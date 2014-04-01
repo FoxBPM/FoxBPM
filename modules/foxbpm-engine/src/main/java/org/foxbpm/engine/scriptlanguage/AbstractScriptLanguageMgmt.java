@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.scriptlanguage;
+package org.foxbpm.engine.scriptlanguage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +23,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.DataVariableBehavior;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.ProcessDefinitionBehavior;
-import com.founder.fix.fixflow.core.impl.datavariable.DataVariableEntity;
-import com.founder.fix.fixflow.core.impl.datavariable.DataVariableMgmtInstance;
-import com.founder.fix.fixflow.core.runtime.ExecutionContext;
+import org.foxbpm.engine.impl.bpmn.behavior.DataVariableBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.ProcessDefinitionBehavior;
+import org.foxbpm.engine.impl.datavariable.DataVariableEntity;
+import org.foxbpm.engine.impl.datavariable.DataVariableMgmtInstance;
+import org.foxbpm.engine.runtime.ExecutionContext;
 
 public abstract class AbstractScriptLanguageMgmt {
 	

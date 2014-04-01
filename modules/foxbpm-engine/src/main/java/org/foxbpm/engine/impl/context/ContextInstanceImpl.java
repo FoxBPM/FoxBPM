@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,19 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.context;
+package org.foxbpm.engine.impl.context;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.founder.fix.fixflow.core.context.ContextInstance;
-import com.founder.fix.fixflow.core.factory.ProcessObjectFactory;
-import com.founder.fix.fixflow.core.impl.Context;
-import com.founder.fix.fixflow.core.impl.datavariable.DataVariableEntity;
-import com.founder.fix.fixflow.core.impl.expression.ExpressionMgmt;
-import com.founder.fix.fixflow.core.impl.runtime.ProcessInstanceEntity;
-import com.founder.fix.fixflow.core.runtime.ExecutionContext;
-import com.founder.fix.fixflow.core.runtime.ProcessInstance;
+import org.foxbpm.engine.context.ContextInstance;
+import org.foxbpm.engine.factory.ProcessObjectFactory;
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.datavariable.DataVariableEntity;
+import org.foxbpm.engine.impl.expression.ExpressionMgmt;
+import org.foxbpm.engine.impl.runtime.ProcessInstanceEntity;
+import org.foxbpm.engine.runtime.ExecutionContext;
+import org.foxbpm.engine.runtime.ProcessInstance;
 
 public class ContextInstanceImpl implements ContextInstance {
 

@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,13 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.flowgraphics.svg;
+package org.foxbpm.engine.impl.flowgraphics.svg;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgLineBaseTo.SvgPoint;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgLineTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgLineBaseTo.SvgPoint;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgLineTo;
 public class CaclModel {
 	/** 勾股定理, 取线段长度
 	 * @param a

@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,13 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.job;
+package org.foxbpm.engine.job;
 
 import java.util.Date;
 import java.util.Map;
 
-import com.founder.fix.fixflow.core.impl.db.PersistentObject;
-import com.founder.fix.fixflow.core.impl.job.JobDetailEntity;
+import org.foxbpm.engine.impl.db.PersistentObject;
+import org.foxbpm.engine.impl.job.JobDetailEntity;
 
 /**
  * 定时任务接口

@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
  */
 package org.foxbpm.engine.impl.cache;
 
-import com.founder.fix.fixflow.core.cache.CacheHandler;
+import org.foxbpm.engine.cache.CacheHandler;
 
 public class CacheImpl implements CacheHandler {
 

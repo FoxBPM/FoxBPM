@@ -21,13 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import com.founder.fix.fixflow.core.exception.FixFlowException;
-import com.founder.fix.fixflow.core.impl.interceptor.Command;
-import com.founder.fix.fixflow.core.impl.interceptor.CommandContext;
-import com.founder.fix.fixflow.core.impl.interceptor.CommandExecutor;
-import com.founder.fix.fixflow.core.impl.task.QueryExpandTo;
-import com.founder.fix.fixflow.core.query.Query;
-import com.founder.fix.fixflow.core.query.QueryProperty;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.impl.interceptor.Command;
+import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.interceptor.CommandExecutor;
+import org.foxbpm.engine.impl.task.QueryExpandTo;
+import org.foxbpm.engine.query.Query;
+import org.foxbpm.engine.query.QueryProperty;
 
 /**
  * 

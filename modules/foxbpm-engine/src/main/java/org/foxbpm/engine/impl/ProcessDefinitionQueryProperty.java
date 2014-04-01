@@ -19,7 +19,7 @@ package org.foxbpm.engine.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.founder.fix.fixflow.core.query.QueryProperty;
+import org.foxbpm.engine.query.QueryProperty;
 
 
 

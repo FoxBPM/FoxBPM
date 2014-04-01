@@ -21,7 +21,7 @@ package org.foxbpm.engine.runtime;
 import java.util.Date;
 import java.util.List;
 
-import com.founder.fix.fixflow.core.query.Query;
+import org.foxbpm.engine.query.Query;
 public interface ProcessInstanceQuery extends Query<ProcessInstanceQuery, ProcessInstance> {
 
 	/**

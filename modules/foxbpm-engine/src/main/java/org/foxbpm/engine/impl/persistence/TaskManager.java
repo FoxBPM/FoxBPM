@@ -20,15 +20,15 @@ package org.foxbpm.engine.impl.persistence;
 import java.util.List;
 import java.util.Map;
 
-import com.founder.fix.fixflow.core.cache.CacheHandler;
-import com.founder.fix.fixflow.core.exception.FixFlowException;
-import com.founder.fix.fixflow.core.impl.Context;
-import com.founder.fix.fixflow.core.impl.Page;
-import com.founder.fix.fixflow.core.impl.command.QueryVariablesCommand;
-import com.founder.fix.fixflow.core.impl.persistence.AbstractManager;
-import com.founder.fix.fixflow.core.impl.task.TaskInstanceEntity;
-import com.founder.fix.fixflow.core.impl.task.TaskQueryImpl;
-import com.founder.fix.fixflow.core.task.IdentityLink;
+import org.foxbpm.engine.cache.CacheHandler;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.Page;
+import org.foxbpm.engine.impl.command.QueryVariablesCommand;
+import org.foxbpm.engine.impl.persistence.AbstractManager;
+import org.foxbpm.engine.impl.task.TaskInstanceEntity;
+import org.foxbpm.engine.impl.task.TaskQueryImpl;
+import org.foxbpm.engine.task.IdentityLink;
 
 /**
  * 任务数据管理器

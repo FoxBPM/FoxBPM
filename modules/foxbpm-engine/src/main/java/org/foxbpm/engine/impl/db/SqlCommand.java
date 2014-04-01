@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.db;
+package org.foxbpm.engine.impl.db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,12 +32,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.founder.fix.fixflow.core.exception.FixFlowException;
-import com.founder.fix.fixflow.core.impl.log.LogFactory;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.impl.log.LogFactory;
 
 public class SqlCommand {
 	
-	 private static com.founder.fix.fixflow.core.impl.log.DebugLog debugLog = LogFactory.getDebugLog(SqlCommand.class);
+	 private static org.foxbpm.engine.impl.log.DebugLog debugLog = LogFactory.getDebugLog(SqlCommand.class);
 
 	Connection conn;
 

@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,27 +15,27 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.interceptor;
+package org.foxbpm.engine.impl.interceptor;
 
 import java.sql.Connection;
 
-import com.founder.fix.fixflow.core.impl.Context;
-import com.founder.fix.fixflow.core.impl.ProcessEngineConfigurationImpl;
-import com.founder.fix.fixflow.core.impl.cache.CacheObject;
-import com.founder.fix.fixflow.core.impl.db.DbSqlSession;
-import com.founder.fix.fixflow.core.impl.db.MappingSqlSession;
-import com.founder.fix.fixflow.core.impl.persistence.CommentManager;
-import com.founder.fix.fixflow.core.impl.persistence.DeploymentManager;
-import com.founder.fix.fixflow.core.impl.persistence.EventSubscriptionManager;
-import com.founder.fix.fixflow.core.impl.persistence.HistoryManager;
-import com.founder.fix.fixflow.core.impl.persistence.IdentityLinkManager;
-import com.founder.fix.fixflow.core.impl.persistence.JobManager;
-import com.founder.fix.fixflow.core.impl.persistence.ProcessDefinitionManager;
-import com.founder.fix.fixflow.core.impl.persistence.ProcessInstanceManager;
-import com.founder.fix.fixflow.core.impl.persistence.ResourceManager;
-import com.founder.fix.fixflow.core.impl.persistence.TaskManager;
-import com.founder.fix.fixflow.core.impl.persistence.TokenManager;
-import com.founder.fix.fixflow.core.impl.persistence.VariableManager;
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
+import org.foxbpm.engine.impl.cache.CacheObject;
+import org.foxbpm.engine.impl.db.DbSqlSession;
+import org.foxbpm.engine.impl.db.MappingSqlSession;
+import org.foxbpm.engine.impl.persistence.CommentManager;
+import org.foxbpm.engine.impl.persistence.DeploymentManager;
+import org.foxbpm.engine.impl.persistence.EventSubscriptionManager;
+import org.foxbpm.engine.impl.persistence.HistoryManager;
+import org.foxbpm.engine.impl.persistence.IdentityLinkManager;
+import org.foxbpm.engine.impl.persistence.JobManager;
+import org.foxbpm.engine.impl.persistence.ProcessDefinitionManager;
+import org.foxbpm.engine.impl.persistence.ProcessInstanceManager;
+import org.foxbpm.engine.impl.persistence.ResourceManager;
+import org.foxbpm.engine.impl.persistence.TaskManager;
+import org.foxbpm.engine.impl.persistence.TokenManager;
+import org.foxbpm.engine.impl.persistence.VariableManager;
 
 /**
  * @author kenshin

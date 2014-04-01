@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.message;
+package org.foxbpm.engine.impl.message;
 
 
 import java.sql.Connection;
@@ -24,19 +24,19 @@ import java.util.Map;
 import javax.jms.Message;
 import javax.jms.ObjectMessage;
 
-import com.founder.fix.fixflow.core.ProcessEngine;
-import com.founder.fix.fixflow.core.ProcessEngineManagement;
-import com.founder.fix.fixflow.core.RuntimeService;
-import com.founder.fix.fixflow.core.impl.ExternalContent;
-import com.founder.fix.fixflow.core.impl.command.MessageStartProcessInstanceCommand;
-import com.founder.fix.fixflow.core.impl.jms.IListener;
-import com.founder.fix.fixflow.core.impl.log.LogFactory;
-import com.founder.fix.fixflow.core.subscription.EventSubscriptionType;
+import org.foxbpm.engine.ProcessEngine;
+import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.RuntimeService;
+import org.foxbpm.engine.impl.ExternalContent;
+import org.foxbpm.engine.impl.command.MessageStartProcessInstanceCommand;
+import org.foxbpm.engine.impl.jms.IListener;
+import org.foxbpm.engine.impl.log.LogFactory;
+import org.foxbpm.engine.subscription.EventSubscriptionType;
 
 public class FlowMessageListener implements IListener {
 
 	FlowMessage flowMessage=new FlowMessage();
-	private static com.founder.fix.fixflow.core.impl.log.DebugLog debugLog = LogFactory.getDebugLog(FlowMessageListener.class);
+	private static org.foxbpm.engine.impl.log.DebugLog debugLog = LogFactory.getDebugLog(FlowMessageListener.class);
 
 	public ChainType doJob(Message message) throws Exception {
 		

@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,13 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.cmd;
+package org.foxbpm.engine.impl.cmd;
 
-import com.founder.fix.fixflow.core.exception.FixFlowException;
-import com.founder.fix.fixflow.core.impl.interceptor.Command;
-import com.founder.fix.fixflow.core.impl.interceptor.CommandContext;
-import com.founder.fix.fixflow.core.impl.persistence.ProcessInstanceManager;
-import com.founder.fix.fixflow.core.impl.runtime.ProcessInstanceEntity;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.impl.interceptor.Command;
+import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.persistence.ProcessInstanceManager;
+import org.foxbpm.engine.impl.runtime.ProcessInstanceEntity;
 
 public class TerminatProcessInstanceCmd implements Command<Void> {
 

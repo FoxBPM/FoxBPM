@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.query;
+package org.foxbpm.engine.query;
 
 import java.util.List;
 
-import com.founder.fix.fixflow.core.impl.task.QueryExpandTo;
+import org.foxbpm.engine.impl.task.QueryExpandTo;
 
 /**
  * Describes basic methods for querying.

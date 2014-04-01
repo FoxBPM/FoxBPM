@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
  * @author kenshin
  */
 
-package com.founder.fix.fixflow.core.impl.interceptor;
+package org.foxbpm.engine.impl.interceptor;
 
-import com.founder.fix.fixflow.core.impl.ProcessEngineConfigurationImpl;
+import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 
 
 /**

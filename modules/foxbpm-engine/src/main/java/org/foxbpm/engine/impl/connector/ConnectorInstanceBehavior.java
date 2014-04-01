@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.connector;
+package org.foxbpm.engine.impl.connector;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -23,11 +23,11 @@ import java.util.List;
 
 import com.founder.fix.bpmn2extensions.fixflow.ConnectorParameterInputs;
 import com.founder.fix.bpmn2extensions.fixflow.ConnectorParameterOutputs;
-import com.founder.fix.fixflow.core.action.ConnectorHandler;
-import com.founder.fix.fixflow.core.exception.FixFlowConnectorException;
-import com.founder.fix.fixflow.core.impl.expression.ExpressionMgmt;
-import com.founder.fix.fixflow.core.impl.util.StringUtil;
-import com.founder.fix.fixflow.core.runtime.ExecutionContext;
+import org.foxbpm.engine.action.ConnectorHandler;
+import org.foxbpm.engine.exception.FixFlowConnectorException;
+import org.foxbpm.engine.impl.expression.ExpressionMgmt;
+import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.runtime.ExecutionContext;
 
 
 public class ConnectorInstanceBehavior {

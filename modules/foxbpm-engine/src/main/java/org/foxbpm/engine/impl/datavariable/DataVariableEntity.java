@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
  * @author kenshin
  */
 
-package com.founder.fix.fixflow.core.impl.datavariable;
+package org.foxbpm.engine.impl.datavariable;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -30,12 +30,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.founder.fix.fixflow.core.impl.Context;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.DataVariableBehavior;
-import com.founder.fix.fixflow.core.impl.command.QueryVariablesCommand;
-import com.founder.fix.fixflow.core.impl.db.AbstractPersistentObject;
-import com.founder.fix.fixflow.core.impl.expression.ExpressionMgmt;
-import com.founder.fix.fixflow.core.runtime.ExecutionContext;
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.bpmn.behavior.DataVariableBehavior;
+import org.foxbpm.engine.impl.command.QueryVariablesCommand;
+import org.foxbpm.engine.impl.db.AbstractPersistentObject;
+import org.foxbpm.engine.impl.expression.ExpressionMgmt;
+import org.foxbpm.engine.runtime.ExecutionContext;
 
 
 public class DataVariableEntity extends AbstractPersistentObject<DataVariableEntity>{

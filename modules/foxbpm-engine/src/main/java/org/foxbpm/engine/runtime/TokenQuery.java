@@ -17,7 +17,7 @@
  */
 package org.foxbpm.engine.runtime;
 
-import com.founder.fix.fixflow.core.query.Query;
+import org.foxbpm.engine.query.Query;
 
 public interface TokenQuery extends Query<TokenQuery, Token>{
 	

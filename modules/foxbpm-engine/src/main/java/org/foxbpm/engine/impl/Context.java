@@ -24,12 +24,12 @@ import java.util.Stack;
 
 import com.founder.fix.bpmn2extensions.coreconfig.ScriptLanguage;
 import com.founder.fix.bpmn2extensions.coreconfig.ScriptLanguageConfig;
-import com.founder.fix.fixflow.core.ConnectionManagement;
-import com.founder.fix.fixflow.core.impl.cache.CacheObject;
-import com.founder.fix.fixflow.core.impl.db.FixConnectionResult;
-import com.founder.fix.fixflow.core.impl.interceptor.CommandContext;
-import com.founder.fix.fixflow.core.impl.util.ReflectUtil;
-import com.founder.fix.fixflow.core.scriptlanguage.AbstractScriptLanguageMgmt;
+import org.foxbpm.engine.ConnectionManagement;
+import org.foxbpm.engine.impl.cache.CacheObject;
+import org.foxbpm.engine.impl.db.FixConnectionResult;
+import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.ReflectUtil;
+import org.foxbpm.engine.scriptlanguage.AbstractScriptLanguageMgmt;
 
 /**
  * @author kenshin

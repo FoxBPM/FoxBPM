@@ -17,8 +17,8 @@
  */
 package org.foxbpm.engine.impl;
 
-import com.founder.fix.fixflow.core.ProcessService;
-import com.founder.fix.fixflow.core.impl.interceptor.CommandExecutor;
+import org.foxbpm.engine.ProcessService;
+import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 
 
 

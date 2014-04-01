@@ -20,13 +20,13 @@ package org.foxbpm.engine.impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.founder.fix.fixflow.core.ManagementService;
-import com.founder.fix.fixflow.core.ProcessEngine;
-import com.founder.fix.fixflow.core.ProcessEngineManagement;
-import com.founder.fix.fixflow.core.TaskService;
-import com.founder.fix.fixflow.core.impl.command.ExpandTaskCommand;
-import com.founder.fix.fixflow.core.impl.identity.Authentication;
-import com.founder.fix.fixflow.core.task.TaskInstance;
+import org.foxbpm.engine.ManagementService;
+import org.foxbpm.engine.ProcessEngine;
+import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.TaskService;
+import org.foxbpm.engine.impl.command.ExpandTaskCommand;
+import org.foxbpm.engine.impl.identity.Authentication;
+import org.foxbpm.engine.task.TaskInstance;
 
 public class ManagementServiceImpl extends ServiceImpl implements ManagementService {
 

@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,29 +15,29 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.db;
+package org.foxbpm.engine.impl.db;
 
 import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 
-import com.founder.fix.fixflow.core.exception.FixFlowDbException;
-import com.founder.fix.fixflow.core.exception.FixFlowException;
-import com.founder.fix.fixflow.core.factory.ProcessObjectFactory;
-import com.founder.fix.fixflow.core.impl.Page;
-import com.founder.fix.fixflow.core.impl.ProcessDefinitionQueryImpl;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.ProcessDefinitionBehavior;
-import com.founder.fix.fixflow.core.impl.persistence.definition.DeploymentEntity;
-import com.founder.fix.fixflow.core.impl.persistence.definition.DeploymentPersistence;
-import com.founder.fix.fixflow.core.impl.persistence.definition.ProcessDefinitionPersistence;
-import com.founder.fix.fixflow.core.impl.persistence.definition.ResourcePersistence;
-import com.founder.fix.fixflow.core.impl.persistence.instance.CommentPersistence;
-import com.founder.fix.fixflow.core.impl.persistence.instance.EventSubscriptionPersistence;
-import com.founder.fix.fixflow.core.impl.persistence.instance.HistoryPersistence;
+import org.foxbpm.engine.exception.FixFlowDbException;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.factory.ProcessObjectFactory;
+import org.foxbpm.engine.impl.Page;
+import org.foxbpm.engine.impl.ProcessDefinitionQueryImpl;
+import org.foxbpm.engine.impl.bpmn.behavior.ProcessDefinitionBehavior;
+import org.foxbpm.engine.impl.persistence.definition.DeploymentEntity;
+import org.foxbpm.engine.impl.persistence.definition.DeploymentPersistence;
+import org.foxbpm.engine.impl.persistence.definition.ProcessDefinitionPersistence;
+import org.foxbpm.engine.impl.persistence.definition.ResourcePersistence;
+import org.foxbpm.engine.impl.persistence.instance.CommentPersistence;
+import org.foxbpm.engine.impl.persistence.instance.EventSubscriptionPersistence;
+import org.foxbpm.engine.impl.persistence.instance.HistoryPersistence;
 
-import com.founder.fix.fixflow.core.impl.subscription.EventSubscriptionEntity;
-import com.founder.fix.fixflow.core.impl.subscription.EventSubscriptionQueryImpl;
-import com.founder.fix.fixflow.core.impl.util.StringUtil;
+import org.foxbpm.engine.impl.subscription.EventSubscriptionEntity;
+import org.foxbpm.engine.impl.subscription.EventSubscriptionQueryImpl;
+import org.foxbpm.engine.impl.util.StringUtil;
 
 
 public class PersistentSession {

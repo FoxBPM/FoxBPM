@@ -27,17 +27,17 @@ import org.eclipse.bpmn2.SequenceFlow;
 
 
 import com.founder.fix.bpmn2extensions.fixflow.SkipStrategy;
-import com.founder.fix.fixflow.core.context.ContextInstance;
-import com.founder.fix.fixflow.core.event.BaseElementEvent;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.ProcessDefinitionBehavior;
-import com.founder.fix.fixflow.core.impl.connector.ConnectorInstanceBehavior;
-import com.founder.fix.fixflow.core.impl.db.SqlCommand;
-import com.founder.fix.fixflow.core.impl.identity.UserTo;
-import com.founder.fix.fixflow.core.impl.runtime.ProcessInstanceEntity;
-import com.founder.fix.fixflow.core.impl.runtime.TokenEntity;
-import com.founder.fix.fixflow.core.task.TaskDefinition;
-import com.founder.fix.fixflow.core.task.TaskInstance;
-import com.founder.fix.fixflow.core.task.TaskMgmtInstance;
+import org.foxbpm.engine.context.ContextInstance;
+import org.foxbpm.engine.event.BaseElementEvent;
+import org.foxbpm.engine.impl.bpmn.behavior.ProcessDefinitionBehavior;
+import org.foxbpm.engine.impl.connector.ConnectorInstanceBehavior;
+import org.foxbpm.engine.impl.db.SqlCommand;
+import org.foxbpm.engine.impl.identity.UserTo;
+import org.foxbpm.engine.impl.runtime.ProcessInstanceEntity;
+import org.foxbpm.engine.impl.runtime.TokenEntity;
+import org.foxbpm.engine.task.TaskDefinition;
+import org.foxbpm.engine.task.TaskInstance;
+import org.foxbpm.engine.task.TaskMgmtInstance;
 
 public interface ExecutionContext {
 	

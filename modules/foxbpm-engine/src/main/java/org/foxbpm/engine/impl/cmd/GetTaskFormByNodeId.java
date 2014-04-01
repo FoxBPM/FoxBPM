@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,15 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.cmd;
+package org.foxbpm.engine.impl.cmd;
 
 
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.ProcessDefinitionBehavior;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.UserTaskBehavior;
-import com.founder.fix.fixflow.core.impl.expression.ExpressionMgmt;
-import com.founder.fix.fixflow.core.impl.interceptor.Command;
-import com.founder.fix.fixflow.core.impl.interceptor.CommandContext;
-import com.founder.fix.fixflow.core.impl.persistence.ProcessDefinitionManager;
+import org.foxbpm.engine.impl.bpmn.behavior.ProcessDefinitionBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
+import org.foxbpm.engine.impl.expression.ExpressionMgmt;
+import org.foxbpm.engine.impl.interceptor.Command;
+import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.persistence.ProcessDefinitionManager;
 
 public class GetTaskFormByNodeId<T> implements Command<String> {
 	

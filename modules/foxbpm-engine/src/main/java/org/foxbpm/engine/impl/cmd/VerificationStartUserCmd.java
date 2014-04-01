@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,20 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.cmd;
+package org.foxbpm.engine.impl.cmd;
 
 import java.util.List;
 
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.ProcessDefinitionBehavior;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.UserTaskBehavior;
-import com.founder.fix.fixflow.core.impl.expression.ExpressionMgmt;
-import com.founder.fix.fixflow.core.impl.identity.Authentication;
-import com.founder.fix.fixflow.core.impl.identity.GroupTo;
-import com.founder.fix.fixflow.core.impl.interceptor.Command;
-import com.founder.fix.fixflow.core.impl.interceptor.CommandContext;
-import com.founder.fix.fixflow.core.impl.task.TaskAssigneeDefinitionTo;
-import com.founder.fix.fixflow.core.impl.util.StringUtil;
-import com.founder.fix.fixflow.core.task.IdentityLinkType;
+import org.foxbpm.engine.impl.bpmn.behavior.ProcessDefinitionBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
+import org.foxbpm.engine.impl.expression.ExpressionMgmt;
+import org.foxbpm.engine.impl.identity.Authentication;
+import org.foxbpm.engine.impl.identity.GroupTo;
+import org.foxbpm.engine.impl.interceptor.Command;
+import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.task.TaskAssigneeDefinitionTo;
+import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.task.IdentityLinkType;
 
 public class VerificationStartUserCmd implements Command<Boolean> {
 

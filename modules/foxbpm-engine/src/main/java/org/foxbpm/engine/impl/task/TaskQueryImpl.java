@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.task;
+package org.foxbpm.engine.impl.task;
 
 
 import java.util.ArrayList;
@@ -23,17 +23,17 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import com.founder.fix.fixflow.core.exception.FixFlowException;
-import com.founder.fix.fixflow.core.impl.AbstractQuery;
-import com.founder.fix.fixflow.core.impl.Page;
-import com.founder.fix.fixflow.core.impl.identity.Authentication;
-import com.founder.fix.fixflow.core.impl.identity.GroupTo;
-import com.founder.fix.fixflow.core.impl.interceptor.CommandContext;
-import com.founder.fix.fixflow.core.impl.interceptor.CommandExecutor;
-import com.founder.fix.fixflow.core.runtime.QueryLocation;
-import com.founder.fix.fixflow.core.task.TaskInstance;
-import com.founder.fix.fixflow.core.task.TaskInstanceType;
-import com.founder.fix.fixflow.core.task.TaskQuery;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.impl.AbstractQuery;
+import org.foxbpm.engine.impl.Page;
+import org.foxbpm.engine.impl.identity.Authentication;
+import org.foxbpm.engine.impl.identity.GroupTo;
+import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.interceptor.CommandExecutor;
+import org.foxbpm.engine.runtime.QueryLocation;
+import org.foxbpm.engine.task.TaskInstance;
+import org.foxbpm.engine.task.TaskInstanceType;
+import org.foxbpm.engine.task.TaskQuery;
 
 
 /**

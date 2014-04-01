@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,17 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.subscription;
+package org.foxbpm.engine.impl.subscription;
 
 import java.util.List;
 
-import com.founder.fix.fixflow.core.impl.AbstractQuery;
-import com.founder.fix.fixflow.core.impl.Page;
-import com.founder.fix.fixflow.core.impl.interceptor.CommandContext;
-import com.founder.fix.fixflow.core.impl.interceptor.CommandExecutor;
-import com.founder.fix.fixflow.core.subscription.EventSubscription;
-import com.founder.fix.fixflow.core.subscription.EventSubscriptionQuery;
-import com.founder.fix.fixflow.core.subscription.EventSubscriptionType;
+import org.foxbpm.engine.impl.AbstractQuery;
+import org.foxbpm.engine.impl.Page;
+import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.interceptor.CommandExecutor;
+import org.foxbpm.engine.subscription.EventSubscription;
+import org.foxbpm.engine.subscription.EventSubscriptionQuery;
+import org.foxbpm.engine.subscription.EventSubscriptionType;
 
 public class EventSubscriptionQueryImpl  extends AbstractQuery< EventSubscriptionQuery, EventSubscription> implements EventSubscriptionQuery {
 	

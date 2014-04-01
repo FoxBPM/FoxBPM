@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.job;
+package org.foxbpm.engine.impl.job;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,9 +24,9 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 
-import com.founder.fix.fixflow.core.RuntimeService;
-import com.founder.fix.fixflow.core.impl.command.StartProcessInstanceCommand;
-import com.founder.fix.fixflow.core.impl.identity.Authentication;
+import org.foxbpm.engine.RuntimeService;
+import org.foxbpm.engine.impl.command.StartProcessInstanceCommand;
+import org.foxbpm.engine.impl.identity.Authentication;
 
 public class ProcessInstanceAutoStart extends AbstactTimeJob {
 

@@ -21,7 +21,7 @@ import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.founder.fix.fixflow.core.ConnectionManagement;
+import org.foxbpm.engine.ConnectionManagement;
 /**
  * 外部内容构造器
  * @author kenshin

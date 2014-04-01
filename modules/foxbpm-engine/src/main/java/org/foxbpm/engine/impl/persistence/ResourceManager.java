@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.founder.fix.fixflow.core.impl.persistence.definition.ResourceEntity;
+import org.foxbpm.engine.impl.persistence.definition.ResourceEntity;
 
 
 

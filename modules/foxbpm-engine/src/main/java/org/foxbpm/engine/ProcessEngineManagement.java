@@ -20,7 +20,7 @@ package org.foxbpm.engine;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.founder.fix.fixflow.core.impl.db.DbType;
+import org.foxbpm.engine.impl.db.DbType;
 
 public abstract class ProcessEngineManagement {
 

@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,20 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.cmd;
+package org.foxbpm.engine.impl.cmd;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.ProcessDefinitionBehavior;
-import com.founder.fix.fixflow.core.impl.interceptor.Command;
-import com.founder.fix.fixflow.core.impl.interceptor.CommandContext;
-import com.founder.fix.fixflow.core.impl.persistence.ProcessDefinitionManager;
-import com.founder.fix.fixflow.core.impl.persistence.ProcessInstanceManager;
-import com.founder.fix.fixflow.core.impl.persistence.TaskManager;
-import com.founder.fix.fixflow.core.impl.runtime.ProcessInstanceEntity;
-import com.founder.fix.fixflow.core.impl.runtime.TokenEntity;
-import com.founder.fix.fixflow.core.task.TaskInstance;
+import org.foxbpm.engine.impl.bpmn.behavior.ProcessDefinitionBehavior;
+import org.foxbpm.engine.impl.interceptor.Command;
+import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.persistence.ProcessDefinitionManager;
+import org.foxbpm.engine.impl.persistence.ProcessInstanceManager;
+import org.foxbpm.engine.impl.persistence.TaskManager;
+import org.foxbpm.engine.impl.runtime.ProcessInstanceEntity;
+import org.foxbpm.engine.impl.runtime.TokenEntity;
+import org.foxbpm.engine.task.TaskInstance;
 
 
 public class GetPreviousStepTaskByTaskIdCmd implements Command<List<TaskInstance>> {

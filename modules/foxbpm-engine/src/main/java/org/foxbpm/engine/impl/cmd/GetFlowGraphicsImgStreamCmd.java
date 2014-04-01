@@ -1,13 +1,30 @@
-package com.founder.fix.fixflow.core.impl.cmd;
+/**
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * @author kenshin
+ */
+package org.foxbpm.engine.impl.cmd;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import com.founder.fix.fixflow.core.exception.FixFlowBizException;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.ProcessDefinitionBehavior;
-import com.founder.fix.fixflow.core.impl.interceptor.Command;
-import com.founder.fix.fixflow.core.impl.interceptor.CommandContext;
-import com.founder.fix.fixflow.core.impl.persistence.definition.ResourceEntity;
+import org.foxbpm.engine.exception.FixFlowBizException;
+import org.foxbpm.engine.impl.bpmn.behavior.ProcessDefinitionBehavior;
+import org.foxbpm.engine.impl.interceptor.Command;
+import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.persistence.definition.ResourceEntity;
 
 public class GetFlowGraphicsImgStreamCmd  implements Command<InputStream> {
 

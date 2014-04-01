@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.task;
+package org.foxbpm.engine.impl.task;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -29,26 +29,26 @@ import com.founder.fix.bpmn2extensions.coreconfig.AssignPolicy;
 import com.founder.fix.bpmn2extensions.coreconfig.AssignPolicyConfig;
 import com.founder.fix.bpmn2extensions.fixflow.AssignPolicyType;
 import com.founder.fix.bpmn2extensions.fixflow.FormUri;
-import com.founder.fix.fixflow.core.action.AssignmentHandler;
-import com.founder.fix.fixflow.core.event.BaseElementEvent;
-import com.founder.fix.fixflow.core.exception.FixFlowException;
-import com.founder.fix.fixflow.core.factory.ProcessObjectFactory;
-import com.founder.fix.fixflow.core.impl.Context;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.UserTaskBehavior;
-import com.founder.fix.fixflow.core.impl.expression.ExpressionMgmt;
-import com.founder.fix.fixflow.core.impl.identity.Authentication;
-import com.founder.fix.fixflow.core.impl.identity.GroupTo;
-import com.founder.fix.fixflow.core.impl.runtime.ProcessInstanceEntity;
-import com.founder.fix.fixflow.core.impl.runtime.TokenEntity;
-import com.founder.fix.fixflow.core.impl.util.GuidUtil;
-import com.founder.fix.fixflow.core.impl.util.StringUtil;
-import com.founder.fix.fixflow.core.runtime.ExecutionContext;
-import com.founder.fix.fixflow.core.runtime.Token;
-import com.founder.fix.fixflow.core.task.Assignable;
-import com.founder.fix.fixflow.core.task.IdentityLinkType;
-import com.founder.fix.fixflow.core.task.TaskDefinition;
-import com.founder.fix.fixflow.core.task.TaskInstance;
-import com.founder.fix.fixflow.core.task.TaskMgmtInstance;
+import org.foxbpm.engine.action.AssignmentHandler;
+import org.foxbpm.engine.event.BaseElementEvent;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.factory.ProcessObjectFactory;
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
+import org.foxbpm.engine.impl.expression.ExpressionMgmt;
+import org.foxbpm.engine.impl.identity.Authentication;
+import org.foxbpm.engine.impl.identity.GroupTo;
+import org.foxbpm.engine.impl.runtime.ProcessInstanceEntity;
+import org.foxbpm.engine.impl.runtime.TokenEntity;
+import org.foxbpm.engine.impl.util.GuidUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.runtime.ExecutionContext;
+import org.foxbpm.engine.runtime.Token;
+import org.foxbpm.engine.task.Assignable;
+import org.foxbpm.engine.task.IdentityLinkType;
+import org.foxbpm.engine.task.TaskDefinition;
+import org.foxbpm.engine.task.TaskInstance;
+import org.foxbpm.engine.task.TaskMgmtInstance;
 
 public class TaskMgmtInstanceImpl implements TaskMgmtInstance {
 

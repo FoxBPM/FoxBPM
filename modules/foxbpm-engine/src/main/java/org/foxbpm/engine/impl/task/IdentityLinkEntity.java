@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,17 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.task;
+package org.foxbpm.engine.impl.task;
 
 import java.util.Date;
 
-import com.founder.fix.fixflow.core.impl.db.AbstractPersistentObject;
-import com.founder.fix.fixflow.core.impl.identity.GroupTo;
-import com.founder.fix.fixflow.core.impl.util.StringUtil;
-import com.founder.fix.fixflow.core.task.IncludeExclusion;
-import com.founder.fix.fixflow.core.task.IdentityLink;
-import com.founder.fix.fixflow.core.task.IdentityLinkType;
-import com.founder.fix.fixflow.core.task.TaskInstance;
+import org.foxbpm.engine.impl.db.AbstractPersistentObject;
+import org.foxbpm.engine.impl.identity.GroupTo;
+import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.task.IncludeExclusion;
+import org.foxbpm.engine.task.IdentityLink;
+import org.foxbpm.engine.task.IdentityLinkType;
+import org.foxbpm.engine.task.TaskInstance;
 
 public class IdentityLinkEntity extends AbstractPersistentObject<IdentityLinkEntity> implements IdentityLink {
 

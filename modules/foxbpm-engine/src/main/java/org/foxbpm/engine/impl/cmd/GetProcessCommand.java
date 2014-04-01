@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,24 +15,24 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.cmd;
+package org.foxbpm.engine.impl.cmd;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.founder.fix.fixflow.core.ProcessEngineManagement;
-import com.founder.fix.fixflow.core.TaskService;
-import com.founder.fix.fixflow.core.impl.Context;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.TaskCommandInst;
-import com.founder.fix.fixflow.core.impl.identity.Authentication;
-import com.founder.fix.fixflow.core.impl.interceptor.Command;
-import com.founder.fix.fixflow.core.impl.interceptor.CommandContext;
-import com.founder.fix.fixflow.core.impl.util.StringUtil;
-import com.founder.fix.fixflow.core.internationalization.FixFlowResources;
-import com.founder.fix.fixflow.core.internationalization.ResourcesUtil;
-import com.founder.fix.fixflow.core.task.TaskInstance;
+import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.TaskService;
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.bpmn.behavior.TaskCommandInst;
+import org.foxbpm.engine.impl.identity.Authentication;
+import org.foxbpm.engine.impl.interceptor.Command;
+import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.internationalization.FixFlowResources;
+import org.foxbpm.engine.internationalization.ResourcesUtil;
+import org.foxbpm.engine.task.TaskInstance;
 
 public class GetProcessCommand implements Command<List<Map<String, Object>>>{
 

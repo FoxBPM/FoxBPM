@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.filter;
+package org.foxbpm.engine.impl.filter;
 
-import com.founder.fix.fixflow.core.ProcessEngine;
-import com.founder.fix.fixflow.core.ProcessEngineManagement;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.TaskCommandInst;
-import com.founder.fix.fixflow.core.task.TaskInstance;
+import org.foxbpm.engine.ProcessEngine;
+import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.impl.bpmn.behavior.TaskCommandInst;
+import org.foxbpm.engine.task.TaskInstance;
 
 public abstract class AbstractCommandFilter {
 	/**

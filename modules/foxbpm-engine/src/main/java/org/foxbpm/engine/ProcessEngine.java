@@ -17,9 +17,9 @@
  */
 package org.foxbpm.engine;
 
-import com.founder.fix.fixflow.core.impl.ExternalContent;
-import com.founder.fix.fixflow.core.impl.ProcessEngineConfigurationImpl;
-import com.founder.fix.fixflow.core.impl.processversion.FixFlowVersion;
+import org.foxbpm.engine.impl.ExternalContent;
+import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
+import org.foxbpm.engine.impl.processversion.FixFlowVersion;
 
 
 

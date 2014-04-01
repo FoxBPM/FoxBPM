@@ -17,10 +17,10 @@
  */
 package org.foxbpm.engine.runtime;
 
-import com.founder.fix.fixflow.core.query.Query;
-import com.founder.fix.fixflow.core.task.IdentityLink;
-import com.founder.fix.fixflow.core.task.IdentityLinkType;
-import com.founder.fix.fixflow.core.task.IncludeExclusion;
+import org.foxbpm.engine.query.Query;
+import org.foxbpm.engine.task.IdentityLink;
+import org.foxbpm.engine.task.IdentityLinkType;
+import org.foxbpm.engine.task.IncludeExclusion;
 
 public interface IdentityLinkQuery extends Query<IdentityLinkQuery, IdentityLink>{
 	

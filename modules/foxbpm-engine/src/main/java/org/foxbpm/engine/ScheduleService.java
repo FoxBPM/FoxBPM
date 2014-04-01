@@ -26,7 +26,7 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerFactory;
 import org.quartz.Trigger;
 
-import com.founder.fix.fixflow.core.job.Job;
+import org.foxbpm.engine.job.Job;
 
 public interface ScheduleService extends ProcessService{
 	

@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.job;
+package org.foxbpm.engine.impl.job;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -24,14 +24,14 @@ import java.util.Map;
 
 
 
-import com.founder.fix.fixflow.core.exception.FixFlowBizException;
-import com.founder.fix.fixflow.core.exception.FixFlowClassLoadingException;
-import com.founder.fix.fixflow.core.impl.db.AbstractPersistentObject;
-import com.founder.fix.fixflow.core.impl.util.GuidUtil;
-import com.founder.fix.fixflow.core.impl.util.StringUtil;
-import com.founder.fix.fixflow.core.job.AbstractJob;
-import com.founder.fix.fixflow.core.job.Job;
-import com.founder.fix.fixflow.core.objkey.JobObjKey;
+import org.foxbpm.engine.exception.FixFlowBizException;
+import org.foxbpm.engine.exception.FixFlowClassLoadingException;
+import org.foxbpm.engine.impl.db.AbstractPersistentObject;
+import org.foxbpm.engine.impl.util.GuidUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.job.AbstractJob;
+import org.foxbpm.engine.job.Job;
+import org.foxbpm.engine.objkey.JobObjKey;
 
 /**
  * 定时任务类

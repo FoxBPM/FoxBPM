@@ -25,10 +25,10 @@ import java.util.Map;
 
 import com.founder.fix.bpmn2extensions.sqlmappingconfig.Result;
 import com.founder.fix.bpmn2extensions.sqlmappingconfig.ResultMap;
-import com.founder.fix.fixflow.core.impl.Context;
-import com.founder.fix.fixflow.core.impl.util.JavaBeanUtil;
-import com.founder.fix.fixflow.core.impl.util.StringUtil;
-import com.founder.fix.fixflow.core.scriptlanguage.AbstractScriptLanguageMgmt;
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.util.JavaBeanUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.scriptlanguage.AbstractScriptLanguageMgmt;
 
 
 public abstract class AbstractPersistentObject <T> implements PersistentObject {

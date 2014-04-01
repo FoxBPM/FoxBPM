@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.threadpool;
+package org.foxbpm.engine.impl.threadpool;
 
 import java.util.Date;
 import java.util.concurrent.BlockingQueue;
@@ -25,7 +25,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 
-import com.founder.fix.fixflow.core.impl.log.LogFactory;
+import org.foxbpm.engine.impl.log.LogFactory;
 
 public class FixThreadPoolExecutor extends ThreadPoolExecutor {
 	
@@ -35,7 +35,7 @@ public class FixThreadPoolExecutor extends ThreadPoolExecutor {
 	
 	
 	
-	private static com.founder.fix.fixflow.core.impl.log.DebugLog debugLog = LogFactory.getDebugLog(FixThreadPoolExecutor.class);
+	private static org.foxbpm.engine.impl.log.DebugLog debugLog = LogFactory.getDebugLog(FixThreadPoolExecutor.class);
 
 	private boolean isPaused;
 	private ReentrantLock pauseLock = new ReentrantLock();

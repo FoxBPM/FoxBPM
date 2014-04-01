@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.schedule;
+package org.foxbpm.engine.impl.schedule;
 
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -24,7 +24,7 @@ import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
 import org.quartz.TriggerKey;
 
-import com.founder.fix.fixflow.core.impl.util.QuartzUtil;
+import org.foxbpm.engine.impl.util.QuartzUtil;
 
 public class Test {
 	public void task() throws SchedulerException {

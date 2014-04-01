@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.command;
+package org.foxbpm.engine.impl.command;
 
 
-import com.founder.fix.fixflow.core.command.CommandParams;
-import com.founder.fix.fixflow.core.impl.runtime.ProcessInstanceEntity;
-import com.founder.fix.fixflow.core.runtime.Token;
+import org.foxbpm.engine.command.CommandParams;
+import org.foxbpm.engine.impl.runtime.ProcessInstanceEntity;
+import org.foxbpm.engine.runtime.Token;
 
 /**
 *

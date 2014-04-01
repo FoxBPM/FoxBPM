@@ -19,9 +19,9 @@ package org.foxbpm.engine.impl.persistence;
 
 import java.util.List;
 
-import com.founder.fix.fixflow.core.impl.Page;
-import com.founder.fix.fixflow.core.impl.subscription.EventSubscriptionEntity;
-import com.founder.fix.fixflow.core.impl.subscription.EventSubscriptionQueryImpl;
+import org.foxbpm.engine.impl.Page;
+import org.foxbpm.engine.impl.subscription.EventSubscriptionEntity;
+import org.foxbpm.engine.impl.subscription.EventSubscriptionQueryImpl;
 
 public class EventSubscriptionManager extends AbstractManager {
 	

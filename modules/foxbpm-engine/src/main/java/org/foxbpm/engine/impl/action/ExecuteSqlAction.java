@@ -17,8 +17,8 @@
  */
 package org.foxbpm.engine.impl.action;
 
-import com.founder.fix.fixflow.core.action.ActionHandler;
-import com.founder.fix.fixflow.core.runtime.ExecutionContext;
+import org.foxbpm.engine.action.ActionHandler;
+import org.foxbpm.engine.runtime.ExecutionContext;
 
 public class ExecuteSqlAction implements ActionHandler {
 

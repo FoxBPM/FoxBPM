@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,41 +15,56 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.factory;
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * @author kenshin
+ */
+package org.foxbpm.engine.factory;
 
 
 
 import java.sql.Connection;
 
-import com.founder.fix.fixflow.core.action.AssignmentHandler;
-import com.founder.fix.fixflow.core.action.CommandHandler;
-import com.founder.fix.fixflow.core.context.ContextInstance;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.UserTaskBehavior;
-import com.founder.fix.fixflow.core.impl.factory.ProcessObjectFactoryImpl;
-import com.founder.fix.fixflow.core.impl.interceptor.CommandExecutor;
-import com.founder.fix.fixflow.core.impl.persistence.definition.DeploymentPersistence;
-import com.founder.fix.fixflow.core.impl.persistence.definition.ProcessDefinitionPersistence;
-import com.founder.fix.fixflow.core.impl.persistence.definition.ResourcePersistence;
-import com.founder.fix.fixflow.core.impl.persistence.instance.HistoryPersistence;
-import com.founder.fix.fixflow.core.impl.persistence.instance.IdentityLinkPersistence;
-import com.founder.fix.fixflow.core.impl.persistence.instance.JobPersistence;
-import com.founder.fix.fixflow.core.impl.persistence.instance.ProcessInstancePersistence;
-import com.founder.fix.fixflow.core.impl.persistence.instance.TaskInstancePersistence;
-import com.founder.fix.fixflow.core.impl.persistence.instance.TokenPersistence;
-import com.founder.fix.fixflow.core.impl.persistence.instance.VariablePersistence;
-import com.founder.fix.fixflow.core.impl.runtime.TokenEntity;
-import com.founder.fix.fixflow.core.model.DeploymentQuery;
-import com.founder.fix.fixflow.core.model.ProcessDefinitionQuery;
+import org.foxbpm.engine.action.AssignmentHandler;
+import org.foxbpm.engine.action.CommandHandler;
+import org.foxbpm.engine.context.ContextInstance;
+import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
+import org.foxbpm.engine.impl.factory.ProcessObjectFactoryImpl;
+import org.foxbpm.engine.impl.interceptor.CommandExecutor;
+import org.foxbpm.engine.impl.persistence.definition.DeploymentPersistence;
+import org.foxbpm.engine.impl.persistence.definition.ProcessDefinitionPersistence;
+import org.foxbpm.engine.impl.persistence.definition.ResourcePersistence;
+import org.foxbpm.engine.impl.persistence.instance.HistoryPersistence;
+import org.foxbpm.engine.impl.persistence.instance.IdentityLinkPersistence;
+import org.foxbpm.engine.impl.persistence.instance.JobPersistence;
+import org.foxbpm.engine.impl.persistence.instance.ProcessInstancePersistence;
+import org.foxbpm.engine.impl.persistence.instance.TaskInstancePersistence;
+import org.foxbpm.engine.impl.persistence.instance.TokenPersistence;
+import org.foxbpm.engine.impl.persistence.instance.VariablePersistence;
+import org.foxbpm.engine.impl.runtime.TokenEntity;
+import org.foxbpm.engine.model.DeploymentQuery;
+import org.foxbpm.engine.model.ProcessDefinitionQuery;
 
 
-import com.founder.fix.fixflow.core.runtime.ExecutionContext;
-import com.founder.fix.fixflow.core.runtime.IdentityLinkQuery;
-import com.founder.fix.fixflow.core.runtime.ProcessInstance;
-import com.founder.fix.fixflow.core.runtime.ProcessInstanceQuery;
-import com.founder.fix.fixflow.core.runtime.TokenQuery;
-import com.founder.fix.fixflow.core.task.TaskDefinition;
-import com.founder.fix.fixflow.core.task.TaskMgmtInstance;
-import com.founder.fix.fixflow.core.task.TaskQuery;
+import org.foxbpm.engine.runtime.ExecutionContext;
+import org.foxbpm.engine.runtime.IdentityLinkQuery;
+import org.foxbpm.engine.runtime.ProcessInstance;
+import org.foxbpm.engine.runtime.ProcessInstanceQuery;
+import org.foxbpm.engine.runtime.TokenQuery;
+import org.foxbpm.engine.task.TaskDefinition;
+import org.foxbpm.engine.task.TaskMgmtInstance;
+import org.foxbpm.engine.task.TaskQuery;
 
 
 public interface ProcessObjectFactory {

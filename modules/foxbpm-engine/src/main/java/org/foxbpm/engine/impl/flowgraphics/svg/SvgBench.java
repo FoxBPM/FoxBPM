@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.flowgraphics.svg;
+package org.foxbpm.engine.impl.flowgraphics.svg;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -24,9 +24,9 @@ import java.util.List;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 
-import com.founder.fix.fixflow.core.exception.FixFlowException;
-import com.founder.fix.fixflow.core.impl.util.StringUtil;
-import com.founder.fix.fixflow.core.impl.util.XmlUtil;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.impl.util.XmlUtil;
 
 public class SvgBench {
 	private static String templetePath = "/svgcomponent/svgTemplate.xml";

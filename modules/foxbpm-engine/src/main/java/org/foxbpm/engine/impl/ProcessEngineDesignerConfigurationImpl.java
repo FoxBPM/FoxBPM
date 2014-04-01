@@ -27,8 +27,8 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import com.founder.fix.bpmn2extensions.coreconfig.CoreconfigPackage;
 import com.founder.fix.bpmn2extensions.coreconfig.FixFlowConfig;
-import com.founder.fix.fixflow.core.exception.FixFlowException;
-import com.founder.fix.fixflow.core.impl.util.ReflectUtil;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.impl.util.ReflectUtil;
 
 public class ProcessEngineDesignerConfigurationImpl extends ProcessEngineConfigurationImpl {
 
