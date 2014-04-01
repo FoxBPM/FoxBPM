@@ -25,6 +25,7 @@ import org.eclipse.bpmn2.Activity;
 import org.eclipse.bpmn2.FlowNode;
 import org.eclipse.bpmn2.LoopCharacteristics;
 import org.eclipse.bpmn2.MultiInstanceLoopCharacteristics;
+import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
 import com.founder.fix.fixflow.core.exception.FixFlowException;
 import com.founder.fix.fixflow.core.factory.ProcessObjectFactory;
@@ -39,7 +40,7 @@ import com.founder.fix.fixflow.core.runtime.ExecutionContext;
 import com.founder.fix.fixflow.core.runtime.Token;
 import com.founder.fix.fixflow.core.task.TaskMgmtInstance;
 
-public class TokenEntity extends AbstractPersistentObject<TokenEntity> implements Token {
+public class TokenEntity extends KernelTokenImpl implements Token {
 
 	private static final long serialVersionUID = 1L;
 	public static final String RULE_GET_TOKEN_PERSISTENT_STATE = "getTokenPersistentState";

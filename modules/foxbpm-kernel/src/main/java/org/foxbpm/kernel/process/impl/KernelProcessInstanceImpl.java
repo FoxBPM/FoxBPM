@@ -22,7 +22,7 @@ public class KernelProcessInstanceImpl implements InterpretableProcessInstance {
 	
 
 	public KernelProcessInstanceImpl() {
-
+		this(null);
 	}
 
 	

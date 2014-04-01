@@ -23,29 +23,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.engine.context.ContextInstance;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.factory.ProcessObjectFactory;
+import org.foxbpm.engine.impl.context.ContextInstanceImpl;
+import org.foxbpm.engine.impl.datavariable.DataVariableMgmtInstance;
 import org.foxbpm.engine.impl.db.AbstractPersistentObject;
+import org.foxbpm.engine.impl.util.GuidUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.runtime.ProcessInstance;
+import org.foxbpm.engine.runtime.ProcessInstanceType;
+import org.foxbpm.engine.task.TaskMgmtInstance;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
+import org.foxbpm.kernel.process.impl.KernelProcessInstanceImpl;
 import org.foxbpm.kernel.runtime.InterpretableProcessInstance;
+import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
-
-
-public class ProcessInstanceEntity extends AbstractPersistentObject<ProcessInstanceEntity> implements ProcessInstance,InterpretableProcessInstance {
+public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements ProcessInstance {
 
 	// Field　字段
 	// //////////////////////////////////////////////////////
-	
-	
-	
-	
 
 	public static final String RULE_GET_PROCESS_INSTANCE_PERSISTENT_STATE = "getProcessInstancePersistentState";
 
 	public static final String RULE_GET_PROCESS_INSTANCE_PERSISTENT_DBMAP = "getProcessInstancePersistentDbMap";
 
 	public static final String RULE_PROCESS_INSTANCE_CLONE = "processInstanceClone";
-	
-	
+
 	/**
 	 * 
 	 */
@@ -228,13 +232,13 @@ public class ProcessInstanceEntity extends AbstractPersistentObject<ProcessInsta
 	public void setInstanceType(ProcessInstanceType instanceType) {
 		this.instanceType = instanceType;
 	}
-	
+
 	public void setInstanceTypeString(String instanceType) {
-		
-		if(StringUtil.isNotEmpty(instanceType)){
+
+		if (StringUtil.isNotEmpty(instanceType)) {
 			this.instanceType = ProcessInstanceType.valueOf(instanceType);
 		}
-		
+
 	}
 
 	public String getProcessLocation() {
@@ -248,51 +252,57 @@ public class ProcessInstanceEntity extends AbstractPersistentObject<ProcessInsta
 	public void setSuspended(boolean isSuspended) {
 		this.isSuspended = isSuspended;
 	}
-	
+
 	public void setSuspendedString(String isSuspended) {
-		if(StringUtil.isNotEmpty(isSuspended)){
-			this.isSuspended=StringUtil.getBoolean(isSuspended);
+		if (StringUtil.isNotEmpty(isSuspended)) {
+			this.isSuspended = StringUtil.getBoolean(isSuspended);
 		}
-		
-		
+
 	}
 
 	public boolean getSuspended() {
 		return this.isSuspended;
 	}
-	
-	
 
-	  
-	  public ProcessInstanceEntity(KernelFlowNodeImpl startFlowNode) {
-		  
-	  }
 
-	// 构造函数 ///////////////////////////////
-	
-	public ProcessInstanceEntity() {
+	@Override
+	public KernelTokenImpl createRootToken() {
+		this.rootToken = new TokenEntity();
+		this.rootToken.setProcessInstance(this);
+		return this.rootToken;
+	}
+
+	@Override
+	public void initialize() {
 
 		this.taskMgmtInstance = ProcessObjectFactory.FACTORYINSTANCE.createTaskMgmtInstance();
-		
+
 		this.taskMgmtInstance.setProcessInstance(this);
 
 		this.dataVariableMgmtInstance = new DataVariableMgmtInstance(this);
 
 		this.contextInstance = new ContextInstanceImpl(this);
-		
 
+	}
+
+	// 构造函数 ///////////////////////////////
+
+	public ProcessInstanceEntity() {
+		super();
 	}
 
 	// Constructor 构造函数
 	// /////////////////////////////////////////////////////
-	public ProcessInstanceEntity(ProcessDefinitionBehavior processDefinition, String businessKey) {
-		this();
+	public ProcessInstanceEntity(KernelFlowNodeImpl startFlowNode) {
+
+		super(startFlowNode);
+		
 		// 设置流程实例的编号,通过静态方法获得Guid
 		this.id = GuidUtil.CreateGuid();
 		if (processDefinition == null) {
 			throw new FixFlowException("你不能通过一个空的流程定义对象来创建流程实例");
 		}
-		
+
 		// 设置业务关联键
 		this.bizKey = businessKey;
 		// 将外部传入的流程定义放置到流程实例里
@@ -304,12 +314,9 @@ public class ProcessInstanceEntity extends AbstractPersistentObject<ProcessInsta
 		this.processDefinitionId = processDefinition.getProcessDefinitionId();
 		this.processDefinitionKey = processDefinition.getProcessDefinitionKey();
 		this.definitionId = processDefinition.getDefinitions().getId();
-		
 
-		
-		
 	}
-	
+
 	/**
 	 * 子流程使用构造函数
 	 * 
@@ -318,21 +325,20 @@ public class ProcessInstanceEntity extends AbstractPersistentObject<ProcessInsta
 	 * @param parentProcessInstance
 	 * @param parentProcessInstanceToken
 	 */
-	public ProcessInstanceEntity(ProcessDefinitionBehavior processDefinition, String businessKey, ProcessInstanceEntity parentProcessInstance,
-			TokenEntity parentProcessInstanceToken) {
+	public ProcessInstanceEntity(ProcessDefinitionBehavior processDefinition, String businessKey,
+			ProcessInstanceEntity parentProcessInstance, TokenEntity parentProcessInstanceToken) {
 		this(processDefinition, businessKey);
 		this.parentProcessInstance = parentProcessInstance;
 		this.parentProcessInstanceId = parentProcessInstance.getId();
 		this.parentProcessInstanceToken = parentProcessInstanceToken;
 		this.parentProcessInstanceTokenId = parentProcessInstanceToken.getId();
-		
-		
+
 	}
 
 	// 对象字段 /////////////////////
 
 	// 流程定义
-	protected ProcessDefinitionBehavior processDefinition;
+	protected ProcessDefinitionEntity processDefinition;
 
 	// 任务管理器
 	protected TaskMgmtInstance taskMgmtInstance;
@@ -349,7 +355,6 @@ public class ProcessInstanceEntity extends AbstractPersistentObject<ProcessInsta
 	// 根令牌
 	protected TokenEntity rootToken;
 
-	
 	// 父流程实例令牌
 	protected TokenEntity parentProcessInstanceToken;
 
@@ -417,7 +422,8 @@ public class ProcessInstanceEntity extends AbstractPersistentObject<ProcessInsta
 
 			if (StringUtil.isNotEmpty(this.parentProcessInstanceId)) {
 				ProcessInstanceManager processInstanceManager = Context.getCommandContext().getProcessInstanceManager();
-				ProcessInstanceEntity processInstanceImpl = processInstanceManager.findProcessInstanceById(this.parentProcessInstanceId, null);
+				ProcessInstanceEntity processInstanceImpl = processInstanceManager.findProcessInstanceById(this.parentProcessInstanceId,
+						null);
 				if (processInstanceImpl != null) {
 					this.parentProcessInstance = processInstanceImpl;
 				}
@@ -440,14 +446,13 @@ public class ProcessInstanceEntity extends AbstractPersistentObject<ProcessInsta
 		if (this.rootToken == null) {
 			if (StringUtil.isNotEmpty(this.rootTokenId)) {
 				TokenEntity rootTokenEntityObj = Context.getCommandContext().getTokenManager().findTokenById(this.rootTokenId);
-				
-				if(rootTokenEntityObj!=null){
+
+				if (rootTokenEntityObj != null) {
 					rootTokenEntityObj.setProcessInstance(this);
 					this.rootToken = rootTokenEntityObj;
 					return this.rootToken;
 				}
-				
-				
+
 			}
 			return null;
 		}
@@ -484,7 +489,7 @@ public class ProcessInstanceEntity extends AbstractPersistentObject<ProcessInsta
 	public List<TokenEntity> getTokenList() {
 
 		if (this.tokenList == null) {
-			this.tokenList=new ArrayList<TokenEntity>();
+			this.tokenList = new ArrayList<TokenEntity>();
 
 		}
 
@@ -525,10 +530,7 @@ public class ProcessInstanceEntity extends AbstractPersistentObject<ProcessInsta
 		return tokenMap;
 	}
 
-	
-	
 	// 遗留方法 ////////////////////
-	
 
 	public void start() {
 		if (this.getRootToken().getFlowNode() == null) {
@@ -688,7 +690,8 @@ public class ProcessInstanceEntity extends AbstractPersistentObject<ProcessInsta
 			endTime = new Date();
 			ExecutionContext executionContext = ProcessObjectFactory.FACTORYINSTANCE.createExecutionContext(getRootToken());
 			// 插入流程结束任务
-			if (this.getProcessDefinition().getStartElement() != null && this.getProcessDefinition().getStartElement() instanceof StartEvent) {
+			if (this.getProcessDefinition().getStartElement() != null
+					&& this.getProcessDefinition().getStartElement() instanceof StartEvent) {
 				// 插入流程结束记录
 				StartEventBehavior startEventBehavior = (StartEventBehavior) this.getProcessDefinition().getStartElement();
 				if (startEventBehavior.isPersistence()) {
@@ -830,7 +833,8 @@ public class ProcessInstanceEntity extends AbstractPersistentObject<ProcessInsta
 		taskInstance.setEndTime(ClockUtil.getCurrentTime());
 		// taskInstance.setCallActivityInstanceId(subProcessInstanceId);
 		executionContext.getProcessInstance().getTaskMgmtInstance().addTaskInstanceEntity(taskInstance);
-		//Context.getCommandContext().getTaskManager().saveTaskInstanceEntity((TaskInstanceEntity) taskInstance);
+		// Context.getCommandContext().getTaskManager().saveTaskInstanceEntity((TaskInstanceEntity)
+		// taskInstance);
 	}
 
 	private void startParentProcessInstance(TokenEntity parentToken, CallActivityBehavior callActivityBehavior) {
@@ -868,7 +872,8 @@ public class ProcessInstanceEntity extends AbstractPersistentObject<ProcessInsta
 
 	public List<ProcessInstanceEntity> getSubProcessInstanceList(String tokenId) {
 		ProcessInstanceManager processInstanceManager = Context.getCommandContext().getProcessInstanceManager();
-		List<ProcessInstanceEntity> processInstanceEntities = processInstanceManager.findSubProcessInstanceByIdAndToken(this.getId(), tokenId);
+		List<ProcessInstanceEntity> processInstanceEntities = processInstanceManager.findSubProcessInstanceByIdAndToken(this.getId(),
+				tokenId);
 		return processInstanceEntities;
 	}
 
@@ -941,15 +946,14 @@ public class ProcessInstanceEntity extends AbstractPersistentObject<ProcessInsta
 	public void setRootTokenIdWithoutCascade(String rootTokenId) {
 		this.rootTokenId = rootTokenId;
 	}
-	
+
 	public void setRootToken(TokenEntity rootToken) {
-		if(rootToken!=null){
-			this.rootTokenId=rootToken.getId();
+		if (rootToken != null) {
+			this.rootTokenId = rootToken.getId();
 		}
-		
+
 		this.rootToken = rootToken;
 	}
-
 
 	@Override
 	public String getCloneRuleId() {
