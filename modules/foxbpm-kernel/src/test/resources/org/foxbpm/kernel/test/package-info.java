@@ -5,4 +5,4 @@
  * @author kenshin
  *
  */
-package org.foxbpm.kernel.test.rr;
+package org.foxbpm.kernel.test;
