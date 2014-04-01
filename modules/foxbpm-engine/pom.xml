@@ -9,4 +9,11 @@
   <artifactId>foxbpm-engine</artifactId>
   <name>foxbpm-engine</name>
   <description>FoxBPM开源BPM、流程引擎内核</description>
+  <dependencies>
+  	<dependency>
+  		<groupId>org.foxbpm</groupId>
+  		<artifactId>foxbpm-kernel</artifactId>
+  		<version>6.0.1-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
 </project>
