@@ -1,12 +1,38 @@
+/**
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * @author kenshin
+ */
 package org.foxbpm.engine.impl.entity;
 
+import java.util.ArrayList;
+
+import org.activiti.engine.impl.bpmn.parser.BpmnParse;
+import org.activiti.engine.impl.context.Context;
+import org.activiti.engine.impl.identity.Authentication;
+import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
+import org.activiti.engine.impl.pvm.process.ActivityImpl;
+import org.activiti.engine.impl.pvm.runtime.InterpretableExecution;
+import org.activiti.engine.task.IdentityLinkType;
 import org.foxbpm.engine.impl.db.PersistentObject;
 import org.foxbpm.engine.model.ProcessDefinition;
+import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
+import org.foxbpm.kernel.runtime.InterpretableProcessInstance;
 
-
-
-public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl implements ProcessDefinition,PersistentObject {
+public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl implements ProcessDefinition, PersistentObject {
 
 	/**
 	 * 
@@ -15,11 +41,9 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 
 	public ProcessDefinitionEntity() {
 		super(null);
-		
+
 	}
-	
-	
-	
+
 	/**
 	 * '{@link #isIsExecutable() <em>Version</em>}' 字段的默认值. <!-- 开始-用户-文档 -->
 	 * <!-- 结束-用户-文档 -->
@@ -71,8 +95,8 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 	public void setVersion(int version) {
 		this.version = version;
 	}
-	
-	public String getName(){
+
+	public String getName() {
 		return name;
 	}
 
@@ -176,8 +200,53 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 
 	}
 
-	public ProcessInstanceEntity createProcessInstance(String businessKey) throws Exception {
-		return new ProcessInstanceEntity(this, businessKey);
+	public ProcessInstanceEntity createProcessInstance(String businessKey, KernelFlowNodeImpl initial) {
+		ProcessInstanceEntity processInstance = null;
+
+		if (initial == null) {
+			processInstance = (ProcessInstanceEntity) super.createProcessInstance();
+		} else {
+			processInstance = (ProcessInstanceEntity) super.createProcessInstanceForInitial(initial);
+		}
+
+		processInstance.setExecutions(new ArrayList<ExecutionEntity>());
+		processInstance.setProcessDefinition(processDefinition);
+		// Do not initialize variable map (let it happen lazily)
+
+		if (businessKey != null) {
+			processInstance.setBusinessKey(businessKey);
+		}
+
+		// Reset the process instance in order to have the db-generated process
+		// instance id available
+		processInstance.setProcessInstance(processInstance);
+
+		String authenticatedUserId = Authentication.getAuthenticatedUserId();
+		String initiatorVariableName = (String) getProperty(BpmnParse.PROPERTYNAME_INITIATOR_VARIABLE_NAME);
+		if (initiatorVariableName != null) {
+			processInstance.setVariable(initiatorVariableName, authenticatedUserId);
+		}
+		if (authenticatedUserId != null) {
+			processInstance.addIdentityLink(authenticatedUserId, IdentityLinkType.STARTER);
+		}
+
+		Context.getCommandContext().getHistoryManager().recordProcessInstanceStart(processInstance);
+
+		return processInstance;
+	}
+
+	public ProcessInstanceEntity createProcessInstance(String businessKey) {
+		return createProcessInstance(businessKey, null);
+	}
+
+	public ProcessInstanceEntity createProcessInstance() {
+		return createProcessInstance(null);
+	}
+
+	@Override
+	protected InterpretableProcessInstance newProcessInstance(KernelFlowNodeImpl startFlowNode) {
+		ProcessInstanceEntity processInstance = new ProcessInstanceEntity(startFlowNode);
+		return processInstance;
 	}
 
 	/**
@@ -270,9 +339,9 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 	public String getDeploymentId() {
 		return this.deploymentId;
 	}
-	
+
 	protected Map<String, Object> extensionFields = new HashMap<String, Object>();
-	
+
 	public Object getExtensionField(String fieldName) {
 		return extensionFields.get(fieldName);
 	}
@@ -288,7 +357,7 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 	public void addExtensionField(String fieldName, Object fieldValue) {
 		this.extensionFields.put(fieldName, fieldValue);
 	}
-	
+
 	/**
 	 * 从数据库初始化对象
 	 * 
@@ -310,7 +379,7 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 		this.setVersion(version);
 		this.setResourceId(resourceId);
 		this.setDiagramResourceName(diagramResourceName);
-		//删除map中无用或无效字段
+		// 删除map中无用或无效字段
 		entityMap.remove("DIFINITIONS_KEY");
 		entityMap.remove("DIFINITIONS_ID");
 		entityMap.remove("PROCESS_ID");
@@ -505,7 +574,8 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 
 		if (this.taskSubject == null) {
 
-			TaskSubject taskSubjectObj = EMFUtil.getExtensionElementOne(TaskSubject.class, this, FixFlowPackage.Literals.DOCUMENT_ROOT__TASK_SUBJECT);
+			TaskSubject taskSubjectObj = EMFUtil.getExtensionElementOne(TaskSubject.class, this,
+					FixFlowPackage.Literals.DOCUMENT_ROOT__TASK_SUBJECT);
 
 			if (taskSubjectObj != null) {
 				this.taskSubject = new TaskSubjectBehavior(taskSubjectObj);
