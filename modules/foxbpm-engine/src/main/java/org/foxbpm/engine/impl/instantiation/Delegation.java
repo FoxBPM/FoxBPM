@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.instantiation;
+package org.foxbpm.engine.impl.instantiation;
 
 
 import java.util.HashMap;
@@ -25,8 +25,8 @@ import java.util.Map;
 import org.dom4j.Element;
 import org.eclipse.bpmn2.Definitions;
 
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.ProcessDefinitionBehavior;
-import com.founder.fix.fixflow.core.impl.util.ReflectUtil;
+import org.foxbpm.engine.impl.bpmn.behavior.ProcessDefinitionBehavior;
+import org.foxbpm.engine.impl.util.ReflectUtil;
 
 public class Delegation {
 

@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.job;
+package org.foxbpm.engine.impl.job;
 
 import java.util.Date;
 
@@ -23,10 +23,10 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import com.founder.fix.fixflow.core.ProcessEngine;
-import com.founder.fix.fixflow.core.ProcessEngineManagement;
-import com.founder.fix.fixflow.core.impl.ExternalContent;
-import com.founder.fix.fixflow.core.impl.identity.Authentication;
+import org.foxbpm.engine.ProcessEngine;
+import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.impl.ExternalContent;
+import org.foxbpm.engine.impl.identity.Authentication;
 
 public abstract class AbstactTimeJob implements Job {
 	

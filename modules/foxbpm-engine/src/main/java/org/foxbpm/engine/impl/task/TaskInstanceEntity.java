@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.task;
+package org.foxbpm.engine.impl.task;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,35 +29,35 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 
 import com.founder.fix.bpmn2extensions.coreconfig.TaskCommandDef;
-import com.founder.fix.fixflow.core.ProcessEngineManagement;
-import com.founder.fix.fixflow.core.cache.CacheHandler;
-import com.founder.fix.fixflow.core.exception.FixFlowException;
-import com.founder.fix.fixflow.core.factory.ProcessObjectFactory;
-import com.founder.fix.fixflow.core.impl.Context;
-import com.founder.fix.fixflow.core.impl.ProcessEngineConfigurationImpl;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.ProcessDefinitionBehavior;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.TaskCommandInst;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.UserTaskBehavior;
-import com.founder.fix.fixflow.core.impl.db.AbstractPersistentObject;
-import com.founder.fix.fixflow.core.impl.identity.GroupTo;
-import com.founder.fix.fixflow.core.impl.interceptor.CommandExecutor;
-import com.founder.fix.fixflow.core.impl.runtime.TokenEntity;
-import com.founder.fix.fixflow.core.impl.util.ClockUtil;
-import com.founder.fix.fixflow.core.impl.util.GuidUtil;
-import com.founder.fix.fixflow.core.impl.util.StringUtil;
-import com.founder.fix.fixflow.core.internationalization.FixFlowResources;
-import com.founder.fix.fixflow.core.internationalization.ResourcesUtil;
-import com.founder.fix.fixflow.core.runtime.ExecutionContext;
-import com.founder.fix.fixflow.core.task.Assignable;
-import com.founder.fix.fixflow.core.task.DelegationState;
-import com.founder.fix.fixflow.core.task.IdentityLink;
-import com.founder.fix.fixflow.core.task.IdentityLinkType;
-import com.founder.fix.fixflow.core.task.IncludeExclusion;
-import com.founder.fix.fixflow.core.task.TaskInstanceType;
-import com.founder.fix.fixflow.core.task.TaskQuery;
-import com.founder.fix.fixflow.core.task.TaskDefinition;
-import com.founder.fix.fixflow.core.task.TaskInstance;
-import com.founder.fix.fixflow.core.task.TaskMgmtInstance;
+import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.cache.CacheHandler;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.factory.ProcessObjectFactory;
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
+import org.foxbpm.engine.impl.bpmn.behavior.ProcessDefinitionBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.TaskCommandInst;
+import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
+import org.foxbpm.engine.impl.db.AbstractPersistentObject;
+import org.foxbpm.engine.impl.identity.GroupTo;
+import org.foxbpm.engine.impl.interceptor.CommandExecutor;
+import org.foxbpm.engine.impl.runtime.TokenEntity;
+import org.foxbpm.engine.impl.util.ClockUtil;
+import org.foxbpm.engine.impl.util.GuidUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.internationalization.FixFlowResources;
+import org.foxbpm.engine.internationalization.ResourcesUtil;
+import org.foxbpm.engine.runtime.ExecutionContext;
+import org.foxbpm.engine.task.Assignable;
+import org.foxbpm.engine.task.DelegationState;
+import org.foxbpm.engine.task.IdentityLink;
+import org.foxbpm.engine.task.IdentityLinkType;
+import org.foxbpm.engine.task.IncludeExclusion;
+import org.foxbpm.engine.task.TaskInstanceType;
+import org.foxbpm.engine.task.TaskQuery;
+import org.foxbpm.engine.task.TaskDefinition;
+import org.foxbpm.engine.task.TaskInstance;
+import org.foxbpm.engine.task.TaskMgmtInstance;
 
 public class TaskInstanceEntity extends AbstractPersistentObject<TaskInstanceEntity> implements TaskInstance, Assignable, Cloneable {
 

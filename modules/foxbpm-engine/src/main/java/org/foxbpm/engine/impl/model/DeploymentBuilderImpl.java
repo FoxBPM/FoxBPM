@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,20 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.model;
+package org.foxbpm.engine.impl.model;
 
 import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import com.founder.fix.fixflow.core.exception.FixFlowException;
-import com.founder.fix.fixflow.core.impl.ModelServiceImpl;
-import com.founder.fix.fixflow.core.impl.persistence.definition.DeploymentEntity;
-import com.founder.fix.fixflow.core.impl.persistence.definition.ResourceEntity;
-import com.founder.fix.fixflow.core.impl.util.IoUtil;
-import com.founder.fix.fixflow.core.impl.util.ReflectUtil;
-import com.founder.fix.fixflow.core.model.Deployment;
-import com.founder.fix.fixflow.core.model.DeploymentBuilder;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.impl.ModelServiceImpl;
+import org.foxbpm.engine.impl.persistence.definition.DeploymentEntity;
+import org.foxbpm.engine.impl.persistence.definition.ResourceEntity;
+import org.foxbpm.engine.impl.util.IoUtil;
+import org.foxbpm.engine.impl.util.ReflectUtil;
+import org.foxbpm.engine.model.Deployment;
+import org.foxbpm.engine.model.DeploymentBuilder;
 
 /**
  * @author kenshin

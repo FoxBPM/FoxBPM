@@ -23,8 +23,8 @@ import java.util.Map;
 
 
 
-import com.founder.fix.fixflow.core.impl.db.PersistentObject;
-import com.founder.fix.fixflow.core.impl.runtime.TokenEntity;
+import org.foxbpm.engine.impl.db.PersistentObject;
+import org.foxbpm.engine.impl.runtime.TokenEntity;
 
 public interface Token  extends PersistentObject, Serializable {
 

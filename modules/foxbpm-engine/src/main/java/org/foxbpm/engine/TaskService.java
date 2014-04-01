@@ -22,18 +22,18 @@ import java.util.List;
 import java.util.Map;
 
 import com.founder.fix.bpmn2extensions.coreconfig.Priority;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.TaskCommandInst;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.UserTaskBehavior;
-import com.founder.fix.fixflow.core.impl.command.ExpandTaskCommand;
-import com.founder.fix.fixflow.core.impl.command.GeneralTaskCommand;
-import com.founder.fix.fixflow.core.impl.identity.UserTo;
-import com.founder.fix.fixflow.core.runtime.IdentityLinkQuery;
-import com.founder.fix.fixflow.core.runtime.ProcessInstance;
-import com.founder.fix.fixflow.core.task.CommentQueryTo;
-import com.founder.fix.fixflow.core.task.IdentityLink;
-import com.founder.fix.fixflow.core.task.TaskInstance;
-import com.founder.fix.fixflow.core.task.TaskQuery;
-import com.founder.fix.fixflow.core.task.UserCommandQueryTo;
+import org.foxbpm.engine.impl.bpmn.behavior.TaskCommandInst;
+import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
+import org.foxbpm.engine.impl.command.ExpandTaskCommand;
+import org.foxbpm.engine.impl.command.GeneralTaskCommand;
+import org.foxbpm.engine.impl.identity.UserTo;
+import org.foxbpm.engine.runtime.IdentityLinkQuery;
+import org.foxbpm.engine.runtime.ProcessInstance;
+import org.foxbpm.engine.task.CommentQueryTo;
+import org.foxbpm.engine.task.IdentityLink;
+import org.foxbpm.engine.task.TaskInstance;
+import org.foxbpm.engine.task.TaskQuery;
+import org.foxbpm.engine.task.UserCommandQueryTo;
 
 public interface TaskService extends ProcessService {
 	

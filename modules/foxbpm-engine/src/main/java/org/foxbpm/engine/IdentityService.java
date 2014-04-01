@@ -20,11 +20,11 @@ package org.foxbpm.engine;
 import java.util.List;
 import java.util.Map;
 
-import com.founder.fix.fixflow.core.impl.Page;
-import com.founder.fix.fixflow.core.impl.identity.GroupDefinition;
-import com.founder.fix.fixflow.core.impl.identity.GroupTo;
-import com.founder.fix.fixflow.core.impl.identity.UserDefinition;
-import com.founder.fix.fixflow.core.impl.identity.UserTo;
+import org.foxbpm.engine.impl.Page;
+import org.foxbpm.engine.impl.identity.GroupDefinition;
+import org.foxbpm.engine.impl.identity.GroupTo;
+import org.foxbpm.engine.impl.identity.UserDefinition;
+import org.foxbpm.engine.impl.identity.UserTo;
 
 
 public interface IdentityService extends ProcessService{

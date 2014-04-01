@@ -20,10 +20,10 @@ package org.foxbpm.engine.impl.persistence;
 
 import java.util.List;
 
-import com.founder.fix.fixflow.core.impl.Page;
-import com.founder.fix.fixflow.core.impl.runtime.IdentityLinkQueryImpl;
-import com.founder.fix.fixflow.core.impl.task.IdentityLinkEntity;
-import com.founder.fix.fixflow.core.task.IdentityLink;
+import org.foxbpm.engine.impl.Page;
+import org.foxbpm.engine.impl.runtime.IdentityLinkQueryImpl;
+import org.foxbpm.engine.impl.task.IdentityLinkEntity;
+import org.foxbpm.engine.task.IdentityLink;
 
 public class IdentityLinkManager extends AbstractManager {
 

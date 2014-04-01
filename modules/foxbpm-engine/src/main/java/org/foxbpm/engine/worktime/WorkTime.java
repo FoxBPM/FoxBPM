@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.worktime;
+package org.foxbpm.engine.worktime;
 
 import java.util.Date;
 
-import com.founder.fix.fixflow.core.runtime.ExecutionContext;
+import org.foxbpm.engine.runtime.ExecutionContext;
 
 public interface WorkTime {
 	

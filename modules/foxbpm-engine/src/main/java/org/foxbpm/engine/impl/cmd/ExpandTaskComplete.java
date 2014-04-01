@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,18 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.cmd;
+package org.foxbpm.engine.impl.cmd;
 
 
 
 import com.founder.fix.bpmn2extensions.coreconfig.TaskCommandDef;
-import com.founder.fix.fixflow.core.exception.FixFlowException;
-import com.founder.fix.fixflow.core.impl.command.AbstractCustomExpandTaskCommand;
-import com.founder.fix.fixflow.core.impl.command.ExpandTaskCommand;
-import com.founder.fix.fixflow.core.impl.identity.Authentication;
-import com.founder.fix.fixflow.core.impl.interceptor.Command;
-import com.founder.fix.fixflow.core.impl.interceptor.CommandContext;
-import com.founder.fix.fixflow.core.impl.util.ReflectUtil;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.impl.command.AbstractCustomExpandTaskCommand;
+import org.foxbpm.engine.impl.command.ExpandTaskCommand;
+import org.foxbpm.engine.impl.identity.Authentication;
+import org.foxbpm.engine.impl.interceptor.Command;
+import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.ReflectUtil;
 
 public class ExpandTaskComplete<A extends AbstractCustomExpandTaskCommand,T> implements Command<T>{
 

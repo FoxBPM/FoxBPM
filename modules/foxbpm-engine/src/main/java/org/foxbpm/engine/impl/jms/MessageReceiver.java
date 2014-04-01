@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.jms;
+package org.foxbpm.engine.impl.jms;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,8 +31,8 @@ import javax.jms.Session;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
-import com.founder.fix.fixflow.core.impl.jms.IListener.ChainType;
-import com.founder.fix.fixflow.core.impl.util.GuidUtil;
+import org.foxbpm.engine.impl.jms.IListener.ChainType;
+import org.foxbpm.engine.impl.util.GuidUtil;
 
 
 

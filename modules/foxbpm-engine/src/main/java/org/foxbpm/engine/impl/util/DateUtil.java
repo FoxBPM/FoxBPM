@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.util;
+package org.foxbpm.engine.impl.util;
 
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -27,10 +27,10 @@ import java.util.regex.Pattern;
 
 import oracle.sql.TIMESTAMP;
 
-import com.founder.fix.fixflow.core.exception.FixFlowException;
-import com.founder.fix.fixflow.core.impl.Context;
-import com.founder.fix.fixflow.core.internationalization.FixFlowResources;
-import com.founder.fix.fixflow.core.internationalization.ResourcesUtil;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.internationalization.FixFlowResources;
+import org.foxbpm.engine.internationalization.ResourcesUtil;
 
 /**
  * 时间操作Util类

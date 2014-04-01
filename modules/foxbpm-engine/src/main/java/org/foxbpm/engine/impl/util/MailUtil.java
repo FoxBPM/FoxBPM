@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.util;
+package org.foxbpm.engine.impl.util;
 
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -23,8 +23,8 @@ import javax.activation.*;
 
 import org.apache.log4j.Logger;
 
-import com.founder.fix.fixflow.core.exception.FixFlowException;
-import com.founder.fix.fixflow.core.impl.Context;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.impl.Context;
 
 import java.util.*;
 import java.util.concurrent.ThreadPoolExecutor;

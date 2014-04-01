@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.cmd;
+package org.foxbpm.engine.impl.cmd;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,47 +66,47 @@ import org.eclipse.dd.dc.Point;
 import org.eclipse.dd.di.DiagramElement;
 import org.eclipse.emf.ecore.impl.BasicEObjectImpl;
 
-import com.founder.fix.fixflow.core.exception.FixFlowBizException;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.DefinitionsBehavior;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.IntermediateCatchEventBehavior;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.ProcessDefinitionBehavior;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.FlowSvgUtil;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.SvgBench;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.LoopType;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgAnnotationTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgAssocationTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgCallActivityTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgComplexGatewayTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgDataInputTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgDataObjectTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgDataOutputTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgDataStoreTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgEndErrorEventTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgEndTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgExclusiveGatewayTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgGroupTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgInclusiveGatewayTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgIntermediateErrorEventCancelTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgIntermediateErrorEventTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgIntermediateEventTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgIntermediateTimeEventCancelTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgIntermediateTimerEventTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgLaneTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgLineBaseTo.SvgPoint;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgLineTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgLineTo.LineType;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgMessageFlowTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgMessageTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgParallelGatewayTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgShapeBaseTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgStartTimerEventTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgStartTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgSubProcessTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgTaskTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgTaskTo.TaskType;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgTerminateEndEventTo;
-import com.founder.fix.fixflow.core.impl.interceptor.Command;
-import com.founder.fix.fixflow.core.impl.interceptor.CommandContext;
+import org.foxbpm.engine.exception.FixFlowBizException;
+import org.foxbpm.engine.impl.bpmn.behavior.DefinitionsBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.IntermediateCatchEventBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.ProcessDefinitionBehavior;
+import org.foxbpm.engine.impl.flowgraphics.svg.FlowSvgUtil;
+import org.foxbpm.engine.impl.flowgraphics.svg.SvgBench;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.LoopType;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgAnnotationTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgAssocationTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgCallActivityTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgComplexGatewayTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgDataInputTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgDataObjectTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgDataOutputTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgDataStoreTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgEndErrorEventTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgEndTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgExclusiveGatewayTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgGroupTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgInclusiveGatewayTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgIntermediateErrorEventCancelTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgIntermediateErrorEventTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgIntermediateEventTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgIntermediateTimeEventCancelTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgIntermediateTimerEventTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgLaneTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgLineBaseTo.SvgPoint;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgLineTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgLineTo.LineType;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgMessageFlowTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgMessageTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgParallelGatewayTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgShapeBaseTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgStartTimerEventTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgStartTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgSubProcessTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgTaskTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgTaskTo.TaskType;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgTerminateEndEventTo;
+import org.foxbpm.engine.impl.interceptor.Command;
+import org.foxbpm.engine.impl.interceptor.CommandContext;
 public class GetFlowGraphicsSvgCmd implements Command<String> {
 
 	/**

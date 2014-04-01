@@ -1,5 +1,5 @@
 /**
- * Copyright 1995-2014 Wisedu Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.exception;
+package org.foxbpm.engine.exception;
 
 public class FixFlowScheduleException extends FixFlowException {
 
@@ -33,7 +33,7 @@ public class FixFlowScheduleException extends FixFlowException {
 
 	/**
 	 * 构造定时任务异常
-	 * @param exceptionCode 异常编码 '{@link com.founder.fix.fixflow.core.exception.ExceptionResourceCore <em>ExceptionResourceCore</em>}'
+	 * @param exceptionCode 异常编码 '{@link org.foxbpm.engine.exception.ExceptionResourceCore <em>ExceptionResourceCore</em>}'
 	 * @param nodeId 节点编号
 	 * @param nodeName 节点名称
 	 */
@@ -43,7 +43,7 @@ public class FixFlowScheduleException extends FixFlowException {
 	
 	/**
 	 * 构造定时任务异常
-	 * @param exceptionCode 异常编码 '{@link com.founder.fix.fixflow.core.exception.ExceptionResourceCore <em>ExceptionResourceCore</em>}'
+	 * @param exceptionCode 异常编码 '{@link org.foxbpm.engine.exception.ExceptionResourceCore <em>ExceptionResourceCore</em>}'
 	 * @param nodeId 节点编号
 	 * @param nodeName 节点名称
 	 * @param cause 异常

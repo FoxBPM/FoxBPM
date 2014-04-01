@@ -17,7 +17,7 @@
  */
 package org.foxbpm.engine;
 
-import com.founder.fix.fixflow.core.impl.ProcessEngineConfigurationImpl;
+import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 
 public abstract class ProcessEngineConfiguration {
 	

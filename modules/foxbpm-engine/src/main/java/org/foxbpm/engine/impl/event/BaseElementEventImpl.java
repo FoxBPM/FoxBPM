@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,16 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.event;
+package org.foxbpm.engine.impl.event;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.bpmn2.BaseElement;
 
-import com.founder.fix.fixflow.core.event.BaseElementEvent;
-import com.founder.fix.fixflow.core.exception.FixFlowException;
-import com.founder.fix.fixflow.core.impl.connector.ConnectorInstanceBehavior;
+import org.foxbpm.engine.event.BaseElementEvent;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.impl.connector.ConnectorInstanceBehavior;
 
 
 public class BaseElementEventImpl implements BaseElementEvent {

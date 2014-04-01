@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.founder.fix.fixflow.core.HistoryService;
-import com.founder.fix.fixflow.core.impl.cmd.ArchiveCmd;
+import org.foxbpm.engine.HistoryService;
+import org.foxbpm.engine.impl.cmd.ArchiveCmd;
 
 public class HistoryServiceImpl extends ServiceImpl implements HistoryService {
 

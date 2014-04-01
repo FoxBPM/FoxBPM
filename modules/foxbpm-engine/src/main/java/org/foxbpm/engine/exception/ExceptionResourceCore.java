@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author ych
  */
-package com.founder.fix.fixflow.core.exception;
+package org.foxbpm.engine.exception;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,9 +32,9 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.founder.fix.fixflow.core.impl.Context;
-import com.founder.fix.fixflow.core.impl.util.ReflectUtil;
-import com.founder.fix.fixflow.core.impl.util.StringUtil;
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.util.ReflectUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
 
 /**
  * 异常国际化信息处理类

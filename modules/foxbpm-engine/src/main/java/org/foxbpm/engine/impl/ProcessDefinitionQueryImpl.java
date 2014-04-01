@@ -19,13 +19,13 @@ package org.foxbpm.engine.impl;
 
 import java.util.List;
 
-import com.founder.fix.fixflow.core.exception.FixFlowException;
+import org.foxbpm.engine.exception.FixFlowException;
 
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.ProcessDefinitionBehavior;
-import com.founder.fix.fixflow.core.impl.interceptor.CommandContext;
-import com.founder.fix.fixflow.core.impl.interceptor.CommandExecutor;
-import com.founder.fix.fixflow.core.impl.task.QueryExpandTo;
-import com.founder.fix.fixflow.core.model.ProcessDefinitionQuery;
+import org.foxbpm.engine.impl.bpmn.behavior.ProcessDefinitionBehavior;
+import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.interceptor.CommandExecutor;
+import org.foxbpm.engine.impl.task.QueryExpandTo;
+import org.foxbpm.engine.model.ProcessDefinitionQuery;
 
 public class ProcessDefinitionQueryImpl extends AbstractQuery<ProcessDefinitionQuery, ProcessDefinitionBehavior> implements ProcessDefinitionQuery {
 

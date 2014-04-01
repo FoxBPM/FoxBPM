@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,20 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.flowgraphics.svg.component;
+package org.foxbpm.engine.impl.flowgraphics.svg.component;
 
 import java.io.InputStream;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 
-import com.founder.fix.fixflow.core.exception.FixFlowException;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.FlowSvgUtil;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.SvgBench;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgBaseTo;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgIntermediateTimeEventCancelTo;
-import com.founder.fix.fixflow.core.impl.util.StringUtil;
-import com.founder.fix.fixflow.core.impl.util.XmlUtil;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.impl.flowgraphics.svg.FlowSvgUtil;
+import org.foxbpm.engine.impl.flowgraphics.svg.SvgBench;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgBaseTo;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgIntermediateTimeEventCancelTo;
+import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.impl.util.XmlUtil;
 
 public class SvgIntermediateTimeEventCancelComponent implements ISvgComponent {
 

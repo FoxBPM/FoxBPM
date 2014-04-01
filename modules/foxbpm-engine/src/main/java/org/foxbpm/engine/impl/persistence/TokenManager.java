@@ -19,11 +19,11 @@ package org.foxbpm.engine.impl.persistence;
 
 import java.util.List;
 
-import com.founder.fix.fixflow.core.exception.FixFlowException;
-import com.founder.fix.fixflow.core.impl.Page;
-import com.founder.fix.fixflow.core.impl.runtime.TokenEntity;
-import com.founder.fix.fixflow.core.impl.runtime.TokenQueryImpl;
-import com.founder.fix.fixflow.core.runtime.Token;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.impl.Page;
+import org.foxbpm.engine.impl.runtime.TokenEntity;
+import org.foxbpm.engine.impl.runtime.TokenQueryImpl;
+import org.foxbpm.engine.runtime.Token;
 
 public class TokenManager extends AbstractManager {
 	

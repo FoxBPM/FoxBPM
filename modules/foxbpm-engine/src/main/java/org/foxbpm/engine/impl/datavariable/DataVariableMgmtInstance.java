@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.datavariable;
+package org.foxbpm.engine.impl.datavariable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.DataVariableBehavior;
-import com.founder.fix.fixflow.core.impl.runtime.ProcessInstanceEntity;
+import org.foxbpm.engine.impl.bpmn.behavior.DataVariableBehavior;
+import org.foxbpm.engine.impl.runtime.ProcessInstanceEntity;
 
 
 public class DataVariableMgmtInstance implements Serializable {

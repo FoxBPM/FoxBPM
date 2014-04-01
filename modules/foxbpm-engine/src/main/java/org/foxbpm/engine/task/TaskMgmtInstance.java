@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.task;
+package org.foxbpm.engine.task;
 
 import java.util.List;
 
-import com.founder.fix.fixflow.core.impl.runtime.ProcessInstanceEntity;
-import com.founder.fix.fixflow.core.impl.task.TaskInstanceEntity;
-import com.founder.fix.fixflow.core.runtime.ExecutionContext;
-import com.founder.fix.fixflow.core.runtime.Token;
+import org.foxbpm.engine.impl.runtime.ProcessInstanceEntity;
+import org.foxbpm.engine.impl.task.TaskInstanceEntity;
+import org.foxbpm.engine.runtime.ExecutionContext;
+import org.foxbpm.engine.runtime.Token;
 
 public interface TaskMgmtInstance {
 

@@ -19,10 +19,10 @@ package org.foxbpm.engine.impl.persistence;
 
 import java.util.Map;
 
-import com.founder.fix.fixflow.core.impl.db.DbSqlSession;
-import com.founder.fix.fixflow.core.impl.db.MappingSqlSession;
-import com.founder.fix.fixflow.core.impl.db.PersistentObject;
-import com.founder.fix.fixflow.core.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.db.DbSqlSession;
+import org.foxbpm.engine.impl.db.MappingSqlSession;
+import org.foxbpm.engine.impl.db.PersistentObject;
+import org.foxbpm.engine.impl.interceptor.CommandContext;
 
 /**
  * @author kenshin

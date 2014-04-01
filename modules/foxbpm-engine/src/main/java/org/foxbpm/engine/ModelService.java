@@ -23,12 +23,12 @@ import java.util.Map;
 import java.util.zip.ZipInputStream;
 
 
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.ProcessDefinitionBehavior;
-import com.founder.fix.fixflow.core.impl.persistence.definition.DeploymentEntity;
-import com.founder.fix.fixflow.core.impl.persistence.definition.ResourceEntity;
-import com.founder.fix.fixflow.core.model.DeploymentBuilder;
-import com.founder.fix.fixflow.core.model.DeploymentQuery;
-import com.founder.fix.fixflow.core.model.ProcessDefinitionQuery;
+import org.foxbpm.engine.impl.bpmn.behavior.ProcessDefinitionBehavior;
+import org.foxbpm.engine.impl.persistence.definition.DeploymentEntity;
+import org.foxbpm.engine.impl.persistence.definition.ResourceEntity;
+import org.foxbpm.engine.model.DeploymentBuilder;
+import org.foxbpm.engine.model.DeploymentQuery;
+import org.foxbpm.engine.model.ProcessDefinitionQuery;
 
 public interface ModelService extends ProcessService{
 	  

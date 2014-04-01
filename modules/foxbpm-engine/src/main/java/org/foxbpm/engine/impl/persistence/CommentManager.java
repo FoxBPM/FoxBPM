@@ -19,8 +19,8 @@ package org.foxbpm.engine.impl.persistence;
 
 import java.util.List;
 
-import com.founder.fix.fixflow.core.impl.db.PersistentObject;
-import com.founder.fix.fixflow.core.task.CommentQueryTo;
+import org.foxbpm.engine.impl.db.PersistentObject;
+import org.foxbpm.engine.task.CommentQueryTo;
 
 public class CommentManager extends AbstractManager {
 

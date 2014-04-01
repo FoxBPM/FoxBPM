@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author yangchenhui
+ * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.util;
+package org.foxbpm.engine.impl.util;
 
 import com.founder.fix.bpmn2extensions.sqlmappingconfig.Column;
 import com.founder.fix.bpmn2extensions.sqlmappingconfig.DataBaseTable;
-import com.founder.fix.fixflow.core.ProcessEngineManagement;
-import com.founder.fix.fixflow.core.exception.FixFlowException;
-import com.founder.fix.fixflow.core.impl.ProcessEngineConfigurationImpl;
-import com.founder.fix.fixflow.core.runtime.QueryLocation;
+import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
+import org.foxbpm.engine.runtime.QueryLocation;
 
 /**
  * 查询query中数据来源工具类，用来处理归档表 运行表之间的关系

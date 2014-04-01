@@ -23,10 +23,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.founder.fix.fixflow.core.impl.Page;
-import com.founder.fix.fixflow.core.impl.command.QueryVariablesCommand;
-import com.founder.fix.fixflow.core.impl.datavariable.DataVariableEntity;
-import com.founder.fix.fixflow.core.impl.db.PersistentObject;
+import org.foxbpm.engine.impl.Page;
+import org.foxbpm.engine.impl.command.QueryVariablesCommand;
+import org.foxbpm.engine.impl.datavariable.DataVariableEntity;
+import org.foxbpm.engine.impl.db.PersistentObject;
 
 
 public class VariableManager extends AbstractManager {

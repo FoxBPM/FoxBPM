@@ -20,13 +20,13 @@ package org.foxbpm.engine.impl.persistence;
 import java.util.List;
 
 
-import com.founder.fix.fixflow.core.impl.Context;
-import com.founder.fix.fixflow.core.impl.Page;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.ProcessDefinitionBehavior;
-import com.founder.fix.fixflow.core.impl.model.DeploymentQueryImpl;
-import com.founder.fix.fixflow.core.impl.persistence.definition.DeploymentEntity;
-import com.founder.fix.fixflow.core.impl.persistence.definition.ResourceEntity;
-import com.founder.fix.fixflow.core.model.Deployment;
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.Page;
+import org.foxbpm.engine.impl.bpmn.behavior.ProcessDefinitionBehavior;
+import org.foxbpm.engine.impl.model.DeploymentQueryImpl;
+import org.foxbpm.engine.impl.persistence.definition.DeploymentEntity;
+import org.foxbpm.engine.impl.persistence.definition.ResourceEntity;
+import org.foxbpm.engine.model.Deployment;
 
 
 

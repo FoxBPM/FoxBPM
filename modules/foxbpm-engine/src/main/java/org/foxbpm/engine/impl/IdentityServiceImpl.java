@@ -21,19 +21,19 @@ package org.foxbpm.engine.impl;
 import java.util.List;
 import java.util.Map;
 
-import com.founder.fix.fixflow.core.IdentityService;
-import com.founder.fix.fixflow.core.impl.cmd.GetAllGroupDefinitionsCmd;
-import com.founder.fix.fixflow.core.impl.cmd.GetGroupInfoByGroupIdCmd;
-import com.founder.fix.fixflow.core.impl.cmd.GetUserInGroupCmd;
-import com.founder.fix.fixflow.core.impl.cmd.GetUserInGroupsCmd;
-import com.founder.fix.fixflow.core.impl.cmd.GroupDefinitionInfoCmd;
-import com.founder.fix.fixflow.core.impl.cmd.UserDefinitionInfoCmd;
-import com.founder.fix.fixflow.core.impl.cmd.VerificationStartUserCmd;
+import org.foxbpm.engine.IdentityService;
+import org.foxbpm.engine.impl.cmd.GetAllGroupDefinitionsCmd;
+import org.foxbpm.engine.impl.cmd.GetGroupInfoByGroupIdCmd;
+import org.foxbpm.engine.impl.cmd.GetUserInGroupCmd;
+import org.foxbpm.engine.impl.cmd.GetUserInGroupsCmd;
+import org.foxbpm.engine.impl.cmd.GroupDefinitionInfoCmd;
+import org.foxbpm.engine.impl.cmd.UserDefinitionInfoCmd;
+import org.foxbpm.engine.impl.cmd.VerificationStartUserCmd;
 
-import com.founder.fix.fixflow.core.impl.identity.GroupDefinition;
-import com.founder.fix.fixflow.core.impl.identity.GroupTo;
-import com.founder.fix.fixflow.core.impl.identity.UserDefinition;
-import com.founder.fix.fixflow.core.impl.identity.UserTo;
+import org.foxbpm.engine.impl.identity.GroupDefinition;
+import org.foxbpm.engine.impl.identity.GroupTo;
+import org.foxbpm.engine.impl.identity.UserDefinition;
+import org.foxbpm.engine.impl.identity.UserTo;
 
 public class IdentityServiceImpl extends ServiceImpl implements IdentityService {
 

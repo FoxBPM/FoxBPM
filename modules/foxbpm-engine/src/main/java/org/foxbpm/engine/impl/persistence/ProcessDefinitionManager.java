@@ -21,9 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.founder.fix.fixflow.core.impl.Page;
-import com.founder.fix.fixflow.core.impl.ProcessDefinitionQueryImpl;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.ProcessDefinitionBehavior;
+import org.foxbpm.engine.impl.Page;
+import org.foxbpm.engine.impl.ProcessDefinitionQueryImpl;
+import org.foxbpm.engine.impl.bpmn.behavior.ProcessDefinitionBehavior;
 
 /**
  * 流程定义管理器

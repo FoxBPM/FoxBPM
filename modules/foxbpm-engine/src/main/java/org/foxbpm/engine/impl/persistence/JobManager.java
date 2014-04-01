@@ -17,7 +17,7 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
-import com.founder.fix.fixflow.core.impl.job.JobEntity;
+import org.foxbpm.engine.impl.job.JobEntity;
 
 public class JobManager extends AbstractManager {
 	

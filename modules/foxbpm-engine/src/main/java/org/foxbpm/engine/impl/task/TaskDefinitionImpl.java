@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.task;
+package org.foxbpm.engine.impl.task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,17 +27,17 @@ import org.eclipse.bpmn2.UserTask;
 
 import com.founder.fix.bpmn2extensions.fixflow.AssignPolicyType;
 import com.founder.fix.bpmn2extensions.fixflow.FixFlowPackage;
-import com.founder.fix.fixflow.core.action.AssignmentHandler;
-import com.founder.fix.fixflow.core.exception.FixFlowClassLoadingException;
-import com.founder.fix.fixflow.core.exception.FixFlowDbException;
-import com.founder.fix.fixflow.core.factory.ProcessObjectFactory;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.UserTaskBehavior;
-import com.founder.fix.fixflow.core.impl.util.GuidUtil;
-import com.founder.fix.fixflow.core.impl.util.StringUtil;
-import com.founder.fix.fixflow.core.task.IdentityLinkType;
-import com.founder.fix.fixflow.core.task.IncludeExclusion;
-import com.founder.fix.fixflow.core.task.TaskDefinition;
-import com.founder.fix.fixflow.core.task.TaskInstanceType;
+import org.foxbpm.engine.action.AssignmentHandler;
+import org.foxbpm.engine.exception.FixFlowClassLoadingException;
+import org.foxbpm.engine.exception.FixFlowDbException;
+import org.foxbpm.engine.factory.ProcessObjectFactory;
+import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
+import org.foxbpm.engine.impl.util.GuidUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.task.IdentityLinkType;
+import org.foxbpm.engine.task.IncludeExclusion;
+import org.foxbpm.engine.task.TaskDefinition;
+import org.foxbpm.engine.task.TaskInstanceType;
 
 public class TaskDefinitionImpl implements TaskDefinition {
 

@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.util;
+package org.foxbpm.engine.impl.util;
 
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
@@ -25,8 +25,8 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
-import com.founder.fix.fixflow.core.exception.FixFlowClassLoadingException;
-import com.founder.fix.fixflow.core.exception.FixFlowException;
+import org.foxbpm.engine.exception.FixFlowClassLoadingException;
+import org.foxbpm.engine.exception.FixFlowException;
 
 
 

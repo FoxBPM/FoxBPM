@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.db;
+package org.foxbpm.engine.impl.db;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -28,22 +28,22 @@ import org.slf4j.LoggerFactory;
 import com.founder.fix.bpmn2extensions.sqlmappingconfig.ResultMap;
 import com.founder.fix.bpmn2extensions.sqlmappingconfig.Rule;
 import com.founder.fix.bpmn2extensions.sqlmappingconfig.Select;
-import com.founder.fix.fixflow.core.exception.FixFlowClassLoadingException;
-import com.founder.fix.fixflow.core.exception.FixFlowDbException;
-import com.founder.fix.fixflow.core.exception.FixFlowException;
-import com.founder.fix.fixflow.core.impl.Context;
-import com.founder.fix.fixflow.core.impl.Page;
-import com.founder.fix.fixflow.core.impl.ProcessEngineConfigurationImpl;
-import com.founder.fix.fixflow.core.impl.cache.CacheObject;
-import com.founder.fix.fixflow.core.impl.util.ReflectUtil;
-import com.founder.fix.fixflow.core.impl.util.StringUtil;
-import com.founder.fix.fixflow.core.internationalization.ExceptionCode;
-import com.founder.fix.fixflow.core.scriptlanguage.AbstractScriptLanguageMgmt;
-import com.founder.fix.fixflow.core.scriptlanguage.BusinessRulesScript;
-import com.founder.fix.fixflow.core.scriptlanguage.DeleteRulesScript;
-import com.founder.fix.fixflow.core.scriptlanguage.InsertRulesScript;
-import com.founder.fix.fixflow.core.scriptlanguage.SelectRulesScript;
-import com.founder.fix.fixflow.core.scriptlanguage.UpdateRulesScript;
+import org.foxbpm.engine.exception.FixFlowClassLoadingException;
+import org.foxbpm.engine.exception.FixFlowDbException;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.Page;
+import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
+import org.foxbpm.engine.impl.cache.CacheObject;
+import org.foxbpm.engine.impl.util.ReflectUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.internationalization.ExceptionCode;
+import org.foxbpm.engine.scriptlanguage.AbstractScriptLanguageMgmt;
+import org.foxbpm.engine.scriptlanguage.BusinessRulesScript;
+import org.foxbpm.engine.scriptlanguage.DeleteRulesScript;
+import org.foxbpm.engine.scriptlanguage.InsertRulesScript;
+import org.foxbpm.engine.scriptlanguage.SelectRulesScript;
+import org.foxbpm.engine.scriptlanguage.UpdateRulesScript;
 
 public class MappingSqlSession {
 

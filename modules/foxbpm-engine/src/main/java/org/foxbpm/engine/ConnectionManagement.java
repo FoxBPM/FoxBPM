@@ -19,8 +19,8 @@ package org.foxbpm.engine;
 
 import java.sql.Connection;
 
-import com.founder.fix.fixflow.core.impl.Context;
-import com.founder.fix.fixflow.core.impl.db.FixConnectionResult;
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.db.FixConnectionResult;
 
 /**
  * FixFlow数据库管理中心

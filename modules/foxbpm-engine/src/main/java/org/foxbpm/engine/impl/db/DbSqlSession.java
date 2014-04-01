@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,20 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.db;
+package org.foxbpm.engine.impl.db;
 
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.founder.fix.fixflow.core.ProcessEngineManagement;
-import com.founder.fix.fixflow.core.impl.Page;
-import com.founder.fix.fixflow.core.impl.ProcessDefinitionQueryImpl;
-import com.founder.fix.fixflow.core.impl.cache.CacheObject;
-import com.founder.fix.fixflow.core.impl.model.DeploymentQueryImpl;
-import com.founder.fix.fixflow.core.impl.runtime.ProcessInstanceQueryImpl;
-import com.founder.fix.fixflow.core.impl.task.TaskQueryImpl;
+import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.impl.Page;
+import org.foxbpm.engine.impl.ProcessDefinitionQueryImpl;
+import org.foxbpm.engine.impl.cache.CacheObject;
+import org.foxbpm.engine.impl.model.DeploymentQueryImpl;
+import org.foxbpm.engine.impl.runtime.ProcessInstanceQueryImpl;
+import org.foxbpm.engine.impl.task.TaskQueryImpl;
 
 public class DbSqlSession {
 

@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,15 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.expression;
+package org.foxbpm.engine.impl.expression;
 
 
 import java.util.Map;
 
 import com.founder.fix.bpmn2extensions.sqlmappingconfig.Sql;
-import com.founder.fix.fixflow.core.impl.Context;
-import com.founder.fix.fixflow.core.impl.bpmn.behavior.ProcessDefinitionBehavior;
-import com.founder.fix.fixflow.core.runtime.ExecutionContext;
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.bpmn.behavior.ProcessDefinitionBehavior;
+import org.foxbpm.engine.runtime.ExecutionContext;
 
 
 

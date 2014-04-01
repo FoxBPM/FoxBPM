@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.identity;
+package org.foxbpm.engine.impl.identity;
 
 import java.sql.Connection;
 import java.util.List;
@@ -23,13 +23,13 @@ import java.util.Map;
 
 import com.founder.fix.bpmn2extensions.coreconfig.DesignerOrgConfig;
 import com.founder.fix.bpmn2extensions.coreconfig.GroupInfo;
-import com.founder.fix.fixflow.core.ProcessEngineManagement;
-import com.founder.fix.fixflow.core.impl.Context;
-import com.founder.fix.fixflow.core.impl.Page;
-import com.founder.fix.fixflow.core.impl.db.SqlCommand;
-import com.founder.fix.fixflow.core.impl.util.StringUtil;
-import com.founder.fix.fixflow.core.internationalization.FixFlowResources;
-import com.founder.fix.fixflow.core.internationalization.ResourcesUtil;
+import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.Page;
+import org.foxbpm.engine.impl.db.SqlCommand;
+import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.internationalization.FixFlowResources;
+import org.foxbpm.engine.internationalization.ResourcesUtil;
 
 public abstract class GroupDefinition {
 

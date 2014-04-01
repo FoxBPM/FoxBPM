@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.flowgraphics.svg;
+package org.foxbpm.engine.impl.flowgraphics.svg;
 
-import com.founder.fix.fixflow.core.exception.FixFlowException;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.component.ISvgComponent;
-import com.founder.fix.fixflow.core.impl.flowgraphics.svg.to.SvgBaseTo;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.impl.flowgraphics.svg.component.ISvgComponent;
+import org.foxbpm.engine.impl.flowgraphics.svg.to.SvgBaseTo;
 
 public class FlowSvgUtil {
 	

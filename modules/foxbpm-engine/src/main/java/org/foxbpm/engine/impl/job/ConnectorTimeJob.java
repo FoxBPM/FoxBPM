@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,13 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.job;
+package org.foxbpm.engine.impl.job;
 
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import com.founder.fix.fixflow.core.ScheduleService;
+import org.foxbpm.engine.ScheduleService;
 
 
 public class ConnectorTimeJob extends AbstactTimeJob {
