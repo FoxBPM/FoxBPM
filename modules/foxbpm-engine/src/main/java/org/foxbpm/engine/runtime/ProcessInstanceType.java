@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.runtime;
+package org.foxbpm.engine.runtime;
 
 /**
  * 流程实例状态

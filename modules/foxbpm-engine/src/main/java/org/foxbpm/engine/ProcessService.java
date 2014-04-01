@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core;
+package org.foxbpm.engine;
 
 import com.founder.fix.fixflow.core.impl.interceptor.CommandExecutor;
 

@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.runtime;
+package org.foxbpm.engine.runtime;
 
 import java.io.Serializable;
 import java.util.Date;

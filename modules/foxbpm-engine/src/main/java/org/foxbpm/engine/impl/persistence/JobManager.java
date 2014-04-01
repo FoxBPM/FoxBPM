@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core.impl.persistence;
+package org.foxbpm.engine.impl.persistence;
 
 import com.founder.fix.fixflow.core.impl.job.JobEntity;
 

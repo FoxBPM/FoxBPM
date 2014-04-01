@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core;
+package org.foxbpm.engine;
 
 import java.util.Collection;
 import java.util.List;

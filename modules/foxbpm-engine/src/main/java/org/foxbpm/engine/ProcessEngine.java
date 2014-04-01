@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package com.founder.fix.fixflow.core;
+package org.foxbpm.engine;
 
 import com.founder.fix.fixflow.core.impl.ExternalContent;
 import com.founder.fix.fixflow.core.impl.ProcessEngineConfigurationImpl;
@@ -27,9 +27,9 @@ import com.founder.fix.fixflow.core.impl.processversion.FixFlowVersion;
 public interface ProcessEngine {
  
 	/**
-	 * fixflow引擎的版本号
+	 * FoxBPM引擎的版本号
 	 */
-	public static String VERSION = "5.0";
+	public static String VERSION = "6.0";
 
 	/** 
 	 * 默认名称为 'default' */
