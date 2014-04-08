@@ -12,6 +12,7 @@ public interface KernelToken extends Serializable {
 	void signal(KernelExecutionContext executionContext);
 	
 	
+	void end();
 	
 
 }

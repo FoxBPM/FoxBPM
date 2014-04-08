@@ -3,13 +3,13 @@ package org.foxbpm.kernel.process.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.foxbpm.kernel.process.KernelDefinitions;
 import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.process.KernelLaneSet;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.runtime.InterpretableProcessInstance;
 import org.foxbpm.kernel.runtime.KernelProcessInstance;
+import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
 
 public class KernelProcessDefinitionImpl extends KernelFlowElementsContainerImpl implements KernelProcessDefinition {
 

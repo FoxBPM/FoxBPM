@@ -1,10 +1,12 @@
 package org.foxbpm.kernel.process.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.kernel.event.KernelListener;
 import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.process.KernelFlowElementsContainer;
 import org.foxbpm.kernel.process.KernelLaneSet;
@@ -18,10 +20,9 @@ public class KernelFlowElementsContainerImpl extends KernelFlowElementImpl imple
 
 	protected List<KernelFlowNodeImpl> flowNodes = new ArrayList<KernelFlowNodeImpl>();
 	protected Map<String, KernelFlowNodeImpl> namedFlowNodes = new HashMap<String, KernelFlowNodeImpl>();
+	
+	protected Map<String, List<KernelListener>> kernelListeners = new HashMap<String, List<KernelListener>>();
 
-	// protected Map<String, List<ExecutionListener>> executionListeners = new
-	// HashMap<String, List<ExecutionListener>>();
-	// protected IOSpecification ioSpecification;
 
 	public KernelFlowElementsContainerImpl(String id, KernelProcessDefinitionImpl processDefinition) {
 		super(id, processDefinition);
@@ -82,28 +83,36 @@ public class KernelFlowElementsContainerImpl extends KernelFlowElementImpl imple
 
 	// event listeners
 	// //////////////////////////////////////////////////////////
-	/*
-	 * @SuppressWarnings("unchecked") public List<ExecutionListener>
-	 * getExecutionListeners(String eventName) { List<ExecutionListener>
-	 * executionListenerList = getExecutionListeners().get(eventName); if
-	 * (executionListenerList != null) { return executionListenerList; } return
-	 * Collections.EMPTY_LIST; }
-	 * 
-	 * public void addExecutionListener(String eventName, ExecutionListener
-	 * executionListener) { addExecutionListener(eventName, executionListener,
-	 * -1); }
-	 * 
-	 * public void addExecutionListener(String eventName, ExecutionListener
-	 * executionListener, int index) { List<ExecutionListener> listeners =
-	 * executionListeners.get(eventName); if (listeners == null) { listeners =
-	 * new ArrayList<ExecutionListener>(); executionListeners.put(eventName,
-	 * listeners); } if (index < 0) { listeners.add(executionListener); } else {
-	 * listeners.add(index, executionListener); } }
-	 * 
-	 * public Map<String, List<ExecutionListener>> getExecutionListeners() {
-	 * return executionListeners; }
-	 */
 
+	@SuppressWarnings("unchecked")
+	public List<KernelListener> getKernelListeners(String eventName) {
+	    List<KernelListener> executionListenerList = getKernelListeners().get(eventName);
+	    if (executionListenerList!=null) {
+	      return executionListenerList;
+	    }
+	    return Collections.EMPTY_LIST;
+	  }
+	  
+	  public void addKernelListener(String eventName, KernelListener kernelListener) {
+		  addKernelListener(eventName, kernelListener, -1);
+	  }
+	  
+	  public void addKernelListener(String eventName, KernelListener kernelListener, int index) {
+	    List<KernelListener> listeners = kernelListeners.get(eventName);
+	    if (listeners==null) {
+	      listeners = new ArrayList<KernelListener>();
+	      kernelListeners.put(eventName, listeners);
+	    }
+	    if (index<0) {
+	      listeners.add(kernelListener);
+	    } else {
+	      listeners.add(index, kernelListener);
+	    }
+	  }
+	  
+	  public Map<String, List<KernelListener>> getKernelListeners() {
+	    return kernelListeners;
+	  }
 	// getters and setters
 	// //////////////////////////////////////////////////////
 
