@@ -21,23 +21,26 @@ public class KernelProcessInstanceImpl implements InterpretableProcessInstance {
 	private static final long serialVersionUID = 1L;
 
 	protected KernelProcessDefinitionImpl processDefinition;
-
 	
 	protected KernelTokenImpl rootToken;
-
 
 	protected KernelFlowNodeImpl startFlowNode;
 	
 	/** 流程令牌集合*/
 	protected List<KernelTokenImpl> tokens=new ArrayList<KernelTokenImpl>();
-	
-	
 
 	protected Map<String, KernelTokenImpl> namedTokens=new HashMap<String, KernelTokenImpl>();
 	
 
 	// 父流程
 	protected KernelProcessInstanceImpl parentProcessInstance;
+	
+	// 父流程实例令牌
+	protected KernelTokenImpl parentProcessInstanceToken;
+	
+	
+	 protected boolean isEnded = false;
+	 
 
 	/**
 	 * 获取父流程实例
@@ -74,8 +77,7 @@ public class KernelProcessInstanceImpl implements InterpretableProcessInstance {
 	protected void ensureParentProcessInstanceInitialized() {
 	}
 
-	// 父流程实例令牌
-	protected KernelTokenImpl parentProcessInstanceToken;
+
 
 
 
@@ -104,12 +106,10 @@ public class KernelProcessInstanceImpl implements InterpretableProcessInstance {
 	public void start() {
 
 		if (this.rootToken.getFlowNode() == null) {
-			// 创建基于Token的上下文
-			KernelExecutionContextImpl executionContext = rootToken.createExecutionContext();
 			//触发流程实例启动事件
-			rootToken.fireEvent(KernelEvent.PROCESS_START, executionContext);
+			rootToken.fireEvent(KernelEvent.PROCESS_START);
 			// 将令牌放置到开始节点中
-			startFlowNode.enter(executionContext);
+			rootToken.enter(startFlowNode);
 			
 		} else {
 			throw new KernelException("流程实例已经启动!");
@@ -201,8 +201,7 @@ public class KernelProcessInstanceImpl implements InterpretableProcessInstance {
 	}
 
 	public boolean isEnded() {
-		// TODO Auto-generated method stub
-		return false;
+		return isEnded;
 	}
 
 	
@@ -228,5 +227,19 @@ public class KernelProcessInstanceImpl implements InterpretableProcessInstance {
 	public void deleteCascade(String deleteReason) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void end() {
+		isEnded=true;
+		getRootToken().end();
+		getRootToken().fireEvent(KernelEvent.PROCESS_END);
+		if(getParentProcessInstance()!=null){
+			signalParentProcessInstance();
+		}
+	}
+	
+	/** 子类可以重写这个方法实现自己的启动子流程方法*/
+	protected void signalParentProcessInstance(){
+		getParentProcessInstanceToken().signal();
 	}
 }

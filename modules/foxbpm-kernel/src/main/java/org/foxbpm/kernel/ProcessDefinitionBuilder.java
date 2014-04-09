@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Stack;
 
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
+import org.foxbpm.kernel.event.KernelListener;
 import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.process.impl.KernelBaseElementImpl;
@@ -118,23 +119,23 @@ public class ProcessDefinitionBuilder {
 		return this;
 	}
 
-	/*
-	public ProcessDefinitionBuilder executionListener(ExecutionListener executionListener) {
-		if (transition != null) {
-			transition.addExecutionListener(executionListener);
+	
+	public ProcessDefinitionBuilder executionListener(KernelListener kernelListener) {
+		if (sequenceFlow != null) {
+			sequenceFlow.addKernelListener(kernelListener);
 		} else {
-			throw new PvmException("not in a transition scope");
+			throw new KernelException("不是 sequenceFlow 对象");
 		}
 		return this;
 	}
 
-	public ProcessDefinitionBuilder executionListener(String eventName, ExecutionListener executionListener) {
-		if (transition == null) {
-			scopeStack.peek().addExecutionListener(eventName, executionListener);
+	public ProcessDefinitionBuilder executionListener(String eventName, KernelListener kernelListener) {
+		if (sequenceFlow == null) {
+			containerStack.peek().addKernelListener(eventName, kernelListener);
 		} else {
-			throw new PvmException("not in an activity- or process definition scope. (but in a transition scope)");
+			throw new KernelException("必须是个 containerStack ");
 		}
 		return this;
 	}
-	*/
+	
 }

@@ -10,7 +10,7 @@ import org.foxbpm.kernel.process.KernelDIBounds;
 import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.process.KernelSequenceFlow;
-import org.foxbpm.kernel.runtime.KernelExecutionContext;
+
 
 public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl implements KernelFlowNode, KernelDIBounds {
 
@@ -23,6 +23,7 @@ public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl implemen
 	protected boolean isScope;
 	protected boolean isAsync;
 	protected boolean isExclusive;
+
 
 	// 图形信息
 	protected int x = -1;
@@ -164,25 +165,7 @@ public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl implemen
 		this.isExclusive = isExclusive;
 	}
 
-	public void enter(KernelExecutionContext executionContext) {
 
-		executionContext.getToken().setFlowNode(this);
-		this.flowNodeBehavior.enter(executionContext);
-
-	}
-	
-
-	public void execute(KernelExecutionContext executionContext) {
-		this.flowNodeBehavior.execute(executionContext);
-	}
-
-	public void leave(KernelExecutionContext executionContext) {
-		this.flowNodeBehavior.leave(executionContext);
-	}
-
-	public void cleanData(KernelExecutionContext executionContext) {
-		this.flowNodeBehavior.cleanData(executionContext);
-	}
 
 	
 

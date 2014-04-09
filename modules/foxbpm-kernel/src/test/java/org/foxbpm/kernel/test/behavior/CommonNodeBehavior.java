@@ -1,8 +1,8 @@
 package org.foxbpm.kernel.test.behavior;
 
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
-import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
-import org.foxbpm.kernel.runtime.KernelExecutionContext;
+import org.foxbpm.kernel.process.KernelFlowNode;
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,30 +15,29 @@ public class CommonNodeBehavior implements KernelFlowNodeBehavior {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public void enter(KernelExecutionContext executionContext) {
-		LOG.debug("进入节点: "+executionContext.getToken().getFlowNode().getId());
-		executionContext.getToken().execute(executionContext);
+	public void enter(FlowNodeExecutionContext executionContext) {
+		LOG.debug("进入节点: "+executionContext.getFlowNode().getId());
+		executionContext.execute();
 	}
 
-	public void execute(KernelExecutionContext executionContext) {
-		LOG.debug("执行节点: "+executionContext.getToken().getFlowNode().getId());
-		executionContext.getToken().signal(executionContext);
-	}
-
-	public void leave(KernelExecutionContext executionContext) {
-		LOG.debug("离开节点: "+executionContext.getToken().getFlowNode().getId());
+	public void execute(FlowNodeExecutionContext executionContext) {
 		
-		KernelFlowNodeImpl flowNode=executionContext.getToken().getFlowNode();
+	}
+
+	public void leave(FlowNodeExecutionContext executionContext) {
+		LOG.debug("离开节点: "+executionContext.getFlowNode().getId());
+		
+		KernelFlowNode flowNode=executionContext.getFlowNode();
 		
 		if(flowNode.getOutgoingSequenceFlows().size()>0){
-			executionContext.getToken().take(executionContext,flowNode.getOutgoingSequenceFlows().get(0));
+			executionContext.take(flowNode.getOutgoingSequenceFlows().get(0));
 		}
 		
 		
 	}
 
-	public void cleanData(KernelExecutionContext executionContext) {
-		LOG.debug("清理节点: "+executionContext.getToken().getFlowNode().getId());
+	public void cleanData(FlowNodeExecutionContext executionContext) {
+		LOG.debug("清理节点: "+executionContext.getFlowNode().getId());
 	}
 
 }

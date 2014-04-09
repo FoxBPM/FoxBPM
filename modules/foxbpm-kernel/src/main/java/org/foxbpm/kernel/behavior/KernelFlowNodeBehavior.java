@@ -5,7 +5,7 @@ package org.foxbpm.kernel.behavior;
 
 import java.io.Serializable;
 
-import org.foxbpm.kernel.runtime.KernelExecutionContext;
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 /**
  * @author kenshin
@@ -13,12 +13,12 @@ import org.foxbpm.kernel.runtime.KernelExecutionContext;
  */
 public interface KernelFlowNodeBehavior extends Serializable {
 	
-	void enter(KernelExecutionContext executionContext);
+	void enter(FlowNodeExecutionContext executionContext);
 	
-	void execute(KernelExecutionContext executionContext);
+	void execute(FlowNodeExecutionContext executionContext);
 	
-	void leave(KernelExecutionContext executionContext);
+	void leave(FlowNodeExecutionContext executionContext);
 	
-	void cleanData(KernelExecutionContext executionContext);
+	void cleanData(FlowNodeExecutionContext executionContext);
 
 }

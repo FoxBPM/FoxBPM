@@ -3,16 +3,16 @@ package org.foxbpm.kernel.event;
 import org.foxbpm.kernel.process.impl.KernelFlowElementsContainerImpl;
 import org.foxbpm.kernel.runtime.InterpretableExecutionContext;
 
-public class KernelEventNodeExecute extends AbstractKernelEvent {
+public class KernelEventProcessAbort extends AbstractKernelEvent {
 
 	@Override
 	protected KernelFlowElementsContainerImpl getContainer(InterpretableExecutionContext executionContext) {
-		return (KernelFlowElementsContainerImpl)executionContext.getFlowNode();
+		return executionContext.getProcessDefinition();
 	}
 
 	@Override
 	protected String getEventName() {
-		return KernelEventType.EVENTTYPE_NODE_EXECUTE;
+		return KernelEventType.EVENTTYPE_PROCESS_ABORT;
 	}
 
 	@Override
@@ -20,6 +20,7 @@ public class KernelEventNodeExecute extends AbstractKernelEvent {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 
 }

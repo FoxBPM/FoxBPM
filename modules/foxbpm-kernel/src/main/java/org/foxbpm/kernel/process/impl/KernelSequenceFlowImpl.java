@@ -1,11 +1,14 @@
 package org.foxbpm.kernel.process.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.foxbpm.kernel.event.KernelEvent;
+import org.foxbpm.kernel.event.KernelListener;
 import org.foxbpm.kernel.process.KernelSequenceFlow;
-import org.foxbpm.kernel.runtime.KernelExecutionContext;
-import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
+import org.foxbpm.kernel.runtime.InterpretableExecutionContext;
 
 public class KernelSequenceFlowImpl extends KernelFlowElementImpl implements KernelSequenceFlow {
 
@@ -16,7 +19,7 @@ public class KernelSequenceFlowImpl extends KernelFlowElementImpl implements Ker
 
 	protected KernelFlowNodeImpl sourceRef;
 	protected KernelFlowNodeImpl targetRef;
-	//protected List<ExecutionListener> executionListeners;
+	protected List<KernelListener> kernelListeners;
 
 	/** Graphical information: a list of waypoints: x1, y1, x2, y2, x3, y3, .. */
 	protected List<Integer> waypoints = new ArrayList<Integer>();
@@ -34,26 +37,26 @@ public class KernelSequenceFlowImpl extends KernelFlowElementImpl implements Ker
 		targetRef.getIncomingSequenceFlows().add(this);
 	}
 
-	/*
-	public void addExecutionListener(ExecutionListener executionListener) {
-		if (executionListeners == null) {
-			executionListeners = new ArrayList<ExecutionListener>();
+	
+	public void addKernelListener(KernelListener kernelListener) {
+		if (kernelListeners == null) {
+			kernelListeners = new ArrayList<KernelListener>();
 		}
-		executionListeners.add(executionListener);
-	}*/
+		kernelListeners.add(kernelListener);
+	}
 
 	public String toString() {
 		return "(" + sourceRef.getId() + ")--" + (id != null ? id + "-->(" : ">(") + targetRef.getId() + ")";
 	}
 
-	/*
+	
 	@SuppressWarnings("unchecked")
-	public List<ExecutionListener> getExecutionListeners() {
-		if (executionListeners == null) {
+	public List<KernelListener> getKernelListeners() {
+		if (kernelListeners == null) {
 			return Collections.EMPTY_LIST;
 		}
-		return executionListeners;
-	}*/
+		return kernelListeners;
+	}
 
 	// getters and setters
 	// //////////////////////////////////////////////////////
@@ -66,10 +69,10 @@ public class KernelSequenceFlowImpl extends KernelFlowElementImpl implements Ker
 		return targetRef;
 	}
 
-	/*
-	public void setExecutionListeners(List<ExecutionListener> executionListeners) {
-		this.executionListeners = executionListeners;
-	}*/
+	
+	public void setKernelListeners(List<KernelListener> kernelListeners) {
+		this.kernelListeners = kernelListeners;
+	}
 
 	public List<Integer> getWaypoints() {
 		return waypoints;
@@ -79,15 +82,21 @@ public class KernelSequenceFlowImpl extends KernelFlowElementImpl implements Ker
 		this.waypoints = waypoints;
 	}
 
-	public boolean isContinue(KernelExecutionContext executionContext) {
-		// TODO Auto-generated method stub
+	public boolean isContinue(FlowNodeExecutionContext executionContext) {
 		return false;
 	}
 
-	public void take(KernelExecutionContext executionContext) {
-		KernelTokenImpl token=executionContext.getToken();
-		token.setFlowNode(null);
-		getTargetRef().enter(executionContext);
+	public void take(InterpretableExecutionContext executionContext) {
+
+		
+		executionContext.setFlowNode(null);
+		executionContext.setSequenceFlow(this);
+		// 执行令牌进入条线事件
+		executionContext.fireEvent(KernelEvent.SEQUENCEFLOW_TAKE);
+		executionContext.setSequenceFlow(null);
+		
+		executionContext.enter(getTargetRef());
+
 	}
 
 

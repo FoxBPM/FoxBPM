@@ -3,16 +3,18 @@
  */
 package org.foxbpm.kernel.event;
 
-import org.foxbpm.kernel.runtime.KernelExecutionContext;
+import java.io.Serializable;
+
+import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 
 /**
  * @author kenshin
  *
  */
-public interface KernelListener {
+public interface KernelListener extends Serializable {
 	
 	/** 执行事件通知 */
-	void notify(KernelExecutionContext executionContext) throws Exception;
+	void notify(ListenerExecutionContext executionContext) throws Exception;
 	
 	/** 是否中断引擎执行 */
 	//boolean isInterrupt();
