@@ -19,7 +19,7 @@ package org.foxbpm.kernel.event;
 
 import java.util.List;
 
-import org.activiti.engine.impl.pvm.PvmException;
+import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 import org.foxbpm.kernel.runtime.InterpretableExecutionContext;
 
@@ -45,7 +45,7 @@ public class KernelEventSequenceFlowTake implements KernelEvent {
 			} catch (RuntimeException e) {
 				throw e;
 			} catch (Exception e) {
-				throw new PvmException("不能执行事件监听 : " + e.getMessage(), e);
+				throw new KernelException("不能执行事件监听 : " + e.getMessage(), e);
 			}
 			executionContext.setKernelListenerIndex(kernelListenerIndex + 1);
 			executionContext.fireEvent(this);
