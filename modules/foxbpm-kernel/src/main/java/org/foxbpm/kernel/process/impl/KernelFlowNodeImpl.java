@@ -18,6 +18,7 @@
 package org.foxbpm.kernel.process.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,6 @@ import org.foxbpm.kernel.process.KernelDIBounds;
 import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.process.KernelSequenceFlow;
-
 
 public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl implements KernelFlowNode, KernelDIBounds {
 
@@ -40,7 +40,7 @@ public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl implemen
 	protected boolean isScope;
 	protected boolean isAsync;
 	protected boolean isExclusive;
-
+	
 
 	// 图形信息
 	protected int x = -1;
@@ -106,6 +106,12 @@ public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl implemen
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<KernelSequenceFlow> getOutgoingSequenceFlows() {
+
+		// 创建比较器对象
+		ComparatorSequence comparatorSequence = new ComparatorSequence();
+		// 调用排序方法
+		Collections.sort(outgoingSequenceFlows, comparatorSequence);
+
 		return (List) outgoingSequenceFlows;
 	}
 
@@ -181,9 +187,5 @@ public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl implemen
 	public void setExclusive(boolean isExclusive) {
 		this.isExclusive = isExclusive;
 	}
-
-
-
-	
 
 }

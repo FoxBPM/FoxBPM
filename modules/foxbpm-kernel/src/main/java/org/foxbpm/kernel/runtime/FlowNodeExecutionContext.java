@@ -31,6 +31,8 @@ public interface FlowNodeExecutionContext extends DelegateExecutionContext {
 	void execute();
 
 	void signal();
+	
+	void leave();
 
 	public void take(KernelSequenceFlow sequenceFlow);
 

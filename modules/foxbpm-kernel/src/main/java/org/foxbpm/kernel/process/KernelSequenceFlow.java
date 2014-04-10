@@ -31,6 +31,7 @@ public interface KernelSequenceFlow extends KernelFlowElement {
 
 	KernelFlowNode getTargetRef();
 	
+	int getOrderId();
 	
 	/**
 	 * 线条条件处理适配器执行方法

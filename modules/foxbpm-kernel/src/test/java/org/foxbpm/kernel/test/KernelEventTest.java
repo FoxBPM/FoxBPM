@@ -28,6 +28,11 @@ import org.foxbpm.kernel.test.behavior.AutomaticBehavior;
 import org.foxbpm.kernel.test.behavior.EndBehavior;
 import org.foxbpm.kernel.test.listener.EventCollector;
 
+/**
+ * 内核事件测试
+ * @author kenshin
+ *
+ */
 public class KernelEventTest extends KernelTestCase  {
 	
 	public void testProcessStartEndEvent(){

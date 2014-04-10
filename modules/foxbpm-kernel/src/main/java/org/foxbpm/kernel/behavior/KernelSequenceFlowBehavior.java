@@ -15,24 +15,18 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.kernel.runtime;
+package org.foxbpm.kernel.behavior;
 
 import java.io.Serializable;
 
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 /**
  * @author kenshin
- * 
+ *
  */
-public interface KernelProcessInstance extends Serializable, KernelVariable {
-
-	void start();
-
-	KernelToken getRootToken();
-
-
-	boolean isEnded();
-
-	void deleteCascade(String deleteReason);
+public interface KernelSequenceFlowBehavior  extends Serializable  {
+	
+	 boolean isContinue(FlowNodeExecutionContext executionContext);
 
 }

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.foxbpm.kernel.behavior.KernelSequenceFlowBehavior;
 import org.foxbpm.kernel.event.KernelEvent;
 import org.foxbpm.kernel.event.KernelListener;
 import org.foxbpm.kernel.process.KernelSequenceFlow;
@@ -37,6 +38,12 @@ public class KernelSequenceFlowImpl extends KernelFlowElementImpl implements Ker
 	protected KernelFlowNodeImpl sourceRef;
 	protected KernelFlowNodeImpl targetRef;
 	protected List<KernelListener> kernelListeners;
+	protected int orderId=0;
+	
+	protected KernelSequenceFlowBehavior sequenceFlowBehavior;
+
+	
+	
 
 	/** Graphical information: a list of waypoints: x1, y1, x2, y2, x3, y3, .. */
 	protected List<Integer> waypoints = new ArrayList<Integer>();
@@ -100,7 +107,11 @@ public class KernelSequenceFlowImpl extends KernelFlowElementImpl implements Ker
 	}
 
 	public boolean isContinue(FlowNodeExecutionContext executionContext) {
-		return false;
+		if(sequenceFlowBehavior==null){
+			return true;
+		}else{
+			return sequenceFlowBehavior.isContinue(executionContext);
+		}
 	}
 
 	public void take(InterpretableExecutionContext executionContext) {
@@ -116,6 +127,20 @@ public class KernelSequenceFlowImpl extends KernelFlowElementImpl implements Ker
 
 	}
 
+	public int getOrderId() {
+		return orderId;
+	}
 
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
+	}
+
+	public KernelSequenceFlowBehavior getSequenceFlowBehavior() {
+		return sequenceFlowBehavior;
+	}
+
+	public void setSequenceFlowBehavior(KernelSequenceFlowBehavior sequenceFlowBehavior) {
+		this.sequenceFlowBehavior = sequenceFlowBehavior;
+	}
 
 }

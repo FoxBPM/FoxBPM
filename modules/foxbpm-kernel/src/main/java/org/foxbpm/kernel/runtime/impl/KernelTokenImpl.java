@@ -18,25 +18,30 @@
 package org.foxbpm.kernel.runtime.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.kernel.event.KernelEvent;
 import org.foxbpm.kernel.process.KernelBaseElement;
+import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.process.KernelSequenceFlow;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
-import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.InterpretableExecutionContext;
 import org.foxbpm.kernel.runtime.KernelToken;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class KernelTokenImpl implements FlowNodeExecutionContext, 
 ListenerExecutionContext, 
 KernelToken,
 InterpretableExecutionContext  {
+	
+	private static Logger LOG = LoggerFactory.getLogger(KernelTokenImpl.class);
 
 	/**
 	 * 
@@ -50,6 +55,22 @@ InterpretableExecutionContext  {
 	protected boolean isActive = true;
 
 	protected KernelFlowNodeImpl currentFlowNode;
+	
+	/**
+	 * 需要跳转的节点
+	 */
+	protected KernelFlowNodeImpl toFlowNode;
+	
+
+	protected String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	protected KernelTokenImpl parent;
 
@@ -65,6 +86,10 @@ InterpretableExecutionContext  {
 	 * 子令牌集合
 	 */
 	protected List<KernelTokenImpl> children = new ArrayList<KernelTokenImpl>();
+	
+	protected HashMap<String, KernelTokenImpl> namedChildren=new HashMap<String, KernelTokenImpl>();
+	
+	
 
 	// 事件 ///////////////////////////////////////////////////////////////////
 	protected String eventName;
@@ -105,7 +130,7 @@ InterpretableExecutionContext  {
 	
 
 	public void signal() {
-		leave();
+		getFlowNode().getKernelFlowNodeBehavior().leave(this);
 	}
 
 
@@ -133,23 +158,131 @@ InterpretableExecutionContext  {
 		KernelListenerIndex = kernelListenerIndex;
 	}
 	
+
+	
 	public void leave() {
-		getFlowNode().getKernelFlowNodeBehavior().leave(this);
-	}
+		
 
-
-	public void take(KernelSequenceFlow sequenceFlow) {
 		// 发生节点离开事件
 		fireEvent(KernelEvent.NODE_LEAVE);
 		// 执行线条的进入方法
 		getFlowNode().getKernelFlowNodeBehavior().cleanData(this);
+		
+		// kenshin  2013.1.2
+		// 用来处理非线条流转令牌,如退回、跳转
+	
+		
+		if(getToFlowNode()!=null){
+			
+			//发现上下文中有直接跳转节点,则流程引擎不走正常处理直接跳转到指定借点。
+			
+			
+			LOG.debug("＝＝执行跳转机制,跳转目标: {}({}),离开节点: {}({}),令牌号: {}({}).",toFlowNode.getName(),toFlowNode.getId(), getFlowNode().getName(),getFlowNode().getId(),this.getName(),this.getId());
+
+			setToFlowNode(null);
+			enter(getToFlowNode());
+			
+			return;
+		}
+		
+		
+		//定义可通过线条集合
+		List<KernelSequenceFlow> sequenceFlowList = new ArrayList<KernelSequenceFlow>();
+
+		//获取正常离开的所有线条
+		for (KernelSequenceFlow sequenceFlow : getFlowNode().getOutgoingSequenceFlows()) {
+			//验证线条上的条件
+			if (sequenceFlow.isContinue(this)) {
+				sequenceFlowList.add(sequenceFlow);
+			}
+
+		}
+
+		// 节点后面没有线的处理
+		if (sequenceFlowList.size() == 0) {
+			if (getFlowNode().getOutgoingSequenceFlows().size() == 0) {
+				
+				LOG.error("节点: {}({}) 后面没有配置处理线条！",getFlowNode().getName(),getFlowNode().getId());
+				
+				throw new KernelException("节点: "+getFlowNode().getName()+"("+getFlowNode().getId()+") 后面没有配置处理线条！");
+				
+			} else {
+				
+				LOG.error("节点: {}({}) 后面的条件都不满足导致节点后面没有处理线条,请检查后续线条条件！",getFlowNode().getName(),this.getId());
+				
+				throw new KernelException("节点: "+getFlowNode().getName()+"("+getFlowNode().getId()+") 后面的条件都不满足导致节点后面没有处理线条,请检查后续线条条件！");
+			}
+		}
+
+		// 节点后面就一条线的处理
+		if (sequenceFlowList.size() == 1) {
+			take(sequenceFlowList.get(0));
+			return;
+		}
+
+		// 节点后面大于一条线的处理
+		if (sequenceFlowList.size() > 1) {
+
+			// 创建分支令牌集合
+			ArrayList<ForkedToken> forkedTokens = new ArrayList<ForkedToken>();
+
+			
+			//这里为什么做两个遍历,因为一定要在令牌都生成出来之后才能进行线条的take
+			
+			
+			// 遍历满足条件线条
+			for (KernelSequenceFlow sequenceFlow : sequenceFlowList) {
+				// 获取线条名称
+				String sequenceFlowId = sequenceFlow.getId();
+				// 创建分支令牌并添加到集合中
+				forkedTokens.add(this.createForkedToken(this, sequenceFlowId));
+			}
+			// 遍历分支令牌集合
+			for (ForkedToken forkedToken : forkedTokens) {
+				// 获取令牌
+				KernelTokenImpl childToken = forkedToken.token;
+				// 获取令牌编号
+				String leavingSequenceFlowId = forkedToken.leavingSequenceFlowId;
+	
+				// 执行节点离开方法
+				childToken.take(this.getFlowNode().findOutgoingSequenceFlow(leavingSequenceFlowId));
+
+			}
+		}
+	}
+	
+	// 分支处理///////////////////////////////
+
+	public ForkedToken createForkedToken(KernelTokenImpl parent, String sequenceFlowId) {
+		// 创建一个令牌实例
+
+		KernelTokenImpl childToken = getProcessInstance().createChildrenToken(parent);
+		childToken.setName(sequenceFlowId);
+
+		// 创建分支令牌
+		ForkedToken forkedToken = null;
+		forkedToken = new ForkedToken(childToken, sequenceFlowId);
+		return forkedToken;
+	}
+
+	public static class ForkedToken {
+		public KernelTokenImpl token = null;
+		String leavingSequenceFlowId = null;
+
+		public ForkedToken(KernelTokenImpl token, String leavingSequenceFlowId) {
+			this.token = token;
+			this.leavingSequenceFlowId = leavingSequenceFlowId;
+		}
+	}
+
+
+
+	public void take(KernelSequenceFlow sequenceFlow) {
+
 		sequenceFlow.take(this);
 	}
 
 	public void take(KernelFlowNodeImpl flowNode) {
-		// 发生节点离开事件
-		fireEvent(KernelEvent.NODE_LEAVE);
-		getFlowNode().getKernelFlowNodeBehavior().cleanData(this);
 		enter(flowNode);
 	}
 
@@ -301,7 +434,15 @@ InterpretableExecutionContext  {
 	public void addChild(KernelTokenImpl token) {
 
 		if (token != null) {
+			
 			getChildren().add(token);
+			
+			if (token.getId() != null) {
+				if (namedChildren.containsKey(token.getId())) {
+					throw new KernelException("token "+token.getId()+"已经存在");
+				}
+				namedChildren.put(token.getId(), token);
+			}
 		}
 
 	}
@@ -325,7 +466,13 @@ InterpretableExecutionContext  {
 		return null;
 	}
 
-	
+	public KernelFlowNodeImpl getToFlowNode() {
+		return toFlowNode;
+	}
+
+	public void setToFlowNode(KernelFlowNodeImpl toFlowNode) {
+		this.toFlowNode = toFlowNode;
+	}
 
 
 }

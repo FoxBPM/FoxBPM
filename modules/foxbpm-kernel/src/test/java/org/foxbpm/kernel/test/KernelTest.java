@@ -24,7 +24,11 @@ import org.foxbpm.kernel.test.behavior.AutomaticBehavior;
 import org.foxbpm.kernel.test.behavior.EndBehavior;
 
 
-
+/**
+ * 内核基础测试
+ * @author kenshin
+ *
+ */
 public class KernelTest extends KernelTestCase {
 	
 	public void testProcessDefinitionBuilder(){
