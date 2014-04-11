@@ -17,6 +17,10 @@
  */
 package org.foxbpm.engine;
 
+import org.foxbpm.engine.impl.ExternalContent;
+import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
+import org.foxbpm.engine.impl.version.FixFlowVersion;
+
 public interface ProcessEngine {
  
 	/**
@@ -100,8 +104,6 @@ public interface ProcessEngine {
 	 */
 	void setExternalContent(ExternalContent externalContent);
 	
-	void setLanguageType(String languageType);
-	
 	/**
 	 * 清除线程副本中的对象、脚本引擎对象
 	 * 不关闭数据库链接
@@ -113,20 +115,12 @@ public interface ProcessEngine {
 	 */
 	void rollBackConnection();
 	
-	/**
-	 * 回滚内部connection事务
-	 */
-	void rollBackConnection(String dataBaseId);
 	
 	/**
 	 * 提交内部connection事务
 	 */
 	void commitConnection();
 	
-	/**
-	 * 提交内部connection事务
-	 */
-	void commitConnection(String dataBaseId);
 	
 	/**
 	 * 关闭内部connection
@@ -134,29 +128,9 @@ public interface ProcessEngine {
 	void colseConnection();
 	
 	/**
-	 * 关闭内部connection
-	 */
-	void colseConnection(String dataBaseId);
-	
-	/**
 	 * 获取流程引擎配置
 	 * @return
 	 */
 	ProcessEngineConfigurationImpl getProcessEngineConfiguration();
-	
-	/**
-	 * 获取流程的版本号
-	 * @return
-	 */
-	FixFlowVersion getVersion();
-	
-	/**
-	 * 清除流程引擎缓存
-	 * @param deploymentCache 定义缓存
-	 * @param processDataCache 流程对象缓存
-	 */
-	void cleanCache(boolean deploymentCache,boolean processDataCache);
-	
-
 
 }

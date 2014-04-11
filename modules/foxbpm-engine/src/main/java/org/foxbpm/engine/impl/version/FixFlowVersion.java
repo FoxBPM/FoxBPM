@@ -17,6 +17,9 @@
  */
 package org.foxbpm.engine.impl.version;
 
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.impl.util.StringUtil;
+
 /**
  * 流程版本类
  * 

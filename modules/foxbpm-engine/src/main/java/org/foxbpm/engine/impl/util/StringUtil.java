@@ -71,6 +71,15 @@ public class StringUtil {
 		}
 	}
 	
+	public static int getInt(Object obj){
+	    	if(obj!=null){
+	    		return Integer.parseInt(obj.toString());
+	    	}else{
+	    		return 0;
+	    	}
+	}
+	 
+	 
 	public static boolean verifySameValueToUpper(String valueA,String valueB){
 		boolean verifyValue=valueA.toUpperCase().equals(valueB.toUpperCase());
 		return verifyValue;

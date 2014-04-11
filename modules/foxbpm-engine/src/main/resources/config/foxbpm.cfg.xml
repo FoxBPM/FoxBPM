@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<foxbpmconfig:FoxBPMConfig xmlns:foxbpmconfig="http://www.foxbpm.org/foxbpmconfig">
+  <resourcePathConfig>
+    <resourcePath id="internationalization" name="国际化资源文件位置" src="扯淡"/>
+  </resourcePathConfig>
+</foxbpmconfig:FoxBPMConfig>

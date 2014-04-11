@@ -36,11 +36,6 @@
 			<version>2.7.0-v20110606-0949</version>
 		</dependency>
 		<dependency>
-			<groupId>com.founder.fix.fixflow</groupId>
-			<artifactId>com.founder.fix.fixflow.bpmn2.extensions</artifactId>
-			<version>5.2.0</version>
-		</dependency>
-		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
 			<version>2.1.7</version>
