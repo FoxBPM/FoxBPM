@@ -18,7 +18,6 @@
 package org.foxbpm.engine.impl;
 
 import java.sql.Connection;
-import java.util.Map;
 
 import org.foxbpm.engine.ConnectionManagement;
 import org.foxbpm.engine.FormService;
@@ -31,10 +30,6 @@ import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.ScheduleService;
 import org.foxbpm.engine.TaskService;
-import org.foxbpm.engine.database.FoxConnectionAdapter;
-import org.foxbpm.engine.exception.FixFlowDbException;
-import org.foxbpm.engine.impl.version.FixFlowVersion;
-
 
 public class ProcessEngineImpl implements ProcessEngine {
 
@@ -52,9 +47,9 @@ public class ProcessEngineImpl implements ProcessEngine {
 
 	public ProcessEngineImpl(ProcessEngineConfigurationImpl processEngineConfiguration) {
 
-//		this.processEngineConfiguration = processEngineConfiguration;
-//		this.name = processEngineConfiguration.getProcessEngineName();
-//		this.modelService = processEngineConfiguration.getModelService();
+		this.processEngineConfiguration = processEngineConfiguration;
+		this.name = processEngineConfiguration.getProcessEngineName();
+		this.modelService = processEngineConfiguration.getModelService();
 //		this.runtimeService = processEngineConfiguration.getRuntimeService();
 //		this.historyService = processEngineConfiguration.getHistoryService();
 //		this.identityService = processEngineConfiguration.getIdentityService();
@@ -62,14 +57,7 @@ public class ProcessEngineImpl implements ProcessEngine {
 //		this.formService = processEngineConfiguration.getFormService();
 //		this.scheduleService = processEngineConfiguration.getScheduleService();
 //		this.managementService = processEngineConfiguration.getManagementService();
-//		this.cacheHandler = processEngineConfiguration.getCacheHandler();
-//		this.commandExecutor = processEngineConfiguration.getCommandExecutor();
-
-		this.processEngineConfiguration = processEngineConfiguration;
-		this.name = processEngineConfiguration.getProcessEngineName();
-
 		ProcessEngineManagement.registerProcessEngine(this);
-
 	}
 
 	public String getName() {
@@ -125,9 +113,9 @@ public class ProcessEngineImpl implements ProcessEngine {
 //		Authentication.setAuthenticatedUserId(authenticatedUserId);
 		String languageType = externalContent.getLanguageType();
 		
-		if (externalContent.getConnectionManagement() != null && !externalContent.getConnectionManagement().equals("")) {
-			Context.setConnectionManagementDefault(externalContent.getConnectionManagement());
-		}
+//		if (externalContent.getConnectionManagement() != null && !externalContent.getConnectionManagement().equals("")) {
+//			Context.setConnectionManagementDefault(externalContent.getConnectionManagement());
+//		}
 		
 		//国际化语言
 //		if (languageType == null || languageType.equals("")) {
@@ -155,95 +143,7 @@ public class ProcessEngineImpl implements ProcessEngine {
 		ProcessEngineManagement.unregister(this);
 	}
 
-	public void rollBackConnection() {
-		// TODO Auto-generated method stub
-		Map<String, FoxConnectionAdapter> connectionMap = Context.getDbConnectionMap();
-		if (connectionMap != null) {
-			for (String mapKey : connectionMap.keySet()) {
-				FoxConnectionAdapter connectionobj = connectionMap.get(mapKey);
-				try {
-					if (connectionobj != null) {
-						connectionobj.rollBackConnection();
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					throw new FixFlowDbException(e.toString(), e);
-				}
-			}
-		}
-	}
-
-	public void rollBackConnection(String dataBaseId) {
-		Map<String, FoxConnectionAdapter> connectionMap = Context.getDbConnectionMap();
-		if (connectionMap != null) {
-			for (String mapKey : connectionMap.keySet()) {
-				if (mapKey.equals(dataBaseId)) {
-					FoxConnectionAdapter connectionobj = connectionMap.get(mapKey);
-					try {
-						if (connectionobj != null) {
-							connectionobj.rollBackConnection();
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-						throw new FixFlowDbException(e.toString(), e);
-					}
-					break;
-				}
-			}
-		}
-	}
-
-	public void commitConnection() {
-		Map<String, FoxConnectionAdapter> connectionMap = Context.getDbConnectionMap();
-		if (connectionMap != null) {
-			for (String mapKey : connectionMap.keySet()) {
-				FoxConnectionAdapter connectionobj = connectionMap.get(mapKey);
-				try {
-					if (connectionobj != null) {
-						connectionobj.commitConnection();
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					throw new FixFlowDbException(e.toString(), e);
-				}
-			}
-		}
-	}
-
-	public void colseConnection() {
-		Map<String, FoxConnectionAdapter> connectionMap = Context.getDbConnectionMap();
-		if (connectionMap != null) {
-			for (String mapKey : connectionMap.keySet()) {
-				FoxConnectionAdapter connectionobj = connectionMap.get(mapKey);
-				try {
-					if (connectionobj != null) {
-						connectionobj.colseConnection();
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					throw new FixFlowDbException(e.toString(), e);
-				}
-			}
-		}
-	}
-
 	public void contextClose(boolean threadLocalContext, boolean connection) {
-		if (connection) {
-			Map<String, FoxConnectionAdapter> connectionMap = Context.getDbConnectionMap();
-			if (connectionMap != null) {
-				for (String mapKey : connectionMap.keySet()) {
-					FoxConnectionAdapter connectionobj = connectionMap.get(mapKey);
-					try {
-						if (connectionobj != null) {
-							connectionobj.colseConnection();
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-						throw new FixFlowDbException(e.toString(), e);
-					}
-				}
-			}
-		}
 		if (threadLocalContext) {
 //			Context.removeCommandContext();
 //			Context.removeProcessEngineConfiguration();
@@ -252,7 +152,6 @@ public class ProcessEngineImpl implements ProcessEngine {
 //			Context.removeLanguageType();
 //			Context.removeQuartzTransactionAutoThreadLocal();
 //			Context.removeConnectionManagement();
-
 		}
 
 	}

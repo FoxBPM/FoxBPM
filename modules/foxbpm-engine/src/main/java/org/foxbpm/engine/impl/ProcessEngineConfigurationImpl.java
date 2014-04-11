@@ -20,6 +20,7 @@ package org.foxbpm.engine.impl;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,11 +30,18 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.foxbpm.engine.ConnectionManagement;
+import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineConfiguration;
 import org.foxbpm.engine.exception.ExceptionCode;
 import org.foxbpm.engine.exception.ExceptionI18NCore;
 import org.foxbpm.engine.exception.FixFlowClassLoadingException;
+import org.foxbpm.engine.impl.interceptor.CommandContextFactory;
+import org.foxbpm.engine.impl.interceptor.CommandContextInterceptor;
+import org.foxbpm.engine.impl.interceptor.CommandExecutor;
+import org.foxbpm.engine.impl.interceptor.CommandExecutorImpl;
+import org.foxbpm.engine.impl.interceptor.CommandInterceptor;
+import org.foxbpm.engine.impl.interceptor.LogInterceptor;
 import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.model.config.foxbpmconfig.FoxBPMConfig;
 import org.foxbpm.model.config.foxbpmconfig.FoxBPMConfigPackage;
@@ -46,11 +54,12 @@ import org.slf4j.LoggerFactory;
 public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	private static Logger log = LoggerFactory.getLogger(ProcessEngineConfigurationImpl.class);
-	
+	protected CommandInterceptor commandExecutor;
+	protected CommandContextFactory commandContextFactory;
+	protected List<CommandInterceptor> commandInterceptors;
 	protected FoxBPMConfig foxBpmConfig;
-	
 	protected ResourcePathConfig resourcePathConfig;
-	
+	protected ModelService modelService = new ModelServiceImpl();
 	protected ConnectionManagement connectionManagementDefault;
 	protected Map<String, ConnectionManagement> connectionManagementMap;
 	public ProcessEngine buildProcessEngine() {
@@ -65,10 +74,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 //		// initSqlMappingFile();
 		initResourcePathConfig();
 //		initDataVariableConfig();
-//		initCommandContextFactory();
-//		initCommandExecutors();
+		initCommandContextFactory();
+		initCommandExecutors();
 //		initConnectionManagementConfig();
-//		initServices();
+		initServices();
 //		initConnection();
 //		// initDataBaseTable();
 //		initCache();
@@ -99,13 +108,12 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	}
 	
+	
+	
 	public void initExceptionResource(){
 		ExceptionI18NCore.system_init("I18N/exception");
 	}
 	
-	
-
-
 	protected void initEmfFile() {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xml", new XMIResourceFactoryImpl());
@@ -143,8 +151,59 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		
 	}
 	
+	protected void initServices() {
+		initService(modelService);
+	}
+
+	protected void initService(Object service) {
+		CommandExecutor executor = initInterceptorChain(commandInterceptors);
+		if (service instanceof ServiceImpl) {
+			((ServiceImpl) service).setCommandExecutor(executor);
+		}
+	}
+	
+	protected void initCommandContextFactory() {
+		if (commandContextFactory == null) {
+			commandContextFactory = new CommandContextFactory();
+			commandContextFactory.setProcessEngineConfiguration(this);
+		}
+	}
+	
+	public void initBaseCommandInterceptors(){
+		commandInterceptors = new ArrayList<CommandInterceptor>();
+		CommandContextInterceptor commandContextInterceptor = new CommandContextInterceptor(commandContextFactory, this);
+		commandInterceptors.add(commandContextInterceptor);
+	}
+
+	protected void initCommandExecutors() {
+		initBaseCommandInterceptors();
+		initCustomInterceptors();
+		initGeneralCommandExecutor();
+	}
+	
+	public void initCustomInterceptors(){
+		commandInterceptors.add(new LogInterceptor());
+	}
+	
+	public void initGeneralCommandExecutor(){
+		commandInterceptors.add(new CommandExecutorImpl());
+	}
+	
+	protected CommandInterceptor initInterceptorChain(List<CommandInterceptor> chain) {
+		for (int i = 0; i < chain.size()-1; i++) {
+			chain.get(i).setNext( chain.get(i+1) );
+		}
+		return chain.get(0);
+	}
+	
+	
 	private void initResourcePathConfig(){
 		resourcePathConfig = foxBpmConfig.getResourcePathConfig();
+	}
+	
+	//Getter方法
+	public ModelService getModelService(){
+		return modelService;
 	}
 	
 	public FoxBPMConfig getFoxBpmConfig(){

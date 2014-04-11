@@ -38,7 +38,7 @@ public abstract class ConnectionManagement {
 	public static ConnectionManagement INSTANCE() {
 
 		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
-		String cmId = Context.getConnectionManagementDefault();
+//		String cmId = Context.getConnectionManagementDefault();
 		return null;
 //		if (cmId == null) {
 //			return processEngine.getProcessEngineConfiguration().getConnectionManagementDefault();

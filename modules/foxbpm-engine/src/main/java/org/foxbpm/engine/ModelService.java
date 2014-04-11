@@ -18,6 +18,30 @@
  */
 package org.foxbpm.engine;
 
-public interface ModelService {
+import java.util.List;
+import java.util.Map;
 
+/**
+ * 获取所有对流程定义级别操作
+ * @author kenshin
+ *
+ */
+public interface ModelService {
+	
+	/**
+	 * 获取用户可以发起的流程集合
+	 * @param userId 用户编号
+	 * @return
+	 * "processDefinitionId" 流程唯一号;<br>
+	 * "processDefinitionName" 流程名称;<br>
+	 * "processDefinitionKey" 流程定义号;<br>
+	 * "category" 分类;<br>
+	 * "version" 版本号;<br>
+	 * "resourceName", 流程定义资源名称;<br>
+	 * "resourceId" 流程定义资源编号;<br>
+	 * "deploymentId" 资源定义发布号;<br>
+	 * "diagramResourceName" 流程图名称;<br>
+	 * "startFormKey" 启动表单;<br>
+	 */
+	List<Map<String, String>> getStartProcessByUserId(String userId);
 }

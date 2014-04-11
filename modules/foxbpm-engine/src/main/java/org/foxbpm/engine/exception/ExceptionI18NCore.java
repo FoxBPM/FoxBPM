@@ -79,7 +79,8 @@ public class ExceptionI18NCore {
 	 */
 	public static String getResourceValue(String key,Object... args){
 		String result = "";
-		String localLanguage = Context.getLanguageType();
+//		String localLanguage = Context.getLanguageType();
+		String localLanguage ="";
 		if(exceptionResource!=null && StringUtil.isNotEmpty(key)){
 			Properties props = exceptionResource.get(localLanguage);
 			if(props!=null){

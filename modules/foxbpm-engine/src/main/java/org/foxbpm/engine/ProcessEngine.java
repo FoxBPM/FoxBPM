@@ -111,23 +111,6 @@ public interface ProcessEngine {
 	void contextClose(boolean threadLocalContext,boolean connection);
 	
 	/**
-	 * 回滚内部connection事务
-	 */
-	void rollBackConnection();
-	
-	
-	/**
-	 * 提交内部connection事务
-	 */
-	void commitConnection();
-	
-	
-	/**
-	 * 关闭内部connection
-	 */
-	void colseConnection();
-	
-	/**
 	 * 获取流程引擎配置
 	 * @return
 	 */
