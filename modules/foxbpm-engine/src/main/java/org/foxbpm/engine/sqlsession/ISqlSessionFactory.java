@@ -13,26 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author kenshin
  * @author ych
  */
+package org.foxbpm.engine.sqlsession;
 
-package org.foxbpm.engine.impl.interceptor;
+import java.sql.Connection;
 
+public interface ISqlSessionFactory {
+	
+	public void init();
+	
+	public ISqlSession createSqlSession(Connection connection);
 
-/**
- * @author kenshin
- */
-public abstract class CommandInterceptor implements CommandExecutor {
-
-  /** will be initialized by the {@link CommandInterceptorChains} */
-  protected CommandExecutor next;
-
-  public CommandExecutor getNext() {
-    return next;
-  }
-  
-  public void setNext(CommandExecutor next) {
-    this.next = next;
-  }
 }

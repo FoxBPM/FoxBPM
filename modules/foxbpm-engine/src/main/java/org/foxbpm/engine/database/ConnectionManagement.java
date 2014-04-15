@@ -16,12 +16,13 @@
  * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine;
+package org.foxbpm.engine.database;
 
 import java.sql.Connection;
 
+import org.foxbpm.engine.ProcessEngine;
+import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.database.FoxConnectionAdapter;
-import org.foxbpm.engine.impl.Context;
 
 /**
  * FixFlow数据库管理中心
@@ -31,21 +32,10 @@ import org.foxbpm.engine.impl.Context;
  */
 public abstract class ConnectionManagement {
 
-	private static String FIXDATABASEID = "DB_FIX_BIZ_BASE";
-
-	public static String defaultDataBaseId = FIXDATABASEID;
-
+	public static final String DAFAULT_DATABASE_ID = "DB_FIX_BIZ_BASE";
 	public static ConnectionManagement INSTANCE() {
-
 		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
-//		String cmId = Context.getConnectionManagementDefault();
-		return null;
-//		if (cmId == null) {
-//			return processEngine.getProcessEngineConfiguration().getConnectionManagementDefault();
-//		} else {
-//			return processEngine.getProcessEngineConfiguration().getConnectionManagement(cmId);
-//		}
-
+		return processEngine.getProcessEngineConfiguration().getConnectionManagementDefault();
 	}
 
 	/**
@@ -72,16 +62,6 @@ public abstract class ConnectionManagement {
 	 * @param connection
 	 *            数据库连接
 	 */
-	public abstract void setFixConnectionResult(String dbId, FoxConnectionAdapter connectionAdapter);
-
-	/**
-	 * 设置数据库连接,默认会放置到流程的线程副本中
-	 * 
-	 * @param dbId
-	 *            数据库配置ID
-	 * @param connection
-	 *            数据库连接
-	 */
-	public abstract void setFixConnection(String dbId, Connection connection);
+	public abstract void setFoxConnection(String dbId, Connection connection);
 
 }

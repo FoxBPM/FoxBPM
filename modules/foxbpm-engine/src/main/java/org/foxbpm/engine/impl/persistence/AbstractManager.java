@@ -18,7 +18,13 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
+import java.util.Map;
+
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.db.PersistentObject;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.sqlsession.ISqlSession;
+import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 
 /**
  * 持久化管理器抽象类
@@ -34,5 +40,32 @@ public abstract class AbstractManager {
 
 	public void setCommandContext(CommandContext commandContext) {
 		this.commandContext = commandContext;
+	}
+	
+	public ISqlSession getSqlSession(){
+		ISqlSessionFactory sqlSessionFactory = commandContext.getProcessEngineConfigurationImpl().getSqlSessionFactory();
+		return sqlSessionFactory.createSqlSession(Context.getDbConnection());
+	}
+	
+	public void insert(String insertStatement, PersistentObject persistentObject) {
+		getSqlSession().insert(insertStatement, persistentObject);
+	}
+
+	public void delete(String deleteStatement, PersistentObject persistentObject) {
+		delete(deleteStatement, persistentObject.getId());
+	}
+	
+	public void delete(String deleteStatement, String parameter) {
+		getSqlSession().delete(deleteStatement, parameter);
+	}
+	
+	public void update(String updateStatement, PersistentObject persistentObject){
+		getSqlSession().update(updateStatement, persistentObject);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> getPersistentDbMap(String statement, PersistentObject persistentObject){
+
+		return (Map<String, Object>)getSqlSession().selectOne(statement, persistentObject);
 	}
 }

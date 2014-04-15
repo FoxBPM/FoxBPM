@@ -22,7 +22,7 @@ import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.foxbpm.engine.ConnectionManagement;
+import org.foxbpm.engine.database.ConnectionManagement;
 
 /**
  * 外部内容构造器
@@ -30,17 +30,10 @@ import org.foxbpm.engine.ConnectionManagement;
  *
  */
 public class ExternalContent {
-
-	
 	
 	protected String authenticatedUserId;
-	
 	protected String languageType;
-
-	
 	protected boolean isQuartzTransactionAuto=true;
-	
-
 	
 	/**
 	 * 获取当前登陆用户
@@ -57,17 +50,14 @@ public class ExternalContent {
 	public void setAuthenticatedUserId(String authenticatedUserId) {
 		this.authenticatedUserId = authenticatedUserId;
 	}
-	
-	
 
 	/**
 	 * 获取数据库连接
 	 * @return
 	 */
 	public Connection getConnection() {
-		return getConnection(ConnectionManagement.defaultDataBaseId);
+		return getConnection(ConnectionManagement.DAFAULT_DATABASE_ID);
 	}
-	
 
 	/**
 	 * 获取数据库连接
@@ -90,12 +80,10 @@ public class ExternalContent {
 	 * @param connection
 	 */
 	public void setConnection(Connection connection) {
-		setConnection(ConnectionManagement.defaultDataBaseId,connection);
+		setConnection(ConnectionManagement.DAFAULT_DATABASE_ID,connection);
 	}
-	
 
 	Map<String, Connection> connectionMap=new HashMap<String, Connection>();
-	
 	
 	/**
 	 * 设置数据库链接
@@ -134,23 +122,7 @@ public class ExternalContent {
 		return isQuartzTransactionAuto;
 	}
 
-	/**
-	 * 设置定时任务框架的事务控制类型
-	 * @param isQuartzTransactionAuto true则框架自己控制事务 false则交由流程引擎控制
-	 */
-	public void setQuartzTransactionAuto(boolean isQuartzTransactionAuto) {
-		this.isQuartzTransactionAuto = isQuartzTransactionAuto;
-	}
-	
 	protected String cmId;
-	/**
-	 * 设置数据库连接管理器
-	 * @param cmId 管理器编号
-	 */
-	private void setConnectionManagement(String cmId) {
-		this.cmId = cmId;
-	}
-	
 
 	/**
 	 * 获取数据库连接管理器

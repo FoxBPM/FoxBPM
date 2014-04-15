@@ -18,13 +18,17 @@
  */
 package org.foxbpm.engine.impl;
 
+import java.sql.Connection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
+import org.foxbpm.engine.database.ConnectionManagement;
 import org.foxbpm.engine.database.FoxConnectionAdapter;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
 /**
+ * 流程引擎线程副本管理器
  * @author kenshin
  */
 public class Context {
@@ -39,6 +43,56 @@ public class Context {
 			return null;
 		}
 		return stack.peek();
+	}
+	
+	public static Connection getDbConnection() {
+		String dbID = ConnectionManagement.DAFAULT_DATABASE_ID;
+		return getDbConnection(dbID);
+	}
+
+	public static Connection getDbConnection(String dbId) {
+		Stack<Map<String, FoxConnectionAdapter>> stack = getStack(dbConnectionThreadLocal);
+		if (stack.isEmpty() || stack.peek() == null) {
+			Map<String, FoxConnectionAdapter> connectioMap = new HashMap<String, FoxConnectionAdapter>();
+			FoxConnectionAdapter foxConnectionAdapter = ConnectionManagement.INSTANCE().getFoxConnectionAdapter(dbId);
+			connectioMap.put(dbId, foxConnectionAdapter);
+			getStack(dbConnectionThreadLocal).push(connectioMap);
+			return foxConnectionAdapter.getConnection();
+
+		}else {
+			Map<String, FoxConnectionAdapter> connMap = stack.peek();
+			FoxConnectionAdapter fixConnectionResult = connMap.get(dbId);
+			if (fixConnectionResult == null) {
+				FoxConnectionAdapter foxConnectionAdapter = ConnectionManagement.INSTANCE().getFoxConnectionAdapter(dbId);
+				connMap.put(dbId, foxConnectionAdapter);
+				return foxConnectionAdapter.getConnection();
+			} else {
+				return fixConnectionResult.getConnection();
+			}
+		}
+	}
+	
+	public static void setFoxConnectionAdapter(String dbID, FoxConnectionAdapter foxConnectionAdapter) {
+		Stack<Map<String, FoxConnectionAdapter>> stack = getStack(dbConnectionThreadLocal);
+		if (stack.isEmpty()) {
+			Map<String, FoxConnectionAdapter> conMap = new HashMap<String, FoxConnectionAdapter>();
+			conMap.put(dbID, foxConnectionAdapter);
+			getStack(dbConnectionThreadLocal).push(conMap);
+		} else {
+			Map<String, FoxConnectionAdapter> connMap = stack.peek();
+			if (connMap == null) {
+				Map<String, FoxConnectionAdapter> conMap = new HashMap<String, FoxConnectionAdapter>();
+				conMap.put(dbID, foxConnectionAdapter);
+				getStack(dbConnectionThreadLocal).push(conMap);
+			} else {
+				connMap.put(dbID, foxConnectionAdapter);
+			}
+		}
+	}
+	
+	public static void removeDbConnection() {
+		getStack(dbConnectionThreadLocal).clear();
+
 	}
 
 	public static void setProcessEngineConfiguration(ProcessEngineConfigurationImpl processEngineConfiguration) {

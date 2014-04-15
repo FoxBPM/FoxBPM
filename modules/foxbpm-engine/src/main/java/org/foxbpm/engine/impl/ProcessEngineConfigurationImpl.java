@@ -21,6 +21,7 @@ package org.foxbpm.engine.impl;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,10 +30,10 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.foxbpm.engine.ConnectionManagement;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineConfiguration;
+import org.foxbpm.engine.database.ConnectionManagement;
 import org.foxbpm.engine.exception.ExceptionCode;
 import org.foxbpm.engine.exception.ExceptionI18NCore;
 import org.foxbpm.engine.exception.FixFlowClassLoadingException;
@@ -42,7 +43,9 @@ import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 import org.foxbpm.engine.impl.interceptor.CommandExecutorImpl;
 import org.foxbpm.engine.impl.interceptor.CommandInterceptor;
 import org.foxbpm.engine.impl.interceptor.LogInterceptor;
+import org.foxbpm.engine.impl.mybatis.MyBatisSqlSessionFactory;
 import org.foxbpm.engine.impl.util.ReflectUtil;
+import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 import org.foxbpm.model.config.foxbpmconfig.FoxBPMConfig;
 import org.foxbpm.model.config.foxbpmconfig.FoxBPMConfigPackage;
 import org.foxbpm.model.config.foxbpmconfig.ResourcePath;
@@ -62,6 +65,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected ModelService modelService = new ModelServiceImpl();
 	protected ConnectionManagement connectionManagementDefault;
 	protected Map<String, ConnectionManagement> connectionManagementMap;
+	protected ISqlSessionFactory sqlSessionFactory;
 	public ProcessEngine buildProcessEngine() {
 		init();
 		return new ProcessEngineImpl(this);
@@ -76,8 +80,9 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 //		initDataVariableConfig();
 		initCommandContextFactory();
 		initCommandExecutors();
-//		initConnectionManagementConfig();
+		initConnectionManagementConfig();
 		initServices();
+		initSqlSessionFactory();
 //		initConnection();
 //		// initDataBaseTable();
 //		initCache();
@@ -151,6 +156,36 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		
 	}
 	
+	private void initConnectionManagementConfig() {
+		connectionManagementMap = new HashMap<String, ConnectionManagement>();
+		List<org.foxbpm.model.config.foxbpmconfig.ConnectionManagement> connectionManagementInstanceConfigs = this.foxBpmConfig.getConnectionManagementConfig().getConnectionManagement();
+		String selectId = this.foxBpmConfig.getConnectionManagementConfig().getSelected();
+		for (org.foxbpm.model.config.foxbpmconfig.ConnectionManagement connectionManagementInstanceConfigTemp : connectionManagementInstanceConfigs) {
+			if (connectionManagementInstanceConfigTemp.getId().equals(selectId)) {
+				connectionManagementDefault = (ConnectionManagement) ReflectUtil.instantiate(connectionManagementInstanceConfigTemp.getClassImpl());
+				if (this.connectionManagementDefault == null) {
+					log.error("数据库管理器{}加载失败",connectionManagementInstanceConfigTemp.getId());
+					throw new FixFlowClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION_DEFAULT,connectionManagementInstanceConfigTemp.getClassImpl());
+				}
+				connectionManagementMap.put(connectionManagementInstanceConfigTemp.getId(), connectionManagementDefault);
+			} else {
+				ConnectionManagement connectionManagementOther = (ConnectionManagement) ReflectUtil
+						.instantiate(connectionManagementInstanceConfigTemp.getClassImpl());
+				connectionManagementMap.put(connectionManagementInstanceConfigTemp.getId(), connectionManagementOther);
+			}
+		}
+	}
+	
+	public void initSqlSessionFactory(){
+		sqlSessionFactory = new MyBatisSqlSessionFactory();
+		sqlSessionFactory.init();
+	}
+	
+	public ISqlSessionFactory getSqlSessionFactory(){
+		return this.sqlSessionFactory;
+	}
+
+	
 	protected void initServices() {
 		initService(modelService);
 	}
@@ -202,10 +237,16 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 	
 	//Getter方法
+	
+	
 	public ModelService getModelService(){
 		return modelService;
 	}
 	
+	public ConnectionManagement getConnectionManagementDefault() {
+		return connectionManagementDefault;
+	}
+
 	public FoxBPMConfig getFoxBpmConfig(){
 		return foxBpmConfig;
 	}

@@ -19,7 +19,6 @@ package org.foxbpm.engine.impl;
 
 import java.sql.Connection;
 
-import org.foxbpm.engine.ConnectionManagement;
 import org.foxbpm.engine.FormService;
 import org.foxbpm.engine.HistoryService;
 import org.foxbpm.engine.IdentityService;
@@ -30,6 +29,7 @@ import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.ScheduleService;
 import org.foxbpm.engine.TaskService;
+import org.foxbpm.engine.database.ConnectionManagement;
 
 public class ProcessEngineImpl implements ProcessEngine {
 
@@ -105,13 +105,13 @@ public class ProcessEngineImpl implements ProcessEngine {
 			for (String connKey : externalContent.getConnectionMap().keySet()) {
 				Connection connection = externalContent.getConnectionMap().get(connKey);
 				if (connection != null) {
-					ConnectionManagement.INSTANCE().setFixConnection(connKey, connection);
+					ConnectionManagement.INSTANCE().setFoxConnection(connKey, connection);
 				}
 			}
 		}
-		String authenticatedUserId = externalContent.getAuthenticatedUserId();
+//		String authenticatedUserId = externalContent.getAuthenticatedUserId();
 //		Authentication.setAuthenticatedUserId(authenticatedUserId);
-		String languageType = externalContent.getLanguageType();
+//		String languageType = externalContent.getLanguageType();
 		
 //		if (externalContent.getConnectionManagement() != null && !externalContent.getConnectionManagement().equals("")) {
 //			Context.setConnectionManagementDefault(externalContent.getConnectionManagement());
@@ -127,9 +127,9 @@ public class ProcessEngineImpl implements ProcessEngine {
 	}
 
 	public void contextClose() {
-//		Context.removeCommandContext();
-//		Context.removeProcessEngineConfiguration();
-//		Context.removeDbConnection();
+		Context.removeCommandContext();
+		Context.removeProcessEngineConfiguration();
+		Context.removeDbConnection();
 //		Context.removeAbstractScriptLanguageMgmt();
 //		Context.removeLanguageType();
 	}
@@ -145,9 +145,9 @@ public class ProcessEngineImpl implements ProcessEngine {
 
 	public void contextClose(boolean threadLocalContext, boolean connection) {
 		if (threadLocalContext) {
-//			Context.removeCommandContext();
-//			Context.removeProcessEngineConfiguration();
-//			Context.removeDbConnection();
+			Context.removeCommandContext();
+			Context.removeProcessEngineConfiguration();
+			Context.removeDbConnection();
 //			Context.removeAbstractScriptLanguageMgmt();
 //			Context.removeLanguageType();
 //			Context.removeQuartzTransactionAutoThreadLocal();

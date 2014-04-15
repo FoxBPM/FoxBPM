@@ -13,26 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author kenshin
  * @author ych
  */
+package org.foxbpm.engine.impl.mybatis;
 
-package org.foxbpm.engine.impl.interceptor;
+import java.sql.Connection;
 
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.foxbpm.engine.sqlsession.ISqlSession;
+import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 
-/**
- * @author kenshin
- */
-public abstract class CommandInterceptor implements CommandExecutor {
+public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 
-  /** will be initialized by the {@link CommandInterceptorChains} */
-  protected CommandExecutor next;
+	public void init() {
+		
+	}
 
-  public CommandExecutor getNext() {
-    return next;
-  }
-  
-  public void setNext(CommandExecutor next) {
-    this.next = next;
-  }
+	public ISqlSession createSqlSession(Connection connection) {
+		return null;
+	}
+	
+	public SqlSessionFactory getSqlSessionFactory(){
+		
+		return null;
+	}
+
 }

@@ -3,4 +3,8 @@
   <resourcePathConfig>
     <resourcePath id="internationalization" name="国际化资源文件位置" src="扯淡"/>
   </resourcePathConfig>
+  
+  <connectionManagementConfig selected="General">
+    <connectionManagement id="General" name="通用连接管理" classImpl="com.founder.fix.fixflow.expand.database.GeneralConnectionManagement"/>
+  </connectionManagementConfig>
 </foxbpmconfig:FoxBPMConfig>
