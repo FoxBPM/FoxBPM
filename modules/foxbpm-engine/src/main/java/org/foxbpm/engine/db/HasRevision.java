@@ -15,20 +15,16 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.engine.impl.db;
-
-import java.util.Map;
+package org.foxbpm.engine.db;
 
 /**
  * @author kenshin
- * 
+ *
  */
-public interface PersistentObject {
-
-	String getId();
-
-	void setId(String id);
-
-	Map<String, Object> getPersistentState();
+public interface HasRevision {
+	
+	  void setRevision(int revision);
+	  int getRevision();
+	  int getRevisionNext();
 
 }

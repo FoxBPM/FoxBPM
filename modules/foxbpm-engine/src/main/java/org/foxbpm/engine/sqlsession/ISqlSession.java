@@ -19,18 +19,18 @@ package org.foxbpm.engine.sqlsession;
 
 import java.util.List;
 
-import org.foxbpm.engine.impl.db.PersistentObject;
+import org.foxbpm.engine.db.PersistentObject;
+
 
 public interface ISqlSession {
 	public void insert(String insertStatement, PersistentObject persistentObject);
 	public void delete(String deleteStatement, Object parameter);
 	public void delete(String deleteStatement, PersistentObject persistentObject);
 	public void update(String updateStatement, PersistentObject persistentObject);
-	@SuppressWarnings("rawtypes")
-	public List selectList(String statement);
-	@SuppressWarnings("rawtypes")
-	public List selectList(String statement, Object parameter) ;
-//	@SuppressWarnings("rawtypes")
-//	public List selectList(String statement, Object parameter, Page page);
+
+	public List<?> selectList(String statement);
+
+	public List<?> selectList(String statement, Object parameter) ;
+
 	public Object selectOne(String statement, Object parameter);
 }

@@ -23,8 +23,8 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.exception.FixFlowException;
-import org.foxbpm.engine.impl.db.PersistentObject;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 
@@ -61,11 +61,11 @@ public class MybatisSqlSession implements ISqlSession {
 		sqlSession.update(updateStatement, persistentObject);
 	}
 
-	public List selectList(String statement) {
+	public List<?> selectList(String statement) {
 		return sqlSession.selectList(statement);
 	}
 
-	public List selectList(String statement, Object parameter) {
+	public List<?> selectList(String statement, Object parameter) {
 		return sqlSession.selectList(statement, parameter);
 	}
 

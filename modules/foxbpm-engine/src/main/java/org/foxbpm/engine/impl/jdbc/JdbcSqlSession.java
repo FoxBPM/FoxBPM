@@ -19,7 +19,7 @@ package org.foxbpm.engine.impl.jdbc;
 
 import java.util.List;
 
-import org.foxbpm.engine.impl.db.PersistentObject;
+import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 
 public class JdbcSqlSession implements ISqlSession {
@@ -44,12 +44,12 @@ public class JdbcSqlSession implements ISqlSession {
 		
 	}
 
-	public List selectList(String statement) {
+	public List<?> selectList(String statement) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List selectList(String statement, Object parameter) {
+	public List<?> selectList(String statement, Object parameter) {
 		// TODO Auto-generated method stub
 		return null;
 	}

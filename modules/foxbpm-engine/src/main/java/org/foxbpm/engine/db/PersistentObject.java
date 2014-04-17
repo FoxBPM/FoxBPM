@@ -15,34 +15,16 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.engine.impl.entity;
+package org.foxbpm.engine.db;
 
 import java.util.Map;
 
-import org.foxbpm.engine.db.PersistentObject;
-import org.foxbpm.engine.repository.ProcessDefinition;
-import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
+public interface PersistentObject {
+	
 
-public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl implements ProcessDefinition,PersistentObject{
+	  String getId();
+	  void setId(String id);
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	public ProcessDefinitionEntity() {
-		super(null);
-
-	}
-
-	public void setId(String id) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public Map<String, Object> getPersistentState() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	  Map<String, Object> getPersistentState();
 
 }
