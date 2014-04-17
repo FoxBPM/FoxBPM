@@ -16,13 +16,13 @@
  * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.impl.database;
+package org.foxbpm.engine.impl.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import org.foxbpm.engine.database.FoxConnectionAdapter;
+import org.foxbpm.engine.db.FoxConnectionAdapter;
 import org.foxbpm.engine.exception.FixFlowDbException;
 
 public class GeneralConnectionAdapter implements FoxConnectionAdapter {

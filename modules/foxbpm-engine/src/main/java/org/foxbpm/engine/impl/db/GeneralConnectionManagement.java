@@ -16,12 +16,12 @@
  * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.impl.database;
+package org.foxbpm.engine.impl.db;
 
 import java.sql.Connection;
 
-import org.foxbpm.engine.database.ConnectionManagement;
-import org.foxbpm.engine.database.FoxConnectionAdapter;
+import org.foxbpm.engine.db.ConnectionManagement;
+import org.foxbpm.engine.db.FoxConnectionAdapter;
 import org.foxbpm.engine.impl.Context;
 
 public class GeneralConnectionManagement extends ConnectionManagement {

@@ -33,7 +33,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineConfiguration;
-import org.foxbpm.engine.database.ConnectionManagement;
+import org.foxbpm.engine.db.ConnectionManagement;
 import org.foxbpm.engine.exception.ExceptionCode;
 import org.foxbpm.engine.exception.ExceptionI18NCore;
 import org.foxbpm.engine.exception.FixFlowClassLoadingException;

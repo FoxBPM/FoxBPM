@@ -22,7 +22,7 @@ import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.foxbpm.engine.database.ConnectionManagement;
+import org.foxbpm.engine.db.ConnectionManagement;
 
 /**
  * 外部内容构造器

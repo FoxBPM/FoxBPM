@@ -16,7 +16,7 @@
  * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.database;
+package org.foxbpm.engine.db;
 
 import java.sql.Connection;
 

@@ -23,8 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-import org.foxbpm.engine.database.ConnectionManagement;
-import org.foxbpm.engine.database.FoxConnectionAdapter;
+import org.foxbpm.engine.db.ConnectionManagement;
+import org.foxbpm.engine.db.FoxConnectionAdapter;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
 /**
