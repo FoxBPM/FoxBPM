@@ -28,7 +28,6 @@ import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.exception.FixFlowException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.sqlsession.ISqlSession;
-import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 
 public class JdbcSqlSession implements ISqlSession {
 	Connection connection ;

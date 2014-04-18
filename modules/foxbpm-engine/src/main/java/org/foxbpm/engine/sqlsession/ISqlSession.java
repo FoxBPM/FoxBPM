@@ -33,4 +33,5 @@ public interface ISqlSession {
 	public List<?> selectList(String statement, Object parameter) ;
 
 	public Object selectOne(String statement, Object parameter);
+	public void closeSession();
 }

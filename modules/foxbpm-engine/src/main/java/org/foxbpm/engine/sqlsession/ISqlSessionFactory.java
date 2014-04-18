@@ -24,5 +24,5 @@ public interface ISqlSessionFactory {
 	public void init(DataSource dataSource);
 	
 	public ISqlSession createSqlSession();
-
+	
 }

@@ -27,6 +27,7 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import org.apache.ibatis.builder.xml.XMLConfigBuilder;
+import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
@@ -46,6 +47,7 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 		if (sqlSessionFactory == null) {
 			InputStream inputStream = null;
 			try {
+				inputStream = Resources.getResourceAsStream("mybatis/mapping/mappings.xml");
 				TransactionFactory transactionFactory = new ManagedTransactionFactory();
 				Environment environment = new Environment("default", transactionFactory, dataSource);
 		        Reader reader = new InputStreamReader(inputStream);
@@ -89,7 +91,7 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 			throw new FixFlowException("mybatis sqlsession工厂创建失败");
 		}
 		Connection connection = Context.getDbConnection();
-		if(connection == null){
+		if(connection != null){
 			sqlSession = sqlSessionFactory.openSession(connection);
 		}else{
 			sqlSession = sqlSessionFactory.openSession();

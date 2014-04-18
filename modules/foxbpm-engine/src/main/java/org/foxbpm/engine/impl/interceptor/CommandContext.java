@@ -27,6 +27,8 @@ import org.foxbpm.engine.impl.persistence.ResourceManager;
 import org.foxbpm.engine.impl.persistence.TaskManager;
 import org.foxbpm.engine.impl.persistence.TokenManager;
 import org.foxbpm.engine.impl.persistence.VariableManager;
+import org.foxbpm.engine.sqlsession.ISqlSession;
+import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 
 /**
  * @author kenshin
@@ -34,6 +36,8 @@ import org.foxbpm.engine.impl.persistence.VariableManager;
 public class CommandContext {
 
 	protected Command<?> command;
+	protected ISqlSession sqlSession;
+	
 
 	protected ProcessEngineConfigurationImpl processEngineConfigurationImpl;
 
@@ -108,6 +112,20 @@ public class CommandContext {
 
 	public Command<?> getCommand() {
 		return command;
+	}
+	
+	public ISqlSession getSqlSession(){
+		if(sqlSession == null){
+			ISqlSessionFactory sqlSessionFactory = getProcessEngineConfigurationImpl().getSqlSessionFactory();
+			sqlSession = sqlSessionFactory.createSqlSession();
+		}
+		return sqlSession;
+	}
+	
+	public void close(){
+		if(sqlSession != null){
+			sqlSession.closeSession();
+		}
 	}
 
 }

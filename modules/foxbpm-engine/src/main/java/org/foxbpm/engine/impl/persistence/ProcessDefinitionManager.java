@@ -18,6 +18,8 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
+import org.foxbpm.engine.impl.entity.TaskEntity;
+
 /**
  * 流程定义管理器
  * @author Kenshin
@@ -26,6 +28,10 @@ public class ProcessDefinitionManager extends AbstractManager {
 
 	public void test(){
 		System.out.println("manager执行了");
+		TaskEntity task = new TaskEntity();
+		task.setId("200");
+		getSqlSession().insert("testInsert", task);
+		throw  new RuntimeException("dd");
 	}
 	
 }

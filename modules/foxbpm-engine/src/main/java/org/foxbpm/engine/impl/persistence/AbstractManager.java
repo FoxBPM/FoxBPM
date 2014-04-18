@@ -41,8 +41,7 @@ public abstract class AbstractManager {
 	}
 	
 	public ISqlSession getSqlSession(){
-		ISqlSessionFactory sqlSessionFactory = commandContext.getProcessEngineConfigurationImpl().getSqlSessionFactory();
-		return sqlSessionFactory.createSqlSession();
+		return commandContext.getSqlSession();
 	}
 	
 	public void insert(String insertStatement, PersistentObject persistentObject) {
