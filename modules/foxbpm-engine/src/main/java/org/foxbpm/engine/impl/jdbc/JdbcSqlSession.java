@@ -21,31 +21,21 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.sql.DataSource;
-
-import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.db.PersistentObject;
-import org.foxbpm.engine.exception.FixFlowException;
-import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.db.SqlCommand;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 
 public class JdbcSqlSession implements ISqlSession {
 	Connection connection ;
-	
-	public JdbcSqlSession(){
-		DataSource dataSource = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getDataSource();
-		connection = Context.getDbConnection();
-		if( connection== null){
-			try {
-				connection = dataSource.getConnection();
-			} catch (SQLException e) {
-				throw new FixFlowException("jdbc数据库连接获取失败，请检查连接池配置",e);
-			}
-		}
+	SqlCommand sqlCommand;
+	public JdbcSqlSession(Connection connection){
+		this.connection = connection;
+		sqlCommand = new SqlCommand(connection);
 	}
 	public void insert(String insertStatement, PersistentObject persistentObject) {
 		// TODO Auto-generated method stub
-		
+		Object []params = new Object[]{"2000","2000"};
+		sqlCommand.execute("insert into demotable(col1,col2) values (?,?)", params);
 	}
 
 	public void delete(String deleteStatement, Object parameter) {
@@ -78,4 +68,11 @@ public class JdbcSqlSession implements ISqlSession {
 		return null;
 	}
 
+	public void closeSession() {
+		try {
+			this.connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

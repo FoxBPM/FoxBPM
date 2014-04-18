@@ -25,6 +25,12 @@ import javax.sql.DataSource;
  *
  */
 public interface DataSourceManage {
+	public static final String DAFAULT_DATABASE_ID = "DB_FIX_BIZ_BASE";
+	
+	public void init();
+	
 	public DataSource  getDataSource();
+	
+	public DataSource getDataSource(String key);
 
 }

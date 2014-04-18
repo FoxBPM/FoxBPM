@@ -31,7 +31,5 @@ public class ProcessDefinitionManager extends AbstractManager {
 		TaskEntity task = new TaskEntity();
 		task.setId("200");
 		getSqlSession().insert("testInsert", task);
-		throw  new RuntimeException("dd");
 	}
-	
 }

@@ -27,8 +27,6 @@ public interface ProcessEngine {
 	 */
 	public static String VERSION = "5.0";
 	
-	public static final String DAFAULT_DATABASE_ID = "DB_FIX_BIZ_BASE";
-
 	/** 
 	 * 默认名称为 'default' */
 	String getName();

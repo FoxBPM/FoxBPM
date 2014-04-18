@@ -66,8 +66,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected ModelService modelService = new ModelServiceImpl();
 	protected ISqlSessionFactory sqlSessionFactory;
 	protected DataSourceManage dataSourceManage;
-	
-	protected DataSource dataSource;
 	public ProcessEngine buildProcessEngine() {
 		init();
 		return new ProcessEngineImpl(this);
@@ -76,19 +74,15 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected void init() {
 		initExceptionResource();
 		initEmfFile();
-//		initRulesConfig();
-//		// initSqlMappingFile();
 		initResourcePathConfig();
 //		initDataVariableConfig();
 		initDataSourceManage();
-		initDataSource();
 		initSqlSessionFactory();
 		initCommandContextFactory();
 		initCommandExecutors();
 		initServices();
 		
-//		initConnection();
-//		// initDataBaseTable();
+//		initDataBaseTable();
 //		initCache();
 //		initDeployers();
 //		initGroupDefinitions();
@@ -120,6 +114,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	public void initDataSourceManage(){
 		if(dataSourceManage == null){
 			dataSourceManage = new DefaultDataSourceManage();
+			dataSourceManage.init();
 		}
 	}
 	
@@ -164,13 +159,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		
 	}
 	
-	public void initDataSource(){
-		if(dataSource == null){
-			dataSource = dataSourceManage.getDataSource();
-		}
-	}
-	
 	public void initSqlSessionFactory(){
+		DataSource dataSource = dataSourceManage.getDataSource();
 		sqlSessionFactory = new MyBatisSqlSessionFactory();
 		sqlSessionFactory.init(dataSource);
 	}
@@ -233,17 +223,12 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	//Getter方法
 	
-	
 	public ModelService getModelService(){
 		return modelService;
 	}
-	
-	public DataSource getDataSource() {
-		return dataSource;
-	}
 
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
+	public DataSourceManage getDataSourceManage() {
+		return dataSourceManage;
 	}
 
 	public FoxBPMConfig getFoxBpmConfig(){

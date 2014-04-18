@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.sql.Connection;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -36,7 +35,7 @@ import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
 import org.foxbpm.engine.exception.FixFlowException;
-import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.util.DBUtils;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 
@@ -85,17 +84,12 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 		return new MybatisSqlSession(getSqlSession());
 	}
 	
-	public SqlSession getSqlSession(){
+	private SqlSession getSqlSession(){
 		SqlSession sqlSession = null;
 		if(sqlSessionFactory == null){
 			throw new FixFlowException("mybatis sqlsession工厂创建失败");
 		}
-		Connection connection = Context.getDbConnection();
-		if(connection != null){
-			sqlSession = sqlSessionFactory.openSession(connection);
-		}else{
-			sqlSession = sqlSessionFactory.openSession();
-		}
+		sqlSession = sqlSessionFactory.openSession();
 		if(sqlSession == null){
 			throw  new FixFlowException("mybatis sqlSession创建失败");
 		}

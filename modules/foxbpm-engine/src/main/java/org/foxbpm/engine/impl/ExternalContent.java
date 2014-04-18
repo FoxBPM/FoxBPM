@@ -18,12 +18,6 @@
  */
 package org.foxbpm.engine.impl;
 
-import java.sql.Connection;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.foxbpm.engine.ProcessEngine;
-
 /**
  * 外部内容构造器
  * @author kenshin
@@ -52,53 +46,6 @@ public class ExternalContent {
 	}
 
 	/**
-	 * 获取数据库连接
-	 * @return
-	 */
-	public Connection getConnection() {
-		return getConnection(ProcessEngine.DAFAULT_DATABASE_ID);
-	}
-
-	/**
-	 * 获取数据库连接
-	 * @return
-	 */
-	public Connection getConnection(String dbId) {
-		return connectionMap.get(dbId);
-	}
-	
-	/**
-	 * 获取数据库连接
-	 * @return
-	 */
-	public Map<String, Connection> getConnectionMap() {
-		return connectionMap;
-	}
-
-	/**
-	 * 设置数据库连接
-	 * @param connection
-	 */
-	public void setConnection(Connection connection) {
-		setConnection(ProcessEngine.DAFAULT_DATABASE_ID,connection);
-	}
-
-	Map<String, Connection> connectionMap=new HashMap<String, Connection>();
-	
-	/**
-	 * 设置数据库链接
-	 * @param connectionKey
-	 * @param connection
-	 */
-	public void setConnection(String connectionKey,Connection connection) {
-		this.connectionMap.put(connectionKey, connection);
-	}
-	
-	public void cleanConnection(){
-		connectionMap.clear();
-	}
-	
-	/**
 	 * 获取语言类型
 	 * @return
 	 */
@@ -120,16 +67,6 @@ public class ExternalContent {
 	 */
 	public boolean isQuartzTransactionAuto() {
 		return isQuartzTransactionAuto;
-	}
-
-	protected String cmId;
-
-	/**
-	 * 获取数据库连接管理器
-	 * @return 管理器编号
-	 */
-	public String getConnectionManagement() {
-		return this.cmId;
 	}
 
 }

@@ -20,7 +20,6 @@ package org.foxbpm.engine.impl.mybatis;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
-
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 
@@ -58,6 +57,11 @@ public class MybatisSqlSession implements ISqlSession {
 
 	public Object selectOne(String statement, Object parameter) {
 		return null;
+	}
+	public void closeSession() {
+		if(sqlSession != null){
+			sqlSession.close();
+		}
 	}
 
 }

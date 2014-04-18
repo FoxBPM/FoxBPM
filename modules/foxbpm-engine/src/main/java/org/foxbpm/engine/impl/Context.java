@@ -44,37 +44,6 @@ public class Context {
 		return stack.peek();
 	}
 	
-	public static Connection getDbConnection() {
-		return getDbConnection(ProcessEngine.DAFAULT_DATABASE_ID);
-	}
-
-	public static Connection getDbConnection(String dbId) {
-		Stack<Map<String,Connection>> stack = getStack(dbConnectionThreadLocal);
-		if (stack.isEmpty() || stack.peek() == null) {
-			return null;
-			
-		}else {
-			Map<String,Connection> connMap = stack.peek();
-			return connMap.get("dbId");
-		}
-	}
-	
-	public static void setDBConnection(String dbID, Connection connection) {
-		Stack<Map<String,Connection>> stack = getStack(dbConnectionThreadLocal);
-		if(stack.isEmpty() || stack.peek() == null){
-			Map<String,Connection> connMap =new HashMap<String,Connection>();
-			connMap.put(dbID, connection);
-			stack.push(connMap);
-		}else{
-			Map<String,Connection> connMap = stack.peek();
-			connMap.put(dbID, connection);
-		}
-	}
-	
-	public static void removeDbConnection() {
-		getStack(dbConnectionThreadLocal).clear();
-	}
-
 	public static void setProcessEngineConfiguration(ProcessEngineConfigurationImpl processEngineConfiguration) {
 		getStack(processEngineConfigurationStackThreadLocal).push(processEngineConfiguration);
 	}

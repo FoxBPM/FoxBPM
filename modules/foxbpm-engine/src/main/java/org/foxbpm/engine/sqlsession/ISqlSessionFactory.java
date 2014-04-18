@@ -21,7 +21,7 @@ import javax.sql.DataSource;
 
 public interface ISqlSessionFactory {
 	
-	public void init(DataSource dataSource);
+	public void init(DataSource datasource);
 	
 	public ISqlSession createSqlSession();
 	

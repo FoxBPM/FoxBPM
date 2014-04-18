@@ -17,10 +17,14 @@
  */
 package org.foxbpm.engine.impl.db;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.foxbpm.engine.db.DataSourceManage;
+import org.foxbpm.engine.exception.FixFlowDbException;
 
 /**
  * 默认数据源管理器
@@ -30,7 +34,9 @@ import org.foxbpm.engine.db.DataSourceManage;
  */
 public class DefaultDataSourceManage implements DataSourceManage {
 
-	public DataSource getDataSource() {
+	private static Map<String,DataSource> dataSourceMap = new HashMap<String,DataSource>();
+	
+	public void init(){
 		BasicDataSource bs = new BasicDataSource();
 		bs.setDriverClassName("com.mysql.jdbc.Driver");
 		bs.setUrl("jdbc:mysql://172.16.40.89/idbase?characterEncoding=UTF-8");
@@ -38,7 +44,17 @@ public class DefaultDataSourceManage implements DataSourceManage {
 		bs.setPassword("fixflow");
 		bs.setMaxActive(20);
 		bs.setMaxIdle(8);
-		return bs;
+		dataSourceMap.put(DAFAULT_DATABASE_ID, bs);
+	}
+	public DataSource getDataSource() {
+		return getDataSource(DAFAULT_DATABASE_ID);
+	}
+	
+	public DataSource getDataSource(String key){
+		if(dataSourceMap.containsKey(key)){
+			return dataSourceMap.get(key);
+		}
+		throw new FixFlowDbException("未找到名称为："+key+" 的数据库连接池");
 	}
 
 }

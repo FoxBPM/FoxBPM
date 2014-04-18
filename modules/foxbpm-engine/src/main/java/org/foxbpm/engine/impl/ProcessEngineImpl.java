@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2013 Founder International Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM ORG.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,9 @@
  * limitations under the License.
  * 
  * @author kenshin
+ * @author ych
  */
 package org.foxbpm.engine.impl;
-
-import java.sql.Connection;
 
 import org.foxbpm.engine.FormService;
 import org.foxbpm.engine.HistoryService;
@@ -100,12 +99,6 @@ public class ProcessEngineImpl implements ProcessEngine {
 	}
 
 	public void setExternalContent(ExternalContent externalContent) {
-		if (externalContent.getConnectionMap() != null) {
-			for (String connKey : externalContent.getConnectionMap().keySet()) {
-				Connection connection = externalContent.getConnectionMap().get(connKey);
-				Context.setDBConnection(connKey, connection);
-			}
-		}
 //		String authenticatedUserId = externalContent.getAuthenticatedUserId();
 //		Authentication.setAuthenticatedUserId(authenticatedUserId);
 //		String languageType = externalContent.getLanguageType();
@@ -126,7 +119,6 @@ public class ProcessEngineImpl implements ProcessEngine {
 	public void contextClose() {
 		Context.removeCommandContext();
 		Context.removeProcessEngineConfiguration();
-		Context.removeDbConnection();
 //		Context.removeAbstractScriptLanguageMgmt();
 //		Context.removeLanguageType();
 	}
@@ -144,7 +136,6 @@ public class ProcessEngineImpl implements ProcessEngine {
 		if (threadLocalContext) {
 			Context.removeCommandContext();
 			Context.removeProcessEngineConfiguration();
-			Context.removeDbConnection();
 //			Context.removeAbstractScriptLanguageMgmt();
 //			Context.removeLanguageType();
 //			Context.removeQuartzTransactionAutoThreadLocal();

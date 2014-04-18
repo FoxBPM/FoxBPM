@@ -54,8 +54,8 @@ public class CommandContextInterceptor extends CommandInterceptor {
 	    	try{
 	    		context.close();
 	    	}finally{
-	    		 Context.removeCommandContext();
-	       	     Context.removeProcessEngineConfiguration();
+	    		Context.removeCommandContext();
+	       	    Context.removeProcessEngineConfiguration();
 	    	}
 	    }
   }
