@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-import org.foxbpm.engine.db.ConnectionManagement;
+import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
 /**
@@ -45,8 +45,7 @@ public class Context {
 	}
 	
 	public static Connection getDbConnection() {
-		String dbID = ConnectionManagement.DAFAULT_DATABASE_ID;
-		return getDbConnection(dbID);
+		return getDbConnection(ProcessEngine.DAFAULT_DATABASE_ID);
 	}
 
 	public static Connection getDbConnection(String dbId) {

@@ -13,29 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author kenshin
  * @author ych
  */
 package org.foxbpm.engine.db;
 
-import java.sql.Connection;
+import javax.sql.DataSource;
 
 /**
- * FoxBpm数据库连接适配器
- * 用于在线程副本中缓存数据库连接的载体
- * @author kenshin
+ * 数据源管理器，用于向引擎初始化时加载数据源
+ * @author ych
  *
  */
-public interface FoxConnectionAdapter {
-	
-	Connection getConnection();
-	
-	void colseConnection();
-	
-	void commitConnection();
-	
-	void rollBackConnection();
-	
-	String getDataBaseId();
-	
+public interface DataSourceManage {
+	public DataSource  getDataSource();
+
 }

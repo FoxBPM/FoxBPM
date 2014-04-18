@@ -22,7 +22,7 @@ import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.foxbpm.engine.db.ConnectionManagement;
+import org.foxbpm.engine.ProcessEngine;
 
 /**
  * 外部内容构造器
@@ -56,7 +56,7 @@ public class ExternalContent {
 	 * @return
 	 */
 	public Connection getConnection() {
-		return getConnection(ConnectionManagement.DAFAULT_DATABASE_ID);
+		return getConnection(ProcessEngine.DAFAULT_DATABASE_ID);
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class ExternalContent {
 	 * @param connection
 	 */
 	public void setConnection(Connection connection) {
-		setConnection(ConnectionManagement.DAFAULT_DATABASE_ID,connection);
+		setConnection(ProcessEngine.DAFAULT_DATABASE_ID,connection);
 	}
 
 	Map<String, Connection> connectionMap=new HashMap<String, Connection>();

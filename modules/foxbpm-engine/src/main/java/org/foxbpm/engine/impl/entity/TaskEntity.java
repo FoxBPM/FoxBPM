@@ -13,6 +13,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private String id;
 
 	public void setRevision(int revision) {
 		// TODO Auto-generated method stub
@@ -30,13 +31,11 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 	}
 
 	public String getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return id;
 	}
 
 	public void setId(String id) {
-		// TODO Auto-generated method stub
-		
+		this.id = id;
 	}
 
 	public Map<String, Object> getPersistentState() {
