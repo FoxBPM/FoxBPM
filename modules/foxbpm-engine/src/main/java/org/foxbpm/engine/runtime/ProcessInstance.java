@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2014 FoxBPM ORG.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,8 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.engine.impl.db;
+package org.foxbpm.engine.runtime;
 
-import java.util.Map;
-
-/**
- * @author kenshin
- * 
- */
-public interface PersistentObject {
-
-	String getId();
-
-	void setId(String id);
-
-	Map<String, Object> getPersistentState();
+public interface ProcessInstance {
 
 }

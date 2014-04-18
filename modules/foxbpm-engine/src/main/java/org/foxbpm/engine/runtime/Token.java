@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2014 FoxBPM ORG.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,24 +15,12 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.kernel.runtime;
-
-import java.io.Serializable;
-
+package org.foxbpm.engine.runtime;
 
 /**
  * @author kenshin
- * 
+ *
  */
-public interface KernelProcessInstance extends Serializable, KernelVariableScope {
-
-	void start();
-
-	KernelToken getRootToken();
-
-
-	boolean isEnded();
-
-	void deleteCascade(String deleteReason);
+public interface Token {
 
 }

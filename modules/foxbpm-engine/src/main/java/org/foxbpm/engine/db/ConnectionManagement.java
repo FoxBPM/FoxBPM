@@ -16,13 +16,13 @@
  * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.database;
+package org.foxbpm.engine.db;
 
 import java.sql.Connection;
 
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineManagement;
-import org.foxbpm.engine.database.FoxConnectionAdapter;
+import org.foxbpm.engine.db.FoxConnectionAdapter;
 
 /**
  * FixFlow数据库管理中心

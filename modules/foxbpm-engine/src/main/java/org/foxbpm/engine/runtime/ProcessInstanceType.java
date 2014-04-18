@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2014 FoxBPM ORG.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,28 +14,37 @@
  * limitations under the License.
  * 
  * @author kenshin
- * @author ych
  */
-package org.foxbpm.engine.database;
-
-import java.sql.Connection;
+package org.foxbpm.engine.runtime;
 
 /**
- * FoxBpm数据库连接适配器
- * 用于在线程副本中缓存数据库连接的载体
+ * 流程实例状态
  * @author kenshin
  *
  */
-public interface FoxConnectionAdapter {
+public enum ProcessInstanceType {
 	
-	Connection getConnection();
 	
-	void colseConnection();
+	/**
+	 * 运行中
+	 */
+	RUNNING,
 	
-	void commitConnection();
+	/**
+	 * 暂停
+	 */
+	SUSPEND,
 	
-	void rollBackConnection();
+	/**
+	 * 终止
+	 */
+	TERMINATION,
 	
-	String getDataBaseId();
+	/**
+	 * 正常结束
+	 */
+	COMPLETE
+
 	
+
 }

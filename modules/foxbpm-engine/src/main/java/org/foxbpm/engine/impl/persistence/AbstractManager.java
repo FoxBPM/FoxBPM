@@ -19,8 +19,7 @@
 package org.foxbpm.engine.impl.persistence;
 
 import java.util.Map;
-
-import org.foxbpm.engine.impl.db.PersistentObject;
+import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;

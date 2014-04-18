@@ -13,24 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
+ * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.sqlsession;
+package org.foxbpm.engine.db;
 
-import java.util.List;
+import java.sql.Connection;
 
-import org.foxbpm.engine.db.PersistentObject;
-
-
-public interface ISqlSession {
-	public void insert(String insertStatement, PersistentObject persistentObject);
-	public void delete(String deleteStatement, Object parameter);
-	public void delete(String deleteStatement, PersistentObject persistentObject);
-	public void update(String updateStatement, PersistentObject persistentObject);
-
-	public List<?> selectList(String statement);
-
-	public List<?> selectList(String statement, Object parameter) ;
-
-	public Object selectOne(String statement, Object parameter);
+/**
+ * FoxBpm数据库连接适配器
+ * 用于在线程副本中缓存数据库连接的载体
+ * @author kenshin
+ *
+ */
+public interface FoxConnectionAdapter {
+	
+	Connection getConnection();
+	
+	void colseConnection();
+	
+	void commitConnection();
+	
+	void rollBackConnection();
+	
+	String getDataBaseId();
+	
 }

@@ -15,22 +15,12 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.kernel.runtime;
-
-import java.util.Map;
+package org.foxbpm.engine.task;
 
 /**
  * @author kenshin
- * 
+ *
  */
-public interface KernelVariable {
-
-	boolean hasVariable(String variableName);
-
-	void setVariable(String variableName, Object value);
-
-	Object getVariable(String variableName);
-
-	Map<String, Object> getVariables();
+public interface IdentityLink {
 
 }

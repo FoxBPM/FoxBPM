@@ -29,9 +29,6 @@ import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.ScheduleService;
 import org.foxbpm.engine.TaskService;
-import org.foxbpm.engine.database.ConnectionManagement;
-import org.foxbpm.engine.database.DataSourceManage;
-
 public class ProcessEngineImpl implements ProcessEngine {
 
 	protected String name;

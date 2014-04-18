@@ -15,24 +15,16 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.kernel.runtime;
+package org.foxbpm.engine.db;
 
-import java.io.Serializable;
+import java.util.Map;
 
+public interface PersistentObject {
+	
 
-/**
- * @author kenshin
- * 
- */
-public interface KernelProcessInstance extends Serializable, KernelVariableScope {
+	  String getId();
+	  void setId(String id);
 
-	void start();
-
-	KernelToken getRootToken();
-
-
-	boolean isEnded();
-
-	void deleteCascade(String deleteReason);
+	  Map<String, Object> getPersistentState();
 
 }
