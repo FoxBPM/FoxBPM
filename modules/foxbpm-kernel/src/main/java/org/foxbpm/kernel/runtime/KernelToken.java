@@ -23,7 +23,7 @@ import java.util.Map;
 import org.foxbpm.kernel.process.KernelFlowNode;
 
 
-public interface KernelToken extends Serializable {
+public interface KernelToken extends Serializable,KernelVariableScope{
 
 	void signal();
 	

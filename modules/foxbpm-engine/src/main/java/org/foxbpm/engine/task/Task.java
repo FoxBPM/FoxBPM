@@ -15,24 +15,13 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.kernel.runtime;
-
-import java.io.Serializable;
+package org.foxbpm.engine.task;
 
 
 /**
  * @author kenshin
- * 
+ *
  */
-public interface KernelProcessInstance extends Serializable, KernelVariableScope {
-
-	void start();
-
-	KernelToken getRootToken();
-
-
-	boolean isEnded();
-
-	void deleteCascade(String deleteReason);
+public interface Task {
 
 }

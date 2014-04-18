@@ -36,7 +36,7 @@ import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class KernelTokenImpl implements FlowNodeExecutionContext, 
+public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNodeExecutionContext, 
 ListenerExecutionContext, 
 KernelToken,
 InterpretableExecutionContext  {
@@ -472,6 +472,14 @@ InterpretableExecutionContext  {
 
 	public void setToFlowNode(KernelFlowNodeImpl toFlowNode) {
 		this.toFlowNode = toFlowNode;
+	}
+
+	
+
+	@Override
+	protected KernelVariableScopeImpl getParentVariableScope() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

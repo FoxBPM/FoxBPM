@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2014 FoxBPM ORG.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,22 +15,8 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.kernel.runtime;
+package org.foxbpm.engine.runtime;
 
-import java.util.Map;
-
-/**
- * @author kenshin
- * 
- */
-public interface KernelVariable {
-
-	boolean hasVariable(String variableName);
-
-	void setVariable(String variableName, Object value);
-
-	Object getVariable(String variableName);
-
-	Map<String, Object> getVariables();
+public interface ProcessInstance {
 
 }

@@ -29,7 +29,7 @@ import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 import org.foxbpm.kernel.runtime.InterpretableProcessInstance;
 import org.foxbpm.kernel.runtime.KernelProcessInstance;
 
-public class KernelProcessInstanceImpl implements InterpretableProcessInstance {
+public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implements InterpretableProcessInstance {
 
 	/**
 	 * 
@@ -262,5 +262,17 @@ public class KernelProcessInstanceImpl implements InterpretableProcessInstance {
 	/** 子类可以重写这个方法实现自己的启动子流程方法 */
 	protected void signalParentProcessInstance() {
 		getParentProcessInstanceToken().signal();
+	}
+
+	@Override
+	protected KernelVariableScopeImpl getParentVariableScope() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected void ensureParentInitialized() {
+		// TODO Auto-generated method stub
+		
 	}
 }
