@@ -12,6 +12,7 @@
 		<module>modules/foxbpm-kernel</module>
 		<module>modules/foxbom-Kernel-advanced</module>
 		<module>modules/foxbpm-model-bpmn</module>
+		<module>modules/foxbpm-bpmn-converter</module>
 	</modules>
 
 	<dependencies>
@@ -36,16 +37,6 @@
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.12</version>
-		</dependency>
-		<dependency>
-			<groupId>org.foxbpm</groupId>
-			<artifactId>org.foxbpm.model.config</artifactId>
-			<version>6.0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.foxbpm</groupId>
-			<artifactId>org.foxbpm.bpmn2</artifactId>
-			<version>6.0.1</version>
 		</dependency>
 	</dependencies>
 
