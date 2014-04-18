@@ -90,7 +90,23 @@
 		<dependency>  
 		 	<groupId>commons-pool</groupId>
 			<artifactId>commons-pool</artifactId>
-			<version>1.4</version>
+			<version>1.3</version>
+		</dependency>
+		
+				<dependency>
+			<groupId>org.foxbpm</groupId>
+			<artifactId>org.foxbpm.model.config</artifactId>
+			<version>6.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.foxbpm</groupId>
+			<artifactId>org.foxbpm.bpmn2</artifactId>
+			<version>6.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.foxbpm</groupId>
+			<artifactId>org.foxbpm.model.bpmn</artifactId>
+			<version>6.0.1</version>
 		</dependency>
 			
 			

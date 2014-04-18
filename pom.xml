@@ -37,16 +37,6 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.12</version>
 		</dependency>
-		<dependency>
-			<groupId>org.foxbpm</groupId>
-			<artifactId>org.foxbpm.model.config</artifactId>
-			<version>6.0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.foxbpm</groupId>
-			<artifactId>org.foxbpm.bpmn2</artifactId>
-			<version>6.0.1</version>
-		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
