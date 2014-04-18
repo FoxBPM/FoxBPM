@@ -33,10 +33,6 @@ import org.foxbpm.engine.database.FoxConnectionAdapter;
 public abstract class ConnectionManagement {
 
 	public static final String DAFAULT_DATABASE_ID = "DB_FIX_BIZ_BASE";
-	public static ConnectionManagement INSTANCE() {
-		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
-		return processEngine.getProcessEngineConfiguration().getConnectionManagementDefault();
-	}
 
 	/**
 	 * 获取默认的数据库连接

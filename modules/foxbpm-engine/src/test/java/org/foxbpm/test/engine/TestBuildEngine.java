@@ -17,8 +17,12 @@
  */
 package org.foxbpm.test.engine;
 
+import javax.sql.DataSource;
+
 import org.foxbpm.engine.ProcessEngine;
+import org.foxbpm.engine.ProcessEngineConfiguration;
 import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 
 import junit.framework.TestCase;
 
@@ -34,6 +38,16 @@ public class TestBuildEngine extends TestCase {
 		//验证国际化资源路径不为null.说明resourcePath正常加载
 		String internationSrc = processEngine.getProcessEngineConfiguration().getInternationPath();
 		assertNotNull(internationSrc);
+		
+	}
+	
+	public void testBuild(){
+		DataSource dataSource = null;
+		ProcessEngineConfigurationImpl processEngineConfiguration = new ProcessEngineConfigurationImpl();
+		processEngineConfiguration.setDataSource(dataSource);
+		processEngineConfiguration.setProcessEngineName("dddd");
+		processEngineConfiguration.buildProcessEngine();
+		
 		
 	}
 }

@@ -7,6 +7,6 @@
     <setting name="lazyLoadingEnabled" value="false" />
   </settings>
   <mappers>
-    <mapper resource="com/founder/fix/fixflow/core/mapping/Task.xml" />
+    <mapper resource="mybatis/mapping/Task.xml" />
   </mappers>
 </configuration>

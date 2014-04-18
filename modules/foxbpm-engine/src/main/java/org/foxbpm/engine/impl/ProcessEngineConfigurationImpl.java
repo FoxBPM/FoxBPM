@@ -21,9 +21,9 @@ package org.foxbpm.engine.impl;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import javax.sql.DataSource;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -33,10 +33,11 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineConfiguration;
-import org.foxbpm.engine.database.ConnectionManagement;
+import org.foxbpm.engine.database.DataSourceManage;
 import org.foxbpm.engine.exception.ExceptionCode;
 import org.foxbpm.engine.exception.ExceptionI18NCore;
 import org.foxbpm.engine.exception.FixFlowClassLoadingException;
+import org.foxbpm.engine.impl.database.DefaultDataSourceManage;
 import org.foxbpm.engine.impl.interceptor.CommandContextFactory;
 import org.foxbpm.engine.impl.interceptor.CommandContextInterceptor;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
@@ -63,9 +64,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected FoxBPMConfig foxBpmConfig;
 	protected ResourcePathConfig resourcePathConfig;
 	protected ModelService modelService = new ModelServiceImpl();
-	protected ConnectionManagement connectionManagementDefault;
-	protected Map<String, ConnectionManagement> connectionManagementMap;
 	protected ISqlSessionFactory sqlSessionFactory;
+	protected DataSourceManage dataSourceManage;
+	
+	protected DataSource dataSource;
 	public ProcessEngine buildProcessEngine() {
 		init();
 		return new ProcessEngineImpl(this);
@@ -78,11 +80,13 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 //		// initSqlMappingFile();
 		initResourcePathConfig();
 //		initDataVariableConfig();
+		initDataSourceManage();
+		initDataSource();
+		initSqlSessionFactory();
 		initCommandContextFactory();
 		initCommandExecutors();
-		initConnectionManagementConfig();
 		initServices();
-		initSqlSessionFactory();
+		
 //		initConnection();
 //		// initDataBaseTable();
 //		initCache();
@@ -113,7 +117,11 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	}
 	
-	
+	public void initDataSourceManage(){
+		if(dataSourceManage == null){
+			dataSourceManage = new DefaultDataSourceManage();
+		}
+	}
 	
 	public void initExceptionResource(){
 		ExceptionI18NCore.system_init("I18N/exception");
@@ -156,29 +164,15 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		
 	}
 	
-	private void initConnectionManagementConfig() {
-		connectionManagementMap = new HashMap<String, ConnectionManagement>();
-		List<org.foxbpm.model.config.foxbpmconfig.ConnectionManagement> connectionManagementInstanceConfigs = this.foxBpmConfig.getConnectionManagementConfig().getConnectionManagement();
-		String selectId = this.foxBpmConfig.getConnectionManagementConfig().getSelected();
-		for (org.foxbpm.model.config.foxbpmconfig.ConnectionManagement connectionManagementInstanceConfigTemp : connectionManagementInstanceConfigs) {
-			if (connectionManagementInstanceConfigTemp.getId().equals(selectId)) {
-				connectionManagementDefault = (ConnectionManagement) ReflectUtil.instantiate(connectionManagementInstanceConfigTemp.getClassImpl());
-				if (this.connectionManagementDefault == null) {
-					log.error("数据库管理器{}加载失败",connectionManagementInstanceConfigTemp.getId());
-					throw new FixFlowClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION_DEFAULT,connectionManagementInstanceConfigTemp.getClassImpl());
-				}
-				connectionManagementMap.put(connectionManagementInstanceConfigTemp.getId(), connectionManagementDefault);
-			} else {
-				ConnectionManagement connectionManagementOther = (ConnectionManagement) ReflectUtil
-						.instantiate(connectionManagementInstanceConfigTemp.getClassImpl());
-				connectionManagementMap.put(connectionManagementInstanceConfigTemp.getId(), connectionManagementOther);
-			}
+	public void initDataSource(){
+		if(dataSource == null){
+			dataSource = dataSourceManage.getDataSource();
 		}
 	}
 	
 	public void initSqlSessionFactory(){
 		sqlSessionFactory = new MyBatisSqlSessionFactory();
-		sqlSessionFactory.init();
+		sqlSessionFactory.init(dataSource);
 	}
 	
 	public ISqlSessionFactory getSqlSessionFactory(){
@@ -217,6 +211,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 	
 	public void initCustomInterceptors(){
+		//这只是个示例，正常应从配置文件读取拦截器
 		commandInterceptors.add(new LogInterceptor());
 	}
 	
@@ -243,8 +238,12 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return modelService;
 	}
 	
-	public ConnectionManagement getConnectionManagementDefault() {
-		return connectionManagementDefault;
+	public DataSource getDataSource() {
+		return dataSource;
+	}
+
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
 	}
 
 	public FoxBPMConfig getFoxBpmConfig(){

@@ -17,13 +17,33 @@
  */
 package org.foxbpm.engine.impl.jdbc;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.db.PersistentObject;
 import org.foxbpm.engine.sqlsession.ISqlSession;
+import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 
 public class JdbcSqlSession implements ISqlSession {
-
+	Connection connection ;
+	
+	public JdbcSqlSession(){
+		DataSource dataSource = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getDataSource();
+		connection = Context.getDbConnection();
+		if( connection== null){
+			try {
+				connection = dataSource.getConnection();
+			} catch (SQLException e) {
+				throw new FixFlowException("jdbc数据库连接获取失败，请检查连接池配置",e);
+			}
+		}
+	}
 	public void insert(String insertStatement, PersistentObject persistentObject) {
 		// TODO Auto-generated method stub
 		

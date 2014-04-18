@@ -17,31 +17,17 @@
  */
 package org.foxbpm.engine.impl.mybatis;
 
-import java.sql.Connection;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.foxbpm.engine.ProcessEngineManagement;
-import org.foxbpm.engine.exception.FixFlowException;
 import org.foxbpm.engine.impl.db.PersistentObject;
 import org.foxbpm.engine.sqlsession.ISqlSession;
-import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 
 public class MybatisSqlSession implements ISqlSession {
 
-	protected Connection connection;
 	SqlSession sqlSession ;
-	public MybatisSqlSession(Connection connection){
-		SqlSessionFactory factory = null;
-		ISqlSessionFactory sqlSessionFactory = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getSqlSessionFactory();
-		if(sqlSessionFactory instanceof MyBatisSqlSessionFactory){
-			factory = ((MyBatisSqlSessionFactory)sqlSessionFactory).getSqlSessionFactory();
-		}
-		if(factory == null){
-			throw new FixFlowException("sqlsession工厂创建失败");
-		}
-		sqlSession = factory.openSession(connection);
+	public MybatisSqlSession(SqlSession sqlSession){
+		this.sqlSession = sqlSession;
 	}
 
 	public void insert(String insertStatement, PersistentObject persistentObject) {

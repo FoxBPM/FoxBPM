@@ -13,23 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author ych
+ * @author kenshin
  */
-package org.foxbpm.engine.impl.jdbc;
+package org.foxbpm.engine.runtime;
 
-import javax.sql.DataSource;
 
-import org.foxbpm.engine.sqlsession.ISqlSession;
-import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
-
-public class JdbcSqlSessionFactory implements ISqlSessionFactory {
-
-	public void init(DataSource dataSource) {
-		
-	}
-
-	public ISqlSession createSqlSession() {
-		return new JdbcSqlSession();
-	}
-
+public interface ExecutionContext {
+	
 }

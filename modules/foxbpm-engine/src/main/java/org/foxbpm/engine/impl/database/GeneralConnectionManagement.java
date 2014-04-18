@@ -38,6 +38,5 @@ public class GeneralConnectionManagement extends ConnectionManagement {
 
 	public void setFoxConnection(String dbId, Connection connection) {
 		FoxConnectionAdapter fixConnectionResult=new GeneralConnectionAdapter(dbId,connection);
-		Context.setFoxConnectionAdapter(dbId,fixConnectionResult);
 	}
 }

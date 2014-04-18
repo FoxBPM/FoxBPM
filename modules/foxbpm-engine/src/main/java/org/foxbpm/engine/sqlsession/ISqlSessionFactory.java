@@ -17,12 +17,12 @@
  */
 package org.foxbpm.engine.sqlsession;
 
-import java.sql.Connection;
+import javax.sql.DataSource;
 
 public interface ISqlSessionFactory {
 	
-	public void init();
+	public void init(DataSource dataSource);
 	
-	public ISqlSession createSqlSession(Connection connection);
+	public ISqlSession createSqlSession();
 
 }

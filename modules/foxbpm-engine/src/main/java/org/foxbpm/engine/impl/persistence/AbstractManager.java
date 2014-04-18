@@ -20,7 +20,6 @@ package org.foxbpm.engine.impl.persistence;
 
 import java.util.Map;
 
-import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.db.PersistentObject;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.sqlsession.ISqlSession;
@@ -44,7 +43,7 @@ public abstract class AbstractManager {
 	
 	public ISqlSession getSqlSession(){
 		ISqlSessionFactory sqlSessionFactory = commandContext.getProcessEngineConfigurationImpl().getSqlSessionFactory();
-		return sqlSessionFactory.createSqlSession(Context.getDbConnection());
+		return sqlSessionFactory.createSqlSession();
 	}
 	
 	public void insert(String insertStatement, PersistentObject persistentObject) {

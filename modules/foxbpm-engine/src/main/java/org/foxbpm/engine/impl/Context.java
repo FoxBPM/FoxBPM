@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.foxbpm.engine.database.ConnectionManagement;
-import org.foxbpm.engine.database.FoxConnectionAdapter;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
 /**
@@ -33,7 +32,7 @@ import org.foxbpm.engine.impl.interceptor.CommandContext;
  */
 public class Context {
 
-	protected static ThreadLocal<Stack<Map<String, FoxConnectionAdapter>>> dbConnectionThreadLocal = new ThreadLocal<Stack<Map<String, FoxConnectionAdapter>>>();
+	protected static ThreadLocal<Stack<Map<String,Connection>>> dbConnectionThreadLocal = new ThreadLocal<Stack<Map<String,Connection>>>();
 	protected static ThreadLocal<Stack<ProcessEngineConfigurationImpl>> processEngineConfigurationStackThreadLocal = new ThreadLocal<Stack<ProcessEngineConfigurationImpl>>();
 	protected static ThreadLocal<Stack<CommandContext>> commandContextThreadLocal = new ThreadLocal<Stack<CommandContext>>();
 
@@ -51,48 +50,30 @@ public class Context {
 	}
 
 	public static Connection getDbConnection(String dbId) {
-		Stack<Map<String, FoxConnectionAdapter>> stack = getStack(dbConnectionThreadLocal);
+		Stack<Map<String,Connection>> stack = getStack(dbConnectionThreadLocal);
 		if (stack.isEmpty() || stack.peek() == null) {
-			Map<String, FoxConnectionAdapter> connectioMap = new HashMap<String, FoxConnectionAdapter>();
-			FoxConnectionAdapter foxConnectionAdapter = ConnectionManagement.INSTANCE().getFoxConnectionAdapter(dbId);
-			connectioMap.put(dbId, foxConnectionAdapter);
-			getStack(dbConnectionThreadLocal).push(connectioMap);
-			return foxConnectionAdapter.getConnection();
-
+			return null;
+			
 		}else {
-			Map<String, FoxConnectionAdapter> connMap = stack.peek();
-			FoxConnectionAdapter fixConnectionResult = connMap.get(dbId);
-			if (fixConnectionResult == null) {
-				FoxConnectionAdapter foxConnectionAdapter = ConnectionManagement.INSTANCE().getFoxConnectionAdapter(dbId);
-				connMap.put(dbId, foxConnectionAdapter);
-				return foxConnectionAdapter.getConnection();
-			} else {
-				return fixConnectionResult.getConnection();
-			}
+			Map<String,Connection> connMap = stack.peek();
+			return connMap.get("dbId");
 		}
 	}
 	
-	public static void setFoxConnectionAdapter(String dbID, FoxConnectionAdapter foxConnectionAdapter) {
-		Stack<Map<String, FoxConnectionAdapter>> stack = getStack(dbConnectionThreadLocal);
-		if (stack.isEmpty()) {
-			Map<String, FoxConnectionAdapter> conMap = new HashMap<String, FoxConnectionAdapter>();
-			conMap.put(dbID, foxConnectionAdapter);
-			getStack(dbConnectionThreadLocal).push(conMap);
-		} else {
-			Map<String, FoxConnectionAdapter> connMap = stack.peek();
-			if (connMap == null) {
-				Map<String, FoxConnectionAdapter> conMap = new HashMap<String, FoxConnectionAdapter>();
-				conMap.put(dbID, foxConnectionAdapter);
-				getStack(dbConnectionThreadLocal).push(conMap);
-			} else {
-				connMap.put(dbID, foxConnectionAdapter);
-			}
+	public static void setDBConnection(String dbID, Connection connection) {
+		Stack<Map<String,Connection>> stack = getStack(dbConnectionThreadLocal);
+		if(stack.isEmpty() || stack.peek() == null){
+			Map<String,Connection> connMap =new HashMap<String,Connection>();
+			connMap.put(dbID, connection);
+			stack.push(connMap);
+		}else{
+			Map<String,Connection> connMap = stack.peek();
+			connMap.put(dbID, connection);
 		}
 	}
 	
 	public static void removeDbConnection() {
 		getStack(dbConnectionThreadLocal).clear();
-
 	}
 
 	public static void setProcessEngineConfiguration(ProcessEngineConfigurationImpl processEngineConfiguration) {

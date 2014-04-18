@@ -19,7 +19,6 @@ package org.foxbpm.engine;
 
 import org.foxbpm.engine.impl.ExternalContent;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
-import org.foxbpm.engine.impl.version.FixFlowVersion;
 
 public interface ProcessEngine {
  

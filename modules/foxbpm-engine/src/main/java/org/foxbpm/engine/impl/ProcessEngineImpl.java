@@ -30,6 +30,7 @@ import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.ScheduleService;
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.database.ConnectionManagement;
+import org.foxbpm.engine.database.DataSourceManage;
 
 public class ProcessEngineImpl implements ProcessEngine {
 
@@ -42,6 +43,7 @@ public class ProcessEngineImpl implements ProcessEngine {
 	protected FormService formService;
 	protected ScheduleService scheduleService;
 	protected ManagementService managementService;
+	
 
 	protected ProcessEngineConfigurationImpl processEngineConfiguration;
 
@@ -104,9 +106,7 @@ public class ProcessEngineImpl implements ProcessEngine {
 		if (externalContent.getConnectionMap() != null) {
 			for (String connKey : externalContent.getConnectionMap().keySet()) {
 				Connection connection = externalContent.getConnectionMap().get(connKey);
-				if (connection != null) {
-					ConnectionManagement.INSTANCE().setFoxConnection(connKey, connection);
-				}
+				Context.setDBConnection(connKey, connection);
 			}
 		}
 //		String authenticatedUserId = externalContent.getAuthenticatedUserId();
