@@ -265,4 +265,9 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return null;
 	}
 
+	public String getNoneTemplateFilePath() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
