@@ -24,9 +24,9 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.exception.FixFlowException;
 import org.foxbpm.engine.impl.Context;
-import org.foxbpm.engine.impl.db.PersistentObject;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 
