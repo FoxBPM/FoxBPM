@@ -19,11 +19,9 @@
 package org.foxbpm.engine.impl;
 
 import java.sql.Connection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
 /**

@@ -38,14 +38,15 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.BasicEObjectImpl;
 import org.eclipse.emf.ecore.impl.EStructuralFeatureImpl.SimpleFeatureMapEntry;
 import org.eclipse.emf.ecore.util.FeatureMap;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
 
 
 public class BpmnModelUtil {
 	
-	
-	public static String getProcessDbid(Process process){
-		return StringugetExtensionAttribute(process,FoxBPMPackage.Literals.DOCUMENT_ROOT__DBID);
+	/** 获取流程的唯一编号*/
+	public static String getProcessId(Process process){
+		return StringUtil.getString(getExtensionAttribute(process,FoxBPMPackage.Literals.DOCUMENT_ROOT__DBID));
 	}
 	
 	

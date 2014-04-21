@@ -17,7 +17,9 @@
  */
 package org.foxbpm.engine.impl.util;
 
-public class StringUtil {
+import org.apache.commons.lang3.StringUtils;
+
+public class StringUtil extends StringUtils{
 	
 	/**
      * 获得对象描述字符串

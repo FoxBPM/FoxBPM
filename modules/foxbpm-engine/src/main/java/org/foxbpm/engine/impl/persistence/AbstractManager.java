@@ -22,8 +22,6 @@ import java.util.Map;
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.sqlsession.ISqlSession;
-import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
-
 /**
  * 持久化管理器抽象类
  * @author kenshin

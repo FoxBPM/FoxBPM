@@ -19,9 +19,11 @@ package org.foxbpm.bpmn.converter;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
+import java.util.List;
 
 import org.eclipse.bpmn2.Bpmn2Package;
 import org.eclipse.bpmn2.Definitions;
+import org.eclipse.bpmn2.FlowElement;
 import org.eclipse.bpmn2.Process;
 import org.eclipse.bpmn2.RootElement;
 import org.eclipse.bpmn2.di.BpmnDiPackage;
@@ -43,72 +45,51 @@ import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
 
 public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 
-	public ProcessDefinitionEntity createProcessDefinition(String processId,Object processFile) {
-		
+	public ProcessDefinitionEntity createProcessDefinition(String processId, Object processFile) {
 
-		if (bytesObject != null) {
-			byte[] bytes = (byte[]) bytesObject;
-			ResourceSet resourceSet = getResourceSet();
-			String fixflowFilePath =  ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getNoneTemplateFilePath();
-			URL url = ReflectUtil.getResource(fixflowFilePath);
-			if(url == null){
-				throw new FixFlowClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION_FILENOTFOUND,fixflowFilePath);
-			}
-			String filePath = url.toString();
-			Resource ddddResource = null;
-			try {
-				if (!filePath.startsWith("jar")) {
-					filePath = java.net.URLDecoder.decode(url.getFile(),"utf-8");
-					ddddResource = resourceSet.createResource(URI.createFileURI(filePath));
-				} else {
-					ddddResource = resourceSet.createResource(URI.createURI(filePath));
-				}
-				ddddResource.load(new ByteArrayInputStream(bytes), null);
-			} catch (Exception e) {
-				throw new FixFlowClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION, e);
-			}
-			DefinitionsBehavior definitions = (DefinitionsBehavior) ddddResource.getContents().get(0).eContents().get(0);
-			definitions.setProcessId(processId);
-
-			for (RootElement rootElement : definitions.getRootElements()) {
-				if (rootElement instanceof ProcessDefinitionBehavior) {
-					ProcessDefinitionBehavior processObj = (ProcessDefinitionBehavior) rootElement;
-					if (processObj.getProcessDefinitionKey().equals(processKey)) {
-						processDefinition = (ProcessDefinitionBehavior) rootElement;
-						break;
-					}
-				}
-			}
-			processDefinition.setDefinitions(definitions);
-			// 加载事件定义.
-			loadEvent(processDefinition);
-			// 加载数据变量
-			loadVariable(processDefinition);
-			// 设置FlowNode元素的子流程
-			loadSubProcess(processDefinition);
-			processDefinition.persistentInit(processDataMap);
-			deploymentCache.addProcessDefinition(processDefinition);
-			return processDefinition;
+		Process process = null;
+		if (processFile != null) {
+			process = createProcess(processId, (byte[]) processFile);
 
 		}
+
+		// 加载事件定义.
+		loadEvent(processDefinition);
+		// 加载数据变量
+		loadVariable(processDefinition);
+		// 设置FlowNode元素的子流程
+		loadSubProcess(processDefinition);
+		processDefinition.persistentInit(processDataMap);
+		deploymentCache.addProcessDefinition(processDefinition);
+		return processDefinition;
+
+	}
+	
+	
+	private void loadBehavior(Process process){
+		
+		List<FlowElement> flowElements=process.getFlowElements();
+		
+		
+		
 		
 		
 	}
 	
-	
-	private Process createProcess(String processId,byte[] bytes){
-		
+
+	private Process createProcess(String processId, byte[] bytes) {
+
 		ResourceSet resourceSet = getResourceSet();
-		String fixflowFilePath =  ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getNoneTemplateFilePath();
+		String fixflowFilePath = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getNoneTemplateFilePath();
 		URL url = ReflectUtil.getResource(fixflowFilePath);
-		if(url == null){
-			throw new FixFlowClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION_FILENOTFOUND,fixflowFilePath);
+		if (url == null) {
+			throw new FixFlowClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION_FILENOTFOUND, fixflowFilePath);
 		}
 		String filePath = url.toString();
 		Resource ddddResource = null;
 		try {
 			if (!filePath.startsWith("jar")) {
-				filePath = java.net.URLDecoder.decode(url.getFile(),"utf-8");
+				filePath = java.net.URLDecoder.decode(url.getFile(), "utf-8");
 				ddddResource = resourceSet.createResource(URI.createFileURI(filePath));
 			} else {
 				ddddResource = resourceSet.createResource(URI.createURI(filePath));
@@ -121,18 +102,19 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		for (RootElement rootElement : definitions.getRootElements()) {
 			if (rootElement instanceof Process) {
 				Process processObj = (Process) rootElement;
-				
-				BpmnModelUtil.getExtensionAttribute(processObj, FoxBPMPackage.Literals.DOCUMENT_ROOT__DBID);
-				
-				if (processObj.getProcessDefinitionKey().equals(processId)) {
-					processDefinition = (ProcessDefinitionBehavior) rootElement;
+
+				String processObjId = BpmnModelUtil.getProcessId(processObj);
+
+				if (processObjId.equals(processId)) {
+					processObj = (Process) rootElement;
 					return processObj;
 				}
 			}
 		}
-		
+		return null;
+
 	}
-	
+
 	private ResourceSet getResourceSet() {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		(EPackage.Registry.INSTANCE).put("http://www.omg.org/spec/BPMN/20100524/MODEL", Bpmn2Package.eINSTANCE);
