@@ -1,6 +1,6 @@
 package org.foxbpm.engine.impl.behavior;
 
-public class FormalExpressionBehavior extends ExpressionBehavior {
+public class FormalExpressionBehavior extends ExpressionDefinition {
 	
 	protected String body;
 	

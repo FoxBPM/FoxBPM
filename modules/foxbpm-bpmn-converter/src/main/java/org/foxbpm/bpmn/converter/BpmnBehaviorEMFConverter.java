@@ -16,9 +16,11 @@ import org.eclipse.bpmn2.impl.StartEventImpl;
 import org.eclipse.bpmn2.impl.TaskImpl;
 import org.eclipse.bpmn2.impl.UserTaskImpl;
 import org.foxbpm.bpmn.converter.model.BaseElementParser;
+import org.foxbpm.bpmn.converter.model.EndEventParser;
 import org.foxbpm.bpmn.converter.model.StartEventParser;
 import org.foxbpm.bpmn.converter.model.UserTaskParser;
 import org.foxbpm.engine.impl.behavior.BaseElementBehavior;
+import org.foxbpm.engine.impl.behavior.EndEventBehavior;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +35,7 @@ public class BpmnBehaviorEMFConverter {
 		elementParserMap.put(ServiceTaskImpl.class, null);
 		elementParserMap.put(ScriptTaskImpl.class, null);
 		elementParserMap.put(StartEventImpl.class, StartEventParser.class);
-		elementParserMap.put(EndEventImpl.class, null);
+		elementParserMap.put(EndEventImpl.class, EndEventParser.class);
 	}
 
 	public static KernelFlowNodeBehavior getFlowNodeBehavior(BaseElement baseElement) {

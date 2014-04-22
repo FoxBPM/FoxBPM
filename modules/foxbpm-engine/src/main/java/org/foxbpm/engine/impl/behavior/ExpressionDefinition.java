@@ -18,28 +18,27 @@
  */
 package org.foxbpm.engine.impl.behavior;
 
-import org.foxbpm.kernel.behavior.KernelSequenceFlowBehavior;
-import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
+public class ExpressionDefinition extends BaseElementBehavior {
 
-public class SequenceFlowBehavior extends FlowElementBehavior implements KernelSequenceFlowBehavior {
-
-	/**
-	 * @author kenshin
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private String conditionExpression;
-	
-	public boolean isContinue(FlowNodeExecutionContext executionContext) {
-		return false;
+	private String id;
+	private String name;
+	private String value;
+	public String getId() {
+		return id;
 	}
-
-	public String getConditionExpression() {
-		return conditionExpression;
+	public void setId(String id) {
+		this.id = id;
 	}
-
-	public void setConditionExpression(String conditionExpression) {
-		this.conditionExpression = conditionExpression;
+	public String getName() {
+		return name;
 	}
-	
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getValue() {
+		return value;
+	}
+	public void setValue(String value) {
+		this.value = value;
+	}
 }

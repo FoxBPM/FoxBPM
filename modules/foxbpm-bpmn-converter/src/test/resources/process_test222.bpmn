@@ -1,59 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:fixflow="http://www.founderfix.com/fixflow" id="Definitions_1" targetNamespace="http://www.founderfix.com">
-  <bpmn2:process id="process_test222" fixflow:verification="true" fixflow:dbid="process_test222:1:0de523a0-eb87-47aa-ac12-6074a3ab4173" name="测试集成">
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:foxbpm="http://www.founderfix.com/foxbpm" id="Definitions_1" targetNamespace="http://www.founderfix.com">
+  <bpmn2:process id="process_test222" foxbpm:verification="true" foxbpm:dbid="process_test222:3:b98913ff-aceb-41be-b18d-ad7d2f3202fa" name="测试集成">
     <bpmn2:extensionElements>
-      <fixflow:formUri>
-        <fixflow:expression xsi:type="fixflow:Expression" id="Expression_1" name="&quot;http://www.baidu.com&quot;">&quot;http://www.baidu.com&quot;</fixflow:expression>
-      </fixflow:formUri>
-      <fixflow:taskSubject id="TaskSubject_1">
-        <fixflow:expression xsi:type="fixflow:Expression" id="Expression_2" name="&quot;集成测试&quot;">&quot;集成测试&quot;</fixflow:expression>
-      </fixflow:taskSubject>
+      <foxbpm:formUri>
+        <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_1" name="&quot;http://www.baidu.com&quot;">&quot;http://www.baidu.com&quot;</foxbpm:expression>
+      </foxbpm:formUri>
+      <foxbpm:taskSubject id="TaskSubject_1">
+        <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_2" name="&quot;集成测试&quot;">&quot;集成测试&quot;</foxbpm:expression>
+      </foxbpm:taskSubject>
     </bpmn2:extensionElements>
-    <bpmn2:startEvent id="StartEvent_1" name="开始">
+    <bpmn2:startEvent id="StartEvent_1" foxbpm:isPersistence="false" name="开始">
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
     </bpmn2:startEvent>
-    <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="StartEvent_1" targetRef="UserTask_1"/>
-    <bpmn2:userTask id="UserTask_1" fixflow:taskType="FIXFLOWTASK" name="提交">
+    <bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="StartEvent_1" targetRef="UserTask_1">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_2" foxbpm:name="&quot;cddd&quot;">&quot;cddd&quot;</bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:userTask id="UserTask_1" foxbpm:taskType="FIXNOTICETASK" name="提交">
       <bpmn2:extensionElements>
-        <fixflow:assignPolicyType id="potentialOwner"/>
-        <fixflow:skipStrategy/>
-        <fixflow:taskCommand id="HandleCommand_3" name="提交" commandType="submit" isVerification="true" isSaveData="true" isSimulationRun="false"/>
-        <fixflow:taskCommand id="HandleCommand_2" name="提交" commandType="startandsubmit" isVerification="true" isSaveData="true" isSimulationRun="false"/>
-        <fixflow:taskCommand id="Advance_ProcessStatus" name="流程状态" commandType="processStatus"/>
-        <fixflow:expectedExecutionTime/>
-        <fixflow:formUri>
-          <fixflow:expression xsi:type="fixflow:Expression" id="Expression_3" name="&quot;http://www.baidu.com&quot;">&quot;http://www.baidu.com&quot;</fixflow:expression>
-        </fixflow:formUri>
+        <foxbpm:assignPolicyType id="potentialOwner"/>
+        <foxbpm:skipStrategy/>
+        <foxbpm:taskCommand id="HandleCommand_2" name="提交" commandType="startandsubmit" isVerification="true" isSaveData="true" isSimulationRun="false">
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_3" name="dddd">dddd</foxbpm:expression>
+          <foxbpm:parameterExpression xsi:type="foxbpm:Expression" id="Expression_4" name="eeeee">eeeee</foxbpm:parameterExpression>
+        </foxbpm:taskCommand>
+        <foxbpm:taskCommand id="HandleCommand_3" name="提交" commandType="submit" isVerification="true" isSaveData="true" isSimulationRun="false"/>
+        <foxbpm:taskCommand id="Advance_ProcessStatus" name="流程状态" commandType="processStatus"/>
+        <foxbpm:expectedExecutionTime/>
+        <foxbpm:formUri>
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_3" name="&quot;http://www.baidu.com&quot;">&quot;http://www.baidu.com&quot;</foxbpm:expression>
+        </foxbpm:formUri>
+        <foxbpm:taskSubject id="TaskSubject_2">
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_5" name="&quot;动态主题&quot;">&quot;动态主题&quot;</foxbpm:expression>
+        </foxbpm:taskSubject>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
-      <bpmn2:potentialOwner id="PotentialOwner_1" fixflow:resourceType="user" fixflow:includeExclusion="INCLUDE" fixflow:isContainsSub="false" name="所有人">
+      <bpmn2:potentialOwner id="PotentialOwner_1" foxbpm:resourceType="user" foxbpm:includeExclusion="INCLUDE" foxbpm:isContainsSub="false" name="所有人">
         <bpmn2:resourceAssignmentExpression id="ResourceAssignmentExpression_1">
-          <bpmn2:formalExpression id="FormalExpression_1" fixflow:name="所有人">&quot;fixflow_allusers&quot;</bpmn2:formalExpression>
+          <bpmn2:formalExpression id="FormalExpression_1" foxbpm:name="所有人">&quot;foxbpm_allusers&quot;</bpmn2:formalExpression>
+        </bpmn2:resourceAssignmentExpression>
+      </bpmn2:potentialOwner>
+      <bpmn2:potentialOwner id="PotentialOwner_2" foxbpm:resourceType="user" foxbpm:includeExclusion="INCLUDE" foxbpm:isContainsSub="false" name="dddd">
+        <bpmn2:resourceAssignmentExpression id="ResourceAssignmentExpression_2">
+          <bpmn2:formalExpression id="FormalExpression_3" foxbpm:name="dddd">dddd</bpmn2:formalExpression>
         </bpmn2:resourceAssignmentExpression>
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
     <bpmn2:endEvent id="EndEvent_1" name="结束">
       <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
     </bpmn2:endEvent>
-    <bpmn2:userTask id="UserTask_2" fixflow:taskType="FIXFLOWTASK" name="审批">
+    <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="UserTask_1" targetRef="UserTask_2"/>
+    <bpmn2:userTask id="UserTask_2" foxbpm:taskType="foxbpmTASK" name="审批">
       <bpmn2:extensionElements>
-        <fixflow:taskCommand id="Advance_ProcessStatus" name="流程状态" commandType="processStatus"/>
-        <fixflow:assignPolicyType id="potentialOwner"/>
-        <fixflow:skipStrategy/>
-        <fixflow:taskCommand id="HandleCommand_2" name="接收任务" commandType="claim" isVerification="false" isSaveData="false" isSimulationRun="false"/>
-        <fixflow:taskCommand id="HandleCommand_3" name="同意" commandType="general" isVerification="true" isSaveData="true" isSimulationRun="false"/>
-        <fixflow:expectedExecutionTime/>
+        <foxbpm:taskCommand id="Advance_ProcessStatus" name="流程状态" commandType="processStatus"/>
+        <foxbpm:assignPolicyType id="potentialOwner"/>
+        <foxbpm:skipStrategy/>
+        <foxbpm:taskCommand id="HandleCommand_2" name="接收任务" commandType="claim" isVerification="false" isSaveData="false" isSimulationRun="false"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general" isVerification="true" isSaveData="true" isSimulationRun="false"/>
+        <foxbpm:expectedExecutionTime/>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
-      <bpmn2:potentialOwner id="_PotentialOwner_2" fixflow:resourceType="user" fixflow:includeExclusion="INCLUDE" fixflow:isContainsSub="false" name="所有人">
+      <bpmn2:potentialOwner id="_PotentialOwner_2" foxbpm:resourceType="user" foxbpm:includeExclusion="INCLUDE" foxbpm:isContainsSub="false" name="所有人">
         <bpmn2:resourceAssignmentExpression id="_ResourceAssignmentExpression_2">
-          <bpmn2:formalExpression id="_FormalExpression_2" fixflow:name="所有人">&quot;fixflow_allusers&quot;</bpmn2:formalExpression>
+          <bpmn2:formalExpression id="_FormalExpression_2" foxbpm:name="所有人">&quot;foxbpm_allusers&quot;</bpmn2:formalExpression>
         </bpmn2:resourceAssignmentExpression>
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_3" name="" sourceRef="UserTask_1" targetRef="UserTask_2"/>
     <bpmn2:sequenceFlow id="SequenceFlow_4" name="" sourceRef="UserTask_2" targetRef="EndEvent_1"/>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default 流程定义">
@@ -71,7 +84,7 @@
         <dc:Bounds height="50.0" width="110.0" x="180.0" y="146.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_UserTask_2" bpmnElement="UserTask_2">
-        <dc:Bounds height="50.0" width="110.0" x="450.0" y="147.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="420.0" y="148.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1" sourceElement="BPMNShape_StartEvent_2" targetElement="BPMNShape_UserTask_1">
         <di:waypoint xsi:type="dc:Point" x="98.0" y="170.0"/>
@@ -81,14 +94,14 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="BPMNShape_UserTask_1" targetElement="BPMNShape_UserTask_2">
         <di:waypoint xsi:type="dc:Point" x="290.0" y="171.0"/>
-        <di:waypoint xsi:type="dc:Point" x="362.0" y="171.0"/>
-        <di:waypoint xsi:type="dc:Point" x="362.0" y="172.0"/>
-        <di:waypoint xsi:type="dc:Point" x="450.0" y="172.0"/>
+        <di:waypoint xsi:type="dc:Point" x="348.0" y="171.0"/>
+        <di:waypoint xsi:type="dc:Point" x="348.0" y="173.0"/>
+        <di:waypoint xsi:type="dc:Point" x="420.0" y="173.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4" sourceElement="BPMNShape_UserTask_2" targetElement="BPMNShape_EndEvent_1">
-        <di:waypoint xsi:type="dc:Point" x="560.0" y="172.0"/>
-        <di:waypoint xsi:type="dc:Point" x="614.0" y="172.0"/>
-        <di:waypoint xsi:type="dc:Point" x="614.0" y="170.0"/>
+        <di:waypoint xsi:type="dc:Point" x="530.0" y="173.0"/>
+        <di:waypoint xsi:type="dc:Point" x="597.0" y="173.0"/>
+        <di:waypoint xsi:type="dc:Point" x="597.0" y="170.0"/>
         <di:waypoint xsi:type="dc:Point" x="680.0" y="170.0"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

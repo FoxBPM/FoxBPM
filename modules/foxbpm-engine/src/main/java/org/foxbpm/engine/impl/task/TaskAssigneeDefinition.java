@@ -17,23 +17,18 @@
  */
 package org.foxbpm.engine.impl.task;
 
-import org.foxbpm.engine.task.IdentityLinkType;
-
-
 /**
  * 任务分配定义
  * @author kenshin
  *
  */
-public class TaskAssigneeDefinitionTo {
+public class TaskAssigneeDefinition {
 	
 
 	/**
 	 * 直接处理人的表达式
 	 */
 	protected String  userIdExpression;
-	
-	
 
 	/**
 	 * 组编号的表达式
@@ -48,7 +43,7 @@ public class TaskAssigneeDefinitionTo {
 	/**
 	 * 任务类型(共享、独占)
 	 */
-	protected IdentityLinkType identityLinkType;
+	protected String identityLinkType;
 	
 	/**
 	 * 资源范围
@@ -59,12 +54,6 @@ public class TaskAssigneeDefinitionTo {
 	 * 是否包含子组
 	 */
 	protected boolean isContainsSub;
-
-
-	
-	
-
-	
 
 	public String getUserIdExpression() {
 		return userIdExpression;
@@ -90,11 +79,11 @@ public class TaskAssigneeDefinitionTo {
 		this.groupTypeExpression = groupTypeExpression;
 	}
 
-	public IdentityLinkType getIdentityLinkType() {
+	public String getIdentityLinkType() {
 		return identityLinkType;
 	}
 
-	public void setIdentityLinkType(IdentityLinkType identityLinkType) {
+	public void setIdentityLinkType(String identityLinkType) {
 		this.identityLinkType = identityLinkType;
 	}
 
@@ -106,6 +95,7 @@ public class TaskAssigneeDefinitionTo {
 	public void setResourceRange(String resourceRange) {
 		this.resourceRange = resourceRange;
 	}
+	
 	public boolean isContainsSub() {
 		return isContainsSub;
 	}
@@ -113,7 +103,4 @@ public class TaskAssigneeDefinitionTo {
 	public void setContainsSub(boolean isContainsSub) {
 		this.isContainsSub = isContainsSub;
 	}
-	
-	
-
 }

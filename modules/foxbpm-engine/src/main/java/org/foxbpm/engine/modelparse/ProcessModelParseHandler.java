@@ -17,7 +17,6 @@
  */
 package org.foxbpm.engine.modelparse;
 
-import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 
 /**

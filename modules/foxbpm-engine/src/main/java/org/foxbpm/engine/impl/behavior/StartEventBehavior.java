@@ -21,7 +21,15 @@ public class StartEventBehavior extends CatchEventBehavior {
 	
 	@Override
 	public void enter(FlowNodeExecutionContext executionContext) {
-		System.out.println("ddddddddddddddddddddddddddddddddd");
+		System.out.println("startTask进入");
+		executionContext.execute();
+	}
+	
+	@Override
+	public void execute(FlowNodeExecutionContext executionContext) {
+		// TODO Auto-generated method stub
+		System.out.println("startTask执行");
+		executionContext.signal();
 	}
 	
 }

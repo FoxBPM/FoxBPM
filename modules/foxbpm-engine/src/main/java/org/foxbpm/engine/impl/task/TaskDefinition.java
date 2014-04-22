@@ -18,8 +18,7 @@
 package org.foxbpm.engine.impl.task;
 
 import java.io.Serializable;
-
-
+import java.util.List;
 
 public class TaskDefinition implements Serializable{
 
@@ -28,6 +27,52 @@ public class TaskDefinition implements Serializable{
 	 */
 	private static final long serialVersionUID = 1357653109003002722L;
 
+	/**
+	 * 任务分配策略
+	 */
+	private String assignPolicyType;
+	
+	private String assigneeExpression;
+	/**
+	 * 处理人集合
+	 */
+	private List<TaskAssigneeDefinition> taskAssignees;
+	
+	/**
+	 * 处理命令集合
+	 */
+	private List<TaskCommandDefinition> taskCommands;
 
+	public List<TaskAssigneeDefinition> getTaskAssignees() {
+		return taskAssignees;
+	}
+
+	public void setTaskAssignees(List<TaskAssigneeDefinition> taskAssignees) {
+		this.taskAssignees = taskAssignees;
+	}
+
+	public List<TaskCommandDefinition> getTaskCommands() {
+		return taskCommands;
+	}
+
+	public void setTaskCommands(List<TaskCommandDefinition> taskCommands) {
+		this.taskCommands = taskCommands;
+	}
+
+	public String getAssignPolicyType() {
+		return assignPolicyType;
+	}
+
+	public void setAssignPolicyType(String assignPolicyType) {
+		this.assignPolicyType = assignPolicyType;
+	}
+
+	public String getAssigneeExpression() {
+		return assigneeExpression;
+	}
+
+	public void setAssigneeExpression(String assigneeExpression) {
+		this.assigneeExpression = assigneeExpression;
+	}
 	
 }

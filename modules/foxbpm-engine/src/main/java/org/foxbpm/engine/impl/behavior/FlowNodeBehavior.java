@@ -1,6 +1,7 @@
 package org.foxbpm.engine.impl.behavior;
 
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
+import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 
@@ -12,18 +13,15 @@ public abstract class FlowNodeBehavior extends FlowElementBehavior implements Ke
 	private static final long serialVersionUID = 1L;
 
 	public void enter(FlowNodeExecutionContext executionContext) {
-		// TODO Auto-generated method stub
-		
+		executionContext.execute();
 	}
 
 	public void execute(FlowNodeExecutionContext executionContext) {
-		// TODO Auto-generated method stub
-		
+		executionContext.signal();
 	}
 
 	public void leave(FlowNodeExecutionContext executionContext) {
-		// TODO Auto-generated method stub
-		
+		executionContext.take(executionContext.getFlowNode().getOutgoingSequenceFlows().get(0));
 	}
 
 	public void cleanData(FlowNodeExecutionContext executionContext) {

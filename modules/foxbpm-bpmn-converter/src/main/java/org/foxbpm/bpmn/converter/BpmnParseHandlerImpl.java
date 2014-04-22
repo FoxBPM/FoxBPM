@@ -24,10 +24,14 @@ import java.util.List;
 
 import org.eclipse.bpmn2.Bpmn2Package;
 import org.eclipse.bpmn2.Definitions;
+import org.eclipse.bpmn2.EndEvent;
 import org.eclipse.bpmn2.FlowElement;
+import org.eclipse.bpmn2.FlowNode;
 import org.eclipse.bpmn2.Process;
 import org.eclipse.bpmn2.RootElement;
+import org.eclipse.bpmn2.SequenceFlow;
 import org.eclipse.bpmn2.StartEvent;
+import org.eclipse.bpmn2.UserTask;
 import org.eclipse.bpmn2.di.BpmnDiPackage;
 import org.eclipse.bpmn2.util.Bpmn2ResourceFactoryImpl;
 import org.eclipse.dd.dc.DcPackage;
@@ -75,10 +79,18 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		List<FlowElement> flowElements=process.getFlowElements();
 		ProcessDefinitionBuilder processDefinitionBuilder = new ProcessDefinitionBuilder("kernelTest");
 		for(FlowElement flowElement :flowElements){
-			
-			if(flowElement instanceof StartEvent){
-				KernelFlowNodeBehavior flowNodeBehavior = BpmnBehaviorEMFConverter.getFlowNodeBehavior(flowElement);
-				processDefinitionBuilder.createFlowNode(flowElement.getId()).initial().behavior(flowNodeBehavior);
+			KernelFlowNodeBehavior flowNodeBehavior = BpmnBehaviorEMFConverter.getFlowNodeBehavior(flowElement);
+			if(flowElement instanceof FlowNode){
+				processDefinitionBuilder.createFlowNode(flowElement.getId()).behavior(flowNodeBehavior);
+				if(flowElement instanceof StartEvent){
+					processDefinitionBuilder.initial();
+				}
+				List<SequenceFlow>  sequenceFlows=((FlowNode) flowElement).getOutgoing();
+				for (SequenceFlow sequenceFlow : sequenceFlows) {
+					processDefinitionBuilder.sequenceFlow(sequenceFlow.getTargetRef().getId());
+					
+				}
+				processDefinitionBuilder.endFlowNode();
 			}
 		}
 		return processDefinitionBuilder.buildProcessDefinition();

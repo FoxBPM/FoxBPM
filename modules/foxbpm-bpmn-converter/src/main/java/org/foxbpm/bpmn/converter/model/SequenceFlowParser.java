@@ -17,14 +17,30 @@
  */
 package org.foxbpm.bpmn.converter.model;
 
+import org.eclipse.bpmn2.BaseElement;
+import org.foxbpm.bpmn.converter.BpmnModelUtil;
+import org.foxbpm.engine.impl.behavior.BaseElementBehavior;
+import org.foxbpm.engine.impl.behavior.SequenceFlowBehavior;
+
 /**
  * 线条转换器
  * 需转换“表达式（condition）属性”
  * @author ych
  *
  */
-public class SequenceFlowParser extends BaseElementParser {
+public class SequenceFlowParser extends FlowElementParser {
 
+	@Override
+	public BaseElementBehavior parser(BaseElement baseElement) {
+		String conditionExpression = BpmnModelUtil.getSequenceFlowCondition(baseElement);
+		SequenceFlowBehavior sequenceFlowBehavior = (SequenceFlowBehavior)baseElementBehavior;
+		sequenceFlowBehavior.setConditionExpression(conditionExpression);
+		return super.parser(baseElement);
+	}
 	
+	@Override
+	public void init() {
+		baseElementBehavior = new SequenceFlowBehavior();
+	}
 	
 }
