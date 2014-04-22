@@ -1,3 +1,4 @@
+package org.foxbpm.test;
 import java.io.InputStream;
 
 import org.foxbpm.bpmn.converter.BpmnParseHandlerImpl;

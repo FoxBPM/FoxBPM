@@ -49,6 +49,10 @@ public class BpmnModelUtil {
 		return StringUtil.getString(getExtensionAttribute(process,FoxBPMPackage.Literals.DOCUMENT_ROOT__DBID));
 	}
 	
+	public static boolean getStartEventPersistence(BaseElement baseElement){
+		return StringUtil.getBoolean(BpmnModelUtil.getExtensionAttribute(baseElement, FoxBPMPackage.Literals.DOCUMENT_ROOT__IS_PERSISTENCE));
+	}
+	
 	
 	public static Object getExtensionAttribute(BaseElement baseElement,EAttribute eAttribute){
 		return baseElement.eGet(eAttribute);
