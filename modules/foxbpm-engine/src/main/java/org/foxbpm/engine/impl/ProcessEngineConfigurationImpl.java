@@ -250,8 +250,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 
 	public String getNoneTemplateFilePath() {
-		// TODO Auto-generated method stub
-		return null;
+		return "fixflowfile.bpmn";
 	}
 
 }

@@ -18,6 +18,7 @@
 package org.foxbpm.engine.modelparse;
 
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
+import org.foxbpm.kernel.process.KernelProcessDefinition;
 
 /**
  * @author kenshin
@@ -26,7 +27,7 @@ import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 public interface ProcessModelParseHandler {
 	
 	
-	ProcessDefinitionEntity createProcessDefinition(String processId,Object processFile);
+	KernelProcessDefinition createProcessDefinition(String processId,Object processFile);
 	
 
 }

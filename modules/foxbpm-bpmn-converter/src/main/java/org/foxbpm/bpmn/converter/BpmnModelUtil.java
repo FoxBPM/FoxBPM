@@ -54,6 +54,10 @@ public class BpmnModelUtil {
 		return baseElement.eGet(eAttribute);
 	}
 	
+	public static Object getExtensionElement(BaseElement baseElement,EReference eReference){
+		return baseElement.eGet(eReference);
+	}
+	
 	
 	public static String getDocumentation(BaseElement baseElement){
 		List<Documentation> documentations=baseElement.getDocumentation();

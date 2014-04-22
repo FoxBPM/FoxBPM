@@ -18,6 +18,7 @@
 package org.foxbpm.bpmn.converter;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import org.eclipse.bpmn2.Definitions;
 import org.eclipse.bpmn2.FlowElement;
 import org.eclipse.bpmn2.Process;
 import org.eclipse.bpmn2.RootElement;
+import org.eclipse.bpmn2.StartEvent;
 import org.eclipse.bpmn2.di.BpmnDiPackage;
 import org.eclipse.bpmn2.util.Bpmn2ResourceFactoryImpl;
 import org.eclipse.dd.dc.DcPackage;
@@ -41,43 +43,49 @@ import org.foxbpm.engine.exception.FixFlowClassLoadingException;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
+import org.foxbpm.kernel.ProcessDefinitionBuilder;
+import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
+import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
 
 public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 
-	public ProcessDefinitionEntity createProcessDefinition(String processId, Object processFile) {
+	public KernelProcessDefinition createProcessDefinition(String processId, Object processFile) {
 
 		Process process = null;
 		if (processFile != null) {
-			process = createProcess(processId, (byte[]) processFile);
+			process = createProcess(processId, (InputStream) processFile);
 
 		}
 
-		// 加载事件定义.
-		loadEvent(processDefinition);
-		// 加载数据变量
-		loadVariable(processDefinition);
-		// 设置FlowNode元素的子流程
-		loadSubProcess(processDefinition);
-		processDefinition.persistentInit(processDataMap);
-		deploymentCache.addProcessDefinition(processDefinition);
-		return processDefinition;
-
+//		// 加载事件定义.
+//		loadEvent(processDefinition);
+//		// 加载数据变量
+//		loadVariable(processDefinition);
+//		// 设置FlowNode元素的子流程
+//		loadSubProcess(processDefinition);
+//		processDefinition.persistentInit(processDataMap);
+//		deploymentCache.addProcessDefinition(processDefinition);
+		return loadBehavior(process);
 	}
 	
 	
-	private void loadBehavior(Process process){
+	private KernelProcessDefinition loadBehavior(Process process){
 		
 		List<FlowElement> flowElements=process.getFlowElements();
-		
-		
-		
-		
-		
+		ProcessDefinitionBuilder processDefinitionBuilder = new ProcessDefinitionBuilder("kernelTest");
+		for(FlowElement flowElement :flowElements){
+			
+			if(flowElement instanceof StartEvent){
+				KernelFlowNodeBehavior flowNodeBehavior = BpmnBehaviorEMFConverter.getFlowNodeBehavior(flowElement);
+				processDefinitionBuilder.createFlowNode(flowElement.getId()).initial().behavior(flowNodeBehavior);
+			}
+		}
+		return processDefinitionBuilder.buildProcessDefinition();
 	}
 	
 
-	private Process createProcess(String processId, byte[] bytes) {
+	private Process createProcess(String processId, InputStream is) {
 
 		ResourceSet resourceSet = getResourceSet();
 		String fixflowFilePath = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getNoneTemplateFilePath();
@@ -94,7 +102,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			} else {
 				ddddResource = resourceSet.createResource(URI.createURI(filePath));
 			}
-			ddddResource.load(new ByteArrayInputStream(bytes), null);
+			ddddResource.load(is, null);
 		} catch (Exception e) {
 			throw new FixFlowClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION, e);
 		}
@@ -105,10 +113,10 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 
 				String processObjId = BpmnModelUtil.getProcessId(processObj);
 
-				if (processObjId.equals(processId)) {
+//				if (processObjId.equals(processId)) {
 					processObj = (Process) rootElement;
 					return processObj;
-				}
+//				}
 			}
 		}
 		return null;
