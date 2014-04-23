@@ -18,6 +18,7 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
+import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 
 /**
@@ -31,5 +32,20 @@ public class ProcessDefinitionManager extends AbstractManager {
 		TaskEntity task = new TaskEntity();
 		task.setId("200");
 		getSqlSession().insert("testInsert", task);
+	}
+
+	public ProcessDefinitionEntity findProcessDefinitionById(String processDefinitionId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ProcessDefinitionEntity findLatestProcessDefinitionByKey(String processDefinitionKey) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ProcessDefinitionEntity findProcessDefinitionByKeyAndVersion(String processDefinitionKey, Integer processDefinitionVersion) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

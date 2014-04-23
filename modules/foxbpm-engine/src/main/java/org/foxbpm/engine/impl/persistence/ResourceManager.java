@@ -18,11 +18,20 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
+import java.util.List;
+
+import org.foxbpm.engine.impl.entity.ResourceEntity;
+
 /**
  * 资源文件管理器
  * @author kenshin
  *
  */
 public class ResourceManager extends AbstractManager {
+
+	public List<ResourceEntity> findResourcesByDeploymentId(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

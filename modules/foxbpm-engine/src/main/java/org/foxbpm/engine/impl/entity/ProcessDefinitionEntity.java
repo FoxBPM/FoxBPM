@@ -41,34 +41,16 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 
 	}
 	
+	public ProcessDefinitionEntity(String id) {
+		super(id);
 
+	}
+	
+	
 
-
-
-
-	/**
-	 * '{@link #isIsExecutable() <em>Version</em>}' 字段的默认值. <!-- 开始-用户-文档 -->
-	 * <!-- 结束-用户-文档 -->
-	 * 
-	 * @see #isIsExecutable()
-	 * @generated
-	 * @ordered
-	 */
 	protected static final int VERSION_DEFAULT = 1;
 
-	/**
-	 * 该值缓存 '{@link #getVersion() <em>Version</em>}' 字段. <!-- 开始-用户-文档 -->
-	 * <p>
-	 * 流程版本定义,默认值为 1. 每当 {@link #getVersion() <em>流程定义版本号 Version</em>} 增加 1,
-	 * {@link #com.founder.fix.fixflow.core.Definitions.getVersion()
-	 * <em>业务定义版本号 Version</em>} 也同时增加 1.
-	 * </p>
-	 * <!-- 结束-用户-文档 -->
-	 * 
-	 * @see #getVersion()
-	 * @generated
-	 * @ordered
-	 */
+
 	protected int version = VERSION_DEFAULT;
 
 	protected String diagramResourceName;

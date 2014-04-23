@@ -14,36 +14,23 @@
  * limitations under the License.
  * 
  * @author kenshin
+ * @author ych
  */
-package org.foxbpm.engine.repository;
-
+package org.foxbpm.engine.impl.persistence.deploy;
 
 /**
  * @author kenshin
- * 
+ *
  */
-public interface ProcessDefinition {
+public interface DeploymentCache <T> {
+	  
+	  T get(String id);
 
-	String getId();
+	  void add(String id, T object);
 
-	String getCategory();
+	  void remove(String id);
+	  
+	  void clear();
+	  
+	}
 
-	String getName();
-
-	String getKey();
-
-	String getDescription();
-
-	int getVersion();
-
-	String getResourceName();
-
-	String getDeploymentId();
-
-	String getDiagramResourceName();
-
-	boolean hasStartFormKey();
-
-	boolean isSuspended();
-
-}

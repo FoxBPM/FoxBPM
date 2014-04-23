@@ -34,52 +34,129 @@ import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
-public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements ProcessInstance,PersistentObject,HasRevision {
+/**
+ * 流程实例实体
+ * @author kenshin
+ *
+ */
+public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements ProcessInstance, PersistentObject, HasRevision {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	
 
-	protected String subject;
 
+
+	/** 流程定义唯一版本编号 */
 	protected String processDefinitionId;
-
+	
+	/** 流程定义编号 */
 	protected String processDefinitionKey;
 
+	/** 交互式流程文件定义号 */
 	protected String definitionId;
 
+	/** 根令牌编号 */
 	protected String rootTokenId;
 
+	/** 父流程实例用来启动子流程实例的令牌编号 */
 	protected String parentTokenId;
 
+	/** 父流程实例编号 */
 	protected String parentId;
+	
+	/** 实例主题 */
+	protected String subject;
 
+	/** 流程实例的启动人 */
 	protected String startAuthor;
 
+	/** 流程任务的发起人 */
 	protected String initiator;
 
+	/** 业务关联键 */
 	protected String bizKey;
 
+	/** 流程实例启动时间 */
 	protected Date startTime;
 
+	/** 流程实例结束时间 */
 	protected Date endTime;
 
+	/** 流程实例最近一次操作时间 */
 	protected Date updateTime;
 
+	/** 流程实例归档时间 */
 	protected Date archiveTime;
-
+	
+	/** 流程实例状态 */
 	protected String instanceStatus;
 
+	/** 流程实例位置 */
 	protected String processLocation;
-
+	
+	/** 是否暂停 */
 	protected boolean isSuspended = false;
-	
-	
-	
 
 	// 对象字段 /////////////////////
+
+	/** 流程定义 */
+	protected KernelProcessDefinitionImpl processDefinition;
+
+	/** 任务集合 */
+	protected List<TaskEntity> tasks;
+	
+	/** 任务身份集合 */
+	protected List<IdentityLinkEntity> identityLinks;
+
+	/** 变量管理器 */
+	protected DataVariableMgmtInstance dataVariableMgmtInstance;
+
+	/** 实例内容管理器 */
+	protected ContextInstance contextInstance;
+
+
+	/** 构造函数 */
+	public ProcessInstanceEntity() {
+		super();
+		// 设置流程实例的编号,通过静态方法获得Guid
+		this.id = GuidUtil.CreateGuid();
+	}
+
+	// Constructor 构造函数
+	// /////////////////////////////////////////////////////
+	public ProcessInstanceEntity(KernelFlowNodeImpl startFlowNode) {
+
+		super(startFlowNode);
+
+		// 设置流程实例的编号,通过静态方法获得Guid
+		this.id = GuidUtil.CreateGuid();
+
+	}
+
+	@Override
+	public KernelTokenImpl createRootToken() {
+		super.createRootToken();
+		this.rootTokenId = this.rootToken.getId();
+		return this.rootToken;
+	}
+
+	@Override
+	public KernelTokenImpl createToken() {
+		TokenEntity tokenObj = new TokenEntity();
+		String tokenObjId = GuidUtil.CreateGuid();
+		tokenObj.setId(tokenObjId);
+		return new TokenEntity();
+	}
+
+	@Override
+	public void initialize() {
+
+		this.tasks = new ArrayList<TaskEntity>();
+
+		this.dataVariableMgmtInstance = new DataVariableMgmtInstance(this);
+
+		this.contextInstance = new ContextInstanceImpl();
+
+	}
 
 	public String getSubject() {
 		return subject;
@@ -217,68 +294,6 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		this.processDefinition = processDefinition;
 	}
 
-	// 流程定义
-	protected KernelProcessDefinitionImpl processDefinition;
-	
-	/** 任务集合 */
-	protected List<TaskEntity> tasks;
-	/** 任务身份集合 */
-	protected List<IdentityLinkEntity> identityLinks;
-
-
-	// 变量管理器
-	protected DataVariableMgmtInstance dataVariableMgmtInstance;
-
-	// 实例内容管理器
-	protected ContextInstance contextInstance;
-
-	// 构造函数 ///////////////////////////////
-
-	public ProcessInstanceEntity() {
-		super();
-		// 设置流程实例的编号,通过静态方法获得Guid
-		this.id = GuidUtil.CreateGuid();
-	}
-
-	// Constructor 构造函数
-	// /////////////////////////////////////////////////////
-	public ProcessInstanceEntity(KernelFlowNodeImpl startFlowNode) {
-
-		super(startFlowNode);
-
-		// 设置流程实例的编号,通过静态方法获得Guid
-		this.id = GuidUtil.CreateGuid();
-
-	}
-
-	@Override
-	public KernelTokenImpl createRootToken() {
-		super.createRootToken();
-		this.rootTokenId = this.rootToken.getId();
-		return this.rootToken;
-	}
-	
-	@Override
-	public KernelTokenImpl createToken() {
-		TokenEntity tokenObj=new TokenEntity();
-		String tokenObjId=GuidUtil.CreateGuid();
-		tokenObj.setId(tokenObjId);
-		return new TokenEntity();
-	}
-	
-	
-
-	@Override
-	public void initialize() {
-
-		this.tasks = new ArrayList<TaskEntity>();
-
-		this.dataVariableMgmtInstance = new DataVariableMgmtInstance(this);
-
-		this.contextInstance = new ContextInstanceImpl();
-
-	}
-
 	public String getBizKey() {
 		return bizKey;
 	}
@@ -286,7 +301,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	public void setBizKey(String bizKey) {
 		this.bizKey = bizKey;
 	}
-	
+
 	@Override
 	public String getId() {
 		return id;
@@ -298,7 +313,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 
 	public void setRevision(int revision) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public int getRevision() {

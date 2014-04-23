@@ -1,7 +1,6 @@
 package org.foxbpm.engine.impl.behavior;
 
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
-import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 

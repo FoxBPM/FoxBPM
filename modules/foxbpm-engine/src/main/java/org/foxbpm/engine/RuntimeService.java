@@ -18,6 +18,34 @@
  */
 package org.foxbpm.engine;
 
+import java.util.Map;
+
+import org.foxbpm.engine.runtime.ProcessInstance;
+
 public interface RuntimeService {
+
+	ProcessInstance startProcessInstanceByKey(String processDefinitionKey);
+
+	ProcessInstance startProcessInstanceByKey(String processDefinitionKey, String bizKey);
+
+	ProcessInstance startProcessInstanceByKey(String processDefinitionKey, Map<String, Object> variables);
+
+	ProcessInstance startProcessInstanceByKey(String processDefinitionKey, String bizKey, Map<String, Object> variables);
+
+	ProcessInstance startProcessInstanceById(String processDefinitionId);
+
+	ProcessInstance startProcessInstanceById(String processDefinitionId, String bizKey);
+
+	ProcessInstance startProcessInstanceById(String processDefinitionId, Map<String, Object> variables);
+
+	ProcessInstance startProcessInstanceById(String processDefinitionId, String bizKey, Map<String, Object> variables);
+
+	ProcessInstance startProcessInstanceByMessage(String messageName);
+
+	ProcessInstance startProcessInstanceByMessage(String messageName, String bizKey);
+
+	ProcessInstance startProcessInstanceByMessage(String messageName, Map<String, Object> processVariables);
+
+	ProcessInstance startProcessInstanceByMessage(String messageName, String bizKey, Map<String, Object> processVariables);
 
 }

@@ -18,7 +18,7 @@
 package org.foxbpm.engine.impl.interceptor;
 
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
-import org.foxbpm.engine.impl.persistence.DeploymentManager;
+import org.foxbpm.engine.impl.persistence.DeploymentEntityManager;
 import org.foxbpm.engine.impl.persistence.HistoryManager;
 import org.foxbpm.engine.impl.persistence.IdentityLinkManager;
 import org.foxbpm.engine.impl.persistence.ProcessDefinitionManager;
@@ -50,9 +50,11 @@ public class CommandContext {
 	public ProcessEngineConfigurationImpl getProcessEngineConfigurationImpl() {
 		return processEngineConfigurationImpl;
 	}
+	
+	
 
-	public DeploymentManager getDeploymentManager() {
-		DeploymentManager deploymentManager = new DeploymentManager();
+	public DeploymentEntityManager getDeploymentEntityManager() {
+		DeploymentEntityManager deploymentManager = new DeploymentEntityManager();
 		deploymentManager.setCommandContext(this);
 		return deploymentManager;
 	}

@@ -4,6 +4,11 @@ import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 public class EndEventBehavior extends EventBehavior {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public void enter(FlowNodeExecutionContext executionContext) {
 		System.out.println("end进入");

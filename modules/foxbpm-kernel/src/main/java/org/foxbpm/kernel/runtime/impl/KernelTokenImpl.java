@@ -57,21 +57,13 @@ InterpretableExecutionContext  {
 	protected KernelFlowNodeImpl currentFlowNode;
 	
 	/**
-	 * 需要跳转的节点
+	 * 临时需要跳转的节点
 	 */
 	protected KernelFlowNodeImpl toFlowNode;
 	
 
 	protected String name;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
+	
 	protected KernelTokenImpl parent;
 
 	protected boolean isLocked = false;
@@ -81,6 +73,10 @@ InterpretableExecutionContext  {
 	protected boolean isSubProcessRootToken = false;
 	
 	protected KernelSequenceFlowImpl sequenceFlow;
+
+	
+
+	
 
 	/**
 	 * 子令牌集合
@@ -482,5 +478,13 @@ InterpretableExecutionContext  {
 		return null;
 	}
 
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 }

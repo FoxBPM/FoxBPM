@@ -23,6 +23,16 @@ package org.foxbpm.engine.impl.persistence;
  * @author kenshin
  *
  */
-public class DeploymentManager extends AbstractManager {
+public class DeploymentEntityManager extends AbstractManager {
+
+	public Object findDeploymentById(String deploymentId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void deleteDeployment(String deploymentId, boolean cascade) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

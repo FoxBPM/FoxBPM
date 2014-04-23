@@ -17,33 +17,20 @@
  */
 package org.foxbpm.engine.repository;
 
+import java.util.Date;
 
 /**
  * @author kenshin
  * 
  */
-public interface ProcessDefinition {
-
+public interface Deployment {
+	
 	String getId();
-
-	String getCategory();
 
 	String getName();
 
-	String getKey();
+	Date getDeploymentTime();
 
-	String getDescription();
-
-	int getVersion();
-
-	String getResourceName();
-
-	String getDeploymentId();
-
-	String getDiagramResourceName();
-
-	boolean hasStartFormKey();
-
-	boolean isSuspended();
+	String getCategory();
 
 }

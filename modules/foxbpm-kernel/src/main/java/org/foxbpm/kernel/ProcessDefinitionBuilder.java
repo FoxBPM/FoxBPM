@@ -44,8 +44,12 @@ public class ProcessDefinitionBuilder {
 	}
 
 	public ProcessDefinitionBuilder(String processDefinitionId) {
-		processDefinition = new KernelProcessDefinitionImpl(processDefinitionId);
+		processDefinition = createProcessDefinition(processDefinitionId);
 		containerStack.push(processDefinition);
+	}
+	
+	protected KernelProcessDefinitionImpl createProcessDefinition(String processDefinitionId){
+		return new KernelProcessDefinitionImpl(processDefinitionId);
 	}
 
 	public ProcessDefinitionBuilder createFlowNode(String id) {

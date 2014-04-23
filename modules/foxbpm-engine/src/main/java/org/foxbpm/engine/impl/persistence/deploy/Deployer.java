@@ -15,35 +15,16 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.engine.repository;
+package org.foxbpm.engine.impl.persistence.deploy;
 
+import org.foxbpm.engine.impl.entity.DeploymentEntity;
 
 /**
  * @author kenshin
  * 
  */
-public interface ProcessDefinition {
+public interface Deployer {
 
-	String getId();
-
-	String getCategory();
-
-	String getName();
-
-	String getKey();
-
-	String getDescription();
-
-	int getVersion();
-
-	String getResourceName();
-
-	String getDeploymentId();
-
-	String getDiagramResourceName();
-
-	boolean hasStartFormKey();
-
-	boolean isSuspended();
+	void deploy(DeploymentEntity deployment);
 
 }
