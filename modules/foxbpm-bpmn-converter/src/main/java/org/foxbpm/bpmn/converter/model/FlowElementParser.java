@@ -2,7 +2,6 @@ package org.foxbpm.bpmn.converter.model;
 
 import org.eclipse.bpmn2.BaseElement;
 import org.foxbpm.engine.impl.behavior.BaseElementBehavior;
-import org.foxbpm.engine.impl.behavior.FlowElementBehavior;
 
 public abstract class FlowElementParser extends BaseElementParser {
 
@@ -14,7 +13,5 @@ public abstract class FlowElementParser extends BaseElementParser {
 	public void init() {
 		super.init();
 	}
-	
-	
 
 }

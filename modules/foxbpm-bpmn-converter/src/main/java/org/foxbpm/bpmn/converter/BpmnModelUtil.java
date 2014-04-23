@@ -91,7 +91,7 @@ public class BpmnModelUtil {
 	 * @return
 	 */
 	public static String getUserTaskSubject(BaseElement baseElement){
-		TaskSubject taskSubject = (TaskSubject)EMFUtil.getExtensionElementOne(TaskSubject.class,baseElement,FoxBPMPackage.Literals.DOCUMENT_ROOT__TASK_SUBJECT);
+		TaskSubject taskSubject = (TaskSubject)BpmnModelUtil.getExtensionElement(baseElement,FoxBPMPackage.Literals.DOCUMENT_ROOT__TASK_SUBJECT);
 		if(taskSubject != null){
 			return taskSubject.getExpression().getValue();
 		}
@@ -104,7 +104,7 @@ public class BpmnModelUtil {
 	 * @return
 	 */
 	public static String getFormUri(BaseElement baseElement){
-		FormUri formUri = (FormUri)EMFUtil.getExtensionElementOne(FormUri.class,baseElement, FoxBPMPackage.Literals.DOCUMENT_ROOT__FORM_URI);
+		FormUri formUri = (FormUri)BpmnModelUtil.getExtensionElement(baseElement, FoxBPMPackage.Literals.DOCUMENT_ROOT__FORM_URI);
 		if(formUri != null){
 			return formUri.getExpression().getValue();
 		}
@@ -117,7 +117,7 @@ public class BpmnModelUtil {
 	 * @return
 	 */
 	public static String getFormUriView(BaseElement baseElement){
-		FormUriView formUri = (FormUriView)EMFUtil.getExtensionElementOne(FormUriView.class,baseElement, FoxBPMPackage.Literals.DOCUMENT_ROOT__FORM_URI_VIEW);
+		FormUriView formUri = (FormUriView)BpmnModelUtil.getExtensionElement(baseElement, FoxBPMPackage.Literals.DOCUMENT_ROOT__FORM_URI_VIEW);
 		if(formUri != null){
 			return formUri.getExpression().getValue();
 		}
@@ -130,7 +130,7 @@ public class BpmnModelUtil {
 	 * @return
 	 */
 	public static String getUserTaskAssigneePolicyType(BaseElement baseElement){
-		AssignPolicyType policyType = (AssignPolicyType)EMFUtil.getExtensionElementOne(AssignPolicyType.class,baseElement, FoxBPMPackage.Literals.DOCUMENT_ROOT__ASSIGN_POLICY_TYPE);
+		AssignPolicyType policyType = (AssignPolicyType)BpmnModelUtil.getExtensionElement(baseElement, FoxBPMPackage.Literals.DOCUMENT_ROOT__ASSIGN_POLICY_TYPE);
 		if(policyType != null){
 			return policyType.getExpression().getValue();
 		}

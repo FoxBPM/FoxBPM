@@ -4,10 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.bpmn2.BaseElement;
-import org.eclipse.bpmn2.EndEvent;
-import org.eclipse.bpmn2.ScriptTask;
-import org.eclipse.bpmn2.ServiceTask;
-import org.eclipse.bpmn2.Task;
 import org.eclipse.bpmn2.impl.BaseElementImpl;
 import org.eclipse.bpmn2.impl.EndEventImpl;
 import org.eclipse.bpmn2.impl.ScriptTaskImpl;
@@ -20,7 +16,6 @@ import org.foxbpm.bpmn.converter.model.EndEventParser;
 import org.foxbpm.bpmn.converter.model.StartEventParser;
 import org.foxbpm.bpmn.converter.model.UserTaskParser;
 import org.foxbpm.engine.impl.behavior.BaseElementBehavior;
-import org.foxbpm.engine.impl.behavior.EndEventBehavior;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
