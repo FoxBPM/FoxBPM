@@ -29,7 +29,6 @@ import org.foxbpm.engine.impl.runtime.ContextInstanceImpl;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.runtime.ContextInstance;
 import org.foxbpm.engine.runtime.ProcessInstance;
-import org.foxbpm.engine.runtime.ProcessInstanceStatus;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
@@ -71,7 +70,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 
 	protected Date archiveTime;
 
-	protected ProcessInstanceStatus instanceStatus;
+	protected String instanceStatus;
 
 	protected String processLocation;
 
