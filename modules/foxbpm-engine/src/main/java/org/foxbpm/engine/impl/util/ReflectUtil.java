@@ -25,8 +25,8 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.logging.Logger;
 
-import org.foxbpm.engine.exception.FixFlowClassLoadingException;
-import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
+import org.foxbpm.engine.exception.FoxBPMException;
 
 /**
  * @author kenshin
@@ -80,7 +80,7 @@ public abstract class ReflectUtil {
    }
   
    if(clazz == null) {
-     throw new FixFlowClassLoadingException(className, throwable);
+     throw new FoxBPMClassLoadingException(className, throwable);
    }
    return clazz;
   }
@@ -131,7 +131,7 @@ public abstract class ReflectUtil {
       Class< ? > clazz = loadClass(className);
       return clazz.newInstance();
     } catch (Exception e) {
-      throw new FixFlowException("couldn't instantiate class "+className, e);
+      throw new FoxBPMException("couldn't instantiate class "+className, e);
     }
   }
 
@@ -142,7 +142,7 @@ public abstract class ReflectUtil {
       method.setAccessible(true);
       return method.invoke(target, args);
     } catch (Exception e) {
-      throw new FixFlowException("couldn't invoke "+methodName+" on "+target, e);
+      throw new FoxBPMException("couldn't invoke "+methodName+" on "+target, e);
     }
   }
   
@@ -161,7 +161,7 @@ public abstract class ReflectUtil {
     try {
       field = clazz.getDeclaredField(fieldName);
     } catch (SecurityException e) {
-      throw new FixFlowException("not allowed to access field " + field + " on class " + clazz.getCanonicalName());
+      throw new FoxBPMException("not allowed to access field " + field + " on class " + clazz.getCanonicalName());
     } catch (NoSuchFieldException e) {
       // for some reason getDeclaredFields doesnt search superclasses
       // (which getFields() does ... but that gives only public fields)
@@ -178,9 +178,9 @@ public abstract class ReflectUtil {
       field.setAccessible(true);
       field.set(object, value);
     } catch (IllegalArgumentException e) {
-      throw new FixFlowException("Could not set field " + field.toString(), e);
+      throw new FoxBPMException("Could not set field " + field.toString(), e);
     } catch (IllegalAccessException e) {
-      throw new FixFlowException("Could not set field " + field.toString(), e);
+      throw new FoxBPMException("Could not set field " + field.toString(), e);
     }
   }
   
@@ -204,7 +204,7 @@ public abstract class ReflectUtil {
       }
       return null;
     } catch (SecurityException e) {
-      throw new FixFlowException("Not allowed to access method " + setterName + " on class " + clazz.getCanonicalName());
+      throw new FoxBPMException("Not allowed to access method " + setterName + " on class " + clazz.getCanonicalName());
     }
   }
 
@@ -228,12 +228,12 @@ public abstract class ReflectUtil {
     Class< ? > clazz = loadClass(className);
     Constructor< ? > constructor = findMatchingConstructor(clazz, args);
     if (constructor==null) {
-      throw new FixFlowException("couldn't find constructor for "+className+" with args "+Arrays.asList(args));
+      throw new FoxBPMException("couldn't find constructor for "+className+" with args "+Arrays.asList(args));
     } 
     try {
       return constructor.newInstance(args);
     } catch (Exception e) {
-      throw new FixFlowException("couldn't find constructor for "+className+" with args "+Arrays.asList(args), e);
+      throw new FoxBPMException("couldn't find constructor for "+className+" with args "+Arrays.asList(args), e);
     }
   }
 

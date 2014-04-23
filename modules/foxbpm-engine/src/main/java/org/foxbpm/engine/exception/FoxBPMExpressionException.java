@@ -22,7 +22,7 @@ package org.foxbpm.engine.exception;
  * @author kenshin
  *
  */
-public class FixFlowExpressionException extends FixFlowException {
+public class FoxBPMExpressionException extends FoxBPMException {
 
 	/**
 	 * 
@@ -38,7 +38,7 @@ public class FixFlowExpressionException extends FixFlowException {
 	 * 构造表达式异常
 	 * @param expressionText 执行的表达式脚本
 	 */
-	public FixFlowExpressionException(String expressionText) {
+	public FoxBPMExpressionException(String expressionText) {
 		super(ExceptionCode.CLASSLOAD_EXCEPTION_DEFAULT, new Object[] { expressionText });
 		this.expressionText = expressionText;
 	}
@@ -49,7 +49,7 @@ public class FixFlowExpressionException extends FixFlowException {
 	 * @param exceptionCode 异常编码 '{@link com.founder.fix.fixflow.core.exception.ExceptionResourceCore <em>ExceptionResourceCore</em>}'
 	 * @param expressionText 执行的表达式脚本
 	 */
-	public FixFlowExpressionException(String exceptionCode, String expressionText) {
+	public FoxBPMExpressionException(String exceptionCode, String expressionText) {
 		super(exceptionCode, new Object[] { expressionText });
 		this.expressionText = expressionText;
 	}
@@ -60,7 +60,7 @@ public class FixFlowExpressionException extends FixFlowException {
 	 * @param expressionText 执行的表达式脚本
 	 * @param cause 异常
 	 */
-	public FixFlowExpressionException(String expressionText, Throwable cause) {
+	public FoxBPMExpressionException(String expressionText, Throwable cause) {
 		super(ExceptionCode.CLASSLOAD_EXCEPTION_DEFAULT, new Object[] { expressionText }, cause);
 		this.expressionText = expressionText;
 	}
@@ -72,7 +72,7 @@ public class FixFlowExpressionException extends FixFlowException {
 	 * @param nodeId 节点编号
 	 * @param nodeName 节点名称
 	 */
-	public FixFlowExpressionException(String exceptionCode, String expressionText,String nodeId,String nodeName) {
+	public FoxBPMExpressionException(String exceptionCode, String expressionText,String nodeId,String nodeName) {
 		super(exceptionCode, new Object[] { expressionText,nodeId,nodeName });
 		this.expressionText = expressionText;
 	}
@@ -87,7 +87,7 @@ public class FixFlowExpressionException extends FixFlowException {
 	 * @param nodeName 节点名称
 	 * @param cause 异常
 	 */
-	public FixFlowExpressionException(String exceptionCode, String expressionText,String nodeId,String nodeName, Throwable cause) {
+	public FoxBPMExpressionException(String exceptionCode, String expressionText,String nodeId,String nodeName, Throwable cause) {
 		super(exceptionCode, new Object[] { expressionText,nodeId,nodeName }, cause);
 		this.expressionText = expressionText;
 	}

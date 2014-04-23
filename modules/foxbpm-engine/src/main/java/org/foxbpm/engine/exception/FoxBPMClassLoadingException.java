@@ -22,7 +22,7 @@ package org.foxbpm.engine.exception;
  * 
  * @author Kenshin
  */
-public class FixFlowClassLoadingException extends FixFlowException {
+public class FoxBPMClassLoadingException extends FoxBPMException {
 
   private static final long serialVersionUID = 1L;
   protected String className;
@@ -32,7 +32,7 @@ public class FixFlowClassLoadingException extends FixFlowException {
    * @param className 未找到的类名或文件名
    * @param cause
    */
-  public FixFlowClassLoadingException(String className) {
+  public FoxBPMClassLoadingException(String className) {
 	  super(ExceptionCode.CLASSLOAD_EXCEPTION_DEFAULT,new Object[]{className});
 	  this.className = className;
   }
@@ -42,7 +42,7 @@ public class FixFlowClassLoadingException extends FixFlowException {
    * @param exceptionCode 异常key
    * @param className
    */
-  public FixFlowClassLoadingException(String exceptionCode,String className) {
+  public FoxBPMClassLoadingException(String exceptionCode,String className) {
 	  super(exceptionCode,new Object[]{className});
 	  this.className = className;
   }
@@ -53,7 +53,7 @@ public class FixFlowClassLoadingException extends FixFlowException {
    * @param className 未找到的类名或文件名
    * @param cause
    */
-  public FixFlowClassLoadingException(String className, Throwable cause) {
+  public FoxBPMClassLoadingException(String className, Throwable cause) {
 	  super(ExceptionCode.CLASSLOAD_EXCEPTION_DEFAULT,new Object[]{className}, cause);
 	  this.className = className;
   }
@@ -63,7 +63,7 @@ public class FixFlowClassLoadingException extends FixFlowException {
    * @param className 未找到的类名或文件名
    * @param cause
    */
-  public FixFlowClassLoadingException(String exceptionCode ,String className, Throwable cause) {
+  public FoxBPMClassLoadingException(String exceptionCode ,String className, Throwable cause) {
     super(exceptionCode,new Object[]{className}, cause);
     this.className = className;
   }

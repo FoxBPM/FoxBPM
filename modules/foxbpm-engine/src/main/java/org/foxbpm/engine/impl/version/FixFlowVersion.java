@@ -17,7 +17,7 @@
  */
 package org.foxbpm.engine.impl.version;
 
-import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.util.StringUtil;
 
 /**
@@ -43,14 +43,14 @@ public class FixFlowVersion implements Comparable<FixFlowVersion> {
 	public FixFlowVersion(String versionString){
 		
 		if(versionString==null||versionString.equals("")){
-			throw new FixFlowException("version不能为空!");
+			throw new FoxBPMException("version不能为空!");
 		}
 		
 		this.versionString=versionString;
 		
 		String[] versionStringTemp=versionString.split("\\.");
 		if(versionStringTemp.length!=4){
-			throw new FixFlowException("version:"+versionString+"格式不正确!");
+			throw new FoxBPMException("version:"+versionString+"格式不正确!");
 		}
 		
 		try {
@@ -60,7 +60,7 @@ public class FixFlowVersion implements Comparable<FixFlowVersion> {
 			this.buildNumber=StringUtil.getInt(versionStringTemp[3]);
 			this.versionNumber=StringUtil.getInt(this.majorVersionNumber+this.minorVersionNumber+this.revisionNumber+this.buildNumber);
 		} catch (Exception e) {
-			throw new FixFlowException("version:"+versionString+"格式不正确!");
+			throw new FoxBPMException("version:"+versionString+"格式不正确!");
 		}
 		
 		

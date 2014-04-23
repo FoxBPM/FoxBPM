@@ -24,7 +24,7 @@ import javax.sql.DataSource;
 
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.db.DataSourceManage;
-import org.foxbpm.engine.exception.FixFlowDbException;
+import org.foxbpm.engine.exception.FoxBPMDbException;
 
 /**
  * 数据源工具类
@@ -48,7 +48,7 @@ public class DBUtils {
 		try {
 			return dataSourceManage.getDataSource().getConnection();
 		} catch (SQLException e) {
-			throw new FixFlowDbException("获取数据库连接："+key+" 出错",e);
+			throw new FoxBPMDbException("获取数据库连接："+key+" 出错",e);
 		}
 	}
 }

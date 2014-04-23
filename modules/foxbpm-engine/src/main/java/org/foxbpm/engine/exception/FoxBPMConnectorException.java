@@ -17,26 +17,24 @@
  */
 package org.foxbpm.engine.exception;
 
+public class FoxBPMConnectorException extends FoxBPMException {
 
-public class FixFlowBizException extends FixFlowException {
+
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1974264253264503442L;
+	private static final long serialVersionUID = 1581790497069877449L;
 
-	public FixFlowBizException(String message) {
-		
+	public FoxBPMConnectorException(String message) {
 		super(message);
-		//super((ResourcesUtil.getExpressionAll(FixFlowResources.ExceptionResource,message)));
+		// TODO 自动生成的构造函数存根
 	}
-
 	
-	public FixFlowBizException(String message, Throwable cause) {
+	public FoxBPMConnectorException(String message, Throwable cause) {
 		
 		super(message, cause);
-		//super(ResourcesUtil.getExpressionAll(FixFlowResources.ExceptionResource, message), cause);
-	}
 
+	}
 
 }

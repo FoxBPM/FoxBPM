@@ -22,7 +22,7 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 
@@ -38,7 +38,7 @@ public class JdbcSqlSessionFactory implements ISqlSessionFactory {
 		try {
 			connection = dataSource.getConnection();
 		} catch (SQLException e) {
-			throw new FixFlowException("jdbc数据库连接获取失败，请检查连接池配置",e);
+			throw new FoxBPMException("jdbc数据库连接获取失败，请检查连接池配置",e);
 		}
 		return new JdbcSqlSession(connection);
 	}

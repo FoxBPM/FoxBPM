@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,7 +63,7 @@ public class SqlCommand {
 	 * @return
 	 * @throws DAOException
 	 */
-	public Object queryForValue(String sql, List<Object> data) throws FixFlowException {
+	public Object queryForValue(String sql, List<Object> data) throws FoxBPMException {
 		String resultStr = new String();
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
@@ -84,7 +84,7 @@ public class SqlCommand {
 
 			}
 		} catch (SQLException e) {
-			throw new FixFlowException("查询错误：" + e.getMessage(), e);
+			throw new FoxBPMException("查询错误：" + e.getMessage(), e);
 		}
 		finally
 		{
@@ -93,7 +93,7 @@ public class SqlCommand {
 				if(rs != null){
 				rs.close();}
 			} catch (SQLException e) {
-				throw new FixFlowException("关闭游标失败",e);
+				throw new FoxBPMException("关闭游标失败",e);
 			}
 		}
 		return resultStr;
@@ -106,7 +106,7 @@ public class SqlCommand {
 	 * @return
 	 * @throws DAOException
 	 */
-	public Object queryForValue(String sql) throws FixFlowException {
+	public Object queryForValue(String sql) throws FoxBPMException {
 		return queryForValue(sql, null);
 	}
 
@@ -118,7 +118,7 @@ public class SqlCommand {
 	 * @return Map<String, Object> 结果集
 	 * @throws DAOException
 	 */
-	public Map<String, Object> queryForMap(String sql, Object[] data) throws FixFlowException {
+	public Map<String, Object> queryForMap(String sql, Object[] data) throws FoxBPMException {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		ResultSet rs = null;
 		PreparedStatement pstmt=null;
@@ -162,7 +162,7 @@ public class SqlCommand {
 				}
 			}
 		} catch (SQLException e) {
-			throw new FixFlowException("查询错误：" + e.getMessage(), e);
+			throw new FoxBPMException("查询错误：" + e.getMessage(), e);
 		}
 		
 		finally
@@ -172,7 +172,7 @@ public class SqlCommand {
 				if(rs != null){
 				rs.close();}
 			} catch (SQLException e) {
-				throw new FixFlowException("关闭游标失败",e);
+				throw new FoxBPMException("关闭游标失败",e);
 			}
 		}
 		return resultMap;
@@ -185,7 +185,7 @@ public class SqlCommand {
 	 * @return Map<String, Object> 结果集
 	 * @throws DAOException
 	 */
-	public Map<String, Object> queryForMap(String sql) throws FixFlowException {
+	public Map<String, Object> queryForMap(String sql) throws FoxBPMException {
 		return queryForMap(sql, null);
 	}
 
@@ -212,7 +212,7 @@ public class SqlCommand {
 	 * @return List<Map<String, Object>> 结果集
 	 * @throws DAOException
 	 */
-	public List<Map<String, Object>> queryForList(String sql, List<Object> data) throws FixFlowException {
+	public List<Map<String, Object>> queryForList(String sql, List<Object> data) throws FoxBPMException {
 		List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
 		ResultSet rs = null;
 		PreparedStatement pstmt=null;
@@ -256,7 +256,7 @@ public class SqlCommand {
 				resultList.add(row);
 			}
 		} catch (SQLException e) {
-			throw new FixFlowException("查询错误：" + e.getMessage(), e);
+			throw new FoxBPMException("查询错误：" + e.getMessage(), e);
 		}
 		finally
 		{
@@ -266,7 +266,7 @@ public class SqlCommand {
 					rs.close();
 				}
 			} catch (SQLException e) {
-				throw new FixFlowException("关闭游标失败",e);
+				throw new FoxBPMException("关闭游标失败",e);
 			}
 		}
 		return resultList;
@@ -279,7 +279,7 @@ public class SqlCommand {
 	 * @return List<Map<String, Object>> 结果集
 	 * @throws DAOException
 	 */
-	public List<Map<String, Object>> queryForList(String sql) throws FixFlowException {
+	public List<Map<String, Object>> queryForList(String sql) throws FoxBPMException {
 		return queryForList(sql, null);
 	}
 
@@ -289,7 +289,7 @@ public class SqlCommand {
 	 * @param sql
 	 * @throws DAOException
 	 */
-	public void execute(String sql) throws FixFlowException {
+	public void execute(String sql) throws FoxBPMException {
 		Statement stmt=null;
 		try {
 			stmt = conn.createStatement();
@@ -298,14 +298,14 @@ public class SqlCommand {
 			 
 			
 		} catch (SQLException e) {
-			throw new FixFlowException("查询错误：" + e.getMessage(), e);
+			throw new FoxBPMException("查询错误：" + e.getMessage(), e);
 		}
 		finally
 		{
 			try {
 				stmt.close();
 			} catch (SQLException e) {
-				throw new FixFlowException("关闭游标失败",e);
+				throw new FoxBPMException("关闭游标失败",e);
 			}
 		}
 	}
@@ -317,7 +317,7 @@ public class SqlCommand {
 	 * @param data
 	 * @throws DAOException
 	 */
-	public void execute(String sql, Object[] data) throws FixFlowException {
+	public void execute(String sql, Object[] data) throws FoxBPMException {
 		PreparedStatement pstmt=null;
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -338,14 +338,14 @@ public class SqlCommand {
 			}
 			pstmt.execute();
 		} catch (SQLException e) {
-			throw new FixFlowException("查询错误：" + e.getMessage(), e);
+			throw new FoxBPMException("查询错误：" + e.getMessage(), e);
 		}
 		finally
 		{
 			try {
 				pstmt.close();
 			} catch (SQLException e) {
-				throw new FixFlowException("关闭游标失败",e);
+				throw new FoxBPMException("关闭游标失败",e);
 			}
 		}
 		
@@ -357,7 +357,7 @@ public class SqlCommand {
 	 * @param sql
 	 * @throws DAOException
 	 */
-	public ResultSet query(String sql) throws FixFlowException {
+	public ResultSet query(String sql) throws FoxBPMException {
 		ResultSet result = null;
 		Statement stmt=null;
 		try {
@@ -366,7 +366,7 @@ public class SqlCommand {
 			result = stmt.executeQuery(sql);
 			
 		} catch (SQLException e) {
-			throw new FixFlowException("查询错误：" + e.getMessage(), e);
+			throw new FoxBPMException("查询错误：" + e.getMessage(), e);
 		}
 		finally
 		{
@@ -375,7 +375,7 @@ public class SqlCommand {
 				if(result != null){
 				result.close();}
 			} catch (SQLException e) {
-				throw new FixFlowException("关闭游标失败",e);
+				throw new FoxBPMException("关闭游标失败",e);
 			}
 		}
 		return result;
@@ -388,7 +388,7 @@ public class SqlCommand {
 	 * @param data
 	 * @throws DAOException
 	 */
-	public ResultSet query(String sql, Object[] data) throws FixFlowException {
+	public ResultSet query(String sql, Object[] data) throws FoxBPMException {
 		ResultSet result = null;
 		PreparedStatement pstmt=null;
 		try {
@@ -410,7 +410,7 @@ public class SqlCommand {
 			}
 			result = pstmt.executeQuery(sql);
 		} catch (SQLException e) {
-			throw new FixFlowException("查询错误：" + e.getMessage(), e);
+			throw new FoxBPMException("查询错误：" + e.getMessage(), e);
 		}
 		finally
 		{
@@ -419,7 +419,7 @@ public class SqlCommand {
 				if(result!=null){
 				result.close();}
 			} catch (SQLException e) {
-				throw new FixFlowException("关闭游标失败",e);
+				throw new FoxBPMException("关闭游标失败",e);
 			}
 		}
 		return result;
@@ -433,11 +433,11 @@ public class SqlCommand {
 	 * @return 影响行数
 	 * @throws DAOException
 	 */
-	public Integer insert(String tableName, Map<String, Object> data) throws FixFlowException {
+	public Integer insert(String tableName, Map<String, Object> data) throws FoxBPMException {
 		
 		
 		if (data.size() < 1) {
-			throw new FixFlowException("插入错误: 无效的数据输入");
+			throw new FoxBPMException("插入错误: 无效的数据输入");
 		}
 		/* 构造插入查询语句 */
 		StringBuffer querySql = new StringBuffer("INSERT INTO ");
@@ -481,14 +481,14 @@ public class SqlCommand {
 			 
 			affectRow = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			throw new FixFlowException("查询错误：" + e.getMessage(), e);
+			throw new FoxBPMException("查询错误：" + e.getMessage(), e);
 		}
 		finally
 		{
 			try {
 				pstmt.close();
 			} catch (SQLException e) {
-				throw new FixFlowException("关闭游标失败",e);
+				throw new FoxBPMException("关闭游标失败",e);
 			}
 		}
 		
@@ -504,9 +504,9 @@ public class SqlCommand {
 	 * @return 影响行数
 	 * @throws DAOException
 	 */
-	public Integer update(String tableName, Map<String, Object> data, String sql, Object[] sdata) throws FixFlowException {
+	public Integer update(String tableName, Map<String, Object> data, String sql, Object[] sdata) throws FoxBPMException {
 		if (data.size() < 1) {
-			throw new FixFlowException("插入错误: 无效的数据输入");
+			throw new FoxBPMException("插入错误: 无效的数据输入");
 		}
 
 		/* 构造插入查询语句 */
@@ -557,14 +557,14 @@ public class SqlCommand {
 			}
 			affectRow = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			throw new FixFlowException("查询错误：" + e.getMessage(), e);
+			throw new FoxBPMException("查询错误：" + e.getMessage(), e);
 		}
 		finally
 		{
 			try {
 				pstmt.close();
 			} catch (SQLException e) {
-				throw new FixFlowException("关闭游标失败",e);
+				throw new FoxBPMException("关闭游标失败",e);
 			}
 		}
 		return affectRow;
@@ -578,7 +578,7 @@ public class SqlCommand {
 	 * @return 影响行数
 	 * @throws DAOException
 	 */
-	public Integer update(String tableName, Map<String, Object> data, String sql) throws FixFlowException {
+	public Integer update(String tableName, Map<String, Object> data, String sql) throws FoxBPMException {
 		return update(tableName, data, sql, null);
 	}
 
@@ -590,7 +590,7 @@ public class SqlCommand {
 	 * @return 影响行数
 	 * @throws DAOException
 	 */
-	public Integer update(String tableName, Map<String, Object> data) throws FixFlowException {
+	public Integer update(String tableName, Map<String, Object> data) throws FoxBPMException {
 		return update(tableName, data, null, null);
 	}
 
@@ -603,7 +603,7 @@ public class SqlCommand {
 	 * @return
 	 * @throws DAOException
 	 */
-	public Integer delete(String tableName, String sql, Object[] data) throws FixFlowException {
+	public Integer delete(String tableName, String sql, Object[] data) throws FoxBPMException {
 		StringBuffer querySql = new StringBuffer("DELETE FROM ");
 		querySql.append(tableName);
 		if (null != sql) {
@@ -630,14 +630,14 @@ public class SqlCommand {
 			}
 			affectRow = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			throw new FixFlowException("查询错误：" + e.getMessage(), e);
+			throw new FoxBPMException("查询错误：" + e.getMessage(), e);
 		}
 		finally
 		{
 			try {
 				pstmt.close();
 			} catch (SQLException e) {
-				throw new FixFlowException("关闭游标失败",e);
+				throw new FoxBPMException("关闭游标失败",e);
 			}
 		}
 		return affectRow;
@@ -651,7 +651,7 @@ public class SqlCommand {
 	 * @return
 	 * @throws DAOException
 	 */
-	public Integer delete(String tableName, String sql) throws FixFlowException {
+	public Integer delete(String tableName, String sql) throws FoxBPMException {
 		return delete(tableName, sql, null);
 	}
 
@@ -662,7 +662,7 @@ public class SqlCommand {
 	 * @return
 	 * @throws DAOException
 	 */
-	public Integer delete(String tableName) throws FixFlowException {
+	public Integer delete(String tableName) throws FoxBPMException {
 		return delete(tableName, null, null);
 	}
 
@@ -672,11 +672,11 @@ public class SqlCommand {
 	 * @param level
 	 * @throws DAOException
 	 */
-	public void startTransaction(Integer level) throws FixFlowException {
+	public void startTransaction(Integer level) throws FoxBPMException {
 		try {
 			conn.setTransactionIsolation(level);
 		} catch (SQLException e) {
-			throw new FixFlowException("事务错误：" + e.getMessage(), e);
+			throw new FoxBPMException("事务错误：" + e.getMessage(), e);
 		}
 	}
 
@@ -685,11 +685,11 @@ public class SqlCommand {
 	 * 
 	 * @throws DAOException
 	 */
-	public void commit() throws FixFlowException {
+	public void commit() throws FoxBPMException {
 		try {
 			conn.commit();
 		} catch (SQLException e) {
-			throw new FixFlowException("事务错误：" + e.getMessage(), e);
+			throw new FoxBPMException("事务错误：" + e.getMessage(), e);
 		}
 	}
 
@@ -698,11 +698,11 @@ public class SqlCommand {
 	 * 
 	 * @throws DAOException
 	 */
-	public void rollback() throws FixFlowException {
+	public void rollback() throws FoxBPMException {
 		try {
 			conn.rollback();
 		} catch (SQLException e) {
-			throw new FixFlowException("事务错误：" + e.getMessage(), e);
+			throw new FoxBPMException("事务错误：" + e.getMessage(), e);
 		}
 	}
 

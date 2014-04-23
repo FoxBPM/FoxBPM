@@ -43,7 +43,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.exception.ExceptionCode;
-import org.foxbpm.engine.exception.FixFlowClassLoadingException;
+import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
@@ -103,7 +103,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		String fixflowFilePath = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getNoneTemplateFilePath();
 		URL url = ReflectUtil.getResource(fixflowFilePath);
 		if (url == null) {
-			throw new FixFlowClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION_FILENOTFOUND, fixflowFilePath);
+			throw new FoxBPMClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION_FILENOTFOUND, fixflowFilePath);
 		}
 		String filePath = url.toString();
 		Resource ddddResource = null;
@@ -116,7 +116,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			}
 			ddddResource.load(is, null);
 		} catch (Exception e) {
-			throw new FixFlowClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION, e);
+			throw new FoxBPMClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION, e);
 		}
 		Definitions definitions = (Definitions) ddddResource.getContents().get(0).eContents().get(0);
 		for (RootElement rootElement : definitions.getRootElements()) {

@@ -19,30 +19,30 @@
 package org.foxbpm.engine.exception;
 
 /**
- * 运行时异常，这是所有FixFlow异常的基类
+ * 运行时异常，这是所有FoxBPM异常的基类
  * 
  * @author kenshin
  */
-public class FixFlowException extends RuntimeException {
+public class FoxBPMException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	public FixFlowException(String exceptionCode) {
+	public FoxBPMException(String exceptionCode) {
 		super(ExceptionI18NCore.getResourceValue(exceptionCode));
 	}
 
-	public FixFlowException(String exceptionCode,Object... args) {
+	public FoxBPMException(String exceptionCode,Object... args) {
 		super(ExceptionI18NCore.getResourceValue(exceptionCode,args));
 	}
-	public FixFlowException(String exceptionCode,Throwable cause,Object... args) {
+	public FoxBPMException(String exceptionCode,Throwable cause,Object... args) {
 		super(ExceptionI18NCore.getResourceValue(exceptionCode,args),cause);
 	}
 	
-	public FixFlowException(String exceptionCode,Throwable cause){
+	public FoxBPMException(String exceptionCode,Throwable cause){
 		super(ExceptionI18NCore.getResourceValue(exceptionCode),cause);
 	}
 	
-	public FixFlowException(String exceptionCode,Object[] args,Throwable cause){
+	public FoxBPMException(String exceptionCode,Object[] args,Throwable cause){
 		super(ExceptionI18NCore.getResourceValue(exceptionCode,args),cause);
 	}
 	

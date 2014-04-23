@@ -24,7 +24,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.foxbpm.engine.db.DataSourceManage;
-import org.foxbpm.engine.exception.FixFlowDbException;
+import org.foxbpm.engine.exception.FoxBPMDbException;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
 /**
@@ -56,7 +56,7 @@ public class DefaultDataSourceManage implements DataSourceManage {
 		if(dataSourceMap.containsKey(key)){
 			return dataSourceMap.get(key);
 		}
-		throw new FixFlowDbException("未找到名称为："+key+" 的数据库连接池");
+		throw new FoxBPMDbException("未找到名称为："+key+" 的数据库连接池");
 	}
 
 }

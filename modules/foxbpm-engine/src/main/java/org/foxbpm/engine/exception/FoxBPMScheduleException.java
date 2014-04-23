@@ -18,14 +18,14 @@
  */
 package org.foxbpm.engine.exception;
 
-public class FixFlowScheduleException extends FixFlowException {
+public class FoxBPMScheduleException extends FoxBPMException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public FixFlowScheduleException(String exceptionCode) {
+	public FoxBPMScheduleException(String exceptionCode) {
 		super(exceptionCode);
 		// TODO Auto-generated constructor stub
 	}
@@ -38,7 +38,7 @@ public class FixFlowScheduleException extends FixFlowException {
 	 * @param nodeId 节点编号
 	 * @param nodeName 节点名称
 	 */
-	public FixFlowScheduleException(String exceptionCode,String nodeId,String nodeName) {
+	public FoxBPMScheduleException(String exceptionCode,String nodeId,String nodeName) {
 		super(exceptionCode, new Object[] { nodeId,nodeName });
 	}
 	
@@ -49,7 +49,7 @@ public class FixFlowScheduleException extends FixFlowException {
 	 * @param nodeName 节点名称
 	 * @param cause 异常
 	 */
-	public FixFlowScheduleException(String exceptionCode,String nodeId,String nodeName, Throwable cause) {
+	public FoxBPMScheduleException(String exceptionCode,String nodeId,String nodeName, Throwable cause) {
 		super(exceptionCode, new Object[] { nodeId,nodeName },cause);
 	}
 

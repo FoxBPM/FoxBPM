@@ -37,7 +37,7 @@ import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.db.DataSourceManage;
 import org.foxbpm.engine.exception.ExceptionCode;
 import org.foxbpm.engine.exception.ExceptionI18NCore;
-import org.foxbpm.engine.exception.FixFlowClassLoadingException;
+import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
 import org.foxbpm.engine.impl.db.DefaultDataSourceManage;
 import org.foxbpm.engine.impl.interceptor.CommandContextFactory;
 import org.foxbpm.engine.impl.interceptor.CommandContextInterceptor;
@@ -139,7 +139,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		URL url = this.getClass().getClassLoader().getResource(classPath);
 		if(url == null){
 			log.error("未能从{}目录下找到foxbpm.cfg.xml文件",classPath);
-			throw new FixFlowClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION_FILENOTFOUND ,"foxbpm.cfg.xml");
+			throw new FoxBPMClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION_FILENOTFOUND ,"foxbpm.cfg.xml");
 		}
 		String filePath = url.toString();
 		Resource resource = null;
@@ -154,7 +154,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			resource.load(null);
 		} catch (Exception e) {
 			log.error("fixflowconfig.xml文件加载失败", e);
-			throw new FixFlowClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION,"fixflowconfig.xml", e);
+			throw new FoxBPMClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION,"fixflowconfig.xml", e);
 		}
 		
 		foxBpmConfig =  (FoxBPMConfig)resource.getContents().get(0);

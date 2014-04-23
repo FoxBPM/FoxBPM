@@ -17,20 +17,26 @@
  */
 package org.foxbpm.engine.exception;
 
-public class FixFlowDbException extends FixFlowException {
 
-	private static final long serialVersionUID = 1L;
-	
-	public FixFlowDbException(String message) {
+public class FoxBPMBizException extends FoxBPMException {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1974264253264503442L;
+
+	public FoxBPMBizException(String message) {
+		
 		super(message);
-	}
-	
-	
-	public FixFlowDbException(String message, Throwable cause)
-	{
-		super(message,cause);
+		//super((ResourcesUtil.getExpressionAll(FixFlowResources.ExceptionResource,message)));
 	}
 
+	
+	public FoxBPMBizException(String message, Throwable cause) {
+		
+		super(message, cause);
+		//super(ResourcesUtil.getExpressionAll(FixFlowResources.ExceptionResource, message), cause);
+	}
 
 
 }

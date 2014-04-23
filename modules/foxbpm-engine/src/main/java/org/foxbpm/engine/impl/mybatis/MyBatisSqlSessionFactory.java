@@ -34,7 +34,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
-import org.foxbpm.engine.exception.FixFlowException;
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 
@@ -86,11 +86,11 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 	private SqlSession getSqlSession(){
 		SqlSession sqlSession = null;
 		if(sqlSessionFactory == null){
-			throw new FixFlowException("mybatis sqlsession工厂创建失败");
+			throw new FoxBPMException("mybatis sqlsession工厂创建失败");
 		}
 		sqlSession = sqlSessionFactory.openSession();
 		if(sqlSession == null){
-			throw  new FixFlowException("mybatis sqlSession创建失败");
+			throw  new FoxBPMException("mybatis sqlSession创建失败");
 		}
 		return sqlSession;
 	}
