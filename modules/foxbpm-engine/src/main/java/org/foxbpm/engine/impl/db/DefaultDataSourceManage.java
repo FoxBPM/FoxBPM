@@ -25,6 +25,7 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.foxbpm.engine.db.DataSourceManage;
 import org.foxbpm.engine.exception.FixFlowDbException;
+import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
 /**
  * 默认数据源管理器
@@ -39,12 +40,13 @@ public class DefaultDataSourceManage implements DataSourceManage {
 	public void init(){
 		BasicDataSource bs = new BasicDataSource();
 		bs.setDriverClassName("com.mysql.jdbc.Driver");
-		bs.setUrl("jdbc:mysql://172.16.40.89/idbase?characterEncoding=UTF-8");
+		bs.setUrl("jdbc:mysql://172.16.40.89/foxbpm?characterEncoding=UTF-8");
 		bs.setUsername("root");
 		bs.setPassword("fixflow");
 		bs.setMaxActive(20);
 		bs.setMaxIdle(8);
-		dataSourceMap.put(DAFAULT_DATABASE_ID, bs);
+		DataSource dataSource = new TransactionAwareDataSourceProxy(bs);
+		dataSourceMap.put(DAFAULT_DATABASE_ID, dataSource);
 	}
 	public DataSource getDataSource() {
 		return getDataSource(DAFAULT_DATABASE_ID);

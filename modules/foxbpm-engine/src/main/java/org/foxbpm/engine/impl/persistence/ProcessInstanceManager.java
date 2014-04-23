@@ -18,6 +18,10 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
+import java.util.List;
+
+import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
+
 /**
  * 流程实例管理器
  * @author kenshin
@@ -25,4 +29,12 @@ package org.foxbpm.engine.impl.persistence;
  */
 public class ProcessInstanceManager extends AbstractManager {
 
+	public void save(ProcessInstanceEntity processInstanceEntity){
+		insert("insertProcessInstance",processInstanceEntity);
+	}
+	
+	public ProcessInstanceEntity selectProcessById(String processId){
+		List<ProcessInstanceEntity> list = (List<ProcessInstanceEntity>)getSqlSession().selectList("selectProcessById", processId);
+		return list.get(0);
+	}
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">
+
+	<resultMap id="processResultMap" type="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">
+	    <id column="ID" jdbcType="VARCHAR" property="id" />
+	    <result column="PROCESSDEFINITION_ID" jdbcType="VARCHAR" property="processDefinitionId" />
+	    <result column="PROCESSDEFINITION_KEY" jdbcType="VARCHAR" property="processDefinitionKey" />
+	    <result column="SUBJECT" jdbcType="VARCHAR" property="subject" />
+	    <result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
+	    <result column="END_TIME" jdbcType="TIMESTAMP" property="endTime" />
+	    <result column="DEFINITION_ID" jdbcType="VARCHAR" property="definitionId" />
+	    <result column="ROOTTOKEN_ID" jdbcType="VARCHAR" property="rootTokenId" />
+	    <result column="BIZ_KEY" jdbcType="VARCHAR" property="bizKey" />
+	    <result column="INITIATOR" jdbcType="VARCHAR" property="initiator" />
+	    <result column="START_AUTHOR" jdbcType="VARCHAR" property="startAuthor" />
+	    <result column="ISSUSPENDED" jdbcType="VARCHAR" property="isSuspended" />
+	    <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
+	    <result column="PARENT_TOKEN_ID" jdbcType="VARCHAR" property="parentTokenId" />
+	    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+	    <result column="PROCESSLOCATION" jdbcType="VARCHAR" property="processLocation" />
+	    <result column="INSTANCE_STATUS" jdbcType="VARCHAR" property="instanceStatus" />
+	    <result column="ARCHIVE_TIME" jdbcType="TIMESTAMP" property="archiveTime" />
+	  </resultMap>
+	  
+   	<insert id="insertProcessInstance" parameterType="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">
+	    insert into foxbpm_run_processinstance (ID, PROCESSDEFINITION_ID, PROCESSDEFINITION_KEY, 
+	      SUBJECT, START_TIME, END_TIME, 
+	      DEFINITION_ID, ROOTTOKEN_ID, BIZ_KEY, 
+	      INITIATOR, START_AUTHOR, ISSUSPENDED, 
+	      PARENT_ID, PARENT_TOKEN_ID, UPDATE_TIME, 
+	      PROCESSLOCATION, INSTANCE_STATUS, ARCHIVE_TIME
+	      )
+	    values (#{id,jdbcType=VARCHAR}, #{processDefinitionId,jdbcType=VARCHAR}, #{processDefinitionKey,jdbcType=VARCHAR}, 
+	      #{subject,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+	      #{definitionId,jdbcType=VARCHAR}, #{rootTokenId,jdbcType=VARCHAR}, #{bizKey,jdbcType=VARCHAR}, 
+	      #{initiator,jdbcType=VARCHAR}, #{startAuthor,jdbcType=VARCHAR}, #{isSuspended,jdbcType=VARCHAR}, 
+	      #{parentId,jdbcType=VARCHAR}, #{parentTokenId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+	      #{processLocation,jdbcType=VARCHAR}, #{instanceStatus,jdbcType=VARCHAR}, #{archiveTime,jdbcType=TIMESTAMP}
+	      )
+  	</insert>
+  	
+  	 <select id="selectProcessById" parameterType="java.lang.String" resultMap="processResultMap">
+	    select 
+	    <include refid="processColumnList" />
+	    from foxbpm_run_processinstance
+	    where ID = #{id,jdbcType=VARCHAR}
+  	</select>
+  	
+  	 <sql id="processColumnList">
+	    ID, PROCESSDEFINITION_ID, PROCESSDEFINITION_KEY, SUBJECT, START_TIME, END_TIME, DEFINITION_ID, 
+	    ROOTTOKEN_ID, BIZ_KEY, INITIATOR, START_AUTHOR, ISSUSPENDED, PARENT_ID, PARENT_TOKEN_ID, 
+	    UPDATE_TIME, PROCESSLOCATION, INSTANCE_STATUS, ARCHIVE_TIME
+  	</sql>
+</mapper>

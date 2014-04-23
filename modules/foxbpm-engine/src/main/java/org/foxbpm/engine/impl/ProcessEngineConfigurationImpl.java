@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineConfiguration;
+import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.db.DataSourceManage;
 import org.foxbpm.engine.exception.ExceptionCode;
 import org.foxbpm.engine.exception.ExceptionI18NCore;
@@ -64,6 +65,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected FoxBPMConfig foxBpmConfig;
 	protected ResourcePathConfig resourcePathConfig;
 	protected ModelService modelService = new ModelServiceImpl();
+	protected RuntimeService runtimeService = new RuntimeServiceImpl();
 	protected ISqlSessionFactory sqlSessionFactory;
 	protected DataSourceManage dataSourceManage;
 	public ProcessEngine buildProcessEngine() {
@@ -172,6 +174,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	protected void initServices() {
 		initService(modelService);
+		initService(runtimeService);
 	}
 
 	protected void initService(Object service) {
@@ -225,6 +228,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	public ModelService getModelService(){
 		return modelService;
+	}
+	
+	public RuntimeService getRuntimeService(){
+		return runtimeService;
 	}
 
 	public DataSourceManage getDataSourceManage() {
