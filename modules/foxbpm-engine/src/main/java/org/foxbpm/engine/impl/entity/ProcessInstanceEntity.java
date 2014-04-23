@@ -75,8 +75,147 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	protected String processLocation;
 
 	protected boolean isSuspended = false;
+	
+	
+	
 
 	// 对象字段 /////////////////////
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+	public String getProcessDefinitionId() {
+		return processDefinitionId;
+	}
+
+	public void setProcessDefinitionId(String processDefinitionId) {
+		this.processDefinitionId = processDefinitionId;
+	}
+
+	public String getProcessDefinitionKey() {
+		return processDefinitionKey;
+	}
+
+	public void setProcessDefinitionKey(String processDefinitionKey) {
+		this.processDefinitionKey = processDefinitionKey;
+	}
+
+	public String getDefinitionId() {
+		return definitionId;
+	}
+
+	public void setDefinitionId(String definitionId) {
+		this.definitionId = definitionId;
+	}
+
+	public String getRootTokenId() {
+		return rootTokenId;
+	}
+
+	public void setRootTokenId(String rootTokenId) {
+		this.rootTokenId = rootTokenId;
+	}
+
+	public String getParentTokenId() {
+		return parentTokenId;
+	}
+
+	public void setParentTokenId(String parentTokenId) {
+		this.parentTokenId = parentTokenId;
+	}
+
+	public String getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
+
+	public String getStartAuthor() {
+		return startAuthor;
+	}
+
+	public void setStartAuthor(String startAuthor) {
+		this.startAuthor = startAuthor;
+	}
+
+	public String getInitiator() {
+		return initiator;
+	}
+
+	public void setInitiator(String initiator) {
+		this.initiator = initiator;
+	}
+
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public Date getArchiveTime() {
+		return archiveTime;
+	}
+
+	public void setArchiveTime(Date archiveTime) {
+		this.archiveTime = archiveTime;
+	}
+
+	public String getInstanceStatus() {
+		return instanceStatus;
+	}
+
+	public void setInstanceStatus(String instanceStatus) {
+		this.instanceStatus = instanceStatus;
+	}
+
+	public String getProcessLocation() {
+		return processLocation;
+	}
+
+	public void setProcessLocation(String processLocation) {
+		this.processLocation = processLocation;
+	}
+
+	public boolean isSuspended() {
+		return isSuspended;
+	}
+
+	public void setSuspended(boolean isSuspended) {
+		this.isSuspended = isSuspended;
+	}
+
+	public KernelProcessDefinitionImpl getProcessDefinition() {
+		return processDefinition;
+	}
+
+	public void setProcessDefinition(KernelProcessDefinitionImpl processDefinition) {
+		this.processDefinition = processDefinition;
+	}
 
 	// 流程定义
 	protected KernelProcessDefinitionImpl processDefinition;

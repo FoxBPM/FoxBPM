@@ -1,5 +1,6 @@
 package org.foxbpm.engine.impl.entity;
 
+import java.util.Date;
 import java.util.Map;
 
 import org.foxbpm.engine.db.HasRevision;
@@ -13,7 +14,92 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String id;
+	
+	
+	protected String id;
+
+	protected String name;
+
+	protected String description;
+
+	protected String processInstanceId;
+
+	protected String processDefinitionId;
+
+	protected String processDefinitionKey;
+
+	protected String processDefinitionName;
+
+	protected int version;
+
+	protected String tokenId;
+
+	protected String nodeId;
+
+	protected String nodeName;
+
+	protected String parentId;
+
+	protected String assignee;
+
+	protected Date claimTime;
+
+	protected Date createTime;
+
+	protected Date startTime;
+
+	protected Date endTime;
+
+	protected Date dueDate;
+
+	protected boolean isBlocking = false;
+
+	protected int priority = TaskInstance.PRIORITY_NORMAL;
+
+	protected String category;
+
+	protected String owner;
+
+	protected DelegationState delegationState;
+
+	protected String bizKey;
+
+	protected String taskComment;
+
+	protected String formUri;
+
+	protected String formUriView;
+
+	protected String taskGroup;
+
+	protected TaskInstanceType taskInstanceType = TaskInstanceType.FIXFLOWTASK;
+
+	protected boolean isCancelled = false;
+
+	protected boolean isSuspended = false;
+
+	protected boolean isOpen = true;
+
+	protected boolean isDraft = false;
+
+	protected int expectedExecutionTime = 0;
+
+	protected String agent;
+
+	protected String admin;
+
+	protected String callActivityInstanceId;
+
+	protected String pendingTaskId;
+
+	protected Date archiveTime;
+
+	protected String commandId;
+
+	protected String commandType;
+
+	protected String commandMessage;
+
 
 	public void setRevision(int revision) {
 		// TODO Auto-generated method stub
