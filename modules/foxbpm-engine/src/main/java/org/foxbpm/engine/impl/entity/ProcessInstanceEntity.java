@@ -29,7 +29,7 @@ import org.foxbpm.engine.impl.runtime.ContextInstanceImpl;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.runtime.ContextInstance;
 import org.foxbpm.engine.runtime.ProcessInstance;
-import org.foxbpm.engine.runtime.ProcessInstanceType;
+import org.foxbpm.engine.runtime.ProcessInstanceStatus;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
@@ -53,9 +53,9 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 
 	protected String rootTokenId;
 
-	protected String parentProcessInstanceTokenId;
+	protected String parentTokenId;
 
-	protected String parentProcessInstanceId;
+	protected String parentId;
 
 	protected String startAuthor;
 
@@ -71,7 +71,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 
 	protected Date archiveTime;
 
-	protected ProcessInstanceType instanceType;
+	protected ProcessInstanceStatus instanceStatus;
 
 	protected String processLocation;
 

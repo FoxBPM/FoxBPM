@@ -15,29 +15,37 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.engine.task;
+package org.foxbpm.engine.impl.identity;
 
-/**
- * 身份类型
- * 
- * @author kenshin
- * 
- */
-public class IdentityLinkType {
+import java.util.List;
+import java.util.Map;
 
-	/**
-	 * 任务领取人类型 通过领取任务，某一用户将成为任务的责任人，这个任务将从组的其他成员的任务列表里面消失。
-	 */
-	public static final String ASSIGNEE = "assignee";
+import org.foxbpm.engine.impl.db.Page;
+
+public abstract class UserDefinition {
+	
+
 
 	/**
-	 * 任务候选人类型 这个类型标识任务处于共享模式,范围内的任何人都可以领取任务
+	 * 根据分页和查询条件获取用户
+	 * @param page
+	 * @param queryMap key有 count,UserList
+	 * @return
 	 */
-	public static final String CANDIDATE = "candidate";
-
+	public abstract Map<String, Object> getUserTos(Page page,Map<String,Object> queryMap);
+	
 	/**
-	 * 任务所有者类型 当任务处理完毕后身份类型将被更新为此类型,用来标识任务的最终负责人.
+	 * 根据userid获取用户
+	 * @param userId
+	 * @return
 	 */
-	public static final String OWNER = "owner";
+	public abstract UserTo findUserByUserId(String userId);
+	
+	/**
+	 * 获取用户所在的所有组
+	 * @param userId用户编号
+	 * @return
+	 */
+	public abstract List<GroupTo> getUserInGroups(String userId);
 
 }

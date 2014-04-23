@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2014 FoxBPM ORG.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,29 +15,34 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.engine.task;
+package org.foxbpm.engine.runtime;
 
 /**
- * 身份类型
+ * 流程实例状态
  * 
  * @author kenshin
  * 
  */
-public class IdentityLinkType {
+public class ProcessInstanceStatus {
 
 	/**
-	 * 任务领取人类型 通过领取任务，某一用户将成为任务的责任人，这个任务将从组的其他成员的任务列表里面消失。
+	 * 运行中
 	 */
-	public static final String ASSIGNEE = "assignee";
+	public static final String RUNNING = "running";
 
 	/**
-	 * 任务候选人类型 这个类型标识任务处于共享模式,范围内的任何人都可以领取任务
+	 * 暂停
 	 */
-	public static final String CANDIDATE = "candidate";
+	public static final String SUSPEND = "suspend";
 
 	/**
-	 * 任务所有者类型 当任务处理完毕后身份类型将被更新为此类型,用来标识任务的最终负责人.
+	 * 终止
 	 */
-	public static final String OWNER = "owner";
+	public static final String TERMINATION = "termination";
+
+	/**
+	 * 正常结束
+	 */
+	public static final String COMPLETE = "complete";
 
 }

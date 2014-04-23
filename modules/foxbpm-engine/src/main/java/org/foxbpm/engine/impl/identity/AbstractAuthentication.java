@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2014 FoxBPM Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM ORG.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,36 +15,26 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.engine.runtime;
+package org.foxbpm.engine.impl.identity;
 
-/**
- * 流程实例状态
- * @author kenshin
- *
- */
-public enum ProcessInstanceType {
-	
+public abstract class AbstractAuthentication {
 	
 	/**
-	 * 运行中
+	 * 获取当前操作人的编号
+	 * @return
 	 */
-	RUNNING,
+	public abstract String getAuthenticatedUserId();
 	
 	/**
-	 * 暂停
+	 * 获取系统管理员的编号
+	 * @return
 	 */
-	SUSPEND,
+	public abstract String getAdminId();
 	
 	/**
-	 * 终止
+	 * 获取系统自动处理的账号
+	 * @return
 	 */
-	TERMINATION,
-	
-	/**
-	 * 正常结束
-	 */
-	COMPLETE
-
-	
+	public abstract String getSystemId();
 
 }
