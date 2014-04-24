@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.impl.Context;
+
 
 
 /**

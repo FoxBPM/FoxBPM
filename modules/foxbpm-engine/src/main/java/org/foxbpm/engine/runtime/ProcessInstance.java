@@ -19,4 +19,5 @@ package org.foxbpm.engine.runtime;
 
 public interface ProcessInstance {
 
+	  String getProcessDefinitionId();
 }

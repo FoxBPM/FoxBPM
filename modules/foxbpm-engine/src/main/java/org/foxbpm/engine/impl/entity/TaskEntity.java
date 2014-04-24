@@ -74,7 +74,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 
 	protected String taskGroup;
 
-	protected String taskType = TaskType.FIXFLOWTASK;
+	protected String taskType = TaskType.FOXBPMTASK;
 
 	protected boolean isCancelled = false;
 

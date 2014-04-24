@@ -2,7 +2,10 @@ package org.foxbpm.engine.impl.persistence.deploy;
 
 import java.util.List;
 
+import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.bpmn.deployer.BpmnDeployer;
 import org.foxbpm.engine.impl.entity.DeploymentEntity;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.persistence.DeploymentEntityManager;
@@ -27,24 +30,28 @@ public class DeploymentManager {
 
 	public ProcessDefinitionEntity findDeployedProcessDefinitionById(String processDefinitionId) {
 		if (processDefinitionId == null) {
-			throw new ActivitiIllegalArgumentException("Invalid process definition id : null");
+			throw new FoxBPMIllegalArgumentException("Invalid process definition id : null");
 		}
+		BpmnDeployer BpmnDeployer=(BpmnDeployer)deployers.get(0);
+		return (ProcessDefinitionEntity)BpmnDeployer.getProcessModelParseHandler().createProcessDefinition("", "111");
+		
+		/*
 		ProcessDefinitionEntity processDefinition = Context.getCommandContext().getProcessDefinitionManager()
 				.findProcessDefinitionById(processDefinitionId);
 		if (processDefinition == null) {
-			throw new ActivitiObjectNotFoundException("no deployed process definition found with id '" + processDefinitionId + "'",
-					ProcessDefinition.class);
+			//throw new FoxBPMObjectNotFoundException("no deployed process definition found with id '" + processDefinitionId + "'",
+			//		ProcessDefinition.class);
 		}
 		processDefinition = resolveProcessDefinition(processDefinition);
-		return processDefinition;
+		return processDefinition;*/
 	}
 
 	public ProcessDefinitionEntity findDeployedLatestProcessDefinitionByKey(String processDefinitionKey) {
 		ProcessDefinitionEntity processDefinition = Context.getCommandContext().getProcessDefinitionManager()
 				.findLatestProcessDefinitionByKey(processDefinitionKey);
 		if (processDefinition == null) {
-			throw new ActivitiObjectNotFoundException("no processes deployed with key '" + processDefinitionKey + "'",
-					ProcessDefinition.class);
+			//throw new ActivitiObjectNotFoundException("no processes deployed with key '" + processDefinitionKey + "'",
+			//		ProcessDefinition.class);
 		}
 		processDefinition = resolveProcessDefinition(processDefinition);
 		return processDefinition;
@@ -55,8 +62,8 @@ public class DeploymentManager {
 		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) Context.getCommandContext()
 				.getProcessDefinitionManager().findProcessDefinitionByKeyAndVersion(processDefinitionKey, processDefinitionVersion);
 		if (processDefinition == null) {
-			throw new ActivitiObjectNotFoundException("no processes deployed with key = '" + processDefinitionKey + "' and version = '"
-					+ processDefinitionVersion + "'", ProcessDefinition.class);
+			//throw new ActivitiObjectNotFoundException("no processes deployed with key = '" + processDefinitionKey + "' and version = '"
+			//		+ processDefinitionVersion + "'", ProcessDefinition.class);
 		}
 		processDefinition = resolveProcessDefinition(processDefinition);
 		return processDefinition;
@@ -73,7 +80,7 @@ public class DeploymentManager {
 			processDefinition = processDefinitionCache.get(processDefinitionId);
 
 			if (processDefinition == null) {
-				throw new ActivitiException("deployment '" + deploymentId + "' didn't put process definition '" + processDefinitionId
+				throw new FoxBPMException("deployment '" + deploymentId + "' didn't put process definition '" + processDefinitionId
 						+ "' in the cache");
 			}
 		}
@@ -82,12 +89,12 @@ public class DeploymentManager {
 
 	public void removeDeployment(String deploymentId, boolean cascade) {
 		DeploymentEntityManager deploymentEntityManager = Context.getCommandContext().getDeploymentEntityManager();
-		if (deploymentEntityManager.findDeploymentById(deploymentId) == null)
-			throw new ActivitiObjectNotFoundException("Could not find a deployment with id '" + deploymentId + "'.", DeploymentEntity.class);
+		//if (deploymentEntityManager.findDeploymentById(deploymentId) == null)
+			//throw new ActivitiObjectNotFoundException("Could not find a deployment with id '" + deploymentId + "'.", DeploymentEntity.class);
 
 		// Remove any process definition from the cache
-		List<ProcessDefinition> processDefinitions = new ProcessDefinitionQueryImpl(Context.getCommandContext()).deploymentId(deploymentId)
-				.list();
+		List<ProcessDefinition> processDefinitions =null; //new ProcessDefinitionQueryImpl(Context.getCommandContext()).deploymentId(deploymentId)
+				//.list();
 		for (ProcessDefinition processDefinition : processDefinitions) {
 			processDefinitionCache.remove(processDefinition.getId());
 		}

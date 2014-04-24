@@ -44,6 +44,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.exception.ExceptionCode;
 import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
+import org.foxbpm.engine.impl.ProcessDefinitionEntityBuilder;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
@@ -77,7 +78,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	private KernelProcessDefinition loadBehavior(Process process){
 		
 		List<FlowElement> flowElements=process.getFlowElements();
-		ProcessDefinitionBuilder processDefinitionBuilder = new ProcessDefinitionBuilder("kernelTest");
+		ProcessDefinitionBuilder processDefinitionBuilder = new ProcessDefinitionEntityBuilder("kernelTest");
 		for(FlowElement flowElement :flowElements){
 			KernelFlowNodeBehavior flowNodeBehavior = BpmnBehaviorEMFConverter.getFlowNodeBehavior(flowElement);
 			if(flowElement instanceof FlowNode){

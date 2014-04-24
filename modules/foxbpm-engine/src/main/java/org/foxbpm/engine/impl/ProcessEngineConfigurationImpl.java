@@ -183,9 +183,9 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		}
 
 		if (processModelParseHandler == null) {
-			// processModelParseHandler = new BpmnParser();
+			processModelParseHandler = (ProcessModelParseHandler)ReflectUtil.instantiate("org.foxbpm.bpmn.converter.BpmnParseHandlerImpl");
 		}
-
+		bpmnDeployer.setProcessModelParseHandler(processModelParseHandler);
 		defaultDeployers.add(bpmnDeployer);
 		return defaultDeployers;
 	}

@@ -6,6 +6,15 @@ import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 
 public class ProcessDefinitionEntityBuilder extends ProcessDefinitionBuilder {
 
+	
+	public ProcessDefinitionEntityBuilder() {
+		super(null);
+	}
+
+	public ProcessDefinitionEntityBuilder(String processDefinitionId) {
+		super(processDefinitionId);
+	}
+	
 	@Override
 	protected KernelProcessDefinitionImpl createProcessDefinition(String processDefinitionId) {
 		return new ProcessDefinitionEntity(processDefinitionId);

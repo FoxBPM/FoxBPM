@@ -13,28 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.impl.persistence;
+package org.foxbpm.test;
 
-import org.foxbpm.engine.impl.entity.DeploymentEntity;
+import org.foxbpm.engine.ProcessEngine;
+import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.RuntimeService;
+import org.foxbpm.engine.runtime.ProcessInstance;
 
-/**
- * 定义发布持久化管理器
- * @author kenshin
- *
- */
-public class DeploymentEntityManager extends AbstractManager {
+import junit.framework.TestCase;
 
-	public DeploymentEntity findDeploymentById(String deploymentId) {
-	    return (DeploymentEntity) getSqlSession().selectOne("selectDeploymentById", deploymentId);
-	  }
-	  
+public class ModelServiceTest extends TestCase {
+	
 
-	public void deleteDeployment(String deploymentId, boolean cascade) {
-		// TODO Auto-generated method stub
+	
+	public void testStartProcessById(){
+		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
 		
+		RuntimeService runtimeService=processEngine.getRuntimeService();
+		ProcessInstance processInstance=runtimeService.startProcessInstanceById("1","bizkeyValue");
+		
+		
+		assertNotNull(processInstance);
 	}
-
 }
