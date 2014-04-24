@@ -28,40 +28,41 @@ public abstract class AbstractFixFlowTestCase extends TestCase {
 	protected String deploymentId;
 
 	protected ProcessEngineConfigurationImpl processEngineConfiguration;
-	protected ModelService modelService;
-	protected RuntimeService runtimeService;
-	protected TaskService taskService;
-	protected FormService formService;
-	protected HistoryService historyService;
-	protected IdentityService identityService;
-	protected ScheduleService scheduleService;
+//	protected ModelService modelService;
+//	protected RuntimeService runtimeService;
+//	protected TaskService taskService;
+//	protected FormService formService;
+//	protected HistoryService historyService;
+//	protected IdentityService identityService;
+//	protected ScheduleService scheduleService;
 	
 	protected CommandContext commandContext;
 
 	protected void initializeServices() {
 		processEngineConfiguration = ((ProcessEngineImpl) processEngine).getProcessEngineConfiguration();
-		modelService = processEngine.getModelService();
-		runtimeService = processEngine.getRuntimeService();
-		taskService = processEngine.getTaskService();
-		formService = processEngine.getFormService();
-		historyService = processEngine.getHistoryService();
-		identityService = processEngine.getIdentityService();
-		scheduleService = processEngine.getScheduleService();
+//		modelService = processEngine.getModelService();
+//		runtimeService = processEngine.getRuntimeService();
+//		taskService = processEngine.getTaskService();
+//		formService = processEngine.getFormService();
+//		historyService = processEngine.getHistoryService();
+//		identityService = processEngine.getIdentityService();
+//		scheduleService = processEngine.getScheduleService();
 		
 		commandContext = new CommandContext(null, processEngine.getProcessEngineConfiguration());
 	}
 	
 	public void runBare() throws Throwable {
 
-		if (modelService == null) {
+//		if (modelService == null) {
 			initializeServices();
-		}
+//		}
 		DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager(DBUtils.getDataSource());
 		TransactionTemplate t = new TransactionTemplate(dataSourceTransactionManager);
 		t.execute(new TransactionCallbackWithoutResult() {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
 				execute();
+				commandContext.flushSession();
 				try {
 					DBUtils.getDataSource().getConnection().rollback();
 				} catch (SQLException e) {

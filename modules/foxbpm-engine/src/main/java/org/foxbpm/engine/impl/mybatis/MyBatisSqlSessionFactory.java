@@ -21,7 +21,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.sql.DataSource;
 
@@ -34,13 +36,35 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
+import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
+import org.foxbpm.engine.impl.entity.TaskEntity;
+import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 
 public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 
 	private SqlSessionFactory sqlSessionFactory;
+	protected static Map<Class<?>,String>  insertStatements = new ConcurrentHashMap<Class<?>, String>();
+	protected static Map<Class<?>,String>  updateStatements = new ConcurrentHashMap<Class<?>, String>();
+	protected static Map<Class<?>,String>  deleteStatements = new ConcurrentHashMap<Class<?>, String>();
+	protected static Map<Class<?>,String>  selectStatements = new ConcurrentHashMap<Class<?>, String>();
+	static{
+		insertStatements.put(ProcessInstanceEntity.class, "insertProcessInstance");
+		insertStatements.put(TaskEntity.class, "insertTask");
+		insertStatements.put(TokenEntity.class, "insertToken");
+		
+		updateStatements.put(ProcessInstanceEntity.class, "updateProcessInstance");
+		updateStatements.put(TaskEntity.class, "updateTask");
+		updateStatements.put(TokenEntity.class, "updateToken");
+		
+		selectStatements.put(ProcessInstanceEntity.class, "selectProcessInstanceById");
+		selectStatements.put(TaskEntity.class, "selectTaskById");
+		selectStatements.put(TokenEntity.class, "selectTokenById");
+	}
+	
 	public void init(DataSource dataSource) {
 		if (sqlSessionFactory == null) {
 			InputStream inputStream = null;
@@ -94,5 +118,20 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 		}
 		return sqlSession;
 	}
+	
+	public static String getInsertStatement(PersistentObject object) {
+	    return insertStatements.get(object.getClass());
+	}
 
+	public static String getUpdateStatement(PersistentObject object) {
+	    return updateStatements.get(object.getClass());
+	}
+
+	public static String getDeleteStatement(Class<?> persistentObjectClass) {
+	    return deleteStatements.get(persistentObjectClass);
+	}
+
+	public static String getSelectStatement(Class<?> persistentObjectClass) {
+		  return selectStatements.get(persistentObjectClass);
+	}
 }

@@ -31,7 +31,7 @@ public class ProcessDefinitionManager extends AbstractManager {
 		System.out.println("manager执行了");
 		TaskEntity task = new TaskEntity();
 		task.setId("200");
-		getSqlSession().insert("testInsert", task);
+		getSqlSession().insert(task);
 	}
 
 	public ProcessDefinitionEntity findProcessDefinitionById(String processDefinitionId) {

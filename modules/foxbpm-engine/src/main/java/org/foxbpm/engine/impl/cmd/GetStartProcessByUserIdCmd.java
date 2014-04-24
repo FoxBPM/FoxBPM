@@ -21,15 +21,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
 public class GetStartProcessByUserIdCmd implements Command<List<Map<String, String>>>{
 
-	protected String userId;
+	protected ProcessInstanceEntity userId;
 	
-	public GetStartProcessByUserIdCmd(String userId){
-		this.userId=userId;
+	public GetStartProcessByUserIdCmd(ProcessInstanceEntity processInstanceEntity){
+		this.userId=processInstanceEntity;
 	}
 	
 	public List<Map<String, String>> execute(CommandContext commandContext) {

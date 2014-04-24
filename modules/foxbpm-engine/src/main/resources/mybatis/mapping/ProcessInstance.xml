@@ -40,7 +40,7 @@
 	      )
   	</insert>
   	
-  	 <select id="selectProcessById" parameterType="java.lang.String" resultMap="processResultMap">
+  	 <select id="selectProcessInstanceById" parameterType="java.lang.String" resultMap="processResultMap">
 	    select 
 	    <include refid="processColumnList" />
 	    from foxbpm_run_processinstance

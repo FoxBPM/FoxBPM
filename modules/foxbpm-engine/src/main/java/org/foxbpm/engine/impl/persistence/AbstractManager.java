@@ -19,6 +19,7 @@
 package org.foxbpm.engine.impl.persistence;
 
 import java.util.Map;
+
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.sqlsession.ISqlSession;
@@ -42,8 +43,8 @@ public abstract class AbstractManager {
 		return commandContext.getSqlSession();
 	}
 	
-	public void insert(String insertStatement, PersistentObject persistentObject) {
-		getSqlSession().insert(insertStatement, persistentObject);
+	public void insert(PersistentObject persistentObject) {
+		getSqlSession().insert(persistentObject);
 	}
 
 	public void delete(String deleteStatement, PersistentObject persistentObject) {
@@ -54,13 +55,16 @@ public abstract class AbstractManager {
 		getSqlSession().delete(deleteStatement, parameter);
 	}
 	
-	public void update(String updateStatement, PersistentObject persistentObject){
-		getSqlSession().update(updateStatement, persistentObject);
+	public void update(PersistentObject persistentObject){
+		getSqlSession().update(persistentObject);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> getPersistentDbMap(String statement, PersistentObject persistentObject){
-
 		return (Map<String, Object>)getSqlSession().selectOne(statement, persistentObject);
+	}
+	
+	public <T extends PersistentObject> T selectById(Class<T> entityClass,String id){
+		return (T) getSqlSession().selectById(entityClass,id);
 	}
 }

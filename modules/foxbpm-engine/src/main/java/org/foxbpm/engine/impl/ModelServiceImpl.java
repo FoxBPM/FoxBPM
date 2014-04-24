@@ -22,13 +22,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.ModelService;
-import org.foxbpm.engine.impl.cmd.GetStartProcessByUserIdCmd;
-import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 
 public class ModelServiceImpl extends ServiceImpl implements ModelService {
 
-	public List<Map<String, String>> getStartProcessByUserId(ProcessInstanceEntity processInstanceEntity) {
-		return commandExecutor.execute(new GetStartProcessByUserIdCmd(processInstanceEntity));
+	public List<Map<String, String>> getStartProcessByUserId(String userId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -26,53 +26,45 @@ import org.foxbpm.engine.impl.db.SqlCommand;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 
 public class JdbcSqlSession implements ISqlSession {
-	Connection connection ;
-	SqlCommand sqlCommand;
-	public JdbcSqlSession(Connection connection){
-		this.connection = connection;
-		sqlCommand = new SqlCommand(connection);
-	}
-	public void insert(String insertStatement, PersistentObject persistentObject) {
+	public void closeSession() {
 		// TODO Auto-generated method stub
-		Object []params = new Object[]{"2000","2000"};
-		sqlCommand.execute("insert into demotable(col1,col2) values (?,?)", params);
+		
 	}
-
 	public void delete(String deleteStatement, Object parameter) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	public void insert(PersistentObject persistentObject) {
+		// TODO Auto-generated method stub
+		
+	}
 	public void delete(String deleteStatement, PersistentObject persistentObject) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	public void update(String updateStatement, PersistentObject persistentObject) {
+	public void update(PersistentObject persistentObject) {
 		// TODO Auto-generated method stub
 		
 	}
-
 	public List<?> selectList(String statement) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 	public List<?> selectList(String statement, Object parameter) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 	public Object selectOne(String statement, Object parameter) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public void closeSession() {
-		try {
-			this.connection.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public <T extends PersistentObject> T selectById(Class<T> entityClass,
+			String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public void flush() {
+		// TODO Auto-generated method stub
+		
 	}
 }

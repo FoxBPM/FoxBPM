@@ -18,8 +18,6 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
-import java.util.List;
-
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 
 /**
@@ -30,11 +28,11 @@ import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 public class ProcessInstanceManager extends AbstractManager {
 
 	public void save(ProcessInstanceEntity processInstanceEntity){
-		insert("insertProcessInstance",processInstanceEntity);
+		insert(processInstanceEntity);
 	}
 	
 	public ProcessInstanceEntity selectProcessById(String processId){
-		List<ProcessInstanceEntity> list = (List<ProcessInstanceEntity>)getSqlSession().selectList("selectProcessById", processId);
-		return list.get(0);
+		ProcessInstanceEntity processInstanceEntity = selectById(ProcessInstanceEntity.class, processId);
+		return processInstanceEntity;
 	}
 }

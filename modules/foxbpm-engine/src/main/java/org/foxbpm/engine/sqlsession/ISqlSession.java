@@ -23,15 +23,19 @@ import org.foxbpm.engine.db.PersistentObject;
 
 
 public interface ISqlSession {
-	public void insert(String insertStatement, PersistentObject persistentObject);
+	public void insert(PersistentObject persistentObject);
 	public void delete(String deleteStatement, Object parameter);
 	public void delete(String deleteStatement, PersistentObject persistentObject);
-	public void update(String updateStatement, PersistentObject persistentObject);
+	public void update(PersistentObject persistentObject);
 
 	public List<?> selectList(String statement);
 
 	public List<?> selectList(String statement, Object parameter) ;
 
 	public Object selectOne(String statement, Object parameter);
+	
+	public <T extends PersistentObject> T selectById(Class<T> entityClass, String id);
+	
+	public void flush();
 	public void closeSession();
 }

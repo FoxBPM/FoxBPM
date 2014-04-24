@@ -40,6 +40,6 @@ public class JdbcSqlSessionFactory implements ISqlSessionFactory {
 		} catch (SQLException e) {
 			throw new FoxBPMException("jdbc数据库连接获取失败，请检查连接池配置",e);
 		}
-		return new JdbcSqlSession(connection);
+		return new JdbcSqlSession();
 	}
 }
