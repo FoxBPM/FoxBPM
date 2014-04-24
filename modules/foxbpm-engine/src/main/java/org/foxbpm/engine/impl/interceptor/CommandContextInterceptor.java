@@ -52,6 +52,7 @@ public class CommandContextInterceptor extends CommandInterceptor {
 	      
 	    }finally {
 	    	try{
+	    		context.flushSession();
 	    		context.close();
 	    	}finally{
 	    		Context.removeCommandContext();
