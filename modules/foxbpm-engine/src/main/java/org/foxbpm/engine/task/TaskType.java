@@ -6,12 +6,12 @@ public class TaskType {
 	/**
 	 * foxbpm流程引擎产生的任务
 	 */
-	public static final String FIXFLOWTASK="foxbpmtask";
+	public static final String FOXBPMTASK="foxbpmtask";
 	
 	/**
 	 * foxbpm产生的通知型任务
 	 */
-	public static final String FIXNOTICETASK="noticetask";
+	public static final String NOTICETASK="noticetask";
 
 
 	/**
