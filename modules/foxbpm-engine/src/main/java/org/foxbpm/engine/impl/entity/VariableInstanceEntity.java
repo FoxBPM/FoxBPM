@@ -53,4 +53,9 @@ public class VariableInstanceEntity implements VariableInstance, PersistentObjec
 		return null;
 	}
 
+	public boolean isModified() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

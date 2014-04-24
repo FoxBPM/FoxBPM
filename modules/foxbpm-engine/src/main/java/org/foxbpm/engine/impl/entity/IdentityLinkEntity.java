@@ -136,4 +136,9 @@ public class IdentityLinkEntity implements Serializable, IdentityLink, Persisten
 		return null;
 	}
 
+	public boolean isModified() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

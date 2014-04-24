@@ -151,4 +151,9 @@ public class DeploymentEntity implements Serializable, Deployment, PersistentObj
 		return "DeploymentEntity[id=" + id + ", name=" + name + "]";
 	}
 
+	public boolean isModified() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

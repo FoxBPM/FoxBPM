@@ -87,4 +87,9 @@ public class ResourceEntity implements Serializable, PersistentObject {
 		return "ResourceEntity[id=" + id + ", name=" + name + "]";
 	}
 
+	public boolean isModified() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

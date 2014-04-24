@@ -289,5 +289,10 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 		return 0;
 	}
 
+	public boolean isModified() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	
 }

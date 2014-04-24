@@ -163,4 +163,9 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 
 	}
 
+	public boolean isModified() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
