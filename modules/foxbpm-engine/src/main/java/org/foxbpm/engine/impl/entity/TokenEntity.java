@@ -47,8 +47,7 @@ public class TokenEntity extends KernelTokenImpl implements Token,PersistentObje
 	}
 
 	public void setId(String id) {
-		// TODO Auto-generated method stub
-		
+		this.id=id;
 	}
 	
 	public String getProcessInstanceId() {
