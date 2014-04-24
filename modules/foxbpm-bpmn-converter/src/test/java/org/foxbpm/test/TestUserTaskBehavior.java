@@ -16,8 +16,8 @@ public class TestUserTaskBehavior extends KernelTestCase{
 public void testProcessDefinitionBuilder(){
 	
 	ProcessModelParseHandler parse = new BpmnParseHandlerImpl();
-	InputStream is = this.getClass().getClassLoader().getResourceAsStream("process_test222.bpmn");
-	KernelProcessDefinition processDefinition = parse.createProcessDefinition("process_test222",is);
+	InputStream is = this.getClass().getClassLoader().getResourceAsStream("process_2222.bpmn");
+	KernelProcessDefinition processDefinition = parse.createProcessDefinition("process_2222",is);
 	KernelProcessInstance processInstance=processDefinition.createProcessInstance();
 	processInstance.start();
 	

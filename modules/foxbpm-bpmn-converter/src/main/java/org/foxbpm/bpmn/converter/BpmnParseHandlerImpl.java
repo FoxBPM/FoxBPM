@@ -55,10 +55,10 @@ import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
 public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 
 	public KernelProcessDefinition createProcessDefinition(String processId, Object processFile) {
-
+		InputStream is = this.getClass().getClassLoader().getResourceAsStream("process_2222.bpmn");
 		Process process = null;
 		if (processFile != null) {
-			process = createProcess(processId, (InputStream) processFile);
+			process = createProcess(processId, is);
 
 		}
 
