@@ -20,6 +20,7 @@ package org.foxbpm.test.engine.manage;
 import java.util.Date;
 
 import org.foxbpm.engine.impl.entity.TokenEntity;
+import org.foxbpm.engine.impl.util.GuidUtil;
 
 public class TokenManageTest extends AbstractFoxBpmManageTestCase {
 
@@ -27,6 +28,8 @@ public class TokenManageTest extends AbstractFoxBpmManageTestCase {
 		
 		Date date = new Date();
 		TokenEntity tokenEntity = new TokenEntity();
+		String id = GuidUtil.CreateGuid();
+		tokenEntity.setId(id);
 		tokenEntity.setName("name");
 		tokenEntity.setProcessInstanceId("processInstanceId");
 		tokenEntity.setNodeId("nodeId");
@@ -40,5 +43,11 @@ public class TokenManageTest extends AbstractFoxBpmManageTestCase {
 		tokenEntity.setActive(true);
 		tokenEntity.setSubProcessRootToken(true);
 		commandContext.getTokenManager().insert(tokenEntity);
+		
+		commandContext.flushSession();
+		
+		TokenEntity token = commandContext.getTokenManager().selectById(TokenEntity.class, id);
+		System.out.println(token.isLocked());
+		
 	}
 }

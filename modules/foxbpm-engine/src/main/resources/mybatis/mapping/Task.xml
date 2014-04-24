@@ -56,7 +56,7 @@
       CLAIM_TIME, NAME, CREATE_TIME, 
       START_TIME, ISBLOCKING, END_TIME, 
       DUEDATE, PRIORITY, CATEGORY, 
-      OWNER, DELEGATIONSTATESTRING, BIZKEY, 
+      OWNER, DELEGATIONSTATE, BIZKEY, 
       COMMAND_TYPE, COMMAND_MESSAGE, TASK_COMMENT, 
       NODE_NAME, PROCESSDEFINITION_KEY, FORMURI, 
       TASKGROUP, TASKTYPE, PROCESSDEFINITION_NAME, 
@@ -73,10 +73,10 @@
       #{dueDate,jdbcType=TIMESTAMP}, #{priority,jdbcType=DECIMAL}, #{category,jdbcType=VARCHAR}, 
       #{owner,jdbcType=VARCHAR}, #{delegationState,jdbcType=VARCHAR}, #{bizKey,jdbcType=VARCHAR}, 
       #{commandType,jdbcType=VARCHAR}, #{commandMessage,jdbcType=VARCHAR}, #{taskComment,jdbcType=VARCHAR}, 
-      #{nodeName,jdbcType=VARCHAR}, #{processdefinitionKey,jdbcType=VARCHAR}, #{formUri,jdbcType=VARCHAR}, 
-      #{taskGroup,jdbcType=VARCHAR}, #{taskType,jdbcType=VARCHAR}, #{processdefinitionName,jdbcType=VARCHAR}, 
+      #{nodeName,jdbcType=VARCHAR}, #{processDefinitionKey,jdbcType=VARCHAR}, #{formUri,jdbcType=VARCHAR}, 
+      #{taskGroup,jdbcType=VARCHAR}, #{taskType,jdbcType=VARCHAR}, #{processDefinitionName,jdbcType=VARCHAR}, 
       #{isCancelled,jdbcType=VARCHAR}, #{isSuspended,jdbcType=VARCHAR}, #{isOpen,jdbcType=VARCHAR}, 
-      #{isDraft,jdbcType=VARCHAR}, #{expectedExecutiontime,jdbcType=DECIMAL}, #{agent,jdbcType=VARCHAR}, 
+      #{isDraft,jdbcType=VARCHAR}, #{expectedExecutionTime,jdbcType=DECIMAL}, #{agent,jdbcType=VARCHAR}, 
       #{admin,jdbcType=VARCHAR}, #{formUriView,jdbcType=VARCHAR}, #{callActivityInstanceId,jdbcType=VARCHAR}, 
       #{commandId,jdbcType=VARCHAR}, #{pendingTaskId,jdbcType=VARCHAR}, #{archiveTime,jdbcType=TIMESTAMP}
       )
@@ -92,7 +92,7 @@
     AGENT, ADMIN, FORMURIVIEW, CALLACTIVITY_INSTANCE_ID, COMMAND_ID, PENDINGTASKID, ARCHIVE_TIME
   </sql>
 
-  <select id="selectTaskById" parameterType="java.lang.String" resultMap="processResultMap">
+  <select id="selectTaskById" parameterType="java.lang.String" resultMap="TaskResultMap">
 	    select 
 	    <include refid="Task_Column_List" />
 	    from foxbpm_run_task

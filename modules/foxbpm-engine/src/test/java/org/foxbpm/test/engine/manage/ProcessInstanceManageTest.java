@@ -42,6 +42,7 @@ public class ProcessInstanceManageTest extends AbstractFoxBpmManageTestCase {
 		processEntity.setUpdateTime(date);
 		processEntity.setParentTokenId("parentTokenId");
 		processEntity.setInstanceStatus("instanceStatus");
+		processEntity.setSuspended(true);
 		commandContext.getProcessInstanceManager().insert(processEntity);
 		
 		String processId = processEntity.getId();

@@ -14,7 +14,7 @@
     <result column="NODEENTER_TIME" property="nodeEnterTime" jdbcType="TIMESTAMP" />
     <result column="ARCHIVE_TIME" property="archiveTime" jdbcType="TIMESTAMP" />
     <result column="ISSUSPENDED" property="isSuspended" jdbcType="VARCHAR" />
-    <result column="ISLOCK" property="isLock" jdbcType="VARCHAR" />
+    <result column="ISLOCK" property="isLocked" jdbcType="VARCHAR" />
     <result column="ISACTIVE" property="isActive" jdbcType="VARCHAR" />
     <result column="ISSUBPROCESSROOTTOKEN" property="isSubProcessRootToken" jdbcType="VARCHAR" />
   </resultMap>
@@ -28,7 +28,7 @@
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{processInstanceId,jdbcType=VARCHAR}, 
       #{nodeId,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
       #{endTime,jdbcType=TIMESTAMP}, #{nodeEnterTime,jdbcType=TIMESTAMP}, #{archiveTime,jdbcType=TIMESTAMP}, 
-      #{isSuspended,jdbcType=VARCHAR}, #{isLock,jdbcType=VARCHAR}, #{isActive,jdbcType=VARCHAR}, 
+      #{isSuspended,jdbcType=VARCHAR}, #{isLocked,jdbcType=VARCHAR}, #{isActive,jdbcType=VARCHAR}, 
       #{isSubProcessRootToken,jdbcType=VARCHAR})
   </insert>
   
@@ -43,7 +43,7 @@
       NODEENTER_TIME = #{nodeEnterTime,jdbcType=TIMESTAMP},
       ARCHIVE_TIME = #{archiveTime,jdbcType=TIMESTAMP},
       ISSUSPENDED = #{isSuspended,jdbcType=VARCHAR},
-      ISLOCK = #{isLock,jdbcType=VARCHAR},
+      ISLOCK = #{isLocked,jdbcType=VARCHAR},
       ISACTIVE = #{isActive,jdbcType=VARCHAR},
       ISSUBPROCESSROOTTOKEN = #{isSubProcessRootToken,jdbcType=VARCHAR}
     where
