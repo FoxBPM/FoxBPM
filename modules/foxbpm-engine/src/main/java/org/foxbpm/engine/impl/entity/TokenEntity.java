@@ -14,11 +14,8 @@ public class TokenEntity extends KernelTokenImpl implements Token,PersistentObje
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
 
 	protected String processInstanceId;
-	
-
 	protected String nodeId;
 	protected String parentId;
 	protected Date startTime;
@@ -27,7 +24,6 @@ public class TokenEntity extends KernelTokenImpl implements Token,PersistentObje
 	protected Date archiveTime;
 	protected boolean isLocked = false;
 	protected boolean isSuspended = false;
-
 	
 
 	@Override
@@ -130,6 +126,10 @@ public class TokenEntity extends KernelTokenImpl implements Token,PersistentObje
 	public Map<String, Object> getPersistentState() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public boolean isModified() {
+		return true;
 	}
 
 }
