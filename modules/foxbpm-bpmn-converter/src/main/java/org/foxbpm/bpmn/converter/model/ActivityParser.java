@@ -19,8 +19,8 @@
 package org.foxbpm.bpmn.converter.model;
 
 import org.eclipse.bpmn2.BaseElement;
-import org.foxbpm.engine.impl.behavior.ActivityBehavior;
-import org.foxbpm.engine.impl.behavior.BaseElementBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.ActivityBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 
 public class ActivityParser extends FlowNodeParser {
 

@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2014 FoxBPM Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM ORG.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author kenshin
  * @author ych
+ * @author kenshin
  */
-package org.foxbpm.bpmn.converter.model;
+package org.foxbpm.engine.impl.bpmn.behavior;
 
-import org.eclipse.bpmn2.BaseElement;
-import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
+public class ExpressionDefinition extends BaseElementBehavior {
 
-public class BaseElementParser {
-	
-	protected BaseElementBehavior baseElementBehavior;
-	public BaseElementBehavior parser(BaseElement baseElement){
-
-		return baseElementBehavior;
+	private String id;
+	private String name;
+	private String value;
+	public String getId() {
+		return id;
 	}
-	
-	public void init(){
-		baseElementBehavior = new BaseElementBehavior();
+	public void setId(String id) {
+		this.id = id;
 	}
-
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getValue() {
+		return value;
+	}
+	public void setValue(String value) {
+		this.value = value;
+	}
 }

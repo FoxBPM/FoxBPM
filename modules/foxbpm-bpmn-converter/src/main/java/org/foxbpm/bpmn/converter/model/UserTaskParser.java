@@ -21,8 +21,8 @@ import java.util.List;
 
 import org.eclipse.bpmn2.BaseElement;
 import org.foxbpm.bpmn.converter.BpmnModelUtil;
-import org.foxbpm.engine.impl.behavior.BaseElementBehavior;
-import org.foxbpm.engine.impl.behavior.UserTaskBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
 import org.foxbpm.engine.impl.task.TaskAssigneeDefinition;
 import org.foxbpm.engine.impl.task.TaskCommandDefinition;
 import org.foxbpm.engine.impl.task.TaskDefinition;

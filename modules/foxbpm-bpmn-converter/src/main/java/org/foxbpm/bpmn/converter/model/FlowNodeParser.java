@@ -19,7 +19,7 @@
 package org.foxbpm.bpmn.converter.model;
 
 import org.eclipse.bpmn2.BaseElement;
-import org.foxbpm.engine.impl.behavior.BaseElementBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 
 public abstract class FlowNodeParser extends FlowElementParser {
 
