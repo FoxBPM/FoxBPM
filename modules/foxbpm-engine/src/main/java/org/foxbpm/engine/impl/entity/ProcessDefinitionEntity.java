@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtDefinition;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.kernel.process.KernelDefinitions;
@@ -31,20 +32,9 @@ import org.foxbpm.kernel.runtime.InterpretableProcessInstance;
 
 public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl implements ProcessDefinition,PersistentObject,HasRevision{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
-	public ProcessDefinitionEntity() {
-		super(null);
 
-	}
-	
-	public ProcessDefinitionEntity(String id) {
-		super(id);
-
-	}
 	
 	
 
@@ -56,6 +46,16 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 	protected String diagramResourceName;
 
 	protected String subject;
+	
+	public ProcessDefinitionEntity() {
+		super(null);
+
+	}
+	
+	public ProcessDefinitionEntity(String id) {
+		super(id);
+
+	}
 
 	public String getSubject() {
 		return subject;
@@ -108,6 +108,10 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 		if (bizKey != null) {
 			processInstance.setBizKey(bizKey);
 		}
+		
+		Context.getCommandContext().getProcessInstanceManager()
+	      .insert(processInstance);
+	    
 
 		return processInstance;
 	}

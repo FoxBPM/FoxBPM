@@ -19,4 +19,22 @@ package org.foxbpm.engine.exception;
 
 public class FoxBPMObjectNotFoundException extends FoxBPMException {
 
+	private static final long serialVersionUID = 1L;
+
+	private Class<?> objectClass;
+	
+	public FoxBPMObjectNotFoundException(String exceptionCode, String objectName ,Class<?> objectClass) {
+		super(exceptionCode, new Object[] { objectName });
+		this.objectClass = objectClass;
+	}
+
+	public FoxBPMObjectNotFoundException(String exceptionCode, String objectName ,Class<?> objectClass, Throwable cause) {
+		super(exceptionCode, new Object[] { objectName },cause);
+		this.objectClass = objectClass;
+	}
+
+	public Class<?> getObjectClass() {
+		return objectClass;
+	}
+
 }

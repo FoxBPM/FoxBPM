@@ -5,7 +5,9 @@ import java.util.Map;
 
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.task.DelegationState;
 import org.foxbpm.engine.task.Task;
+import org.foxbpm.engine.task.TaskType;
 import org.foxbpm.kernel.runtime.impl.KernelVariableScopeImpl;
 
 public class TaskEntity extends KernelVariableScopeImpl implements Task, PersistentObject, HasRevision {
@@ -14,8 +16,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	
+
 	protected String id;
 
 	protected String name;
@@ -54,7 +55,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 
 	protected boolean isBlocking = false;
 
-	protected int priority = TaskInstance.PRIORITY_NORMAL;
+	protected int priority = Task.PRIORITY_NORMAL;
 
 	protected String category;
 
@@ -72,7 +73,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 
 	protected String taskGroup;
 
-	protected TaskInstanceType taskInstanceType = TaskInstanceType.FIXFLOWTASK;
+	protected String taskType = TaskType.FIXFLOWTASK;
 
 	protected boolean isCancelled = false;
 
@@ -99,11 +100,32 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 	protected String commandType;
 
 	protected String commandMessage;
+	
+	
+	
+	
 
+	public DelegationState getDelegationState() {
+		return delegationState;
+	}
+
+	public void setDelegationState(DelegationState delegationState) {
+		this.delegationState = delegationState;
+	}
+
+	public String getDelegationStateString() {
+		return (delegationState != null ? delegationState.toString() : null);
+	}
+
+	public void setDelegationStateString(String delegationStateString) {
+		this.delegationState = (delegationStateString != null ? 
+				DelegationState.valueOf(DelegationState.class, delegationStateString)
+				: null);
+	}
 
 	public void setRevision(int revision) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public int getRevision() {
@@ -138,9 +160,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 	@Override
 	protected void ensureParentInitialized() {
 		// TODO Auto-generated method stub
-		
+
 	}
-
-
 
 }
