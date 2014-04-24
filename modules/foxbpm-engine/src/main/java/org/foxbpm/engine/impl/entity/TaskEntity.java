@@ -21,6 +21,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 
 	protected String name;
 
+	
 	protected String description;
 
 	protected String processInstanceId;
@@ -167,5 +168,326 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getProcessInstanceId() {
+		return processInstanceId;
+	}
+
+	public void setProcessInstanceId(String processInstanceId) {
+		this.processInstanceId = processInstanceId;
+	}
+
+	public String getProcessDefinitionId() {
+		return processDefinitionId;
+	}
+
+	public void setProcessDefinitionId(String processDefinitionId) {
+		this.processDefinitionId = processDefinitionId;
+	}
+
+	public String getProcessDefinitionKey() {
+		return processDefinitionKey;
+	}
+
+	public void setProcessDefinitionKey(String processDefinitionKey) {
+		this.processDefinitionKey = processDefinitionKey;
+	}
+
+	public String getProcessDefinitionName() {
+		return processDefinitionName;
+	}
+
+	public void setProcessDefinitionName(String processDefinitionName) {
+		this.processDefinitionName = processDefinitionName;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
+	}
+
+	public String getTokenId() {
+		return tokenId;
+	}
+
+	public void setTokenId(String tokenId) {
+		this.tokenId = tokenId;
+	}
+
+	public String getNodeId() {
+		return nodeId;
+	}
+
+	public void setNodeId(String nodeId) {
+		this.nodeId = nodeId;
+	}
+
+	public String getNodeName() {
+		return nodeName;
+	}
+
+	public void setNodeName(String nodeName) {
+		this.nodeName = nodeName;
+	}
+
+	public String getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
+
+	public String getAssignee() {
+		return assignee;
+	}
+
+	public void setAssignee(String assignee) {
+		this.assignee = assignee;
+	}
+
+	public Date getClaimTime() {
+		return claimTime;
+	}
+
+	public void setClaimTime(Date claimTime) {
+		this.claimTime = claimTime;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+
+	public Date getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(Date dueDate) {
+		this.dueDate = dueDate;
+	}
+
+	public boolean isBlocking() {
+		return isBlocking;
+	}
+
+	public void setBlocking(boolean isBlocking) {
+		this.isBlocking = isBlocking;
+	}
+
+	public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
+
+	public String getBizKey() {
+		return bizKey;
+	}
+
+	public void setBizKey(String bizKey) {
+		this.bizKey = bizKey;
+	}
+
+	public String getTaskComment() {
+		return taskComment;
+	}
+
+	public void setTaskComment(String taskComment) {
+		this.taskComment = taskComment;
+	}
+
+	public String getFormUri() {
+		return formUri;
+	}
+
+	public void setFormUri(String formUri) {
+		this.formUri = formUri;
+	}
+
+	public String getFormUriView() {
+		return formUriView;
+	}
+
+	public void setFormUriView(String formUriView) {
+		this.formUriView = formUriView;
+	}
+
+	public String getTaskGroup() {
+		return taskGroup;
+	}
+
+	public void setTaskGroup(String taskGroup) {
+		this.taskGroup = taskGroup;
+	}
+
+	public String getTaskType() {
+		return taskType;
+	}
+
+	public void setTaskType(String taskType) {
+		this.taskType = taskType;
+	}
+
+	public boolean isCancelled() {
+		return isCancelled;
+	}
+
+	public void setCancelled(boolean isCancelled) {
+		this.isCancelled = isCancelled;
+	}
+
+	public boolean isSuspended() {
+		return isSuspended;
+	}
+
+	public void setSuspended(boolean isSuspended) {
+		this.isSuspended = isSuspended;
+	}
+
+	public boolean isOpen() {
+		return isOpen;
+	}
+
+	public void setOpen(boolean isOpen) {
+		this.isOpen = isOpen;
+	}
+
+	public boolean isDraft() {
+		return isDraft;
+	}
+
+	public void setDraft(boolean isDraft) {
+		this.isDraft = isDraft;
+	}
+
+	public int getExpectedExecutionTime() {
+		return expectedExecutionTime;
+	}
+
+	public void setExpectedExecutionTime(int expectedExecutionTime) {
+		this.expectedExecutionTime = expectedExecutionTime;
+	}
+
+	public String getAgent() {
+		return agent;
+	}
+
+	public void setAgent(String agent) {
+		this.agent = agent;
+	}
+
+	public String getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(String admin) {
+		this.admin = admin;
+	}
+
+	public String getCallActivityInstanceId() {
+		return callActivityInstanceId;
+	}
+
+	public void setCallActivityInstanceId(String callActivityInstanceId) {
+		this.callActivityInstanceId = callActivityInstanceId;
+	}
+
+	public String getPendingTaskId() {
+		return pendingTaskId;
+	}
+
+	public void setPendingTaskId(String pendingTaskId) {
+		this.pendingTaskId = pendingTaskId;
+	}
+
+	public Date getArchiveTime() {
+		return archiveTime;
+	}
+
+	public void setArchiveTime(Date archiveTime) {
+		this.archiveTime = archiveTime;
+	}
+
+	public String getCommandId() {
+		return commandId;
+	}
+
+	public void setCommandId(String commandId) {
+		this.commandId = commandId;
+	}
+
+	public String getCommandType() {
+		return commandType;
+	}
+
+	public void setCommandType(String commandType) {
+		this.commandType = commandType;
+	}
+
+	public String getCommandMessage() {
+		return commandMessage;
+	}
+
+	public void setCommandMessage(String commandMessage) {
+		this.commandMessage = commandMessage;
+	}
+
 
 }
