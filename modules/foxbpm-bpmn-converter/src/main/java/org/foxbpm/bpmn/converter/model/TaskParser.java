@@ -19,8 +19,8 @@
 package org.foxbpm.bpmn.converter.model;
 
 import org.eclipse.bpmn2.BaseElement;
-import org.foxbpm.engine.impl.behavior.BaseElementBehavior;
-import org.foxbpm.engine.impl.behavior.TaskBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.TaskBehavior;
 
 public class TaskParser extends ActivityParser {
 

@@ -15,7 +15,7 @@ import org.foxbpm.bpmn.converter.model.BaseElementParser;
 import org.foxbpm.bpmn.converter.model.EndEventParser;
 import org.foxbpm.bpmn.converter.model.StartEventParser;
 import org.foxbpm.bpmn.converter.model.UserTaskParser;
-import org.foxbpm.engine.impl.behavior.BaseElementBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
