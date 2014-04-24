@@ -52,4 +52,29 @@
 	    ROOTTOKEN_ID, BIZ_KEY, INITIATOR, START_AUTHOR, ISSUSPENDED, PARENT_ID, PARENT_TOKEN_ID, 
 	    UPDATE_TIME, PROCESSLOCATION, INSTANCE_STATUS, ARCHIVE_TIME
   	</sql>
+  	
+  	 <update id="updateProcessInstance" parameterType="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">
+    update 
+      foxbpm_run_processinstance
+    set 
+      PROCESSDEFINITION_ID = #{processDefinitionId,jdbcType=VARCHAR},
+      PROCESSDEFINITION_KEY = #{processDefinitionKey,jdbcType=VARCHAR},
+      SUBJECT = #{subject,jdbcType=VARCHAR},
+      START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      DEFINITION_ID = #{definitionId,jdbcType=VARCHAR},
+      ROOTTOKEN_ID = #{rootTokenId,jdbcType=VARCHAR},
+      BIZ_KEY = #{bizKey,jdbcType=VARCHAR},
+      INITIATOR = #{initiator,jdbcType=VARCHAR},
+      START_AUTHOR = #{startAuthor,jdbcType=VARCHAR},
+      ISSUSPENDED = #{isSuspended,jdbcType=VARCHAR},
+      PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      PARENT_TOKEN_ID = #{parentTokenId,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      PROCESSLOCATION = #{processLocation,jdbcType=VARCHAR},
+      INSTANCE_STATUS = #{instanceStatus,jdbcType=VARCHAR},
+      ARCHIVE_TIME = #{archiveTime,jdbcType=TIMESTAMP}
+    where
+      where ID = #{id,jdbcType=VARCHAR}
+  </update>
 </mapper>

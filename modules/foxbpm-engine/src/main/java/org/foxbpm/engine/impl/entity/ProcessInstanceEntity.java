@@ -113,6 +113,10 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	/** 实例内容管理器 */
 	protected ContextInstance contextInstance;
 
+	
+	public boolean isModified() {
+		return true;
+	}
 
 	/** 构造函数 */
 	public ProcessInstanceEntity() {

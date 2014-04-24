@@ -26,7 +26,7 @@ public interface ISqlSession {
 	public void insert(PersistentObject persistentObject);
 	public void delete(String deleteStatement, Object parameter);
 	public void delete(String deleteStatement, PersistentObject persistentObject);
-	public void update(PersistentObject persistentObject);
+//	public void update(PersistentObject persistentObject);
 
 	public List<?> selectList(String statement);
 

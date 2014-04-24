@@ -27,11 +27,22 @@ public class ProcessInstanceManageTest extends AbstractFixFlowTestCase {
 		processEntity.setUpdateTime(date);
 		processEntity.setParentTokenId("parentTokenId");
 		processEntity.setInstanceStatus("instanceStatus");
-		commandContext.getProcessInstanceManager().save(processEntity);
+		commandContext.getProcessInstanceManager().insert(processEntity);
+		
+		String processId = processEntity.getId();
+		ProcessInstanceEntity process2 = commandContext.getProcessInstanceManager().selectById(ProcessInstanceEntity.class, processId);
+		process2.setBizKey("bizKey2");
 	}
 	
 	public void testSelectProcessById(){
-		ProcessInstanceEntity process = commandContext.getProcessInstanceManager().selectProcessById("c82d0948-3d1c-4d64-9927-3a12396ef04b");
-		assertNotNull(process);
+//		System.out.println("ddddddddddddddddddddddddddddddddddddddddddddd");
+//		ProcessInstanceEntity process = commandContext.getProcessInstanceManager().selectById(ProcessInstanceEntity.class, "c82d0948-3d1c-4d64-9927-3a12396ef04b");
+//		assertNotNull(process);
+//		process.setBizKey("bizkey_2");
+//		commandContext.getProcessInstanceManager().update(process);
+//		process = commandContext.getProcessInstanceManager().selectById(ProcessInstanceEntity.class, "c82d0948-3d1c-4d64-9927-3a12396ef04b");
+//		System.out.println(process.getBizKey());
+//		System.out.println("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+		
 	}
 }

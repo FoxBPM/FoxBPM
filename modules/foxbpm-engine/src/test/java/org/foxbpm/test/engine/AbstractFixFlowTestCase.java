@@ -63,11 +63,11 @@ public abstract class AbstractFixFlowTestCase extends TestCase {
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
 				execute();
 				commandContext.flushSession();
-				try {
-					DBUtils.getDataSource().getConnection().rollback();
-				} catch (SQLException e) {
-					throw new RuntimeException(e);
-				}
+//				try {
+//					DBUtils.getDataSource().getConnection().rollback();
+//				} catch (SQLException e) {
+//					throw new RuntimeException(e);
+//				}
 			}
 		});
 	}

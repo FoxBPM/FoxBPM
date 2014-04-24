@@ -36,7 +36,6 @@ public class MybatisSqlSession implements ISqlSession {
 	public static Logger log = LoggerFactory.getLogger(MybatisSqlSession.class);
 	 protected Map<Class<?>, Map<String, CachedObject>> cachedObjects = new HashMap<Class<?>, Map<String,CachedObject>>();
 	protected List<PersistentObject> insertedObjects = new ArrayList<PersistentObject>();
-	protected List<PersistentObject> updatedObjects = new ArrayList<PersistentObject>();
 	public MybatisSqlSession(SqlSession sqlSession){
 		this.sqlSession = sqlSession;
 	}
@@ -46,10 +45,9 @@ public class MybatisSqlSession implements ISqlSession {
 		cachePut(persistentObject, false);
 	}
 
-	public void update(PersistentObject persistentObject) {
-		updatedObjects.add(persistentObject);
-	    cachePut(persistentObject, false);
-	}
+//	public void update(PersistentObject persistentObject) {
+//	    cachePut(persistentObject,true);
+//	}
 
 	@SuppressWarnings("unchecked")
 	public <T extends PersistentObject> T selectById(Class<T> entityClass,String id) {
@@ -87,20 +85,37 @@ public class MybatisSqlSession implements ISqlSession {
 		return null;
 	}
 	
+	public void flushUpdate(List<PersistentObject> updateObjects){
+		for (PersistentObject updateObject : updateObjects) {
+			String updateStatement = MyBatisSqlSessionFactory.getUpdateStatement(updateObject);
+			if (updateStatement == null) {
+				throw new FoxBPMDbException("no insert statement for "+ updateObject.getClass()
+						+ " in the ibatis mapping files");
+			}
+			log.debug("updating: {}", updateObject);
+			sqlSession.update(updateStatement, updateObject);
+		}
+		updateObjects.clear();
+	}
+	
 	public void flushInsert(){
 		log.debug("flush summary: {} insert", insertedObjects.size());
-		for(PersistentObject insertedObject: insertedObjects) {
-		    String insertStatement = MyBatisSqlSessionFactory.getInsertStatement(insertedObject);
-		    if(insertStatement==null) {
-		      throw new FoxBPMDbException("no insert statement for "+insertedObject.getClass()+" in the ibatis mapping files");
-		    }
-		    log.debug("inserting: {}", insertedObject);
-		    sqlSession.insert(insertStatement, insertedObject);
-		  }
-		  insertedObjects.clear();
+		for (PersistentObject insertedObject : insertedObjects) {
+			String insertStatement = MyBatisSqlSessionFactory.getInsertStatement(insertedObject);
+			if (insertStatement == null) {
+				throw new FoxBPMDbException("no insert statement for "+ insertedObject.getClass()
+						+ " in the ibatis mapping files");
+			}
+			log.debug("inserting: {}", insertedObject);
+			sqlSession.insert(insertStatement, insertedObject);
+		}
+		insertedObjects.clear();
 	}
 	
 	public void flush() {
+		
+		List<PersistentObject> updateObjects = getUpdateObjects();
+		flushUpdate(updateObjects);
 		flushInsert();
 	}
 	
@@ -108,6 +123,22 @@ public class MybatisSqlSession implements ISqlSession {
 		if(sqlSession != null){
 			sqlSession.close();
 		}
+	}
+	
+	public List<PersistentObject> getUpdateObjects(){
+		List<PersistentObject> updatedObjects = new ArrayList<PersistentObject>();
+		for (Class<?> clazz : cachedObjects.keySet()) {
+			Map<String, CachedObject> classCache = cachedObjects.get(clazz);
+			for (CachedObject cachedObject : classCache.values()) {
+				if(cachedObject.isStore()){
+					PersistentObject persistentObject = cachedObject.getPersistentObject();
+					if (!persistentObject.isModified()) {
+						updatedObjects.add(persistentObject);
+					}
+				}
+			}
+		}
+		return updatedObjects;
 	}
 	
 	
@@ -177,20 +208,18 @@ public class MybatisSqlSession implements ISqlSession {
 
 	public static class CachedObject {
 		protected PersistentObject persistentObject;
-		protected Object persistentObjectState;
+		protected boolean storeState;
 
 		public CachedObject(PersistentObject persistentObject,boolean storeState) {
 			this.persistentObject = persistentObject;
-			if (storeState) {
-				this.persistentObjectState = persistentObject.getPersistentState();
-			}
+			this.storeState = storeState;
 		}
 		public PersistentObject getPersistentObject() {
 			return persistentObject;
 		}
 
-		public Object getPersistentObjectState() {
-			return persistentObjectState;
+		public boolean isStore() {
+			return storeState;
 		}
 	}
 }

@@ -55,9 +55,9 @@ public abstract class AbstractManager {
 		getSqlSession().delete(deleteStatement, parameter);
 	}
 	
-	public void update(PersistentObject persistentObject){
-		getSqlSession().update(persistentObject);
-	}
+//	public void update(PersistentObject persistentObject){
+//		getSqlSession().update(persistentObject);
+//	}
 	
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> getPersistentDbMap(String statement, PersistentObject persistentObject){
