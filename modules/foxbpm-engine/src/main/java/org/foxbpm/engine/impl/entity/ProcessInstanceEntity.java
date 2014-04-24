@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtInstance;
 import org.foxbpm.engine.impl.runtime.ContextInstanceImpl;
 import org.foxbpm.engine.impl.util.GuidUtil;
@@ -36,18 +37,17 @@ import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
 /**
  * 流程实例实体
+ * 
  * @author kenshin
- *
+ * 
  */
 public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements ProcessInstance, PersistentObject, HasRevision {
 
 	private static final long serialVersionUID = 1L;
 
-
-
 	/** 流程定义唯一版本编号 */
 	protected String processDefinitionId;
-	
+
 	/** 流程定义编号 */
 	protected String processDefinitionKey;
 
@@ -62,7 +62,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 
 	/** 父流程实例编号 */
 	protected String parentId;
-	
+
 	/** 实例主题 */
 	protected String subject;
 
@@ -86,13 +86,13 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 
 	/** 流程实例归档时间 */
 	protected Date archiveTime;
-	
+
 	/** 流程实例状态 */
 	protected String instanceStatus;
 
 	/** 流程实例位置 */
 	protected String processLocation;
-	
+
 	/** 是否暂停 */
 	protected boolean isSuspended = false;
 
@@ -103,7 +103,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 
 	/** 任务集合 */
 	protected List<TaskEntity> tasks;
-	
+
 	/** 任务身份集合 */
 	protected List<IdentityLinkEntity> identityLinks;
 
@@ -112,7 +112,6 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 
 	/** 实例内容管理器 */
 	protected ContextInstance contextInstance;
-
 
 	/** 构造函数 */
 	public ProcessInstanceEntity() {
@@ -133,6 +132,11 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	}
 
 	@Override
+	public void start() {
+		super.start();
+	}
+
+	@Override
 	public KernelTokenImpl createRootToken() {
 		super.createRootToken();
 		this.rootTokenId = this.rootToken.getId();
@@ -144,7 +148,9 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		TokenEntity tokenObj = new TokenEntity();
 		String tokenObjId = GuidUtil.CreateGuid();
 		tokenObj.setId(tokenObjId);
-		return new TokenEntity();
+		Context.getCommandContext().getTokenManager().insert(tokenObj);
+
+		return tokenObj;
 	}
 
 	@Override

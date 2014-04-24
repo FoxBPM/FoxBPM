@@ -122,5 +122,21 @@ public interface ExceptionCode {
 	public static String RULEEXCEPTION_CLASSANDSCRIPTEMPTY = "ruleException_classAndScriptEmpty";
 	
 	
+	
+	// 对象没找到异常
+	
+	/**  流程定义对象没找到*/
+	public static String OBJECTNOTFOUNDEXCEPTION_FINDDEFINITIONBYID = "objectNotFoundException_findDefinitionById";
+	
+	/**  流程定义对象没找到*/
+	public static String OBJECTNOTFOUNDEXCEPTION_FINDDEFINITIONBYKEY = "objectNotFoundException_findDefinitionByKey";
+	
+	
+	
+	// 参数异常为空
+	public static String ILLEGALARGUMENTEXCEPTION_ISNULL = "IllegalArgumentException_isNull";
+	
+	
+	
 
 }

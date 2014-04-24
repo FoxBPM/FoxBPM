@@ -23,5 +23,9 @@ package org.foxbpm.engine.task;
  *
  */
 public interface Task {
+	
+	int PRIORITY_MINIUM = 0;
+	int PRIORITY_NORMAL = 50;
+	int PRIORITY_MAXIMUM = 100;
 
 }
