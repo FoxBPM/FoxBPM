@@ -19,7 +19,7 @@
     <result column="ISSUBPROCESSROOTTOKEN" property="isSubProcessRootToken" jdbcType="VARCHAR" />
   </resultMap>
   
-  <insert id="insert" parameterType="org.foxbpm.engine.impl.entity.TokenEntity" >
+  <insert id="insertToken" parameterType="org.foxbpm.engine.impl.entity.TokenEntity" >
     insert into foxbpm_run_token (ID, NAME, PROCESSINSTANCE_ID, 
       NODE_ID, PARENT_ID, START_TIME, 
       END_TIME, NODEENTER_TIME, ARCHIVE_TIME, 
@@ -58,7 +58,7 @@
   <select id="selectTokenById" parameterType="java.lang.String" resultMap="TokenResultMap">
 	    select 
 	    <include refid="Token_Column_List" />
-	    from foxbpm_run_processinstance
+	    from foxbpm_run_token
 	    where ID = #{id,jdbcType=VARCHAR}
   </select>
 

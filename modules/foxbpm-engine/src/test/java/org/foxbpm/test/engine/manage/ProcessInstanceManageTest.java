@@ -1,12 +1,27 @@
-
+/**
+ * Copyright 1996-2014 FoxBPM ORG.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * @author ych
+ */
 package org.foxbpm.test.engine.manage;
 
 import java.util.Date;
 
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
-import org.foxbpm.test.engine.AbstractFixFlowTestCase;
 
-public class ProcessInstanceManageTest extends AbstractFixFlowTestCase {
+public class ProcessInstanceManageTest extends AbstractFoxBpmManageTestCase {
 
 	public void testSave(){
 		ProcessInstanceEntity processEntity = new ProcessInstanceEntity();
@@ -35,14 +50,13 @@ public class ProcessInstanceManageTest extends AbstractFixFlowTestCase {
 	}
 	
 	public void testSelectProcessById(){
-//		System.out.println("ddddddddddddddddddddddddddddddddddddddddddddd");
-//		ProcessInstanceEntity process = commandContext.getProcessInstanceManager().selectById(ProcessInstanceEntity.class, "c82d0948-3d1c-4d64-9927-3a12396ef04b");
-//		assertNotNull(process);
-//		process.setBizKey("bizkey_2");
-//		commandContext.getProcessInstanceManager().update(process);
-//		process = commandContext.getProcessInstanceManager().selectById(ProcessInstanceEntity.class, "c82d0948-3d1c-4d64-9927-3a12396ef04b");
-//		System.out.println(process.getBizKey());
-//		System.out.println("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+		System.out.println("ddddddddddddddddddddddddddddddddddddddddddddd");
+		ProcessInstanceEntity process = commandContext.getProcessInstanceManager().selectById(ProcessInstanceEntity.class, "c82d0948-3d1c-4d64-9927-3a12396ef04b");
+		assertNotNull(process);
+		process.setBizKey("bizkey_2");
+		process = commandContext.getProcessInstanceManager().selectById(ProcessInstanceEntity.class, "c82d0948-3d1c-4d64-9927-3a12396ef04b");
+		System.out.println(process.getBizKey());
+		System.out.println("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
 		
 	}
 }

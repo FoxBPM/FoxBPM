@@ -487,4 +487,8 @@ InterpretableExecutionContext  {
 		this.name = name;
 	}
 
+	public void setSubProcessRootToken(boolean isSubProcessRootToken) {
+		this.isSubProcessRootToken = isSubProcessRootToken;
+	}
+
 }
