@@ -43,7 +43,7 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 	protected KernelFlowNodeImpl startFlowNode;
 
 	/** 流程令牌集合 */
-	protected List<KernelTokenImpl> tokens = new ArrayList<KernelTokenImpl>();
+	protected List<KernelTokenImpl> tokens;
 
 	// 父流程
 	protected KernelProcessInstanceImpl parentProcessInstance;
@@ -69,8 +69,8 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 	 * @param parentProcessInstance
 	 *            父流程实例
 	 */
-	public void setParentProcessInstance(InterpretableProcessInstance parentProcessInstance) {
-		this.parentProcessInstance = (KernelProcessInstanceImpl) parentProcessInstance;
+	public void setParentProcessInstance(KernelProcessInstanceImpl parentProcessInstance) {
+		this.parentProcessInstance = parentProcessInstance;
 	}
 
 	public void ensureParentProcessInstanceTokenInitialized() {
@@ -115,12 +115,11 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 	public KernelTokenImpl createToken() {
 		return new KernelTokenImpl();
 	}
-	
+
 	/** 子类需要重写这个方法创建自己的ID */
-	public String createTokenId(){
+	public String createTokenId() {
 		return UUID.randomUUID().toString();
 	}
-	
 
 	/** 创建子令牌 */
 	public KernelTokenImpl createChildrenToken(KernelTokenImpl parent) {
@@ -141,14 +140,34 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 
 	}
 
+	public void signal() {
+		getRootToken().signal();
+	}
+
+	public void signal(String tokenId) {
+		List<KernelTokenImpl> tokenImpls = getTokens();
+		KernelTokenImpl tokenObj = null;
+		for (KernelTokenImpl kernelTokenImpl : tokenImpls) {
+			if (kernelTokenImpl.getId().equals(tokenId)) {
+				tokenObj = kernelTokenImpl;
+				break;
+			}
+		}
+		if (tokenObj != null) {
+			tokenObj.signal();
+		} else {
+			// 异常
+		}
+	}
+
 	/** 启动流程实例 */
 	public void start() {
 
-		if (this.rootToken.getFlowNode() == null) {
+		if (getRootToken().getFlowNode() == null) {
 			// 触发流程实例启动事件
-			rootToken.fireEvent(KernelEvent.PROCESS_START);
+			getRootToken().fireEvent(KernelEvent.PROCESS_START);
 			// 将令牌放置到开始节点中
-			rootToken.enter(startFlowNode);
+			getRootToken().enter(startFlowNode);
 
 		} else {
 			throw new KernelException("流程实例已经启动!");
@@ -209,9 +228,16 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 	}
 
 	public List<KernelTokenImpl> getTokens() {
+		ensureTokensInitialized();
 		return tokens;
 	}
 
+	/** 实例令牌集合初始化 子类需要重写 */
+	protected void ensureTokensInitialized() {
+		if (tokens == null) {
+			tokens = new ArrayList<KernelTokenImpl>();
+		}
+	}
 
 	public void addToken(KernelTokenImpl token) {
 
@@ -221,6 +247,9 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 
 	}
 
+	public void setTokens(List<KernelTokenImpl> tokens) {
+		this.tokens = tokens;
+	}
 
 	public boolean isEnded() {
 		return isEnded;
@@ -263,6 +292,10 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 	protected void signalParentProcessInstance() {
 		getParentProcessInstanceToken().signal();
 	}
+	
+	public void setRootToken(KernelTokenImpl rootToken) {
+		this.rootToken = rootToken;
+	}
 
 	@Override
 	protected KernelVariableScopeImpl getParentVariableScope() {
@@ -270,9 +303,7 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 		return null;
 	}
 
-	@Override
-	protected void ensureParentInitialized() {
-		// TODO Auto-generated method stub
-		
-	}
+	
+
+
 }

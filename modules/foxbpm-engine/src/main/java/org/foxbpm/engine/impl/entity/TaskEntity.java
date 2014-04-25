@@ -1,13 +1,17 @@
 package org.foxbpm.engine.impl.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.task.DelegationState;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskType;
+import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.runtime.impl.KernelVariableScopeImpl;
 
 public class TaskEntity extends KernelVariableScopeImpl implements Task, PersistentObject, HasRevision {
@@ -103,7 +107,75 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 	protected String commandMessage;
 	
 	
+	protected TokenEntity token;
+
+	protected ProcessInstanceEntity processInstance;
+
+	protected KernelFlowNode node;
+
+	protected TaskDefinition taskDefinition;
+
+	protected List<IdentityLinkEntity> taskIdentityLinks=new ArrayList<IdentityLinkEntity>();
+
+	protected TaskEntity parentTask;
+
 	
+
+	public ProcessInstanceEntity getProcessInstance() {
+		return processInstance;
+	}
+
+	public void setProcessInstance(ProcessInstanceEntity processInstance) {
+		setProcessInstanceId(processInstance.getId());
+		setProcessDefinitionId(processInstance.getProcessDefinitionId());
+		setProcessDefinitionKey(processInstance.getProcessDefinitionKey());
+		this.processInstance = processInstance;
+	}
+
+	
+	
+	public TokenEntity getToken() {
+		return token;
+	}
+
+	public void setToken(TokenEntity token) {
+		setTokenId(token.getId());
+		setProcessInstance(token.getProcessInstance());
+		this.token = token;
+	}
+
+	public KernelFlowNode getNode() {
+		return node;
+	}
+
+	public void setNode(KernelFlowNode node) {
+		setNodeId(node.getId());
+		this.node = node;
+	}
+
+	public TaskDefinition getTaskDefinition() {
+		return taskDefinition;
+	}
+
+	public void setTaskDefinition(TaskDefinition taskDefinition) {
+		this.taskDefinition = taskDefinition;
+	}
+
+	public List<IdentityLinkEntity> getTaskIdentityLinks() {
+		return taskIdentityLinks;
+	}
+
+	public void setTaskIdentityLinks(List<IdentityLinkEntity> taskIdentityLinks) {
+		this.taskIdentityLinks = taskIdentityLinks;
+	}
+
+	public TaskEntity getParentTask() {
+		return parentTask;
+	}
+
+	public void setParentTask(TaskEntity parentTask) {
+		this.parentTask = parentTask;
+	}
 	
 
 	public DelegationState getDelegationState() {

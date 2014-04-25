@@ -17,21 +17,18 @@
  */
 package org.foxbpm.bpmn.converter;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
 import org.eclipse.bpmn2.Bpmn2Package;
 import org.eclipse.bpmn2.Definitions;
-import org.eclipse.bpmn2.EndEvent;
 import org.eclipse.bpmn2.FlowElement;
 import org.eclipse.bpmn2.FlowNode;
 import org.eclipse.bpmn2.Process;
 import org.eclipse.bpmn2.RootElement;
 import org.eclipse.bpmn2.SequenceFlow;
 import org.eclipse.bpmn2.StartEvent;
-import org.eclipse.bpmn2.UserTask;
 import org.eclipse.bpmn2.di.BpmnDiPackage;
 import org.eclipse.bpmn2.util.Bpmn2ResourceFactoryImpl;
 import org.eclipse.dd.dc.DcPackage;
@@ -62,7 +59,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			process = createProcess(processId, is);
 
 		}
-
+		KernelProcessDefinition processDefinition=loadBehavior(process);
 //		// 加载事件定义.
 //		loadEvent(processDefinition);
 //		// 加载数据变量
@@ -71,14 +68,14 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 //		loadSubProcess(processDefinition);
 //		processDefinition.persistentInit(processDataMap);
 //		deploymentCache.addProcessDefinition(processDefinition);
-		return loadBehavior(process);
+		return processDefinition;
 	}
 	
 	
 	private KernelProcessDefinition loadBehavior(Process process){
-		
+		String processObjId = BpmnModelUtil.getProcessId(process);
 		List<FlowElement> flowElements=process.getFlowElements();
-		ProcessDefinitionBuilder processDefinitionBuilder = new ProcessDefinitionEntityBuilder("kernelTest");
+		ProcessDefinitionBuilder processDefinitionBuilder = new ProcessDefinitionEntityBuilder(processObjId);
 		for(FlowElement flowElement :flowElements){
 			KernelFlowNodeBehavior flowNodeBehavior = BpmnBehaviorEMFConverter.getFlowNodeBehavior(flowElement);
 			if(flowElement instanceof FlowNode){
@@ -94,7 +91,10 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 				processDefinitionBuilder.endFlowNode();
 			}
 		}
-		return processDefinitionBuilder.buildProcessDefinition();
+		
+		ProcessDefinitionEntity processDefinition=(ProcessDefinitionEntity)processDefinitionBuilder.buildProcessDefinition();
+		processDefinition.setKey(process.getId());
+		return processDefinition;
 	}
 	
 
@@ -124,7 +124,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			if (rootElement instanceof Process) {
 				Process processObj = (Process) rootElement;
 
-				String processObjId = BpmnModelUtil.getProcessId(processObj);
+				
 
 //				if (processObjId.equals(processId)) {
 					processObj = (Process) rootElement;

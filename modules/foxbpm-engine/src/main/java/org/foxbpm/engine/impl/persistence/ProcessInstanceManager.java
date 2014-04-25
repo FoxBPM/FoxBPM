@@ -18,11 +18,18 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
+import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
+
 /**
  * 流程实例管理器
  * @author kenshin
  *
  */
 public class ProcessInstanceManager extends AbstractManager {
+
+	public ProcessInstanceEntity findProcessInstanceById(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

@@ -104,7 +104,6 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 		}
 
 		processInstance.setProcessDefinition(processDefinition);
-
 		if (bizKey != null) {
 			processInstance.setBizKey(bizKey);
 		}

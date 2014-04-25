@@ -31,7 +31,10 @@ public abstract class KernelVariableScopeImpl implements KernelVariableScope,
 	 * must be called before memberfield parent is used. can be used by
 	 * subclasses to provide parent member field initialization.
 	 */
-	protected abstract void ensureParentInitialized();
+	protected void ensureParentInitialized()
+	{
+		
+	}
 
 	// variables
 	// ////////////////////////////////////////////////////////////////

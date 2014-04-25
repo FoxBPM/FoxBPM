@@ -27,9 +27,11 @@ import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtInstance;
 import org.foxbpm.engine.impl.runtime.ContextInstanceImpl;
+import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.runtime.ContextInstance;
 import org.foxbpm.engine.runtime.ProcessInstance;
+import org.foxbpm.engine.runtime.ProcessInstanceStatus;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
@@ -136,6 +138,10 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 
 	@Override
 	public void start() {
+		
+		this.setInstanceStatus(ProcessInstanceStatus.RUNNING);
+		this.setStartTime(ClockUtil.getCurrentTime());
+		
 		super.start();
 	}
 
@@ -151,6 +157,8 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		TokenEntity tokenObj = new TokenEntity();
 		String tokenObjId = GuidUtil.CreateGuid();
 		tokenObj.setId(tokenObjId);
+		tokenObj.setStartTime(ClockUtil.getCurrentTime());
+		tokenObj.setProcessInstance(this);
 		Context.getCommandContext().getTokenManager().insert(tokenObj);
 
 		return tokenObj;
@@ -167,6 +175,88 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 
 	}
 
+	
+	
+	
+	
+	
+	
+	@Override
+	public void ensureParentProcessInstanceTokenInitialized() {
+		
+		if (parentProcessInstanceToken == null && parentTokenId != null) {
+		      TokenEntity token = Context
+		        .getCommandContext().getTokenManager()
+		        .findTokenById(parentTokenId);
+		      setParentProcessInstanceToken(token);
+		}
+		
+		
+		
+	}
+	@Override
+	protected void ensureParentProcessInstanceInitialized() {
+		if (parentProcessInstance == null && parentId != null) {
+			ProcessInstanceEntity parentProcessInstance = Context
+		        .getCommandContext().getProcessInstanceManager()
+		        .findProcessInstanceById(parentId);
+			setParentProcessInstance(parentProcessInstance);
+		}
+	}
+	@Override
+	public void ensureRootTokenInitialized() {
+		if (rootToken == null && rootTokenId != null) {
+		      TokenEntity token = Context
+		        .getCommandContext().getTokenManager()
+		        .findTokenById(rootTokenId);
+		      setRootToken(token);
+		}
+	}
+	@Override
+	public void ensureProcessDefinitionInitialized() {
+		  if ((processDefinition == null) && (processDefinitionId != null)) {
+		      ProcessDefinitionEntity deployedProcessDefinition = Context
+		        .getProcessEngineConfiguration()
+		        .getDeploymentManager()
+		        .findDeployedProcessDefinitionById(processDefinitionId);
+		      setProcessDefinition(deployedProcessDefinition);
+		    }
+	}
+	
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	protected void ensureTokensInitialized() {
+		if (tokens==null) {
+		      this.tokens = (List) Context
+		        .getCommandContext().getTokenManager()
+		        .findChildTokensByProcessInstanceId(id);
+		}
+	}
+	
+
+	
+	
+	
+	@Override
+	public void setParentProcessInstance(KernelProcessInstanceImpl parentProcessInstance) {
+		this.parentProcessInstance = (ProcessInstanceEntity)parentProcessInstance;
+		this.parentId=((ProcessInstanceEntity)parentProcessInstance).getParentId();
+	}
+	
+	@Override
+	public void setParentProcessInstanceToken(KernelTokenImpl parentProcessInstanceToken) {
+		this.parentProcessInstanceToken=parentProcessInstanceToken;
+		this.parentTokenId=parentProcessInstanceToken.getId();
+	}
+	
+	
+	@Override
+	public void setRootToken(KernelTokenImpl rootToken) {
+		this.rootToken=rootToken;
+		this.rootTokenId=rootToken.getId();
+	}
+	
 	public String getSubject() {
 		return subject;
 	}
@@ -299,8 +389,11 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		return processDefinition;
 	}
 
+	@Override
 	public void setProcessDefinition(KernelProcessDefinitionImpl processDefinition) {
 		this.processDefinition = processDefinition;
+		this.processDefinitionId = processDefinition.getId();
+		this.processDefinitionKey=processDefinition.getKey();
 	}
 
 	public String getBizKey() {

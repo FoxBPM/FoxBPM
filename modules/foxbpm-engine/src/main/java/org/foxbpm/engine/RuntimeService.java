@@ -48,4 +48,8 @@ public interface RuntimeService {
 
 	ProcessInstance startProcessInstanceByMessage(String messageName, String bizKey, Map<String, Object> processVariables);
 
+	void signal(String tokenId);
+
+	void signal(String tokenId, Map<String, Object> processVariables);
+
 }
