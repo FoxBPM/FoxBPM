@@ -18,11 +18,25 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
+import java.util.List;
+
+import org.foxbpm.engine.impl.entity.TokenEntity;
+
 /**
  * 令牌管理器
  * @author kenshin
  *
  */
 public class TokenManager extends AbstractManager {
+
+	public List<TokenEntity> findChildTokensByProcessInstanceId(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public TokenEntity findTokenById(String rootTokenId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

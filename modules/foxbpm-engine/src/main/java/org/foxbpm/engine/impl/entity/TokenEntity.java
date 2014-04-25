@@ -5,7 +5,10 @@ import java.util.Map;
 
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.runtime.Token;
+import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
+import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
 public class TokenEntity extends KernelTokenImpl implements Token,PersistentObject,HasRevision{
@@ -25,6 +28,35 @@ public class TokenEntity extends KernelTokenImpl implements Token,PersistentObje
 	protected boolean isLocked = false;
 	protected boolean isSuspended = false;
 	
+
+
+	
+	
+	@Override
+	public void setFlowNode(KernelFlowNodeImpl flowNode) {
+		setNodeId(flowNode.getId());
+		super.setFlowNode(flowNode);
+	}
+
+	@Override
+	public void setProcessInstance(KernelProcessInstanceImpl processInstance) {
+		setProcessInstanceId(processInstance.getId());
+		super.setProcessInstance(processInstance);
+	}
+
+	@Override
+	public void setParent(KernelTokenImpl parent) {
+		setParentId(parent.getId());
+		super.setParent(parent);
+	} 
+
+	
+	
+	@Override
+	public void enter(KernelFlowNodeImpl flowNode) {
+		setNodeEnterTime(ClockUtil.getCurrentTime());
+		super.enter(flowNode);
+	}
 
 	@Override
 	public String getId() {
@@ -131,4 +163,9 @@ public class TokenEntity extends KernelTokenImpl implements Token,PersistentObje
 		return true;
 	}
 
+	@Override
+	public ProcessInstanceEntity getProcessInstance() {
+		return (ProcessInstanceEntity)super.getProcessInstance();
+	}
+	
 }

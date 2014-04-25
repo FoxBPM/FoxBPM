@@ -15,32 +15,31 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.kernel.runtime;
+package org.foxbpm.engine.impl.util;
 
-import org.foxbpm.kernel.process.KernelFlowNode;
-import org.foxbpm.kernel.process.KernelSequenceFlow;
-import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
-import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
+import java.util.Date;
 
 /**
  * @author kenshin
  * 
  */
-public interface FlowNodeExecutionContext extends DelegateExecutionContext {
-	
-	KernelProcessInstanceImpl getProcessInstance();
-	
-	KernelFlowNode getFlowNode();
-	
-	void execute();
+public class ClockUtil {
 
-	void signal();
-	
-	void leave();
+	private volatile static Date CURRENT_TIME = null;
 
-	public void take(KernelSequenceFlow sequenceFlow);
+	public static void setCurrentTime(Date currentTime) {
+		ClockUtil.CURRENT_TIME = currentTime;
+	}
 
-	public void take(KernelFlowNodeImpl flowNode);
-	
-	void end();
+	public static void reset() {
+		ClockUtil.CURRENT_TIME = null;
+	}
+
+	public static Date getCurrentTime() {
+		if (CURRENT_TIME != null) {
+			return CURRENT_TIME;
+		}
+		return new Date();
+	}
+
 }

@@ -18,7 +18,14 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
+import org.foxbpm.engine.impl.entity.TaskEntity;
+import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.task.TaskDefinition;
+import org.foxbpm.engine.impl.util.ClockUtil;
+import org.foxbpm.engine.impl.util.GuidUtil;
+import org.foxbpm.engine.task.TaskType;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 /**
@@ -51,17 +58,24 @@ public class UserTaskBehavior extends TaskBehavior {
 	private String taskSubject;
 	
 	private String taskPriority;
-	
-	@Override
-	public void enter(FlowNodeExecutionContext executionContext) {
-		System.out.println("UserTask进入"+executionContext.getFlowNode().getId());
-		executionContext.execute();
-	}
+
 	
 	@Override
 	public void execute(FlowNodeExecutionContext executionContext) {
-		System.out.println("userTask执行"+executionContext.getFlowNode().getId());
-		executionContext.signal();
+		
+		TaskEntity task=new TaskEntity();
+		task.setId(GuidUtil.CreateGuid());
+		task.setAssignee("jiangnan");
+		task.setCreateTime(ClockUtil.getCurrentTime());
+		
+		ProcessInstanceEntity processInstance=(ProcessInstanceEntity) executionContext.getProcessInstance();
+		
+		task.setBizKey(processInstance.getBizKey());
+		task.setDescription("任务主题");
+		task.setToken((TokenEntity)executionContext);
+		task.setTaskType(TaskType.FOXBPMTASK);
+		Context.getCommandContext().getTaskManager().insert(task);
+
 	}
 	
 	public String getFormUri() {
