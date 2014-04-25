@@ -18,6 +18,10 @@
  */
 package org.foxbpm.engine;
 
+import org.foxbpm.engine.query.NativeTaskQuery;
+
 public interface TaskService {
 
+	public NativeTaskQuery createNativeTaskQuery();
+	
 }

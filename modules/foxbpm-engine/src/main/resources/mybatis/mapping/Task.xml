@@ -98,4 +98,8 @@
 	    from foxbpm_run_task
 	    where ID = #{id,jdbcType=VARCHAR}
   </select>
+  
+  <select id="selectTaskByNativeQuery" parameterType="java.util.Map" resultMap="TaskResultMap">
+    ${sql}
+  </select>
 </mapper>

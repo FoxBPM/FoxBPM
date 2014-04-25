@@ -5,4 +5,4 @@
  * @author Administrator
  *
  */
-package org.foxbpm.engine.query;
+package org.foxbpm.test.engine.query;

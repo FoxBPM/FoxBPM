@@ -107,7 +107,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initCommandContextFactory();
 		initCommandExecutors();
 		initServices();
-		initDeployers();
+//		initDeployers();
 		// initDataBaseTable();
 		// initCache();
 		// initDeployers();

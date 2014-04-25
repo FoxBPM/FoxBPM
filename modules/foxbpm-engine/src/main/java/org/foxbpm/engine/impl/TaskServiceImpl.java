@@ -19,7 +19,11 @@
 package org.foxbpm.engine.impl;
 
 import org.foxbpm.engine.TaskService;
+import org.foxbpm.engine.impl.query.NativeTaskQueryImpl;
+import org.foxbpm.engine.query.NativeTaskQuery;
 
-public class TaskServiceImpl implements TaskService {
-
+public class TaskServiceImpl extends ServiceImpl implements TaskService{
+	public NativeTaskQuery createNativeTaskQuery() {
+	    return new NativeTaskQueryImpl(commandExecutor);
+	}
 }

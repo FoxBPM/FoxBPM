@@ -18,11 +18,23 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
+import java.util.List;
+import java.util.Map;
+
+import org.foxbpm.engine.task.Task;
+
 /**
  * 任务数据管理器
  * @author kenshin
  */
 public class TaskManager extends AbstractManager {
 
+	public List<Task> findTasksByNativeQuery(Map<String, Object> parameterMap,int firstResult, int maxResults) {
+		return (List<Task>)getSqlSession().selectList("selectTaskByNativeQuery", parameterMap);
+	}
+
+	public long findTaskCountByNativeQuery(Map<String, Object> parameterMap) {
+		return 0;
+	}
 	
 }

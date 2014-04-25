@@ -47,13 +47,13 @@ public abstract class AbstractManager {
 		getSqlSession().insert(persistentObject);
 	}
 
-	public void delete(String deleteStatement, PersistentObject persistentObject) {
-		delete(deleteStatement, persistentObject.getId());
-	}
-	
-	public void delete(String deleteStatement, String parameter) {
-		getSqlSession().delete(deleteStatement, parameter);
-	}
+//	public void delete(String deleteStatement, PersistentObject persistentObject) {
+//		delete(deleteStatement, persistentObject.getId());
+//	}
+//	
+//	public void delete(String deleteStatement, String parameter) {
+//		getSqlSession().delete(deleteStatement, parameter);
+//	}
 	
 //	public void update(PersistentObject persistentObject){
 //		getSqlSession().update(persistentObject);
