@@ -132,6 +132,7 @@ public class CommandContext {
 	
 	public void close(){
 		if(sqlSession != null){
+			flushSession();
 			sqlSession.closeSession();
 		}
 	}

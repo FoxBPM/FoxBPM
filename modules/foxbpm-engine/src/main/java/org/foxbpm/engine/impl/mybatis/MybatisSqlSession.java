@@ -64,25 +64,50 @@ public class MybatisSqlSession implements ISqlSession {
 	    return persistentObject;
 	}
 	
-	public void delete(String deleteStatement, Object parameter) {
-		sqlSession.delete(deleteStatement, parameter);
-	}
-
-	public void delete(String deleteStatement, PersistentObject persistentObject) {
-		sqlSession.delete(deleteStatement, persistentObject);
-
-	}
+//	public void delete(String deleteStatement, Object parameter) {
+//		sqlSession.delete(deleteStatement, parameter);
+//	}
+//
+//	public void delete(String deleteStatement, PersistentObject persistentObject) {
+//		sqlSession.delete(deleteStatement, persistentObject);
+//
+//	}
 
 	public List<?> selectList(String statement) {
 		return sqlSession.selectList(statement);
 	}
-
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public List<?> selectList(String statement, Object parameter) {
-		return sqlSession.selectList(statement, parameter);
+		List loadedObject = sqlSession.selectList(statement, parameter);
+		return filterLoadedObjects(loadedObject);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	protected List filterLoadedObjects(List<Object> loadedObjects) {
+		if (loadedObjects.isEmpty()) {
+			return loadedObjects;
+		}
+		if (!(loadedObjects.get(0) instanceof PersistentObject)) {
+			return loadedObjects;
+		}
+
+		List<PersistentObject> filteredObjects = new ArrayList<PersistentObject>(
+				loadedObjects.size());
+		for (Object loadedObject : loadedObjects) {
+			PersistentObject cachedPersistentObject = cacheFilter((PersistentObject) loadedObject);
+			filteredObjects.add(cachedPersistentObject);
+		}
+		return filteredObjects;
 	}
 
 	public Object selectOne(String statement, Object parameter) {
-		return null;
+		Object result = sqlSession.selectOne(statement, parameter);
+		if (result instanceof PersistentObject) {
+			PersistentObject loadedObject = (PersistentObject) result;
+			result = cacheFilter(loadedObject);
+		}
+		return result;
 	}
 	
 	public void flushUpdates(List<PersistentObject> updateObjects){
@@ -178,8 +203,7 @@ public class MybatisSqlSession implements ISqlSession {
 	 * loaded, then the loadedObject is added to the cache.
 	 */
 	protected PersistentObject cacheFilter(PersistentObject persistentObject) {
-		PersistentObject cachedPersistentObject = cacheGet(
-				persistentObject.getClass(), persistentObject.getId());
+		PersistentObject cachedPersistentObject = cacheGet(persistentObject.getClass(), persistentObject.getId());
 		if (cachedPersistentObject != null) {
 			return cachedPersistentObject;
 		}
