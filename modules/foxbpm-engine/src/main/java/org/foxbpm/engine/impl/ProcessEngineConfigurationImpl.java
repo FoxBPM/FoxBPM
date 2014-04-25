@@ -35,6 +35,7 @@ import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineConfiguration;
 import org.foxbpm.engine.RuntimeService;
+import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.db.DataSourceManage;
 import org.foxbpm.engine.exception.ExceptionCode;
 import org.foxbpm.engine.exception.ExceptionI18NCore;
@@ -71,11 +72,12 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected List<CommandInterceptor> commandInterceptors;
 	protected FoxBPMConfig foxBpmConfig;
 	protected ResourcePathConfig resourcePathConfig;
+	//service
 	protected ModelService modelService = new ModelServiceImpl();
 	protected RuntimeService runtimeService = new RuntimeServiceImpl();
+	protected TaskService taskService = new TaskServiceImpl();
 	protected ISqlSessionFactory sqlSessionFactory;
 	protected DataSourceManage dataSourceManage;
-
 	// 定义及发布
 	protected int processDefinitionCacheLimit = -1; // By default, no limit
 	protected DeploymentCache<ProcessDefinitionEntity> processDefinitionCache;
@@ -89,8 +91,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected List<Deployer> customPostDeployers;
 	protected List<Deployer> deployers;
 	protected DeploymentManager deploymentManager;
-
-	
 
 	public ProcessEngine buildProcessEngine() {
 		init();
@@ -251,6 +251,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected void initServices() {
 		initService(modelService);
 		initService(runtimeService);
+		initService(taskService);
 	}
 
 	protected void initService(Object service) {
@@ -307,6 +308,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	public RuntimeService getRuntimeService() {
 		return runtimeService;
+	}
+	
+	public TaskService getTaskService(){
+		return taskService;
 	}
 
 	public DataSourceManage getDataSourceManage() {

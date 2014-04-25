@@ -51,7 +51,7 @@ public class ProcessEngineImpl implements ProcessEngine {
 		this.runtimeService = processEngineConfiguration.getRuntimeService();
 //		this.historyService = processEngineConfiguration.getHistoryService();
 //		this.identityService = processEngineConfiguration.getIdentityService();
-//		this.taskService = processEngineConfiguration.getTaskService();
+		this.taskService = processEngineConfiguration.getTaskService();
 //		this.formService = processEngineConfiguration.getFormService();
 //		this.scheduleService = processEngineConfiguration.getScheduleService();
 //		this.managementService = processEngineConfiguration.getManagementService();

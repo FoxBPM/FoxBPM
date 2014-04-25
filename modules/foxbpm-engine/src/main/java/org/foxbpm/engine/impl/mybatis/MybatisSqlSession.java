@@ -85,7 +85,7 @@ public class MybatisSqlSession implements ISqlSession {
 		return null;
 	}
 	
-	public void flushUpdate(List<PersistentObject> updateObjects){
+	public void flushUpdates(List<PersistentObject> updateObjects){
 		for (PersistentObject updateObject : updateObjects) {
 			String updateStatement = MyBatisSqlSessionFactory.getUpdateStatement(updateObject);
 			if (updateStatement == null) {
@@ -98,8 +98,7 @@ public class MybatisSqlSession implements ISqlSession {
 		updateObjects.clear();
 	}
 	
-	public void flushInsert(){
-		log.debug("flush summary: {} insert", insertedObjects.size());
+	public void flushInserts(){
 		for (PersistentObject insertedObject : insertedObjects) {
 			String insertStatement = MyBatisSqlSessionFactory.getInsertStatement(insertedObject);
 			if (insertStatement == null) {
@@ -112,11 +111,30 @@ public class MybatisSqlSession implements ISqlSession {
 		insertedObjects.clear();
 	}
 	
+	public void removeUnnecessaryOperations(){
+		for(PersistentObject insertedObject : insertedObjects) {
+			cacheRemove(insertedObject.getClass(), insertedObject.getId());
+		}
+	}
+	
 	public void flush() {
-		
-		List<PersistentObject> updateObjects = getUpdateObjects();
-		flushUpdate(updateObjects);
-		flushInsert();
+		removeUnnecessaryOperations();
+//		flushDeserializedObjects();
+		List<PersistentObject> updatedObjects = getUpdatedObjects();
+
+		if (log.isDebugEnabled()) {
+			log.debug("flush summary: {} insert, {} update",insertedObjects.size(), updatedObjects.size());
+			for (PersistentObject insertedObject : insertedObjects) {
+				log.debug("  insert {}", insertedObject);
+			}
+			for (PersistentObject updatedObject : updatedObjects) {
+				log.debug("  update {}", updatedObject);
+			}
+			log.debug("now executing flush...");
+		}
+
+		flushInserts();
+		flushUpdates(updatedObjects);
 	}
 	
 	public void closeSession() {
@@ -125,16 +143,17 @@ public class MybatisSqlSession implements ISqlSession {
 		}
 	}
 	
-	public List<PersistentObject> getUpdateObjects(){
+	public List<PersistentObject> getUpdatedObjects(){
 		List<PersistentObject> updatedObjects = new ArrayList<PersistentObject>();
 		for (Class<?> clazz : cachedObjects.keySet()) {
 			Map<String, CachedObject> classCache = cachedObjects.get(clazz);
 			for (CachedObject cachedObject : classCache.values()) {
-				if(cachedObject.isStore()){
-					PersistentObject persistentObject = cachedObject.getPersistentObject();
-					if (!persistentObject.isModified()) {
-						updatedObjects.add(persistentObject);
-					}
+				PersistentObject persistentObject = cachedObject.getPersistentObject();
+				Object originalState = cachedObject.getPersistentObjectState();
+				if (!persistentObject.getPersistentState().equals(originalState)) {
+					updatedObjects.add(persistentObject);
+				} else {
+					log.trace("loaded object '{}' was not updated",persistentObject);
 				}
 			}
 		}
@@ -208,18 +227,21 @@ public class MybatisSqlSession implements ISqlSession {
 
 	public static class CachedObject {
 		protected PersistentObject persistentObject;
-		protected boolean storeState;
+		protected Object persistentObjectState;
 
 		public CachedObject(PersistentObject persistentObject,boolean storeState) {
 			this.persistentObject = persistentObject;
-			this.storeState = storeState;
+			if (storeState) {
+				this.persistentObjectState = persistentObject.getPersistentState();
+			}
 		}
+
 		public PersistentObject getPersistentObject() {
 			return persistentObject;
 		}
 
-		public boolean isStore() {
-			return storeState;
+		public Object getPersistentObjectState() {
+			return persistentObjectState;
 		}
 	}
 }
