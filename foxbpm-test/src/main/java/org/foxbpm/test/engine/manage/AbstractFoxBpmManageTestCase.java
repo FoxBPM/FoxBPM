@@ -1,53 +1,48 @@
-package org.foxbpm.test.engine;
+package org.foxbpm.test.engine.manage;
 
 
 import java.sql.SQLException;
 
 import junit.framework.TestCase;
 
-import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineManagement;
-import org.foxbpm.engine.RuntimeService;
-import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.ProcessEngineImpl;
+import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.util.DBUtils;
+import org.foxbpm.engine.spring.ProcessEngineConfigrationImplSpring;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-public abstract class AbstractFoxBpmTestCase extends TestCase {
+public abstract class AbstractFoxBpmManageTestCase extends TestCase {
 
-	public static ProcessEngine processEngine=ProcessEngineManagement.getDefaultProcessEngine();
+	public static ProcessEngine processEngine;
 	protected String deploymentId;
 
 	protected ProcessEngineConfigurationImpl processEngineConfiguration;
 	
-	protected ModelService modelService;
-	protected RuntimeService runtimeService;
-	protected TaskService taskService;
-	
+	protected CommandContext commandContext;
 
 	protected void initializeServices() {
+		ProcessEngineConfigrationImplSpring processEngineConfigrationImplSpring = new ProcessEngineConfigrationImplSpring();
+		processEngine = processEngineConfigrationImplSpring.setProcessEngineName("spring").buildProcessEngine();
 		processEngineConfiguration = ((ProcessEngineImpl) processEngine).getProcessEngineConfiguration();
-		modelService = processEngine.getModelService();
-		runtimeService = processEngine.getRuntimeService();
-		taskService = processEngine.getTaskService();
+		commandContext = new CommandContext(null, processEngine.getProcessEngineConfiguration());
 	}
 	
 	public void runBare() throws Throwable {
 
-		if(modelService == null){
-			initializeServices();
-		}
+		initializeServices();
 		DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager(DBUtils.getDataSource());
 		TransactionTemplate t = new TransactionTemplate(dataSourceTransactionManager);
 		t.execute(new TransactionCallbackWithoutResult() {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
 				execute();
+				commandContext.flushSession();
 				try {
 					DBUtils.getDataSource().getConnection().rollback();
 				} catch (SQLException e) {

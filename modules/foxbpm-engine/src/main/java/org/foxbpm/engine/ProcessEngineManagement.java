@@ -112,4 +112,15 @@ public abstract class ProcessEngineManagement {
 			isInitialized = false;
 		}
 	}
+	
+	/**
+	 * 手工设置引擎初始化状态，手工初始化时使用
+	 * 引擎初始化部分存在问题，需要重构
+	 * 问题1.内部调用引擎方式是否不应该从getDefaultEngine
+	 * 问题2.是否应该支持多引擎操作方式
+	 * 问题3.多引擎时，dbUtils等很多地方会出现问题，因为都是从默认引擎拿配置。是否考虑改成线程副本形式。
+	 */
+	public static void setInit(){
+		isInitialized = true;
+	}
 }

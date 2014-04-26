@@ -193,8 +193,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	public void initDataSourceManage() {
 		if (dataSourceManage == null) {
 			dataSourceManage = new DefaultDataSourceManage();
-			dataSourceManage.init();
 		}
+		dataSourceManage.init();
 	}
 
 	public void initExceptionResource() {

@@ -15,7 +15,7 @@
  * 
  * @author ych
  */
-package org.foxbpm.engine.impl.db;
+package org.foxbpm.engine.spring.db;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +25,7 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.foxbpm.engine.db.DataSourceManage;
 import org.foxbpm.engine.exception.FoxBPMDbException;
+import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
 /**
  * 默认数据源管理器
@@ -32,7 +33,7 @@ import org.foxbpm.engine.exception.FoxBPMDbException;
  * @author ych
  *
  */
-public class DefaultDataSourceManage implements DataSourceManage {
+public class SpringDataSourceManage implements DataSourceManage {
 
 	private static Map<String,DataSource> dataSourceMap = new HashMap<String,DataSource>();
 	
@@ -44,7 +45,8 @@ public class DefaultDataSourceManage implements DataSourceManage {
 		bs.setPassword("fixflow");
 		bs.setMaxActive(20);
 		bs.setMaxIdle(8);
-		dataSourceMap.put(DAFAULT_DATABASE_ID, bs);
+		DataSource dataSource = new TransactionAwareDataSourceProxy(bs);
+		dataSourceMap.put(DAFAULT_DATABASE_ID, dataSource);
 	}
 	public DataSource getDataSource() {
 		return getDataSource(DAFAULT_DATABASE_ID);
