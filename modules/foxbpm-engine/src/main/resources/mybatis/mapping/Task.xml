@@ -102,4 +102,11 @@
   <select id="selectTaskByNativeQuery" parameterType="java.util.Map" resultMap="TaskResultMap">
     ${sql}
   </select>
+  
+   <select id="selectTasksByProcessInstanceId" parameterType="java.lang.String" resultMap="TaskResultMap">
+    select 
+    *
+    from foxbpm_run_task
+    where PROCESSINSTANCE_ID = #{id,jdbcType=VARCHAR}
+  </select>
 </mapper>

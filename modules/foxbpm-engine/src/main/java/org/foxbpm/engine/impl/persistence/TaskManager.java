@@ -43,4 +43,9 @@ public class TaskManager extends AbstractManager {
 		return selectById(TaskEntity.class, taskId);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Task> findTasksByProcessInstanceId(String processInstanceId){
+		return (List<Task>)getSqlSession().selectList("selectTaskByNativeQuery", processInstanceId);
+	}
+	
 }
