@@ -23,6 +23,8 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.scriptlanguage.GroovyScriptLanguageMgmtImpl;
+import org.foxbpm.engine.scriptlanguage.AbstractScriptLanguageMgmt;
 
 /**
  * 流程引擎线程副本管理器
@@ -33,7 +35,7 @@ public class Context {
 	protected static ThreadLocal<Stack<Map<String,Connection>>> dbConnectionThreadLocal = new ThreadLocal<Stack<Map<String,Connection>>>();
 	protected static ThreadLocal<Stack<ProcessEngineConfigurationImpl>> processEngineConfigurationStackThreadLocal = new ThreadLocal<Stack<ProcessEngineConfigurationImpl>>();
 	protected static ThreadLocal<Stack<CommandContext>> commandContextThreadLocal = new ThreadLocal<Stack<CommandContext>>();
-
+	protected static ThreadLocal<Stack<AbstractScriptLanguageMgmt>> abstractScriptLanguageMgmtThreadLocal = new ThreadLocal<Stack<AbstractScriptLanguageMgmt>>();
 	public static ProcessEngineConfigurationImpl getProcessEngineConfiguration() {
 		Stack<ProcessEngineConfigurationImpl> stack = getStack(processEngineConfigurationStackThreadLocal);
 		if (stack.isEmpty()) {
@@ -64,6 +66,31 @@ public class Context {
 	
 	public static void removeCommandContext() {
 		getStack(commandContextThreadLocal).pop();
+	}
+	
+	//
+	public static AbstractScriptLanguageMgmt getAbstractScriptLanguageMgmt() {
+		Stack<AbstractScriptLanguageMgmt> stack = getStack(abstractScriptLanguageMgmtThreadLocal);
+		if (stack.isEmpty()) {
+
+			AbstractScriptLanguageMgmt abstractScriptLanguageMgmt = null;
+//			ScriptLanguageConfig scriptLanguageConfig = getProcessEngineConfiguration().getScriptLanguageConfig();
+//			for (ScriptLanguage scriptLanguage : scriptLanguageConfig.getScriptLanguage()) {
+//				if (scriptLanguage.getId().equals(scriptLanguageConfig.getSelected())) {
+//					abstractScriptLanguageMgmt = (AbstractScriptLanguageMgmt) ReflectUtil.instantiate(scriptLanguage.getClassImpl());
+//					break;
+//				}
+//			}
+			abstractScriptLanguageMgmt = new GroovyScriptLanguageMgmtImpl();
+			Context.setAbstractScriptLanguageMgmt(abstractScriptLanguageMgmt.init());
+
+			return abstractScriptLanguageMgmt;
+		}
+		return stack.peek();
+	}
+
+	public static void setAbstractScriptLanguageMgmt(AbstractScriptLanguageMgmt abstractScriptLanguageMgmt) {
+		getStack(abstractScriptLanguageMgmtThreadLocal).push(abstractScriptLanguageMgmt);
 	}
 	
 	protected static <T> Stack<T> getStack(ThreadLocal<Stack<T>> threadLocal) {
