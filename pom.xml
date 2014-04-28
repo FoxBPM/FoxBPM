@@ -10,9 +10,6 @@
 	<modules>
 		<module>modules/foxbpm-engine</module>
 		<module>modules/foxbpm-kernel</module>
-		<module>modules/foxbom-Kernel-advanced</module>
-		<module>modules/foxbpm-model-bpmn</module>
-		<module>modules/foxbpm-bpmn-converter</module>
 		<module>foxbpm-test</module>
 	</modules>
 
