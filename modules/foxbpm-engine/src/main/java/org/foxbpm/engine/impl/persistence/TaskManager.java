@@ -21,6 +21,7 @@ package org.foxbpm.engine.impl.persistence;
 import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.task.Task;
 
 /**
@@ -29,12 +30,17 @@ import org.foxbpm.engine.task.Task;
  */
 public class TaskManager extends AbstractManager {
 
+	@SuppressWarnings("unchecked")
 	public List<Task> findTasksByNativeQuery(Map<String, Object> parameterMap,int firstResult, int maxResults) {
 		return (List<Task>)getSqlSession().selectList("selectTaskByNativeQuery", parameterMap);
 	}
 
 	public long findTaskCountByNativeQuery(Map<String, Object> parameterMap) {
 		return 0;
+	}
+	
+	public TaskEntity findTaskById(String taskId){
+		return selectById(TaskEntity.class, taskId);
 	}
 	
 }

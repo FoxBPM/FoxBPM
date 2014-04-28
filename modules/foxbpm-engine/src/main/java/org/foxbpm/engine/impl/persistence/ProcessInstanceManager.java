@@ -28,8 +28,7 @@ import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 public class ProcessInstanceManager extends AbstractManager {
 
 	public ProcessInstanceEntity findProcessInstanceById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return selectById(ProcessInstanceEntity.class, id);
 	}
 
 }

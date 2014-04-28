@@ -62,4 +62,10 @@
 	    where ID = #{id,jdbcType=VARCHAR}
   </select>
 
+  <select id="selectTokensByProcessInstanceId" parameterType="java.lang.String" resultMap="TokenResultMap">
+	    select 
+	    *
+	    from foxbpm_run_token
+	    where PROCESSINSTANCE_ID = #{id,jdbcType=VARCHAR}
+  </select>
 </mapper>

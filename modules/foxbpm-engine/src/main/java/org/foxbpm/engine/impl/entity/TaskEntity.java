@@ -2,6 +2,7 @@ package org.foxbpm.engine.impl.entity;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -220,8 +221,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 	}
 
 	public Map<String, Object> getPersistentState() {
-		// TODO Auto-generated method stub
-		return null;
+		return new HashMap<String,Object>();
 	}
 
 	@Override

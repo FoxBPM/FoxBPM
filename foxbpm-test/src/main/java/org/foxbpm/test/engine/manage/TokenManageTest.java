@@ -18,6 +18,7 @@
 package org.foxbpm.test.engine.manage;
 
 import java.util.Date;
+import java.util.List;
 
 import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.util.GuidUtil;
@@ -47,7 +48,16 @@ public class TokenManageTest extends AbstractFoxBpmManageTestCase {
 		commandContext.flushSession();
 		
 		TokenEntity token = commandContext.getTokenManager().selectById(TokenEntity.class, id);
-		System.out.println(token.isLocked());
+		assertTrue(token.isLocked());
+		
+		commandContext.flushSession();
+		
+		List<TokenEntity> tokens = commandContext.getTokenManager().findChildTokensByProcessInstanceId("processInstanceId");
+		assertEquals(1, tokens.size());
+		
+		assertEquals("name", tokens.get(0).getName());
 		
 	}
+	
+	
 }

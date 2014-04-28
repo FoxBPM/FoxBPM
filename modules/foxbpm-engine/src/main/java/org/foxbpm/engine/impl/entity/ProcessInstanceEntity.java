@@ -19,6 +19,7 @@ package org.foxbpm.engine.impl.entity;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -429,8 +430,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	}
 
 	public Map<String, Object> getPersistentState() {
-		// TODO Auto-generated method stub
-		return null;
+		return new HashMap<String,Object>();
 	}
 
 }

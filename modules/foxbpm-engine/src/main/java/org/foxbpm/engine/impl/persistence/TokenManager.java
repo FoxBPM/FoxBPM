@@ -29,14 +29,12 @@ import org.foxbpm.engine.impl.entity.TokenEntity;
  */
 public class TokenManager extends AbstractManager {
 
+	@SuppressWarnings("unchecked")
 	public List<TokenEntity> findChildTokensByProcessInstanceId(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return (List<TokenEntity>)getSqlSession().selectList("selectTokensByProcessInstanceId", id);
 	}
 
 	public TokenEntity findTokenById(String rootTokenId) {
-		// TODO Auto-generated method stub
-		return null;
+		return selectById(TokenEntity.class, rootTokenId);
 	}
-	
 }

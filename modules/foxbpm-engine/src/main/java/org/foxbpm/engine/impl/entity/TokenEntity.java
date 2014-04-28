@@ -1,6 +1,7 @@
 package org.foxbpm.engine.impl.entity;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.foxbpm.engine.db.HasRevision;
@@ -156,7 +157,7 @@ public class TokenEntity extends KernelTokenImpl implements Token,PersistentObje
 
 	public Map<String, Object> getPersistentState() {
 		// TODO Auto-generated method stub
-		return null;
+		return new HashMap<String,Object>();
 	}
 
 	public boolean isModified() {

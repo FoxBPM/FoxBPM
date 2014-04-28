@@ -57,7 +57,7 @@ public abstract class AbstractFoxBpmManageTestCase extends TestCase {
 	public void runBare() throws Throwable {
 
 		initializeServices();
-		DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager(DBUtils.getDataSource());
+		DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager(processEngine.getProcessEngineConfiguration().getDataSourceManage().getDataSource());
 		TransactionTemplate t = new TransactionTemplate(dataSourceTransactionManager);
 		t.execute(new TransactionCallbackWithoutResult() {
 			@Override
@@ -65,7 +65,7 @@ public abstract class AbstractFoxBpmManageTestCase extends TestCase {
 				execute();
 				commandContext.flushSession();
 				try {
-					DBUtils.getDataSource().getConnection().rollback();
+					processEngine.getProcessEngineConfiguration().getDataSourceManage().getDataSource().getConnection().rollback();
 				} catch (SQLException e) {
 					throw new RuntimeException(e);
 				}
