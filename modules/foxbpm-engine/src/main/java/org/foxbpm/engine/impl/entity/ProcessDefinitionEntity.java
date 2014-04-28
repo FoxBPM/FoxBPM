@@ -34,12 +34,7 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 
 	private static final long serialVersionUID = 1L;
 
-
-	
-	
-
 	protected static final int VERSION_DEFAULT = 1;
-
 
 	protected int version = VERSION_DEFAULT;
 

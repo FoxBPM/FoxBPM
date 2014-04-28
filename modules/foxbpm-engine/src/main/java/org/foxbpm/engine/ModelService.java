@@ -20,6 +20,7 @@ package org.foxbpm.engine;
 
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipInputStream;
 
 /**
  * 获取所有对流程定义级别操作
@@ -44,4 +45,11 @@ public interface ModelService {
 	 * "startFormKey" 启动表单;<br>
 	 */
 	List<Map<String, String>> getStartProcessByUserId(String userId);
+	
+	/**
+	 * 通过zip文件发布流程
+	 * @param path zip文件路径
+	 * @return 发布号
+	 */
+	void deployByZip(ZipInputStream zipInputStream);
 }

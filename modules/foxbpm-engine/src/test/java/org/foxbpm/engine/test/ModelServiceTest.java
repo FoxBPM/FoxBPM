@@ -17,25 +17,9 @@
  */
 package org.foxbpm.engine.test;
 
-import org.foxbpm.engine.ProcessEngine;
-import org.foxbpm.engine.ProcessEngineManagement;
-import org.foxbpm.engine.RuntimeService;
-import org.foxbpm.engine.runtime.ProcessInstance;
-
-import junit.framework.TestCase;
-
-public class ModelServiceTest extends TestCase {
-	
-
+public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	
 	public void testStartProcessById(){
-		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
 		
-		RuntimeService runtimeService=processEngine.getRuntimeService();
-		ProcessInstance processInstance=runtimeService.startProcessInstanceById("1","bizkeyValue");
-		
-		
-		
-		assertNotNull(processInstance);
 	}
 }
