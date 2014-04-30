@@ -13,14 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
+ * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.sqlsession;
+package org.foxbpm.engine.impl.persistence;
 
-import javax.sql.DataSource;
+import org.foxbpm.engine.identity.UserEntityManager;
+import org.foxbpm.engine.impl.interceptor.Session;
+import org.foxbpm.engine.impl.interceptor.SessionFactory;
 
-public interface ISqlSessionFactory {
-	
-	public void init(DataSource datasource);
-	
+public class UserEntityManagerFactory implements SessionFactory {
+
+	public Class<?> getSessionType() {
+		return UserEntityManager.class;
+	}
+
+	public Session openSession() {
+		return new DefaultUserEntityManager();
+	}
+
 }

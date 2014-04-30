@@ -41,10 +41,12 @@ import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
+import org.foxbpm.engine.impl.interceptor.Session;
+import org.foxbpm.engine.impl.interceptor.SessionFactory;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 
-public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
+public class MyBatisSqlSessionFactory implements ISqlSessionFactory,SessionFactory {
 
 	private SqlSessionFactory sqlSessionFactory;
 	protected static Map<Class<?>,String>  insertStatements = new ConcurrentHashMap<Class<?>, String>();
@@ -103,10 +105,6 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 		}
 	}
 
-	public ISqlSession createSqlSession() {
-		return new MybatisSqlSession(getSqlSession());
-	}
-	
 	private SqlSession getSqlSession(){
 		SqlSession sqlSession = null;
 		if(sqlSessionFactory == null){
@@ -133,5 +131,13 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 
 	public static String getSelectStatement(Class<?> persistentObjectClass) {
 		  return selectStatements.get(persistentObjectClass);
+	}
+
+	public Class<?> getSessionType() {
+		return ISqlSession.class;
+	}
+
+	public Session openSession() {
+		return new MybatisSqlSession(getSqlSession());
 	}
 }

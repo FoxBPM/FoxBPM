@@ -26,11 +26,12 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.exception.FoxBPMDbException;
+import org.foxbpm.engine.impl.interceptor.Session;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MybatisSqlSession implements ISqlSession {
+public class MybatisSqlSession implements ISqlSession,Session {
 
 	SqlSession sqlSession ;
 	public static Logger log = LoggerFactory.getLogger(MybatisSqlSession.class);
@@ -267,5 +268,9 @@ public class MybatisSqlSession implements ISqlSession {
 		public Object getPersistentObjectState() {
 			return persistentObjectState;
 		}
+	}
+
+	public void close() {
+		
 	}
 }

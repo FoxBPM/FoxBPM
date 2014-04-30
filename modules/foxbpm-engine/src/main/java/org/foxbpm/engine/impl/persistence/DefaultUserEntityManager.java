@@ -13,14 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
+ * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.sqlsession;
+package org.foxbpm.engine.impl.persistence;
 
-import javax.sql.DataSource;
+import org.foxbpm.engine.identity.User;
+import org.foxbpm.engine.identity.UserEntityManager;
 
-public interface ISqlSessionFactory {
+public class DefaultUserEntityManager extends AbstractManager implements UserEntityManager {
 	
-	public void init(DataSource datasource);
-	
+	public User findUserById(String userId) {
+		return (User)getSqlSession().selectOne("selectUserById", userId);
+	}
 }

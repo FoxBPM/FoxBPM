@@ -14,38 +14,33 @@
  * limitations under the License.
  * 
  * @author kenshin
+ * @author ych
  */
-package org.foxbpm.engine.impl.identity;
+package org.foxbpm.engine.model;
 
-import java.util.List;
-import java.util.Map;
+import java.io.InputStream;
+import java.util.zip.ZipInputStream;
 
-import org.foxbpm.engine.impl.db.Page;
-
-public abstract class UserDefinition {
-	
-
-
+/**
+ * 
+ * @author kenshin
+ *
+ */
+public interface DeploymentBuilder {
+  
 	/**
-	 * 根据分页和查询条件获取用户
-	 * @param page
-	 * @param queryMap key有 count,UserList
+	 * 
+	 * @param resourceName
+	 * @param inputStream
 	 * @return
 	 */
-	public abstract Map<String, Object> getUserTos(Page page,Map<String,Object> queryMap);
-	
-	/**
-	 * 根据userid获取用户
-	 * @param userId
-	 * @return
-	 */
-	public abstract UserTo findUserByUserId(String userId);
-	
-	/**
-	 * 获取用户所在的所有组
-	 * @param userId用户编号
-	 * @return
-	 */
-	public abstract List<GroupTo> getUserInGroups(String userId);
+	DeploymentBuilder addInputStream(String resourceName,InputStream inputStream);
 
+	DeploymentBuilder addZipInputStream(ZipInputStream zipInputStream);
+
+	DeploymentBuilder name(String name);
+
+	DeploymentBuilder updateDeploymentId(String updateDeploymentId);
+
+	Deployment deploy();
 }

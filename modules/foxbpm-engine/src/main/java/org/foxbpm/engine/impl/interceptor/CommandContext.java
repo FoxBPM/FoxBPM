@@ -17,6 +17,11 @@
  */
 package org.foxbpm.engine.impl.interceptor;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
+import org.foxbpm.engine.identity.UserEntityManager;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.persistence.DeploymentEntityManager;
 import org.foxbpm.engine.impl.persistence.HistoryManager;
@@ -28,7 +33,6 @@ import org.foxbpm.engine.impl.persistence.TaskManager;
 import org.foxbpm.engine.impl.persistence.TokenManager;
 import org.foxbpm.engine.impl.persistence.VariableManager;
 import org.foxbpm.engine.sqlsession.ISqlSession;
-import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 
 /**
  * @author kenshin
@@ -36,14 +40,15 @@ import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 public class CommandContext {
 
 	protected Command<?> command;
-	protected ISqlSession sqlSession;
-	
+	protected Map<Class< ? >, SessionFactory> sessionFactories;
+	protected Map<Class< ? >, Session> sessions = new HashMap<Class< ? >, Session>();
 
 	protected ProcessEngineConfigurationImpl processEngineConfigurationImpl;
 
 	public CommandContext(Command<?> command, ProcessEngineConfigurationImpl processEngineConfigurationImpl) {
 		this.command = command;
 		this.processEngineConfigurationImpl = processEngineConfigurationImpl;
+		sessionFactories = processEngineConfigurationImpl.getSessionFactories();
 
 	}
 
@@ -51,89 +56,81 @@ public class CommandContext {
 		return processEngineConfigurationImpl;
 	}
 	
-	
+	@SuppressWarnings({"unchecked"})
+	public <T> T getSession(Class<T> sessionClass) {
+		Session session = sessions.get(sessionClass);
+		if (session == null) {
+			SessionFactory sessionFactory = sessionFactories.get(sessionClass);
+			if (sessionFactory == null) {
+				throw new FoxBPMClassLoadingException("no session factory configured for " + sessionClass.getName());
+			}
+			session = sessionFactory.openSession();
+			sessions.put(sessionClass, session);
+		}
+		return (T) session;
+	}
 
 	public DeploymentEntityManager getDeploymentEntityManager() {
-		DeploymentEntityManager deploymentManager = new DeploymentEntityManager();
-		deploymentManager.setCommandContext(this);
-		return deploymentManager;
+		return getSession(DeploymentEntityManager.class);
 	}
 
 	public ResourceManager getResourceManager() {
-		ResourceManager resourceManager = new ResourceManager();
-		resourceManager.setCommandContext(this);
-		return resourceManager;
+		return getSession(ResourceManager.class);
 	}
 
 	public ProcessDefinitionManager getProcessDefinitionManager() {
-		ProcessDefinitionManager processDefinitionManager = new ProcessDefinitionManager();
-		processDefinitionManager.setCommandContext(this);
-		return processDefinitionManager;
+		return getSession(ProcessDefinitionManager.class);
 	}
 
 	public ProcessInstanceManager getProcessInstanceManager() {
-		ProcessInstanceManager processInstanceManager = new ProcessInstanceManager();
-		processInstanceManager.setCommandContext(this);
-		return processInstanceManager;
+		return getSession(ProcessInstanceManager.class);
 	}
 
 	public TaskManager getTaskManager() {
-		TaskManager taskManager = new TaskManager();
-		taskManager.setCommandContext(this);
-		return taskManager;
+		return getSession(TaskManager.class);
 	}
 
 	public IdentityLinkManager getIdentityLinkManager() {
-		IdentityLinkManager identityLinkManager = new IdentityLinkManager();
-		identityLinkManager.setCommandContext(this);
-
-		return identityLinkManager;
+		return getSession(IdentityLinkManager.class);
 	}
-
-
 	
 	public VariableManager getVariableManager() {
-		VariableManager variableManager = new VariableManager();
-		variableManager.setCommandContext(this);
-
-		return variableManager;
+		return getSession(VariableManager.class);
 	}
 
 	public TokenManager getTokenManager() {
-		TokenManager tokenManager = new TokenManager();
-		tokenManager.setCommandContext(this);
-		return tokenManager;
+		return getSession(TokenManager.class);
 	}
 	
 	public HistoryManager getHistoryManager(){
-		HistoryManager historyManager = new HistoryManager();
-		historyManager.setCommandContext(this);
-		return historyManager;
+		return getSession(HistoryManager.class);
 	}
-
+	
+	public UserEntityManager getUserEntityManager(){
+		return getSession(UserEntityManager.class);
+	}
 
 	public Command<?> getCommand() {
 		return command;
 	}
 	
 	public ISqlSession getSqlSession(){
-		if(sqlSession == null){
-			ISqlSessionFactory sqlSessionFactory = getProcessEngineConfigurationImpl().getSqlSessionFactory();
-			sqlSession = sqlSessionFactory.createSqlSession();
-		}
-		return sqlSession;
+		return getSession(ISqlSession.class);
 	}
 	
 	public void flushSession(){
-		if(sqlSession != null){
-			sqlSession.flush();
+		for(Session session : sessions.values()) {
+		    session.flush();
 		}
 	}
 	
 	public void close(){
-		if(sqlSession != null){
-			flushSession();
-			sqlSession.closeSession();
+		for (Session session : sessions.values()) {
+			try {
+				session.close();
+			} catch (Throwable exception) {
+				//exception(exception);
+			}
 		}
 	}
 

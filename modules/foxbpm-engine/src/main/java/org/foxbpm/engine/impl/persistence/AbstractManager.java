@@ -21,26 +21,21 @@ package org.foxbpm.engine.impl.persistence;
 import java.util.Map;
 
 import org.foxbpm.engine.db.PersistentObject;
-import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.interceptor.Session;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 /**
  * 持久化管理器抽象类
  * @author kenshin
  */
-public abstract class AbstractManager {
-
-	protected CommandContext commandContext;
-
-	public CommandContext getCommandContext() {
-		return commandContext;
-	}
-
-	public void setCommandContext(CommandContext commandContext) {
-		this.commandContext = commandContext;
-	}
+public abstract class AbstractManager implements Session{
 	
 	public ISqlSession getSqlSession(){
-		return commandContext.getSqlSession();
+		return getSession(ISqlSession.class);
+	}
+
+	protected <T> T getSession(Class<T> sessionClass) {
+		return Context.getCommandContext().getSession(sessionClass);
 	}
 	
 	public void insert(PersistentObject persistentObject) {
@@ -66,5 +61,12 @@ public abstract class AbstractManager {
 	
 	public <T extends PersistentObject> T selectById(Class<T> entityClass,String id){
 		return (T) getSqlSession().selectById(entityClass,id);
+	}
+	
+	public void flush() {
+		
+	}
+	public void close() {
+		
 	}
 }

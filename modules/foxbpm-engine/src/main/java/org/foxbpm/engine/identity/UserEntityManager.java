@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
+ * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.sqlsession;
+package org.foxbpm.engine.identity;
 
-import javax.sql.DataSource;
+public interface UserEntityManager {
 
-public interface ISqlSessionFactory {
-	
-	public void init(DataSource datasource);
-	
+	public User findUserById(String userId);
 }

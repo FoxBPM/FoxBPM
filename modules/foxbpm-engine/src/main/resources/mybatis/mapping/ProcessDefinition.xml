@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="org.foxbpm.engine.impl.entity.TaskEntity">
+
+  <resultMap id="TaskResultMap" type="org.foxbpm.engine.impl.entity.TaskEntity" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="PROCESSINSTANCE_ID" property="processInstanceId" jdbcType="VARCHAR" />
+    <result column="PROCESSDEFINITION_ID" property="processDefinitionId" jdbcType="VARCHAR" />
+    <result column="VERSION" property="version" jdbcType="INTEGER" />
+    <result column="TOKEN_ID" property="tokenId" jdbcType="VARCHAR" />
+    <result column="NODE_ID" property="nodeId" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+    <result column="ASSIGNEE" property="assignee" jdbcType="VARCHAR" />
+    <result column="CLAIM_TIME" property="claimTime" jdbcType="TIMESTAMP" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="ISBLOCKING" property="isBlocking" jdbcType="VARCHAR" />
+    <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="DUEDATE" property="dueDate" jdbcType="TIMESTAMP" />
+    <result column="PRIORITY" property="priority" jdbcType="DECIMAL" />
+    <result column="CATEGORY" property="category" jdbcType="VARCHAR" />
+    <result column="OWNER" property="owner" jdbcType="VARCHAR" />
+    <result column="DELEGATIONSTATE" property="delegationState" jdbcType="VARCHAR" />
+    <result column="BIZKEY" property="bizKey" jdbcType="VARCHAR" />
+    <result column="COMMAND_TYPE" property="commandType" jdbcType="VARCHAR" />
+    <result column="COMMAND_MESSAGE" property="commandMessage" jdbcType="VARCHAR" />
+    <result column="TASK_COMMENT" property="taskComment" jdbcType="VARCHAR" />
+    <result column="NODE_NAME" property="nodeName" jdbcType="VARCHAR" />
+    <result column="PROCESSDEFINITION_KEY" property="processDefinitionKey" jdbcType="VARCHAR" />
+    <result column="FORMURI" property="formUri" jdbcType="VARCHAR" />
+    <result column="TASKGROUP" property="taskGroup" jdbcType="VARCHAR" />
+    <result column="TASKTYPE" property="taskType" jdbcType="VARCHAR" />
+    <result column="PROCESSDEFINITION_NAME" property="processDefinitionName" jdbcType="VARCHAR" />
+    <result column="ISCANCELLED" property="isCancelled" jdbcType="VARCHAR" />
+    <result column="ISSUSPENDED" property="isSuspended" jdbcType="VARCHAR" />
+    <result column="ISOPEN" property="isOpen" jdbcType="VARCHAR" />
+    <result column="ISDRAFT" property="isDraft" jdbcType="VARCHAR" />
+    <result column="EXPECTED_EXECUTIONTIME" property="expectedExecutiontime" jdbcType="DECIMAL" />
+    <result column="AGENT" property="agent" jdbcType="VARCHAR" />
+    <result column="ADMIN" property="admin" jdbcType="VARCHAR" />
+    <result column="FORMURIVIEW" property="formUriView" jdbcType="VARCHAR" />
+    <result column="CALLACTIVITY_INSTANCE_ID" property="callActivityInstanceId" jdbcType="VARCHAR" />
+    <result column="COMMAND_ID" property="commandId" jdbcType="VARCHAR" />
+    <result column="PENDINGTASKID" property="pendingTaskId" jdbcType="VARCHAR" />
+    <result column="ARCHIVE_TIME" property="archiveTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  
+  <insert id="insertTask" parameterType="org.foxbpm.engine.impl.entity.TaskEntity" >
+    insert into foxbpm_run_task (ID, PROCESSINSTANCE_ID, PROCESSDEFINITION_ID, 
+      VERSION, TOKEN_ID, NODE_ID, 
+      DESCRIPTION, PARENT_ID, ASSIGNEE, 
+      CLAIM_TIME, NAME, CREATE_TIME, 
+      START_TIME, ISBLOCKING, END_TIME, 
+      DUEDATE, PRIORITY, CATEGORY, 
+      OWNER, DELEGATIONSTATE, BIZKEY, 
+      COMMAND_TYPE, COMMAND_MESSAGE, TASK_COMMENT, 
+      NODE_NAME, PROCESSDEFINITION_KEY, FORMURI, 
+      TASKGROUP, TASKTYPE, PROCESSDEFINITION_NAME, 
+      ISCANCELLED, ISSUSPENDED, ISOPEN, 
+      ISDRAFT, EXPECTED_EXECUTIONTIME, AGENT, 
+      ADMIN, FORMURIVIEW, CALLACTIVITY_INSTANCE_ID, 
+      COMMAND_ID, PENDINGTASKID, ARCHIVE_TIME
+      )
+    values (#{id,jdbcType=VARCHAR}, #{processInstanceId,jdbcType=VARCHAR}, #{processDefinitionId,jdbcType=VARCHAR}, 
+      #{version,jdbcType=INTEGER}, #{tokenId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{assignee,jdbcType=VARCHAR}, 
+      #{claimTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{isBlocking,jdbcType=VARCHAR}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{dueDate,jdbcType=TIMESTAMP}, #{priority,jdbcType=DECIMAL}, #{category,jdbcType=VARCHAR}, 
+      #{owner,jdbcType=VARCHAR}, #{delegationState,jdbcType=VARCHAR}, #{bizKey,jdbcType=VARCHAR}, 
+      #{commandType,jdbcType=VARCHAR}, #{commandMessage,jdbcType=VARCHAR}, #{taskComment,jdbcType=VARCHAR}, 
+      #{nodeName,jdbcType=VARCHAR}, #{processDefinitionKey,jdbcType=VARCHAR}, #{formUri,jdbcType=VARCHAR}, 
+      #{taskGroup,jdbcType=VARCHAR}, #{taskType,jdbcType=VARCHAR}, #{processDefinitionName,jdbcType=VARCHAR}, 
+      #{isCancelled,jdbcType=VARCHAR}, #{isSuspended,jdbcType=VARCHAR}, #{isOpen,jdbcType=VARCHAR}, 
+      #{isDraft,jdbcType=VARCHAR}, #{expectedExecutionTime,jdbcType=DECIMAL}, #{agent,jdbcType=VARCHAR}, 
+      #{admin,jdbcType=VARCHAR}, #{formUriView,jdbcType=VARCHAR}, #{callActivityInstanceId,jdbcType=VARCHAR}, 
+      #{commandId,jdbcType=VARCHAR}, #{pendingTaskId,jdbcType=VARCHAR}, #{archiveTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  
+  
+  <sql id="Task_Column_List" >
+    ID, PROCESSINSTANCE_ID, PROCESSDEFINITION_ID, VERSION, TOKEN_ID, NODE_ID, DESCRIPTION, 
+    PARENT_ID, ASSIGNEE, CLAIM_TIME, NAME, CREATE_TIME, START_TIME, ISBLOCKING, END_TIME, 
+    DUEDATE, PRIORITY, CATEGORY, OWNER, DELEGATIONSTATE, BIZKEY, COMMAND_TYPE, 
+    COMMAND_MESSAGE, TASK_COMMENT, NODE_NAME, PROCESSDEFINITION_KEY, FORMURI, TASKGROUP, 
+    TASKTYPE, PROCESSDEFINITION_NAME, ISCANCELLED, ISSUSPENDED, ISOPEN, ISDRAFT, EXPECTED_EXECUTIONTIME, 
+    AGENT, ADMIN, FORMURIVIEW, CALLACTIVITY_INSTANCE_ID, COMMAND_ID, PENDINGTASKID, ARCHIVE_TIME
+  </sql>
+
+  <select id="selectTaskById" parameterType="java.lang.String" resultMap="TaskResultMap">
+	    select 
+	    <include refid="Task_Column_List" />
+	    from foxbpm_run_task
+	    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectTaskByNativeQuery" parameterType="java.util.Map" resultMap="TaskResultMap">
+    ${sql}
+  </select>
+</mapper>

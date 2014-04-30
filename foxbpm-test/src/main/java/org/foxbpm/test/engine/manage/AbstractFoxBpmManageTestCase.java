@@ -23,10 +23,10 @@ import java.sql.SQLException;
 import junit.framework.TestCase;
 
 import org.foxbpm.engine.ProcessEngine;
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.ProcessEngineImpl;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
-import org.foxbpm.engine.impl.util.DBUtils;
 import org.foxbpm.engine.spring.ProcessEngineConfigrationImplSpring;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -52,6 +52,7 @@ public abstract class AbstractFoxBpmManageTestCase extends TestCase {
 		processEngine = processEngineConfigrationImplSpring.setProcessEngineName("spring").buildProcessEngine();
 		processEngineConfiguration = ((ProcessEngineImpl) processEngine).getProcessEngineConfiguration();
 		commandContext = new CommandContext(null, processEngine.getProcessEngineConfiguration());
+		Context.setCommandContext(commandContext);
 	}
 	
 	public void runBare() throws Throwable {

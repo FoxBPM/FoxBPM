@@ -22,7 +22,6 @@ import java.util.Date;
 import java.util.Map;
 
 import org.foxbpm.engine.db.PersistentObject;
-import org.foxbpm.engine.impl.identity.GroupTo;
 import org.foxbpm.engine.task.IdentityLink;
 
 public class IdentityLinkEntity implements Serializable, IdentityLink, PersistentObject {
@@ -122,14 +121,14 @@ public class IdentityLinkEntity implements Serializable, IdentityLink, Persisten
 		return userId != null;
 	}
 
-	public GroupTo getGroup() {
-		return new GroupTo(groupId, groupType);
-	}
-
-	public void setGroup(GroupTo group) {
-		this.groupId = group.getGroupId();
-		this.groupType = group.getGroupType();
-	}
+//	public Group getGroup() {
+//		return new Group(groupId, groupType);
+//	}
+//
+//	public void setGroup(Group group) {
+//		this.groupId = group.getGroupId();
+//		this.groupType = group.getGroupType();
+//	}
 
 	public Map<String, Object> getPersistentState() {
 		// TODO Auto-generated method stub

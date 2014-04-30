@@ -13,14 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
+ * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.sqlsession;
+package org.foxbpm.engine.impl.interceptor;
 
-import javax.sql.DataSource;
+/**
+ * @author ych
+ */
+public interface SessionFactory {
+  
+  Class<?> getSessionType();
 
-public interface ISqlSessionFactory {
-	
-	public void init(DataSource datasource);
-	
+  Session openSession();
+
 }

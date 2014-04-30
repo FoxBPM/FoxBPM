@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="org.foxbpm.engine.impl.entity.UserEntity">
+
+ <resultMap id="groupResultMap" type="org.foxbpm.engine.impl.entity.UserEntity" >
+ 	<id column="GROUPID" property="id" jdbcType="VARCHAR" />
+    <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR" />
+    <result column="GROUPTYPE" property="groupType" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectGroupByUserId" parameterType="java.lang.String" resultMap="groupResultMap">
+	   SELECT *,'' AS groupName from au_group_relation where USERID = ?
+  </select>
+</mapper>
