@@ -18,12 +18,102 @@
  */
 package org.foxbpm.engine.impl;
 
+import java.util.Collection;
+import java.util.Map;
+
 import org.foxbpm.engine.TaskService;
+import org.foxbpm.engine.impl.cmd.FindTaskCmd;
 import org.foxbpm.engine.impl.query.NativeTaskQueryImpl;
 import org.foxbpm.engine.query.NativeTaskQuery;
+import org.foxbpm.engine.task.Task;
 
-public class TaskServiceImpl extends ServiceImpl implements TaskService{
+public class TaskServiceImpl extends ServiceImpl implements TaskService {
+
+	public Task newTask() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Task newTask(String taskId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Task findTask(String taskId) {
+		return commandExecutor.execute(new FindTaskCmd(taskId));
+	}
+
+	public void saveTask(Task task) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void deleteTask(String taskId) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void deleteTasks(Collection<String> taskIds) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void deleteTask(String taskId, boolean cascade) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void deleteTasks(Collection<String> taskIds, boolean cascade) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void deleteTask(String taskId, String deleteReason) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void deleteTasks(Collection<String> taskIds, String deleteReason) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void claim(String taskId, String userId) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void unclaim(String taskId) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void complete(String taskId) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void delegateTask(String taskId, String userId) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void resolveTask(String taskId) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void resolveTask(String taskId, Map<String, Object> variables) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void complete(String taskId, Map<String, Object> variables) {
+		// TODO Auto-generated method stub
+
+	}
+
 	public NativeTaskQuery createNativeTaskQuery() {
-	    return new NativeTaskQueryImpl(commandExecutor);
+		return new NativeTaskQueryImpl(commandExecutor);
 	}
 }

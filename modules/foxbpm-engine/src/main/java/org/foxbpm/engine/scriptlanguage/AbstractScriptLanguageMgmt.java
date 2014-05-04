@@ -23,9 +23,15 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
+import org.foxbpm.engine.impl.mgmt.DataVariableMgmtInstance;
 import org.foxbpm.engine.runtime.ExecutionContext;
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 public abstract class AbstractScriptLanguageMgmt {
+	
+	
+	
 	
 	/**
 	 * 执行表达式
@@ -33,6 +39,19 @@ public abstract class AbstractScriptLanguageMgmt {
 	 * @return
 	 */
 	public abstract Object execute(String scriptText);
+	
+	
+	
+	/**
+	 * 执行表达式,对于没有流程上下文环境的时候,执行表达式的时候需要传入流程定义。
+	 * @param scriptText 表达式文本
+	 * @param processDefinition 流程定义
+	 * @return
+	 */
+	public abstract Object execute(String scriptText, ProcessDefinitionEntity processDefinition);
+	
+
+
 	
 	/**
 	 * 向表达式环境中放入变量
@@ -73,6 +92,7 @@ public abstract class AbstractScriptLanguageMgmt {
 	
 	public static List<String> getDataVariableList(String scriptText) {
 		String inexp = scriptText;
+		// ${test} afdfs ${test1}erewr ${test3}
 		String regex = "\\$\\{[^}{]+\\}";
 		Pattern regexExpType = Pattern.compile(regex);
 		Matcher mType = regexExpType.matcher(inexp);
@@ -104,7 +124,39 @@ public abstract class AbstractScriptLanguageMgmt {
 		str = sb.toString();
 		return str;
 	}
-	public static void dataVariableCalculate(String scriptText, ExecutionContext executionContext){
+	
+	
+	public static void dataVariableCalculate(String scriptText, FlowNodeExecutionContext executionContext){
+		DataVariableMgmtInstance dataVariableMgmtInstance = executionContext.getProcessInstance().getDataVariableMgmtInstance();
+
+		List<String> dataVariableList = getDataVariableList(scriptText);
+
+		for (String expressionId : dataVariableList) {
+
+			if (dataVariableMgmtInstance.getDataVariableByExpressionId(expressionId) == null) {
+
+				List<DataVariableBehavior> dataVariableBehaviors = dataVariableMgmtInstance.getProcessInstance().getProcessDefinition().getDataVariableMgmtDefinition()
+						.getDataVariableBehaviorsByProcess();
+				for (DataVariableBehavior dataVariableBehavior : dataVariableBehaviors) {
+
+
+					if (dataVariableBehavior.getId().equals(expressionId)) {
+
+						DataVariableEntity dataVariableEntity = dataVariableMgmtInstance.createDataVariableInstance(dataVariableBehavior);
+						dataVariableEntity.executeExpression(executionContext);
+
+					}else{
+						if(dataVariableBehavior.getBizType()!=null&&!dataVariableBehavior.getBizType().equals("")&&dataVariableBehavior.getBizType().equals(DataVariableEntity.QUERY_DATA_KEY)){
+							DataVariableEntity dataVariableEntity = dataVariableMgmtInstance.createDataVariableInstance(dataVariableBehavior);
+							dataVariableEntity.executeExpression(executionContext);
+						}
+					}
+
+				}
+
+			}
+
+		}
 
 	}
 }

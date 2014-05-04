@@ -19,16 +19,45 @@
 package org.foxbpm.engine.impl.expression;
 
 import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.runtime.ExecutionContext;
 
 public class ExpressionMgmt {
 
-	
 	public static Object execute(String scriptText) {
+
 		return Context.getAbstractScriptLanguageMgmt().execute(scriptText);
+		
 	}
 	
+	
 	public static Object execute(String scriptText, ExecutionContext executionContext) {
+
 		return Context.getAbstractScriptLanguageMgmt().execute(scriptText, executionContext);
+		
+	}
+
+	public static Object getVariable(String variableName) {
+		return Context.getAbstractScriptLanguageMgmt().getVariable(variableName);
+		
+	}
+	
+	public static void setVariable(String variableName, Object variableObj,ExecutionContext executionContext) {
+
+		Context.getAbstractScriptLanguageMgmt().setVariable(variableName,variableObj,executionContext);
+		
+	}
+	
+
+	public static void setVariable(String variableName, Object variableObj) {
+
+
+		Context.getAbstractScriptLanguageMgmt().setVariable(variableName,variableObj);
+		
+	}
+
+	public static Object execute(String scriptText, ProcessDefinitionEntity processDefinition) {
+		return Context.getAbstractScriptLanguageMgmt().execute(scriptText,processDefinition);
+		
 	}
 }

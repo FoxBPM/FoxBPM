@@ -53,7 +53,7 @@ import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
 public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 
 	public KernelProcessDefinition createProcessDefinition(String processId, Object processFile) {
-		InputStream is = this.getClass().getClassLoader().getResourceAsStream("process_test2222.bpmn");
+		InputStream is = this.getClass().getClassLoader().getResourceAsStream("process_test222.bpmn");
 		Process process = null;
 		if (processFile != null) {
 			process = createProcess(processId, is);
@@ -147,7 +147,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		FoxBPMPackage xxxPackage = FoxBPMPackage.eINSTANCE;
 		EPackage.Registry.INSTANCE.put(xxxPackage.getNsURI(), xxxPackage);
 		Bpmn2ResourceFactoryImpl ddd = new Bpmn2ResourceFactoryImpl();
-		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("fixflow", ddd);
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("foxbpm", ddd);
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("bpmn", ddd);
 		resourceSet.getPackageRegistry().put(xxxPackage.getNsURI(), xxxPackage);
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("bpmn", ddd);

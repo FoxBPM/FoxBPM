@@ -101,8 +101,6 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 
 	// 对象字段 /////////////////////
 
-	/** 流程定义 */
-	protected KernelProcessDefinitionImpl processDefinition;
 
 	/** 任务集合 */
 	protected List<TaskEntity> tasks;
@@ -113,36 +111,42 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	/** 变量管理器 */
 	protected DataVariableMgmtInstance dataVariableMgmtInstance;
 
+
+
 	/** 实例内容管理器 */
 	protected ContextInstance contextInstance;
 
 	public boolean isModified() {
 		return true;
 	}
+
 	/** 构造函数 */
 	public ProcessInstanceEntity() {
-		super();
-		// 设置流程实例的编号,通过静态方法获得Guid
-		this.id = GuidUtil.CreateGuid();
+		this(null);
 	}
 
 	// Constructor 构造函数
 	// /////////////////////////////////////////////////////
 	public ProcessInstanceEntity(KernelFlowNodeImpl startFlowNode) {
 
+
 		super(startFlowNode);
 
 		// 设置流程实例的编号,通过静态方法获得Guid
 		this.id = GuidUtil.CreateGuid();
+		
+		this.dataVariableMgmtInstance = new DataVariableMgmtInstance(this);
+
+		this.contextInstance = new ContextInstanceImpl();
 
 	}
 
 	@Override
 	public void start() {
-		
+
 		this.setInstanceStatus(ProcessInstanceStatus.RUNNING);
 		this.setStartTime(ClockUtil.getCurrentTime());
-		
+
 		super.start();
 	}
 
@@ -167,97 +171,97 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 
 	@Override
 	public void initialize() {
-
+		super.initialize();
 		this.tasks = new ArrayList<TaskEntity>();
 
-		this.dataVariableMgmtInstance = new DataVariableMgmtInstance(this);
-
-		this.contextInstance = new ContextInstanceImpl();
-
 	}
 
-	
-	
-	
-	
-	
-	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected void ensureTasksInitialized() {
+		if (tasks == null) {
+			tasks = (List) Context.getCommandContext().getTaskManager().findTasksByProcessInstanceId(id);
+		}
+	}
+
+	protected List<TaskEntity> getTasksInternal() {
+		ensureTasksInitialized();
+		return tasks;
+	}
+
+	public List<TaskEntity> getTasks() {
+		return new ArrayList<TaskEntity>(getTasksInternal());
+	}
+
+	public void addTask(TaskEntity taskEntity) {
+		getTasksInternal().add(taskEntity);
+	}
+
+	public void removeTask(TaskEntity task) {
+		getTasksInternal().remove(task);
+	}
+
 	@Override
 	public void ensureParentProcessInstanceTokenInitialized() {
-		
+
 		if (parentProcessInstanceToken == null && parentTokenId != null) {
-		      TokenEntity token = Context
-		        .getCommandContext().getTokenManager()
-		        .findTokenById(parentTokenId);
-		      setParentProcessInstanceToken(token);
+			TokenEntity token = Context.getCommandContext().getTokenManager().findTokenById(parentTokenId);
+			setParentProcessInstanceToken(token);
 		}
-		
-		
-		
+
 	}
+
 	@Override
 	protected void ensureParentProcessInstanceInitialized() {
 		if (parentProcessInstance == null && parentId != null) {
-			ProcessInstanceEntity parentProcessInstance = Context
-		        .getCommandContext().getProcessInstanceManager()
-		        .findProcessInstanceById(parentId);
+			ProcessInstanceEntity parentProcessInstance = Context.getCommandContext().getProcessInstanceManager()
+					.findProcessInstanceById(parentId);
 			setParentProcessInstance(parentProcessInstance);
 		}
 	}
+
 	@Override
 	public void ensureRootTokenInitialized() {
 		if (rootToken == null && rootTokenId != null) {
-		      TokenEntity token = Context
-		        .getCommandContext().getTokenManager()
-		        .findTokenById(rootTokenId);
-		      setRootToken(token);
+			TokenEntity token = Context.getCommandContext().getTokenManager().findTokenById(rootTokenId);
+			setRootToken(token);
 		}
 	}
+
 	@Override
 	public void ensureProcessDefinitionInitialized() {
-		  if ((processDefinition == null) && (processDefinitionId != null)) {
-		      ProcessDefinitionEntity deployedProcessDefinition = Context
-		        .getProcessEngineConfiguration()
-		        .getDeploymentManager()
-		        .findDeployedProcessDefinitionById(processDefinitionId);
-		      setProcessDefinition(deployedProcessDefinition);
-		    }
+		if ((processDefinition == null) && (processDefinitionId != null)) {
+			ProcessDefinitionEntity deployedProcessDefinition = Context.getProcessEngineConfiguration().getDeploymentManager()
+					.findDeployedProcessDefinitionById(processDefinitionId);
+			setProcessDefinition(deployedProcessDefinition);
+		}
 	}
-	
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	protected void ensureTokensInitialized() {
-		if (tokens==null) {
-		      this.tokens = (List) Context
-		        .getCommandContext().getTokenManager()
-		        .findChildTokensByProcessInstanceId(id);
+		if (tokens == null) {
+			this.tokens = (List) Context.getCommandContext().getTokenManager().findChildTokensByProcessInstanceId(id);
 		}
 	}
-	
 
-	
-	
-	
 	@Override
 	public void setParentProcessInstance(KernelProcessInstanceImpl parentProcessInstance) {
-		this.parentProcessInstance = (ProcessInstanceEntity)parentProcessInstance;
-		this.parentId=((ProcessInstanceEntity)parentProcessInstance).getParentId();
+		this.parentProcessInstance = (ProcessInstanceEntity) parentProcessInstance;
+		this.parentId = ((ProcessInstanceEntity) parentProcessInstance).getParentId();
 	}
-	
+
 	@Override
 	public void setParentProcessInstanceToken(KernelTokenImpl parentProcessInstanceToken) {
-		this.parentProcessInstanceToken=parentProcessInstanceToken;
-		this.parentTokenId=parentProcessInstanceToken.getId();
+		this.parentProcessInstanceToken = parentProcessInstanceToken;
+		this.parentTokenId = parentProcessInstanceToken.getId();
 	}
-	
-	
+
 	@Override
 	public void setRootToken(KernelTokenImpl rootToken) {
-		this.rootToken=rootToken;
-		this.rootTokenId=rootToken.getId();
+		this.rootToken = rootToken;
+		this.rootTokenId = rootToken.getId();
 	}
-	
+
 	public String getSubject() {
 		return subject;
 	}
@@ -385,16 +389,21 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	public void setSuspended(boolean isSuspended) {
 		this.isSuspended = isSuspended;
 	}
-
-	public KernelProcessDefinitionImpl getProcessDefinition() {
-		return processDefinition;
+	
+	public DataVariableMgmtInstance getDataVariableMgmtInstance() {
+		return dataVariableMgmtInstance;
 	}
+
+	public void setDataVariableMgmtInstance(DataVariableMgmtInstance dataVariableMgmtInstance) {
+		this.dataVariableMgmtInstance = dataVariableMgmtInstance;
+	}
+
 
 	@Override
 	public void setProcessDefinition(KernelProcessDefinitionImpl processDefinition) {
 		this.processDefinition = processDefinition;
 		this.processDefinitionId = processDefinition.getId();
-		this.processDefinitionKey=processDefinition.getKey();
+		this.processDefinitionKey = processDefinition.getKey();
 	}
 
 	public String getBizKey() {
@@ -430,7 +439,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	}
 
 	public Map<String, Object> getPersistentState() {
-		return new HashMap<String,Object>();
+		return new HashMap<String, Object>();
 	}
 
 }

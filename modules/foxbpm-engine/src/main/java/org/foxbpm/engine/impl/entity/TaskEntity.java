@@ -8,11 +8,16 @@ import java.util.Map;
 
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.task.TaskDefinition;
+import org.foxbpm.engine.impl.util.ClockUtil;
+import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.task.DelegationState;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskType;
 import org.foxbpm.kernel.process.KernelFlowNode;
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelVariableScopeImpl;
 
 public class TaskEntity extends KernelVariableScopeImpl implements Task, PersistentObject, HasRevision {
@@ -108,6 +113,10 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 	protected String commandMessage;
 	
 	
+	
+	protected boolean isIdentityLinksInitialized = false;
+	
+	
 	protected TokenEntity token;
 
 	protected ProcessInstanceEntity processInstance;
@@ -121,6 +130,63 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 	protected TaskEntity parentTask;
 
 	
+	
+	
+	
+	public TaskEntity() {
+	  }
+
+	  public TaskEntity(String taskId) {
+	    this.id = taskId;
+	  }
+	  
+	  /** 创建并持久化一个任务 */
+	  public static TaskEntity createAndInsert(FlowNodeExecutionContext executionContext) {
+	    TaskEntity task = create();
+	    task.insert( ((TokenEntity)executionContext).getProcessInstance());
+	    return task;
+	  }
+
+	  public void insert(ProcessInstanceEntity processInstance) {
+	    CommandContext commandContext = Context.getCommandContext();
+	    commandContext.getTaskManager().insert(this);
+	    
+	    if(processInstance != null) {
+	    	processInstance.addTask(this);
+	    }
+	    
+	  }
+	  
+	  public void update() {
+	    // Needed to make history work: the setter will also update the historic task
+	    setOwner(this.getOwner());
+	    setAssignee(this.getAssignee());
+	    setDelegationState(this.getDelegationState());
+	    setName(this.getName());
+	    setDescription(this.getDescription());
+	    setPriority(this.getPriority());
+	    setCreateTime(this.getCreateTime());
+	    setDueDate(this.getDueDate());
+	    //setParentTaskId(this.getParentTaskId());
+	    
+	    //CommandContext commandContext = Context.getCommandContext();
+	    //commandContext.getTaskManager().u
+	    //dbSqlSession.update(this);
+	  }
+	  
+	  /**  Creates a new task.  Embedded state and create time will be initialized.
+	   * But this task still will have to be persisted. See {@link #insert(ExecutionEntity)}. */
+	  public static TaskEntity create() {
+	    TaskEntity task = new TaskEntity();
+	    task.setId(GuidUtil.CreateGuid());
+	    task.isIdentityLinksInitialized = true;
+	    task.createTime = ClockUtil.getCurrentTime();
+	    return task;
+	  }
+
+	
+	
+	
 
 	public ProcessInstanceEntity getProcessInstance() {
 		return processInstance;
@@ -133,7 +199,17 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 		this.processInstance = processInstance;
 	}
 
-	
+	 public List<IdentityLinkEntity> getIdentityLinks() {
+		    if (!isIdentityLinksInitialized) {
+		    	taskIdentityLinks = Context
+		        .getCommandContext()
+		        .getIdentityLinkManager()
+		        .findIdentityLinksByTaskId(id);
+		      isIdentityLinksInitialized = true;
+		    }
+		    
+		    return taskIdentityLinks;
+		  }
 	
 	public TokenEntity getToken() {
 		return token;

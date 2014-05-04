@@ -30,9 +30,9 @@ import org.foxbpm.engine.task.Task;
  */
 public class TaskManager extends AbstractManager {
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<Task> findTasksByNativeQuery(Map<String, Object> parameterMap,int firstResult, int maxResults) {
-		return (List<Task>)getSqlSession().selectList("selectTaskByNativeQuery", parameterMap);
+		return (List)getSqlSession().selectList("selectTaskByNativeQuery", parameterMap);
 	}
 
 	public long findTaskCountByNativeQuery(Map<String, Object> parameterMap) {
@@ -43,9 +43,10 @@ public class TaskManager extends AbstractManager {
 		return selectById(TaskEntity.class, taskId);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<Task> findTasksByProcessInstanceId(String processInstanceId){
-		return (List<Task>)getSqlSession().selectList("selectTaskByNativeQuery", processInstanceId);
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<TaskEntity> findTasksByProcessInstanceId(String processInstanceId){
+		return (List)getSqlSession().selectList("selectTasksByProcessInstanceId", processInstanceId);
 	}
 	
 }

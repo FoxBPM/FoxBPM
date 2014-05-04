@@ -18,13 +18,10 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
-import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.task.TaskDefinition;
-import org.foxbpm.engine.impl.util.ClockUtil;
-import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.task.TaskType;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
@@ -63,10 +60,9 @@ public class UserTaskBehavior extends TaskBehavior {
 	@Override
 	public void execute(FlowNodeExecutionContext executionContext) {
 		
-		TaskEntity task=new TaskEntity();
-		task.setId(GuidUtil.CreateGuid());
+		TaskEntity task = TaskEntity.createAndInsert(executionContext);
+		
 		task.setAssignee("jiangnan");
-		task.setCreateTime(ClockUtil.getCurrentTime());
 		
 		ProcessInstanceEntity processInstance=(ProcessInstanceEntity) executionContext.getProcessInstance();
 		
@@ -74,7 +70,6 @@ public class UserTaskBehavior extends TaskBehavior {
 		task.setDescription("任务主题");
 		task.setToken((TokenEntity)executionContext);
 		task.setTaskType(TaskType.FOXBPMTASK);
-		Context.getCommandContext().getTaskManager().insert(task);
 
 	}
 	

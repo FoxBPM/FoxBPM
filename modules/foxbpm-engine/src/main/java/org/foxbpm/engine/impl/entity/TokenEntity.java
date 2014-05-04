@@ -6,13 +6,14 @@ import java.util.Map;
 
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.runtime.Token;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
-public class TokenEntity extends KernelTokenImpl implements Token,PersistentObject,HasRevision{
+public class TokenEntity extends KernelTokenImpl implements Token, PersistentObject, HasRevision {
 
 	/**
 	 * 
@@ -28,15 +29,30 @@ public class TokenEntity extends KernelTokenImpl implements Token,PersistentObje
 	protected Date archiveTime;
 	protected boolean isLocked = false;
 	protected boolean isSuspended = false;
-	
 
-
-	
-	
 	@Override
 	public void setFlowNode(KernelFlowNodeImpl flowNode) {
-		setNodeId(flowNode.getId());
+		if (flowNode != null) {
+			setNodeId(flowNode.getId());
+		}
+
 		super.setFlowNode(flowNode);
+	}
+
+	@Override
+	protected void ensureFlowNodeInitialized() {
+		if ((currentFlowNode == null) && (nodeId != null)) {
+			currentFlowNode = getProcessDefinition().findFlowNode(nodeId);
+		}
+	}
+
+	@Override
+	protected void ensureProcessInstanceInitialized() {
+		if ((processInstance == null) && (processInstanceId != null)) {
+		      processInstance = Context
+		        .getCommandContext().getProcessInstanceManager()
+		        .findProcessInstanceById(processInstanceId);
+		}
 	}
 
 	@Override
@@ -49,10 +65,8 @@ public class TokenEntity extends KernelTokenImpl implements Token,PersistentObje
 	public void setParent(KernelTokenImpl parent) {
 		setParentId(parent.getId());
 		super.setParent(parent);
-	} 
+	}
 
-	
-	
 	@Override
 	public void enter(KernelFlowNodeImpl flowNode) {
 		setNodeEnterTime(ClockUtil.getCurrentTime());
@@ -66,7 +80,7 @@ public class TokenEntity extends KernelTokenImpl implements Token,PersistentObje
 
 	public void setRevision(int revision) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public int getRevision() {
@@ -80,9 +94,9 @@ public class TokenEntity extends KernelTokenImpl implements Token,PersistentObje
 	}
 
 	public void setId(String id) {
-		this.id=id;
+		this.id = id;
 	}
-	
+
 	public String getProcessInstanceId() {
 		return processInstanceId;
 	}
@@ -157,7 +171,7 @@ public class TokenEntity extends KernelTokenImpl implements Token,PersistentObje
 
 	public Map<String, Object> getPersistentState() {
 		// TODO Auto-generated method stub
-		return new HashMap<String,Object>();
+		return new HashMap<String, Object>();
 	}
 
 	public boolean isModified() {
@@ -166,7 +180,7 @@ public class TokenEntity extends KernelTokenImpl implements Token,PersistentObje
 
 	@Override
 	public ProcessInstanceEntity getProcessInstance() {
-		return (ProcessInstanceEntity)super.getProcessInstance();
+		return (ProcessInstanceEntity) super.getProcessInstance();
 	}
-	
+
 }

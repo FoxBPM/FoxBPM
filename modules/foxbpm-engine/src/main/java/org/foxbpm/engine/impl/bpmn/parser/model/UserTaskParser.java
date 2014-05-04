@@ -48,7 +48,7 @@ public class UserTaskParser extends TaskParser {
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		UserTaskBehavior userTaskBehavior=(UserTaskBehavior)baseElementBehavior;
 		
-		String subject = BpmnModelUtil.getUserTaskSubject(baseElement);
+		/*String subject = BpmnModelUtil.getUserTaskSubject(baseElement);
 		String formUri = BpmnModelUtil.getFormUri(baseElement);
 		String formUriView = BpmnModelUtil.getFormUriView(baseElement);
 		String assigneePolicy = BpmnModelUtil.getUserTaskAssigneePolicyType(baseElement);
@@ -69,7 +69,7 @@ public class UserTaskParser extends TaskParser {
 		userTaskBehavior.setFormUriView(formUriView);
 		userTaskBehavior.setTaskSubject(subject);
 		userTaskBehavior.setTaskPriority(taskPriority);
-		userTaskBehavior.setTaskDefinition(taskDefinition);
+		userTaskBehavior.setTaskDefinition(taskDefinition);*/
 		return super.parser(baseElement);
 	}
 

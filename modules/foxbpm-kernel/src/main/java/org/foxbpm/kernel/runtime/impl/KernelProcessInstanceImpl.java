@@ -99,16 +99,18 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 		// 设置流程实例启动的节点
 		this.startFlowNode = flowNode;
 
-		KernelTokenImpl token = createRootToken();
-		// 创建根令牌
-		addToken(token);
 
 	}
 
 	public KernelTokenImpl createRootToken() {
-		this.rootToken = createToken();
-		this.rootToken.setProcessInstance(this);
-		return this.rootToken;
+		if(rootToken==null){
+			this.rootToken = createToken();
+			this.rootToken.setProcessInstance(this);
+			return this.rootToken;
+		}else{
+			throw new KernelException("RootToken已经存在");
+		}
+		
 	}
 
 	/** 子类需要重写这个方法 */
@@ -194,8 +196,10 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 
 	/** 这个方法需要子类重写 */
 	public void initialize() {
-		// TODO Auto-generated method stub
 
+		KernelTokenImpl token = createRootToken();
+		// 创建根令牌
+		addToken(token);
 	}
 
 	/** 这个方法需要子类重写 */
@@ -241,7 +245,7 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 
 	public void addToken(KernelTokenImpl token) {
 
-		if (token != null) {
+		if (tokens != null) {
 			tokens.add(token);
 		}
 

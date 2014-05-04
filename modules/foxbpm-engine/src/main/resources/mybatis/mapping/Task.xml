@@ -38,7 +38,7 @@
     <result column="ISSUSPENDED" property="isSuspended" jdbcType="VARCHAR" />
     <result column="ISOPEN" property="isOpen" jdbcType="VARCHAR" />
     <result column="ISDRAFT" property="isDraft" jdbcType="VARCHAR" />
-    <result column="EXPECTED_EXECUTIONTIME" property="expectedExecutiontime" jdbcType="DECIMAL" />
+    <result column="EXPECTED_EXECUTIONTIME" property="expectedExecutionTime" jdbcType="DECIMAL" />
     <result column="AGENT" property="agent" jdbcType="VARCHAR" />
     <result column="ADMIN" property="admin" jdbcType="VARCHAR" />
     <result column="FORMURIVIEW" property="formUriView" jdbcType="VARCHAR" />

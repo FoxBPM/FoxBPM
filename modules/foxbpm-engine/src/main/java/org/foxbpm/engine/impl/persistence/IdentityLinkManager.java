@@ -18,11 +18,20 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
+import java.util.List;
+
+import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
+
 /**
  * 任务候选人持久化管理器
  * @author kenshin
  *
  */
 public class IdentityLinkManager extends AbstractManager {
+
+	public List<IdentityLinkEntity> findIdentityLinksByTaskId(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:foxbpm="http://www.founderfix.com/foxbpm" id="Definitions_1" targetNamespace="http://www.founderfix.com">
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:foxbpm="http://www.foxbpm.org/foxbpm" id="Definitions_1" targetNamespace="http://www.foxbpm.org">
   <bpmn2:process id="process_test222" foxbpm:verification="true" foxbpm:dbid="process_test222:3:b98913ff-aceb-41be-b18d-ad7d2f3202fa" name="测试集成">
     <bpmn2:extensionElements>
       <foxbpm:formUri>

@@ -23,21 +23,19 @@ import java.util.Map;
 import java.util.zip.ZipInputStream;
 
 import org.foxbpm.engine.ModelService;
-import org.foxbpm.engine.model.DeploymentBuilder;
 
 public class ModelServiceImpl extends ServiceImpl implements ModelService {
-	
-	public DeploymentBuilder createDeployment() {
-		return new DeploymentBuilderImpl(this);
-	}
 
 	public List<Map<String, String>> getStartProcessByUserId(String userId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	public void deployByZip(ZipInputStream zipInputStream) {
-		return commandExecutor.execute(new DeploymentByZipCmd(createDeployment(),zipInputStream));
+		// TODO Auto-generated method stub
+		
 	}
+	
+
 
 }

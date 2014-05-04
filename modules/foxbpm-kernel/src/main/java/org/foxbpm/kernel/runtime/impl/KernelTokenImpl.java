@@ -95,7 +95,14 @@ InterpretableExecutionContext  {
 	protected boolean isOperating = false;
 
 	public KernelFlowNodeImpl getFlowNode() {
+		ensureFlowNodeInitialized();
 		return currentFlowNode;
+	}
+	
+	/** 子类需要重写这个类*/
+	protected void ensureFlowNodeInitialized() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public void setFlowNode(KernelFlowNodeImpl flowNode) {
@@ -107,7 +114,14 @@ InterpretableExecutionContext  {
 	}
 
 	public KernelProcessInstanceImpl getProcessInstance() {
+		ensureProcessInstanceInitialized();
 		return processInstance;
+	}
+
+	/** 子类需要重写这个方法*/
+	protected void ensureProcessInstanceInitialized() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public void setProcessInstance(KernelProcessInstanceImpl processInstance) {
