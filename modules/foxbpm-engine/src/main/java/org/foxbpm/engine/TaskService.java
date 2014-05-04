@@ -18,10 +18,48 @@
  */
 package org.foxbpm.engine;
 
+import java.util.Collection;
+import java.util.Map;
+
 import org.foxbpm.engine.query.NativeTaskQuery;
+import org.foxbpm.engine.task.Task;
 
 public interface TaskService {
 
+	Task newTask();
+
+	Task newTask(String taskId);
+
+	Task findTask(String taskId);
+
+	void saveTask(Task task);
+
+	void deleteTask(String taskId);
+
+	void deleteTasks(Collection<String> taskIds);
+
+	void deleteTask(String taskId, boolean cascade);
+
+	void deleteTasks(Collection<String> taskIds, boolean cascade);
+
+	void deleteTask(String taskId, String deleteReason);
+
+	void deleteTasks(Collection<String> taskIds, String deleteReason);
+
+	void claim(String taskId, String userId);
+
+	void unclaim(String taskId);
+
+	void complete(String taskId);
+
+	void delegateTask(String taskId, String userId);
+
+	void resolveTask(String taskId);
+
+	void resolveTask(String taskId, Map<String, Object> variables);
+
+	void complete(String taskId, Map<String, Object> variables);
+
 	public NativeTaskQuery createNativeTaskQuery();
-	
+
 }
