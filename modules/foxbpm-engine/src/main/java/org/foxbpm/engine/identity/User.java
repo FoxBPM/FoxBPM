@@ -13,14 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author ych
+ * @author kenshin
  */
-package org.foxbpm.engine.sqlsession;
+package org.foxbpm.engine.identity;
 
-import javax.sql.DataSource;
+import java.util.Map;
+public interface User {
 
-public interface ISqlSessionFactory {
-	
-	public void init(DataSource datasource);
-	
+	public String getUserId();
+	public String getUserName();
+	public Map<String, Object> getPropertyMap();
+	public String getEmail();
+	public Object getPropertyValue(String propertyName);
+
 }

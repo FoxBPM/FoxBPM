@@ -13,29 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
+ * @author kenshin
  * @author ych
  */
-package org.foxbpm.test;
+package org.foxbpm.engine.identity;
 
-import org.foxbpm.engine.ProcessEngine;
-import org.foxbpm.engine.ProcessEngineManagement;
-import org.foxbpm.engine.RuntimeService;
-import org.foxbpm.engine.runtime.ProcessInstance;
+import java.util.List;
 
-import junit.framework.TestCase;
+public interface GroupEntityManager {
 
-public class ModelServiceTest extends TestCase {
-	
-
-	
-	public void testStartProcessById(){
-		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
-		
-		RuntimeService runtimeService=processEngine.getRuntimeService();
-		ProcessInstance processInstance=runtimeService.startProcessInstanceById("1","bizkeyValue");
-		
-		
-		
-		assertNotNull(processInstance);
-	}
+	public List<Group> selectGroupByUserId();
 }

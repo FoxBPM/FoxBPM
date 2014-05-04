@@ -22,7 +22,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -49,7 +51,13 @@ import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 import org.foxbpm.engine.impl.interceptor.CommandExecutorImpl;
 import org.foxbpm.engine.impl.interceptor.CommandInterceptor;
 import org.foxbpm.engine.impl.interceptor.LogInterceptor;
+import org.foxbpm.engine.impl.interceptor.SessionFactory;
 import org.foxbpm.engine.impl.mybatis.MyBatisSqlSessionFactory;
+import org.foxbpm.engine.impl.persistence.GenericManagerFactory;
+import org.foxbpm.engine.impl.persistence.ProcessInstanceManager;
+import org.foxbpm.engine.impl.persistence.TaskManager;
+import org.foxbpm.engine.impl.persistence.TokenManager;
+import org.foxbpm.engine.impl.persistence.UserEntityManagerFactory;
 import org.foxbpm.engine.impl.persistence.deploy.DefaultDeploymentCache;
 import org.foxbpm.engine.impl.persistence.deploy.Deployer;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentCache;
@@ -77,6 +85,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected RuntimeService runtimeService = new RuntimeServiceImpl();
 	protected TaskService taskService = new TaskServiceImpl();
 	protected ISqlSessionFactory sqlSessionFactory;
+	protected Map<Class<?>, SessionFactory> sessionFactories;
 	protected DataSourceManage dataSourceManage;
 	// 定义及发布
 	protected int processDefinitionCacheLimit = -1; // By default, no limit
@@ -103,10 +112,12 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initResourcePathConfig();
 		// initDataVariableConfig();
 		initDataSourceManage();
-		initSqlSessionFactory();
+//		initSqlSessionFactory();
 		initCommandContextFactory();
 		initCommandExecutors();
 		initServices();
+		
+		initSessionFactories();
 		initDeployers();
 		// initDataBaseTable();
 		// initCache();
@@ -135,6 +146,24 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		// initAssignPolicyConfig();
 		// initThreadPool();
 
+	}
+	
+	protected void initSessionFactories(){
+		if (sessionFactories == null) {
+			sessionFactories = new HashMap<Class<?>, SessionFactory>();
+			MyBatisSqlSessionFactory sqlSessionFactory = new MyBatisSqlSessionFactory();
+			sqlSessionFactory.init(dataSourceManage.getDataSource());
+			addSessionFactory(sqlSessionFactory);
+			addSessionFactory(new GenericManagerFactory(TaskManager.class));
+			addSessionFactory(new GenericManagerFactory(ProcessInstanceManager.class));
+			addSessionFactory(new GenericManagerFactory(TokenManager.class));
+			
+			addSessionFactory(new UserEntityManagerFactory());
+		}
+	}
+	
+	protected void addSessionFactory(SessionFactory sessionFactory) {
+		sessionFactories.put(sessionFactory.getSessionType(), sessionFactory);
 	}
 
 	protected void initDeployers() {
@@ -320,6 +349,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	public FoxBPMConfig getFoxBpmConfig() {
 		return foxBpmConfig;
+	}
+	
+	public Map<Class<?>, SessionFactory> getSessionFactories() {
+		return sessionFactories;
 	}
 
 	public String getInternationPath() {

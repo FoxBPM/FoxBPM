@@ -13,29 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
+ * @author kenshin
  * @author ych
  */
-package org.foxbpm.test;
+package org.foxbpm.engine.impl.persistence;
 
-import org.foxbpm.engine.ProcessEngine;
-import org.foxbpm.engine.ProcessEngineManagement;
-import org.foxbpm.engine.RuntimeService;
-import org.foxbpm.engine.runtime.ProcessInstance;
+import org.foxbpm.engine.identity.UserEntityManager;
+import org.foxbpm.engine.impl.interceptor.Session;
+import org.foxbpm.engine.impl.interceptor.SessionFactory;
 
-import junit.framework.TestCase;
+public class UserEntityManagerFactory implements SessionFactory {
 
-public class ModelServiceTest extends TestCase {
-	
-
-	
-	public void testStartProcessById(){
-		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
-		
-		RuntimeService runtimeService=processEngine.getRuntimeService();
-		ProcessInstance processInstance=runtimeService.startProcessInstanceById("1","bizkeyValue");
-		
-		
-		
-		assertNotNull(processInstance);
+	public Class<?> getSessionType() {
+		return UserEntityManager.class;
 	}
+
+	public Session openSession() {
+		return new DefaultUserEntityManager();
+	}
+
 }

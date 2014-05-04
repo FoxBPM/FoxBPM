@@ -10,5 +10,6 @@
   <mapper resource="mybatis/mapping/Task.xml" />
     <mapper resource="mybatis/mapping/ProcessInstance.xml" />
     <mapper resource="mybatis/mapping/Token.xml" />
+     <mapper resource="mybatis/mapping/Group.xml" />
   </mappers>
 </configuration>

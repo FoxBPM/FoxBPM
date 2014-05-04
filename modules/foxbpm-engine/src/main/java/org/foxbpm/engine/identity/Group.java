@@ -13,14 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author ych
+ * @author kenshin
  */
-package org.foxbpm.engine.sqlsession;
+package org.foxbpm.engine.identity;
 
-import javax.sql.DataSource;
+import java.util.Map;
 
-public interface ISqlSessionFactory {
+/**
+ * 组,用于组的数据传递
+ * @author kenshin
+ *
+ */
+public interface Group {
 	
-	public void init(DataSource datasource);
+	public String getGroupId();
+
+	public String getGroupType();
+	
+	public String getGroupName();
+
+	public Map<String, Object> getPropertyMap();
+	
+	public Object getPropertyValue(String propertyName);
 	
 }

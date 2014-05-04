@@ -48,10 +48,6 @@ public class TaskAssigneeDefinitionTo {
 	 */
 	protected IdentityLinkType identityLinkType;
 	
-	/**
-	 * 包含排除
-	 */
-	protected IncludeExclusion includeExclusion;
 	
 	/**
 	 * 资源范围
@@ -101,13 +97,6 @@ public class TaskAssigneeDefinitionTo {
 		this.identityLinkType = identityLinkType;
 	}
 
-	public IncludeExclusion getIncludeExclusion() {
-		return includeExclusion;
-	}
-
-	public void setIncludeExclusion(IncludeExclusion includeExclusion) {
-		this.includeExclusion = includeExclusion;
-	}
 	
 	public String getResourceRange() {
 		return resourceRange;
