@@ -107,7 +107,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initCommandContextFactory();
 		initCommandExecutors();
 		initServices();
-//		initDeployers();
+		initDeployers();
 		// initDataBaseTable();
 		// initCache();
 		// initDeployers();
@@ -183,7 +183,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		}
 
 		if (processModelParseHandler == null) {
-			processModelParseHandler = (ProcessModelParseHandler)ReflectUtil.instantiate("org.foxbpm.bpmn.converter.BpmnParseHandlerImpl");
+			processModelParseHandler = (ProcessModelParseHandler)ReflectUtil.instantiate("org.foxbpm.engine.impl.bpmn.parser.BpmnParseHandlerImpl");
 		}
 		bpmnDeployer.setProcessModelParseHandler(processModelParseHandler);
 		defaultDeployers.add(bpmnDeployer);
