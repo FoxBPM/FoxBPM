@@ -307,6 +307,23 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 		return null;
 	}
 
+	public Object getVariableLocal(Object variableName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected List<KernelVariableInstanceImpl> loadVariableInstances() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected void initializeVariableInstanceBackPointer(KernelVariableInstanceImpl variableInstance) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 
 

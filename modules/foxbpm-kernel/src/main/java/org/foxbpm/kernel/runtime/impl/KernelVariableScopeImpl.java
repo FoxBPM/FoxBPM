@@ -325,6 +325,8 @@ public abstract class KernelVariableScopeImpl implements KernelVariableScope, Se
 
 	protected void updateVariableInstance(KernelVariableInstanceImpl variableInstance, Object value, KernelVariableScopeImpl sourceVariableScope) {
 
+		
+		/*
 		// type should be changed
 		if ((variableInstance != null) && (!variableInstance.getType().isAbleToStore(value))) {
 			VariableTypes variableTypes = Context.getProcessEngineConfiguration().getVariableTypes();
@@ -333,17 +335,17 @@ public abstract class KernelVariableScopeImpl implements KernelVariableScope, Se
 			variableInstance.setType(newType);
 			variableInstance.forceUpdate();
 		}
-		variableInstance.setValue(value);
+		variableInstance.setValue(value);*/
 
 	}
 
 	protected KernelVariableInstanceImpl createVariableInstance(String variableName, Object value, KernelVariableScopeImpl sourceVariableScope) {
 
-		KernelVariableInstanceImpl variableInstance = KernelVariableInstanceImpl.createAndInsert(variableName, type, value);
-		initializeVariableInstanceBackPointer(variableInstance);
-		variableInstances.put(variableName, variableInstance);
+		//KernelVariableInstanceImpl variableInstance = KernelVariableInstanceImpl.createAndInsert(variableName, null, value);
+		//initializeVariableInstanceBackPointer(variableInstance);
+		//variableInstances.put(variableName, variableInstance);
 
-		return variableInstance;
+		return null;
 	}
 
 
