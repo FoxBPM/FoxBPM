@@ -6,5 +6,5 @@
       <widgetExpression expressionValue=""/>
     </widget>
   </page>
-  <definitionImpl className="SelectUserActorConnector" packageName="com.founder.fix.fixflow.expand.actorconnector.SelectUserActorConnector"/>
+  <definitionImpl className="SelectUserActorConnector" packageName="org.foxbpm.connector.actorconnector.SelectUserActorConnector"/>
 </flowconnector:FlowConnectorDefinition>

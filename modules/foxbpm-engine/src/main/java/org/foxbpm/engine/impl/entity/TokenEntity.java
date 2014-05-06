@@ -9,6 +9,7 @@ import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.runtime.Token;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
@@ -208,8 +209,11 @@ public class TokenEntity extends KernelTokenImpl implements Token,ConnectorExecu
 	}
 
 	public String getAuthenticatedUserId() {
-		// TODO Auto-generated method stub
-		return null;
+		return Authentication.getAuthenticatedUserId();
+	}
+
+	public String getStartAuthor() {
+		return getProcessInstance().getStartAuthor();
 	}
 
 }
