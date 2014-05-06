@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2014 FoxBPM ORG.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,21 +15,31 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.kernel.runtime;
+package org.foxbpm.engine.impl.connector;
 
-/**
- * @author kenshin
- * 
- */
-public interface DelegateExecutionContext extends KernelVariableScope {
 
-	/**
-	 * Unique id of this path of execution that can be used as a handle to
-	 * provide external signals back into the engine after wait states.
-	 */
-	String getId();
+public class ConnectorOutputParam {
+	
+	protected String outputId;
+	
+	public String getOutputId() {
+		return outputId;
+	}
 
-	/** Reference to the overall process instance */
-	String getProcessInstanceId();
+	public void setOutputId(String outputId) {
+		this.outputId = outputId;
+	}
+
+	protected String variableTarget;
+
+
+	public String getVariableTarget() {
+		return variableTarget;
+	}
+
+	public void setVariableTarget(String variableTarget) {
+		this.variableTarget = variableTarget;
+	}
+
 
 }

@@ -15,21 +15,22 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.kernel.runtime;
+package org.foxbpm.engine.expression;
+
+import java.io.Serializable;
+
+import org.foxbpm.kernel.runtime.KernelVariableScope;
 
 /**
  * @author kenshin
- * 
+ *
  */
-public interface DelegateExecutionContext extends KernelVariableScope {
+public interface Expression extends Serializable {
 
-	/**
-	 * Unique id of this path of execution that can be used as a handle to
-	 * provide external signals back into the engine after wait states.
-	 */
-	String getId();
-
-	/** Reference to the overall process instance */
-	String getProcessInstanceId();
+	   Object getValue(KernelVariableScope variableScope);
+	   
+	   String getExpressionText();
+	   
+	   boolean isNullText();
 
 }

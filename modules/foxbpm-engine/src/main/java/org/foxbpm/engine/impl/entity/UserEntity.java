@@ -29,6 +29,15 @@ public class UserEntity implements User {
 	private String password;
 	private String email;
 	private Map<String,Object> propertyMap;
+	
+	public UserEntity (){
+		
+	}
+	
+
+	public UserEntity (String userId){
+		
+	}
 
 	public String getPassword() {
 		return password;

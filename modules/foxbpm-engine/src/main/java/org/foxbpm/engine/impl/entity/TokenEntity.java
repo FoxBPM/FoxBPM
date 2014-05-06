@@ -2,18 +2,21 @@ package org.foxbpm.engine.impl.entity;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.runtime.Token;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
+import org.foxbpm.kernel.runtime.impl.KernelVariableInstanceImpl;
 
-public class TokenEntity extends KernelTokenImpl implements Token, PersistentObject, HasRevision {
+public class TokenEntity extends KernelTokenImpl implements Token,ConnectorExecutionContext, PersistentObject, HasRevision {
 
 	/**
 	 * 
@@ -181,6 +184,32 @@ public class TokenEntity extends KernelTokenImpl implements Token, PersistentObj
 	@Override
 	public ProcessInstanceEntity getProcessInstance() {
 		return (ProcessInstanceEntity) super.getProcessInstance();
+	}
+
+	public Object getVariableLocal(Object variableName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getInitiator() {
+		return getProcessInstance().getInitiator();
+	}
+
+	@Override
+	protected List<KernelVariableInstanceImpl> loadVariableInstances() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected void initializeVariableInstanceBackPointer(KernelVariableInstanceImpl variableInstance) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String getAuthenticatedUserId() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

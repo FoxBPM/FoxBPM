@@ -21,6 +21,7 @@ package org.foxbpm.engine.impl.expression;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.runtime.ExecutionContext;
+import org.foxbpm.kernel.runtime.KernelVariableScope;
 
 public class ExpressionMgmt {
 
@@ -29,6 +30,19 @@ public class ExpressionMgmt {
 		return Context.getAbstractScriptLanguageMgmt().execute(scriptText);
 		
 	}
+	
+	public static Object execute(String scriptText,KernelVariableScope variableScope) {
+
+		return Context.getAbstractScriptLanguageMgmt().execute(scriptText);
+		
+	}
+	
+	public static void setVariable(String variableName, Object variableObj,KernelVariableScope variableScope) {
+
+		Context.getAbstractScriptLanguageMgmt().setVariable(variableName,variableObj,executionContext);
+		
+	}
+	
 	
 	
 	public static Object execute(String scriptText, ExecutionContext executionContext) {

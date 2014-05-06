@@ -23,7 +23,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
+import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtInstance;
 import org.foxbpm.engine.runtime.ExecutionContext;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
@@ -82,6 +84,8 @@ public abstract class AbstractScriptLanguageMgmt {
 	 * @return
 	 */
 	public abstract Object execute(String scriptText, ExecutionContext executionContext);
+	
+	
 	
 	/**
 	 * 脚本管理器初始化方法

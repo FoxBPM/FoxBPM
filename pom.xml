@@ -10,7 +10,7 @@
 	<modules>
 		<module>modules/foxbpm-engine</module>
 		<module>modules/foxbpm-kernel</module>
-		<module>foxbpm-test</module>
+		<module>modules/foxbpm-connector</module>
 	</modules>
 
 	<dependencies>
