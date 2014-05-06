@@ -61,6 +61,11 @@ public class BpmnModelUtil {
 		return StringUtil.getString(getExtensionAttribute(process,FoxBPMPackage.Literals.DOCUMENT_ROOT__DBID));
 	}
 	
+	/** 获取流程的分类*/
+	public static String getProcessCategory(Process process){
+		return StringUtil.getString(getExtensionAttribute(process,FoxBPMPackage.Literals.DOCUMENT_ROOT__CATEGORY));
+	}
+	
 	public List<Connector> getcConnectors(BaseElement baseElement){
 		
 		List<Connector> connectors=new ArrayList<Connector>();

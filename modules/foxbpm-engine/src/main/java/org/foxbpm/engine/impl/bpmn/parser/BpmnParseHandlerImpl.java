@@ -80,6 +80,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 
 	private KernelProcessDefinition loadBehavior(Process process){
 		String processObjId = BpmnModelUtil.getProcessId(process);
+		String category=BpmnModelUtil.getProcessCategory(process);
 		List<FlowElement> flowElements=process.getFlowElements();
 		ProcessDefinitionBuilder processDefinitionBuilder = new ProcessDefinitionEntityBuilder(processObjId);
 		for(FlowElement flowElement :flowElements){
@@ -101,6 +102,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		ProcessDefinitionEntity processDefinition=(ProcessDefinitionEntity)processDefinitionBuilder.buildProcessDefinition();
 		processDefinition.setKey(process.getId());
 		processDefinition.setName(process.getName());
+		processDefinition.setCategory(category);
 		return processDefinition;
 	}
 	
