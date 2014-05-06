@@ -1,49 +1,49 @@
+/**
+ * Copyright 1996-2014 FoxBPM ORG.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * @author kenshin
+ */
 package org.foxbpm.connector.actorconnector.SelectUserActorConnector;
 
+import java.util.List;
 
-import java.util.*;
+import org.foxbpm.engine.execution.ConnectorExecutionContext;
+import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
+import org.foxbpm.engine.impl.entity.UserEntity;
+import org.foxbpm.engine.impl.util.AssigneeUtil;
 
-import com.founder.fix.fixflow.core.connector.ActorConnectorHandler;
-import com.founder.fix.fixflow.core.impl.identity.GroupTo;
-import com.founder.fix.fixflow.core.impl.identity.UserTo;
-import com.founder.fix.fixflow.core.impl.util.AssigneeUtil;
-import com.founder.fix.fixflow.core.runtime.ExecutionContext;
+public class SelectUserActorConnector extends ActorConnectorHandler {
 
-public class SelectUserActorConnector implements ActorConnectorHandler {
+	private static final long serialVersionUID = 1L;
 
 	private java.lang.Object userId;
 
-	/**
-	* 获取用户类型处理者
-	* @param executionContext 流程上下文
-	* @return
-	*/
-	public List<UserTo> UserExecute(ExecutionContext executionContext) {
-		List<UserTo> userTos = new ArrayList<UserTo>();
-		List<String> userList=AssigneeUtil.executionExpressionObj(userId, executionContext);
-		
-		
+	public void setUserId(java.lang.Object userId) {
+		this.userId = userId;
+	}
+
+	@Override
+	public void execute(ConnectorExecutionContext executionContext) throws Exception {
+
+		List<String> userList = AssigneeUtil.executionExpressionObj(userId);
+
 		for (String userId : userList) {
-			UserTo userTo = new UserTo(userId);
-			userTos.add(userTo);
+			UserEntity user = new UserEntity(userId);
+			addUser(user);
 		}
 
-		return userTos;
-	}
-
-	/**
-	* 获取组类型处理者
-	* @param executionContext 流程上下文
-	* @return
-	*/
-	public List<GroupTo> GroupExecute(ExecutionContext executionContext) {
-		List<GroupTo> groupTos = new ArrayList<GroupTo>();
-		//加入Group 	GroupTo groupTo = new GroupTo("组编号", "组类型");
-		return groupTos;
-	}
-
-	public void  setUserId(java.lang.Object userId){
-		this.userId = userId;
 	}
 
 }

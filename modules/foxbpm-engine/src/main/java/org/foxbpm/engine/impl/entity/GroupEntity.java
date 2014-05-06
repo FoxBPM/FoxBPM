@@ -28,6 +28,14 @@ public class GroupEntity implements Group{
 	private String groupType;
 	private Map<String,Object> propertyMap;
 	
+	public GroupEntity(){
+		
+	}
+	
+	public GroupEntity(String groupId,String groupType){
+		
+	}
+	
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
 	}

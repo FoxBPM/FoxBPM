@@ -15,22 +15,18 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.engine.execution;
+package org.foxbpm.engine.impl.identity;
 
-import org.foxbpm.kernel.runtime.ListenerExecutionContext;
+public abstract class Authentication {
 
-/**
- * @author kenshin
- *
- */
-public interface ConnectorExecutionContext extends ListenerExecutionContext {
-	
-	
-	String getInitiator();
-	
-	String getAuthenticatedUserId();
-	
-	String getStartAuthor();
-	
+	static ThreadLocal<String> authenticatedUserIdThreadLocal = new ThreadLocal<String>();
+
+	public static void setAuthenticatedUserId(String authenticatedUserId) {
+		authenticatedUserIdThreadLocal.set(authenticatedUserId);
+	}
+
+	public static String getAuthenticatedUserId() {
+		return authenticatedUserIdThreadLocal.get();
+	}
 
 }

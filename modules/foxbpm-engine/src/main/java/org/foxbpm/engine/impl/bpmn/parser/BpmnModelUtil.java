@@ -41,6 +41,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.BasicEObjectImpl;
 import org.eclipse.emf.ecore.impl.EStructuralFeatureImpl.SimpleFeatureMapEntry;
 import org.eclipse.emf.ecore.util.FeatureMap;
+import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.task.TaskAssigneeDefinition;
 import org.foxbpm.engine.impl.task.TaskCommandDefinition;
 import org.foxbpm.engine.impl.util.StringUtil;
@@ -60,6 +61,18 @@ public class BpmnModelUtil {
 		return StringUtil.getString(getExtensionAttribute(process,FoxBPMPackage.Literals.DOCUMENT_ROOT__DBID));
 	}
 	
+	/** 获取流程的分类*/
+	public static String getProcessCategory(Process process){
+		return StringUtil.getString(getExtensionAttribute(process,FoxBPMPackage.Literals.DOCUMENT_ROOT__CATEGORY));
+	}
+	
+	public List<Connector> getcConnectors(BaseElement baseElement){
+		
+		List<Connector> connectors=new ArrayList<Connector>();
+		
+		
+		return connectors;
+	}
 	
 	/**
 	 * 获取开始节点是否持久化属性
@@ -252,6 +265,28 @@ public class BpmnModelUtil {
 			}
 		}
 		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> List<T> getExtensionElementList( Class<T> t ,BaseElement baseElement,EReference eReference){
+		
+		
+		if (baseElement.getExtensionValues().size() > 0) {
+			for (ExtensionAttributeValue extensionAttributeValue : baseElement.getExtensionValues()) {
+				FeatureMap extensionElements = extensionAttributeValue.getValue();
+				Object objectElement = extensionElements.get(eReference, true);
+				if (objectElement != null) {
+
+					List<T> tObjList = (List<T>) objectElement;
+					return tObjList;
+				
+
+				}
+			}
+		}
+		
+		
+		return (List<T>)null;
 	}
 	
 	

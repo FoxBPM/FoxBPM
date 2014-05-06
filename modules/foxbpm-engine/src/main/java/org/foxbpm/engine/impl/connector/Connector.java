@@ -22,11 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.foxbpm.engine.exception.FoxBPMConnectorException;
+import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
-import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 
 public class Connector {
 
@@ -203,7 +203,7 @@ public class Connector {
 
 			}
 
-			connectorInstance.execute((ListenerExecutionContext)executionContext);
+			connectorInstance.execute((ConnectorExecutionContext)executionContext);
 
 			for (ConnectorOutputParam connectorParameterOutputs : this.getConnectorOutputsParam()) {
 
