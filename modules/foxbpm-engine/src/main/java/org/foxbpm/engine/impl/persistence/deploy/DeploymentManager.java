@@ -2,6 +2,7 @@ package org.foxbpm.engine.impl.persistence.deploy;
 
 import java.util.List;
 
+import org.foxbpm.engine.cache.Cache;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.Context;
@@ -14,12 +15,8 @@ import org.foxbpm.engine.repository.ProcessDefinition;
 
 public class DeploymentManager {
 
-	protected DeploymentCache<ProcessDefinitionEntity> processDefinitionCache;
-	protected DeploymentCache<Object> knowledgeBaseCache; // Needs to be object
-															// to avoid an
-															// import to Drools
-															// in this core
-															// class
+	protected Cache processDefinitionCache;
+	protected Cache knowledgeBaseCache; // Needs to be object
 	protected List<Deployer> deployers;
 
 	public void deploy(DeploymentEntity deployment) {
@@ -72,12 +69,12 @@ public class DeploymentManager {
 	public ProcessDefinitionEntity resolveProcessDefinition(ProcessDefinitionEntity processDefinition) {
 		String processDefinitionId = processDefinition.getId();
 		String deploymentId = processDefinition.getDeploymentId();
-		processDefinition = processDefinitionCache.get(processDefinitionId);
+		processDefinition = (ProcessDefinitionEntity) processDefinitionCache.get(processDefinitionId);
 		if (processDefinition == null) {
 			DeploymentEntity deployment = Context.getCommandContext().getDeploymentEntityManager().findDeploymentById(deploymentId);
 			deployment.setNew(false);
 			deploy(deployment);
-			processDefinition = processDefinitionCache.get(processDefinitionId);
+			processDefinition = (ProcessDefinitionEntity) processDefinitionCache.get(processDefinitionId);
 
 			if (processDefinition == null) {
 				throw new FoxBPMException("deployment '" + deploymentId + "' didn't put process definition '" + processDefinitionId
@@ -114,19 +111,19 @@ public class DeploymentManager {
 		this.deployers = deployers;
 	}
 
-	public DeploymentCache<ProcessDefinitionEntity> getProcessDefinitionCache() {
+	public Cache getProcessDefinitionCache() {
 		return processDefinitionCache;
 	}
 
-	public void setProcessDefinitionCache(DeploymentCache<ProcessDefinitionEntity> processDefinitionCache) {
+	public void setProcessDefinitionCache(Cache processDefinitionCache) {
 		this.processDefinitionCache = processDefinitionCache;
 	}
 
-	public DeploymentCache<Object> getKnowledgeBaseCache() {
+	public Cache getKnowledgeBaseCache() {
 		return knowledgeBaseCache;
 	}
 
-	public void setKnowledgeBaseCache(DeploymentCache<Object> knowledgeBaseCache) {
+	public void setKnowledgeBaseCache(Cache knowledgeBaseCache) {
 		this.knowledgeBaseCache = knowledgeBaseCache;
 	}
 

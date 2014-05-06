@@ -31,6 +31,9 @@ public class ResourceManager extends AbstractManager {
 
 	public List<ResourceEntity> findResourcesByDeploymentId(String id) {
 		// TODO Auto-generated method stub
+		
+		@SuppressWarnings("unchecked")
+		List<ResourceEntity> resources = (List<ResourceEntity>) getSqlSession().selectList("selectResourceByDeploymentId", id);
 		return null;
 	}
 

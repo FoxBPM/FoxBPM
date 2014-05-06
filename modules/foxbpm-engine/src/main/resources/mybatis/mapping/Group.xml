@@ -3,7 +3,7 @@
 
 <mapper namespace="org.foxbpm.engine.impl.entity.UserEntity">
 
- <resultMap id="groupResultMap" type="org.foxbpm.engine.impl.entity.UserEntity" >
+ <resultMap id="groupResultMap" type="org.foxbpm.engine.impl.entity.GroupEntity" >
  	<id column="GROUPID" property="id" jdbcType="VARCHAR" />
     <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR" />
     <result column="GROUPTYPE" property="groupType" jdbcType="VARCHAR" />

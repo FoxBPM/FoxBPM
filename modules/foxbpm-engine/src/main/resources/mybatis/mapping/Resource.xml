@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="org.foxbpm.engine.impl.entity.ResourceEntity">
+
+ <resultMap id="resourceResultMap" type="org.foxbpm.engine.impl.entity.ResourceEntity" >
+ 	<id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="BYTES" property="bytes" jdbcType="BLOB" />
+    <result column="DEPLOYMENT_ID" property="groupType" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectResourceById" parameterType="java.lang.String" resultMap="resourceResultMap">
+	   SELECT * from FOXBPM_DEF_BYTEARRAY where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectResourceByDeploymentId" parameterType="java.lang.String" resultMap="resourceResultMap">
+	   SELECT * FROM FOXBPM_DEF_BYTEARRAY WHERE DEPLOYMENT_ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <insert id="insertResource" parameterType="org.foxbpm.engine.impl.entity.ResourceEntity" >
+    insert into foxbpm_def_bytearray (ID, NAME, DEPLOYMENT_ID,BYTES)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{deploymentId,jdbcType=VARCHAR},#{bytes,jdbcType=BLOB})
+  </insert>
+  <update id="updateResource" parameterType="org.foxbpm.engine.impl.entity.ResourceEntity" >
+    update foxbpm_def_bytearray
+    set BYTES = #{bytes,jdbcType=BLOB}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

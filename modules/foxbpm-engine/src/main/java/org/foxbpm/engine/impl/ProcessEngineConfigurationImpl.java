@@ -38,13 +38,14 @@ import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineConfiguration;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.TaskService;
+import org.foxbpm.engine.cache.Cache;
 import org.foxbpm.engine.db.DataSourceManage;
 import org.foxbpm.engine.exception.ExceptionCode;
 import org.foxbpm.engine.exception.ExceptionI18NCore;
 import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
 import org.foxbpm.engine.impl.bpmn.deployer.BpmnDeployer;
+import org.foxbpm.engine.impl.cache.DefaultCache;
 import org.foxbpm.engine.impl.db.DefaultDataSourceManage;
-import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.interceptor.CommandContextFactory;
 import org.foxbpm.engine.impl.interceptor.CommandContextInterceptor;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
@@ -53,14 +54,15 @@ import org.foxbpm.engine.impl.interceptor.CommandInterceptor;
 import org.foxbpm.engine.impl.interceptor.LogInterceptor;
 import org.foxbpm.engine.impl.interceptor.SessionFactory;
 import org.foxbpm.engine.impl.mybatis.MyBatisSqlSessionFactory;
+import org.foxbpm.engine.impl.persistence.DeploymentEntityManager;
 import org.foxbpm.engine.impl.persistence.GenericManagerFactory;
+import org.foxbpm.engine.impl.persistence.ProcessDefinitionManager;
 import org.foxbpm.engine.impl.persistence.ProcessInstanceManager;
+import org.foxbpm.engine.impl.persistence.ResourceManager;
 import org.foxbpm.engine.impl.persistence.TaskManager;
 import org.foxbpm.engine.impl.persistence.TokenManager;
 import org.foxbpm.engine.impl.persistence.UserEntityManagerFactory;
-import org.foxbpm.engine.impl.persistence.deploy.DefaultDeploymentCache;
 import org.foxbpm.engine.impl.persistence.deploy.Deployer;
-import org.foxbpm.engine.impl.persistence.deploy.DeploymentCache;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
 import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
@@ -89,10 +91,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected DataSourceManage dataSourceManage;
 	// 定义及发布
 	protected int processDefinitionCacheLimit = -1; // By default, no limit
-	protected DeploymentCache<ProcessDefinitionEntity> processDefinitionCache;
+	protected Cache processDefinitionCache;
 
 	protected int knowledgeBaseCacheLimit = -1;
-	protected DeploymentCache<Object> knowledgeBaseCache;
+	protected Cache knowledgeBaseCache;
 
 	protected BpmnDeployer bpmnDeployer;
 	protected ProcessModelParseHandler processModelParseHandler;
@@ -100,6 +102,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected List<Deployer> customPostDeployers;
 	protected List<Deployer> deployers;
 	protected DeploymentManager deploymentManager;
+	protected Cache identityCache;
 
 	public ProcessEngine buildProcessEngine() {
 		init();
@@ -120,7 +123,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initSessionFactories();
 		initDeployers();
 		// initDataBaseTable();
-		// initCache();
+		initCache();
 		// initDeployers();
 		// initGroupDefinitions();
 		// initDbConfig();// dbType
@@ -148,6 +151,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	}
 	
+	public void initCache(){
+		identityCache = new DefaultCache();
+	}
+	
 	protected void initSessionFactories(){
 		if (sessionFactories == null) {
 			sessionFactories = new HashMap<Class<?>, SessionFactory>();
@@ -157,7 +164,9 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			addSessionFactory(new GenericManagerFactory(TaskManager.class));
 			addSessionFactory(new GenericManagerFactory(ProcessInstanceManager.class));
 			addSessionFactory(new GenericManagerFactory(TokenManager.class));
-			
+			addSessionFactory(new GenericManagerFactory(DeploymentEntityManager.class));
+			addSessionFactory(new GenericManagerFactory(ProcessDefinitionManager.class));
+			addSessionFactory(new GenericManagerFactory(ResourceManager.class));
 			addSessionFactory(new UserEntityManagerFactory());
 		}
 	}
@@ -184,18 +193,18 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			// Process Definition cache
 			if (processDefinitionCache == null) {
 				if (processDefinitionCacheLimit <= 0) {
-					processDefinitionCache = new DefaultDeploymentCache<ProcessDefinitionEntity>();
+					processDefinitionCache = new DefaultCache();
 				} else {
-					processDefinitionCache = new DefaultDeploymentCache<ProcessDefinitionEntity>(processDefinitionCacheLimit);
+					processDefinitionCache = new DefaultCache(processDefinitionCacheLimit);
 				}
 			}
 
 			// Knowledge base cache (used for Drools business task)
 			if (knowledgeBaseCache == null) {
 				if (knowledgeBaseCacheLimit <= 0) {
-					knowledgeBaseCache = new DefaultDeploymentCache<Object>();
+					knowledgeBaseCache = new DefaultCache();
 				} else {
-					knowledgeBaseCache = new DefaultDeploymentCache<Object>(knowledgeBaseCacheLimit);
+					knowledgeBaseCache = new DefaultCache(knowledgeBaseCacheLimit);
 				}
 			}
 
@@ -353,6 +362,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	public Map<Class<?>, SessionFactory> getSessionFactories() {
 		return sessionFactories;
+	}
+	
+	public Cache getIdentityCache() {
+		return identityCache;
 	}
 
 	public String getInternationPath() {

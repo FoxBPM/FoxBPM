@@ -21,6 +21,8 @@ package org.foxbpm.engine.model;
 import java.io.InputStream;
 import java.util.zip.ZipInputStream;
 
+import org.foxbpm.engine.impl.entity.DeploymentEntity;
+
 /**
  * 
  * @author kenshin
@@ -42,5 +44,7 @@ public interface DeploymentBuilder {
 
 	DeploymentBuilder updateDeploymentId(String updateDeploymentId);
 
-	Deployment deploy();
+	void deploy();
+	
+	DeploymentEntity getDeployment();
 }

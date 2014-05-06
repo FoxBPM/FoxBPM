@@ -42,6 +42,14 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 
 	protected String subject;
 	
+	protected String resourceId;
+	
+	protected String deploymentId;
+	
+	protected String resourceName;
+	
+	protected String category;
+	
 	public ProcessDefinitionEntity() {
 		super(null);
 
@@ -124,8 +132,6 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 		return processInstance;
 	}
 
-	protected String resourceId;
-
 	public String getResourceId() {
 		return resourceId;
 	}
@@ -133,8 +139,6 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 	public void setResourceId(String resourceId) {
 		this.resourceId = resourceId;
 	}
-
-	protected String deploymentId;
 
 	public void setDeploymentId(String deploymentId) {
 		this.deploymentId = deploymentId;
@@ -166,9 +170,9 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 
 	public Map<String, Object> getPersistentState() {
 		Map<String, Object> persistentState = new HashMap<String, Object>();
-		persistentState.put("processDefinitionId", this.processDefinitionId);
-		persistentState.put("processDefinitionName", this.name);
-		persistentState.put("processDefinitionKey", this.id);
+		persistentState.put("id", this.id);
+		persistentState.put("name", this.name);
+		persistentState.put("key", this.key);
 		persistentState.put("category", getCategory());
 		persistentState.put("version", this.version);
 		persistentState.put("resourceName", this.resourceName);
@@ -179,8 +183,6 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 		return persistentState;
 	}
 
-	protected String resourceName;
-
 	public String getResourceName() {
 		return this.resourceName;
 	}
@@ -189,26 +191,14 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 		this.resourceName = resourceName;
 	}
 
-	protected String processDefinitionId;
-
-	public String getProcessDefinitionKey() {
+	public String getProcessDefinitionId() {
 		return this.id;
 	}
 
-	public void setProcessDefinitionKey(String processDefinitionKey) {
-		this.id = processDefinitionKey;
-
-	}
-
-	public String getProcessDefinitionId() {
-		return this.processDefinitionId;
-	}
-
 	public void setProcessDefinitionId(String processDefinitionId) {
-		this.processDefinitionId = processDefinitionId;
+		this.id = processDefinitionId;
 	}
 
-	protected String category;
 
 	public String getCategory() {
 		return this.category;

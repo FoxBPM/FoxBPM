@@ -18,7 +18,13 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.DeploymentEntity;
+import org.foxbpm.engine.impl.entity.ResourceEntity;
 
 /**
  * 定义发布持久化管理器
@@ -28,13 +34,31 @@ import org.foxbpm.engine.impl.entity.DeploymentEntity;
 public class DeploymentEntityManager extends AbstractManager {
 
 	public DeploymentEntity findDeploymentById(String deploymentId) {
-	    return (DeploymentEntity) getSqlSession().selectOne("selectDeploymentById", deploymentId);
-	  }
+		DeploymentEntity deployment = (DeploymentEntity)getSqlSession().selectOne("selectDeploymentById", deploymentId);
+		
+		List<ResourceEntity> resources = Context.getCommandContext().getResourceManager().findResourcesByDeploymentId(deployment.getId());
+		Map<String,ResourceEntity>  resourcesMap = new HashMap<String,ResourceEntity>();
+		if(resources != null){
+			for(ResourceEntity resource : resources){
+				resourcesMap.put(resource.getName(), resource);
+			}
+			deployment.setResources(resourcesMap);
+		}
+		return deployment;
+	}
+	
+	public void insertDeployment(DeploymentEntity deployment){
+		getSqlSession().insert(deployment);
+		Map<String,ResourceEntity> resources = deployment.getResources();
+		for(ResourceEntity resource : resources.values()){
+			resource.setDeploymentId(deployment.getId());
+			Context.getCommandContext().getResourceManager().insert(resource);
+		}
+	}
 	  
 
 	public void deleteDeployment(String deploymentId, boolean cascade) {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

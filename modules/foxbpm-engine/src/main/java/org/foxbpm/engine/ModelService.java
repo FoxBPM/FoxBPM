@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipInputStream;
 
+import org.foxbpm.engine.impl.model.DeploymentBuilderImpl;
+
 /**
  * 获取所有对流程定义级别操作
  * @author kenshin
@@ -52,4 +54,8 @@ public interface ModelService {
 	 * @return 发布号
 	 */
 	void deployByZip(ZipInputStream zipInputStream);
+
+	void deploy(DeploymentBuilderImpl deploymentBuilderImpl);
+	
+	void updateByZip(String deploymentId,ZipInputStream zipInputStream);
 }

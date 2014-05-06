@@ -38,7 +38,10 @@ import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.entity.DeploymentEntity;
+import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
+import org.foxbpm.engine.impl.entity.ResourceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.interceptor.Session;
@@ -57,14 +60,23 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory,SessionFacto
 		insertStatements.put(ProcessInstanceEntity.class, "insertProcessInstance");
 		insertStatements.put(TaskEntity.class, "insertTask");
 		insertStatements.put(TokenEntity.class, "insertToken");
+		insertStatements.put(DeploymentEntity.class, "insertDeployment");
+		insertStatements.put(ProcessDefinitionEntity.class, "insertProcessDefinition");
+		insertStatements.put(ResourceEntity.class, "insertResource");
 		
 		updateStatements.put(ProcessInstanceEntity.class, "updateProcessInstance");
 		updateStatements.put(TaskEntity.class, "updateTask");
 		updateStatements.put(TokenEntity.class, "updateToken");
+		updateStatements.put(DeploymentEntity.class, "updateDeployment");
+		updateStatements.put(ProcessDefinitionEntity.class, "updateProcessDefinition");
+		updateStatements.put(ResourceEntity.class, "updateResource");
 		
 		selectStatements.put(ProcessInstanceEntity.class, "selectProcessInstanceById");
 		selectStatements.put(TaskEntity.class, "selectTaskById");
 		selectStatements.put(TokenEntity.class, "selectTokenById");
+		selectStatements.put(DeploymentEntity.class, "selectDeploymentById");
+		selectStatements.put(ProcessDefinitionEntity.class, "selectProcessDefinitionById");
+		selectStatements.put(ResourceEntity.class, "selectResourceById");
 	}
 	
 	public void init(DataSource dataSource) {

@@ -23,13 +23,16 @@ import java.util.Map;
 import java.util.zip.ZipInputStream;
 
 import org.foxbpm.engine.ModelService;
+import org.foxbpm.engine.impl.cmd.DeployCmd;
+import org.foxbpm.engine.impl.cmd.DeploymentByZipCmd;
+import org.foxbpm.engine.impl.cmd.UpdateDeploymentByZipCmd;
+import org.foxbpm.engine.impl.model.DeploymentBuilderImpl;
 import org.foxbpm.engine.model.DeploymentBuilder;
 
 public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	
 	public DeploymentBuilder createDeployment() {
-//		return new DeploymentBuilderImpl(this);
-		return null;
+		return new DeploymentBuilderImpl(this);
 	}
 
 	public List<Map<String, String>> getStartProcessByUserId(String userId) {
@@ -38,7 +41,15 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	}
 	
 	public void deployByZip(ZipInputStream zipInputStream) {
-//		return commandExecutor.execute(new DeploymentByZipCmd(createDeployment(),zipInputStream));
+		commandExecutor.execute(new DeploymentByZipCmd(createDeployment(),zipInputStream));
+	}
+
+	public void deploy(DeploymentBuilderImpl deploymentBuilder) {
+		commandExecutor.execute(new DeployCmd(deploymentBuilder));
+	}
+	
+	public void updateByZip(String deploymentId, ZipInputStream zipInputStream) {
+		commandExecutor.execute(new UpdateDeploymentByZipCmd(createDeployment() , deploymentId , zipInputStream));
 	}
 
 }

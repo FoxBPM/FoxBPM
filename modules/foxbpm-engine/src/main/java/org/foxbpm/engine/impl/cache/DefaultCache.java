@@ -15,38 +15,39 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.engine.impl.persistence.deploy;
+package org.foxbpm.engine.impl.cache;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.foxbpm.engine.cache.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DefaultDeploymentCache<T> implements DeploymentCache<T> {
+public class DefaultCache implements Cache {
 
-	private static final Logger logger = LoggerFactory.getLogger(DefaultDeploymentCache.class);
+	private static final Logger logger = LoggerFactory.getLogger(DefaultCache.class);
 
-	protected Map<String, T> cache;
+	protected Map<String, Object> cache;
 
 	/** Cache with no limit */
-	public DefaultDeploymentCache() {
-		this.cache = new HashMap<String, T>();
+	public DefaultCache() {
+		this.cache = new HashMap<String, Object>();
 	}
 
 	/**
 	 * Cache which has a hard limit: no more elements will be cached than the
 	 * limit.
 	 */
-	public DefaultDeploymentCache(final int limit) {
-	    this.cache = new LinkedHashMap<String, T>(limit + 1, 0.75f, true) {
+	public DefaultCache(final int limit) {
+	    this.cache = new LinkedHashMap<String, Object>(limit + 1, 0.75f, true) {
 	    	// +1 is needed, because the entry is inserted first, before it is removed
 	        // 0.75 is the default (see javadocs)
 	        // true will keep the 'access-order', which is needed to have a real LRU cache
 			private static final long serialVersionUID = 1L;
 
-			protected boolean removeEldestEntry(java.util.Map.Entry<String, T> eldest) {
+			protected boolean removeEldestEntry(java.util.Map.Entry<String, Object> eldest) {
 				boolean removeEldest = size() > limit;
 				if (removeEldest) {
 					logger.trace("Cache limit is reached, {} will be evicted", eldest.getKey());
@@ -57,11 +58,11 @@ public class DefaultDeploymentCache<T> implements DeploymentCache<T> {
 		};
 	}
 
-	public T get(String id) {
+	public Object get(String id) {
 		return cache.get(id);
 	}
 
-	public void add(String id, T obj) {
+	public void add(String id, Object obj) {
 		cache.put(id, obj);
 	}
 

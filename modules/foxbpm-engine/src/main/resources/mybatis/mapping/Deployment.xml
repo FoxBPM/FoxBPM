@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="org.foxbpm.engine.impl.entity.DeploymentEntity">
+
+ <resultMap id="deploymentResultMap" type="org.foxbpm.engine.impl.entity.DeploymentEntity" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="DEPLOY_TIME" property="deploymentTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+<insert id="insertDeployment" parameterType="org.foxbpm.engine.impl.entity.DeploymentEntity" >
+    insert into foxbpm_def_deployment (ID, NAME, DEPLOY_TIME)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{deploymentTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <update id="updateDeployment" parameterType="org.foxbpm.engine.impl.entity.DeploymentEntity" >
+    update foxbpm_def_deployment
+    set NAME = #{name,jdbcType=VARCHAR},
+      DEPLOY_TIME = #{deploymentTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <select id="selectDeploymentById" parameterType="java.lang.String" resultMap="deploymentResultMap">
+	   SELECT * FROM FOXBPM_DEF_DEPLOYMENT WHERE ID =  #{id,jdbcType=VARCHAR}
+  </select>
+  
+</mapper>

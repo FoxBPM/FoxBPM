@@ -125,11 +125,15 @@ public class CommandContext {
 	}
 	
 	public void close(){
-		for (Session session : sessions.values()) {
-			try {
-				session.close();
-			} catch (Throwable exception) {
-				//exception(exception);
+		try{
+			flushSession();
+		}finally{
+			for (Session session : sessions.values()) {
+				try {
+					session.close();
+				} catch (Throwable exception) {
+					//exception(exception);
+				}
 			}
 		}
 	}

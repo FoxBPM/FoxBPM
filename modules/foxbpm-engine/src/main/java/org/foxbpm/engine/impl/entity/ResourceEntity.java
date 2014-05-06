@@ -18,6 +18,7 @@
 package org.foxbpm.engine.impl.entity;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.foxbpm.engine.db.PersistentObject;
@@ -65,8 +66,12 @@ public class ResourceEntity implements Serializable, PersistentObject {
 	}
 
 	public Map<String, Object> getPersistentState() {
-		return null;
-	}
+		Map<String,Object> mapState = new HashMap<String,Object>();
+		mapState.put("id", this.id);
+		mapState.put("deploymentId",this.deploymentId);
+		mapState.put("bytes", this.bytes);
+		return mapState;
+	} 
 
 	public void setGenerated(boolean generated) {
 		this.generated = generated;

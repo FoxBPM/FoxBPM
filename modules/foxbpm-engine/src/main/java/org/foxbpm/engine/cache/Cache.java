@@ -16,21 +16,20 @@
  * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.impl.persistence.deploy;
+package org.foxbpm.engine.cache;
 
 /**
  * @author kenshin
- *
+ * 
  */
-public interface DeploymentCache <T> {
-	  
-	  T get(String id);
+public interface Cache {
 
-	  void add(String id, T object);
+	Object get(String id);
 
-	  void remove(String id);
-	  
-	  void clear();
-	  
-	}
+	void add(String id, Object object);
 
+	void remove(String id);
+
+	void clear();
+
+}

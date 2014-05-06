@@ -56,7 +56,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream("process_test222.bpmn");
 		Process process = null;
 		if (processFile != null) {
-			process = createProcess(processId, is);
+			process = createProcess(processId, (InputStream)processFile);
 
 		}
 		KernelProcessDefinition processDefinition=loadBehavior(process);

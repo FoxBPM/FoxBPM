@@ -26,6 +26,7 @@ import java.util.Map;
 
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.repository.Deployment;
 
 public class DeploymentEntity implements Serializable, Deployment, PersistentObject {
@@ -38,6 +39,7 @@ public class DeploymentEntity implements Serializable, Deployment, PersistentObj
 	protected Map<String, ResourceEntity> resources;
 	protected Date deploymentTime;
 	protected boolean isNew;
+	protected String updateDeploymentId;
 
 	/**
 	 * Will only be used during actual deployment to pass deployed artifacts (eg
@@ -45,6 +47,9 @@ public class DeploymentEntity implements Serializable, Deployment, PersistentObj
 	 */
 	protected Map<Class<?>, List<Object>> deployedArtifacts;
 
+	public DeploymentEntity() {
+		this.id = GuidUtil.CreateGuid();
+	}
 	public ResourceEntity getResource(String resourceName) {
 		return getResources().get(resourceName);
 	}
@@ -71,7 +76,9 @@ public class DeploymentEntity implements Serializable, Deployment, PersistentObj
 
 	public Map<String, Object> getPersistentState() {
 		Map<String, Object> persistentState = new HashMap<String, Object>();
-		persistentState.put("category", this.category);
+		persistentState.put("id", this.id);
+		persistentState.put("name", this.name);
+		persistentState.put("deploymentTime", this.deploymentTime);
 		return persistentState;
 	}
 
@@ -143,8 +150,18 @@ public class DeploymentEntity implements Serializable, Deployment, PersistentObj
 	public void setNew(boolean isNew) {
 		this.isNew = isNew;
 	}
+	
+	
 
 	// common methods //////////////////////////////////////////////////////////
+
+	public String getUpdateDeploymentId() {
+		return updateDeploymentId;
+	}
+
+	public void setUpdateDeploymentId(String setUpdateDeploymentId) {
+		this.updateDeploymentId = setUpdateDeploymentId;
+	}
 
 	@Override
 	public String toString() {

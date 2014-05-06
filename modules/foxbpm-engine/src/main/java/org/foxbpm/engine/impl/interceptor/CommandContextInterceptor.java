@@ -39,25 +39,21 @@ public class CommandContextInterceptor extends CommandInterceptor {
   }
 
   public <T> T execute(Command<T> command) {
-	    CommandContext context = Context.getCommandContext();
-	    
-	    if (context == null) { 
-	    	context = commandContextFactory.createCommandContext(command);    	
-	    }  
-	    try {
-	      // Push on stack
-	      Context.setCommandContext(context);
-	      Context.setProcessEngineConfiguration(processEngineConfiguration);
-	      return next.execute(command);
-	      
-	    }finally {
-	    	try{
-	    		context.close();
-	    	}finally{
-	    		Context.removeCommandContext();
-	       	    Context.removeProcessEngineConfiguration();
-	    	}
-	    }
+		CommandContext context = commandContextFactory.createCommandContext(command);
+		try {
+			// Push on stack
+			Context.setCommandContext(context);
+			Context.setProcessEngineConfiguration(processEngineConfiguration);
+			return next.execute(command);
+
+		} finally {
+			try {
+				context.close();
+			} finally {
+				Context.removeCommandContext();
+				Context.removeProcessEngineConfiguration();
+			}
+		}
   }
   
   public CommandContextFactory getCommandContextFactory() {
