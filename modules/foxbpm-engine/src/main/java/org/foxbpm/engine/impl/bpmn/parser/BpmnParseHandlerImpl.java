@@ -60,8 +60,8 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 
 		}
 		KernelProcessDefinition processDefinition=loadBehavior(process);
-//		// 加载事件定义.
-//		loadEvent(processDefinition);
+		// 加载事件定义.
+		loadConnector(processDefinition);
 //		// 加载数据变量
 //		loadVariable(processDefinition);
 //		// 设置FlowNode元素的子流程
@@ -72,6 +72,12 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	}
 	
 	
+	private void loadConnector(KernelProcessDefinition processDefinition) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	private KernelProcessDefinition loadBehavior(Process process){
 		String processObjId = BpmnModelUtil.getProcessId(process);
 		List<FlowElement> flowElements=process.getFlowElements();
@@ -94,6 +100,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		
 		ProcessDefinitionEntity processDefinition=(ProcessDefinitionEntity)processDefinitionBuilder.buildProcessDefinition();
 		processDefinition.setKey(process.getId());
+		processDefinition.setName(process.getName());
 		return processDefinition;
 	}
 	
