@@ -22,13 +22,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.bpmn2.BaseElement;
+import org.eclipse.emf.common.util.EList;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.parser.BpmnModelUtil;
 import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.connector.ConnectorInputParam;
 import org.foxbpm.engine.impl.connector.ConnectorOutputParam;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.model.bpmn.foxbpm.ConnectorInstance;
+import org.foxbpm.model.bpmn.foxbpm.ConnectorParameterInput;
+import org.foxbpm.model.bpmn.foxbpm.ConnectorParameterOutput;
 import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
 
 public class BaseElementParser {
@@ -47,6 +51,10 @@ public class BaseElementParser {
 		this.connectors = connectors;
 	}
 
+	/**
+	 * @param baseElement
+	 * @return
+	 */
 	public BaseElementBehavior parser(BaseElement baseElement){
 		 
 		List<ConnectorInstance> connectorInstances=  BpmnModelUtil.getExtensionElementList(ConnectorInstance.class,baseElement,FoxBPMPackage.Literals.DOCUMENT_ROOT__CONNECTOR_INSTANCE);
@@ -90,12 +98,36 @@ public class BaseElementParser {
 			}
 			
 			
-			List<ConnectorInputParam> connectorParameterInputs = connectorInstance.getConnectorParameterInputs();
-			connectorInstanceBehavior.getConnectorParameterInputs().clear();
-			connectorInstanceBehavior.getConnectorParameterInputs().addAll(connectorParameterInputs);
-			List<ConnectorOutputParam> connectorParameterOutputs = connectorInstance.getConnectorParameterOutputs();
-			connectorInstanceBehavior.getConnectorParameterOutputs().clear();
-			connectorInstanceBehavior.getConnectorParameterOutputs().addAll(connectorParameterOutputs);
+			List<ConnectorInputParam> connectorInputParameters=new ArrayList<ConnectorInputParam>();
+			
+			List<ConnectorOutputParam> connectorOutputParameters=new ArrayList<ConnectorOutputParam>();
+					
+					
+			EList<ConnectorParameterInput> connectorParameterInputs = connectorInstance.getConnectorParameterInputs();
+			EList<ConnectorParameterOutput> connectorParameterOutputs = connectorInstance.getConnectorParameterOutputs();
+			
+			
+			for (ConnectorParameterInput connectorInputParamEmf : connectorParameterInputs) {
+				
+				ConnectorInputParam connectorInputParam=new ConnectorInputParam();
+				connectorInputParam.setId(connectorInputParamEmf.getId());
+				connectorInputParam.setExecute(StringUtil.getBoolean(connectorInputParamEmf.getIsExecute()));
+				connectorInputParam.setDataType(connectorInputParamEmf.getDataType());
+				connectorInputParam.setName(connectorInputParamEmf.getName());
+				if(connectorInputParamEmf.getExpression()!=null){
+					connectorInputParam.setExpression(new ExpressionImpl(connectorInputParamEmf.getExpression().getValue()));
+				}
+				connectorInputParameters.add(connectorInputParam);
+			}
+			
+			
+			for (ConnectorParameterOutput connectorOutputParamEmf : connectorParameterOutputs) {
+				ConnectorOutputParam connectorOutputParam=new ConnectorOutputParam();
+				connectorOutputParam.setOutputId(connectorOutputParamEmf.getOutputId());
+				connectorOutputParam.setVariableTarget(connectorOutputParamEmf.getVariableTarget());
+				connectorOutputParameters.add(connectorOutputParam);
+			}
+
 			
 			connectors.add(connectorInstanceBehavior);
 		}
