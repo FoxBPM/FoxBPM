@@ -191,15 +191,6 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 		this.resourceName = resourceName;
 	}
 
-	public String getProcessDefinitionId() {
-		return this.id;
-	}
-
-	public void setProcessDefinitionId(String processDefinitionId) {
-		this.id = processDefinitionId;
-	}
-
-
 	public String getCategory() {
 		return this.category;
 	}

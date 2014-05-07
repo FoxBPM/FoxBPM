@@ -18,12 +18,10 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
-import org.foxbpm.engine.cache.Cache;
-import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.impl.Context;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
-import org.foxbpm.engine.impl.entity.ResourceEntity;
-import org.foxbpm.engine.impl.entity.TaskEntity;
 
 /**
  * 流程定义管理器
@@ -31,55 +29,35 @@ import org.foxbpm.engine.impl.entity.TaskEntity;
  */
 public class ProcessDefinitionManager extends AbstractManager {
 
-	public void test(){
-		System.out.println("manager执行了");
-		TaskEntity task = new TaskEntity();
-		task.setId("200");
-		getSqlSession().insert(task);
-	}
-
 	/**
-	 * 根据流程定义编号返回流程定时实体，此
+	 * 根据流程定义编号返回流程定时实体
 	 * @param processDefinitionId
 	 * @return
 	 */
 	public ProcessDefinitionEntity findProcessDefinitionById(String processDefinitionId) {
-		// TODO Auto-generated method stub
-		Cache cache = Context.getProcessEngineConfiguration().getDeploymentManager().getProcessDefinitionCache();
-		ProcessDefinitionEntity processEntity = (ProcessDefinitionEntity)cache.get(processDefinitionId);
-		if(processEntity != null){
-			return processEntity;
-		}
 		ProcessDefinitionEntity processEntityNew = getSqlSession().selectById(ProcessDefinitionEntity.class, processDefinitionId);
-		if(processEntityNew != null){
-			ResourceEntity resource = Context.getCommandContext().getResourceManager().selectResourceByDeployIdAndName(processEntityNew.getDeploymentId(), processEntityNew.getResourceName());
-			if(resource == null){
-				throw new FoxBPMException("数据库中不存在流程定义：" + processEntityNew.getName() + "的流程定义！");
-			}
-			//转换
-			
-			
-		}
-		
 		return processEntityNew;
 	}
 
 	public ProcessDefinitionEntity findLatestProcessDefinitionByKey(String processDefinitionKey) {
 		ProcessDefinitionEntity processEntity = (ProcessDefinitionEntity)getSqlSession().selectOne("selectLatestProcessDefinitionByKey", processDefinitionKey);
-		if(processEntity != null){
-			return findProcessDefinitionById(processEntity.getId());
-		}
-		return null;
+		return processEntity;
 	}
 
 	public ProcessDefinitionEntity findProcessDefinitionByKeyAndVersion(String processDefinitionKey, Integer processDefinitionVersion) {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("key", processDefinitionKey);
+		paramMap.put("version", processDefinitionVersion);
+		ProcessDefinitionEntity processEntity = (ProcessDefinitionEntity)getSqlSession().selectOne("selectProcessDefinitionByKeyAndVersion", paramMap);
+		return processEntity;
 	}
 
 	public ProcessDefinitionEntity findProcessDefinitionByDeploymentAndKey(String deploymentId, String key) {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("deploymentId", deploymentId);
+		paramMap.put("key", key);
+		ProcessDefinitionEntity processEntity = (ProcessDefinitionEntity)getSqlSession().selectOne("selectProcessDefinitionByDeployIdAndKey", paramMap);
+		return processEntity;
 	}
 	
 	

@@ -6,7 +6,7 @@
  <resultMap id="resourceResultMap" type="org.foxbpm.engine.impl.entity.ResourceEntity" >
  	<id column="ID" property="id" jdbcType="VARCHAR" />
     <result column="BYTES" property="bytes" jdbcType="BLOB" />
-    <result column="DEPLOYMENT_ID" property="groupType" jdbcType="VARCHAR" />
+    <result column="DEPLOYMENT_ID" property="deploymentId" jdbcType="VARCHAR" />
   </resultMap>
 	
 	<!-- insert -->

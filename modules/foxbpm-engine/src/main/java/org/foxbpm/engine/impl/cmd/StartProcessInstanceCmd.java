@@ -1,3 +1,21 @@
+/**
+ * Copyright 1996-2014 FoxBPM ORG.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * @author kenshin
+ * @author ych
+ */
 package org.foxbpm.engine.impl.cmd;
 
 import java.io.Serializable;
@@ -56,8 +74,8 @@ public class StartProcessInstanceCmd<T> implements Command<ProcessInstance>, Ser
 
 		// 如果流程定义是暂停状态则不允许启动流程实例
 		if (processDefinition.isSuspended()) {
-			throw new FoxBPMException("Cannot start process instance. Process definition " + processDefinition.getName() + " (id = "
-					+ processDefinition.getId() + ") is suspended");
+			throw new FoxBPMException("启动失败：流程定义 " + processDefinition.getName() + " (id = "
+					+ processDefinition.getId() + ") 为暂停状态");
 		}
 
 		// 启动流程实例

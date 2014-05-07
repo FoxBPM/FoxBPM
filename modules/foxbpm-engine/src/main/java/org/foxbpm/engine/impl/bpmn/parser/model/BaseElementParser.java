@@ -59,7 +59,9 @@ public class BaseElementParser {
 		 
 		List<ConnectorInstance> connectorInstances=  BpmnModelUtil.getExtensionElementList(ConnectorInstance.class,baseElement,FoxBPMPackage.Literals.DOCUMENT_ROOT__CONNECTOR_INSTANCE);
 		
-		
+		if(connectorInstances == null){
+			return baseElementBehavior;
+		}
 		for (ConnectorInstance connectorInstance : connectorInstances) {
 			String packageNamesString = connectorInstance.getPackageName();
 			String classNameString = connectorInstance.getClassName();
@@ -131,8 +133,6 @@ public class BaseElementParser {
 			
 			connectors.add(connectorInstanceBehavior);
 		}
-		
-
 		return baseElementBehavior;
 	}
 	
