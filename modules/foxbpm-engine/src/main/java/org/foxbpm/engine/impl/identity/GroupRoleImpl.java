@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author kenshin
+ * @author ych
  */
-package org.foxbpm.engine.identity;
+package org.foxbpm.engine.impl.identity;
 
-import java.util.Map;
+import java.util.List;
 
-/**
- * 组,用于组的数据传递
- * @author kenshin
- *
- */
-public interface Group {
-	
-	public String getGroupId();
+import org.foxbpm.engine.identity.Group;
+import org.foxbpm.engine.identity.GroupDefinition;
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.sqlsession.ISqlSession;
 
-	public String getGroupType();
-	
-	public String getGroupName();
+public class GroupRoleImpl implements GroupDefinition {
 
-	public Map<String, Object> getPropertyMap();
-	
+	@SuppressWarnings("unchecked")
+	public List<Group> selectGroupByUserId(String userId) {
+		ISqlSession sqlsession = Context.getCommandContext().getSqlSession();
+		List<Group> groups = (List<Group>)sqlsession.selectList("selectRoleByUserId", userId);
+		return groups;
+	}
+
+
 }

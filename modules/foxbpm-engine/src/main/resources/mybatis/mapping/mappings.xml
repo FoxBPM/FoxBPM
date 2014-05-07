@@ -14,5 +14,7 @@
     <mapper resource="mybatis/mapping/Deployment.xml" />
     <mapper resource="mybatis/mapping/Resource.xml" />
     <mapper resource="mybatis/mapping/ProcessDefinition.xml" />
+    <mapper resource="mybatis/mapping/Dept.xml" />
+    <mapper resource="mybatis/mapping/Role.xml" />
   </mappers>
 </configuration>

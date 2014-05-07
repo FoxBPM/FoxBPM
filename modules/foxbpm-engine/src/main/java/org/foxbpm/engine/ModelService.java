@@ -60,5 +60,9 @@ public interface ModelService {
 	
 	void updateByZip(String deploymentId,ZipInputStream zipInputStream);
 	
-	public DeploymentBuilder createDeployment();
+	DeploymentBuilder createDeployment();
+	
+	void testCmd(String params);
+	
+	
 }

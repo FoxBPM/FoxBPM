@@ -17,6 +17,13 @@
  */
 package org.foxbpm.engine.impl.identity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.foxbpm.engine.identity.Group;
+import org.foxbpm.engine.identity.GroupDefinition;
+import org.foxbpm.engine.impl.Context;
+
 public abstract class Authentication {
 
 	static ThreadLocal<String> authenticatedUserIdThreadLocal = new ThreadLocal<String>();
@@ -27,6 +34,18 @@ public abstract class Authentication {
 
 	public static String getAuthenticatedUserId() {
 		return authenticatedUserIdThreadLocal.get();
+	}
+	
+	public static List<Group> selectGroupByUserId(String userId) {
+		List<GroupDefinition> groupDefinitions = Context.getCommandContext().getProcessEngineConfigurationImpl().getGroupDefinitions();
+		List<Group> result = new ArrayList<Group>();
+		for(GroupDefinition groupDefinition : groupDefinitions){
+			List<Group> tmpGroups = groupDefinition.selectGroupByUserId(userId);
+			if(tmpGroups != null && tmpGroups.size() >0){
+				result.addAll(tmpGroups);
+			}
+		}
+		return result;
 	}
 
 }
