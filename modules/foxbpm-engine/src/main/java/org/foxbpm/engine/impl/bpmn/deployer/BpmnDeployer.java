@@ -62,8 +62,9 @@ public class BpmnDeployer implements Deployer {
 		InputStream input = new ByteArrayInputStream(resourceBpmn.getBytes());
 		ProcessDefinitionManager processDefinitionManager = Context.getCommandContext().getProcessDefinitionManager();
 		ProcessDefinitionEntity processEntity = (ProcessDefinitionEntity)processModelParseHandler.createProcessDefinition("dddd", input);
-		ProcessDefinitionEntity latestProcessDefinition = processDefinitionManager.findLatestProcessDefinitionByKey(processEntity.getKey());
+		processEntity.setResourceName(resourceBpmn.getName());
 		if(deployment.getUpdateDeploymentId() == null || deployment.getUpdateDeploymentId().equals("")){
+			ProcessDefinitionEntity latestProcessDefinition = processDefinitionManager.findLatestProcessDefinitionByKey(processEntity.getKey());
 			//发布
 			int processDefinitionVersion = 1;
 			if (latestProcessDefinition != null) {
@@ -79,10 +80,14 @@ public class BpmnDeployer implements Deployer {
 			processDefinitionManager.insert(processEntity);
 		}else{
 			//更新
+			String deploymentId = deployment.getId();
 			
-			
+			ProcessDefinitionEntity processDefinition = processDefinitionManager.findProcessDefinitionByDeploymentAndKey(deploymentId, processEntity.getKey());
+			processDefinition.setCategory(processEntity.getCategory());
+			processDefinition.setName(processEntity.getName());
+			processDefinition.setResourceName(processEntity.getResourceName());
+			Context.getProcessEngineConfiguration().getDeploymentManager().getProcessDefinitionCache().remove(processEntity.getId());
 		}
-		
 	}
 	
 	 public void setProcessModelParseHandler(ProcessModelParseHandler processModelParseHandler) {

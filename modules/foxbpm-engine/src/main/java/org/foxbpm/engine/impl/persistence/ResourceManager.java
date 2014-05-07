@@ -18,7 +18,9 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.foxbpm.engine.impl.entity.ResourceEntity;
 
@@ -28,13 +30,17 @@ import org.foxbpm.engine.impl.entity.ResourceEntity;
  *
  */
 public class ResourceManager extends AbstractManager {
-
+	
+	@SuppressWarnings("unchecked")
 	public List<ResourceEntity> findResourcesByDeploymentId(String id) {
-		// TODO Auto-generated method stub
-		
-		@SuppressWarnings("unchecked")
 		List<ResourceEntity> resources = (List<ResourceEntity>) getSqlSession().selectList("selectResourceByDeploymentId", id);
-		return null;
+		return resources;
 	}
-
+	
+	public ResourceEntity selectResourceByDeployIdAndName(String deploymentId,String resourceName){
+		Map<String,Object> paramsMap = new HashMap<String,Object>();
+		paramsMap.put("deployId", deploymentId);
+		paramsMap.put("name", resourceName);
+		return (ResourceEntity)getSqlSession().selectOne("selectResourceByDeployIdAndName", resourceName);
+	}
 }

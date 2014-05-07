@@ -18,8 +18,6 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.impl.Context;
@@ -35,15 +33,6 @@ public class DeploymentEntityManager extends AbstractManager {
 
 	public DeploymentEntity findDeploymentById(String deploymentId) {
 		DeploymentEntity deployment = (DeploymentEntity)getSqlSession().selectOne("selectDeploymentById", deploymentId);
-		
-		List<ResourceEntity> resources = Context.getCommandContext().getResourceManager().findResourcesByDeploymentId(deployment.getId());
-		Map<String,ResourceEntity>  resourcesMap = new HashMap<String,ResourceEntity>();
-		if(resources != null){
-			for(ResourceEntity resource : resources){
-				resourcesMap.put(resource.getName(), resource);
-			}
-			deployment.setResources(resourcesMap);
-		}
 		return deployment;
 	}
 	

@@ -18,7 +18,11 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
+import org.foxbpm.engine.cache.Cache;
+import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
+import org.foxbpm.engine.impl.entity.ResourceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 
 /**
@@ -34,13 +38,37 @@ public class ProcessDefinitionManager extends AbstractManager {
 		getSqlSession().insert(task);
 	}
 
+	/**
+	 * 根据流程定义编号返回流程定时实体，此
+	 * @param processDefinitionId
+	 * @return
+	 */
 	public ProcessDefinitionEntity findProcessDefinitionById(String processDefinitionId) {
 		// TODO Auto-generated method stub
-		return null;
+		Cache cache = Context.getProcessEngineConfiguration().getDeploymentManager().getProcessDefinitionCache();
+		ProcessDefinitionEntity processEntity = (ProcessDefinitionEntity)cache.get(processDefinitionId);
+		if(processEntity != null){
+			return processEntity;
+		}
+		ProcessDefinitionEntity processEntityNew = getSqlSession().selectById(ProcessDefinitionEntity.class, processDefinitionId);
+		if(processEntityNew != null){
+			ResourceEntity resource = Context.getCommandContext().getResourceManager().selectResourceByDeployIdAndName(processEntityNew.getDeploymentId(), processEntityNew.getResourceName());
+			if(resource == null){
+				throw new FoxBPMException("数据库中不存在流程定义：" + processEntityNew.getName() + "的流程定义！");
+			}
+			//转换
+			
+			
+		}
+		
+		return processEntityNew;
 	}
 
 	public ProcessDefinitionEntity findLatestProcessDefinitionByKey(String processDefinitionKey) {
-		// TODO Auto-generated method stub
+		ProcessDefinitionEntity processEntity = (ProcessDefinitionEntity)getSqlSession().selectOne("selectLatestProcessDefinitionByKey", processDefinitionKey);
+		if(processEntity != null){
+			return findProcessDefinitionById(processEntity.getId());
+		}
 		return null;
 	}
 
@@ -48,4 +76,11 @@ public class ProcessDefinitionManager extends AbstractManager {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public ProcessDefinitionEntity findProcessDefinitionByDeploymentAndKey(String deploymentId, String key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 }

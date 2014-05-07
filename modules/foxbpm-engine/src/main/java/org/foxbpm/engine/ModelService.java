@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.zip.ZipInputStream;
 
 import org.foxbpm.engine.impl.model.DeploymentBuilderImpl;
+import org.foxbpm.engine.model.DeploymentBuilder;
 
 /**
  * 获取所有对流程定义级别操作
@@ -58,4 +59,6 @@ public interface ModelService {
 	void deploy(DeploymentBuilderImpl deploymentBuilderImpl);
 	
 	void updateByZip(String deploymentId,ZipInputStream zipInputStream);
+	
+	public DeploymentBuilder createDeployment();
 }

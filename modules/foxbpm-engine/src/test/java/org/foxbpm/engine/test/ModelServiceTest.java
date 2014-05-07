@@ -24,6 +24,7 @@ import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
+import org.foxbpm.engine.model.DeploymentBuilder;
 import org.foxbpm.engine.query.NativeTaskQuery;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.task.Task;

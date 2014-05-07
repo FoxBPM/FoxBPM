@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.impl.util.GuidUtil;
 
 public class ResourceEntity implements Serializable, PersistentObject {
 
@@ -32,6 +33,10 @@ public class ResourceEntity implements Serializable, PersistentObject {
 	protected byte[] bytes;
 	protected String deploymentId;
 	protected boolean generated = false;
+	
+	public ResourceEntity() {
+		this.id = GuidUtil.CreateGuid();
+	}
 
 	public String getId() {
 		return id;

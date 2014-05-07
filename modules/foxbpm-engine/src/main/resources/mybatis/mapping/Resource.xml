@@ -8,21 +8,30 @@
     <result column="BYTES" property="bytes" jdbcType="BLOB" />
     <result column="DEPLOYMENT_ID" property="groupType" jdbcType="VARCHAR" />
   </resultMap>
-
-  <select id="selectResourceById" parameterType="java.lang.String" resultMap="resourceResultMap">
-	   SELECT * from FOXBPM_DEF_BYTEARRAY where ID = #{id,jdbcType=VARCHAR}
-  </select>
-  <select id="selectResourceByDeploymentId" parameterType="java.lang.String" resultMap="resourceResultMap">
-	   SELECT * FROM FOXBPM_DEF_BYTEARRAY WHERE DEPLOYMENT_ID = #{id,jdbcType=VARCHAR}
-  </select>
+	
+	<!-- insert -->
   <insert id="insertResource" parameterType="org.foxbpm.engine.impl.entity.ResourceEntity" >
     insert into foxbpm_def_bytearray (ID, NAME, DEPLOYMENT_ID,BYTES)
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{deploymentId,jdbcType=VARCHAR},#{bytes,jdbcType=BLOB})
   </insert>
+  
+  <!-- update -->
   <update id="updateResource" parameterType="org.foxbpm.engine.impl.entity.ResourceEntity" >
     update foxbpm_def_bytearray
     set BYTES = #{bytes,jdbcType=BLOB}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  
+  <!-- select -->
+   <select id="selectResourceById" parameterType="java.lang.String" resultMap="resourceResultMap">
+	   SELECT * from FOXBPM_DEF_BYTEARRAY where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectResourceByDeploymentId" parameterType="java.lang.String" resultMap="resourceResultMap">
+	   SELECT * FROM FOXBPM_DEF_BYTEARRAY WHERE DEPLOYMENT_ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectResourceByDeployIdAndName" parameterType="map" resultMap="resourceResultMap">
+	   SELECT * FROM FOXBPM_DEF_BYTEARRAY WHERE DEPLOYMENT_ID = #{deployId,jdbcType=VARCHAR} and NAME = #{name,jdbcType=VARCHAR}
+  </select>
   
 </mapper>
