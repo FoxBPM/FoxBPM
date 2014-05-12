@@ -13,23 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.model;
-
-import java.util.Date;
+package org.foxbpm.engine.query;
 
 
 /**
+ *
+ * 
  * @author kenshin
  */
-public interface Deployment {
+public interface QueryProperty {
 
-  String getId();
-  
   String getName();
-  
-  Date getDeploymentTime();
-  
 }

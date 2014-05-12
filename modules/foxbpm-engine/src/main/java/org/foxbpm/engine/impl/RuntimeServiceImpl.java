@@ -5,7 +5,9 @@ import java.util.Map;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.impl.cmd.SignalCmd;
 import org.foxbpm.engine.impl.cmd.StartProcessInstanceCmd;
+import org.foxbpm.engine.impl.runtime.TokenQueryImpl;
 import org.foxbpm.engine.runtime.ProcessInstance;
+import org.foxbpm.engine.runtime.TokenQuery;
 
 public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 
@@ -67,6 +69,10 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 
 	public void signal(String executionId, Map<String, Object> processVariables) {
 		commandExecutor.execute(new SignalCmd(executionId, null, null, processVariables));
+	}
+	
+	public TokenQuery createTokenQuery() {
+		return new TokenQueryImpl(commandExecutor);
 	}
 
 }

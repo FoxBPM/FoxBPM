@@ -29,8 +29,10 @@ import org.foxbpm.engine.impl.cmd.GetProcessDefinitionById;
 import org.foxbpm.engine.impl.cmd.TestCmd;
 import org.foxbpm.engine.impl.cmd.UpdateDeploymentByZipCmd;
 import org.foxbpm.engine.impl.model.DeploymentBuilderImpl;
-import org.foxbpm.engine.model.DeploymentBuilder;
+import org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl;
+import org.foxbpm.engine.repository.DeploymentBuilder;
 import org.foxbpm.engine.repository.ProcessDefinition;
+import org.foxbpm.engine.repository.ProcessDefinitionQuery;
 
 public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	
@@ -61,5 +63,9 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	
 	public ProcessDefinition getProcessDefinitionById(String processDefinitionId) {
 		return commandExecutor.execute(new GetProcessDefinitionById(processDefinitionId));
+	}
+	
+	public ProcessDefinitionQuery createProcessDefinitionQuery() {
+	    return new ProcessDefinitionQueryImpl(commandExecutor);
 	}
 }

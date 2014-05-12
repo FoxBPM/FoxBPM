@@ -23,8 +23,9 @@ import java.util.Map;
 import java.util.zip.ZipInputStream;
 
 import org.foxbpm.engine.impl.model.DeploymentBuilderImpl;
-import org.foxbpm.engine.model.DeploymentBuilder;
+import org.foxbpm.engine.repository.DeploymentBuilder;
 import org.foxbpm.engine.repository.ProcessDefinition;
+import org.foxbpm.engine.repository.ProcessDefinitionQuery;
 
 /**
  * 获取所有对流程定义级别操作
@@ -66,6 +67,8 @@ public interface ModelService {
 	void testCmd(String params);
 	
 	ProcessDefinition getProcessDefinitionById(String processDefinitionId);
+	
+	ProcessDefinitionQuery createProcessDefinitionQuery();
 	
 	
 }

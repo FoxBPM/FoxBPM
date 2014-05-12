@@ -27,7 +27,7 @@ import org.foxbpm.engine.impl.entity.DeploymentEntity;
 import org.foxbpm.engine.impl.entity.ResourceEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
-import org.foxbpm.engine.model.DeploymentBuilder;
+import org.foxbpm.engine.repository.DeploymentBuilder;
 
 public class DeployCmd implements Command<Void>{
 

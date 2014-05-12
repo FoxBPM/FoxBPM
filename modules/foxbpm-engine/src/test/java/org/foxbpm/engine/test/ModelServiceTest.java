@@ -22,6 +22,8 @@ import java.util.zip.ZipInputStream;
 
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.query.NativeTaskQuery;
+import org.foxbpm.engine.repository.ProcessDefinition;
+import org.foxbpm.engine.repository.ProcessDefinitionQuery;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.task.Task;
 
@@ -49,7 +51,14 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	}
 	
 	public void testCmd(){
-		modelService.testCmd("admin");
+//		modelService.testCmd("admin");
+	}
+	
+	public void testProcessDefinitionQuery(){
+		ProcessDefinitionQuery processQuery = modelService.createProcessDefinitionQuery();
+		processQuery.processDefinitionKey("process_test222").orderByProcessDefinitionKey().asc();
+		List<ProcessDefinition> process = processQuery.listPage(0, 10);
+		System.out.println(process.size());
 	}
 	
 	

@@ -23,7 +23,7 @@ import java.util.zip.ZipInputStream;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
-import org.foxbpm.engine.model.DeploymentBuilder;
+import org.foxbpm.engine.repository.DeploymentBuilder;
 
 public class UpdateDeploymentByZipCmd implements Command<Void>{
 	

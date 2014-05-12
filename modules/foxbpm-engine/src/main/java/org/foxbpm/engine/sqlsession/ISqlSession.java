@@ -20,7 +20,7 @@ package org.foxbpm.engine.sqlsession;
 import java.util.List;
 
 import org.foxbpm.engine.db.PersistentObject;
-
+import org.foxbpm.engine.impl.db.ListQueryParameterObject;
 
 public interface ISqlSession {
 	public void insert(PersistentObject persistentObject);
@@ -29,8 +29,11 @@ public interface ISqlSession {
 //	public void update(PersistentObject persistentObject);
 
 	public List<?> selectList(String statement);
-
-	public List<?> selectList(String statement, Object parameter) ;
+	 @SuppressWarnings("rawtypes")
+	public List selectList(String statement, ListQueryParameterObject parameter) ;
+	 
+	@SuppressWarnings("rawtypes")
+	public List selectListWithRawParameter(String statement,Object parameter);
 
 	public Object selectOne(String statement, Object parameter);
 	

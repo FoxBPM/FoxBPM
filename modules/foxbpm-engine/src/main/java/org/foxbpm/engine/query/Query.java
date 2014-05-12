@@ -15,25 +15,29 @@
  * 
  * @author ych
  */
+
 package org.foxbpm.engine.query;
 
 import java.util.List;
 
-public interface NativeQuery<T extends NativeQuery< ? , ? >, U extends Object> {
+/**
+ * Describes basic methods for querying.
+ * 
+ * @author Frederik Heremans
+ */
+public interface Query<T extends Query< ? , ? >, U extends Object> {
 
   /**
-   * Hand in the SQL statement you want to execute. BEWARE: if you need a count you have to hand in a count() statement
-   * yourself, otherwise the result will be treated as lost of Activiti entities.
-   * 
-   * If you need paging you have to insert the pagination code yourself. We skipped doing this for you
-   * as this is done really different on some databases (especially MS-SQL / DB2)
+   * Order the results ascending on the given property as defined in this
+   * class (needs to come after a call to one of the orderByXxxx methods).
    */
-  T sql(String selectClause);
-  
+  T asc();
+
   /**
-   * Add parameter to be replaced in query for index, e.g. :param1, :myParam, ...
+   * Order the results descending on the given property as defined in this
+   * class (needs to come after a call to one of the orderByXxxx methods).
    */
-  T parameter(String name, Object value);
+  T desc();
 
   /** Executes the query and returns the number of results */
   long count();
@@ -48,7 +52,7 @@ public interface NativeQuery<T extends NativeQuery< ? , ? >, U extends Object> {
 
   /** Executes the query and get a list of entities as the result. */
   List<U> list();
-  
+
   /** Executes the query and get a list of entities as the result. */
   List<U> listPage(int firstResult, int maxResults);
 }

@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
@@ -52,11 +53,24 @@ import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 public class MyBatisSqlSessionFactory implements ISqlSessionFactory,SessionFactory {
 
 	private SqlSessionFactory sqlSessionFactory;
+	
+	protected static final Map<String, Map<String, String>> databaseSpecificStatements = new HashMap<String, Map<String,String>>();
+	  
+	public static final Map<String, String> databaseSpecificLimitBeforeStatements = new HashMap<String, String>();
+	public static final Map<String, String> databaseSpecificLimitAfterStatements = new HashMap<String, String>();
+	public static final Map<String, String> databaseSpecificLimitBetweenStatements = new HashMap<String, String>();
+	public static final Map<String, String> databaseSpecificOrderByStatements = new HashMap<String, String>();
+	public static final Map<String, String> databaseOuterJoinLimitBetweenStatements = new HashMap<String, String>();
+	public static final Map<String, String> databaseSpecificLimitBeforeNativeQueryStatements = new HashMap<String, String>();
+	  
+	  
 	protected static Map<Class<?>,String>  insertStatements = new ConcurrentHashMap<Class<?>, String>();
 	protected static Map<Class<?>,String>  updateStatements = new ConcurrentHashMap<Class<?>, String>();
 	protected static Map<Class<?>,String>  deleteStatements = new ConcurrentHashMap<Class<?>, String>();
 	protected static Map<Class<?>,String>  selectStatements = new ConcurrentHashMap<Class<?>, String>();
 	static{
+		
+		String defaultOrderBy = " order by ${orderBy} ";
 		insertStatements.put(ProcessInstanceEntity.class, "insertProcessInstance");
 		insertStatements.put(TaskEntity.class, "insertTask");
 		insertStatements.put(TokenEntity.class, "insertToken");
@@ -77,9 +91,24 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory,SessionFacto
 		selectStatements.put(DeploymentEntity.class, "selectDeploymentById");
 		selectStatements.put(ProcessDefinitionEntity.class, "selectProcessDefinitionById");
 		selectStatements.put(ResourceEntity.class, "selectResourceById");
+		
+		 //mysql specific
+	    databaseSpecificLimitBeforeStatements.put("mysql", "");
+	    databaseSpecificLimitAfterStatements.put("mysql", "LIMIT #{maxResults} OFFSET #{firstResult}");
+	    databaseSpecificLimitBetweenStatements.put("mysql", "");
+	    databaseOuterJoinLimitBetweenStatements.put("mysql", "");
+	    databaseSpecificOrderByStatements.put("mysql", defaultOrderBy);
+	    
+	    // oracle
+	    databaseSpecificLimitBeforeStatements.put("oracle", "select * from ( select a.*, ROWNUM rnum from (");
+	    databaseSpecificLimitAfterStatements.put("oracle", "  ) a where ROWNUM < #{lastRow}) where rnum  >= #{firstRow}");
+	    databaseSpecificLimitBetweenStatements.put("oracle", "");
+	    databaseOuterJoinLimitBetweenStatements.put("oracle", "");
+	    databaseSpecificOrderByStatements.put("oracle", defaultOrderBy);
 	}
 	
 	public void init(DataSource dataSource) {
+		String databaseType = "mysql";
 		if (sqlSessionFactory == null) {
 			InputStream inputStream = null;
 			try {
@@ -88,14 +117,13 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory,SessionFacto
 				Environment environment = new Environment("default", transactionFactory, dataSource);
 		        Reader reader = new InputStreamReader(inputStream);
 		        Properties properties = new Properties();
-//		        if(databaseType != null) {
-//		          properties.put("limitBefore" , DbSqlSessionFactory.databaseSpecificLimitBeforeStatements.get(databaseType));
-//		          properties.put("limitAfter" , DbSqlSessionFactory.databaseSpecificLimitAfterStatements.get(databaseType));
-//		          properties.put("limitBetween" , DbSqlSessionFactory.databaseSpecificLimitBetweenStatements.get(databaseType));
-//		          properties.put("limitOuterJoinBetween" , DbSqlSessionFactory.databaseOuterJoinLimitBetweenStatements.get(databaseType));
-//		          properties.put("orderBy" , DbSqlSessionFactory.databaseSpecificOrderByStatements.get(databaseType));
-//		          properties.put("limitBeforeNativeQuery" , ObjectUtils.toString(DbSqlSessionFactory.databaseSpecificLimitBeforeNativeQueryStatements.get(databaseType)));
-//		        }
+		        if(databaseType != null) {
+					properties.put("limitBefore", databaseSpecificLimitBeforeStatements.get(databaseType));
+					properties.put("limitAfter", databaseSpecificLimitAfterStatements.get(databaseType));
+					properties.put("limitBetween", databaseSpecificLimitBetweenStatements.get(databaseType));
+					properties.put("limitOuterJoinBetween", databaseOuterJoinLimitBetweenStatements.get(databaseType));
+					properties.put("orderBy" , databaseSpecificOrderByStatements.get(databaseType));
+		        }
 		        XMLConfigBuilder parser = new XMLConfigBuilder(reader,"", properties);
 		        Configuration configuration = parser.getConfiguration();
 		        configuration.setEnvironment(environment);
@@ -152,4 +180,6 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory,SessionFacto
 	public Session openSession() {
 		return new MybatisSqlSession(getSqlSession());
 	}
+	
+	
 }

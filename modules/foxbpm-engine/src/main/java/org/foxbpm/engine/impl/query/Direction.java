@@ -13,38 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.model;
 
-import java.io.InputStream;
-import java.util.zip.ZipInputStream;
-
-import org.foxbpm.engine.impl.entity.DeploymentEntity;
+package org.foxbpm.engine.impl.query;
 
 /**
- * 
- * @author kenshin
- *
+ * @author ych
  */
-public interface DeploymentBuilder {
+public class Direction {
+
+  public static final Direction ASCENDING = new Direction("asc");
+  public static final Direction DESCENDING = new Direction("desc");
   
-	/**
-	 * 
-	 * @param resourceName
-	 * @param inputStream
-	 * @return
-	 */
-	DeploymentBuilder addInputStream(String resourceName,InputStream inputStream);
+  private String name;
+  
+  public Direction(String name) {
+    this.name = name;
+  }
 
-	DeploymentBuilder addZipInputStream(ZipInputStream zipInputStream);
-
-	DeploymentBuilder name(String name);
-
-	DeploymentBuilder updateDeploymentId(String updateDeploymentId);
-
-	void deploy();
-	
-	DeploymentEntity getDeployment();
+  public String getName() {
+    return name;
+  }
 }

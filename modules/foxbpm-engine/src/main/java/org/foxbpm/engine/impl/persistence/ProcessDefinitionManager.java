@@ -19,10 +19,11 @@
 package org.foxbpm.engine.impl.persistence;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
-
+import org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl;
+import org.foxbpm.engine.repository.ProcessDefinition;
 /**
  * 流程定义管理器
  * @author Kenshin
@@ -60,5 +61,13 @@ public class ProcessDefinitionManager extends AbstractManager {
 		return processEntity;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<ProcessDefinition> findProcessDefinitionsByQueryCriteria(ProcessDefinitionQueryImpl processDefinitionQuery){
+		return getSqlSession().selectList("selectProcessDefinitionsByQueryCriteria", processDefinitionQuery);
+	}
+	
+	public long findProcessDefinitionCountByQueryCriteria(ProcessDefinitionQueryImpl processDefinitionQuery){
+		return (Long)getSqlSession().selectOne("selectProcessDefinitionCountByQueryCriteria", processDefinitionQuery);
+	}
 	
 }

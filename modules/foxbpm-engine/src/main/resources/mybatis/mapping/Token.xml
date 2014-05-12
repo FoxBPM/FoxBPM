@@ -68,4 +68,39 @@
 	    from foxbpm_run_token
 	    where PROCESSINSTANCE_ID = #{id,jdbcType=VARCHAR}
   </select>
+  
+   <select id="selectTokensByQueryCriteria" parameterType="org.foxbpm.engine.impl.runtime.TokenQueryImpl" resultMap="TokenResultMap">
+  	${limitBefore}
+    select RES.* ${limitBetween}
+    <include refid="selectTokensByQueryCriteriaSql"/>
+    <if test="orderBy != null">
+       ${orderBy}
+    </if>
+    ${limitAfter}
+  </select>
+  
+  <select id="selectTokenCountByQueryCriteria" parameterType="org.foxbpm.engine.impl.runtime.TokenQueryImpl" resultType="long">
+    select count(RES.ID)
+    <include refid="selectTokensByQueryCriteriaSql"/>
+  </select>
+  
+  <sql id="selectTokensByQueryCriteriaSql">  
+    from FOXBPM_RUN_TOKEN RES
+    <where>
+      <if test="tokenId != null">
+        RES.ID = #{tokenId}
+      </if>
+      <if test="processInstanceId != null">
+        and RES.PROCESSINSTANCE_ID = #{processInstanceId}
+      </if>
+      <if test="end == true">
+        and RES.END_TIME is not null
+      </if>
+      
+      <if test="end == false">
+        and RES.END_TIME is null
+      </if>
+    </where>
+  </sql>
+  
 </mapper>
