@@ -23,8 +23,10 @@ import java.util.Map;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.impl.cmd.SignalCmd;
 import org.foxbpm.engine.impl.cmd.StartProcessInstanceCmd;
+import org.foxbpm.engine.impl.runtime.ProcessInstanceQueryImpl;
 import org.foxbpm.engine.impl.runtime.TokenQueryImpl;
 import org.foxbpm.engine.runtime.ProcessInstance;
+import org.foxbpm.engine.runtime.ProcessInstanceQuery;
 import org.foxbpm.engine.runtime.TokenQuery;
 
 /**
@@ -96,6 +98,10 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 	
 	public TokenQuery createTokenQuery() {
 		return new TokenQueryImpl(commandExecutor);
+	}
+	
+	public ProcessInstanceQuery createProcessInstanceQuery() {
+		return new ProcessInstanceQueryImpl(commandExecutor);
 	}
 
 }

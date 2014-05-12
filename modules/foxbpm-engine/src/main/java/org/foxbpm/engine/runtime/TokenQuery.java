@@ -13,12 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
+ * @author kenshin
  * @author ych
  */
 package org.foxbpm.engine.runtime;
 
 import org.foxbpm.engine.query.Query;
 
+/**
+ * 流程令牌查询
+ * @author kenshin
+ */
 public interface TokenQuery extends Query<TokenQuery, Token>{
 	
 	/**

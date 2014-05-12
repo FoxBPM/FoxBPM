@@ -18,7 +18,11 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
+import java.util.List;
+
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
+import org.foxbpm.engine.impl.runtime.ProcessInstanceQueryImpl;
+import org.foxbpm.engine.runtime.ProcessInstance;
 
 /**
  * 流程实例管理器
@@ -29,6 +33,15 @@ public class ProcessInstanceManager extends AbstractManager {
 
 	public ProcessInstanceEntity findProcessInstanceById(String id) {
 		return selectById(ProcessInstanceEntity.class, id);
+	}
+	
+	public long findProcessInstanceCountByQueryCriteria(ProcessInstanceQueryImpl processsInstanceQuery){
+		return (Long) getSqlSession().selectOne("selectProcessInstanceCountByQueryCriteria", processsInstanceQuery);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ProcessInstance> findProcessInstanceByQueryCriteria(ProcessInstanceQueryImpl processInstaceQuery){
+		return getSqlSession().selectList("selectProcessInstanceByQueryCriteria", processInstaceQuery);
 	}
 
 }

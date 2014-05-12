@@ -47,6 +47,84 @@
 	    where ID = #{id,jdbcType=VARCHAR}
   	</select>
   	
+  	
+  	<select id="selectProcessInstanceByQueryCriteria" parameterType="org.foxbpm.engine.impl.runtime.ProcessInstanceQueryImpl" resultMap="processResultMap">
+  	${limitBefore}
+    select RES.* ${limitBetween}
+    <include refid="selectProcessInstancesByQueryCriteriaSql"/>
+    <if test="orderBy != null">
+       ${orderBy}
+    </if>
+    ${limitAfter}
+  </select>
+  
+  <select id="selectProcessInstanceCountByQueryCriteria" parameterType="org.foxbpm.engine.impl.runtime.ProcessInstanceQueryImpl" resultType="long">
+    select count(RES.ID)
+    <include refid="selectProcessInstancesByQueryCriteriaSql"/>
+  </select>
+  
+  <sql id="selectProcessInstancesByQueryCriteriaSql">  
+    from FOXBPM_RUN_PROCESSINSTANCE RES
+    
+    <if test="processDefinitionName != null or processDefinitionNameLike != null">
+        inner join FOXBPM_DEF_PROCESSDEFINITION P on p.PROCESS_ID = RES.PROCESSDEFINITION_ID
+      </if>
+    <where>
+      <if test="processInstanceId != null">
+        RES.ID = #{processInstanceId}
+      </if>
+      <if test="processDefinitionId != null">
+        RES.PROCESSDEFINITION_ID = #{processDefinitionId}
+      </if>
+      <if test="businessKey != null">
+        and RES.BIZ_KEY = #{businessKey}
+      </if>
+      <if test="businessKeyLike != null">
+        and RES.BIZ_KEY like #{businessKey}
+      </if>
+       <if test="processDefinitionId != null">
+        and RES.PROCESSDEFINITION_ID = #{processDefinitionId}
+      </if>
+       <if test="processDefinitionKey != null">
+        and RES.PROCESSDEFINITION_KEY = #{processDefinitionKey}
+      </if>
+       <if test="initiator != null">
+        and RES.INITIATOR = #{initiator}
+      </if>
+       <if test="initiatorLike != null">
+        and RES.INITIATOR like #{initiatorLike}
+      </if>
+       <if test="subject != null">
+        and RES.SUBJECT = #{subject}
+      </if>
+       <if test="subjectLike != null">
+        and RES.SUBJECT like #{subjectLike}
+      </if>
+       <if test="processDefinitionName != null">
+        and P.PROCESS_NAME = #{processDefinitionName}
+      </if>
+       <if test="processDefinitionNameLike != null">
+        and P.PROCESS_NAME like #{processDefinitionNameLike}
+      </if>
+      <if test="taskParticipants != null">
+        and RES.ID in (SELECT distinct(PROCESSINSTANCE_ID) FROM FOXBPM_RUN_TASK WHERE ASSIGNEE=#{taskParticipants} and END_TIME is not null)
+      </if>
+      <if test="status != null">
+      	and RES.INSTANCE_STATUS = #{status}
+      </if>
+      <if test="isEnd == true">
+      	and RES.END_TIME is not null
+      </if>
+      <if test="isEnd == false">
+      	and RES.END_TIME is null
+      </if>
+    </where>
+  </sql>
+  	
+  	
+  	
+  	
+  	
   	 <sql id="processColumnList">
 	    ID, PROCESSDEFINITION_ID, PROCESSDEFINITION_KEY, SUBJECT, START_TIME, END_TIME, DEFINITION_ID, 
 	    ROOTTOKEN_ID, BIZ_KEY, INITIATOR, START_AUTHOR, ISSUSPENDED, PARENT_ID, PARENT_TOKEN_ID, 
