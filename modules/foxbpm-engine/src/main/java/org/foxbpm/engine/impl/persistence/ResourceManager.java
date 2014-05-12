@@ -33,7 +33,7 @@ public class ResourceManager extends AbstractManager {
 	
 	@SuppressWarnings("unchecked")
 	public List<ResourceEntity> findResourcesByDeploymentId(String id) {
-		List<ResourceEntity> resources = (List<ResourceEntity>) getSqlSession().selectList("selectResourceByDeploymentId", id);
+		List<ResourceEntity> resources = (List<ResourceEntity>) getSqlSession().selectListWithRawParameter("selectResourceByDeploymentId", id);
 		return resources;
 	}
 	

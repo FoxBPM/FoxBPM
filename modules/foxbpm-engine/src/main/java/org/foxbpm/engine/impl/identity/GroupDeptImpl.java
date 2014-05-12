@@ -12,7 +12,7 @@ public class GroupDeptImpl implements GroupDefinition {
 	@SuppressWarnings("unchecked")
 	public List<Group> selectGroupByUserId(String userId) {
 		ISqlSession sqlsession = Context.getCommandContext().getSqlSession();
-		List<Group> groups = (List<Group>)sqlsession.selectList("selectDeptByUserId", userId);
+		List<Group> groups = (List<Group>)sqlsession.selectListWithRawParameter("selectDeptByUserId", userId);
 		return groups;
 	}
 

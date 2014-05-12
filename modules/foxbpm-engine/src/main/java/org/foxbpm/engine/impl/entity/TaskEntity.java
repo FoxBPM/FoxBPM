@@ -18,6 +18,7 @@ import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskType;
 import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
+import org.foxbpm.kernel.runtime.impl.KernelVariableInstanceImpl;
 import org.foxbpm.kernel.runtime.impl.KernelVariableScopeImpl;
 
 public class TaskEntity extends KernelVariableScopeImpl implements Task, PersistentObject, HasRevision {
@@ -306,7 +307,6 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 		return null;
 	}
 
-	@Override
 	protected void ensureParentInitialized() {
 		// TODO Auto-generated method stub
 
@@ -635,6 +635,23 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 
 	public void setCommandMessage(String commandMessage) {
 		this.commandMessage = commandMessage;
+	}
+
+	public Object getVariableLocal(Object variableName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected List<KernelVariableInstanceImpl> loadVariableInstances() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected void initializeVariableInstanceBackPointer(KernelVariableInstanceImpl variableInstance) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

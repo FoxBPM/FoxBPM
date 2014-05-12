@@ -29,7 +29,7 @@ public class GroupRoleImpl implements GroupDefinition {
 	@SuppressWarnings("unchecked")
 	public List<Group> selectGroupByUserId(String userId) {
 		ISqlSession sqlsession = Context.getCommandContext().getSqlSession();
-		List<Group> groups = (List<Group>)sqlsession.selectList("selectRoleByUserId", userId);
+		List<Group> groups = (List<Group>)sqlsession.selectListWithRawParameter("selectRoleByUserId", userId);
 		return groups;
 	}
 
