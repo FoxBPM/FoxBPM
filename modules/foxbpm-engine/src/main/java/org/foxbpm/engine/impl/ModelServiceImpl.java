@@ -25,10 +25,12 @@ import java.util.zip.ZipInputStream;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.impl.cmd.DeployCmd;
 import org.foxbpm.engine.impl.cmd.DeploymentByZipCmd;
+import org.foxbpm.engine.impl.cmd.GetProcessDefinitionById;
 import org.foxbpm.engine.impl.cmd.TestCmd;
 import org.foxbpm.engine.impl.cmd.UpdateDeploymentByZipCmd;
 import org.foxbpm.engine.impl.model.DeploymentBuilderImpl;
 import org.foxbpm.engine.model.DeploymentBuilder;
+import org.foxbpm.engine.repository.ProcessDefinition;
 
 public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	
@@ -56,5 +58,8 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	public void testCmd(String params) {
 		commandExecutor.execute(new TestCmd(params));
 	}
-
+	
+	public ProcessDefinition getProcessDefinitionById(String processDefinitionId) {
+		return commandExecutor.execute(new GetProcessDefinitionById(processDefinitionId));
+	}
 }
