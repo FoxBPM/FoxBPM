@@ -15,7 +15,7 @@
  * 
  * @author ych
  */
-package org.foxbpm.engine.test;
+package org.foxbpm.engine.test.api;
 
 import java.util.List;
 import java.util.zip.ZipInputStream;
@@ -26,6 +26,7 @@ import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.repository.ProcessDefinitionQuery;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.task.Task;
+import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
 
 public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	

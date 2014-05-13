@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.impl.entity.TaskEntity;
+import org.foxbpm.engine.impl.task.TaskQueryImpl;
 import org.foxbpm.engine.task.Task;
 
 /**
@@ -47,6 +48,15 @@ public class TaskManager extends AbstractManager {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<TaskEntity> findTasksByProcessInstanceId(String processInstanceId){
 		return (List)getSqlSession().selectListWithRawParameter("selectTasksByProcessInstanceId", processInstanceId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Task> findTasksByQueryCriteria(TaskQueryImpl taskQuery){
+		return getSqlSession().selectList("findTasksByQueryCriteria", taskQuery);
+	}
+	
+	public long findTaskCountByQueryCriteria(TaskQueryImpl taskQuery){
+		return (Long)getSqlSession().selectOne("findTaskCountByQueryCriteria", taskQuery);
 	}
 	
 }

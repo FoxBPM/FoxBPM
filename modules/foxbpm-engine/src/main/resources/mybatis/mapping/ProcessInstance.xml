@@ -74,7 +74,7 @@
         RES.ID = #{processInstanceId}
       </if>
       <if test="processDefinitionId != null">
-        RES.PROCESSDEFINITION_ID = #{processDefinitionId}
+        AND RES.PROCESSDEFINITION_ID = #{processDefinitionId}
       </if>
       <if test="businessKey != null">
         and RES.BIZ_KEY = #{businessKey}
@@ -119,10 +119,7 @@
       	and RES.END_TIME is null
       </if>
     </where>
-  </sql>
-  	
-  	
-  	
+  </sql> 	
   	
   	
   	 <sql id="processColumnList">

@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.foxbpm.engine.query.NativeTaskQuery;
 import org.foxbpm.engine.task.Task;
+import org.foxbpm.engine.task.TaskQuery;
 
 public interface TaskService {
 
@@ -59,6 +60,8 @@ public interface TaskService {
 	void resolveTask(String taskId, Map<String, Object> variables);
 
 	void complete(String taskId, Map<String, Object> variables);
+	
+	TaskQuery createTaskQuery();
 
 	public NativeTaskQuery createNativeTaskQuery();
 
