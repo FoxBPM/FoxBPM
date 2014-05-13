@@ -4,20 +4,16 @@
     <groupId>org.foxbpm</groupId>
     <artifactId>foxbpm-root</artifactId>
     <version>6.0.1-SNAPSHOT</version>
+	<relativePath>../..</relativePath>
   </parent>
-  <artifactId>foxbpm-test</artifactId>
+  <artifactId>foxbpm-webapps-rest</artifactId>
+  <packaging>war</packaging>
   
   <dependencies>
-  <dependency>
-    <groupId>org.foxbpm</groupId>
-    <artifactId>foxbpm-engine</artifactId>
-    <version>6.0.1-SNAPSHOT</version>
-  </dependency>
-  
   	<dependency>
-		<groupId>org.springframework</groupId>
-		<artifactId>spring-jdbc</artifactId>
-		<version>3.2.3.RELEASE</version>
+		<groupId>org.foxbpm</groupId>
+		<artifactId>foxbpm-rest</artifactId>
+		<version>6.0.1-SNAPSHOT</version>
 	</dependency>
   </dependencies>
 </project>

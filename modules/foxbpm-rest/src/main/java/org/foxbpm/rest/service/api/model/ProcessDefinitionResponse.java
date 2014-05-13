@@ -6,6 +6,7 @@ public class ProcessDefinitionResponse {
 	private String name;
 	private String catory;
 	private String deploymentId;
+	private String processKey;
 	public String getId() {
 		return id;
 	}
@@ -29,6 +30,12 @@ public class ProcessDefinitionResponse {
 	}
 	public void setDeploymentId(String deploymentId) {
 		this.deploymentId = deploymentId;
+	}
+	public String getProcessKey() {
+		return processKey;
+	}
+	public void setProcessKey(String processKey) {
+		this.processKey = processKey;
 	}
 	
 }

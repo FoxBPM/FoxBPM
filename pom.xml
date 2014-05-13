@@ -12,7 +12,7 @@
 		<module>modules/foxbpm-kernel</module>
 		<module>modules/foxbpm-connector</module>
 		<module>modules/foxbpm-rest</module>
-		
+		<module>modules/foxbpm-webapps-rest</module>
 	</modules>
 
 	<dependencies>

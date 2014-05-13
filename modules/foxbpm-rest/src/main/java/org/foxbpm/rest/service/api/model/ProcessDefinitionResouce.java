@@ -28,4 +28,8 @@ public class ProcessDefinitionResouce extends ServerResource{
 		processDefintionResponse.setName(processEntity.getName());
 		return processDefintionResponse;
 	}
+	
+	 protected String getAttribute(String name) {
+		    return (String) getRequest().getAttributes().get(name);
+	 }
 }
