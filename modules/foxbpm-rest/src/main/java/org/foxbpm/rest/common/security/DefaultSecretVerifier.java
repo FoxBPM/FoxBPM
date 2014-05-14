@@ -15,30 +15,22 @@
  * 
  * @author ych
  */
-package org.foxbpm.rest.service.application;
+package org.foxbpm.rest.common.security;
 
-import org.foxbpm.rest.common.application.AbstractRestApplication;
-import org.restlet.Restlet;
-import org.restlet.routing.Router;
+import org.restlet.security.SecretVerifier;
 
 /**
- * foxbpm rest服务暴露的application入口 
- * 需要将此application注册到服务端，如component、defaultHost、web容器等。
+ * 默认的安全校验器，需要其他校验时可创建新的SecretVerifier子类，并注册到abstractRestApplication中
  * @author ych
  *
  */
-public class FoxbpmRestApplication extends AbstractRestApplication {
-	
-	public FoxbpmRestApplication() {
-		super();
-	}
-	
+public class DefaultSecretVerifier extends SecretVerifier{
+
 	@Override
-	public Restlet createInboundRoot() {
-		initializeAuthentication();
-		Router router = new Router(getContext());
-		RestServicesInit.attachResources(router);
-		authenticator.setNext(router);
-		return authenticator;
+	public boolean verify(String userName, char[] password) throws IllegalArgumentException {
+		System.out.println("UserName is :" + userName);
+		String pwd = new String(password);
+		System.out.println("password is :" + pwd);
+		return true;
 	}
 }

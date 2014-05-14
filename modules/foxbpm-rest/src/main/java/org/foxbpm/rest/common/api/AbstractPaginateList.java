@@ -1,4 +1,7 @@
-/* Licensed under the Apache License, Version 2.0 (the "License");
+/**
+ * Copyright 1996-2014 FoxBPM ORG.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
@@ -9,8 +12,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * 
+ * @author ych
  */
-
 package org.foxbpm.rest.common.api;
 
 import java.util.List;
@@ -23,12 +27,14 @@ import org.foxbpm.engine.query.QueryProperty;
 import org.restlet.data.Form;
 
 /**
- * @author Tijs Rademakers
+ * rest请求返回分页结果集,参考自activiti设计
+ * @author ych
+ *
  */
 public abstract class AbstractPaginateList {
 
 	@SuppressWarnings("rawtypes")
-	public DataResponse paginateList(Form form, Query query, String defaultSort, Map<String, QueryProperty> properties) {
+	public DataResult paginateList(Form form, Query query, String defaultSort, Map<String, QueryProperty> properties) {
 
 		// Collect parameters
 		int start = RequestUtil.getInteger(form, "start", 0);
@@ -58,9 +64,8 @@ public abstract class AbstractPaginateList {
 			}
 		}
 
-		// Get result and set pagination parameters
 		List list = processList(query.listPage(start, size));
-		DataResponse response = new DataResponse();
+		DataResult response = new DataResult();
 		response.setStart(start);
 		response.setSize(list.size());
 		response.setSort(sort);

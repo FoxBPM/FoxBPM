@@ -15,30 +15,24 @@
  * 
  * @author ych
  */
-package org.foxbpm.rest.service.application;
+package org.foxbpm.rest.common.api;
 
-import org.foxbpm.rest.common.application.AbstractRestApplication;
-import org.restlet.Restlet;
-import org.restlet.routing.Router;
+import org.foxbpm.engine.ProcessEngine;
+import org.foxbpm.engine.ProcessEngineManagement;
 
 /**
- * foxbpm rest服务暴露的application入口 
- * 需要将此application注册到服务端，如component、defaultHost、web容器等。
+ * foxbpm引擎工具类，用于处理rest服务中的所有引擎相关操作
  * @author ych
  *
  */
-public class FoxbpmRestApplication extends AbstractRestApplication {
+public class FoxBpmUtil {
 	
-	public FoxbpmRestApplication() {
-		super();
+	/**
+	 * 获取流程引擎实例
+	 * @return
+	 */
+	public static ProcessEngine getProcessEngine(){
+		return ProcessEngineManagement.getDefaultProcessEngine();
 	}
-	
-	@Override
-	public Restlet createInboundRoot() {
-		initializeAuthentication();
-		Router router = new Router(getContext());
-		RestServicesInit.attachResources(router);
-		authenticator.setNext(router);
-		return authenticator;
-	}
+
 }

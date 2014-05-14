@@ -1,3 +1,20 @@
+/**
+ * Copyright 1996-2014 FoxBPM ORG.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * @author ych
+ */
 package org.foxbpm.rest.service.api.model;
 
 import java.util.ArrayList;
@@ -8,25 +25,25 @@ import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.repository.ProcessDefinitionQuery;
-import org.foxbpm.rest.common.api.DataResponse;
-import org.foxbpm.rest.service.application.FoxbpmRestApplication;
+import org.foxbpm.rest.common.api.AbstractRestResource;
+import org.foxbpm.rest.common.api.DataResult;
 import org.restlet.data.Form;
-import org.restlet.data.Status;
 import org.restlet.resource.Get;
-import org.restlet.resource.ServerResource;
 
-public class ProcessDefinitionCollectionResouce extends ServerResource {
+/**
+ * 流程定义集合资源
+ * Get：processDefinitionQuery
+ * @author ych
+ *
+ */
+public class ProcessDefinitionCollectionResouce extends AbstractRestResource {
 
-	
 	@Get
-	public DataResponse getDefinitions() {
-		//if(authenticate() == false) return null;
+	public DataResult getDefinitions() {
 		ProcessEngine engine = ProcessEngineManagement.getDefaultProcessEngine();
 		ProcessDefinitionQuery processDefinitionQuery = engine.getModelService().createProcessDefinitionQuery();
 		Form query = getQuery();
 		Set<String> names = query.getNames();
-
-		// Populate filter-parameters
 		if (names.contains("category")) {
 			processDefinitionQuery.processDefinitionCategory(getQueryParameter("category", query));
 		}
@@ -49,31 +66,13 @@ public class ProcessDefinitionCollectionResouce extends ServerResource {
 		List<ProcessDefinition> processDefinitions = processDefinitionQuery.list();
 		List<ProcessDefinitionResponse> results = new ArrayList<ProcessDefinitionResponse>();
 		for (ProcessDefinition process : processDefinitions) {
-			ProcessDefinitionResponse response = new ProcessDefinitionResponse();
-			response.setId(process.getId());
-			response.setName(process.getName());
-			response.setProcessKey(process.getKey());
+			ProcessDefinitionResponse response = new ProcessDefinitionResponse(process);
 			results.add(response);
 		}
-		DataResponse result = new DataResponse();
+		DataResult result = new DataResult();
 		result.setData(results);
 		result.setStart(0);
 		result.setTotal(processDefinitions.size());
-
 		return result;
 	}
-
-	protected String getQueryParameter(String name, Form query) {
-		return query.getFirstValue(name);
-	}
-
-	protected boolean authenticate() {
-		String loggedInUser = ((FoxbpmRestApplication) getApplication()).authenticate(getRequest(), getResponse());
-		if (loggedInUser == null) {
-			setStatus(Status.CLIENT_ERROR_UNAUTHORIZED, "Authentication is required");
-			return false;
-		}
-		return true;
-	}
-
 }

@@ -8,7 +8,7 @@
   <display-name>Foxbpm-rest</display-name>
    
   <listener>
-    <listener-class>org.foxbpm.rest.listener.FoxBpmRestServletContextListener</listener-class>
+    <listener-class>org.foxbpm.rest.common.listener.FoxBpmRestServletContextListener</listener-class>
   </listener> 
   
   <!-- Restlet adapter -->  
