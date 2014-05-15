@@ -36,7 +36,7 @@
 		<artifactId>jstl</artifactId>
 		<version>1.2</version>
     </dependency>
-   <dependency>
+   		<dependency>
 			<groupId>org.foxbpm</groupId>
 			<artifactId>foxbpm-engine</artifactId>
 			<version>6.0.1-SNAPSHOT</version>

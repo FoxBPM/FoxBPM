@@ -21,6 +21,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.rest.service.api.connector.ConnectorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +37,7 @@ public class FoxBpmRestServletContextListener implements ServletContextListener{
 		try{
 			ProcessEngineManagement.getDefaultProcessEngine();
 			log.info("引擎启动成功");
+			ConnectorService.genarateConnectorZipFile();
 		}catch(Exception ex){
 			log.error("引擎启动失败:"+ex.getMessage(),ex);
 		}
