@@ -34,4 +34,8 @@ public class IdentityLinkManager extends AbstractManager {
 		return (List<IdentityLinkEntity>)getSqlSession().selectListWithRawParameter("selectIdentityLinkByTaskId", id);
 	}
 	
+	public IdentityLinkEntity findIdentityLinkById(String identityLinkId){
+		return getSqlSession().selectById(IdentityLinkEntity.class, identityLinkId);
+	}
+	
 }
