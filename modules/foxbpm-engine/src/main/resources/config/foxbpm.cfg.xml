@@ -2,6 +2,8 @@
 <foxbpmconfig:FoxBPMConfig xmlns:foxbpmconfig="http://www.foxbpm.org/foxbpmconfig">
   <resourcePathConfig>
     <resourcePath id="internationalization" name="国际化资源文件位置" src="扯淡"/>
+      <resourcePath id="OAcon" name="国际化资源文件位置" src="扯淡"/>
+      <resourcePath id="ERPCon" name="国际化资源文件位置" src="org/foxbpm/connector"/>
   </resourcePathConfig>
   
   <connectionManagementConfig selected="General">

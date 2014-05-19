@@ -29,9 +29,9 @@ import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
  */
 public class IdentityLinkManager extends AbstractManager {
 
+	@SuppressWarnings("unchecked")
 	public List<IdentityLinkEntity> findIdentityLinksByTaskId(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return (List<IdentityLinkEntity>)getSqlSession().selectListWithRawParameter("selectIdentityLinkByTaskId", id);
 	}
 	
 }
