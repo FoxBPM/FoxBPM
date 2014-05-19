@@ -29,7 +29,7 @@ import org.foxbpm.engine.impl.entity.DeploymentEntity;
 import org.foxbpm.engine.impl.entity.ResourceEntity;
 import org.foxbpm.engine.impl.util.IoUtil;
 import org.foxbpm.engine.impl.util.ReflectUtil;
-import org.foxbpm.engine.model.DeploymentBuilder;
+import org.foxbpm.engine.repository.DeploymentBuilder;
 
 /**
  * @author kenshin

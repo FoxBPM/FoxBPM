@@ -21,6 +21,8 @@ package org.foxbpm.engine.impl.persistence;
 import java.util.List;
 
 import org.foxbpm.engine.impl.entity.TokenEntity;
+import org.foxbpm.engine.impl.runtime.TokenQueryImpl;
+import org.foxbpm.engine.runtime.Token;
 
 /**
  * 令牌管理器
@@ -31,10 +33,19 @@ public class TokenManager extends AbstractManager {
 
 	@SuppressWarnings("unchecked")
 	public List<TokenEntity> findChildTokensByProcessInstanceId(String id) {
-		return (List<TokenEntity>)getSqlSession().selectList("selectTokensByProcessInstanceId", id);
+		return (List<TokenEntity>)getSqlSession().selectListWithRawParameter("selectTokensByProcessInstanceId", id);
 	}
 
 	public TokenEntity findTokenById(String rootTokenId) {
 		return selectById(TokenEntity.class, rootTokenId);
+	}
+	
+	public long findTokenCountByQueryCriteria(TokenQueryImpl tokenQuery){
+		return (Long)getSqlSession().selectOne("selectTokenCountByQueryCriteria", tokenQuery);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Token> findTokenByQueryCriteria(TokenQueryImpl tokenQuery){
+		return getSqlSession().selectList("selectTokensByQueryCriteria", tokenQuery);
 	}
 }

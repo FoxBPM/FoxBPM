@@ -1,3 +1,21 @@
+/**
+ * Copyright 1996-2014 FoxBPM ORG.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * @author kenshin
+ * @author ych
+ */
 package org.foxbpm.engine.impl.persistence.deploy;
 
 import java.util.List;
@@ -5,14 +23,18 @@ import java.util.List;
 import org.foxbpm.engine.cache.Cache;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
+import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
 import org.foxbpm.engine.impl.Context;
-import org.foxbpm.engine.impl.bpmn.deployer.BpmnDeployer;
 import org.foxbpm.engine.impl.entity.DeploymentEntity;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.persistence.DeploymentEntityManager;
 import org.foxbpm.engine.repository.ProcessDefinition;
 
-
+/**
+ * 流程发布管理器
+ * @author Administrator
+ *
+ */
 public class DeploymentManager {
 
 	protected Cache processDefinitionCache;
@@ -27,28 +49,21 @@ public class DeploymentManager {
 
 	public ProcessDefinitionEntity findDeployedProcessDefinitionById(String processDefinitionId) {
 		if (processDefinitionId == null) {
-			throw new FoxBPMIllegalArgumentException("Invalid process definition id : null");
+			throw new FoxBPMIllegalArgumentException("processDefinitionId不能为 : null");
 		}
-		BpmnDeployer BpmnDeployer=(BpmnDeployer)deployers.get(0);
-		return (ProcessDefinitionEntity)BpmnDeployer.getProcessModelParseHandler().createProcessDefinition("", "111");
-		
-		/*
-		ProcessDefinitionEntity processDefinition = Context.getCommandContext().getProcessDefinitionManager()
-				.findProcessDefinitionById(processDefinitionId);
+		ProcessDefinitionEntity processDefinition = Context.getCommandContext().getProcessDefinitionManager().findProcessDefinitionById(processDefinitionId);
 		if (processDefinition == null) {
-			//throw new FoxBPMObjectNotFoundException("no deployed process definition found with id '" + processDefinitionId + "'",
-			//		ProcessDefinition.class);
+			throw new FoxBPMObjectNotFoundException("数据库中未找到id = '" + processDefinitionId + "'的流程定义！");
 		}
 		processDefinition = resolveProcessDefinition(processDefinition);
-		return processDefinition;*/
+		return processDefinition;
 	}
 
 	public ProcessDefinitionEntity findDeployedLatestProcessDefinitionByKey(String processDefinitionKey) {
 		ProcessDefinitionEntity processDefinition = Context.getCommandContext().getProcessDefinitionManager()
 				.findLatestProcessDefinitionByKey(processDefinitionKey);
 		if (processDefinition == null) {
-			//throw new ActivitiObjectNotFoundException("no processes deployed with key '" + processDefinitionKey + "'",
-			//		ProcessDefinition.class);
+			throw new FoxBPMObjectNotFoundException("数据库中未找到流程key = '" + processDefinitionKey + "'的流程定义！");
 		}
 		processDefinition = resolveProcessDefinition(processDefinition);
 		return processDefinition;
@@ -59,8 +74,8 @@ public class DeploymentManager {
 		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) Context.getCommandContext()
 				.getProcessDefinitionManager().findProcessDefinitionByKeyAndVersion(processDefinitionKey, processDefinitionVersion);
 		if (processDefinition == null) {
-			//throw new ActivitiObjectNotFoundException("no processes deployed with key = '" + processDefinitionKey + "' and version = '"
-			//		+ processDefinitionVersion + "'", ProcessDefinition.class);
+			throw new FoxBPMObjectNotFoundException("数据库中未找到key = '" + processDefinitionKey + "' ， version 为='"
+					+ processDefinitionVersion + "'的流程定义");
 		}
 		processDefinition = resolveProcessDefinition(processDefinition);
 		return processDefinition;
@@ -77,8 +92,8 @@ public class DeploymentManager {
 			processDefinition = (ProcessDefinitionEntity) processDefinitionCache.get(processDefinitionId);
 
 			if (processDefinition == null) {
-				throw new FoxBPMException("deployment '" + deploymentId + "' didn't put process definition '" + processDefinitionId
-						+ "' in the cache");
+				throw new FoxBPMException("deploymentId = '" + deploymentId + "' 的发布中不存在  processDefinitionId = '" + processDefinitionId
+						+ "' 的流程定义或未放入缓存");
 			}
 		}
 		return processDefinition;

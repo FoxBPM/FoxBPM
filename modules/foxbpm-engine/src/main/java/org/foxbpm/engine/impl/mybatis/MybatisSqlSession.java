@@ -26,6 +26,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.exception.FoxBPMDbException;
+import org.foxbpm.engine.impl.db.ListQueryParameterObject;
 import org.foxbpm.engine.impl.interceptor.Session;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 import org.slf4j.Logger;
@@ -78,8 +79,18 @@ public class MybatisSqlSession implements ISqlSession,Session {
 		return sqlSession.selectList(statement);
 	}
 	
+	@SuppressWarnings("rawtypes")
+	public List selectList(String statement, Object parameter, int firstResult, int maxResults) {   
+	    return selectList(statement, new ListQueryParameterObject(parameter, firstResult, maxResults));
+	}
+	
+	@SuppressWarnings({ "rawtypes"})
+	public List selectList(String statement,ListQueryParameterObject parameter) {
+		return selectListWithRawParameter(statement,parameter);
+	}
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public List<?> selectList(String statement, Object parameter) {
+	public List<?> selectListWithRawParameter(String statement, Object parameter) {
 		List loadedObject = sqlSession.selectList(statement, parameter);
 		return filterLoadedObjects(loadedObject);
 	}

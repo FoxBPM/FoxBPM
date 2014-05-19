@@ -19,6 +19,7 @@
 package org.foxbpm.engine.impl.cmd;
 
 import java.util.Date;
+
 import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.bpmn.deployer.BpmnDeployer;
@@ -26,7 +27,7 @@ import org.foxbpm.engine.impl.entity.DeploymentEntity;
 import org.foxbpm.engine.impl.entity.ResourceEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
-import org.foxbpm.engine.model.DeploymentBuilder;
+import org.foxbpm.engine.repository.DeploymentBuilder;
 
 public class DeployCmd implements Command<Void>{
 
@@ -39,9 +40,6 @@ public class DeployCmd implements Command<Void>{
 		if(deployment.getUpdateDeploymentId()!=null&&!deployment.getUpdateDeploymentId().equals("")){
 			DeploymentEntity deploymentOld=Context.getCommandContext().getDeploymentEntityManager().findDeploymentById(deployment.getUpdateDeploymentId());
 			
-			if(deploymentOld.getResources().keySet().size()!=2){
-				throw new FoxBPMBizException("资源发布号,中不存在流程定义和流程图两个文件！");
-			}
 			ResourceEntity resourceEntityNewBpmn = null;
 			ResourceEntity resourceEntityNewPng = null;
 			
@@ -54,14 +52,34 @@ public class DeployCmd implements Command<Void>{
 					}
 				}
 			}
+			
+			if(resourceEntityNewBpmn == null){
+				throw new FoxBPMBizException("发布包中必须存在bpmn文件");
+			}
+			if(resourceEntityNewPng == null){
+				throw new FoxBPMBizException("发布包中必须存在png文件");
+			}
+			ResourceEntity resourceEntityOldBpmn = null;
+			ResourceEntity resourceEntityOldPng = null;
+			
 			for ( ResourceEntity resourceEntityOld : deploymentOld.getResources().values()) {
 				if (resourceEntityOld.getName().toLowerCase().endsWith(BpmnDeployer.BPMN_RESOURCE_SUFFIX)) {
-					resourceEntityOld.setBytes(resourceEntityNewBpmn.getBytes());
+					resourceEntityOldBpmn = resourceEntityOld;
 				} else {
 					if (resourceEntityOld.getName().toLowerCase().endsWith(BpmnDeployer.DIAGRAM_SUFFIXES)) {
-						resourceEntityOld.setBytes(resourceEntityNewPng.getBytes());
+						resourceEntityOldPng = resourceEntityOld;
 					}
 				}
+			}
+			if(resourceEntityOldBpmn == null){
+				Context.getCommandContext().getResourceManager().insert(resourceEntityNewBpmn);
+			}else{
+				resourceEntityOldBpmn.setBytes(resourceEntityNewBpmn.getBytes());
+			}
+			if(resourceEntityOldPng == null){
+				Context.getCommandContext().getResourceManager().insert(resourceEntityNewPng);
+			}else{
+				resourceEntityOldPng.setBytes(resourceEntityOldPng.getBytes());
 			}
 		}else{
 			deployment.setDeploymentTime(new Date());

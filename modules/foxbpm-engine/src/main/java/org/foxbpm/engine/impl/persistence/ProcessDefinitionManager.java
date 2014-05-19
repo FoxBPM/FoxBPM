@@ -18,34 +18,56 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
-import org.foxbpm.engine.impl.entity.TaskEntity;
-
+import org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl;
+import org.foxbpm.engine.repository.ProcessDefinition;
 /**
  * 流程定义管理器
  * @author Kenshin
  */
 public class ProcessDefinitionManager extends AbstractManager {
 
-	public void test(){
-		System.out.println("manager执行了");
-		TaskEntity task = new TaskEntity();
-		task.setId("200");
-		getSqlSession().insert(task);
-	}
-
+	/**
+	 * 根据流程定义编号返回流程定时实体
+	 * @param processDefinitionId
+	 * @return
+	 */
 	public ProcessDefinitionEntity findProcessDefinitionById(String processDefinitionId) {
-		// TODO Auto-generated method stub
-		return null;
+		ProcessDefinitionEntity processEntityNew = getSqlSession().selectById(ProcessDefinitionEntity.class, processDefinitionId);
+		return processEntityNew;
 	}
 
 	public ProcessDefinitionEntity findLatestProcessDefinitionByKey(String processDefinitionKey) {
-		// TODO Auto-generated method stub
-		return null;
+		ProcessDefinitionEntity processEntity = (ProcessDefinitionEntity)getSqlSession().selectOne("selectLatestProcessDefinitionByKey", processDefinitionKey);
+		return processEntity;
 	}
 
 	public ProcessDefinitionEntity findProcessDefinitionByKeyAndVersion(String processDefinitionKey, Integer processDefinitionVersion) {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("key", processDefinitionKey);
+		paramMap.put("version", processDefinitionVersion);
+		ProcessDefinitionEntity processEntity = (ProcessDefinitionEntity)getSqlSession().selectOne("selectProcessDefinitionByKeyAndVersion", paramMap);
+		return processEntity;
 	}
+
+	public ProcessDefinitionEntity findProcessDefinitionByDeploymentAndKey(String deploymentId, String key) {
+		Map<String,Object> paramMap = new HashMap<String,Object>();
+		paramMap.put("deploymentId", deploymentId);
+		paramMap.put("key", key);
+		ProcessDefinitionEntity processEntity = (ProcessDefinitionEntity)getSqlSession().selectOne("selectProcessDefinitionByDeployIdAndKey", paramMap);
+		return processEntity;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ProcessDefinition> findProcessDefinitionsByQueryCriteria(ProcessDefinitionQueryImpl processDefinitionQuery){
+		return getSqlSession().selectList("selectProcessDefinitionsByQueryCriteria", processDefinitionQuery);
+	}
+	
+	public long findProcessDefinitionCountByQueryCriteria(ProcessDefinitionQueryImpl processDefinitionQuery){
+		return (Long)getSqlSession().selectOne("selectProcessDefinitionCountByQueryCriteria", processDefinitionQuery);
+	}
+	
 }

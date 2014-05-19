@@ -35,7 +35,7 @@ public class GetStartProcessByUserIdCmd implements Command<List<Map<String, Stri
 	
 	public List<Map<String, String>> execute(CommandContext commandContext) {
 		System.out.println("测试CMD执行");
-		commandContext.getProcessDefinitionManager().test();
+//		commandContext.getProcessDefinitionManager().test();
 		return new ArrayList<Map<String,String>>();
 	}
 

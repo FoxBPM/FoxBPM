@@ -25,9 +25,14 @@ import java.util.zip.ZipInputStream;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.impl.cmd.DeployCmd;
 import org.foxbpm.engine.impl.cmd.DeploymentByZipCmd;
+import org.foxbpm.engine.impl.cmd.GetProcessDefinitionById;
+import org.foxbpm.engine.impl.cmd.TestCmd;
 import org.foxbpm.engine.impl.cmd.UpdateDeploymentByZipCmd;
 import org.foxbpm.engine.impl.model.DeploymentBuilderImpl;
-import org.foxbpm.engine.model.DeploymentBuilder;
+import org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl;
+import org.foxbpm.engine.repository.DeploymentBuilder;
+import org.foxbpm.engine.repository.ProcessDefinition;
+import org.foxbpm.engine.repository.ProcessDefinitionQuery;
 
 public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	
@@ -51,5 +56,16 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	public void updateByZip(String deploymentId, ZipInputStream zipInputStream) {
 		commandExecutor.execute(new UpdateDeploymentByZipCmd(createDeployment() , deploymentId , zipInputStream));
 	}
-
+	
+	public void testCmd(String params) {
+		commandExecutor.execute(new TestCmd(params));
+	}
+	
+	public ProcessDefinition getProcessDefinitionById(String processDefinitionId) {
+		return commandExecutor.execute(new GetProcessDefinitionById(processDefinitionId));
+	}
+	
+	public ProcessDefinitionQuery createProcessDefinitionQuery() {
+	    return new ProcessDefinitionQueryImpl(commandExecutor);
+	}
 }

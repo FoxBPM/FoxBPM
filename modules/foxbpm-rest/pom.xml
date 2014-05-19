@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+   <parent>
+    <groupId>org.foxbpm</groupId>
+    <artifactId>foxbpm-root</artifactId>
+    <version>6.0.1-SNAPSHOT</version>
+	<relativePath>../..</relativePath>
+  </parent>
+  <artifactId>foxbpm-rest</artifactId>
+  <packaging>jar</packaging>
+  <name>foxbpm-rest</name>
+  <url>http://maven.apache.org</url>
+  
+  <repositories>
+    <repository>
+      <id>maven-restlet</id>
+      <name>Public online Restlet repository</name>
+      <url>http://maven.restlet.org</url>
+    </repository>
+  </repositories>
+  
+  <properties>
+  	<restlet.version>2.0.15</restlet.version>
+  </properties>
+  
+  
+  <build>  
+        <finalName>foxbpm</finalName>  
+  </build>  
+  
+  <dependencies>
+    <dependency>
+    	<groupId>javax.servlet</groupId>
+		<artifactId>jstl</artifactId>
+		<version>1.2</version>
+    </dependency>
+   		<dependency>
+			<groupId>org.foxbpm</groupId>
+			<artifactId>foxbpm-engine</artifactId>
+			<version>6.0.1-SNAPSHOT</version>
+		</dependency>
+    <dependency>
+    	<groupId>taglibs</groupId>
+		<artifactId>standard</artifactId>
+		<version>1.0.6</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.restlet.jee</groupId>
+      <artifactId>org.restlet</artifactId>
+      <version>2.0.15</version>
+    </dependency>
+    <dependency>
+      <groupId>org.restlet.jee</groupId>
+      <artifactId>org.restlet.ext.jackson</artifactId>
+       <version>2.0.15</version>
+      
+    </dependency>
+      <dependency>
+      <groupId>org.restlet.jee</groupId>
+      <artifactId>org.restlet.ext.fileupload</artifactId>
+      <version>2.0.15</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.restlet.jee</groupId>
+      <artifactId>org.restlet.ext.servlet</artifactId>
+       <version>2.0.15</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.5</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+ 
+</project>

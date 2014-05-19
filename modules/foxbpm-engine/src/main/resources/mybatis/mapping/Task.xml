@@ -109,4 +109,127 @@
     from foxbpm_run_task
     where PROCESSINSTANCE_ID = #{id,jdbcType=VARCHAR}
   </select>
+  
+  <select id="findTasksByQueryCriteria" parameterType="org.foxbpm.engine.impl.task.TaskQueryImpl" resultMap="TaskResultMap">
+  	${limitBefore}
+    select RES.* ${limitBetween}
+    <include refid="selectTasksByQueryCriteriaSql"/>
+    <if test="orderBy != null">
+       ${orderBy}
+    </if>
+    ${limitAfter}
+  </select>
+  
+  <select id="findTaskCountByQueryCriteria" parameterType="org.foxbpm.engine.impl.task.TaskQueryImpl" resultType="long">
+    select count(RES.ID)
+    <include refid="selectTasksByQueryCriteriaSql"/>
+  </select>
+  
+  <sql id="selectTasksByQueryCriteriaSql">  
+    from FOXBPM_RUN_TASK RES
+    
+    <if test="candidateUser != null">
+        inner join FOXBPM_RUN_TASKIDENTITYLINK I on I.TASK_ID = RES.ID
+    </if>
+     <if test="initiator != null" >
+        inner join FOXBPM_RUN_PROCESSINSTANCE P ON P.ID = RES.PROCESSINSTANCE_ID
+     </if>
+    <where>
+       <if test="taskId != null" >
+        ID = #{taskId}
+      </if>
+      <if test="processInstanceId != null" >
+        and PROCESSINSTANCE_ID = #{processInstanceId}
+      </if>
+      <if test="tokenId != null" >
+        and TOKEN_ID = #{tokenId}
+      </if>
+      <if test="nodeId != null" >
+       and NODE_ID = #{nodeId}
+      </if>
+      <if test="description != null" >
+        and DESCRIPTION = #{description}
+      </if>
+      <if test="descriptionLike != null" >
+        and DESCRIPTION like #{descriptionLike}
+      </if>
+      <if test="assignee != null" >
+        and ASSIGNEE = #{assignee}
+      </if>
+      <if test="initiator != null" >
+        and P.INITIATOR = #{initiator}
+      </if>
+      <if test="name != null" >
+       and NAME = #{name}
+      </if>
+      <if test="nameLike != null" >
+        and NAME like #{nameLike}
+      </if>
+      <if test="owner != null" >
+        and OWNER = #{owner}
+      </if>
+      <if test="businessKey != null" >
+        and BIZKEY = #{businessKey}
+      </if>
+       <if test="businessKeyLike != null" >
+        and BIZKEY like #{businessKeyLike}
+      </if>
+      
+      <if test="unassigned" >
+        and ASSIGNEE is null 
+      </if>
+      <if test="processDefinitionId != null" >
+        and PROCESSDEFINITION_ID = #{processDefinitionId}
+      </if>
+      <if test="processDefinitionKey != null" >
+        and PROCESSDEFINITION_KEY = #{processDefinitionKey}
+      </if>
+      <if test="processDefinitionName != null" >
+        and PROCESSDEFINITION_NAME = #{processDefinitionName}
+      </if>
+      <if test="processDefinitionNameLike != null" >
+        and PROCESSDEFINITION_NAME like #{processDefinitionNameLike}
+      </if>
+      
+      <!-- TaskType -->
+      <if test="taskTypeList != null  &amp;&amp; taskTypeList.size() &gt; 0" >
+        and TASKTYPE in 
+        <foreach item="group" index="index" collection="taskTypeList" 
+                     open="(" separator="," close=")">
+              #{group}
+        </foreach>
+      </if>
+      
+      <!-- 共享任务 -->
+      <if test="candidateUser != null" >
+        and RES.ASSIGNEE is null
+        and I.TYPE = 'candidate'
+        and 
+        ( 
+          <if test="candidateUser != null">
+            I.USER_ID = #{candidateUser}  or I.USER_ID='fixflow_allusers'         
+          </if>
+          <if test="candidateUser != null &amp;&amp; candidateGroups != null &amp;&amp; candidateGroups.size() &gt; 0">
+            or
+          </if>
+          <if test="candidateGroups != null &amp;&amp; candidateGroups.size() &gt; 0">
+            <foreach item="group" index="index" collection="candidateGroups" 
+                     open="(" separator="or" close=")">
+              (I.GROUP_ID = #{group.groupId} AND group_type =#{group.groupType})
+            </foreach>
+          </if>
+        )
+      </if>
+      
+      <if test="end != null">
+      	and RES.CREATE_TIME IS ${end}
+      </if>
+      
+      <if test="isSuspended != null" >
+        and ISSUSPENDED = #{isSuspended}
+      </if>
+      
+    </where>
+  </sql> 	
+  
 </mapper>

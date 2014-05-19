@@ -24,8 +24,10 @@ import java.util.Map;
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.impl.cmd.FindTaskCmd;
 import org.foxbpm.engine.impl.query.NativeTaskQueryImpl;
+import org.foxbpm.engine.impl.task.TaskQueryImpl;
 import org.foxbpm.engine.query.NativeTaskQuery;
 import org.foxbpm.engine.task.Task;
+import org.foxbpm.engine.task.TaskQuery;
 
 public class TaskServiceImpl extends ServiceImpl implements TaskService {
 
@@ -115,5 +117,9 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 
 	public NativeTaskQuery createNativeTaskQuery() {
 		return new NativeTaskQueryImpl(commandExecutor);
+	}
+	
+	public TaskQuery createTaskQuery() {
+		return new TaskQueryImpl(commandExecutor);
 	}
 }

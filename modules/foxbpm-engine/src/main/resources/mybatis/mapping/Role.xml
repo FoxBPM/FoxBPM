@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="org.foxbpm.engine.impl.entity.GroupEntity">
+	<select id="selectRoleByUserId" parameterType="java.lang.String" resultMap="groupResultMap">
+	  select R.ROLEID as GROUPID,R.ROLENAME as GROUPNAME,G.GROUPTYPE from AU_ROLEINFO R inner join AU_GROUP_RELATION G on R.ROLEID = G.GROUPID
+	  where 
+	  G.USERID=#{userId,jdbcType=VARCHAR} and G.GROUPTYPE='role'
+  </select>
+  
+  
+</mapper>

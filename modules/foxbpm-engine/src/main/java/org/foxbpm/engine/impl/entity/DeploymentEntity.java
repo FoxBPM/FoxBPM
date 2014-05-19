@@ -38,7 +38,7 @@ public class DeploymentEntity implements Serializable, Deployment, PersistentObj
 	protected String category;
 	protected Map<String, ResourceEntity> resources;
 	protected Date deploymentTime;
-	protected boolean isNew;
+	protected boolean isNew = true;
 	protected String updateDeploymentId;
 
 	/**
@@ -67,8 +67,10 @@ public class DeploymentEntity implements Serializable, Deployment, PersistentObj
 		if (resources == null && id != null) {
 			List<ResourceEntity> resourcesList = Context.getCommandContext().getResourceManager().findResourcesByDeploymentId(id);
 			resources = new HashMap<String, ResourceEntity>();
-			for (ResourceEntity resource : resourcesList) {
-				resources.put(resource.getName(), resource);
+			if(resourcesList != null){
+				for (ResourceEntity resource : resourcesList) {
+					resources.put(resource.getName(), resource);
+				}
 			}
 		}
 		return resources;

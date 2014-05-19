@@ -21,6 +21,8 @@ package org.foxbpm.engine;
 import java.util.Map;
 
 import org.foxbpm.engine.runtime.ProcessInstance;
+import org.foxbpm.engine.runtime.ProcessInstanceQuery;
+import org.foxbpm.engine.runtime.TokenQuery;
 
 public interface RuntimeService {
 
@@ -51,5 +53,9 @@ public interface RuntimeService {
 	void signal(String tokenId);
 
 	void signal(String tokenId, Map<String, Object> processVariables);
+	
+	TokenQuery createTokenQuery();
+	
+	ProcessInstanceQuery createProcessInstanceQuery();
 
 }

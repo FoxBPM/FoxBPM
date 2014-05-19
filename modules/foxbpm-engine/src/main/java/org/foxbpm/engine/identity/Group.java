@@ -34,6 +34,4 @@ public interface Group {
 
 	public Map<String, Object> getPropertyMap();
 	
-	public Object getPropertyValue(String propertyName);
-	
 }

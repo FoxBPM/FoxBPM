@@ -43,9 +43,12 @@ import org.foxbpm.engine.db.DataSourceManage;
 import org.foxbpm.engine.exception.ExceptionCode;
 import org.foxbpm.engine.exception.ExceptionI18NCore;
 import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
+import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.impl.bpmn.deployer.BpmnDeployer;
 import org.foxbpm.engine.impl.cache.DefaultCache;
 import org.foxbpm.engine.impl.db.DefaultDataSourceManage;
+import org.foxbpm.engine.impl.identity.GroupDeptImpl;
+import org.foxbpm.engine.impl.identity.GroupRoleImpl;
 import org.foxbpm.engine.impl.interceptor.CommandContextFactory;
 import org.foxbpm.engine.impl.interceptor.CommandContextInterceptor;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
@@ -103,6 +106,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected List<Deployer> deployers;
 	protected DeploymentManager deploymentManager;
 	protected Cache identityCache;
+	
+	protected List<GroupDefinition> groupDefinitions;
 
 	public ProcessEngine buildProcessEngine() {
 		init();
@@ -125,7 +130,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		// initDataBaseTable();
 		initCache();
 		// initDeployers();
-		// initGroupDefinitions();
+		initGroupDefinitions();
 		// initDbConfig();// dbType
 		// // 任务命令配置加载
 		// initTaskCommandConfig();
@@ -149,6 +154,15 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		// initAssignPolicyConfig();
 		// initThreadPool();
 
+	}
+	
+	
+	public void initGroupDefinitions(){
+		if(groupDefinitions == null){
+			groupDefinitions = new ArrayList<GroupDefinition>();
+			groupDefinitions.add(new GroupDeptImpl());
+			groupDefinitions.add(new GroupRoleImpl());
+		}
 	}
 	
 	public void initCache(){
@@ -339,9 +353,19 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 
 	// Getter方法
+	
+	
 
 	public ModelService getModelService() {
 		return modelService;
+	}
+
+	public List<GroupDefinition> getGroupDefinitions() {
+		return groupDefinitions;
+	}
+
+	public void setGroupDefinitions(List<GroupDefinition> groupDefinitions) {
+		this.groupDefinitions = groupDefinitions;
 	}
 
 	public RuntimeService getRuntimeService() {
