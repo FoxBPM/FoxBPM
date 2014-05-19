@@ -18,12 +18,17 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.task.TaskType;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
+import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 
 /**
  * 人工任务处理器
@@ -55,10 +60,32 @@ public class UserTaskBehavior extends TaskBehavior {
 	private String taskSubject;
 	
 	private String taskPriority;
+	
+	protected List<Connector> actorConnectors=new ArrayList<Connector>();
 
 	
+	public List<Connector> getActorConnectors() {
+		return actorConnectors;
+	}
+
+	public void setActorConnectors(List<Connector> actorConnectors) {
+		this.actorConnectors = actorConnectors;
+	}
+
 	@Override
 	public void execute(FlowNodeExecutionContext executionContext) {
+		
+		
+		for (Connector connector : getActorConnectors()) {
+			try {
+				connector.notify((ListenerExecutionContext)executionContext);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
 		
 		TaskEntity task = TaskEntity.createAndInsert(executionContext);
 		

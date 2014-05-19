@@ -42,11 +42,14 @@ import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.exception.ExceptionCode;
 import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
 import org.foxbpm.engine.impl.ProcessDefinitionEntityBuilder;
+import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
+import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
 import org.foxbpm.kernel.ProcessDefinitionBuilder;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
+import org.foxbpm.kernel.event.KernelEventType;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
 
@@ -87,6 +90,13 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			KernelFlowNodeBehavior flowNodeBehavior = BpmnBehaviorEMFConverter.getFlowNodeBehavior(flowElement);
 			if(flowElement instanceof FlowNode){
 				processDefinitionBuilder.createFlowNode(flowElement.getId()).behavior(flowNodeBehavior);
+				
+				if(flowNodeBehavior instanceof BaseElementBehavior){
+					for (Connector connector :((BaseElementBehavior) flowNodeBehavior).getConnectors()) {
+						processDefinitionBuilder.executionListener(connector.getEventType(), connector);
+					}
+				}
+
 				if(flowElement instanceof StartEvent){
 					processDefinitionBuilder.initial();
 				}

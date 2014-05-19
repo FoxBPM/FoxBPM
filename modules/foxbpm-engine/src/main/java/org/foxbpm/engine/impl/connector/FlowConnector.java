@@ -26,16 +26,19 @@ import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.util.StringUtil;
-import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
+import org.foxbpm.kernel.event.KernelListener;
+import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 
-public class Connector {
+public class FlowConnector implements KernelListener {
 
+
+	private static final long serialVersionUID = 1L;
 	protected String connectorId;
 	protected String packageName;
 	protected String className;
 	protected String connectorInstanceId;
 	protected String connectorInstanceName;
-	protected String eventType;
+ 	protected String eventType;
 	protected String documentation;
 	protected String errorHandling;
 	protected String errorCode;
@@ -161,7 +164,7 @@ public class Connector {
 		return connectorOutputsParam;
 	}
 
-	public void execute(FlowNodeExecutionContext executionContext) {
+	public void notify(ListenerExecutionContext executionContext) throws Exception  {
 		// TODO Auto-generated method stub
 
 		try {
@@ -231,5 +234,7 @@ public class Connector {
 
 		}
 	}
+
+	
 
 }

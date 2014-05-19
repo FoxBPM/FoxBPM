@@ -19,10 +19,10 @@ package org.foxbpm.connector.actorconnector.SelectDeptActorConnector;
 
 import java.util.List;
 
-import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
 import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.impl.util.AssigneeUtil;
+import org.foxbpm.engine.task.DelegateTask;
 
 public class SelectDeptActorConnector extends ActorConnectorHandler {
 
@@ -34,16 +34,30 @@ public class SelectDeptActorConnector extends ActorConnectorHandler {
 		this.deptId = deptId;
 	}
 
-	@Override
-	public void execute(ConnectorExecutionContext executionContext) throws Exception {
+	
+	
+	/** humanPerformer独占 potentialOwner共享*/
+	@SuppressWarnings("unused")
+	private String assignType;
 
+	public void setAssignType(String assignType) {
+		this.assignType = assignType;
+	}
+	
+	
+
+
+	@Override
+	public void assign(DelegateTask task) throws Exception {
+		
 		List<String> deptList = AssigneeUtil.executionExpressionObj(deptId);
 
 		for (String deptId : deptList) {
 			GroupEntity group = new GroupEntity(deptId, "dept");
-			addGroup(group);
+			task.addCandidateGroupEntity(group);
 		}
-
+		
 	}
+
 
 }

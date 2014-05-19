@@ -17,54 +17,31 @@
  */
 package org.foxbpm.engine.impl.connector;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.foxbpm.engine.execution.ConnectorExecutionContext;
+import org.foxbpm.engine.impl.entity.TokenEntity;
+import org.foxbpm.engine.task.DelegateTask;
 
-import org.foxbpm.engine.impl.entity.GroupEntity;
-import org.foxbpm.engine.impl.entity.UserEntity;
+public abstract class ActorConnectorHandler implements ConnectorHandler {
 
-public abstract class ActorConnectorHandler extends ConnectorHandler {
-
-	protected List<UserEntity> users=new ArrayList<UserEntity>();
 	
-	public void setUsers(List<UserEntity> users) {
-		this.users = users;
+	
+	
+	
+	public void execute(ConnectorExecutionContext executionContext) throws Exception {
+
+		assign(((TokenEntity)executionContext).getAssignTask());
+		
+		
 	}
 
-	public void setGroups(List<GroupEntity> groups) {
-		this.groups = groups;
-	}
-
-	protected List<GroupEntity> groups=new ArrayList<GroupEntity>();
-	
-	public void addUser(UserEntity user){
-		users.add(user);
-	}
-	
-	public void addGroup(GroupEntity group){
-		groups.add(group);
-	}
+	public abstract void assign(DelegateTask task)  throws Exception;
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	/**
-	 * 获取用户类型处理者
-	 * @return
-	 */
-	public List<UserEntity> getUsers(){
-		return users;
-	}
 	
-	/**
-	 * 获取组类型处理者
-	 * @return
-	 */
-	public List<GroupEntity> getGroups(){
-		return groups;
-	}
 	
 
 }

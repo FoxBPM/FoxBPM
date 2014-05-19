@@ -33,6 +33,13 @@ public class TokenEntity extends KernelTokenImpl implements Token,ConnectorExecu
 	protected Date archiveTime;
 	protected boolean isLocked = false;
 	protected boolean isSuspended = false;
+	
+	
+	protected TaskEntity assignTask;
+	
+	
+
+	
 
 	@Override
 	public void setFlowNode(KernelFlowNodeImpl flowNode) {
@@ -214,6 +221,14 @@ public class TokenEntity extends KernelTokenImpl implements Token,ConnectorExecu
 
 	public String getStartAuthor() {
 		return getProcessInstance().getStartAuthor();
+	}
+	
+	public TaskEntity getAssignTask() {
+		return assignTask;
+	}
+
+	public void setAssignTask(TaskEntity assignTask) {
+		this.assignTask = assignTask;
 	}
 
 }

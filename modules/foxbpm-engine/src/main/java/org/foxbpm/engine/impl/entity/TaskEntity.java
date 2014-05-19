@@ -1,26 +1,32 @@
 package org.foxbpm.engine.impl.entity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.GuidUtil;
+import org.foxbpm.engine.task.DelegateTask;
 import org.foxbpm.engine.task.DelegationState;
+import org.foxbpm.engine.task.IdentityLink;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskType;
 import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
+import org.foxbpm.kernel.runtime.impl.KernelVariableInstanceImpl;
 import org.foxbpm.kernel.runtime.impl.KernelVariableScopeImpl;
 
-public class TaskEntity extends KernelVariableScopeImpl implements Task, PersistentObject, HasRevision {
+public class TaskEntity extends KernelVariableScopeImpl implements Task,DelegateTask, PersistentObject, HasRevision {
 
 	/**
 	 * 
@@ -128,11 +134,15 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 	protected List<IdentityLinkEntity> taskIdentityLinks=new ArrayList<IdentityLinkEntity>();
 
 	protected TaskEntity parentTask;
+	
+	protected boolean isAutoClaim=false;
 
 	
 	
 	
 	
+
+
 	public TaskEntity() {
 	  }
 
@@ -174,8 +184,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 	    //dbSqlSession.update(this);
 	  }
 	  
-	  /**  Creates a new task.  Embedded state and create time will be initialized.
-	   * But this task still will have to be persisted. See {@link #insert(ExecutionEntity)}. */
+	  /** 创建任务 */
 	  public static TaskEntity create() {
 	    TaskEntity task = new TaskEntity();
 	    task.setId(GuidUtil.CreateGuid());
@@ -306,11 +315,6 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 		return null;
 	}
 
-	@Override
-	protected void ensureParentInitialized() {
-		// TODO Auto-generated method stub
-
-	}
 
 	public boolean isModified() {
 		// TODO Auto-generated method stub
@@ -635,6 +639,116 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Persist
 
 	public void setCommandMessage(String commandMessage) {
 		this.commandMessage = commandMessage;
+	}
+
+	public Object getVariableLocal(Object variableName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getTaskDefinitionKey() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ConnectorExecutionContext getExecutionContext() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getEventName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void addCandidateUser(String userId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addCandidateUserEntity(UserEntity user) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addCandidateUsers(Collection<String> candidateUsers) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addCandidateUserEntitys(Collection<UserEntity> candidateUsers) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addCandidateGroup(String groupId, String groupType) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addCandidateGroupEntity(GroupEntity group) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addCandidateGroupEntitys(Collection<GroupEntity> candidateGroups) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addUserIdentityLink(String userId, String identityLinkType) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addGroupIdentityLink(String groupId, String groupType, String identityLinkType) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void deleteCandidateUser(String userId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void deleteCandidateGroup(String groupId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void deleteUserIdentityLink(String userId, String identityLinkType) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void deleteGroupIdentityLink(String groupId, String groupType, String identityLinkType) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Set<IdentityLink> getCandidates() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected List<KernelVariableInstanceImpl> loadVariableInstances() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected void initializeVariableInstanceBackPointer(KernelVariableInstanceImpl variableInstance) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public boolean isAutoClaim() {
+		return isAutoClaim;
+	}
+
+	public void setAutoClaim(boolean isAutoClaim) {
+		this.isAutoClaim = isAutoClaim;
 	}
 
 

@@ -31,6 +31,7 @@ import org.foxbpm.engine.impl.connector.ConnectorOutputParam;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.model.bpmn.foxbpm.ConnectorInstance;
+import org.foxbpm.model.bpmn.foxbpm.ConnectorInstanceElements;
 import org.foxbpm.model.bpmn.foxbpm.ConnectorParameterInput;
 import org.foxbpm.model.bpmn.foxbpm.ConnectorParameterOutput;
 import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
@@ -38,18 +39,7 @@ import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
 public class BaseElementParser {
 	
 	protected BaseElementBehavior baseElementBehavior;
-	
-	protected List<Connector> connectors=new ArrayList<Connector>();
-	
-	
-	
-	public List<Connector> getConnectors() {
-		return connectors;
-	}
 
-	public void setConnectors(List<Connector> connectors) {
-		this.connectors = connectors;
-	}
 
 	/**
 	 * @param baseElement
@@ -57,8 +47,23 @@ public class BaseElementParser {
 	 */
 	public BaseElementBehavior parser(BaseElement baseElement){
 		 
-		List<ConnectorInstance> connectorInstances=  BpmnModelUtil.getExtensionElementList(ConnectorInstance.class,baseElement,FoxBPMPackage.Literals.DOCUMENT_ROOT__CONNECTOR_INSTANCE);
 		
+		baseElementBehavior.getConnectors().addAll(parserConnector(baseElement, "flowconnector"));
+
+		return baseElementBehavior;
+	}
+	
+	protected List<Connector> parserConnector(BaseElement baseElement,String connrctorType){
+		List<ConnectorInstanceElements> connectorInstanceElements=  BpmnModelUtil.getExtensionElementList(ConnectorInstanceElements.class,baseElement,FoxBPMPackage.Literals.DOCUMENT_ROOT__CONNECTOR_INSTANCE_ELEMENTS);
+		List<ConnectorInstance> connectorInstances=new ArrayList<ConnectorInstance>();
+		for (ConnectorInstanceElements connectorInstanceElementsObj : connectorInstanceElements) {
+			if(connectorInstanceElementsObj.getConnrctorType().equals(connrctorType)){
+				connectorInstances.addAll(connectorInstanceElementsObj.getConnectorInstance());
+			}
+			
+		}
+		
+		List<Connector> connectors=new ArrayList<Connector>();
 		
 		for (ConnectorInstance connectorInstance : connectorInstances) {
 			String packageNamesString = connectorInstance.getPackageName();
@@ -132,8 +137,7 @@ public class BaseElementParser {
 			connectors.add(connectorInstanceBehavior);
 		}
 		
-
-		return baseElementBehavior;
+		return connectors;
 	}
 	
 	public void init(){

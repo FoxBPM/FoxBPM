@@ -17,23 +17,43 @@
  */
 package org.foxbpm.connector.actorconnector.InitiatorActorConnector;
 
-import org.foxbpm.engine.execution.ConnectorExecutionContext;
+import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
-import org.foxbpm.engine.impl.entity.UserEntity;
+import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.task.DelegateTask;
 
 
 public class InitiatorActorConnector extends ActorConnectorHandler {
 
 	private static final long serialVersionUID = 1L;
+	
+	/** humanPerformer独占 potentialOwner共享*/
+	private String assignType;
+
+	public void setAssignType(String assignType) {
+		this.assignType = assignType;
+	}
+
 
 	@Override
-	public void execute(ConnectorExecutionContext executionContext) throws Exception {
+	public void assign(DelegateTask task) throws Exception {
+		
+		String initiator=task.getExecutionContext().getInitiator();
 
-		//获取发起人
-		String initiator=executionContext.getInitiator();
-		UserEntity user= new UserEntity(initiator);
-		addUser(user);
-
+		if(StringUtil.isEmpty(initiator)){
+			throw new FoxBPMConnectorException("流程的提交人未找到,请重新检查借点的人员配置.");
+		}
+		
+		if(assignType!=null){
+			if(assignType.equals("humanPerformer")){
+				task.setAssignee(initiator);
+			}
+			else{
+				task.addCandidateUser(initiator);
+			}
+		}else{
+			task.setAssignee(initiator);
+		}
 	}
 
 	

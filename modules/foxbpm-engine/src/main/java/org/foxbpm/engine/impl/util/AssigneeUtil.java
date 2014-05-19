@@ -19,6 +19,7 @@ package org.foxbpm.engine.impl.util;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -54,19 +55,13 @@ public class AssigneeUtil {
 			}
 	
 
-			if (result instanceof List<?>) {
-				List<?> resultTempList = (List<?>) result;
+			if (result instanceof Collection) {
+				Collection<?> resultTempList = (Collection<?>) result;
 				for (Object resultObj : resultTempList) {
 					resultList.add(resultObj.toString());
 				}
 			}
 
-			if (result instanceof Set<?>) {
-				Set<?> resultTempList = (Set<?>) result;
-				for (Object resultObj : resultTempList) {
-					resultList.add(resultObj.toString());
-				}
-			}
 
 		}
 
@@ -98,20 +93,14 @@ public class AssigneeUtil {
 				resultList.add(result.toString());
 			}
 	
-
-			if (result instanceof List<?>) {
-				List<?> resultTempList = (List<?>) result;
+			if (result instanceof Collection) {
+				Collection<?> resultTempList = (Collection<?>) result;
 				for (Object resultObj : resultTempList) {
 					resultList.add(resultObj.toString());
 				}
 			}
 
-			if (result instanceof Set<?>) {
-				Set<?> resultTempList = (Set<?>) result;
-				for (Object resultObj : resultTempList) {
-					resultList.add(resultObj.toString());
-				}
-			}
+
 
 		}
 

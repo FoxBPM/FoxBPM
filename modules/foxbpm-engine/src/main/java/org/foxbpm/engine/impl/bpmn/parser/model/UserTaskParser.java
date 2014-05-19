@@ -17,12 +17,14 @@
  */
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.bpmn2.BaseElement;
 import org.foxbpm.engine.impl.bpmn.parser.BpmnModelUtil;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
+import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.task.TaskAssigneeDefinition;
 import org.foxbpm.engine.impl.task.TaskCommandDefinition;
 import org.foxbpm.engine.impl.task.TaskDefinition;
@@ -43,10 +45,13 @@ import org.foxbpm.engine.impl.task.TaskDefinition;
  *
  */
 public class UserTaskParser extends TaskParser {
+	
+	
 
 	@Override
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		UserTaskBehavior userTaskBehavior=(UserTaskBehavior)baseElementBehavior;
+		userTaskBehavior.getActorConnectors().addAll(parserConnector(baseElement, "actorconnector"));
 		
 		/*String subject = BpmnModelUtil.getUserTaskSubject(baseElement);
 		String formUri = BpmnModelUtil.getFormUri(baseElement);
