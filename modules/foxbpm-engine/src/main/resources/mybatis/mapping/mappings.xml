@@ -17,5 +17,6 @@
     <mapper resource="mybatis/mapping/Dept.xml" />
     <mapper resource="mybatis/mapping/Role.xml" />
     <mapper resource="mybatis/mapping/TaskIdentityLink.xml" />
+    <mapper resource="mybatis/mapping/Variable.xml" />
   </mappers>
 </configuration>
