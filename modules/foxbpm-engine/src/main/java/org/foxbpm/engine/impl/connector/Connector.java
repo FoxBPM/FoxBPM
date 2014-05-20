@@ -29,7 +29,7 @@ import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.event.KernelListener;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 
-public class FlowConnector implements KernelListener {
+public class Connector implements KernelListener {
 
 
 	private static final long serialVersionUID = 1L;
@@ -181,7 +181,7 @@ public class FlowConnector implements KernelListener {
 
 			String classNameObj = packageName + "." + className;
 			Class<?> connectorHandlerClass = Class.forName(classNameObj);
-			ConnectorHandler connectorInstance = (ConnectorHandler) connectorHandlerClass.newInstance();
+			FlowConnectorHandler connectorInstance = (FlowConnectorHandler) connectorHandlerClass.newInstance();
 
 			for (ConnectorInputParam connectorParameterInputs : this.getConnectorInputsParam()) {
 

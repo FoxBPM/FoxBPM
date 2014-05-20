@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.bpmn2.BaseElement;
-import org.eclipse.emf.common.util.EList;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.parser.BpmnModelUtil;
 import org.foxbpm.engine.impl.connector.Connector;
@@ -108,8 +107,8 @@ public class BaseElementParser {
 			List<ConnectorOutputParam> connectorOutputParameters=new ArrayList<ConnectorOutputParam>();
 					
 					
-			EList<ConnectorParameterInput> connectorParameterInputs = connectorInstance.getConnectorParameterInputs();
-			EList<ConnectorParameterOutput> connectorParameterOutputs = connectorInstance.getConnectorParameterOutputs();
+			List<ConnectorParameterInput> connectorParameterInputs = connectorInstance.getConnectorParameterInputs();
+			List<ConnectorParameterOutput> connectorParameterOutputs = connectorInstance.getConnectorParameterOutputs();
 			
 			
 			for (ConnectorParameterInput connectorInputParamEmf : connectorParameterInputs) {

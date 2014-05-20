@@ -64,6 +64,20 @@ public class DataVariableMgmtDefinition implements Serializable {
 	}
 	
 	/**
+	 * 获取流程定义的全局变量
+	 * @return
+	 */
+	public List<DataVariableDefinition> getDataVariableBehaviorsByProcess(){
+		List<DataVariableDefinition> dataVariableBehaviorsTemp=new ArrayList<DataVariableDefinition>();
+		for (DataVariableDefinition dataVariableBehavior : this.dataVariableDefinitions) {
+			if(dataVariableBehavior.isPubilc()){
+				dataVariableBehaviorsTemp.add(dataVariableBehavior);
+			}
+		}
+		return dataVariableBehaviorsTemp;
+	}
+	
+	/**
 	 * 获取指定节点的数据变量
 	 * @param nodeId 节点编号
 	 * @return

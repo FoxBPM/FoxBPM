@@ -24,12 +24,19 @@ import java.util.Map;
 
 import org.foxbpm.engine.impl.entity.VariableInstanceEntity;
 
+import org.foxbpm.kernel.runtime.impl.KernelVariableInstanceImpl;
+
 /**
  * 变量管理器
  * @author kenshin
  *
  */
 public class VariableManager extends AbstractManager {
+
+	public List<KernelVariableInstanceImpl> findVariableInstancesByProcessInstanceId(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	public VariableInstanceEntity findVariableById(String variableId){

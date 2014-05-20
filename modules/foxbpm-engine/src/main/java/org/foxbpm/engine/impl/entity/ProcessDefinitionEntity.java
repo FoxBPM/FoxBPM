@@ -50,6 +50,9 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 	
 	protected String category;
 	
+	protected DataVariableMgmtDefinition dataVariableMgmtDefinition;
+	
+	
 	public ProcessDefinitionEntity() {
 		super(null);
 
@@ -217,7 +220,7 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 
 	}
 
-	protected DataVariableMgmtDefinition dataVariableMgmtDefinition;
+	
 
 	public DataVariableMgmtDefinition getDataVariableMgmtDefinition() {
 		return dataVariableMgmtDefinition;

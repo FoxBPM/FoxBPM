@@ -52,14 +52,14 @@ public interface TaskService {
 	void unclaim(String taskId);
 
 	void complete(String taskId);
+	
+	void complete(String taskId, Map<String, Object> variables);
 
 	void delegateTask(String taskId, String userId);
 
 	void resolveTask(String taskId);
 
 	void resolveTask(String taskId, Map<String, Object> variables);
-
-	void complete(String taskId, Map<String, Object> variables);
 	
 	TaskQuery createTaskQuery();
 

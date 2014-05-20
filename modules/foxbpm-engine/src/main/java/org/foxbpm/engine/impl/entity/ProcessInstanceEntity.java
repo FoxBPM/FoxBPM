@@ -37,6 +37,7 @@ import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
+import org.foxbpm.kernel.runtime.impl.KernelVariableInstanceImpl;
 
 /**
  * 流程实例实体
@@ -101,7 +102,6 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 
 	// 对象字段 /////////////////////
 
-
 	/** 任务集合 */
 	protected List<TaskEntity> tasks;
 
@@ -110,8 +110,6 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 
 	/** 变量管理器 */
 	protected DataVariableMgmtInstance dataVariableMgmtInstance;
-
-
 
 	/** 实例内容管理器 */
 	protected ContextInstance contextInstance;
@@ -129,12 +127,11 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	// /////////////////////////////////////////////////////
 	public ProcessInstanceEntity(KernelFlowNodeImpl startFlowNode) {
 
-
 		super(startFlowNode);
 
 		// 设置流程实例的编号,通过静态方法获得Guid
 		this.id = GuidUtil.CreateGuid();
-		
+
 		this.dataVariableMgmtInstance = new DataVariableMgmtInstance(this);
 
 		this.contextInstance = new ContextInstanceImpl();
@@ -389,7 +386,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	public void setSuspended(boolean isSuspended) {
 		this.isSuspended = isSuspended;
 	}
-	
+
 	public DataVariableMgmtInstance getDataVariableMgmtInstance() {
 		return dataVariableMgmtInstance;
 	}
@@ -397,7 +394,6 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	public void setDataVariableMgmtInstance(DataVariableMgmtInstance dataVariableMgmtInstance) {
 		this.dataVariableMgmtInstance = dataVariableMgmtInstance;
 	}
-
 
 	@Override
 	public void setProcessDefinition(KernelProcessDefinitionImpl processDefinition) {
@@ -436,6 +432,13 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	public int getRevisionNext() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	protected List<KernelVariableInstanceImpl> loadVariableInstances() {
+		return Context
+			      .getCommandContext().getVariableManager()
+			      .findVariableInstancesByProcessInstanceId(id);
 	}
 
 	public Map<String, Object> getPersistentState() {

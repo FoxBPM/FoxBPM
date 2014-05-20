@@ -341,9 +341,9 @@ public abstract class KernelVariableScopeImpl implements KernelVariableScope, Se
 
 	protected KernelVariableInstanceImpl createVariableInstance(String variableName, Object value, KernelVariableScopeImpl sourceVariableScope) {
 
-		//KernelVariableInstanceImpl variableInstance = KernelVariableInstanceImpl.createAndInsert(variableName, null, value);
-		//initializeVariableInstanceBackPointer(variableInstance);
-		//variableInstances.put(variableName, variableInstance);
+		KernelVariableInstanceImpl variableInstance = KernelVariableInstanceImpl.createAndInsert(variableName, null, value);
+		initializeVariableInstanceBackPointer(variableInstance);
+		variableInstances.put(variableName, variableInstance);
 
 		return null;
 	}

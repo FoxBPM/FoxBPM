@@ -58,5 +58,10 @@ public class TaskManager extends AbstractManager {
 	public long findTaskCountByQueryCriteria(TaskQueryImpl taskQuery){
 		return (Long)getSqlSession().selectOne("findTaskCountByQueryCriteria", taskQuery);
 	}
+
+	public List<TaskEntity> findTasksByTokenId(String tokenId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

@@ -75,6 +75,16 @@ public class UserTaskBehavior extends TaskBehavior {
 	@Override
 	public void execute(FlowNodeExecutionContext executionContext) {
 		
+		TaskEntity task = TaskEntity.createAndInsert(executionContext);
+		
+		((TokenEntity)executionContext).setAssignTask(task);
+		
+		ProcessInstanceEntity processInstance=(ProcessInstanceEntity) executionContext.getProcessInstance();
+		
+		task.setBizKey(processInstance.getBizKey());
+		task.setDescription("任务主题");
+		task.setToken((TokenEntity)executionContext);
+		task.setTaskType(TaskType.FOXBPMTASK);
 		
 		for (Connector connector : getActorConnectors()) {
 			try {
@@ -87,16 +97,6 @@ public class UserTaskBehavior extends TaskBehavior {
 		
 		
 		
-		TaskEntity task = TaskEntity.createAndInsert(executionContext);
-		
-		task.setAssignee("jiangnan");
-		
-		ProcessInstanceEntity processInstance=(ProcessInstanceEntity) executionContext.getProcessInstance();
-		
-		task.setBizKey(processInstance.getBizKey());
-		task.setDescription("任务主题");
-		task.setToken((TokenEntity)executionContext);
-		task.setTaskType(TaskType.FOXBPMTASK);
 
 	}
 	

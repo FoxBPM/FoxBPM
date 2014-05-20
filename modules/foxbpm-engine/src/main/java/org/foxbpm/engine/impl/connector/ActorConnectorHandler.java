@@ -21,7 +21,7 @@ import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.task.DelegateTask;
 
-public abstract class ActorConnectorHandler implements ConnectorHandler {
+public abstract class ActorConnectorHandler implements FlowConnectorHandler {
 
 	
 	
