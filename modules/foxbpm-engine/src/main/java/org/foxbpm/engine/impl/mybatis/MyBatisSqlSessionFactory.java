@@ -40,6 +40,7 @@ import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.entity.DeploymentEntity;
+import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.ResourceEntity;
@@ -77,6 +78,7 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory,SessionFacto
 		insertStatements.put(DeploymentEntity.class, "insertDeployment");
 		insertStatements.put(ProcessDefinitionEntity.class, "insertProcessDefinition");
 		insertStatements.put(ResourceEntity.class, "insertResource");
+		insertStatements.put(IdentityLinkEntity.class, "insertIdentityLink");
 		
 		updateStatements.put(ProcessInstanceEntity.class, "updateProcessInstance");
 		updateStatements.put(TaskEntity.class, "updateTask");
@@ -91,6 +93,7 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory,SessionFacto
 		selectStatements.put(DeploymentEntity.class, "selectDeploymentById");
 		selectStatements.put(ProcessDefinitionEntity.class, "selectProcessDefinitionById");
 		selectStatements.put(ResourceEntity.class, "selectResourceById");
+		selectStatements.put(IdentityLinkEntity.class, "selectIdentityLinkById");
 		
 		 //mysql specific
 	    databaseSpecificLimitBeforeStatements.put("mysql", "");
