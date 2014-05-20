@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.foxbpm.engine.TaskService;
+import org.foxbpm.engine.impl.cmd.CompleteTaskCmd;
 import org.foxbpm.engine.impl.cmd.FindTaskCmd;
 import org.foxbpm.engine.impl.query.NativeTaskQueryImpl;
 import org.foxbpm.engine.impl.task.TaskQueryImpl;
@@ -91,9 +92,13 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 	}
 
 	public void complete(String taskId) {
-		// TODO Auto-generated method stub
-
+		commandExecutor.execute(new CompleteTaskCmd(taskId, null));
 	}
+	
+	public void complete(String taskId, Map<String, Object> variables) {
+		commandExecutor.execute(new CompleteTaskCmd(taskId, variables));
+	}
+
 
 	public void delegateTask(String taskId, String userId) {
 		// TODO Auto-generated method stub
@@ -110,10 +115,6 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 
 	}
 
-	public void complete(String taskId, Map<String, Object> variables) {
-		// TODO Auto-generated method stub
-
-	}
 
 	public NativeTaskQuery createNativeTaskQuery() {
 		return new NativeTaskQueryImpl(commandExecutor);

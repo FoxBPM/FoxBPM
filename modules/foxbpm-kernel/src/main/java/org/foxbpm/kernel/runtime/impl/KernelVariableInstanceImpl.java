@@ -3,11 +3,7 @@ package org.foxbpm.kernel.runtime.impl;
 import org.foxbpm.kernel.runtime.KernelVariableInstance;
 
 public class KernelVariableInstanceImpl implements KernelVariableInstance {
-	
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	protected String name;

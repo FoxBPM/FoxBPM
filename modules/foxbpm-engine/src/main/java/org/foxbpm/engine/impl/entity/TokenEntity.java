@@ -1,5 +1,6 @@
 package org.foxbpm.engine.impl.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +18,7 @@ import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 import org.foxbpm.kernel.runtime.impl.KernelVariableInstanceImpl;
 
-public class TokenEntity extends KernelTokenImpl implements Token,ConnectorExecutionContext, PersistentObject, HasRevision {
+public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExecutionContext, PersistentObject, HasRevision {
 
 	/**
 	 * 
@@ -33,13 +34,10 @@ public class TokenEntity extends KernelTokenImpl implements Token,ConnectorExecu
 	protected Date archiveTime;
 	protected boolean isLocked = false;
 	protected boolean isSuspended = false;
-	
-	
-	protected TaskEntity assignTask;
-	
-	
 
-	
+	protected List<TaskEntity> tasks;
+
+	protected TaskEntity assignTask;
 
 	@Override
 	public void setFlowNode(KernelFlowNodeImpl flowNode) {
@@ -60,9 +58,7 @@ public class TokenEntity extends KernelTokenImpl implements Token,ConnectorExecu
 	@Override
 	protected void ensureProcessInstanceInitialized() {
 		if ((processInstance == null) && (processInstanceId != null)) {
-		      processInstance = Context
-		        .getCommandContext().getProcessInstanceManager()
-		        .findProcessInstanceById(processInstanceId);
+			processInstance = Context.getCommandContext().getProcessInstanceManager().findProcessInstanceById(processInstanceId);
 		}
 	}
 
@@ -212,7 +208,7 @@ public class TokenEntity extends KernelTokenImpl implements Token,ConnectorExecu
 	@Override
 	protected void initializeVariableInstanceBackPointer(KernelVariableInstanceImpl variableInstance) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public String getAuthenticatedUserId() {
@@ -222,13 +218,40 @@ public class TokenEntity extends KernelTokenImpl implements Token,ConnectorExecu
 	public String getStartAuthor() {
 		return getProcessInstance().getStartAuthor();
 	}
-	
+
 	public TaskEntity getAssignTask() {
 		return assignTask;
 	}
 
 	public void setAssignTask(TaskEntity assignTask) {
 		this.assignTask = assignTask;
+	}
+
+	// 任务对象
+	// ///////////////////////////////////////////////////
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected void ensureTasksInitialized() {
+		if (tasks == null) {
+			tasks = (List) Context.getCommandContext().getTaskManager().findTasksByTokenId(id);
+		}
+	}
+
+	protected List<TaskEntity> getTasksInternal() {
+		ensureTasksInitialized();
+		return tasks;
+	}
+
+	public List<TaskEntity> getTasks() {
+		return new ArrayList<TaskEntity>(getTasksInternal());
+	}
+
+	public void addTask(TaskEntity taskEntity) {
+		getTasksInternal().add(taskEntity);
+	}
+
+	public void removeTask(TaskEntity task) {
+		getTasksInternal().remove(task);
 	}
 
 }

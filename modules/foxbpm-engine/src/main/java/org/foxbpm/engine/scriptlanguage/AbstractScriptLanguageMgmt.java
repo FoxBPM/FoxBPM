@@ -24,7 +24,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.foxbpm.engine.expression.Expression;
+import org.foxbpm.engine.impl.datavariable.DataVariableDefinition;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
+import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
+import org.foxbpm.engine.impl.entity.VariableInstanceEntity;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtInstance;
 import org.foxbpm.engine.runtime.ExecutionContext;
@@ -130,8 +133,14 @@ public abstract class AbstractScriptLanguageMgmt {
 	}
 	
 	
-	public static void dataVariableCalculate(String scriptText, FlowNodeExecutionContext executionContext){
-		DataVariableMgmtInstance dataVariableMgmtInstance = executionContext.getProcessInstance().getDataVariableMgmtInstance();
+	protected void dataVariableCalculate(String scriptText, FlowNodeExecutionContext executionContext){
+		
+		
+		ProcessInstanceEntity processInstance=(ProcessInstanceEntity)executionContext.getProcessInstance();
+		
+		DataVariableMgmtInstance dataVariableMgmtInstance = processInstance.getDataVariableMgmtInstance();
+		
+		ProcessDefinitionEntity processDefinition=(ProcessDefinitionEntity)processInstance.getProcessDefinition();
 
 		List<String> dataVariableList = getDataVariableList(scriptText);
 
@@ -139,19 +148,18 @@ public abstract class AbstractScriptLanguageMgmt {
 
 			if (dataVariableMgmtInstance.getDataVariableByExpressionId(expressionId) == null) {
 
-				List<DataVariableBehavior> dataVariableBehaviors = dataVariableMgmtInstance.getProcessInstance().getProcessDefinition().getDataVariableMgmtDefinition()
-						.getDataVariableBehaviorsByProcess();
-				for (DataVariableBehavior dataVariableBehavior : dataVariableBehaviors) {
+				List<DataVariableDefinition> dataVariableBehaviors = processDefinition.getDataVariableMgmtDefinition().getDataVariableBehaviorsByProcess();
+				for (DataVariableDefinition dataVariableBehavior : dataVariableBehaviors) {
 
 
 					if (dataVariableBehavior.getId().equals(expressionId)) {
 
-						DataVariableEntity dataVariableEntity = dataVariableMgmtInstance.createDataVariableInstance(dataVariableBehavior);
+						VariableInstanceEntity dataVariableEntity = dataVariableMgmtInstance.createDataVariableInstance(dataVariableBehavior);
 						dataVariableEntity.executeExpression(executionContext);
 
 					}else{
-						if(dataVariableBehavior.getBizType()!=null&&!dataVariableBehavior.getBizType().equals("")&&dataVariableBehavior.getBizType().equals(DataVariableEntity.QUERY_DATA_KEY)){
-							DataVariableEntity dataVariableEntity = dataVariableMgmtInstance.createDataVariableInstance(dataVariableBehavior);
+						if(dataVariableBehavior.getBizType()!=null&&!dataVariableBehavior.getBizType().equals("")&&dataVariableBehavior.getBizType().equals(VariableInstanceEntity.QUERY_DATA_KEY)){
+							VariableInstanceEntity dataVariableEntity = dataVariableMgmtInstance.createDataVariableInstance(dataVariableBehavior);
 							dataVariableEntity.executeExpression(executionContext);
 						}
 					}

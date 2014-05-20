@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
@@ -26,7 +27,7 @@ import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelVariableInstanceImpl;
 import org.foxbpm.kernel.runtime.impl.KernelVariableScopeImpl;
 
-public class TaskEntity extends KernelVariableScopeImpl implements Task,DelegateTask, PersistentObject, HasRevision {
+public class TaskEntity extends KernelVariableScopeImpl implements Task, DelegateTask, PersistentObject, HasRevision {
 
 	/**
 	 * 
@@ -37,7 +38,6 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task,Delegate
 
 	protected String name;
 
-	
 	protected String description;
 
 	protected String processInstanceId;
@@ -117,12 +117,9 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task,Delegate
 	protected String commandType;
 
 	protected String commandMessage;
-	
-	
-	
+
 	protected boolean isIdentityLinksInitialized = false;
-	
-	
+
 	protected TokenEntity token;
 
 	protected ProcessInstanceEntity processInstance;
@@ -131,71 +128,62 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task,Delegate
 
 	protected TaskDefinition taskDefinition;
 
-	protected List<IdentityLinkEntity> taskIdentityLinks=new ArrayList<IdentityLinkEntity>();
+	protected List<IdentityLinkEntity> taskIdentityLinks = new ArrayList<IdentityLinkEntity>();
 
 	protected TaskEntity parentTask;
-	
-	protected boolean isAutoClaim=false;
 
-	
-	
-	
-	
-
+	protected boolean isAutoClaim = false;
 
 	public TaskEntity() {
-	  }
+	}
 
-	  public TaskEntity(String taskId) {
-	    this.id = taskId;
-	  }
-	  
-	  /** 创建并持久化一个任务 */
-	  public static TaskEntity createAndInsert(FlowNodeExecutionContext executionContext) {
-	    TaskEntity task = create();
-	    task.insert( ((TokenEntity)executionContext).getProcessInstance());
-	    return task;
-	  }
+	public TaskEntity(String taskId) {
+		this.id = taskId;
+	}
 
-	  public void insert(ProcessInstanceEntity processInstance) {
-	    CommandContext commandContext = Context.getCommandContext();
-	    commandContext.getTaskManager().insert(this);
-	    
-	    if(processInstance != null) {
-	    	processInstance.addTask(this);
-	    }
-	    
-	  }
-	  
-	  public void update() {
-	    // Needed to make history work: the setter will also update the historic task
-	    setOwner(this.getOwner());
-	    setAssignee(this.getAssignee());
-	    setDelegationState(this.getDelegationState());
-	    setName(this.getName());
-	    setDescription(this.getDescription());
-	    setPriority(this.getPriority());
-	    setCreateTime(this.getCreateTime());
-	    setDueDate(this.getDueDate());
-	    //setParentTaskId(this.getParentTaskId());
-	    
-	    //CommandContext commandContext = Context.getCommandContext();
-	    //commandContext.getTaskManager().u
-	    //dbSqlSession.update(this);
-	  }
-	  
-	  /** 创建任务 */
-	  public static TaskEntity create() {
-	    TaskEntity task = new TaskEntity();
-	    task.setId(GuidUtil.CreateGuid());
-	    task.isIdentityLinksInitialized = true;
-	    task.createTime = ClockUtil.getCurrentTime();
-	    return task;
-	  }
+	/** 创建并持久化一个任务 */
+	public static TaskEntity createAndInsert(FlowNodeExecutionContext executionContext) {
+		TaskEntity task = create();
+		task.insert(((TokenEntity) executionContext).getProcessInstance());
+		return task;
+	}
 
-	
-	
-	
+	public void insert(ProcessInstanceEntity processInstance) {
+		CommandContext commandContext = Context.getCommandContext();
+		commandContext.getTaskManager().insert(this);
+
+		if (processInstance != null) {
+			processInstance.addTask(this);
+		}
+
+	}
+
+	public void update() {
+		// Needed to make history work: the setter will also update the historic
+		// task
+		setOwner(this.getOwner());
+		setAssignee(this.getAssignee());
+		setDelegationState(this.getDelegationState());
+		setName(this.getName());
+		setDescription(this.getDescription());
+		setPriority(this.getPriority());
+		setCreateTime(this.getCreateTime());
+		setDueDate(this.getDueDate());
+		// setParentTaskId(this.getParentTaskId());
+
+		// CommandContext commandContext = Context.getCommandContext();
+		// commandContext.getTaskManager().u
+		// dbSqlSession.update(this);
+	}
+
+	/** 创建任务 */
+	public static TaskEntity create() {
+		TaskEntity task = new TaskEntity();
+		task.setId(GuidUtil.CreateGuid());
+		task.isIdentityLinksInitialized = true;
+		task.createTime = ClockUtil.getCurrentTime();
+		return task;
+	}
 
 	public ProcessInstanceEntity getProcessInstance() {
 		return processInstance;
@@ -208,20 +196,22 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task,Delegate
 		this.processInstance = processInstance;
 	}
 
-	 public List<IdentityLinkEntity> getIdentityLinks() {
-		    if (!isIdentityLinksInitialized) {
-		    	taskIdentityLinks = Context
-		        .getCommandContext()
-		        .getIdentityLinkManager()
-		        .findIdentityLinksByTaskId(id);
-		      isIdentityLinksInitialized = true;
-		    }
-		    
-		    return taskIdentityLinks;
-		  }
-	
+	public List<IdentityLinkEntity> getIdentityLinks() {
+		if (!isIdentityLinksInitialized) {
+			taskIdentityLinks = Context.getCommandContext().getIdentityLinkManager().findIdentityLinksByTaskId(id);
+			isIdentityLinksInitialized = true;
+		}
+
+		return taskIdentityLinks;
+	}
+
 	public TokenEntity getToken() {
+
+		if ((token == null) && (tokenId != null)) {
+			this.token = Context.getCommandContext().getTokenManager().findTokenById(tokenId);
+		}
 		return token;
+
 	}
 
 	public void setToken(TokenEntity token) {
@@ -262,7 +252,6 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task,Delegate
 	public void setParentTask(TaskEntity parentTask) {
 		this.parentTask = parentTask;
 	}
-	
 
 	public DelegationState getDelegationState() {
 		return delegationState;
@@ -277,8 +266,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task,Delegate
 	}
 
 	public void setDelegationStateString(String delegationStateString) {
-		this.delegationState = (delegationStateString != null ? 
-				DelegationState.valueOf(DelegationState.class, delegationStateString)
+		this.delegationState = (delegationStateString != null ? DelegationState.valueOf(DelegationState.class, delegationStateString)
 				: null);
 	}
 
@@ -306,7 +294,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task,Delegate
 	}
 
 	public Map<String, Object> getPersistentState() {
-		return new HashMap<String,Object>();
+		return new HashMap<String, Object>();
 	}
 
 	@Override
@@ -315,12 +303,11 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task,Delegate
 		return null;
 	}
 
-
 	public boolean isModified() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -663,73 +650,79 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task,Delegate
 
 	public void addCandidateUser(String userId) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void addCandidateUserEntity(UserEntity user) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void addCandidateUsers(Collection<String> candidateUsers) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void addCandidateUserEntitys(Collection<UserEntity> candidateUsers) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void addCandidateGroup(String groupId, String groupType) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void addCandidateGroupEntity(GroupEntity group) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void addCandidateGroupEntitys(Collection<GroupEntity> candidateGroups) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void addUserIdentityLink(String userId, String identityLinkType) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void addGroupIdentityLink(String groupId, String groupType, String identityLinkType) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void deleteCandidateUser(String userId) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void deleteCandidateGroup(String groupId) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void deleteUserIdentityLink(String userId, String identityLinkType) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void deleteGroupIdentityLink(String groupId, String groupType, String identityLinkType) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public Set<IdentityLink> getCandidates() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public void setProcessInstanceVariables(Map<String, Object> parameters) {
+	    if (getProcessInstance()!=null) {
+	    	processInstance.setVariables(parameters);
+	    }
+	  }
 
 	@Override
 	protected List<KernelVariableInstanceImpl> loadVariableInstances() {
@@ -740,9 +733,9 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task,Delegate
 	@Override
 	protected void initializeVariableInstanceBackPointer(KernelVariableInstanceImpl variableInstance) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	public boolean isAutoClaim() {
 		return isAutoClaim;
 	}
@@ -751,5 +744,29 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task,Delegate
 		this.isAutoClaim = isAutoClaim;
 	}
 
+	public void complete() {
+
+		// 设置是否为草稿
+		this.isDraft = false;
+
+		if (this.endTime != null) {
+			throw new FoxBPMException("任务已经结束,不能再进行处理.");
+		}
+		if (this.isSuspended) {
+			throw new FoxBPMException("任务已经暂停不能再处理");
+		}
+
+		this.endTime = new Date();
+
+		this.isOpen = false;
+
+		// 触发事件
+
+		if (tokenId != null) {
+			TokenEntity token = getToken();
+			token.removeTask(this);
+			token.signal();
+		}
+	}
 
 }

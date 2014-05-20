@@ -17,17 +17,10 @@
  */
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.bpmn2.BaseElement;
-import org.foxbpm.engine.impl.bpmn.parser.BpmnModelUtil;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
-import org.foxbpm.engine.impl.connector.Connector;
-import org.foxbpm.engine.impl.task.TaskAssigneeDefinition;
-import org.foxbpm.engine.impl.task.TaskCommandDefinition;
-import org.foxbpm.engine.impl.task.TaskDefinition;
+
 
 /**
  * 人工任务节点转换
@@ -42,7 +35,7 @@ import org.foxbpm.engine.impl.task.TaskDefinition;
  * 操作表单
  * 浏览表单
  * @author ych
- *
+ * 
  */
 public class UserTaskParser extends TaskParser {
 	

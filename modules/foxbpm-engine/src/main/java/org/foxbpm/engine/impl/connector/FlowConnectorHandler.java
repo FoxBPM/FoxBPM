@@ -21,7 +21,7 @@ import java.io.Serializable;
 
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
 
-public interface ConnectorHandler extends Serializable{
+public interface FlowConnectorHandler extends Serializable{
 
 	/**
 	 * 连接器执行方法
