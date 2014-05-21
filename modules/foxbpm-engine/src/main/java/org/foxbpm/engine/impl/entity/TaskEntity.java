@@ -18,6 +18,7 @@ import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.GuidUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
 import org.foxbpm.engine.task.DelegationState;
 import org.foxbpm.engine.task.IdentityLink;
@@ -294,10 +295,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		this.id = id;
 	}
 
-	public Map<String, Object> getPersistentState() {
-		return new HashMap<String, Object>();
-	}
-
+	
 
 	public boolean isModified() {
 		// TODO Auto-generated method stub
@@ -771,5 +769,64 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 			token.signal();
 		}
 	}
+	
+	
+	public Map<String, Object> getPersistentState() {
+		
+		
+		Map<String,Object> persistentState = new HashMap<String, Object>();
+		persistentState.put("id", getId());		
+		persistentState.put("name", getName());		
+		persistentState.put("description", getDescription());
+		persistentState.put("processInstanceId", getProcessInstanceId());
+		persistentState.put("processDefinitionId", getProcessDefinitionId());
+		persistentState.put("processDefinitionKey", getProcessDefinitionKey());		
+		persistentState.put("processDefinitionName", getProcessDefinitionName());	
+		persistentState.put("version", getVersion());
+		persistentState.put("tokenId", getTokenId());
+		persistentState.put("nodeId", getNodeId());
+		persistentState.put("nodeName", getNodeName());		
+		persistentState.put("parentId", getParentId());		
+		persistentState.put("assignee", getAssignee());
+		persistentState.put("claimTime", getClaimTime());		
+		persistentState.put("createTime", getCreateTime());
+		persistentState.put("startTime", getStartTime());		
+		persistentState.put("endTime", getEndTime());		
+		persistentState.put("dueDate", getDueDate());		
+		persistentState.put("priority", String.valueOf(getPriority()));		
+		persistentState.put("category", String.valueOf(getCategory()));		
+		persistentState.put("owner", getOwner());		
+		persistentState.put("delegationState", StringUtil.getString(getDelegationState()));		
+		persistentState.put("bizKey", getBizKey());		
+		persistentState.put("taskComment", getTaskComment());		
+		persistentState.put("formUri", getFormUri());
+		persistentState.put("formUriView", getFormUriView());		
+		persistentState.put("taskGroup", getTaskGroup());		
+		persistentState.put("taskInstanceType", StringUtil.getString(getTaskType()));		
+		persistentState.put("isBlocking", String.valueOf(isBlocking()));
+		persistentState.put("isCancelled", String.valueOf(isCancelled()));		
+		persistentState.put("isSuspended", String.valueOf(isSuspended()));		
+		persistentState.put("isOpen", String.valueOf(isOpen()));
+		persistentState.put("isDraft", String.valueOf(isDraft()));
+		persistentState.put("expectedExecutionTime", String.valueOf(getExpectedExecutionTime()));
+		persistentState.put("agent", getAgent());		
+		persistentState.put("admin", getAdmin());		
+		persistentState.put("callActivityInstanceId", getCallActivityInstanceId());		
+		persistentState.put("pendingTaskId",getPendingTaskId());		
+		persistentState.put("archiveTime", getArchiveTime());		
+		persistentState.put("commandId", getCommandId());
+		persistentState.put("commandType", getCommandType());		
+		persistentState.put("commandMessage", getCommandMessage());
+		
+		/*
+		Map<String,Object> extensionFields=getExtensionFields();	
+			
+		for (String key : extensionFields.keySet()) {
+			persistentState.put(key, extensionFields.get(key));
+		}*/
+		
+		return new HashMap<String, Object>();
+	}
+
 
 }
