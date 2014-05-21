@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="org.foxbpm.engine.impl.entity.VariableInstanceEntity">
+
+ <resultMap id="VariableResultMap" type="org.foxbpm.engine.impl.entity.VariableInstanceEntity" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="PROCESSINSTANCE_ID" property="processInstanceId" jdbcType="VARCHAR" />
+    <result column="KEY" property="key" jdbcType="VARCHAR" />
+    <result column="CLASSNAME" property="classname" jdbcType="VARCHAR" />
+    <result column="TASK_ID" property="taskId" jdbcType="VARCHAR" />
+    <result column="TOKEN_ID" property="tokenId" jdbcType="VARCHAR" />
+    <result column="NODE_ID" property="nodeId" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="BIZ_DATA" property="bizData" jdbcType="VARCHAR" />
+  </resultMap>
+  
+     <insert id="insertVariable" parameterType="org.foxbpm.engine.impl.entity.VariableInstanceEntity" >
+    insert into foxbpm_run_variable (ID, PROCESSINSTANCE_ID, KEY, 
+      CLASSNAME, TASK_ID, TOKEN_ID, 
+      NODE_ID, TYPE, BIZ_DATA, 
+      VALUE)
+    values (#{id,jdbcType=VARCHAR}, #{processInstanceId,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR}, 
+      #{className,jdbcType=VARCHAR}, #{taskId,jdbcType=VARCHAR}, #{tokenId,jdbcType=VARCHAR}, 
+      #{nodeId,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{bizData,jdbcType=VARCHAR}, 
+      #{value,jdbcType=BLOB})
+  </insert>
+  
+   <select id="selectVariableById" resultMap="VariableResultMap" parameterType="java.lang.String" >
+    select 
+    *
+    from foxbpm_run_variable
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="selectVariableByProcessInstanceId" resultMap="VariableResultMap" parameterType="java.lang.String" >
+    select 
+   *
+    from foxbpm_run_variable
+    where PROCESSINSTANCE_ID = #{id,jdbcType=VARCHAR}
+  </select>
+
+ <select id="selectVariableByProcessInstanceIdAndKey" resultMap="VariableResultMap" parameterType="map" >
+    select 
+   *
+    from foxbpm_run_variable
+    where PROCESSINSTANCE_ID = #{processInstanceId,jdbcType=VARCHAR} and key = #{key,jdbcType=VARCHAR}
+  </select>
+  
+   <update id="updateVariable" parameterType="org.foxbpm.engine.impl.entity.VariableInstanceEntity" >
+    update foxbpm_run_variable
+    set 
+      PROCESSINSTANCE_ID = #{processInstanceId,jdbcType=VARCHAR},
+      KEY = #{key,jdbcType=VARCHAR},
+      CLASSNAME = #{className,jdbcType=VARCHAR},
+      TASK_ID = #{taskId,jdbcType=VARCHAR},
+      TOKEN_ID = #{tokenId,jdbcType=VARCHAR},
+      NODE_ID = #{nodeId,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=VARCHAR},
+      BIZ_DATA = #{bizData,jdbcType=VARCHAR}
+   where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -46,6 +46,7 @@ import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.ResourceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
+import org.foxbpm.engine.impl.entity.VariableInstanceEntity;
 import org.foxbpm.engine.impl.interceptor.Session;
 import org.foxbpm.engine.impl.interceptor.SessionFactory;
 import org.foxbpm.engine.sqlsession.ISqlSession;
@@ -79,6 +80,7 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory,SessionFacto
 		insertStatements.put(ProcessDefinitionEntity.class, "insertProcessDefinition");
 		insertStatements.put(ResourceEntity.class, "insertResource");
 		insertStatements.put(IdentityLinkEntity.class, "insertIdentityLink");
+		insertStatements.put(VariableInstanceEntity.class, "insertVariable");
 		
 		updateStatements.put(ProcessInstanceEntity.class, "updateProcessInstance");
 		updateStatements.put(TaskEntity.class, "updateTask");
@@ -86,6 +88,7 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory,SessionFacto
 		updateStatements.put(DeploymentEntity.class, "updateDeployment");
 		updateStatements.put(ProcessDefinitionEntity.class, "updateProcessDefinition");
 		updateStatements.put(ResourceEntity.class, "updateResource");
+		updateStatements.put(VariableInstanceEntity.class, "updateVariable");
 		
 		selectStatements.put(ProcessInstanceEntity.class, "selectProcessInstanceById");
 		selectStatements.put(TaskEntity.class, "selectTaskById");
@@ -94,6 +97,7 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory,SessionFacto
 		selectStatements.put(ProcessDefinitionEntity.class, "selectProcessDefinitionById");
 		selectStatements.put(ResourceEntity.class, "selectResourceById");
 		selectStatements.put(IdentityLinkEntity.class, "selectIdentityLinkById");
+		selectStatements.put(VariableInstanceEntity.class, "selectVariableById");
 		
 		 //mysql specific
 	    databaseSpecificLimitBeforeStatements.put("mysql", "");

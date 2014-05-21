@@ -18,7 +18,11 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.foxbpm.engine.impl.entity.VariableInstanceEntity;
 
 import org.foxbpm.kernel.runtime.impl.KernelVariableInstanceImpl;
 
@@ -35,6 +39,19 @@ public class VariableManager extends AbstractManager {
 	}
 	
 	
+	public VariableInstanceEntity findVariableById(String variableId){
+		return getSqlSession().selectById(VariableInstanceEntity.class, variableId);
+	}
 	
-
+	@SuppressWarnings("unchecked")
+	public List<VariableInstanceEntity> findVariableByProcessInstanceId(String processInstanceId){
+		return (List<VariableInstanceEntity>)getSqlSession().selectListWithRawParameter("selectVariableByProcessInstanceId", processInstanceId);
+	}
+	
+	public VariableInstanceEntity findVariableByProcessInstanceIdAndKey(String processInstanceId,String key){
+		Map<String,Object> paraMap = new HashMap<String,Object>();
+		paraMap.put("processInstanceId", processInstanceId);
+		paraMap.put("key", key);
+		return (VariableInstanceEntity)getSqlSession().selectOne("selectVariableByProcessInstanceIdAndKey",paraMap);
+	}
 }
