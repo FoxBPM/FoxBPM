@@ -110,6 +110,13 @@
     where PROCESSINSTANCE_ID = #{id,jdbcType=VARCHAR}
   </select>
   
+   <select id="selectTasksByTokenId" parameterType="java.lang.String" resultMap="TaskResultMap">
+    select 
+    *
+    from foxbpm_run_task
+    where TOKEN_ID = #{id,jdbcType=VARCHAR}
+  </select>
+  
   <select id="findTasksByQueryCriteria" parameterType="org.foxbpm.engine.impl.task.TaskQueryImpl" resultMap="TaskResultMap">
   	${limitBefore}
     select RES.* ${limitBetween}

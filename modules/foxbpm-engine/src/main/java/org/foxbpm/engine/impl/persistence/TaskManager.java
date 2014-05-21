@@ -59,9 +59,9 @@ public class TaskManager extends AbstractManager {
 		return (Long)getSqlSession().selectOne("findTaskCountByQueryCriteria", taskQuery);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<TaskEntity> findTasksByTokenId(String tokenId) {
-		// TODO Auto-generated method stub
-		return null;
+		return (List<TaskEntity>) getSqlSession().selectListWithRawParameter("selectTasksByTokenId", tokenId);
 	}
 	
 }
