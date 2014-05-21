@@ -43,6 +43,8 @@ public interface DeploymentBuilder {
 	DeploymentBuilder name(String name);
 
 	DeploymentBuilder updateDeploymentId(String updateDeploymentId);
+	
+	DeploymentBuilder addClasspathResource(String resource);
 
 	void deploy();
 	

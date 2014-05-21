@@ -18,12 +18,14 @@
  */
 package org.foxbpm.engine.impl;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipInputStream;
 
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.impl.cmd.DeployCmd;
+import org.foxbpm.engine.impl.cmd.DeploymentByInputStreamCmd;
 import org.foxbpm.engine.impl.cmd.DeploymentByZipCmd;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinitionById;
 import org.foxbpm.engine.impl.cmd.TestCmd;
@@ -43,6 +45,10 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	public List<Map<String, String>> getStartProcessByUserId(String userId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public void deployByInputStream(Map<String, InputStream> inputStreamMap) {
+		commandExecutor.execute(new DeploymentByInputStreamCmd(createDeployment(),inputStreamMap));
 	}
 	
 	public void deployByZip(ZipInputStream zipInputStream) {

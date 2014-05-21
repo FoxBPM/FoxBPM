@@ -1,8 +1,7 @@
 package org.foxbpm.engine.test;
 
 
-import java.sql.SQLException;
-
+import java.lang.reflect.Method;
 import junit.framework.TestCase;
 
 import org.foxbpm.engine.ModelService;
@@ -10,8 +9,10 @@ import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.TaskService;
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.ProcessEngineImpl;
+import org.foxbpm.engine.repository.DeploymentBuilder;
 import org.foxbpm.spring.ProcessEngineConfigrationImplSpring;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -48,10 +49,11 @@ public abstract class AbstractFoxBpmTestCase extends TestCase {
 		t.execute(new TransactionCallbackWithoutResult() {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
-				execute();
 				try {
+					
+					execute();
 					processEngine.getProcessEngineConfiguration().getDataSourceManage().getDataSource().getConnection().rollback();
-				} catch (SQLException e) {
+				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
 			}
@@ -60,9 +62,31 @@ public abstract class AbstractFoxBpmTestCase extends TestCase {
 	
 	public void execute(){
 		try {
+			annotationDeploymentSetUp(processEngine, getClass(), getName());
 			super.runBare();
 		} catch (Throwable e) {
 			throw new RuntimeException(e);
+		}
+	}
+	
+	public void annotationDeploymentSetUp(ProcessEngine processEngine, Class<?> testClass, String methodName) throws Exception {
+		Method method = null;
+		try {
+			method = testClass.getDeclaredMethod(methodName, (Class<?>[]) null);
+		} catch (Exception e) {
+			throw new FoxBPMException("获取方法失败!", e);
+		}
+		Deployment deploymentAnnotation = method.getAnnotation(Deployment.class);
+		if (deploymentAnnotation != null) {
+			String[] resources = deploymentAnnotation.resources();
+			if (resources.length == 0) {
+				return;
+			}
+			DeploymentBuilder deploymentBuilder = processEngine.getModelService().createDeployment().name("测试名称");
+			for (String resource : resources) {
+				deploymentBuilder.addClasspathResource(resource);
+			}
+			deploymentBuilder.deploy();
 		}
 	}
 }

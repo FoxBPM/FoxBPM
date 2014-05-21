@@ -18,6 +18,7 @@
  */
 package org.foxbpm.engine;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipInputStream;
@@ -69,6 +70,8 @@ public interface ModelService {
 	ProcessDefinition getProcessDefinitionById(String processDefinitionId);
 	
 	ProcessDefinitionQuery createProcessDefinitionQuery();
+	
+	void deployByInputStream(Map<String, InputStream> inputStreamMap);
 	
 	
 }
