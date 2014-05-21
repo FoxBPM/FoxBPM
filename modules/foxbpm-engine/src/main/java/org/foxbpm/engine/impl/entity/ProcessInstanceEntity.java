@@ -461,4 +461,12 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		return endTime!=null;
 	}
 
+	@Override
+	public void end() {
+		endTime=ClockUtil.getCurrentTime();
+		super.end();
+	}
+	
+	
+
 }

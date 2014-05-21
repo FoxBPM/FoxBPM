@@ -260,4 +260,13 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		}
 	}
 
+	@Override
+	public void end(boolean verifyParentTermination) {
+		
+		endTime=ClockUtil.getCurrentTime();
+		super.end(verifyParentTermination);
+	}
+	
+	
+
 }
