@@ -17,7 +17,6 @@ import org.foxbpm.engine.runtime.Token;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
-import org.foxbpm.kernel.runtime.impl.KernelVariableInstanceImpl;
 
 public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExecutionContext, PersistentObject, HasRevision {
 
@@ -87,17 +86,14 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 	}
 
 	public void setRevision(int revision) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public int getRevision() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public int getRevisionNext() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -178,8 +174,19 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 	}
 
 	public Map<String, Object> getPersistentState() {
-		// TODO Auto-generated method stub
-		return new HashMap<String, Object>();
+		
+		Map<String,Object> objectParam = new HashMap<String,Object>();
+		objectParam.put("tokenId", getId());
+		objectParam.put("name", getName());
+		objectParam.put("startTime", getStartTime());
+		objectParam.put("endTime", getEndTime());
+		objectParam.put("nodeEnterTime", getNodeEnterTime());
+		objectParam.put("isSuspended", String.valueOf(isSuspended()));
+		objectParam.put("isLocked", String.valueOf(isLocked()));
+		objectParam.put("nodeId", getNodeId());
+		objectParam.put("processInstanceId", getProcessInstanceId());
+		objectParam.put("parentId", getParentId());
+		return objectParam;
 	}
 
 	public boolean isModified() {
@@ -192,7 +199,6 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 	}
 
 	public Object getVariableLocal(Object variableName) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -38,7 +38,6 @@ import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
-import org.foxbpm.kernel.runtime.impl.KernelVariableInstanceImpl;
 
 /**
  * 流程实例实体
@@ -127,24 +126,17 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	// Constructor 构造函数
 	// /////////////////////////////////////////////////////
 	public ProcessInstanceEntity(KernelFlowNodeImpl startFlowNode) {
-
 		super(startFlowNode);
-
 		// 设置流程实例的编号,通过静态方法获得Guid
 		this.id = GuidUtil.CreateGuid();
-
 		this.dataVariableMgmtInstance = new DataVariableMgmtInstance(this);
-
 		this.contextInstance = new ContextInstanceImpl();
-
 	}
 
 	@Override
 	public void start() {
-
 		this.setInstanceStatus(ProcessInstanceStatus.RUNNING);
 		this.setStartTime(ClockUtil.getCurrentTime());
-
 		super.start();
 	}
 
@@ -421,34 +413,47 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	}
 
 	public void setRevision(int revision) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public int getRevision() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public int getRevisionNext() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public Map<String, Object> getPersistentState() {
-		return new HashMap<String, Object>();
+		Map<String,Object> mapPersistentState = new HashMap<String, Object>();
+		mapPersistentState.put("id", id);
+		mapPersistentState.put("subject", subject);
+		mapPersistentState.put("processDefinitionKey", processDefinitionKey);
+		mapPersistentState.put("processDefinitionId", processDefinitionId);
+		mapPersistentState.put("rootTokenId", rootTokenId);
+		mapPersistentState.put("definitionId", definitionId);
+		mapPersistentState.put("parentId", parentId);
+		mapPersistentState.put("parentTokenId", parentTokenId);
+		mapPersistentState.put("initiator", initiator);
+		mapPersistentState.put("startAuthor", startAuthor);
+		mapPersistentState.put("bizKey", bizKey);
+		mapPersistentState.put("startTime", startTime);
+		mapPersistentState.put("endTime", endTime);
+		mapPersistentState.put("updateTime", updateTime);
+		mapPersistentState.put("archiveTime", archiveTime);
+		mapPersistentState.put("isSuspended", isSuspended);
+		mapPersistentState.put("processLocation", processLocation);
+		mapPersistentState.put("instanceStatus", instanceStatus);
+		return mapPersistentState;
 	}
 
 	public void setVariables(Map<String, Object> transientVariables) {
-		
-			if (transientVariables == null) {
-				return;
-			}
-
-			for (String mapKey : transientVariables.keySet()) {
-				ExpressionMgmt.setVariable(mapKey, transientVariables.get(mapKey));
-			}
-		
+		if (transientVariables == null) {
+			return;
+		}
+		for (String mapKey : transientVariables.keySet()) {
+			ExpressionMgmt.setVariable(mapKey, transientVariables.get(mapKey));
+		}
 	}
 
 	public boolean isEnd() {

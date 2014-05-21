@@ -19,6 +19,7 @@ package org.foxbpm.engine.impl.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.foxbpm.engine.db.PersistentObject;
@@ -125,19 +126,16 @@ public class IdentityLinkEntity implements Serializable, IdentityLink, Persisten
 		Context.getCommandContext().getIdentityLinkManager().insert(this);
 
 	}
-
-	// public Group getGroup() {
-	// return new Group(groupId, groupType);
-	// }
-	//
-	// public void setGroup(Group group) {
-	// this.groupId = group.getGroupId();
-	// this.groupType = group.getGroupType();
-	// }
-
 	public Map<String, Object> getPersistentState() {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("id", getId());
+		map.put("type", getType());
+		map.put("groupId", getGroupId());
+		map.put("GroupType", getGroupType());
+		map.put("userId", getUserId());
+		map.put("taskId", getTaskId());
+		return map;
+		
 	}
 
 	public boolean isModified() {
