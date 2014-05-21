@@ -25,6 +25,8 @@ import org.foxbpm.kernel.runtime.impl.KernelVariableInstanceImpl;
 
 public class VariableInstanceEntity extends KernelVariableInstanceImpl implements VariableInstance, PersistentObject, HasRevision,
 		Serializable {
+	
+	public final static String QUERY_DATA_KEY="queryBizVariable";
 
 	/**
 	 * 
@@ -37,9 +39,9 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 
 	protected String processInstanceId;
 
-	protected String Key;
+	protected String key;
 
-	protected byte[] Value;
+	protected byte[] value;
 
 	protected String className;
 
@@ -57,29 +59,30 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 
 	protected Date archiveTime;
 	
-	public VariableInstanceEntity() {
-		// TODO Auto-generated constructor stub
+	protected DataVariableDefinition dataVariableDefinition;
+
+	protected DataVariableMgmtInstance dataVariableMgmtInstance;
+	
+	public VariableInstanceEntity () {
+	
 	}
 
-	public VariableInstanceEntity(DataVariableDefinition dataVariableDefinition, DataVariableMgmtInstance dataVariableMgmtInstance) {
-		// TODO Auto-generated constructor stub
+
+	public VariableInstanceEntity (DataVariableDefinition dataVariableDefinition, DataVariableMgmtInstance dataVariableMgmtInstance) {
+	
+		
+		
+		
+		this.dataVariableDefinition = dataVariableDefinition;
+		this.isPersistence=dataVariableDefinition.isPersistence();
+		this.key=dataVariableDefinition.getId();
+		this.dataVariableMgmtInstance = dataVariableMgmtInstance;
+		this.processInstanceId=dataVariableMgmtInstance.getProcessInstance().getId();
+		this.type=dataVariableDefinition.getBizType();
+
 	}
+	
 
-	public static VariableInstanceEntity createAndInsert(String name, Object value) {
-		VariableInstanceEntity variableInstance = create(name, value);
-
-		Context.getCommandContext().getVariableManager().insert(variableInstance);
-
-		return variableInstance;
-	}
-
-	public static VariableInstanceEntity create(String name, Object value) {
-		VariableInstanceEntity variableInstance = new VariableInstanceEntity();
-		variableInstance.name = name;
-		variableInstance.type = type;
-		variableInstance.setValue(value);
-		return variableInstance;
-	}
 
 	// get set //////////////////////////////////////////////////////////
 
@@ -91,41 +94,41 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 		this.processInstanceId = processInstanceId;
 	}
 
-	public String getVariableKey() {
-		return variableKey;
+	public String getKey() {
+		return key;
 	}
 
-	public void setVariableKey(String variableKey) {
-		this.variableKey = variableKey;
+	public void setKey(String key) {
+		this.key = key;
 	}
 
-	public byte[] getVariableValue() {
-		return variableValue;
+	public byte[] getValue() {
+		return value;
 	}
 
 	public Object getVariableObject() {
 
-		return bytesToObject(variableValue);
+		return bytesToObject(value);
 	}
 
-	public void setVariableValue(byte[] variableValue) {
-		this.variableValue = variableValue;
+	public void setVariableValue(byte[] value) {
+		this.value = value;
 	}
 
-	public String getVariableClassName() {
-		return variableClassName;
+	public String getClassName() {
+		return className;
 	}
 
-	public void setVariableClassName(String variableClassName) {
-		this.variableClassName = variableClassName;
+	public void setClassName(String className) {
+		this.className = className;
 	}
 
-	public String getTaskInstanceId() {
-		return taskInstanceId;
+	public String getTaskId() {
+		return taskId;
 	}
 
-	public void setTaskInstanceId(String taskInstanceId) {
-		this.taskInstanceId = taskInstanceId;
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
 	}
 
 	public String getTokenId() {
@@ -145,11 +148,11 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 	}
 
 	public String getVariableType() {
-		return variableType;
+		return type;
 	}
 
-	public void setVariableType(String variableType) {
-		this.variableType = variableType;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getBizData() {
@@ -223,14 +226,14 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 		return false;
 	}
 
-	private void executeExpression(FlowNodeExecutionContext executionContext) {
+	public void executeExpression(FlowNodeExecutionContext executionContext) {
 
 		// 对于需要持久化的数据变量的处理
 		if (this.isPersistence()) {
 
 			String processInstanceId = this.dataVariableMgmtInstance.getProcessInstance().getId();
 			List<String> variableNames = new ArrayList<String>();
-			String variableName = this.dataVariableBehavior.getId();
+			String variableName = this.dataVariableDefinition.getId();
 			variableNames.add(variableName);
 
 			QueryVariablesCommand queryVariablesCommand = new QueryVariablesCommand();
@@ -239,13 +242,12 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 
 			Map<String, Object> returnMap = Context.getCommandContext().getVariableManager().queryVariable(queryVariablesCommand);
 			if (returnMap != null && returnMap.containsKey(variableName)) {
-				this.setAdd(false);
 				ExpressionMgmt.setVariable(getId(), returnMap.get(variableName));
 
 			} else {
 				Object object = null;
-				if (dataVariableBehavior.getExpression() != null) {
-					object = ExpressionMgmt.execute(dataVariableBehavior.getExpression(), executionContext);
+				if (dataVariableDefinition.getExpression() != null) {
+					object = ExpressionMgmt.execute(dataVariableDefinition.getExpression(), executionContext);
 				}
 
 				ExpressionMgmt.setVariable(getId(), object);
@@ -254,8 +256,8 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 		} else {
 			// 不需要持久化的数据变量的处理
 			Object object = null;
-			if (dataVariableBehavior.getExpression() != null) {
-				object = ExpressionMgmt.execute(dataVariableBehavior.getExpression(), executionContext);
+			if (dataVariableDefinition.getExpression() != null) {
+				object = ExpressionMgmt.execute(dataVariableDefinition.getExpression(), executionContext);
 			}
 
 			ExpressionMgmt.setVariable(getId(), object);

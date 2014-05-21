@@ -13,6 +13,7 @@ import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.util.ClockUtil;
@@ -24,7 +25,6 @@ import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskType;
 import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
-import org.foxbpm.kernel.runtime.impl.KernelVariableInstanceImpl;
 import org.foxbpm.kernel.runtime.impl.KernelVariableScopeImpl;
 
 public class TaskEntity extends KernelVariableScopeImpl implements Task, DelegateTask, PersistentObject, HasRevision {
@@ -297,11 +297,6 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		return new HashMap<String, Object>();
 	}
 
-	@Override
-	protected KernelVariableScopeImpl getParentVariableScope() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public boolean isModified() {
 		// TODO Auto-generated method stub
@@ -719,22 +714,17 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	}
 	
 	public void setProcessInstanceVariables(Map<String, Object> parameters) {
-	    if (getProcessInstance()!=null) {
-	    	processInstance.setVariables(parameters);
-	    }
-	  }
+		if (getProcessInstance() != null) {
+			if (parameters == null) {
+				return;
+			}
 
-	@Override
-	protected List<KernelVariableInstanceImpl> loadVariableInstances() {
-		// TODO Auto-generated method stub
-		return null;
+			for (String mapKey : parameters.keySet()) {
+				ExpressionMgmt.setVariable(mapKey, parameters.get(mapKey));
+			}
+		}
 	}
 
-	@Override
-	protected void initializeVariableInstanceBackPointer(KernelVariableInstanceImpl variableInstance) {
-		// TODO Auto-generated method stub
-
-	}
 
 	public boolean isAutoClaim() {
 		return isAutoClaim;

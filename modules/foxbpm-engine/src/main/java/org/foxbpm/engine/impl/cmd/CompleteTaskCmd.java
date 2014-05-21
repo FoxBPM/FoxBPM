@@ -9,21 +9,24 @@ public class CompleteTaskCmd extends NeedsActiveTaskCmd<Void> {
 
 	private static final long serialVersionUID = 1L;
 
-	 protected Map<String, Object> variables;
-	
-	public CompleteTaskCmd(String taskId, Map<String, Object> variables) {
+	protected Map<String, Object> transientVariables;
+	protected Map<String, Object> persistenceVariables;
+
+	public CompleteTaskCmd(String taskId, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables) {
 		super(taskId);
-	    this.variables = variables;
+		this.transientVariables = transientVariables;
+		this.persistenceVariables = persistenceVariables;
 	}
 
 	@Override
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
-		  if (variables!=null) {
-		      task.setExecutionVariables(variables);
-		    }
-		    
-		    task.complete();
-		    return null;
+		
+		if (transientVariables != null) {
+			task.setProcessInstanceVariables(transientVariables);
+		}
+
+		task.complete();
+		return null;
 	}
 
 }

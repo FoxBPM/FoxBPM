@@ -92,11 +92,11 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 	}
 
 	public void complete(String taskId) {
-		commandExecutor.execute(new CompleteTaskCmd(taskId, null));
+		commandExecutor.execute(new CompleteTaskCmd(taskId, null,null));
 	}
 	
-	public void complete(String taskId, Map<String, Object> variables) {
-		commandExecutor.execute(new CompleteTaskCmd(taskId, variables));
+	public void complete(String taskId,Map<String, Object> transientVariables,Map<String, Object> persistenceVariables) {
+		commandExecutor.execute(new CompleteTaskCmd(taskId, transientVariables,persistenceVariables));
 	}
 
 

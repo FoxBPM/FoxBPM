@@ -26,6 +26,7 @@ import java.util.Map;
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtInstance;
 import org.foxbpm.engine.impl.runtime.ContextInstanceImpl;
 import org.foxbpm.engine.impl.util.ClockUtil;
@@ -434,15 +435,20 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		return 0;
 	}
 
-	@Override
-	protected List<KernelVariableInstanceImpl> loadVariableInstances() {
-		return Context
-			      .getCommandContext().getVariableManager()
-			      .findVariableInstancesByProcessInstanceId(id);
-	}
-
 	public Map<String, Object> getPersistentState() {
 		return new HashMap<String, Object>();
+	}
+
+	public void setVariables(Map<String, Object> transientVariables) {
+		
+			if (transientVariables == null) {
+				return;
+			}
+
+			for (String mapKey : transientVariables.keySet()) {
+				ExpressionMgmt.setVariable(mapKey, transientVariables.get(mapKey));
+			}
+		
 	}
 
 }

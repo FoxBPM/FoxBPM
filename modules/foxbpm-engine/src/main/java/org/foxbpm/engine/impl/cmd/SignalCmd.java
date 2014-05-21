@@ -11,19 +11,21 @@ public class SignalCmd extends NeedsTokenCmd<Object> {
 
 	protected String signalName;
 	protected Object signalData;
-	protected final Map<String, Object> processVariables;
+	protected Map<String, Object> transientVariables;
+	protected Map<String, Object> persistenceVariables;
 
-	public SignalCmd(String tokenId, String signalName, Object signalData, Map<String, Object> processVariables) {
+	public SignalCmd(String tokenId, String signalName, Object signalData, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables) {
 		super(tokenId);
 		this.signalName = signalName;
 		this.signalData = signalData;
-		this.processVariables = processVariables;
+		this.transientVariables = transientVariables;
+		this.persistenceVariables = persistenceVariables;
 	}
 
 	@Override
 	protected Object execute(CommandContext commandContext, TokenEntity token) {
-		if (processVariables != null) {
-			token.setVariables(processVariables);
+		if (transientVariables != null) {
+			token.setProcessInstanceVariables(transientVariables);
 		}
 
 		token.signal();

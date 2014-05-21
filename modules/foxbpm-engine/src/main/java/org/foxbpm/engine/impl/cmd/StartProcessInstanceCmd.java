@@ -40,14 +40,16 @@ public class StartProcessInstanceCmd<T> implements Command<ProcessInstance>, Ser
 
 	protected String processDefinitionKey;
 	protected String processDefinitionId;
-	protected Map<String, Object> variables;
+	protected Map<String, Object> transientVariables;
+	protected Map<String, Object> persistenceVariables;
 	protected String bizKey;
 
-	public StartProcessInstanceCmd(String processDefinitionKey, String processDefinitionId, String bizKey, Map<String, Object> variables) {
+	public StartProcessInstanceCmd(String processDefinitionKey, String processDefinitionId, String bizKey, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables) {
 		this.processDefinitionKey = processDefinitionKey;
 		this.processDefinitionId = processDefinitionId;
 		this.bizKey = bizKey;
-		this.variables = variables;
+		this.transientVariables = transientVariables;
+		this.persistenceVariables = persistenceVariables;
 	}
 
 	public ProcessInstance execute(CommandContext commandContext) {
@@ -80,8 +82,8 @@ public class StartProcessInstanceCmd<T> implements Command<ProcessInstance>, Ser
 
 		// 启动流程实例
 		ProcessInstanceEntity processInstance = processDefinition.createProcessInstance(bizKey);
-		if (variables != null) {
-			processInstance.setVariables(variables);
+		if (transientVariables != null) {
+			processInstance.setVariables(transientVariables);
 		}
 		processInstance.start();
 

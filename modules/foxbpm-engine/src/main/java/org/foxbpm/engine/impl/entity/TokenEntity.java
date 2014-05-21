@@ -10,6 +10,7 @@ import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.runtime.Token;
@@ -199,17 +200,6 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		return getProcessInstance().getInitiator();
 	}
 
-	@Override
-	protected List<KernelVariableInstanceImpl> loadVariableInstances() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected void initializeVariableInstanceBackPointer(KernelVariableInstanceImpl variableInstance) {
-		// TODO Auto-generated method stub
-
-	}
 
 	public String getAuthenticatedUserId() {
 		return Authentication.getAuthenticatedUserId();
@@ -252,6 +242,16 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 
 	public void removeTask(TaskEntity task) {
 		getTasksInternal().remove(task);
+	}
+
+	public void setProcessInstanceVariables(Map<String, Object> transientVariables) {
+		if (transientVariables == null) {
+			return;
+		}
+
+		for (String mapKey : transientVariables.keySet()) {
+			ExpressionMgmt.setVariable(mapKey, transientVariables.get(mapKey));
+		}
 	}
 
 }

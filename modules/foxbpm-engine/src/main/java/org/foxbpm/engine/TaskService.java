@@ -53,7 +53,7 @@ public interface TaskService {
 
 	void complete(String taskId);
 	
-	void complete(String taskId, Map<String, Object> variables);
+	void complete(String taskId,Map<String, Object> transientVariables,Map<String, Object> persistenceVariables);
 
 	void delegateTask(String taskId, String userId);
 

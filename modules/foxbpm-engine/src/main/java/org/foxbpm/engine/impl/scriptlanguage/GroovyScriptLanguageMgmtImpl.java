@@ -18,10 +18,15 @@
  */
 package org.foxbpm.engine.impl.scriptlanguage;
 
+import java.util.List;
+
 import groovy.lang.GroovyShell;
 
-import org.foxbpm.engine.runtime.ExecutionContext;
+import org.foxbpm.engine.impl.datavariable.DataVariableDefinition;
+import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
+import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.scriptlanguage.AbstractScriptLanguageMgmt;
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 public class GroovyScriptLanguageMgmtImpl extends AbstractScriptLanguageMgmt {
 
@@ -29,51 +34,107 @@ public class GroovyScriptLanguageMgmtImpl extends AbstractScriptLanguageMgmt {
 
 	@Override
 	public AbstractScriptLanguageMgmt init() {
+
 		groovyShell = new GroovyShell();
+
 		return this;
 	}
 
 	@Override
 	public void close() {
 		groovyShell = null;
+
 	}
 
 	@Override
-	public Object execute(String scriptText) {
-		return groovyShell.evaluate(scriptText);
+	public Object execute(String scriptText, ProcessDefinitionEntity processDefinition) {
+
+		List<String> dvList = getDataVariableList(scriptText);
+
+		if (dvList.size() > 0) {
+
+			for (String expressionId : dvList) {
+
+				List<DataVariableDefinition> dataVariableBehaviors = processDefinition.getDataVariableMgmtDefinition()
+						.getDataVariableBehaviorsByProcess();
+				for (DataVariableDefinition dataVariableBehavior : dataVariableBehaviors) {
+
+					if (dataVariableBehavior.getId().equals(expressionId)) {
+
+						Object object = null;
+						if (dataVariableBehavior.getExpression() != null) {
+							object = ExpressionMgmt.execute(dataVariableBehavior.getExpression(), processDefinition);
+						}
+
+						ExpressionMgmt.setVariable(dataVariableBehavior.getId(), object);
+
+					}
+
+				}
+
+			}
+
+		}
+
+		String scriptTextTemp = getExpressionAll(scriptText);
+
+		Object resultObj;
+		resultObj = groovyShell.evaluate(scriptTextTemp);
+
+		return resultObj;
 	}
+
 	@Override
 	public void setVariable(String variableName, Object variableObj) {
+
 		groovyShell.setVariable(variableName, variableObj);
+
 	}
 
 	@Override
-	public void setVariable(String variableName, Object variableObj,
-			ExecutionContext executionContext) {
+	public void setVariable(String variableName, Object variableObj, FlowNodeExecutionContext executionContext) {
 		dataVariableCalculate(variableName, executionContext);
 		String scriptText = getExpressionAll(variableName);
+
 		groovyShell.setVariable(scriptText, variableObj);
+
 	}
 
 	@Override
 	public Object getVariable(String variableName) {
+
 		return groovyShell.getVariable(variableName);
+
 	}
 
 	@Override
-	public Object execute(String scriptText, ExecutionContext executionContext) {
+	public Object execute(String scriptText, FlowNodeExecutionContext executionContext) {
 		if (scriptText == null) {
 			return null;
 		}
+
 		dataVariableCalculate(scriptText, executionContext);
+
 		Object resultObj = false;
+
+		//groovyShell.setVariable("bizData", Context.getProcessEngineConfiguration().getBizData());
+
 		// 绑定变量
 		if (executionContext != null) {
 			groovyShell.setVariable("processInfo", executionContext);
 		}
 		String scriptTextTemp = getExpressionAll(scriptText);
 		resultObj = groovyShell.evaluate(scriptTextTemp);
+
 		return resultObj;
 	}
+
+	@Override
+	public Object execute(String scriptText) {
+		 return groovyShell.evaluate(scriptText);
+	}
+
+	
+
 
 }

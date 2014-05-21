@@ -37,35 +37,35 @@ import org.foxbpm.engine.runtime.TokenQuery;
 public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 
 	public ProcessInstance startProcessInstanceByKey(String processDefinitionKey) {
-		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(processDefinitionKey, null, null, null));
+		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(processDefinitionKey, null, null, null,null));
 	}
 
 	public ProcessInstance startProcessInstanceByKey(String processDefinitionKey, String bizKey) {
-		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(processDefinitionKey, null, bizKey, null));
+		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(processDefinitionKey, null, bizKey, null,null));
 	}
 
-	public ProcessInstance startProcessInstanceByKey(String processDefinitionKey, Map<String, Object> variables) {
-		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(processDefinitionKey, null, null, variables));
+	public ProcessInstance startProcessInstanceByKey(String processDefinitionKey,Map<String, Object> transientVariables,Map<String, Object> persistenceVariables) {
+		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(processDefinitionKey, null, null, transientVariables,persistenceVariables));
 	}
 
-	public ProcessInstance startProcessInstanceByKey(String processDefinitionKey, String bizKey, Map<String, Object> variables) {
-		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(processDefinitionKey, null, bizKey, variables));
+	public ProcessInstance startProcessInstanceByKey(String processDefinitionKey, String bizKey, Map<String, Object> transientVariables,Map<String, Object> persistenceVariables) {
+		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(processDefinitionKey, null, bizKey, transientVariables,persistenceVariables));
 	}
 
 	public ProcessInstance startProcessInstanceById(String processDefinitionId) {
-		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(null, processDefinitionId, null, null));
+		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(null, processDefinitionId, null, null,null));
 	}
 
 	public ProcessInstance startProcessInstanceById(String processDefinitionId, String bizKey) {
-		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(null, processDefinitionId, bizKey, null));
+		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(null, processDefinitionId, bizKey, null,null));
 	}
 
-	public ProcessInstance startProcessInstanceById(String processDefinitionId, Map<String, Object> variables) {
-		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(null, processDefinitionId, null, variables));
+	public ProcessInstance startProcessInstanceById(String processDefinitionId, Map<String, Object> transientVariables,Map<String, Object> persistenceVariables) {
+		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(null, processDefinitionId, null, transientVariables,persistenceVariables));
 	}
 
-	public ProcessInstance startProcessInstanceById(String processDefinitionId, String bizKey, Map<String, Object> variables) {
-		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(null, processDefinitionId, bizKey, variables));
+	public ProcessInstance startProcessInstanceById(String processDefinitionId, String bizKey, Map<String, Object> transientVariables,Map<String, Object> persistenceVariables) {
+		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(null, processDefinitionId, bizKey, transientVariables,persistenceVariables));
 	}
 
 	public ProcessInstance startProcessInstanceByMessage(String messageName) {
@@ -89,11 +89,11 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 	}
 
 	public void signal(String executionId) {
-		commandExecutor.execute(new SignalCmd(executionId, null, null, null));
+		commandExecutor.execute(new SignalCmd(executionId, null, null, null,null));
 	}
 
-	public void signal(String executionId, Map<String, Object> processVariables) {
-		commandExecutor.execute(new SignalCmd(executionId, null, null, processVariables));
+	public void signal(String executionId, Map<String, Object> transientVariables,Map<String, Object> persistenceVariables) {
+		commandExecutor.execute(new SignalCmd(executionId, null, null, transientVariables,persistenceVariables));
 	}
 	
 	public TokenQuery createTokenQuery() {

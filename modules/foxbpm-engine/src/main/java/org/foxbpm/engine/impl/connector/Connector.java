@@ -27,6 +27,7 @@ import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.event.KernelListener;
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 
 public class Connector implements KernelListener {
@@ -223,7 +224,7 @@ public class Connector implements KernelListener {
 
 					Object objectValue = m.invoke(connectorInstance);
 
-					ExpressionMgmt.setVariable(variableTarget, objectValue, executionContext);
+					ExpressionMgmt.setVariable(variableTarget, objectValue, (FlowNodeExecutionContext)executionContext);
 				}
 
 			}

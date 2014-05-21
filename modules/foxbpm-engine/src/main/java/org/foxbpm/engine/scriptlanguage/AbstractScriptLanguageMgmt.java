@@ -23,14 +23,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.datavariable.DataVariableDefinition;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.VariableInstanceEntity;
-import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtInstance;
-import org.foxbpm.engine.runtime.ExecutionContext;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 public abstract class AbstractScriptLanguageMgmt {
@@ -71,7 +68,7 @@ public abstract class AbstractScriptLanguageMgmt {
 	 * @param variableObj 变量值
 	 * @param executionContext 流程上下文
 	 */
-	public abstract void setVariable(String variableName, Object variableObj,ExecutionContext executionContext);
+	public abstract void setVariable(String variableName, Object variableObj,FlowNodeExecutionContext executionContext);
 	
 	/**
 	 * 获取变量值
@@ -86,7 +83,7 @@ public abstract class AbstractScriptLanguageMgmt {
 	 * @param executionContext 流程上下文
 	 * @return
 	 */
-	public abstract Object execute(String scriptText, ExecutionContext executionContext);
+	public abstract Object execute(String scriptText, FlowNodeExecutionContext executionContext);
 	
 	
 	

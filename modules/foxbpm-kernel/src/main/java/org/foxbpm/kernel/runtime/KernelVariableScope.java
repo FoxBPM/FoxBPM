@@ -27,46 +27,46 @@ import java.util.Set;
  */
 public interface KernelVariableScope {
 
-	Map<String, Object> getVariables();
-
-	Map<String, Object> getVariablesLocal();
-
-	Object getVariable(String variableName);
-
-	Object getVariableLocal(Object variableName);
-
-	Set<String> getVariableNames();
-
-	Set<String> getVariableNamesLocal();
-
-	void setVariable(String variableName, Object value);
-
-	Object setVariableLocal(String variableName, Object value);
-
-	void setVariables(Map<String, ? extends Object> variables);
-
-	void setVariablesLocal(Map<String, ? extends Object> variables);
-
-	boolean hasVariables();
-
-	boolean hasVariablesLocal();
-
-	boolean hasVariable(String variableName);
-
-	boolean hasVariableLocal(String variableName);
-
-	void createVariableLocal(String variableName, Object value);
-
-	void removeVariable(String variableName);
-
-	void removeVariableLocal(String variableName);
-
-	void removeVariables(Collection<String> variableNames);
-
-	void removeVariablesLocal(Collection<String> variableNames);
-
-	void removeVariables();
-
-	void removeVariablesLocal();
+//	Map<String, Object> getVariables();
+//
+//	Map<String, Object> getVariablesLocal();
+//
+//	Object getVariable(String variableName);
+//
+//	Object getVariableLocal(Object variableName);
+//
+//	Set<String> getVariableNames();
+//
+//	Set<String> getVariableNamesLocal();
+//
+//	void setVariable(String variableName, Object value);
+//
+//	Object setVariableLocal(String variableName, Object value);
+//
+//	void setVariables(Map<String, ? extends Object> variables);
+//
+//	void setVariablesLocal(Map<String, ? extends Object> variables);
+//
+//	boolean hasVariables();
+//
+//	boolean hasVariablesLocal();
+//
+//	boolean hasVariable(String variableName);
+//
+//	boolean hasVariableLocal(String variableName);
+//
+//	void createVariableLocal(String variableName, Object value);
+//
+//	void removeVariable(String variableName);
+//
+//	void removeVariableLocal(String variableName);
+//
+//	void removeVariables(Collection<String> variableNames);
+//
+//	void removeVariablesLocal(Collection<String> variableNames);
+//
+//	void removeVariables();
+//
+//	void removeVariablesLocal();
 
 }

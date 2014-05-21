@@ -30,17 +30,17 @@ public interface RuntimeService {
 
 	ProcessInstance startProcessInstanceByKey(String processDefinitionKey, String bizKey);
 
-	ProcessInstance startProcessInstanceByKey(String processDefinitionKey, Map<String, Object> variables);
+	ProcessInstance startProcessInstanceByKey(String processDefinitionKey, Map<String, Object> transientVariables,Map<String, Object> persistenceVariables);
 
-	ProcessInstance startProcessInstanceByKey(String processDefinitionKey, String bizKey, Map<String, Object> variables);
+	ProcessInstance startProcessInstanceByKey(String processDefinitionKey, String bizKey, Map<String, Object> transientVariables,Map<String, Object> persistenceVariables);
 
 	ProcessInstance startProcessInstanceById(String processDefinitionId);
 
 	ProcessInstance startProcessInstanceById(String processDefinitionId, String bizKey);
 
-	ProcessInstance startProcessInstanceById(String processDefinitionId, Map<String, Object> variables);
+	ProcessInstance startProcessInstanceById(String processDefinitionId, Map<String, Object> transientVariables,Map<String, Object> persistenceVariables);
 
-	ProcessInstance startProcessInstanceById(String processDefinitionId, String bizKey, Map<String, Object> variables);
+	ProcessInstance startProcessInstanceById(String processDefinitionId, String bizKey, Map<String, Object> transientVariables,Map<String, Object> persistenceVariables);
 
 	ProcessInstance startProcessInstanceByMessage(String messageName);
 
@@ -52,7 +52,7 @@ public interface RuntimeService {
 
 	void signal(String tokenId);
 
-	void signal(String tokenId, Map<String, Object> processVariables);
+	void signal(String tokenId, Map<String, Object> transientVariables,Map<String, Object> persistenceVariables);
 	
 	TokenQuery createTokenQuery();
 	

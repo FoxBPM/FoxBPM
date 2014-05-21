@@ -485,13 +485,6 @@ InterpretableExecutionContext  {
 	}
 
 	
-
-	@Override
-	protected KernelVariableScopeImpl getParentVariableScope() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	
 	public String getName() {
 		return name;
@@ -515,16 +508,5 @@ InterpretableExecutionContext  {
 		return null;
 	}
 
-	@Override
-	protected List<KernelVariableInstanceImpl> loadVariableInstances() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected void initializeVariableInstanceBackPointer(KernelVariableInstanceImpl variableInstance) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }
