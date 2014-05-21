@@ -15,7 +15,10 @@ public class ExpressionImpl implements Expression {
 	}
 
 	public Object getValue(KernelVariableScope variableScope) {
-		return ExpressionMgmt.execute(expressionText,variableScope);
+		if(StringUtil.isNotEmpty(expressionText)){
+			return ExpressionMgmt.execute(expressionText,variableScope);
+		}
+		return null;
 	}
 
 	public void setValue(Object value, KernelVariableScope variableScope) {

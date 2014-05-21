@@ -1,7 +1,11 @@
 package org.foxbpm.engine.test.api;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.foxbpm.engine.impl.entity.TaskEntity;
+import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskQuery;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
@@ -10,135 +14,22 @@ public class TaskServiceTest extends AbstractFoxBpmTestCase {
 
 	public void testTaskQuery(){
 		
-		//api
-		TaskQuery taskQuery = taskService.createTaskQuery();
-		taskQuery.taskIsEnd();
-		List<Task> tasks = taskQuery.list();
-		System.out.println("taskIsEnd****************"+tasks.size());
 		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.taskNotEnd();
-		tasks = taskQuery.list();
-		System.out.println("taskNotEnd****************"+tasks.size());
+		Map<String, Object> transientVariables=new HashMap<String, Object>();
+		transientVariables.put("value", 10);
+		ProcessInstance processInstance=runtimeService.startProcessInstanceById
+		("FirstFoxbpm:1:916131d2-4598-4e4c-952f-c13c76c77f71","bizkey",transientVariables, null);
 		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.isSuspended(true);
-		tasks = taskQuery.list();
-		System.out.println("isSuspended****************"+tasks.size());
 		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.tokenId("tokenId");
-		tasks = taskQuery.list();
-		System.out.println("tokenId****************"+tasks.size());
+		Task task=taskService.createTaskQuery().processInstanceId(processInstance.getId()).taskNotEnd().singleResult();
+		taskService.complete(task.getId());
 		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.initiator("initiator");
-		tasks = taskQuery.list();
-		System.out.println("initiator****************"+tasks.size());
+		task=taskService.createTaskQuery().processInstanceId(processInstance.getId()).taskNotEnd().singleResult();
+		taskService.complete(task.getId());
 		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.taskId("taskId");
-		tasks = taskQuery.list();
-		System.out.println("taskId****************"+tasks.size());
+		processInstance=runtimeService.createProcessInstanceQuery().processInstanceId(processInstance.getId()).singleResult();
 		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.taskName("taskName");
-		tasks = taskQuery.list();
-		System.out.println("taskName****************"+tasks.size());
-		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.taskNameLike("taskNameLike");
-		tasks = taskQuery.list();
-		System.out.println("taskNameLike****************"+tasks.size());
-		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.businessKey("businessKey");
-		tasks = taskQuery.list();
-		System.out.println("businessKey****************"+tasks.size());
-		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.businessKeyLike("businessKeyLike");
-		tasks = taskQuery.list();
-		System.out.println("businessKeyLike****************"+tasks.size());
-		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.addTaskType("addTaskType");
-		tasks = taskQuery.list();
-		System.out.println("addTaskType****************"+tasks.size());
-		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.taskDescription("taskDescription");
-		tasks = taskQuery.list();
-		System.out.println("taskDescription****************"+tasks.size());
-		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.taskDescriptionLike("taskDescriptionLike");
-		tasks = taskQuery.list();
-		System.out.println("taskDescriptionLike****************"+tasks.size());
-		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.taskAssignee("taskAssignee");
-		tasks = taskQuery.list();
-		System.out.println("taskAssignee****************"+tasks.size());
-		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.taskOwner("taskOwner");
-		tasks = taskQuery.list();
-		System.out.println("taskOwner****************"+tasks.size());
-		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.taskUnnassigned();
-		tasks = taskQuery.list();
-		System.out.println("taskUnnassigned****************"+tasks.size());
-		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.taskCandidateUser("admin");
-		tasks = taskQuery.list();
-		System.out.println("taskCandidateUser****************"+tasks.size());
-		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.processInstanceId("processInstanceId");
-		tasks = taskQuery.list();
-		System.out.println("processInstanceId****************"+tasks.size());
-		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.processDefinitionKey("processDefinitionKey");
-		tasks = taskQuery.list();
-		System.out.println("processDefinitionKey****************"+tasks.size());
-		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.processDefinitionId("processDefinitionId");
-		tasks = taskQuery.list();
-		System.out.println("processDefinitionId****************"+tasks.size());
-		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.processDefinitionName("processDefinitionName");
-		tasks = taskQuery.list();
-		System.out.println("processDefinitionName****************"+tasks.size());
-		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.processDefinitionNameLike("processDefinitionNameLike");
-		tasks = taskQuery.list();
-		System.out.println("processDefinitionNameLike****************"+tasks.size());
-		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.nodeId("nodeId");
-		tasks = taskQuery.list();
-		System.out.println("nodeId****************"+tasks.size());
-		
-		//order by 
-		
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.nodeId("nodeId").orderByEndTime().asc().orderByProcessInstanceId().desc().orderByTaskAssignee().asc();
-		taskQuery.orderByTaskCreateTime().asc().orderByTaskDescription().desc().orderByTaskId().asc().orderByTaskName().desc();
-		tasks = taskQuery.list();
-		System.out.println("nodeId****************"+tasks.size());
-		
-		//page测试
-		taskQuery = taskService.createTaskQuery();
-		taskQuery.nodeId("nodeId");
-		tasks = taskQuery.listPage(0, 15);
-		System.out.println("nodeId****************"+tasks.size());
+		assertTrue(processInstance.isEnd());
 		
 	}
 }

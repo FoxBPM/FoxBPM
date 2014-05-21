@@ -229,7 +229,7 @@
       </if>
       
       <if test="end != null">
-      	and RES.CREATE_TIME IS ${end}
+      	and RES.END_TIME IS NULL
       </if>
       
       <if test="isSuspended != null" >

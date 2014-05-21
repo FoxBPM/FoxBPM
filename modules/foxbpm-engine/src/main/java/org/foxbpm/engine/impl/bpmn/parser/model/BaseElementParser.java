@@ -46,8 +46,8 @@ public class BaseElementParser {
 	 */
 	public BaseElementBehavior parser(BaseElement baseElement){
 		 
-		
-		baseElementBehavior.getConnectors().addAll(parserConnector(baseElement, "flowconnector"));
+		baseElementBehavior.setId(baseElement.getId());
+		baseElementBehavior.getConnectors().addAll(parserConnector(baseElement, "flowConnector"));
 
 		return baseElementBehavior;
 	}

@@ -10,16 +10,13 @@
     <result column="GROUP_ID" property="groupId" jdbcType="VARCHAR" />
     <result column="GROUP_TYPE" property="groupType" jdbcType="VARCHAR" />
     <result column="TASK_ID" property="taskId" jdbcType="VARCHAR" />
-    <result column="INCLUDE_EXCLUSION" property="includeExclusion" jdbcType="VARCHAR" />
   </resultMap>
   
    <insert id="insertIdentityLink" parameterType="org.foxbpm.engine.impl.entity.IdentityLinkEntity" >
     insert into foxbpm_run_taskidentitylink (ID, TYPE, USER_ID, 
-      GROUP_ID, GROUP_TYPE, TASK_ID, 
-      INCLUDE_EXCLUSION)
+      GROUP_ID, GROUP_TYPE, TASK_ID)
     values (#{id,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
-      #{groupId,jdbcType=VARCHAR}, #{groupType,jdbcType=VARCHAR}, #{taskId,jdbcType=VARCHAR}, 
-      #{includeExclusion,jdbcType=VARCHAR})
+      #{groupId,jdbcType=VARCHAR}, #{groupType,jdbcType=VARCHAR}, #{taskId,jdbcType=VARCHAR})
   </insert>
   
    <select id="selectIdentityLinkById" resultMap="IdentityLinkResultMap" parameterType="java.lang.String" >

@@ -21,6 +21,7 @@ import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.task.DelegateTask;
 import org.foxbpm.engine.task.DelegationState;
 import org.foxbpm.engine.task.IdentityLink;
+import org.foxbpm.engine.task.IdentityLinkType;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskType;
 import org.foxbpm.kernel.process.KernelFlowNode;
@@ -644,8 +645,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	}
 
 	public void addCandidateUser(String userId) {
-		// TODO Auto-generated method stub
-
+		 addIdentityLink(userId, null, IdentityLinkType.CANDIDATE);
 	}
 
 	public void addCandidateUserEntity(UserEntity user) {
@@ -706,6 +706,19 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	public void deleteGroupIdentityLink(String groupId, String groupType, String identityLinkType) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	public IdentityLinkEntity addIdentityLink(String userId, String groupId, String type) {
+		IdentityLinkEntity identityLinkEntity = new IdentityLinkEntity();
+		identityLinkEntity.setId(GuidUtil.CreateGuid());
+		getIdentityLinks().add(identityLinkEntity);
+		identityLinkEntity.setTask(this);
+		identityLinkEntity.setUserId(userId);
+		identityLinkEntity.setGroupId(groupId);
+		identityLinkEntity.setType(type);
+		identityLinkEntity.insert();
+	
+		return identityLinkEntity;
 	}
 
 	public Set<IdentityLink> getCandidates() {

@@ -451,4 +451,9 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		
 	}
 
+	public boolean isEnd() {
+		
+		return endTime!=null;
+	}
+
 }
