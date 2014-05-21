@@ -59,6 +59,7 @@ import org.foxbpm.engine.impl.interceptor.SessionFactory;
 import org.foxbpm.engine.impl.mybatis.MyBatisSqlSessionFactory;
 import org.foxbpm.engine.impl.persistence.DeploymentEntityManager;
 import org.foxbpm.engine.impl.persistence.GenericManagerFactory;
+import org.foxbpm.engine.impl.persistence.IdentityLinkManager;
 import org.foxbpm.engine.impl.persistence.ProcessDefinitionManager;
 import org.foxbpm.engine.impl.persistence.ProcessInstanceManager;
 import org.foxbpm.engine.impl.persistence.ResourceManager;
@@ -181,6 +182,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			addSessionFactory(new GenericManagerFactory(DeploymentEntityManager.class));
 			addSessionFactory(new GenericManagerFactory(ProcessDefinitionManager.class));
 			addSessionFactory(new GenericManagerFactory(ResourceManager.class));
+			addSessionFactory(new GenericManagerFactory(IdentityLinkManager.class));
 			addSessionFactory(new UserEntityManagerFactory());
 		}
 	}
