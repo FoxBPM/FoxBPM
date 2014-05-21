@@ -34,7 +34,7 @@
   
    <update id="updateToken" parameterType="org.foxbpm.engine.impl.entity.TokenEntity" >
     update foxbpm_run_token
-      NAME = #{name,jdbcType=VARCHAR},
+      set NAME = #{name,jdbcType=VARCHAR},
       PROCESSINSTANCE_ID = #{processInstanceId,jdbcType=VARCHAR},
       NODE_ID = #{nodeId,jdbcType=VARCHAR},
       PARENT_ID = #{parentId,jdbcType=VARCHAR},

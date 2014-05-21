@@ -825,7 +825,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 			persistentState.put(key, extensionFields.get(key));
 		}*/
 		
-		return new HashMap<String, Object>();
+		return persistentState;
 	}
 
 

@@ -83,6 +83,54 @@
   </insert>
   
   
+   <update id="updateTask" parameterType="org.foxbpm.engine.impl.entity.TaskEntity" >
+    update foxbpm_run_task
+    set 
+      PROCESSINSTANCE_ID = #{processInstanceId,jdbcType=VARCHAR},
+      PROCESSDEFINITION_ID = #{processDefinitionId,jdbcType=VARCHAR},
+      VERSION = #{version,jdbcType=INTEGER},
+      TOKEN_ID = #{tokenId,jdbcType=VARCHAR},
+      NODE_ID = #{nodeId,jdbcType=VARCHAR},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      ASSIGNEE = #{assignee,jdbcType=VARCHAR},
+      CLAIM_TIME = #{claimTime,jdbcType=TIMESTAMP},
+      NAME = #{name,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      ISBLOCKING = #{isBlocking,jdbcType=VARCHAR},
+      END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      DUEDATE = #{dueDate,jdbcType=TIMESTAMP},
+      PRIORITY = #{priority,jdbcType=DECIMAL},
+      CATEGORY = #{category,jdbcType=VARCHAR},
+      OWNER = #{owner,jdbcType=VARCHAR},
+      DELEGATIONSTATE = #{delegationStateString,jdbcType=VARCHAR},
+      BIZKEY = #{bizKey,jdbcType=VARCHAR},
+      COMMAND_TYPE = #{commandType,jdbcType=VARCHAR},
+      COMMAND_MESSAGE = #{commandMessage,jdbcType=VARCHAR},
+      TASK_COMMENT = #{taskComment,jdbcType=VARCHAR},
+      NODE_NAME = #{nodeName,jdbcType=VARCHAR},
+      PROCESSDEFINITION_KEY = #{processDefinitionKey,jdbcType=VARCHAR},
+      FORMURI = #{formUri,jdbcType=VARCHAR},
+      TASKGROUP = #{taskGroup,jdbcType=VARCHAR},
+      TASKTYPE = #{taskType,jdbcType=VARCHAR},
+      PROCESSDEFINITION_NAME = #{processDefinitionName,jdbcType=VARCHAR},
+      ISCANCELLED = #{isCancelled,jdbcType=VARCHAR},
+      ISSUSPENDED = #{isSuspended,jdbcType=VARCHAR},
+      ISOPEN = #{isOpen,jdbcType=VARCHAR},
+      ISDRAFT = #{isDraft,jdbcType=VARCHAR},
+      EXPECTED_EXECUTIONTIME = #{expectedExecutionTime,jdbcType=DECIMAL},
+      AGENT = #{agent,jdbcType=VARCHAR},
+      ADMIN = #{admin,jdbcType=VARCHAR},
+      FORMURIVIEW = #{formUriView,jdbcType=VARCHAR},
+      CALLACTIVITY_INSTANCE_ID = #{callActivityInstanceId,jdbcType=VARCHAR},
+      COMMAND_ID = #{commandId,jdbcType=VARCHAR},
+      PENDINGTASKID = #{pendingTaskId,jdbcType=VARCHAR},
+      ARCHIVE_TIME = #{archiveTime,jdbcType=TIMESTAMP}
+    where
+     ID=#{id,jdbcType=VARCHAR}
+  </update>
+  
   <sql id="Task_Column_List" >
     ID, PROCESSINSTANCE_ID, PROCESSDEFINITION_ID, VERSION, TOKEN_ID, NODE_ID, DESCRIPTION, 
     PARENT_ID, ASSIGNEE, CLAIM_TIME, NAME, CREATE_TIME, START_TIME, ISBLOCKING, END_TIME, 
