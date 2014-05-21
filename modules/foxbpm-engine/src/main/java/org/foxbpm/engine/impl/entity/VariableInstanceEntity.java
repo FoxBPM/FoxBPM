@@ -237,7 +237,7 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 			variableNames.add(variableName);
 
 			QueryVariablesCommand queryVariablesCommand = new QueryVariablesCommand();
-			queryVariablesCommand.setVariableNames(variableNames);
+			queryVariablesCommand.setKeys(variableNames);
 			queryVariablesCommand.setProcessInstanceId(processInstanceId);
 
 			Map<String, Object> returnMap = Context.getCommandContext().getVariableManager().queryVariable(queryVariablesCommand);

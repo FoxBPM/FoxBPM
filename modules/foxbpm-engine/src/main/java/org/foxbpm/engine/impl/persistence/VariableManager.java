@@ -22,8 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.engine.impl.entity.QueryVariablesCommand;
 import org.foxbpm.engine.impl.entity.VariableInstanceEntity;
-
 import org.foxbpm.kernel.runtime.impl.KernelVariableInstanceImpl;
 
 /**
@@ -53,5 +53,17 @@ public class VariableManager extends AbstractManager {
 		paraMap.put("processInstanceId", processInstanceId);
 		paraMap.put("key", key);
 		return (VariableInstanceEntity)getSqlSession().selectOne("selectVariableByProcessInstanceIdAndKey",paraMap);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Map<String,Object> queryVariable(QueryVariablesCommand queryVariableCommand){
+		List<VariableInstanceEntity> variables =  (List<VariableInstanceEntity>)getSqlSession().selectListWithRawParameter("selectVariableByQueryCommand", queryVariableCommand);
+		Map<String,Object> result = new HashMap<String,Object>();
+		if(variables != null){
+			for(VariableInstanceEntity variable : variables){
+				result.put(variable.getKey(), variable.getValue());
+			}
+		}
+		return result;
 	}
 }

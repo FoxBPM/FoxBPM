@@ -55,11 +55,13 @@ public class BaseElementParser {
 	protected List<Connector> parserConnector(BaseElement baseElement,String connrctorType){
 		List<ConnectorInstanceElements> connectorInstanceElements=  BpmnModelUtil.getExtensionElementList(ConnectorInstanceElements.class,baseElement,FoxBPMPackage.Literals.DOCUMENT_ROOT__CONNECTOR_INSTANCE_ELEMENTS);
 		List<ConnectorInstance> connectorInstances=new ArrayList<ConnectorInstance>();
-		for (ConnectorInstanceElements connectorInstanceElementsObj : connectorInstanceElements) {
-			if(connectorInstanceElementsObj.getConnrctorType().equals(connrctorType)){
-				connectorInstances.addAll(connectorInstanceElementsObj.getConnectorInstance());
+		if(connectorInstanceElements != null){
+			for (ConnectorInstanceElements connectorInstanceElementsObj : connectorInstanceElements) {
+				if(connectorInstanceElementsObj.getConnrctorType().equals(connrctorType)){
+					connectorInstances.addAll(connectorInstanceElementsObj.getConnectorInstance());
+				}
+				
 			}
-			
 		}
 		
 		List<Connector> connectors=new ArrayList<Connector>();
