@@ -112,11 +112,8 @@
       <if test="status != null">
       	and RES.INSTANCE_STATUS = #{status}
       </if>
-      <if test="isEnd == true">
-      	and RES.END_TIME is not null
-      </if>
-      <if test="isEnd == false">
-      	and RES.END_TIME is null
+      <if test="isEnd != null">
+      	and RES.END_TIME is ${isEnd}
       </if>
     </where>
   </sql> 	
@@ -150,6 +147,6 @@
       INSTANCE_STATUS = #{instanceStatus,jdbcType=VARCHAR},
       ARCHIVE_TIME = #{archiveTime,jdbcType=TIMESTAMP}
     where
-      where ID = #{id,jdbcType=VARCHAR}
+      ID = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

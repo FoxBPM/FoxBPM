@@ -51,7 +51,7 @@ public class ProcessInstanceQueryImpl  extends AbstractQuery<ProcessInstanceQuer
 	protected String status;
 	protected String processDefinitionName;
 	protected String processDefinitionNameLike;
-	protected boolean isEnd;
+	protected String isEnd;
 	protected String initiatorLike;
 	protected String subject;
 	protected String subjectLike;
@@ -124,12 +124,12 @@ public class ProcessInstanceQueryImpl  extends AbstractQuery<ProcessInstanceQuer
 	
 	
 	public ProcessInstanceQuery isEnd() {
-		isEnd=true;
+		isEnd = " not null";
 		return this;
 	}
 
 	public ProcessInstanceQuery notEnd() {
-		isEnd=false;
+		isEnd= " null";
 		return this;
 	}
 
@@ -343,7 +343,7 @@ public class ProcessInstanceQueryImpl  extends AbstractQuery<ProcessInstanceQuer
 		return startTimeAfter;
 	}
 
-	public boolean getIsEnd() {
+	public String getIsEnd() {
 		return isEnd;
 	}
 	
