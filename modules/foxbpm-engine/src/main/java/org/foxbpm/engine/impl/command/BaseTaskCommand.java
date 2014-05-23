@@ -36,9 +36,9 @@ public class BaseTaskCommand extends CommandParams{
 	protected String commandType;
 
 	/**
-	 * 用户命令编号
+	 * 任务命令编号
 	 */
-	protected String userCommandId;
+	protected String taskCommandId;
 	
 	/**
 	 * 任务意见
@@ -135,19 +135,19 @@ public class BaseTaskCommand extends CommandParams{
 
 	
 	/**
-	 * 获取用户命令编号
+	 * 获取任务命令编号
 	 * @return
 	 */
-	public String getUserCommandId() {
-		return userCommandId;
+	public String getTaskCommandId() {
+		return taskCommandId;
 	}
 
 	/**
 	 * 设置用户命令编号
 	 * @param userCommandId
 	 */
-	public void setUserCommandId(String userCommandId) {
-		this.userCommandId = userCommandId;
+	public void setTaskCommandId(String taskCommandId) {
+		this.taskCommandId = taskCommandId;
 	}
 	
 	/**
@@ -169,8 +169,8 @@ public class BaseTaskCommand extends CommandParams{
 	
 	public BaseTaskCommand(BaseTaskCommand taskCommand){
 		this.taskId = taskCommand.taskId;
-		this.userCommandId = taskCommand.userCommandId;
-		this.variables = taskCommand.variables;
+		this.taskCommandId = taskCommand.taskCommandId;
+		this.persistenceVariables = taskCommand.persistenceVariables;
 		this.transientVariables = taskCommand.transientVariables;
 		this.taskComment=taskCommand.taskComment;
 		this.commandType=taskCommand.commandType;

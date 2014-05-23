@@ -77,6 +77,8 @@ public class UserTaskBehavior extends TaskBehavior {
 		
 		TaskEntity task = TaskEntity.createAndInsert(executionContext);
 		
+		task.setTaskDefinition(taskDefinition);
+		
 		((TokenEntity)executionContext).setAssignTask(task);
 		
 		ProcessInstanceEntity processInstance=(ProcessInstanceEntity) executionContext.getProcessInstance();

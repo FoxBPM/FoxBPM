@@ -18,9 +18,6 @@
  */
 package org.foxbpm.engine.impl.command;
 
-import java.util.Map;
-
-
 
 
 /**

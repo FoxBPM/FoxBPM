@@ -31,7 +31,7 @@ public abstract class CommandParams {
 	/**
 	 * 持久化流程实例变量Map
 	 */
-	protected Map<String, Object> variables = null;
+	protected Map<String, Object> persistenceVariables = null;
 
 	public void addTransientVariable(String variableKey, Object variableObj) {
 		if (transientVariables == null) {
@@ -40,11 +40,11 @@ public abstract class CommandParams {
 		transientVariables.put(variableKey, variableObj);
 	}
 
-	public void addVariable(String variableKey, Object variableObj) {
-		if (variables == null) {
-			variables = new HashMap<String, Object>();
+	public void addPersistenceVariable(String variableKey, Object variableObj) {
+		if (persistenceVariables == null) {
+			persistenceVariables = new HashMap<String, Object>();
 		}
-		variables.put(variableKey, variableObj);
+		persistenceVariables.put(variableKey, variableObj);
 	}
 
 	public Object getTransientVariable(String variableKey) {
@@ -58,23 +58,23 @@ public abstract class CommandParams {
 		return transientVariables;
 	}
 
-	public Object getVariable(String variableKey) {
-		if (variables == null) {
+	public Object getPersistenceVariable(String variableKey) {
+		if (persistenceVariables == null) {
 			return null;
 		}
-		return variables.get(variableKey);
+		return persistenceVariables.get(variableKey);
 	}
 
-	public Map<String, Object> getVariables() {
-		return variables;
+	public Map<String, Object> getPersistenceVariables() {
+		return persistenceVariables;
 	}
 
 	public void setTransientVariables(Map<String, Object> transientVariables) {
 		this.transientVariables = transientVariables;
 	}
 
-	public void setVariables(Map<String, Object> variables) {
-		this.variables = variables;
+	public void setPersistenceVariables(Map<String, Object> persistenceVariables) {
+		this.persistenceVariables = persistenceVariables;
 	}
 
 }

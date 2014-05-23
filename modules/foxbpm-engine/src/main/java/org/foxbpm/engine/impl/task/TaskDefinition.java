@@ -18,9 +18,10 @@
 package org.foxbpm.engine.impl.task;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class TaskDefinition implements Serializable{
+public class TaskDefinition implements Serializable {
 
 	/**
 	 * 
@@ -31,17 +32,17 @@ public class TaskDefinition implements Serializable{
 	 * 任务分配策略
 	 */
 	private String assignPolicyType;
-	
+
 	private String assigneeExpression;
 	/**
 	 * 处理人集合
 	 */
 	private List<TaskAssigneeDefinition> taskAssignees;
-	
+
 	/**
 	 * 处理命令集合
 	 */
-	private List<TaskCommandDefinition> taskCommands;
+	private List<TaskCommand> taskCommands = new ArrayList<TaskCommand>();
 
 	public List<TaskAssigneeDefinition> getTaskAssignees() {
 		return taskAssignees;
@@ -51,11 +52,22 @@ public class TaskDefinition implements Serializable{
 		this.taskAssignees = taskAssignees;
 	}
 
-	public List<TaskCommandDefinition> getTaskCommands() {
+	public List<TaskCommand> getTaskCommands() {
 		return taskCommands;
 	}
 
-	public void setTaskCommands(List<TaskCommandDefinition> taskCommands) {
+	public TaskCommand getTaskCommand(String taskCommandId) {
+
+		for (TaskCommand taskCommand : taskCommands) {
+			if (taskCommand.getId().equals(taskCommandId)) {
+				return taskCommand;
+			}
+		}
+
+		return null;
+	}
+
+	public void setTaskCommands(List<TaskCommand> taskCommands) {
 		this.taskCommands = taskCommands;
 	}
 
@@ -74,5 +86,5 @@ public class TaskDefinition implements Serializable{
 	public void setAssigneeExpression(String assigneeExpression) {
 		this.assigneeExpression = assigneeExpression;
 	}
-	
+
 }

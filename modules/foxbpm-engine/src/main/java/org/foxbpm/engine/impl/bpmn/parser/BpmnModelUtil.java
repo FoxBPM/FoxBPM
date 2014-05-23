@@ -49,7 +49,7 @@ import org.foxbpm.model.bpmn.foxbpm.AssignPolicyType;
 import org.foxbpm.model.bpmn.foxbpm.FormUri;
 import org.foxbpm.model.bpmn.foxbpm.FormUriView;
 import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
-import org.foxbpm.model.bpmn.foxbpm.TaskCommand;
+import org.foxbpm.model.bpmn.foxbpm.TaskCommandModel;
 import org.foxbpm.model.bpmn.foxbpm.TaskPriority;
 import org.foxbpm.model.bpmn.foxbpm.TaskSubject;
 
@@ -195,9 +195,9 @@ public class BpmnModelUtil {
 	 */
 	public static List<TaskCommandDefinition> getUserTaskCommands(BaseElement baseElement){
 		List<TaskCommandDefinition> taskCommands = new ArrayList<TaskCommandDefinition>();
-		List<TaskCommand> taskCommandsObj  =BpmnModelUtil.getAll(TaskCommand.class, baseElement);
+		List<TaskCommandModel> taskCommandsObj  =BpmnModelUtil.getAll(TaskCommandModel.class, baseElement);
 		if(taskCommandsObj!=null){
-			for (TaskCommand tmpTaskCommand : taskCommandsObj) {
+			for (TaskCommandModel tmpTaskCommand : taskCommandsObj) {
 				TaskCommandDefinition taskCommandDefinition = new TaskCommandDefinition();
 				taskCommandDefinition.setCommandType(tmpTaskCommand.getCommandType());
 				taskCommandDefinition.setId(tmpTaskCommand.getId());

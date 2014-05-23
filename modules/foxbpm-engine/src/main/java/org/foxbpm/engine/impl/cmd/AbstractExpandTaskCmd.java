@@ -18,25 +18,25 @@
  */
 package org.foxbpm.engine.impl.cmd;
 
-import java.util.List;
+import java.io.Serializable;
 import java.util.Map;
 
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.command.AbstractCustomExpandTaskCommand;
 import org.foxbpm.engine.impl.command.ExpandTaskCommand;
-import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
-import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
-import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
-import org.foxbpm.engine.impl.persistence.ProcessInstanceManager;
-import org.foxbpm.engine.impl.persistence.TaskManager;
-import org.foxbpm.engine.runtime.ExecutionContext;
-import org.foxbpm.engine.task.Task;
+import org.foxbpm.engine.impl.task.TaskCommand;
+import org.foxbpm.engine.impl.task.TaskDefinition;
 
-public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCommand, T> implements Command<T> {
+
+public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCommand, T> implements Command<T>, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 任务编号
@@ -49,9 +49,9 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 	protected String commandType;
 
 	/**
-	 * 用户命令编号
+	 * 任务命令编号
 	 */
-	protected String userCommandId;
+	protected String taskCommandId;
 
 	/**
 	 * 任务意见
@@ -66,7 +66,7 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 	/**
 	 * 持久化流程实例变量Map
 	 */
-	protected Map<String, Object> variables = null;
+	protected Map<String, Object> persistenceVariables = null;
 
 	protected ExpandTaskCommand expandTaskCommand = null;
 
@@ -84,10 +84,10 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 
 		this.taskId = abstractCustomExpandTaskCommand.getExpandTaskCommand().getTaskId();
 		this.commandType = abstractCustomExpandTaskCommand.getExpandTaskCommand().getCommandType();
-		this.userCommandId = abstractCustomExpandTaskCommand.getExpandTaskCommand().getUserCommandId();
+		this.taskCommandId = abstractCustomExpandTaskCommand.getExpandTaskCommand().getTaskCommandId();
 		this.taskComment = abstractCustomExpandTaskCommand.getExpandTaskCommand().getTaskComment();
 		this.transientVariables = abstractCustomExpandTaskCommand.getExpandTaskCommand().getTransientVariables();
-		this.variables = abstractCustomExpandTaskCommand.getExpandTaskCommand().getVariables();
+		this.persistenceVariables = abstractCustomExpandTaskCommand.getExpandTaskCommand().getPersistenceVariables();
 		this.expandTaskCommand = abstractCustomExpandTaskCommand.getExpandTaskCommand();
 
 		this.initiator = abstractCustomExpandTaskCommand.getExpandTaskCommand().getInitiator();
@@ -97,175 +97,38 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 		this.admin = abstractCustomExpandTaskCommand.getExpandTaskCommand().getAdmin();
 	}
 
-	/**
-	 * 流程执行上下文对象
-	 */
-	protected ExecutionContext executionContextAbstract;
 
-	/**
-	 * 任务处理命名
-	 */
-	protected TaskCommandInst taskCommandInstAbstract;
+	public T execute(CommandContext commandContext) {
 
-	/**
-	 * 正在操作的任务的实体
-	 */
-	protected TaskEntity taskInstanceEntityAbstract;
-
-	/**
-	 * 流程实例
-	 */
-	protected ProcessInstanceEntity processInstanceAbstract;
-
-	/**
-	 * 加载流程相关参数
-	 */
-	protected void loadProcessParameter(CommandContext commandContext) {
-
-		if (this.taskId == null || this.taskId.equals("")) {
-			throw new FoxBPMIllegalArgumentException("任务编号为空！");
+		if (taskId == null) {
+			throw new FoxBPMIllegalArgumentException("taskId is null");
 		}
 
-		// 获取任务管理器
-		TaskManager taskManager = commandContext.getTaskManager();
-
-		// 获取任务管理器
-		ProcessInstanceManager processInstanceManager = commandContext.getProcessInstanceManager();
-
-		// 根据指定id查询出任务的TO 不能做改变操作
-		TaskEntity task = taskManager.findTaskById(taskId);
+		TaskEntity task = Context.getCommandContext().getTaskManager().findTaskById(taskId);
 
 		if (task == null) {
-			throw new FoxBPMObjectNotFoundException("未查询到指定的任务");
+			throw new FoxBPMObjectNotFoundException("Cannot find task with id " + taskId);
 		}
 
-		String processInstanceId = task.getProcessInstanceId();
-
-		String tokenId = task.getTokenId();
-
-		String nodeId = task.getNodeId();
-
-		this.processInstanceAbstract = processInstanceManager.findProcessInstanceById(processInstanceId);
-
-		TokenEntity tokenEntity = this.processInstanceAbstract.getTokenMap().get(tokenId);
-
-		this.executionContextAbstract = ProcessObjectFactory.FACTORYINSTANCE.createExecutionContext(tokenEntity);
-
-		ProcessDefinitionEntity processDefinition = this.processInstanceAbstract.getProcessDefinition();
-
-		// 获取任务所在节点对象
-		UserTaskBehavior userTask = (UserTaskBehavior) processDefinition.getDefinitions().getElement(nodeId);
-
-		String taskCommandTypeString = expandTaskCommand.getCommandType();
-
-		if (StringUtil.isNotEmpty(this.admin) && StringUtil.isEmpty(this.userCommandId) && StringUtil.isNotEmpty(taskCommandTypeString)) {
-
-			String taskCommandName = commandContext.getProcessEngineConfigurationImpl().getTaskCommandDefMap().get(taskCommandTypeString).getName();
-
-			this.taskCommandInstAbstract = new TaskCommandInst(taskCommandTypeString, taskCommandName, null, taskCommandTypeString, true);
-
-		} else {
-			this.taskCommandInstAbstract = userTask.getTaskCommandsMap().get(this.userCommandId);
+		if (task.isSuspended()) {
+			throw new FoxBPMException("task is suspended");
 		}
 
-		// 获取任务管理器
-		List<TaskInstanceEntity> taskInstances = this.processInstanceAbstract.getTaskMgmtInstance().getTaskInstanceEntitys();
-
-		for (TaskInstanceEntity taskInstance : taskInstances) {
-			if (taskInstance.getId().equals(this.taskId)) {
-
-				this.taskInstanceEntityAbstract = taskInstance;
-
-				break;
-			}
-		}
-
-		if (AbstractCommandFilter.isAutoClaim()) {
-			this.taskInstanceEntityAbstract.setAssignee(Authentication.getAuthenticatedUserId());
-		}
-		if (this.taskInstanceEntityAbstract.getAssignee() == null) {
-
-			if (StringUtil.isNotEmpty(this.admin)) {
-				this.taskInstanceEntityAbstract.setAssignee(this.admin);
-			} else {
-
-				if(this.taskCommandInstAbstract!=null&&this.taskCommandInstAbstract.getTaskCommandDefType()!=null){
-					if(!this.taskCommandInstAbstract.getTaskCommandDefType().equals("processInstanceInfo")){
-						throw new FixFlowException("任务 " + taskId + " 无代理人!");
-					}
-				}else{
-					throw new FixFlowException("任务 " + taskId + " 无代理人!");
-				}
-				
-			}
-
-		}
-
-		if (StringUtil.isNotEmpty(agent)) {
-			this.taskInstanceEntityAbstract.setAgent(Authentication.getAuthenticatedUserId());
-			if (StringUtil.isEmpty(this.taskInstanceEntityAbstract.getAssignee())) {
-				this.taskInstanceEntityAbstract.setAssignee(this.agent);
-			}
-
-		} else {
-			if (StringUtil.isEmpty(this.taskInstanceEntityAbstract.getAssignee())) {
-				this.taskInstanceEntityAbstract.setAssignee(Authentication.getAuthenticatedUserId());
-			}
-			this.taskInstanceEntityAbstract.setAgent(null);
-		}
-
-		if (StringUtil.isNotEmpty(admin)) {
-			this.taskInstanceEntityAbstract.setAdmin(admin);
-		}
-
-		this.executionContextAbstract.setTaskInstance(this.taskInstanceEntityAbstract);
-
+		return execute(commandContext, task);
 	}
 
-	protected void addVariable() {
-		// 放置当前点击的按钮ID
-		this.processInstanceAbstract.getContextInstance().addTransientVariable("fixVariable_userCommand", this.userCommandId);
-		// 放置持久化变量
-		this.processInstanceAbstract.getContextInstance().setVariableMap(this.variables);
-		// 放置瞬态变量
-		this.processInstanceAbstract.getContextInstance().setTransientVariableMap(this.transientVariables);
-	}
+	/** 子类需要实现这个方法 */
+	protected abstract T execute(CommandContext commandContext, TaskEntity task);
+	
+	/** 获取任务命令 */
+	protected TaskCommand getTaskCommand(TaskEntity task){
+		
+		TaskDefinition taskDefinition=task.getTaskDefinition();
+		
+		TaskCommand taskCommand=taskDefinition.getTaskCommand(taskCommandId);
+		
+		return taskCommand;
 
-	protected void runCommandExpression() {
-
-		this.executionContextAbstract.setTaskInstance(this.taskInstanceEntityAbstract);
-		if (this.taskCommandInstAbstract != null && this.taskCommandInstAbstract.getExpression() != null) {
-			try {
-
-				ExpressionMgmt.execute(this.taskCommandInstAbstract.getExpression(), this.executionContextAbstract);
-			} catch (Exception e) {
-				throw new FixFlowException("用户命令表达式执行异常!", e);
-			}
-		}
-	}
-
-	protected void saveProcessInstance(CommandContext commandContext) {
-		try {
-			commandContext.getProcessInstanceManager().saveProcessInstance(getProcessInstance());
-		} catch (Exception e) {
-			throw new FixFlowException("流程实例持久化失败!", e);
-		}
-	}
-
-	public ExecutionContext getExecutionContext() {
-		return executionContextAbstract;
-	}
-
-	public TaskCommandInst getTaskCommandInst() {
-		return taskCommandInstAbstract;
-	}
-
-	public TaskInstanceEntity getTaskInstanceEntity() {
-		return taskInstanceEntityAbstract;
-	}
-
-	public ProcessInstanceEntity getProcessInstance() {
-		return processInstanceAbstract;
 	}
 
 }
