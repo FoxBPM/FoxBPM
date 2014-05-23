@@ -17,7 +17,9 @@
  */
 package org.foxbpm.engine.impl.interceptor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
@@ -33,23 +35,28 @@ import org.foxbpm.engine.impl.persistence.TaskManager;
 import org.foxbpm.engine.impl.persistence.TokenManager;
 import org.foxbpm.engine.impl.persistence.VariableManager;
 import org.foxbpm.engine.sqlsession.ISqlSession;
+import org.foxbpm.engine.transaction.TransactionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author kenshin
  */
 public class CommandContext {
 
+	Logger log = LoggerFactory.getLogger(CommandContext.class);
 	protected Command<?> command;
 	protected Map<Class< ? >, SessionFactory> sessionFactories;
 	protected Map<Class< ? >, Session> sessions = new HashMap<Class< ? >, Session>();
-
+	protected TransactionContext transactionContext ;
+	protected List<Throwable> exception = null;
 	protected ProcessEngineConfigurationImpl processEngineConfigurationImpl;
 
 	public CommandContext(Command<?> command, ProcessEngineConfigurationImpl processEngineConfigurationImpl) {
 		this.command = command;
 		this.processEngineConfigurationImpl = processEngineConfigurationImpl;
 		sessionFactories = processEngineConfigurationImpl.getSessionFactories();
-
+		this.transactionContext = processEngineConfigurationImpl.getTransactionContextFactory().openTransactionContext(this);
 	}
 
 	public ProcessEngineConfigurationImpl getProcessEngineConfigurationImpl() {
@@ -126,16 +133,54 @@ public class CommandContext {
 	
 	public void close(){
 		try{
-			flushSession();
-		}finally{
-			for (Session session : sessions.values()) {
-				try {
-					session.close();
-				} catch (Throwable exception) {
-					//exception(exception);
+			try{
+				if(exception == null){
+					flushSession();
 				}
+			}catch(Exception ex){
+				exception(ex);
+			}finally{
+				
+				try {
+					if (exception == null) {
+						transactionContext.commit();
+					}
+				} catch (Throwable exception) {
+					exception(exception);
+				}
+				
+				if(exception != null){
+					transactionContext.rollback();
+				}
+			}
+		}catch(Exception ex){
+			exception(ex);
+		}finally{
+			closeSessions();
+		}
+		
+		if(exception != null){
+			for(Throwable e : exception){
+				log.error("执行command出错：" + command,e);
+			}
+		}
+		
+	}
+	
+	public void closeSessions(){
+		for (Session session : sessions.values()) {
+			try {
+				session.close();
+			} catch (Throwable exception) {
+				exception(exception);
 			}
 		}
 	}
-
+	
+	public void exception(Throwable e){
+		if(exception == null){
+			exception = new ArrayList<Throwable>();
+		}
+		exception.add(e);
+	}
 }

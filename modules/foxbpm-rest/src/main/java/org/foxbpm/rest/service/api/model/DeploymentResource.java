@@ -17,9 +17,41 @@
  */
 package org.foxbpm.rest.service.api.model;
 
+import java.io.InputStream;
+import java.util.zip.ZipInputStream;
+
+import org.foxbpm.engine.ModelService;
+import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.rest.common.api.AbstractRestResource;
+import org.foxbpm.rest.common.api.FoxBpmUtil;
+import org.restlet.data.Status;
+import org.restlet.representation.Representation;
+import org.restlet.resource.Put;
 
 public class DeploymentResource extends AbstractRestResource {
-
 	
+	@Put
+	public String update(Representation entity){
+		
+		String deploymentId = getAttribute("deploymentId");
+		InputStream input = null;
+		try {
+			input = entity.getStream();
+			if(input == null){
+				throw new FoxBPMIllegalArgumentException("请求中必须包含文件流inputStream");
+			}
+			ModelService modelService = FoxBpmUtil.getProcessEngine().getModelService();
+			ZipInputStream zip = new ZipInputStream(input);
+			modelService.updateByZip(deploymentId, zip);
+			setStatus(Status.SUCCESS_OK);
+		} catch (Exception e) {
+			if (e instanceof FoxBPMException) {
+				throw (FoxBPMException) e;
+			}
+			throw new FoxBPMException(e.getMessage(), e);
+		}
+		
+		return "SUCCESS";
+	}
 }

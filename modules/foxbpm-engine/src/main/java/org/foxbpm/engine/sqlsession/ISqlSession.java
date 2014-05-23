@@ -40,5 +40,10 @@ public interface ISqlSession {
 	public <T extends PersistentObject> T selectById(Class<T> entityClass, String id);
 	
 	public void flush();
+	
 	public void closeSession();
+	
+	public void commit();
+	
+	public void rollback();
 }

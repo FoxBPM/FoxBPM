@@ -20,26 +20,44 @@ package org.foxbpm.engine.impl.interceptor;
 
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author kenshin
  */
 public class CommandContextInterceptor extends CommandInterceptor {
 
-  protected CommandContextFactory commandContextFactory;
-  protected ProcessEngineConfigurationImpl processEngineConfiguration;
+	protected CommandContextFactory commandContextFactory;
+	protected ProcessEngineConfigurationImpl processEngineConfiguration;
 
-  public CommandContextInterceptor() {
-	  
-  }
+	private static Logger log = LoggerFactory.getLogger(CommandContextInterceptor.class);
+	
+	public CommandContextInterceptor() {
 
-  public CommandContextInterceptor(CommandContextFactory commandContextFactory, ProcessEngineConfigurationImpl processEngineConfiguration) {
-    this.commandContextFactory = commandContextFactory;
-    this.processEngineConfiguration = processEngineConfiguration;
-  }
+	}
 
-  public <T> T execute(Command<T> command) {
-		CommandContext context = commandContextFactory.createCommandContext(command);
+	public CommandContextInterceptor(CommandContextFactory commandContextFactory, ProcessEngineConfigurationImpl processEngineConfiguration) {
+		this.commandContextFactory = commandContextFactory;
+		this.processEngineConfiguration = processEngineConfiguration;
+	}
+
+	public <T> T execute(Command<T> command) {
+		
+		CommandContext context = Context.getCommandContext();
+	    
+		/*表示CommandContext是否复用，当已经存在commandContext时，此变量为true
+		  当cmd中嵌套调用cmd时，此变量为true，表示cmd中共享commandContext.
+		  只有最上层的cmd调用完毕时，此变量为false,关闭commandContext和变量管理器等。
+		*/
+	    boolean contextReused = false;
+	    if (context == null) { 
+	    	context = commandContextFactory.createCommandContext(command);    	
+	    }  
+	    else {
+	    	log.debug("CommandContext已经存在，共享此commandContext '{}'", command.getClass().getCanonicalName());
+	    	contextReused = true;
+	    }
 		try {
 			// Push on stack
 			Context.setCommandContext(context);
@@ -48,27 +66,31 @@ public class CommandContextInterceptor extends CommandInterceptor {
 
 		} finally {
 			try {
-				context.close();
+				if(!contextReused){
+					context.close();
+					//最后一次cmd调用结束，清空脚本管理器，放置内存泄露，线程副本中只会存在一个scriptMgmt，所以在最后一次关闭即可。
+					Context.removeAbstractScriptLanguageMgmt();
+				}
 			} finally {
 				Context.removeCommandContext();
 				Context.removeProcessEngineConfiguration();
 			}
 		}
-  }
-  
-  public CommandContextFactory getCommandContextFactory() {
-    return commandContextFactory;
-  }
-  
-  public void setCommandContextFactory(CommandContextFactory commandContextFactory) {
-    this.commandContextFactory = commandContextFactory;
-  }
+	}
 
-  public ProcessEngineConfigurationImpl getProcessEngineConfiguration() {
-    return processEngineConfiguration;
-  }
+	public CommandContextFactory getCommandContextFactory() {
+		return commandContextFactory;
+	}
 
-  public void setProcessEngineContext(ProcessEngineConfigurationImpl processEngineContext) {
-    this.processEngineConfiguration = processEngineContext;
-  }
+	public void setCommandContextFactory(CommandContextFactory commandContextFactory) {
+		this.commandContextFactory = commandContextFactory;
+	}
+
+	public ProcessEngineConfigurationImpl getProcessEngineConfiguration() {
+		return processEngineConfiguration;
+	}
+
+	public void setProcessEngineContext(ProcessEngineConfigurationImpl processEngineContext) {
+		this.processEngineConfiguration = processEngineContext;
+	}
 }
