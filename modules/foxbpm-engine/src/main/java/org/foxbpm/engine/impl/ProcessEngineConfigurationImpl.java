@@ -68,9 +68,11 @@ import org.foxbpm.engine.impl.persistence.TokenManager;
 import org.foxbpm.engine.impl.persistence.UserEntityManagerFactory;
 import org.foxbpm.engine.impl.persistence.deploy.Deployer;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
+import org.foxbpm.engine.impl.transaction.DefaultTransactionContextFactory;
 import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
+import org.foxbpm.engine.transaction.TransactionContextFactory;
 import org.foxbpm.model.config.foxbpmconfig.FoxBPMConfig;
 import org.foxbpm.model.config.foxbpmconfig.FoxBPMConfigPackage;
 import org.foxbpm.model.config.foxbpmconfig.ResourcePath;
@@ -107,7 +109,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected List<Deployer> deployers;
 	protected DeploymentManager deploymentManager;
 	protected Cache identityCache;
-	
+	protected TransactionContextFactory transactionContextFactory;
 	protected List<GroupDefinition> groupDefinitions;
 
 	public ProcessEngine buildProcessEngine() {
@@ -132,6 +134,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initCache();
 		// initDeployers();
 		initGroupDefinitions();
+		initTransactionContextFactory();
 		// initDbConfig();// dbType
 		// // 任务命令配置加载
 		// initTaskCommandConfig();
@@ -155,6 +158,12 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		// initAssignPolicyConfig();
 		// initThreadPool();
 
+	}
+	
+	public void initTransactionContextFactory(){
+		if(transactionContextFactory == null){
+			transactionContextFactory = new DefaultTransactionContextFactory();
+		}
 	}
 	
 	
@@ -356,10 +365,16 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	// Getter方法
 	
-	
-
 	public ModelService getModelService() {
 		return modelService;
+	}
+
+	public TransactionContextFactory getTransactionContextFactory() {
+		return transactionContextFactory;
+	}
+
+	public void setTransactionContextFactory(TransactionContextFactory transactionFactory) {
+		this.transactionContextFactory = transactionFactory;
 	}
 
 	public List<GroupDefinition> getGroupDefinitions() {

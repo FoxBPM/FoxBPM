@@ -25,7 +25,7 @@ public class ProcessDefinitionResponse {
 	private String name;
 	private String catory;
 	private String deploymentId;
-	private String processKey;
+	private String key;
 	public String getId() {
 		return id;
 	}
@@ -50,11 +50,11 @@ public class ProcessDefinitionResponse {
 	public void setDeploymentId(String deploymentId) {
 		this.deploymentId = deploymentId;
 	}
-	public String getProcessKey() {
-		return processKey;
+	public String getKey() {
+		return key;
 	}
-	public void setProcessKey(String processKey) {
-		this.processKey = processKey;
+	public void setKey(String processKey) {
+		this.key = processKey;
 	}
 	
 	public ProcessDefinitionResponse() {
@@ -66,6 +66,7 @@ public class ProcessDefinitionResponse {
 		setCatory(processDefinition.getCategory());
 		setDeploymentId(processDefinition.getDeploymentId());
 		setName(processDefinition.getName());
+		setKey(processDefinition.getKey());
 	}
 	
 }

@@ -282,6 +282,20 @@ public class MybatisSqlSession implements ISqlSession,Session {
 	}
 
 	public void close() {
-		
+		if(this.sqlSession != null){
+			this.sqlSession.close();
+		}
+	}
+	
+	public void commit(){
+		if(this.sqlSession != null){
+			this.sqlSession.commit();
+		}
+	}
+	
+	public void rollback(){
+		if(this.sqlSession != null){
+			this.sqlSession.rollback();
+		}
 	}
 }

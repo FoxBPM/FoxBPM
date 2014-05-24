@@ -32,7 +32,7 @@ public class RestServicesInit {
 
 	public static void attachResources(Router router){
 		router.attach("/model/deployments", DeploymentCollectionResource.class);
-	    router.attach("/model/deployments/{deploymentId}", DeploymentResource.class);
+	    router.attach("/model/deployment/{deploymentId}", DeploymentResource.class);
 	    router.attach("/process-definition/{processDefinitionId}", ProcessDefinitionResouce.class);
 	    router.attach("/process-definitions", ProcessDefinitionCollectionResouce.class);
 	    router.attach("/connectors", ConnectorsResource.class);

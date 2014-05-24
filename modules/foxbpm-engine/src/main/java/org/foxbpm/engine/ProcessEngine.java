@@ -104,12 +104,6 @@ public interface ProcessEngine {
 	void setExternalContent(ExternalContent externalContent);
 	
 	/**
-	 * 清除线程副本中的对象、脚本引擎对象
-	 * 不关闭数据库链接
-	 */
-	void contextClose(boolean threadLocalContext,boolean connection);
-	
-	/**
 	 * 获取流程引擎配置
 	 * @return
 	 */

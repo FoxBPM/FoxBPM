@@ -132,16 +132,4 @@ public class ProcessEngineImpl implements ProcessEngine {
 		ProcessEngineManagement.unregister(this);
 	}
 
-	public void contextClose(boolean threadLocalContext, boolean connection) {
-		if (threadLocalContext) {
-			Context.removeCommandContext();
-			Context.removeProcessEngineConfiguration();
-//			Context.removeAbstractScriptLanguageMgmt();
-//			Context.removeLanguageType();
-//			Context.removeQuartzTransactionAutoThreadLocal();
-//			Context.removeConnectionManagement();
-		}
-
-	}
-
 }

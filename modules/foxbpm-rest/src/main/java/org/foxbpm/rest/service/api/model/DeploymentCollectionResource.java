@@ -18,13 +18,11 @@
 package org.foxbpm.rest.service.api.model;
 
 import java.io.InputStream;
-import java.sql.SQLException;
 import java.util.zip.ZipInputStream;
 
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
-import org.foxbpm.engine.impl.util.DBUtils;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
 import org.restlet.data.Status;
@@ -56,15 +54,7 @@ public class DeploymentCollectionResource extends AbstractRestResource {
 				throw (FoxBPMException) e;
 			}
 			throw new FoxBPMException(e.getMessage(), e);
-		}finally{
-			FoxBpmUtil.getProcessEngine().contextClose(true, false);
-			try {
-				DBUtils.getConnection().close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
+		}		
 		return "success";
 	}
 }

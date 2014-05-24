@@ -72,21 +72,23 @@ public class Context {
 	public static AbstractScriptLanguageMgmt getAbstractScriptLanguageMgmt() {
 		Stack<AbstractScriptLanguageMgmt> stack = getStack(abstractScriptLanguageMgmtThreadLocal);
 		if (stack.isEmpty()) {
-
 			AbstractScriptLanguageMgmt abstractScriptLanguageMgmt = null;
-//			ScriptLanguageConfig scriptLanguageConfig = getProcessEngineConfiguration().getScriptLanguageConfig();
-//			for (ScriptLanguage scriptLanguage : scriptLanguageConfig.getScriptLanguage()) {
-//				if (scriptLanguage.getId().equals(scriptLanguageConfig.getSelected())) {
-//					abstractScriptLanguageMgmt = (AbstractScriptLanguageMgmt) ReflectUtil.instantiate(scriptLanguage.getClassImpl());
-//					break;
-//				}
-//			}
 			abstractScriptLanguageMgmt = new GroovyScriptLanguageMgmtImpl();
 			Context.setAbstractScriptLanguageMgmt(abstractScriptLanguageMgmt.init());
-
 			return abstractScriptLanguageMgmt;
 		}
 		return stack.peek();
+	}
+	
+	public static void removeAbstractScriptLanguageMgmt() {
+		Stack<AbstractScriptLanguageMgmt> stack = getStack(abstractScriptLanguageMgmtThreadLocal);
+		if (!stack.isEmpty()) {
+			AbstractScriptLanguageMgmt scriptManagement = stack.pop();
+			if(scriptManagement != null){
+				scriptManagement.close();
+			}
+		}
+		stack.clear();
 	}
 
 	public static void setAbstractScriptLanguageMgmt(AbstractScriptLanguageMgmt abstractScriptLanguageMgmt) {
