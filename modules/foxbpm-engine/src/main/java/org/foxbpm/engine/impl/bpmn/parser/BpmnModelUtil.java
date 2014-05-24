@@ -43,6 +43,7 @@ import org.eclipse.emf.ecore.impl.EStructuralFeatureImpl.SimpleFeatureMapEntry;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.task.TaskAssigneeDefinition;
+import org.foxbpm.engine.impl.task.TaskCommand;
 import org.foxbpm.engine.impl.task.TaskCommandDefinition;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.model.bpmn.foxbpm.AssignPolicyType;
@@ -193,18 +194,15 @@ public class BpmnModelUtil {
 	 * @param baseElement
 	 * @return
 	 */
-	public static List<TaskCommandDefinition> getUserTaskCommands(BaseElement baseElement){
-		List<TaskCommandDefinition> taskCommands = new ArrayList<TaskCommandDefinition>();
+	public static List<TaskCommand> getUserTaskCommands(BaseElement baseElement){
+		List<TaskCommand> taskCommands = new ArrayList<TaskCommand>();
 		List<TaskCommandModel> taskCommandsObj  =BpmnModelUtil.getAll(TaskCommandModel.class, baseElement);
 		if(taskCommandsObj!=null){
 			for (TaskCommandModel tmpTaskCommand : taskCommandsObj) {
-				TaskCommandDefinition taskCommandDefinition = new TaskCommandDefinition();
+				TaskCommand taskCommandDefinition = new TaskCommand();
 				taskCommandDefinition.setCommandType(tmpTaskCommand.getCommandType());
 				taskCommandDefinition.setId(tmpTaskCommand.getId());
 				taskCommandDefinition.setName(tmpTaskCommand.getName());
-				taskCommandDefinition.setVerification(StringUtil.getBoolean(tmpTaskCommand.getIsVerification()));
-				taskCommandDefinition.setSaveData(StringUtil.getBoolean(tmpTaskCommand.getIsSaveData()));
-				taskCommandDefinition.setSaveData(StringUtil.getBoolean(tmpTaskCommand.getIsSimulationRun()));
 				org.foxbpm.model.bpmn.foxbpm.Expression expression =  tmpTaskCommand.getExpression();
 				if(expression != null){
 					taskCommandDefinition.setExpression(expression.getValue());

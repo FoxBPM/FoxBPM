@@ -20,73 +20,73 @@ package org.foxbpm.engine.impl.task;
 
 public class TaskCommandDefinition {
 
-	private String id;
-	private String name;
-	private String commandType;
-	private boolean isVerification;
-	private boolean isSaveData;
-	private boolean isSimulationRun;
-	private String expression;
-	private String paraExpression;
-	
-	public TaskCommandDefinition() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	
+	protected String id;
+
+	protected String name;
+
+	protected String command;
+
+	protected String cmd;
+
+	protected String filter;
+
+	protected String isEnabled;
+
+	protected String type;
+
 	public String getId() {
 		return id;
 	}
+
 	public void setId(String id) {
 		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getCommandType() {
-		return commandType;
-	}
-	public void setCommandType(String commandType) {
-		this.commandType = commandType;
-	}
-	public boolean isVerification() {
-		return isVerification;
-	}
-	public void setVerification(boolean isVerification) {
-		this.isVerification = isVerification;
-	}
-	public boolean isSaveData() {
-		return isSaveData;
-	}
-	public void setSaveData(boolean isSaveData) {
-		this.isSaveData = isSaveData;
-	}
-	public boolean isSimulationRun() {
-		return isSimulationRun;
-	}
-	public void setSimulationRun(boolean isSimulationRun) {
-		this.isSimulationRun = isSimulationRun;
+
+	public String getCommand() {
+		return command;
 	}
 
-	public String getExpression() {
-		return expression;
+	public void setCommand(String command) {
+		this.command = command;
 	}
 
-	public void setExpression(String expression) {
-		this.expression = expression;
+	public String getCmd() {
+		return cmd;
 	}
 
-	public String getParaExpression() {
-		return paraExpression;
+	public void setCmd(String cmd) {
+		this.cmd = cmd;
 	}
 
-	public void setParaExpression(String paraExpression) {
-		this.paraExpression = paraExpression;
+	public String getFilter() {
+		return filter;
 	}
-	
-	
-	
+
+	public void setFilter(String filter) {
+		this.filter = filter;
+	}
+
+	public String getIsEnabled() {
+		return isEnabled;
+	}
+
+	public void setIsEnabled(String isEnabled) {
+		this.isEnabled = isEnabled;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }

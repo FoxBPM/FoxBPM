@@ -21,6 +21,7 @@ package org.foxbpm.engine;
 import java.util.Collection;
 import java.util.Map;
 
+import org.foxbpm.engine.impl.command.ExpandTaskCommand;
 import org.foxbpm.engine.query.NativeTaskQuery;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskQuery;
@@ -54,6 +55,16 @@ public interface TaskService {
 	void complete(String taskId);
 	
 	void complete(String taskId,Map<String, Object> transientVariables,Map<String, Object> persistenceVariables);
+	
+	/**
+	 * 自定义扩展方式完成任务的处理命令调用的方法
+	 * 
+	 * @param expandTaskCommand
+	 * @param classReturn
+	 * @return
+	 */
+	<T> T expandTaskComplete(ExpandTaskCommand expandTaskCommand, T classReturn);
+	
 
 	void delegateTask(String taskId, String userId);
 
