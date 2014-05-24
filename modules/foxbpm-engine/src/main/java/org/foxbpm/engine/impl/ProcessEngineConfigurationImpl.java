@@ -168,7 +168,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected void initTaskCommandConfig() {
 		this.taskCommandConfig = foxBpmConfig.getTaskCommandConfig();
 		taskCommandDefinitionMap = new HashMap<String, TaskCommandDefinition>();
-		for (TaskCommandDefinition taskCommandDef : taskCommandConfig.getTaskCommandDefinitions()) {
+		for (TaskCommandDefinition taskCommandDef : taskCommandConfig.getTaskCommandDefinition()) {
 			String id = taskCommandDef.getId();
 			taskCommandDefinitionMap.put(id, taskCommandDef);
 		}
