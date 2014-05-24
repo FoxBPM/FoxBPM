@@ -48,11 +48,10 @@ import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.entity.VariableInstanceEntity;
 import org.foxbpm.engine.impl.interceptor.Session;
-import org.foxbpm.engine.impl.interceptor.SessionFactory;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 
-public class MyBatisSqlSessionFactory implements ISqlSessionFactory,SessionFactory {
+public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 
 	private SqlSessionFactory sqlSessionFactory;
 	

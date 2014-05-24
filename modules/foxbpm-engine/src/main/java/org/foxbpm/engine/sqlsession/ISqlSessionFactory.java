@@ -19,7 +19,9 @@ package org.foxbpm.engine.sqlsession;
 
 import javax.sql.DataSource;
 
-public interface ISqlSessionFactory {
+import org.foxbpm.engine.impl.interceptor.SessionFactory;
+
+public interface ISqlSessionFactory extends SessionFactory{
 	
 	public void init(DataSource datasource);
 	
