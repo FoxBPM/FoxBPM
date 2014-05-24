@@ -15,22 +15,16 @@
  * 
  * @author ych
  */
-package org.foxbpm.rest.service.api.connector;
+package org.foxbpm.rest.service.api.config;
 
-import java.io.InputStream;
-import org.foxbpm.rest.common.api.AbstractRestResource;
-import org.restlet.resource.Get;
+import java.util.zip.ZipOutputStream;
 
 /**
- * connectors 连接器资源管理
- * 用来向设计器返回所有连接器的压缩包
+ * zip文件生成器
+ * 用来向zipInputStream中增加zipEntry
  * @author ych
  *
  */
-public class ConnectorsResource extends AbstractRestResource {
-	@Get
-	public InputStream  getConnectors(){
-		InputStream input = this.getClass().getClassLoader().getResourceAsStream(ConnectorService.fileName);
-		return input;
-	}
+public interface IZipGenerator {
+	public void generate(ZipOutputStream out);
 }

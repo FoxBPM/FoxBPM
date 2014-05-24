@@ -15,11 +15,9 @@
  * 
  * @author ych
  */
-package org.foxbpm.rest.service.api.connector;
+package org.foxbpm.rest.service.api.config;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.JarURLConnection;
 import java.net.URL;
@@ -31,37 +29,30 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 连接器管理服务
- * 用来创建连接器资源文件的压缩包，供设计器请求返回
+ * 连接器zip文件生成器
+ * 解析foxbpm.cfg.xml中配置的连接器包，扫描包下所有非java文件
+ * 最终为flowResouce/connector/flowconnector结构
+ * 用来给设计器同步connector配置用
  * @author ych
  *
  */
-public class ConnectorService {
-	public static Logger log = LoggerFactory.getLogger(ConnectorService.class);
-	public static final String fileName = "tmpConnectorZipFile.zip";
-	
-	public static void genarateConnectorZipFile(){
-		ZipOutputStream out = null;
-		log.info("开始生成connector的临时文件...");
+public class ConnectorGenerator implements IZipGenerator {
+
+	Logger log = LoggerFactory.getLogger(ConnectorGenerator.class);
+	public void generate(ZipOutputStream out) {
+		
 		try{
-			String systemPath = ConnectorService.class.getResource("/").getPath();
-			String tmpFilePath = systemPath + File.separator + fileName;
 			Map<String,String> pathMap = new HashMap<String,String>();
-			pathMap.put("flow", "org/foxbpm/connector");
-			pathMap.put("conf", "config");
-			File outFile = new File(tmpFilePath);
-			if(outFile.exists()){
-				outFile.delete();
-			}
-			FileOutputStream fileOutStream = new FileOutputStream(outFile);
-			out = new ZipOutputStream(fileOutStream);
+			pathMap.put("OA", "org/foxbpm/connector");
+			pathMap.put("ERP", "config");
 			for(String key : pathMap.keySet()){
 				String dirPath = pathMap.get(key);
-				URL url = ConnectorService.class.getClassLoader().getResource(dirPath);
+				URL url = this.getClass().getClassLoader().getResource(dirPath);
 				if(url == null){
 					log.warn("位置:" + dirPath + " 不存在，跳过不处理");
 					continue;
@@ -80,7 +71,7 @@ public class ConnectorService {
 					if(name.startsWith(dirPath) && !entry.isDirectory() && !name.endsWith(".class")){
 						int size = 1024;
 						InputStream is = jarFile.getInputStream(entry);
-						String tmpEntryName = key + File.separator + name.substring(dirPath.length()+1);
+						String tmpEntryName = "connector" + File.separator + key + File.separator + name.substring(dirPath.length()+1);
 						ZipEntry zipEntry = new ZipEntry(tmpEntryName);
 						zipEntry.setMethod(ZipEntry.DEFLATED);// 设置条目的压缩方式
 						out.putNextEntry(zipEntry);
@@ -97,16 +88,8 @@ public class ConnectorService {
 			}
 			log.info("成功生成connector临时文件...");
 		}catch(Exception ex){
-			log.error("生成connector失败", ex);
-		}finally{
-			if(out != null){
-				try {
-					out.close();
-				} catch (IOException e) {
-					log.error("IO关闭失败", e);
-				}
-			}
+			log.error("转换connector时出错",ex);
+			throw new FoxBPMException("转换connector时出错", ex);
 		}
 	}
-
 }
