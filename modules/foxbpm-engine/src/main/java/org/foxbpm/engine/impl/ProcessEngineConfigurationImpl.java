@@ -77,6 +77,8 @@ import org.foxbpm.model.config.foxbpmconfig.FoxBPMConfig;
 import org.foxbpm.model.config.foxbpmconfig.FoxBPMConfigPackage;
 import org.foxbpm.model.config.foxbpmconfig.ResourcePath;
 import org.foxbpm.model.config.foxbpmconfig.ResourcePathConfig;
+import org.foxbpm.model.config.foxbpmconfig.TaskCommandConfig;
+import org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -111,7 +113,13 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected Cache identityCache;
 	protected TransactionContextFactory transactionContextFactory;
 	protected List<GroupDefinition> groupDefinitions;
+	
+	
+	protected TaskCommandConfig taskCommandConfig;
 
+	protected Map<String, TaskCommandDefinition> taskCommandDefinitionMap;
+
+	
 	public ProcessEngine buildProcessEngine() {
 		init();
 		return new ProcessEngineImpl(this);
@@ -134,7 +142,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initTransactionContextFactory();
 		// initDbConfig();// dbType
 		// // 任务命令配置加载
-		// initTaskCommandConfig();
+		initTaskCommandConfig();
 		//
 		// initImportDataVariableConfig();
 		//
@@ -157,14 +165,23 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	}
 	
-	public void initTransactionContextFactory(){
+	protected void initTaskCommandConfig() {
+		this.taskCommandConfig = foxBpmConfig.getTaskCommandConfig();
+		taskCommandDefinitionMap = new HashMap<String, TaskCommandDefinition>();
+		for (TaskCommandDefinition taskCommandDef : taskCommandConfig.getTaskCommandDefinitions()) {
+			String id = taskCommandDef.getId();
+			taskCommandDefinitionMap.put(id, taskCommandDef);
+		}
+	}
+
+	protected void initTransactionContextFactory(){
 		if(transactionContextFactory == null){
 			transactionContextFactory = new DefaultTransactionContextFactory();
 		}
 	}
 	
 	
-	public void initGroupDefinitions(){
+	protected void initGroupDefinitions(){
 		if(groupDefinitions == null){
 			groupDefinitions = new ArrayList<GroupDefinition>();
 			groupDefinitions.add(new GroupDeptImpl());
@@ -172,7 +189,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		}
 	}
 	
-	public void initCache(){
+	protected void initCache(){
 		identityCache = new DefaultCache();
 	}
 	
@@ -430,4 +447,15 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	public void setDeploymentManager(DeploymentManager deploymentManager) {
 		this.deploymentManager = deploymentManager;
 	}
+	
+	public Map<String, TaskCommandDefinition> getTaskCommandDefinitionMap() {
+		return taskCommandDefinitionMap;
+	}
+	
+	public TaskCommandDefinition getTaskCommandDefinition(String taskCommandDefinitionId) {
+		return taskCommandDefinitionMap.get(taskCommandDefinitionId);
+	}
+
+
+
 }

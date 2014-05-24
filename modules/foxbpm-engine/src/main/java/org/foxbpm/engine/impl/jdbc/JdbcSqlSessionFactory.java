@@ -43,16 +43,17 @@ public class JdbcSqlSessionFactory implements ISqlSessionFactory {
 		}
 		return new JdbcSqlSession();
 	}
-	
-	@Override
+
 	public Class<?> getSessionType() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	@Override
+
 	public Session openSession() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
+
 }

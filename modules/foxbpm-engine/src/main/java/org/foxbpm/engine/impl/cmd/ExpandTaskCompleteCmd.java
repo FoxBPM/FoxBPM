@@ -1,16 +1,15 @@
 package org.foxbpm.engine.impl.cmd;
 
-import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.command.AbstractCustomExpandTaskCommand;
 import org.foxbpm.engine.impl.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
-import org.foxbpm.engine.impl.task.TaskCommandDefinition;
 import org.foxbpm.engine.impl.util.ReflectUtil;
+import org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition;
 
-public class ExpandTaskCompleteCmd <A extends AbstractCustomExpandTaskCommand,T> implements Command<T>{
+public class ExpandTaskCompleteCmd<T> implements Command<T>{
 
 	protected ExpandTaskCommand expandTaskCommand;
 	
@@ -19,6 +18,8 @@ public class ExpandTaskCompleteCmd <A extends AbstractCustomExpandTaskCommand,T>
 	}
 	
 	
+
+	@SuppressWarnings("unchecked")
 	public T execute(CommandContext commandContext) {
 		
 		if(Authentication.getAuthenticatedUserId()==null||Authentication.getAuthenticatedUserId().equals("")){
@@ -28,29 +29,29 @@ public class ExpandTaskCompleteCmd <A extends AbstractCustomExpandTaskCommand,T>
 		Object[] obj = new Object[] {expandTaskCommand};  
 		
 		
-		TaskCommandDefinition taskCommandDef= commandContext.getProcessEngineConfigurationImpl().getTaskCommandDefMap().get(this.expandTaskCommand.getCommandType());
+		TaskCommandDefinition taskCommandDef= commandContext.getProcessEngineConfigurationImpl().getTaskCommandDefinition(this.expandTaskCommand.getCommandType());
 		if(taskCommandDef!=null){
 			String classNameString=taskCommandDef.getCmd();
 			if(classNameString==null||classNameString.equals("")){
-				throw new FixFlowException("配置文件中ID为 "+this.expandTaskCommand.getCommandType() + " 的扩展配置cmd属性不能为空!");
+				throw new FoxBPMException("配置文件中ID为 "+this.expandTaskCommand.getCommandType() + " 的扩展配置cmd属性不能为空!");
 			}
 			
 			String commandClassNameString=taskCommandDef.getCommand();
 			if(commandClassNameString==null||commandClassNameString.equals("")){
-				throw new FixFlowException("配置文件中ID为 "+this.expandTaskCommand.getCommandType() + " 的扩展配置command属性不能为空!");
+				throw new FoxBPMException("配置文件中ID为 "+this.expandTaskCommand.getCommandType() + " 的扩展配置command属性不能为空!");
 			}
 			
 			//commandClassNameString
 			AbstractCustomExpandTaskCommand abstractCustomExpandTaskCommand=(AbstractCustomExpandTaskCommand)ReflectUtil.instantiate(commandClassNameString, obj);
 			
 			Object[] objTemp = new Object[] {abstractCustomExpandTaskCommand};  
-			@SuppressWarnings("unchecked")
-			AbstractExpandTaskCmd<A,T> abstractExpandTaskCmd=(AbstractExpandTaskCmd<A,T>)ReflectUtil.instantiate(classNameString, objTemp);
+			@SuppressWarnings("rawtypes")
+			AbstractExpandTaskCmd abstractExpandTaskCmd=(AbstractExpandTaskCmd)ReflectUtil.instantiate(classNameString, objTemp);
 			return (T) abstractExpandTaskCmd.execute(commandContext);
 			
 		}
 		else{
-			throw new FixFlowException("配置文件中不存在ID为 "+this.expandTaskCommand.getCommandType() + " 的扩展配置.");
+			throw new FoxBPMException("配置文件中不存在ID为 "+this.expandTaskCommand.getCommandType() + " 的扩展配置.");
 		}
 	
 

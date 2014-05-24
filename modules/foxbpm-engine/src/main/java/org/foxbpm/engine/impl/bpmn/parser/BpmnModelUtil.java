@@ -44,13 +44,11 @@ import org.eclipse.emf.ecore.util.FeatureMap;
 import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.task.TaskAssigneeDefinition;
 import org.foxbpm.engine.impl.task.TaskCommand;
-import org.foxbpm.engine.impl.task.TaskCommandDefinition;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.model.bpmn.foxbpm.AssignPolicyType;
 import org.foxbpm.model.bpmn.foxbpm.FormUri;
 import org.foxbpm.model.bpmn.foxbpm.FormUriView;
 import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
-import org.foxbpm.model.bpmn.foxbpm.TaskCommandModel;
 import org.foxbpm.model.bpmn.foxbpm.TaskPriority;
 import org.foxbpm.model.bpmn.foxbpm.TaskSubject;
 
@@ -196,24 +194,24 @@ public class BpmnModelUtil {
 	 */
 	public static List<TaskCommand> getUserTaskCommands(BaseElement baseElement){
 		List<TaskCommand> taskCommands = new ArrayList<TaskCommand>();
-		List<TaskCommandModel> taskCommandsObj  =BpmnModelUtil.getAll(TaskCommandModel.class, baseElement);
-		if(taskCommandsObj!=null){
-			for (TaskCommandModel tmpTaskCommand : taskCommandsObj) {
-				TaskCommand taskCommandDefinition = new TaskCommand();
-				taskCommandDefinition.setCommandType(tmpTaskCommand.getCommandType());
-				taskCommandDefinition.setId(tmpTaskCommand.getId());
-				taskCommandDefinition.setName(tmpTaskCommand.getName());
-				org.foxbpm.model.bpmn.foxbpm.Expression expression =  tmpTaskCommand.getExpression();
-				if(expression != null){
-					taskCommandDefinition.setExpression(expression.getValue());
-				}
-				expression =  tmpTaskCommand.getParameterExpression();
-				if(expression != null){
-					taskCommandDefinition.setParaExpression(expression.getValue());
-				}
-				taskCommands.add(taskCommandDefinition);
-			}
-		}
+//		List<TaskCommandModel> taskCommandsObj  =BpmnModelUtil.getAll(TaskCommandModel.class, baseElement);
+//		if(taskCommandsObj!=null){
+//			for (TaskCommandModel tmpTaskCommand : taskCommandsObj) {
+//				TaskCommand taskCommandDefinition = new TaskCommand();
+//				taskCommandDefinition.setCommandType(tmpTaskCommand.getCommandType());
+//				taskCommandDefinition.setId(tmpTaskCommand.getId());
+//				taskCommandDefinition.setName(tmpTaskCommand.getName());
+//				org.foxbpm.model.bpmn.foxbpm.Expression expression =  tmpTaskCommand.getExpression();
+//				if(expression != null){
+//					taskCommandDefinition.setExpression(expression.getValue());
+//				}
+//				expression =  tmpTaskCommand.getParameterExpression();
+//				if(expression != null){
+//					taskCommandDefinition.setParaExpression(expression.getValue());
+//				}
+//				taskCommands.add(taskCommandDefinition);
+//			}
+//		}
 		return taskCommands;
 	}
 	
