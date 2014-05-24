@@ -21,7 +21,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 public class TaskCommand implements Serializable {
 
@@ -34,9 +36,9 @@ public class TaskCommand implements Serializable {
 
 	protected String name;
 
-	protected String expression;
+	protected Expression expression;
 
-	protected String expressionParam;
+	protected Expression expressionParam;
 
 	protected String taskCommandType;
 
@@ -54,11 +56,15 @@ public class TaskCommand implements Serializable {
 		return name;
 	}
 
-	public String getExpression() {
+	public Expression getExpression() {
 		return expression;
 	}
+	
+	public Object getExpressionValue(FlowNodeExecutionContext executionContext) {
+		return expression.getValue(executionContext);
+	}
 
-	public String getExpressionParam() {
+	public Expression getExpressionParam() {
 		return expressionParam;
 	}
 

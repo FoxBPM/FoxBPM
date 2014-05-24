@@ -174,7 +174,7 @@ public class Connector implements KernelListener {
 				
 				
 				
-				Object timeExpressionObj = skipExpression.getValue(executionContext);
+				Object timeExpressionObj = skipExpression.getValue((FlowNodeExecutionContext)executionContext);
 				if (StringUtil.getBoolean(timeExpressionObj)) {
 					return;
 				}
@@ -200,7 +200,7 @@ public class Connector implements KernelListener {
 					
 					if (!connectorParameterInputs.getExpression().isNullText()&&connectorParameterInputs.isExecute()) {
 						Object arg[] = new Object[1];
-						arg[0] = connectorParameterInputs.getExpression().getValue(executionContext);
+						arg[0] = connectorParameterInputs.getExpression().getValue((FlowNodeExecutionContext)executionContext);
 						m.invoke(connectorInstance, arg);
 					}
 				}

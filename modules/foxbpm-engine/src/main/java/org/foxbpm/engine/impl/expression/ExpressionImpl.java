@@ -2,6 +2,7 @@ package org.foxbpm.engine.impl.expression;
 
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.KernelVariableScope;
 
 public class ExpressionImpl implements Expression {
@@ -14,9 +15,9 @@ public class ExpressionImpl implements Expression {
 		this.expressionText=expressionText;
 	}
 
-	public Object getValue(KernelVariableScope variableScope) {
+	public Object getValue(FlowNodeExecutionContext executionContext) {
 		if(StringUtil.isNotEmpty(expressionText)){
-			return ExpressionMgmt.execute(expressionText,variableScope);
+			return ExpressionMgmt.execute(expressionText,executionContext);
 		}
 		return null;
 	}

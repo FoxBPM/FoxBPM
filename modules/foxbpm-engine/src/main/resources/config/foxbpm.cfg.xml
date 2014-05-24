@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <foxbpmconfig:FoxBPMConfig xmlns:foxbpmconfig="http://www.foxbpm.org/foxbpmconfig">
-  <resourcePathConfig>
-    <resourcePath id="internationalization" name="国际化资源文件位置" src="扯淡"/>
-      <resourcePath id="OAcon" name="国际化资源文件位置" src="扯淡"/>
-      <resourcePath id="ERPCon" name="国际化资源文件位置" src="org/foxbpm/connector"/>
-  </resourcePathConfig>
-  
-  <connectionManagementConfig selected="General">
-    <connectionManagement id="General" name="通用连接管理" classImpl="com.founder.fix.fixflow.expand.database.GeneralConnectionManagement"/>
-  </connectionManagementConfig>
+	<resourcePathConfig>
+		<resourcePath id="internationalization" name="国际化资源文件位置"
+			src="扯淡" />
+		<resourcePath id="OAcon" name="国际化资源文件位置" src="扯淡" />
+		<resourcePath id="ERPCon" name="国际化资源文件位置" src="org/foxbpm/connector" />
+	</resourcePathConfig>
+
+	<taskCommandConfig>
+
+		<taskCommandDefinition id="general" name="通用"
+			isEnabled="true" type="toDoTasks"
+			command="org.foxbpm.engine.impl.command.GeneralTaskCommand" cmd="org.foxbpm.engine.impl.cmd.CompleteGeneralTaskCmd"
+			filter="org.foxbpm.engine.impl.filter.CompleteGeneralTaskFilter" />
+		<taskCommandDefinition id="processStatus" name="流程状态"
+			isEnabled="true" type="all" />
+
+	</taskCommandConfig>
+
+	<connectionManagementConfig selected="General">
+		<connectionManagement id="General" name="通用连接管理"
+			classImpl="com.founder.fix.fixflow.expand.database.GeneralConnectionManagement" />
+	</connectionManagementConfig>
 </foxbpmconfig:FoxBPMConfig>

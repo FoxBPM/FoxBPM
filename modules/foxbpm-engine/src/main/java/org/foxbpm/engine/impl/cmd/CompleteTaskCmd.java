@@ -40,7 +40,7 @@ public class CompleteTaskCmd extends NeedsActiveTaskCmd<Void> {
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
 		
 		if (transientVariables != null) {
-			task.setProcessInstanceVariables(transientVariables);
+			task.setProcessInstanceTransientVariables(transientVariables);
 		}
 
 		task.complete();

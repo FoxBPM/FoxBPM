@@ -19,7 +19,7 @@ package org.foxbpm.engine.expression;
 
 import java.io.Serializable;
 
-import org.foxbpm.kernel.runtime.KernelVariableScope;
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 /**
  * @author kenshin
@@ -27,7 +27,7 @@ import org.foxbpm.kernel.runtime.KernelVariableScope;
  */
 public interface Expression extends Serializable {
 
-	   Object getValue(KernelVariableScope variableScope);
+	   Object getValue(FlowNodeExecutionContext executionContext);
 	   
 	   String getExpressionText();
 	   

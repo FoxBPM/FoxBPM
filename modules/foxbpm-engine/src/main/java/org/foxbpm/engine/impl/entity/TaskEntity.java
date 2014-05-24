@@ -724,7 +724,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		return null;
 	}
 	
-	public void setProcessInstanceVariables(Map<String, Object> parameters) {
+	public void setProcessInstanceTransientVariables(Map<String, Object> parameters) {
 		if (getProcessInstance() != null) {
 			if (parameters == null) {
 				return;
@@ -734,6 +734,10 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 				ExpressionMgmt.setVariable(mapKey, parameters.get(mapKey));
 			}
 		}
+	}
+	
+	public void setProcessInstancePersistenceVariablesVariables(Map<String, Object> parameters) {
+		throw new FoxBPMException("未实现");
 	}
 
 
@@ -770,6 +774,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		}
 	}
 	
+
 	
 	public Map<String, Object> getPersistentState() {
 		

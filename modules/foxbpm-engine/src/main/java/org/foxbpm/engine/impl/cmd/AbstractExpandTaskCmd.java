@@ -32,6 +32,7 @@ import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.task.TaskCommand;
 import org.foxbpm.engine.impl.task.TaskDefinition;
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 
 public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCommand, T> implements Command<T>, Serializable {
@@ -130,5 +131,11 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 		return taskCommand;
 
 	}
+	
+	protected FlowNodeExecutionContext getExecutionContext(TaskEntity task){
+		return (FlowNodeExecutionContext)task.getToken();
+	}
+	
+	
 
 }
