@@ -121,18 +121,15 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initExceptionResource();
 		initEmfFile();
 		initResourcePathConfig();
-		// initDataVariableConfig();
 		initDataSourceManage();
-//		initSqlSessionFactory();
+		initSqlSessionFactory();
 		initCommandContextFactory();
 		initCommandExecutors();
 		initServices();
 		
 		initSessionFactories();
 		initDeployers();
-		// initDataBaseTable();
 		initCache();
-		// initDeployers();
 		initGroupDefinitions();
 		initTransactionContextFactory();
 		// initDbConfig();// dbType
@@ -182,8 +179,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected void initSessionFactories(){
 		if (sessionFactories == null) {
 			sessionFactories = new HashMap<Class<?>, SessionFactory>();
-			MyBatisSqlSessionFactory sqlSessionFactory = new MyBatisSqlSessionFactory();
-			sqlSessionFactory.init(dataSourceManage.getDataSource());
 			addSessionFactory(sqlSessionFactory);
 			addSessionFactory(new GenericManagerFactory(TaskManager.class));
 			addSessionFactory(new GenericManagerFactory(ProcessInstanceManager.class));
