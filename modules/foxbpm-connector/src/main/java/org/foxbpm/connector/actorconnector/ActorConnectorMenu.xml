@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<connectormenu:Menu xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:connectormenu="http://www.founderfix.com/connectormenu">
+<connectormenu:Menu xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:connectormenu="http://www.foxbpm.org/connectormenu">
   <node id="71e8d50f-5d55-4b03-88b0-dbe37bc8fedf" name="流程处理者" ico="group_16.png">
     <menuConnector id="InitiatorActorConnector" name="发起人" note="流程第一步提交数据的人"/>
     <menuConnector id="AllUserActorConnector" name="所有人" note="系统里的全部用户"/>

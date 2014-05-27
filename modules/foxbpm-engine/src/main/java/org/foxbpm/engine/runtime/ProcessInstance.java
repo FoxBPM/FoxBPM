@@ -22,12 +22,28 @@ import java.util.Map;
 
 public interface ProcessInstance {
 
+	/**
+	 * 获取流程实例 编号
+	 * @return
+	 */
 	String getId();
 	
+	/**
+	 * 判断实例是否结束
+	 * @return
+	 */
 	boolean isEnd();
 
+	/**
+	 * 获取流程定义编号
+	 * @return
+	 */
 	String getProcessDefinitionId();
 	
+	/**
+	 * 获取流程定义名称
+	 * @return
+	 */
 	String getProcessDefinitionName();
 	
 	/**
