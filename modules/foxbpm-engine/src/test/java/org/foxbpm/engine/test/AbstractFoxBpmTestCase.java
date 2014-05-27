@@ -52,7 +52,7 @@ public abstract class AbstractFoxBpmTestCase extends TestCase {
 				try {
 					
 					execute();
-//					processEngine.getProcessEngineConfiguration().getDataSourceManage().getDataSource().getConnection().rollback();
+					processEngine.getProcessEngineConfiguration().getDataSourceManage().getDataSource().getConnection().rollback();
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
