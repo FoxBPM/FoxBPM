@@ -23,9 +23,11 @@ import java.util.Map;
 
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
+import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
-public class TaskCommand implements Serializable {
+
+public class TaskCommandImpl implements Serializable,TaskCommand {
 
 	/**
 	 * 
@@ -45,6 +47,8 @@ public class TaskCommand implements Serializable {
 	protected UserTaskBehavior userTask;
 
 	protected String taskCommandDefType;
+	
+
 	
 	
 	

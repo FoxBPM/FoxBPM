@@ -3,8 +3,8 @@ package org.foxbpm.engine.impl.task.cmd;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
-import org.foxbpm.engine.impl.task.TaskCommand;
 import org.foxbpm.engine.impl.task.command.GeneralTaskCommand;
+import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 public class CompleteGeneralTaskCmd extends AbstractExpandTaskCmd<GeneralTaskCommand, Void> {

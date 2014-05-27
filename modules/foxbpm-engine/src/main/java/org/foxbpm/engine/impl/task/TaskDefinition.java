@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.foxbpm.engine.impl.connector.Connector;
+import org.foxbpm.engine.task.TaskCommand;
 
 public class TaskDefinition implements Serializable {
 
@@ -37,7 +38,17 @@ public class TaskDefinition implements Serializable {
 
 	private String assigneeExpression;
 	
+	private boolean isAutoClaim;
 	
+	
+	public boolean isAutoClaim() {
+		return isAutoClaim;
+	}
+
+	public void setAutoClaim(boolean isAutoClaim) {
+		this.isAutoClaim = isAutoClaim;
+	}
+
 	protected List<Connector> actorConnectors=new ArrayList<Connector>();
 
 	

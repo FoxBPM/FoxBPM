@@ -17,8 +17,8 @@
  */
 package org.foxbpm.engine.impl.task.filter;
 
-import org.foxbpm.engine.impl.task.TaskCommand;
 import org.foxbpm.engine.task.Task;
+import org.foxbpm.engine.task.TaskCommand;
 
 
 public abstract class AbstractCommandFilter {

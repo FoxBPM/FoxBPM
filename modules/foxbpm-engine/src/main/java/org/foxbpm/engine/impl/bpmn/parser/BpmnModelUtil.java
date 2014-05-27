@@ -43,8 +43,8 @@ import org.eclipse.emf.ecore.impl.EStructuralFeatureImpl.SimpleFeatureMapEntry;
 import org.eclipse.emf.ecore.util.FeatureMap;
 import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.task.TaskAssigneeDefinition;
-import org.foxbpm.engine.impl.task.TaskCommand;
 import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.model.bpmn.foxbpm.AssignPolicyType;
 import org.foxbpm.model.bpmn.foxbpm.FormUri;
 import org.foxbpm.model.bpmn.foxbpm.FormUriView;
@@ -58,6 +58,11 @@ public class BpmnModelUtil {
 	/** 获取流程的唯一编号*/
 	public static String getProcessId(Process process){
 		return StringUtil.getString(getExtensionAttribute(process,FoxBPMPackage.Literals.DOCUMENT_ROOT__DBID));
+	}
+	
+	/** 获取任务领取方式*/
+	public static boolean isAutoClaim(UserTask userTask){
+		return StringUtil.getBoolean(getExtensionAttribute(userTask,FoxBPMPackage.Literals.DOCUMENT_ROOT__IS_AUTO_CLAIM));
 	}
 	
 	/** 获取流程的分类*/

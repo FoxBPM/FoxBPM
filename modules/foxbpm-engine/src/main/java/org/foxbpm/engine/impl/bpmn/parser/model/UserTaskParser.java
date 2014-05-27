@@ -21,6 +21,7 @@ import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.UserTask;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
+import org.foxbpm.engine.impl.bpmn.parser.BpmnModelUtil;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 
 
@@ -50,12 +51,20 @@ public class UserTaskParser extends TaskParser {
 		TaskDefinition taskDefinition=new TaskDefinition();
 		
 		
+		
+		
 		UserTask userTask=(UserTask)baseElement;
+		
+		boolean isAutoClaim=BpmnModelUtil.isAutoClaim(userTask);
+		taskDefinition.setAutoClaim(isAutoClaim);
+		
 		if(userTask.getResources().size()>0){
 			taskDefinition.getActorConnectors().addAll(parserConnector(userTask.getResources().get(0), "actorConnector"));
 			
 		}
 		userTaskBehavior.setTaskDefinition(taskDefinition);
+		
+		
 		/*String subject = BpmnModelUtil.getUserTaskSubject(baseElement);
 		String formUri = BpmnModelUtil.getFormUri(baseElement);
 		String formUriView = BpmnModelUtil.getFormUriView(baseElement);

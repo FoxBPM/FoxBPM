@@ -28,10 +28,10 @@ import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
-import org.foxbpm.engine.impl.task.TaskCommand;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.task.command.AbstractCustomExpandTaskCommand;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
+import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 
