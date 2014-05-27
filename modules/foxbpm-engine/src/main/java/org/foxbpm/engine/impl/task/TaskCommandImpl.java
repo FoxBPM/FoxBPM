@@ -36,6 +36,7 @@ public class TaskCommandImpl implements Serializable,TaskCommand {
 
 	protected String id;
 
+
 	protected String name;
 
 	protected Expression expression;
@@ -82,6 +83,35 @@ public class TaskCommandImpl implements Serializable,TaskCommand {
 
 	public String getTaskCommandDefType() {
 		return taskCommandDefType;
+	}
+	
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setExpression(Expression expression) {
+		this.expression = expression;
+	}
+
+	public void setExpressionParam(Expression expressionParam) {
+		this.expressionParam = expressionParam;
+	}
+
+	public void setTaskCommandType(String taskCommandType) {
+		this.taskCommandType = taskCommandType;
+	}
+
+	public void setUserTask(UserTaskBehavior userTask) {
+		this.userTask = userTask;
+	}
+
+	public void setTaskCommandDefType(String taskCommandDefType) {
+		this.taskCommandDefType = taskCommandDefType;
 	}
 
 	public Map<String, Object> getPersistentState() {

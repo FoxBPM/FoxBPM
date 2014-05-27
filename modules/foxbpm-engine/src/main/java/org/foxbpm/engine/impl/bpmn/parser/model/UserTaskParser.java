@@ -17,13 +17,19 @@
  */
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
+import java.util.List;
+
 import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.UserTask;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
+import org.foxbpm.engine.impl.expression.ExpressionImpl;
+import org.foxbpm.engine.impl.task.TaskCommandImpl;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.util.BpmnModelUtil;
+import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
+
 
 
 /**
@@ -50,11 +56,31 @@ public class UserTaskParser extends TaskParser {
 		UserTaskBehavior userTaskBehavior=(UserTaskBehavior)baseElementBehavior;
 		
 		TaskDefinition taskDefinition=new TaskDefinition();
-		
-		
-		
-		
 		UserTask userTask=(UserTask)baseElement;
+		List<org.foxbpm.model.bpmn.foxbpm.TaskCommand> taskCommandsObj  =BpmnModelUtil.getExtensionElementList(org.foxbpm.model.bpmn.foxbpm.TaskCommand.class,userTask,FoxBPMPackage.Literals.DOCUMENT_ROOT__TASK_COMMAND);
+		
+		if(taskCommandsObj!=null){
+			for (org.foxbpm.model.bpmn.foxbpm.TaskCommand taskCommand : taskCommandsObj) {
+				
+				TaskCommandImpl taskCommandNew=new TaskCommandImpl();
+				
+				taskCommandNew.setId(taskCommand.getId());
+				taskCommandNew.setName(taskCommand.getName());
+				taskCommandNew.setTaskCommandDefType(null);
+				taskCommandNew.setTaskCommandType(taskCommand.getCommandType());
+				taskCommandNew.setUserTask(userTaskBehavior);
+				if(taskCommand.getExpression()!=null){
+					taskCommandNew.setExpression(new ExpressionImpl(taskCommand.getExpression().getValue()));
+				}
+				
+				taskDefinition.getTaskCommands().add(taskCommandNew);
+
+			}
+		}
+		
+		
+		
+		
 		
 		boolean isAutoClaim=BpmnModelUtil.isAutoClaim(userTask);
 		taskDefinition.setAutoClaim(isAutoClaim);
