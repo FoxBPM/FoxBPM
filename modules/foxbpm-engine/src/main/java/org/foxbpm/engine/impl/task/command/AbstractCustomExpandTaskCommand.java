@@ -16,7 +16,7 @@
  * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.impl.command;
+package org.foxbpm.engine.impl.task.command;
 
 
 public abstract class AbstractCustomExpandTaskCommand {

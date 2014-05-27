@@ -1,11 +1,11 @@
-package org.foxbpm.engine.impl.cmd;
+package org.foxbpm.engine.impl.task.cmd;
 
 import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.impl.command.AbstractCustomExpandTaskCommand;
-import org.foxbpm.engine.impl.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.task.command.AbstractCustomExpandTaskCommand;
+import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition;
 

@@ -16,7 +16,7 @@
  * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.impl.command;
+package org.foxbpm.engine.impl.task.command;
 
 /**
  * 任务处理命令参数基类

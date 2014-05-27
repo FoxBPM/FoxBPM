@@ -11,8 +11,8 @@
 
 		<taskCommandDefinition id="general"
 			name="通用" isEnabled="true" type="toDoTasks"
-			command="org.foxbpm.engine.impl.command.GeneralTaskCommand" cmd="org.foxbpm.engine.impl.cmd.CompleteGeneralTaskCmd"
-			filter="org.foxbpm.engine.impl.filter.CompleteGeneralTaskFilter" />
+			command="org.foxbpm.engine.impl.task.command.GeneralTaskCommand" cmd="org.foxbpm.engine.impl.task.cmd.CompleteGeneralTaskCmd"
+			filter="org.foxbpm.engine.impl.task.filter.CompleteGeneralTaskFilter" />
 		<taskCommandDefinition id="processStatus"
 			name="流程状态" isEnabled="true" type="all" />
 
