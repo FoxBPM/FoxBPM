@@ -1,4 +1,4 @@
-package org.foxbpm.engine.impl.command;
+package org.foxbpm.engine.impl.task.command;
 
 public class GeneralTaskCommand  extends AbstractCustomExpandTaskCommand {
 	

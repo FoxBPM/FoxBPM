@@ -24,13 +24,12 @@ import java.util.Map;
 
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.impl.cmd.CompleteTaskCmd;
-import org.foxbpm.engine.impl.cmd.ExpandTaskCompleteCmd;
 import org.foxbpm.engine.impl.cmd.FindTaskCmd;
-import org.foxbpm.engine.impl.command.AbstractCustomExpandTaskCommand;
-import org.foxbpm.engine.impl.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.query.NativeTaskQueryImpl;
 import org.foxbpm.engine.impl.task.TaskCommand;
 import org.foxbpm.engine.impl.task.TaskQueryImpl;
+import org.foxbpm.engine.impl.task.cmd.ExpandTaskCompleteCmd;
+import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.query.NativeTaskQuery;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskQuery;

@@ -16,7 +16,7 @@
  * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.impl.cmd;
+package org.foxbpm.engine.impl.task.cmd;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -25,13 +25,13 @@ import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
 import org.foxbpm.engine.impl.Context;
-import org.foxbpm.engine.impl.command.AbstractCustomExpandTaskCommand;
-import org.foxbpm.engine.impl.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.task.TaskCommand;
 import org.foxbpm.engine.impl.task.TaskDefinition;
+import org.foxbpm.engine.impl.task.command.AbstractCustomExpandTaskCommand;
+import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 
