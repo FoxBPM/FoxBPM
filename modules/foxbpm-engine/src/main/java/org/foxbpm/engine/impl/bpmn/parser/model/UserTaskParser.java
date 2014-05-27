@@ -92,7 +92,7 @@ public class UserTaskParser extends TaskParser {
 		userTaskBehavior.setTaskDefinition(taskDefinition);
 		
 		ProcessDefinitionEntity processDefinition=(ProcessDefinitionEntity)getFlowElementsContainer();
-		processDefinition.getTaskDefinitions().put(userTaskBehavior.getId(), taskDefinition);
+		processDefinition.getTaskDefinitions().put(userTask.getId(), taskDefinition);
 		
 		/*String subject = BpmnModelUtil.getUserTaskSubject(baseElement);
 		String formUri = BpmnModelUtil.getFormUri(baseElement);

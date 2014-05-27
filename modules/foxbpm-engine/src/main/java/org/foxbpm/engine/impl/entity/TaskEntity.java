@@ -230,9 +230,8 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	protected void ensureProcessDefinitionInitialized() {
 
 		if (processDefinition == null && processDefinitionId != null) {
-			ProcessDefinitionEntity processDefinition = Context.getCommandContext().
-					getProcessDefinitionManager().
-					findProcessDefinitionById(processDefinitionId);
+			ProcessDefinitionEntity processDefinition = Context.getProcessEngineConfiguration().
+					getDeploymentManager().findDeployedProcessDefinitionById(processDefinitionId);
 			setProcessDefinition(processDefinition);
 		}
 		

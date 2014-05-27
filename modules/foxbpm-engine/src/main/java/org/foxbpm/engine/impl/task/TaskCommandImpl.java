@@ -66,7 +66,11 @@ public class TaskCommandImpl implements Serializable,TaskCommand {
 	}
 	
 	public Object getExpressionValue(FlowNodeExecutionContext executionContext) {
-		return expression.getValue(executionContext);
+		
+		if(expression!=null){
+			return expression.getValue(executionContext);
+		}
+		return null;
 	}
 
 	public Expression getExpressionParam() {
