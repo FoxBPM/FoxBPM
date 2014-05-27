@@ -29,6 +29,7 @@ import org.foxbpm.engine.impl.connector.ConnectorOutputParam;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.util.BpmnModelUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.kernel.process.impl.KernelFlowElementsContainerImpl;
 import org.foxbpm.model.bpmn.foxbpm.ConnectorInstance;
 import org.foxbpm.model.bpmn.foxbpm.ConnectorInstanceElements;
 import org.foxbpm.model.bpmn.foxbpm.ConnectorParameterInput;
@@ -37,6 +38,10 @@ import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
 
 public class BaseElementParser {
 	
+	protected KernelFlowElementsContainerImpl  flowElementsContainer;
+
+
+
 	protected BaseElementBehavior baseElementBehavior;
 
 
@@ -143,6 +148,15 @@ public class BaseElementParser {
 	
 	public void init(){
 		baseElementBehavior = new BaseElementBehavior();
+	}
+	
+	
+	public KernelFlowElementsContainerImpl getFlowElementsContainer() {
+		return flowElementsContainer;
+	}
+
+	public void setFlowElementsContainer(KernelFlowElementsContainerImpl flowElementsContainer) {
+		this.flowElementsContainer = flowElementsContainer;
 	}
 
 }

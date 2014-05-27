@@ -34,6 +34,8 @@ import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 public class ProcessDefinitionBuilder {
 
 	protected KernelProcessDefinitionImpl processDefinition;
+	
+
 	protected Stack<KernelFlowElementsContainerImpl> containerStack = new Stack<KernelFlowElementsContainerImpl>();
 	protected KernelBaseElementImpl processElement = processDefinition;
 	protected KernelSequenceFlowImpl sequenceFlow;
@@ -157,6 +159,10 @@ public class ProcessDefinitionBuilder {
 			throw new KernelException("必须是个 containerStack ");
 		}
 		return this;
+	}
+	
+	public KernelProcessDefinitionImpl getProcessDefinition() {
+		return processDefinition;
 	}
 	
 }

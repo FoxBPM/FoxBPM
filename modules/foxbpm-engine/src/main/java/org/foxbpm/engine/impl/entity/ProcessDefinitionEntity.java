@@ -24,6 +24,7 @@ import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtDefinition;
+import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.kernel.process.KernelDefinitions;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
@@ -52,7 +53,17 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 	
 	protected DataVariableMgmtDefinition dataVariableMgmtDefinition;
 	
+	protected Map<String, TaskDefinition> taskDefinitions=new HashMap<String, TaskDefinition>();
 	
+	
+	public Map<String, TaskDefinition> getTaskDefinitions() {
+		return taskDefinitions;
+	}
+
+	public void setTaskDefinitions(Map<String, TaskDefinition> taskDefinitions) {
+		this.taskDefinitions = taskDefinitions;
+	}
+
 	public ProcessDefinitionEntity() {
 		super(null);
 

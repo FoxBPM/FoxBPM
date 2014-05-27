@@ -21,6 +21,7 @@ import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.UserTask;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
+import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.util.BpmnModelUtil;
 
@@ -64,6 +65,8 @@ public class UserTaskParser extends TaskParser {
 		}
 		userTaskBehavior.setTaskDefinition(taskDefinition);
 		
+		ProcessDefinitionEntity processDefinition=(ProcessDefinitionEntity)getFlowElementsContainer();
+		processDefinition.getTaskDefinitions().put(userTaskBehavior.getId(), taskDefinition);
 		
 		/*String subject = BpmnModelUtil.getUserTaskSubject(baseElement);
 		String formUri = BpmnModelUtil.getFormUri(baseElement);

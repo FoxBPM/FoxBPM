@@ -17,6 +17,7 @@ import org.foxbpm.engine.impl.bpmn.parser.model.StartEventParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.UserTaskParser;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
+import org.foxbpm.kernel.process.impl.KernelFlowElementsContainerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +34,7 @@ public class BpmnBehaviorEMFConverter {
 		elementParserMap.put(EndEventImpl.class, EndEventParser.class);
 	}
 
-	public static KernelFlowNodeBehavior getFlowNodeBehavior(BaseElement baseElement) {
+	public static KernelFlowNodeBehavior getFlowNodeBehavior(BaseElement baseElement,KernelFlowElementsContainerImpl  flowElementsContainer) {
 		Class<? extends BaseElementParser> baseParserClass = elementParserMap.get(baseElement.getClass());
 		if(baseParserClass != null){
 			BaseElementParser parser = null;
@@ -44,6 +45,7 @@ public class BpmnBehaviorEMFConverter {
 			}
 			if(parser != null){
 				parser.init();
+				parser.setFlowElementsContainer(flowElementsContainer);
 				BaseElementBehavior baseElementBehavior=parser.parser(baseElement);
 				if(baseElementBehavior instanceof KernelFlowNodeBehavior){
 					return (KernelFlowNodeBehavior)baseElementBehavior;
