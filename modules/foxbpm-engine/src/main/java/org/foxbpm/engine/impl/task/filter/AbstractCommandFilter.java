@@ -17,6 +17,8 @@
  */
 package org.foxbpm.engine.impl.task.filter;
 
+import org.foxbpm.engine.impl.entity.TaskEntity;
+import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskCommand;
 
@@ -71,17 +73,14 @@ public abstract class AbstractCommandFilter {
 	 * 判断是否是自动领取
 	 * @return
 	 */
-	public static boolean isAutoClaim(){
-		return getCommandType().equals(AUTO_CLAIM);
+	public static boolean isAutoClaim(Task task){
+		
+		TaskEntity taskEntity=(TaskEntity)(task);
+		TaskDefinition taskDefinition=taskEntity.getTaskDefinition();
+		return taskDefinition.isAutoClaim();
+
 	}
 	
-	/**
-	 * 判断是否是手动领取
-	 * @return
-	 */
-	public static boolean isManualClaim(){
-		return getCommandType().equals(MANUAL_CLAIM);
-	}
 	
 	public abstract boolean accept(Task task);
 	
