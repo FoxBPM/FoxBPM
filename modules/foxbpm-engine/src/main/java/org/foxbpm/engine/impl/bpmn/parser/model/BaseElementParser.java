@@ -23,11 +23,11 @@ import java.util.List;
 
 import org.eclipse.bpmn2.BaseElement;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
-import org.foxbpm.engine.impl.bpmn.parser.BpmnModelUtil;
 import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.connector.ConnectorInputParam;
 import org.foxbpm.engine.impl.connector.ConnectorOutputParam;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
+import org.foxbpm.engine.impl.util.BpmnModelUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.model.bpmn.foxbpm.ConnectorInstance;
 import org.foxbpm.model.bpmn.foxbpm.ConnectorInstanceElements;

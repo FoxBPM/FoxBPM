@@ -18,9 +18,9 @@
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
 import org.eclipse.bpmn2.BaseElement;
-import org.foxbpm.engine.impl.bpmn.parser.BpmnModelUtil;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.SequenceFlowBehavior;
+import org.foxbpm.engine.impl.util.BpmnModelUtil;
 
 /**
  * 线条转换器

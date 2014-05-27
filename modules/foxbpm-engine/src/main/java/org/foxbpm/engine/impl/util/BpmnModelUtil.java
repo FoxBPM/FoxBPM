@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.engine.impl.bpmn.parser;
+package org.foxbpm.engine.impl.util;
 
 import java.util.ArrayList;
 import java.util.List;
