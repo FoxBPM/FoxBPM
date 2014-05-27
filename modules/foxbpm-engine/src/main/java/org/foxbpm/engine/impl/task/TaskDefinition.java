@@ -30,6 +30,8 @@ public class TaskDefinition implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1357653109003002722L;
+	
+	private String id;
 
 	/**
 	 * 任务分配策略
@@ -112,5 +114,15 @@ public class TaskDefinition implements Serializable {
 	public void setAssigneeExpression(String assigneeExpression) {
 		this.assigneeExpression = assigneeExpression;
 	}
+	
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 
 }

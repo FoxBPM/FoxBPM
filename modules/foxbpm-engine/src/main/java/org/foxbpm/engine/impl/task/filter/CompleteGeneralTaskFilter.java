@@ -51,7 +51,7 @@ public class CompleteGeneralTaskFilter extends AbstractCommandFilter {
 			
 		}
 		else{
-			if(isAutoClaim()){
+			if(isAutoClaim(task)){
 				return true;
 			}else{
 				return false;

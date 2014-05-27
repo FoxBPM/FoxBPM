@@ -47,9 +47,14 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	protected String processDefinitionId;
 
 	protected String processDefinitionKey;
+	
+	protected ProcessDefinitionEntity processDefinition;
+
+	
 
 	protected String processDefinitionName;
 
+	
 	protected int version;
 
 	protected String tokenId;
@@ -221,7 +226,44 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		setProcessInstance(token.getProcessInstance());
 		this.token = token;
 	}
+	
+	protected void ensureProcessDefinitionInitialized() {
 
+		if (processDefinition == null && processDefinitionId != null) {
+			ProcessDefinitionEntity processDefinition = Context.getCommandContext().
+					getProcessDefinitionManager().
+					findProcessDefinitionById(processDefinitionId);
+			setProcessDefinition(processDefinition);
+		}
+		
+	}
+	
+	public ProcessDefinitionEntity getProcessDefinition() {
+		ensureProcessDefinitionInitialized();
+		return processDefinition;
+	}
+	
+	public void setProcessDefinition(ProcessDefinitionEntity processDefinition) {
+		if(processDefinition!=null){
+			processDefinitionId=processDefinition.getId();
+			processDefinitionKey=processDefinition.getKey();
+		}
+		this.processDefinition = processDefinition;
+	}
+
+
+	protected void ensureNodeInitialized() {
+		
+		ensureProcessDefinitionInitialized();
+		
+		if (node == null && nodeId != null&& processDefinition!=null) {
+			KernelFlowNode flowNode=processDefinition.findFlowNode(nodeId);
+			if(flowNode!=null){
+				setNode(flowNode);
+			}
+		}
+	}
+	
 	public KernelFlowNode getNode() {
 		return node;
 	}
@@ -232,6 +274,11 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	}
 
 	public TaskDefinition getTaskDefinition() {
+		ensureProcessDefinitionInitialized();
+		if(processDefinition!=null&&taskDefinition!=null&&nodeId!=null){
+			TaskDefinition taskDefinition=processDefinition.getTaskDefinitions().get(nodeId);
+			setTaskDefinition(taskDefinition);
+		}
 		return taskDefinition;
 	}
 

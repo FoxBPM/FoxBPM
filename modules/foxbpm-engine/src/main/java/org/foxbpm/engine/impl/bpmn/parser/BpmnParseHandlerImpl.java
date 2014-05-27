@@ -56,7 +56,6 @@ import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
 public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 
 	public KernelProcessDefinition createProcessDefinition(String processId, Object processFile) {
-		InputStream is = this.getClass().getClassLoader().getResourceAsStream("process_test222.bpmn");
 		Process process = null;
 		if (processFile != null) {
 			process = createProcess(processId, (InputStream)processFile);
@@ -87,7 +86,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		List<FlowElement> flowElements=process.getFlowElements();
 		ProcessDefinitionBuilder processDefinitionBuilder = new ProcessDefinitionEntityBuilder(processObjId);
 		for(FlowElement flowElement :flowElements){
-			KernelFlowNodeBehavior flowNodeBehavior = BpmnBehaviorEMFConverter.getFlowNodeBehavior(flowElement);
+			KernelFlowNodeBehavior flowNodeBehavior = BpmnBehaviorEMFConverter.getFlowNodeBehavior(flowElement,processDefinitionBuilder.getProcessDefinition());
 			if(flowElement instanceof FlowNode){
 				processDefinitionBuilder.createFlowNode(flowElement.getId()).behavior(flowNodeBehavior);
 				
