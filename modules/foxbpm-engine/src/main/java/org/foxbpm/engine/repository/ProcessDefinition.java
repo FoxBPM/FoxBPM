@@ -17,33 +17,76 @@
  */
 package org.foxbpm.engine.repository;
 
-
 /**
  * @author kenshin
  * 
  */
 public interface ProcessDefinition {
 
+	/**
+	 * 获取流程定义编号
+	 * @return
+	 */
 	String getId();
 
+	/**
+	 * 获取流程分类
+	 * @return
+	 */
 	String getCategory();
 
+	/**
+	 * 获取流程定义名称
+	 * @return
+	 */
 	String getName();
 
+	/**
+	 * 获取流程定义key
+	 * @return
+	 */
 	String getKey();
 
+	/**
+	 * 获取流程定义描述
+	 * @return
+	 */
 	String getDescription();
 
+	/**
+	 * 获取流程定义版本
+	 * @return
+	 */
 	int getVersion();
 
+	/**
+	 * 获取流程定义文件名称，结合deploymentId可以查出对应的Stream流文件
+	 * @return
+	 */
 	String getResourceName();
 
+	/**
+	 * 获取流程发布号
+	 * @return
+	 */
 	String getDeploymentId();
 
+	/**
+	 * 获取流程图名称，结合deploymentId可以查出对应的Stream流文件
+	 * @return
+	 */
 	String getDiagramResourceName();
-
+	
+	/**
+	 * 判断流程定义是否存在开始表单
+	 * @return
+	 */
 	boolean hasStartFormKey();
 
+	/**
+	 * 判断流程定义是否暂停
+	 * @return
+	 */
 	boolean isSuspended();
 
 }

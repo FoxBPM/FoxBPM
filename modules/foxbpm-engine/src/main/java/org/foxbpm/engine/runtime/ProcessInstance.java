@@ -17,6 +17,9 @@
  */
 package org.foxbpm.engine.runtime;
 
+import java.util.Date;
+import java.util.Map;
+
 public interface ProcessInstance {
 
 	String getId();
@@ -26,4 +29,80 @@ public interface ProcessInstance {
 	String getProcessDefinitionId();
 	
 	String getProcessDefinitionName();
+	
+	/**
+	 * 获取流程主题
+	 * @return
+	 */
+	String getSubject();
+	
+	/**
+	 * 获取流程定义key
+	 * @return
+	 */
+	String getProcessDefinitionKey();
+	
+	/**
+	 * 获取流程启动人
+	 * 正常人工启动时此属性和initator一致
+	 * 定时启动任务，此属性可能不一致
+	 * @return
+	 */
+	String getStartAuthor();
+	
+	/**
+	 * 获取流程的提交人
+	 * @return
+	 */
+	String getInitiator();
+	
+	/**
+	 * 获取流程开始时间
+	 * @return
+	 */
+	Date getStartTime();
+	
+	/**
+	 * 获取流程结束时间
+	 * @return
+	 */
+	Date getEndTime();
+	
+	/**
+	 * 获取流程上次更新时间
+	 * @return
+	 */
+	Date getUpdateTime();
+	
+	/**
+	 * 获取流程状态
+	 * 详见ProcessInstanceStatus
+	 * running，suspend，termination，complete
+	 * @return
+	 */
+	String getInstanceStatus();
+	
+	/**
+	 * 获取流程实例当前所在位置，如果多个节点，则以逗号分隔
+	 * @return
+	 */
+	String getProcessLocation();
+	
+	/**
+	 * 判断流程是否暂停
+	 * @return
+	 */
+	boolean isSuspended();
+	
+	/**
+	 * 获取流程关联键
+	 * @return
+	 */
+	String getBizKey();
+	
+	/**
+	 * 获取实体属性map
+	 * @return
+	 */
+	Map<String, Object> getPersistentState();
 }
