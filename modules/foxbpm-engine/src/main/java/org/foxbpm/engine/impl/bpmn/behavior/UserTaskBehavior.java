@@ -69,6 +69,10 @@ public class UserTaskBehavior extends TaskBehavior {
 		
 		task.setAutoClaim(taskDefinition.isAutoClaim());
 		
+		task.setNodeId(getId());
+		
+		task.setNodeName(getName());
+		
 		((TokenEntity)executionContext).setAssignTask(task);
 		
 		ProcessInstanceEntity processInstance=(ProcessInstanceEntity) executionContext.getProcessInstance();

@@ -275,7 +275,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 
 	public TaskDefinition getTaskDefinition() {
 		ensureProcessDefinitionInitialized();
-		if(processDefinition!=null&&taskDefinition!=null&&nodeId!=null){
+		if(processDefinition!=null&&taskDefinition==null&&nodeId!=null){
 			TaskDefinition taskDefinition=processDefinition.getTaskDefinitions().get(nodeId);
 			setTaskDefinition(taskDefinition);
 		}
