@@ -144,4 +144,10 @@ public interface Task{
 	 * @return
 	 */
 	Map<String, Object> getPersistentState();
+
+	boolean isSuspended(); 
+
+	boolean hasEnded();
+
+	Object getDelegationState();
 }

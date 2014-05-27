@@ -24,4 +24,6 @@ public interface ProcessInstance {
 	boolean isEnd();
 
 	String getProcessDefinitionId();
+	
+	String getProcessDefinitionName();
 }

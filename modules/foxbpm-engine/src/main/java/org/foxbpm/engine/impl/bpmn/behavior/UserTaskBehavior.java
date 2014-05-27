@@ -18,9 +18,6 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
@@ -61,16 +58,7 @@ public class UserTaskBehavior extends TaskBehavior {
 	
 	private String taskPriority;
 	
-	protected List<Connector> actorConnectors=new ArrayList<Connector>();
 
-	
-	public List<Connector> getActorConnectors() {
-		return actorConnectors;
-	}
-
-	public void setActorConnectors(List<Connector> actorConnectors) {
-		this.actorConnectors = actorConnectors;
-	}
 
 	@Override
 	public void execute(FlowNodeExecutionContext executionContext) {
@@ -88,7 +76,7 @@ public class UserTaskBehavior extends TaskBehavior {
 		task.setToken((TokenEntity)executionContext);
 		task.setTaskType(TaskType.FOXBPMTASK);
 		
-		for (Connector connector : getActorConnectors()) {
+		for (Connector connector : taskDefinition.getActorConnectors()) {
 			try {
 				connector.notify((ListenerExecutionContext)executionContext);
 			} catch (Exception e) {

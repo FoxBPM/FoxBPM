@@ -466,6 +466,15 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		endTime=ClockUtil.getCurrentTime();
 		super.end();
 	}
+
+	@Override
+	public String getProcessDefinitionName() {
+		ensureProcessDefinitionInitialized();
+		if(processDefinition!=null){
+			return processDefinition.getName();
+		}
+		return null;
+	}
 	
 	
 

@@ -21,6 +21,7 @@ import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.UserTask;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
+import org.foxbpm.engine.impl.task.TaskDefinition;
 
 
 /**
@@ -46,12 +47,15 @@ public class UserTaskParser extends TaskParser {
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		UserTaskBehavior userTaskBehavior=(UserTaskBehavior)baseElementBehavior;
 		
+		TaskDefinition taskDefinition=new TaskDefinition();
+		
+		
 		UserTask userTask=(UserTask)baseElement;
 		if(userTask.getResources().size()>0){
-			userTaskBehavior.getActorConnectors().addAll(parserConnector(userTask.getResources().get(0), "actorConnector"));
+			taskDefinition.getActorConnectors().addAll(parserConnector(userTask.getResources().get(0), "actorConnector"));
 			
 		}
-		
+		userTaskBehavior.setTaskDefinition(taskDefinition);
 		/*String subject = BpmnModelUtil.getUserTaskSubject(baseElement);
 		String formUri = BpmnModelUtil.getFormUri(baseElement);
 		String formUriView = BpmnModelUtil.getFormUriView(baseElement);

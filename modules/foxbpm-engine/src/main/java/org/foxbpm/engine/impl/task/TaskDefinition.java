@@ -21,6 +21,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.foxbpm.engine.impl.connector.Connector;
+
 public class TaskDefinition implements Serializable {
 
 	/**
@@ -34,6 +36,19 @@ public class TaskDefinition implements Serializable {
 	private String assignPolicyType;
 
 	private String assigneeExpression;
+	
+	
+	protected List<Connector> actorConnectors=new ArrayList<Connector>();
+
+	
+	public List<Connector> getActorConnectors() {
+		return actorConnectors;
+	}
+
+	public void setActorConnectors(List<Connector> actorConnectors) {
+		this.actorConnectors = actorConnectors;
+	}
+	
 	/**
 	 * 处理人集合
 	 */

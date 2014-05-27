@@ -833,5 +833,10 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		return persistentState;
 	}
 
+	@Override
+	public boolean hasEnded() {
+		return endTime!=null;
+	}
+
 
 }
