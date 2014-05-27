@@ -443,7 +443,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 
 	public String getNoneTemplateFilePath() {
-		return "fixflowfile.bpmn";
+		return "config/foxbpm.bpmn";
 	}
 
 	
