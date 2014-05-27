@@ -19,6 +19,7 @@
 package org.foxbpm.engine.impl;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.TaskService;
@@ -28,6 +29,7 @@ import org.foxbpm.engine.impl.cmd.FindTaskCmd;
 import org.foxbpm.engine.impl.command.AbstractCustomExpandTaskCommand;
 import org.foxbpm.engine.impl.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.query.NativeTaskQueryImpl;
+import org.foxbpm.engine.impl.task.TaskCommand;
 import org.foxbpm.engine.impl.task.TaskQueryImpl;
 import org.foxbpm.engine.query.NativeTaskQuery;
 import org.foxbpm.engine.task.Task;
@@ -129,6 +131,18 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 	
 	public TaskQuery createTaskQuery() {
 		return new TaskQueryImpl(commandExecutor);
+	}
+	
+	@Override
+	public List<TaskCommand> getSubTaskCommandByKey(String Key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public List<TaskCommand> getTaskCommandByTaskId(String taskId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

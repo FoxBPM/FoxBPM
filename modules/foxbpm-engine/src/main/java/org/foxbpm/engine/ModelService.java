@@ -65,13 +65,37 @@ public interface ModelService {
 	
 	DeploymentBuilder createDeployment();
 	
-	void testCmd(String params);
-	
 	ProcessDefinition getProcessDefinitionById(String processDefinitionId);
 	
 	ProcessDefinitionQuery createProcessDefinitionQuery();
 	
 	void deployByInputStream(Map<String, InputStream> inputStreamMap);
 	
+	/**
+	 * 获取流程图节点信息
+	 * @param processDefinitionId  流程唯一编号
+	 * @return key为节点编号,value为 Map<String,Object> Key(height,width,x,y) (height="36.0" width="36.0" x="100.0" y="100.0")
+	 */
+	Map<String, Map<String, Object>> GetFlowGraphicsElementPosition(String processDefinitionId);
 	
+	/**
+	 * 获取流程图图片Stream
+	 * @param processDefinitionId 流程唯一编号
+	 * @return 图片Stream
+	 */
+	InputStream GetFlowGraphicsImgStreamByDefId(String processDefinitionId);
+	
+	/**
+	 * 获取流程图图片Stream
+	 * @param processDefinitionKey 流程编号
+	 * @return 图片Stream
+	 */
+	InputStream GetFlowGraphicsImgStreamByDefKey(String processDefinitionKey);
+	
+	/**
+	 * 获取流程定义(内置缓存)
+	 * @param processDefinitionId 流程唯一编号
+	 * @return 获取流程定义
+	 */
+	ProcessDefinition getProcessDefinition(String processDefinitionId);
 }

@@ -18,6 +18,10 @@
  */
 package org.foxbpm.engine;
 
+import org.foxbpm.engine.identity.User;
+
 public interface IdentityService {
 
+	
+	User getUser(String userId);
 }

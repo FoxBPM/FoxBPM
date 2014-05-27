@@ -22,8 +22,8 @@ public interface User {
 
 	public String getUserId();
 	public String getUserName();
-	public Map<String, Object> getPropertyMap();
 	public String getEmail();
+	public Map<String, Object> getPropertyMap();
 	public Object getPropertyValue(String propertyName);
 
 }

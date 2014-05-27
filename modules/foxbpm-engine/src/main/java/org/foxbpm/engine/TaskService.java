@@ -19,9 +19,11 @@
 package org.foxbpm.engine;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.impl.command.ExpandTaskCommand;
+import org.foxbpm.engine.impl.task.TaskCommand;
 import org.foxbpm.engine.query.NativeTaskQuery;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskQuery;
@@ -75,5 +77,21 @@ public interface TaskService {
 	TaskQuery createTaskQuery();
 
 	public NativeTaskQuery createNativeTaskQuery();
+	
+	
+	/**
+	 * 获取任务节点上的toolbar
+	 * @param taskId
+	 * @return
+	 */
+	List<TaskCommand> getTaskCommandByTaskId(String taskId);
+	
+	/**
+	 * 获取提交节点上的toolbar
+	 * 用于流程开始界面上，此时实例未生成，取定义上的toolbar配置
+	 * @param key 流程定义key，会根据key去当前流程定义的最新版本key,因为启动流程总是启动最新版本的流程
+	 * @return
+	 */
+	List<TaskCommand> getSubTaskCommandByKey(String Key);
 
 }

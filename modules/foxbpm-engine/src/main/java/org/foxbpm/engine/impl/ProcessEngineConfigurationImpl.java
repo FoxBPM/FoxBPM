@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.foxbpm.engine.IdentityService;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineConfiguration;
@@ -94,6 +95,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected ModelService modelService = new ModelServiceImpl();
 	protected RuntimeService runtimeService = new RuntimeServiceImpl();
 	protected TaskService taskService = new TaskServiceImpl();
+	protected IdentityService identityService = new IdentityServiceImpl();
 	protected ISqlSessionFactory sqlSessionFactory;
 	protected Map<Class<?>, SessionFactory> sessionFactories;
 	protected DataSourceManage dataSourceManage;
@@ -327,6 +329,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initService(modelService);
 		initService(runtimeService);
 		initService(taskService);
+		initService(identityService);
 	}
 
 	protected void initService(Object service) {
@@ -403,6 +406,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	public TaskService getTaskService(){
 		return taskService;
+	}
+	
+	public IdentityService getIdentityService() {
+		return identityService;
 	}
 
 	public DataSourceManage getDataSourceManage() {

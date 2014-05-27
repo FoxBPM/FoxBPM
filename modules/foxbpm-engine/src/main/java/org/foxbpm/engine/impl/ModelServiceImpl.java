@@ -27,8 +27,9 @@ import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.impl.cmd.DeployCmd;
 import org.foxbpm.engine.impl.cmd.DeploymentByInputStreamCmd;
 import org.foxbpm.engine.impl.cmd.DeploymentByZipCmd;
+import org.foxbpm.engine.impl.cmd.GetFlowGraphicsImgStreamCmd;
+import org.foxbpm.engine.impl.cmd.GetProcessDefinition;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinitionById;
-import org.foxbpm.engine.impl.cmd.TestCmd;
 import org.foxbpm.engine.impl.cmd.UpdateDeploymentByZipCmd;
 import org.foxbpm.engine.impl.model.DeploymentBuilderImpl;
 import org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl;
@@ -63,10 +64,6 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 		commandExecutor.execute(new UpdateDeploymentByZipCmd(createDeployment() , deploymentId , zipInputStream));
 	}
 	
-	public void testCmd(String params) {
-		commandExecutor.execute(new TestCmd(params));
-	}
-	
 	public ProcessDefinition getProcessDefinitionById(String processDefinitionId) {
 		return commandExecutor.execute(new GetProcessDefinitionById(processDefinitionId));
 	}
@@ -74,4 +71,27 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	public ProcessDefinitionQuery createProcessDefinitionQuery() {
 	    return new ProcessDefinitionQueryImpl(commandExecutor);
 	}
+	
+	@Override
+	public InputStream GetFlowGraphicsImgStreamByDefId(String processDefinitionId) {
+		return commandExecutor.execute(new GetFlowGraphicsImgStreamCmd(processDefinitionId,null));
+	}
+	
+	@Override
+	public InputStream GetFlowGraphicsImgStreamByDefKey(String processDefinitionKey) {
+		return commandExecutor.execute(new GetFlowGraphicsImgStreamCmd(null,processDefinitionKey));
+	}
+	
+	@Override
+	public ProcessDefinition getProcessDefinition(String processDefinitionId) {
+		return commandExecutor.execute(new GetProcessDefinition(processDefinitionId));
+	}
+	
+	@Override
+	public Map<String, Map<String, Object>> GetFlowGraphicsElementPosition(String processDefinitionId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 }
