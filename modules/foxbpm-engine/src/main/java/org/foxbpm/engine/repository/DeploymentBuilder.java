@@ -46,7 +46,7 @@ public interface DeploymentBuilder {
 	
 	DeploymentBuilder addClasspathResource(String resource);
 
-	void deploy();
+	Deployment deploy();
 	
 	DeploymentEntity getDeployment();
 }

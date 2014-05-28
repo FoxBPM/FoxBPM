@@ -208,9 +208,7 @@
       <if test="descriptionLike != null" >
         and DESCRIPTION like #{descriptionLike}
       </if>
-      <if test="assignee != null" >
-        and ASSIGNEE = #{assignee}
-      </if>
+     
       <if test="initiator != null" >
         and P.INITIATOR = #{initiator}
       </if>
@@ -256,8 +254,9 @@
       </if>
       
       <!-- 共享任务 -->
-      <if test="candidateUser != null" >
-        and RES.ASSIGNEE is null
+      <if test="candidateUser != null  || (candidateGroups != null &amp;&amp; candidateGroups.size() &gt; 0)" >
+      and (
+        RES.ASSIGNEE is null
         and I.TYPE = 'candidate'
         and 
         ( 
@@ -274,6 +273,17 @@
             </foreach>
           </if>
         )
+         <!-- 共享任务和独占任务同时存在 -->
+         <if test="assignee != null" >
+       		or RES.ASSIGNEE = #{assignee}
+      	</if>
+        )
+      </if>
+      <!-- 只有独占任务 -->
+       <if test="candidateUser == null &amp;&amp; candidateGroups == null">
+     		<if test="assignee != null" >
+       		and RES.ASSIGNEE = #{assignee}
+      	</if>
       </if>
       
       <if test="end != null">

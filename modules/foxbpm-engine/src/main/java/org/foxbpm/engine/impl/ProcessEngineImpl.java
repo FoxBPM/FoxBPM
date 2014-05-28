@@ -28,6 +28,7 @@ import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.ScheduleService;
 import org.foxbpm.engine.TaskService;
+import org.foxbpm.engine.impl.identity.Authentication;
 public class ProcessEngineImpl implements ProcessEngine {
 
 	protected String name;
@@ -99,8 +100,8 @@ public class ProcessEngineImpl implements ProcessEngine {
 	}
 
 	public void setExternalContent(ExternalContent externalContent) {
-//		String authenticatedUserId = externalContent.getAuthenticatedUserId();
-//		Authentication.setAuthenticatedUserId(authenticatedUserId);
+		String authenticatedUserId = externalContent.getAuthenticatedUserId();
+		Authentication.setAuthenticatedUserId(authenticatedUserId);
 //		String languageType = externalContent.getLanguageType();
 		
 //		if (externalContent.getConnectionManagement() != null && !externalContent.getConnectionManagement().equals("")) {

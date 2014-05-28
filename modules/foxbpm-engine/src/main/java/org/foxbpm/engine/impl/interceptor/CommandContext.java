@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.identity.UserEntityManager;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.persistence.DeploymentEntityManager;
@@ -163,6 +164,7 @@ public class CommandContext {
 			for(Throwable e : exception){
 				log.error("执行command出错：" + command,e);
 			}
+			throw new FoxBPMException("执行命令出错，具体请查看日志信息！部分异常信息如下：",exception.get(0));
 		}
 		
 	}

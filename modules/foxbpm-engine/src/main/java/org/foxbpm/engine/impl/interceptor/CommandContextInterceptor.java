@@ -64,7 +64,9 @@ public class CommandContextInterceptor extends CommandInterceptor {
 			Context.setProcessEngineConfiguration(processEngineConfiguration);
 			return next.execute(command);
 
-		} finally {
+		}catch(Exception ex){
+			context.exception(ex);
+		}finally {
 			try {
 				if(!contextReused){
 					context.close();
@@ -76,6 +78,7 @@ public class CommandContextInterceptor extends CommandInterceptor {
 				Context.removeProcessEngineConfiguration();
 			}
 		}
+		return null;
 	}
 
 	public CommandContextFactory getCommandContextFactory() {

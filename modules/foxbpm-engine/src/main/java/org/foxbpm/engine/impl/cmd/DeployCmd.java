@@ -27,15 +27,16 @@ import org.foxbpm.engine.impl.entity.DeploymentEntity;
 import org.foxbpm.engine.impl.entity.ResourceEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.repository.Deployment;
 import org.foxbpm.engine.repository.DeploymentBuilder;
 
-public class DeployCmd implements Command<Void>{
+public class DeployCmd implements Command<Deployment>{
 
 	protected DeploymentBuilder deploymentBuilder;
 	public DeployCmd(DeploymentBuilder deploymentBuilder) {
 		this.deploymentBuilder = deploymentBuilder;
 	}
-	public Void execute(CommandContext commandContext) {
+	public Deployment execute(CommandContext commandContext) {
 		DeploymentEntity deployment = deploymentBuilder.getDeployment();
 		if(deployment.getUpdateDeploymentId()!=null&&!deployment.getUpdateDeploymentId().equals("")){
 			DeploymentEntity deploymentOld=Context.getCommandContext().getDeploymentEntityManager().findDeploymentById(deployment.getUpdateDeploymentId());
@@ -87,6 +88,6 @@ public class DeployCmd implements Command<Void>{
 			Context.getCommandContext().getDeploymentEntityManager().insertDeployment(deployment);
 			Context.getProcessEngineConfiguration().getDeploymentManager().deploy(deployment);
 		}
-		return null;
+		return deployment;
 	}
 }

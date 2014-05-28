@@ -29,6 +29,7 @@ import org.foxbpm.engine.impl.entity.DeploymentEntity;
 import org.foxbpm.engine.impl.entity.ResourceEntity;
 import org.foxbpm.engine.impl.util.IoUtil;
 import org.foxbpm.engine.impl.util.ReflectUtil;
+import org.foxbpm.engine.repository.Deployment;
 import org.foxbpm.engine.repository.DeploymentBuilder;
 
 /**
@@ -107,8 +108,8 @@ public class DeploymentBuilderImpl implements DeploymentBuilder {
 		return this;
 	}
 
-	public void deploy() {
-		modelService.deploy(this);
+	public Deployment deploy() {
+		return modelService.deploy(this);
 	}
 
 	// getters and setters

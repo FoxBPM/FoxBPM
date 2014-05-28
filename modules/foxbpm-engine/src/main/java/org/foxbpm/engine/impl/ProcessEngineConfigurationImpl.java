@@ -115,6 +115,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected Cache identityCache;
 	protected TransactionContextFactory transactionContextFactory;
 	protected List<GroupDefinition> groupDefinitions;
+	protected String dbType = "mysql";
 	
 	
 	protected TaskCommandConfig taskCommandConfig;
@@ -318,7 +319,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	public void initSqlSessionFactory() {
 		DataSource dataSource = dataSourceManage.getDataSource();
 		sqlSessionFactory = new MyBatisSqlSessionFactory();
-		sqlSessionFactory.init(dataSource);
+		sqlSessionFactory.init(dataSource,dbType);
 	}
 
 	public ISqlSessionFactory getSqlSessionFactory() {

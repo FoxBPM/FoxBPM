@@ -26,7 +26,7 @@ import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.repository.DeploymentBuilder;
 
-public class DeploymentByInputStreamCmd  implements Command<Void> {
+public class DeploymentByInputStreamCmd  implements Command<String> {
 	protected Map<String, InputStream>  inputStreamMap;
 	protected DeploymentBuilder deploymentBuilder;
 	public DeploymentByInputStreamCmd(DeploymentBuilder deploymentBuilder,Map<String, InputStream> inputStreamMap) {
@@ -34,15 +34,14 @@ public class DeploymentByInputStreamCmd  implements Command<Void> {
 		this.deploymentBuilder = deploymentBuilder;
 	}
 
-	public Void execute(CommandContext commandContext) {
+	public String execute(CommandContext commandContext) {
 		if(inputStreamMap == null || inputStreamMap.size() == 0){
 			throw new FoxBPMIllegalArgumentException("发布 内容不能为空");
 		}
 		for(String resourceName : inputStreamMap.keySet()){
 			deploymentBuilder.addInputStream(resourceName, inputStreamMap.get(resourceName));
 		}
-		deploymentBuilder.deploy();
-		return null;
+		return deploymentBuilder.deploy().getId();
 	}
 
 }

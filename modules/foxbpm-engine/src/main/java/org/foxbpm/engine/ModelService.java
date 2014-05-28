@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.zip.ZipInputStream;
 
 import org.foxbpm.engine.impl.model.DeploymentBuilderImpl;
+import org.foxbpm.engine.repository.Deployment;
 import org.foxbpm.engine.repository.DeploymentBuilder;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.repository.ProcessDefinitionQuery;
@@ -57,9 +58,9 @@ public interface ModelService {
 	 * @param path zip文件路径
 	 * @return 发布号
 	 */
-	void deployByZip(ZipInputStream zipInputStream);
+	String deployByZip(ZipInputStream zipInputStream);
 
-	void deploy(DeploymentBuilderImpl deploymentBuilderImpl);
+	Deployment deploy(DeploymentBuilderImpl deploymentBuilderImpl);
 	
 	void updateByZip(String deploymentId,ZipInputStream zipInputStream);
 	
@@ -69,7 +70,7 @@ public interface ModelService {
 	
 	ProcessDefinitionQuery createProcessDefinitionQuery();
 	
-	void deployByInputStream(Map<String, InputStream> inputStreamMap);
+	String deployByInputStream(Map<String, InputStream> inputStreamMap);
 	
 	/**
 	 * 获取流程图节点信息

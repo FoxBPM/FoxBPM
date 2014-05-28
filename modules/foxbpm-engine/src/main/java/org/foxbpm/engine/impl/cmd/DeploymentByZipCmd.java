@@ -25,7 +25,7 @@ import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.repository.DeploymentBuilder;
 
-public class DeploymentByZipCmd implements Command<Void>{
+public class DeploymentByZipCmd implements Command<String>{
 	
 	protected ZipInputStream zipInputStream;
 	protected DeploymentBuilder deploymentBuilder;
@@ -33,13 +33,12 @@ public class DeploymentByZipCmd implements Command<Void>{
 		this.zipInputStream = zipInputStream;
 		this.deploymentBuilder = deploymentBuilder;
 	}
-	public Void execute(CommandContext commandContext) {
+	public String execute(CommandContext commandContext) {
 		if(zipInputStream == null){
 			throw new FoxBPMException("Zip文件不能为空");
 		}
 		deploymentBuilder.addZipInputStream(zipInputStream);
-		deploymentBuilder.deploy();
-		return null;
+		return deploymentBuilder.deploy().getId();
 	}
 
 }

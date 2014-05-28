@@ -40,6 +40,7 @@ public class DeploymentCollectionResource extends AbstractRestResource {
 	@Post
 	public String deploy(Representation entity){
 		InputStream input = null;
+		String deploymentId = null;
 		try {
 			input = entity.getStream();
 			if(input == null){
@@ -47,7 +48,7 @@ public class DeploymentCollectionResource extends AbstractRestResource {
 			}
 			ModelService modelService = FoxBpmUtil.getProcessEngine().getModelService();
 			ZipInputStream zip = new ZipInputStream(input);
-			modelService.deployByZip(zip);
+			deploymentId = modelService.deployByZip(zip);
 			setStatus(Status.SUCCESS_CREATED);
 		} catch (Exception e) {
 			if (e instanceof FoxBPMException) {
@@ -55,6 +56,6 @@ public class DeploymentCollectionResource extends AbstractRestResource {
 			}
 			throw new FoxBPMException(e.getMessage(), e);
 		}		
-		return "success";
+		return deploymentId;
 	}
 }

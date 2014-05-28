@@ -113,8 +113,7 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 	    databaseSpecificOrderByStatements.put("oracle", defaultOrderBy);
 	}
 	
-	public void init(DataSource dataSource) {
-		String databaseType = "mysql";
+	public void init(DataSource dataSource,String databaseType) {
 		if (sqlSessionFactory == null) {
 			InputStream inputStream = null;
 			try {

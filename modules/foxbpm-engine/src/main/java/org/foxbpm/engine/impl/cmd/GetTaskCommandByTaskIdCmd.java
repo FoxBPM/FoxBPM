@@ -19,10 +19,8 @@ public class GetTaskCommandByTaskIdCmd implements Command<List<TaskCommand>> {
 	public List<TaskCommand> execute(CommandContext commandContext) {
 		List<TaskCommand> taskCommandInsts=new ArrayList<TaskCommand>();
 		TaskEntity taskInstance=commandContext.getTaskManager().findTaskById(taskId);
-		
-		//非流程追踪查询
 		if(taskInstance!=null){
-			taskInstance.getTaskDefinition().getTaskCommands();
+			taskCommandInsts = taskInstance.getTaskDefinition().getTaskCommands();
 		}
 		return taskCommandInsts;
 	}

@@ -33,6 +33,7 @@ import org.foxbpm.engine.impl.cmd.GetProcessDefinitionById;
 import org.foxbpm.engine.impl.cmd.UpdateDeploymentByZipCmd;
 import org.foxbpm.engine.impl.model.DeploymentBuilderImpl;
 import org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl;
+import org.foxbpm.engine.repository.Deployment;
 import org.foxbpm.engine.repository.DeploymentBuilder;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.repository.ProcessDefinitionQuery;
@@ -48,16 +49,16 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 		return null;
 	}
 	
-	public void deployByInputStream(Map<String, InputStream> inputStreamMap) {
-		commandExecutor.execute(new DeploymentByInputStreamCmd(createDeployment(),inputStreamMap));
+	public String deployByInputStream(Map<String, InputStream> inputStreamMap) {
+		return commandExecutor.execute(new DeploymentByInputStreamCmd(createDeployment(),inputStreamMap));
 	}
 	
-	public void deployByZip(ZipInputStream zipInputStream) {
-		commandExecutor.execute(new DeploymentByZipCmd(createDeployment(),zipInputStream));
+	public String deployByZip(ZipInputStream zipInputStream) {
+		return commandExecutor.execute(new DeploymentByZipCmd(createDeployment(),zipInputStream));
 	}
 
-	public void deploy(DeploymentBuilderImpl deploymentBuilder) {
-		commandExecutor.execute(new DeployCmd(deploymentBuilder));
+	public Deployment deploy(DeploymentBuilderImpl deploymentBuilder) {
+		return commandExecutor.execute(new DeployCmd(deploymentBuilder));
 	}
 	
 	public void updateByZip(String deploymentId, ZipInputStream zipInputStream) {
