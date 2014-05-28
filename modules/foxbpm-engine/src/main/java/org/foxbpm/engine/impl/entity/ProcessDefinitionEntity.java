@@ -18,6 +18,7 @@
 package org.foxbpm.engine.impl.entity;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.db.HasRevision;
@@ -27,6 +28,7 @@ import org.foxbpm.engine.impl.mgmt.DataVariableMgmtDefinition;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.kernel.process.KernelDefinitions;
+import org.foxbpm.kernel.process.KernelSequenceFlow;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 import org.foxbpm.kernel.runtime.InterpretableProcessInstance;
@@ -55,6 +57,17 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 	
 	protected Map<String, TaskDefinition> taskDefinitions=new HashMap<String, TaskDefinition>();
 	
+	
+	public TaskDefinition getSubTaskDefinition() {
+		if(getInitial()!=null){
+			List<KernelSequenceFlow> sequenceFlows=getInitial().getOutgoingSequenceFlows();
+			if(sequenceFlows!=null&&sequenceFlows.size()>0){
+				String subNodeId=sequenceFlows.get(0).getTargetRef().getId();
+				return taskDefinitions.get(subNodeId);
+			}
+		}
+		return null;
+	}
 	
 	public Map<String, TaskDefinition> getTaskDefinitions() {
 		return taskDefinitions;
