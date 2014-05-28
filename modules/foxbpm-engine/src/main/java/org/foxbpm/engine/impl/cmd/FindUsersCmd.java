@@ -16,31 +16,39 @@
  * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.impl.persistence;
+package org.foxbpm.engine.impl.cmd;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.identity.UserEntityManager;
+import org.foxbpm.engine.impl.interceptor.Command;
+import org.foxbpm.engine.impl.interceptor.CommandContext;
 
-public class DefaultUserEntityManager extends AbstractManager implements UserEntityManager {
+/**
+ * 根据userId 或者userName 模糊匹配
+ * 参数之间or关系
+ * @author Administrator
+ *
+ */
+public class FindUsersCmd implements Command<List<User>> {
 	
-	public User findUserById(String userId) {
-		return (User)getSqlSession().selectOne("selectUserById", userId);
+	/**
+	 * 示例：%20080101%
+	 */
+	private String idLike;
+	/**
+	 * 示例：%张三%
+	 */
+	private String nameLike;
+	public FindUsersCmd(String idLike,String nameLike) {
+		this.idLike = idLike;
+		this.nameLike = nameLike;
 	}
-	
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<User> findUsers(String idLike, String nameLike) {
-		Map<String,Object> map = new HashMap<String,Object>();
-		if(idLike != null){
-			map.put("userId", idLike);
-		}
-		if(nameLike != null){
-			map.put("userName", nameLike);
-		}
-		return (List<User>)getSqlSession().selectListWithRawParameter("selectUsers", map);
+	public List<User> execute(CommandContext commandContext) {
+		UserEntityManager userEntityManager = commandContext.getUserEntityManager();
+		return userEntityManager.findUsers(idLike, nameLike);
 	}
+
 }

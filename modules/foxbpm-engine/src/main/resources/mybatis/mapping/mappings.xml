@@ -18,5 +18,6 @@
     <mapper resource="mybatis/mapping/Role.xml" />
     <mapper resource="mybatis/mapping/TaskIdentityLink.xml" />
     <mapper resource="mybatis/mapping/Variable.xml" />
+    <mapper resource="mybatis/mapping/User.xml" />
   </mappers>
 </configuration>

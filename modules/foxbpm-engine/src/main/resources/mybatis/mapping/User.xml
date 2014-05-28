@@ -4,11 +4,10 @@
 <mapper namespace="org.foxbpm.engine.impl.entity.UserEntity">
 
  <resultMap id="userResultMap" type="org.foxbpm.engine.impl.entity.UserEntity" >
-    <id column="USERID" property="userid" jdbcType="VARCHAR" />
-    <result column="USERNAME" property="username" jdbcType="VARCHAR" />
+    <id column="USERID" property="userId" jdbcType="VARCHAR" />
+    <result column="USERNAME" property="userName" jdbcType="VARCHAR" />
     <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
     <result column="EMAIL" property="email" jdbcType="VARCHAR" />
-    <result column="TEL" property="tel" jdbcType="VARCHAR" />
   </resultMap>
   
    <select id="selectUserById" parameterType="java.lang.String" resultMap="userResultMap">
@@ -17,4 +16,21 @@
 	    from au_userinfo
 	    where USERID = #{id,jdbcType=VARCHAR}
   </select>
+  
+  <select id="selectUsers" parameterType="java.util.Map" resultMap="userResultMap">
+	    select 
+	    *
+	    from au_userinfo
+	    <where> 
+	     <if test="_parameter.containsKey('userId')">  
+        	AND USERID LIKE #{userId,jdbcType=VARCHAR} 
+    	</if>  
+    	<if test="_parameter.containsKey('userName')">  
+        	AND USERNAME LIKE #{userName,jdbcType=VARCHAR}
+    	</if>  
+	    </where>
+	   
+	    
+  </select>
+  
 </mapper>

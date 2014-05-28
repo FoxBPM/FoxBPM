@@ -5,11 +5,11 @@ import org.foxbpm.engine.identity.UserEntityManager;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
-public class FindUser implements Command<User> {
+public class FindUserByIdCmd implements Command<User> {
 
 	
 	private String userId;
-	public FindUser(String userId) {
+	public FindUserByIdCmd(String userId) {
 		this.userId = userId;
 	}
 	

@@ -13,16 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.identity;
+package org.foxbpm.engine.test.api;
 
 import java.util.List;
 
-public interface UserEntityManager {
+import org.foxbpm.engine.identity.User;
+import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
 
-	public User findUserById(String userId);
+public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 	
-	public List<User> findUsers(String idLike,String nameLike);
+	/**
+	 * 测试模糊查询用户接口
+	 */
+	public void testGetUsers(){
+		List<User> users = identityService.getUsers("%admi%", null);
+		System.out.println(users.size());
+		
+		users = identityService.getUsers(null, "%管理%");
+		System.out.println(users.size());
+		
+		users = identityService.getUsers(null, null);
+		System.out.println(users.size());
+		
+	}
 }

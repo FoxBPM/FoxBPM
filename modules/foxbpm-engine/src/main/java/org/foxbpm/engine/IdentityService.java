@@ -18,10 +18,25 @@
  */
 package org.foxbpm.engine;
 
+import java.util.List;
+
 import org.foxbpm.engine.identity.User;
 
 public interface IdentityService {
-
 	
+	/**
+	 * 根据用户编号查询用户
+	 * @param userId 用户编号 主键
+	 * @return
+	 */
 	User getUser(String userId);
+	
+	/**
+	 * 根据编号或名称模糊匹配
+	 * @param idLike 示例： %200802%
+	 * @param nameLike 示例： %张%
+	 * 
+	 * @return 参数可为null,参数之间为or关系，如果都为null代表查询所有
+	 */
+	List<User> getUsers(String idLike,String nameLike);
 }

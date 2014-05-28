@@ -2,8 +2,10 @@ package org.foxbpm.engine.test;
 
 
 import java.lang.reflect.Method;
+
 import junit.framework.TestCase;
 
+import org.foxbpm.engine.IdentityService;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineManagement;
@@ -27,6 +29,7 @@ public abstract class AbstractFoxBpmTestCase extends TestCase {
 	protected ModelService modelService;
 	protected RuntimeService runtimeService;
 	protected TaskService taskService;
+	protected IdentityService identityService;
 	
 
 	protected void initializeServices() {
@@ -37,6 +40,7 @@ public abstract class AbstractFoxBpmTestCase extends TestCase {
 		modelService = processEngine.getModelService();
 		runtimeService = processEngine.getRuntimeService();
 		taskService = processEngine.getTaskService();
+		identityService = processEngine.getIdentityService();
 	}
 	
 	public void runBare() throws Throwable {

@@ -61,4 +61,13 @@ public class TaskServiceTest extends AbstractFoxBpmTestCase {
 		System.out.println(taskCommands.size());
 		
 	}
+	
+	public void testGetTaskCommandByKey(){
+		Authentication.setAuthenticatedUserId("2222");
+		List<TaskCommand> taskCommands = taskService.getSubTaskCommandByKey("process_foxbpm_1");
+		
+		System.out.println(taskCommands);
+	}
+	
+	
 }

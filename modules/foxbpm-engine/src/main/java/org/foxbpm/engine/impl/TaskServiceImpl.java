@@ -25,6 +25,7 @@ import java.util.Map;
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.impl.cmd.CompleteTaskCmd;
 import org.foxbpm.engine.impl.cmd.FindTaskCmd;
+import org.foxbpm.engine.impl.cmd.GetTaskCommandByKeyCmd;
 import org.foxbpm.engine.impl.cmd.GetTaskCommandByTaskIdCmd;
 import org.foxbpm.engine.impl.query.NativeTaskQueryImpl;
 import org.foxbpm.engine.impl.task.TaskQueryImpl;
@@ -135,8 +136,7 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 	
 	@Override
 	public List<TaskCommand> getSubTaskCommandByKey(String Key) {
-		// TODO Auto-generated method stub
-		return null;
+		return commandExecutor.execute(new GetTaskCommandByKeyCmd(Key));
 	}
 	
 	@Override
