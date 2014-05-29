@@ -64,6 +64,8 @@ public interface ModelService {
 	
 	void updateByZip(String deploymentId,ZipInputStream zipInputStream);
 	
+	void updateByStreamMap(String deploymentId, Map<String, InputStream> inputStreamMap);
+	
 	DeploymentBuilder createDeployment();
 	
 	ProcessDefinition getProcessDefinitionById(String processDefinitionId);
@@ -99,4 +101,12 @@ public interface ModelService {
 	 * @return 获取流程定义
 	 */
 	ProcessDefinition getProcessDefinition(String processDefinitionId);
+	
+	/**
+	 * 获取流程定义(内置缓存)
+	 * @param processKey 流程key
+	 * @param version 版本号
+	 * @return 获取流程定义
+	 */
+	ProcessDefinition getProcessDefinition(String processKey,int version);
 }

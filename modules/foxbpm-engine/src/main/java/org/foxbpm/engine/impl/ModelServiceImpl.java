@@ -30,6 +30,8 @@ import org.foxbpm.engine.impl.cmd.DeploymentByZipCmd;
 import org.foxbpm.engine.impl.cmd.GetFlowGraphicsImgStreamCmd;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinition;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinitionById;
+import org.foxbpm.engine.impl.cmd.GetProcessDefinitionByKeyAndVersion;
+import org.foxbpm.engine.impl.cmd.UpdateDeploymentByStreamMapCmd;
 import org.foxbpm.engine.impl.cmd.UpdateDeploymentByZipCmd;
 import org.foxbpm.engine.impl.model.DeploymentBuilderImpl;
 import org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl;
@@ -65,6 +67,10 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 		commandExecutor.execute(new UpdateDeploymentByZipCmd(createDeployment() , deploymentId , zipInputStream));
 	}
 	
+	public void updateByStreamMap(String deploymentId, Map<String, InputStream> inputStreamMap) {
+		commandExecutor.execute(new UpdateDeploymentByStreamMapCmd(createDeployment() , deploymentId , inputStreamMap));
+	}
+	
 	public ProcessDefinition getProcessDefinitionById(String processDefinitionId) {
 		return commandExecutor.execute(new GetProcessDefinitionById(processDefinitionId));
 	}
@@ -86,6 +92,11 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	@Override
 	public ProcessDefinition getProcessDefinition(String processDefinitionId) {
 		return commandExecutor.execute(new GetProcessDefinition(processDefinitionId));
+	}
+	
+	@Override
+	public ProcessDefinition getProcessDefinition(String processKey, int version) {
+		return commandExecutor.execute(new GetProcessDefinitionByKeyAndVersion(processKey,version));
 	}
 	
 	@Override
