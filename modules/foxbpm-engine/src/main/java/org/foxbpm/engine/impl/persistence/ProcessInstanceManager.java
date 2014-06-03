@@ -46,16 +46,24 @@ public class ProcessInstanceManager extends AbstractManager {
 	
 	@SuppressWarnings("unchecked")
 	public void deleteProcessInstancesByProcessDefinition(String processDefinitionId, boolean cascade){
-		List<String> processInstanceIds = getSqlSession().selectListWithRawParameter("selectProcessInstanceIdsByProcessDefinitionId", processDefinitionId);
-		for (String processInstanceId : processInstanceIds) {
-			deleteProcessInstance(processInstanceId, cascade);
+		//删除流程实例
+		deleteProcessInstanceByProcessDefinitionId(processDefinitionId);
+		if(cascade){
+			//循环删除其他信息
+			List<String> processInstanceIds = getSqlSession().selectListWithRawParameter("selectProcessInstanceIdsByProcessDefinitionId", processDefinitionId);
+			for (String processInstanceId : processInstanceIds) {	
+				//删除令牌
+				getTokenManager().deleteTokenByProcessInstanceId(processInstanceId);
+				//删除任务
+				getTaskManager().deleteTaskByProcessInstanceId(processInstanceId);
+				//删除变量
+				getVariableManager().deleteVariableByProcessInstanceId(processInstanceId);
+			}
 		}
 	}
 
-	private void deleteProcessInstance(String processInstanceId, boolean cascade) {
-		getSqlSession().delete("deleteProcessInstanceById",processInstanceId);
-		getTokenManager().deleteTokenByProcessInstanceId(processInstanceId);
-		getTaskManager().deleteTaskByProcessInstanceId(processInstanceId);
+	private void deleteProcessInstanceByProcessDefinitionId(String processInstanceId) {
+		getSqlSession().delete("deleteProcessInstanceByProcessDefinitionId",processInstanceId);
 	}
 
 }

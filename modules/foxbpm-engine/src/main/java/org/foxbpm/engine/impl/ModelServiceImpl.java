@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.zip.ZipInputStream;
 
 import org.foxbpm.engine.ModelService;
+import org.foxbpm.engine.impl.cmd.DeleteDeploymentCmd;
 import org.foxbpm.engine.impl.cmd.DeployCmd;
 import org.foxbpm.engine.impl.cmd.DeploymentByInputStreamCmd;
 import org.foxbpm.engine.impl.cmd.DeploymentByZipCmd;
@@ -71,7 +72,7 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	}
 	
 	public void deleteDeployment(String deploymentId){
-		
+		commandExecutor.execute(new DeleteDeploymentCmd(deploymentId));
 	}
 	
 	public ProcessDefinitionQuery createProcessDefinitionQuery() {

@@ -297,4 +297,8 @@
     </where>
   </sql> 	
   
+  <delete id="deleteTaskByProcessInstanceId" parameterType="java.lang.String">
+  	DELETE FROM FOXBPM_RUN_TASK WHERE PROCESSINSTANCE_ID = #{processInstanceId,jdbcType=VARCHAR}
+  </delete>
+  
 </mapper>

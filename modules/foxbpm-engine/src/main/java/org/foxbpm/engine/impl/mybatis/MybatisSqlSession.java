@@ -256,6 +256,14 @@ public class MybatisSqlSession implements ISqlSession,Session {
 		insertedObjects.clear();
 	}
 	
+	protected void flushDeletes() {
+		for (DeleteOperation delete : deleteOperations) {
+			log.debug("executing: {}", delete);
+			delete.execute();
+		}
+		deleteOperations.clear();
+	}
+	
 	public void removeUnnecessaryOperations(){
 		//如果对象既在insert中，又在delete中，则直接删除，不做处理
 		for (Iterator<DeleteOperation> deleteIt = deleteOperations.iterator(); deleteIt.hasNext();) {
@@ -281,18 +289,23 @@ public class MybatisSqlSession implements ISqlSession,Session {
 		List<PersistentObject> updatedObjects = getUpdatedObjects();
 
 		if (log.isDebugEnabled()) {
-			log.debug("flush summary: {} insert, {} update",insertedObjects.size(), updatedObjects.size());
+			log.debug("flush summary: {} insert, {} update,{} delete.",insertedObjects.size(), updatedObjects.size(),deleteOperations.size());
 			for (PersistentObject insertedObject : insertedObjects) {
 				log.debug("  insert {}", insertedObject);
 			}
 			for (PersistentObject updatedObject : updatedObjects) {
 				log.debug("  update {}", updatedObject);
 			}
+			for (DeleteOperation deleteOperation : deleteOperations) {
+				log.debug("  delete {}", deleteOperation);
+			}
 			log.debug("now executing flush...");
 		}
 
 		flushInserts();
+		flushDeletes();
 		flushUpdates(updatedObjects);
+		
 	}
 	
 	public void closeSession() {

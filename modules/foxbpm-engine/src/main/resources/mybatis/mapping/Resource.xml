@@ -6,6 +6,7 @@
  <resultMap id="resourceResultMap" type="org.foxbpm.engine.impl.entity.ResourceEntity" >
  	<id column="ID" property="id" jdbcType="VARCHAR" />
     <result column="BYTES" property="bytes" jdbcType="BLOB" />
+     <result column="NAME" property="name" jdbcType="BLOB" />
     <result column="DEPLOYMENT_ID" property="deploymentId" jdbcType="VARCHAR" />
   </resultMap>
 	
@@ -33,5 +34,10 @@
   <select id="selectResourceByDeployIdAndName" parameterType="map" resultMap="resourceResultMap">
 	   SELECT * FROM FOXBPM_DEF_BYTEARRAY WHERE DEPLOYMENT_ID = #{deployId,jdbcType=VARCHAR} and NAME = #{name,jdbcType=VARCHAR}
   </select>
+  
+  <delete id="deleteResourceByDeploymentId" parameterType="java.lang.String">
+  
+  		DELETE FROM FOXBPM_DEF_BYTEARRAY WHERE DEPLOYMENT_ID = #{deployId,jdbcType=VARCHAR}
+  </delete>
   
 </mapper>

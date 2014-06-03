@@ -60,6 +60,10 @@ public abstract class AbstractManager implements Session{
 		return getSession(IdentityLinkManager.class);
 	}
 	
+	protected VariableManager getVariableManager() {
+		return getSession(VariableManager.class);
+	}
+	
 	protected TokenManager getTokenManager() {
 		return getSession(TokenManager.class);
 	}

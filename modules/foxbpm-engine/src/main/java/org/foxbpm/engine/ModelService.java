@@ -66,6 +66,8 @@ public interface ModelService {
 	
 	void updateByStreamMap(String deploymentId, Map<String, InputStream> inputStreamMap);
 	
+	void deleteDeployment(String deploymentId);
+	
 	DeploymentBuilder createDeployment();
 	
 	ProcessDefinitionQuery createProcessDefinitionQuery();

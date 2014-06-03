@@ -32,5 +32,9 @@
     from foxbpm_run_taskidentitylink
     where TASK_ID = #{id,jdbcType=VARCHAR}
   </select>
+  
+  <delete id="deleteIdentityLinkByTaskId">
+  	DELETE FROM FOXBPM_RUN_TASKIDENTITYLINK WHERE TASK_ID = #{taskId,jdbcType=VARCHAR}
+  </delete>
 
 </mapper>

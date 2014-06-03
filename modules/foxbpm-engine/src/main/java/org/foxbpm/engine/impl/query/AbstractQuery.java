@@ -18,6 +18,7 @@
 package org.foxbpm.engine.impl.query;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.foxbpm.engine.exception.FoxBPMException;
@@ -33,7 +34,7 @@ import org.foxbpm.engine.query.QueryProperty;
 /**
  * Abstract superclass for all query types.
  * 
- * @author Joram Barrez
+ * @author 
  */
 public abstract class AbstractQuery<T extends Query<?, ?>, U> extends
 		ListQueryParameterObject implements Command<Object>, Query<T, U>,
@@ -130,6 +131,22 @@ public abstract class AbstractQuery<T extends Query<?, ?>, U> extends
 		this.resultType = ResultType.LIST_PAGE;
 		if (commandExecutor != null) {
 			return (List<U>) commandExecutor.execute(this);
+		}
+		return executeList(Context.getCommandContext());
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<U> listPagination(int pageNum, int rowNum) {
+		this.firstResult = pageNum*rowNum-rowNum+1;
+		this.maxResults = pageNum*rowNum;
+		this.resultType = ResultType.LIST_PAGE;
+		if (commandExecutor != null) {
+			List<U> returnList=(List<U>) commandExecutor.execute(this);
+			if(returnList==null)
+			{
+				returnList=new ArrayList<U>();
+			}
+			return returnList;
 		}
 		return executeList(Context.getCommandContext());
 	}

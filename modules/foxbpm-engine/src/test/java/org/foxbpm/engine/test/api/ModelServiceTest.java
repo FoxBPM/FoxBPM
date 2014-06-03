@@ -62,5 +62,10 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 		System.out.println(process.size());
 	}
 	
+	public void testDeleteDeploy(){
+		String deploymentId = "1e496bcd-708e-45a1-8f01-9d5b02b2aa21";
+		modelService.deleteDeployment(deploymentId);
+	}
+	
 	
 }

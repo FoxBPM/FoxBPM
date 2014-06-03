@@ -50,17 +50,16 @@ public class DeploymentEntityManager extends AbstractManager {
 	  
 
 	public void deleteDeployment(String deploymentId, boolean cascade) {
-		List<ProcessDefinition> processDefinitions = new ProcessDefinitionQueryImpl().deploymentId(deploymentId).list();
-		List<ResourceEntity> resources = Context.getCommandContext().getResourceManager().findResourcesByDeploymentId(deploymentId);
-		for(ResourceEntity resource : resources){
-			getSqlSession().delete(resource);
-		}
+		//删除大字段表
+		getResourceManager().deleteResourceByDeploymentId(deploymentId);
+		//删除所有的流程定义
 		if (cascade) {
+			List<ProcessDefinition> processDefinitions = new ProcessDefinitionQueryImpl().deploymentId(deploymentId).list();
 			for (ProcessDefinition processDefinition : processDefinitions) {
 				Context.getCommandContext().getProcessDefinitionManager().deleteProcessDefinition(processDefinition.getId(), cascade);
-				String processDefinitionId = processDefinition.getId();
-				getProcessInstanceManager().deleteProcessInstancesByProcessDefinition(processDefinitionId,cascade);
 			}
 		}
+		//删除deployment发布记录
+		getSqlSession().delete("deleteDeploymentById", deploymentId);
 	}
 }

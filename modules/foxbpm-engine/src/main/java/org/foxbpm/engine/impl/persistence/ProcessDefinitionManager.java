@@ -71,7 +71,12 @@ public class ProcessDefinitionManager extends AbstractManager {
 	}
 	
 	public void deleteProcessDefinition(String processDefinitionId,boolean cascade){
-		
+		//删除流程实例
+		if(cascade){
+			getProcessInstanceManager().deleteProcessInstancesByProcessDefinition(processDefinitionId,cascade);
+		}
+		//删除流程定义
+		getSqlSession().delete("deleteProcessDefinitionById", processDefinitionId);
 	}
 	
 }

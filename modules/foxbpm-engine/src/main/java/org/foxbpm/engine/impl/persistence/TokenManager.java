@@ -50,6 +50,6 @@ public class TokenManager extends AbstractManager {
 	}
 	
 	public void deleteTokenByProcessInstanceId(String processInstanceId){
-		
+		getSqlSession().delete("deleteTokenByProcessInstanceId", processInstanceId);
 	}
 }

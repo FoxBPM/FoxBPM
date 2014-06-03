@@ -103,4 +103,8 @@
     </where>
   </sql>
   
+  <delete id="deleteTokenByProcessInstanceId" parameterType="java.lang.String">
+  	DELETE FROM FOXBPM_RUN_TOKEN WHERE PROCESSINSTANCE_ID = #{processInstanceId,jdbcType=VARCHAR}
+  </delete>
+  
 </mapper>

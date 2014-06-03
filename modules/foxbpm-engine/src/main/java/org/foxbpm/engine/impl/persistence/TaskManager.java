@@ -65,17 +65,15 @@ public class TaskManager extends AbstractManager {
 	}
 	
 	public void deleteTaskByProcessInstanceId(String processInstanceId){
+		//查询出相关任务
 		List<TaskEntity> taskList = findTasksByProcessInstanceId(processInstanceId);
+		//根据流程实例号删除任务实例
+		getSqlSession().delete("deleteTaskByProcessInstanceId",processInstanceId);
+		//删除任务候选人信息
 		if(taskList != null){
 			for(TaskEntity task :taskList){
-				deleteTask(task);
+				getIdentityLinkManager().deleteIdentityLinkByTaskId(task.getId());
 			}
 		}
 	}
-	
-	public void deleteTask(TaskEntity task){
-		getSqlSession().delete(task);
-		getIdentityLinkManager().deleteIdentityLinkByTaskId(task.getId());
-	}
-	
 }

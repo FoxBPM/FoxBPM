@@ -90,13 +90,13 @@
         and PD.PROCESS_KEY like #{keyLike}
       </if>
       <if test="version != null">
-        and RES.VERSION = #{version}
+        and PD.VERSION = #{version}
       </if>
       <if test="deploymentId != null">
-        and RES.DEPLOYMENT_ID = #{deploymentId}
+        and PD.DEPLOYMENT_ID = #{deploymentId}
       </if>
       <if test="latest">
-        and RES.VERSION = (select max(VERSION) from FOXBPM_DEF_PROCESSDEFINITION where KEY = RES.KEY)
+        and PD.VERSION = (select max(VERSION) from FOXBPM_DEF_PROCESSDEFINITION where KEY = RES.KEY)
       </if>
     </where>
   </sql>
@@ -116,4 +116,8 @@
       PROCESS_ID = #{id,jdbcType=VARCHAR}
   </update>
   
+  <delete id="deleteProcessDefinitionById" parameterType="java.lang.String">
+  	DELETE FROM FOXBPM_DEF_PROCESSDEFINITION WHERE PROCESS_ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  	
 </mapper>

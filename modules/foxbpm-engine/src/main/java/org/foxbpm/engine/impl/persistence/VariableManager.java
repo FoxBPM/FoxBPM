@@ -66,4 +66,8 @@ public class VariableManager extends AbstractManager {
 		}
 		return result;
 	}
+	
+	public void deleteVariableByProcessInstanceId(String processInstanceId){
+		getSqlSession().delete("deleteVariableByProcessInstanceId", processInstanceId);
+	}
 }

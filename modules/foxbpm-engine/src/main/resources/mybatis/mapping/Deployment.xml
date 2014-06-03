@@ -26,4 +26,8 @@
 	   SELECT * FROM FOXBPM_DEF_DEPLOYMENT WHERE ID =  #{id,jdbcType=VARCHAR}
   </select>
   
+  <delete id="deleteDeploymentById" parameterType="java.lang.String">
+  		DELETE FROM FOXBPM_DEF_DEPLOYMENT WHERE ID =  #{id,jdbcType=VARCHAR}
+  </delete>
+  	
 </mapper>

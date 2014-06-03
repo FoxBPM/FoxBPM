@@ -48,6 +48,16 @@
   	</select>
   	
   	
+  	 <select id="selectProcessInstanceIdsByProcessDefinitionId" parameterType="java.lang.String" resultType="string">
+	    select 
+	    ID
+	    from foxbpm_run_processinstance
+	    where PROCESSDEFINITION_ID = #{id,jdbcType=VARCHAR}
+  	</select>
+  	
+  	
+  	
+  	
   	<select id="selectProcessInstanceByQueryCriteria" parameterType="org.foxbpm.engine.impl.runtime.ProcessInstanceQueryImpl" resultMap="processResultMap">
   	${limitBefore}
     select RES.* ${limitBetween}
@@ -149,4 +159,8 @@
     where
       ID = #{id,jdbcType=VARCHAR}
   </update>
+  
+  <delete id="deleteProcessInstanceByProcessDefinitionId" parameterType="java.lang.String">
+  		DELETE FROM FOXBPM_RUN_PROCESSINSTANCE WHERE PROCESSDEFINITION_ID = #{processDefinitionId,jdbcType=VARCHAR}
+  </delete>
 </mapper>
