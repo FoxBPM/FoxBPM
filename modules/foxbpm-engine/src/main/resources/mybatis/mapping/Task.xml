@@ -287,7 +287,7 @@
       </if>
       
       <if test="end != null">
-      	and RES.END_TIME IS NULL
+      	and RES.END_TIME IS ${end}
       </if>
       
       <if test="isSuspended != null" >

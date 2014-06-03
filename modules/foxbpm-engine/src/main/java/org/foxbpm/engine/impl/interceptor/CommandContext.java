@@ -164,7 +164,7 @@ public class CommandContext {
 			for(Throwable e : exception){
 				log.error("执行command出错：" + command,e);
 			}
-			throw new FoxBPMException("执行命令出错，具体请查看日志信息！部分异常信息如下：",exception.get(0));
+			throw new FoxBPMException("执行command出错：" + command.getClass(),exception.get(0));
 		}
 		
 	}

@@ -18,8 +18,6 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
-import java.util.Map;
-
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.interceptor.Session;
@@ -41,22 +39,33 @@ public abstract class AbstractManager implements Session{
 	public void insert(PersistentObject persistentObject) {
 		getSqlSession().insert(persistentObject);
 	}
+	
+	protected DeploymentEntityManager getDeploymentManager() {
+		return getSession(DeploymentEntityManager.class);
+	}
 
-//	public void delete(String deleteStatement, PersistentObject persistentObject) {
-//		delete(deleteStatement, persistentObject.getId());
-//	}
-//	
-//	public void delete(String deleteStatement, String parameter) {
-//		getSqlSession().delete(deleteStatement, parameter);
-//	}
+	protected ResourceManager getResourceManager() {
+		return getSession(ResourceManager.class);
+	}
+
+	protected ProcessDefinitionManager getProcessDefinitionManager() {
+		return getSession(ProcessDefinitionManager.class);
+	}
+
+	protected TaskManager getTaskManager() {
+		return getSession(TaskManager.class);
+	}
+
+	protected IdentityLinkManager getIdentityLinkManager() {
+		return getSession(IdentityLinkManager.class);
+	}
 	
-//	public void update(PersistentObject persistentObject){
-//		getSqlSession().update(persistentObject);
-//	}
+	protected TokenManager getTokenManager() {
+		return getSession(TokenManager.class);
+	}
 	
-	@SuppressWarnings("unchecked")
-	public Map<String, Object> getPersistentDbMap(String statement, PersistentObject persistentObject){
-		return (Map<String, Object>)getSqlSession().selectOne(statement, persistentObject);
+	protected ProcessInstanceManager getProcessInstanceManager() {
+		return getSession(ProcessInstanceManager.class);
 	}
 	
 	public <T extends PersistentObject> T selectById(Class<T> entityClass,String id){

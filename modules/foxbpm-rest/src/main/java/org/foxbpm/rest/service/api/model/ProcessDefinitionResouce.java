@@ -38,7 +38,7 @@ public class ProcessDefinitionResouce extends AbstractRestResource{
 		}
 		ProcessEngine engine = ProcessEngineManagement.getDefaultProcessEngine();
 		ModelService modelService =engine.getModelService();
-		ProcessDefinition processEntity = modelService.getProcessDefinitionById(processDefinitionId);
+		ProcessDefinition processEntity = modelService.getProcessDefinition(processDefinitionId);
 		if(processEntity == null){
 			return null;
 		}

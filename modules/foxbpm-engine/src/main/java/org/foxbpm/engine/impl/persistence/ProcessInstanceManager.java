@@ -43,5 +43,19 @@ public class ProcessInstanceManager extends AbstractManager {
 	public List<ProcessInstance> findProcessInstanceByQueryCriteria(ProcessInstanceQueryImpl processInstaceQuery){
 		return getSqlSession().selectList("selectProcessInstanceByQueryCriteria", processInstaceQuery);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public void deleteProcessInstancesByProcessDefinition(String processDefinitionId, boolean cascade){
+		List<String> processInstanceIds = getSqlSession().selectListWithRawParameter("selectProcessInstanceIdsByProcessDefinitionId", processDefinitionId);
+		for (String processInstanceId : processInstanceIds) {
+			deleteProcessInstance(processInstanceId, cascade);
+		}
+	}
+
+	private void deleteProcessInstance(String processInstanceId, boolean cascade) {
+		getSqlSession().delete("deleteProcessInstanceById",processInstanceId);
+		getTokenManager().deleteTokenByProcessInstanceId(processInstanceId);
+		getTaskManager().deleteTaskByProcessInstanceId(processInstanceId);
+	}
 
 }

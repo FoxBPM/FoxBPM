@@ -70,4 +70,8 @@ public class ProcessDefinitionManager extends AbstractManager {
 		return (Long)getSqlSession().selectOne("selectProcessDefinitionCountByQueryCriteria", processDefinitionQuery);
 	}
 	
+	public void deleteProcessDefinition(String processDefinitionId,boolean cascade){
+		
+	}
+	
 }

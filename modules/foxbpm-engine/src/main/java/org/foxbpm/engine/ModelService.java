@@ -68,8 +68,6 @@ public interface ModelService {
 	
 	DeploymentBuilder createDeployment();
 	
-	ProcessDefinition getProcessDefinitionById(String processDefinitionId);
-	
 	ProcessDefinitionQuery createProcessDefinitionQuery();
 	
 	String deployByInputStream(Map<String, InputStream> inputStreamMap);

@@ -20,12 +20,14 @@ package org.foxbpm.engine.impl.mybatis;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.exception.FoxBPMDbException;
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.db.ListQueryParameterObject;
 import org.foxbpm.engine.impl.interceptor.Session;
 import org.foxbpm.engine.sqlsession.ISqlSession;
@@ -36,8 +38,9 @@ public class MybatisSqlSession implements ISqlSession,Session {
 
 	SqlSession sqlSession ;
 	public static Logger log = LoggerFactory.getLogger(MybatisSqlSession.class);
-	 protected Map<Class<?>, Map<String, CachedObject>> cachedObjects = new HashMap<Class<?>, Map<String,CachedObject>>();
+	protected Map<Class<?>, Map<String, CachedObject>> cachedObjects = new HashMap<Class<?>, Map<String,CachedObject>>();
 	protected List<PersistentObject> insertedObjects = new ArrayList<PersistentObject>();
+	protected List<DeleteOperation> deleteOperations = new ArrayList<DeleteOperation>();
 	public MybatisSqlSession(SqlSession sqlSession){
 		this.sqlSession = sqlSession;
 	}
@@ -66,14 +69,119 @@ public class MybatisSqlSession implements ISqlSession,Session {
 	    return persistentObject;
 	}
 	
-//	public void delete(String deleteStatement, Object parameter) {
-//		sqlSession.delete(deleteStatement, parameter);
-//	}
-//
-//	public void delete(String deleteStatement, PersistentObject persistentObject) {
-//		sqlSession.delete(deleteStatement, persistentObject);
-//
-//	}
+	// delete
+	// ///////////////////////////////////////////////////////////////////
+
+	public void delete(String statement, Object parameter) {
+		deleteOperations.add(new BulkDeleteOperation(statement, parameter));
+	}
+
+	public void delete(PersistentObject persistentObject) {
+		for (DeleteOperation deleteOperation : deleteOperations) {
+			if (deleteOperation.sameIdentity(persistentObject)) {
+				log.debug("skipping redundant delete: {}", persistentObject);
+				return; // Skip this delete. It was already added.
+			}
+		}
+
+		deleteOperations.add(new CheckedDeleteOperation(persistentObject));
+	}
+
+	public interface DeleteOperation {
+
+		boolean sameIdentity(PersistentObject other);
+
+		void clearCache();
+
+		void execute();
+
+	}
+
+	/**
+	 * Use this {@link DeleteOperation} to execute a dedicated delete statement.
+	 * It is important to note there won't be any optimistic locking checks done
+	 * for these kind of delete operations!
+	 * 
+	 * For example, a usage of this operation would be to delete all variables
+	 * for a certain execution, when that certain execution is removed. The
+	 * optimistic locking happens on the execution, but the variables can be
+	 * removed by a simple 'delete from var_table where execution_id is xxx'. It
+	 * could very well be there are no variables, which would also work with
+	 * this query, but not with the regular {@link CheckedDeleteOperation}.
+	 */
+	public class BulkDeleteOperation implements DeleteOperation {
+		private String statement;
+		private Object parameter;
+
+		public BulkDeleteOperation(String statement, Object parameter) {
+			this.statement = statement;
+			this.parameter = parameter;
+		}
+
+		@Override
+		public boolean sameIdentity(PersistentObject other) {
+			// this implementation is unable to determine what the identity of
+			// the removed object(s) will be.
+			return false;
+		}
+
+		@Override
+		public void clearCache() {
+			// this implementation cannot clear the object(s) to be removed from
+			// the cache.
+		}
+
+		@Override
+		public void execute() {
+			sqlSession.delete(statement, parameter);
+		}
+
+		@Override
+		public String toString() {
+			return "bulk delete: " + statement + "(" + parameter + ")";
+		}
+	}
+
+	/**
+	 * A {@link DeleteOperation} that checks for concurrent modifications if the
+	 * persistent object implements {@link HasRevision}. That is, it employs
+	 * optimisting concurrency control. Used when the persistent object has been
+	 * fetched already.
+	 */
+	public class CheckedDeleteOperation implements DeleteOperation {
+		protected final PersistentObject persistentObject;
+
+		public CheckedDeleteOperation(PersistentObject persistentObject) {
+			this.persistentObject = persistentObject;
+		}
+
+		@Override
+		public boolean sameIdentity(PersistentObject other) {
+			return persistentObject.getClass().equals(other.getClass()) && persistentObject.getId().equals(other.getId());
+		}
+
+		@Override
+		public void clearCache() {
+			cacheRemove(persistentObject.getClass(), persistentObject.getId());
+		}
+
+		public void execute() {
+			String deleteStatement = MyBatisSqlSessionFactory.getDeleteStatement(persistentObject.getClass());
+			if (deleteStatement == null) {
+				throw new FoxBPMException("no delete statement for " + persistentObject.getClass() + " in the ibatis mapping files");
+			}
+			sqlSession.delete(deleteStatement, persistentObject);
+		}
+
+		public PersistentObject getPersistentObject() {
+			return persistentObject;
+		}
+
+		@Override
+		public String toString() {
+			return "delete " + persistentObject;
+		}
+	}
 
 	public List<?> selectList(String statement) {
 		return sqlSession.selectList(statement);
@@ -149,6 +257,19 @@ public class MybatisSqlSession implements ISqlSession,Session {
 	}
 	
 	public void removeUnnecessaryOperations(){
+		//如果对象既在insert中，又在delete中，则直接删除，不做处理
+		for (Iterator<DeleteOperation> deleteIt = deleteOperations.iterator(); deleteIt.hasNext();) {
+			DeleteOperation deleteOperation = deleteIt.next();
+			for (Iterator<PersistentObject> insertIt = insertedObjects.iterator(); insertIt.hasNext();) {
+				PersistentObject insertedObject = insertIt.next();
+				if (deleteOperation.sameIdentity(insertedObject)) {
+					insertIt.remove();
+					deleteIt.remove();
+				}
+			}
+			deleteOperation.clearCache();
+		}
+		
 		for(PersistentObject insertedObject : insertedObjects) {
 			cacheRemove(insertedObject.getClass(), insertedObject.getId());
 		}
@@ -186,17 +307,27 @@ public class MybatisSqlSession implements ISqlSession,Session {
 			Map<String, CachedObject> classCache = cachedObjects.get(clazz);
 			for (CachedObject cachedObject : classCache.values()) {
 				PersistentObject persistentObject = cachedObject.getPersistentObject();
-				Object originalState = cachedObject.getPersistentObjectState();
-				if (!persistentObject.getPersistentState().equals(originalState)) {
-					updatedObjects.add(persistentObject);
-				} else {
-					log.trace("loaded object '{}' was not updated",persistentObject);
+				if (!isPersistentObjectDeleted(persistentObject)) {
+					Object originalState = cachedObject.getPersistentObjectState();
+					if (!persistentObject.getPersistentState().equals(originalState)) {
+						updatedObjects.add(persistentObject);
+					} else {
+						log.trace("loaded object '{}' was not updated",persistentObject);
+					}
 				}
 			}
 		}
 		return updatedObjects;
 	}
 	
+	protected boolean isPersistentObjectDeleted(PersistentObject persistentObject) {
+		for (DeleteOperation deleteOperation : deleteOperations) {
+			if (deleteOperation.sameIdentity(persistentObject)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	protected CachedObject cachePut(PersistentObject persistentObject,boolean storeState) {
 		Map<String, CachedObject> classCache = cachedObjects.get(persistentObject.getClass());

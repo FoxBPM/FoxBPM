@@ -27,6 +27,7 @@ import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.DeploymentEntity;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
+import org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl;
 import org.foxbpm.engine.impl.persistence.DeploymentEntityManager;
 import org.foxbpm.engine.repository.ProcessDefinition;
 
@@ -101,17 +102,13 @@ public class DeploymentManager {
 
 	public void removeDeployment(String deploymentId, boolean cascade) {
 		DeploymentEntityManager deploymentEntityManager = Context.getCommandContext().getDeploymentEntityManager();
-		//if (deploymentEntityManager.findDeploymentById(deploymentId) == null)
-			//throw new ActivitiObjectNotFoundException("Could not find a deployment with id '" + deploymentId + "'.", DeploymentEntity.class);
+		if (deploymentEntityManager.findDeploymentById(deploymentId) == null)
+			throw new FoxBPMObjectNotFoundException("Could not find a deployment with id '" + deploymentId + "'.");
 
-		// Remove any process definition from the cache
-		List<ProcessDefinition> processDefinitions =null; //new ProcessDefinitionQueryImpl(Context.getCommandContext()).deploymentId(deploymentId)
-				//.list();
+		List<ProcessDefinition> processDefinitions = new ProcessDefinitionQueryImpl(Context.getCommandContext()).deploymentId(deploymentId).list();
 		for (ProcessDefinition processDefinition : processDefinitions) {
 			processDefinitionCache.remove(processDefinition.getId());
 		}
-
-		// Delete data
 		deploymentEntityManager.deleteDeployment(deploymentId, cascade);
 	}
 

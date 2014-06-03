@@ -29,7 +29,6 @@ import org.foxbpm.engine.impl.cmd.DeploymentByInputStreamCmd;
 import org.foxbpm.engine.impl.cmd.DeploymentByZipCmd;
 import org.foxbpm.engine.impl.cmd.GetFlowGraphicsImgStreamCmd;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinition;
-import org.foxbpm.engine.impl.cmd.GetProcessDefinitionById;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinitionByKeyAndVersion;
 import org.foxbpm.engine.impl.cmd.UpdateDeploymentByStreamMapCmd;
 import org.foxbpm.engine.impl.cmd.UpdateDeploymentByZipCmd;
@@ -71,8 +70,8 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 		commandExecutor.execute(new UpdateDeploymentByStreamMapCmd(createDeployment() , deploymentId , inputStreamMap));
 	}
 	
-	public ProcessDefinition getProcessDefinitionById(String processDefinitionId) {
-		return commandExecutor.execute(new GetProcessDefinitionById(processDefinitionId));
+	public void deleteDeployment(String deploymentId){
+		
 	}
 	
 	public ProcessDefinitionQuery createProcessDefinitionQuery() {

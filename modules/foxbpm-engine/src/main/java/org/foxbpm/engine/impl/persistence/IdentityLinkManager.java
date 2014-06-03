@@ -38,4 +38,12 @@ public class IdentityLinkManager extends AbstractManager {
 		return getSqlSession().selectById(IdentityLinkEntity.class, identityLinkId);
 	}
 	
+	public void deleteIdentityLinkByTaskId(String taskId){
+		getSqlSession().delete("deleteIdentityLinkByTaskId", taskId);
+	}
+	
+	public void deleteIdentityLinkByProcessInstanceId(String processInstanceId){
+		getSqlSession().delete("deleteIdentityLinkByProcessInstanceId",processInstanceId);
+	}
+	
 }

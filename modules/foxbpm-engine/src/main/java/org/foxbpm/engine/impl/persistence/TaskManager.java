@@ -64,4 +64,18 @@ public class TaskManager extends AbstractManager {
 		return (List<TaskEntity>) getSqlSession().selectListWithRawParameter("selectTasksByTokenId", tokenId);
 	}
 	
+	public void deleteTaskByProcessInstanceId(String processInstanceId){
+		List<TaskEntity> taskList = findTasksByProcessInstanceId(processInstanceId);
+		if(taskList != null){
+			for(TaskEntity task :taskList){
+				deleteTask(task);
+			}
+		}
+	}
+	
+	public void deleteTask(TaskEntity task){
+		getSqlSession().delete(task);
+		getIdentityLinkManager().deleteIdentityLinkByTaskId(task.getId());
+	}
+	
 }

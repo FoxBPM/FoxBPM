@@ -18,11 +18,14 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
+import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.DeploymentEntity;
 import org.foxbpm.engine.impl.entity.ResourceEntity;
+import org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl;
+import org.foxbpm.engine.repository.ProcessDefinition;
 
 /**
  * 定义发布持久化管理器
@@ -47,7 +50,17 @@ public class DeploymentEntityManager extends AbstractManager {
 	  
 
 	public void deleteDeployment(String deploymentId, boolean cascade) {
-		// TODO Auto-generated method stub
-		
+		List<ProcessDefinition> processDefinitions = new ProcessDefinitionQueryImpl().deploymentId(deploymentId).list();
+		List<ResourceEntity> resources = Context.getCommandContext().getResourceManager().findResourcesByDeploymentId(deploymentId);
+		for(ResourceEntity resource : resources){
+			getSqlSession().delete(resource);
+		}
+		if (cascade) {
+			for (ProcessDefinition processDefinition : processDefinitions) {
+				Context.getCommandContext().getProcessDefinitionManager().deleteProcessDefinition(processDefinition.getId(), cascade);
+				String processDefinitionId = processDefinition.getId();
+				getProcessInstanceManager().deleteProcessInstancesByProcessDefinition(processDefinitionId,cascade);
+			}
+		}
 	}
 }

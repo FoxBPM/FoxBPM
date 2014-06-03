@@ -89,4 +89,10 @@ public class JdbcSqlSession implements ISqlSession {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void delete(PersistentObject persistentObject) {
+		// TODO Auto-generated method stub
+		
+	}
 }
