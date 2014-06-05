@@ -21,18 +21,13 @@ package org.foxbpm.engine.impl;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.ZipInputStream;
 
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.impl.cmd.DeleteDeploymentCmd;
 import org.foxbpm.engine.impl.cmd.DeployCmd;
-import org.foxbpm.engine.impl.cmd.DeploymentByInputStreamCmd;
-import org.foxbpm.engine.impl.cmd.DeploymentByZipCmd;
 import org.foxbpm.engine.impl.cmd.GetFlowGraphicsImgStreamCmd;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinition;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinitionByKeyAndVersion;
-import org.foxbpm.engine.impl.cmd.UpdateDeploymentByStreamMapCmd;
-import org.foxbpm.engine.impl.cmd.UpdateDeploymentByZipCmd;
 import org.foxbpm.engine.impl.model.DeploymentBuilderImpl;
 import org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl;
 import org.foxbpm.engine.repository.Deployment;
@@ -50,25 +45,9 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	public String deployByInputStream(Map<String, InputStream> inputStreamMap) {
-		return commandExecutor.execute(new DeploymentByInputStreamCmd(createDeployment(),inputStreamMap));
-	}
-	
-	public String deployByZip(ZipInputStream zipInputStream) {
-		return commandExecutor.execute(new DeploymentByZipCmd(createDeployment(),zipInputStream));
-	}
 
 	public Deployment deploy(DeploymentBuilderImpl deploymentBuilder) {
 		return commandExecutor.execute(new DeployCmd(deploymentBuilder));
-	}
-	
-	public void updateByZip(String deploymentId, ZipInputStream zipInputStream) {
-		commandExecutor.execute(new UpdateDeploymentByZipCmd(createDeployment() , deploymentId , zipInputStream));
-	}
-	
-	public void updateByStreamMap(String deploymentId, Map<String, InputStream> inputStreamMap) {
-		commandExecutor.execute(new UpdateDeploymentByStreamMapCmd(createDeployment() , deploymentId , inputStreamMap));
 	}
 	
 	public void deleteDeployment(String deploymentId){

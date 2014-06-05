@@ -48,6 +48,11 @@ public class DeploymentBuilderImpl implements DeploymentBuilder {
 	}
 
 	public DeploymentBuilder addInputStream(String resourceName, InputStream inputStream) {
+		return addInputStream(resourceName,inputStream,-1);
+	}
+	
+	@Override
+	public DeploymentBuilder addInputStream(String resourceName, InputStream inputStream, int version) {
 		if (inputStream == null) {
 			throw new FoxBPMClassLoadingException("inputStream for resource '" + resourceName + "' is null");
 		}
@@ -55,6 +60,9 @@ public class DeploymentBuilderImpl implements DeploymentBuilder {
 		ResourceEntity resource = new ResourceEntity();
 		resource.setName(resourceName);
 		resource.setBytes(bytes);
+		if(version != -1){
+			resource.setVersion(version);
+		}
 		deployment.addResource(resource);
 		return this;
 	}
@@ -79,6 +87,11 @@ public class DeploymentBuilderImpl implements DeploymentBuilder {
 	}
 
 	public DeploymentBuilder addZipInputStream(ZipInputStream zipInputStream) {
+		return addZipInputStream(zipInputStream,-1);
+	}
+	
+	@Override
+	public DeploymentBuilder addZipInputStream(ZipInputStream zipInputStream, int version) {
 		try {
 			ZipEntry entry = zipInputStream.getNextEntry();
 			while (entry != null) {
@@ -88,6 +101,9 @@ public class DeploymentBuilderImpl implements DeploymentBuilder {
 					ResourceEntity resource = new ResourceEntity();
 					resource.setName(entryName);
 					resource.setBytes(bytes);
+					if(version != -1){
+						resource.setVersion(version);
+					}
 					deployment.addResource(resource);
 				}
 				entry = zipInputStream.getNextEntry();

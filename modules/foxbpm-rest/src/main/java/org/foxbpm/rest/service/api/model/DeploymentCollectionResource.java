@@ -23,6 +23,7 @@ import java.util.zip.ZipInputStream;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
+import org.foxbpm.engine.repository.DeploymentBuilder;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
 import org.restlet.data.Status;
@@ -48,7 +49,9 @@ public class DeploymentCollectionResource extends AbstractRestResource {
 			}
 			ModelService modelService = FoxBpmUtil.getProcessEngine().getModelService();
 			ZipInputStream zip = new ZipInputStream(input);
-			deploymentId = modelService.deployByZip(zip);
+			DeploymentBuilder deploymentBuilder = modelService.createDeployment();
+			deploymentBuilder.addZipInputStream(zip);
+			deploymentBuilder.deploy();
 			setStatus(Status.SUCCESS_CREATED);
 		} catch (Exception e) {
 			if (e instanceof FoxBPMException) {

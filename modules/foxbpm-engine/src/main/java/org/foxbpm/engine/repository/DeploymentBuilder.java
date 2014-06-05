@@ -37,8 +37,12 @@ public interface DeploymentBuilder {
 	 * @return
 	 */
 	DeploymentBuilder addInputStream(String resourceName,InputStream inputStream);
+	
+	DeploymentBuilder addInputStream(String resourceName,InputStream inputStream,int version);
 
 	DeploymentBuilder addZipInputStream(ZipInputStream zipInputStream);
+	
+	DeploymentBuilder addZipInputStream(ZipInputStream zipInputStream,int version);
 
 	DeploymentBuilder name(String name);
 

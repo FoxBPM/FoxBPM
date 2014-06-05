@@ -33,6 +33,8 @@ public class ResourceEntity implements Serializable, PersistentObject {
 	protected byte[] bytes;
 	protected String deploymentId;
 	protected boolean generated = false;
+	//数据库中不存储，
+	private int version = -1;
 	
 	public ResourceEntity() {
 		this.id = GuidUtil.CreateGuid();
@@ -100,6 +102,14 @@ public class ResourceEntity implements Serializable, PersistentObject {
 	public boolean isModified() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 }

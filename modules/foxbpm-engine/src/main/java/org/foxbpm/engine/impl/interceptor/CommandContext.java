@@ -50,7 +50,7 @@ public class CommandContext {
 	protected Map<Class< ? >, SessionFactory> sessionFactories;
 	protected Map<Class< ? >, Session> sessions = new HashMap<Class< ? >, Session>();
 	protected TransactionContext transactionContext ;
-	protected List<Throwable> exception = null;
+	protected Throwable exception = null;
 	protected ProcessEngineConfigurationImpl processEngineConfigurationImpl;
 
 	public CommandContext(Command<?> command, ProcessEngineConfigurationImpl processEngineConfigurationImpl) {
@@ -161,10 +161,13 @@ public class CommandContext {
 		}
 		
 		if(exception != null){
-			for(Throwable e : exception){
-				log.error("执行command出错：" + command,e);
+			if (exception instanceof Error) {
+				throw (Error) exception;
+			} else if (exception instanceof RuntimeException) {
+				throw (RuntimeException) exception;
+			} else {
+				throw new FoxBPMException("exception while executing command " + command, exception);
 			}
-			throw new FoxBPMException("执行command出错：" + command.getClass(),exception.get(0));
 		}
 		
 	}
@@ -180,9 +183,10 @@ public class CommandContext {
 	}
 	
 	public void exception(Throwable e){
-		if(exception == null){
-			exception = new ArrayList<Throwable>();
+		if (this.exception == null) {
+			this.exception = e;
+		} else {
+			log.error("masked exception in command context. for root cause, see below as it will be rethrown later.", exception);
 		}
-		exception.add(e);
 	}
 }

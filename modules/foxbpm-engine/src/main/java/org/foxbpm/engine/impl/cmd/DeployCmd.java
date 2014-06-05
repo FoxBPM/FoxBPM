@@ -57,9 +57,9 @@ public class DeployCmd implements Command<Deployment>{
 			if(resourceEntityNewBpmn == null){
 				throw new FoxBPMBizException("发布包中必须存在bpmn文件");
 			}
-			if(resourceEntityNewPng == null){
-				throw new FoxBPMBizException("发布包中必须存在png文件");
-			}
+//			if(resourceEntityNewPng == null){
+//				throw new FoxBPMBizException("发布包中必须存在png文件");
+//			}
 			ResourceEntity resourceEntityOldBpmn = null;
 			ResourceEntity resourceEntityOldPng = null;
 			
@@ -76,12 +76,14 @@ public class DeployCmd implements Command<Deployment>{
 				Context.getCommandContext().getResourceManager().insert(resourceEntityNewBpmn);
 			}else{
 				resourceEntityOldBpmn.setBytes(resourceEntityNewBpmn.getBytes());
+			}if(resourceEntityNewPng != null){
+				if(resourceEntityOldPng == null){
+					Context.getCommandContext().getResourceManager().insert(resourceEntityNewPng);
+				}else{
+					resourceEntityOldPng.setBytes(resourceEntityOldPng.getBytes());
+				}
 			}
-			if(resourceEntityOldPng == null){
-				Context.getCommandContext().getResourceManager().insert(resourceEntityNewPng);
-			}else{
-				resourceEntityOldPng.setBytes(resourceEntityOldPng.getBytes());
-			}
+			
 		}else{
 			deployment.setDeploymentTime(new Date());
 			deployment.setNew(true);

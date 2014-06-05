@@ -30,6 +30,7 @@ import org.foxbpm.engine.impl.entity.ResourceEntity;
 import org.foxbpm.engine.impl.persistence.ProcessDefinitionManager;
 import org.foxbpm.engine.impl.persistence.deploy.Deployer;
 import org.foxbpm.engine.impl.util.GuidUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,9 +39,9 @@ public class BpmnDeployer implements Deployer {
 	
 	
 	Logger log = LoggerFactory.getLogger(BpmnDeployer.class);
-	public static final String BPMN_RESOURCE_SUFFIX = "bpmn";
+	public static final String BPMN_RESOURCE_SUFFIX = ".bpmn";
 
-	public static final String DIAGRAM_SUFFIXES = "png";
+	public static final String DIAGRAM_SUFFIXES = ".png";
 	protected ProcessModelParseHandler processModelParseHandler;
 
 	public ProcessModelParseHandler getProcessModelParseHandler() {
@@ -64,10 +65,15 @@ public class BpmnDeployer implements Deployer {
 		processEntity.setResourceName(resourceBpmn.getName());
 		if(deployment.isNew()){//需要更新数据库（新发布或更新）
 			if(deployment.getUpdateDeploymentId() == null || deployment.getUpdateDeploymentId().equals("")){
-				ProcessDefinitionEntity latestProcessDefinition = processDefinitionManager.findLatestProcessDefinitionByKey(processEntity.getKey());
 				//发布
 				int processDefinitionVersion = 1;
-				if (latestProcessDefinition != null) {
+				//如果外部传了version，
+				if(resourceBpmn.getVersion() != -1){
+					processDefinitionVersion = resourceBpmn.getVersion();
+				}
+				else {
+					ProcessDefinitionEntity latestProcessDefinition = processDefinitionManager.findLatestProcessDefinitionByKey(processEntity.getKey());
+					if (latestProcessDefinition != null)
 					processDefinitionVersion = latestProcessDefinition.getVersion() + 1;
 				}
 				//新的发布号

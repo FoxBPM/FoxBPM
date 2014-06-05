@@ -21,7 +21,6 @@ package org.foxbpm.engine;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.ZipInputStream;
 
 import org.foxbpm.engine.impl.model.DeploymentBuilderImpl;
 import org.foxbpm.engine.repository.Deployment;
@@ -53,26 +52,13 @@ public interface ModelService {
 	 */
 	List<Map<String, String>> getStartProcessByUserId(String userId);
 	
-	/**
-	 * 通过zip文件发布流程
-	 * @param path zip文件路径
-	 * @return 发布号
-	 */
-	String deployByZip(ZipInputStream zipInputStream);
-
 	Deployment deploy(DeploymentBuilderImpl deploymentBuilderImpl);
-	
-	void updateByZip(String deploymentId,ZipInputStream zipInputStream);
-	
-	void updateByStreamMap(String deploymentId, Map<String, InputStream> inputStreamMap);
 	
 	void deleteDeployment(String deploymentId);
 	
 	DeploymentBuilder createDeployment();
 	
 	ProcessDefinitionQuery createProcessDefinitionQuery();
-	
-	String deployByInputStream(Map<String, InputStream> inputStreamMap);
 	
 	/**
 	 * 获取流程图节点信息
