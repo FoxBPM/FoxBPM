@@ -41,12 +41,6 @@ public interface ProcessInstance {
 	String getProcessDefinitionId();
 	
 	/**
-	 * 获取流程定义名称
-	 * @return
-	 */
-	String getProcessDefinitionName();
-	
-	/**
 	 * 获取流程主题
 	 * @return
 	 */

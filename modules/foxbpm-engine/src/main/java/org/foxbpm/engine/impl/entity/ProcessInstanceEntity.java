@@ -467,7 +467,6 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		super.end();
 	}
 
-	@Override
 	public String getProcessDefinitionName() {
 		ensureProcessDefinitionInitialized();
 		if(processDefinition!=null){
