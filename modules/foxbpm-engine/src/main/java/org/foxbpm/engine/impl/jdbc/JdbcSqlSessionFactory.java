@@ -35,12 +35,12 @@ public class JdbcSqlSessionFactory implements ISqlSessionFactory {
 	}
 
 	public ISqlSession createSqlSession() {
-		Connection connection;
-		try {
-			connection = dataSource.getConnection();
-		} catch (SQLException e) {
-			throw new FoxBPMException("jdbc数据库连接获取失败，请检查连接池配置",e);
-		}
+//		Connection connection;
+//		try {
+//			connection = dataSource.getConnection();
+//		} catch (SQLException e) {
+//			throw new FoxBPMException("jdbc数据库连接获取失败，请检查连接池配置",e);
+//		}
 		return new JdbcSqlSession();
 	}
 

@@ -89,7 +89,9 @@ public class SqlCommand {
 		finally
 		{
 			try {
-				pstmt.close();
+				if(pstmt != null){
+					pstmt.close();
+				}
 				if(rs != null){
 				rs.close();}
 			} catch (SQLException e) {
@@ -168,7 +170,9 @@ public class SqlCommand {
 		finally
 		{
 			try {
-				pstmt.close();
+				if(pstmt != null){
+					pstmt.close();
+				}
 				if(rs != null){
 				rs.close();}
 			} catch (SQLException e) {
@@ -261,7 +265,9 @@ public class SqlCommand {
 		finally
 		{
 			try {
-				pstmt.close();
+				if(pstmt != null){
+					pstmt.close();
+				}
 				if(rs != null){
 					rs.close();
 				}
@@ -303,7 +309,9 @@ public class SqlCommand {
 		finally
 		{
 			try {
-				stmt.close();
+				if(stmt != null){
+					stmt.close();
+				}
 			} catch (SQLException e) {
 				throw new FoxBPMException("关闭游标失败",e);
 			}
@@ -343,7 +351,9 @@ public class SqlCommand {
 		finally
 		{
 			try {
-				pstmt.close();
+				if(pstmt != null){
+					pstmt.close();
+				}
 			} catch (SQLException e) {
 				throw new FoxBPMException("关闭游标失败",e);
 			}
@@ -371,9 +381,12 @@ public class SqlCommand {
 		finally
 		{
 			try {
-				stmt.close();
+				if(stmt != null){
+					stmt.close();
+				}
 				if(result != null){
-				result.close();}
+					result.close();
+				}
 			} catch (SQLException e) {
 				throw new FoxBPMException("关闭游标失败",e);
 			}
@@ -415,9 +428,12 @@ public class SqlCommand {
 		finally
 		{
 			try {
-				pstmt.close();
+				if(pstmt != null){
+					pstmt.close();
+				}
 				if(result!=null){
-				result.close();}
+					result.close();
+				}
 			} catch (SQLException e) {
 				throw new FoxBPMException("关闭游标失败",e);
 			}
@@ -486,7 +502,9 @@ public class SqlCommand {
 		finally
 		{
 			try {
-				pstmt.close();
+				if(pstmt != null){
+					pstmt.close();
+				}
 			} catch (SQLException e) {
 				throw new FoxBPMException("关闭游标失败",e);
 			}
@@ -562,7 +580,9 @@ public class SqlCommand {
 		finally
 		{
 			try {
-				pstmt.close();
+				if(pstmt != null){
+					pstmt.close();
+				}
 			} catch (SQLException e) {
 				throw new FoxBPMException("关闭游标失败",e);
 			}
@@ -635,7 +655,9 @@ public class SqlCommand {
 		finally
 		{
 			try {
-				pstmt.close();
+				if(pstmt != null){
+					pstmt.close();
+				}
 			} catch (SQLException e) {
 				throw new FoxBPMException("关闭游标失败",e);
 			}

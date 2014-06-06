@@ -42,6 +42,7 @@ public class TemplateGenerator implements IZipGenerator {
 			URL url = this.getClass().getClassLoader().getResource(dirPath);
 			if(url == null){
 				log.warn("template位置:" + dirPath + " 不存在，跳过不处理");
+				return;
 			}
 			String urlStr = url.toString();
 			String jarPath = urlStr.substring(0, urlStr.indexOf("!/") + 2);

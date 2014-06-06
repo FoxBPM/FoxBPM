@@ -170,10 +170,7 @@ public class Connector implements KernelListener {
 
 		try {
 
-			if (this.skipExpression != null && !this.skipExpression.equals("")) {
-				
-				
-				
+			if (this.skipExpression != null && this.skipExpression.getExpressionText() != null && !this.skipExpression.getExpressionText().equals("")) {
 				Object timeExpressionObj = skipExpression.getValue((FlowNodeExecutionContext)executionContext);
 				if (StringUtil.getBoolean(timeExpressionObj)) {
 					return;

@@ -41,6 +41,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.exception.ExceptionCode;
 import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.ProcessDefinitionEntityBuilder;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.connector.Connector;
@@ -59,7 +60,9 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		Process process = null;
 		if (processFile != null) {
 			process = createProcess(processId, (InputStream)processFile);
-
+		}
+		if(process == null){
+			throw new FoxBPMException("文件中没有对应的流程定义，请检查bpmn文件内容和流程key是否对应！");
 		}
 		KernelProcessDefinition processDefinition=loadBehavior(process);
 		// 加载事件定义.
@@ -89,20 +92,17 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			KernelFlowNodeBehavior flowNodeBehavior = BpmnBehaviorEMFConverter.getFlowNodeBehavior(flowElement,processDefinitionBuilder.getProcessDefinition());
 			if(flowElement instanceof FlowNode){
 				processDefinitionBuilder.createFlowNode(flowElement.getId()).behavior(flowNodeBehavior);
-				
 				if(flowNodeBehavior instanceof BaseElementBehavior){
 					for (Connector connector :((BaseElementBehavior) flowNodeBehavior).getConnectors()) {
 						processDefinitionBuilder.executionListener(connector.getEventType(), connector);
 					}
 				}
-
 				if(flowElement instanceof StartEvent){
 					processDefinitionBuilder.initial();
 				}
 				List<SequenceFlow>  sequenceFlows=((FlowNode) flowElement).getOutgoing();
 				for (SequenceFlow sequenceFlow : sequenceFlows) {
 					processDefinitionBuilder.sequenceFlow(sequenceFlow.getTargetRef().getId());
-					
 				}
 				processDefinitionBuilder.endFlowNode();
 			}
@@ -141,13 +141,8 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		for (RootElement rootElement : definitions.getRootElements()) {
 			if (rootElement instanceof Process) {
 				Process processObj = (Process) rootElement;
-
-				
-
-//				if (processObjId.equals(processId)) {
-					processObj = (Process) rootElement;
-					return processObj;
-//				}
+				processObj = (Process) rootElement;
+				return processObj;
 			}
 		}
 		return null;
