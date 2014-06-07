@@ -29,15 +29,4 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  <servlet>
-    <description></description>
-    <display-name>InitializeServlet</display-name>
-    <servlet-name>InitializeServlet</servlet-name>
-    <servlet-class>org.foxbpm.web.servlet.InitializeServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>InitializeServlet</servlet-name>
-    <url-pattern>/InitializeServlet</url-pattern>
-  </servlet-mapping>
 </web-app>

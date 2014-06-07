@@ -33,7 +33,12 @@
 		<property name="dataSourceManager" ref="foxbpmDataSourceManager" />
 		<property name="transactionManager" ref="foxbpmTransactionManager" />
 	</bean>
-
+	<bean class="org.foxbpm.web.db.factory.FoxbpmDBConnectionFactory"
+		id="foxbpmConnectionFactory" scope="prototype">
+		<property name="dataSource">
+			<ref bean="foxbpmDataSource" />
+		</property>
+	</bean>
 	<bean id="processEngine" class="org.foxbpm.engine.spring.ProcessEngineFactoryBean">
 		<property name="processEngineConfiguration" ref="processEngineConfiguration" />
 	</bean>
@@ -52,8 +57,8 @@
 
 
 	<bean class="org.foxbpm.web.db.impl.BizDBImpl" id="bizDBImpl">
-	</bean> 
-	<bean class="org.foxbpm.web.service.impl.WebappProcessService" id="webappProcessServiceTarget"> 
+	</bean>
+	<bean class="org.foxbpm.web.service.impl.WebappProcessService" id="webappProcessServiceTarget">
 		<property name="bizDB">
 			<ref bean="bizDBImpl" />
 		</property>
@@ -73,7 +78,8 @@
 	<bean class="org.springframework.aop.framework.ProxyFactoryBean"
 		id="webappProcessService">
 		<property name="proxyInterfaces">
-			<value>org.foxbpm.web.service.interfaces.IWebappProcessService</value>
+			<value>org.foxbpm.web.service.interfaces.IWebappProcessService
+			</value>
 		</property>
 		<property name="interceptorNames">
 			<list>
@@ -87,7 +93,7 @@
 			<ref bean="webappProcessServiceTarget" />
 		</property>
 	</bean>
-	
+
 	<tx:advice id="foxbpmTransactionAdvice" transaction-manager="foxbpmTransactionManager">
 		<tx:attributes>
 			<tx:method name="get*" propagation="REQUIRED" read-only="true" />
