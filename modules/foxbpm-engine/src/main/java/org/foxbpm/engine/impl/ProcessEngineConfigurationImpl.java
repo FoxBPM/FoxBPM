@@ -98,7 +98,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected IdentityService identityService = new IdentityServiceImpl();
 	protected ISqlSessionFactory sqlSessionFactory;
 	protected Map<Class<?>, SessionFactory> sessionFactories;
-	protected DataSourceManage dataSourceManage;
+	protected DataSourceManage dataSourceManager;
 	// 定义及发布
 	protected int processDefinitionCacheLimit = -1; // By default, no limit
 	protected Cache processDefinitionCache;
@@ -269,10 +269,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 
 	public void initDataSourceManage() {
-		if (dataSourceManage == null) {
-			dataSourceManage = new DefaultDataSourceManage();
+		if (dataSourceManager == null) {
+			dataSourceManager = new DefaultDataSourceManage();
 		}
-		dataSourceManage.init();
+		dataSourceManager.init();
 	}
 
 	public void initExceptionResource() {
@@ -317,7 +317,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 
 	public void initSqlSessionFactory() {
-		DataSource dataSource = dataSourceManage.getDataSource();
+		DataSource dataSource = dataSourceManager.getDataSource();
 		sqlSessionFactory = new MyBatisSqlSessionFactory();
 		sqlSessionFactory.init(dataSource,dbType);
 	}
@@ -378,6 +378,12 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	private void initResourcePathConfig() {
 		resourcePathConfig = foxBpmConfig.getResourcePathConfig();
 	}
+	
+	//Setter
+	
+	public void setDataSourceManager(DataSourceManage dataSourceManager) {
+		this.dataSourceManager = dataSourceManager;
+	}
 
 	// Getter方法
 	
@@ -413,8 +419,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return identityService;
 	}
 
-	public DataSourceManage getDataSourceManage() {
-		return dataSourceManage;
+	public DataSourceManage getDataSourceManager() {
+		return dataSourceManager;
 	}
 
 	public FoxBPMConfig getFoxBpmConfig() {

@@ -37,14 +37,14 @@ public class DBUtils {
 		return getDataSource(DataSourceManage.DAFAULT_DATABASE_ID);
 	}
 	public static DataSource getDataSource(String key){
-		DataSourceManage dataSourceManage = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getDataSourceManage();
+		DataSourceManage dataSourceManage = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getDataSourceManager();
 		return dataSourceManage.getDataSource(key);
 	}
 	public static Connection getConnection(){
 		return getConnection(DataSourceManage.DAFAULT_DATABASE_ID);
 	}
 	public static Connection getConnection(String key){
-		DataSourceManage dataSourceManage = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getDataSourceManage();
+		DataSourceManage dataSourceManage = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getDataSourceManager();
 		try {
 			return dataSourceManage.getDataSource().getConnection();
 		} catch (SQLException e) {

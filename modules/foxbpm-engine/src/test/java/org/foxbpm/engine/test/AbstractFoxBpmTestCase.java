@@ -48,7 +48,7 @@ public abstract class AbstractFoxBpmTestCase extends TestCase {
 		if(modelService == null){
 			initializeServices();
 		}
-		DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager(processEngine.getProcessEngineConfiguration().getDataSourceManage().getDataSource());
+		DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager(processEngine.getProcessEngineConfiguration().getDataSourceManager().getDataSource());
 		TransactionTemplate t = new TransactionTemplate(dataSourceTransactionManager);
 		t.execute(new TransactionCallbackWithoutResult() {
 			@Override
@@ -56,7 +56,7 @@ public abstract class AbstractFoxBpmTestCase extends TestCase {
 				try {
 					
 					execute();
-					processEngine.getProcessEngineConfiguration().getDataSourceManage().getDataSource().getConnection().rollback();
+					processEngine.getProcessEngineConfiguration().getDataSourceManager().getDataSource().getConnection().rollback();
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}

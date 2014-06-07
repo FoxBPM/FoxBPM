@@ -6,7 +6,7 @@ public class ProcessEngineConfigrationImplSpring extends ProcessEngineConfigurat
 
 	@Override
 	public ProcessEngine buildProcessEngine() {
-		this.dataSourceManage = new SpringDataSourceManage();
+		this.dataSourceManager = new SpringDataSourceManage();
 		return super.buildProcessEngine();
 	}
 }

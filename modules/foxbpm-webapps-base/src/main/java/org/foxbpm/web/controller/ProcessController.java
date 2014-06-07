@@ -17,15 +17,17 @@
  */
 package org.foxbpm.web.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
+import org.foxbpm.engine.TaskService;
+import org.foxbpm.engine.task.Task;
 import org.foxbpm.web.common.constant.FoxbpmActionNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmRequestAttributeParamNameDefinition;
-import org.foxbpm.web.common.constant.FoxbpmServiceNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmViewNameDefinition;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.model.ProcessDefinition;
-import org.foxbpm.web.service.interfaces.IProcessService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -38,8 +40,8 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class ProcessController {
-	@Resource(name = FoxbpmServiceNameDefinition.START_PROCESS_SERVICENAME)
-	private IProcessService processService;
+	@Resource(name = "taskService")
+	private TaskService taskService;
 
 	/**
 	 * 对应到前端请求的action
@@ -50,20 +52,13 @@ public class ProcessController {
 	 */
 	@RequestMapping(FoxbpmActionNameDefinition.START_PROCESSINSTANCE_ACTION)
 	public ModelAndView startProcess(String parameter) {
-		ProcessDefinition processDefinition = null;
 		try {
-			processDefinition = processService
-					.createProcessDefinition(parameter);
+			List<Task> tasks = taskService.createTaskQuery().list();
+			System.out.println(tasks.size());
 		} catch (FoxbpmWebException foxbpmException) {
 			return new ModelAndView("error");
 		}
-
-		ModelAndView modelAndView = new ModelAndView(
-				FoxbpmViewNameDefinition.START_PROCESS_VIEWNAME);
-		modelAndView
-				.addObject(
-						FoxbpmRequestAttributeParamNameDefinition.ATTRIBUTE_NAME_PROCESSDEFINITION,
-						processDefinition);
+		ModelAndView modelAndView = new ModelAndView(FoxbpmViewNameDefinition.START_PROCESS_VIEWNAME);
 		return modelAndView;
 	}
 
