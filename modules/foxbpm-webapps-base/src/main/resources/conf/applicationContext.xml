@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation=" 
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd 
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd 
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="/WEB-INF/spring-mvc/jdbc.properties" />
+	</bean>
+	<bean id="foxbpmDataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${idbase.driverClassName}" />
+		<property name="url" value="${idbase.url}" />
+		<property name="username" value="${idbase.username}" />
+		<property name="password" value="${idbase.password}" />
+	</bean>
+	<bean id="foxbpmTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="foxbpmDataSource" />
+	</bean>
+	<bean id="foxbpmConnectionFactory" scope="prototype"
+		class="org.foxbpm.web.db.factory.FoxbpmDBConnectionFactory">
+		<property name="dataSource">
+			<ref bean="foxbpmDataSource" />
+		</property>
+	</bean>
+	<bean id="bizDBImpl" class="org.foxbpm.web.db.impl.BizDBImpl">
+	</bean>
+	<bean id="processServiceTarget" class="org.foxbpm.web.service.impl.ProcessService">
+		<property name="bizDB">
+			<ref bean="bizDBImpl" />
+		</property>
+		<property name="dbfactory">
+			<ref bean="foxbpmConnectionFactory" />
+		</property>
+	</bean>
+	<bean id="taskService" class="org.foxbpm.web.service.impl.TaskService"></bean>
+	<bean id="foxbpmMethodBeforeInvokeLogger"
+		class="org.foxbpm.web.service.aop.FoxbpmMethodBeforeInvokeLogger"></bean>
+	<bean id="foxbpmMethodAfterInvokeLogger"
+		class="org.foxbpm.web.service.aop.FoxbpmMethodAfterInvokeLogger"></bean>
+	<bean id="foxbpmMethodInvokeInterceptor"
+		class="org.foxbpm.web.service.aop.FoxbpmMethodInvokeInterceptor"></bean>
+	<bean id="foxbpmMethodInvokeExceptionLogger"
+		class="org.foxbpm.web.service.aop.FoxbpmMethodInvokeExceptionLogger"></bean>
+
+	<bean id="processService" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces">
+			<value>org.foxbpm.web.service.interfaces.IProcessService</value>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>foxbpmMethodBeforeInvokeLogger</value>
+				<value>foxbpmMethodAfterInvokeLogger</value>
+				<value>foxbpmMethodInvokeInterceptor</value>
+				<value>foxbpmMethodInvokeExceptionLogger</value>
+			</list>
+		</property>
+		<property name="target">
+			<ref bean="processServiceTarget" />
+		</property>
+	</bean>
+
+
+	<tx:advice id="foxbpmTransactionAdvice" transaction-manager="foxbpmTransactionManager">
+		<tx:attributes>
+			<tx:method name="get*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="create*" propagation="REQUIRED" />
+			<tx:method name="del*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="executeFunctionPointCut"
+			expression="execution(* org.foxbpm.web.service.impl.*.*(..))" />
+		<aop:advisor advice-ref="foxbpmTransactionAdvice"
+			pointcut-ref="executeFunctionPointCut" />
+	</aop:config>
+</beans> 
