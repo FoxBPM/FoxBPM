@@ -9,7 +9,7 @@ import org.foxbpm.web.model.ProcessDefinition;
  * @author MEL
  * @date 2014-06-04
  */
-public interface IProcessService {
+public interface IWebappProcessService {
 	public ProcessDefinition createProcessDefinition(String parameter)
 			throws FoxbpmWebException;
 }

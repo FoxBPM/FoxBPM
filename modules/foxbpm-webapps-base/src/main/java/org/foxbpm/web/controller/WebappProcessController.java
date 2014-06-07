@@ -17,25 +17,33 @@
  */
 package org.foxbpm.web.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
+import org.foxbpm.engine.TaskService;
+import org.foxbpm.engine.task.Task;
 import org.foxbpm.web.common.constant.FoxbpmActionNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmRequestAttributeParamNameDefinition;
-import org.foxbpm.web.common.constant.FoxbpmServiceNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmViewNameDefinition;
+import org.foxbpm.web.common.env.ExceptionEnvironment;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.model.ProcessDefinition;
-import org.foxbpm.web.service.interfaces.IProcessService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
+ * MVC 控制器
+ * 
  * @author MEL
  * @date 2014-06-04
  */
 @Controller
-public abstract class FoxbpmBaseController {
+public class WebappProcessController {
+	@Resource(name = "taskService")
+	private TaskService taskService;
+
 	/**
 	 * 对应到前端请求的action
 	 * 
@@ -43,15 +51,17 @@ public abstract class FoxbpmBaseController {
 	 *            形参名称必须和请求参数名称一致
 	 * @return ModelAndView
 	 */
-	@RequestMapping(FoxbpmActionNameDefinition.FOXBPM_BASE_ACTION)
-	public ModelAndView foxbpmAction(String parameter) {
-		try{
-			return this.subFoxbpmAction();
-		}catch(FoxbpmWebException foxbpmException){
-			//异常业务逻辑处理
+	@RequestMapping(FoxbpmActionNameDefinition.START_PROCESSINSTANCE_ACTION)
+	public ModelAndView startProcess(String parameter) {
+		try {
+			 
+			List<Task> tasks = taskService.createTaskQuery().list();
+			System.out.println(tasks.size());
+		} catch (FoxbpmWebException foxbpmException) {
+			return new ModelAndView("error");
 		}
-		return null;
+		ModelAndView modelAndView = new ModelAndView(FoxbpmViewNameDefinition.START_PROCESS_VIEWNAME);
+		return modelAndView;
 	}
-	public abstract ModelAndView subFoxbpmAction();
 
 }

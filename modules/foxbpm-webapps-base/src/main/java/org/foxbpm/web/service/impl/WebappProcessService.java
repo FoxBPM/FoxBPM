@@ -9,7 +9,7 @@ import org.foxbpm.web.db.factory.FoxbpmDBConnectionFactory;
 import org.foxbpm.web.db.interfaces.BizDBInterface;
 import org.foxbpm.web.model.BizInfo;
 import org.foxbpm.web.model.ProcessDefinition;
-import org.foxbpm.web.service.interfaces.IProcessService;
+import org.foxbpm.web.service.interfaces.IWebappProcessService;
 
 /**
  * 流程服务类
@@ -17,7 +17,7 @@ import org.foxbpm.web.service.interfaces.IProcessService;
  * @author MEL
  * @date 2014-06-04
  */
-public class ProcessService implements IProcessService {
+public class WebappProcessService implements IWebappProcessService {
 	@Setter
 	private BizDBInterface bizDB;
 	@Setter

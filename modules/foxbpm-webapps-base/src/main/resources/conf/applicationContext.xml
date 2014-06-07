@@ -18,33 +18,76 @@
 		<property name="username" value="${idbase.username}" />
 		<property name="password" value="${idbase.password}" />
 	</bean>
-	
-	<bean id="foxbpmDataSourceManager"
-		class="org.foxbpm.engine.spring.SpringDataSourceManager">
+
+	<bean id="foxbpmDataSourceManager" class="org.foxbpm.engine.spring.SpringDataSourceManager">
 		<property name="dataSource" ref="foxbpmDataSource" />
 	</bean>
-	
+
 	<bean id="foxbpmTransactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="foxbpmDataSource" />
 	</bean>
-	
+
 	<bean id="processEngineConfiguration"
 		class="org.foxbpm.engine.spring.ProcessEngineConfigurationSpring">
 		<property name="dataSourceManager" ref="foxbpmDataSourceManager" />
 		<property name="transactionManager" ref="foxbpmTransactionManager" />
 	</bean>
-	
-	<bean id="processEngine"
-		class="org.foxbpm.engine.spring.ProcessEngineFactoryBean">
+
+	<bean id="processEngine" class="org.foxbpm.engine.spring.ProcessEngineFactoryBean">
 		<property name="processEngineConfiguration" ref="processEngineConfiguration" />
 	</bean>
-	
-	<bean id="taskService" factory-bean="processEngine" factory-method="getTaskService"/>
-	<bean id="modelService" factory-bean="processEngine" factory-method="getModelService"/>
-	<bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService"/>
-	
 
+	<bean id="taskService" factory-bean="processEngine"
+		factory-method="getTaskService" />
+	<bean id="modelService" factory-bean="processEngine"
+		factory-method="getModelService" />
+	<bean id="runtimeService" factory-bean="processEngine"
+		factory-method="getRuntimeService" />
+
+	<bean id="exceptionEnvironment" class="org.foxbpm.web.common.env.ExceptionEnvironment"
+		scope="singleton" init-method="init"></bean>
+
+
+
+
+	<bean class="org.foxbpm.web.db.impl.BizDBImpl" id="bizDBImpl">
+	</bean> 
+	<bean class="org.foxbpm.web.service.impl.WebappProcessService" id="webappProcessServiceTarget"> 
+		<property name="bizDB">
+			<ref bean="bizDBImpl" />
+		</property>
+		<property name="dbfactory">
+			<ref bean="foxbpmConnectionFactory" />
+		</property>
+	</bean>
+	<bean class="org.foxbpm.web.service.impl.WebappTaskService" id="webappTaskService" />
+	<bean class="org.foxbpm.web.service.aop.FoxbpmMethodBeforeInvokeLogger"
+		id="foxbpmMethodBeforeInvokeLogger" />
+	<bean class="org.foxbpm.web.service.aop.FoxbpmMethodAfterInvokeLogger"
+		id="foxbpmMethodAfterInvokeLogger" />
+	<bean class="org.foxbpm.web.service.aop.FoxbpmMethodInvokeInterceptor"
+		id="foxbpmMethodInvokeInterceptor" />
+	<bean class="org.foxbpm.web.service.aop.FoxbpmMethodInvokeExceptionLogger"
+		id="foxbpmMethodInvokeExceptionLogger" />
+	<bean class="org.springframework.aop.framework.ProxyFactoryBean"
+		id="webappProcessService">
+		<property name="proxyInterfaces">
+			<value>org.foxbpm.web.service.interfaces.IWebappProcessService</value>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>foxbpmMethodBeforeInvokeLogger</value>
+				<value>foxbpmMethodAfterInvokeLogger</value>
+				<value>foxbpmMethodInvokeInterceptor</value>
+				<value>foxbpmMethodInvokeExceptionLogger</value>
+			</list>
+		</property>
+		<property name="target">
+			<ref bean="webappProcessServiceTarget" />
+		</property>
+	</bean>
+	
 	<tx:advice id="foxbpmTransactionAdvice" transaction-manager="foxbpmTransactionManager">
 		<tx:attributes>
 			<tx:method name="get*" propagation="REQUIRED" read-only="true" />

@@ -6,6 +6,6 @@ package org.foxbpm.web.service.interfaces;
  * @author MEL
  * @date 2014-06-04
  */
-public interface ITaskService {
+public interface IWebappTaskService {
 
 }
