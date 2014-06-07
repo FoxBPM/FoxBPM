@@ -9,7 +9,7 @@
 
 	<bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location" value="/WEB-INF/spring-mvc/jdbc.properties" />
+		<property name="location" value="/WEB-INF/classes/conf/jdbc.properties" />
 	</bean>
 	<bean id="foxbpmDataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">

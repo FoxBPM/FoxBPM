@@ -6,7 +6,7 @@
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <init-param>
       <param-name>contextConfigLocation</param-name>
-      <param-value>classpath*:dispatcher-servlet.xml</param-value>
+      <param-value>/WEB-INF/classes/conf/dispatcher-servlet.xml</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
@@ -19,7 +19,7 @@
   </listener>
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>classpath*:applicationContext*.xml</param-value>
+    <param-value>/WEB-INF/classes/conf/applicationContext.xml</param-value>
   </context-param>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
