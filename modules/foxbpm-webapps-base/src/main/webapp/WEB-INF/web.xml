@@ -19,7 +19,11 @@
   </listener>
   <context-param>
     <param-name>contextConfigLocation</param-name>
+<<<<<<< HEAD
     <param-value>classpath*:conf/applicationContext*.xml</param-value>
+=======
+    <param-value>/WEB-INF/classes/conf/applicationContext.xml</param-value>
+>>>>>>> branch 'develop' of https://github.com/FoxBPM/FoxBPM.git
   </context-param>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
