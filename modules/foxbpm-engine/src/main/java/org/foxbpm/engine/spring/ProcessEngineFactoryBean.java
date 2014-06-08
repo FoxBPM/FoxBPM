@@ -9,15 +9,27 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-public class ProcessEngineFactoryBean implements FactoryBean<ProcessEngine>, DisposableBean, ApplicationContextAware {
+public class ProcessEngineFactoryBean implements FactoryBean<ProcessEngine>,
+		DisposableBean, ApplicationContextAware {
 
+	// ADD ATTRIBUTE processEngineConfigurationDecrator BY MAENLIANG
+	// AT 2014-06-08
+	// 采用动态组合的形式构造processEngineConfiguration，从而创建processEngine
+	// 避免，processEngineConfiguration存在多个扩展功能，且功能之间有组合时候
+	// 创建大量的类似ProcessEngineConfigurationSpring这样的子类的情况
+	protected ProcessEngineConfigurationDecrator processEngineConfigurationDecrator;
 	protected ProcessEngineConfigurationImpl processEngineConfiguration;
 	protected ApplicationContext applicationContext;
 	protected ProcessEngineImpl processEngine;
 
 	@Override
 	public ProcessEngine getObject() throws Exception {
-		processEngine = (ProcessEngineImpl) processEngineConfiguration.buildProcessEngine();
+		processEngine = (ProcessEngineImpl) processEngineConfiguration
+				.buildProcessEngine();
+		// 通过装饰对象创建processEgine
+		// processEngine = (ProcessEngineImpl)
+		// processEngineConfigurationDecrator
+		// .buildProcessEngine();
 		return processEngine;
 	}
 
@@ -34,7 +46,8 @@ public class ProcessEngineFactoryBean implements FactoryBean<ProcessEngine>, Dis
 	}
 
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+	public void setApplicationContext(ApplicationContext applicationContext)
+			throws BeansException {
 		this.applicationContext = applicationContext;
 	}
 
@@ -43,8 +56,18 @@ public class ProcessEngineFactoryBean implements FactoryBean<ProcessEngine>, Dis
 		return true;
 	}
 
-	public void setProcessEngineConfiguration(ProcessEngineConfigurationImpl processEngineConfiguration) {
+	public void setProcessEngineConfiguration(
+			ProcessEngineConfigurationImpl processEngineConfiguration) {
 		this.processEngineConfiguration = processEngineConfiguration;
+	}
+
+	public ProcessEngineConfigurationDecrator getProcessEngineConfigurationDecrator() {
+		return processEngineConfigurationDecrator;
+	}
+
+	public void setProcessEngineConfigurationDecrator(
+			ProcessEngineConfigurationDecrator processEngineConfigurationDecrator) {
+		this.processEngineConfigurationDecrator = processEngineConfigurationDecrator;
 	}
 
 }
