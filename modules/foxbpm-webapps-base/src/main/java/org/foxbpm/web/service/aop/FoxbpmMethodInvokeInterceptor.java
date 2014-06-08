@@ -14,7 +14,7 @@ import org.springframework.util.StringUtils;
  */
 public class FoxbpmMethodInvokeInterceptor implements MethodInterceptor {
 	public Object invoke(MethodInvocation invocation) throws Throwable {
-		String parameter = invocation.getArguments()[0].toString();
+		String parameter = "test";// invocation.getArguments()[0].toString();
 		if (!StringUtils.isEmpty(parameter)) {
 			return invocation.proceed();
 		} else {

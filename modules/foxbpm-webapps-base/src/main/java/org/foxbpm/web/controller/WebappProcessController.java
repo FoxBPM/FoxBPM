@@ -21,14 +21,12 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.foxbpm.engine.TaskService;
-import org.foxbpm.engine.task.Task;
+import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.web.common.constant.FoxbpmActionNameDefinition;
-import org.foxbpm.web.common.constant.FoxbpmRequestAttributeParamNameDefinition;
+import org.foxbpm.web.common.constant.FoxbpmServiceNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmViewNameDefinition;
-import org.foxbpm.web.common.env.ExceptionEnvironment;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
-import org.foxbpm.web.model.ProcessDefinition;
+import org.foxbpm.web.service.interfaces.IWebappProcessService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -41,8 +39,8 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class WebappProcessController {
-	@Resource(name = "taskService")
-	private TaskService taskService;
+	@Resource(name = FoxbpmServiceNameDefinition.PROCESS_SERVICENAME)
+	private IWebappProcessService webappProcessService;
 
 	/**
 	 * 对应到前端请求的action
@@ -51,16 +49,17 @@ public class WebappProcessController {
 	 *            形参名称必须和请求参数名称一致
 	 * @return ModelAndView
 	 */
-	@RequestMapping(FoxbpmActionNameDefinition.START_PROCESSINSTANCE_ACTION)
-	public ModelAndView startProcess(String parameter) {
+	@RequestMapping(FoxbpmActionNameDefinition.QUERY_PROCESSDEFINITION_ACTION)
+	public ModelAndView queryProcessDefinition(String parameter) {
 		try {
-			 
-			List<Task> tasks = taskService.createTaskQuery().list();
-			System.out.println(tasks.size());
+
+			List<ProcessDefinition> processDefinitionList = webappProcessService
+					.queryProcessDefinition();
 		} catch (FoxbpmWebException foxbpmException) {
 			return new ModelAndView("error");
 		}
-		ModelAndView modelAndView = new ModelAndView(FoxbpmViewNameDefinition.START_PROCESS_VIEWNAME);
+		ModelAndView modelAndView = new ModelAndView(
+				FoxbpmViewNameDefinition.START_PROCESS_VIEWNAME);
 		return modelAndView;
 	}
 

@@ -14,9 +14,12 @@ import org.foxbpm.web.model.BizInfo;
 
 public class BizDBImpl implements BizDBInterface {
 	private final static String SQL_INERT_BIZINFO = "INSERT INTO BIZ_INFO VALUES(?,?,?)";
+	@Setter
+	private FoxbpmDBConnectionFactory dbfactory;
 	@Override
 	public void insertBizInfo(BizInfo bizInfo,Connection connection) throws FoxbpmWebException {
 		PreparedStatement prepareStatement = null;
+		Connection connections = dbfactory.createConnection();
 		try {
 			prepareStatement = connection.prepareStatement(SQL_INERT_BIZINFO);
 			prepareStatement.setString(1, bizInfo.getId());

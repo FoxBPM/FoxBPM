@@ -12,6 +12,9 @@ public class FoxbpmDBConnectionFactory {
 	@Setter
 	private DataSource dataSource;
 
+	private FoxbpmDBConnectionFactory() {
+	}
+
 	public Connection createConnection() {
 		// 同一个事物获取的同一个数据库连接
 		return DataSourceUtils.getConnection(this.dataSource);
