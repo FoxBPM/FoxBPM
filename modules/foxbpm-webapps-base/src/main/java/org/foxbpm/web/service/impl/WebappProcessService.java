@@ -3,15 +3,12 @@ package org.foxbpm.web.service.impl;
 import java.sql.Connection;
 import java.util.List;
 
-import lombok.Setter;
-
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.db.factory.FoxbpmDBConnectionFactory;
 import org.foxbpm.web.db.interfaces.BizDBInterface;
-import org.foxbpm.web.model.BizInfo;
 import org.foxbpm.web.service.interfaces.IWebappProcessService;
 
 /**

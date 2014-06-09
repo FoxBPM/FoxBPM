@@ -2,8 +2,6 @@ package org.foxbpm.web.service.impl;
 
 import java.util.List;
 
-import lombok.Setter;
-
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.web.db.factory.FoxbpmDBConnectionFactory;
