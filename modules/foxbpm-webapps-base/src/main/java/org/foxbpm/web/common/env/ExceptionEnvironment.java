@@ -53,7 +53,7 @@ public class ExceptionEnvironment extends Environment {
 		return exceptionEnv;
 	}
 
-	public String getMessageByCode(String errorCode) {
-		return this.getValue(errorCode);
+	public static String getMessageByCode(String errorCode) {
+		return exceptionEnv.getValue(errorCode);
 	}
 }
