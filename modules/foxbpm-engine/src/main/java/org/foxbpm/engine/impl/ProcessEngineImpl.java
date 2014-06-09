@@ -126,9 +126,9 @@ public class ProcessEngineImpl implements ProcessEngine {
 
 	public void closeEngine() {
 		try {
-			contextClose();
+//			contextClose();
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		ProcessEngineManagement.unregister(this);
 	}

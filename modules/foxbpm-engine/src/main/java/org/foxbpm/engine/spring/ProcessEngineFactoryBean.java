@@ -24,6 +24,7 @@ public class ProcessEngineFactoryBean implements FactoryBean<ProcessEngine>,
 
 	@Override
 	public ProcessEngine getObject() throws Exception {
+		new ProcessEngineConfigurationSpringDecrator(new ProcessEngineConfigurationSpringDecrator(new ProcessEngineConfigurationSpring())).buildProcessEngine();
 		processEngine = (ProcessEngineImpl) processEngineConfiguration
 				.buildProcessEngine();
 		// 通过装饰对象创建processEgine
