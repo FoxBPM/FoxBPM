@@ -1,17 +1,20 @@
 package org.foxbpm.web.service.impl;
 
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import lombok.Setter;
+import java.util.Map;
 
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.RuntimeService;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.repository.ProcessDefinition;
+import org.foxbpm.engine.repository.ProcessDefinitionQuery;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
+import org.foxbpm.web.common.util.Pagination;
 import org.foxbpm.web.db.factory.FoxbpmDBConnectionFactory;
 import org.foxbpm.web.db.interfaces.BizDBInterface;
-import org.foxbpm.web.model.BizInfo;
 import org.foxbpm.web.service.interfaces.IWebappProcessService;
 
 /**
@@ -80,6 +83,37 @@ public class WebappProcessService implements IWebappProcessService {
 			throw new FoxbpmWebException(e.getMessage(), "", e);
 		}
 		// return modelService.createProcessDefinitionQuery().list();
+	}
+
+	@Override
+	public Map<String, Object> queryAllProcessDef(Pagination<String> pageInfor,
+			Map<String, Object> params) throws FoxbpmWebException {
+		try {
+            //创建流程定义查询
+			ProcessDefinitionQuery pdq = modelService.createProcessDefinitionQuery();
+			
+			List<ProcessDefinition> pdList = null;
+			if (null == pageInfor) {
+				pdList = pdq.list();
+			} else {
+				pdList = pdq.listPagination(pageInfor.getPageIndex(),
+						pageInfor.getPageSize());
+				pageInfor.setTotal(StringUtil.getInt(pdq.count()));
+			}
+			Map<String, Object> resultMap = new HashMap<String, Object>();
+			List<Map<String, Object>> instanceMaps = new ArrayList<Map<String, Object>>();
+			Map<String, Object> instances = null;
+			for (int i = 0, size = (null == pdList) ? 0 : pdList.size(); i < size; i++) {
+				instances = new HashMap<String, Object>();
+				//instances.putAll(pdList.get(i).getPersistentState());
+				instanceMaps.add(instances);
+			}
+			resultMap.put("dataList", instanceMaps);
+
+		} catch (Exception e) {
+			throw new FoxbpmWebException(e.getMessage(), "", e);
+		}
+		return null;
 	}
 
 	public void setBizDB(BizDBInterface bizDB) {

@@ -9,7 +9,7 @@
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDNS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
@@ -33,6 +33,10 @@ public class Pagination<T> implements Serializable {
 	public final static int MAX_PAGE_HTML_LENGTH = 8;
 	// 首部和尾部连续页码的长度
 	public final static int PRE_LAST_PAGE_LENGTH = 5;
+	// 默认当前页下标
+	public final static int PAGE_INDEX = 1;
+	// 默认分页大小
+	public final static int PAGE_SIZE = 10;
 	
 	private int total; // 总记录数
 	private int pageIndex; // 当前页, 从1开始计数

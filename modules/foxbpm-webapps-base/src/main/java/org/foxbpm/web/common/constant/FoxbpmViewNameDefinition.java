@@ -8,4 +8,13 @@ package org.foxbpm.web.common.constant;
  */
 public final class FoxbpmViewNameDefinition {
 	public final static String START_PROCESS_VIEWNAME = "startProcess";
+	/**
+	 * 错误视图
+	 */
+	public final static String ERROR_VIEWNAME = "error";
+	/**
+	 * 代办视图
+	 */
+	public final static String QUERY_TODOTASK_VIEWNAME = "queryTodoTask";
+	public final static String QUERY_QUERYALLPROCESSDEF_VIEWNAME = "queryAllProcessDef";
 }

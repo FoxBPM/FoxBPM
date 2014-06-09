@@ -17,15 +17,22 @@
  */
 package org.foxbpm.web.controller;
 
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.web.common.constant.FoxbpmActionNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmServiceNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmViewNameDefinition;
+import org.foxbpm.web.common.constant.FoxbpmWebContextAttributeNameDefinition;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
+import org.foxbpm.web.common.util.Pagination;
 import org.foxbpm.web.service.interfaces.IWebappTaskService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,4 +70,82 @@ public class WebappTaskController {
 		return modelAndView;
 	}
 
+	/**
+	 * 查询代办任务
+	 * 
+	 * @param request
+	 *            请求
+	 * @return 返回对应展现视图
+	 */
+	@RequestMapping(FoxbpmActionNameDefinition.QUERY_TODOTASK_ACTION)
+	public ModelAndView queryToDoTask(HttpServletRequest request) {
+
+		try {
+			Map<String, Object> requestParams = getRequestParams(request);
+			// 获取分页条件参数
+			String pageI = StringUtil
+					.getString(requestParams
+							.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINDEX));
+			String pageS = StringUtil
+					.getString(requestParams
+							.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGESIZE));
+
+			// 处理分页
+			int pageIndex = Pagination.PAGE_INDEX;
+			int pageSize = Pagination.PAGE_SIZE;
+			if (StringUtil.isNotEmpty(pageI)) {
+				pageIndex = StringUtil.getInt(pageI);
+			}
+			if (StringUtil.isNotEmpty(pageS)) {
+				pageSize = StringUtil.getInt(pageS);
+			}
+			// 分页信息
+			Pagination<String> pageInfor = new Pagination<String>(pageIndex,
+					pageSize);
+			// 查询结果
+			Map<String, Object> resultMap = taskService.queryToDoTask(
+					pageInfor, requestParams);
+			// 封装参数
+			request.setAttribute(
+					FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT,
+					resultMap);
+			request.setAttribute(
+					FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR,
+					pageInfor);
+		} catch (FoxbpmWebException foxbpmException) {
+			return new ModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
+		}
+		return new ModelAndView(
+				FoxbpmViewNameDefinition.QUERY_TODOTASK_VIEWNAME);
+	}
+
+	/**
+	 * http request 请求参数获取
+	 * @param request http 请求
+	 * @return 返回获取的http请求参数
+	 */
+	private Map<String, Object> getRequestParams(HttpServletRequest request) {
+
+		// 请求参数
+		Map<String, Object> requestParams = new HashMap<String, Object>();
+
+		requestParams.putAll(request.getParameterMap());
+		Enumeration<String> enumeration = request.getParameterNames();
+		if (null != enumeration) {
+			String key = null;
+			while (enumeration.hasMoreElements()) {
+				key = enumeration.nextElement();
+				requestParams.put(key, request.getParameter(key));
+			}
+		}
+		enumeration = request.getAttributeNames();
+		if (null != enumeration) {
+			String key = null;
+			while (enumeration.hasMoreElements()) {
+				key = enumeration.nextElement();
+				requestParams.put(key, request.getAttribute(key));
+			}
+		}
+		return requestParams;
+	}
 }
