@@ -29,7 +29,7 @@ public interface IWebappProcessService {
 	 * @return 返回查询结果
 	 * @throws FoxbpmWebException
 	 */
-	Map<String, Object> queryAllProcessDef(
+	Map<String, List<Map<String, Object>>> queryAllProcessDef(
 			Pagination<String> pageInfor, Map<String, Object> params)
 			throws FoxbpmWebException;
 }

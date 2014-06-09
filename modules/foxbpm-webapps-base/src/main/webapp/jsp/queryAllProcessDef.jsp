@@ -26,7 +26,7 @@ a{text-decoration: none;}
 	    	<div class="type">
 	        	<h1>${row.key}</h1>
 	        	<c:forEach items="${row.value}" var="tmp" varStatus="status">
-	        		<a href="#" formUrl="${tmp.formUrl}" processDefinitionKey="${tmp.processDefinitionKey}"><div>${tmp.processDefinitionName}</div></a>
+	        		<a href="#" formUrl="${tmp.formUrl}" processDefinitionKey="${tmp.key}"><div>${tmp.name}</div></a>
 	        	</c:forEach>
 	    	</div>
 		</c:forEach>

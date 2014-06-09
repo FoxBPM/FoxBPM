@@ -34,8 +34,7 @@ public class WebappProcessService implements IWebappProcessService {
 	 * 这样数据库的连接就交给事物进行处理，事物处理完毕后会关闭数据库连接
 	 * 
 	 */
-	public ProcessDefinition createProcessDefinition(String parameter)
-			throws FoxbpmWebException {
+	public ProcessDefinition createProcessDefinition(String parameter) throws FoxbpmWebException {
 		Connection connection = null;
 		try {
 			// connection = dbfactory.createConnection();
@@ -75,8 +74,7 @@ public class WebappProcessService implements IWebappProcessService {
 			// bizInfo.setName("name001");
 			// bizInfo.setComment("comment001");
 			// bizDB.insertBizInfo(bizInfo, connection);
-			List<ProcessDefinition> processDefinitionList = modelService
-					.createProcessDefinitionQuery().list();
+			List<ProcessDefinition> processDefinitionList = modelService.createProcessDefinitionQuery().list();
 			System.out.println(processDefinitionList.size());
 			return processDefinitionList;
 		} catch (Exception e) {
@@ -86,34 +84,41 @@ public class WebappProcessService implements IWebappProcessService {
 	}
 
 	@Override
-	public Map<String, Object> queryAllProcessDef(Pagination<String> pageInfor,
-			Map<String, Object> params) throws FoxbpmWebException {
+	public Map<String, List<Map<String, Object>>> queryAllProcessDef(Pagination<String> pageInfor, Map<String, Object> params) throws FoxbpmWebException {
+		Map<String, List<Map<String, Object>>> resultMap = new HashMap<String, List<Map<String, Object>>>();
 		try {
-            //创建流程定义查询
+			// 创建流程定义查询
 			ProcessDefinitionQuery pdq = modelService.createProcessDefinitionQuery();
-			
+
 			List<ProcessDefinition> pdList = null;
 			if (null == pageInfor) {
 				pdList = pdq.list();
 			} else {
-				pdList = pdq.listPagination(pageInfor.getPageIndex(),
-						pageInfor.getPageSize());
+				pdList = pdq.listPagination(pageInfor.getPageIndex(), pageInfor.getPageSize());
 				pageInfor.setTotal(StringUtil.getInt(pdq.count()));
 			}
-			Map<String, Object> resultMap = new HashMap<String, Object>();
-			List<Map<String, Object>> instanceMaps = new ArrayList<Map<String, Object>>();
 			Map<String, Object> instances = null;
 			for (int i = 0, size = (null == pdList) ? 0 : pdList.size(); i < size; i++) {
 				instances = new HashMap<String, Object>();
-				//instances.putAll(pdList.get(i).getPersistentState());
-				instanceMaps.add(instances);
+				instances.putAll(pdList.get(i).getPersistentState());
+				// instanceMaps.add(instances);
+				// String formUrl = (String) instances.get("startFormKey");
+				instances.put("formUrl", "www.baidu.com");
+				String category = StringUtil.getString(instances.get("category"));
+				if (StringUtil.isEmpty(category)) {
+					category = "默认分类";
+				}
+				List<Map<String, Object>> tlist = resultMap.get(category);
+				if (tlist == null) {
+					tlist = new ArrayList<Map<String, Object>>();
+					resultMap.put(category, tlist);
+				}
+				tlist.add(instances);
 			}
-			resultMap.put("dataList", instanceMaps);
-
 		} catch (Exception e) {
 			throw new FoxbpmWebException(e.getMessage(), "", e);
 		}
-		return null;
+		return resultMap;
 	}
 
 	public void setBizDB(BizDBInterface bizDB) {

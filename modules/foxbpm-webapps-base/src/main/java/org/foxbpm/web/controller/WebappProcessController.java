@@ -60,13 +60,11 @@ public class WebappProcessController {
 	public ModelAndView queryProcessDefinition(String parameter) {
 		try {
 
-			List<ProcessDefinition> processDefinitionList = webappProcessService
-					.queryProcessDefinition();
+			List<ProcessDefinition> processDefinitionList = webappProcessService.queryProcessDefinition();
 		} catch (FoxbpmWebException foxbpmException) {
 			return new ModelAndView("error");
 		}
-		ModelAndView modelAndView = new ModelAndView(
-				FoxbpmViewNameDefinition.START_PROCESS_VIEWNAME);
+		ModelAndView modelAndView = new ModelAndView(FoxbpmViewNameDefinition.START_PROCESS_VIEWNAME);
 		return modelAndView;
 	}
 
@@ -75,40 +73,15 @@ public class WebappProcessController {
 		try {
 			// 请求参数
 			Map<String, Object> requestParams = getRequestParams(request);
-			// 获取分页条件参数
-			String pageI = StringUtil
-					.getString(requestParams
-							.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINDEX));
-			String pageS = StringUtil
-					.getString(requestParams
-							.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGESIZE));
-
-			// 处理分页
-			int pageIndex = Pagination.PAGE_INDEX;
-			int pageSize = Pagination.PAGE_SIZE;
-			if (StringUtil.isNotEmpty(pageI)) {
-				pageIndex = StringUtil.getInt(pageI);
-			}
-			if (StringUtil.isNotEmpty(pageS)) {
-				pageSize = StringUtil.getInt(pageS);
-			}
-			// 分页信息
-			Pagination<String> pageInfor = new Pagination<String>(pageIndex,pageSize);
 			// 查询结果
-			Map<String, Object> resultMap = webappProcessService
-					.queryAllProcessDef(pageInfor, requestParams);
+			Map<String, List<Map<String, Object>>> resultMap = webappProcessService.queryAllProcessDef(null, requestParams);
 			// 封装参数
-			request.setAttribute(
-					FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT,
-					resultMap);
-			request.setAttribute(
-					FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR,
-					pageInfor);
+			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
+			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, null);
 		} catch (FoxbpmWebException foxbpmException) {
 			return new ModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
 		}
-		ModelAndView modelAndView = new ModelAndView(
-				FoxbpmViewNameDefinition.QUERY_QUERYALLPROCESSDEF_VIEWNAME);
+		ModelAndView modelAndView = new ModelAndView(FoxbpmViewNameDefinition.QUERY_QUERYALLPROCESSDEF_VIEWNAME);
 		return modelAndView;
 	}
 
