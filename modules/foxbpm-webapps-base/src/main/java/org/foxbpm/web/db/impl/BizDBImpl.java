@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import lombok.Setter;
-
 import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.common.util.DBUtils;
 import org.foxbpm.web.db.factory.FoxbpmDBConnectionFactory;

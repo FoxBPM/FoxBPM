@@ -7,7 +7,7 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 
 public class FoxbpmDBConnectionFactory {
-	
+
 	private DataSource dataSource;
 
 	private FoxbpmDBConnectionFactory() {
@@ -25,5 +25,4 @@ public class FoxbpmDBConnectionFactory {
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
-	
 }

@@ -1,7 +1,5 @@
 package org.foxbpm.web.common.exception;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * 封装异常信息
