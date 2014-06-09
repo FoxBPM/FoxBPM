@@ -9,8 +9,6 @@ import lombok.EqualsAndHashCode;
  * @author MEL
  * @date 2014-06-06
  */
-@Data
-@EqualsAndHashCode(callSuper = false)
 public class FoxbpmWebException extends RuntimeException {
 	/**
 	 * serialVersionUID
@@ -37,5 +35,29 @@ public class FoxbpmWebException extends RuntimeException {
 		this.cause = cause;
 		this.errorCode = errorCode;
 		this.errorMsg = errorMsg;
+	}
+
+	public String getErrorCode() {
+		return errorCode;
+	}
+
+	public void setErrorCode(String errorCode) {
+		this.errorCode = errorCode;
+	}
+
+	public String getErrorMsg() {
+		return errorMsg;
+	}
+
+	public void setErrorMsg(String errorMsg) {
+		this.errorMsg = errorMsg;
+	}
+
+	public Throwable getCause() {
+		return cause;
+	}
+
+	public void setCause(Throwable cause) {
+		this.cause = cause;
 	}
 }

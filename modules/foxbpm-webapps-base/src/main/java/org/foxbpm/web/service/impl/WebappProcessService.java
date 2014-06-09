@@ -21,13 +21,9 @@ import org.foxbpm.web.service.interfaces.IWebappProcessService;
  * @date 2014-06-04
  */
 public class WebappProcessService implements IWebappProcessService {
-	@Setter
 	private BizDBInterface bizDB;
-	@Setter
 	private FoxbpmDBConnectionFactory dbfactory;
-	@Setter
 	private ModelService modelService;
-	@Setter
 	private RuntimeService runtimeService;
 
 	/**
@@ -39,7 +35,7 @@ public class WebappProcessService implements IWebappProcessService {
 			throws FoxbpmWebException {
 		Connection connection = null;
 		try {
-			connection = dbfactory.createConnection();
+			// connection = dbfactory.createConnection();
 			// 开启数据库连接
 			// 开启事物
 			// 设置工作流引擎的数据库连接
@@ -47,11 +43,11 @@ public class WebappProcessService implements IWebappProcessService {
 			// 本地业务数据DAO调用
 			// 提交或回滚事物
 			// 事物处理完毕后会自动关闭数据库连接
-			BizInfo bizInfo = new BizInfo();
-			bizInfo.setId("id001");
-			bizInfo.setName("name001");
-			bizInfo.setComment("comment001");
-			bizDB.insertBizInfo(bizInfo, connection);
+			// BizInfo bizInfo = new BizInfo();
+			// bizInfo.setId("id001");
+			// bizInfo.setName("name001");
+			// bizInfo.setComment("comment001");
+			// bizDB.insertBizInfo(bizInfo, connection);
 			return null;
 		} catch (FoxbpmWebException e) {
 			throw e;
@@ -71,15 +67,35 @@ public class WebappProcessService implements IWebappProcessService {
 			// 本地业务数据DAO调用
 			// 提交或回滚事物
 			// 事物处理完毕后会自动关闭数据库连接
-			BizInfo bizInfo = new BizInfo();
-			bizInfo.setId("id001");
-			bizInfo.setName("name001");
-			bizInfo.setComment("comment001");
-			bizDB.insertBizInfo(bizInfo, connection);
-			return modelService.createProcessDefinitionQuery().list();
+			// BizInfo bizInfo = new BizInfo();
+			// bizInfo.setId("id001");
+			// bizInfo.setName("name001");
+			// bizInfo.setComment("comment001");
+			// bizDB.insertBizInfo(bizInfo, connection);
+			List<ProcessDefinition> processDefinitionList = modelService
+					.createProcessDefinitionQuery().list();
+			System.out.println(processDefinitionList.size());
+			return processDefinitionList;
 		} catch (Exception e) {
-			throw new FoxbpmWebException(e.getMessage(),"",e);
+			throw new FoxbpmWebException(e.getMessage(), "", e);
 		}
 		// return modelService.createProcessDefinitionQuery().list();
 	}
+
+	public void setBizDB(BizDBInterface bizDB) {
+		this.bizDB = bizDB;
+	}
+
+	public void setDbfactory(FoxbpmDBConnectionFactory dbfactory) {
+		this.dbfactory = dbfactory;
+	}
+
+	public void setModelService(ModelService modelService) {
+		this.modelService = modelService;
+	}
+
+	public void setRuntimeService(RuntimeService runtimeService) {
+		this.runtimeService = runtimeService;
+	}
+
 }

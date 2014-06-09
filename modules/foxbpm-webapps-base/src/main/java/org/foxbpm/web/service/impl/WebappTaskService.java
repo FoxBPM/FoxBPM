@@ -17,12 +17,9 @@ import org.foxbpm.web.service.interfaces.IWebappTaskService;
  * @date 2014-06-04
  */
 public class WebappTaskService implements IWebappTaskService {
-	@Setter
 	private BizDBInterface bizDB;
-	@Setter
 	private FoxbpmDBConnectionFactory dbfactory;
-	@Setter
-	TaskService taskService;
+	private TaskService taskService;
 
 	@Override
 	public void completeTask(String taskId) {
@@ -37,4 +34,15 @@ public class WebappTaskService implements IWebappTaskService {
 		return taskService.createTaskQuery().list();
 	}
 
+	public void setBizDB(BizDBInterface bizDB) {
+		this.bizDB = bizDB;
+	}
+
+	public void setDbfactory(FoxbpmDBConnectionFactory dbfactory) {
+		this.dbfactory = dbfactory;
+	}
+
+	public void setTaskService(TaskService taskService) {
+		this.taskService = taskService;
+	}
 }

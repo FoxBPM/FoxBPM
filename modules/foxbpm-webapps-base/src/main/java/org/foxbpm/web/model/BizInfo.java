@@ -1,6 +1,5 @@
 package org.foxbpm.web.model;
 
-import lombok.Data;
 
 /**
  * 业务数据定义
