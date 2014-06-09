@@ -17,6 +17,8 @@
  */
 package org.foxbpm.engine.repository;
 
+import java.util.Map;
+
 /**
  * @author kenshin
  * 
@@ -88,5 +90,11 @@ public interface ProcessDefinition {
 	 * @return
 	 */
 	boolean isSuspended();
+	
+	/**
+	 * 获取实体属性map
+	 * @return
+	 */
+	Map<String, Object> getPersistentState();
 
 }

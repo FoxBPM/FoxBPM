@@ -138,7 +138,7 @@ public abstract class AbstractQuery<T extends Query<?, ?>, U> extends
 	@SuppressWarnings("unchecked")
 	public List<U> listPagination(int pageNum, int rowNum) {
 		this.firstResult = pageNum*rowNum-rowNum;
-		this.maxResults = pageNum;
+		this.maxResults = rowNum;
 		this.resultType = ResultType.LIST_PAGE;
 		if (commandExecutor != null) {
 			List<U> returnList=(List<U>) commandExecutor.execute(this);

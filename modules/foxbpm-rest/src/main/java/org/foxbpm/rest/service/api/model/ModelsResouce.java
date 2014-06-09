@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ModelsResouce extends AbstractRestResource{
 
-	private static final String targetPath = "D:\\TMP";
+//	private static final String targetPath = "D:\\TMP";
 	private static final String SEP = "-";
 	private static final String PREFIX_ADD = "insert";
 	private static final String PREFIX_UPDATE = "update";
@@ -63,6 +63,9 @@ public class ModelsResouce extends AbstractRestResource{
 			}
 			fileOutputStream = new FileOutputStream(file);
 			entity.write(fileOutputStream);
+			String targetPath = this.getClass().getClassLoader().getResource("/").getPath();
+			targetPath = targetPath+File.separator+"Temp";
+			System.out.println(targetPath);
 			FileUtil.unZip(file.getPath(),targetPath);
 			File modelsPath = new File(targetPath);
 			for(File tmpFile : modelsPath.listFiles()){
