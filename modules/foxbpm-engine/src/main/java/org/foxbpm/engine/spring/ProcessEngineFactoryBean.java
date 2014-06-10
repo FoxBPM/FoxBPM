@@ -19,6 +19,7 @@
 package org.foxbpm.engine.spring;
 
 import org.foxbpm.engine.ProcessEngine;
+import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.ProcessEngineImpl;
 import org.springframework.beans.BeansException;
@@ -47,9 +48,9 @@ public class ProcessEngineFactoryBean implements FactoryBean<ProcessEngine>,
 
 	@Override
 	public ProcessEngine getObject() throws Exception {
-		new ProcessEngineConfigurationSpringDecrator(new ProcessEngineConfigurationSpringDecrator(new ProcessEngineConfigurationSpring())).buildProcessEngine();
-		processEngine = (ProcessEngineImpl) processEngineConfiguration
+		processEngine = (ProcessEngineImpl) processEngineConfiguration.setProcessEngineName(ProcessEngineManagement.NAME_DEFAULT)
 				.buildProcessEngine();
+		ProcessEngineManagement.setInit();
 		// 通过装饰对象创建processEgine
 		// processEngine = (ProcessEngineImpl)
 		// processEngineConfigurationDecrator

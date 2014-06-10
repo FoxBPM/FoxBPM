@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -50,9 +53,12 @@ import org.foxbpm.engine.impl.entity.VariableInstanceEntity;
 import org.foxbpm.engine.impl.interceptor.Session;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 
+	Logger log = LoggerFactory.getLogger(MyBatisSqlSessionFactory.class);
 	private SqlSessionFactory sqlSessionFactory;
 	
 	protected static final Map<String, Map<String, String>> databaseSpecificStatements = new HashMap<String, Map<String,String>>();
@@ -69,6 +75,9 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 	protected static Map<Class<?>,String>  updateStatements = new ConcurrentHashMap<Class<?>, String>();
 	protected static Map<Class<?>,String>  deleteStatements = new ConcurrentHashMap<Class<?>, String>();
 	protected static Map<Class<?>,String>  selectStatements = new ConcurrentHashMap<Class<?>, String>();
+	
+	protected static Properties databaseTypeMappings = new Properties();
+
 	static{
 		
 		String defaultOrderBy = " order by ${orderBy} ";
@@ -111,9 +120,37 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 	    databaseSpecificLimitBetweenStatements.put("oracle", "");
 	    databaseOuterJoinLimitBetweenStatements.put("oracle", "");
 	    databaseSpecificOrderByStatements.put("oracle", defaultOrderBy);
+	    
+	    
+		databaseTypeMappings.setProperty("MySQL", "mysql");
+		databaseTypeMappings.setProperty("Oracle", "oracle");
+		databaseTypeMappings.setProperty("Microsoft SQL Server", "mssql");
 	}
 	
-	public void init(DataSource dataSource,String databaseType) {
+	public void init(DataSource dataSource) {
+		Connection connection = null;
+		String databaseType = null;
+		try {
+			connection = dataSource.getConnection();
+			DatabaseMetaData databaseMetaData = connection.getMetaData();
+			String databaseProductName = databaseMetaData.getDatabaseProductName();
+			log.debug("database product name: '{}'", databaseProductName);
+			databaseType = databaseTypeMappings.getProperty(databaseProductName);
+			if (databaseType == null) {
+				throw new FoxBPMException("couldn't deduct database type from database product name '" + databaseProductName + "'");
+			}
+
+		} catch (SQLException e) {
+			log.error("Exception while initializing Database connection", e);
+		} finally {
+			try {
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				log.error("Exception while closing the Database connection", e);
+			}
+		}
 		if (sqlSessionFactory == null) {
 			InputStream inputStream = null;
 			try {

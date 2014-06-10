@@ -17,13 +17,10 @@
  */
 package org.foxbpm.engine.impl.jdbc;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.impl.db.ListQueryParameterObject;
-import org.foxbpm.engine.impl.db.SqlCommand;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 
 public class JdbcSqlSession implements ISqlSession {
@@ -65,11 +62,13 @@ public class JdbcSqlSession implements ISqlSession {
 		return null;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public List selectList(String statement, ListQueryParameterObject parameter) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public List selectListWithRawParameter(String statement, Object parameter) {
 		// TODO Auto-generated method stub
 		return null;

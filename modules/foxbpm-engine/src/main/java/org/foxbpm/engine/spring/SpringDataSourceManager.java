@@ -21,6 +21,7 @@ package org.foxbpm.engine.spring;
 import javax.sql.DataSource;
 
 import org.foxbpm.engine.db.DataSourceManage;
+import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
 /**
  * spring数据源管理器，通过spring配置注入数据源
@@ -47,7 +48,12 @@ public class SpringDataSourceManager implements DataSourceManage {
 	}
 
 	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
+		if (dataSource instanceof TransactionAwareDataSourceProxy) {
+			this.dataSource = dataSource;
+		} else {
+			DataSource proxiedDataSource = new TransactionAwareDataSourceProxy(dataSource);
+			this.dataSource = proxiedDataSource;
+		}
 	}
 	
 	

@@ -8,9 +8,12 @@
   <display-name>Foxbpm-rest</display-name>
    
   <listener>
-    <listener-class>org.foxbpm.rest.common.listener.FoxBpmRestServletContextListener</listener-class>
-  </listener> 
-  
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath*:applicationContext*.xml</param-value>
+  </context-param>
   <!-- Restlet adapter -->  
   <servlet>  
     <servlet-name>RestletServlet</servlet-name>  
