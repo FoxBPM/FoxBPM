@@ -46,8 +46,7 @@ $(function(){
     	 url+="?";
      }
      url+="userId=<%=request.getAttribute("userId")%>&processDefinitionKey="+pdk;
-    var obj = {};
-    window.open(url);
+     window.open(url);
   });
 });
 </script>

@@ -45,7 +45,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @date 2014-06-04
  */
 @Controller
-public class WebappTaskController {
+public class WebappTaskController extends AbstractWebappController {
 	@Resource(name = FoxbpmServiceNameDefinition.TAST_SERVICENAME)
 	private IWebappTaskService taskService;
 
@@ -57,15 +57,12 @@ public class WebappTaskController {
 	 * @return ModelAndView
 	 */
 	@RequestMapping(FoxbpmActionNameDefinition.QUERY_TASK_ACTION)
-	public ModelAndView startProcess(String parameter)
-	{
-		try
-		{
+	public ModelAndView startProcess(String parameter) {
+		try {
 
 			List<Task> tasks = taskService.queryTask();
 			System.out.println(tasks.size());
-		} catch (FoxbpmWebException foxbpmException)
-		{
+		} catch (FoxbpmWebException foxbpmException) {
 			return new ModelAndView("error");
 		}
 		ModelAndView modelAndView = new ModelAndView(FoxbpmViewNameDefinition.START_PROCESS_VIEWNAME);
@@ -80,11 +77,9 @@ public class WebappTaskController {
 	 * @return 返回对应展现视图
 	 */
 	@RequestMapping(FoxbpmActionNameDefinition.QUERY_TODOTASK_ACTION)
-	public ModelAndView queryToDoTask(HttpServletRequest request)
-	{
+	public ModelAndView queryToDoTask(HttpServletRequest request) {
 
-		try
-		{
+		try {
 			Map<String, Object> requestParams = getRequestParams(request);
 			// 获取分页条件参数
 			String pageI = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINDEX));
@@ -93,12 +88,10 @@ public class WebappTaskController {
 			// 处理分页
 			int pageIndex = Pagination.PAGE_INDEX;
 			int pageSize = Pagination.PAGE_SIZE;
-			if (StringUtil.isNotEmpty(pageI))
-			{
+			if (StringUtil.isNotEmpty(pageI)) {
 				pageIndex = StringUtil.getInt(pageI);
 			}
-			if (StringUtil.isNotEmpty(pageS))
-			{
+			if (StringUtil.isNotEmpty(pageS)) {
 				pageSize = StringUtil.getInt(pageS);
 			}
 			// 分页信息
@@ -108,47 +101,37 @@ public class WebappTaskController {
 			// 封装参数
 			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
 			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
-		} catch (FoxbpmWebException foxbpmException)
-		{
+		} catch (FoxbpmWebException foxbpmException) {
 			return new ModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
 		}
-		return new ModelAndView(FoxbpmViewNameDefinition.QUERY_TODOTASK_VIEWNAME);
+		return new ModelAndView(FoxbpmViewNameDefinition.QUERY_QUERYTODOTASK_VIEWNAME);
 	}
 
-	/**
-	 * http request 请求参数获取
-	 * 
-	 * @param request
-	 *            http 请求
-	 * @return 返回获取的http请求参数
-	 */
-	private Map<String, Object> getRequestParams(HttpServletRequest request)
-	{
+	@RequestMapping(FoxbpmActionNameDefinition.START_TASK_ACTION)
+	public ModelAndView startTask(HttpServletRequest request) {
 
-		// 请求参数
-		Map<String, Object> requestParams = new HashMap<String, Object>();
+		try {
+			Map<String, Object> requestParams = getRequestParams(request);
+			// 查询结果
+			Map<String, Object> resultMap = taskService.startTask(requestParams);
+			// 封装参数
+			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
+		} catch (FoxbpmWebException foxbpmException) {
+			return new ModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
+		}
+		return new ModelAndView(FoxbpmViewNameDefinition.START_TASK_VIEWNAME);
+	}
 
-		requestParams.putAll(request.getParameterMap());
-		Enumeration<String> enumeration = request.getParameterNames();
-		if (null != enumeration)
-		{
-			String key = null;
-			while (enumeration.hasMoreElements())
-			{
-				key = enumeration.nextElement();
-				requestParams.put(key, request.getParameter(key));
-			}
+	@RequestMapping(FoxbpmActionNameDefinition.COMPLETE_TASK_ACTION)
+	public ModelAndView completeTask(HttpServletRequest request) {
+
+		try {
+			Map<String, Object> requestParams = getRequestParams(request);
+			// 查询结果
+			taskService.completeTask(requestParams);
+		} catch (FoxbpmWebException foxbpmException) {
+			return new ModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
 		}
-		enumeration = request.getAttributeNames();
-		if (null != enumeration)
-		{
-			String key = null;
-			while (enumeration.hasMoreElements())
-			{
-				key = enumeration.nextElement();
-				requestParams.put(key, request.getAttribute(key));
-			}
-		}
-		return requestParams;
+		return new ModelAndView(FoxbpmViewNameDefinition.COMPLETETASK_VIEWNAME);
 	}
 }

@@ -15,7 +15,10 @@ public final class FoxbpmViewNameDefinition {
 	/**
 	 * 代办视图
 	 */
-	public final static String QUERY_TODOTASK_VIEWNAME = "queryTodoTask";
+	public final static String QUERY_QUERYTODOTASK_VIEWNAME = "queryTodoTask";
 	public final static String QUERY_QUERYALLPROCESSDEF_VIEWNAME = "queryProcessDef";
 	public final static String QUERY_QUERYALLPROCESSINST_VIEWNAME = "queryProcessInst";
+	public final static String QUERY_TASKDETAILINFOR_ACTION = "queryTaskDetailInfor";
+	public final static String START_TASK_VIEWNAME = "startTask";
+	public final static String COMPLETETASK_VIEWNAME = "result";
 }

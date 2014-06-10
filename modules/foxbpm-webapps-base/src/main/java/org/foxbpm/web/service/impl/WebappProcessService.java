@@ -9,14 +9,16 @@ import java.util.Map;
 
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.RuntimeService;
-import org.foxbpm.engine.impl.util.FileUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.repository.ProcessDefinitionQuery;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.runtime.ProcessInstanceQuery;
+import org.foxbpm.engine.task.Task;
+import org.foxbpm.engine.task.TaskQuery;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.common.util.DateUtil;
+import org.foxbpm.web.common.util.JSONUtil;
 import org.foxbpm.web.common.util.Pagination;
 import org.foxbpm.web.db.factory.FoxbpmDBConnectionFactory;
 import org.foxbpm.web.db.interfaces.BizDBInterface;
@@ -28,11 +30,7 @@ import org.foxbpm.web.service.interfaces.IWebappProcessService;
  * @author MEL
  * @date 2014-06-04
  */
-public class WebappProcessService implements IWebappProcessService {
-	private BizDBInterface bizDB;
-	private FoxbpmDBConnectionFactory dbfactory;
-	private ModelService modelService;
-	private RuntimeService runtimeService;
+public class WebappProcessService extends AbstractWebappService implements IWebappProcessService {
 
 	/**
 	 * spring事物控制方法、所以在方法的开头开启数据库连接、 采用Spring DataSourceUtils类获取连接
@@ -107,7 +105,7 @@ public class WebappProcessService implements IWebappProcessService {
 				instances = new HashMap<String, Object>();
 				instances.putAll(pdList.get(i).getPersistentState());
 				// String formUrl = (String) instances.get("startFormKey");
-				instances.put("formUrl", "www.baidu.com");
+				instances.put("formUrl", "startTask.action");
 				String category = StringUtil.getString(instances.get("category"));
 				if (StringUtil.isEmpty(category)) {
 					category = "默认分类";
@@ -211,9 +209,49 @@ public class WebappProcessService implements IWebappProcessService {
 				instances = new HashMap<String, Object>();
 				instances.putAll(pi.getPersistentState());
 				instanceMaps.add(instances);
-				instances.put("processDefinitionName", modelService.getProcessDefinition(pi.getId()).getName());
+				instances.put("processDefinitionName", modelService.getProcessDefinition(pi.getProcessDefinitionId()).getName());
 			}
 			resultMap.put("dataList", instanceMaps);
+		} catch (Exception e) {
+			throw new FoxbpmWebException(e.getMessage(), "", e);
+		}
+		return resultMap;
+	}
+
+	@Override
+	public Map<String, Object> queryTaskDetailInfor(Map<String, Object> params) {
+		// 返回对象
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			String processInstanceId = StringUtil.getString(params.get("processInstanceId"));
+			ProcessInstanceQuery piq = runtimeService.createProcessInstanceQuery();
+			if (StringUtil.isNotEmpty(processInstanceId)) {
+				ProcessInstance processInstance = piq.processInstanceId(processInstanceId).list().get(0);
+				String processName = modelService.getProcessDefinition(processInstance.getProcessDefinitionId()).getName();
+				TaskQuery tq = taskService.createTaskQuery();
+				tq.processInstanceId(processInstanceId);
+				tq.taskIsEnd().orderByEndTime().asc();
+				List<Task> instances = tq.list();
+				List<Map<String, Object>> instanceMaps = new ArrayList<Map<String, Object>>();
+				for (Task tmp : instances) {
+					Map<String, Object> instanceMap = tmp.getPersistentState();
+					instanceMaps.add(instanceMap);
+				}
+				tq.taskNotEnd().orderByTaskCreateTime().asc();
+				List<Task> instancesNotEnd = tq.list();
+				List<Map<String, Object>> notEndInstanceMaps = new ArrayList<Map<String, Object>>();
+				for (Task tmp : instancesNotEnd) {
+					Map<String, Object> instanceMap = tmp.getPersistentState();
+					notEndInstanceMaps.add(instanceMap);
+				}
+				Map<String, Map<String, Object>> postionMap = modelService.GetFlowGraphicsElementPosition(processInstance.getProcessDefinitionId());
+				resultMap.put("notEnddataList", notEndInstanceMaps);
+				resultMap.put("dataList", instanceMaps);
+				resultMap.put("positionInfo", JSONUtil.parseObject2JSON(postionMap));
+				resultMap.put("taskEndedJson", JSONUtil.parseObject2JSON(instanceMaps));
+				resultMap.put("taskNotEndJson", JSONUtil.parseObject2JSON(instancesNotEnd));
+				resultMap.put("processName", processName);
+			}
 		} catch (Exception e) {
 			throw new FoxbpmWebException(e.getMessage(), "", e);
 		}

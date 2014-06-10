@@ -14,4 +14,6 @@ public final class FoxbpmActionNameDefinition {
 	public final static String QUERY_PROCESSDEFINITION_ACTION = "queryProcessDefinition";
 	public final static String QUERY_QUERYALLPROCESSDEF_ACTION = "queryProcessDef";
 	public final static String QUERY_QUERYALLPROCESSINST_ACTION = "queryProcessInst";
+	public final static String QUERY_TASKDETAILINFOR_ACTION = "queryTaskDetailInfor";
+	public final static String START_TASK_ACTION = "startTask";
 }

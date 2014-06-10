@@ -64,7 +64,7 @@
 	<bean id="exceptionEnvironment" class="org.foxbpm.web.common.env.ExceptionEnvironment"
 		scope="singleton" init-method="init"></bean>
 	<bean id="propertiesUtil" class="org.foxbpm.web.I18N.PropertiesUtil"
-	scope="singleton" init-method="initProperties" />
+		scope="singleton" init-method="initProperties" />
 
 
 	<bean id="bizDBImpl" class="org.foxbpm.web.db.impl.BizDBImpl">
@@ -72,33 +72,18 @@
 			<ref bean="foxbpmConnectionFactory" />
 		</property>
 	</bean>
-	<bean id="webappProcessServiceTarget" class="org.foxbpm.web.service.impl.WebappProcessService">
-		<property name="bizDB">
-			<ref bean="bizDBImpl" />
-		</property>
-		<property name="dbfactory">
-			<ref bean="foxbpmConnectionFactory" />
-		</property>
-
-		<property name="modelService">
-			<ref bean="modelService" />
-		</property>
-		<property name="runtimeService">
-			<ref bean="runtimeService" />
-		</property>
+	<bean id="abstractWebappService" abstract="true">
+		<property name="bizDB" ref="bizDBImpl" />
+		<property name="dbfactory" ref="foxbpmConnectionFactory" />
+		<property name="taskService" ref="taskService" />
+		<property name="runtimeService" ref="runtimeService" />
+		<property name="modelService" ref="modelService" />
 	</bean>
+	<bean id="webappProcessServiceTarget" class="org.foxbpm.web.service.impl.WebappProcessService"
+		parent="abstractWebappService" />
 
-	<bean id="webappTaskServiceTarget" class="org.foxbpm.web.service.impl.WebappTaskService">
-		<property name="bizDB">
-			<ref bean="bizDBImpl" />
-		</property>
-		<property name="dbfactory">
-			<ref bean="foxbpmConnectionFactory" />
-		</property>
-		<property name="taskService">
-			<ref bean="taskService" />
-		</property>
-	</bean>
+	<bean id="webappTaskServiceTarget" class="org.foxbpm.web.service.impl.WebappTaskService"
+		parent="abstractWebappService" />
 
 	<bean id="foxbpmMethodBeforeInvokeLogger"
 		class="org.foxbpm.web.service.aop.FoxbpmMethodBeforeInvokeLogger" />

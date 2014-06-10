@@ -13,8 +13,7 @@ $(function(){
 $("a[name=flowGraph]").click(function(){
     var pdk = $(this).attr("pdk");
     var pii = $(this).attr("pii");
-    var obj = {};
-    window.open("FlowCenter?action=getTaskDetailInfo&processDefinitionKey="+pdk+"&processInstanceId="+pii);
+    window.open("queryTaskDetailInfor.action?processDefinitionKey="+pdk+"&processInstanceId="+pii);
   });
 var status = '${result.status}';
 if(status!='')
@@ -186,16 +185,16 @@ function clearInfo(){
 										<td><fmt:formatDate value="${dataList.updateTime}"
 												type="both" /></td>
 										<td>${dataList.nowNodeInfo}</td>
-										<td><c:if test="${dataList.instanceStatus == 'SUSPEND'}"
+										<td><c:if test="${dataList.instanceStatus == 'suspend'}"
 												var="runStatue">暂停</c:if> <c:if
-												test="${dataList.instanceStatus == 'RUNNING'}"
+												test="${dataList.instanceStatus == 'running'}"
 												var="runStatue">运行中</c:if> <c:if
-												test="${dataList.instanceStatus == 'COMPLETE'}"
+												test="${dataList.instanceStatus == 'complete'}"
 												var="runStatue">完成</c:if> <c:if
-												test="${dataList.instanceStatus == 'TERMINATION'}"
+												test="${dataList.instanceStatus == 'termination'}"
 												var="runStatue">终止</c:if></td>
 										<td><a name="flowGraph" href="#"
-											pii="${dataList.processInstanceId}"
+											pii="${dataList.id}"
 											pdk="${dataList.processDefinitionKey}">查看</a></td>
 									</tr>
 								</c:forEach>

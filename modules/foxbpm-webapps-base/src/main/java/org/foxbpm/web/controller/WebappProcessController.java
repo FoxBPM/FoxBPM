@@ -45,7 +45,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @date 2014-06-04
  */
 @Controller
-public class WebappProcessController {
+public class WebappProcessController extends AbstractWebappController {
 	@Resource(name = FoxbpmServiceNameDefinition.PROCESS_SERVICENAME)
 	private IWebappProcessService webappProcessService;
 
@@ -57,14 +57,11 @@ public class WebappProcessController {
 	 * @return ModelAndView
 	 */
 	@RequestMapping(FoxbpmActionNameDefinition.QUERY_PROCESSDEFINITION_ACTION)
-	public ModelAndView queryProcessDefinition(String parameter)
-	{
-		try
-		{
+	public ModelAndView queryProcessDefinition(String parameter) {
+		try {
 
 			List<ProcessDefinition> processDefinitionList = webappProcessService.queryProcessDefinition();
-		} catch (FoxbpmWebException foxbpmException)
-		{
+		} catch (FoxbpmWebException foxbpmException) {
 			return new ModelAndView("error");
 		}
 		ModelAndView modelAndView = new ModelAndView(FoxbpmViewNameDefinition.START_PROCESS_VIEWNAME);
@@ -72,18 +69,15 @@ public class WebappProcessController {
 	}
 
 	@RequestMapping(FoxbpmActionNameDefinition.QUERY_QUERYALLPROCESSDEF_ACTION)
-	public ModelAndView queryProcessDef(HttpServletRequest request)
-	{
-		try
-		{
+	public ModelAndView queryProcessDef(HttpServletRequest request) {
+		try {
 			// 请求参数
 			Map<String, Object> requestParams = getRequestParams(request);
 			// 查询结果
 			Map<String, List<Map<String, Object>>> resultMap = webappProcessService.queryProcessDef(null, requestParams);
 			// 封装参数
 			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
-		} catch (FoxbpmWebException foxbpmException)
-		{
+		} catch (FoxbpmWebException foxbpmException) {
 			return new ModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
 		}
 		ModelAndView modelAndView = new ModelAndView(FoxbpmViewNameDefinition.QUERY_QUERYALLPROCESSDEF_VIEWNAME);
@@ -101,10 +95,8 @@ public class WebappProcessController {
 	 * @throws FoxbpmWebException
 	 */
 	@RequestMapping(FoxbpmActionNameDefinition.QUERY_QUERYALLPROCESSINST_ACTION)
-	public ModelAndView queryProcessInst(HttpServletRequest request)
-	{
-		try
-		{
+	public ModelAndView queryProcessInst(HttpServletRequest request) {
+		try {
 			// 请求参数
 			Map<String, Object> requestParams = getRequestParams(request);
 
@@ -115,12 +107,10 @@ public class WebappProcessController {
 			// 处理分页
 			int pageIndex = Pagination.PAGE_INDEX;
 			int pageSize = Pagination.PAGE_SIZE;
-			if (StringUtil.isNotEmpty(pageI))
-			{
+			if (StringUtil.isNotEmpty(pageI)) {
 				pageIndex = StringUtil.getInt(pageI);
 			}
-			if (StringUtil.isNotEmpty(pageS))
-			{
+			if (StringUtil.isNotEmpty(pageS)) {
 				pageSize = StringUtil.getInt(pageS);
 			}
 			// 分页信息
@@ -130,48 +120,24 @@ public class WebappProcessController {
 			// 封装参数
 			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
 			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
-		} catch (FoxbpmWebException foxbpmException)
-		{
+		} catch (FoxbpmWebException foxbpmException) {
 			return new ModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
 		}
 		ModelAndView modelAndView = new ModelAndView(FoxbpmViewNameDefinition.QUERY_QUERYALLPROCESSINST_VIEWNAME);
 		return modelAndView;
 	}
 
-	/**
-	 * http request 请求参数获取
-	 * 
-	 * @param request
-	 *            http 请求
-	 * @return 返回获取的http请求参数
-	 */
-	private Map<String, Object> getRequestParams(HttpServletRequest request)
-	{
+	@RequestMapping(FoxbpmActionNameDefinition.QUERY_TASKDETAILINFOR_ACTION)
+	public ModelAndView queryTaskDetailInfor(HttpServletRequest request) {
 
-		// 请求参数
-		Map<String, Object> requestParams = new HashMap<String, Object>();
-
-		requestParams.putAll(request.getParameterMap());
-		Enumeration<String> enumeration = request.getParameterNames();
-		if (null != enumeration)
-		{
-			String key = null;
-			while (enumeration.hasMoreElements())
-			{
-				key = enumeration.nextElement();
-				requestParams.put(key, request.getParameter(key));
-			}
+		try {
+			Map<String, Object> requestParams = getRequestParams(request);
+			// 查询结果
+			Map<String, Object> resultMap = webappProcessService.queryTaskDetailInfor(requestParams);
+			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
+		} catch (FoxbpmWebException foxbpmException) {
+			return new ModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
 		}
-		enumeration = request.getAttributeNames();
-		if (null != enumeration)
-		{
-			String key = null;
-			while (enumeration.hasMoreElements())
-			{
-				key = enumeration.nextElement();
-				requestParams.put(key, request.getAttribute(key));
-			}
-		}
-		return requestParams;
+		return new ModelAndView(FoxbpmViewNameDefinition.QUERY_TASKDETAILINFOR_ACTION);
 	}
 }
