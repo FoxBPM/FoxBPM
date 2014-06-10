@@ -23,48 +23,29 @@
 		<property name="dataSource" ref="foxbpmDataSource" />
 	</bean>
 
-	<bean id="foxbpmTransactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<bean id="foxbpmTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="foxbpmDataSource" />
 	</bean>
 
-	<bean id="processEngineConfigurationSpring"
-		class="org.foxbpm.engine.spring.ProcessEngineConfigurationSpring">
+	<bean id="processEngineConfigurationSpring" class="org.foxbpm.engine.spring.ProcessEngineConfigurationSpring">
 		<property name="dataSourceManager" ref="foxbpmDataSourceManager" />
 		<property name="transactionManager" ref="foxbpmTransactionManager" />
 	</bean>
-	<bean id="processEngineConfiguration" class="org.foxbpm.engine.impl.ProcessEngineConfigurationImpl">
-		<property name="dataSourceManager" ref="foxbpmDataSourceManager" />
-	</bean>
-	<bean id="processEngineConfigurationDecrator"
-		class="org.foxbpm.engine.spring.ProcessEngineConfigurationSpringDecrator">
-		<constructor-arg>
-			<ref bean="processEngineConfiguration" />
-		</constructor-arg>
-		<property name="springTransactionManager" ref="foxbpmTransactionManager" />
-	</bean>
-	<bean id="foxbpmConnectionFactory" class="org.foxbpm.web.db.factory.FoxbpmDBConnectionFactory"
-		scope="singleton">
+	<bean id="foxbpmConnectionFactory" class="org.foxbpm.web.db.factory.FoxbpmDBConnectionFactory" scope="singleton">
 		<property name="dataSource">
 			<ref bean="foxbpmDataSource" />
 		</property>
 	</bean>
 	<bean id="processEngine" class="org.foxbpm.engine.spring.ProcessEngineFactoryBean">
 		<property name="processEngineConfiguration" ref="processEngineConfigurationSpring" />
-		<property name="processEngineConfigurationDecrator" ref="processEngineConfigurationDecrator"></property>
 	</bean>
 
-	<bean id="taskService" factory-bean="processEngine"
-		factory-method="getTaskService" />
-	<bean id="modelService" factory-bean="processEngine"
-		factory-method="getModelService" />
-	<bean id="runtimeService" factory-bean="processEngine"
-		factory-method="getRuntimeService" />
+	<bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />
+	<bean id="modelService" factory-bean="processEngine" factory-method="getModelService" />
+	<bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
 
-	<bean id="exceptionEnvironment" class="org.foxbpm.web.common.env.ExceptionEnvironment"
-		scope="singleton" init-method="init"></bean>
-	<bean id="propertiesUtil" class="com.org.foxbpm.web.I18N.PropertiesUtil"
-	scope="singleton" init-method="initProperties" />
+	<bean id="exceptionEnvironment" class="org.foxbpm.web.common.env.ExceptionEnvironment" scope="singleton" init-method="init" />
+	<bean id="propertiesUtil" class="com.org.foxbpm.web.I18N.PropertiesUtil" scope="singleton" init-method="initProperties" />
 
 
 	<bean id="bizDBImpl" class="org.foxbpm.web.db.impl.BizDBImpl">
@@ -100,14 +81,10 @@
 		</property>
 	</bean>
 
-	<bean id="foxbpmMethodBeforeInvokeLogger"
-		class="org.foxbpm.web.service.aop.FoxbpmMethodBeforeInvokeLogger" />
-	<bean id="foxbpmMethodAfterInvokeLogger"
-		class="org.foxbpm.web.service.aop.FoxbpmMethodAfterInvokeLogger" />
-	<bean id="foxbpmMethodInvokeInterceptor"
-		class="org.foxbpm.web.service.aop.FoxbpmMethodInvokeInterceptor" />
-	<bean id="foxbpmMethodInvokeExceptionLogger"
-		class="org.foxbpm.web.service.aop.FoxbpmMethodInvokeExceptionLogger" />
+	<bean id="foxbpmMethodBeforeInvokeLogger" class="org.foxbpm.web.service.aop.FoxbpmMethodBeforeInvokeLogger" />
+	<bean id="foxbpmMethodAfterInvokeLogger" class="org.foxbpm.web.service.aop.FoxbpmMethodAfterInvokeLogger" />
+	<bean id="foxbpmMethodInvokeInterceptor" class="org.foxbpm.web.service.aop.FoxbpmMethodInvokeInterceptor" />
+	<bean id="foxbpmMethodInvokeExceptionLogger" class="org.foxbpm.web.service.aop.FoxbpmMethodInvokeExceptionLogger" />
 
 	<bean id="webappProcessService" class="org.springframework.aop.framework.ProxyFactoryBean">
 		<property name="proxyInterfaces">

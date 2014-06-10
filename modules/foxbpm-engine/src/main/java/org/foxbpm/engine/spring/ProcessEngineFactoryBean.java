@@ -36,12 +36,6 @@ import org.springframework.context.ApplicationContextAware;
 public class ProcessEngineFactoryBean implements FactoryBean<ProcessEngine>,
 		DisposableBean, ApplicationContextAware {
 
-	// ADD ATTRIBUTE processEngineConfigurationDecrator BY MAENLIANG
-	// AT 2014-06-08
-	// 采用动态组合的形式构造processEngineConfiguration，从而创建processEngine
-	// 避免，processEngineConfiguration存在多个扩展功能，且功能之间有组合时候
-	// 创建大量的类似ProcessEngineConfigurationSpring这样的子类的情况
-	protected ProcessEngineConfigurationDecrator processEngineConfigurationDecrator;
 	protected ProcessEngineConfigurationImpl processEngineConfiguration;
 	protected ApplicationContext applicationContext;
 	protected ProcessEngineImpl processEngine;
@@ -51,10 +45,6 @@ public class ProcessEngineFactoryBean implements FactoryBean<ProcessEngine>,
 		processEngine = (ProcessEngineImpl) processEngineConfiguration.setProcessEngineName(ProcessEngineManagement.NAME_DEFAULT)
 				.buildProcessEngine();
 		ProcessEngineManagement.setInit();
-		// 通过装饰对象创建processEgine
-		// processEngine = (ProcessEngineImpl)
-		// processEngineConfigurationDecrator
-		// .buildProcessEngine();
 		return processEngine;
 	}
 
@@ -84,15 +74,6 @@ public class ProcessEngineFactoryBean implements FactoryBean<ProcessEngine>,
 	public void setProcessEngineConfiguration(
 			ProcessEngineConfigurationImpl processEngineConfiguration) {
 		this.processEngineConfiguration = processEngineConfiguration;
-	}
-
-	public ProcessEngineConfigurationDecrator getProcessEngineConfigurationDecrator() {
-		return processEngineConfigurationDecrator;
-	}
-
-	public void setProcessEngineConfigurationDecrator(
-			ProcessEngineConfigurationDecrator processEngineConfigurationDecrator) {
-		this.processEngineConfigurationDecrator = processEngineConfigurationDecrator;
 	}
 
 }

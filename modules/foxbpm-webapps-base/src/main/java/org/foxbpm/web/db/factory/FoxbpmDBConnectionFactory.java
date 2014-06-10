@@ -18,10 +18,6 @@ public class FoxbpmDBConnectionFactory {
 		return DataSourceUtils.getConnection(this.dataSource);
 	}
 
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
