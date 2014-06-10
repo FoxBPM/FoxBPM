@@ -5,6 +5,7 @@ import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.web.db.factory.FoxbpmDBConnectionFactory;
 import org.foxbpm.web.db.interfaces.BizDBInterface;
+import org.foxbpm.web.db.interfaces.IDemoDao;
 
 /**
  * webappService抽象服务
@@ -18,6 +19,7 @@ public abstract class AbstractWebappService {
 	protected TaskService taskService;
 	protected ModelService modelService;
 	protected RuntimeService runtimeService;
+	protected IDemoDao idemoDao;
 
 	public BizDBInterface getBizDB() {
 		return bizDB;
@@ -57,5 +59,13 @@ public abstract class AbstractWebappService {
 
 	public void setRuntimeService(RuntimeService runtimeService) {
 		this.runtimeService = runtimeService;
+	}
+
+	public IDemoDao getIdemoDao() {
+		return idemoDao;
+	}
+
+	public void setIdemoDao(IDemoDao idemoDao) {
+		this.idemoDao = idemoDao;
 	}
 }

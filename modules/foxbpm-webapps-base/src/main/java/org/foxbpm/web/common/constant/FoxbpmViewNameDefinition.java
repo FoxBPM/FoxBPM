@@ -20,5 +20,6 @@ public final class FoxbpmViewNameDefinition {
 	public final static String QUERY_QUERYALLPROCESSINST_VIEWNAME = "queryProcessInst";
 	public final static String QUERY_TASKDETAILINFOR_ACTION = "queryTaskDetailInfor";
 	public final static String START_TASK_VIEWNAME = "startTask";
+	public final static String DO_TASK_VIEWNAME = "doTask";
 	public final static String COMPLETETASK_VIEWNAME = "result";
 }

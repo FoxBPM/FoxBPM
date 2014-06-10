@@ -106,32 +106,4 @@ public class WebappTaskController extends AbstractWebappController {
 		}
 		return new ModelAndView(FoxbpmViewNameDefinition.QUERY_QUERYTODOTASK_VIEWNAME);
 	}
-
-	@RequestMapping(FoxbpmActionNameDefinition.START_TASK_ACTION)
-	public ModelAndView startTask(HttpServletRequest request) {
-
-		try {
-			Map<String, Object> requestParams = getRequestParams(request);
-			// 查询结果
-			Map<String, Object> resultMap = taskService.startTask(requestParams);
-			// 封装参数
-			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
-		} catch (FoxbpmWebException foxbpmException) {
-			return new ModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
-		}
-		return new ModelAndView(FoxbpmViewNameDefinition.START_TASK_VIEWNAME);
-	}
-
-	@RequestMapping(FoxbpmActionNameDefinition.COMPLETE_TASK_ACTION)
-	public ModelAndView completeTask(HttpServletRequest request) {
-
-		try {
-			Map<String, Object> requestParams = getRequestParams(request);
-			// 查询结果
-			taskService.completeTask(requestParams);
-		} catch (FoxbpmWebException foxbpmException) {
-			return new ModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
-		}
-		return new ModelAndView(FoxbpmViewNameDefinition.COMPLETETASK_VIEWNAME);
-	}
 }
