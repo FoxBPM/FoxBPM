@@ -349,8 +349,18 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	public void initBaseCommandInterceptors() {
 		commandInterceptors = new ArrayList<CommandInterceptor>();
+		commandInterceptors.add(new LogInterceptor());
+		
+		CommandInterceptor transactionInterceptor = createTransactionInterceptor();
+		if(transactionInterceptor != null){
+			commandInterceptors.add(transactionInterceptor);
+		}
 		CommandContextInterceptor commandContextInterceptor = new CommandContextInterceptor(commandContextFactory, this);
 		commandInterceptors.add(commandContextInterceptor);
+	}
+	
+	protected CommandInterceptor createTransactionInterceptor(){
+		return null;
 	}
 
 	protected void initCommandExecutors() {
@@ -361,7 +371,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	public void initCustomInterceptors() {
 		// 这只是个示例，正常应从配置文件读取拦截器
-		commandInterceptors.add(new LogInterceptor());
+		
 	}
 
 	public void initGeneralCommandExecutor() {
