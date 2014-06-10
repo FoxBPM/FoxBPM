@@ -6,12 +6,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 pageContext.setAttribute("basePath",basePath); 
 %>
 <base href="<%=basePath%>">
-<script type="text/javascript" src="fixflow/js/jquery.js"></script>
-<script type="text/javascript" src="fixflow/js/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="fixflow/js/common.js"></script>
-<link rel="stylesheet" type="text/css" href="fixflow/css/reset.css">
-<link rel="stylesheet" type="text/css" href="fixflow/css/global.css">
-<link rel="stylesheet" type="text/css" href="fixflow/css/popup.css">
+<script type="text/javascript" src="foxbpm/js/jquery.js"></script>
+<script type="text/javascript" src="foxbpm/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="foxbpm/js/common.js"></script>
+<link rel="stylesheet" type="text/css" href="foxbpm/css/reset.css">
+<link rel="stylesheet" type="text/css" href="foxbpm/css/global.css">
+<link rel="stylesheet" type="text/css" href="foxbpm/css/popup.css">
 <script type="text/javascript">
 var message = '${errorMsg}';
 if(message!=''){

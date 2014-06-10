@@ -50,13 +50,15 @@
 			$("#agentType").val('0');
 			$("#subForm").submit();
 		});
-		$("a[name=flowGraph]").click(
-				function() {
-					var pdk = $(this).attr("pdk");
-					var pii = $(this).attr("pii");
-					window.open("queryTaskDetailInfor.action?processDefinitionKey="
-							+ pdk + "&processInstanceId=" + pii);
-				});
+		$("a[name=flowGraph]")
+				.click(
+						function() {
+							var pdk = $(this).attr("pdk");
+							var pii = $(this).attr("pii");
+							window
+									.open("queryTaskDetailInfor.action?processDefinitionKey="
+											+ pdk + "&processInstanceId=" + pii);
+						});
 		$("a[name=doTask]").click(
 				function() {
 					var tii = $(this).attr("tii");
@@ -200,18 +202,20 @@
 									name="processDefinitionName" class="fix-input"
 									value="${result.processDefinitionName}" /></td>
 								<td class="title-r">${applicationScope.appInfo["task.bizKey"]}：</td>
-								<td><input type="text" id="bizKey" name="bizKey" class="fix-input"  /></td>
+								<td><input type="text" id="bizKey" name="bizKey"
+									value="${result.bizKey}" class="fix-input" /></td>
 								<td>
 									<table style="margin: 0">
 										<tr>
 											<td>
 												<div class="btn-normal">
-													<a onclick="$('#subForm').submit();">${applicationScope.appInfo["common.search"]}</a>
+													<a href="javascript:void(0)"
+														onclick="$('#subForm').submit();">${applicationScope.appInfo["common.search"]}</a>
 												</div>
 											</td>
 											<td>
 												<div class="btn-normal">
-													<a href="#" onclick="clearInfo();">${applicationScope.appInfo["common.clear"]}</a>
+													<a href="javascript:void(0)" onclick="clearInfo();">${applicationScope.appInfo["common.clear"]}</a>
 												</div>
 											</td>
 										</tr>
@@ -230,7 +234,7 @@
 												value="${result.initorName}" /></td>
 											<td>
 												<div class="btn-normal">
-													<a href="#" onclick="" id="selectUser">${applicationScope.appInfo["common.select"]}<em
+													<a href="javascript:void(0)" id="selectUser">${applicationScope.appInfo["common.select"]}<em
 														class="arrow-small"></em></a>
 												</div>
 											</td>

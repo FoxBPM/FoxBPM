@@ -11,7 +11,7 @@ public final class FoxbpmWebContextAttributeNameDefinition {
 	public final static String ATTRIBUTE_NAME_USERID = "userId";
 	public final static String ATTRIBUTE_NAME_INITIATOR = "initiator";
 	public final static String ATTRIBUTE_NAME_PROCESSDEFINITIONNAME = "processDefinitionName";
-	public final static String ATTRIBUTE_NAME_BUSINESSKEY = "businessKey";
+	public final static String ATTRIBUTE_NAME_BUSINESSKEY = "bizKey";
 	public final static String ATTRIBUTE_NAME_TITLE = "title";
 	public final static String ATTRIBUTE_NAME_PAGEINDEX = "pageIndex";
 	public final static String ATTRIBUTE_NAME_PAGESIZE = "pageSize";

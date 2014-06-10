@@ -49,7 +49,7 @@ function clearInfo(){
 	<div class="main-panel">
 		<jsp:include page="top.jsp" flush="true" />
 		<div class="center-panel">
-			<form id="subForm" method="post" action="queryProcessInst">
+			<form id="subForm" method="post" action="queryProcessInst.action">
 				<!-- 左 -->
 				<div class="left">
 					<div class="left-nav-box">
@@ -80,9 +80,7 @@ function clearInfo(){
 				<div class="right">
 					<!-- 查 -->
 					<div id="search" class="search">
-						<input type="hidden" name="action" value="getAllProcess" /> <input
-							type="hidden" id="processType" name="processType"
-							value="${result.processType}" />
+						<input type="hidden" id="processType" name="processType" value="${result.processType}" />
 						<table>
 							<tr>
 								<td class="title-r">${applicationScope.appInfo["task.subject"]}：</td>
@@ -100,12 +98,12 @@ function clearInfo(){
 										<tr>
 											<td>
 												<div class="btn-normal">
-													<a href="#" onclick="$('#subForm').submit();">${applicationScope.appInfo["common.search"]}</a>
+													<a href="javascript:void(0)" target="_self" onclick="$('#subForm').submit();">${applicationScope.appInfo["common.search"]}</a>
 												</div>
 											</td>
 											<td>
 												<div class="btn-normal">
-													<a href="#" onclick="clearInfo();">${applicationScope.appInfo["common.clear"]}</a>
+													<a href="javascript:void(0)" onclick="clearInfo();">${applicationScope.appInfo["common.clear"]}</a>
 												</div>
 											</td>
 										</tr>

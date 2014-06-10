@@ -17,7 +17,7 @@
 <link rel="stylesheet" type="text/css" href="foxbpm/css/reset.css" />
 <link rel="stylesheet" type="text/css" href="foxbpm/css/global.css" />
 <link rel="stylesheet" type="text/css" href="foxbpm/css/index.css" />
-<link id="color" rel="stylesheet" type="text/css" href="/foxbpm/css/color_red.css" />
+<link id="color" rel="stylesheet" type="text/css" href="foxbpm/css/color_red.css" />
 <link rel="stylesheet" type="text/css" href="foxbpm/css/popup.css">
 <script type="text/javascript">
 	var message = "${errorMsg}";

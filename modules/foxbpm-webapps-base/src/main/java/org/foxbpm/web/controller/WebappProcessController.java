@@ -117,6 +117,8 @@ public class WebappProcessController extends AbstractWebappController {
 			Pagination<String> pageInfor = new Pagination<String>(pageIndex, pageSize);
 			// 查询结果
 			Map<String, Object> resultMap = webappProcessService.queryProcessInst(pageInfor, requestParams);
+			//封装请求参数
+			resultMap.putAll(requestParams);
 			// 封装参数
 			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
 			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
