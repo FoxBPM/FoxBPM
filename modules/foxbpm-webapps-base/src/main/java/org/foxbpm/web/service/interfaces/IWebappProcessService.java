@@ -16,8 +16,7 @@ import org.foxbpm.web.common.util.Pagination;
 public interface IWebappProcessService {
 	public List<ProcessDefinition> queryProcessDefinition();
 
-	public ProcessDefinition createProcessDefinition(String parameter)
-			throws FoxbpmWebException;
+	public ProcessDefinition createProcessDefinition(String parameter) throws FoxbpmWebException;
 
 	/**
 	 * 查询所有流程定义信息
@@ -29,7 +28,17 @@ public interface IWebappProcessService {
 	 * @return 返回查询结果
 	 * @throws FoxbpmWebException
 	 */
-	Map<String, List<Map<String, Object>>> queryAllProcessDef(
-			Pagination<String> pageInfor, Map<String, Object> params)
-			throws FoxbpmWebException;
+	Map<String, List<Map<String, Object>>> queryProcessDef(Pagination<String> pageInfor, Map<String, Object> params) throws FoxbpmWebException;
+
+	/**
+	 * 查询所有流程实例信息
+	 * 
+	 * @param pageInfor
+	 *            分页对象
+	 * @param params
+	 *            查询条件参数
+	 * @return 返回查询结果
+	 * @throws FoxbpmWebException
+	 */
+	Map<String, Object> queryProcessInst(Pagination<String> pageInfor, Map<String, Object> params) throws FoxbpmWebException;
 }

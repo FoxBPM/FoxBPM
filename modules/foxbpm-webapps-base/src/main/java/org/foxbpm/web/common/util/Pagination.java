@@ -36,7 +36,7 @@ public class Pagination<T> implements Serializable {
 	// 默认当前页下标
 	public final static int PAGE_INDEX = 1;
 	// 默认分页大小
-	public final static int PAGE_SIZE = 10;
+	public final static int PAGE_SIZE = 15;
 	
 	private int total; // 总记录数
 	private int pageIndex; // 当前页, 从1开始计数

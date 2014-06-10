@@ -15,9 +15,9 @@
     <div class="menu">
         <div class="logo"></div>
         <ul>
-        <li><a id="getMyProcess" href="queryAllProcessDef.action"><h1>${applicationScope.appInfo["module.startFlow"]}</h1><h4>Start Flow</h4></a></li>
+        <li><a id="getMyProcess" href="queryProcessDef.action"><h1>${applicationScope.appInfo["module.startFlow"]}</h1><h4>Start Flow</h4></a></li>
         <li><a id="getMyTask" href="queryToDoTask.action"><h1>${applicationScope.appInfo["module.schedule"]}</h1><h4>To Do Task</h4></a></li>
-        <li><a id="getAllProcess" href="FlowCenter?action=getAllProcess"><h1>${applicationScope.appInfo["module.flowQuery"]}</h1><h4>Flow Query</h4></a></li>
+        <li><a id="getAllProcess" href="queryProcessInst.action"><h1>${applicationScope.appInfo["module.flowQuery"]}</h1><h4>Flow Query</h4></a></li>
         <li><a id="getPlaceOnFile" href="FlowCenter?action=getPlaceOnFile"><h1>${applicationScope.appInfo["module.placeOnFile"]}</h1><h4>Archiving Flow</h4></a></li>
         </ul>
     </div>

@@ -57,11 +57,14 @@ public class WebappProcessController {
 	 * @return ModelAndView
 	 */
 	@RequestMapping(FoxbpmActionNameDefinition.QUERY_PROCESSDEFINITION_ACTION)
-	public ModelAndView queryProcessDefinition(String parameter) {
-		try {
+	public ModelAndView queryProcessDefinition(String parameter)
+	{
+		try
+		{
 
 			List<ProcessDefinition> processDefinitionList = webappProcessService.queryProcessDefinition();
-		} catch (FoxbpmWebException foxbpmException) {
+		} catch (FoxbpmWebException foxbpmException)
+		{
 			return new ModelAndView("error");
 		}
 		ModelAndView modelAndView = new ModelAndView(FoxbpmViewNameDefinition.START_PROCESS_VIEWNAME);
@@ -69,19 +72,69 @@ public class WebappProcessController {
 	}
 
 	@RequestMapping(FoxbpmActionNameDefinition.QUERY_QUERYALLPROCESSDEF_ACTION)
-	public ModelAndView queryAllProcessDef(HttpServletRequest request) {
-		try {
+	public ModelAndView queryProcessDef(HttpServletRequest request)
+	{
+		try
+		{
 			// 请求参数
 			Map<String, Object> requestParams = getRequestParams(request);
 			// 查询结果
-			Map<String, List<Map<String, Object>>> resultMap = webappProcessService.queryAllProcessDef(null, requestParams);
+			Map<String, List<Map<String, Object>>> resultMap = webappProcessService.queryProcessDef(null, requestParams);
 			// 封装参数
 			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
-			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, null);
-		} catch (FoxbpmWebException foxbpmException) {
+		} catch (FoxbpmWebException foxbpmException)
+		{
 			return new ModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
 		}
 		ModelAndView modelAndView = new ModelAndView(FoxbpmViewNameDefinition.QUERY_QUERYALLPROCESSDEF_VIEWNAME);
+		return modelAndView;
+	}
+
+	/**
+	 * 查询所有流程定义信息
+	 * 
+	 * @param pageInfor
+	 *            分页对象
+	 * @param params
+	 *            查询条件参数
+	 * @return 返回查询结果
+	 * @throws FoxbpmWebException
+	 */
+	@RequestMapping(FoxbpmActionNameDefinition.QUERY_QUERYALLPROCESSINST_ACTION)
+	public ModelAndView queryProcessInst(HttpServletRequest request)
+	{
+		try
+		{
+			// 请求参数
+			Map<String, Object> requestParams = getRequestParams(request);
+
+			// 获取分页条件参数
+			String pageI = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINDEX));
+			String pageS = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGESIZE));
+
+			// 处理分页
+			int pageIndex = Pagination.PAGE_INDEX;
+			int pageSize = Pagination.PAGE_SIZE;
+			if (StringUtil.isNotEmpty(pageI))
+			{
+				pageIndex = StringUtil.getInt(pageI);
+			}
+			if (StringUtil.isNotEmpty(pageS))
+			{
+				pageSize = StringUtil.getInt(pageS);
+			}
+			// 分页信息
+			Pagination<String> pageInfor = new Pagination<String>(pageIndex, pageSize);
+			// 查询结果
+			Map<String, Object> resultMap = webappProcessService.queryProcessInst(pageInfor, requestParams);
+			// 封装参数
+			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
+			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
+		} catch (FoxbpmWebException foxbpmException)
+		{
+			return new ModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
+		}
+		ModelAndView modelAndView = new ModelAndView(FoxbpmViewNameDefinition.QUERY_QUERYALLPROCESSINST_VIEWNAME);
 		return modelAndView;
 	}
 
@@ -92,24 +145,29 @@ public class WebappProcessController {
 	 *            http 请求
 	 * @return 返回获取的http请求参数
 	 */
-	private Map<String, Object> getRequestParams(HttpServletRequest request) {
+	private Map<String, Object> getRequestParams(HttpServletRequest request)
+	{
 
 		// 请求参数
 		Map<String, Object> requestParams = new HashMap<String, Object>();
 
 		requestParams.putAll(request.getParameterMap());
 		Enumeration<String> enumeration = request.getParameterNames();
-		if (null != enumeration) {
+		if (null != enumeration)
+		{
 			String key = null;
-			while (enumeration.hasMoreElements()) {
+			while (enumeration.hasMoreElements())
+			{
 				key = enumeration.nextElement();
 				requestParams.put(key, request.getParameter(key));
 			}
 		}
 		enumeration = request.getAttributeNames();
-		if (null != enumeration) {
+		if (null != enumeration)
+		{
 			String key = null;
-			while (enumeration.hasMoreElements()) {
+			while (enumeration.hasMoreElements())
+			{
 				key = enumeration.nextElement();
 				requestParams.put(key, request.getAttribute(key));
 			}

@@ -2,16 +2,21 @@ package org.foxbpm.web.service.impl;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.RuntimeService;
+import org.foxbpm.engine.impl.util.FileUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.repository.ProcessDefinitionQuery;
+import org.foxbpm.engine.runtime.ProcessInstance;
+import org.foxbpm.engine.runtime.ProcessInstanceQuery;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
+import org.foxbpm.web.common.util.DateUtil;
 import org.foxbpm.web.common.util.Pagination;
 import org.foxbpm.web.db.factory.FoxbpmDBConnectionFactory;
 import org.foxbpm.web.db.interfaces.BizDBInterface;
@@ -84,7 +89,7 @@ public class WebappProcessService implements IWebappProcessService {
 	}
 
 	@Override
-	public Map<String, List<Map<String, Object>>> queryAllProcessDef(Pagination<String> pageInfor, Map<String, Object> params) throws FoxbpmWebException {
+	public Map<String, List<Map<String, Object>>> queryProcessDef(Pagination<String> pageInfor, Map<String, Object> params) throws FoxbpmWebException {
 		Map<String, List<Map<String, Object>>> resultMap = new HashMap<String, List<Map<String, Object>>>();
 		try {
 			// 创建流程定义查询
@@ -101,7 +106,6 @@ public class WebappProcessService implements IWebappProcessService {
 			for (int i = 0, size = (null == pdList) ? 0 : pdList.size(); i < size; i++) {
 				instances = new HashMap<String, Object>();
 				instances.putAll(pdList.get(i).getPersistentState());
-				// instanceMaps.add(instances);
 				// String formUrl = (String) instances.get("startFormKey");
 				instances.put("formUrl", "www.baidu.com");
 				String category = StringUtil.getString(instances.get("category"));
@@ -115,6 +119,101 @@ public class WebappProcessService implements IWebappProcessService {
 				}
 				tlist.add(instances);
 			}
+		} catch (Exception e) {
+			throw new FoxbpmWebException(e.getMessage(), "", e);
+		}
+		return resultMap;
+	}
+
+	@Override
+	public Map<String, Object> queryProcessInst(Pagination<String> pageInfor, Map<String, Object> params) throws FoxbpmWebException {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			ProcessInstanceQuery piq = runtimeService.createProcessInstanceQuery();
+			// 获取查询条件参数
+			String userId = StringUtil.getString(params.get("userId"));
+			String processDefinitionKey = StringUtil.getString(params.get("processDefinitionKey"));
+			String processInstanceId = StringUtil.getString(params.get("processInstanceId"));
+			String processDefinitionName = StringUtil.getString(params.get("processDefinitionName"));
+			String title = StringUtil.getString(params.get("title"));
+			String bizKey = StringUtil.getString(params.get("bizKey"));
+			String initor = StringUtil.getString(params.get("initor"));
+			String status = StringUtil.getString(params.get("status"));
+			String processType = StringUtil.getString(params.get("processType"));
+
+			String dss = StringUtil.getString(params.get("startTimeS"));
+			String dse = StringUtil.getString(params.get("startTimeE"));
+			if (StringUtil.isNotEmpty(processDefinitionKey)) {
+				piq.processDefinitionKey(processDefinitionKey);
+			}
+			if (StringUtil.isNotEmpty(processInstanceId)) {
+				piq.processInstanceId(processInstanceId);
+			}
+			if (StringUtil.isNotEmpty(title)) {
+				piq.subjectLike(title);
+			}
+			if (StringUtil.isNotEmpty(bizKey)) {
+				piq.processInstanceBusinessKeyLike(bizKey);
+			}
+			if (StringUtil.isNotEmpty(status)) {
+				piq.processInstanceStatus(status);
+			}
+
+			if (StringUtil.isNotEmpty(initor)) {
+				piq.initiator(initor);
+			}
+
+			if (StringUtil.isNotEmpty(processType)) {
+				if (processType.equals("initor")) {
+					piq.initiator(userId);
+				} else {
+					piq.taskParticipants(userId);
+				}
+
+			}
+			if (StringUtil.isNotEmpty(processDefinitionName)) {
+				piq.processDefinitionNameLike(processDefinitionName);
+			}
+			Date dates = null;
+			Date datee = null;
+
+			if (StringUtil.isNotEmpty(dss)) {
+				dates = DateUtil.stringToDate(dss, "yyyy-MM-dd");
+			}
+			if (StringUtil.isNotEmpty(dse)) {
+				String endTime = "235959999";
+				dse += endTime;
+				datee = DateUtil.stringToDate(dse, "yyyy-MM-ddHHmmssSSS");
+			}
+			if (null != dates) {
+				piq.startTimeBefore(dates);
+			}
+			if (null != datee) {
+				piq.startTimeAfter(datee);
+			}
+
+			List<ProcessInstance> piList = null;
+			piq.orderByUpdateTime().desc();
+			if (null == pageInfor) {
+				piList = piq.list();
+			} else {
+				// 执行分页查询
+				piList = piq.listPagination(pageInfor.getPageIndex(), pageInfor.getPageSize());
+				// 设置分页信息
+				pageInfor.setTotal(StringUtil.getInt(piq.count()));
+			}
+
+			List<Map<String, Object>> instanceMaps = new ArrayList<Map<String, Object>>();
+			Map<String, Object> instances = null;
+			ProcessInstance pi = null;
+			for (int i = 0, size = (null == piList) ? 0 : piList.size(); i < size; i++) {
+				pi = piList.get(i);
+				instances = new HashMap<String, Object>();
+				instances.putAll(pi.getPersistentState());
+				instanceMaps.add(instances);
+				instances.put("processDefinitionName", modelService.getProcessDefinition(pi.getId()).getName());
+			}
+			resultMap.put("dataList", instanceMaps);
 		} catch (Exception e) {
 			throw new FoxbpmWebException(e.getMessage(), "", e);
 		}

@@ -57,16 +57,18 @@ public class WebappTaskController {
 	 * @return ModelAndView
 	 */
 	@RequestMapping(FoxbpmActionNameDefinition.QUERY_TASK_ACTION)
-	public ModelAndView startProcess(String parameter) {
-		try {
+	public ModelAndView startProcess(String parameter)
+	{
+		try
+		{
 
 			List<Task> tasks = taskService.queryTask();
 			System.out.println(tasks.size());
-		} catch (FoxbpmWebException foxbpmException) {
+		} catch (FoxbpmWebException foxbpmException)
+		{
 			return new ModelAndView("error");
 		}
-		ModelAndView modelAndView = new ModelAndView(
-				FoxbpmViewNameDefinition.START_PROCESS_VIEWNAME);
+		ModelAndView modelAndView = new ModelAndView(FoxbpmViewNameDefinition.START_PROCESS_VIEWNAME);
 		return modelAndView;
 	}
 
@@ -78,70 +80,71 @@ public class WebappTaskController {
 	 * @return 返回对应展现视图
 	 */
 	@RequestMapping(FoxbpmActionNameDefinition.QUERY_TODOTASK_ACTION)
-	public ModelAndView queryToDoTask(HttpServletRequest request) {
+	public ModelAndView queryToDoTask(HttpServletRequest request)
+	{
 
-		try {
+		try
+		{
 			Map<String, Object> requestParams = getRequestParams(request);
 			// 获取分页条件参数
-			String pageI = StringUtil
-					.getString(requestParams
-							.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINDEX));
-			String pageS = StringUtil
-					.getString(requestParams
-							.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGESIZE));
+			String pageI = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINDEX));
+			String pageS = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGESIZE));
 
 			// 处理分页
 			int pageIndex = Pagination.PAGE_INDEX;
 			int pageSize = Pagination.PAGE_SIZE;
-			if (StringUtil.isNotEmpty(pageI)) {
+			if (StringUtil.isNotEmpty(pageI))
+			{
 				pageIndex = StringUtil.getInt(pageI);
 			}
-			if (StringUtil.isNotEmpty(pageS)) {
+			if (StringUtil.isNotEmpty(pageS))
+			{
 				pageSize = StringUtil.getInt(pageS);
 			}
 			// 分页信息
-			Pagination<String> pageInfor = new Pagination<String>(pageIndex,
-					pageSize);
+			Pagination<String> pageInfor = new Pagination<String>(pageIndex, pageSize);
 			// 查询结果
-			Map<String, Object> resultMap = taskService.queryToDoTask(
-					pageInfor, requestParams);
+			Map<String, Object> resultMap = taskService.queryToDoTask(pageInfor, requestParams);
 			// 封装参数
-			request.setAttribute(
-					FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT,
-					resultMap);
-			request.setAttribute(
-					FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR,
-					pageInfor);
-		} catch (FoxbpmWebException foxbpmException) {
+			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
+			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
+		} catch (FoxbpmWebException foxbpmException)
+		{
 			return new ModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
 		}
-		return new ModelAndView(
-				FoxbpmViewNameDefinition.QUERY_TODOTASK_VIEWNAME);
+		return new ModelAndView(FoxbpmViewNameDefinition.QUERY_TODOTASK_VIEWNAME);
 	}
 
 	/**
 	 * http request 请求参数获取
-	 * @param request http 请求
+	 * 
+	 * @param request
+	 *            http 请求
 	 * @return 返回获取的http请求参数
 	 */
-	private Map<String, Object> getRequestParams(HttpServletRequest request) {
+	private Map<String, Object> getRequestParams(HttpServletRequest request)
+	{
 
 		// 请求参数
 		Map<String, Object> requestParams = new HashMap<String, Object>();
 
 		requestParams.putAll(request.getParameterMap());
 		Enumeration<String> enumeration = request.getParameterNames();
-		if (null != enumeration) {
+		if (null != enumeration)
+		{
 			String key = null;
-			while (enumeration.hasMoreElements()) {
+			while (enumeration.hasMoreElements())
+			{
 				key = enumeration.nextElement();
 				requestParams.put(key, request.getParameter(key));
 			}
 		}
 		enumeration = request.getAttributeNames();
-		if (null != enumeration) {
+		if (null != enumeration)
+		{
 			String key = null;
-			while (enumeration.hasMoreElements()) {
+			while (enumeration.hasMoreElements())
+			{
 				key = enumeration.nextElement();
 				requestParams.put(key, request.getAttribute(key));
 			}
