@@ -35,8 +35,6 @@ public class FoxBpmRestServletContextListener implements ServletContextListener{
 	Logger log = LoggerFactory.getLogger(FoxBpmRestServletContextListener.class);
 	public void contextInitialized(ServletContextEvent sce) {
 		try{
-//			ProcessEngineManagement.getDefaultProcessEngine();
-			log.info("引擎启动成功");
 			FlowResourceService flowResouceService = new FlowResourceService();
 			flowResouceService.generateFlowResouceZipFile();
 		}catch(Exception ex){

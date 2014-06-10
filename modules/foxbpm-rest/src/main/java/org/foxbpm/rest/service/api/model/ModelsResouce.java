@@ -33,11 +33,17 @@ import org.foxbpm.engine.repository.DeploymentBuilder;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
+import org.foxbpm.rest.common.api.SpringLoadHelper;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
+import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * 流程定义批量操作
@@ -54,9 +60,9 @@ public class ModelsResouce extends AbstractRestResource{
 	@Post
 	public String deploy(Representation entity){
 		FileOutputStream fileOutputStream  = null;
-		Map<String,InputStream> resourceMap = new HashMap<String, InputStream>();
+		final Map<String,InputStream> resourceMap = new HashMap<String, InputStream>();
 		try {
-			ModelService modelService = FoxBpmUtil.getProcessEngine().getModelService();
+			
 			File file = File.createTempFile(System.currentTimeMillis() + "flowres", ".zip");
 			if(file.exists()){
 				file.delete();
@@ -64,47 +70,62 @@ public class ModelsResouce extends AbstractRestResource{
 			fileOutputStream = new FileOutputStream(file);
 			entity.write(fileOutputStream);
 			String targetPath = this.getClass().getClassLoader().getResource("/").getPath();
-			targetPath = targetPath+File.separator+"Temp";
-			System.out.println(targetPath);
+			targetPath=targetPath.substring(1, targetPath.indexOf("WEB-INF/classes"));
+			targetPath = targetPath+File.separator+"ModelsTempFile";
 			FileUtil.unZip(file.getPath(),targetPath);
-			File modelsPath = new File(targetPath);
-			for(File tmpFile : modelsPath.listFiles()){
-				if(tmpFile.isDirectory()){
-					DeploymentBuilder deploymentBuilder = modelService.createDeployment();
-					String fileName = tmpFile.getName();
-					if(fileName.indexOf(SEP) == -1){
-						throw new FoxBPMException("上传文件夹内容格式不正确");
-					}
-					//解析文件夹名，获得对应信息  如“insert-processExpens-1”  insert：操作码，processExpens：流程key,1：流程版本
-					String operation = fileName.substring(0, fileName.indexOf(SEP));
-					String processKey = fileName.substring(fileName.indexOf(SEP)+1, fileName.lastIndexOf(SEP));
-					int version = Integer.parseInt(fileName.substring(fileName.lastIndexOf(SEP)+1));
-					File [] files = tmpFile.listFiles();
-					for(File t : files){
-						InputStream input =  new FileInputStream(t);
-						//放到map中，用完之后一一关闭
-						resourceMap.put(t.getName(), input);
-						deploymentBuilder.addInputStream(t.getName(),input, version);
-					}
-					if(PREFIX_ADD.equals(operation)){
-						log.debug("发布--发布"+resourceMap);
-						deploymentBuilder.deploy();
-					}else if(PREFIX_UPDATE.equals(operation)){
-						ProcessDefinition processDefinition = null;
-						try{
-							processDefinition = modelService.getProcessDefinition(processKey, version);
-							String deploymentId = processDefinition.getDeploymentId();
-							deploymentBuilder.updateDeploymentId(deploymentId);
-							deploymentBuilder.deploy();
-						}catch(FoxBPMObjectNotFoundException ex){
-							deploymentBuilder.deploy();
+			final File modelsPath = new File(targetPath);
+			
+			PlatformTransactionManager transactionManager = (PlatformTransactionManager)SpringLoadHelper.getBean("foxbpmTransactionManager");
+			TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus status) {
+					try{
+						ModelService modelService = FoxBpmUtil.getProcessEngine().getModelService();
+						for(File tmpFile : modelsPath.listFiles()){
+							if(tmpFile.isDirectory()){
+								DeploymentBuilder deploymentBuilder = modelService.createDeployment();
+								String fileName = tmpFile.getName();
+								if(fileName.indexOf(SEP) == -1){
+									throw new FoxBPMException("上传文件夹内容格式不正确");
+								}
+								//解析文件夹名，获得对应信息  如“insert-processExpens-1”  insert：操作码，processExpens：流程key,1：流程版本
+								String operation = fileName.substring(0, fileName.indexOf(SEP));
+								String processKey = fileName.substring(fileName.indexOf(SEP)+1, fileName.lastIndexOf(SEP));
+								int version = Integer.parseInt(fileName.substring(fileName.lastIndexOf(SEP)+1));
+								File [] files = tmpFile.listFiles();
+								for(File t : files){
+									InputStream input =  new FileInputStream(t);
+									//放到map中，用完之后一一关闭
+									resourceMap.put(t.getName(), input);
+									deploymentBuilder.addInputStream(t.getName(),input, version);
+								}
+								if(PREFIX_ADD.equals(operation)){
+									deploymentBuilder.deploy();
+								}else if(PREFIX_UPDATE.equals(operation)){
+									ProcessDefinition processDefinition = null;
+									try{
+										processDefinition = modelService.getProcessDefinition(processKey, version);
+										String deploymentId = processDefinition.getDeploymentId();
+										deploymentBuilder.updateDeploymentId(deploymentId);
+										deploymentBuilder.deploy();
+									}catch(FoxBPMObjectNotFoundException ex){
+										deploymentBuilder.deploy();
+									}
+								}else{
+									throw new FoxBPMException("发布文件中不包含操作码");
+								}
+							}
 						}
-					}else{
-						throw new FoxBPMException("发布文件中不包含操作码");
+					}catch(Exception ex){
+						if(ex instanceof FoxBPMException){
+							throw (FoxBPMException)ex;
+						}else{
+							throw new FoxBPMException("执行保存错误", ex);
+						}
 					}
 				}
-			}
-			
+			});
 			setStatus(Status.SUCCESS_CREATED);
 		} catch (Exception e) {
 			if (e instanceof FoxBPMException) {
@@ -124,7 +145,7 @@ public class ModelsResouce extends AbstractRestResource{
 				if(is != null){
 					try {
 						is.close();
-					} catch (IOException e) {
+					}catch (IOException e) {
 						log.error("关闭流失败", e);
 					}
 				}
@@ -133,4 +154,8 @@ public class ModelsResouce extends AbstractRestResource{
 		return null;
 	}
 	
+	@Get
+	public String test(){
+		return "success";
+	}
 }

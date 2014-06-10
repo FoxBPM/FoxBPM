@@ -432,9 +432,9 @@ public class MybatisSqlSession implements ISqlSession,Session {
 	}
 	
 	public void commit(){
-		if(this.sqlSession != null){
-			this.sqlSession.commit();
-		}
+//		if(this.sqlSession != null){
+//			this.sqlSession.commit();
+//		}
 	}
 	
 	public void rollback(){

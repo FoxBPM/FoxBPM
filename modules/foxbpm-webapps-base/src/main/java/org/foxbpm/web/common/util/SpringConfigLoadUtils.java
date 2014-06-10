@@ -17,8 +17,9 @@
  */
 package org.foxbpm.web.common.util;
 
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 /**
  * spring 容器工具类
@@ -26,75 +27,15 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @author MEL
  * @date 2014-06-06
  */
-public class SpringConfigLoadUtils {
-	private static Object object = new Object();
-	private static ApplicationContext _wac = null;
-	private static ApplicationContext context;
-	static {
+public class SpringConfigLoadUtils implements ApplicationContextAware {
 
+	private static ApplicationContext applicationContext; 
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		SpringConfigLoadUtils.applicationContext = applicationContext;
 	}
-
-	public static ApplicationContext getLocalContext() {
-		if (context == null) {
-			String[] sources = { "applicationContext*.xml" };
-			context = new ClassPathXmlApplicationContext(sources);
-		}
-		return context;
-	}
-
-	public static boolean isCreated() {
-		return (_wac != null || context != null);
-	}
-
-	/**
-	 * 加载spring配置信息
-	 * 
-	 * @param wac
-	 */
-	public static void buildApplicationContext(ApplicationContext wac) {
-		if (_wac == null) {
-			synchronized (object) {
-				if (_wac == null) {
-					_wac = wac;
-				}
-			}
-		}
-	}
-
-	/**
-	 * 根据Class从容器中查询bean名称
-	 * 
-	 * @param clazz
-	 * @return bean名称
-	 */
-	public static String[] getBeanId(Class clazz) {
-		return getContext().getBeanNamesForType(clazz);
-	}
-
-	/**
-	 * 获得spring容器
-	 * 
-	 * @return spring容器
-	 */
-	public ApplicationContext getApplicationContext() {
-		return _wac;
-	}
-
-	/**
-	 * 根据名称从容器中获得实例
-	 * 
-	 * @param name
-	 * @return 实例
-	 */
-	public static Object getBean(String name) {
-		if (_wac == null)
-			return getLocalContext().getBean(name);
-		return _wac.getBean(name);
-	}
-
-	public static ApplicationContext getContext() {
-		if (_wac == null)
-			return getLocalContext();
-		return _wac;
+	
+	public static Object getBean(String name) throws BeansException{
+		return applicationContext.getBean(name);
 	}
 }

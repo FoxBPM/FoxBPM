@@ -17,21 +17,16 @@
  */
 package org.foxbpm.engine.impl.jdbc;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import javax.sql.DataSource;
 
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.interceptor.Session;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 
 public class JdbcSqlSessionFactory implements ISqlSessionFactory {
 
-	private DataSource dataSource;
 	public void init(DataSource dataSource) {
-		this.dataSource = dataSource;
+		
 	}
 
 	public ISqlSession createSqlSession() {
@@ -53,13 +48,4 @@ public class JdbcSqlSessionFactory implements ISqlSessionFactory {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public void init(DataSource datasource, String databaseType) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
-
 }

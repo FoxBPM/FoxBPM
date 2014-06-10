@@ -38,16 +38,6 @@
 		<property name="dataSourceManager" ref="foxbpmDataSourceManager" />
 		<property name="transactionManager" ref="foxbpmTransactionManager" />
 	</bean>
-	<bean id="processEngineConfiguration" class="org.foxbpm.engine.impl.ProcessEngineConfigurationImpl">
-		<property name="dataSourceManager" ref="foxbpmDataSourceManager" />
-	</bean>
-	<bean id="processEngineConfigurationDecrator"
-		class="org.foxbpm.engine.spring.ProcessEngineConfigurationSpringDecrator">
-		<constructor-arg>
-			<ref bean="processEngineConfiguration" />
-		</constructor-arg>
-		<property name="springTransactionManager" ref="foxbpmTransactionManager" />
-	</bean>
 	<bean id="foxbpmConnectionFactory" class="org.foxbpm.web.db.factory.FoxbpmDBConnectionFactory"
 		scope="singleton">
 		<property name="dataSource">
@@ -56,7 +46,6 @@
 	</bean>
 	<bean id="processEngine" class="org.foxbpm.engine.spring.ProcessEngineFactoryBean">
 		<property name="processEngineConfiguration" ref="processEngineConfigurationSpring" />
-		<property name="processEngineConfigurationDecrator" ref="processEngineConfigurationDecrator"></property>
 	</bean>
 
 	<bean id="taskService" factory-bean="processEngine"
@@ -66,11 +55,11 @@
 	<bean id="runtimeService" factory-bean="processEngine"
 		factory-method="getRuntimeService" />
 
-	<bean id="exceptionEnvironment" class="org.foxbpm.web.common.env.ExceptionEnvironment"
-		scope="singleton" init-method="init"></bean>
-	<bean id="propertiesUtil" class="org.foxbpm.web.I18N.PropertiesUtil"
-		scope="singleton" init-method="initProperties" />
 
+	<bean id="exceptionEnvironment" class="org.foxbpm.web.common.env.ExceptionEnvironment"
+		scope="singleton" init-method="init" />
+	<bean id="propertiesUtil" class="com.org.foxbpm.web.I18N.PropertiesUtil"
+		scope="singleton" init-method="initProperties" />
 
 	<bean id="bizDBImpl" class="org.foxbpm.web.db.impl.BizDBImpl">
 		<property name="dbfactory">
@@ -83,7 +72,7 @@
 	</bean>
 	<bean id="demoDaoImpl" class="org.foxbpm.web.db.impl.DemoDaoImpl"
 		parent="abstrJdbcTemplate" />
-	
+
 	<bean id="abstractWebappService" abstract="true">
 		<property name="bizDB" ref="bizDBImpl" />
 		<property name="idemoDao" ref="demoDaoImpl" />
@@ -170,7 +159,8 @@
 			<tx:method name="get*" propagation="REQUIRED" read-only="true" />
 			<tx:method name="create*" propagation="REQUIRED" />
 			<tx:method name="del*" propagation="REQUIRED" />
-			<tx:method name="save*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+			<tx:method name="save*" propagation="REQUIRED"
+				rollback-for="java.lang.Exception" />
 			<tx:method name="update*" propagation="REQUIRED" />
 		</tx:attributes>
 	</tx:advice>

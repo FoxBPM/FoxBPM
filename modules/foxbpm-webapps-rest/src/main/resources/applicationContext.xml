@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation=" 
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd 
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd 
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:jdbc.properties" />
+	</bean>
+	<bean id="foxbpmDataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${idbase.driverClassName}" />
+		<property name="url" value="${idbase.url}" />
+		<property name="username" value="${idbase.username}" />
+		<property name="password" value="${idbase.password}" />
+	</bean>
+
+	<bean id="foxbpmDataSourceManager" class="org.foxbpm.engine.spring.SpringDataSourceManager">
+		<property name="dataSource" ref="foxbpmDataSource" />
+	</bean>
+	<bean id="foxbpmTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="foxbpmDataSource" />
+	</bean>
+
+	<bean id="processEngineConfigurationSpring"
+		class="org.foxbpm.engine.spring.ProcessEngineConfigurationSpring">
+		<property name="dataSourceManager" ref="foxbpmDataSourceManager" />
+		<property name="transactionManager" ref="foxbpmTransactionManager" />
+	</bean>
+	<bean id="processEngine" class="org.foxbpm.engine.spring.ProcessEngineFactoryBean">
+		<property name="processEngineConfiguration" ref="processEngineConfigurationSpring" />
+	</bean>
+
+	<bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />
+	<bean id="modelService" factory-bean="processEngine" factory-method="getModelService" />
+	<bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
+
+	<bean id="springLoaderHelper" class="org.foxbpm.rest.common.api.SpringLoadHelper" scope="singleton" />
+	
+	<tx:advice id="foxbpmTransactionAdvice" transaction-manager="foxbpmTransactionManager">
+		<tx:attributes>
+			<tx:method name="query*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="get*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="create*" propagation="REQUIRED" />
+			<tx:method name="del*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="executeFunctionPointCut"
+			expression="execution(* org.foxbpm.web.service.impl.*.*(..))" />
+		<aop:advisor advice-ref="foxbpmTransactionAdvice"
+			pointcut-ref="executeFunctionPointCut" />
+	</aop:config>
+</beans> 
