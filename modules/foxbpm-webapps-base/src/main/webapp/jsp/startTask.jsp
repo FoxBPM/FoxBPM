@@ -33,7 +33,7 @@
 
 <body>
 	<div class="tpl-form-border">
-		<form id="form1" action="completeTask.action" method="post">
+		<form id="form1" action="executeTask.action" method="post">
 			<table class="table-form">
 				<tr>
 					<td class="title-r">流程关联键：</td>
@@ -64,6 +64,8 @@
 					</div>
 				</c:forEach>
 			</div>
+			<!-- 首次启动 -->
+			<input type="hidden" name="taskStauts" id="taskStauts" value="0" />
 		</form>
 	</div>
 </body>

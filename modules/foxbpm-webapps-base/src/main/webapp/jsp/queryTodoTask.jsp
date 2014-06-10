@@ -8,7 +8,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>${applicationScope.appInfo["product.title"]}</title>
-<jsp:include page="head.jsp" flush="true" /> 
+<jsp:include page="head.jsp" flush="true" />
 <script type="text/javascript">
 	/*  
 	 * "userId" 用户编号
@@ -50,16 +50,13 @@
 			$("#agentType").val('0');
 			$("#subForm").submit();
 		});
-		$("a[name=flowGraph]")
-				.click(
-						function() {
-							var pdk = $(this).attr("pdk");
-							var pii = $(this).attr("pii");
-							var obj = {};
-							window
-									.open("FlowCenter?action=getTaskDetailInfo&processDefinitionKey="
-											+ pdk + "&processInstanceId=" + pii);
-						});
+		$("a[name=flowGraph]").click(
+				function() {
+					var pdk = $(this).attr("pdk");
+					var pii = $(this).attr("pii");
+					window.open("queryTaskDetailInfor.action?processDefinitionKey="
+							+ pdk + "&processInstanceId=" + pii);
+				});
 		$("a[name=doTask]").click(
 				function() {
 					var tii = $(this).attr("tii");
@@ -122,11 +119,15 @@
 						<div class="left-nav m-top">
 							<h1>${applicationScope.appInfo["task.agent"]}</h1>
 						</div>
-						<c:if test="${result.agentUsers!= null && fn:length(result.agentUsers) != 0}">
-							<c:forEach items="${result.agentUsers}" var="agentUsers" varStatus="index">
+						<c:if
+							test="${result.agentUsers!= null && fn:length(result.agentUsers) != 0}">
+							<c:forEach items="${result.agentUsers}" var="agentUsers"
+								varStatus="index">
 								<div class="left-nav">
 									<a name="agentUsers" userId="${agentUsers.userid}" href="#">
-										<img src="foxbpm\images\temp\user01.jpg" height="30" width="30" alt="头像" onerror="miniImgNotFound('<%=request.getContextPath()%>',this);" />
+										<img src="foxbpm\images\temp\user01.jpg" height="30"
+										width="30" alt="头像"
+										onerror="miniImgNotFound('<%=request.getContextPath()%>',this);" />
 										"${agentUsers.username}"
 									</a>
 								</div>
@@ -171,7 +172,7 @@
 							</div>
 							<div class="msg">
 								<img src="images/temp/user01.jpg"
-									onerror="miniImgNotFound('<%=request.getContextPath() %>',this);" />张飞：今天还没吃午饭！
+									onerror="miniImgNotFound('<%=request.getContextPath()%>',this);" />张飞：今天还没吃午饭！
 								<div class="time">一小时前</div>
 							</div>
 							<div class="msg">
@@ -199,8 +200,7 @@
 									name="processDefinitionName" class="fix-input"
 									value="${result.processDefinitionName}" /></td>
 								<td class="title-r">${applicationScope.appInfo["task.bizKey"]}：</td>
-								<td><input type="text" id="bizKey" name="bizKey"
-									class="fix-input" value="<%=request.getContextPath()%>" /></td>
+								<td><input type="text" id="bizKey" name="bizKey" class="fix-input"  /></td>
 								<td>
 									<table style="margin: 0">
 										<tr>
@@ -269,8 +269,8 @@
 								<tr>
 									<td style="text-align: center;">${(index.index+1)+pageInfo.pageSize*(pageInfo.pageIndex-1)}</td>
 
-									<td><img src="foxbpm\images\temp\user01.jpg"
-										height="30" width="30" alt="头像"
+									<td><img src="foxbpm\images\temp\user01.jpg" height="30"
+										width="30" alt="头像"
 										onerror="miniImgNotFound('<%=request.getContextPath()%>',this);"></td>
 									<td>${dataList.processDefinitionName}</td>
 									<td>${dataList.bizKey}</td>
@@ -285,7 +285,7 @@
 									<td>${dataList.nodeName}</td>
 									<td><fmt:formatDate value="${dataList.createTime}"
 											type="both" /></td>
-									<td><a name="flowGraph" href="#"
+									<td><a name="flowGraph" href="javascript:void(0)"
 										pii="${dataList.processInstanceId}"
 										pdk="${dataList.processDefinitionKey}">${applicationScope.appInfo["common.check"]}</a></td>
 								</tr>
@@ -296,7 +296,7 @@
 				</div>
 				<!-- 分页 -->
 				<div id="page">
-					<jsp:include page="page.jsp" flush="true" /> 
+					<jsp:include page="page.jsp" flush="true" />
 				</div>
 
 			</form>

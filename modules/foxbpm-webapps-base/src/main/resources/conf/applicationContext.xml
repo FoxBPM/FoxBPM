@@ -58,7 +58,7 @@
 
 	<bean id="exceptionEnvironment" class="org.foxbpm.web.common.env.ExceptionEnvironment"
 		scope="singleton" init-method="init" />
-	<bean id="propertiesUtil" class="com.org.foxbpm.web.I18N.PropertiesUtil"
+	<bean id="propertiesUtil" class="org.foxbpm.web.I18N.PropertiesUtil"
 		scope="singleton" init-method="initProperties" />
 
 	<bean id="bizDBImpl" class="org.foxbpm.web.db.impl.BizDBImpl">
@@ -159,9 +159,9 @@
 			<tx:method name="get*" propagation="REQUIRED" read-only="true" />
 			<tx:method name="create*" propagation="REQUIRED" />
 			<tx:method name="del*" propagation="REQUIRED" />
-			<tx:method name="save*" propagation="REQUIRED"
-				rollback-for="java.lang.Exception" />
+			<tx:method name="save*" propagation="REQUIRED"  />
 			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="execute*" propagation="REQUIRED" />
 		</tx:attributes>
 	</tx:advice>
 

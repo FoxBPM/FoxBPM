@@ -193,7 +193,7 @@ function clearInfo(){
 												var="runStatue">完成</c:if> <c:if
 												test="${dataList.instanceStatus == 'termination'}"
 												var="runStatue">终止</c:if></td>
-										<td><a name="flowGraph" href="#"
+										<td><a name="flowGraph" href="javascript:void(0)"
 											pii="${dataList.id}"
 											pdk="${dataList.processDefinitionKey}">查看</a></td>
 									</tr>

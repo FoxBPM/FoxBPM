@@ -29,7 +29,7 @@ public class DemoDaoImpl extends AbstrJdbcTemplate implements IDemoDao {
 
 	@Override
 	public List<TDemo> queryDemoData(List<Object> sqpParams) {
-		List<TDemo> tdList = this.jdbcTemplate.query(QUERY_DEMOSQL, sqpParams.toArray(), new TDemoMapper<TDemo>());
+		List<TDemo> tdList = this.jdbcTemplate.query(QUERY_DEMOSQL, (Object[]) sqpParams.toArray(), new TDemoMapper<TDemo>());
 		return tdList;
 	}
 
@@ -38,7 +38,7 @@ public class DemoDaoImpl extends AbstrJdbcTemplate implements IDemoDao {
 		List<Object> args = new ArrayList<Object>();
 		args.add(tdemo.getPak());
 		args.add(tdemo.getInfor());
-		jdbcTemplate.update(INSERT_DEMOSQL, args);
+		jdbcTemplate.update(INSERT_DEMOSQL, args.toArray());
 	}
 
 	/**

@@ -18,7 +18,7 @@ a{text-decoration: none;}
 			<div class="type">
 	        	<h1>最近使用的流程</h1>
 	        	<c:forEach items="${lastest}" var="process" varStatus="status">
-	        		<a href="#" formUrl="${process.formUrl}" processDefinitionKey="${process.processDefinitionKey}"><div>${process.processDefinitionName}</div></a>
+	        		<a href="javascript:void(0)" formUrl="${process.formUrl}" processDefinitionKey="${process.processDefinitionKey}"><div>${process.processDefinitionName}</div></a>
 	        	</c:forEach>
 	    	</div>
 	    	
@@ -26,7 +26,7 @@ a{text-decoration: none;}
 	    	<div class="type">
 	        	<h1>${row.key}</h1>
 	        	<c:forEach items="${row.value}" var="tmp" varStatus="status">
-	        		<a href="#" formUrl="${tmp.formUrl}" processDefinitionKey="${tmp.key}"><div>${tmp.name}</div></a>
+	        		<a href="javascript:void(0)" formUrl="${tmp.formUrl}" processDefinitionKey="${tmp.key}"><div>${tmp.name}</div></a>
 	        	</c:forEach>
 	    	</div>
 		</c:forEach>

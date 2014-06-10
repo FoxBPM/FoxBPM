@@ -8,13 +8,11 @@
  */
 package org.foxbpm.web.service.impl;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.foxbpm.engine.impl.db.SqlCommand;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.StringUtil;
@@ -23,6 +21,7 @@ import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.web.common.constant.FoxbpmViewNameDefinition;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
+import org.foxbpm.web.common.util.JSONUtil;
 import org.foxbpm.web.model.TDemo;
 import org.foxbpm.web.service.interfaces.IWebappDemoService;
 
@@ -78,9 +77,12 @@ public class WebappDemoService extends AbstractWebappService implements IWebappD
 		String commandId = StringUtil.getString(params.get("commandId"));
 		String processDefinitionKey = StringUtil.getString(params.get("processDefinitionKey"));
 		String businessKey = StringUtil.getString(params.get("businessKey"));
+		String infor = StringUtil.getString(params.get("infor"));
 		String userId = StringUtil.getString(params.get("userId"));
 		String taskComment = StringUtil.getString(params.get("_taskComment"));
-
+		String taskStauts = StringUtil.getString(params.get("taskStauts"));
+		String taskParams = StringUtil.getString(params.get("taskParams"));
+		
 		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
 		userId = "admin";
 		// 命令类型，可以从流程引擎配置中查询 启动并提交为startandsubmit
@@ -89,19 +91,28 @@ public class WebappDemoService extends AbstractWebappService implements IWebappD
 		expandTaskCommand.setInitiator(userId);
 		// 设置命令的id,需和节点上配置的按钮编号对应，会执行按钮中的脚本。
 		expandTaskCommand.setTaskCommandId(commandId);
-		expandTaskCommand.setTaskComment(taskComment);
-		if (StringUtil.isNotEmpty(taskId)) {
-			expandTaskCommand.setTaskId(taskId);
-		} else {
-			String processInstanceId = runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey).getId();
-			Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).taskNotEnd().singleResult();
-			expandTaskCommand.setTaskId(task.getId());
-		}
+		
+		Map<String, Object> flowMaps = JSONUtil
+				.parseJSON2Map(taskParams);
+		params.put("taskParams", flowMaps);
 		try {
-			TDemo tDemo = new TDemo();
-			tDemo.setPak(StringUtil.getString(params.get("businessKey")));
-			tDemo.setPak(StringUtil.getString(params.get("infor")));
-			idemoDao.saveDemoData(tDemo);
+			// 如果当前流程是首次启动
+			if ("0".equalsIgnoreCase(taskStauts))
+			{
+				// 将业务数据存放到数据库中
+				TDemo tDemo = new TDemo();
+				tDemo.setPak(businessKey);
+				tDemo.setInfor(infor);
+				idemoDao.saveDemoData(tDemo);
+			}
+			expandTaskCommand.setTaskComment(taskComment);
+			if (StringUtil.isNotEmpty(taskId)) {
+				expandTaskCommand.setTaskId(taskId);
+			} else {
+				String processInstanceId = runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey).getId();
+				Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).taskNotEnd().singleResult();
+				expandTaskCommand.setTaskId(task.getId());
+			}
 			processInstance = taskService.expandTaskComplete(expandTaskCommand, null);
 		} catch (Exception e) {
 			throw new FoxbpmWebException(e.getMessage(), "", e);
