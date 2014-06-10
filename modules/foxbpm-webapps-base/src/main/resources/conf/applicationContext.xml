@@ -63,7 +63,7 @@
 
 	<bean id="exceptionEnvironment" class="org.foxbpm.web.common.env.ExceptionEnvironment"
 		scope="singleton" init-method="init"></bean>
-	<bean id="propertiesUtil" class="com.org.foxbpm.web.I18N.PropertiesUtil"
+	<bean id="propertiesUtil" class="org.foxbpm.web.I18N.PropertiesUtil"
 	scope="singleton" init-method="initProperties" />
 
 

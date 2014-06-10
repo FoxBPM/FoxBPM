@@ -15,7 +15,7 @@
  * 
  * @author shao
  */
-package com.org.foxbpm.web.I18N;
+package org.foxbpm.web.I18N;
 
 import java.io.InputStream;
 import java.util.HashMap;
