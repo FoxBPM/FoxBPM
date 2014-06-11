@@ -17,8 +17,6 @@
  */
 package org.foxbpm.web.controller;
 
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

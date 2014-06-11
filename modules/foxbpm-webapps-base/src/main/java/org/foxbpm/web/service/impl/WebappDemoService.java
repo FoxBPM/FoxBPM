@@ -33,12 +33,15 @@ import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.common.util.JSONUtil;
 import org.foxbpm.web.model.TDemo;
 import org.foxbpm.web.service.interfaces.IWebappDemoService;
+import org.springframework.stereotype.Service;
 
 /**
  * 业务服务类
+ * 
  * @author yangguangftlp
  * @date 2014年6月10日
  */
+@Service("webappDemoService")
 public class WebappDemoService extends AbstractWebappService implements IWebappDemoService {
 
 	@Override
@@ -91,7 +94,7 @@ public class WebappDemoService extends AbstractWebappService implements IWebappD
 		String taskComment = StringUtil.getString(params.get("_taskComment"));
 		String taskStauts = StringUtil.getString(params.get("taskStauts"));
 		String taskParams = StringUtil.getString(params.get("taskParams"));
-		
+
 		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
 		userId = "admin";
 		// 命令类型，可以从流程引擎配置中查询 启动并提交为startandsubmit
@@ -100,14 +103,12 @@ public class WebappDemoService extends AbstractWebappService implements IWebappD
 		expandTaskCommand.setInitiator(userId);
 		// 设置命令的id,需和节点上配置的按钮编号对应，会执行按钮中的脚本。
 		expandTaskCommand.setTaskCommandId(commandId);
-		
-		Map<String, Object> flowMaps = JSONUtil
-				.parseJSON2Map(taskParams);
+
+		Map<String, Object> flowMaps = JSONUtil.parseJSON2Map(taskParams);
 		params.put("taskParams", flowMaps);
 		try {
 			// 如果当前流程是首次启动
-			if ("0".equalsIgnoreCase(taskStauts))
-			{
+			if ("0".equalsIgnoreCase(taskStauts)) {
 				// 将业务数据存放到数据库中
 				TDemo tDemo = new TDemo();
 				tDemo.setPak(businessKey);

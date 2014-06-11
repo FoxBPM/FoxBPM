@@ -21,6 +21,7 @@ import org.foxbpm.web.common.util.Pagination;
 import org.foxbpm.web.db.factory.FoxbpmDBConnectionFactory;
 import org.foxbpm.web.db.interfaces.BizDBInterface;
 import org.foxbpm.web.service.interfaces.IWebappTaskService;
+import org.springframework.stereotype.Service;
 
 /**
  * 任务服务类
@@ -28,6 +29,7 @@ import org.foxbpm.web.service.interfaces.IWebappTaskService;
  * @author MEL
  * @date 2014-06-04
  */
+@Service("webappTaskService")
 public class WebappTaskService extends AbstractWebappService implements IWebappTaskService {
 
 	@Override
