@@ -1,10 +1,19 @@
-/** 
- * Project Name:foxbpm-webapps-base 
- * File Name:DemoDaoImpl.java 
- * Package Name:org.foxbpm.web.db.impl 
- * Date:2014年6月10日下午5:07:03 
- * Copyright (c) 2014, yangguangftlp@163.com All Rights Reserved. 
+/**
+ * Copyright 1996-2014 FoxBPM ORG.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * @author yangguangftlp
  */
 package org.foxbpm.web.db.impl;
 
@@ -17,9 +26,9 @@ import org.foxbpm.web.model.TDemo;
 import org.springframework.jdbc.core.RowMapper;
 
 /**
- * date: 2014年6月10日 下午5:07:03
- * 
+ * 对表demotable 数据操作Dao实现
  * @author yangguangftlp
+ * @date 2014年6月10日
  */
 @SuppressWarnings("unchecked")
 public class DemoDaoImpl extends AbstrJdbcTemplate implements IDemoDao {
