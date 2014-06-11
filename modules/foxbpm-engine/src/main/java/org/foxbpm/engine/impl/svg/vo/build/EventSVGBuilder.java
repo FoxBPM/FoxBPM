@@ -82,18 +82,8 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setX(String x) {
-	}
-
-	@Override
-	public void setY(String y) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void setWidth(String width) {
-		// TODO Auto-generated method stub
+		this.circleVO.setR(width);
 
 	}
 
@@ -116,7 +106,10 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setFill(String fill) {
-		this.circleVO.setFill(fill);
+		String fillValue = "url(#"
+				+ this.svgVo.getgVo().getDefsVo().getRadialGradientVo().getId()
+				+ ") ";
+		this.circleVO.setFill(fillValue + fill);
 	}
 
 	@Override
@@ -160,6 +153,12 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 	@Override
 	public void setStyle(String style) {
 		this.circleVO.setStyle(style);
+	}
+
+	@Override
+	public void setXAndY(String x, String y) {
+		this.circleVO.setCx(x);
+		this.circleVO.setCy(y);
 	}
 
 }

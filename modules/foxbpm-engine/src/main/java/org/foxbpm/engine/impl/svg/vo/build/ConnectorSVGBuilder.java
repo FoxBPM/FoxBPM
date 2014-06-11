@@ -7,18 +7,7 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 	public ConnectorSVGBuilder(SvgVO svgVo) {
 		super(svgVo);
 	}
-
-	@Override
-	public void setX(String x) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setY(String y) {
-		// TODO Auto-generated method stub
-
-	}
+ 
 
 	@Override
 	public void setWidth(String width) {
@@ -120,6 +109,13 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 	public void setTypeStyle(String style) {
 		// TODO Auto-generated method stub
 
+	}
+
+
+	@Override
+	public void setXAndY(String x, String y) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -31,18 +31,6 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setX(String x) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setY(String y) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void setWidth(String width) {
 		// TODO Auto-generated method stub
 
@@ -137,6 +125,12 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 	public void setTypeStyle(String style) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void setXAndY(String x, String y) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

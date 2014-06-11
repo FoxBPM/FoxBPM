@@ -41,15 +41,15 @@ public final class SVGTemplateNameConstant {
 	/**
 	 * end_event
 	 */
-	public static final String TEMPLATE_END_NONE = "endevent/none.svg";
-	public static final String TEMPLATE_END_CANCEL = "endevent/cancel.svg";
-	public static final String TEMPLATE_END_SIGNAL = "endevent/signal.svg";
-	public static final String TEMPLATE_END_MULTIPLE = "endevent/multiple.svg";
-	public static final String TEMPLATE_END_MESSAGE = "endevent/message.svg";
-	public static final String TEMPLATE_END_ESCALATION = "endevent/escalation.svg";
-	public static final String TEMPLATE_END_ERROR = "endevent/error.svg";
-	public static final String TEMPLATE_END_TERMINATE = "endevent/terminate.svg";
-	public static final String TEMPLATE_END_COMPENSATION = "endevent/compensation.svg";
+	public static final String TEMPLATE_ENDEVENT_NONE = "endevent/none.svg";
+	public static final String TEMPLATE_ENDEVENT_CANCEL = "endevent/cancel.svg";
+	public static final String TEMPLATE_ENDEVENT_SIGNAL = "endevent/signal.svg";
+	public static final String TEMPLATE_ENDEVENT_MULTIPLE = "endevent/multiple.svg";
+	public static final String TEMPLATE_ENDEVENT_MESSAGE = "endevent/message.svg";
+	public static final String TEMPLATE_ENDEVENT_ESCALATION = "endevent/escalation.svg";
+	public static final String TEMPLATE_ENDEVENT_ERROR = "endevent/error.svg";
+	public static final String TEMPLATE_ENDEVENT_TERMINATE = "endevent/terminate.svg";
+	public static final String TEMPLATE_ENDEVENT_COMPENSATION = "endevent/compensation.svg";
 
 	/**
 	 * activity

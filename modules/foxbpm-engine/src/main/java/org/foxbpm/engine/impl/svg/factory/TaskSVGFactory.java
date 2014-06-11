@@ -20,12 +20,14 @@ package org.foxbpm.engine.impl.svg.factory;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.impl.svg.vo.GVO;
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.svg.vo.VONode;
 import org.foxbpm.engine.impl.svg.vo.build.AbstractSVGBuilder;
+import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 
 /**
  * 任务SVG对象的工厂类
@@ -33,7 +35,7 @@ import org.foxbpm.engine.impl.svg.vo.build.AbstractSVGBuilder;
  * @author MAENLIANG
  * @date 2014-06-10
  */
-public class TaskSVGFactory extends AbstractSVGFactory {
+public class TaskSVGFactory extends AbstractFlowNodeSVGFactory {
 	private static final String SPLIT_SEPERATOR = "/";
 	public TaskSVGFactory(String svgTemplateFileName) {
 		super(svgTemplateFileName);
@@ -41,7 +43,7 @@ public class TaskSVGFactory extends AbstractSVGFactory {
 	}
 
 	@Override
-	public VONode createSVGVO(String svgType) {
+	public VONode createSVGVO(KernelFlowNodeImpl kernelFlowNodeImpl,String svgType) {
 		// 分析svgType
 		// 加载svgvo
 		// 创建svgbuilder
@@ -93,7 +95,7 @@ public class TaskSVGFactory extends AbstractSVGFactory {
 	}
 
 	@Override
-	public VONode createSVGVO() {
+	public VONode createSVGVO(KernelFlowNodeImpl kernelFlowNodeImpl) {
 		// TODO Auto-generated method stub
 		return null;
 	}

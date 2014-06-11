@@ -18,15 +18,11 @@
 package org.foxbpm.engine.test.api;
 
 import java.util.List;
-import java.util.zip.ZipInputStream;
 
-import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
-import org.foxbpm.engine.query.NativeTaskQuery;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.repository.ProcessDefinitionQuery;
-import org.foxbpm.engine.runtime.ProcessInstance;
-import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
+import org.junit.Test;
 
 public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	
@@ -65,6 +61,12 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	public void testDeleteDeploy(){
 		String deploymentId = "1e496bcd-708e-45a1-8f01-9d5b02b2aa21";
 		modelService.deleteDeployment(deploymentId);
+	}
+	
+	@Test
+	public void testSVG(){
+		String processDefinitionId = "process_test_1:1:377503a3-3e6d-46bc-a801-bdb11e094205";
+		modelService.getProcessDefinitionSVG(processDefinitionId);
 	}
 	
 	

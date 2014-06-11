@@ -30,69 +30,93 @@ import org.foxbpm.engine.repository.ProcessDefinitionQuery;
 
 /**
  * 获取所有对流程定义级别操作
+ * 
  * @author kenshin
- *
+ * 
  */
 public interface ModelService {
-	
+
 	/**
 	 * 获取用户可以发起的流程集合
-	 * @param userId 用户编号
-	 * @return
-	 * "processDefinitionId" 流程唯一号;<br>
-	 * "processDefinitionName" 流程名称;<br>
-	 * "processDefinitionKey" 流程定义号;<br>
-	 * "category" 分类;<br>
-	 * "version" 版本号;<br>
-	 * "resourceName", 流程定义资源名称;<br>
-	 * "resourceId" 流程定义资源编号;<br>
-	 * "deploymentId" 资源定义发布号;<br>
-	 * "diagramResourceName" 流程图名称;<br>
-	 * "startFormKey" 启动表单;<br>
+	 * 
+	 * @param userId
+	 *            用户编号
+	 * @return "processDefinitionId" 流程唯一号;<br>
+	 *         "processDefinitionName" 流程名称;<br>
+	 *         "processDefinitionKey" 流程定义号;<br>
+	 *         "category" 分类;<br>
+	 *         "version" 版本号;<br>
+	 *         "resourceName", 流程定义资源名称;<br>
+	 *         "resourceId" 流程定义资源编号;<br>
+	 *         "deploymentId" 资源定义发布号;<br>
+	 *         "diagramResourceName" 流程图名称;<br>
+	 *         "startFormKey" 启动表单;<br>
 	 */
 	List<Map<String, String>> getStartProcessByUserId(String userId);
-	
+
 	Deployment deploy(DeploymentBuilderImpl deploymentBuilderImpl);
-	
+
 	void deleteDeployment(String deploymentId);
-	
+
 	DeploymentBuilder createDeployment();
-	
+
 	ProcessDefinitionQuery createProcessDefinitionQuery();
-	
+
 	/**
 	 * 获取流程图节点信息
-	 * @param processDefinitionId  流程唯一编号
-	 * @return key为节点编号,value为 Map<String,Object> Key(height,width,x,y) (height="36.0" width="36.0" x="100.0" y="100.0")
+	 * 
+	 * @param processDefinitionId
+	 *            流程唯一编号
+	 * @return key为节点编号,value为 Map<String,Object> Key(height,width,x,y)
+	 *         (height="36.0" width="36.0" x="100.0" y="100.0")
 	 */
-	Map<String, Map<String, Object>> GetFlowGraphicsElementPosition(String processDefinitionId);
-	
+	Map<String, Map<String, Object>> GetFlowGraphicsElementPosition(
+			String processDefinitionId);
+
 	/**
 	 * 获取流程图图片Stream
-	 * @param processDefinitionId 流程唯一编号
+	 * 
+	 * @param processDefinitionId
+	 *            流程唯一编号
 	 * @return 图片Stream
 	 */
 	InputStream GetFlowGraphicsImgStreamByDefId(String processDefinitionId);
-	
+
 	/**
 	 * 获取流程图图片Stream
-	 * @param processDefinitionKey 流程编号
+	 * 
+	 * @param processDefinitionKey
+	 *            流程编号
 	 * @return 图片Stream
 	 */
 	InputStream GetFlowGraphicsImgStreamByDefKey(String processDefinitionKey);
-	
+
 	/**
 	 * 获取流程定义(内置缓存)
-	 * @param processDefinitionId 流程唯一编号
+	 * 
+	 * @param processDefinitionId
+	 *            流程唯一编号
 	 * @return 获取流程定义
 	 */
 	ProcessDefinition getProcessDefinition(String processDefinitionId);
-	
+
 	/**
 	 * 获取流程定义(内置缓存)
-	 * @param processKey 流程key
-	 * @param version 版本号
+	 * 
+	 * @param processKey
+	 *            流程key
+	 * @param version
+	 *            版本号
 	 * @return 获取流程定义
 	 */
-	ProcessDefinition getProcessDefinition(String processKey,int version);
+	ProcessDefinition getProcessDefinition(String processKey, int version);
+
+	/**
+	 * 根据流程定义ID获取该流程对应的SVG文档字符串
+	 * 
+	 * @param processDefinitionId
+	 *            流程定义ID
+	 * @return SVG文档字符串
+	 */
+	String getProcessDefinitionSVG(String processDefinitionId);
 }

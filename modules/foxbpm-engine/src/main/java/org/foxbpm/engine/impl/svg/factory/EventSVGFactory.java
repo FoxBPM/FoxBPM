@@ -17,12 +17,17 @@
  */
 package org.foxbpm.engine.impl.svg.factory;
 
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
+import org.foxbpm.engine.impl.bpmn.parser.StyleOption;
 import org.foxbpm.engine.impl.svg.SVGTypeNameConstant;
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.svg.vo.VONode;
 import org.foxbpm.engine.impl.svg.vo.build.AbstractSVGBuilder;
 import org.foxbpm.engine.impl.svg.vo.build.EventSVGBuilder;
+import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
+import org.foxbpm.model.config.style.Style;
 
 /**
  * BPMN2.0事件元素的工厂类
@@ -31,34 +36,59 @@ import org.foxbpm.engine.impl.svg.vo.build.EventSVGBuilder;
  * @date 2014-06-10
  * 
  */
-public class EventSVGFactory extends AbstractSVGFactory {
+public class EventSVGFactory extends AbstractFlowNodeSVGFactory {
 
 	public EventSVGFactory(String svgTemplateFileName) {
 		super(svgTemplateFileName);
 	}
 
 	@Override
-	public VONode createSVGVO() {
+	public VONode createSVGVO(KernelFlowNodeImpl kernelFlowNodeImpl) {
 		SvgVO startEventNone = (SvgVO) super.loadSVGVO(svgTemplateFileName);
 		// 根据式样构造SVG图像
 		AbstractSVGBuilder svgBuilder = AbstractSVGBuilder.createSVGBuilder(
 				startEventNone, SVGTypeNameConstant.SVG_TYPE_EVENT);
+		// 获取所有式样
+		Map<String, Object> svgStyleProps = kernelFlowNodeImpl.getProperties();
+		// 设置整个组件包括子类型的坐标、大小等等
+		svgBuilder.setXAndY(String.valueOf(kernelFlowNodeImpl.getX()),
+				String.valueOf(kernelFlowNodeImpl.getY()));
+		svgBuilder.setWidth(String.valueOf(kernelFlowNodeImpl.getWidth()));
+		svgBuilder.setFill((String) svgStyleProps.get(StyleOption.Background));
+		svgBuilder.setTextStroke((String) svgStyleProps
+				.get(StyleOption.TextColor));
 
-		svgBuilder.setID("000001");
-		svgBuilder.setName("000002");
-		svgBuilder.setFill("white");
-		svgBuilder.setStroke("red");
-		svgBuilder.setStrokeWidth("2");
+		// TODO 未知属性
+		svgStyleProps.get(StyleOption.Font);
+		svgStyleProps.get(StyleOption.Foreground);
+		String style = (String) svgStyleProps.get(StyleOption.StyleObject);
 
-		svgBuilder.setTypeFill("red");
-		svgBuilder.setTypeStrokeWidth("3");
 		return startEventNone;
 	}
 
 	@Override
-	public VONode createSVGVO(String svgType) {
-		// TODO Auto-generated method stub
-		return null;
+	public VONode createSVGVO(KernelFlowNodeImpl kernelFlowNodeImpl,
+			String svgType) {
+		SvgVO startEventNone = (SvgVO) super.loadSVGVO(svgTemplateFileName);
+		// 根据式样构造SVG图像
+		AbstractSVGBuilder svgBuilder = AbstractSVGBuilder.createSVGBuilder(
+				startEventNone, svgType);
+		// 获取所有式样
+		Map<String, Object> svgStyleProps = kernelFlowNodeImpl.getProperties();
+		// 设置整个组件包括子类型的坐标、大小等等
+		svgBuilder.setXAndY(String.valueOf(kernelFlowNodeImpl.getX()),
+				String.valueOf(kernelFlowNodeImpl.getY()));
+		svgBuilder.setWidth(String.valueOf(kernelFlowNodeImpl.getWidth()));
+		svgBuilder.setFill((String) svgStyleProps.get(StyleOption.Background));
+		svgBuilder.setTextStroke((String) svgStyleProps
+				.get(StyleOption.TextColor));
+
+		// TODO 未知属性
+		svgStyleProps.get(StyleOption.Font);
+		svgStyleProps.get(StyleOption.Foreground);
+		String style = (String) svgStyleProps.get(StyleOption.StyleObject);
+
+		return startEventNone;
 	}
 
 }

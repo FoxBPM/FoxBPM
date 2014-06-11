@@ -74,9 +74,7 @@ public abstract class AbstractSVGBuilder {
 		this.svgVo.setHeight(hight);
 	}
 
-	public abstract void setX(String x);
-
-	public abstract void setY(String y);
+	public abstract void setXAndY(String x,String y);
 
 	public abstract void setWidth(String width);
 

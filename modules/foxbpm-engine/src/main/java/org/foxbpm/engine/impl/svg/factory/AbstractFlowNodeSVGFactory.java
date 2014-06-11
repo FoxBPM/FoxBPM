@@ -17,12 +17,11 @@
  */
 package org.foxbpm.engine.impl.svg.factory;
 
-import java.io.File;
 import java.io.StringWriter;
+import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
@@ -30,22 +29,24 @@ import org.foxbpm.engine.impl.svg.SVGTemplateContainer;
 import org.foxbpm.engine.impl.svg.SVGTypeNameConstant;
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.svg.vo.VONode;
+import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 
 /**
- * SVG工厂类
+ * FLOW单个节点SVG工厂类
  * 
  * @author MAENLIANG
  * @date 2014-06-10
  * 
  */
-public abstract class AbstractSVGFactory {
+public abstract class AbstractFlowNodeSVGFactory {
 	protected String svgTemplateFileName;
 
-	public AbstractSVGFactory(String svgTemplateFileName) {
+	public AbstractFlowNodeSVGFactory(String svgTemplateFileName) {
 		this.svgTemplateFileName = svgTemplateFileName;
 	}
 
-	public static AbstractSVGFactory createSVGFactory(String svgTemplateFileName) {
+	public static AbstractFlowNodeSVGFactory createSVGFactory(
+			String svgTemplateFileName) {
 		if (StringUtils.contains(svgTemplateFileName, "event")) {
 			return new EventSVGFactory(svgTemplateFileName);
 		}
@@ -66,14 +67,15 @@ public abstract class AbstractSVGFactory {
 	 * @param svgType
 	 * @return
 	 */
-	public abstract VONode createSVGVO(String svgType);
+	public abstract VONode createSVGVO(KernelFlowNodeImpl kernelFlowNodeImpl,
+			String svgType);
 
 	/**
 	 * 根据具体的SVG文件名称创建对象，例如： 如果是构造事件SVG对象，则根据事件类型 对应的具体SVG文件，创建SVG对象
 	 * 
 	 * @return
 	 */
-	public abstract VONode createSVGVO();
+	public abstract VONode createSVGVO(KernelFlowNodeImpl kernelFlowNodeImpl);
 
 	/**
 	 * 加载SVG模版
@@ -97,7 +99,8 @@ public abstract class AbstractSVGFactory {
 	 * @param svgVo
 	 * @return
 	 */
-	public String createSVGString(String svgType) {
+	public String createFlowNodeSVGString(KernelFlowNodeImpl kernelFlowNodeImpl,
+			String svgType) {
 		try {
 			JAXBContext context = JAXBContext.newInstance(SvgVO.class);
 			Marshaller marshal = context.createMarshaller();
@@ -109,9 +112,9 @@ public abstract class AbstractSVGFactory {
 					SVGTypeNameConstant.SVG_TYPE_EVENT)
 					|| StringUtils.equalsIgnoreCase(svgType,
 							SVGTypeNameConstant.SVG_TYPE_CONNECTOR)) {
-				svgVo = (SvgVO) this.createSVGVO();
+				svgVo = (SvgVO) this.createSVGVO(kernelFlowNodeImpl);
 			} else {
-				svgVo = (SvgVO) this.createSVGVO(svgType);
+				svgVo = (SvgVO) this.createSVGVO(kernelFlowNodeImpl, svgType);
 			}
 
 			marshal.marshal(svgVo, writer);
@@ -121,4 +124,5 @@ public abstract class AbstractSVGFactory {
 					e);
 		}
 	}
+
 }
