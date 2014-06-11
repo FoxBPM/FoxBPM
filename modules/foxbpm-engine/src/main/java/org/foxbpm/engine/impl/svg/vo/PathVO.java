@@ -34,6 +34,10 @@ import javax.xml.bind.annotation.XmlType;
 public class PathVO extends NamespaceAttributesVO {
 	@XmlAttribute(name = "d")
 	private String d;
+	@XmlAttribute(name = "marker-start")
+	private String markerStart;
+	@XmlAttribute(name = "marker-end")
+	private String markerEnd;
 
 	public String getD() {
 		return d;

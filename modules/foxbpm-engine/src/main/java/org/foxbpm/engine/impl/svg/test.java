@@ -13,7 +13,7 @@ public class test {
 			AbstractSVGFactory factory = AbstractSVGFactory
 					.createSVGFactory(SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK);
 			String svgString = factory
-					.createSVGString(SVGTypeNameConstant.ACTIVITY_BUSINESSRULETASK_PARALLEL);
+					.createSVGString(SVGTypeNameConstant.ACTIVITY_BUSINESSRULETASK_SEQUENTIAL);
 			System.out.println(svgString);
 		} catch (Exception e) {
 
