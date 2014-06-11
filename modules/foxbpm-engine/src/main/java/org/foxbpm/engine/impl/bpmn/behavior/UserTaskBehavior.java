@@ -86,9 +86,11 @@ public class UserTaskBehavior extends TaskBehavior {
 			try {
 				connector.notify((ListenerExecutionContext) executionContext);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				throw new FoxBPMException(e.getMessage());
+				if(e instanceof FoxBPMException)
+					throw (FoxBPMException)e;
+				else{
+					throw new FoxBPMException("执行选择人处理器失败！节点"+this.getId()+",处理器："+connector.getConnectorId() , e);
+				}
 			}
 		}
 
