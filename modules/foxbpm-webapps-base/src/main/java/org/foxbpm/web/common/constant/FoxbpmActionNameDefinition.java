@@ -8,7 +8,7 @@ package org.foxbpm.web.common.constant;
  */
 public final class FoxbpmActionNameDefinition {
 
-	public final static String COMPLETE_TASK_ACTION = "executeTask";
+	public final static String COMPLETE_TASK_ACTION = "completeTask";
 	public final static String QUERY_TASK_ACTION = "queryTask";
 	public final static String QUERY_TODOTASK_ACTION = "queryToDoTask";
 	public final static String QUERY_PROCESSDEFINITION_ACTION = "queryProcessDefinition";

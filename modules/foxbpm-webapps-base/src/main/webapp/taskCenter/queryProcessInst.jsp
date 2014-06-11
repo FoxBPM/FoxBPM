@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<jsp:include page="head.jsp" flush="true" />
+<jsp:include page="../common/head.jsp" flush="true" />
 <script type="text/javascript">
 $(function(){
 $("a[name=flowGraph]").click(function(){
@@ -200,7 +200,7 @@ function clearInfo(){
 						</table>
 						<!-- 分页 -->
 						<div id="page">
-							<jsp:include page="page.jsp" flush="true" />
+							<jsp:include page="../common/page.jsp" flush="true" />
 						</div>
 					</div>
 				</div>
