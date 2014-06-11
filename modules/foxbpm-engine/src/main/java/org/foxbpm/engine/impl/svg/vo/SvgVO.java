@@ -46,7 +46,8 @@ public class SvgVO extends VONode {
 
 	@XmlAttribute(name = "version")
 	private String version;
-
+	@XmlAttribute(name = "edge", namespace = "http://www.b3mn.org/oryx")
+	private String oryxEdge;
 	@XmlElement(name = "defs")
 	private DefsVO defsVo;
 	@XmlElement(name = "magnets", namespace = "http://www.b3mn.org/oryx")

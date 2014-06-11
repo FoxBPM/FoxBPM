@@ -52,6 +52,9 @@ public abstract class AbstractSVGFactory {
 		if (StringUtils.contains(svgTemplateFileName, "activity")) {
 			return new TaskSVGFactory(svgTemplateFileName);
 		}
+		if (StringUtils.contains(svgTemplateFileName, "connector")) {
+			return new ConnectorSVGFactory(svgTemplateFileName);
+		}
 		return null;
 	}
 
@@ -103,7 +106,9 @@ public abstract class AbstractSVGFactory {
 
 			SvgVO svgVo = null;
 			if (StringUtils.equalsIgnoreCase(svgType,
-					SVGTypeNameConstant.SVG_TYPE_EVENT)) {
+					SVGTypeNameConstant.SVG_TYPE_EVENT)
+					|| StringUtils.equalsIgnoreCase(svgType,
+							SVGTypeNameConstant.SVG_TYPE_CONNECTOR)) {
 				svgVo = (SvgVO) this.createSVGVO();
 			} else {
 				svgVo = (SvgVO) this.createSVGVO(svgType);

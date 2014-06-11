@@ -3,6 +3,7 @@ package org.foxbpm.engine.impl.svg;
 public class SVGTypeNameConstant {
 	public static final String SVG_TYPE_EVENT = "event";
 	public static final String SVG_TYPE_TASK = "Task";
+	public static final String SVG_TYPE_CONNECTOR = "connector";
 
 	public static final String ACTIVITY_MANUALTASK = "manualTask";
 	public static final String ACTIVITY_MANUALTASK_LOOP = "manualTask/loop";

@@ -59,4 +59,6 @@ public final class SVGTemplateNameConstant {
 	/**
 	 * connector
 	 */
+	public static final String TEMPLATE_CONNECTOR_SEQUENCEFLOW = "connector/sequenceflow.svg";
+
 }

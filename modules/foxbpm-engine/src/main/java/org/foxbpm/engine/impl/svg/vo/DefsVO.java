@@ -17,6 +17,8 @@
  */
 package org.foxbpm.engine.impl.svg.vo;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -33,6 +35,16 @@ import javax.xml.bind.annotation.XmlType;
 public class DefsVO extends VONode {
 	@XmlElement(name = "radialGradient")
 	private RadialGradientVO radialGradientVo;
+	@XmlElement(name = "marker")
+	private List<MarkerVO> markerVOList;
+
+	public List<MarkerVO> getMarkerVOList() {
+		return markerVOList;
+	}
+
+	public void setMarkerVOList(List<MarkerVO> markerVOList) {
+		this.markerVOList = markerVOList;
+	}
 
 	public RadialGradientVO getRadialGradientVo() {
 		return radialGradientVo;

@@ -47,6 +47,10 @@ public abstract class VONode implements Serializable {
 	protected String stroke;
 	@XmlAttribute(name = "stroke-width")
 	protected String strokeWidth;
+	@XmlAttribute(name = "stroke-linecap")
+	protected String strokeLinecap;
+	@XmlAttribute(name = "stroke-linejoin")
+	protected String strokeLinejoin;
 	@XmlAttribute(name = "width")
 	protected String width;
 	@XmlAttribute(name = "height")
@@ -146,4 +150,19 @@ public abstract class VONode implements Serializable {
 		this.name = name;
 	}
 
+	public String getStrokeLinecap() {
+		return strokeLinecap;
+	}
+
+	public void setStrokeLinecap(String strokeLinecap) {
+		this.strokeLinecap = strokeLinecap;
+	}
+
+	public String getStrokeLinejoin() {
+		return strokeLinejoin;
+	}
+
+	public void setStrokeLinejoin(String strokeLinejoin) {
+		this.strokeLinejoin = strokeLinejoin;
+	}
 }

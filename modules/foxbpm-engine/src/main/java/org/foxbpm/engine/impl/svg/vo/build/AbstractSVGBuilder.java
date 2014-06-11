@@ -50,6 +50,9 @@ public abstract class AbstractSVGBuilder {
 		if (StringUtils.contains(type, SVGTypeNameConstant.SVG_TYPE_TASK)) {
 			return new TaskSVGBuilder(svgVo);
 		}
+		if (StringUtils.contains(type, SVGTypeNameConstant.SVG_TYPE_CONNECTOR)) {
+			return new ConnectorSVGBuilder(svgVo);
+		}
 		return null;
 	}
 

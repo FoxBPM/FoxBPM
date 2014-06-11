@@ -16,7 +16,7 @@
  * @author MAENLIANG
  */
 @XmlSchema(xmlns = {
-		@XmlNs(prefix = "cryx", namespaceURI = "http://www.b3mn.org/oryx"),
+		@XmlNs(prefix = "oryx", namespaceURI = "http://www.b3mn.org/oryx"),
 		@XmlNs(prefix = "xmln", namespaceURI = "http://www.w3.org/2000/svg") })
 package org.foxbpm.engine.impl.svg.vo;
 
