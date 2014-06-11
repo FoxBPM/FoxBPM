@@ -29,11 +29,11 @@ import org.foxbpm.engine.repository.ProcessDefinition;
  * @author ych
  *
  */
-public class GetProcessDefinitionByKeyAndVersion implements Command<ProcessDefinition>{
+public class GetProcessDefinitionByKeyAndVersionCmd implements Command<ProcessDefinition>{
 
 	private int version = -1;
 	private String processKey;
-	public GetProcessDefinitionByKeyAndVersion(String processKey,int version) {
+	public GetProcessDefinitionByKeyAndVersionCmd(String processKey,int version) {
 		this.processKey = processKey;
 		this.version = version;
 	}

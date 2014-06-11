@@ -28,8 +28,8 @@ import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.impl.cmd.DeleteDeploymentCmd;
 import org.foxbpm.engine.impl.cmd.DeployCmd;
 import org.foxbpm.engine.impl.cmd.GetFlowGraphicsImgStreamCmd;
-import org.foxbpm.engine.impl.cmd.GetProcessDefinition;
-import org.foxbpm.engine.impl.cmd.GetProcessDefinitionByKeyAndVersion;
+import org.foxbpm.engine.impl.cmd.GetProcessDefinitionCmd;
+import org.foxbpm.engine.impl.cmd.GetProcessDefinitionByKeyAndVersionCmd;
 import org.foxbpm.engine.impl.model.DeploymentBuilderImpl;
 import org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl;
 import org.foxbpm.engine.repository.Deployment;
@@ -80,12 +80,12 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	
 	@Override
 	public ProcessDefinition getProcessDefinition(String processDefinitionId) {
-		return commandExecutor.execute(new GetProcessDefinition(processDefinitionId));
+		return commandExecutor.execute(new GetProcessDefinitionCmd(processDefinitionId));
 	}
 	
 	@Override
 	public ProcessDefinition getProcessDefinition(String processKey, int version) {
-		return commandExecutor.execute(new GetProcessDefinitionByKeyAndVersion(processKey,version));
+		return commandExecutor.execute(new GetProcessDefinitionByKeyAndVersionCmd(processKey,version));
 	}
 	
 	@Override
