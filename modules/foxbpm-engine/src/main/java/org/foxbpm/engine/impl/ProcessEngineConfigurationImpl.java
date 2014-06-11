@@ -25,8 +25,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.sql.DataSource;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -79,6 +81,9 @@ import org.foxbpm.model.config.foxbpmconfig.ResourcePath;
 import org.foxbpm.model.config.foxbpmconfig.ResourcePathConfig;
 import org.foxbpm.model.config.foxbpmconfig.TaskCommandConfig;
 import org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition;
+import org.foxbpm.model.config.style.ElementStyle;
+import org.foxbpm.model.config.style.FoxBPMStyleConfig;
+import org.foxbpm.model.config.style.Style;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,7 +95,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected List<CommandInterceptor> commandInterceptors;
 	protected FoxBPMConfig foxBpmConfig;
 	protected ResourcePathConfig resourcePathConfig;
-	//service
+	// service
 	protected ModelService modelService = new ModelServiceImpl();
 	protected RuntimeService runtimeService = new RuntimeServiceImpl();
 	protected TaskService taskService = new TaskServiceImpl();
@@ -114,13 +119,14 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected Cache identityCache;
 	protected TransactionContextFactory transactionContextFactory;
 	protected List<GroupDefinition> groupDefinitions;
+	protected FoxBPMStyleConfig foxBPMStyleConfig;
 	
+	protected Map<String, Style> styleMap=new HashMap<String, Style>();
+
 	protected TaskCommandConfig taskCommandConfig;
 
 	protected Map<String, TaskCommandDefinition> taskCommandDefinitionMap;
 
-	
-	
 	public ProcessEngine buildProcessEngine() {
 		init();
 		return new ProcessEngineImpl(this);
@@ -135,7 +141,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initCommandContextFactory();
 		initCommandExecutors();
 		initServices();
-		
+
 		initSessionFactories();
 		initDeployers();
 		initCache();
@@ -163,9 +169,56 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		// initPriorityConfig();
 		// initAssignPolicyConfig();
 		// initThreadPool();
-
+		// 加载主题样式文件
+		initStyle();
 	}
-	
+
+	private void initStyle() {
+		ResourceSet resourceSet = new ResourceSetImpl();
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xml", new XMIResourceFactoryImpl());
+		InputStream inputStream = null;
+		String classPath = "config/style.xml";
+		inputStream = ReflectUtil.getResourceAsStream("style.xml");
+		if (inputStream != null) {
+			classPath = "foxbpm.cfg.xml";
+			log.info("开始从classes根目录加载style.xml文件");
+		} else {
+			log.info("开始从classes/config/目录加载style.xml文件");
+		}
+		URL url = this.getClass().getClassLoader().getResource(classPath);
+		if (url == null) {
+			log.error("未能从{}目录下找到style.xml文件", classPath);
+			throw new FoxBPMClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION_FILENOTFOUND, "style.xml");
+		}
+		String filePath = url.toString();
+		Resource resource = null;
+		try {
+			if (!filePath.startsWith("jar")) {
+				filePath = java.net.URLDecoder.decode(ReflectUtil.getResource(classPath).getFile(), "utf-8");
+				resource = resourceSet.createResource(URI.createFileURI(filePath));
+			} else {
+				resource = resourceSet.createResource(URI.createURI(filePath));
+			}
+			resourceSet.getPackageRegistry().put(FoxBPMConfigPackage.eINSTANCE.getNsURI(), FoxBPMConfigPackage.eINSTANCE);
+			resource.load(null);
+		} catch (Exception e) {
+			log.error("style.xml文件加载失败", e);
+			throw new FoxBPMClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION, "style.xml", e);
+		}
+
+		foxBPMStyleConfig = (FoxBPMStyleConfig) resource.getContents().get(0);
+		
+		EList<ElementStyle> elementStyleList = foxBPMStyleConfig.getElementStyleConfig().getElementStyle();
+
+		for (ElementStyle elementStyle : elementStyleList) {
+			
+			for (Style style : elementStyle.getStyle()) {
+				String key=elementStyle.getStyleId()+style.getObject();
+				styleMap.put(key, style);
+			}
+		}
+	}
+
 	protected void initTaskCommandConfig() {
 		this.taskCommandConfig = foxBpmConfig.getTaskCommandConfig();
 		taskCommandDefinitionMap = new HashMap<String, TaskCommandDefinition>();
@@ -175,26 +228,25 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		}
 	}
 
-	protected void initTransactionContextFactory(){
-		if(transactionContextFactory == null){
+	protected void initTransactionContextFactory() {
+		if (transactionContextFactory == null) {
 			transactionContextFactory = new DefaultTransactionContextFactory();
 		}
 	}
-	
-	
-	protected void initGroupDefinitions(){
-		if(groupDefinitions == null){
+
+	protected void initGroupDefinitions() {
+		if (groupDefinitions == null) {
 			groupDefinitions = new ArrayList<GroupDefinition>();
 			groupDefinitions.add(new GroupDeptImpl());
 			groupDefinitions.add(new GroupRoleImpl());
 		}
 	}
-	
-	protected void initCache(){
+
+	protected void initCache() {
 		identityCache = new DefaultCache();
 	}
-	
-	protected void initSessionFactories(){
+
+	protected void initSessionFactories() {
 		if (sessionFactories == null) {
 			sessionFactories = new HashMap<Class<?>, SessionFactory>();
 			addSessionFactory(sqlSessionFactory);
@@ -208,7 +260,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			addSessionFactory(new UserEntityManagerFactory());
 		}
 	}
-	
+
 	protected void addSessionFactory(SessionFactory sessionFactory) {
 		sessionFactories.put(sessionFactory.getSessionType(), sessionFactory);
 	}
@@ -259,7 +311,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		}
 
 		if (processModelParseHandler == null) {
-			processModelParseHandler = (ProcessModelParseHandler)ReflectUtil.instantiate("org.foxbpm.engine.impl.bpmn.parser.BpmnParseHandlerImpl");
+			processModelParseHandler = (ProcessModelParseHandler) ReflectUtil
+					.instantiate("org.foxbpm.engine.impl.bpmn.parser.BpmnParseHandlerImpl");
 		}
 		bpmnDeployer.setProcessModelParseHandler(processModelParseHandler);
 		defaultDeployers.add(bpmnDeployer);
@@ -348,16 +401,16 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	public void initBaseCommandInterceptors() {
 		commandInterceptors = new ArrayList<CommandInterceptor>();
 		commandInterceptors.add(new LogInterceptor());
-		
+
 		CommandInterceptor transactionInterceptor = createTransactionInterceptor();
-		if(transactionInterceptor != null){
+		if (transactionInterceptor != null) {
 			commandInterceptors.add(transactionInterceptor);
 		}
 		CommandContextInterceptor commandContextInterceptor = new CommandContextInterceptor(commandContextFactory, this);
 		commandInterceptors.add(commandContextInterceptor);
 	}
-	
-	protected CommandInterceptor createTransactionInterceptor(){
+
+	protected CommandInterceptor createTransactionInterceptor() {
 		return null;
 	}
 
@@ -369,7 +422,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	public void initCustomInterceptors() {
 		// 这只是个示例，正常应从配置文件读取拦截器
-		
+
 	}
 
 	public void initGeneralCommandExecutor() {
@@ -386,15 +439,15 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	private void initResourcePathConfig() {
 		resourcePathConfig = foxBpmConfig.getResourcePathConfig();
 	}
-	
-	//Setter
-	
+
+	// Setter
+
 	public void setDataSourceManager(DataSourceManage dataSourceManager) {
 		this.dataSourceManager = dataSourceManager;
 	}
 
 	// Getter方法
-	
+
 	public ModelService getModelService() {
 		return modelService;
 	}
@@ -418,11 +471,11 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	public RuntimeService getRuntimeService() {
 		return runtimeService;
 	}
-	
-	public TaskService getTaskService(){
+
+	public TaskService getTaskService() {
 		return taskService;
 	}
-	
+
 	public IdentityService getIdentityService() {
 		return identityService;
 	}
@@ -434,11 +487,11 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	public FoxBPMConfig getFoxBpmConfig() {
 		return foxBpmConfig;
 	}
-	
+
 	public Map<Class<?>, SessionFactory> getSessionFactories() {
 		return sessionFactories;
 	}
-	
+
 	public Cache getIdentityCache() {
 		return identityCache;
 	}
@@ -461,7 +514,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return "config/foxbpm.bpmn";
 	}
 
-	
 	public DeploymentManager getDeploymentManager() {
 		return deploymentManager;
 	}
@@ -469,15 +521,48 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	public void setDeploymentManager(DeploymentManager deploymentManager) {
 		this.deploymentManager = deploymentManager;
 	}
-	
+
 	public Map<String, TaskCommandDefinition> getTaskCommandDefinitionMap() {
 		return taskCommandDefinitionMap;
 	}
-	
+
 	public TaskCommandDefinition getTaskCommandDefinition(String taskCommandDefinitionId) {
 		return taskCommandDefinitionMap.get(taskCommandDefinitionId);
 	}
 
+	public FoxBPMStyleConfig getFoxBPMStyleConfig() {
 
+		return foxBPMStyleConfig;
+	}
+
+	public ElementStyle getDefaultElementStyle() {
+		String currentStyle = foxBPMStyleConfig.getElementStyleConfig().getCurrentStyle();
+
+		return getElementStyle(currentStyle);
+
+	}
+
+	
+	public Style getStyle(String styleId,String styleObjId){
+		return styleMap.get(styleId+styleObjId);
+	}
+	
+	public Style getStyle(String styleObjId){
+		String currentStyle = foxBPMStyleConfig.getElementStyleConfig().getCurrentStyle();
+		return styleMap.get(currentStyle+styleObjId);
+	}
+	
+	
+	public ElementStyle getElementStyle(String styleId) {
+
+		EList<ElementStyle> elementStyleList = foxBPMStyleConfig.getElementStyleConfig().getElementStyle();
+
+		for (ElementStyle elementStyle : elementStyleList) {
+			if (elementStyle.getStyleId().equals(styleId)) {
+				return elementStyle;
+			}
+		}
+		return null;
+	}
 
 }

@@ -23,9 +23,9 @@ import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 public interface ProcessEngine {
  
 	/**
-	 * fixflow引擎的版本号
+	 * FoxBPM引擎的版本号
 	 */
-	public static String VERSION = "5.0";
+	public static String VERSION = "6.0";
 	
 	/** 
 	 * 默认名称为 'default' */

@@ -42,6 +42,7 @@ public class KernelProcessDefinitionImpl extends KernelFlowElementsContainerImpl
 	protected List<KernelLaneSet> laneSets;
 	protected KernelDefinitions definitions;
 
+
 	public KernelProcessDefinitionImpl(String id) {
 		super(id, null);
 		processDefinition = this;
@@ -71,6 +72,10 @@ public class KernelProcessDefinitionImpl extends KernelFlowElementsContainerImpl
 		
 
 		return processInstance;
+	}
+	
+	public KernelSequenceFlowImpl createSequenceFlow(String id, KernelProcessDefinitionImpl processDefinition){
+		return new KernelSequenceFlowImpl(id, processDefinition);
 	}
 
 

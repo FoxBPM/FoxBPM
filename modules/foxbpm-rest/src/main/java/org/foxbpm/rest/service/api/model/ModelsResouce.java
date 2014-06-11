@@ -23,8 +23,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
@@ -35,6 +39,7 @@ import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
 import org.foxbpm.rest.common.api.SpringLoadHelper;
 import org.restlet.data.Status;
+import org.restlet.ext.fileupload.RestletFileUpload;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
@@ -61,14 +66,20 @@ public class ModelsResouce extends AbstractRestResource{
 	public String deploy(Representation entity){
 		FileOutputStream fileOutputStream  = null;
 		final Map<String,InputStream> resourceMap = new HashMap<String, InputStream>();
+		InputStream is = null;
 		try {
-			
 			File file = File.createTempFile(System.currentTimeMillis() + "flowres", ".zip");
-			if(file.exists()){
-				file.delete();
-			}
 			fileOutputStream = new FileOutputStream(file);
-			entity.write(fileOutputStream);
+		    DiskFileItemFactory factory = new DiskFileItemFactory();  
+	        RestletFileUpload upload = new RestletFileUpload(factory); 
+	        List<FileItem> items = null;  
+	        try {  
+	            items = upload.parseRepresentation(entity);  
+	        } catch (FileUploadException e) {  
+	            e.printStackTrace();  
+	        }
+	        FileItem fileItem = items.get(0);
+	        fileItem.write(file);
 			String targetPath = this.getClass().getClassLoader().getResource("/").getPath();
 			targetPath=targetPath.substring(1, targetPath.indexOf("WEB-INF/classes"));
 			targetPath = targetPath+File.separator+"ModelsTempFile";
@@ -141,13 +152,21 @@ public class ModelsResouce extends AbstractRestResource{
 				}
 			}
 			for(String name : resourceMap.keySet()){
-				InputStream is = resourceMap.get(name);
-				if(is != null){
+				InputStream isTmp = resourceMap.get(name);
+				if(isTmp != null){
 					try {
-						is.close();
+						isTmp.close();
 					}catch (IOException e) {
 						log.error("关闭流失败", e);
 					}
+				}
+			}
+			if(is != null){
+				try {
+					is.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}

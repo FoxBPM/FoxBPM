@@ -1,7 +1,6 @@
 package org.foxbpm.engine.impl.svg;
 
 public class SVGTypeNameConstant {
-	public static final String NONE_TYPE = "";
 	public static final String SVG_TYPE_EVENT = "event";
 	public static final String SVG_TYPE_TASK = "Task";
 

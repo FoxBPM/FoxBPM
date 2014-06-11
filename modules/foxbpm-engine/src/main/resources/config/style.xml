@@ -1,354 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<style:FoxBPMStyleConfig xmi:version="2.0"
-	xmlns:xmi="http://www.omg.org/XMI" xmlns:style="http://www.foxbpm.org/style">
-	<elementStyleConfig currentStyle="foxbpm">
-		<elementStyle styleId="foxbpm" styleName="Fox主题">
-			<style object="AdHocSubProcess" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="Association" foreground="546778" background="D4E7F8"
-				textColor="546778" font="arial,10,-,-" />
-			<style object="CallChoreography" foreground="546778"
-				background="D4E7F8" textColor="546778" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="ComplexGateway" foreground="484800" background="C8C864"
-				textColor="484800" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="Conversation" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="DataAssociation" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="DataStoreReference" foreground="546778"
-				background="D4E7F8" textColor="546778" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="EventBasedGateway" foreground="484800"
-				background="C8C864" textColor="484800" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="Message" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="MessageFlow" foreground="546778" background="D4E7F8"
-				textColor="546778" font="arial,10,-,-" />
-			<style object="Participant" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="Transaction" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="SendTask" foreground="3DA9D8" background="6ACAFD"
-				textColor="004A7D" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="ChoreographyTask" foreground="3DA9D8"
-				background="6ACAFD" textColor="004A7D" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="ManualTask" foreground="3DA9D8" background="6ACAFD"
-				textColor="004A7D" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="Task" foreground="3DA9D8" background="6ACAFD"
-				textColor="004A7D" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="ReceiveTask" foreground="3DA9D8" background="6ACAFD"
-				textColor="004A7D" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="UserTask" foreground="3DA9D8" background="6ACAFD"
-				textColor="004A7D" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="ScriptTask" foreground="3DA9D8" background="6ACAFD"
-				textColor="004A7D" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="ServiceTask" foreground="3DA9D8" background="6ACAFD"
-				textColor="004A7D" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="BusinessRuleTask" foreground="3DA9D8"
-				background="6ACAFD" textColor="004A7D" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="SequenceFlow" foreground="808080" background="D4E7F8"
-				textColor="546778" font="arial,10,-,-" />
-			<style object="ExclusiveGateway" foreground="DCA567"
-				background="F5D889" textColor="755809" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="ParallelGateway" foreground="DCA567" background="F5D889"
-				textColor="755809" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="InclusiveGateway" foreground="DCA567"
-				background="F5D889" textColor="755809" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="Lane" foreground="ABBFD3" background="FFFFFF"
-				textColor="505050" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="SubChoreography" foreground="97CEE6" background="C0E9FE"
-				textColor="40697E" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="SubProcess" foreground="97CEE6" background="C0E9FE"
-				textColor="40697E" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="CallActivity" foreground="57B0D7" background="C0E9FE"
-				textColor="40697E" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="TextAnnotation" foreground="7F007F" background="FF80FF"
-				textColor="7F007F" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="Group" foreground="007F00" background="80FF80"
-				textColor="007F00" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="DataOutput" foreground="619DBE" background="B4E4FE"
-				textColor="34647E" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="DataObject" foreground="619DBE" background="B4E4FE"
-				textColor="34647E" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="Arial,10,-,-" />
-			<style object="DataInput" foreground="619DBE" background="B4E4FE"
-				textColor="34647E" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="IntermediateThrowEvent" foreground="546778"
-				background="D4E7F8" textColor="546778" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="IntermediateCatchEvent" foreground="008AC6"
-				background="73CCEE" textColor="004C6E" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="StartEvent" foreground="335100" background="B3D147"
-				textColor="335100" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="EndEvent" foreground="AE661E" background="FF8040"
-				textColor="7F0000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="BoundaryEvent" foreground="BF9900" background="E0CD1F"
-				textColor="604D00" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-		</elementStyle>
-		<elementStyle styleId="default" styleName="默认主题">
-			<style object="AdHocSubProcess" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="Association" foreground="546778" background="D4E7F8"
-				textColor="546778" font="arial,10,-,-" />
-			<style object="BoundaryEvent" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="BusinessRuleTask" foreground="546778"
-				background="D4E7F8" textColor="546778" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="CallActivity" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="CallChoreography" foreground="546778"
-				background="D4E7F8" textColor="546778" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="ChoreographyTask" foreground="546778"
-				background="D4E7F8" textColor="546778" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="ComplexGateway" foreground="484800" background="C8C864"
-				textColor="484800" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="Conversation" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="DataAssociation" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="DataInput" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="DataObject" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="Arial,10,-,-" />
-			<style object="DataOutput" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="DataStoreReference" foreground="546778"
-				background="D4E7F8" textColor="546778" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="EndEvent" foreground="7F0000" background="FF8080"
-				textColor="7F0000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="EventBasedGateway" foreground="484800"
-				background="C8C864" textColor="484800" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="ExclusiveGateway" foreground="484800"
-				background="C8C864" textColor="484800" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="Group" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="InclusiveGateway" foreground="7F7F00"
-				background="FFFF80" textColor="7F7F00" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="IntermediateCatchEvent" foreground="546778"
-				background="D4E7F8" textColor="546778" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="IntermediateThrowEvent" foreground="546778"
-				background="D4E7F8" textColor="546778" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="Lane" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="ManualTask" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="Message" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="MessageFlow" foreground="546778" background="D4E7F8"
-				textColor="546778" font="arial,10,-,-" />
-			<style object="ParallelGateway" foreground="484800" background="C8C864"
-				textColor="484800" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="Participant" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="ReceiveTask" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="ScriptTask" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="SendTask" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="SequenceFlow" foreground="546778" background="D4E7F8"
-				textColor="546778" font="arial,10,-,-" />
-			<style object="ServiceTask" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="StartEvent" foreground="007F00" background="80FF80"
-				textColor="007F00" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="SubChoreography" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="SubProcess" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="Task" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="TextAnnotation" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="Transaction" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="UserTask" foreground="546778" background="D4E7F8"
-				textColor="546778" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-		</elementStyle>
-		<elementStyle styleId="yellow" styleName="黄色主题">
-			<style object="AdHocSubProcess" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="Association" foreground="000000" background="FFFFCC"
-				textColor="000000" font="arial,10,-,-" />
-			<style object="BoundaryEvent" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="BusinessRuleTask" foreground="000000"
-				background="FFFFCC" textColor="000000" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="CallActivity" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="CallChoreography" foreground="000000"
-				background="FFFFCC" textColor="000000" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="ChoreographyTask" foreground="000000"
-				background="FFFFCC" textColor="000000" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="ComplexGateway" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="Conversation" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="DataAssociation" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="DataInput" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="DataObject" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="Arial,10,-,-" />
-			<style object="DataOutput" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="DataStoreReference" foreground="000000"
-				background="FFFFCC" textColor="000000" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="EndEvent" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="EventBasedGateway" foreground="000000"
-				background="FFFFCC" textColor="000000" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="ExclusiveGateway" foreground="000000"
-				background="FFFFCC" textColor="000000" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="Group" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="InclusiveGateway" foreground="000000"
-				background="FFFFCC" textColor="000000" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="IntermediateCatchEvent" foreground="000000"
-				background="FFFFCC" textColor="000000" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="IntermediateThrowEvent" foreground="000000"
-				background="FFFFCC" textColor="000000" mulitSelectedColor="F4FFFF"
-				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="Lane" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="ManualTask" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="Message" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="MessageFlow" foreground="000000" background="FFFFCC"
-				textColor="000000" font="arial,10,-,-" />
-			<style object="ParallelGateway" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="Participant" foreground="000000" background="FFFFFF"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="ReceiveTask" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="ScriptTask" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="SendTask" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="SequenceFlow" foreground="000000" background="FFFFCC"
-				textColor="000000" font="arial,10,-,-" />
-			<style object="ServiceTask" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="StartEvent" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="SubChoreography" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="SubProcess" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="Task" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="TextAnnotation" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="Transaction" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-			<style object="UserTask" foreground="000000" background="FFFFCC"
-				textColor="000000" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
-				font="arial,10,-,-" />
-		</elementStyle>
-	</elementStyleConfig>
+<style:FoxBPMStyleConfig xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:style="http://www.foxbpm.org/style">
+  <elementStyleConfig currentStyle="foxbpm">
+    <elementStyle styleId="foxbpm" styleName="Fox主题">
+      <style object="AdHocSubProcess" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="Association" foreground="546778" background="D4E7F8" textColor="546778" font="arial,10,-,-"/>
+      <style object="CallChoreography" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="ComplexGateway" foreground="484800" background="C8C864" textColor="484800" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="Conversation" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="DataAssociation" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="DataStoreReference" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="EventBasedGateway" foreground="484800" background="C8C864" textColor="484800" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="Message" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="MessageFlow" foreground="546778" background="D4E7F8" textColor="546778" font="arial,10,-,-"/>
+      <style object="Participant" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="Transaction" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="SendTask" foreground="3DA9D8" background="6ACAFD" textColor="004A7D" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="ChoreographyTask" foreground="3DA9D8" background="6ACAFD" textColor="004A7D" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="ManualTask" foreground="3DA9D8" background="6ACAFD" textColor="004A7D"  mulitSelectedColor="" selectedColor=""font="arial,10,-,-"/>
+      <style object="Task" foreground="3DA9D8" background="6ACAFD" textColor="004A7D" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="ReceiveTask" foreground="3DA9D8" background="6ACAFD" textColor="004A7D" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="UserTask" foreground="3DA9D8" background="6ACAFD" textColor="004A7D"  mulitSelectedColor="" selectedColor=""font="arial,10,-,-"/>
+      <style object="ScriptTask" foreground="3DA9D8" background="6ACAFD" textColor="004A7D" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="ServiceTask" foreground="3DA9D8" background="6ACAFD" textColor="004A7D" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="BusinessRuleTask" foreground="3DA9D8" background="6ACAFD" textColor="004A7D" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="SequenceFlow" foreground="808080" background="D4E7F8" textColor="546778" font="arial,10,-,-"/>
+      <style object="ExclusiveGateway" foreground="DCA567" background="F5D889" textColor="755809" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="ParallelGateway" foreground="DCA567" background="F5D889" textColor="755809" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="InclusiveGateway" foreground="DCA567" background="F5D889" textColor="755809" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="Lane" foreground="ABBFD3" background="FFFFFF" textColor="505050" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="SubChoreography" foreground="97CEE6" background="C0E9FE" textColor="40697E" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="SubProcess" foreground="97CEE6" background="C0E9FE" textColor="40697E" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="CallActivity" foreground="57B0D7" background="C0E9FE" textColor="40697E" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="TextAnnotation" foreground="7F007F" background="FF80FF" textColor="7F007F" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="Group" foreground="007F00" background="80FF80" textColor="007F00" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="DataOutput" foreground="619DBE" background="B4E4FE" textColor="34647E" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="DataObject" foreground="619DBE" background="B4E4FE" textColor="34647E"  mulitSelectedColor="" selectedColor="" font="Arial,10,-,-"/>
+      <style object="DataInput" foreground="619DBE" background="B4E4FE" textColor="34647E" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="IntermediateThrowEvent" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="IntermediateCatchEvent" foreground="008AC6" background="73CCEE" textColor="004C6E" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="StartEvent" foreground="335100" background="B3D147" textColor="335100" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="EndEvent" foreground="AE661E" background="FF8040" textColor="7F0000" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="BoundaryEvent" foreground="BF9900" background="E0CD1F" textColor="604D00" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+    </elementStyle>
+    <elementStyle styleId="default" styleName="默认主题">
+      <style object="AdHocSubProcess" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="Association" foreground="546778" background="D4E7F8" textColor="546778"  font="arial,10,-,-"/>
+      <style object="BoundaryEvent" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="BusinessRuleTask" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="CallActivity" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="CallChoreography" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="ChoreographyTask" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="ComplexGateway" foreground="484800" background="C8C864" textColor="484800" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="Conversation" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="DataAssociation" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="DataInput" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="DataObject" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="Arial,10,-,-"/>
+      <style object="DataOutput" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="DataStoreReference" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="EndEvent" foreground="7F0000" background="FF8080" textColor="7F0000" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="EventBasedGateway" foreground="484800" background="C8C864" textColor="484800" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="ExclusiveGateway" foreground="484800" background="C8C864" textColor="484800" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="Group" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="InclusiveGateway" foreground="7F7F00" background="FFFF80" textColor="7F7F00" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="IntermediateCatchEvent" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="IntermediateThrowEvent" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="Lane" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="ManualTask" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="Message" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="MessageFlow" foreground="546778" background="D4E7F8" textColor="546778" font="arial,10,-,-"/>
+      <style object="ParallelGateway" foreground="484800" background="C8C864" textColor="484800" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="Participant" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="ReceiveTask" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="ScriptTask" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="SendTask" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="SequenceFlow" foreground="546778" background="D4E7F8" textColor="546778"  font="arial,10,-,-"/>
+      <style object="ServiceTask" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="StartEvent" foreground="007F00" background="80FF80" textColor="007F00" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="SubChoreography" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="SubProcess" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="Task" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="TextAnnotation" foreground="546778" background="D4E7F8"  textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="Transaction" foreground="546778" background="D4E7F8"  textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="UserTask" foreground="546778" background="D4E7F8" textColor="546778" mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+    </elementStyle>
+    <elementStyle styleId="yellow" styleName="黄色主题">
+      <style object="AdHocSubProcess" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="Association" foreground="000000" background="FFFFCC" textColor="000000" font="arial,10,-,-"/>
+      <style object="BoundaryEvent" foreground="000000" background="FFFFCC" textColor="000000"  mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="BusinessRuleTask" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="CallActivity" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="CallChoreography" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="ChoreographyTask" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="ComplexGateway" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="Conversation" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="DataAssociation" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="DataInput" foreground="000000" background="FFFFCC" textColor="000000"  mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="DataObject" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="Arial,10,-,-"/>
+      <style object="DataOutput" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="DataStoreReference" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="EndEvent" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="EventBasedGateway" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="ExclusiveGateway" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="Group" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="InclusiveGateway" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="IntermediateCatchEvent" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="IntermediateThrowEvent" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="Lane" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="ManualTask" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="Message" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="MessageFlow" foreground="000000" background="FFFFCC" textColor="000000" font="arial,10,-,-"/>
+      <style object="ParallelGateway" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="Participant" foreground="000000" background="FFFFFF" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="ReceiveTask" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="ScriptTask" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="SendTask" foreground="000000" background="FFFFCC" textColor="000000"  mulitSelectedColor="" selectedColor="" font="arial,10,-,-"/>
+      <style object="SequenceFlow" foreground="000000" background="FFFFCC" textColor="000000" font="arial,10,-,-"/>
+      <style object="ServiceTask" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="StartEvent" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="SubChoreography" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="SubProcess" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="Task" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="TextAnnotation" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="Transaction" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+      <style object="UserTask" foreground="000000" background="FFFFCC" textColor="000000" mulitSelectedColor="" selectedColor=""  font="arial,10,-,-"/>
+    </elementStyle>
+  </elementStyleConfig>
 </style:FoxBPMStyleConfig>

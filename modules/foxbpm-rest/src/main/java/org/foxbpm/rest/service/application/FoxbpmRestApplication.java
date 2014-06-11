@@ -35,10 +35,10 @@ public class FoxbpmRestApplication extends AbstractRestApplication {
 	
 	@Override
 	public Restlet createInboundRoot() {
-		initializeAuthentication();
+//		initializeAuthentication();
 		Router router = new Router(getContext());
 		RestServicesInit.attachResources(router);
-		authenticator.setNext(router);
-		return authenticator;
+//		authenticator.setNext(router);
+		return router;
 	}
 }
