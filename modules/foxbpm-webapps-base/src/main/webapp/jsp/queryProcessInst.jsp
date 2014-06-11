@@ -122,7 +122,7 @@ function clearInfo(){
 												value="${result.initorName}" /></td>
 											<td>
 												<div class="btn-normal">
-													<a href="#" onclick="" id="selectUser">${applicationScope.appInfo["common.select"]}<em
+													<a href="javascript:void(0)" onclick="" id="selectUser">${applicationScope.appInfo["common.select"]}<em
 														class="arrow-small"></em></a>
 												</div>
 											</td>

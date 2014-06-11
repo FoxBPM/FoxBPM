@@ -23,9 +23,8 @@ function regFlowCommand(formId,processInstanceId,processDefinitionKey,taskId){
 			if(type=="processStatus"){
 				var pii = processInstanceId;
 				var pdk = processDefinitionKey;
-				var obj = {};
 				window.open(
-						"FlowCenter?action=getTaskDetailInfo&processInstanceId="
+						"queryTaskDetailInfor.action?processInstanceId="
 								+ pii+"&processDefinitionKey="
 								+ pdk+"");
 				return false;

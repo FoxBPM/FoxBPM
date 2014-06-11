@@ -115,7 +115,7 @@
 				<div class="left">
 					<div class="left-nav-box">
 						<div class="left-nav">
-							<a name="myTask" href="#">${applicationScope.appInfo["task.myTask"]}</a>
+							<a name="myTask" href="javascript:void(0)">${applicationScope.appInfo["task.myTask"]}</a>
 						</div>
 						<div class="left-nav-orange-line">&nbsp;</div>
 						<div class="left-nav m-top">
