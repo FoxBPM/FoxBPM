@@ -23,18 +23,26 @@ import org.foxbpm.engine.TaskService;
 import org.foxbpm.web.db.factory.FoxbpmDBConnectionFactory;
 import org.foxbpm.web.db.interfaces.BizDBInterface;
 import org.foxbpm.web.db.interfaces.IDemoDao;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * webapp抽象服务
+ * 
  * @author yangguangftlp
  * @date 2014年6月11日
  */
 public abstract class AbstractWebappService {
+	@Autowired
 	protected BizDBInterface bizDB;
+	@Autowired
 	protected FoxbpmDBConnectionFactory dbfactory;
+	@Autowired
 	protected TaskService taskService;
+	@Autowired
 	protected ModelService modelService;
+	@Autowired
 	protected RuntimeService runtimeService;
+	@Autowired
 	protected IDemoDao idemoDao;
 
 	public BizDBInterface getBizDB() {

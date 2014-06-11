@@ -23,6 +23,7 @@ import org.foxbpm.web.common.util.Pagination;
 import org.foxbpm.web.db.factory.FoxbpmDBConnectionFactory;
 import org.foxbpm.web.db.interfaces.BizDBInterface;
 import org.foxbpm.web.service.interfaces.IWebappProcessService;
+import org.springframework.stereotype.Service;
 
 /**
  * 流程服务类
@@ -30,6 +31,7 @@ import org.foxbpm.web.service.interfaces.IWebappProcessService;
  * @author MEL
  * @date 2014-06-04
  */
+@Service("webappProcessService")
 public class WebappProcessService extends AbstractWebappService implements IWebappProcessService {
 
 	/**
