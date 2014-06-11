@@ -18,7 +18,9 @@
 package org.foxbpm.engine.impl.svg.vo.build;
 
 import org.apache.commons.lang3.StringUtils;
+import org.foxbpm.engine.impl.svg.SVGTypeNameConstant;
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
+import org.foxbpm.engine.impl.svg.vo.TextVO;
 
 /**
  * 组件式样的构造，包括EVENT、ACTIVITY等组件
@@ -29,22 +31,23 @@ import org.foxbpm.engine.impl.svg.vo.SvgVO;
  */
 public abstract class AbstractSVGBuilder {
 	protected SvgVO svgVo;
+	/**
+	 * 文本对象
+	 */
+	protected TextVO textVO;
 
 	public AbstractSVGBuilder(SvgVO svgVo) {
 		this.svgVo = svgVo;
+		this.textVO = svgVo.getgVo().getTextVo();
 	}
 
 	public static AbstractSVGBuilder createSVGBuilder(SvgVO svgVo, String type) {
 
-		if (StringUtils.equalsIgnoreCase(type, SVGTypeNameConstant.TYPE_EVENT)) {
-			return new TypeEventSVGBuilder(svgVo);
-		}
 		if (StringUtils.equalsIgnoreCase(type,
-				SVGTypeNameConstant.TYPE_EVENT_NONE)) {
+				SVGTypeNameConstant.SVG_TYPE_EVENT)) {
 			return new EventSVGBuilder(svgVo);
 		}
-		if (StringUtils.equalsIgnoreCase(type,
-				SVGTypeNameConstant.TYPE_ACTIVITY_MANUALTASK_LOOP)) {
+		if (StringUtils.contains(type, SVGTypeNameConstant.SVG_TYPE_TASK)) {
 			return new TaskSVGBuilder(svgVo);
 		}
 		return null;

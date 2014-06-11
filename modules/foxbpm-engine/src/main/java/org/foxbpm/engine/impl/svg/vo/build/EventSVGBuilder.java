@@ -19,7 +19,9 @@ package org.foxbpm.engine.impl.svg.vo.build;
 
 import java.util.List;
 
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.svg.vo.CircleVO;
+import org.foxbpm.engine.impl.svg.vo.PathVO;
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.svg.vo.TextVO;
 
@@ -30,20 +32,53 @@ import org.foxbpm.engine.impl.svg.vo.TextVO;
  * @date 2014-06-10
  */
 public class EventSVGBuilder extends AbstractSVGBuilder {
+	private PathVO pathVo;
 	/**
 	 * 事件圆圈对象
 	 */
 	private CircleVO circleVO;
-	/**
-	 * 时间文本对象
-	 */
-	private TextVO textVO;
 
 	public EventSVGBuilder(SvgVO voNode) {
 		super(voNode);
 		List<CircleVO> circleVoList = voNode.getgVo().getCircleVoList();
 		this.circleVO = circleVoList.get(circleVoList.size() - 1);
-		this.textVO = voNode.getgVo().getTextVo();
+		List<PathVO> pathVoList = this.svgVo.getgVo().getPathVoList();
+		if (pathVoList == null || pathVoList.size() == 0) {
+			throw new FoxBPMException(
+					"the even svg has no type like errorType signalType");
+		}
+		pathVo = pathVoList.get(0);
+	}
+
+	public void setTypeStyle(String typeStyle) {
+		if (pathVo == null) {
+			return;
+		}
+		pathVo.setStyle(typeStyle);
+	}
+
+	@Override
+	public void setTypeStroke(String stroke) {
+		if (pathVo == null) {
+			return;
+		}
+		this.pathVo.setStroke(stroke);
+	}
+
+	@Override
+	public void setTypeStrokeWidth(String strokeWidth) {
+		if (pathVo == null) {
+			return;
+		}
+		this.pathVo.setStrokeWidth(strokeWidth);
+	}
+
+	@Override
+	public void setTypeFill(String fill) {
+		if (pathVo == null) {
+			return;
+		}
+		this.pathVo.setFill(fill);
 	}
 
 	@Override
@@ -86,6 +121,7 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setText(String text) {
+		this.textVO.setElementValue(text);
 	}
 
 	@Override
@@ -124,30 +160,6 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 	@Override
 	public void setStyle(String style) {
 		this.circleVO.setStyle(style);
-	}
-
-	@Override
-	public void setTypeStroke(String stroke) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setTypeStrokeWidth(String strokeWidth) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setTypeFill(String fill) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setTypeStyle(String style) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

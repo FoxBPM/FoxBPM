@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
 
 /**
  * SVG对象的超类
@@ -54,6 +55,16 @@ public abstract class VONode implements Serializable {
 	protected String x;
 	@XmlAttribute(name = "y")
 	protected String y;
+	@XmlValue
+	protected String elementValue;
+
+	public String getElementValue() {
+		return elementValue;
+	}
+
+	public void setElementValue(String elementValue) {
+		this.elementValue = elementValue;
+	}
 
 	public String getX() {
 		return x;

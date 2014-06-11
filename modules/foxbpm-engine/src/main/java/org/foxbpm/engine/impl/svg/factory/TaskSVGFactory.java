@@ -35,18 +35,23 @@ import org.foxbpm.engine.impl.svg.vo.build.AbstractSVGBuilder;
  */
 public class TaskSVGFactory extends AbstractSVGFactory {
 	private static final String SPLIT_SEPERATOR = "/";
+	public TaskSVGFactory(String svgTemplateFileName) {
+		super(svgTemplateFileName);
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
-	public VONode createSVGVO(String templateName, String svgType) {
+	public VONode createSVGVO(String svgType) {
 		// 分析svgType
 		// 加载svgvo
 		// 创建svgbuilder
 		// builder
 		List<String> gIDList = this.getGIDSFromSvgType(svgType);
-		SvgVO taskVO = (SvgVO) super.loadSVGVO(templateName);
+		SvgVO taskVO = (SvgVO) super.loadSVGVO(this.svgTemplateFileName);
 		this.filterSvgVOByGID(taskVO, gIDList);
 		AbstractSVGBuilder svgBuilder = AbstractSVGBuilder.createSVGBuilder(
 				taskVO, svgType);
+		svgBuilder.setText("");
 		// 构造
 		// 构造
 		return taskVO;
@@ -85,6 +90,12 @@ public class TaskSVGFactory extends AbstractSVGFactory {
 
 	private List<String> getGIDSFromSvgType(String svgType) {
 		return Arrays.asList(svgType.split(SPLIT_SEPERATOR));
+	}
+
+	@Override
+	public VONode createSVGVO() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

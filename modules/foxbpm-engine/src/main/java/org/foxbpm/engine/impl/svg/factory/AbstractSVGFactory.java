@@ -24,7 +24,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.svg.SVGTypeNameConstant;
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.svg.vo.VONode;
 
@@ -36,14 +38,38 @@ import org.foxbpm.engine.impl.svg.vo.VONode;
  * 
  */
 public abstract class AbstractSVGFactory {
+	protected String svgTemplateFileName;
+
+	public AbstractSVGFactory(String svgTemplateFileName) {
+		this.svgTemplateFileName = svgTemplateFileName;
+	}
+
+	public static AbstractSVGFactory createSVGFactory(String svgTemplateFileName) {
+		if (StringUtils.contains(svgTemplateFileName, "event")) {
+			return new EventSVGFactory(svgTemplateFileName);
+		}
+		if (StringUtils.contains(svgTemplateFileName, "activity")) {
+			return new TaskSVGFactory(svgTemplateFileName);
+		}
+		return null;
+	}
 
 	/**
-	 * 根据模版构造SVG对象
+	 * 
+	 * 根据SVG文件模版，以及SVG类型构造SVG对象，例如：构建TASK SVG对象，可以根据TASK SVG模板和TASK
+	 * 类型《manualTask,scriptTask,,》构造SVG 对象
 	 * 
 	 * @param svgType
 	 * @return
 	 */
-	public abstract VONode createSVGVO(String templateName, String svgType);
+	public abstract VONode createSVGVO(String svgType);
+
+	/**
+	 * 根据具体的SVG文件名称创建对象，例如： 如果是构造事件SVG对象，则根据事件类型 对应的具体SVG文件，创建SVG对象
+	 * 
+	 * @return
+	 */
+	public abstract VONode createSVGVO();
 
 	/**
 	 * 加载SVG模版
@@ -67,14 +93,20 @@ public abstract class AbstractSVGFactory {
 	 * @param svgVo
 	 * @return
 	 */
-	public String createSVGString(String templateName, String svgType) {
+	public String createSVGString(String svgType) {
 		try {
 			JAXBContext context = JAXBContext.newInstance(SvgVO.class);
 			Marshaller marshal = context.createMarshaller();
 			marshal.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			StringWriter writer = new StringWriter();
 
-			SvgVO svgVo = (SvgVO) this.createSVGVO(templateName, svgType);
+			SvgVO svgVo = null;
+			if (StringUtils.equalsIgnoreCase(svgType, SVGTypeNameConstant.SVG_TYPE_EVENT)) {
+				svgVo = (SvgVO) this.createSVGVO();
+			} else {
+				svgVo = (SvgVO) this.createSVGVO(svgType);
+			}
+
 			marshal.marshal(svgVo, writer);
 			return writer.toString();
 		} catch (Exception e) {

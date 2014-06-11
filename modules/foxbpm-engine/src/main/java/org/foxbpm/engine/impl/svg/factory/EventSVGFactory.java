@@ -17,6 +17,8 @@
  */
 package org.foxbpm.engine.impl.svg.factory;
 
+import org.apache.commons.lang3.StringUtils;
+import org.foxbpm.engine.impl.svg.SVGTypeNameConstant;
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.svg.vo.VONode;
 import org.foxbpm.engine.impl.svg.vo.build.AbstractSVGBuilder;
@@ -31,12 +33,16 @@ import org.foxbpm.engine.impl.svg.vo.build.EventSVGBuilder;
  */
 public class EventSVGFactory extends AbstractSVGFactory {
 
+	public EventSVGFactory(String svgTemplateFileName) {
+		super(svgTemplateFileName);
+	}
+
 	@Override
-	public VONode createSVGVO(String templateName, String svgType) {
-		SvgVO startEventNone = (SvgVO) super.loadSVGVO(templateName);
+	public VONode createSVGVO() {
+		SvgVO startEventNone = (SvgVO) super.loadSVGVO(svgTemplateFileName);
 		// 根据式样构造SVG图像
 		AbstractSVGBuilder svgBuilder = AbstractSVGBuilder.createSVGBuilder(
-				startEventNone, svgType);
+				startEventNone, SVGTypeNameConstant.SVG_TYPE_EVENT);
 
 		svgBuilder.setID("000001");
 		svgBuilder.setName("000002");
@@ -47,6 +53,12 @@ public class EventSVGFactory extends AbstractSVGFactory {
 		svgBuilder.setTypeFill("red");
 		svgBuilder.setTypeStrokeWidth("3");
 		return startEventNone;
+	}
+
+	@Override
+	public VONode createSVGVO(String svgType) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
