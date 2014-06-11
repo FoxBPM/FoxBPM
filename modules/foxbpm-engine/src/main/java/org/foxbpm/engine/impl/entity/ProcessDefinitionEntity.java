@@ -31,6 +31,7 @@ import org.foxbpm.kernel.process.KernelDefinitions;
 import org.foxbpm.kernel.process.KernelSequenceFlow;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
+import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 import org.foxbpm.kernel.runtime.InterpretableProcessInstance;
 
 public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl implements ProcessDefinition,PersistentObject,HasRevision{
@@ -194,6 +195,11 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 	}
 
 	
+
+	@Override
+	public KernelSequenceFlowImpl createSequenceFlow(String id, KernelProcessDefinitionImpl processDefinition) {
+		return super.createSequenceFlow(id, processDefinition);
+	}
 
 	public Map<String, Object> getPersistentState() {
 		Map<String, Object> persistentState = new HashMap<String, Object>();
