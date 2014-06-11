@@ -6,11 +6,16 @@
                  http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">  
   
   <display-name>Foxbpm-rest</display-name>
-   
-  <listener>
+   <listener>
     <listener-class>org.foxbpm.rest.common.listener.FoxBpmRestServletContextListener</listener-class>
-  </listener> 
-  
+  </listener>
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath*:applicationContext*.xml</param-value>
+  </context-param>
   <!-- Restlet adapter -->  
   <servlet>  
     <servlet-name>RestletServlet</servlet-name>  

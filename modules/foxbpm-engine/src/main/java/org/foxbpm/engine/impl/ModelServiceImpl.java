@@ -19,6 +19,8 @@
 package org.foxbpm.engine.impl;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,8 +44,16 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	}
 
 	public List<Map<String, String>> getStartProcessByUserId(String userId) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Map<String,String>> list = new ArrayList<Map<String,String>>();
+		
+		Map<String,String> map = new HashMap<String, String>();
+		map.put("processDefinitionKey", "process_1");
+		map.put("processDefinitionId", "process_2");
+		map.put("processDefinitionName","测试流程");
+		
+		list.add(map);
+		
+		return list;
 	}
 
 	public Deployment deploy(DeploymentBuilderImpl deploymentBuilder) {

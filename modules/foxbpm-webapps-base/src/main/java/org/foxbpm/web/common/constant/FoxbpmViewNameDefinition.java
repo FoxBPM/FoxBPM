@@ -8,4 +8,18 @@ package org.foxbpm.web.common.constant;
  */
 public final class FoxbpmViewNameDefinition {
 	public final static String START_PROCESS_VIEWNAME = "startProcess";
+	/**
+	 * 错误视图
+	 */
+	public final static String ERROR_VIEWNAME = "error";
+	/**
+	 * 代办视图
+	 */
+	public final static String QUERY_QUERYTODOTASK_VIEWNAME = "queryTodoTask";
+	public final static String QUERY_QUERYALLPROCESSDEF_VIEWNAME = "queryProcessDef";
+	public final static String QUERY_QUERYALLPROCESSINST_VIEWNAME = "queryProcessInst";
+	public final static String QUERY_TASKDETAILINFOR_ACTION = "queryTaskDetailInfor";
+	public final static String START_TASK_VIEWNAME = "startTask";
+	public final static String DO_TASK_VIEWNAME = "doTask";
+	public final static String COMPLETETASK_VIEWNAME = "result";
 }

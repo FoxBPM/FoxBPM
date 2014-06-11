@@ -61,7 +61,7 @@
   </select>
   
   <select id="selectProcessDefinitionCountByQueryCriteria" parameterType="org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl" resultType="long">
-    select count(PD.ID_)
+    select count(PD.PROCESS_ID)
     <include refid="selectProcessDefinitionsByQueryCriteriaSql"/>
   </select>
   

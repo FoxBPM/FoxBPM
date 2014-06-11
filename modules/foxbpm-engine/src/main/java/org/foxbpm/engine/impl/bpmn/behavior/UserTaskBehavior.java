@@ -18,6 +18,7 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
@@ -29,8 +30,9 @@ import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 
 /**
  * 人工任务处理器
+ * 
  * @author kenshin
- *
+ * 
  */
 public class UserTaskBehavior extends TaskBehavior {
 
@@ -38,7 +40,7 @@ public class UserTaskBehavior extends TaskBehavior {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * 操作表单
 	 */
@@ -55,47 +57,43 @@ public class UserTaskBehavior extends TaskBehavior {
 	 * 任务主题
 	 */
 	private String taskSubject;
-	
-	private String taskPriority;
-	
 
+	private String taskPriority;
 
 	@Override
 	public void execute(FlowNodeExecutionContext executionContext) {
-		
+
 		TaskEntity task = TaskEntity.createAndInsert(executionContext);
-		
+
 		task.setTaskDefinition(taskDefinition);
-		
+
 		task.setAutoClaim(taskDefinition.isAutoClaim());
-		
+
 		task.setNodeId(getId());
-		
+
 		task.setNodeName(getName());
-		
-		((TokenEntity)executionContext).setAssignTask(task);
-		
-		ProcessInstanceEntity processInstance=(ProcessInstanceEntity) executionContext.getProcessInstance();
-		
+
+		((TokenEntity) executionContext).setAssignTask(task);
+
+		ProcessInstanceEntity processInstance = (ProcessInstanceEntity) executionContext.getProcessInstance();
+
 		task.setBizKey(processInstance.getBizKey());
 		task.setDescription("任务主题");
-		task.setToken((TokenEntity)executionContext);
+		task.setToken((TokenEntity) executionContext);
 		task.setTaskType(TaskType.FOXBPMTASK);
-		
+
 		for (Connector connector : taskDefinition.getActorConnectors()) {
 			try {
-				connector.notify((ListenerExecutionContext)executionContext);
+				connector.notify((ListenerExecutionContext) executionContext);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				throw new FoxBPMException(e.getMessage());
 			}
 		}
-		
-		
-		
 
 	}
-	
+
 	public String getFormUri() {
 		return formUri;
 	}
@@ -135,5 +133,5 @@ public class UserTaskBehavior extends TaskBehavior {
 	public void setTaskPriority(String taskPriority) {
 		this.taskPriority = taskPriority;
 	}
-	
+
 }

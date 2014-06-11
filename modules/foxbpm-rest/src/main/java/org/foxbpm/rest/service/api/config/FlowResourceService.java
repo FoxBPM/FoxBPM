@@ -44,6 +44,7 @@ public class FlowResourceService {
 		generators.add(new ConnectorGenerator());
 		generators.add(new FoxBpmCfgGenerator());
 		generators.add(new TemplateGenerator());
+		generators.add(new StyleGenerator());
 	}
 	public void generateFlowResouceZipFile(){
 		ZipOutputStream out = null;

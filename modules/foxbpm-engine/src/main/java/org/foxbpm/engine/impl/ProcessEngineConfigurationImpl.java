@@ -25,7 +25,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.sql.DataSource;
 
 import org.eclipse.emf.common.util.URI;
@@ -115,13 +114,12 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected Cache identityCache;
 	protected TransactionContextFactory transactionContextFactory;
 	protected List<GroupDefinition> groupDefinitions;
-	protected String dbType = "mysql";
-	
 	
 	protected TaskCommandConfig taskCommandConfig;
 
 	protected Map<String, TaskCommandDefinition> taskCommandDefinitionMap;
 
+	
 	
 	public ProcessEngine buildProcessEngine() {
 		init();
@@ -319,7 +317,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	public void initSqlSessionFactory() {
 		DataSource dataSource = dataSourceManager.getDataSource();
 		sqlSessionFactory = new MyBatisSqlSessionFactory();
-		sqlSessionFactory.init(dataSource,dbType);
+		sqlSessionFactory.init(dataSource);
 	}
 
 	public ISqlSessionFactory getSqlSessionFactory() {
@@ -349,8 +347,18 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	public void initBaseCommandInterceptors() {
 		commandInterceptors = new ArrayList<CommandInterceptor>();
+		commandInterceptors.add(new LogInterceptor());
+		
+		CommandInterceptor transactionInterceptor = createTransactionInterceptor();
+		if(transactionInterceptor != null){
+			commandInterceptors.add(transactionInterceptor);
+		}
 		CommandContextInterceptor commandContextInterceptor = new CommandContextInterceptor(commandContextFactory, this);
 		commandInterceptors.add(commandContextInterceptor);
+	}
+	
+	protected CommandInterceptor createTransactionInterceptor(){
+		return null;
 	}
 
 	protected void initCommandExecutors() {
@@ -361,7 +369,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	public void initCustomInterceptors() {
 		// 这只是个示例，正常应从配置文件读取拦截器
-		commandInterceptors.add(new LogInterceptor());
+		
 	}
 
 	public void initGeneralCommandExecutor() {

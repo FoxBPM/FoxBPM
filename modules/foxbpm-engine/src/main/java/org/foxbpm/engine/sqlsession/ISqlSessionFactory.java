@@ -23,6 +23,6 @@ import org.foxbpm.engine.impl.interceptor.SessionFactory;
 
 public interface ISqlSessionFactory extends SessionFactory{
 	
-	public void init(DataSource datasource,String databaseType);
+	public void init(DataSource datasource);
 	
 }

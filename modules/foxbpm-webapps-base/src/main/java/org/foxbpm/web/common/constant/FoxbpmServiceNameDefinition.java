@@ -9,4 +9,5 @@ package org.foxbpm.web.common.constant;
 public final class FoxbpmServiceNameDefinition {
 	public final static String PROCESS_SERVICENAME = "webappProcessService";
 	public final static String TAST_SERVICENAME = "webappTaskService";
+	public final static String DEMO_SERVICENAME = "webappDemoService";
 }

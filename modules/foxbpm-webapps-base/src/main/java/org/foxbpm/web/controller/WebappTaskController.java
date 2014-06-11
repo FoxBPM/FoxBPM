@@ -17,15 +17,22 @@
  */
 package org.foxbpm.web.controller;
 
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.web.common.constant.FoxbpmActionNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmServiceNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmViewNameDefinition;
+import org.foxbpm.web.common.constant.FoxbpmWebContextAttributeNameDefinition;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
+import org.foxbpm.web.common.util.Pagination;
 import org.foxbpm.web.service.interfaces.IWebappTaskService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +45,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @date 2014-06-04
  */
 @Controller
-public class WebappTaskController {
+public class WebappTaskController extends AbstractWebappController {
 	@Resource(name = FoxbpmServiceNameDefinition.TAST_SERVICENAME)
 	private IWebappTaskService taskService;
 
@@ -58,9 +65,47 @@ public class WebappTaskController {
 		} catch (FoxbpmWebException foxbpmException) {
 			return new ModelAndView("error");
 		}
-		ModelAndView modelAndView = new ModelAndView(
-				FoxbpmViewNameDefinition.START_PROCESS_VIEWNAME);
+		ModelAndView modelAndView = new ModelAndView(FoxbpmViewNameDefinition.START_PROCESS_VIEWNAME);
 		return modelAndView;
 	}
 
+	/**
+	 * 查询代办任务
+	 * 
+	 * @param request
+	 *            请求
+	 * @return 返回对应展现视图
+	 */
+	@RequestMapping(FoxbpmActionNameDefinition.QUERY_TODOTASK_ACTION)
+	public ModelAndView queryToDoTask(HttpServletRequest request) {
+
+		try {
+			Map<String, Object> requestParams = getRequestParams(request);
+			// 获取分页条件参数
+			String pageI = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINDEX));
+			String pageS = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGESIZE));
+
+			// 处理分页
+			int pageIndex = Pagination.PAGE_INDEX;
+			int pageSize = Pagination.PAGE_SIZE;
+			if (StringUtil.isNotEmpty(pageI)) {
+				pageIndex = StringUtil.getInt(pageI);
+			}
+			if (StringUtil.isNotEmpty(pageS)) {
+				pageSize = StringUtil.getInt(pageS);
+			}
+			// 分页信息
+			Pagination<String> pageInfor = new Pagination<String>(pageIndex, pageSize);
+			// 查询结果
+			Map<String, Object> resultMap = taskService.queryToDoTask(pageInfor, requestParams);
+			// 封装请求参数
+			resultMap.putAll(requestParams);
+			// 封装参数
+			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
+			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
+		} catch (FoxbpmWebException foxbpmException) {
+			return new ModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
+		}
+		return new ModelAndView(FoxbpmViewNameDefinition.QUERY_QUERYTODOTASK_VIEWNAME);
+	}
 }
