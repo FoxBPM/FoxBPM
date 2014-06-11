@@ -15,7 +15,7 @@
  * 
  * @author MAENLIANG
  */
-package org.foxbpm.engine.impl.svg.factory;
+package org.foxbpm.engine.impl.svg;
 
 import java.io.BufferedReader;
 import java.io.File;

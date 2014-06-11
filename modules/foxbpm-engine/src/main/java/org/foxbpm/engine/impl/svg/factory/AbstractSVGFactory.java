@@ -26,6 +26,7 @@ import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.svg.SVGTemplateContainer;
 import org.foxbpm.engine.impl.svg.SVGTypeNameConstant;
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.svg.vo.VONode;
@@ -78,7 +79,7 @@ public abstract class AbstractSVGFactory {
 	 *            模版名称
 	 * @return SVG模版
 	 */
-	public VONode loadSVGVO(String templateName) {
+	protected VONode loadSVGVO(String templateName) {
 		try {
 			return SVGTemplateContainer.getContainerInstance()
 					.getTemplateByName(templateName);
@@ -101,7 +102,8 @@ public abstract class AbstractSVGFactory {
 			StringWriter writer = new StringWriter();
 
 			SvgVO svgVo = null;
-			if (StringUtils.equalsIgnoreCase(svgType, SVGTypeNameConstant.SVG_TYPE_EVENT)) {
+			if (StringUtils.equalsIgnoreCase(svgType,
+					SVGTypeNameConstant.SVG_TYPE_EVENT)) {
 				svgVo = (SvgVO) this.createSVGVO();
 			} else {
 				svgVo = (SvgVO) this.createSVGVO(svgType);
