@@ -28,48 +28,67 @@ import org.foxbpm.web.common.constant.FoxbpmServiceNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmViewNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmWebContextAttributeNameDefinition;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
-import org.foxbpm.web.service.interfaces.IWebappDemoService;
+import org.foxbpm.web.service.interfaces.IDemoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * 业务控制器
+ * mvc 控制器主要处理业务
+ * 
  * @author yangguangftlp
- * @date 2014年6月10日
+ * @date 2014年6月11日
  */
 @Controller
-public class WebappDemoController extends AbstractWebappController {
-
+public class DemoController extends AbstWebController {
+	// 工作业务服务
 	@Resource(name = FoxbpmServiceNameDefinition.DEMO_SERVICENAME)
-	private IWebappDemoService webappDemoService;
+	private IDemoService workDemoService;
 
+	/**
+	 * 开启任务
+	 * 
+	 * @param request
+	 *            http请求参数
+	 * @return 返回响应视图
+	 */
 	@RequestMapping(FoxbpmActionNameDefinition.START_TASK_ACTION)
 	public ModelAndView startTask(HttpServletRequest request) {
 		String viewName = FoxbpmViewNameDefinition.START_TASK_VIEWNAME;
 		try {
 			Map<String, Object> requestParams = getRequestParams(request);
-			Map<String, Object> resultMap = webappDemoService.startTask(requestParams);
+			Map<String, Object> resultMap = workDemoService.startTask(requestParams);
 			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
 			// 获取视图处理
 			viewName = StringUtil.getString(resultMap.remove("viewName"));
 		} catch (FoxbpmWebException foxbpmException) {
-			return new ModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
+			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
 		}
-		return new ModelAndView(viewName);
+		return createModelAndView(viewName);
 	}
 
+	/**
+	 * 完成任务
+	 * 
+	 * @param request
+	 *            http请求参数
+	 * @return 返回响应视图
+	 */
 	@RequestMapping(FoxbpmActionNameDefinition.COMPLETE_TASK_ACTION)
-	public ModelAndView executeTask(HttpServletRequest request) {
+	public ModelAndView completeTask(HttpServletRequest request) {
 		try {
 			Map<String, Object> requestParams = getRequestParams(request);
 			if (StringUtil.isEmpty(StringUtil.getString(requestParams.get("businessKey")))) {
 				throw new FoxbpmWebException("", "businessKey不能为空!");
 			}
-			webappDemoService.executeTask(requestParams);
+			workDemoService.completeTask(requestParams);
 		} catch (FoxbpmWebException foxbpmException) {
-			return new ModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
+			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
 		}
-		return new ModelAndView(FoxbpmViewNameDefinition.COMPLETETASK_VIEWNAME);
+		return createModelAndView(FoxbpmViewNameDefinition.COMPLETETASK_VIEWNAME);
+	}
+
+	protected String getPrefix() {
+		return "taskCenter/";
 	}
 }

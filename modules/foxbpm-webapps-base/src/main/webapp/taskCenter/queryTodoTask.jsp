@@ -8,7 +8,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>${applicationScope.appInfo["product.title"]}</title>
-<jsp:include page="head.jsp" flush="true" />
+<jsp:include page="../common/head.jsp" flush="true" />
 <script type="text/javascript">
 	/*  
 	 * "userId" 用户编号
@@ -273,7 +273,7 @@
 								<tr>
 									<td style="text-align: center;">${(index.index+1)+pageInfo.pageSize*(pageInfo.pageIndex-1)}</td>
 
-									<td><img src="foxbpm\images\temp\user01.jpg" height="30"
+									<td><img src="common\images\temp\user01.jpg" height="30"
 										width="30" alt="头像"
 										onerror="miniImgNotFound('<%=request.getContextPath()%>',this);"></td>
 									<td>${dataList.processDefinitionName}</td>
@@ -300,7 +300,7 @@
 				</div>
 				<!-- 分页 -->
 				<div id="page">
-					<jsp:include page="page.jsp" flush="true" />
+					<jsp:include page="../common/page.jsp" flush="true" />
 				</div>
 
 			</form>

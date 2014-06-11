@@ -1,6 +1,22 @@
+/**
+ * Copyright 1996-2014 FoxBPM ORG.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * @author yangguangftlp
+ */
 package org.foxbpm.web.service.impl;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,84 +25,43 @@ import java.util.Map;
 
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.RuntimeService;
+import org.foxbpm.engine.TaskService;
+import org.foxbpm.engine.impl.identity.Authentication;
+import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.repository.ProcessDefinitionQuery;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.runtime.ProcessInstanceQuery;
 import org.foxbpm.engine.task.Task;
+import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.engine.task.TaskQuery;
+import org.foxbpm.web.common.constant.FoxbpmWebContextAttributeNameDefinition;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.common.util.DateUtil;
 import org.foxbpm.web.common.util.JSONUtil;
 import org.foxbpm.web.common.util.Pagination;
-import org.foxbpm.web.db.factory.FoxbpmDBConnectionFactory;
-import org.foxbpm.web.db.interfaces.BizDBInterface;
-import org.foxbpm.web.service.interfaces.IWebappProcessService;
+import org.foxbpm.web.service.interfaces.IWorkFlowService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * 流程服务类
+ * 工作流服务实现类
  * 
- * @author MEL
- * @date 2014-06-04
+ * @author yangguangftlp
+ * @date 2014年6月11日
  */
-@Service("webappProcessService")
-public class WebappProcessService extends AbstractWebappService implements IWebappProcessService {
-
-	/**
-	 * spring事物控制方法、所以在方法的开头开启数据库连接、 采用Spring DataSourceUtils类获取连接
-	 * 这样数据库的连接就交给事物进行处理，事物处理完毕后会关闭数据库连接
-	 * 
-	 */
-	public ProcessDefinition createProcessDefinition(String parameter) throws FoxbpmWebException {
-		Connection connection = null;
-		try {
-			// connection = dbfactory.createConnection();
-			// 开启数据库连接
-			// 开启事物
-			// 设置工作流引擎的数据库连接
-			// 工作流引擎的API调用
-			// 本地业务数据DAO调用
-			// 提交或回滚事物
-			// 事物处理完毕后会自动关闭数据库连接
-			// BizInfo bizInfo = new BizInfo();
-			// bizInfo.setId("id001");
-			// bizInfo.setName("name001");
-			// bizInfo.setComment("comment001");
-			// bizDB.insertBizInfo(bizInfo, connection);
-			return null;
-		} catch (FoxbpmWebException e) {
-			throw e;
-		}
-
-	}
-
-	@Override
-	public List<ProcessDefinition> queryProcessDefinition() {
-		Connection connection = null;
-		try {
-			connection = dbfactory.createConnection();
-			// 开启数据库连接
-			// 开启事物
-			// 设置工作流引擎的数据库连接
-			// 工作流引擎的API调用
-			// 本地业务数据DAO调用
-			// 提交或回滚事物
-			// 事物处理完毕后会自动关闭数据库连接
-			// BizInfo bizInfo = new BizInfo();
-			// bizInfo.setId("id001");
-			// bizInfo.setName("name001");
-			// bizInfo.setComment("comment001");
-			// bizDB.insertBizInfo(bizInfo, connection);
-			List<ProcessDefinition> processDefinitionList = modelService.createProcessDefinitionQuery().list();
-			System.out.println(processDefinitionList.size());
-			return processDefinitionList;
-		} catch (Exception e) {
-			throw new FoxbpmWebException(e.getMessage(), "", e);
-		}
-		// return modelService.createProcessDefinitionQuery().list();
-	}
+@Service("workFlowServiceImpl")
+public class WorkFlowServiceImpl implements IWorkFlowService {
+	// 任务服务
+	@Autowired
+	private TaskService taskService;
+	// 模型服务
+	@Autowired
+	private ModelService modelService;
+	// 运行时服务
+	@Autowired
+	private RuntimeService runtimeService;
 
 	@Override
 	public Map<String, List<Map<String, Object>>> queryProcessDef(Pagination<String> pageInfor, Map<String, Object> params) throws FoxbpmWebException {
@@ -260,20 +235,136 @@ public class WebappProcessService extends AbstractWebappService implements IWeba
 		return resultMap;
 	}
 
-	public void setBizDB(BizDBInterface bizDB) {
-		this.bizDB = bizDB;
+	@Override
+	public Map<String, Object> queryToDoTask(Pagination<String> pageInfor, Map<String, Object> params) {
+
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		try {
+			TaskQuery taskQuery = taskService.createTaskQuery();
+			// 获取基本查询条件参数
+			String userId = (String) params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_USERID);
+			String initiator = (String) params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_INITIATOR);
+			String processDefinitionName = (String) params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PROCESSDEFINITIONNAME);
+			String businessKey = (String) params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_BUSINESSKEY);
+			String title = (String) params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_TITLE);
+			String dss = (String) params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_ARRIVALTIMES);
+			String dse = (String) params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_ARRIVALTIMEE);
+			userId = "admin";
+			// 处理查询参数
+			if (StringUtil.isNotEmpty(userId)) {
+				taskQuery.taskAssignee(userId);
+				taskQuery.taskCandidateUser(userId);
+			}
+			if (StringUtil.isNotEmpty(initiator)) {
+				taskQuery.initiator(initiator);
+			}
+			if (StringUtil.isNotEmpty(processDefinitionName)) {
+				taskQuery.processDefinitionNameLike(processDefinitionName);
+			}
+			if (StringUtil.isNotEmpty(businessKey)) {
+				taskQuery.businessKeyLike(businessKey);
+			}
+			if (StringUtil.isNotEmpty(title)) {
+				taskQuery.taskDescriptionLike(title);
+			}
+			// 时间处理
+			Date dates = null;
+			Date datee = null;
+
+			if (StringUtil.isNotEmpty(dss)) {
+				dates = DateUtil.stringToDate(dss, "yyyy-MM-dd");
+			}
+			if (StringUtil.isNotEmpty(dse)) {
+				String endTime = "235959999";
+				dse += endTime;
+				datee = DateUtil.stringToDate(dse, "yyyy-MM-ddHHmmssSSS");
+			}
+			if (dates != null) {
+				taskQuery.taskCreatedAfter(datee);
+			}
+			if (datee != null) {
+				taskQuery.taskCreatedBefore(dates);
+			}
+			// 查询代办任务
+			List<Task> taskList = null;
+			if (null == pageInfor) {
+				taskList = taskQuery.list();
+			} else {
+				taskList = taskQuery.orderByTaskCreateTime().desc().listPagination(pageInfor.getPageIndex(), pageInfor.getPageSize());
+				pageInfor.setTotal(StringUtil.getInt(taskQuery.count()));
+			}
+			// 设置分页信息
+			List<Map<String, Object>> instanceMaps = new ArrayList<Map<String, Object>>();
+			Map<String, Object> instances = null;
+			for (int i = 0, size = (null == taskList) ? 0 : taskList.size(); i < size; i++) {
+				instances = new HashMap<String, Object>();
+				instances.putAll(taskList.get(i).getPersistentState());
+				instanceMaps.add(instances);
+			}
+			resultMap.put("dataList", instanceMaps);
+		} catch (Exception e) {
+			throw new FoxbpmWebException(e.getMessage(), "", e);
+		}
+		return resultMap;
 	}
 
-	public void setDbfactory(FoxbpmDBConnectionFactory dbfactory) {
-		this.dbfactory = dbfactory;
+	@Override
+	public Map<String, Object> startTask(Map<String, Object> params) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		List<Map<String, Object>> tmpres = new ArrayList<Map<String, Object>>();
+		try {
+			String taskId = StringUtil.getString(params.get("taskId"));
+			String processDefinitionKey = StringUtil.getString(params.get("processDefinitionKey"));
+			List<TaskCommand> list = null;
+			if (StringUtil.isNotEmpty(taskId)) {
+				list = taskService.getTaskCommandByTaskId(taskId);
+			} else {
+				list = taskService.getSubTaskCommandByKey(processDefinitionKey);
+			}
+			for (TaskCommand tmp : list) {
+				tmpres.add(tmp.getPersistentState());
+			}
+			resultMap.put("commandList", tmpres);
+		} catch (Exception e) {
+			throw new FoxbpmWebException(e.getMessage(), "", e);
+		}
+		return resultMap;
 	}
 
-	public void setModelService(ModelService modelService) {
-		this.modelService = modelService;
-	}
+	@Override
+	public ProcessInstance completeTask(Map<String, Object> params) {
+		Authentication.setAuthenticatedUserId("admin");
+		ProcessInstance processInstance = null;
+		String taskId = StringUtil.getString(params.get("taskId"));
+		String commandType = StringUtil.getString(params.get("commandType"));
+		String commandId = StringUtil.getString(params.get("commandId"));
+		String processDefinitionKey = StringUtil.getString(params.get("processDefinitionKey"));
+		String businessKey = StringUtil.getString(params.get("businessKey"));
+		String userId = StringUtil.getString(params.get("userId"));
+		String taskComment = StringUtil.getString(params.get("_taskComment"));
 
-	public void setRuntimeService(RuntimeService runtimeService) {
-		this.runtimeService = runtimeService;
+		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
+		userId = "admin";
+		// 命令类型，可以从流程引擎配置中查询 启动并提交为startandsubmit
+		expandTaskCommand.setCommandType(commandType);
+		// 设置提交人
+		expandTaskCommand.setInitiator(userId);
+		// 设置命令的id,需和节点上配置的按钮编号对应，会执行按钮中的脚本。
+		expandTaskCommand.setTaskCommandId(commandId);
+		expandTaskCommand.setTaskComment(taskComment);
+		try {
+			if (StringUtil.isNotEmpty(taskId)) {
+				expandTaskCommand.setTaskId(taskId);
+			} else {
+				String processInstanceId = runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey).getId();
+				Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).taskNotEnd().singleResult();
+				expandTaskCommand.setTaskId(task.getId());
+			}
+			processInstance = taskService.expandTaskComplete(expandTaskCommand, null);
+		} catch (Exception e) {
+			throw new FoxbpmWebException(e.getMessage(), "", e);
+		}
+		return processInstance;
 	}
 
 }

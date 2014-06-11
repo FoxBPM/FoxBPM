@@ -6,12 +6,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 pageContext.setAttribute("basePath",basePath); 
 %>
 <base href="<%=basePath%>">
-<script type="text/javascript" src="foxbpm/js/jquery.js"></script>
-<script type="text/javascript" src="foxbpm/js/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="foxbpm/js/common.js"></script>
-<link rel="stylesheet" type="text/css" href="foxbpm/css/reset.css">
-<link rel="stylesheet" type="text/css" href="foxbpm/css/global.css">
-<link rel="stylesheet" type="text/css" href="foxbpm/css/popup.css">
+<script type="text/javascript" src="common/js/jquery.js"></script>
+<script type="text/javascript" src="common/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="common/js/common.js"></script>
+<link rel="stylesheet" type="text/css" href="common/css/reset.css">
+<link rel="stylesheet" type="text/css" href="common/css/global.css">
+<link rel="stylesheet" type="text/css" href="common/css/popup.css">
 <script type="text/javascript">
 var message = '${errorMsg}';
 if(message!=''){

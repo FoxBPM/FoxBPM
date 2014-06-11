@@ -22,12 +22,12 @@ import java.util.Map;
 import org.foxbpm.engine.runtime.ProcessInstance;
 
 /**
- * 业务服务接口
+ * 工作业务服务接口
+ * 
  * @author yangguangftlp
- * @date: 2014年6月10日
+ * @date 2014年6月11日
  */
-public interface IWebappDemoService {
-
+public interface IDemoService {
 	/**
 	 * 开启一个任务
 	 * 
@@ -44,7 +44,5 @@ public interface IWebappDemoService {
 	 *            任务信息
 	 * @return 返回完成后的任务信息
 	 */
-	public ProcessInstance executeTask(Map<String, Object> params);
-	
-	
+	public ProcessInstance completeTask(Map<String, Object> params);
 }

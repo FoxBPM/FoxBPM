@@ -7,7 +7,7 @@ package org.foxbpm.web.common.constant;
  * @date 2014-06-06
  */
 public final class FoxbpmServiceNameDefinition {
-	public final static String PROCESS_SERVICENAME = "webappProcessService";
-	public final static String TAST_SERVICENAME = "webappTaskService";
-	public final static String DEMO_SERVICENAME = "webappDemoService";
+	public final static String WORKFLOW_SERVICENAME = "workFlowServiceImpl";
+	public final static String FLOWMANAGE_SERVICENAME = "FlowManageServiceImpl";
+	public final static String DEMO_SERVICENAME = "demoServiceImpl";
 }

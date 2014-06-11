@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<jsp:include page="head.jsp" flush="true"/>
+<jsp:include page="../common/head.jsp" flush="true"/>
 <style>
 a{text-decoration: none;}
 </style>

@@ -15,14 +15,13 @@
 <base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>审批</title>
-<link rel="stylesheet" type="text/css" href="foxbpm/css/reset.css">
-<link rel="stylesheet" type="text/css" href="foxbpm/css/form.css">
-<script type="text/javascript" src="foxbpm/js/jquery.js"></script>
-<script type="text/javascript"
-	src="foxbpm/js/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="foxbpm/js/flowcommand.js"></script>
-<script type="text/javascript" src="foxbpm/js/flowautoassemble.js"></script>
-<script type="text/javascript" src="foxbpm/js/select.js"></script>
+<link rel="stylesheet" type="text/css" href="common/css/reset.css">
+<link rel="stylesheet" type="text/css" href="common/css/form.css">
+<script type="text/javascript" src="common/js/jquery.js"></script>
+<script type="text/javascript" src="common/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="common/js/flowcommand.js"></script>
+<script type="text/javascript" src="common/js/flowautoassemble.js"></script>
+<script type="text/javascript" src="common/js/select.js"></script>
 
 <script type="text/javascript">
 	var message = '${errorMsg}';
