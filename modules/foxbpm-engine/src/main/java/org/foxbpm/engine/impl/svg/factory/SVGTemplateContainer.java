@@ -81,7 +81,7 @@ public class SVGTemplateContainer {
 			Unmarshaller unMarshaller = context.createUnmarshaller();
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 			// 解析的时候忽略SVG命名空间，否则会出错
-			factory.setNamespaceAware(false);
+			factory.setNamespaceAware(true);
 			XMLReader reader = factory.newSAXParser().getXMLReader();
 			Source source = new SAXSource(reader, new InputSource(stringReader));
 			VONode object = (VONode) unMarshaller.unmarshal(source);

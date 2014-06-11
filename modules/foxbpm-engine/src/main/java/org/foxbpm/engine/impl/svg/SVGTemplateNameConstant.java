@@ -15,7 +15,7 @@
  * 
  * @author MAENLIANG
  */
-package org.foxbpm.engine.impl.svg.factory;
+package org.foxbpm.engine.impl.svg;
 
 /**
  * 模版名称的定义类，和BPMN2.0下的SVG文件名进行映射
