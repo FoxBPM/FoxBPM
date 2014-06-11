@@ -37,7 +37,10 @@ public class KernelFlowElementsContainerImpl extends KernelFlowElementImpl imple
 
 	protected List<KernelFlowNodeImpl> flowNodes = new ArrayList<KernelFlowNodeImpl>();
 	protected Map<String, KernelFlowNodeImpl> namedFlowNodes = new HashMap<String, KernelFlowNodeImpl>();
+	protected Map<String,KernelSequenceFlowImpl> sequenceFlows=new HashMap<String,KernelSequenceFlowImpl>();
 	
+	
+
 	protected Map<String, List<KernelListener>> kernelListeners = new HashMap<String, List<KernelListener>>();
 
 
@@ -67,6 +70,18 @@ public class KernelFlowElementsContainerImpl extends KernelFlowElementImpl imple
 
 	public KernelFlowNodeImpl createFlowNode() {
 		return createFlowNode(null);
+	}
+	
+	public KernelSequenceFlowImpl findSequenceFlow(String sequenceFlowId){
+		return sequenceFlows.get(sequenceFlowId);
+	}
+	
+	public Map<String, KernelSequenceFlowImpl> getSequenceFlows() {
+		return sequenceFlows;
+	}
+
+	public void setSequenceFlows(Map<String, KernelSequenceFlowImpl> sequenceFlows) {
+		this.sequenceFlows = sequenceFlows;
 	}
 
 	public KernelFlowNodeImpl createFlowNode(String flowNodeId) {

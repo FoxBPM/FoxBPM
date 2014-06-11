@@ -50,6 +50,7 @@ public class KernelSequenceFlowImpl extends KernelFlowElementImpl implements Ker
 
 	public KernelSequenceFlowImpl(String id, KernelProcessDefinitionImpl processDefinition) {
 		super(id, processDefinition);
+		processDefinition.getSequenceFlows().put(id, this);
 	}
 
 	public KernelFlowNodeImpl getSourceRef() {

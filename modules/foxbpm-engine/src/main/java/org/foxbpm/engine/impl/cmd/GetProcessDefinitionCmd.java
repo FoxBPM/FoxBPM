@@ -25,11 +25,11 @@ import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
 import org.foxbpm.engine.repository.ProcessDefinition;
 
-public class GetProcessDefinition implements Command<ProcessDefinition>{
+public class GetProcessDefinitionCmd implements Command<ProcessDefinition>{
 
 	private String processDefinitionId;
 	
-	public GetProcessDefinition(String processDefintionId) {
+	public GetProcessDefinitionCmd(String processDefintionId) {
 		this.processDefinitionId = processDefintionId;
 	}
 	
