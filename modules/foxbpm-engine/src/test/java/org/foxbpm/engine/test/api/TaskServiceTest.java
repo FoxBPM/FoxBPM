@@ -1,20 +1,11 @@
 package org.foxbpm.engine.test.api;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.foxbpm.engine.impl.entity.TaskEntity;
-import org.foxbpm.engine.impl.identity.Authentication;
-import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
-import org.foxbpm.engine.runtime.ProcessInstance;
-import org.foxbpm.engine.task.Task;
-import org.foxbpm.engine.task.TaskCommand;
-import org.foxbpm.engine.task.TaskQuery;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
+import org.junit.Test;
 
 public class TaskServiceTest extends AbstractFoxBpmTestCase {
 
+	@Test
 	public void testTaskQuery(){
 		
 //		Authentication.setAuthenticatedUserId("2222");
@@ -33,8 +24,6 @@ public class TaskServiceTest extends AbstractFoxBpmTestCase {
 //		taskService.expandTaskComplete(expandCommand, null);
 		
 		taskService.createTaskQuery().taskAssignee("2222").taskCandidateUser("2222").taskNotEnd().listPagination(1, 10);
-		
-		
 		
 //		task=taskService.createTaskQuery().processInstanceId(processInstance.getId()).taskNotEnd().singleResult();
 //		ExpandTaskCommand expandCommand2 = new ExpandTaskCommand();

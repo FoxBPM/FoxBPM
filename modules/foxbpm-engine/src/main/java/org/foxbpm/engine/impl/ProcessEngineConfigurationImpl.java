@@ -84,6 +84,7 @@ import org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition;
 import org.foxbpm.model.config.style.ElementStyle;
 import org.foxbpm.model.config.style.FoxBPMStyleConfig;
 import org.foxbpm.model.config.style.Style;
+import org.foxbpm.model.config.style.StylePackage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -199,7 +200,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			} else {
 				resource = resourceSet.createResource(URI.createURI(filePath));
 			}
-			resourceSet.getPackageRegistry().put(FoxBPMConfigPackage.eINSTANCE.getNsURI(), FoxBPMConfigPackage.eINSTANCE);
+			resourceSet.getPackageRegistry().put(StylePackage.eINSTANCE.getNsURI(), StylePackage.eINSTANCE);
 			resource.load(null);
 		} catch (Exception e) {
 			log.error("style.xml文件加载失败", e);

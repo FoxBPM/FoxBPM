@@ -3,75 +3,37 @@ package org.foxbpm.engine.test;
 
 import java.lang.reflect.Method;
 
-import junit.framework.TestCase;
-
 import org.foxbpm.engine.IdentityService;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngine;
-import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
-import org.foxbpm.engine.impl.ProcessEngineImpl;
 import org.foxbpm.engine.repository.DeploymentBuilder;
-import org.foxbpm.spring.ProcessEngineConfigrationImplSpring;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
-import org.springframework.transaction.support.TransactionTemplate;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
-public abstract class AbstractFoxBpmTestCase extends TestCase {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:applicationContext-test.xml")
+@Transactional  
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
+public abstract class AbstractFoxBpmTestCase extends AbstractJUnit4SpringContextTests  {
 
+	@Autowired
 	public static ProcessEngine processEngine;
-	protected String deploymentId;
-	protected ProcessEngineConfigurationImpl processEngineConfiguration;
+	@Autowired
 	protected ModelService modelService;
+	@Autowired
 	protected RuntimeService runtimeService;
+	@Autowired
 	protected TaskService taskService;
+	@Autowired
 	protected IdentityService identityService;
-	
-
-	protected void initializeServices() {
-		ProcessEngineConfigrationImplSpring processEngineConfigrationImplSpring = new ProcessEngineConfigrationImplSpring();
-		processEngine = processEngineConfigrationImplSpring.setProcessEngineName(ProcessEngineManagement.NAME_DEFAULT).buildProcessEngine();
-		ProcessEngineManagement.setInit();
-		processEngineConfiguration = ((ProcessEngineImpl) processEngine).getProcessEngineConfiguration();
-		modelService = processEngine.getModelService();
-		runtimeService = processEngine.getRuntimeService();
-		taskService = processEngine.getTaskService();
-		identityService = processEngine.getIdentityService();
-	}
-	
-	public void runBare() throws Throwable {
-
-		if(modelService == null){
-			initializeServices();
-		}
-		DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager(processEngine.getProcessEngineConfiguration().getDataSourceManager().getDataSource());
-		TransactionTemplate t = new TransactionTemplate(dataSourceTransactionManager);
-		t.execute(new TransactionCallbackWithoutResult() {
-			@Override
-			protected void doInTransactionWithoutResult(TransactionStatus status) {
-				try {
-					
-					execute();
-//					processEngine.getProcessEngineConfiguration().getDataSourceManager().getDataSource().getConnection().rollback();
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-			}
-		});
-	}
-	
-	public void execute(){
-		try {
-			annotationDeploymentSetUp(processEngine, getClass(), getName());
-			super.runBare();
-		} catch (Throwable e) {
-			throw new RuntimeException(e);
-		}
-	}
 	
 	public void annotationDeploymentSetUp(ProcessEngine processEngine, Class<?> testClass, String methodName) throws Exception {
 		Method method = null;
