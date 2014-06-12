@@ -36,6 +36,7 @@ import org.foxbpm.engine.impl.svg.vo.SvgVO;
  * @date 2014-06-10
  */
 public class EventSVGBuilder extends AbstractSVGBuilder {
+	private static final String FILL_DEFAULT = "white";
 	/**
 	 * 事件子类型对象
 	 */
@@ -108,18 +109,12 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setHeight(String height) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void setStroke(String stroke) {
 		if (StringUtils.isBlank(stroke)) {
-			this.textVO.setStroke("black");
+			this.textVO.setStroke(STROKE_DEFAULT);
 			return;
 		}
-		this.circleVO.setStroke("#" + stroke);
+		this.circleVO.setStroke(COLOR_FLAG + stroke);
 	}
 
 	@Override
@@ -148,9 +143,9 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 		}
 
 		if (StringUtils.isBlank(fill)) {
-			this.circleVO.setFill("white");
+			this.circleVO.setFill(FILL_DEFAULT);
 		} else {
-			this.circleVO.setFill("#" + fill);
+			this.circleVO.setFill(COLOR_FLAG + fill);
 		}
 
 	}
@@ -177,6 +172,10 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 				+ Float.valueOf(this.circleVO.getR()));
 		x = String.valueOf(Float.valueOf(x)
 				+ Float.valueOf(this.circleVO.getR()));
+		// 如果是事件节点，字体横坐标和圆心的横坐标一直，纵坐标等圆心坐标值加圆的半径值
+		this.textVO.setX(x);
+		this.textVO.setY(String.valueOf(Float.valueOf(y)
+				+ Float.valueOf(this.circleVO.getR()) + 10));
 		// 如果存在子类型，例如ERROR
 		if (this.pathVo != null) {
 			// 整体 SHIFT
@@ -185,5 +184,21 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 			this.circleVO.setCx(x);
 			this.circleVO.setCy(y);
 		}
+	}
+
+	/**
+	 * 圆圈不需要设置拐点
+	 */
+	public void setWayPoints(String[] wayPointArray) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * 圆圈已经设置半径，不需要在设置高度
+	 */
+	public void setHeight(String height) {
+		// TODO Auto-generated method stub
+
 	}
 }

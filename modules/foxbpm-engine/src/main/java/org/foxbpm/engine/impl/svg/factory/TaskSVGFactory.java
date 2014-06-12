@@ -57,49 +57,8 @@ public class TaskSVGFactory extends AbstractFlowNodeSVGFactory {
 
 	@Override
 	public VONode createSVGVO(String svgType) {
-		List<String> gIDList = this.getGIDSFromSvgType(svgType);
 		SvgVO taskVO = (SvgVO) super.loadSVGVO(this.svgTemplateFileName);
-		this.filterSvgVOByGID(taskVO, gIDList);
-		this.filterRectVO(taskVO);
-
 		return taskVO;
-	}
-
-	/**
-	 * 从模版对象中过滤掉其他类型的G节点
-	 * 
-	 * @param svgVO
-	 * @param gIDList
-	 */
-	private void filterSvgVOByGID(SvgVO svgVO, List<String> gIDList) {
-		GVO gvo = svgVO.getgVo();
-		List<GVO> gvoList = gvo.getgVoList();
-		Iterator<GVO> gvoIter = gvoList.iterator();
-		while (gvoIter.hasNext()) {
-			GVO subGVo = gvoIter.next();
-			if (!this.confirmGVOExistsByID(gIDList, subGVo.getId())) {
-				gvoIter.remove();
-				continue;
-			}
-		}
-	}
-
-	/**
-	 * 过滤RECT节点
-	 * 
-	 * @param svgVO
-	 */
-	private void filterRectVO(SvgVO svgVO) {
-		List<RectVO> rectVoList = svgVO.getgVo().getRectVoList();
-		Iterator<RectVO> rectVOIter = rectVoList.iterator();
-		while (rectVOIter.hasNext()) {
-			RectVO rectVo = rectVOIter.next();
-			if (StringUtils.equalsIgnoreCase(rectVo.getId(), "callActivity")
-					|| StringUtils.equalsIgnoreCase(rectVo.getId(),
-							"text_frame")) {
-				rectVOIter.remove();
-			}
-		}
 	}
 
 	/**
@@ -120,13 +79,45 @@ public class TaskSVGFactory extends AbstractFlowNodeSVGFactory {
 		return false;
 	}
 
-	/**
-	 * 转化G节点ID为集合
-	 * 
-	 * @param svgType
-	 * @return
-	 */
-	private List<String> getGIDSFromSvgType(String svgType) {
-		return Arrays.asList(svgType.split(SPLIT_SEPERATOR));
+	@Override
+	public void filterSvgVO(VONode voNode, String[] filterCondition) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void filterRectVO(VONode svgVO, String[] filterCondition) {
+		for (int i = 0; i < filterCondition.length; i++) {
+			List<RectVO> rectVoList = ((SvgVO) svgVO).getgVo().getRectVoList();
+			Iterator<RectVO> rectVOIter = rectVoList.iterator();
+			while (rectVOIter.hasNext()) {
+				RectVO rectVo = rectVOIter.next();
+				if (StringUtils.equalsIgnoreCase(rectVo.getId(),
+						filterCondition[i])) {
+					rectVOIter.remove();
+				}
+			}
+		}
+	}
+
+	@Override
+	public void filterPathVO(VONode voNode, String[] filterCondition) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void filterGVO(VONode voNode, List<String> gIDList) {
+		GVO gvo = ((SvgVO) voNode).getgVo();
+		List<GVO> gvoList = gvo.getgVoList();
+		Iterator<GVO> gvoIter = gvoList.iterator();
+		while (gvoIter.hasNext()) {
+			GVO subGVo = gvoIter.next();
+			if (!this.confirmGVOExistsByID(gIDList, subGVo.getId())) {
+				gvoIter.remove();
+				continue;
+			}
+		}
+
 	}
 }

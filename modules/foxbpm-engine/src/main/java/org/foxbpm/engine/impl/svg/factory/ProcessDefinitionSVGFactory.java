@@ -17,17 +17,12 @@
  */
 package org.foxbpm.engine.impl.svg.factory;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.bpmn.behavior.EndEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.SendTaskBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.StartEventBehavior;
@@ -40,6 +35,7 @@ import org.foxbpm.engine.impl.svg.vo.GVO;
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.svg.vo.VONode;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
+import org.foxbpm.kernel.process.KernelFlowElement;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 
@@ -71,12 +67,12 @@ public class ProcessDefinitionSVGFactory extends
 
 		// 遍历所有的流程节点
 		Iterator<KernelFlowNodeImpl> flowNodeIterator = flowNodes.iterator();
+		String taskType = EMPTY_STRING;
+		String svgTemplateFileName = EMPTY_STRING;
 		while (flowNodeIterator.hasNext()) {
 			KernelFlowNodeImpl kernelFlowNodeImpl = flowNodeIterator.next();
 			KernelFlowNodeBehavior kernelFlowNodeBehavior = kernelFlowNodeImpl
 					.getKernelFlowNodeBehavior();
-			String taskType = EMPTY_STRING;
-			String svgTemplateFileName = EMPTY_STRING;
 			if (kernelFlowNodeBehavior instanceof UserTaskBehavior) {
 				taskType = SVGTypeNameConstant.ACTIVITY_USERTASK;
 				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK;
@@ -104,8 +100,12 @@ public class ProcessDefinitionSVGFactory extends
 		while (sequenceFlowterator.hasNext()) {
 			Entry<String, KernelSequenceFlowImpl> nextConnector = sequenceFlowterator
 					.next();
-			// KernelSequenceFlowImpl sequenceFlowImpl =
-			// nextConnector.getValue();
+			KernelSequenceFlowImpl sequenceFlowImpl = nextConnector.getValue();
+			taskType = SVGTypeNameConstant.SVG_TYPE_CONNECTOR;
+			svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_CONNECTOR_SEQUENCEFLOW;
+			VONode voNode = this.getNodeSVGFromFactory(sequenceFlowImpl,
+					taskType, svgTemplateFileName);
+			voNodeList.add(voNode);
 		}
 
 		String svgStr = this.convertNodeListToString(
@@ -145,7 +145,7 @@ public class ProcessDefinitionSVGFactory extends
 	 * @param svgTemplateFileName
 	 * @return
 	 */
-	private VONode getNodeSVGFromFactory(KernelFlowNodeImpl kernelFlowNodeImpl,
+	private VONode getNodeSVGFromFactory(KernelFlowElement kernelFlowNodeImpl,
 			String svgType, String svgTemplateFileName) {
 		// 调用节点构造方法，创建SVG VALUE OBJECT 对象
 		AbstractFlowNodeSVGFactory svgFactory = AbstractFlowNodeSVGFactory

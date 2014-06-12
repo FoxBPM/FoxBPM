@@ -17,6 +17,8 @@
  */
 package org.foxbpm.engine.impl.svg.factory;
 
+import java.util.List;
+
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.svg.vo.VONode;
 import org.foxbpm.kernel.process.KernelFlowElement;
@@ -53,6 +55,30 @@ public class EventSVGFactory extends AbstractFlowNodeSVGFactory {
 		SvgVO startEventNone = (SvgVO) super.loadSVGVO(svgTemplateFileName);
 		// 过滤之类的操作
 		return startEventNone;
+	}
+
+	@Override
+	public void filterSvgVO(VONode voNode, String[] filterCondition) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void filterRectVO(VONode voNode, String[] filterCondition) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void filterPathVO(VONode voNode, String[] filterCondition) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void filterGVO(VONode voNode, List<String> filterCondition) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

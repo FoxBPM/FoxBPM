@@ -18,6 +18,8 @@
 package org.foxbpm.engine.impl.svg.factory;
 
 import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
@@ -32,6 +34,7 @@ import org.foxbpm.engine.impl.svg.SVGTypeNameConstant;
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.svg.vo.VONode;
 import org.foxbpm.engine.impl.svg.vo.build.AbstractSVGBuilder;
+import org.foxbpm.engine.impl.svg.vo.build.ConnectorSVGBuilder;
 import org.foxbpm.kernel.process.KernelFlowElement;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
@@ -44,6 +47,7 @@ import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
  * 
  */
 public abstract class AbstractFlowNodeSVGFactory {
+	private static final String SPLIT_SEPERATOR = "/";
 	protected String svgTemplateFileName;
 	protected KernelFlowElement kernelFlowElement;
 
@@ -77,12 +81,17 @@ public abstract class AbstractFlowNodeSVGFactory {
 		AbstractSVGBuilder svgBuilder = AbstractSVGBuilder.createSVGBuilder(
 				svgVo, svgType);
 
-		// 构造节点元素
+		// 构造节点元素,需要考虑构造顺序
 		if (kernelFlowElement instanceof KernelFlowNodeImpl) {
+			this.filterRectVO(svgVo, new String[] { "callActivity",
+					"text_frame" });
+			this.filterGVO(svgVo, Arrays.asList(svgType.split(SPLIT_SEPERATOR)));
 			KernelFlowNodeImpl kernelFlowNodeImpl = (KernelFlowNodeImpl) kernelFlowElement;
 			svgBuilder.setText(kernelFlowNodeImpl.getName());
+			svgBuilder.setText("haohaohao");
 			// 如果是事件节点，必须先设置width属性，即设置圆的直径
 			svgBuilder.setWidth(String.valueOf(kernelFlowNodeImpl.getWidth()));
+			// 设置节点的坐标包括对应文本字体的坐标
 			svgBuilder.setXAndY(String.valueOf(kernelFlowNodeImpl.getX()),
 					String.valueOf(kernelFlowNodeImpl.getY()));
 
@@ -93,23 +102,53 @@ public abstract class AbstractFlowNodeSVGFactory {
 			svgBuilder.setTextStroke((String) kernelFlowNodeImpl
 					.getProperty(StyleOption.TextColor));
 
-			// 构造
-			// 构造
-			// TODO 未知属性
-			kernelFlowNodeImpl.getProperty(StyleOption.Font);
+			svgBuilder.setTextFont((String) kernelFlowNodeImpl
+					.getProperty(StyleOption.Font));
 			svgBuilder.setStroke((String) kernelFlowNodeImpl
 					.getProperty(StyleOption.Foreground));
-			String style = (String) kernelFlowNodeImpl
-					.getProperty(StyleOption.StyleObject);
+			// TODO 未知属性
+			kernelFlowNodeImpl.getProperty(StyleOption.StyleObject);
 		}
 		// 线条元素
 		if (kernelFlowElement instanceof KernelSequenceFlowImpl) {
+			this.filterPathVO(svgVo, new String[] { "conditional", "default" });
 			KernelSequenceFlowImpl kernelSequenceFlowImpl = (KernelSequenceFlowImpl) kernelFlowElement;
-			kernelSequenceFlowImpl.getProperty("");
-			// TODO 待操作
+			List<Integer> waypoints = kernelSequenceFlowImpl.getWaypoints();
+			String[] wayPointArray = this
+					.getSequenceFLowWayPointArrayByWayPointList(waypoints);
+			svgBuilder.setWayPoints(wayPointArray);
+			svgBuilder.setStroke((String) kernelSequenceFlowImpl
+					.getProperty(StyleOption.Foreground));
 		}
 		return svgVo;
 
+	}
+
+	/**
+	 * 创建waypoint节点数组
+	 * 
+	 * @param waypoints
+	 * @return
+	 */
+	private String[] getSequenceFLowWayPointArrayByWayPointList(
+			List<Integer> waypoints) {
+		if (waypoints != null && waypoints.size() > 0
+				&& waypoints.size() % 2 == 0) {
+			String[] wayPointArray = new String[waypoints.size() / 2];
+			int arrayIndex = 0;
+			for (int i = 0; i < waypoints.size(); i++) {
+				if (i % 2 != 0) {
+					wayPointArray[arrayIndex] = String.valueOf(waypoints
+							.get(i - 1))
+							+ " "
+							+ String.valueOf(waypoints.get(i)) + " ";
+					arrayIndex++;
+				}
+			}
+			return wayPointArray;
+		} else {
+			throw new FoxBPMException("线条节点有问题 waypoints不符合规则！");
+		}
 	}
 
 	/**
@@ -183,6 +222,38 @@ public abstract class AbstractFlowNodeSVGFactory {
 					e);
 		}
 	}
+
+	/**
+	 * SVG对象内容过滤
+	 * 
+	 * @param filterCondition
+	 *            过滤条件
+	 */
+	public abstract void filterSvgVO(VONode voNode, String[] filterCondition);
+
+	/**
+	 * SVG对象内容过滤
+	 * 
+	 * @param filterCondition
+	 *            过滤条件
+	 */
+	public abstract void filterRectVO(VONode voNode, String[] filterCondition);
+
+	/**
+	 * SVG对象内容过滤
+	 * 
+	 * @param filterCondition
+	 *            过滤条件
+	 */
+	public abstract void filterPathVO(VONode voNode, String[] filterCondition);
+
+	/**
+	 * SVG对象内容过滤
+	 * 
+	 * @param filterCondition
+	 *            过滤条件
+	 */
+	public abstract void filterGVO(VONode voNode, List<String> filterCondition);
 
 	/**
 	 * 

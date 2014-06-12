@@ -24,6 +24,7 @@ import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.svg.vo.DefsVO;
+import org.foxbpm.engine.impl.svg.vo.GVO;
 import org.foxbpm.engine.impl.svg.vo.RadialGradientVO;
 import org.foxbpm.engine.impl.svg.vo.RectVO;
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
@@ -35,6 +36,8 @@ import org.foxbpm.engine.impl.svg.vo.SvgVO;
  * @date 2014-06-10
  */
 public class TaskSVGBuilder extends AbstractSVGBuilder {
+	private static final String FILL_DEFAULT = "ffffcc";
+
 	/**
 	 * 矩形对象
 	 */
@@ -75,20 +78,26 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setStroke(String stroke) {
-		// TODO Auto-generated method stub
-
+		if (StringUtils.isBlank(stroke)) {
+			this.rectVO.setStroke(STROKE_DEFAULT);
+			return;
+		}
+		this.rectVO.setStroke(COLOR_FLAG + stroke);
 	}
 
 	@Override
 	public void setStrokeWidth(String strokeWidth) {
-		// TODO Auto-generated method stub
-
+		if (StringUtils.isBlank(strokeWidth)) {
+			this.rectVO.setStroke(STROKEWIDTH_DEFAULT);
+			return;
+		}
+		this.rectVO.setStrokeWidth(strokeWidth);
 	}
 
 	@Override
 	public void setFill(String fill) {
 		if (StringUtils.isBlank(fill)) {
-			fill = "ffffcc";
+			fill = FILL_DEFAULT;
 		}
 		DefsVO defsVo = this.svgVo.getgVo().getDefsVo();
 		if (defsVo != null) {
@@ -101,7 +110,19 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 			}
 		}
 
-		this.rectVO.setFill("#" + fill);
+		this.rectVO.setFill(COLOR_FLAG + fill);
+	}
+
+	@Override
+	public void setXAndY(String x, String y) {
+		// 设置整体坐标，包括子类型
+		this.svgVo.getgVo().setTransform("translate(" + x + ", " + y + ")");
+
+		// 矩形设置文字X坐标，矩形X坐标+宽度的一半
+		this.textVO.setX(String.valueOf(Float.valueOf(x)
+				+ (Float.valueOf(this.rectVO.getWidth()) / 2)));
+		this.textVO.setY(String.valueOf(Float.valueOf(y)
+				+ Float.valueOf(this.rectVO.getHeight()) + 10));
 	}
 
 	@Override
@@ -145,9 +166,8 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setXAndY(String x, String y) {
-		// 设置整体坐标，包括子类型
-		this.svgVo.getgVo().setTransform("translate(" + x + ", " + y + ")");
-	}
+	public void setWayPoints(String[] wayPointArray) {
+		// TODO Auto-generated method stub
 
+	}
 }

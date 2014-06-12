@@ -23,6 +23,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.svg.vo.DefsVO;
 import org.foxbpm.engine.impl.svg.vo.GVO;
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
 
@@ -34,14 +35,18 @@ import org.foxbpm.engine.impl.svg.vo.SvgVO;
  */
 public final class SVGUtils {
 	/**
-	 * GVO对象需要添加到其他的集合中，所以要克隆，避免产生问题
+	 * DefsVO克隆
 	 * 
-	 * @param gVo
+	 * @param DefsVO
 	 *            原对象
 	 * @return clone之后的对象
 	 */
 	public static GVO cloneGVO(GVO gVo) {
 		return (GVO) clone(gVo);
+	}
+
+	public static DefsVO cloneDefsVO(DefsVO defsVo) {
+		return (DefsVO) clone(defsVo);
 	}
 
 	/**

@@ -34,6 +34,9 @@ public abstract class AbstractSVGBuilder {
 	 * BPMN节点类型(例如：矩形，圆形)在SVG文档中的ID
 	 */
 	public static final String BPMN_NODE_ID = "bg_frame";
+	public static final String COLOR_FLAG = "#";
+	public static final String STROKE_DEFAULT = "black";
+	public static final String STROKEWIDTH_DEFAULT = "1";
 	/**
 	 * SVG 对象
 	 */
@@ -69,6 +72,13 @@ public abstract class AbstractSVGBuilder {
 		}
 		return null;
 	}
+
+	/**
+	 * 设置线条的乖点
+	 * 
+	 * @param wayPointArray
+	 */
+	public abstract void setWayPoints(String[] wayPointArray);
 
 	/**
 	 * 设置SVG的宽度
@@ -120,6 +130,15 @@ public abstract class AbstractSVGBuilder {
 	 */
 	public void setText(String text) {
 		this.textVO.setElementValue(text);
+	}
+
+	public void setTextFont(String font) {
+		if (StringUtils.isBlank(font)) {
+			return;
+		}
+		String[] fonts = font.split(",");
+		String style = "font-family:" + fonts[0] + ";font-size:" + fonts[1];
+		this.textVO.setStyle(style);
 	}
 
 	/**
