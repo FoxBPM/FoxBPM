@@ -28,7 +28,12 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlType
-@XmlAccessorType(XmlAccessType.FIELD) 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class OryxDockerVO extends NamespaceAttributesVO {
+
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -1949304045560786908L;
 
 }

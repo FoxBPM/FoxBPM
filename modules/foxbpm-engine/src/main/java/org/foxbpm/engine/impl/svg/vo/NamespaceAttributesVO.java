@@ -20,7 +20,6 @@ package org.foxbpm.engine.impl.svg.vo;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -33,6 +32,10 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
 public class NamespaceAttributesVO extends VONode {
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -6775939784953491038L;
 	@XmlAttribute(name = "cx", namespace = "http://www.b3mn.org/oryx")
 	protected String oryxCx;
 	@XmlAttribute(name = "cy", namespace = "http://www.b3mn.org/oryx")

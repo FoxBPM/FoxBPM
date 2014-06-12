@@ -23,18 +23,22 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
  * 用于组合SVG中的各个元素
- * @author MAENLIANG 
+ * 
+ * @author MAENLIANG
  * @date 2014-06-10
- *
+ * 
  */
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
 public class GVO extends NamespaceAttributesVO {
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -1261284765455616578L;
 	@XmlAttribute(name = "pointer-events")
 	private String pointerEvents;
 	@XmlAttribute(name = "transform")
@@ -49,7 +53,7 @@ public class GVO extends NamespaceAttributesVO {
 	private List<GVO> gVoList;
 	@XmlElement(name = "path")
 	private List<PathVO> pathVoList;
-	@XmlElement(name = "text",defaultValue="value")
+	@XmlElement(name = "text", defaultValue = "value")
 	private TextVO textVo;
 	@XmlElement(name = "polygon")
 	private List<PolygonVO> polygonList;

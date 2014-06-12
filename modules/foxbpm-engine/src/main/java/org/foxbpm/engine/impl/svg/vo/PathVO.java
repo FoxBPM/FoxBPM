@@ -32,6 +32,10 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PathVO extends NamespaceAttributesVO {
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 6232272472033577074L;
 	@XmlAttribute(name = "d")
 	private String d;
 	@XmlAttribute(name = "marker-start")

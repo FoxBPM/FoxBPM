@@ -31,6 +31,10 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CircleVO extends NamespaceAttributesVO {
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -981639681305762274L;
 	@XmlAttribute(name = "cx")
 	private String cx;
 	@XmlAttribute(name = "cy")

@@ -32,6 +32,10 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
 public class StopVO extends VONode {
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -4522966679910169405L;
 	@XmlAttribute(name = "offset")
 	private String offset;
 	@XmlAttribute(name = "stop-color")

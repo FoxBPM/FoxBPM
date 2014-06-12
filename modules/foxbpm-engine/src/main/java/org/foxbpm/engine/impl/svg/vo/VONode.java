@@ -35,6 +35,10 @@ import javax.xml.bind.annotation.XmlValue;
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class VONode implements Serializable {
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -817550474604039751L;
 	@XmlAttribute(name = "id")
 	protected String id;
 	@XmlAttribute(name = "name")

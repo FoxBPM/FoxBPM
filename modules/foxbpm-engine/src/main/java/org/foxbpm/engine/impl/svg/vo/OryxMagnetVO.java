@@ -19,8 +19,6 @@ package org.foxbpm.engine.impl.svg.vo;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -30,7 +28,12 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlType
-@XmlAccessorType(XmlAccessType.FIELD) 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class OryxMagnetVO extends NamespaceAttributesVO {
-	 
+
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 3457154975314285426L;
+
 }

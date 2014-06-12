@@ -20,9 +20,7 @@ package org.foxbpm.engine.impl.svg.vo;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.XmlValue;
 
 /**
  * 组件的文本对象
@@ -34,6 +32,10 @@ import javax.xml.bind.annotation.XmlValue;
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TextVO extends NamespaceAttributesVO {
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -6548116428505922833L;
 	@XmlAttribute(name = "font-size")
 	private String fontSize;
 

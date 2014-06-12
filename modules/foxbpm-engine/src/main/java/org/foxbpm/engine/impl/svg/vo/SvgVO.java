@@ -35,6 +35,10 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "svg")
 public class SvgVO extends VONode {
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 1316043116432334296L;
 	@XmlAttribute(name = "xmlns")
 	private String xmlns = "http://www.w3.org/2000/svg";
 	@XmlAttribute(name = "xmlns:svg")

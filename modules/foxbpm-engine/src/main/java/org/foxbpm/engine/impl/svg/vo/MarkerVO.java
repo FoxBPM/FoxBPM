@@ -17,7 +17,10 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MarkerVO extends VONode {
-
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -3274864357879628267L;
 	@XmlAttribute(name = "refX")
 	private String refX;
 	@XmlAttribute(name = "refY")

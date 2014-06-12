@@ -35,6 +35,10 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RadialGradientVO extends VONode {
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 3727786287753881069L;
 	@XmlAttribute(name = "cx")
 	private String cx;
 	@XmlAttribute(name = "cy")

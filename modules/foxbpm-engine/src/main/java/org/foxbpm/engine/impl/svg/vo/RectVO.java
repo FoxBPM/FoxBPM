@@ -32,6 +32,10 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RectVO extends NamespaceAttributesVO {
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 995236243017598074L;
 	@XmlAttribute(name = "rx")
 	private String rx;
 	@XmlAttribute(name = "ry")

@@ -31,6 +31,10 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PolygonVO extends NamespaceAttributesVO {
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -6994046978643940585L;
 	@XmlAttribute(name = "points")
 	private String points;
 	@XmlAttribute(name = "stroke-linecap")

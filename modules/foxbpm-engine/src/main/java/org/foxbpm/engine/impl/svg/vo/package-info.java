@@ -21,6 +21,5 @@
 package org.foxbpm.engine.impl.svg.vo;
 
 import javax.xml.bind.annotation.XmlNs;
-import javax.xml.bind.annotation.XmlNsForm;
 import javax.xml.bind.annotation.XmlSchema;
 

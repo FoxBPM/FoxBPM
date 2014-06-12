@@ -22,7 +22,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -32,8 +31,12 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlType
-@XmlAccessorType(XmlAccessType.FIELD) 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class OryxMagnetsVO extends VONode {
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 6951721771706464408L;
 	@XmlElement(name = "magnet", namespace = "http://www.b3mn.org/oryx")
 	private List<OryxMagnetVO> oryxMagnetList;
 
