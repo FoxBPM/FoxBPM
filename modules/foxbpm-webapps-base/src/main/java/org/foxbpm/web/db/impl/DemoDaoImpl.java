@@ -61,7 +61,7 @@ public class DemoDaoImpl extends AbstrJdbcTemplate implements IDemoDao {
 		@Override
 		public T mapRow(java.sql.ResultSet rs, int arg1) throws SQLException {
 			TDemo tDemo = new TDemo();
-			tDemo.setbKey(rs.getString("pkd"));
+			tDemo.setbKey(rs.getString("bKey"));
 			tDemo.setInfor(rs.getString("infor"));
 			return (T) tDemo;
 		}

@@ -77,9 +77,11 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 				pdList = pdq.listPagination(pageInfor.getPageIndex(), pageInfor.getPageSize());
 				pageInfor.setTotal(StringUtil.getInt(pdq.count()));
 			}
-
+			Map<String, Object> attrMap = null;
 			for (int i = 0, size = (null == pdList) ? 0 : pdList.size(); i < size; i++) {
-				resultData.add(pdList.get(i).getPersistentState());
+				attrMap = pdList.get(i).getPersistentState();
+				attrMap.put("formUrl", "startTask.action");
+				resultData.add(attrMap);
 			}
 		} catch (Exception e) {
 			throw new FoxbpmWebException(e.getMessage(), "", e);
@@ -166,14 +168,14 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 				pageInfor.setTotal(StringUtil.getInt(piq.count()));
 			}
 			// 流程实例属性集
-			Map<String, Object> instances = null;
+			Map<String, Object> attrMap = null;
 			ProcessInstance pi = null;
 			for (int i = 0, size = (null == piList) ? 0 : piList.size(); i < size; i++) {
 				pi = piList.get(i);
-				instances = new HashMap<String, Object>();
-				instances.putAll(pi.getPersistentState());
-				resultData.add(instances);
-				instances.put("processDefinitionName", modelService.getProcessDefinition(pi.getProcessDefinitionId()).getName());
+				attrMap = new HashMap<String, Object>();
+				attrMap.putAll(pi.getPersistentState());
+				resultData.add(attrMap);
+				attrMap.put("processDefinitionName", modelService.getProcessDefinition(pi.getProcessDefinitionId()).getName());
 			}
 		} catch (Exception e) {
 			throw new FoxbpmWebException(e.getMessage(), "", e);
@@ -272,19 +274,21 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			if (datee != null) {
 				taskQuery.taskCreatedBefore(dates);
 			}
+			taskQuery.orderByTaskCreateTime().desc();
+			taskQuery.taskNotEnd();
 			// 查询代办任务
 			List<Task> taskList = null;
 			if (null == pageInfor) {
 				taskList = taskQuery.list();
 			} else {
-				taskList = taskQuery.orderByTaskCreateTime().desc().listPagination(pageInfor.getPageIndex(), pageInfor.getPageSize());
+				taskList = taskQuery.listPagination(pageInfor.getPageIndex(), pageInfor.getPageSize());
 				pageInfor.setTotal(StringUtil.getInt(taskQuery.count()));
 			}
-			Map<String, Object> instances = null;
+			Map<String, Object> attrMap = null;
 			for (int i = 0, size = (null == taskList) ? 0 : taskList.size(); i < size; i++) {
-				instances = new HashMap<String, Object>();
-				instances.putAll(taskList.get(i).getPersistentState());
-				resultData.add(instances);
+				attrMap = taskList.get(i).getPersistentState();
+				attrMap.put("formUri", "startTask.action");
+				resultData.add(attrMap);
 			}
 		} catch (Exception e) {
 			throw new FoxbpmWebException(e.getMessage(), "", e);

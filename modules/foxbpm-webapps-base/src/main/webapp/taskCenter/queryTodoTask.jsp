@@ -76,7 +76,7 @@
 						url += "?";
 					}
 					url += "taskId=" + tii + "&processInstanceId=" + pii
-							+ "&bizKey=" + bizKey + "&processDefinitionKey="
+							+ "&businessKey=" + bizKey + "&processDefinitionKey="
 							+ pdk, obj, "dialogWidth=800px;dialogHeight=600px";
 					window.open(url);
 				});
@@ -278,7 +278,7 @@
 										onerror="miniImgNotFound('<%=request.getContextPath()%>',this);"></td>
 									<td>${dataList.processDefinitionName}</td>
 									<td>${dataList.bizKey}</td>
-									<td><a name="doTask" href="#"
+									<td><a name="doTask" href="javascript:void(0)"
 										formUri="${dataList.formUri}" tii="${dataList.taskInstanceId}"
 										pii="${dataList.processInstanceId}" bk="${dataList.bizKey}"
 										pdk="${dataList.processDefinitionKey}">${dataList.description}</a>

@@ -35,7 +35,7 @@
 
 <body>
 	<div class="tpl-form-border">
-		<form id="form1" action="executeTask.action" method="post">
+		<form id="form1" action="completeTask.action" method="post">
 			<table class="table-form">
 				<tr>
 					<td class="title-r">流程关联键：</td>
@@ -60,10 +60,12 @@
 						isSaveData="${row.isSaveData}"
 						isSimulationRun="${row.isSimulationRun}" nodeId="${row.nodeId}"
 						nodeName="${row.nodeName}">
-						<a href="#">${row.name}</a>
+						<a>${row.name}</a>
 					</div>
 				</c:forEach>
 			</div>
+			<!-- 保证业务key一致 -->
+			<input id="businessKey" name="businessKey" type="hidden" value="${result.demoObject.bKey}" />
 		</form>
 	</div>
 </body>
