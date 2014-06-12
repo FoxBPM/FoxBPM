@@ -32,7 +32,6 @@ import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
 
 import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.exception.FoxBPMExpressionException;
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.svg.vo.VONode;
 import org.xml.sax.InputSource;
@@ -62,7 +61,7 @@ public class SVGTemplateContainer {
 	 */
 	public void init(String templateName) {
 		File svgFile = new File(BPMN_PATH + File.separator + templateName);
-		if (svgFile == null) {
+		if (!svgFile.exists()) {
 			throw new FoxBPMException("template svg file not exists");
 		}
 		BufferedReader bufferReader = null;

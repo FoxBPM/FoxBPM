@@ -25,7 +25,6 @@ import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.svg.vo.CircleVO;
 import org.foxbpm.engine.impl.svg.vo.PathVO;
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
-import org.foxbpm.engine.impl.svg.vo.TextVO;
 
 /**
  * 默认空白事件式样构造
