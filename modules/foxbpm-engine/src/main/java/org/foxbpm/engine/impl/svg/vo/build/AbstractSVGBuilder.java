@@ -118,35 +118,49 @@ public abstract class AbstractSVGBuilder {
 	 * 
 	 * @param text
 	 */
-	public abstract void setText(String text);
+	public void setText(String text) {
+		this.textVO.setElementValue(text);
+	}
 
 	/**
 	 * 设置显示名的X坐标
 	 * 
 	 * @param textX
 	 */
-	public abstract void setTextX(String textX);
+	public void setTextX(String textX) {
+		this.textVO.setX(textX);
+	}
 
 	/**
 	 * 设置显示名的Y坐标
 	 * 
 	 * @param textY
 	 */
-	public abstract void setTextY(String textY);
+	public void setTextY(String textY) {
+		this.textVO.setY(textY);
+	}
 
 	/**
 	 * 设置显示名的字体大小
 	 * 
 	 * @param textFontSize
 	 */
-	public abstract void setTextFontSize(String textFontSize);
+	public void setTextFontSize(String textFontSize) {
+		this.textVO.setFontSize(textFontSize);
+	}
 
 	/**
 	 * 设置显示名的边框色
 	 * 
 	 * @param textStroke
 	 */
-	public abstract void setTextStroke(String textStroke);
+	public void setTextStroke(String textStroke) {
+		if (StringUtils.isBlank(textStroke)) {
+			this.textVO.setStroke("black");
+			return;
+		}
+		this.textVO.setStroke("#" + textStroke);
+	}
 
 	/**
 	 * 设置元素ID

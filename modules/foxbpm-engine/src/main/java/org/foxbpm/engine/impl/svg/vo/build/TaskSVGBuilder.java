@@ -40,6 +40,11 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 	 */
 	private RectVO rectVO;
 
+	/**
+	 * 任务节点Builder、获取节点矩形
+	 * 
+	 * @param svgVo
+	 */
 	public TaskSVGBuilder(SvgVO svgVo) {
 		super(svgVo);
 		List<RectVO> rectVoList = svgVo.getgVo().getRectVoList();
@@ -97,34 +102,6 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 		}
 
 		this.rectVO.setFill("#" + fill);
-	}
-
-	@Override
-	public void setText(String text) {
-		this.textVO.setElementValue(text);
-	}
-
-	@Override
-	public void setTextX(String textX) {
-		this.textVO.setX(textX);
-	}
-
-	@Override
-	public void setTextY(String textY) {
-		this.textVO.setY(textY);
-	}
-
-	@Override
-	public void setTextFontSize(String textFontSize) {
-		this.textVO.setFontSize(textFontSize);
-	}
-
-	@Override
-	public void setTextStroke(String textStroke) {
-		if (StringUtils.isBlank(textStroke)) {
-			this.textVO.setStroke("black");
-		}
-		this.textVO.setStroke("#" + textStroke);
 	}
 
 	@Override

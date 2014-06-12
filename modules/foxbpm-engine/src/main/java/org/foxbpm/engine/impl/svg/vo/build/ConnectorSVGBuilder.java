@@ -40,36 +40,6 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setText(String text) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setTextX(String textX) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setTextY(String textY) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setTextFontSize(String textFontSize) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setTextStroke(String textStroke) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void setID(String id) {
 		// TODO Auto-generated method stub
 

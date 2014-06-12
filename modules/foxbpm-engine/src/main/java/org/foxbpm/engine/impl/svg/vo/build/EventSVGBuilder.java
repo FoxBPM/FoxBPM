@@ -19,11 +19,14 @@ package org.foxbpm.engine.impl.svg.vo.build;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.svg.vo.CircleVO;
+import org.foxbpm.engine.impl.svg.vo.DefsVO;
 import org.foxbpm.engine.impl.svg.vo.PathVO;
+import org.foxbpm.engine.impl.svg.vo.RadialGradientVO;
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
 
 /**
@@ -42,6 +45,11 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 	 */
 	private CircleVO circleVO;
 
+	/**
+	 * 事件节点Builder，获取Circle对象
+	 * 
+	 * @param voNode
+	 */
 	public EventSVGBuilder(SvgVO voNode) {
 		super(voNode);
 		List<CircleVO> circleVoList = voNode.getgVo().getCircleVoList();
@@ -107,7 +115,11 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setStroke(String stroke) {
-		this.circleVO.setStroke("#"+stroke);
+		if (StringUtils.isBlank(stroke)) {
+			this.textVO.setStroke("black");
+			return;
+		}
+		this.circleVO.setStroke("#" + stroke);
 	}
 
 	@Override
@@ -118,37 +130,28 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setFill(String fill) {
-		String fillValue = "url(#"
-				+ this.svgVo.getgVo().getDefsVo().getRadialGradientVo().getId()
-				+ ") #";
-		this.circleVO.setFill(fillValue + fill);
-	}
+		DefsVO defsVo = this.svgVo.getgVo().getDefsVo();
+		if (defsVo != null) {
+			RadialGradientVO radialGradientVo = defsVo.getRadialGradientVo();
+			if (radialGradientVo != null) {
+				String backGroudUUID = UUID.randomUUID().toString();
+				radialGradientVo.setId(backGroudUUID);
+				if (StringUtils.isBlank(fill)) {
+					this.circleVO.setFill("url(#" + backGroudUUID + ") white");
+				} else {
+					this.circleVO.setFill("url(#" + backGroudUUID + ") #"
+							+ fill);
+				}
 
-	@Override
-	public void setText(String text) {
-		this.textVO.setElementValue(text);
-	}
+				return;
+			}
+		}
 
-	@Override
-	public void setTextX(String textX) {
-		this.textVO.setX(textX);
-	}
-
-	@Override
-	public void setTextY(String textY) {
-		this.textVO.setY(textY);
-
-	}
-
-	@Override
-	public void setTextFontSize(String textFontSize) {
-		this.textVO.setFontSize(textFontSize);
-
-	}
-
-	@Override
-	public void setTextStroke(String textStroke) {
-		this.textVO.setStroke("#"+textStroke);
+		if (StringUtils.isBlank(fill)) {
+			this.circleVO.setFill("white");
+		} else {
+			this.circleVO.setFill("#" + fill);
+		}
 
 	}
 
