@@ -7,7 +7,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
 <jsp:include page="../common/head.jsp" flush="true" />
 
 <style>
@@ -21,12 +20,7 @@ a {
 </style>
 <script type="text/javascript">
 	function deployment() {
-		var obj = {};
 		window.open("manageCenter/deployment.jsp");
-	}
-
-	function searchProcess() {
-		document.forms[0].submit();
 	}
 
 	function deleteDeploy(obj) {
@@ -60,7 +54,6 @@ a {
 		if (checkList.length > 0) {
 			deploymentId = $(checkList[0]).attr("deploymentId");
 		}
-		var obj = {};
 		window.open("manageCenter/deployment.jsp?deploymentId=" + deploymentId);
 	}
 
@@ -141,7 +134,7 @@ a {
 							style="padding-right: 2px; text-align: right; margin-bottom: 4px;">
 							<div class="btn-normal"
 								style="display: inline-block; margin-left: 5px;" data-scope=all>
-								<a href="#" onclick="deployment()">发布流程</a>
+								<a href="javascript:void(0)" target="_self" onclick="deployment()">发布流程</a>
 							</div>
 							<div class="btn-normal"
 								style="display: inline-block; margin-left: 5px;"
@@ -151,7 +144,7 @@ a {
 							<div class="btn-normal"
 								style="display: inline-block; margin-left: 5px;"
 								data-scope=single>
-								<a href="#" onclick="updateDeploy(this)">更新定义</a>
+								<a href="javascript:void(0)" onclick="updateDeploy(this)">更新定义</a>
 							</div>
 							<div class="btn-normal"
 								style="display: inline-block; margin-left: 5px;"
@@ -185,8 +178,7 @@ a {
 											<td>${dataList.version}</td>
 											<td>${dataList.category}</td>
 											<td>${dataList.processDefinitionId}</td>
-											<td><fmt:formatDate value="${dataList.DEPLOY_TIME}"
-													type="both" /></td>
+											<td><fmt:formatDate value="${dataList.DEPLOY_TIME}" type="both" /></td>
 										</tr>
 									</c:forEach>
 								</tbody>

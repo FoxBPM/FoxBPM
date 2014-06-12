@@ -46,7 +46,7 @@
 </script>
 </head>
 <body onload="bodyOnLoad();">
-	<form action="../../FlowManager" method="post" id="subForm"
+	<form action="deploy.action" method="post" id="subForm"
 		ENCTYPE="multipart/form-data">
 		<input type="hidden" name="action" value="deploy">
 		<div class="tpl-form-border">
@@ -64,7 +64,7 @@
 			</table>
 			<div class="toolbar">
 				<div class="btn-normal" onclick="sub();">
-					<a href="#">发布</a>
+					<a href="javascript:void(0)">发布</a>
 				</div>
 			</div>
 		</div>
