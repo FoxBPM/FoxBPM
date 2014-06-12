@@ -17,12 +17,17 @@
  */
 package org.foxbpm.engine.impl.svg.factory;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.bpmn.behavior.EndEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.SendTaskBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.StartEventBehavior;
@@ -30,6 +35,8 @@ import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.svg.SVGTemplateNameConstant;
 import org.foxbpm.engine.impl.svg.SVGTypeNameConstant;
+import org.foxbpm.engine.impl.svg.SVGUtils;
+import org.foxbpm.engine.impl.svg.vo.GVO;
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.svg.vo.VONode;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
@@ -61,7 +68,6 @@ public class ProcessDefinitionSVGFactory extends
 		VONode svgTemplateContainer = this
 				.getDefaultSVGContainerFromFactory(deployedProcessDefinition
 						.getProperties());
-		voNodeList.add(svgTemplateContainer);
 
 		// 遍历所有的流程节点
 		Iterator<KernelFlowNodeImpl> flowNodeIterator = flowNodes.iterator();
@@ -98,10 +104,14 @@ public class ProcessDefinitionSVGFactory extends
 		while (sequenceFlowterator.hasNext()) {
 			Entry<String, KernelSequenceFlowImpl> nextConnector = sequenceFlowterator
 					.next();
-			KernelSequenceFlowImpl sequenceFlowImpl = nextConnector.getValue();
+			// KernelSequenceFlowImpl sequenceFlowImpl =
+			// nextConnector.getValue();
 		}
 
-		return this.convertNodeListToString(voNodeList);
+		String svgStr = this.convertNodeListToString(
+				(SvgVO) svgTemplateContainer, voNodeList);
+		System.out.println(svgStr);
+		return svgStr;
 	}
 
 	/**
@@ -114,16 +124,16 @@ public class ProcessDefinitionSVGFactory extends
 			Map<String, Object> processDefinitionPorperties) {
 		SvgVO svgTemplateContainer = (SvgVO) AbstractFlowNodeSVGFactory
 				.createSVGTemplateContainerVO(processDefinitionPorperties);
-		int svgMinX = Integer.valueOf((String) processDefinitionPorperties
-				.get(SVG_MINX));
-		int svgMinY = Integer.valueOf((String) processDefinitionPorperties
-				.get(SVG_MINY));
-		int svgMaxX = Integer.valueOf((String) processDefinitionPorperties
-				.get(SVG_MAXX));
-		int svgMaxY = Integer.valueOf((String) processDefinitionPorperties
-				.get(SVG_MAXY));
-		svgTemplateContainer.setWidth(String.valueOf(svgMaxX - svgMinX));
-		svgTemplateContainer.setHeight(String.valueOf(svgMaxY - svgMinY));
+		Float svgMinX = (Float) processDefinitionPorperties.get(SVG_MINX);
+		Float svgMinY = (Float) processDefinitionPorperties.get(SVG_MINY);
+		Float svgMaxX = (Float) processDefinitionPorperties.get(SVG_MAXX);
+		Float svgMaxY = (Float) processDefinitionPorperties.get(SVG_MAXY);
+		svgTemplateContainer.setWidth(String.valueOf(svgMaxX));
+		svgTemplateContainer.setHeight(String.valueOf(svgMaxY));
+		svgTemplateContainer.setMinHeight(String.valueOf(svgMinY));
+		svgTemplateContainer.setMinWidth(String.valueOf(svgMinX));
+		// 初始化VOList
+		svgTemplateContainer.getgVo().setgVoList(new ArrayList<GVO>());
 		return svgTemplateContainer;
 	}
 
@@ -143,8 +153,22 @@ public class ProcessDefinitionSVGFactory extends
 		return svgFactory.createFlowElementSVGVO(svgType);
 	}
 
-	private String convertNodeListToString(List<VONode> voNodeList) {
-		StringBuffer svgBuffer = new StringBuffer();
-		return svgBuffer.toString();
+	/**
+	 * 将所有的元素对象转化成String字符串
+	 * 
+	 * @param voNodeList
+	 *            所有的节点集合
+	 * @return SVG字符串
+	 */
+	private String convertNodeListToString(SvgVO svgContainer,
+			List<VONode> voNodeList) {
+		Iterator<VONode> voIter = voNodeList.iterator();
+		while (voIter.hasNext()) {
+			SvgVO svgVo = (SvgVO) voIter.next();
+			GVO clone = SVGUtils.cloneGVO(svgVo.getgVo());
+			List<GVO> getgVoList = svgContainer.getgVo().getgVoList();
+			getgVoList.add(clone);
+		}
+		return AbstractFlowNodeSVGFactory.createFlowNodeSVGString(svgContainer);
 	}
 }

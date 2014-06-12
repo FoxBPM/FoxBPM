@@ -10,8 +10,8 @@ public class test {
 	public static void main(String[] args) {
 
 		try {
-			AbstractFlowNodeSVGFactory factory = AbstractFlowNodeSVGFactory
-					.createSVGFactory(SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK);
+//			AbstractFlowNodeSVGFactory factory = AbstractFlowNodeSVGFactory
+//					.createSVGFactory(SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK);
 //			String svgString = factory
 //					.createSVGString(SVGTypeNameConstant.ACTIVITY_BUSINESSRULETASK_SEQUENTIAL);
 //			System.out.println(svgString);

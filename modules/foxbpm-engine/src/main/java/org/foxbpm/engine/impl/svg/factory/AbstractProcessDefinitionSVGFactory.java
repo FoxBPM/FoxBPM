@@ -45,6 +45,11 @@ public abstract class AbstractProcessDefinitionSVGFactory {
 	protected static final String SVG_MAXY = "canvas_maxY";
 
 	/**
+	 * SVG模版容器VO对象ID
+	 */
+	protected static final String SVG_CONTAINER = "SVG_CONTAINER";
+
+	/**
 	 * 
 	 * 根据流程定义创建SVG文档字符串
 	 * 

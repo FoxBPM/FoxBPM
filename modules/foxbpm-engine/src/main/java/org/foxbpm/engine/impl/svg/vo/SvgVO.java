@@ -42,8 +42,8 @@ public class SvgVO extends VONode {
 	@XmlAttribute(name = "xmlns")
 	private String xmlns = "http://www.w3.org/2000/svg";
 	@XmlAttribute(name = "xmlns:svg")
-	private String xmlnsSvg = "http://www.w3.org/2000/svg";
-	@XmlAttribute(name = "xmlns:oryx")
+	// private String xmlnsSvg = "http://www.w3.org/2000/svg";
+	// @XmlAttribute(name = "xmlns:oryx")
 	private String xmlnsOryx = "http://www.b3mn.org/oryx";
 	@XmlAttribute(name = "xmlns:xlink")
 	private String xmlnsXlink = "http://www.w3.org/1999/xlink";
@@ -61,20 +61,17 @@ public class SvgVO extends VONode {
 	@XmlElement(name = "g")
 	private GVO gVo;
 
+	@XmlAttribute(name = "minwidth")
+	private String minWidth;
+	@XmlAttribute(name = "minheight")
+	private String minHeight;
+
 	public String getXmlns() {
 		return xmlns;
 	}
 
 	public void setXmlns(String xmlns) {
 		this.xmlns = xmlns;
-	}
-
-	public String getXmlnsSvg() {
-		return xmlnsSvg;
-	}
-
-	public void setXmlnsSvg(String xmlnsSvg) {
-		this.xmlnsSvg = xmlnsSvg;
 	}
 
 	public String getXmlnsOryx() {
@@ -124,4 +121,37 @@ public class SvgVO extends VONode {
 	public void setgVo(GVO gVo) {
 		this.gVo = gVo;
 	}
+
+	public String getOryxEdge() {
+		return oryxEdge;
+	}
+
+	public void setOryxEdge(String oryxEdge) {
+		this.oryxEdge = oryxEdge;
+	}
+
+	public OryxDockerVO getOryxDockerVO() {
+		return oryxDockerVO;
+	}
+
+	public void setOryxDockerVO(OryxDockerVO oryxDockerVO) {
+		this.oryxDockerVO = oryxDockerVO;
+	}
+
+	public String getMinWidth() {
+		return minWidth;
+	}
+
+	public void setMinWidth(String minWidth) {
+		this.minWidth = minWidth;
+	}
+
+	public String getMinHeight() {
+		return minHeight;
+	}
+
+	public void setMinHeight(String minHeight) {
+		this.minHeight = minHeight;
+	}
+
 }

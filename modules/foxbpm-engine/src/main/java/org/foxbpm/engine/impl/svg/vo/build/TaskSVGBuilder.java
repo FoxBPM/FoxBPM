@@ -19,9 +19,12 @@ package org.foxbpm.engine.impl.svg.vo.build;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.svg.vo.DefsVO;
+import org.foxbpm.engine.impl.svg.vo.RadialGradientVO;
 import org.foxbpm.engine.impl.svg.vo.RectVO;
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
 
@@ -79,10 +82,21 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setFill(String fill) {
-		String fillValue = "url(#"
-				+ this.svgVo.getgVo().getDefsVo().getRadialGradientVo().getId()
-				+ ") #";
-		this.rectVO.setFill(fillValue + fill);
+		if (StringUtils.isBlank(fill)) {
+			fill = "ffffcc";
+		}
+		DefsVO defsVo = this.svgVo.getgVo().getDefsVo();
+		if (defsVo != null) {
+			RadialGradientVO radialGradientVo = defsVo.getRadialGradientVo();
+			if (radialGradientVo != null) {
+				String backGroudUUID = UUID.randomUUID().toString();
+				radialGradientVo.setId(backGroudUUID);
+				this.rectVO.setFill("url(#" + backGroudUUID + ") #" + fill);
+				return;
+			}
+		}
+
+		this.rectVO.setFill("#" + fill);
 	}
 
 	@Override
@@ -107,7 +121,10 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setTextStroke(String textStroke) {
-		this.textVO.setStroke(textStroke);
+		if (StringUtils.isBlank(textStroke)) {
+			this.textVO.setStroke("black");
+		}
+		this.textVO.setStroke("#" + textStroke);
 	}
 
 	@Override

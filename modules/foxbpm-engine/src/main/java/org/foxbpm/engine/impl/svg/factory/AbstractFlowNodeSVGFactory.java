@@ -83,6 +83,7 @@ public abstract class AbstractFlowNodeSVGFactory {
 			svgBuilder.setText(kernelFlowNodeImpl.getName());
 			svgBuilder.setXAndY(String.valueOf(kernelFlowNodeImpl.getX()),
 					String.valueOf(kernelFlowNodeImpl.getY()));
+
 			svgBuilder.setFill((String) kernelFlowNodeImpl
 					.getProperty(StyleOption.Background));
 			svgBuilder.setWidth(String.valueOf(kernelFlowNodeImpl.getWidth()));
@@ -95,7 +96,8 @@ public abstract class AbstractFlowNodeSVGFactory {
 			// 构造
 			// TODO 未知属性
 			kernelFlowNodeImpl.getProperty(StyleOption.Font);
-			kernelFlowNodeImpl.getProperty(StyleOption.Foreground);
+			svgBuilder.setStroke((String) kernelFlowNodeImpl
+					.getProperty(StyleOption.Foreground));
 			String style = (String) kernelFlowNodeImpl
 					.getProperty(StyleOption.StyleObject);
 		}
@@ -166,23 +168,12 @@ public abstract class AbstractFlowNodeSVGFactory {
 	 * @param svgVo
 	 * @return
 	 */
-	public String createFlowNodeSVGString(
-			KernelFlowNodeImpl kernelFlowNodeImpl, String svgType) {
+	public static String createFlowNodeSVGString(VONode svgVo) {
 		try {
 			JAXBContext context = JAXBContext.newInstance(SvgVO.class);
 			Marshaller marshal = context.createMarshaller();
 			marshal.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			StringWriter writer = new StringWriter();
-
-			SvgVO svgVo = null;
-			if (StringUtils.equalsIgnoreCase(svgType,
-					SVGTypeNameConstant.SVG_TYPE_EVENT)
-					|| StringUtils.equalsIgnoreCase(svgType,
-							SVGTypeNameConstant.SVG_TYPE_CONNECTOR)) {
-				svgVo = (SvgVO) this.createSVGVO();
-			} else {
-				svgVo = (SvgVO) this.createSVGVO(svgType);
-			}
 
 			marshal.marshal(svgVo, writer);
 			return writer.toString();

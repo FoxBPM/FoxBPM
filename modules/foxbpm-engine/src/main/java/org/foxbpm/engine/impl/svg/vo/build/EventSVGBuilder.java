@@ -58,7 +58,9 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 			throw new FoxBPMException("EventSVGBuilder构造 EVENT SVG时，无法获取圆形对象");
 		}
 		List<PathVO> pathVoList = this.svgVo.getgVo().getPathVoList();
-		pathVo = pathVoList.get(0);
+		if (pathVoList != null && pathVoList.size() > 0) {
+			pathVo = pathVoList.get(0);
+		}
 	}
 
 	public void setTypeStyle(String typeStyle) {
@@ -94,7 +96,7 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setWidth(String width) {
-		this.circleVO.setR(width);
+		this.circleVO.setR(String.valueOf(Float.valueOf(width) / 2));
 
 	}
 
@@ -106,7 +108,7 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setStroke(String stroke) {
-		this.circleVO.setStroke(stroke);
+		this.circleVO.setStroke("#"+stroke);
 	}
 
 	@Override
@@ -147,7 +149,7 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setTextStroke(String textStroke) {
-		this.textVO.setStroke(textStroke);
+		this.textVO.setStroke("#"+textStroke);
 
 	}
 
@@ -168,8 +170,13 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setXAndY(String x, String y) {
-		this.circleVO.setCx(x);
-		this.circleVO.setCy(y);
+		// 如果存在子类型，例如ERROR
+		if (this.pathVo != null) {
+			// 整体 SHIFT
+			this.svgVo.getgVo().setTransform("translate(" + x + ", " + y + ")");
+		} else {
+			this.circleVO.setCx(x);
+			this.circleVO.setCy(y);
+		}
 	}
-
 }

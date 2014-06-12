@@ -119,6 +119,7 @@ public class SVGTemplateContainer {
 		if (container.svgTemplets.get(templateName) == null) {
 			container.init(templateName);
 		}
-		return container.svgTemplets.get(templateName);
+		return SVGUtils.cloneSVGVo((SvgVO) container.svgTemplets
+				.get(templateName));
 	}
 }
