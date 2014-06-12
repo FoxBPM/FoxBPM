@@ -17,7 +17,25 @@
  */
 package org.foxbpm.web.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.web.common.constant.FoxbpmActionNameDefinition;
+import org.foxbpm.web.common.constant.FoxbpmServiceNameDefinition;
+import org.foxbpm.web.common.constant.FoxbpmViewNameDefinition;
+import org.foxbpm.web.common.constant.FoxbpmWebContextAttributeNameDefinition;
+import org.foxbpm.web.common.exception.FoxbpmWebException;
+import org.foxbpm.web.common.util.Pagination;
+import org.foxbpm.web.service.interfaces.IFlowManageService;
+import org.foxbpm.web.service.interfaces.IWorkFlowService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * mvc 控制器 流程管理中心
@@ -27,5 +45,79 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 public class FlowManageController extends AbstWebController {
+
+	// 工作流服务
+	@Resource(name = FoxbpmServiceNameDefinition.WORKFLOW_SERVICENAME)
+	private IWorkFlowService workFlowService;
+	// 流程管理服务
+	@Resource(name = FoxbpmServiceNameDefinition.FLOWMANAGE_SERVICENAME)
+	private IFlowManageService flowManageService;
+
+	/**
+	 * 流程定义 action请求
+	 * 
+	 * @param request
+	 *            http请求参数
+	 * @return 返回响应视图
+	 */
+	@RequestMapping(FoxbpmActionNameDefinition.PROCESSDEF_ACTION)
+	public ModelAndView processDef(HttpServletRequest request) {
+		try {
+			// 请求参数
+			Map<String, Object> requestParams = getRequestParams(request);
+			String pageI = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINDEX));
+			String pageS = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGESIZE));
+
+			// 处理分页
+			int pageIndex = Pagination.PAGE_INDEX;
+			int pageSize = Pagination.PAGE_SIZE;
+			if (StringUtil.isNotEmpty(pageI)) {
+				pageIndex = StringUtil.getInt(pageI);
+			}
+			if (StringUtil.isNotEmpty(pageS)) {
+				pageSize = StringUtil.getInt(pageS);
+			}
+			// 分页信息
+			Pagination<String> pageInfor = new Pagination<String>(pageIndex, pageSize);
+			// 查询结果
+			List<Map<String, Object>> resultData = workFlowService.queryProcessDef(pageInfor, requestParams);
+			// 封装参数给页面使用
+			Map<String, List<Map<String, Object>>> resultMap = new HashMap<String, List<Map<String, Object>>>();
+			// 获取分页条件参数
+			resultMap.put("dataList", resultData);
+			// 封装参数
+			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
+			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
+		} catch (FoxbpmWebException foxbpmException) {
+			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
+		}
+		ModelAndView modelAndView = createModelAndView(FoxbpmViewNameDefinition.PROCESSDEF_VIEWNAME);
+		return modelAndView;
+	}
+
+	/**
+	 * 流程定义 action请求
+	 * 
+	 * @param request
+	 *            http请求参数
+	 * @return 返回响应视图
+	 */
+	@RequestMapping(FoxbpmActionNameDefinition.DEPLOY_ACTION)
+	public ModelAndView deploy(HttpServletRequest request) {
+		try {
+			// 请求参数
+			Map<String, Object> requestParams = getRequestParams(request);
+			this.flowManageService.deployByZip(requestParams);
+			return processDef(request);
+			// 封装参数
+		} catch (FoxbpmWebException foxbpmException) {
+			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
+		}
+	}
+
+	@Override
+	protected String getPrefix() {
+		return "manageCenter/";
+	}
 
 }

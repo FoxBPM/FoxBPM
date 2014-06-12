@@ -25,7 +25,7 @@
     </div>
     <div class="second-nav">
     	<ul tg="tg1">
-	        <li><a id="processDefinitionList" href="FlowManager?action=processDefinitionList">流程定义</a></li>
+	        <li><a id="processDefinitionList" href="processDef.action">流程定义</a></li>
 	        <li><a id="flowLibrary" href="FlowManager?action=flowLibrary">归档库</a></li>
         </ul>
         <ul tg="tg2" style="display:none;">

@@ -10,10 +10,13 @@ import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.repository.DeploymentBuilder;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,10 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations = "classpath:applicationContext-test.xml")
 @Transactional  
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
-public abstract class AbstractFoxBpmTestCase extends AbstractJUnit4SpringContextTests  {
+public abstract class AbstractFoxBpmTestCase extends AbstractTransactionalJUnit4SpringContextTests  {
 
 	@Autowired
-	public static ProcessEngine processEngine;
+	public ProcessEngine processEngine;
 	@Autowired
 	protected ModelService modelService;
 	@Autowired
@@ -35,10 +38,15 @@ public abstract class AbstractFoxBpmTestCase extends AbstractJUnit4SpringContext
 	@Autowired
 	protected IdentityService identityService;
 	
-	public void annotationDeploymentSetUp(ProcessEngine processEngine, Class<?> testClass, String methodName) throws Exception {
+	@Rule  
+    public TestName name = new TestName(); 
+	
+	@Before
+	public void annotationDeploymentSetUp() throws Exception {
+		
 		Method method = null;
 		try {
-			method = testClass.getDeclaredMethod(methodName, (Class<?>[]) null);
+			method = this.getClass().getDeclaredMethod(name.getMethodName(), (Class<?>[]) null);
 		} catch (Exception e) {
 			throw new FoxBPMException("获取方法失败!", e);
 		}

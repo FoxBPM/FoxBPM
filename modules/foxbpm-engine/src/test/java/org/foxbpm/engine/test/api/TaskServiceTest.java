@@ -1,11 +1,14 @@
 package org.foxbpm.engine.test.api;
 
+import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
+import org.foxbpm.engine.test.Deployment;
 import org.junit.Test;
 
 public class TaskServiceTest extends AbstractFoxBpmTestCase {
 
 	@Test
+	@Deployment(resources = { "process_test_1.bpmn"})
 	public void testTaskQuery(){
 		
 //		Authentication.setAuthenticatedUserId("2222");
@@ -23,7 +26,10 @@ public class TaskServiceTest extends AbstractFoxBpmTestCase {
 //		expandCommand.setTaskId(task.getId());
 //		taskService.expandTaskComplete(expandCommand, null);
 		
-		taskService.createTaskQuery().taskAssignee("2222").taskCandidateUser("2222").taskNotEnd().listPagination(1, 10);
+//		taskService.createTaskQuery().taskAssignee("2222").taskCandidateUser("2222").taskNotEnd().listPagination(1, 10);
+		
+		ProcessDefinition processDefinition = modelService.getProcessDefinition("process_test_1", 1);
+		System.out.println(processDefinition.getName());
 		
 //		task=taskService.createTaskQuery().processInstanceId(processInstance.getId()).taskNotEnd().singleResult();
 //		ExpandTaskCommand expandCommand2 = new ExpandTaskCommand();

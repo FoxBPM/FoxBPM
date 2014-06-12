@@ -17,6 +17,8 @@
  */
 package org.foxbpm.web.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,8 +61,24 @@ public class WorkFlowController extends AbstWebController {
 		try {
 			// 请求参数
 			Map<String, Object> requestParams = getRequestParams(request);
+			// 封装参数给页面使用
+			Map<String, List<Map<String, Object>>> resultMap = new HashMap<String, List<Map<String, Object>>>();
 			// 查询结果
-			Map<String, List<Map<String, Object>>> resultMap = workFlowService.queryProcessDef(null, requestParams);
+			List<Map<String, Object>> resultList = workFlowService.queryProcessDef(null, requestParams);
+			// 进行分类处理
+			for (Map<String, Object> map : resultList) {
+				String category = StringUtil.getString(map.get("category"));
+				if (StringUtil.isEmpty(category)) {
+					category = "默认分类";
+				}
+				List<Map<String, Object>> tempList = (List<Map<String, Object>>) resultMap.get(category);
+				if (tempList == null) {
+					tempList = new ArrayList<Map<String, Object>>();
+					resultMap.put(category, tempList);
+				}
+				map.put("formUrl", "startTask.action");
+				tempList.add(map);
+			}
 			// 封装参数
 			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
 		} catch (FoxbpmWebException foxbpmException) {
@@ -99,10 +117,12 @@ public class WorkFlowController extends AbstWebController {
 			// 分页信息
 			Pagination<String> pageInfor = new Pagination<String>(pageIndex, pageSize);
 			// 查询结果
-			Map<String, Object> resultMap = workFlowService.queryProcessInst(pageInfor, requestParams);
-			// 封装请求参数
-			resultMap.putAll(requestParams);
-			// 封装参数
+			List<Map<String, Object>> resultData = workFlowService.queryProcessInst(pageInfor, requestParams);
+			// 封装参数给页面使用
+			Map<String, List<Map<String, Object>>> resultMap = new HashMap<String, List<Map<String, Object>>>();
+			// 获取分页条件参数
+			resultMap.put("dataList", resultData);
+			// 将参数封装给页面使用
 			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
 			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
 		} catch (FoxbpmWebException foxbpmException) {
@@ -161,10 +181,12 @@ public class WorkFlowController extends AbstWebController {
 			// 分页信息
 			Pagination<String> pageInfor = new Pagination<String>(pageIndex, pageSize);
 			// 查询结果
-			Map<String, Object> resultMap = workFlowService.queryToDoTask(pageInfor, requestParams);
-			// 封装请求参数
-			resultMap.putAll(requestParams);
-			// 封装参数
+			List<Map<String, Object>> resultData = workFlowService.queryToDoTask(pageInfor, requestParams);
+			// 封装参数给页面使用
+			Map<String, List<Map<String, Object>>> resultMap = new HashMap<String, List<Map<String, Object>>>();
+			// 获取分页条件参数
+			resultMap.put("dataList", resultData);
+			// 将参数封装给页面使用
 			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
 			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
 		} catch (FoxbpmWebException foxbpmException) {

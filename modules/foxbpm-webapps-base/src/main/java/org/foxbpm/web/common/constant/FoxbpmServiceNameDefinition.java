@@ -8,6 +8,6 @@ package org.foxbpm.web.common.constant;
  */
 public final class FoxbpmServiceNameDefinition {
 	public final static String WORKFLOW_SERVICENAME = "workFlowServiceImpl";
-	public final static String FLOWMANAGE_SERVICENAME = "FlowManageServiceImpl";
+	public final static String FLOWMANAGE_SERVICENAME = "flowManageServiceImpl";
 	public final static String DEMO_SERVICENAME = "demoServiceImpl";
 }

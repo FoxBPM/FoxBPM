@@ -20,18 +20,18 @@ public class TDemo {
 	/**
 	 * 业务key
 	 */
-	private String pak;
+	private String bKey;
 	/**
 	 * 信息
 	 */
 	private String infor;
 
-	public String getPak() {
-		return pak;
+	public String getbKey() {
+		return bKey;
 	}
 
-	public void setPak(String pak) {
-		this.pak = pak;
+	public void setbKey(String bKey) {
+		this.bKey = bKey;
 	}
 
 	public String getInfor() {
@@ -44,7 +44,7 @@ public class TDemo {
 
 	public Map<String, Object> getPersistentState() {
 		Map<String, Object> persistentState = new HashMap<String, Object>();
-		persistentState.put("pak", pak);
+		persistentState.put("bKey", bKey);
 		persistentState.put("infor", infor);
 		return persistentState;
 	}
