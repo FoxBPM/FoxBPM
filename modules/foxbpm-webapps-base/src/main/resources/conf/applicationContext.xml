@@ -64,11 +64,7 @@
 
 	<bean id="exceptionEnvironment" class="org.foxbpm.web.common.env.ExceptionEnvironment" scope="singleton" init-method="init" />
 	<bean id="propertiesUtil" class="org.foxbpm.web.I18N.PropertiesUtil" scope="singleton" init-method="initProperties" />
-	<bean id="bizDBImpl" class="org.foxbpm.web.db.impl.BizDBImpl">
-		<property name="dbfactory">
-			<ref bean="foxbpmConnectionFactory" />
-		</property>
-	</bean>
+	
 	<bean id="abstrJdbcTemplate" abstract="true">
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
