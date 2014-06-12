@@ -23,7 +23,9 @@ public final class FoxbpmViewNameDefinition {
 	public final static String START_TASK_VIEWNAME = "startTask";
 	// 处理任务视图
 	public final static String DO_TASK_VIEWNAME = "doTask";
-	/*************************** 管理中心 ***********************************/
+	/*************************** 管控中心 ***********************************/
+	// 流程定义视图
+	public final static String PROCESSDEF_VIEWNAME = "processDef";
 	// 成功视图
 	public final static String COMPLETETASK_VIEWNAME = "result";
 }

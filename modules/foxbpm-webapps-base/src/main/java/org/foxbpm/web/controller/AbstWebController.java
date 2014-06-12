@@ -19,11 +19,16 @@ package org.foxbpm.web.controller;
 
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.foxbpm.engine.impl.util.StringUtil;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.foxbpm.web.common.constant.FoxbpmWebContextAttributeNameDefinition;
+import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -50,9 +55,7 @@ public abstract class AbstWebController {
 	 * 
 	 * @return 返回视图前缀
 	 */
-	protected String getPrefix() {
-		return StringUtil.EMPTY;
-	}
+	protected abstract String getPrefix();
 
 	/**
 	 * http request 请求参数获取
@@ -61,27 +64,47 @@ public abstract class AbstWebController {
 	 *            http 请求
 	 * @return 返回获取的http请求参数
 	 */
+	@SuppressWarnings("unchecked")
 	protected Map<String, Object> getRequestParams(HttpServletRequest request) {
 		// 请求参数
 		Map<String, Object> requestParams = new HashMap<String, Object>();
 		requestParams.putAll(request.getParameterMap());
-		// 获取parmeter中参数
-		Enumeration<String> enumeration = request.getParameterNames();
-		if (null != enumeration) {
-			String key = null;
-			while (enumeration.hasMoreElements()) {
-				key = enumeration.nextElement();
-				requestParams.put(key, request.getParameter(key));
+		try {
+			Enumeration<String> enumeration = null;
+			if (ServletFileUpload.isMultipartContent(request)) {
+				ServletFileUpload Uploader = new ServletFileUpload(new DiskFileItemFactory());
+				Uploader.setHeaderEncoding("utf-8");
+				List<FileItem> fileItems = Uploader.parseRequest(request);
+				for (FileItem item : fileItems) {
+					requestParams.put(item.getFieldName(), item);
+					if (FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_DEPLOYMENTID.equals(item.getFieldName())) {
+						requestParams.put(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_DEPLOYMENTID, item.getString());
+					}
+				}
+			} else {
+				// 获取parmeter中参数
+				enumeration = request.getParameterNames();
+				if (null != enumeration) {
+					String key = null;
+					String value = null;
+					while (enumeration.hasMoreElements()) {
+						key = enumeration.nextElement();
+						value = request.getParameter(key);
+						requestParams.put(key, new String(value.getBytes("ISO8859-1"), "utf-8"));
+					}
+				}
 			}
-		}
-		// 获取attribute中参数
-		enumeration = request.getAttributeNames();
-		if (null != enumeration) {
-			String key = null;
-			while (enumeration.hasMoreElements()) {
-				key = enumeration.nextElement();
-				requestParams.put(key, request.getAttribute(key));
+			// 获取attribute中参数
+			enumeration = request.getAttributeNames();
+			if (null != enumeration) {
+				String key = null;
+				while (enumeration.hasMoreElements()) {
+					key = enumeration.nextElement();
+					requestParams.put(key, request.getAttribute(key));
+				}
 			}
+		} catch (Exception e) {
+			throw new FoxbpmWebException(e.getMessage(), "", e);
 		}
 		return requestParams;
 	}

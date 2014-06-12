@@ -23,9 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.foxbpm.engine.ModelService;
-import org.foxbpm.engine.RuntimeService;
-import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.StringUtil;
@@ -42,7 +39,6 @@ import org.foxbpm.web.common.util.DateUtil;
 import org.foxbpm.web.common.util.JSONUtil;
 import org.foxbpm.web.common.util.Pagination;
 import org.foxbpm.web.service.interfaces.IWorkFlowService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -52,24 +48,28 @@ import org.springframework.stereotype.Service;
  * @date 2014年6月11日
  */
 @Service("workFlowServiceImpl")
-public class WorkFlowServiceImpl implements IWorkFlowService {
-	// 任务服务
-	@Autowired
-	private TaskService taskService;
-	// 模型服务
-	@Autowired
-	private ModelService modelService;
-	// 运行时服务
-	@Autowired
-	private RuntimeService runtimeService;
+public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlowService {
 
 	@Override
-	public Map<String, List<Map<String, Object>>> queryProcessDef(Pagination<String> pageInfor, Map<String, Object> params) throws FoxbpmWebException {
-		Map<String, List<Map<String, Object>>> resultMap = new HashMap<String, List<Map<String, Object>>>();
+	public List<Map<String, Object>> queryProcessDef(Pagination<String> pageInfor, Map<String, Object> params) throws FoxbpmWebException {
+		// 返回结果
+		List<Map<String, Object>> resultData = new ArrayList<Map<String, Object>>();
 		try {
 			// 创建流程定义查询
 			ProcessDefinitionQuery pdq = modelService.createProcessDefinitionQuery();
-
+			String processName = StringUtil.getString(params.get("queryProcessName"));
+			if (StringUtil.isNotEmpty(processName)) {
+				pdq.processDefinitionNameLike(processName);
+			}
+			String processId = StringUtil.getString(params.get("queryProcessId"));
+			if (StringUtil.isNotEmpty(processId)) {
+				pdq.processDefinitionKeyLike(processId);
+			}
+			String processCategory = StringUtil.getString(params.get("queryType"));
+			if (StringUtil.isNotEmpty(processCategory)) {
+				pdq.processDefinitionCategoryLike(processCategory);
+			}
+			pdq.orderByDeploymentId().desc();
 			List<ProcessDefinition> pdList = null;
 			if (null == pageInfor) {
 				pdList = pdq.list();
@@ -77,32 +77,20 @@ public class WorkFlowServiceImpl implements IWorkFlowService {
 				pdList = pdq.listPagination(pageInfor.getPageIndex(), pageInfor.getPageSize());
 				pageInfor.setTotal(StringUtil.getInt(pdq.count()));
 			}
-			Map<String, Object> instances = null;
+
 			for (int i = 0, size = (null == pdList) ? 0 : pdList.size(); i < size; i++) {
-				instances = new HashMap<String, Object>();
-				instances.putAll(pdList.get(i).getPersistentState());
-				// String formUrl = (String) instances.get("startFormKey");
-				instances.put("formUrl", "startTask.action");
-				String category = StringUtil.getString(instances.get("category"));
-				if (StringUtil.isEmpty(category)) {
-					category = "默认分类";
-				}
-				List<Map<String, Object>> tlist = resultMap.get(category);
-				if (tlist == null) {
-					tlist = new ArrayList<Map<String, Object>>();
-					resultMap.put(category, tlist);
-				}
-				tlist.add(instances);
+				resultData.add(pdList.get(i).getPersistentState());
 			}
 		} catch (Exception e) {
 			throw new FoxbpmWebException(e.getMessage(), "", e);
 		}
-		return resultMap;
+		return resultData;
 	}
 
 	@Override
-	public Map<String, Object> queryProcessInst(Pagination<String> pageInfor, Map<String, Object> params) throws FoxbpmWebException {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
+	public List<Map<String, Object>> queryProcessInst(Pagination<String> pageInfor, Map<String, Object> params) throws FoxbpmWebException {
+		// 返回结果
+		List<Map<String, Object>> resultData = new ArrayList<Map<String, Object>>();
 		try {
 			ProcessInstanceQuery piq = runtimeService.createProcessInstanceQuery();
 			// 获取查询条件参数
@@ -177,28 +165,26 @@ public class WorkFlowServiceImpl implements IWorkFlowService {
 				// 设置分页信息
 				pageInfor.setTotal(StringUtil.getInt(piq.count()));
 			}
-
-			List<Map<String, Object>> instanceMaps = new ArrayList<Map<String, Object>>();
+			// 流程实例属性集
 			Map<String, Object> instances = null;
 			ProcessInstance pi = null;
 			for (int i = 0, size = (null == piList) ? 0 : piList.size(); i < size; i++) {
 				pi = piList.get(i);
 				instances = new HashMap<String, Object>();
 				instances.putAll(pi.getPersistentState());
-				instanceMaps.add(instances);
+				resultData.add(instances);
 				instances.put("processDefinitionName", modelService.getProcessDefinition(pi.getProcessDefinitionId()).getName());
 			}
-			resultMap.put("dataList", instanceMaps);
 		} catch (Exception e) {
 			throw new FoxbpmWebException(e.getMessage(), "", e);
 		}
-		return resultMap;
+		return resultData;
 	}
 
 	@Override
 	public Map<String, Object> queryTaskDetailInfor(Map<String, Object> params) {
-		// 返回对象
-		Map<String, Object> resultMap = new HashMap<String, Object>();
+		// 返回结果
+		Map<String, Object> resultData = new HashMap<String, Object>();
 		try {
 			String processInstanceId = StringUtil.getString(params.get("processInstanceId"));
 			ProcessInstanceQuery piq = runtimeService.createProcessInstanceQuery();
@@ -222,23 +208,24 @@ public class WorkFlowServiceImpl implements IWorkFlowService {
 					notEndInstanceMaps.add(instanceMap);
 				}
 				Map<String, Map<String, Object>> postionMap = modelService.GetFlowGraphicsElementPosition(processInstance.getProcessDefinitionId());
-				resultMap.put("notEnddataList", notEndInstanceMaps);
-				resultMap.put("dataList", instanceMaps);
-				resultMap.put("positionInfo", JSONUtil.parseObject2JSON(postionMap));
-				resultMap.put("taskEndedJson", JSONUtil.parseObject2JSON(instanceMaps));
-				resultMap.put("taskNotEndJson", JSONUtil.parseObject2JSON(instancesNotEnd));
-				resultMap.put("processName", processName);
+				resultData.put("notEnddataList", notEndInstanceMaps);
+				resultData.put("dataList", instanceMaps);
+				resultData.put("positionInfo", JSONUtil.parseObject2JSON(postionMap));
+				resultData.put("taskEndedJson", JSONUtil.parseObject2JSON(instanceMaps));
+				resultData.put("taskNotEndJson", JSONUtil.parseObject2JSON(instancesNotEnd));
+				resultData.put("processName", processName);
 			}
 		} catch (Exception e) {
 			throw new FoxbpmWebException(e.getMessage(), "", e);
 		}
-		return resultMap;
+		return resultData;
 	}
 
 	@Override
-	public Map<String, Object> queryToDoTask(Pagination<String> pageInfor, Map<String, Object> params) {
+	public List<Map<String, Object>> queryToDoTask(Pagination<String> pageInfor, Map<String, Object> params) {
 
-		Map<String, Object> resultMap = new HashMap<String, Object>();
+		// 返回结果
+		List<Map<String, Object>> resultData = new ArrayList<Map<String, Object>>();
 		try {
 			TaskQuery taskQuery = taskService.createTaskQuery();
 			// 获取基本查询条件参数
@@ -293,19 +280,16 @@ public class WorkFlowServiceImpl implements IWorkFlowService {
 				taskList = taskQuery.orderByTaskCreateTime().desc().listPagination(pageInfor.getPageIndex(), pageInfor.getPageSize());
 				pageInfor.setTotal(StringUtil.getInt(taskQuery.count()));
 			}
-			// 设置分页信息
-			List<Map<String, Object>> instanceMaps = new ArrayList<Map<String, Object>>();
 			Map<String, Object> instances = null;
 			for (int i = 0, size = (null == taskList) ? 0 : taskList.size(); i < size; i++) {
 				instances = new HashMap<String, Object>();
 				instances.putAll(taskList.get(i).getPersistentState());
-				instanceMaps.add(instances);
+				resultData.add(instances);
 			}
-			resultMap.put("dataList", instanceMaps);
 		} catch (Exception e) {
 			throw new FoxbpmWebException(e.getMessage(), "", e);
 		}
-		return resultMap;
+		return resultData;
 	}
 
 	@Override

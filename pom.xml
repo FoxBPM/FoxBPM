@@ -15,7 +15,7 @@
 		<module>modules/foxbpm-webapps-rest</module>
 		<module>modules/foxbpm-webapps-base</module>
 	</modules>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -55,12 +55,23 @@
 	</dependencies>
 
 	<dependencyManagement>
-	    <dependencies>
-			 <dependency>
-		      <groupId>dom4j</groupId>
-		      <artifactId>dom4j</artifactId>
-		      <version>1.6.1</version>
-		    </dependency>
-	    </dependencies>
-	  </dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>dom4j</groupId>
+				<artifactId>dom4j</artifactId>
+				<version>1.6.1</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-fileupload</groupId>
+				<artifactId>commons-fileupload</artifactId>
+				<version>1.2.2</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.4</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
 </project>

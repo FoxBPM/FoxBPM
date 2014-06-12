@@ -20,4 +20,6 @@ public final class FoxbpmWebContextAttributeNameDefinition {
 	public final static String ATTRIBUTE_NAME_PAGEINFOR = "pageInfor";
 	public static final String ATTRIBUTE_NAME_ARRIVALTIMES = "arrivalTimeS";
 	public static final String ATTRIBUTE_NAME_ARRIVALTIMEE = "arrivalTimeE";
+	public static final String ATTRIBUTE_DEPLOYMENTID = "deploymentId";
+	
 }
