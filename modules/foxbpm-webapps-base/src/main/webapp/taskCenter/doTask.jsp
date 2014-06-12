@@ -18,7 +18,8 @@
 <link rel="stylesheet" type="text/css" href="common/css/reset.css">
 <link rel="stylesheet" type="text/css" href="common/css/form.css">
 <script type="text/javascript" src="common/js/jquery.js"></script>
-<script type="text/javascript" src="common/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript"
+	src="common/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="common/js/flowcommand.js"></script>
 <script type="text/javascript" src="common/js/flowautoassemble.js"></script>
 <script type="text/javascript" src="common/js/select.js"></script>
@@ -38,7 +39,7 @@
 			<table class="table-form">
 				<tr>
 					<td class="title-r">流程关联键：</td>
-					<td>${result.demoObject.pak}</td>
+					<td>${result.demoObject.bKey}</td>
 				</tr>
 				<tr>
 					<td class="title-r">信息：</td>

@@ -37,7 +37,7 @@
 				<tr>
 					<td class="title-r">流程关联键：</td>
 					<td><input type="text" name="businessKey"
-						value="${result.demoObject.pak}" /></td>
+						value="${result.demoObject.bKey}" /></td>
 				</tr>
 				<tr>
 					<td class="title-r">信息：</td>

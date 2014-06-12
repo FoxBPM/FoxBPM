@@ -80,7 +80,7 @@ public class DemoServiceImpl implements IDemoService {
 			if ("0".equalsIgnoreCase(taskStauts)) {
 				// 将业务数据存放到数据库中
 				TDemo tDemo = new TDemo();
-				tDemo.setPak(businessKey);
+				tDemo.setbKey(businessKey);
 				tDemo.setInfor(infor);
 				idemoDao.saveDemoData(tDemo);
 			}

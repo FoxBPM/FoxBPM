@@ -27,14 +27,15 @@ import org.springframework.jdbc.core.RowMapper;
 
 /**
  * 对表demotable 数据操作Dao实现
+ * 
  * @author yangguangftlp
  * @date 2014年6月10日
  */
 @SuppressWarnings("unchecked")
 public class DemoDaoImpl extends AbstrJdbcTemplate implements IDemoDao {
 
-	private static final String QUERY_DEMOSQL = "select * from demotable where pak = ?";
-	private static final String INSERT_DEMOSQL = "insert into demotable (pak,infor) values(?,?)";
+	private static final String QUERY_DEMOSQL = "select * from demotable where bKey = ?";
+	private static final String INSERT_DEMOSQL = "insert into demotable (bKey,infor) values(?,?)";
 
 	@Override
 	public List<TDemo> queryDemoData(List<Object> sqpParams) {
@@ -45,7 +46,7 @@ public class DemoDaoImpl extends AbstrJdbcTemplate implements IDemoDao {
 	@Override
 	public void saveDemoData(TDemo tdemo) {
 		List<Object> args = new ArrayList<Object>();
-		args.add(tdemo.getPak());
+		args.add(tdemo.getbKey());
 		args.add(tdemo.getInfor());
 		jdbcTemplate.update(INSERT_DEMOSQL, args.toArray());
 	}
@@ -60,7 +61,7 @@ public class DemoDaoImpl extends AbstrJdbcTemplate implements IDemoDao {
 		@Override
 		public T mapRow(java.sql.ResultSet rs, int arg1) throws SQLException {
 			TDemo tDemo = new TDemo();
-			tDemo.setPak(rs.getString("pkd"));
+			tDemo.setbKey(rs.getString("pkd"));
 			tDemo.setInfor(rs.getString("infor"));
 			return (T) tDemo;
 		}
