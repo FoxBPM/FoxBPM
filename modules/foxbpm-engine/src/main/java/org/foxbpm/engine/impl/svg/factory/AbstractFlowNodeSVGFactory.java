@@ -81,12 +81,13 @@ public abstract class AbstractFlowNodeSVGFactory {
 		if (kernelFlowElement instanceof KernelFlowNodeImpl) {
 			KernelFlowNodeImpl kernelFlowNodeImpl = (KernelFlowNodeImpl) kernelFlowElement;
 			svgBuilder.setText(kernelFlowNodeImpl.getName());
+			// 如果是事件节点，必须先设置width属性，即设置圆的直径
+			svgBuilder.setWidth(String.valueOf(kernelFlowNodeImpl.getWidth()));
 			svgBuilder.setXAndY(String.valueOf(kernelFlowNodeImpl.getX()),
 					String.valueOf(kernelFlowNodeImpl.getY()));
 
 			svgBuilder.setFill((String) kernelFlowNodeImpl
 					.getProperty(StyleOption.Background));
-			svgBuilder.setWidth(String.valueOf(kernelFlowNodeImpl.getWidth()));
 			svgBuilder
 					.setHeight(String.valueOf(kernelFlowNodeImpl.getHeight()));
 			svgBuilder.setTextStroke((String) kernelFlowNodeImpl

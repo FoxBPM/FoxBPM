@@ -172,6 +172,11 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setXAndY(String x, String y) {
+		// 流程图定义的是圆对应矩形左上角的坐标，所以对应的SVG坐标需要将坐标值加半径
+		y = String.valueOf(Float.valueOf(y)
+				+ Float.valueOf(this.circleVO.getR()));
+		x = String.valueOf(Float.valueOf(x)
+				+ Float.valueOf(this.circleVO.getR()));
 		// 如果存在子类型，例如ERROR
 		if (this.pathVo != null) {
 			// 整体 SHIFT
