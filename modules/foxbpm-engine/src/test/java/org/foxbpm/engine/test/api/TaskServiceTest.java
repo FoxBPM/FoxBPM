@@ -26,10 +26,10 @@ public class TaskServiceTest extends AbstractFoxBpmTestCase {
 //		expandCommand.setTaskId(task.getId());
 //		taskService.expandTaskComplete(expandCommand, null);
 		
-		taskService.createTaskQuery().taskAssignee("2222").taskCandidateUser("2222").taskNotEnd().listPagination(1, 10);
+//		taskService.createTaskQuery().taskAssignee("2222").taskCandidateUser("2222").taskNotEnd().listPagination(1, 10);
 		
-//		ProcessDefinition processDefinition = modelService.getProcessDefinition("BXLC_1:1:31e2c906-31af-462c-974e-6990ab5f05c6");
-//		System.out.println(processDefinition.getName());
+		ProcessDefinition processDefinition = modelService.getProcessDefinition("process_test_1", 1);
+		System.out.println(processDefinition.getName());
 		
 //		task=taskService.createTaskQuery().processInstanceId(processInstance.getId()).taskNotEnd().singleResult();
 //		ExpandTaskCommand expandCommand2 = new ExpandTaskCommand();

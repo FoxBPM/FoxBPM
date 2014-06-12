@@ -370,17 +370,17 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		
 						}
 						
-//						findSequenceFlow.setWaypoints(waypoints);
-//						
-//						if(style!=null){
-//							findSequenceFlow.setProperty(StyleOption.Background, style.getBackground());
-//							findSequenceFlow.setProperty(StyleOption.Font, style.getFont());
-//							findSequenceFlow.setProperty(StyleOption.Foreground, style.getForeground());
-//							findSequenceFlow.setProperty(StyleOption.MulitSelectedColor, style.getMulitSelectedColor());
-//							findSequenceFlow.setProperty(StyleOption.StyleObject, style.getObject());
-//							findSequenceFlow.setProperty(StyleOption.SelectedColor, style.getSelectedColor());
-//							findSequenceFlow.setProperty(StyleOption.TextColor, style.getTextColor());
-//						}
+						findSequenceFlow.setWaypoints(waypoints);
+						
+						if(style!=null){
+							findSequenceFlow.setProperty(StyleOption.Background, style.getBackground());
+							findSequenceFlow.setProperty(StyleOption.Font, style.getFont());
+							findSequenceFlow.setProperty(StyleOption.Foreground, style.getForeground());
+							findSequenceFlow.setProperty(StyleOption.MulitSelectedColor, style.getMulitSelectedColor());
+							findSequenceFlow.setProperty(StyleOption.StyleObject, style.getObject());
+							findSequenceFlow.setProperty(StyleOption.SelectedColor, style.getSelectedColor());
+							findSequenceFlow.setProperty(StyleOption.TextColor, style.getTextColor());
+						}
 						
 
 						//String sequenceFlowSVG = sequenceFlowToSVG(bpmnEdge);
