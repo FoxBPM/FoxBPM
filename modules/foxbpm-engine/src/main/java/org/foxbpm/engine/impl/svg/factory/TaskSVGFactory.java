@@ -20,14 +20,13 @@ package org.foxbpm.engine.impl.svg.factory;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.impl.svg.vo.GVO;
+import org.foxbpm.engine.impl.svg.vo.RectVO;
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.svg.vo.VONode;
-import org.foxbpm.engine.impl.svg.vo.build.AbstractSVGBuilder;
-import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
+import org.foxbpm.kernel.process.KernelFlowElement;
 
 /**
  * 任务SVG对象的工厂类
@@ -37,28 +36,41 @@ import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
  */
 public class TaskSVGFactory extends AbstractFlowNodeSVGFactory {
 	private static final String SPLIT_SEPERATOR = "/";
-	public TaskSVGFactory(String svgTemplateFileName) {
-		super(svgTemplateFileName);
-		// TODO Auto-generated constructor stub
+
+	/**
+	 * 
+	 * @param kernelFlowElement
+	 *            任务节点
+	 * @param svgTemplateFileName
+	 *            SVG模版文件名
+	 */
+	public TaskSVGFactory(KernelFlowElement kernelFlowElement,
+			String svgTemplateFileName) {
+		super(kernelFlowElement, svgTemplateFileName);
 	}
 
 	@Override
-	public VONode createSVGVO(KernelFlowNodeImpl kernelFlowNodeImpl,String svgType) {
-		// 分析svgType
-		// 加载svgvo
-		// 创建svgbuilder
-		// builder
-		List<String> gIDList = this.getGIDSFromSvgType(svgType);
+	public VONode createSVGVO() {
 		SvgVO taskVO = (SvgVO) super.loadSVGVO(this.svgTemplateFileName);
-		this.filterSvgVOByGID(taskVO, gIDList);
-		AbstractSVGBuilder svgBuilder = AbstractSVGBuilder.createSVGBuilder(
-				taskVO, svgType);
-		svgBuilder.setText("");
-		// 构造
-		// 构造
 		return taskVO;
 	}
 
+	@Override
+	public VONode createSVGVO(String svgType) {
+		List<String> gIDList = this.getGIDSFromSvgType(svgType);
+		SvgVO taskVO = (SvgVO) super.loadSVGVO(this.svgTemplateFileName);
+		this.filterSvgVOByGID(taskVO, gIDList);
+		this.filterRectVO(taskVO);
+
+		return taskVO;
+	}
+
+	/**
+	 * 从模版对象中过滤掉其他类型的G节点
+	 * 
+	 * @param svgVO
+	 * @param gIDList
+	 */
 	private void filterSvgVOByGID(SvgVO svgVO, List<String> gIDList) {
 		GVO gvo = svgVO.getgVo();
 		List<GVO> gvoList = gvo.getgVoList();
@@ -68,6 +80,24 @@ public class TaskSVGFactory extends AbstractFlowNodeSVGFactory {
 			if (!this.confirmGVOExistsByID(gIDList, subGVo.getId())) {
 				gvoIter.remove();
 				continue;
+			}
+		}
+	}
+
+	/**
+	 * 过滤RECT节点
+	 * 
+	 * @param svgVO
+	 */
+	private void filterRectVO(SvgVO svgVO) {
+		List<RectVO> rectVoList = svgVO.getgVo().getRectVoList();
+		Iterator<RectVO> rectVOIter = rectVoList.iterator();
+		while (rectVOIter.hasNext()) {
+			RectVO rectVo = rectVOIter.next();
+			if (StringUtils.equalsIgnoreCase(rectVo.getId(), "callActivity")
+					|| StringUtils.equalsIgnoreCase(rectVo.getId(),
+							"text_frame")) {
+				rectVOIter.remove();
 			}
 		}
 	}
@@ -90,14 +120,13 @@ public class TaskSVGFactory extends AbstractFlowNodeSVGFactory {
 		return false;
 	}
 
+	/**
+	 * 转化G节点ID为集合
+	 * 
+	 * @param svgType
+	 * @return
+	 */
 	private List<String> getGIDSFromSvgType(String svgType) {
 		return Arrays.asList(svgType.split(SPLIT_SEPERATOR));
 	}
-
-	@Override
-	public VONode createSVGVO(KernelFlowNodeImpl kernelFlowNodeImpl) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

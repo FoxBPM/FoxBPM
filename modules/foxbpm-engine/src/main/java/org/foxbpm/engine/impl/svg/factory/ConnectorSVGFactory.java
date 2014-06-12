@@ -4,6 +4,7 @@ import org.foxbpm.engine.impl.svg.SVGTypeNameConstant;
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.svg.vo.VONode;
 import org.foxbpm.engine.impl.svg.vo.build.AbstractSVGBuilder;
+import org.foxbpm.kernel.process.KernelFlowElement;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 
 /**
@@ -15,24 +16,26 @@ import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
  */
 public class ConnectorSVGFactory extends AbstractFlowNodeSVGFactory {
 
-	public ConnectorSVGFactory(String svgTemplateFileName) {
-		super(svgTemplateFileName);
+	/**
+	 * 
+	 * @param kernelFlowElement
+	 *            连接线对象
+	 * @param svgTemplateFileName
+	 */
+	public ConnectorSVGFactory(KernelFlowElement kernelFlowElement,
+			String svgTemplateFileName) {
+		super(kernelFlowElement, svgTemplateFileName);
 	}
 
 	@Override
-	public VONode createSVGVO(KernelFlowNodeImpl kernelFlowNodeImpl,
-			String svgType) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public VONode createSVGVO(KernelFlowNodeImpl kernelFlowNodeImpl) {
+	public VONode createSVGVO(String svgType) {
 		SvgVO connectorVO = (SvgVO) super.loadSVGVO(svgTemplateFileName);
-		// 根据式样构造SVG图像
-		AbstractSVGBuilder svgBuilder = AbstractSVGBuilder.createSVGBuilder(
-				connectorVO, SVGTypeNameConstant.SVG_TYPE_CONNECTOR);
+		return connectorVO;
+	}
 
+	@Override
+	public VONode createSVGVO() {
+		SvgVO connectorVO = (SvgVO) super.loadSVGVO(svgTemplateFileName);
 		return connectorVO;
 	}
 

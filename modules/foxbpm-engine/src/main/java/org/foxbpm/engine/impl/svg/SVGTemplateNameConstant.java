@@ -25,6 +25,10 @@ package org.foxbpm.engine.impl.svg;
  */
 public final class SVGTemplateNameConstant {
 	/**
+	 * SVG 模板容器
+	 */
+	public static final String SVG_TEMPLATE = "svg_template.svg";
+	/**
 	 * start_event
 	 */
 	public static final String TEMPLATE_STARTEVENT_NONE = "startevent/none.svg";

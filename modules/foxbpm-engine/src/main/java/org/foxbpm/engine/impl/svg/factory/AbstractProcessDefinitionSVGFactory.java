@@ -20,14 +20,38 @@ package org.foxbpm.engine.impl.svg.factory;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 
 /**
- * 流程定义SVG抽象工厂
+ * 创建流程SVG对象的抽象工厂
  * 
  * @author MAENLIANG
  * @date 2014-06-10
  * 
  */
 public abstract class AbstractProcessDefinitionSVGFactory {
+	/**
+	 * 流程定义的SVG画布坐标MINX
+	 */
+	protected static final String SVG_MINX = "canvas_minX";
+	/**
+	 * 流程定义的SVG画布坐标MINY
+	 */
+	protected static final String SVG_MINY = "canvas_minY";
+	/**
+	 * 流程定义的SVG画布坐标MAXX
+	 */
+	protected static final String SVG_MAXX = "canvas_maxX";
+	/**
+	 * 流程定义的SVG画布坐标MAXY
+	 */
+	protected static final String SVG_MAXY = "canvas_maxY";
 
+	/**
+	 * 
+	 * 根据流程定义创建SVG文档字符串
+	 * 
+	 * @param deployedProcessDefinition
+	 *            流程定义实体对象
+	 * @return
+	 */
 	public abstract String createProcessDefinitionSVGString(
 			ProcessDefinitionEntity deployedProcessDefinition);
 

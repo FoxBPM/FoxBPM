@@ -30,6 +30,7 @@ import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.svg.SVGTemplateNameConstant;
 import org.foxbpm.engine.impl.svg.SVGTypeNameConstant;
+import org.foxbpm.engine.impl.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.svg.vo.VONode;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
@@ -44,6 +45,8 @@ import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
  */
 public class ProcessDefinitionSVGFactory extends
 		AbstractProcessDefinitionSVGFactory {
+	private static final String EMPTY_STRING = "";
+
 	/**
 	 * 根据所有流程节点，和流程连接创建流程SVG文档字符串
 	 */
@@ -54,15 +57,20 @@ public class ProcessDefinitionSVGFactory extends
 		Map<String, KernelSequenceFlowImpl> sequenceFlows = deployedProcessDefinition
 				.getSequenceFlows();
 
+		List<VONode> voNodeList = new ArrayList<VONode>();
+		VONode svgTemplateContainer = this
+				.getDefaultSVGContainerFromFactory(deployedProcessDefinition
+						.getProperties());
+		voNodeList.add(svgTemplateContainer);
+
 		// 遍历所有的流程节点
 		Iterator<KernelFlowNodeImpl> flowNodeIterator = flowNodes.iterator();
-		List<VONode> voNodeList = new ArrayList<VONode>();
 		while (flowNodeIterator.hasNext()) {
 			KernelFlowNodeImpl kernelFlowNodeImpl = flowNodeIterator.next();
 			KernelFlowNodeBehavior kernelFlowNodeBehavior = kernelFlowNodeImpl
 					.getKernelFlowNodeBehavior();
-			String taskType = "";
-			String svgTemplateFileName = "";
+			String taskType = EMPTY_STRING;
+			String svgTemplateFileName = EMPTY_STRING;
 			if (kernelFlowNodeBehavior instanceof UserTaskBehavior) {
 				taskType = SVGTypeNameConstant.ACTIVITY_USERTASK;
 				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK;
@@ -79,8 +87,8 @@ public class ProcessDefinitionSVGFactory extends
 				taskType = SVGTypeNameConstant.SVG_TYPE_EVENT;
 				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ENDEVENT_NONE;
 			}
-			VONode voNode = this.getNodeSVGStringFromFactory(
-					kernelFlowNodeImpl, taskType, svgTemplateFileName);
+			VONode voNode = this.getNodeSVGFromFactory(kernelFlowNodeImpl,
+					taskType, svgTemplateFileName);
 			voNodeList.add(voNode);
 		}
 
@@ -96,14 +104,43 @@ public class ProcessDefinitionSVGFactory extends
 		return this.convertNodeListToString(voNodeList);
 	}
 
-	private VONode getNodeSVGStringFromFactory(
-			KernelFlowNodeImpl kernelFlowNodeImpl, String taskType,
-			String svgTemplateFileName) {
+	/**
+	 * s构造SVG容器设置大小
+	 * 
+	 * @param processDefinitionPorperties
+	 * @return
+	 */
+	private VONode getDefaultSVGContainerFromFactory(
+			Map<String, Object> processDefinitionPorperties) {
+		SvgVO svgTemplateContainer = (SvgVO) AbstractFlowNodeSVGFactory
+				.createSVGTemplateContainerVO(processDefinitionPorperties);
+		int svgMinX = Integer.valueOf((String) processDefinitionPorperties
+				.get(SVG_MINX));
+		int svgMinY = Integer.valueOf((String) processDefinitionPorperties
+				.get(SVG_MINY));
+		int svgMaxX = Integer.valueOf((String) processDefinitionPorperties
+				.get(SVG_MAXX));
+		int svgMaxY = Integer.valueOf((String) processDefinitionPorperties
+				.get(SVG_MAXY));
+		svgTemplateContainer.setWidth(String.valueOf(svgMaxX - svgMinX));
+		svgTemplateContainer.setHeight(String.valueOf(svgMaxY - svgMinY));
+		return svgTemplateContainer;
+	}
+
+	/**
+	 * 创建流程元素SVG
+	 * 
+	 * @param kernelFlowNodeImpl
+	 * @param svgType
+	 * @param svgTemplateFileName
+	 * @return
+	 */
+	private VONode getNodeSVGFromFactory(KernelFlowNodeImpl kernelFlowNodeImpl,
+			String svgType, String svgTemplateFileName) {
 		// 调用节点构造方法，创建SVG VALUE OBJECT 对象
 		AbstractFlowNodeSVGFactory svgFactory = AbstractFlowNodeSVGFactory
-				.createSVGFactory(svgTemplateFileName);
-		return svgFactory.createSVGVO(kernelFlowNodeImpl,
-				taskType);
+				.createSVGFactory(kernelFlowNodeImpl, svgTemplateFileName);
+		return svgFactory.createFlowElementSVGVO(svgType);
 	}
 
 	private String convertNodeListToString(List<VONode> voNodeList) {

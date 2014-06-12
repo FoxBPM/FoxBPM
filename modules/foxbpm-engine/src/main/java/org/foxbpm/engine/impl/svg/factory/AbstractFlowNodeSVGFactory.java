@@ -25,11 +25,16 @@ import javax.xml.bind.Marshaller;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.bpmn.parser.StyleOption;
 import org.foxbpm.engine.impl.svg.SVGTemplateContainer;
+import org.foxbpm.engine.impl.svg.SVGTemplateNameConstant;
 import org.foxbpm.engine.impl.svg.SVGTypeNameConstant;
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.svg.vo.VONode;
+import org.foxbpm.engine.impl.svg.vo.build.AbstractSVGBuilder;
+import org.foxbpm.kernel.process.KernelFlowElement;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
+import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 
 /**
  * FLOW单个节点SVG工厂类
@@ -40,42 +45,104 @@ import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
  */
 public abstract class AbstractFlowNodeSVGFactory {
 	protected String svgTemplateFileName;
+	protected KernelFlowElement kernelFlowElement;
 
-	public AbstractFlowNodeSVGFactory(String svgTemplateFileName) {
+	/**
+	 * 
+	 * @param kernelFlowElement
+	 * @param svgTemplateFileName
+	 */
+	public AbstractFlowNodeSVGFactory(KernelFlowElement kernelFlowElement,
+			String svgTemplateFileName) {
 		this.svgTemplateFileName = svgTemplateFileName;
+		this.kernelFlowElement = kernelFlowElement;
 	}
 
+	/**
+	 * 构造流程元素SVG 包括连接线
+	 * 
+	 * @param svgType
+	 * @return
+	 */
+	public VONode createFlowElementSVGVO(String svgType) {
+		SvgVO svgVo = null;
+		if (StringUtils.equalsIgnoreCase(svgType,
+				SVGTypeNameConstant.SVG_TYPE_EVENT)
+				|| StringUtils.equalsIgnoreCase(svgType,
+						SVGTypeNameConstant.SVG_TYPE_CONNECTOR)) {
+			svgVo = (SvgVO) this.createSVGVO();
+		} else {
+			svgVo = (SvgVO) this.createSVGVO(svgType);
+		}
+		AbstractSVGBuilder svgBuilder = AbstractSVGBuilder.createSVGBuilder(
+				svgVo, svgType);
+
+		// 构造节点元素
+		if (kernelFlowElement instanceof KernelFlowNodeImpl) {
+			KernelFlowNodeImpl kernelFlowNodeImpl = (KernelFlowNodeImpl) kernelFlowElement;
+			svgBuilder.setText(kernelFlowNodeImpl.getName());
+			svgBuilder.setXAndY(String.valueOf(kernelFlowNodeImpl.getX()),
+					String.valueOf(kernelFlowNodeImpl.getY()));
+			svgBuilder.setFill((String) kernelFlowNodeImpl
+					.getProperty(StyleOption.Background));
+			svgBuilder.setWidth(String.valueOf(kernelFlowNodeImpl.getWidth()));
+			svgBuilder
+					.setHeight(String.valueOf(kernelFlowNodeImpl.getHeight()));
+			svgBuilder.setTextStroke((String) kernelFlowNodeImpl
+					.getProperty(StyleOption.TextColor));
+
+			// 构造
+			// 构造
+			// TODO 未知属性
+			kernelFlowNodeImpl.getProperty(StyleOption.Font);
+			kernelFlowNodeImpl.getProperty(StyleOption.Foreground);
+			String style = (String) kernelFlowNodeImpl
+					.getProperty(StyleOption.StyleObject);
+		}
+		// 线条元素
+		if (kernelFlowElement instanceof KernelSequenceFlowImpl) {
+			KernelSequenceFlowImpl kernelSequenceFlowImpl = (KernelSequenceFlowImpl) kernelFlowElement;
+			kernelSequenceFlowImpl.getProperty("");
+			// TODO 待操作
+		}
+		return svgVo;
+
+	}
+
+	/**
+	 * 创建具体的工厂类
+	 * 
+	 * @param kernelFlowElement
+	 * @param svgTemplateFileName
+	 * @return
+	 */
 	public static AbstractFlowNodeSVGFactory createSVGFactory(
-			String svgTemplateFileName) {
+			KernelFlowElement kernelFlowElement, String svgTemplateFileName) {
 		if (StringUtils.contains(svgTemplateFileName, "event")) {
-			return new EventSVGFactory(svgTemplateFileName);
+			return new EventSVGFactory(kernelFlowElement, svgTemplateFileName);
 		}
 		if (StringUtils.contains(svgTemplateFileName, "activity")) {
-			return new TaskSVGFactory(svgTemplateFileName);
+			return new TaskSVGFactory(kernelFlowElement, svgTemplateFileName);
 		}
 		if (StringUtils.contains(svgTemplateFileName, "connector")) {
-			return new ConnectorSVGFactory(svgTemplateFileName);
+			return new ConnectorSVGFactory(kernelFlowElement,
+					svgTemplateFileName);
 		}
 		return null;
 	}
 
 	/**
-	 * 
-	 * 根据SVG文件模版，以及SVG类型构造SVG对象，例如：构建TASK SVG对象，可以根据TASK SVG模板和TASK
-	 * 类型《manualTask,scriptTask,,》构造SVG 对象
-	 * 
-	 * @param svgType
-	 * @return
-	 */
-	public abstract VONode createSVGVO(KernelFlowNodeImpl kernelFlowNodeImpl,
-			String svgType);
-
-	/**
-	 * 根据具体的SVG文件名称创建对象，例如： 如果是构造事件SVG对象，则根据事件类型 对应的具体SVG文件，创建SVG对象
+	 * 创建SVG模板容器对象
 	 * 
 	 * @return
 	 */
-	public abstract VONode createSVGVO(KernelFlowNodeImpl kernelFlowNodeImpl);
+	public static VONode createSVGTemplateContainerVO(
+			Map<String, Object> processDefinitionProperties) {
+		VONode svgTemplateContainer = SVGTemplateContainer
+				.getContainerInstance().getTemplateByName(
+						SVGTemplateNameConstant.SVG_TEMPLATE);
+		return svgTemplateContainer;
+	}
 
 	/**
 	 * 加载SVG模版
@@ -99,8 +166,8 @@ public abstract class AbstractFlowNodeSVGFactory {
 	 * @param svgVo
 	 * @return
 	 */
-	public String createFlowNodeSVGString(KernelFlowNodeImpl kernelFlowNodeImpl,
-			String svgType) {
+	public String createFlowNodeSVGString(
+			KernelFlowNodeImpl kernelFlowNodeImpl, String svgType) {
 		try {
 			JAXBContext context = JAXBContext.newInstance(SvgVO.class);
 			Marshaller marshal = context.createMarshaller();
@@ -112,9 +179,9 @@ public abstract class AbstractFlowNodeSVGFactory {
 					SVGTypeNameConstant.SVG_TYPE_EVENT)
 					|| StringUtils.equalsIgnoreCase(svgType,
 							SVGTypeNameConstant.SVG_TYPE_CONNECTOR)) {
-				svgVo = (SvgVO) this.createSVGVO(kernelFlowNodeImpl);
+				svgVo = (SvgVO) this.createSVGVO();
 			} else {
-				svgVo = (SvgVO) this.createSVGVO(kernelFlowNodeImpl, svgType);
+				svgVo = (SvgVO) this.createSVGVO(svgType);
 			}
 
 			marshal.marshal(svgVo, writer);
@@ -124,5 +191,22 @@ public abstract class AbstractFlowNodeSVGFactory {
 					e);
 		}
 	}
+
+	/**
+	 * 
+	 * 根据SVG文件模版，以及SVG类型构造SVG对象，例如：构建TASK SVG对象，可以根据TASK SVG模板和TASK
+	 * 类型《manualTask,scriptTask,,》构造SVG 对象
+	 * 
+	 * @param svgType
+	 * @return
+	 */
+	protected abstract VONode createSVGVO(String svgType);
+
+	/**
+	 * 根据具体的SVG文件名称创建对象，例如： 如果是构造事件SVG对象，则根据事件类型 对应的具体SVG文件，创建SVG对象
+	 * 
+	 * @return
+	 */
+	protected abstract VONode createSVGVO();
 
 }

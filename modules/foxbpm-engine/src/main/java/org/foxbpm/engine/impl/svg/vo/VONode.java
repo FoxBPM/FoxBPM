@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
 /**
- * SVG对象的超类
+ * SVG对象的超类,包括 节点SVG对象，连接线SVG对象
  * 
  * @author MAENLIANG
  * @date 2014-06-10

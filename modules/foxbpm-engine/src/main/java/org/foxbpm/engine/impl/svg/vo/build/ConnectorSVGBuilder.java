@@ -16,7 +16,7 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setHight(String hight) {
+	public void setHeight(String height) {
 		// TODO Auto-generated method stub
 
 	}

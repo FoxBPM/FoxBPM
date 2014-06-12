@@ -17,6 +17,12 @@
  */
 package org.foxbpm.engine.impl.svg.vo.build;
 
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.svg.vo.RectVO;
 import org.foxbpm.engine.impl.svg.vo.SvgVO;
 
 /**
@@ -26,20 +32,37 @@ import org.foxbpm.engine.impl.svg.vo.SvgVO;
  * @date 2014-06-10
  */
 public class TaskSVGBuilder extends AbstractSVGBuilder {
+	/**
+	 * 矩形对象
+	 */
+	private RectVO rectVO;
+
 	public TaskSVGBuilder(SvgVO svgVo) {
 		super(svgVo);
+		List<RectVO> rectVoList = svgVo.getgVo().getRectVoList();
+		Iterator<RectVO> iterator = rectVoList.iterator();
+		while (iterator.hasNext()) {
+			RectVO next = iterator.next();
+			if (StringUtils.equalsIgnoreCase(next.getId(), BPMN_NODE_ID)) {
+				rectVO = next;
+				break;
+			}
+		}
+
+		if (this.rectVO == null) {
+			throw new FoxBPMException("TaskSVGBuilder构造 TASK SVG时，无法获取矩形对象");
+		}
+
 	}
 
 	@Override
 	public void setWidth(String width) {
-		// TODO Auto-generated method stub
-
+		rectVO.setWidth(width);
 	}
 
 	@Override
-	public void setHight(String hight) {
-		// TODO Auto-generated method stub
-
+	public void setHeight(String height) {
+		this.rectVO.setHeight(height);
 	}
 
 	@Override
@@ -56,8 +79,10 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setFill(String fill) {
-		// TODO Auto-generated method stub
-
+		String fillValue = "url(#"
+				+ this.svgVo.getgVo().getDefsVo().getRadialGradientVo().getId()
+				+ ") #";
+		this.rectVO.setFill(fillValue + fill);
 	}
 
 	@Override
@@ -83,17 +108,15 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 	@Override
 	public void setTextStroke(String textStroke) {
 		this.textVO.setStroke(textStroke);
-
 	}
 
 	@Override
 	public void setID(String id) {
-		
+
 	}
 
 	@Override
 	public void setName(String name) {
-		
 
 	}
 
@@ -129,8 +152,8 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setXAndY(String x, String y) {
-		// TODO Auto-generated method stub
-		
+		// 设置整体坐标，包括子类型
+		this.svgVo.getgVo().setTransform("translate(" + x + ", " + y + ")");
 	}
 
 }

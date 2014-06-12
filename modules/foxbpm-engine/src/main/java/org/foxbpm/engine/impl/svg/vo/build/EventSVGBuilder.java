@@ -17,8 +17,10 @@
  */
 package org.foxbpm.engine.impl.svg.vo.build;
 
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.svg.vo.CircleVO;
 import org.foxbpm.engine.impl.svg.vo.PathVO;
@@ -32,6 +34,9 @@ import org.foxbpm.engine.impl.svg.vo.TextVO;
  * @date 2014-06-10
  */
 public class EventSVGBuilder extends AbstractSVGBuilder {
+	/**
+	 * 事件子类型对象
+	 */
 	private PathVO pathVo;
 	/**
 	 * 事件圆圈对象
@@ -41,12 +46,18 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 	public EventSVGBuilder(SvgVO voNode) {
 		super(voNode);
 		List<CircleVO> circleVoList = voNode.getgVo().getCircleVoList();
-		this.circleVO = circleVoList.get(circleVoList.size() - 1);
-		List<PathVO> pathVoList = this.svgVo.getgVo().getPathVoList();
-		if (pathVoList == null || pathVoList.size() == 0) {
-			throw new FoxBPMException(
-					"the even svg has no type like errorType signalType");
+		Iterator<CircleVO> iterator = circleVoList.iterator();
+		while (iterator.hasNext()) {
+			CircleVO next = iterator.next();
+			if (StringUtils.equalsIgnoreCase(next.getId(), BPMN_NODE_ID)) {
+				this.circleVO = next;
+				break;
+			}
 		}
+		if (this.circleVO == null) {
+			throw new FoxBPMException("EventSVGBuilder构造 EVENT SVG时，无法获取圆形对象");
+		}
+		List<PathVO> pathVoList = this.svgVo.getgVo().getPathVoList();
 		pathVo = pathVoList.get(0);
 	}
 
@@ -88,7 +99,7 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setHight(String height) {
+	public void setHeight(String height) {
 		// TODO Auto-generated method stub
 
 	}
@@ -108,7 +119,7 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 	public void setFill(String fill) {
 		String fillValue = "url(#"
 				+ this.svgVo.getgVo().getDefsVo().getRadialGradientVo().getId()
-				+ ") ";
+				+ ") #";
 		this.circleVO.setFill(fillValue + fill);
 	}
 

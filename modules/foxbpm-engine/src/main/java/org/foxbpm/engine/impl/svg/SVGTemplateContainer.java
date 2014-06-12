@@ -114,7 +114,7 @@ public class SVGTemplateContainer {
 	 * @param templateName
 	 * @return
 	 */
-	public static VONode getTemplateByName(String templateName) {
+	public VONode getTemplateByName(String templateName) {
 		// 第一次需要从svg文档初始化
 		if (container.svgTemplets.get(templateName) == null) {
 			container.init(templateName);
