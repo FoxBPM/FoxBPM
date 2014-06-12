@@ -8,8 +8,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>流程状态</title>
 <jsp:include page="formHead.jsp" flush="true" />
-<link rel="stylesheet" type="text/css" href="foxbpm/css/form.css"></link>
-<link rel="stylesheet" type="text/css" href="foxbpm/css/flowGraph.css"></link>
+<link rel="stylesheet" type="text/css" href="common/css/form.css"></link>
+<link rel="stylesheet" type="text/css" href="common/css/flowGraph.css"></link>
 
 <script type="text/javascript">
 	var taskListEnd = [];//存放已经结束的节点

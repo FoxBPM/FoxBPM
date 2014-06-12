@@ -76,7 +76,6 @@ public class WorkFlowController extends AbstWebController {
 					tempList = new ArrayList<Map<String, Object>>();
 					resultMap.put(category, tempList);
 				}
-				map.put("formUrl", "startTask.action");
 				tempList.add(map);
 			}
 			// 封装参数
