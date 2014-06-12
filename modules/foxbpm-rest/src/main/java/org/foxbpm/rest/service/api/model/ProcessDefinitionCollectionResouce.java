@@ -19,6 +19,7 @@ package org.foxbpm.rest.service.api.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.foxbpm.engine.ProcessEngine;
@@ -64,10 +65,9 @@ public class ProcessDefinitionCollectionResouce extends AbstractRestResource {
 		}
 
 		List<ProcessDefinition> processDefinitions = processDefinitionQuery.list();
-		List<ProcessDefinitionResponse> results = new ArrayList<ProcessDefinitionResponse>();
+		List<Map<String,Object>> results = new ArrayList<Map<String,Object>>();
 		for (ProcessDefinition process : processDefinitions) {
-			ProcessDefinitionResponse response = new ProcessDefinitionResponse(process);
-			results.add(response);
+			results.add(process.getPersistentState());
 		}
 		DataResult result = new DataResult();
 		result.setData(results);

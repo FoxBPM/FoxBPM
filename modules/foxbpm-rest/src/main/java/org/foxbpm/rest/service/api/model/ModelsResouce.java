@@ -61,6 +61,7 @@ public class ModelsResouce extends AbstractRestResource{
 	private static final String SEP = "-";
 	private static final String PREFIX_ADD = "insert";
 	private static final String PREFIX_UPDATE = "update";
+	private static final String PREFIX_DELETE = "delete";
 	private static Logger log = LoggerFactory.getLogger(ModelsResouce.class);
 	@Post
 	public String deploy(Representation entity){
@@ -115,13 +116,22 @@ public class ModelsResouce extends AbstractRestResource{
 									deploymentBuilder.deploy();
 								}else if(PREFIX_UPDATE.equals(operation)){
 									ProcessDefinition processDefinition = null;
-									try{
+									try{//查询是否已经存在，已存在，则更新，否则新增
 										processDefinition = modelService.getProcessDefinition(processKey, version);
 										String deploymentId = processDefinition.getDeploymentId();
 										deploymentBuilder.updateDeploymentId(deploymentId);
-										deploymentBuilder.deploy();
 									}catch(FoxBPMObjectNotFoundException ex){
-										deploymentBuilder.deploy();
+										//此异常代表数据库中不存在此流程定义
+									}
+									deploymentBuilder.deploy();
+								}else if(PREFIX_DELETE.equals(operation)){
+									try{//查询是否已经存在，已存在，则更新，否则新增
+										ProcessDefinition processDefinitionNew = modelService.getProcessDefinition(processKey, version);
+										String deploymentId = processDefinitionNew.getDeploymentId();
+										modelService.deleteDeployment(deploymentId);
+									}catch(FoxBPMObjectNotFoundException ex){
+										//此异常代表数据库中不存在此流程定义,则不进行删除操作
+										log.warn("数据库中不存在key:"+processKey+"，version:"+version+"的流程定义，忽略此删除操作");
 									}
 								}else{
 									throw new FoxBPMException("发布文件中不包含操作码");
