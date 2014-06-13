@@ -1,10 +1,10 @@
 package org.foxbpm.engine.impl.cmd;
 
+import org.foxbpm.engine.impl.diagramview.factory.FoxbpmProcessDefinitionVOFactory;
+import org.foxbpm.engine.impl.diagramview.factory.ConcreteProcessDefinitionVOFactory;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
-import org.foxbpm.engine.impl.svg.factory.AbstractProcessDefinitionSVGFactory;
-import org.foxbpm.engine.impl.svg.factory.ProcessDefinitionSVGFactory;
 
 public class GetProcessDefinitionSVGCmd implements Command<String> {
 	private String processDefinitionId;
@@ -18,8 +18,9 @@ public class GetProcessDefinitionSVGCmd implements Command<String> {
 		ProcessDefinitionEntity deployedProcessDefinition = commandContext
 				.getProcessEngineConfigurationImpl().getDeploymentManager()
 				.findDeployedProcessDefinitionById(processDefinitionId);
-		AbstractProcessDefinitionSVGFactory svgFactory = new ProcessDefinitionSVGFactory();
+		// SVG上一层接口，独立于SVG，后期支持动态切换到微软SVG实现
+		FoxbpmProcessDefinitionVOFactory svgFactory = new ConcreteProcessDefinitionVOFactory();
 		return svgFactory
-				.createProcessDefinitionSVGString(deployedProcessDefinition);
+				.createProcessDefinitionVOString(deployedProcessDefinition);
 	}
 }
