@@ -42,7 +42,7 @@ import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 
 /**
- * PROCESS流程SVG工厂类
+ * PROCESS流程图形工厂类
  * 
  * @author MAENLIANG
  * @date 2014-06-11

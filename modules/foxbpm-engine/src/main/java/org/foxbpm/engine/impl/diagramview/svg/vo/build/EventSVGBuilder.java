@@ -25,8 +25,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.diagramview.svg.vo.CircleVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.DefsVO;
+import org.foxbpm.engine.impl.diagramview.svg.vo.LinearGradient;
 import org.foxbpm.engine.impl.diagramview.svg.vo.PathVO;
-import org.foxbpm.engine.impl.diagramview.svg.vo.RadialGradientVO;
+import org.foxbpm.engine.impl.diagramview.svg.vo.StopVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 
 /**
@@ -37,6 +38,7 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
  */
 public class EventSVGBuilder extends AbstractSVGBuilder {
 	private static final String FILL_DEFAULT = "white";
+	private static final int LINEARGRADIENT_INDEX = 0;
 	/**
 	 * 事件子类型对象
 	 */
@@ -127,18 +129,25 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 	public void setFill(String fill) {
 		DefsVO defsVo = this.svgVo.getgVo().getDefsVo();
 		if (defsVo != null) {
-			RadialGradientVO radialGradientVo = defsVo.getRadialGradientVo();
-			if (radialGradientVo != null) {
+			LinearGradient linearGradient = defsVo.getLinearGradient();
+			if (linearGradient != null) {
 				String backGroudUUID = UUID.randomUUID().toString();
-				radialGradientVo.setId(backGroudUUID);
-				if (StringUtils.isBlank(fill)) {
-					this.circleVO.setFill("url(#" + backGroudUUID + ") white");
-				} else {
-					this.circleVO.setFill("url(#" + backGroudUUID + ") #"
-							+ fill);
+				linearGradient.setId(backGroudUUID);
+				List<StopVO> stopVoList = linearGradient.getStopVoList();
+				int index = 0;
+				if (stopVoList != null && stopVoList.size() > index) {
+					StopVO stopVO = stopVoList.get(LINEARGRADIENT_INDEX);
+					if (StringUtils.isBlank(fill)) {
+						this.circleVO.setFill("url(#" + backGroudUUID
+								+ ") white");
+						stopVO.setStopColor("white");
+					} else {
+						this.circleVO.setFill("url(#" + backGroudUUID + ")");
+						stopVO.setStopColor(COLOR_FLAG + fill);
+					}
+					return;
 				}
 
-				return;
 			}
 		}
 

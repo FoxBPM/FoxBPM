@@ -14,6 +14,10 @@
 			<stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
 			<stop id="fill_el" offset="100%" stop-color="#ffffff" stop-opacity="1"/>
 		</radialGradient>
+		<linearGradient x1="70" gradientUnits="userSpaceOnUse" x2="70" y1="109" y2="145" id="b0bd8528-9671-4914-92fe-288653be1a83" spreadMethod="pad">
+			<stop stop-opacity="1" stop-color="#ffffff" offset="0%" />
+			<stop stop-opacity="1" stop-color="rgb(192,255,192)" offset="100%" />
+	 	</linearGradient>
 	</defs>
 	
     <circle id="bg_frame" cx="16" cy="16" r="14" stroke="black" fill="url(#background) white" stroke-width="3"/>

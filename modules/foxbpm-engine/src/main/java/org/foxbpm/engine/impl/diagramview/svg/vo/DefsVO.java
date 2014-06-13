@@ -39,8 +39,18 @@ public class DefsVO extends VONode {
 	private static final long serialVersionUID = -8584630516155274242L;
 	@XmlElement(name = "radialGradient")
 	private RadialGradientVO radialGradientVo;
+	@XmlElement(name = "linearGradient")
+	private LinearGradient linearGradient;
 	@XmlElement(name = "marker")
 	private List<MarkerVO> markerVOList;
+
+	public LinearGradient getLinearGradient() {
+		return linearGradient;
+	}
+
+	public void setLinearGradient(LinearGradient linearGradient) {
+		this.linearGradient = linearGradient;
+	}
 
 	public List<MarkerVO> getMarkerVOList() {
 		return markerVOList;

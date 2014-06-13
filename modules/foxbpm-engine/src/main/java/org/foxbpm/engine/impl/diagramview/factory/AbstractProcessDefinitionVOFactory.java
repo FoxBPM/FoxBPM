@@ -20,7 +20,7 @@ package org.foxbpm.engine.impl.diagramview.factory;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 
 /**
- * 创建流程SVG对象的抽象工厂
+ * 创建流程图形对象的抽象工厂
  * 
  * @author MAENLIANG
  * @date 2014-06-10

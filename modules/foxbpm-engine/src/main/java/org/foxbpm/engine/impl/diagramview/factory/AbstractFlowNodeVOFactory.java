@@ -58,7 +58,7 @@ public abstract class AbstractFlowNodeVOFactory {
 	}
 
 	/**
-	 * 构造流程元素SVG 包括连接线
+	 * 构造流程元素信息 包括连接线
 	 * 
 	 * @param svgType
 	 * @return
