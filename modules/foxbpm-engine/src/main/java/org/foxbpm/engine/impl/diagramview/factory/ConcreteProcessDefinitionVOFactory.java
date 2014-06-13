@@ -96,13 +96,8 @@ public class ConcreteProcessDefinitionVOFactory extends
 			voNodeList.add(voNode);
 		}
 
-		VONode svgTemplateContainer = flowNodeVOFactory
-				.getDefaultSVGContainerFromFactory(deployedProcessDefinition
-						.getProperties());
-		voNodeList.add(svgTemplateContainer);
-
 		String svgStr = flowNodeVOFactory.convertNodeListToString(
-				svgTemplateContainer, voNodeList);
+				deployedProcessDefinition.getProperties(), voNodeList);
 		System.out.println(svgStr);
 		return svgStr;
 	}

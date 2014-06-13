@@ -25,6 +25,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.impl.bpmn.behavior.SequenceFlowBehavior;
 import org.foxbpm.engine.impl.bpmn.parser.StyleOption;
 import org.foxbpm.engine.impl.diagramview.builder.FoxBpmnViewBuilder;
+import org.foxbpm.engine.impl.diagramview.svg.Point;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTypeNameConstant;
 import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
 import org.foxbpm.engine.impl.diagramview.svg.factory.AbstractFlowNodeSVGFactory;
@@ -76,7 +77,7 @@ public abstract class AbstractFlowNodeVOFactory {
 		FoxBpmnViewBuilder svgBuilder = AbstractSVGBuilder.createSVGBuilder(
 				voNode, svgType);
 
-		// 构造节点元素,需要考虑构造顺序
+		// 构造节点元素,需要考虑构造顺序，注意以来关系
 		if (kernelFlowElement instanceof KernelFlowNodeImpl) {
 			// 过滤
 			this.filterActivityTaskVO(voNode, new String[] { "callActivity" });
@@ -84,25 +85,25 @@ public abstract class AbstractFlowNodeVOFactory {
 					Arrays.asList(svgType.split(SPLIT_SEPERATOR)));
 			KernelFlowNodeImpl kernelFlowNodeImpl = (KernelFlowNodeImpl) kernelFlowElement;
 			svgBuilder.setText(kernelFlowNodeImpl.getName());
-			svgBuilder.setText("haohaohao");
-			// 如果是事件节点，必须先设置width属性，即设置圆的直径
+			svgBuilder.setText("中国人阿");
+			// 如果是事件节点，必须先设置width属性，即设置圆的直径,
 			svgBuilder.setWidth(String.valueOf(kernelFlowNodeImpl.getWidth()));
 			svgBuilder
 					.setHeight(String.valueOf(kernelFlowNodeImpl.getHeight()));
-			// 设置节点的坐标包括对应文本字体的坐标
-			svgBuilder.setXAndY(String.valueOf(kernelFlowNodeImpl.getX()),
-					String.valueOf(kernelFlowNodeImpl.getY()));
-
 			svgBuilder.setFill((String) kernelFlowNodeImpl
 					.getProperty(StyleOption.Background));
 
 			svgBuilder.setTextStroke((String) kernelFlowNodeImpl
 					.getProperty(StyleOption.TextColor));
-			svgBuilder.setTextStroke("0");
+			svgBuilder.setTextStrokeWidth("0");
 			svgBuilder.setTextFont((String) kernelFlowNodeImpl
 					.getProperty(StyleOption.Font));
 			svgBuilder.setStroke((String) kernelFlowNodeImpl
 					.getProperty(StyleOption.Foreground));
+
+			// 设置节点的坐标包括对应文本字体的坐标，文本坐标依赖于文本式样字体大小等
+			svgBuilder.setXAndY(String.valueOf(kernelFlowNodeImpl.getX()),
+					String.valueOf(kernelFlowNodeImpl.getY()));
 			// TODO 未知属性
 			kernelFlowNodeImpl.getProperty(StyleOption.StyleObject);
 		}
@@ -120,10 +121,10 @@ public abstract class AbstractFlowNodeVOFactory {
 			// 过滤
 			this.filterConnectorVO(voNode, filterConfition);
 			List<Integer> waypoints = kernelSequenceFlowImpl.getWaypoints();
-			String[] wayPointArray = SVGUtils
-					.getSequenceFLowWayPointArrayByWayPointList(waypoints);
+			List<Point> pointList = SVGUtils
+					.convertWaypointsTOPointList(waypoints);
 			// 构造
-			svgBuilder.setWayPoints(wayPointArray);
+			svgBuilder.setWayPoints(pointList);
 			svgBuilder.setStroke((String) kernelSequenceFlowImpl
 					.getProperty(StyleOption.Foreground));
 		}
@@ -131,11 +132,9 @@ public abstract class AbstractFlowNodeVOFactory {
 
 	}
 
-	public abstract String convertNodeListToString(VONode svgContainer,
+	public abstract String convertNodeListToString(
+			Map<String, Object> processDefinitionPorperties,
 			List<VONode> voNodeList);
-
-	public abstract VONode getDefaultSVGContainerFromFactory(
-			Map<String, Object> processDefinitionPorperties);
 
 	/**
 	 * 创建具体的工厂类

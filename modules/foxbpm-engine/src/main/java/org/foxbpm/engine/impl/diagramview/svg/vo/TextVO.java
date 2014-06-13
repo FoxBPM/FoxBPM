@@ -17,9 +17,12 @@
  */
 package org.foxbpm.engine.impl.diagramview.svg.vo;
 
+import java.awt.Font;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -38,6 +41,8 @@ public class TextVO extends NamespaceAttributesVO {
 	private static final long serialVersionUID = -6548116428505922833L;
 	@XmlAttribute(name = "font-size")
 	private String fontSize;
+	@XmlTransient
+	private Font font;
 
 	public String getFontSize() {
 		return fontSize;
@@ -46,4 +51,13 @@ public class TextVO extends NamespaceAttributesVO {
 	public void setFontSize(String fontSize) {
 		this.fontSize = fontSize;
 	}
+
+	public Font getFont() {
+		return font;
+	}
+
+	public void setFont(Font font) {
+		this.font = font;
+	}
+
 }

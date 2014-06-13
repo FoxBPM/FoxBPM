@@ -23,6 +23,8 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.diagramview.svg.Point;
+import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
 import org.foxbpm.engine.impl.diagramview.svg.vo.CircleVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.DefsVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.LinearGradient;
@@ -113,7 +115,7 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 	@Override
 	public void setStroke(String stroke) {
 		if (StringUtils.isBlank(stroke)) {
-			this.textVO.setStroke(STROKE_DEFAULT);
+			this.circleVO.setStroke(STROKE_DEFAULT);
 			return;
 		}
 		this.circleVO.setStroke(COLOR_FLAG + stroke);
@@ -182,9 +184,12 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 		x = String.valueOf(Float.valueOf(x)
 				+ Float.valueOf(this.circleVO.getR()));
 		// 如果是事件节点，字体横坐标和圆心的横坐标一直，纵坐标等圆心坐标值加圆的半径值
-		this.textVO.setX(x);
+		int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
+				this.textVO.getElementValue());
+		this.textVO.setX(String.valueOf(Float.valueOf(x) - textWidth / 2));
 		this.textVO.setY(String.valueOf(Float.valueOf(y)
-				+ Float.valueOf(this.circleVO.getR()) + 10));
+				+ Float.valueOf(this.circleVO.getR()) + 20));
+
 		// 如果存在子类型，例如ERROR
 		if (this.pathVo != null) {
 			// 整体 SHIFT
@@ -199,7 +204,7 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 	/**
 	 * 圆圈不需要设置拐点
 	 */
-	public void setWayPoints(String[] wayPointArray) {
+	public void setWayPoints(List<Point> pointList) {
 		// TODO Auto-generated method stub
 
 	}

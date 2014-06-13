@@ -23,6 +23,8 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.diagramview.svg.Point;
+import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
 import org.foxbpm.engine.impl.diagramview.svg.vo.DefsVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.RadialGradientVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.RectVO;
@@ -117,8 +119,12 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 		// 设置整体坐标，包括子类型
 		this.svgVo.getgVo().setTransform("translate(" + x + ", " + y + ")");
 
-		// 设置字体的相对偏移量
-		this.textVO.setX("1");
+		// 设置字体的相对偏移量,X相对是矩形宽度的一半减去文本本身屏宽的一半
+		int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
+				this.textVO.getElementValue());
+		this.textVO
+				.setX(String.valueOf((Integer.valueOf(this.rectVO.getWidth()) / 2)
+						- textWidth / 2));
 		this.textVO
 				.setY(String.valueOf(Float.valueOf(this.rectVO.getHeight()) + 20));
 	}
@@ -164,7 +170,7 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setWayPoints(String[] wayPointArray) {
+	public void setWayPoints(List<Point> pointList) {
 		// TODO Auto-generated method stub
 
 	}

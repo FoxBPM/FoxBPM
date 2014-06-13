@@ -17,6 +17,10 @@
  */
 package org.foxbpm.engine.impl.diagramview.builder;
 
+import java.util.List;
+
+import org.foxbpm.engine.impl.diagramview.svg.Point;
+
 /**
  * 流程图形信息构造接口
  * 
@@ -27,7 +31,7 @@ public interface FoxBpmnViewBuilder {
 	/**
 	 * 设置节点信息
 	 */
-	public void setWayPoints(String[] wayPointArray);
+	public void setWayPoints(List<Point> pointList);
 
 	public void setWidth(String width);
 

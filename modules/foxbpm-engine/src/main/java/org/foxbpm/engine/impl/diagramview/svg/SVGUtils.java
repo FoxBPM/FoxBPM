@@ -17,13 +17,17 @@
  */
 package org.foxbpm.engine.impl.diagramview.svg;
 
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JLabel;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
@@ -40,6 +44,48 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.VONode;
  * @date 2014-06-10
  */
 public final class SVGUtils {
+	/**
+	 * 根据文本的式样，以及文本内容，获取文本在屏幕上展示的像素宽
+	 * 
+	 * @param font
+	 *            字体式样
+	 * @param text
+	 *            文本
+	 * @return 文本宽度
+	 */
+	public static int getTextWidth(Font font, String text) {
+		JLabel label = new JLabel(text);
+		label.setFont(font);
+		FontMetrics metrics = label.getFontMetrics(label.getFont());
+		return metrics.stringWidth(label.getText());
+	}
+
+	/**
+	 * 将所有的线条的所有点信息，转化成点的坐标
+	 * 
+	 * @param waypoints
+	 * @return
+	 */
+	public static List<Point> convertWaypointsTOPointList(
+			List<Integer> waypoints) {
+		if (waypoints != null && waypoints.size() > 0
+				&& waypoints.size() % 2 == 0) {
+			List<Point> pointList = new ArrayList<Point>();
+			Point point = null;
+			for (int i = 0; i < waypoints.size(); i++) {
+				if (i % 2 != 0) {
+					point = new Point(Float.valueOf(String.valueOf(waypoints
+							.get(i - 1))), Float.valueOf(String
+							.valueOf(waypoints.get(i))));
+					pointList.add(point);
+				}
+			}
+			return pointList;
+		} else {
+			throw new FoxBPMException("线条节点有问题 waypoints不符合规则！");
+		}
+	}
+
 	/**
 	 * 创建waypoint节点数组
 	 * 

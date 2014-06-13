@@ -17,8 +17,12 @@
  */
 package org.foxbpm.engine.impl.diagramview.svg.vo.build;
 
+import java.awt.Font;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.impl.diagramview.builder.FoxBpmnViewBuilder;
+import org.foxbpm.engine.impl.diagramview.svg.Point;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTypeNameConstant;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.TextVO;
@@ -80,7 +84,7 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 	 * 
 	 * @param wayPointArray
 	 */
-	public abstract void setWayPoints(String[] wayPointArray);
+	public abstract void setWayPoints(List<Point> pointList);
 
 	/**
 	 * 设置SVG的宽度
@@ -134,12 +138,16 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 		this.textVO.setElementValue(text);
 	}
 
-	public void setTextFont(String font) {
-		if (StringUtils.isBlank(font)) {
+	public void setTextFont(String fontStr) {
+		if (StringUtils.isBlank(fontStr)) {
+			Font font = new Font("arial", Font.PLAIN, 11);
+			this.textVO.setFont(font);
 			return;
 		}
-		String[] fonts = font.split(",");
+		String[] fonts = fontStr.split(",");
 		String style = "font-family:" + fonts[0] + ";font-size:" + fonts[1];
+		Font font = new Font(fonts[0], Font.PLAIN, Integer.valueOf(fonts[1]));
+		this.textVO.setFont(font);
 		this.textVO.setStyle(style);
 	}
 
@@ -188,7 +196,7 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 			this.textVO.setStroke("black");
 			return;
 		}
-		this.textVO.setStroke("#" + textStroke);
+		this.textVO.setStroke(COLOR_FLAG + textStroke);
 	}
 
 	/**

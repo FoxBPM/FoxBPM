@@ -101,27 +101,6 @@ public abstract class AbstractFlowNodeSVGFactory extends
 	}
 
 	/**
-	 * 获取模版容器对象
-	 */
-	@Override
-	public VONode getDefaultSVGContainerFromFactory(
-			Map<String, Object> processDefinitionPorperties) {
-		SvgVO svgTemplateContainer = (SvgVO) AbstractFlowNodeSVGFactory
-				.createSVGTemplateContainerVO(processDefinitionPorperties);
-		Float svgMinX = (Float) processDefinitionPorperties.get(SVG_MINX);
-		Float svgMinY = (Float) processDefinitionPorperties.get(SVG_MINY);
-		Float svgMaxX = (Float) processDefinitionPorperties.get(SVG_MAXX);
-		Float svgMaxY = (Float) processDefinitionPorperties.get(SVG_MAXY);
-		svgTemplateContainer.setWidth(String.valueOf(svgMaxX));
-		svgTemplateContainer.setHeight(String.valueOf(svgMaxY));
-		svgTemplateContainer.setMinHeight(String.valueOf(svgMinY));
-		svgTemplateContainer.setMinWidth(String.valueOf(svgMinX));
-		// 初始化VOList
-		svgTemplateContainer.getgVo().setgVoList(new ArrayList<GVO>());
-		return svgTemplateContainer;
-	}
-
-	/**
 	 * 将所有的元素对象转化成String字符串
 	 * 
 	 * @param voNodeList
@@ -129,8 +108,11 @@ public abstract class AbstractFlowNodeSVGFactory extends
 	 * @return SVG字符串
 	 */
 	@Override
-	public String convertNodeListToString(VONode svgContainer,
+	public String convertNodeListToString(
+			Map<String, Object> processDefinitionPorperties,
 			List<VONode> voNodeList) {
+		VONode svgContainer = this
+				.getDefaultSVGContainerFromFactory(processDefinitionPorperties);
 		Iterator<VONode> voIter = voNodeList.iterator();
 		while (voIter.hasNext()) {
 			SvgVO svgVo = (SvgVO) voIter.next();
@@ -168,5 +150,25 @@ public abstract class AbstractFlowNodeSVGFactory extends
 		} catch (Exception e) {
 			throw new FoxBPMException("template svg file load exception", e);
 		}
+	}
+
+	/**
+	 * 获取模版容器对象
+	 */
+	private VONode getDefaultSVGContainerFromFactory(
+			Map<String, Object> processDefinitionPorperties) {
+		SvgVO svgTemplateContainer = (SvgVO) AbstractFlowNodeSVGFactory
+				.createSVGTemplateContainerVO(processDefinitionPorperties);
+		Float svgMinX = (Float) processDefinitionPorperties.get(SVG_MINX);
+		Float svgMinY = (Float) processDefinitionPorperties.get(SVG_MINY);
+		Float svgMaxX = (Float) processDefinitionPorperties.get(SVG_MAXX);
+		Float svgMaxY = (Float) processDefinitionPorperties.get(SVG_MAXY);
+		svgTemplateContainer.setWidth(String.valueOf(svgMaxX));
+		svgTemplateContainer.setHeight(String.valueOf(svgMaxY));
+		svgTemplateContainer.setMinHeight(String.valueOf(svgMinY));
+		svgTemplateContainer.setMinWidth(String.valueOf(svgMinX));
+		// 初始化VOList
+		svgTemplateContainer.getgVo().setgVoList(new ArrayList<GVO>());
+		return svgTemplateContainer;
 	}
 }

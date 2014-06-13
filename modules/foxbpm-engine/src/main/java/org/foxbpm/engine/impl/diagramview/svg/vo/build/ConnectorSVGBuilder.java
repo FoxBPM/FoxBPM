@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.diagramview.svg.Point;
 import org.foxbpm.engine.impl.diagramview.svg.vo.GVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.PathVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
@@ -33,11 +34,11 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
  * @date 2014-06-10
  */
 public class ConnectorSVGBuilder extends AbstractSVGBuilder {
-
 	public static final String SEQUENCE_STROKEWIDTH_DEFAULT = "2";
 	private static final String FILL_DEFAULT = "none";
 	private static final String MOVETO_FLAG = "M";
 	private static final String LINETO_FLAG = "L";
+	private static final String D_SPACE = " ";
 	private PathVO pathVo;
 
 	public ConnectorSVGBuilder(SvgVO svgVo) {
@@ -71,17 +72,22 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 	/**
 	 * 设置线条的拐点信息
 	 */
-	public void setWayPoints(String[] wayPointArray) {
-		String tempD = "";
-		for (int i = 0; i < wayPointArray.length; i++) {
+	public void setWayPoints(List<Point> pointList) {
+		StringBuffer pathBuffer = new StringBuffer();
+		for (int i = 0; i < pointList.size(); i++) {
+			Point point = pointList.get(i);
 			if (i != 0) {
-				tempD = tempD + LINETO_FLAG + wayPointArray[i];
+				pathBuffer.append(LINETO_FLAG)
+						.append(String.valueOf(point.getX())).append(D_SPACE)
+						.append(String.valueOf(point.getY()));
 			} else {
-				tempD = tempD + MOVETO_FLAG + wayPointArray[i];
+				pathBuffer.append(MOVETO_FLAG)
+						.append(String.valueOf(point.getX())).append(D_SPACE)
+						.append(String.valueOf(point.getY()));
 			}
 
 		}
-		this.pathVo.setD(tempD);
+		this.pathVo.setD(pathBuffer.toString());
 	}
 
 	@Override
