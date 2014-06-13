@@ -41,7 +41,6 @@ public class SpringTransactionInterceptor extends CommandInterceptor {
 		this.transactionManager = transactionManager;
 	}
 	
-	@Override
 	public <T> T execute(final Command<T> command) {
 		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
 	    T result = transactionTemplate.execute(new TransactionCallback<T>() {
@@ -51,5 +50,9 @@ public class SpringTransactionInterceptor extends CommandInterceptor {
 	    });
 	    return result;
 	}
+	
+	
+	
+	
 
 }

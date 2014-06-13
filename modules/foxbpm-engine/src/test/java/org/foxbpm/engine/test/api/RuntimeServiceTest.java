@@ -1,17 +1,13 @@
 package org.foxbpm.engine.test.api;
 
-import java.util.List;
-
-import org.foxbpm.engine.runtime.ProcessInstance;
-import org.foxbpm.engine.runtime.ProcessInstanceQuery;
-import org.foxbpm.engine.runtime.ProcessInstanceStatus;
-import org.foxbpm.engine.runtime.Token;
-import org.foxbpm.engine.runtime.TokenQuery;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
+import org.foxbpm.engine.test.Clear;
 import org.foxbpm.engine.test.Deployment;
+import org.junit.Test;
 
 public class RuntimeServiceTest extends AbstractFoxBpmTestCase {
 	
+	@Test
 	public void testTokenQuery(){
 //		TokenQuery tokenQuery = runtimeService.createTokenQuery();
 //		tokenQuery.tokenId("2222");
@@ -34,7 +30,8 @@ public class RuntimeServiceTest extends AbstractFoxBpmTestCase {
 //		System.out.println("********************"+tokens.size());
 	
 	}
-	
+	@Test
+	@Clear
 	@Deployment(resources = { "process_test_1.bpmn" })
 	public void testProcessInstanceQuery(){
 //		ProcessInstanceQuery processQuery = runtimeService.createProcessInstanceQuery();

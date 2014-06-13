@@ -14,6 +14,7 @@
  * limitations under the License.
  * 
  * @author kenshin
+ * @author ych
  */
 package org.foxbpm.engine.impl.cache;
 
@@ -25,15 +26,15 @@ import org.foxbpm.engine.cache.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DefaultCache implements Cache {
+public class DefaultCache<T> implements Cache<T> {
 
 	private static final Logger logger = LoggerFactory.getLogger(DefaultCache.class);
 
-	protected Map<String, Object> cache;
+	protected Map<String, T> cache;
 
 	/** Cache with no limit */
 	public DefaultCache() {
-		this.cache = new HashMap<String, Object>();
+		this.cache = new HashMap<String, T>();
 	}
 
 	/**
@@ -41,13 +42,13 @@ public class DefaultCache implements Cache {
 	 * limit.
 	 */
 	public DefaultCache(final int limit) {
-	    this.cache = new LinkedHashMap<String, Object>(limit + 1, 0.75f, true) {
+	    this.cache = new LinkedHashMap<String, T>(limit + 1, 0.75f, true) {
 	    	// +1 is needed, because the entry is inserted first, before it is removed
 	        // 0.75 is the default (see javadocs)
 	        // true will keep the 'access-order', which is needed to have a real LRU cache
 			private static final long serialVersionUID = 1L;
 
-			protected boolean removeEldestEntry(java.util.Map.Entry<String, Object> eldest) {
+			protected boolean removeEldestEntry(java.util.Map.Entry<String, T> eldest) {
 				boolean removeEldest = size() > limit;
 				if (removeEldest) {
 					logger.trace("Cache limit is reached, {} will be evicted", eldest.getKey());
@@ -58,11 +59,11 @@ public class DefaultCache implements Cache {
 		};
 	}
 
-	public Object get(String id) {
+	public T get(String id) {
 		return cache.get(id);
 	}
 
-	public void add(String id, Object obj) {
+	public void add(String id, T obj) {
 		cache.put(id, obj);
 	}
 

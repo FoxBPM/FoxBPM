@@ -15,22 +15,12 @@
  * 
  * @author ych
  */
-package org.foxbpm.engine.impl.identity;
+package org.foxbpm.engine.test;
 
-import java.util.List;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-import org.foxbpm.engine.identity.Group;
-import org.foxbpm.engine.identity.GroupDefinition;
-import org.foxbpm.engine.impl.Context;
-import org.foxbpm.engine.sqlsession.ISqlSession;
-
-public class GroupDeptImpl implements GroupDefinition {
-
-	@SuppressWarnings("unchecked")
-	public List<Group> selectGroupByUserId(String userId) {
-		ISqlSession sqlsession = Context.getCommandContext().getSqlSession();
-		List<Group> groups = (List<Group>)sqlsession.selectListWithRawParameter("selectDeptByUserId", userId);
-		return groups;
-	}
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Clear {
 
 }

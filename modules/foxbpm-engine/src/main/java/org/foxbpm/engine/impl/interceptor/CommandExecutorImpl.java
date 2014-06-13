@@ -18,16 +18,19 @@
  */
 package org.foxbpm.engine.impl.interceptor;
 
-import org.foxbpm.engine.impl.Context;
-
 /**
  * @author kenshin
  */
-public class CommandExecutorImpl extends CommandInterceptor {
+public class CommandExecutorImpl implements CommandExecutor {
 
 
+	private CommandInterceptor first;
+	
+	public CommandExecutorImpl(CommandInterceptor first) {
+		this.first = first;
+	}
 	public <T> T execute(Command<T> command) {
-		return command.execute(Context.getCommandContext());
+		return first.execute(command);
 	}
 
 }

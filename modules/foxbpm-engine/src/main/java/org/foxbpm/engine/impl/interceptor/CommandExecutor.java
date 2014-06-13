@@ -27,8 +27,6 @@ package org.foxbpm.engine.impl.interceptor;
  */
 public interface CommandExecutor {
 
-
-
 	<T> T execute(Command<T> command);
 
 }
