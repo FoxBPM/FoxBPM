@@ -52,7 +52,7 @@ public interface ModelService {
 	 *         "diagramResourceName" 流程图名称;<br>
 	 *         "startFormKey" 启动表单;<br>
 	 */
-	List<Map<String, String>> getStartProcessByUserId(String userId);
+	List<Map<String, Object>> getStartProcessByUserId(String userId);
 
 	Deployment deploy(DeploymentBuilderImpl deploymentBuilderImpl);
 

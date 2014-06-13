@@ -18,11 +18,11 @@
 package org.foxbpm.engine.test.api;
 
 import java.util.List;
+import java.util.Map;
 
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.repository.ProcessDefinitionQuery;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
-import org.foxbpm.engine.test.Clear;
 import org.foxbpm.engine.test.Deployment;
 import org.junit.Test;
 import org.springframework.util.Assert;
@@ -35,10 +35,10 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	 * 逻辑：根据流程定义开始节点后面第一个人工任务的任务分配属性获得
 	 */
 	@Test
-	@Clear
 	@Deployment(resources = { "process_test_1.bpmn" })
 	public void testGetStartProcessByUserId(){
-		modelService.getStartProcessByUserId("admin");
+		List<Map<String,Object>> list = modelService.getStartProcessByUserId("admin");
+		System.out.println(list.size());
 	}
 	
 	/**

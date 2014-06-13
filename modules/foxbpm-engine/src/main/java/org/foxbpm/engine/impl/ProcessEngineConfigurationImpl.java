@@ -114,6 +114,9 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected int knowledgeBaseCacheLimit = -1;
 	protected Cache<ProcessDefinition> knowledgeBaseCache;
 	
+	protected int userProcessDefinitionCacheLimit = -1;
+	protected Cache<Object> userProcessDefinitionCache;
+	
 	protected int userCacheLimit = -1;
 	protected Cache<User> userCache;
 
@@ -271,6 +274,13 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 				knowledgeBaseCache = new DefaultCache<ProcessDefinition>();
 			} else {
 				knowledgeBaseCache = new DefaultCache<ProcessDefinition>(knowledgeBaseCacheLimit);
+			}
+		}
+		if(userProcessDefinitionCache == null){
+			if (userProcessDefinitionCacheLimit <= 0) {
+				userProcessDefinitionCache = new DefaultCache<Object>();
+			} else {
+				userProcessDefinitionCache = new DefaultCache<Object>(userProcessDefinitionCacheLimit);
 			}
 		}
 	}
@@ -513,6 +523,22 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	public void setUserCacheLimit(int userCacheLimit) {
 		this.userCacheLimit = userCacheLimit;
+	}
+	
+	public int getUserProcessDefinitionCacheLimit() {
+		return userProcessDefinitionCacheLimit;
+	}
+
+	public void setUserProcessDefinitionCacheLimit(int userProcessDefinitionCacheLimit) {
+		this.userProcessDefinitionCacheLimit = userProcessDefinitionCacheLimit;
+	}
+
+	public Cache<Object> getUserProcessDefinitionCache() {
+		return userProcessDefinitionCache;
+	}
+
+	public void setUserProcessDefinitionCache(Cache<Object> userProcessDefinitionCache) {
+		this.userProcessDefinitionCache = userProcessDefinitionCache;
 	}
 
 	public int getProcessDefinitionCacheLimit() {

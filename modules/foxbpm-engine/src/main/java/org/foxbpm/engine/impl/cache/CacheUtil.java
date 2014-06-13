@@ -11,14 +11,31 @@ public class CacheUtil {
 	public static void clearCache(){
 		clearUserCache();
 		clearProcessDefinitionCache();
+		clearUserProcessDefinitionCache();
 	}
 	
+	/**
+	 * 用户缓存
+	 * @return
+	 */
 	public static Cache<User> getUserCache(){
 		return ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getUserCache();
 	}
 	
+	/**
+	 * 流程定义缓存
+	 * @return
+	 */
 	public static Cache<ProcessDefinition> getProcessDefinitionCache(){
 		return ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getProcessDefinitionCache();
+	}
+	
+	/**
+	 * 用户可发起流程缓存
+	 * @return
+	 */
+	public static Cache<Object> getUserProcessDefinitionCache(){
+		return ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getUserProcessDefinitionCache();
 	}
 	
 	public static void clearUserCache(){
@@ -28,5 +45,10 @@ public class CacheUtil {
 	public static void clearProcessDefinitionCache(){
 		getProcessDefinitionCache().clear();
 	}
+	
+	public static void clearUserProcessDefinitionCache(){
+		getUserProcessDefinitionCache().clear();
+	}
+	
 	
 }

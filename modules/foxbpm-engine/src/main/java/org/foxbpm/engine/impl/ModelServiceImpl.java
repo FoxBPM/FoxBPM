@@ -19,8 +19,6 @@
 package org.foxbpm.engine.impl;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +29,7 @@ import org.foxbpm.engine.impl.cmd.GetFlowGraphicsImgStreamCmd;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinitionByKeyAndVersionCmd;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinitionCmd;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinitionSVGCmd;
+import org.foxbpm.engine.impl.cmd.GetStartProcessByUserIdCmd;
 import org.foxbpm.engine.impl.cmd.VerificationStartUserCmd;
 import org.foxbpm.engine.impl.model.DeploymentBuilderImpl;
 import org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl;
@@ -45,17 +44,9 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 		return new DeploymentBuilderImpl(this);
 	}
 
-	public List<Map<String, String>> getStartProcessByUserId(String userId) {
-		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("processDefinitionKey", "process_1");
-		map.put("processDefinitionId", "process_2");
-		map.put("processDefinitionName", "测试流程");
-
-		list.add(map);
-
-		return list;
+	public List<Map<String, Object>> getStartProcessByUserId(String userId) {
+		return commandExecutor.execute(new GetStartProcessByUserIdCmd(userId));
+		
 	}
 
 	public Deployment deploy(DeploymentBuilderImpl deploymentBuilder) {

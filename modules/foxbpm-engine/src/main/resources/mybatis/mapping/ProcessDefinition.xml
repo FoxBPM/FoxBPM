@@ -50,6 +50,14 @@
 	   where PROCESS_KEY = #{key,jdbcType=VARCHAR} AND VERSION = #{version,jdbcType=INTEGER}
   </select>
   
+   <select id="selectProcessDefinitionGroupByKey" parameterType="map" resultMap="ProcessDefinitionMap">
+	   select * from (select max(VERSION) as VERSION,PROCESS_KEY from FOXBPM_DEF_PROCESSDEFINITION GROUP BY PROCESS_KEY  ) t1 
+	   left join FOXBPM_DEF_PROCESSDEFINITION t2 on 
+	   t1.VERSION=t2.VERSION and t1.PROCESS_KEY=t2.PROCESS_KEY
+  </select>
+  
+  
+  
   <select id="selectProcessDefinitionsByQueryCriteria" parameterType="org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl" resultMap="ProcessDefinitionMap">
   	${limitBefore}
     select PD.* ${limitBetween}
