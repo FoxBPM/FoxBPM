@@ -79,7 +79,7 @@ public abstract class AbstractFoxBpmTestCase extends AbstractTransactionalJUnit4
 			throw new FoxBPMException("获取方法失败!", e);
 		}
 		if(method.isAnnotationPresent(Clear.class)){
-			cleanData();
+//			cleanData();
 		}
 		Deployment deploymentAnnotation = method.getAnnotation(Deployment.class);
 		if (deploymentAnnotation != null) {
