@@ -186,7 +186,12 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 		// 如果是事件节点，字体横坐标和圆心的横坐标一直，纵坐标等圆心坐标值加圆的半径值
 		int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
 				this.textVO.getElementValue());
-		this.textVO.setX(String.valueOf(Float.valueOf(x) - textWidth / 2));
+		int languageShift = 0;
+		if (SVGUtils.isChinese(this.textVO.getElementValue().charAt(0))) {
+			languageShift = 8;
+		}
+		this.textVO.setX(String.valueOf(Float.valueOf(x) - textWidth / 2
+				- languageShift));
 		this.textVO.setY(String.valueOf(Float.valueOf(y)
 				+ Float.valueOf(this.circleVO.getR()) + 20));
 

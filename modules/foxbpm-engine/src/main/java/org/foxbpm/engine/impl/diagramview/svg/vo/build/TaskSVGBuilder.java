@@ -122,9 +122,13 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 		// 设置字体的相对偏移量,X相对是矩形宽度的一半减去文本本身屏宽的一半
 		int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
 				this.textVO.getElementValue());
+		int languageShift = -5;
+		if (SVGUtils.isChinese(this.textVO.getElementValue().charAt(0))) {
+			languageShift = 12;
+		}
 		this.textVO
 				.setX(String.valueOf((Integer.valueOf(this.rectVO.getWidth()) / 2)
-						- textWidth / 2));
+						- textWidth / 2 - languageShift));
 		this.textVO
 				.setY(String.valueOf(Float.valueOf(this.rectVO.getHeight()) + 20));
 	}

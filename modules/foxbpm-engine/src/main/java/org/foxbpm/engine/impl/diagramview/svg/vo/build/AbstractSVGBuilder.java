@@ -140,7 +140,7 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 
 	public void setTextFont(String fontStr) {
 		if (StringUtils.isBlank(fontStr)) {
-			Font font = new Font("arial", Font.PLAIN, 11);
+			Font font = new Font("arial", Font.CENTER_BASELINE, 11);
 			this.textVO.setFont(font);
 			return;
 		}
