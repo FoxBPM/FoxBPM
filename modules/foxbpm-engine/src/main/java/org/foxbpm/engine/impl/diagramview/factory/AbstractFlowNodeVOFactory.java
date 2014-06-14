@@ -86,7 +86,7 @@ public abstract class AbstractFlowNodeVOFactory {
 					Arrays.asList(svgType.split(SPLIT_SEPERATOR)));
 			KernelFlowNodeImpl kernelFlowNodeImpl = (KernelFlowNodeImpl) kernelFlowElement;
 			if (StringUtils.isBlank(kernelFlowNodeImpl.getName())) {
-				kernelFlowNodeImpl.setName("Default");
+				kernelFlowNodeImpl.setName("目录目录目录目录目录");
 			}
 			svgBuilder.setText(kernelFlowNodeImpl.getName());
 			// 如果是事件节点，必须先设置width属性，即设置圆的直径,

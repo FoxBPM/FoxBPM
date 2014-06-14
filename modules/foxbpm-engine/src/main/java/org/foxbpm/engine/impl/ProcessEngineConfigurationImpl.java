@@ -50,6 +50,7 @@ import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.bpmn.deployer.BpmnDeployer;
 import org.foxbpm.engine.impl.cache.DefaultCache;
 import org.foxbpm.engine.impl.db.DefaultDataSourceManage;
+import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateContainer;
 import org.foxbpm.engine.impl.identity.GroupDeptImpl;
 import org.foxbpm.engine.impl.identity.GroupRoleImpl;
 import org.foxbpm.engine.impl.interceptor.CommandContextFactory;
@@ -181,6 +182,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		// initThreadPool();
 		// 加载主题样式文件
 		initStyle();
+		//加载SVG模版资源
+		SVGTemplateContainer.getContainerInstance();
 	}
 
 	private void initStyle() {

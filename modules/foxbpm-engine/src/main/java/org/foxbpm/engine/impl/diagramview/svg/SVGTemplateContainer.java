@@ -19,11 +19,9 @@ package org.foxbpm.engine.impl.diagramview.svg;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,10 +48,17 @@ import org.xml.sax.XMLReader;
 public class SVGTemplateContainer {
 
 	private static final String BPMN_PATH = "bpmn/view";
-	private static SVGTemplateContainer container = null;
-	private Map<String, VONode> svgTemplets = new HashMap<String, VONode>();
+	private static SVGTemplateContainer container = new SVGTemplateContainer();
+	private Map<String, VONode> svgTemplets = null;
 
 	private SVGTemplateContainer() {
+		// 初始化SVG模版资源
+		if (this.svgTemplets == null) {
+			this.initTemplate();
+		}
+	}
+
+	private void initTemplate() {
 		svgTemplets = new HashMap<String, VONode>();
 		// 初始化加载空白开始事件
 		this.init(SVGTemplateNameConstant.TEMPLATE_STARTEVENT_NONE);
@@ -95,7 +100,7 @@ public class SVGTemplateContainer {
 			XMLReader reader = factory.newSAXParser().getXMLReader();
 			Source source = new SAXSource(reader, new InputSource(stringReader));
 			VONode object = (VONode) unMarshaller.unmarshal(source);
-			container.svgTemplets.put(templateName, object);
+			this.svgTemplets.put(templateName, object);
 		} catch (Exception e) {
 			throw new FoxBPMException("template svg file load exception", e);
 		} finally {
@@ -115,9 +120,6 @@ public class SVGTemplateContainer {
 	 * @return
 	 */
 	public static SVGTemplateContainer getContainerInstance() {
-		if (container == null) {
-			container = new SVGTemplateContainer();
-		}
 		return container;
 	}
 
@@ -129,10 +131,9 @@ public class SVGTemplateContainer {
 	 */
 	public VONode getTemplateByName(String templateName) {
 		// 第一次需要从svg文档初始化
-		if (container.svgTemplets.get(templateName) == null) {
-			container.init(templateName);
+		if (this.svgTemplets.get(templateName) == null) {
+			this.init(templateName);
 		}
-		return SVGUtils.cloneSVGVo((SvgVO) container.svgTemplets
-				.get(templateName));
+		return SVGUtils.cloneSVGVo((SvgVO) this.svgTemplets.get(templateName));
 	}
 }
