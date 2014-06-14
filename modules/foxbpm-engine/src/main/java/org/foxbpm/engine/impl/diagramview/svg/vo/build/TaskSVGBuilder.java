@@ -115,7 +115,7 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setXAndY(String x, String y) {
+	public void setXAndY(float x, float y) {
 		// 设置整体坐标，包括子类型
 		this.svgVo.getgVo().setTransform("translate(" + x + ", " + y + ")");
 
@@ -126,11 +126,9 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 		if (SVGUtils.isChinese(this.textVO.getElementValue().charAt(0))) {
 			languageShift = 12;
 		}
-		this.textVO
-				.setX(String.valueOf((Integer.valueOf(this.rectVO.getWidth()) / 2)
-						- textWidth / 2 - languageShift));
-		this.textVO
-				.setY(String.valueOf(Float.valueOf(this.rectVO.getHeight()) + 20));
+		super.setTextX((Integer.valueOf(this.rectVO.getWidth()) / 2)
+				- textWidth / 2 - languageShift);
+		super.setTextY(Float.valueOf(this.rectVO.getHeight()) + 20);
 	}
 
 	@Override

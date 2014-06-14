@@ -26,6 +26,7 @@ import org.foxbpm.engine.impl.bpmn.behavior.SequenceFlowBehavior;
 import org.foxbpm.engine.impl.bpmn.parser.StyleOption;
 import org.foxbpm.engine.impl.diagramview.builder.FoxBpmnViewBuilder;
 import org.foxbpm.engine.impl.diagramview.svg.Point;
+import org.foxbpm.engine.impl.diagramview.svg.PointUtils;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTypeNameConstant;
 import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
 import org.foxbpm.engine.impl.diagramview.svg.factory.AbstractFlowNodeSVGFactory;
@@ -102,8 +103,8 @@ public abstract class AbstractFlowNodeVOFactory {
 					.getProperty(StyleOption.Foreground));
 
 			// 设置节点的坐标包括对应文本字体的坐标，文本坐标依赖于文本式样字体大小等
-			svgBuilder.setXAndY(String.valueOf(kernelFlowNodeImpl.getX()),
-					String.valueOf(kernelFlowNodeImpl.getY()));
+			svgBuilder.setXAndY(kernelFlowNodeImpl.getX(),
+					kernelFlowNodeImpl.getY());
 			// TODO 未知属性
 			kernelFlowNodeImpl.getProperty(StyleOption.StyleObject);
 		}
@@ -125,6 +126,12 @@ public abstract class AbstractFlowNodeVOFactory {
 					.convertWaypointsTOPointList(waypoints);
 			// 构造
 			svgBuilder.setWayPoints(pointList);
+			svgBuilder.setText(kernelSequenceFlowImpl.getName());
+			svgBuilder.setText("Sequence_1");
+			// 设置文本的相对位置
+			Point textPoint = PointUtils.caclCenterPoint(pointList);
+			svgBuilder.setTextX(textPoint.getX());
+			svgBuilder.setTextY(textPoint.getY());
 			svgBuilder.setStroke((String) kernelSequenceFlowImpl
 					.getProperty(StyleOption.Foreground));
 		}

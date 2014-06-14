@@ -37,7 +37,7 @@ public interface FoxBpmnViewBuilder {
 
 	public void setHeight(String height);
 
-	public void setXAndY(String x, String y);
+	public void setXAndY(float x, float y);
 
 	public void setStroke(String stroke);
 
@@ -60,9 +60,9 @@ public interface FoxBpmnViewBuilder {
 
 	public void setTextStrokeWidth(String textStrokeWidth);
 
-	public void setTextX(String textX);
+	public void setTextX(float textX);
 
-	public void setTextY(String textY);
+	public void setTextY(float textY);
 
 	public void setTextFontSize(String textFontSize);
 

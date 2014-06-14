@@ -43,6 +43,7 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 
 	public ConnectorSVGBuilder(SvgVO svgVo) {
 		super(svgVo);
+		this.textVO = svgVo.getgVo().getgVoList().get(0).getTextVo();
 		List<GVO> gVoList = svgVo.getgVo().getgVoList();
 		if (gVoList != null && gVoList.size() > 0) {
 			Iterator<GVO> iterator = gVoList.iterator();
@@ -174,8 +175,6 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setXAndY(String x, String y) {
-		// TODO Auto-generated method stub
-
+	public void setXAndY(float x, float y) {
 	}
 }

@@ -177,12 +177,10 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setXAndY(String x, String y) {
+	public void setXAndY(float x, float y) {
 		// 流程图定义的是圆对应矩形左上角的坐标，所以对应的SVG坐标需要将坐标值加半径
-		y = String.valueOf(Float.valueOf(y)
-				+ Float.valueOf(this.circleVO.getR()));
-		x = String.valueOf(Float.valueOf(x)
-				+ Float.valueOf(this.circleVO.getR()));
+		y = Float.valueOf(y) + Float.valueOf(this.circleVO.getR());
+		x = Float.valueOf(x) + Float.valueOf(this.circleVO.getR());
 		// 如果是事件节点，字体横坐标和圆心的横坐标一直，纵坐标等圆心坐标值加圆的半径值
 		int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
 				this.textVO.getElementValue());
@@ -190,10 +188,9 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 		if (SVGUtils.isChinese(this.textVO.getElementValue().charAt(0))) {
 			languageShift = 8;
 		}
-		this.textVO.setX(String.valueOf(Float.valueOf(x) - textWidth / 2
-				- languageShift));
-		this.textVO.setY(String.valueOf(Float.valueOf(y)
-				+ Float.valueOf(this.circleVO.getR()) + 20));
+		this.setTextX(Float.valueOf(x) - textWidth / 2 - languageShift);
+		this.setTextY(Float.valueOf(y) + Float.valueOf(this.circleVO.getR())
+				+ 20);
 
 		// 如果存在子类型，例如ERROR
 		if (this.pathVo != null) {
@@ -201,8 +198,8 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 			this.svgVo.getgVo().setTransform("translate(" + x + ", " + y + ")");
 			// TODO 同时需要设置文本的相对偏移量
 		} else {
-			this.circleVO.setCx(x);
-			this.circleVO.setCy(y);
+			this.circleVO.setCx(String.valueOf(x));
+			this.circleVO.setCy(String.valueOf(y));
 		}
 	}
 

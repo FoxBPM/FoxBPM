@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +35,7 @@ import javax.xml.transform.sax.SAXSource;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.VONode;
+import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
@@ -46,7 +48,7 @@ import org.xml.sax.XMLReader;
  */
 public class SVGTemplateContainer {
 
-	private static final String BPMN_PATH = "target/classes/bpmn2.0/view";
+	private static final String BPMN_PATH = "bpmn2.0/view";
 	private static SVGTemplateContainer container = new SVGTemplateContainer();
 	private Map<String, VONode> svgTemplets = new HashMap<String, VONode>();
 
@@ -60,13 +62,14 @@ public class SVGTemplateContainer {
 	 * @param templateName
 	 */
 	public void init(String templateName) {
-		File svgFile = new File(BPMN_PATH + File.separator + templateName);
-		if (!svgFile.exists()) {
-			throw new FoxBPMException("template svg file not exists");
-		}
 		BufferedReader bufferReader = null;
 		try {
-
+			URL url = ReflectUtil.getResource(BPMN_PATH + File.separator
+					+ templateName);
+			File svgFile = new File(url.toURI());
+			if (!svgFile.exists()) {
+				throw new FoxBPMException("template svg file not exists");
+			}
 			bufferReader = new BufferedReader(new FileReader(svgFile));
 			String tempLineStr = "";
 			StringBuffer svgStrBuffer = new StringBuffer(tempLineStr);

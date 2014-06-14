@@ -106,7 +106,7 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 	 * @param x
 	 * @param y
 	 */
-	public abstract void setXAndY(String x, String y);
+	public abstract void setXAndY(float x, float y);
 
 	/**
 	 * 设置元素的边框色
@@ -164,8 +164,8 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 	 * 
 	 * @param textX
 	 */
-	public void setTextX(String textX) {
-		this.textVO.setX(textX);
+	public void setTextX(float textX) {
+		this.textVO.setX(String.valueOf(textX));
 	}
 
 	/**
@@ -173,8 +173,8 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 	 * 
 	 * @param textY
 	 */
-	public void setTextY(String textY) {
-		this.textVO.setY(textY);
+	public void setTextY(float textY) {
+		this.textVO.setY(String.valueOf(textY));
 	}
 
 	/**
