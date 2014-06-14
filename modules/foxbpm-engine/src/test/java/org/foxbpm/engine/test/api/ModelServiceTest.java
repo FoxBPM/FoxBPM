@@ -17,7 +17,11 @@
  */
 package org.foxbpm.engine.test.api;
 
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.util.List;
+
+import javax.swing.JLabel;
 
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.repository.ProcessDefinitionQuery;
@@ -65,9 +69,8 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	
 	@Test
 	public void testSVG(){
+		
 		String processDefinitionId = "process_test_1:1:377503a3-3e6d-46bc-a801-bdb11e094205";
 		modelService.getProcessDefinitionSVG(processDefinitionId);
-	}
-	
-	
+	} 
 }
