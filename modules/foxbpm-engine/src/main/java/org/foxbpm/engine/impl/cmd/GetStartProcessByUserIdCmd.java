@@ -21,22 +21,38 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
+import org.foxbpm.engine.cache.Cache;
+import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 
-public class GetStartProcessByUserIdCmd implements Command<List<Map<String, String>>>{
+public class GetStartProcessByUserIdCmd implements Command<List<Map<String, Object>>>{
 
-	protected ProcessInstanceEntity userId;
+	protected String userId;
 	
-	public GetStartProcessByUserIdCmd(ProcessInstanceEntity processInstanceEntity){
-		this.userId=processInstanceEntity;
+	public GetStartProcessByUserIdCmd(String userId){
+		this.userId=userId;
 	}
 	
-	public List<Map<String, String>> execute(CommandContext commandContext) {
-		System.out.println("测试CMD执行");
-//		commandContext.getProcessDefinitionManager().test();
-		return new ArrayList<Map<String,String>>();
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> execute(CommandContext commandContext) {
+		Cache<Object> userProcessDefinitionCache = commandContext.getProcessEngineConfigurationImpl().getUserProcessDefinitionCache();
+		List<Map<String,Object>> result = (List<Map<String,Object>>)userProcessDefinitionCache.get(userId);
+		if(result != null){
+			return result;
+		}
+		result = new ArrayList<Map<String,Object>>();
+		CommandExecutor commandExecutor = commandContext.getProcessEngineConfigurationImpl().getCommandExecutor();
+		List<ProcessDefinitionEntity> processDefinitions = commandExecutor.execute(new GetProcessDefinitionGroupKeyCmd());
+		for(ProcessDefinitionEntity process : processDefinitions){
+			boolean isVerify = commandExecutor.execute(new VerificationStartUserCmd(userId, null, process.getId()));
+			if(isVerify){
+				result.add(process.getPersistentState());
+			}
+		}
+		userProcessDefinitionCache.add(userId, result);
+		return result;
 	}
 
 }

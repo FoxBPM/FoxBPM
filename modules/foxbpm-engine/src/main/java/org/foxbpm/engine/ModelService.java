@@ -52,7 +52,7 @@ public interface ModelService {
 	 *         "diagramResourceName" 流程图名称;<br>
 	 *         "startFormKey" 启动表单;<br>
 	 */
-	List<Map<String, String>> getStartProcessByUserId(String userId);
+	List<Map<String, Object>> getStartProcessByUserId(String userId);
 
 	Deployment deploy(DeploymentBuilderImpl deploymentBuilderImpl);
 
@@ -65,13 +65,11 @@ public interface ModelService {
 	/**
 	 * 获取流程图节点信息
 	 * 
-	 * @param processDefinitionId
-	 *            流程唯一编号
+	 * @param processDefinitionId 流程唯一编号
 	 * @return key为节点编号,value为 Map<String,Object> Key(height,width,x,y)
 	 *         (height="36.0" width="36.0" x="100.0" y="100.0")
 	 */
-	Map<String, Map<String, Object>> GetFlowGraphicsElementPosition(
-			String processDefinitionId);
+	Map<String, Map<String, Object>> GetFlowGraphicsElementPosition(String processDefinitionId);
 
 	/**
 	 * 获取流程图图片Stream
@@ -84,39 +82,43 @@ public interface ModelService {
 
 	/**
 	 * 获取流程图图片Stream
-	 * 
-	 * @param processDefinitionKey
-	 *            流程编号
+	 * @param processDefinitionKey 流程编号
 	 * @return 图片Stream
 	 */
 	InputStream GetFlowGraphicsImgStreamByDefKey(String processDefinitionKey);
 
 	/**
 	 * 获取流程定义(内置缓存)
-	 * 
-	 * @param processDefinitionId
-	 *            流程唯一编号
+	 * @param processDefinitionId  流程唯一编号
 	 * @return 获取流程定义
+	 * throws FoxBPMObjectNotFoundException 未找到对象时会抛出此异常
 	 */
 	ProcessDefinition getProcessDefinition(String processDefinitionId);
 
 	/**
 	 * 获取流程定义(内置缓存)
-	 * 
-	 * @param processKey
-	 *            流程key
-	 * @param version
-	 *            版本号
+	 * @param processKey  流程key
+	 * @param version 版本号
 	 * @return 获取流程定义
+	 * throws FoxBPMObjectNotFoundException 未找到对象时会抛出此异常
 	 */
 	ProcessDefinition getProcessDefinition(String processKey, int version);
 
 	/**
 	 * 根据流程定义ID获取该流程对应的SVG文档字符串
-	 * 
-	 * @param processDefinitionId
-	 *            流程定义ID
+	 * @param processDefinitionId 流程定义ID
 	 * @return SVG文档字符串
 	 */
 	String getProcessDefinitionSVG(String processDefinitionId);
+	
+	/**
+	 * 判断用户是否有权限发起流程
+	 * 根据流程定义上开始节点后面第一个人工节点的任务分配判断权限
+	 * processDefinitionKey和processDefinitionId不能同时为空
+	 * @param userId 用户编号 不能为空
+	 * @param processDefinitionKey 可为空，流程定义Key 
+	 * @param processDefinitionId 可为空，流程定义唯一编号
+	 * @return
+	 */
+	boolean verifyStartProcessByUserId(String userId,String processDefinitionKey,String processDefinitionId);
 }

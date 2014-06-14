@@ -21,6 +21,7 @@ package org.foxbpm.engine.impl.persistence;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl;
 import org.foxbpm.engine.repository.ProcessDefinition;
@@ -62,6 +63,11 @@ public class ProcessDefinitionManager extends AbstractManager {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<ProcessDefinitionEntity> findProcessDefinitionGroupByKey(){
+		return (List<ProcessDefinitionEntity>) getSqlSession().selectList("selectProcessDefinitionGroupByKey");
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<ProcessDefinition> findProcessDefinitionsByQueryCriteria(ProcessDefinitionQueryImpl processDefinitionQuery){
 		return getSqlSession().selectList("selectProcessDefinitionsByQueryCriteria", processDefinitionQuery);
 	}
@@ -78,5 +84,7 @@ public class ProcessDefinitionManager extends AbstractManager {
 		//删除流程定义
 		getSqlSession().delete("deleteProcessDefinitionById", processDefinitionId);
 	}
+	
+	
 	
 }

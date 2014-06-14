@@ -38,8 +38,8 @@ import org.foxbpm.engine.repository.ProcessDefinition;
  */
 public class DeploymentManager {
 
-	protected Cache processDefinitionCache;
-	protected Cache knowledgeBaseCache; // Needs to be object
+	protected Cache<ProcessDefinition> processDefinitionCache;
+	protected Cache<ProcessDefinition> knowledgeBaseCache; // Needs to be object
 	protected List<Deployer> deployers;
 
 	public void deploy(DeploymentEntity deployment) {
@@ -58,6 +58,14 @@ public class DeploymentManager {
 		}
 		processDefinition = resolveProcessDefinition(processDefinition);
 		return processDefinition;
+	}
+	
+	public List<ProcessDefinitionEntity> findProcessDefinitionGroupByKey(){
+		List<ProcessDefinitionEntity> processDefinitions = Context.getCommandContext().getProcessDefinitionManager().findProcessDefinitionGroupByKey();
+		for(ProcessDefinitionEntity process : processDefinitions){
+			resolveProcessDefinition(process);
+		}
+		return processDefinitions;
 	}
 
 	public ProcessDefinitionEntity findDeployedLatestProcessDefinitionByKey(String processDefinitionKey) {
@@ -123,19 +131,19 @@ public class DeploymentManager {
 		this.deployers = deployers;
 	}
 
-	public Cache getProcessDefinitionCache() {
+	public Cache<ProcessDefinition> getProcessDefinitionCache() {
 		return processDefinitionCache;
 	}
 
-	public void setProcessDefinitionCache(Cache processDefinitionCache) {
+	public void setProcessDefinitionCache(Cache<ProcessDefinition> processDefinitionCache) {
 		this.processDefinitionCache = processDefinitionCache;
 	}
 
-	public Cache getKnowledgeBaseCache() {
+	public Cache<ProcessDefinition> getKnowledgeBaseCache() {
 		return knowledgeBaseCache;
 	}
 
-	public void setKnowledgeBaseCache(Cache knowledgeBaseCache) {
+	public void setKnowledgeBaseCache(Cache<ProcessDefinition> knowledgeBaseCache) {
 		this.knowledgeBaseCache = knowledgeBaseCache;
 	}
 

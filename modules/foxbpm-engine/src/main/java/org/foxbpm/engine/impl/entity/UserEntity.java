@@ -18,8 +18,11 @@
  */
 package org.foxbpm.engine.impl.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.User;
 
 public class UserEntity implements User {
@@ -29,11 +32,10 @@ public class UserEntity implements User {
 	private String password;
 	private String email;
 	private Map<String,Object> propertyMap;
-	
+	private List<Group> groups = new ArrayList<Group>();
 	public UserEntity (){
 		
 	}
-	
 
 	public UserEntity (String userId){
 		
@@ -77,6 +79,11 @@ public class UserEntity implements User {
 
 	public String getEmail() {
 		return this.email;
+	}
+	
+	@Override
+	public List<Group> getGroups() {
+		return groups;
 	}
 
 	public Object getPropertyValue(String propertyName) {

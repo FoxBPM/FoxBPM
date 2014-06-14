@@ -140,7 +140,6 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>3.2.5.RELEASE</version>
-			<type>jar</type>
 			<scope>test</scope>
 		</dependency>   
 	</dependencies>

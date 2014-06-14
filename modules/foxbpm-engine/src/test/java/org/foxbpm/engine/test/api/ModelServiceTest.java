@@ -17,27 +17,40 @@
  */
 package org.foxbpm.engine.test.api;
 
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.util.List;
-
-import javax.swing.JLabel;
+import java.util.Map;
 
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.repository.ProcessDefinitionQuery;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
+import org.foxbpm.engine.test.Deployment;
 import org.junit.Test;
+import org.springframework.util.Assert;
 
 public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	
-	public void testStartProcessById(){
-//		ProcessInstance processInstance=runtimeService.startProcessInstanceById("process_test222:1:35b1da34-aaf2-4acf-ba1e-b27b20885124","bizkeyValue");
-//		NativeTaskQuery nativeTaskQuery=processEngine.getTaskService().createNativeTaskQuery();
-//		List<Task> tasks = nativeTaskQuery.sql("SELECT * FROM FOXBPM_RUN_TASK").list();
-//		ProcessInstanceEntity processInstanceEntity=(ProcessInstanceEntity)processInstance;
-//		runtimeService.signal(processInstanceEntity.getRootTokenId());
-//		tasks = nativeTaskQuery.sql("SELECT * FROM FOXBPM_RUN_TASK").list();
-//		assertNotNull(processInstance);
+	
+	/**
+	 * 功能：获取用户有权限发起的流程
+	 * 逻辑：根据流程定义开始节点后面第一个人工任务的任务分配属性获得
+	 */
+	@Test
+	@Deployment(resources = { "process_test_1.bpmn" })
+	public void testGetStartProcessByUserId(){
+		List<Map<String,Object>> list = modelService.getStartProcessByUserId("admin");
+		System.out.println(list.size());
+	}
+	
+	/**
+	 * 判断用户是否有权限发起流程
+	 */
+	@Test
+	@Deployment(resources = { "process_test_1.bpmn" })
+	public void testVerifyStartProcessByUserId(){
+		String userId = "admin";
+		String processDefinitionKey = "process_test_1";
+		boolean result = modelService.verifyStartProcessByUserId(userId, processDefinitionKey, null);
+		Assert.isTrue(result);
 	}
 	
 	

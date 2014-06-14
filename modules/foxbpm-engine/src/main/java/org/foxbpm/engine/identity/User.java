@@ -17,12 +17,14 @@
  */
 package org.foxbpm.engine.identity;
 
+import java.util.List;
 import java.util.Map;
 public interface User {
 
 	public String getUserId();
 	public String getUserName();
 	public String getEmail();
+	public List<Group> getGroups();
 	public Map<String, Object> getPropertyMap();
 	public Object getPropertyValue(String propertyName);
 

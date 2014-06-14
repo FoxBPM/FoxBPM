@@ -22,11 +22,11 @@ package org.foxbpm.engine.cache;
  * @author kenshin
  * 
  */
-public interface Cache {
+public interface Cache<T> {
 
-	Object get(String id);
+	T get(String id);
 
-	void add(String id, Object object);
+	void add(String id, T object);
 
 	void remove(String id);
 

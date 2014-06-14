@@ -46,6 +46,7 @@ import org.foxbpm.engine.exception.ExceptionCode;
 import org.foxbpm.engine.exception.ExceptionI18NCore;
 import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
 import org.foxbpm.engine.identity.GroupDefinition;
+import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.bpmn.deployer.BpmnDeployer;
 import org.foxbpm.engine.impl.cache.DefaultCache;
 import org.foxbpm.engine.impl.db.DefaultDataSourceManage;
@@ -56,6 +57,7 @@ import org.foxbpm.engine.impl.interceptor.CommandContextInterceptor;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 import org.foxbpm.engine.impl.interceptor.CommandExecutorImpl;
 import org.foxbpm.engine.impl.interceptor.CommandInterceptor;
+import org.foxbpm.engine.impl.interceptor.CommandInvoker;
 import org.foxbpm.engine.impl.interceptor.LogInterceptor;
 import org.foxbpm.engine.impl.interceptor.SessionFactory;
 import org.foxbpm.engine.impl.mybatis.MyBatisSqlSessionFactory;
@@ -73,6 +75,7 @@ import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
 import org.foxbpm.engine.impl.transaction.DefaultTransactionContextFactory;
 import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
+import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 import org.foxbpm.engine.transaction.TransactionContextFactory;
 import org.foxbpm.model.config.foxbpmconfig.FoxBPMConfig;
@@ -91,7 +94,7 @@ import org.slf4j.LoggerFactory;
 public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	private static Logger log = LoggerFactory.getLogger(ProcessEngineConfigurationImpl.class);
-	protected CommandInterceptor commandExecutor;
+	protected CommandExecutor commandExecutor;
 	protected CommandContextFactory commandContextFactory;
 	protected List<CommandInterceptor> commandInterceptors;
 	protected FoxBPMConfig foxBpmConfig;
@@ -106,10 +109,16 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected DataSourceManage dataSourceManager;
 	// 定义及发布
 	protected int processDefinitionCacheLimit = -1; // By default, no limit
-	protected Cache processDefinitionCache;
+	protected Cache<ProcessDefinition> processDefinitionCache;
 
 	protected int knowledgeBaseCacheLimit = -1;
-	protected Cache knowledgeBaseCache;
+	protected Cache<ProcessDefinition> knowledgeBaseCache;
+	
+	protected int userProcessDefinitionCacheLimit = -1;
+	protected Cache<Object> userProcessDefinitionCache;
+	
+	protected int userCacheLimit = -1;
+	protected Cache<User> userCache;
 
 	protected BpmnDeployer bpmnDeployer;
 	protected ProcessModelParseHandler processModelParseHandler;
@@ -117,7 +126,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected List<Deployer> customPostDeployers;
 	protected List<Deployer> deployers;
 	protected DeploymentManager deploymentManager;
-	protected Cache identityCache;
+	
 	protected TransactionContextFactory transactionContextFactory;
 	protected List<GroupDefinition> groupDefinitions;
 	protected FoxBPMStyleConfig foxBPMStyleConfig;
@@ -136,16 +145,15 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected void init() {
 		initExceptionResource();
 		initEmfFile();
+		initCache();
 		initResourcePathConfig();
 		initDataSourceManage();
 		initSqlSessionFactory();
 		initCommandContextFactory();
 		initCommandExecutors();
 		initServices();
-
 		initSessionFactories();
 		initDeployers();
-		initCache();
 		initGroupDefinitions();
 		initTransactionContextFactory();
 		// initDbConfig();// dbType
@@ -244,7 +252,37 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 
 	protected void initCache() {
-		identityCache = new DefaultCache();
+		//userCache
+		if(userCache == null){
+			if(userCacheLimit <= 0){
+				userCache = new DefaultCache<User>();
+			}else{
+				userCache = new DefaultCache<User>(userCacheLimit);
+			}
+		}
+		// Process Definition cache
+		if (processDefinitionCache == null) {
+			if (processDefinitionCacheLimit <= 0) {
+				processDefinitionCache = new DefaultCache<ProcessDefinition>();
+			} else {
+				processDefinitionCache = new DefaultCache<ProcessDefinition>(processDefinitionCacheLimit);
+			}
+		}
+		// Knowledge base cache (used for Drools business task)
+		if (knowledgeBaseCache == null) {
+			if (knowledgeBaseCacheLimit <= 0) {
+				knowledgeBaseCache = new DefaultCache<ProcessDefinition>();
+			} else {
+				knowledgeBaseCache = new DefaultCache<ProcessDefinition>(knowledgeBaseCacheLimit);
+			}
+		}
+		if(userProcessDefinitionCache == null){
+			if (userProcessDefinitionCacheLimit <= 0) {
+				userProcessDefinitionCache = new DefaultCache<Object>();
+			} else {
+				userProcessDefinitionCache = new DefaultCache<Object>(userProcessDefinitionCacheLimit);
+			}
+		}
 	}
 
 	protected void initSessionFactories() {
@@ -280,25 +318,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		if (deploymentManager == null) {
 			deploymentManager = new DeploymentManager();
 			deploymentManager.setDeployers(deployers);
-
-			// Process Definition cache
-			if (processDefinitionCache == null) {
-				if (processDefinitionCacheLimit <= 0) {
-					processDefinitionCache = new DefaultCache();
-				} else {
-					processDefinitionCache = new DefaultCache(processDefinitionCacheLimit);
-				}
-			}
-
-			// Knowledge base cache (used for Drools business task)
-			if (knowledgeBaseCache == null) {
-				if (knowledgeBaseCacheLimit <= 0) {
-					knowledgeBaseCache = new DefaultCache();
-				} else {
-					knowledgeBaseCache = new DefaultCache(knowledgeBaseCacheLimit);
-				}
-			}
-
 			deploymentManager.setProcessDefinitionCache(processDefinitionCache);
 			deploymentManager.setKnowledgeBaseCache(knowledgeBaseCache);
 		}
@@ -386,9 +405,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 
 	protected void initService(Object service) {
-		CommandExecutor executor = initInterceptorChain(commandInterceptors);
 		if (service instanceof ServiceImpl) {
-			((ServiceImpl) service).setCommandExecutor(executor);
+			((ServiceImpl) service).setCommandExecutor(commandExecutor);
 		}
 	}
 
@@ -409,6 +427,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		}
 		CommandContextInterceptor commandContextInterceptor = new CommandContextInterceptor(commandContextFactory, this);
 		commandInterceptors.add(commandContextInterceptor);
+		commandInterceptors.add(new CommandInvoker());
 	}
 
 	protected CommandInterceptor createTransactionInterceptor() {
@@ -427,7 +446,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 
 	public void initGeneralCommandExecutor() {
-		commandInterceptors.add(new CommandExecutorImpl());
+		CommandInterceptor first = initInterceptorChain(commandInterceptors);
+		commandExecutor = new CommandExecutorImpl(first);
 	}
 
 	protected CommandInterceptor initInterceptorChain(List<CommandInterceptor> chain) {
@@ -493,8 +513,52 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return sessionFactories;
 	}
 
-	public Cache getIdentityCache() {
-		return identityCache;
+	public Cache<User> getUserCache() {
+		return userCache;
+	}
+	
+	public int getUserCacheLimit() {
+		return userCacheLimit;
+	}
+	
+	public void setUserCacheLimit(int userCacheLimit) {
+		this.userCacheLimit = userCacheLimit;
+	}
+	
+	public int getUserProcessDefinitionCacheLimit() {
+		return userProcessDefinitionCacheLimit;
+	}
+
+	public void setUserProcessDefinitionCacheLimit(int userProcessDefinitionCacheLimit) {
+		this.userProcessDefinitionCacheLimit = userProcessDefinitionCacheLimit;
+	}
+
+	public Cache<Object> getUserProcessDefinitionCache() {
+		return userProcessDefinitionCache;
+	}
+
+	public void setUserProcessDefinitionCache(Cache<Object> userProcessDefinitionCache) {
+		this.userProcessDefinitionCache = userProcessDefinitionCache;
+	}
+
+	public int getProcessDefinitionCacheLimit() {
+		return processDefinitionCacheLimit;
+	}
+
+	public void setProcessDefinitionCacheLimit(int processDefinitionCacheLimit) {
+		this.processDefinitionCacheLimit = processDefinitionCacheLimit;
+	}
+
+	public Cache<ProcessDefinition> getProcessDefinitionCache() {
+		return processDefinitionCache;
+	}
+
+	public void setProcessDefinitionCache(Cache<ProcessDefinition> processDefinitionCache) {
+		this.processDefinitionCache = processDefinitionCache;
+	}
+	
+	public CommandExecutor getCommandExecutor() {
+		return commandExecutor;
 	}
 
 	public String getInternationPath() {

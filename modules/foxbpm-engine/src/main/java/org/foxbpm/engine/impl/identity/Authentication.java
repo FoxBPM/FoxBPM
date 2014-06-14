@@ -17,12 +17,17 @@
  */
 package org.foxbpm.engine.impl.identity;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.foxbpm.engine.ProcessEngine;
+import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.cache.Cache;
+import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
 import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.GroupDefinition;
-import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.identity.User;
+import org.foxbpm.engine.impl.cmd.FindUserByIdNoCacheCmd;
+import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 
 public abstract class Authentication {
 
@@ -37,15 +42,32 @@ public abstract class Authentication {
 	}
 	
 	public static List<Group> selectGroupByUserId(String userId) {
-		List<GroupDefinition> groupDefinitions = Context.getCommandContext().getProcessEngineConfigurationImpl().getGroupDefinitions();
-		List<Group> result = new ArrayList<Group>();
+		User user = selectUserByUserId(userId);
+		if(user == null){
+			throw new FoxBPMObjectNotFoundException("为找到ID:"+userId+"的用户！");
+		}
+		return user.getGroups();
+	}
+	
+	public static User selectUserByUserId(String userId){
+		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
+		
+		Cache<User> userCache = processEngine.getProcessEngineConfiguration().getUserCache();
+		User result = userCache.get(userId);
+		if(result != null){
+			return result;
+		}
+		CommandExecutor commandExecutor = processEngine.getProcessEngineConfiguration().getCommandExecutor();
+		User user = commandExecutor.execute(new FindUserByIdNoCacheCmd(userId));
+		List<GroupDefinition> groupDefinitions = processEngine.getProcessEngineConfiguration().getGroupDefinitions();
 		for(GroupDefinition groupDefinition : groupDefinitions){
 			List<Group> tmpGroups = groupDefinition.selectGroupByUserId(userId);
 			if(tmpGroups != null && tmpGroups.size() >0){
-				result.addAll(tmpGroups);
+				user.getGroups().addAll(tmpGroups);
 			}
 		}
-		return result;
+		userCache.add(userId, user);
+		return user;
 	}
 
 }

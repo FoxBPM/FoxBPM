@@ -13,25 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author kenshin
+ * @author ych
  */
 package org.foxbpm.engine.impl.cmd;
 
-import org.foxbpm.engine.identity.User;
-import org.foxbpm.engine.impl.identity.Authentication;
+import java.util.List;
+
+import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
 
-public class FindUserByIdCmd implements Command<User> {
+/**
+ * 获取流程定义 group by ProcessKey
+ * @author ych
+ *
+ */
+public class GetProcessDefinitionGroupKeyCmd implements  Command<List<ProcessDefinitionEntity>>{
 
-	
-	private String userId;
-	public FindUserByIdCmd(String userId) {
-		this.userId = userId;
+	public GetProcessDefinitionGroupKeyCmd() {
+		
 	}
 	
 	@Override
-	public User execute(CommandContext commandContext) {
-		return Authentication.selectUserByUserId(userId);
+	public List<ProcessDefinitionEntity> execute(CommandContext commandContext) {
+		DeploymentManager deploymentCache = commandContext.getProcessEngineConfigurationImpl().getDeploymentManager();
+		return deploymentCache.findProcessDefinitionGroupByKey();
 	}
+	
 }

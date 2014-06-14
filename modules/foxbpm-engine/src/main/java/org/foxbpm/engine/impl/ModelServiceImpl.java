@@ -19,8 +19,6 @@
 package org.foxbpm.engine.impl;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +29,8 @@ import org.foxbpm.engine.impl.cmd.GetFlowGraphicsImgStreamCmd;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinitionByKeyAndVersionCmd;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinitionCmd;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinitionSVGCmd;
+import org.foxbpm.engine.impl.cmd.GetStartProcessByUserIdCmd;
+import org.foxbpm.engine.impl.cmd.VerificationStartUserCmd;
 import org.foxbpm.engine.impl.model.DeploymentBuilderImpl;
 import org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl;
 import org.foxbpm.engine.repository.Deployment;
@@ -44,17 +44,9 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 		return new DeploymentBuilderImpl(this);
 	}
 
-	public List<Map<String, String>> getStartProcessByUserId(String userId) {
-		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("processDefinitionKey", "process_1");
-		map.put("processDefinitionId", "process_2");
-		map.put("processDefinitionName", "测试流程");
-
-		list.add(map);
-
-		return list;
+	public List<Map<String, Object>> getStartProcessByUserId(String userId) {
+		return commandExecutor.execute(new GetStartProcessByUserIdCmd(userId));
+		
 	}
 
 	public Deployment deploy(DeploymentBuilderImpl deploymentBuilder) {
@@ -70,43 +62,39 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	}
 
 	@Override
-	public InputStream GetFlowGraphicsImgStreamByDefId(
-			String processDefinitionId) {
-		return commandExecutor.execute(new GetFlowGraphicsImgStreamCmd(
-				processDefinitionId, null));
+	public InputStream GetFlowGraphicsImgStreamByDefId(String processDefinitionId) {
+		return commandExecutor.execute(new GetFlowGraphicsImgStreamCmd(processDefinitionId, null));
 	}
 
 	@Override
-	public InputStream GetFlowGraphicsImgStreamByDefKey(
-			String processDefinitionKey) {
-		return commandExecutor.execute(new GetFlowGraphicsImgStreamCmd(null,
-				processDefinitionKey));
+	public InputStream GetFlowGraphicsImgStreamByDefKey(String processDefinitionKey) {
+		return commandExecutor.execute(new GetFlowGraphicsImgStreamCmd(null, processDefinitionKey));
 	}
 
 	@Override
 	public ProcessDefinition getProcessDefinition(String processDefinitionId) {
-		return commandExecutor.execute(new GetProcessDefinitionCmd(
-				processDefinitionId));
+		return commandExecutor.execute(new GetProcessDefinitionCmd(processDefinitionId));
 	}
 
 	@Override
 	public ProcessDefinition getProcessDefinition(String processKey, int version) {
-		return commandExecutor
-				.execute(new GetProcessDefinitionByKeyAndVersionCmd(processKey,
-						version));
+		return commandExecutor.execute(new GetProcessDefinitionByKeyAndVersionCmd(processKey, version));
 	}
 
 	@Override
-	public Map<String, Map<String, Object>> GetFlowGraphicsElementPosition(
-			String processDefinitionId) {
+	public Map<String, Map<String, Object>> GetFlowGraphicsElementPosition(String processDefinitionId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getProcessDefinitionSVG(String processDefinitionId) {
-		return commandExecutor.execute(new GetProcessDefinitionSVGCmd(
-				processDefinitionId));
+		return commandExecutor.execute(new GetProcessDefinitionSVGCmd(processDefinitionId));
+	}
+	
+	@Override
+	public boolean verifyStartProcessByUserId(String userId, String processDefinitionKey, String processDefinitionId) {
+		return commandExecutor.execute(new VerificationStartUserCmd(userId, processDefinitionKey, processDefinitionId));
 	}
 
 }

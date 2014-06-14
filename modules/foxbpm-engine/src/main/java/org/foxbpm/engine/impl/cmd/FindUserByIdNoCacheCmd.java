@@ -13,25 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author kenshin
+ * @author ych
  */
 package org.foxbpm.engine.impl.cmd;
 
 import org.foxbpm.engine.identity.User;
-import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
-public class FindUserByIdCmd implements Command<User> {
-
+/**
+ * 从数据库中查询user对象
+ * 此方法不加载组织机构
+ * 如果需要完整user对象，请使用Authentication.selectUserByUserId(String userId)
+ * @author ych
+ *
+ */
+public class FindUserByIdNoCacheCmd implements Command<User>{
 	
 	private String userId;
-	public FindUserByIdCmd(String userId) {
+	public FindUserByIdNoCacheCmd(String userId) {
 		this.userId = userId;
 	}
-	
 	@Override
 	public User execute(CommandContext commandContext) {
-		return Authentication.selectUserByUserId(userId);
+		return commandContext.getUserEntityManager().findUserById(userId);
 	}
 }

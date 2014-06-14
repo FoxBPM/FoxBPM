@@ -19,7 +19,7 @@
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="4afab0a5-74a9-4f0d-9901-bde4e7c1fe68" connectorInstanceName="所有人" errorHandling="" type="actorconnector">
-              <documentation xsi:type="foxbpm:Documentation"></documentation>
+              <documentation xsi:type="foxbpm:Documentation" id="Documentation_1"></documentation>
             </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>

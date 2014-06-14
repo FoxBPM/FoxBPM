@@ -13,24 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
+ * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.impl.identity;
+package org.foxbpm.engine.impl.interceptor;
 
-import java.util.List;
-
-import org.foxbpm.engine.identity.Group;
-import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.impl.Context;
-import org.foxbpm.engine.sqlsession.ISqlSession;
 
-public class GroupDeptImpl implements GroupDefinition {
+/**
+ * foxbpm command执行器
+ * @author ych
+ *
+ */
+public class CommandInvoker extends CommandInterceptor {
 
-	@SuppressWarnings("unchecked")
-	public List<Group> selectGroupByUserId(String userId) {
-		ISqlSession sqlsession = Context.getCommandContext().getSqlSession();
-		List<Group> groups = (List<Group>)sqlsession.selectListWithRawParameter("selectDeptByUserId", userId);
-		return groups;
+	@Override
+	public <T> T execute(Command<T> command) {
+		return command.execute(Context.getCommandContext());
 	}
 
 }
