@@ -48,7 +48,7 @@ import org.xml.sax.XMLReader;
  */
 public class SVGTemplateContainer {
 
-	private static final String BPMN_PATH = "bpmn2.0/view";
+	private static final String BPMN_PATH = "bpmn/view";
 	private static SVGTemplateContainer container = new SVGTemplateContainer();
 	private Map<String, VONode> svgTemplets = new HashMap<String, VONode>();
 

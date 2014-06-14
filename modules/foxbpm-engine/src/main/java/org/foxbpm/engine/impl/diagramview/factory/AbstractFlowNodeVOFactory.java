@@ -85,8 +85,10 @@ public abstract class AbstractFlowNodeVOFactory {
 			this.filterChildVO(voNode,
 					Arrays.asList(svgType.split(SPLIT_SEPERATOR)));
 			KernelFlowNodeImpl kernelFlowNodeImpl = (KernelFlowNodeImpl) kernelFlowElement;
+			if (StringUtils.isBlank(kernelFlowNodeImpl.getName())) {
+				kernelFlowNodeImpl.setName("Default");
+			}
 			svgBuilder.setText(kernelFlowNodeImpl.getName());
-			svgBuilder.setText("test");
 			// 如果是事件节点，必须先设置width属性，即设置圆的直径,
 			svgBuilder.setWidth(String.valueOf(kernelFlowNodeImpl.getWidth()));
 			svgBuilder
@@ -126,8 +128,10 @@ public abstract class AbstractFlowNodeVOFactory {
 					.convertWaypointsTOPointList(waypoints);
 			// 构造
 			svgBuilder.setWayPoints(pointList);
+			if (StringUtils.isBlank(kernelSequenceFlowImpl.getName())) {
+				kernelSequenceFlowImpl.setName("Default");
+			}
 			svgBuilder.setText(kernelSequenceFlowImpl.getName());
-			svgBuilder.setText("Sequence_1");
 			// 设置文本的相对位置
 			Point textPoint = PointUtils.caclCenterPoint(pointList);
 			svgBuilder.setTextX(textPoint.getX());
