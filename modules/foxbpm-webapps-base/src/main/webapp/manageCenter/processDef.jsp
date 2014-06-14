@@ -40,9 +40,14 @@ a {
 						+ $(checkList[i]).attr("deploymentId");
 			}
 		}
-		$("#deploymentId").val(deploymentId);
-		$("#action").val("deleteDeploy");
-		document.forms[0].submit();
+		$.ajax({
+			type : "POST",
+			url : "deleteDeploy.action",
+			data : "deploymentId=" + deploymentId,
+			success : function(msg) {
+				document.forms[0].submit();
+			}
+		});
 	}
 
 	function updateDeploy(obj) {
@@ -134,12 +139,13 @@ a {
 							style="padding-right: 2px; text-align: right; margin-bottom: 4px;">
 							<div class="btn-normal"
 								style="display: inline-block; margin-left: 5px;" data-scope=all>
-								<a href="javascript:void(0)" target="_self" onclick="deployment()">发布流程</a>
+								<a href="javascript:void(0)" target="_self"
+									onclick="deployment()">发布流程</a>
 							</div>
 							<div class="btn-normal"
 								style="display: inline-block; margin-left: 5px;"
 								data-scope=multi>
-								<a href="#" onclick="deleteDeploy(this)">删除定义</a>
+								<a href="javascript:void(0)" onclick="deleteDeploy(this)">删除定义</a>
 							</div>
 							<div class="btn-normal"
 								style="display: inline-block; margin-left: 5px;"
@@ -173,12 +179,13 @@ a {
 												deploymentId="${dataList.deploymentId}"
 												processDefinitionId="${dataList.processDefinitionId}" /></td>
 											<td style="text-align: center;">${(index.index+1)+pageInfo.pageSize*(pageInfo.pageIndex-1)}</td>
-											<td>${dataList.processDefinitionName}</td>
-											<td>${dataList.processDefinitionKey}</td>
+											<td>${dataList.name}</td>
+											<td>${dataList.key}</td>
 											<td>${dataList.version}</td>
 											<td>${dataList.category}</td>
-											<td>${dataList.processDefinitionId}</td>
-											<td><fmt:formatDate value="${dataList.DEPLOY_TIME}" type="both" /></td>
+											<td>${dataList.id}</td>
+											<td><fmt:formatDate value="${dataList.DEPLOY_TIME}"
+													type="both" /></td>
 										</tr>
 									</c:forEach>
 								</tbody>

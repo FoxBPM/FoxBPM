@@ -85,4 +85,8 @@
        </if>
     </where>
   </select>
+  
+  <delete id="deleteVariableByProcessInstanceId" parameterType="java.lang.String">
+  	DELETE FROM FOXBPM_RUN_VARIABLE WHERE PROCESSINSTANCE_ID =#{processInstanceId,jdbcType=VARCHAR}
+  </delete>
 </mapper>

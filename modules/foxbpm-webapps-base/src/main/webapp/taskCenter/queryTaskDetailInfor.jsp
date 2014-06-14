@@ -150,14 +150,13 @@
 							onclick="viewPostion()" />&nbsp;&nbsp;隐藏状态</li>
 					</ul>
 				</h3>
-				<!---流程图 START
+				<!---流程图 START--->
 				<div id="flowImg" class="pos_abs" style='position: relative;'>
 					<c:if test="${param.noGraphic!='1'}">
 						<img
-							src="FlowCenter?action=getFlowGraph&processDefinitionKey=${result.processDefinitionKey}" />
+							src="getFlowGraph.action&processDefinitionId=process_test_1:1:377503a3-3e6d-46bc-a801-bdb11e094205" />
 					</c:if>
 				</div>
-				--->
 			</div>
 		</div>
 	</div>

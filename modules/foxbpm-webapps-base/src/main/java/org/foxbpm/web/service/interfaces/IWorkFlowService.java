@@ -41,7 +41,7 @@ public interface IWorkFlowService {
 	 * @return 返回查询结果
 	 * @throws FoxbpmWebException
 	 */
-	List<Map<String, Object>> queryProcessDef(Pagination<String> pageInfor, Map<String, Object> params);
+	List<Map<String, Object>> queryStartProcess(Map<String, Object> params);
 
 	/**
 	 * 查询所有流程实例信息
@@ -82,7 +82,7 @@ public interface IWorkFlowService {
 	 *            请求参数
 	 * @return 返回任务信息
 	 */
-	public Map<String, Object> startTask(Map<String, Object> params);
+	Map<String, Object> startTask(Map<String, Object> params);
 
 	/**
 	 * 完成任务
@@ -91,6 +91,15 @@ public interface IWorkFlowService {
 	 *            任务执行命令
 	 * @return 返回任务执行结果
 	 */
-	public ProcessInstance completeTask(Map<String, Object> params);
+	ProcessInstance completeTask(Map<String, Object> params);
+
+	/**
+	 * 获取流程图
+	 * 
+	 * @param params
+	 *            请求参数
+	 * @return 返回结果信息
+	 */
+	String getFlowGraph(Map<String, Object> params);
 
 }
