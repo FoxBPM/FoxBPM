@@ -18,7 +18,6 @@
 package org.foxbpm.engine.impl.diagramview.svg;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
@@ -48,6 +47,7 @@ import org.xml.sax.XMLReader;
 public class SVGTemplateContainer {
 
 	private static final String BPMN_PATH = "bpmn/view";
+	private static final String FILE_SPERATOR = "/";
 	private static SVGTemplateContainer container = new SVGTemplateContainer();
 	private Map<String, VONode> svgTemplets = null;
 
@@ -81,7 +81,7 @@ public class SVGTemplateContainer {
 		BufferedReader bufferReader = null;
 		try {
 			InputStreamReader inputReader = new InputStreamReader(
-					ReflectUtil.getResourceAsStream(BPMN_PATH + File.separator
+					ReflectUtil.getResourceAsStream(BPMN_PATH + FILE_SPERATOR
 							+ templateName));
 			bufferReader = new BufferedReader(inputReader);
 			String tempLineStr = "";
