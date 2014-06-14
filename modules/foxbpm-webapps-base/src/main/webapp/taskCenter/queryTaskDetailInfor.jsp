@@ -85,6 +85,23 @@
 			noPostion = 0;
 		}
 	}
+	function loadFlowGraph(processDefinitionId) {
+		$.ajax({
+			type : "POST",
+			url : "getFlowGraph.action",
+			data : "processDefinitionId=" + processDefinitionId,
+			success : function(src) {
+				$("#flowImg").append(src);
+			}
+		});
+	}
+	$(function() {
+		var noGraphic = (1 != '${param.noGraphic}');
+		if (true == noGraphic) {
+			//process_ma_1:1:caffbffe-b7fe-466d-955f-8e7db3252389
+			loadFlowGraph('${result.processDefinitionId}');
+		}
+	});
 </script>
 </head>
 
@@ -152,10 +169,6 @@
 				</h3>
 				<!---流程图 START--->
 				<div id="flowImg" class="pos_abs" style='position: relative;'>
-					<c:if test="${param.noGraphic!='1'}">
-						<img
-							src="getFlowGraph.action&processDefinitionId=process_test_1:1:377503a3-3e6d-46bc-a801-bdb11e094205" />
-					</c:if>
 				</div>
 			</div>
 		</div>

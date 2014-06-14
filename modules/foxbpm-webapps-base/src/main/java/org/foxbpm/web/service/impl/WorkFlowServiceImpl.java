@@ -166,6 +166,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			String processInstanceId = StringUtil.getString(params.get("processInstanceId"));
 			ProcessInstanceQuery piq = runtimeService.createProcessInstanceQuery();
 			if (StringUtil.isNotEmpty(processInstanceId)) {
+				
 				ProcessInstance processInstance = piq.processInstanceId(processInstanceId).list().get(0);
 				String processName = modelService.getProcessDefinition(processInstance.getProcessDefinitionId()).getName();
 				TaskQuery tq = taskService.createTaskQuery();
@@ -191,6 +192,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 				resultData.put("taskEndedJson", JSONUtil.parseObject2JSON(instanceMaps));
 				resultData.put("taskNotEndJson", JSONUtil.parseObject2JSON(instancesNotEnd));
 				resultData.put("processName", processName);
+				resultData.put("processDefinitionId", processInstance.getProcessDefinitionId());
 			}
 		} catch (Exception e) {
 			throw new FoxbpmWebException(e.getMessage(), "", e);

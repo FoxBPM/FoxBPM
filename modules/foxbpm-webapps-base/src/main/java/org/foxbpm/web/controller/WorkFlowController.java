@@ -135,6 +135,7 @@ public class WorkFlowController extends AbstWebController {
 			Map<String, Object> resultMap = workFlowService.queryTaskDetailInfor(requestParams);
 			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
 		} catch (FoxbpmWebException foxbpmException) {
+			foxbpmException.printStackTrace();
 			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
 		}
 		return createModelAndView(FoxbpmViewNameDefinition.QUERY_TASKDETAILINFOR_ACTION);
@@ -192,6 +193,7 @@ public class WorkFlowController extends AbstWebController {
 			response.setContentType("application/octet-stream;charset=UTF-8");
 			byte[] buff = flowGraphInfor.getBytes();
 			out.write(buff, 0, buff.length);
+			out.flush();
 			return null;
 		} catch (IOException e) {
 			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);

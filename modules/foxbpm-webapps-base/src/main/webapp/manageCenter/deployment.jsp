@@ -27,7 +27,7 @@
 
 <script type="text/javascript">
 	function sub() {
-		var fileName = $("#ProcessFile").val();
+		var fileName = $("#processFile").val();
 		var d = /\.[^\.]+$/.exec(fileName);
 		if (d == ".zip" || d == ".ZIP") {
 			$("#subForm").submit();
@@ -54,7 +54,7 @@
 				<tr>
 					<td class="title-r" style="width: 300px"><p>请选择文件：</p>(<span
 						style="color: red">注：只能选择设计器或者web下载的zip格式文件</span>)：</td>
-					<td><input type="file" name="ProcessFile" id="ProcessFile" /></td>
+					<td><input type="file" name="processFile" id="processFile" /></td>
 				</tr>
 				<tr id="trDeploy">
 					<td class="title-r">发布号：</td>
