@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.HashMap;
@@ -64,13 +65,10 @@ public class SVGTemplateContainer {
 	public void init(String templateName) {
 		BufferedReader bufferReader = null;
 		try {
-			URL url = ReflectUtil.getResource(BPMN_PATH + File.separator
-					+ templateName);
-			File svgFile = new File(url.toURI());
-			if (!svgFile.exists()) {
-				throw new FoxBPMException("template svg file not exists");
-			}
-			bufferReader = new BufferedReader(new FileReader(svgFile));
+			InputStreamReader inputReader = new InputStreamReader(
+					ReflectUtil.getResourceAsStream(BPMN_PATH + File.separator
+							+ templateName));
+			bufferReader = new BufferedReader(inputReader);
 			String tempLineStr = "";
 			StringBuffer svgStrBuffer = new StringBuffer(tempLineStr);
 			while ((tempLineStr = bufferReader.readLine()) != null) {
