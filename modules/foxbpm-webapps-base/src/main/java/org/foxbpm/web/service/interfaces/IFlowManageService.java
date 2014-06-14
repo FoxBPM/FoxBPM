@@ -17,7 +17,11 @@
  */
 package org.foxbpm.web.service.interfaces;
 
+import java.util.List;
 import java.util.Map;
+
+import org.foxbpm.web.common.exception.FoxbpmWebException;
+import org.foxbpm.web.common.util.Pagination;
 
 /**
  * 流程管理接口
@@ -26,10 +30,30 @@ import java.util.Map;
  * @date 2014年6月12日
  */
 public interface IFlowManageService {
+
+	/**
+	 * 查询所有流程定义信息
+	 * 
+	 * @param pageInfor
+	 *            分页对象
+	 * @param params
+	 *            查询条件参数
+	 * @return 返回查询结果
+	 * @throws FoxbpmWebException
+	 */
+	List<Map<String, Object>> queryProcessDef(Pagination<String> pageInfor, Map<String, Object> params);
+
 	/**
 	 * 流程定义新增和更新，取决于参数中有没有deploymentId
 	 * 
 	 * @param params
 	 */
 	void deployByZip(Map<String, Object> params);
+
+	/**
+	 * 删除流程定义 根据deploymentId
+	 * 
+	 * @param params
+	 */
+	void deleteDeploy(Map<String, Object> params);
 }

@@ -26,8 +26,6 @@ import java.util.Map;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.StringUtil;
-import org.foxbpm.engine.repository.ProcessDefinition;
-import org.foxbpm.engine.repository.ProcessDefinitionQuery;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.runtime.ProcessInstanceQuery;
 import org.foxbpm.engine.task.Task;
@@ -51,37 +49,14 @@ import org.springframework.stereotype.Service;
 public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlowService {
 
 	@Override
-	public List<Map<String, Object>> queryProcessDef(Pagination<String> pageInfor, Map<String, Object> params) throws FoxbpmWebException {
+	public List<Map<String, Object>> queryStartProcess(Map<String, Object> params) throws FoxbpmWebException {
 		// 返回结果
 		List<Map<String, Object>> resultData = new ArrayList<Map<String, Object>>();
 		try {
 			// 创建流程定义查询
-			ProcessDefinitionQuery pdq = modelService.createProcessDefinitionQuery();
-			String processName = StringUtil.getString(params.get("queryProcessName"));
-			if (StringUtil.isNotEmpty(processName)) {
-				pdq.processDefinitionNameLike(processName);
-			}
-			String processId = StringUtil.getString(params.get("queryProcessId"));
-			if (StringUtil.isNotEmpty(processId)) {
-				pdq.processDefinitionKeyLike(processId);
-			}
-			String processCategory = StringUtil.getString(params.get("queryType"));
-			if (StringUtil.isNotEmpty(processCategory)) {
-				pdq.processDefinitionCategoryLike(processCategory);
-			}
-			pdq.orderByDeploymentId().desc();
-			List<ProcessDefinition> pdList = null;
-			if (null == pageInfor) {
-				pdList = pdq.list();
-			} else {
-				pdList = pdq.listPagination(pageInfor.getPageIndex(), pageInfor.getPageSize());
-				pageInfor.setTotal(StringUtil.getInt(pdq.count()));
-			}
-			Map<String, Object> attrMap = null;
-			for (int i = 0, size = (null == pdList) ? 0 : pdList.size(); i < size; i++) {
-				attrMap = pdList.get(i).getPersistentState();
-				attrMap.put("formUrl", "startTask.action");
-				resultData.add(attrMap);
+			String userId = StringUtil.getString(params.get("userId"));
+			if (StringUtil.isNotEmpty(userId)) {
+				resultData = modelService.getStartProcessByUserId(userId);
 			}
 		} catch (Exception e) {
 			throw new FoxbpmWebException(e.getMessage(), "", e);
@@ -353,6 +328,17 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			throw new FoxbpmWebException(e.getMessage(), "", e);
 		}
 		return processInstance;
+	}
+
+	@Override
+	public String getFlowGraph(Map<String, Object> params) {
+
+		try {
+			String processDefinitionId = StringUtil.getString(params.get("processDefinitionId"));
+			return modelService.getProcessDefinitionSVG(processDefinitionId);
+		} catch (Exception e) {
+			throw new FoxbpmWebException(e.getMessage(), "", e);
+		}
 	}
 
 }

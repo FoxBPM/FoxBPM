@@ -17,13 +17,15 @@
  */
 package org.foxbpm.web.controller;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.web.common.constant.FoxbpmActionNameDefinition;
@@ -56,30 +58,16 @@ public class WorkFlowController extends AbstWebController {
 	 *            http请求参数
 	 * @return 返回响应视图
 	 */
-	@RequestMapping(FoxbpmActionNameDefinition.QUERY_QUERYALLPROCESSDEF_ACTION)
-	public ModelAndView queryProcessDef(HttpServletRequest request) {
+	@RequestMapping(FoxbpmActionNameDefinition.QUERY_STARTPROCESS_ACTION)
+	public ModelAndView queryStartProcess(HttpServletRequest request) {
 		try {
 			// 请求参数
 			Map<String, Object> requestParams = getRequestParams(request);
-			// 封装参数给页面使用
-			Map<String, List<Map<String, Object>>> resultMap = new HashMap<String, List<Map<String, Object>>>();
+			requestParams.put("userId", "admin");
 			// 查询结果
-			List<Map<String, Object>> resultList = workFlowService.queryProcessDef(null, requestParams);
-			// 进行分类处理
-			for (Map<String, Object> map : resultList) {
-				String category = StringUtil.getString(map.get("category"));
-				if (StringUtil.isEmpty(category)) {
-					category = "默认分类";
-				}
-				List<Map<String, Object>> tempList = (List<Map<String, Object>>) resultMap.get(category);
-				if (tempList == null) {
-					tempList = new ArrayList<Map<String, Object>>();
-					resultMap.put(category, tempList);
-				}
-				tempList.add(map);
-			}
+			List<Map<String, Object>> resultList = workFlowService.queryStartProcess(requestParams);
 			// 封装参数
-			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
+			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultList);
 		} catch (FoxbpmWebException foxbpmException) {
 			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
 		}
@@ -192,6 +180,22 @@ public class WorkFlowController extends AbstWebController {
 			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
 		}
 		return createModelAndView(FoxbpmViewNameDefinition.QUERY_QUERYTODOTASK_VIEWNAME);
+	}
+
+	@RequestMapping(FoxbpmActionNameDefinition.GETFLOWGRAPH_ACTION)
+	public ModelAndView getFlowGraph(HttpServletRequest request, HttpServletResponse response) {
+
+		try {
+			Map<String, Object> requestParams = getRequestParams(request);
+			ServletOutputStream out = response.getOutputStream();
+			String flowGraphInfor = this.workFlowService.getFlowGraph(requestParams);
+			response.setContentType("application/octet-stream;charset=UTF-8");
+			byte[] buff = flowGraphInfor.getBytes();
+			out.write(buff, 0, buff.length);
+			return null;
+		} catch (IOException e) {
+			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
+		}
 	}
 
 	@Override

@@ -23,6 +23,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.web.common.constant.FoxbpmActionNameDefinition;
@@ -80,7 +81,7 @@ public class FlowManageController extends AbstWebController {
 			// 分页信息
 			Pagination<String> pageInfor = new Pagination<String>(pageIndex, pageSize);
 			// 查询结果
-			List<Map<String, Object>> resultData = workFlowService.queryProcessDef(pageInfor, requestParams);
+			List<Map<String, Object>> resultData = flowManageService.queryProcessDef(pageInfor, requestParams);
 			// 封装参数给页面使用
 			Map<String, List<Map<String, Object>>> resultMap = new HashMap<String, List<Map<String, Object>>>();
 			// 获取分页条件参数
@@ -111,6 +112,18 @@ public class FlowManageController extends AbstWebController {
 			return processDef(request);
 			// 封装参数
 		} catch (FoxbpmWebException foxbpmException) {
+			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
+		}
+	}
+
+	@RequestMapping(FoxbpmActionNameDefinition.DELETEDEPLOY_ACTION)
+	public ModelAndView deleteDeploy(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			// 请求参数
+			Map<String, Object> requestParams = getRequestParams(request);
+			flowManageService.deleteDeploy(requestParams);
+			return null;
+		} catch (Exception e) {
 			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
 		}
 	}
