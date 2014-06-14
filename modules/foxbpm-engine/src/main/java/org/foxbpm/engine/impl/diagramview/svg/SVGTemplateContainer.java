@@ -50,11 +50,21 @@ import org.xml.sax.XMLReader;
 public class SVGTemplateContainer {
 
 	private static final String BPMN_PATH = "bpmn/view";
-	private static SVGTemplateContainer container = new SVGTemplateContainer();
+	private static SVGTemplateContainer container = null;
 	private Map<String, VONode> svgTemplets = new HashMap<String, VONode>();
 
 	private SVGTemplateContainer() {
 		svgTemplets = new HashMap<String, VONode>();
+		// 初始化加载空白开始事件
+		this.init(SVGTemplateNameConstant.TEMPLATE_STARTEVENT_NONE);
+		// 初始化加载空白结束事件
+		this.init(SVGTemplateNameConstant.TEMPLATE_ENDEVENT_NONE);
+		// 初始化加载空白UserTask
+		this.init(SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK);
+		// 初始化加载空白UserTask
+		this.init(SVGTemplateNameConstant.TEMPLATE_CONNECTOR_SEQUENCEFLOW);
+		// 初始化加载模版容器
+		this.init(SVGTemplateNameConstant.SVG_TEMPLATE);
 	}
 
 	/**
@@ -62,7 +72,7 @@ public class SVGTemplateContainer {
 	 * 
 	 * @param templateName
 	 */
-	public void init(String templateName) {
+	private void init(String templateName) {
 		BufferedReader bufferReader = null;
 		try {
 			InputStreamReader inputReader = new InputStreamReader(
@@ -105,6 +115,9 @@ public class SVGTemplateContainer {
 	 * @return
 	 */
 	public static SVGTemplateContainer getContainerInstance() {
+		if (container == null) {
+			container = new SVGTemplateContainer();
+		}
 		return container;
 	}
 
