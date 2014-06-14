@@ -23,6 +23,7 @@ import java.util.Map;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.repository.ProcessDefinitionQuery;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
+import org.foxbpm.engine.test.Clear;
 import org.foxbpm.engine.test.Deployment;
 import org.junit.Test;
 import org.springframework.util.Assert;
@@ -35,10 +36,10 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	 * 逻辑：根据流程定义开始节点后面第一个人工任务的任务分配属性获得
 	 */
 	@Test
-	@Deployment(resources = { "process_test_1.bpmn" })
+	@Deployment(resources = { "process_ma_1.bpmn" })
 	public void testGetStartProcessByUserId(){
-		List<Map<String,Object>> list = modelService.getStartProcessByUserId("admin");
-		System.out.println(list.size());
+//		List<Map<String,Object>> list = modelService.getStartProcessByUserId("admin");
+//		System.out.println(list.size());
 	}
 	
 	/**
@@ -75,8 +76,9 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 		System.out.println(process.size());
 	}
 	
+	@Test
 	public void testDeleteDeploy(){
-		String deploymentId = "1e496bcd-708e-45a1-8f01-9d5b02b2aa21";
+		String deploymentId = "3e280222-7f82-4182-a7c7-2756a4bc0548";
 		modelService.deleteDeployment(deploymentId);
 	}
 	

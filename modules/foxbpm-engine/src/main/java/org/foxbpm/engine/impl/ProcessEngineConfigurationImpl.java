@@ -70,6 +70,7 @@ import org.foxbpm.engine.impl.persistence.ResourceManager;
 import org.foxbpm.engine.impl.persistence.TaskManager;
 import org.foxbpm.engine.impl.persistence.TokenManager;
 import org.foxbpm.engine.impl.persistence.UserEntityManagerFactory;
+import org.foxbpm.engine.impl.persistence.VariableManager;
 import org.foxbpm.engine.impl.persistence.deploy.Deployer;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
 import org.foxbpm.engine.impl.transaction.DefaultTransactionContextFactory;
@@ -296,6 +297,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			addSessionFactory(new GenericManagerFactory(ProcessDefinitionManager.class));
 			addSessionFactory(new GenericManagerFactory(ResourceManager.class));
 			addSessionFactory(new GenericManagerFactory(IdentityLinkManager.class));
+			addSessionFactory(new GenericManagerFactory(VariableManager.class));
 			addSessionFactory(new UserEntityManagerFactory());
 		}
 	}

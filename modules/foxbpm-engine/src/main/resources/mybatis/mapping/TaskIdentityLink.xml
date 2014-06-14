@@ -33,7 +33,7 @@
     where TASK_ID = #{id,jdbcType=VARCHAR}
   </select>
   
-  <delete id="deleteIdentityLinkByTaskId">
+  <delete id="deleteIdentityLinkByTaskId" parameterType="java.lang.String">
   	DELETE FROM FOXBPM_RUN_TASKIDENTITYLINK WHERE TASK_ID = #{taskId,jdbcType=VARCHAR}
   </delete>
 
