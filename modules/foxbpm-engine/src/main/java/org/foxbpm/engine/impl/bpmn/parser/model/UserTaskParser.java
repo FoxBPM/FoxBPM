@@ -28,7 +28,10 @@ import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.task.TaskCommandImpl;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.util.BpmnModelUtil;
+import org.foxbpm.model.bpmn.foxbpm.CompleteTaskDescription;
 import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
+import org.foxbpm.model.bpmn.foxbpm.TaskDescription;
+
 
 
 
@@ -78,6 +81,15 @@ public class UserTaskParser extends TaskParser {
 			}
 		}
 		
+		TaskDescription taskDescription=(TaskDescription)BpmnModelUtil.getExtensionElement(userTask,FoxBPMPackage.Literals.DOCUMENT_ROOT__TASK_DESCRIPTION);
+		if(taskDescription.getExpression()!=null){
+			taskDefinition.setTaskDescription(taskDescription.getExpression().getValue());
+		}
+		
+		CompleteTaskDescription completeTaskDescription=(CompleteTaskDescription)BpmnModelUtil.getExtensionElement(userTask,FoxBPMPackage.Literals.DOCUMENT_ROOT__COMPLETE_TASK_DESCRIPTION);
+		if(completeTaskDescription.getExpression()!=null){
+			taskDefinition.setCompleteTaskDescription(completeTaskDescription.getExpression().getValue());
+		}
 		
 		
 		

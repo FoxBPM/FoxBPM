@@ -38,6 +38,8 @@ public class ProcessDefinitionBuilder {
 
 	protected Stack<KernelFlowElementsContainerImpl> containerStack = new Stack<KernelFlowElementsContainerImpl>();
 	protected KernelBaseElementImpl processElement = processDefinition;
+	
+
 	protected KernelSequenceFlowImpl sequenceFlow;
 	protected List<Object[]> unresolvedSequenceFlows = new ArrayList<Object[]>();
 
@@ -55,10 +57,15 @@ public class ProcessDefinitionBuilder {
 	}
 
 	public ProcessDefinitionBuilder createFlowNode(String id) {
+		createFlowNode(id,null);
+		return this;
+	}
+	
+	public ProcessDefinitionBuilder createFlowNode(String id,String name) {
 		KernelFlowNodeImpl flowNode = containerStack.peek().createFlowNode(id);
+		flowNode.setName(name);
 		containerStack.push(flowNode);
 		processElement = flowNode;
-
 		sequenceFlow = null;
 
 		return this;
@@ -163,6 +170,10 @@ public class ProcessDefinitionBuilder {
 	
 	public KernelProcessDefinitionImpl getProcessDefinition() {
 		return processDefinition;
+	}
+	
+	public KernelBaseElementImpl getProcessElement() {
+		return processElement;
 	}
 	
 }

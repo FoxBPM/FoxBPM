@@ -108,7 +108,10 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		for(FlowElement flowElement :flowElements){
 			KernelFlowNodeBehavior flowNodeBehavior = BpmnBehaviorEMFConverter.getFlowNodeBehavior(flowElement,processDefinitionBuilder.getProcessDefinition());
 			if(flowElement instanceof FlowNode){
-				processDefinitionBuilder.createFlowNode(flowElement.getId()).behavior(flowNodeBehavior);
+				
+				
+				processDefinitionBuilder.createFlowNode(flowElement.getId(),flowElement.getName()).behavior(flowNodeBehavior);
+
 				if(flowNodeBehavior instanceof BaseElementBehavior){
 					for (Connector connector :((BaseElementBehavior) flowNodeBehavior).getConnectors()) {
 						processDefinitionBuilder.executionListener(connector.getEventType(), connector);
@@ -120,7 +123,10 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 				List<SequenceFlow>  sequenceFlows=((FlowNode) flowElement).getOutgoing();
 				for (SequenceFlow sequenceFlow : sequenceFlows) {
 					processDefinitionBuilder.sequenceFlow(sequenceFlow.getTargetRef().getId(),sequenceFlow.getId());
-				} 
+				}
+				
+				// 
+				
 				processDefinitionBuilder.endFlowNode();
 			}
 		}
@@ -228,8 +234,8 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 
 					if (bpmnElement instanceof Task) {
 
-						//String taskSVG = taskToSVG(bpmnShape);
-						//svg.addChildren(taskSVG);
+						//String endEventSVG = endEventToSVG(bpmnShape);
+						style=processEngineConfiguration.getStyle("UserTask");
 
 					}
 					

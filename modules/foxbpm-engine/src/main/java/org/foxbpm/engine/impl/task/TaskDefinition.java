@@ -33,14 +33,70 @@ public class TaskDefinition implements Serializable {
 	
 	private String id;
 
-	/**
-	 * 任务分配策略
-	 */
-	private String assignPolicyType;
+	
+	private String completeTaskDescription;
+	
 
-	private String assigneeExpression;
+	private String taskDescription;
 	
 	private boolean isAutoClaim;
+	
+	private String taskSubject;
+	
+	private String taskPriority;
+	
+	private String formUri;
+	
+	private String formUriView;
+	
+	private List<FormParam> formParams;
+	
+	
+	public String getTaskSubject() {
+		return taskSubject;
+	}
+
+	public void setTaskSubject(String taskSubject) {
+		this.taskSubject = taskSubject;
+	}
+
+	public String getTaskPriority() {
+		return taskPriority;
+	}
+
+	public void setTaskPriority(String taskPriority) {
+		this.taskPriority = taskPriority;
+	}
+
+	public String getFormUri() {
+		return formUri;
+	}
+
+	public void setFormUri(String formUri) {
+		this.formUri = formUri;
+	}
+
+	public String getFormUriView() {
+		return formUriView;
+	}
+
+	public void setFormUriView(String formUriView) {
+		this.formUriView = formUriView;
+	}
+
+	public List<FormParam> getFormParams() {
+		return formParams;
+	}
+
+	public void setFormParams(List<FormParam> formParams) {
+		this.formParams = formParams;
+	}
+
+	/**
+	 * 处理命令集合
+	 */
+	private List<TaskCommand> taskCommands = new ArrayList<TaskCommand>();
+
 	
 	
 	public boolean isAutoClaim() {
@@ -61,24 +117,8 @@ public class TaskDefinition implements Serializable {
 	public void setActorConnectors(List<Connector> actorConnectors) {
 		this.actorConnectors = actorConnectors;
 	}
+
 	
-	/**
-	 * 处理人集合
-	 */
-	private List<TaskAssigneeDefinition> taskAssignees;
-
-	/**
-	 * 处理命令集合
-	 */
-	private List<TaskCommand> taskCommands = new ArrayList<TaskCommand>();
-
-	public List<TaskAssigneeDefinition> getTaskAssignees() {
-		return taskAssignees;
-	}
-
-	public void setTaskAssignees(List<TaskAssigneeDefinition> taskAssignees) {
-		this.taskAssignees = taskAssignees;
-	}
 
 	public List<TaskCommand> getTaskCommands() {
 		return taskCommands;
@@ -99,22 +139,6 @@ public class TaskDefinition implements Serializable {
 		this.taskCommands = taskCommands;
 	}
 
-	public String getAssignPolicyType() {
-		return assignPolicyType;
-	}
-
-	public void setAssignPolicyType(String assignPolicyType) {
-		this.assignPolicyType = assignPolicyType;
-	}
-
-	public String getAssigneeExpression() {
-		return assigneeExpression;
-	}
-
-	public void setAssigneeExpression(String assigneeExpression) {
-		this.assigneeExpression = assigneeExpression;
-	}
-	
 
 	public String getId() {
 		return id;
@@ -122,6 +146,22 @@ public class TaskDefinition implements Serializable {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	public String getCompleteTaskDescription() {
+		return completeTaskDescription;
+	}
+
+	public void setCompleteTaskDescription(String completeTaskDescription) {
+		this.completeTaskDescription = completeTaskDescription;
+	}
+
+	public String getTaskDescription() {
+		return taskDescription;
+	}
+
+	public void setTaskDescription(String taskDescription) {
+		this.taskDescription = taskDescription;
 	}
 
 
