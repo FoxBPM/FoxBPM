@@ -26,8 +26,10 @@ import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.diagramview.svg.Point;
 import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
 import org.foxbpm.engine.impl.diagramview.svg.vo.DefsVO;
+import org.foxbpm.engine.impl.diagramview.svg.vo.LinearGradient;
 import org.foxbpm.engine.impl.diagramview.svg.vo.RadialGradientVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.RectVO;
+import org.foxbpm.engine.impl.diagramview.svg.vo.StopVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 
 /**
@@ -100,18 +102,7 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 		if (StringUtils.isBlank(fill)) {
 			fill = FILL_DEFAULT;
 		}
-		DefsVO defsVo = this.svgVo.getgVo().getDefsVo();
-		if (defsVo != null) {
-			RadialGradientVO radialGradientVo = defsVo.getRadialGradientVo();
-			if (radialGradientVo != null) {
-				String backGroudUUID = UUID.randomUUID().toString();
-				radialGradientVo.setId(backGroudUUID);
-				this.rectVO.setFill("url(#" + backGroudUUID + ") #" + fill);
-				return;
-			}
-		}
-
-		this.rectVO.setFill(COLOR_FLAG + fill);
+		this.buildLinearGradient(fill);
 	}
 
 	@Override
@@ -120,15 +111,17 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 		this.svgVo.getgVo().setTransform("translate(" + x + ", " + y + ")");
 
 		// 设置字体的相对偏移量,X相对是矩形宽度的一半减去文本本身屏宽的一半
-		int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
-				this.textVO.getElementValue());
-		int languageShift = -5;
-		if (SVGUtils.isChinese(this.textVO.getElementValue().charAt(0))) {
-			languageShift = 12;
+		if (StringUtils.isNotBlank(textVO.getElementValue())) {
+			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
+					this.textVO.getElementValue());
+			int languageShift = -5;
+			if (SVGUtils.isChinese(this.textVO.getElementValue().charAt(0))) {
+				languageShift = 12;
+			}
+			super.setTextX((Integer.valueOf(this.rectVO.getWidth()) / 2)
+					- textWidth / 2 - languageShift);
+			super.setTextY(Float.valueOf(this.rectVO.getHeight()) / 2 + 5);
 		}
-		super.setTextX((Integer.valueOf(this.rectVO.getWidth()) / 2)
-				- textWidth / 2 - languageShift);
-		super.setTextY(Float.valueOf(this.rectVO.getHeight()) + 20);
 	}
 
 	@Override
@@ -175,5 +168,50 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 	public void setWayPoints(List<Point> pointList) {
 		// TODO Auto-generated method stub
 
+	}
+
+	/**
+	 * 线性渐变
+	 * 
+	 * @param fill
+	 */
+	private void buildLinearGradient(String fill) {
+		DefsVO defsVo = this.svgVo.getgVo().getDefsVo();
+		if (defsVo != null) {
+			LinearGradient linearGradient = defsVo.getLinearGradient();
+			if (linearGradient != null) {
+				String backGroudUUID = UUID.randomUUID().toString();
+				linearGradient.setId(backGroudUUID);
+				linearGradient.setX1("0");
+				linearGradient.setX2("0");
+				linearGradient.setY1("0");
+				linearGradient.setY2(this.rectVO.getHeight());
+				List<StopVO> stopVoList = linearGradient.getStopVoList();
+				if (stopVoList != null && stopVoList.size() > 0) {
+					StopVO stopVO = stopVoList.get(LINEARGRADIENT_INDEX);
+					this.rectVO.setFill("url(#" + backGroudUUID + ")");
+					stopVO.setStopColor(COLOR_FLAG + fill);
+				}
+			}
+
+		}
+	}
+
+	/**
+	 * 放射性渐变
+	 * 
+	 * @param fill
+	 */
+	private void buildRadialGradient(String fill) {
+		DefsVO defsVo = this.svgVo.getgVo().getDefsVo();
+		if (defsVo != null) {
+			RadialGradientVO radialGradientVo = defsVo.getRadialGradientVo();
+			if (radialGradientVo != null) {
+				String backGroudUUID = UUID.randomUUID().toString();
+				radialGradientVo.setId(backGroudUUID);
+				this.rectVO.setFill("url(#" + backGroudUUID + ") #" + fill);
+				return;
+			}
+		}
 	}
 }

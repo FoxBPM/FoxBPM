@@ -39,8 +39,7 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
  * @date 2014-06-10
  */
 public class EventSVGBuilder extends AbstractSVGBuilder {
-	private static final String FILL_DEFAULT = "white";
-	private static final int LINEARGRADIENT_INDEX = 0;
+	private static final String FILL_DEFAULT = "ffffff";
 	/**
 	 * 事件子类型对象
 	 */
@@ -129,6 +128,9 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setFill(String fill) {
+		if (StringUtils.isBlank(fill)) {
+			fill = FILL_DEFAULT;
+		}
 		DefsVO defsVo = this.svgVo.getgVo().getDefsVo();
 		if (defsVo != null) {
 			LinearGradient linearGradient = defsVo.getLinearGradient();
@@ -136,29 +138,15 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 				String backGroudUUID = UUID.randomUUID().toString();
 				linearGradient.setId(backGroudUUID);
 				List<StopVO> stopVoList = linearGradient.getStopVoList();
-				int index = 0;
-				if (stopVoList != null && stopVoList.size() > index) {
+				if (stopVoList != null && stopVoList.size() > 0) {
 					StopVO stopVO = stopVoList.get(LINEARGRADIENT_INDEX);
-					if (StringUtils.isBlank(fill)) {
-						this.circleVO.setFill("url(#" + backGroudUUID
-								+ ") white");
-						stopVO.setStopColor("white");
-					} else {
-						this.circleVO.setFill("url(#" + backGroudUUID + ")");
-						stopVO.setStopColor(COLOR_FLAG + fill);
-					}
+					this.circleVO.setFill("url(#" + backGroudUUID + ")");
+					stopVO.setStopColor(COLOR_FLAG + fill);
 					return;
 				}
 
 			}
 		}
-
-		if (StringUtils.isBlank(fill)) {
-			this.circleVO.setFill(FILL_DEFAULT);
-		} else {
-			this.circleVO.setFill(COLOR_FLAG + fill);
-		}
-
 	}
 
 	@Override
@@ -182,15 +170,17 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 		y = Float.valueOf(y) + Float.valueOf(this.circleVO.getR());
 		x = Float.valueOf(x) + Float.valueOf(this.circleVO.getR());
 		// 如果是事件节点，字体横坐标和圆心的横坐标一直，纵坐标等圆心坐标值加圆的半径值
-		int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
-				this.textVO.getElementValue());
-		int languageShift = 0;
-		if (SVGUtils.isChinese(this.textVO.getElementValue().charAt(0))) {
-			languageShift = 8;
+		if (StringUtils.isNotBlank(textVO.getElementValue())) {
+			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
+					this.textVO.getElementValue());
+			int languageShift = 0;
+			if (SVGUtils.isChinese(this.textVO.getElementValue().charAt(0))) {
+				languageShift = 8;
+			}
+			this.setTextX(Float.valueOf(x) - textWidth / 2 - languageShift);
+			this.setTextY(Float.valueOf(y)
+					+ Float.valueOf(this.circleVO.getR()) + 20);
 		}
-		this.setTextX(Float.valueOf(x) - textWidth / 2 - languageShift);
-		this.setTextY(Float.valueOf(y) + Float.valueOf(this.circleVO.getR())
-				+ 20);
 
 		// 如果存在子类型，例如ERROR
 		if (this.pathVo != null) {

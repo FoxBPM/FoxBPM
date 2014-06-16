@@ -57,5 +57,6 @@ public interface RuntimeService {
 	TokenQuery createTokenQuery();
 	
 	ProcessInstanceQuery createProcessInstanceQuery();
+	String createProcessInstanceSVGImageString(String processInstanceID);
 
 }

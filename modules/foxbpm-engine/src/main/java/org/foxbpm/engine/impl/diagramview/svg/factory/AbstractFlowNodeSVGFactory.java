@@ -86,14 +86,29 @@ public abstract class AbstractFlowNodeSVGFactory extends
 	 * @return
 	 */
 	public static AbstractFlowNodeSVGFactory createSVGFactory(
+			KernelFlowElement kernelFlowElement, String svgTemplateFileName,
+			boolean taskState,
+			AbstractFlowNodeVOFactory abstractFlowNodeSVGFactory) {
+		return new SignProcessStateSVGFactory(kernelFlowElement,
+				svgTemplateFileName, abstractFlowNodeSVGFactory, taskState);
+	}
+
+	/**
+	 * 创建具体的工厂类,目前支持三种实现
+	 * 
+	 * @param kernelFlowElement
+	 * @param svgTemplateFileName
+	 * @return
+	 */
+	public static AbstractFlowNodeSVGFactory createSVGFactory(
 			KernelFlowElement kernelFlowElement, String svgTemplateFileName) {
 		if (StringUtils.contains(svgTemplateFileName, NODE_TYPE_EVENT)) {
 			return new EventSVGFactory(kernelFlowElement, svgTemplateFileName);
-		}
-		if (StringUtils.contains(svgTemplateFileName, NODE_TYPE_ACTIVITY)) {
+		} else if (StringUtils
+				.contains(svgTemplateFileName, NODE_TYPE_ACTIVITY)) {
 			return new TaskSVGFactory(kernelFlowElement, svgTemplateFileName);
-		}
-		if (StringUtils.contains(svgTemplateFileName, NODE_TYPE_CONNECTOR)) {
+		} else if (StringUtils.contains(svgTemplateFileName,
+				NODE_TYPE_CONNECTOR)) {
 			return new ConnectorSVGFactory(kernelFlowElement,
 					svgTemplateFileName);
 		}

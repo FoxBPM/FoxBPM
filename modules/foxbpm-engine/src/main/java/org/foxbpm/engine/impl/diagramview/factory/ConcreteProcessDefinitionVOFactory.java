@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.impl.bpmn.behavior.BusinessRuleTaskBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.EndEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ManualTaskBehavior;
@@ -36,6 +37,7 @@ import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateNameConstant;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTypeNameConstant;
 import org.foxbpm.engine.impl.diagramview.svg.vo.VONode;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
+import org.foxbpm.engine.task.Task;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
 import org.foxbpm.kernel.process.KernelFlowElement;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
@@ -51,15 +53,16 @@ import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 public class ConcreteProcessDefinitionVOFactory extends
 		AbstractProcessDefinitionVOFactory {
 	private static final String EMPTY_STRING = "";
+	private static final int EMPTY_LIST = 0;
+	private static final int ARRAY_INDEX_FIRST = 0;
+	private static final int ARRAY_INDEX_SECOND = 1;
 	/**
 	 * 创建节点工厂
 	 */
 	private AbstractFlowNodeVOFactory flowNodeVOFactory;
 
-	/**
-	 * 根据所有流程节点，和流程连接创建流程SVG文档字符串
-	 */
-	public String createProcessDefinitionVOString(
+	@Override
+	public String createProcessInstanceSVGImageString(List<Task> notEndTask,
 			ProcessDefinitionEntity deployedProcessDefinition) {
 		List<KernelFlowNodeImpl> flowNodes = deployedProcessDefinition
 				.getFlowNodes();
@@ -75,10 +78,18 @@ public class ConcreteProcessDefinitionVOFactory extends
 			KernelFlowNodeImpl kernelFlowNodeImpl = flowNodeIterator.next();
 			String[] typeTemplateArray = this
 					.getTypeAndTemplateNameByFlowNode(kernelFlowNodeImpl);
-			taskType = typeTemplateArray[0];
-			svgTemplateFileName = typeTemplateArray[1];
-			VONode voNode = this.getNodeSVGFromFactory(kernelFlowNodeImpl,
-					taskType, svgTemplateFileName);
+			taskType = typeTemplateArray[ARRAY_INDEX_FIRST];
+			svgTemplateFileName = typeTemplateArray[ARRAY_INDEX_SECOND];
+			VONode voNode = null;
+			if (notEndTask == null || notEndTask.size() == EMPTY_LIST) {
+				voNode = this.getNodeSVGFromFactory(kernelFlowNodeImpl,
+						taskType, svgTemplateFileName);
+			} else {
+				boolean taskState = this.confirmTaskNotEnd(notEndTask,
+						kernelFlowNodeImpl.getId());
+				voNode = this.getSignedNodeSVGFromFactory(kernelFlowNodeImpl,
+						taskType, svgTemplateFileName, taskState);
+			}
 			voNodeList.add(voNode);
 		}
 
@@ -103,6 +114,35 @@ public class ConcreteProcessDefinitionVOFactory extends
 	}
 
 	/**
+	 * 根据所有流程节点，和流程连接创建流程SVG文档字符串
+	 */
+	public String createProcessDefinitionVOString(
+			ProcessDefinitionEntity deployedProcessDefinition) {
+		// 内部处理
+		return this.createProcessInstanceSVGImageString(null,
+				deployedProcessDefinition);
+	}
+
+	/**
+	 * 判断任务节点是否已经处理过
+	 * 
+	 * @param notEndTask
+	 * @param taskFlowNodeID
+	 * @return
+	 */
+	private boolean confirmTaskNotEnd(List<Task> notEndTask,
+			String taskFlowNodeID) {
+		Iterator<Task> notEndIter = notEndTask.iterator();
+		while (notEndIter.hasNext()) {
+			Task notEnd = notEndIter.next();
+			if (StringUtils.equalsIgnoreCase(notEnd.getId(), taskFlowNodeID)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * 创建流程元素SVG
 	 * 
 	 * @param kernelFlowNodeImpl
@@ -115,6 +155,28 @@ public class ConcreteProcessDefinitionVOFactory extends
 		// 调用节点构造方法，创建SVG VALUE OBJECT 对象
 		flowNodeVOFactory = AbstractFlowNodeVOFactory.createSVGFactory(
 				kernelFlowNodeImpl, svgTemplateFileName);
+		return flowNodeVOFactory.createFlowElementSVGVO(svgType);
+	}
+
+	/**
+	 * 创建具有标记的流程元素SVG
+	 * 
+	 * @param kernelFlowNodeImpl
+	 * @param svgType
+	 * @param svgTemplateFileName
+	 * @return
+	 */
+	private VONode getSignedNodeSVGFromFactory(
+			KernelFlowElement kernelFlowNodeImpl, String svgType,
+			String svgTemplateFileName, boolean taskState) {
+		// 创建具体工厂
+		AbstractFlowNodeVOFactory conreateFactory = AbstractFlowNodeVOFactory
+				.createSVGFactory(kernelFlowNodeImpl, svgTemplateFileName);
+		// 创建标记工厂，标记工厂
+		flowNodeVOFactory = AbstractFlowNodeVOFactory.createSignedSVGFactory(
+				kernelFlowNodeImpl, svgTemplateFileName, taskState,
+				conreateFactory);
+		// 标记构造独自实现，非侵入,独自扩展，对应SgnProcessStateSVGFactory工厂，
 		return flowNodeVOFactory.createFlowElementSVGVO(svgType);
 	}
 
@@ -160,4 +222,5 @@ public class ConcreteProcessDefinitionVOFactory extends
 		}
 		return new String[] { taskType, svgTemplateFileName };
 	}
+
 }

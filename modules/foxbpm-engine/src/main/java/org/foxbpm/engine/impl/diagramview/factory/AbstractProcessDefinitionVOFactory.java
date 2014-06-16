@@ -17,7 +17,10 @@
  */
 package org.foxbpm.engine.impl.diagramview.factory;
 
+import java.util.List;
+
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
+import org.foxbpm.engine.task.Task;
 
 /**
  * 创建流程图形对象的抽象工厂
@@ -26,16 +29,33 @@ import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
  * @date 2014-06-10
  * 
  */
-public abstract class AbstractProcessDefinitionVOFactory implements FoxbpmProcessDefinitionVOFactory {
+public abstract class AbstractProcessDefinitionVOFactory implements
+		FoxbpmProcessDefinitionVOFactory {
 	/**
-	 * 
-	 * 根据流程定义创建SVG文档字符串
+	 * 创建流程图，不包括标记信息
 	 * 
 	 * @param deployedProcessDefinition
-	 *            流程定义实体对象
 	 * @return
 	 */
+
 	public abstract String createProcessDefinitionVOString(
+			ProcessDefinitionEntity deployedProcessDefinition);
+
+	/**
+	 * 创建流程图，包括标记信息
+	 * 
+	 * @param processDefinitionKey
+	 *            流程定义KEY
+	 * @param notEndTask
+	 *            没有完成的任务信息
+	 * @param endTask
+	 *            已经完成的任务信息
+	 * @param deployedProcessDefinition
+	 *            流程定义信息
+	 * @return 包含标记的，流程图字符串
+	 */
+	public abstract String createProcessInstanceSVGImageString(
+			List<Task> notEndTask,
 			ProcessDefinitionEntity deployedProcessDefinition);
 
 }

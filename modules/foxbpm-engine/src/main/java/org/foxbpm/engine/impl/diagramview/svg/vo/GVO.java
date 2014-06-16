@@ -53,7 +53,7 @@ public class GVO extends NamespaceAttributesVO {
 	private List<GVO> gVoList;
 	@XmlElement(name = "path")
 	private List<PathVO> pathVoList;
-	@XmlElement(name = "text", defaultValue = "value")
+	@XmlElement(name = "text")
 	private TextVO textVo;
 	@XmlElement(name = "polygon")
 	private List<PolygonVO> polygonList;

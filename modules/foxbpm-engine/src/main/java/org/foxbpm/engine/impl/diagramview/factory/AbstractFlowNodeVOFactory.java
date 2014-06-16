@@ -85,22 +85,23 @@ public abstract class AbstractFlowNodeVOFactory {
 			this.filterChildVO(voNode,
 					Arrays.asList(svgType.split(SPLIT_SEPERATOR)));
 			KernelFlowNodeImpl kernelFlowNodeImpl = (KernelFlowNodeImpl) kernelFlowElement;
-			if (StringUtils.isBlank(kernelFlowNodeImpl.getName())) {
-				kernelFlowNodeImpl.setName("目录目录目录目录目录");
+			if (StringUtils.isNotBlank(kernelFlowNodeImpl.getName())) {
+				svgBuilder.setText(kernelFlowNodeImpl.getName());
+				svgBuilder.setTextStroke((String) kernelFlowNodeImpl
+						.getProperty(StyleOption.TextColor));
+				svgBuilder.setTextStrokeWidth("0");
+				svgBuilder.setTextFont((String) kernelFlowNodeImpl
+						.getProperty(StyleOption.Font));
 			}
-			svgBuilder.setText(kernelFlowNodeImpl.getName());
+
 			// 如果是事件节点，必须先设置width属性，即设置圆的直径,
 			svgBuilder.setWidth(String.valueOf(kernelFlowNodeImpl.getWidth()));
 			svgBuilder
 					.setHeight(String.valueOf(kernelFlowNodeImpl.getHeight()));
+			// 线性渐变设置会用到矩形的Height属性
 			svgBuilder.setFill((String) kernelFlowNodeImpl
 					.getProperty(StyleOption.Background));
 
-			svgBuilder.setTextStroke((String) kernelFlowNodeImpl
-					.getProperty(StyleOption.TextColor));
-			svgBuilder.setTextStrokeWidth("0");
-			svgBuilder.setTextFont((String) kernelFlowNodeImpl
-					.getProperty(StyleOption.Font));
 			svgBuilder.setStroke((String) kernelFlowNodeImpl
 					.getProperty(StyleOption.Foreground));
 
@@ -128,14 +129,14 @@ public abstract class AbstractFlowNodeVOFactory {
 					.convertWaypointsTOPointList(waypoints);
 			// 构造
 			svgBuilder.setWayPoints(pointList);
-			if (StringUtils.isBlank(kernelSequenceFlowImpl.getName())) {
-				kernelSequenceFlowImpl.setName("Default");
+			if (StringUtils.isNotBlank(kernelSequenceFlowImpl.getName())) {
+				svgBuilder.setText(kernelSequenceFlowImpl.getName());
+				// 设置文本的相对位置
+				Point textPoint = PointUtils.caclCenterPoint(pointList);
+				svgBuilder.setTextX(textPoint.getX());
+				svgBuilder.setTextY(textPoint.getY());
 			}
-			svgBuilder.setText(kernelSequenceFlowImpl.getName());
-			// 设置文本的相对位置
-			Point textPoint = PointUtils.caclCenterPoint(pointList);
-			svgBuilder.setTextX(textPoint.getX());
-			svgBuilder.setTextY(textPoint.getY());
+
 			svgBuilder.setStroke((String) kernelSequenceFlowImpl
 					.getProperty(StyleOption.Foreground));
 		}
@@ -159,6 +160,22 @@ public abstract class AbstractFlowNodeVOFactory {
 		// 当前实现是SVG格式，后期可能支持微软的XML
 		return AbstractFlowNodeSVGFactory.createSVGFactory(kernelFlowElement,
 				svgTemplateFileName);
+	}
+
+	/**
+	 * 创建具体的工厂类
+	 * 
+	 * @param kernelFlowElement
+	 * @param svgTemplateFileName
+	 * @return
+	 */
+	public static AbstractFlowNodeVOFactory createSignedSVGFactory(
+			KernelFlowElement kernelFlowElement, String svgTemplateFileName,
+			boolean taskState,
+			AbstractFlowNodeVOFactory abstractFlowNodeVOFactory) {
+		// 当前实现是SVG格式，后期可能支持微软的XML
+		return AbstractFlowNodeSVGFactory.createSVGFactory(kernelFlowElement,
+				svgTemplateFileName, taskState, abstractFlowNodeVOFactory);
 	}
 
 	/**
@@ -202,12 +219,12 @@ public abstract class AbstractFlowNodeVOFactory {
 	 * @param svgType
 	 * @return
 	 */
-	protected abstract VONode createSVGVO(String svgType);
+	public abstract VONode createSVGVO(String svgType);
 
 	/**
 	 * 构造空白类型
 	 * 
 	 * @return
 	 */
-	protected abstract VONode createSVGVO();
+	public abstract VONode createSVGVO();
 }

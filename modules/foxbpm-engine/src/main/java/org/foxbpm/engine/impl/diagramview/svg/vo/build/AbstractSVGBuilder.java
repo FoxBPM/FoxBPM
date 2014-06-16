@@ -43,6 +43,7 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 	public static final String COLOR_FLAG = "#";
 	public static final String STROKE_DEFAULT = "black";
 	public static final String STROKEWIDTH_DEFAULT = "1";
+	public static final int LINEARGRADIENT_INDEX = 0;
 	/**
 	 * SVG 对象
 	 */
