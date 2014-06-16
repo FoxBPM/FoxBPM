@@ -28,6 +28,7 @@ import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.repository.DeploymentBuilder;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.repository.ProcessDefinitionQuery;
+import org.foxbpm.web.common.constant.FoxbpmExceptionCode;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.common.util.Pagination;
 import org.foxbpm.web.service.interfaces.IFlowManageService;
@@ -73,11 +74,12 @@ public class FlowManageServiceImpl extends AbstWorkFlowService implements IFlowM
 	public void deleteDeploy(Map<String, Object> params) {
 		String deploymentId = StringUtil.getString(params.get("deploymentId"));
 		try {
-			if (StringUtil.isNotEmpty(deploymentId)) {
-				String[] deploymentIds = deploymentId.split(",");
-				for (int i = 0; i < deploymentIds.length; i++) {
-					modelService.deleteDeployment(deploymentIds[i]);
-				}
+			if (StringUtil.isEmpty(deploymentId)) {
+				throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_DEPLOYMENTID, "deploymentId is null !");
+			}
+			String[] deploymentIds = deploymentId.split(",");
+			for (int i = 0; i < deploymentIds.length; i++) {
+				modelService.deleteDeployment(deploymentIds[i]);
 			}
 		} catch (Exception e) {
 			throw new FoxbpmWebException(e);
@@ -92,15 +94,15 @@ public class FlowManageServiceImpl extends AbstWorkFlowService implements IFlowM
 		ProcessDefinitionQuery pdq = modelService.createProcessDefinitionQuery();
 		String processName = StringUtil.getString(params.get("queryProcessName"));
 		if (StringUtil.isNotEmpty(processName)) {
-			pdq.processDefinitionNameLike("%" + processName + "%");
+			pdq.processDefinitionNameLike(assembleLikeParam(processName));
 		}
 		String processId = StringUtil.getString(params.get("queryProcessId"));
 		if (StringUtil.isNotEmpty(processId)) {
-			pdq.processDefinitionKeyLike("%" + processId + "%");
+			pdq.processDefinitionKeyLike(assembleLikeParam(processId));
 		}
 		String processCategory = StringUtil.getString(params.get("queryType"));
 		if (StringUtil.isNotEmpty(processCategory)) {
-			pdq.processDefinitionCategoryLike("%" + processCategory + "%");
+			pdq.processDefinitionCategoryLike(assembleLikeParam(processCategory));
 		}
 		pdq.orderByDeploymentId().desc();
 		List<ProcessDefinition> pdList = null;

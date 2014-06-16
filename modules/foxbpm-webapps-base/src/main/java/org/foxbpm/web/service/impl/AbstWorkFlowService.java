@@ -38,4 +38,15 @@ public abstract class AbstWorkFlowService {
 	// 运行时服务
 	@Autowired
 	protected RuntimeService runtimeService;
+
+	/**
+	 * 拼装参数like %xx%
+	 * 
+	 * @param param
+	 *            参数
+	 * @return 返回拼装的参数
+	 */
+	protected String assembleLikeParam(String param) {
+		return "%" + param + "%";
+	}
 }
