@@ -24,7 +24,9 @@ import java.util.Map;
 
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.runtime.ProcessInstance;
+import org.foxbpm.web.common.constant.FoxbpmExceptionCode;
 import org.foxbpm.web.common.constant.FoxbpmViewNameDefinition;
+import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.db.interfaces.IDemoDao;
 import org.foxbpm.web.model.TDemo;
 import org.foxbpm.web.service.interfaces.IDemoService;
@@ -50,7 +52,6 @@ public class DemoServiceImpl implements IDemoService {
 
 	@Override
 	public Map<String, Object> startTask(Map<String, Object> params) {
-
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("viewName", FoxbpmViewNameDefinition.START_TASK_VIEWNAME);
 		// 调用工作流程服务开启一个任务,并存放获取信息
@@ -74,6 +75,9 @@ public class DemoServiceImpl implements IDemoService {
 		String infor = StringUtil.getString(params.get("infor"));
 		String taskStauts = StringUtil.getString(params.get("taskStauts"));
 		String businessKey = StringUtil.getString(params.get("businessKey"));
+		if (StringUtil.isEmpty(businessKey)) {
+			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_BUSINESSKEY, "businessKey is null !");
+		}
 		// 如果当前流程是首次启动
 		if ("0".equalsIgnoreCase(taskStauts)) {
 			// 将业务数据存放到数据库中

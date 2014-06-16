@@ -44,7 +44,16 @@ public class FoxbpmMethodInvokeLogger implements AfterReturningAdvice, MethodBef
 	@Override
 	public void before(Method method, Object[] params, Object implObj) throws Throwable {
 		Logger logger = LoggerFactory.getLogger(implObj.getClass());
-		logger.debug(method.getName() + "将被执行,执行参数是" + params);
+		logger.debug("方法名:{}",method.getName());
+//		StringBuilder paramsBuilder = new StringBuilder();
+//		for(Object param : params){
+//			paramsBuilder.append(param);
+//			paramsBuilder.append("(");
+//			paramsBuilder.append(param.getClass());
+//			paramsBuilder.append(")");
+//			paramsBuilder.append(", ");
+//		}
+//		logger.debug("参数：{}" , paramsBuilder.toString().substring(0, paramsBuilder.toString().length()-1));
 	}
 
 	public void afterThrowing(Method method, Object[] args, Object implObj, FoxbpmWebException ex) {

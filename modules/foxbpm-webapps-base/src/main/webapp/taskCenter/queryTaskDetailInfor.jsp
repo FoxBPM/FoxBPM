@@ -18,9 +18,12 @@
 	function bodyOnload() {
 		var flag = "${param.noGraphic}";
 		if (flag != "1") {
+			//初始化流程信息
 			initFlowInfo();
-			getGraphiNew();
-			markSvg();
+			//添加图信息
+			addGraphicInfo();
+			//标记流程图
+			markImags();
 		}
 	}
 
@@ -30,10 +33,9 @@
 		var taskIng = '${result.taskNotEndJson}';
 		taskListEnd = $.parseJSON(taskEnded);
 		taskListIng = $.parseJSON(taskIng);
-
 	}
 	//给流程图加坐标
-	function getGraphiNew(key, instid) {
+	function addGraphicInfo(key, instid) {
 		var divcontent = "";
 		var nodeInfoArr = $.parseJSON('${result.positionInfo}');
 		for ( var nodeInfo in nodeInfoArr) {
@@ -42,7 +44,6 @@
 					+ getDiv(nodeInfo, nodeInfoObj.x - 4, nodeInfoObj.y - 4,
 							nodeInfoObj.width + 4, nodeInfoObj.height + 4);
 		}
-
 		$("#flowImg").append(divcontent);
 	}
 
@@ -52,12 +53,13 @@
 	}
 
 	//标记节点
-	function markSvg() {
+	function markImags() {
 		$.each(taskListEnd, function(i, task) {
 			markImg(task.nodeId, "green", 2, 0);
 		});
+
 		$.each(taskListIng, function(i, task) {
-			if (task.taskType == "FIXCALLACTIVITYTASK") {
+			if (task.taskType == "callactivitytask") {
 				//如果是正在运行的，则将z-idnex设为最大，因为子流程如果折叠起来，会有重叠的DIV
 				markImg(task.nodeId, "#ff6000", 4, 999);
 			} else {
@@ -65,7 +67,6 @@
 			}
 		});
 	}
-
 	//标记单个节点
 	function markImg(svgNodeId, color, width, zIndex) {
 		var svgElement = $("#" + svgNodeId);
@@ -75,47 +76,18 @@
 			svgElement.css('z-index', zIndex);
 		}
 	}
-
 	function viewPostion() {
-
 		if (noPostion == 0) {
 			$(".nodeclass").css('display', 'none');
 			noPostion = 1;
 		} else {
-			markSvg();
+			markImags();
 			noPostion = 0;
 		}
 	}
-
-	//加载svg图片
-	function loadFlowSvgGraph(processDefinitionId) {
-		$.ajax({
-			type : "POST",
-			url : "getFlowGraph.action",
-			data : "flag=svg&processDefinitionId=" + processDefinitionId,
-			success : function(src) {
-				$("#flowImg").append(src);
-			}
-		});
-	}
-	//图片加载
-	$(function() {
-		var noGraphic = (1 != '${param.noGraphic}');
-		if (true == noGraphic) {
-			//判断浏览器类型为IE 过滤360
-			if (window.ActiveXObject && $.browser.msie) {
-				$("#flowImg")
-						.append(
-								"<img src='getFlowGraph.action?processDefinitionId=${result.processDefinitionId}' />");
-			} else {
-				loadFlowSvgGraph('${result.processDefinitionId}');
-			}
-		}
-	});
 </script>
 </head>
-
-<body onload="bodyOnload()">
+<body>
 	<div style="padding: 10px; height: 95%; background: #fff;">
 		<div class="process">
 			<h1 id="processDefinitionName">${result.processName}</h1>
@@ -184,4 +156,32 @@
 		</div>
 	</div>
 </body>
+<script type="text/javascript">
+	//页面初始化后需要展现流程图
+	$(function() {
+		var noGraphic = (1 != '${param.noGraphic}');
+		if (true == noGraphic) {
+			//判断浏览器类型为IE
+			if (window.ActiveXObject && $.browser.msie) {
+				$("#flowImg")
+						.append(
+								"<img src='getFlowGraph.action?processDefinitionId=${result.processDefinitionId}' />");
+				bodyOnload();
+			} 
+			else 
+			{
+				//加载svg图片
+				$.ajax({
+					type : "POST",
+					url : "getFlowGraph.action",
+					data : "flag=svg&processDefinitionId="
+							+ '${result.processDefinitionId}',
+					success : function(src) {
+						$("#flowImg").append(src);
+					}
+				});
+			}
+		}
+	});
+</script>
 </html>

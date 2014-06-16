@@ -32,6 +32,7 @@ import org.foxbpm.engine.runtime.ProcessInstanceQuery;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.engine.task.TaskQuery;
+import org.foxbpm.web.common.constant.FoxbpmExceptionCode;
 import org.foxbpm.web.common.constant.FoxbpmWebContextAttributeNameDefinition;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.common.util.DateUtil;
@@ -51,14 +52,14 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 
 	@Override
 	public List<Map<String, Object>> queryStartProcess(Map<String, Object> params) throws FoxbpmWebException {
-		// 返回结果
-		List<Map<String, Object>> resultData = new ArrayList<Map<String, Object>>();
 		// 创建流程定义查询
 		String userId = StringUtil.getString(params.get("userId"));
-		if (StringUtil.isNotEmpty(userId)) {
-			resultData = modelService.getStartProcessByUserId(userId);
+		// 参数校验
+		if (StringUtil.isEmpty(userId)) {
+			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_USERID, "userId is null !");
 		}
-		return resultData;
+
+		return modelService.getStartProcessByUserId(userId);
 	}
 
 	@Override
@@ -86,10 +87,10 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			piq.processInstanceId(processInstanceId);
 		}
 		if (StringUtil.isNotEmpty(title)) {
-			piq.subjectLike("%" + title + "%");
+			piq.subjectLike(assembleLikeParam(title));
 		}
 		if (StringUtil.isNotEmpty(bizKey)) {
-			piq.processInstanceBusinessKeyLike("%" + bizKey + "%");
+			piq.processInstanceBusinessKeyLike(assembleLikeParam(bizKey));
 		}
 		if (StringUtil.isNotEmpty(status)) {
 			piq.processInstanceStatus(status);
@@ -108,7 +109,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 
 		}
 		if (StringUtil.isNotEmpty(processDefinitionName)) {
-			piq.processDefinitionNameLike("%" + processDefinitionName + "%");
+			piq.processDefinitionNameLike(assembleLikeParam(processDefinitionName));
 		}
 		Date dates = null;
 		Date datee = null;
@@ -158,35 +159,36 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		Map<String, Object> resultData = new HashMap<String, Object>();
 		String processInstanceId = StringUtil.getString(params.get("processInstanceId"));
 		ProcessInstanceQuery piq = runtimeService.createProcessInstanceQuery();
-		if (StringUtil.isNotEmpty(processInstanceId)) {
-
-			ProcessInstance processInstance = piq.processInstanceId(processInstanceId).list().get(0);
-			String processName = modelService.getProcessDefinition(processInstance.getProcessDefinitionId()).getName();
-			TaskQuery tq = taskService.createTaskQuery();
-			tq.processInstanceId(processInstanceId);
-			tq.taskIsEnd().orderByEndTime().asc();
-			List<Task> instances = tq.list();
-			List<Map<String, Object>> instanceMaps = new ArrayList<Map<String, Object>>();
-			for (Task tmp : instances) {
-				Map<String, Object> instanceMap = tmp.getPersistentState();
-				instanceMaps.add(instanceMap);
-			}
-			tq.taskNotEnd().orderByTaskCreateTime().asc();
-			List<Task> instancesNotEnd = tq.list();
-			List<Map<String, Object>> notEndInstanceMaps = new ArrayList<Map<String, Object>>();
-			for (Task tmp : instancesNotEnd) {
-				Map<String, Object> instanceMap = tmp.getPersistentState();
-				notEndInstanceMaps.add(instanceMap);
-			}
-			Map<String, Map<String, Object>> postionMap = modelService.getFlowGraphicsElementPositionById(processInstance.getProcessDefinitionId());
-			resultData.put("notEnddataList", notEndInstanceMaps);
-			resultData.put("dataList", instanceMaps);
-			resultData.put("positionInfo", JSONUtil.parseObject2JSON(postionMap));
-			resultData.put("taskEndedJson", JSONUtil.parseObject2JSON(instanceMaps));
-			resultData.put("taskNotEndJson", JSONUtil.parseObject2JSON(instancesNotEnd));
-			resultData.put("processName", processName);
-			resultData.put("processDefinitionId", processInstance.getProcessDefinitionId());
+		// 参数校验
+		if (StringUtil.isEmpty(processInstanceId)) {
+			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_PROCESSINSTID, "processInstanceId is null!");
 		}
+		ProcessInstance processInstance = piq.processInstanceId(processInstanceId).list().get(0);
+		String processName = modelService.getProcessDefinition(processInstance.getProcessDefinitionId()).getName();
+		TaskQuery tq = taskService.createTaskQuery();
+		tq.processInstanceId(processInstanceId);
+		tq.taskIsEnd().orderByEndTime().asc();
+		List<Task> instances = tq.list();
+		List<Map<String, Object>> instanceMaps = new ArrayList<Map<String, Object>>();
+		for (Task tmp : instances) {
+			Map<String, Object> instanceMap = tmp.getPersistentState();
+			instanceMaps.add(instanceMap);
+		}
+		tq.taskNotEnd().orderByTaskCreateTime().asc();
+		List<Task> instancesNotEnd = tq.list();
+		List<Map<String, Object>> notEndInstanceMaps = new ArrayList<Map<String, Object>>();
+		for (Task tmp : instancesNotEnd) {
+			Map<String, Object> instanceMap = tmp.getPersistentState();
+			notEndInstanceMaps.add(instanceMap);
+		}
+		Map<String, Map<String, Object>> postionMap = modelService.getFlowGraphicsElementPositionById(processInstance.getProcessDefinitionId());
+		resultData.put("notEnddataList", notEndInstanceMaps);
+		resultData.put("dataList", instanceMaps);
+		resultData.put("positionInfo", JSONUtil.parseObject2JSON(postionMap));
+		resultData.put("taskEndedJson", JSONUtil.parseObject2JSON(instanceMaps));
+		resultData.put("taskNotEndJson", JSONUtil.parseObject2JSON(instancesNotEnd));
+		resultData.put("processName", processName);
+		resultData.put("processDefinitionId", processInstance.getProcessDefinitionId());
 		return resultData;
 	}
 
@@ -204,7 +206,9 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		String title = (String) params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_TITLE);
 		String dss = (String) params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_ARRIVALTIMES);
 		String dse = (String) params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_ARRIVALTIMEE);
+
 		userId = "admin";
+
 		// 处理查询参数
 		if (StringUtil.isNotEmpty(userId)) {
 			taskQuery.taskAssignee(userId);
@@ -214,13 +218,13 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			taskQuery.initiator(initiator);
 		}
 		if (StringUtil.isNotEmpty(processDefinitionName)) {
-			taskQuery.processDefinitionNameLike("%" + processDefinitionName + "%");
+			taskQuery.processDefinitionNameLike(assembleLikeParam(processDefinitionName));
 		}
 		if (StringUtil.isNotEmpty(businessKey)) {
-			taskQuery.businessKeyLike("%" + businessKey + "%");
+			taskQuery.businessKeyLike(assembleLikeParam(businessKey));
 		}
 		if (StringUtil.isNotEmpty(title)) {
-			taskQuery.taskDescriptionLike("%" + title + "%");
+			taskQuery.taskDescriptionLike(assembleLikeParam(title));
 		}
 		// 时间处理
 		Date dates = null;
@@ -266,6 +270,10 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		String taskId = StringUtil.getString(params.get("taskId"));
 		String processDefinitionKey = StringUtil.getString(params.get("processDefinitionKey"));
 		List<TaskCommand> list = null;
+
+		if (StringUtil.isEmpty(processDefinitionKey)) {
+			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_PROCESSDEFKEY, "processDefinitionKey is null !");
+		}
 		if (StringUtil.isNotEmpty(taskId)) {
 			list = taskService.getTaskCommandByTaskId(taskId);
 		} else {
@@ -281,8 +289,9 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 
 	@Override
 	public ProcessInstance completeTask(Map<String, Object> params) {
+		// 预置测试数据
 		Authentication.setAuthenticatedUserId("admin");
-		ProcessInstance processInstance = null;
+
 		String taskId = StringUtil.getString(params.get("taskId"));
 		String commandType = StringUtil.getString(params.get("commandType"));
 		String commandId = StringUtil.getString(params.get("commandId"));
@@ -291,8 +300,33 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		String userId = StringUtil.getString(params.get("userId"));
 		String taskComment = StringUtil.getString(params.get("_taskComment"));
 
-		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
 		userId = "admin";
+		// 参数校验
+		// 命令类型
+		if (StringUtil.isEmpty("commandType")) {
+			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_COMMANDTYPE, "commandType is null !");
+		}
+		// 命令Id
+		if (StringUtil.isEmpty("commandId")) {
+			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_COMMANDID, "commandId is null !");
+		}
+		// 流程实例Key
+		if (StringUtil.isEmpty("processDefinitionKey")) {
+			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_PROCESSDEFKEY, "processDefinitionKey is null !");
+		}
+		// 业务key
+		if (StringUtil.isEmpty("businessKey")) {
+			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_BUSINESSKEY, "businessKey is null !");
+		}
+		// 用户Id
+		if (StringUtil.isEmpty("userId")) {
+			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_USERID, "businessKey is null !");
+		}
+		if (StringUtil.isEmpty("_taskComment")) {
+			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_TASKCOMMENT, "_taskComment is null !");
+		}
+
+		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
 		// 命令类型，可以从流程引擎配置中查询 启动并提交为startandsubmit
 		expandTaskCommand.setCommandType(commandType);
 		// 设置提交人
@@ -300,7 +334,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		// 设置命令的id,需和节点上配置的按钮编号对应，会执行按钮中的脚本。
 		expandTaskCommand.setTaskCommandId(commandId);
 		expandTaskCommand.setTaskComment(taskComment);
-
+		ProcessInstance processInstance = null;
 		if (StringUtil.isNotEmpty(taskId)) {
 			expandTaskCommand.setTaskId(taskId);
 		} else {
@@ -308,7 +342,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).taskNotEnd().singleResult();
 			expandTaskCommand.setTaskId(task.getId());
 		}
-
+		processInstance = taskService.expandTaskComplete(expandTaskCommand, null);
 		return processInstance;
 	}
 
@@ -316,19 +350,21 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 	public String getFlowSvgGraph(Map<String, Object> params) {
 
 		String processDefinitionId = StringUtil.getString(params.get("processDefinitionId"));
-		if (StringUtil.isNotEmpty(processDefinitionId)) {
-			return modelService.getProcessDefinitionSVG(processDefinitionId);
+		// 流程实例Key
+		if (StringUtil.isEmpty("processDefinitionId")) {
+			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_PROCESSDEFID, "processDefinitionId is null !");
 		}
-		return null;
+		return modelService.getProcessDefinitionSVG(processDefinitionId);
 	}
 
 	@Override
 	public InputStream getFlowImagGraph(Map<String, Object> params) {
 
 		String processDefinitionId = StringUtil.getString(params.get("processDefinitionId"));
-		if (StringUtil.isNotEmpty(processDefinitionId)) {
-			return modelService.GetFlowGraphicsImgStreamByDefId(processDefinitionId);
+		// 流程实例Key
+		if (StringUtil.isEmpty("processDefinitionId")) {
+			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_PROCESSDEFID, "processDefinitionId is null !");
 		}
-		return null;
+		return modelService.GetFlowGraphicsImgStreamByDefId(processDefinitionId);
 	}
 }

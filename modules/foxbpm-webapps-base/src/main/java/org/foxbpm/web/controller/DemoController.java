@@ -27,7 +27,6 @@ import org.foxbpm.web.common.constant.FoxbpmActionNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmServiceNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmViewNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmWebContextAttributeNameDefinition;
-import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.service.interfaces.IDemoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,9 +72,6 @@ public class DemoController extends AbstWebController {
 	@RequestMapping(FoxbpmActionNameDefinition.COMPLETE_TASK_ACTION)
 	public ModelAndView completeTask(HttpServletRequest request) {
 		Map<String, Object> requestParams = getRequestParams(request);
-		if (StringUtil.isEmpty(StringUtil.getString(requestParams.get("businessKey")))) {
-			throw new FoxbpmWebException("", "businessKey不能为空!");
-		}
 		workDemoService.completeTask(requestParams);
 		return createModelAndView(FoxbpmViewNameDefinition.COMPLETETASK_VIEWNAME);
 	}
