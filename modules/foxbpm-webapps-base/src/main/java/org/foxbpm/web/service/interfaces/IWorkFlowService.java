@@ -17,6 +17,7 @@
  */
 package org.foxbpm.web.service.interfaces;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -100,6 +101,15 @@ public interface IWorkFlowService {
 	 *            请求参数
 	 * @return 返回结果信息
 	 */
-	String getFlowGraph(Map<String, Object> params);
+	String getFlowSvgGraph(Map<String, Object> params);
+
+	/**
+	 * 获取流程图
+	 * 
+	 * @param params
+	 *            请求参数
+	 * @return 返回结果信息
+	 */
+	InputStream getFlowImagGraph(Map<String, Object> params);
 
 }

@@ -64,23 +64,25 @@
 	if (pagination.getPageSize() == 15) {
 		sb.append(" class='select' ");
 	}
-	sb.append("href='#' onclick='toSize(15)'>15</a> ");
+	sb.append("href='javascript:void(0)' onclick='toSize(15)'>15</a> ");
 	sb.append("<a ");
 	if (pagination.getPageSize() == 30) {
 		sb.append(" class='select' ");
 	}
-	sb.append("href='#' onclick='toSize(30)'>30</a> ");
+	sb.append("href='javascript:void(0)' onclick='toSize(30)'>30</a> ");
 	sb.append("<a ");
 	if (pagination.getPageSize() == 50) {
 		sb.append(" class='select' ");
 	}
-	sb.append("href='#' onclick='toSize(50)'>50</a> ");
+	sb.append("href='javascript:void(0)' onclick='toSize(50)'>50</a> ");
 	sb.append(" 条</li>");
 	sb.append("</ul></div>");
 	out.print(sb.toString());
 %>
-<input type="hidden" id="pageIndex" name="pageIndex" value="${pageInfo.pageIndex}" />
-<input type="hidden" id="pageSize" name="pageSize"   value="${pageInfo.pageSize}" />
+<input type="hidden" id="pageIndex" name="pageIndex"
+	value="${pageInfo.pageIndex}" />
+<input type="hidden" id="pageSize" name="pageSize"
+	value="${pageInfo.pageSize}" />
 <script>
 	function submit(index, size) {
 		$("#pageIndex").val(index);

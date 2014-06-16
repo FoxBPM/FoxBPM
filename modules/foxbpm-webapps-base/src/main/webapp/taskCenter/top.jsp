@@ -3,7 +3,7 @@
 <div class="header">
 	<div class="top-right">
 		<ul>
-			<li><a id="updateCache" href="#">${applicationScope.appInfo["common.clearCache"]}</a></li>
+			<li><a id="updateCache" href="javascript:void(0)">${applicationScope.appInfo["common.clearCache"]}</a></li>
 			<li><a id="setAgent" href="#">${applicationScope.appInfo["common.agent"]}</a></li>
 			<li><a href="#" onclick="updateMyself();">${sessionScope.LOGIN_USER_NAME}</a></li>
 			<li><a href="LoginServlet?doLogOut=true">${applicationScope.appInfo["common.logOut"]}</a></li>
@@ -46,7 +46,7 @@
 		}
 		$("#"+color).css("border","1px solid #fff");
 		$("#updateCache").click(function(){ 
-			$.get("FlowManager?action=updateCache",function(msg){
+			$.get("updateCache.action",function(msg){
 				alert(msg);
 			})
 		});

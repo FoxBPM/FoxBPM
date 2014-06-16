@@ -25,6 +25,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.foxbpm.engine.impl.cache.CacheUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.web.common.constant.FoxbpmActionNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmServiceNameDefinition;
@@ -87,6 +88,7 @@ public class FlowManageController extends AbstWebController {
 			// 获取分页条件参数
 			resultMap.put("dataList", resultData);
 			// 封装参数
+
 			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
 			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
 		} catch (FoxbpmWebException foxbpmException) {
@@ -122,6 +124,17 @@ public class FlowManageController extends AbstWebController {
 			// 请求参数
 			Map<String, Object> requestParams = getRequestParams(request);
 			flowManageService.deleteDeploy(requestParams);
+			return null;
+		} catch (Exception e) {
+			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
+		}
+	}
+
+	@RequestMapping(FoxbpmActionNameDefinition.UPDATECACHE_ACTION)
+	public ModelAndView updateCache(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			CacheUtil.clearCache();
+			response.getWriter().write("update success!");
 			return null;
 		} catch (Exception e) {
 			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
