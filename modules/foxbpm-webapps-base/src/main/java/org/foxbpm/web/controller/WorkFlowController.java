@@ -17,13 +17,13 @@
  */
 package org.foxbpm.web.controller;
 
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -193,14 +193,21 @@ public class WorkFlowController extends AbstWebController {
 
 		try {
 			Map<String, Object> requestParams = getRequestParams(request);
-			ServletOutputStream out = response.getOutputStream();
-			String flowGraphInfor = this.workFlowService.getFlowGraph(requestParams);
-			response.setContentType("application/octet-stream;charset=UTF-8");
-			byte[] buff = flowGraphInfor.getBytes();
-			out.write(buff, 0, buff.length);
-			out.flush();
+			String flag = StringUtil.getString(requestParams.get("flag"));
+			InputStream in = null;
+			if ("svg".equals(flag)) {
+				String svgContent = workFlowService.getFlowSvgGraph(requestParams);
+				if (StringUtil.isNotEmpty(svgContent)) {
+					in = new ByteArrayInputStream(svgContent.getBytes());
+				}
+			} else {
+				in = workFlowService.getFlowImagGraph(requestParams);
+			}
+			if (null != in) {
+				doResponse(response, in);
+			}
 			return null;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
 		}
 	}

@@ -17,6 +17,7 @@
  */
 package org.foxbpm.web.service.impl;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -90,10 +91,10 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 				piq.processInstanceId(processInstanceId);
 			}
 			if (StringUtil.isNotEmpty(title)) {
-				piq.subjectLike(title);
+				piq.subjectLike("%" + title + "%");
 			}
 			if (StringUtil.isNotEmpty(bizKey)) {
-				piq.processInstanceBusinessKeyLike(bizKey);
+				piq.processInstanceBusinessKeyLike("%" + bizKey + "%");
 			}
 			if (StringUtil.isNotEmpty(status)) {
 				piq.processInstanceStatus(status);
@@ -112,7 +113,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 
 			}
 			if (StringUtil.isNotEmpty(processDefinitionName)) {
-				piq.processDefinitionNameLike(processDefinitionName);
+				piq.processDefinitionNameLike("%" + processDefinitionName + "%");
 			}
 			Date dates = null;
 			Date datee = null;
@@ -166,7 +167,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			String processInstanceId = StringUtil.getString(params.get("processInstanceId"));
 			ProcessInstanceQuery piq = runtimeService.createProcessInstanceQuery();
 			if (StringUtil.isNotEmpty(processInstanceId)) {
-				
+
 				ProcessInstance processInstance = piq.processInstanceId(processInstanceId).list().get(0);
 				String processName = modelService.getProcessDefinition(processInstance.getProcessDefinitionId()).getName();
 				TaskQuery tq = taskService.createTaskQuery();
@@ -225,13 +226,13 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 				taskQuery.initiator(initiator);
 			}
 			if (StringUtil.isNotEmpty(processDefinitionName)) {
-				taskQuery.processDefinitionNameLike(processDefinitionName);
+				taskQuery.processDefinitionNameLike("%" + processDefinitionName + "%");
 			}
 			if (StringUtil.isNotEmpty(businessKey)) {
-				taskQuery.businessKeyLike(businessKey);
+				taskQuery.businessKeyLike("%" + businessKey + "%");
 			}
 			if (StringUtil.isNotEmpty(title)) {
-				taskQuery.taskDescriptionLike(title);
+				taskQuery.taskDescriptionLike("%" + title + "%");
 			}
 			// 时间处理
 			Date dates = null;
@@ -333,14 +334,30 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 	}
 
 	@Override
-	public String getFlowGraph(Map<String, Object> params) {
+	public String getFlowSvgGraph(Map<String, Object> params) {
 
 		try {
 			String processDefinitionId = StringUtil.getString(params.get("processDefinitionId"));
-			return modelService.getProcessDefinitionSVG(processDefinitionId);
+			if (StringUtil.isNotEmpty(processDefinitionId)) {
+				return modelService.getProcessDefinitionSVG(processDefinitionId);
+			}
 		} catch (Exception e) {
 			throw new FoxbpmWebException(e.getMessage(), "", e);
 		}
+		return null;
 	}
 
+	@Override
+	public InputStream getFlowImagGraph(Map<String, Object> params) {
+
+		try {
+			String processDefinitionId = StringUtil.getString(params.get("processDefinitionId"));
+			if (StringUtil.isNotEmpty(processDefinitionId)) {
+				return modelService.GetFlowGraphicsImgStreamByDefId(processDefinitionId);
+			}
+		} catch (Exception e) {
+			throw new FoxbpmWebException(e.getMessage(), "", e);
+		}
+		return null;
+	}
 }

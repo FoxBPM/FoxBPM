@@ -94,15 +94,15 @@ public class FlowManageServiceImpl extends AbstWorkFlowService implements IFlowM
 			ProcessDefinitionQuery pdq = modelService.createProcessDefinitionQuery();
 			String processName = StringUtil.getString(params.get("queryProcessName"));
 			if (StringUtil.isNotEmpty(processName)) {
-				pdq.processDefinitionNameLike(processName);
+				pdq.processDefinitionNameLike("%" + processName + "%");
 			}
 			String processId = StringUtil.getString(params.get("queryProcessId"));
 			if (StringUtil.isNotEmpty(processId)) {
-				pdq.processDefinitionKeyLike(processId);
+				pdq.processDefinitionKeyLike("%" + processId + "%");
 			}
 			String processCategory = StringUtil.getString(params.get("queryType"));
 			if (StringUtil.isNotEmpty(processCategory)) {
-				pdq.processDefinitionCategoryLike(processCategory);
+				pdq.processDefinitionCategoryLike("%" + processCategory + "%");
 			}
 			pdq.orderByDeploymentId().desc();
 			List<ProcessDefinition> pdList = null;
@@ -123,4 +123,5 @@ public class FlowManageServiceImpl extends AbstWorkFlowService implements IFlowM
 		}
 		return resultData;
 	}
+
 }

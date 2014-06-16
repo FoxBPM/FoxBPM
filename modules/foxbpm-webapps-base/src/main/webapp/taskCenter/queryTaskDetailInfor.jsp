@@ -42,6 +42,7 @@
 					+ getDiv(nodeInfo, nodeInfoObj.x - 4, nodeInfoObj.y - 4,
 							nodeInfoObj.width + 4, nodeInfoObj.height + 4);
 		}
+
 		$("#flowImg").append(divcontent);
 	}
 
@@ -85,21 +86,30 @@
 			noPostion = 0;
 		}
 	}
-	function loadFlowGraph(processDefinitionId) {
+
+	//加载svg图片
+	function loadFlowSvgGraph(processDefinitionId) {
 		$.ajax({
 			type : "POST",
 			url : "getFlowGraph.action",
-			data : "processDefinitionId=" + processDefinitionId,
+			data : "flag=svg&processDefinitionId=" + processDefinitionId,
 			success : function(src) {
 				$("#flowImg").append(src);
 			}
 		});
 	}
+	//图片加载
 	$(function() {
 		var noGraphic = (1 != '${param.noGraphic}');
 		if (true == noGraphic) {
-			//process_ma_1:1:caffbffe-b7fe-466d-955f-8e7db3252389
-			loadFlowGraph('${result.processDefinitionId}');
+			//判断浏览器类型为IE 过滤360
+			if (window.ActiveXObject && $.browser.msie) {
+				$("#flowImg")
+						.append(
+								"<img src='getFlowGraph.action?processDefinitionId=${result.processDefinitionId}' />");
+			} else {
+				loadFlowSvgGraph('${result.processDefinitionId}');
+			}
 		}
 	});
 </script>

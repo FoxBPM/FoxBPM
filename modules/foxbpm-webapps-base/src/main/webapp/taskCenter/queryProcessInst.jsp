@@ -9,40 +9,45 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <jsp:include page="../common/head.jsp" flush="true" />
 <script type="text/javascript">
-$(function(){
-$("a[name=flowGraph]").click(function(){
-    var pdk = $(this).attr("pdk");
-    var pii = $(this).attr("pii");
-    window.open("queryTaskDetailInfor.action?processDefinitionKey="+pdk+"&processInstanceId="+pii);
-  });
-var status = '${result.status}';
-if(status!='')
-	$("#status").val(status);
-	
-$("#selectUser").click(function(){
-	var obj = {
-	  type:"user"
-	};
-	var d = FixSelect(obj);
-	var userId = d[0].USERID;
-	var userName = d[0].USERNAME;
-	$("#initor").val(userId);
-	$("#initorName").val(userName);
-});
+	$(function() {
+		$("a[name=flowGraph]")
+				.click(
+						function() {
+							var pdk = $(this).attr("pdk");
+							var pii = $(this).attr("pii");
+							window
+									.open("queryTaskDetailInfor.action?processDefinitionKey="
+											+ pdk + "&processInstanceId=" + pii);
+						});
+		var status = '${result.status}';
+		if (status != '')
+			$("#status").val(status);
 
-$("#processType_"+$("#processType").val()).css("background-color","#ffffff");
-});
-function clearInfo(){
-	$("#title").val("");
-	$("#processDefinitionKey").val("");
-	$("#processDefinitionName").val("");
-	$("#bizKey").val("");
-	$("#initor").val("");
-	$("#initorName").val("");
-	$("#startTimeS").val("");
-	$("#startTimeE").val("");
-	$("#status").val("");
-}
+		$("#selectUser").click(function() {
+			var obj = {
+				type : "user"
+			};
+			var d = FixSelect(obj);
+			var userId = d[0].USERID;
+			var userName = d[0].USERNAME;
+			$("#initor").val(userId);
+			$("#initorName").val(userName);
+		});
+
+		$("#processType_" + $("#processType").val()).css("background-color",
+				"#ffffff");
+	});
+	function clearInfo() {
+		$("#title").val("");
+		$("#processDefinitionKey").val("");
+		$("#processDefinitionName").val("");
+		$("#bizKey").val("");
+		$("#initor").val("");
+		$("#initorName").val("");
+		$("#startTimeS").val("");
+		$("#startTimeE").val("");
+		$("#status").val("");
+	}
 </script>
 </head>
 <body>
@@ -55,21 +60,21 @@ function clearInfo(){
 					<div class="left-nav-box">
 						<div class="left-nav" id="processType_">
 							<a id="getAllProcess" name="getAllProcess" target="_self"
-								href="#"
+								href="javascript:void(0)"
 								onclick="$('#processType').val('');$('#subForm').submit();"
 								style="display: block;">全部流程</a>
 						</div>
 						<div class="left-nav-orange-line">&nbsp;</div>
 						<div class="left-nav" id="processType_initor">
 							<a id="getInitorTask" name="getInitorTask" target="_self"
-								href="#"
+								href="javascript:void(0)"
 								onclick="$('#processType').val('initor');$('#subForm').submit();"
 								style="display: block;">我发起的流程</a>
 						</div>
 						<div class="left-nav-orange-line">&nbsp;</div>
 						<div class="left-nav" id="processType_participants">
 							<a id="getInitorTask" name="getParticipantsTask" target="_self"
-								href="#"
+								href="javascript:void(0)"
 								onclick="$('#processType').val('participants');$('#subForm').submit();"
 								style="display: block;">我参与的流程</a>
 						</div>
@@ -80,7 +85,8 @@ function clearInfo(){
 				<div class="right">
 					<!-- 查 -->
 					<div id="search" class="search">
-						<input type="hidden" id="processType" name="processType" value="${result.processType}" />
+						<input type="hidden" id="processType" name="processType"
+							value="${result.processType}" />
 						<table>
 							<tr>
 								<td class="title-r">${applicationScope.appInfo["task.subject"]}：</td>
@@ -98,7 +104,8 @@ function clearInfo(){
 										<tr>
 											<td>
 												<div class="btn-normal">
-													<a href="javascript:void(0)" target="_self" onclick="$('#subForm').submit();">${applicationScope.appInfo["common.search"]}</a>
+													<a href="javascript:void(0)" target="_self"
+														onclick="$('#subForm').submit();">${applicationScope.appInfo["common.search"]}</a>
 												</div>
 											</td>
 											<td>
@@ -111,7 +118,7 @@ function clearInfo(){
 								</td>
 							</tr>
 							<tr>
-							    <td class="title-r">${applicationScope.appInfo["task.initor"]}：</td>
+								<td class="title-r">${applicationScope.appInfo["task.initor"]}：</td>
 								<td>
 									<table style="margin: 0">
 										<tr>
@@ -192,8 +199,7 @@ function clearInfo(){
 												test="${dataList.instanceStatus == 'termination'}"
 												var="runStatue">终止</c:if></td>
 										<td><a name="flowGraph" href="javascript:void(0)"
-											pii="${dataList.id}"
-											pdk="${dataList.processDefinitionKey}">查看</a></td>
+											pii="${dataList.id}" pdk="${dataList.processDefinitionKey}">查看</a></td>
 									</tr>
 								</c:forEach>
 							</tbody>
