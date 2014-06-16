@@ -88,14 +88,14 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 	 * 
 	 * @param width
 	 */
-	public abstract void setWidth(String width);
+	public abstract void setWidth(float width);
 
 	/**
 	 * 设置SVG的高度
 	 * 
 	 * @param width
 	 */
-	public abstract void setHeight(String height);
+	public abstract void setHeight(float height);
 
 	/**
 	 * 设置元素的坐标
@@ -117,7 +117,7 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 	 * 
 	 * @param strokeWidth
 	 */
-	public abstract void setStrokeWidth(String strokeWidth);
+	public abstract void setStrokeWidth(float strokeWidth);
 
 	/**
 	 * 设置元素的填充色，即背景色
@@ -148,12 +148,8 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 		this.textVO.setStyle(style);
 	}
 
-	public void setTextStrokeWidth(String textStrokeWidth) {
-		if (StringUtils.isBlank(textStrokeWidth)) {
-			this.textVO.setStrokeWidth("0");
-		} else {
-			this.textVO.setStrokeWidth(textStrokeWidth);
-		}
+	public void setTextStrokeWidth(float textStrokeWidth) { 
+			this.textVO.setStrokeWidth(textStrokeWidth); 
 	}
 
 	/**
@@ -162,7 +158,7 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 	 * @param textX
 	 */
 	public void setTextX(float textX) {
-		this.textVO.setX(String.valueOf(textX));
+		this.textVO.setX(textX);
 	}
 
 	/**
@@ -171,7 +167,7 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 	 * @param textY
 	 */
 	public void setTextY(float textY) {
-		this.textVO.setY(String.valueOf(textY));
+		this.textVO.setY(textY);
 	}
 
 	/**
@@ -229,7 +225,7 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 	 * 
 	 * @param strokeWidth
 	 */
-	public abstract void setTypeStrokeWidth(String strokeWidth);
+	public abstract void setTypeStrokeWidth(float strokeWidth);
 
 	/**
 	 * 设置子类型的填充式样

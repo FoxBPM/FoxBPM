@@ -61,12 +61,12 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setWidth(String width) {
+	public void setWidth(float width) {
 		rectVO.setWidth(width);
 	}
 
 	@Override
-	public void setHeight(String height) {
+	public void setHeight(float height) {
 		this.rectVO.setHeight(height);
 	}
 
@@ -80,11 +80,7 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setStrokeWidth(String strokeWidth) {
-		if (StringUtils.isBlank(strokeWidth)) {
-			this.rectVO.setStroke(STROKEWIDTH_DEFAULT);
-			return;
-		}
+	public void setStrokeWidth(float strokeWidth) {
 		this.rectVO.setStrokeWidth(strokeWidth);
 	}
 
@@ -101,8 +97,8 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 		// 设置整体坐标，包括子类型
 		this.svgVo.getgVo().setTransform("translate(" + x + ", " + y + ")");
 		// 设置相对位置
-		this.rectVO.setX("0");
-		this.rectVO.setY("0");
+		this.rectVO.setX(0.0F);
+		this.rectVO.setY(0.0F);
 		// 设置字体的相对偏移量,X相对是矩形宽度的一半减去文本本身屏宽的一半
 		if (StringUtils.isNotBlank(textVO.getElementValue())) {
 			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
@@ -111,9 +107,9 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 			if (SVGUtils.isChinese(this.textVO.getElementValue().charAt(0))) {
 				languageShift = 12;
 			}
-			super.setTextX((Integer.valueOf(this.rectVO.getWidth()) / 2)
-					- textWidth / 2 - languageShift);
-			super.setTextY(Float.valueOf(this.rectVO.getHeight()) / 2 + 5);
+			super.setTextX((this.rectVO.getWidth() / 2) - textWidth / 2
+					- languageShift);
+			super.setTextY(this.rectVO.getHeight() / 2 + 5);
 		}
 	}
 
@@ -140,7 +136,7 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setTypeStrokeWidth(String strokeWidth) {
+	public void setTypeStrokeWidth(float strokeWidth) {
 		// TODO Auto-generated method stub
 
 	}
@@ -175,9 +171,9 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 			if (linearGradient != null) {
 				String backGroudUUID = UUID.randomUUID().toString();
 				linearGradient.setId(backGroudUUID);
-				linearGradient.setX1("0");
-				linearGradient.setX2("0");
-				linearGradient.setY1("0");
+				linearGradient.setX1(0.0F);
+				linearGradient.setX2(0.0F);
+				linearGradient.setY1(0.0F);
 				linearGradient.setY2(this.rectVO.getHeight());
 				List<StopVO> stopVoList = linearGradient.getStopVoList();
 				if (stopVoList != null && stopVoList.size() > 0) {

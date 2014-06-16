@@ -89,15 +89,15 @@ public abstract class AbstractFlowNodeVOFactory {
 				svgBuilder.setText(kernelFlowNodeImpl.getName());
 				svgBuilder.setTextStroke((String) kernelFlowNodeImpl
 						.getProperty(StyleOption.TextColor));
-				svgBuilder.setTextStrokeWidth("0");
+				svgBuilder.setTextStrokeWidth(0);
 				svgBuilder.setTextFont((String) kernelFlowNodeImpl
 						.getProperty(StyleOption.Font));
 			}
 
 			// 如果是事件节点，必须先设置width属性，即设置圆的直径,
-			svgBuilder.setWidth(String.valueOf(kernelFlowNodeImpl.getWidth()));
+			svgBuilder.setWidth(kernelFlowNodeImpl.getWidth());
 			svgBuilder
-					.setHeight(String.valueOf(kernelFlowNodeImpl.getHeight()));
+					.setHeight(kernelFlowNodeImpl.getHeight());
 			// 线性渐变设置会用到矩形的Height属性
 			svgBuilder.setFill((String) kernelFlowNodeImpl
 					.getProperty(StyleOption.Background));

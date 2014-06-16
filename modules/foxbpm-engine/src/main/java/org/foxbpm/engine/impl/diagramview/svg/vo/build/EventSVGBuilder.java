@@ -81,7 +81,7 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setTypeStrokeWidth(String strokeWidth) {
+	public void setTypeStrokeWidth(float strokeWidth) {
 		if (pathVo == null) {
 			return;
 		}
@@ -97,8 +97,8 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setWidth(String width) {
-		this.circleVO.setR(String.valueOf(Float.valueOf(width) / 2));
+	public void setWidth(float width) {
+		this.circleVO.setR(width / 2);
 
 	}
 
@@ -112,7 +112,7 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setStrokeWidth(String strokeWidth) {
+	public void setStrokeWidth(float strokeWidth) {
 		this.circleVO.setStrokeWidth(strokeWidth);
 
 	}
@@ -162,8 +162,8 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 	@Override
 	public void setXAndY(float x, float y) {
 		// 流程图定义的是圆对应矩形左上角的坐标，所以对应的SVG坐标需要将坐标值加半径
-		y = Float.valueOf(y) + Float.valueOf(this.circleVO.getR());
-		x = Float.valueOf(x) + Float.valueOf(this.circleVO.getR());
+		y = y + this.circleVO.getR();
+		x = x + this.circleVO.getR();
 		// 如果是事件节点，字体横坐标和圆心的横坐标一直，纵坐标等圆心坐标值加圆的半径值
 		if (StringUtils.isNotBlank(textVO.getElementValue())) {
 			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
@@ -172,9 +172,8 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 			if (SVGUtils.isChinese(this.textVO.getElementValue().charAt(0))) {
 				languageShift = 8;
 			}
-			this.setTextX(Float.valueOf(x) - textWidth / 2 - languageShift);
-			this.setTextY(Float.valueOf(y)
-					+ Float.valueOf(this.circleVO.getR()) + 20);
+			this.setTextX(x - textWidth / 2 - languageShift);
+			this.setTextY(y + this.circleVO.getR() + 20);
 		}
 
 		// 如果存在子类型，例如ERROR
@@ -183,8 +182,8 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 			this.svgVo.getgVo().setTransform("translate(" + x + ", " + y + ")");
 			// TODO 同时需要设置文本的相对偏移量
 		} else {
-			this.circleVO.setCx(String.valueOf(x));
-			this.circleVO.setCy(String.valueOf(y));
+			this.circleVO.setCx(x);
+			this.circleVO.setCy(y);
 		}
 	}
 
@@ -199,7 +198,7 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 	/**
 	 * 圆圈已经设置半径，不需要在设置高度
 	 */
-	public void setHeight(String height) {
+	public void setHeight(float height) {
 		// TODO Auto-generated method stub
 
 	}

@@ -146,7 +146,7 @@ public abstract class AbstractFlowNodeSVGFactory extends
 	public static VONode createSVGTemplateContainerVO(
 			Map<String, Object> processDefinitionProperties) {
 		VONode svgTemplateContainer = SVGTemplateContainer
-				.getContainerInstance().getTemplateByName(
+				.getContainerInstance().getCloneTemplateByName(
 						SVGTemplateNameConstant.SVG_TEMPLATE);
 		return svgTemplateContainer;
 	}
@@ -161,7 +161,7 @@ public abstract class AbstractFlowNodeSVGFactory extends
 	protected VONode loadSVGVO(String templateName) {
 		try {
 			return SVGTemplateContainer.getContainerInstance()
-					.getTemplateByName(templateName);
+					.getCloneTemplateByName(templateName);
 		} catch (Exception e) {
 			throw new FoxBPMException("template svg file load exception", e);
 		}
@@ -178,8 +178,8 @@ public abstract class AbstractFlowNodeSVGFactory extends
 		Float svgMinY = (Float) processDefinitionPorperties.get(SVG_MINY);
 		Float svgMaxX = (Float) processDefinitionPorperties.get(SVG_MAXX);
 		Float svgMaxY = (Float) processDefinitionPorperties.get(SVG_MAXY);
-		svgTemplateContainer.setWidth(String.valueOf(svgMaxX));
-		svgTemplateContainer.setHeight(String.valueOf(svgMaxY));
+		svgTemplateContainer.setWidth(svgMaxX);
+		svgTemplateContainer.setHeight(svgMaxY);
 		svgTemplateContainer.setMinHeight(String.valueOf(svgMinY));
 		svgTemplateContainer.setMinWidth(String.valueOf(svgMinX));
 		// 初始化VOList

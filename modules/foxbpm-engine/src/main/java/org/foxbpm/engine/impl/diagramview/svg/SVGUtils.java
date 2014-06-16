@@ -55,6 +55,12 @@ public final class SVGUtils {
 	 */
 	public static final String BPMN_NODE_ID = "bg_frame";
 
+	/**
+	 * 获取任务矩形
+	 * 
+	 * @param svgVo
+	 * @return
+	 */
 	public final static RectVO getTaskVOFromSvgVO(SvgVO svgVo) {
 		List<RectVO> rectVoList = svgVo.getgVo().getRectVoList();
 		Iterator<RectVO> iterator = rectVoList.iterator();
@@ -67,6 +73,12 @@ public final class SVGUtils {
 		return null;
 	}
 
+	/**
+	 * 获取事件圆形
+	 * 
+	 * @param svgVo
+	 * @return
+	 */
 	public final static CircleVO getEventVOFromSvgVO(SvgVO svgVo) {
 		List<CircleVO> circleVoList = svgVo.getgVo().getCircleVoList();
 		Iterator<CircleVO> iterator = circleVoList.iterator();
@@ -79,6 +91,12 @@ public final class SVGUtils {
 		return null;
 	}
 
+	/**
+	 * 获取线条路径
+	 * 
+	 * @param svgVo
+	 * @return
+	 */
 	public final static PathVO getSequenceVOFromSvgVO(SvgVO svgVo) {
 		List<GVO> gVoList = svgVo.getgVo().getgVoList();
 		if (gVoList != null && gVoList.size() > 0) {

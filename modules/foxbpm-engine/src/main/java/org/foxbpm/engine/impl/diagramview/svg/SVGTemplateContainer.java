@@ -58,6 +58,33 @@ public class SVGTemplateContainer {
 		}
 	}
 
+	/**
+	 * 获取模版所在容器的实例
+	 * 
+	 * @return
+	 */
+	public static SVGTemplateContainer getContainerInstance() {
+		return container;
+	}
+
+	/**
+	 * 获取svg模版
+	 * 
+	 * @param templateName
+	 * @return
+	 */
+	public VONode getCloneTemplateByName(String templateName) {
+		// 第一次需要从svg文档初始化
+		if (this.svgTemplets.get(templateName) == null) {
+			this.init(templateName);
+		}
+		// 返回模版的深度克隆对象
+		return SVGUtils.cloneSVGVo((SvgVO) this.svgTemplets.get(templateName));
+	}
+
+	/**
+	 * 初始化模版
+	 */
 	private void initTemplate() {
 		svgTemplets = new HashMap<String, VONode>();
 		// 初始化加载空白开始事件
@@ -112,28 +139,5 @@ public class SVGTemplateContainer {
 			}
 		}
 
-	}
-
-	/**
-	 * 获取模版所在容器的实例
-	 * 
-	 * @return
-	 */
-	public static SVGTemplateContainer getContainerInstance() {
-		return container;
-	}
-
-	/**
-	 * 获取svg模版
-	 * 
-	 * @param templateName
-	 * @return
-	 */
-	public VONode getTemplateByName(String templateName) {
-		// 第一次需要从svg文档初始化
-		if (this.svgTemplets.get(templateName) == null) {
-			this.init(templateName);
-		}
-		return SVGUtils.cloneSVGVo((SvgVO) this.svgTemplets.get(templateName));
 	}
 }

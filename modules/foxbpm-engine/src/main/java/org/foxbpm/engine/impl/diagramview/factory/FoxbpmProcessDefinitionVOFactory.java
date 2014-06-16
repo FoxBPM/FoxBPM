@@ -42,17 +42,13 @@ public interface FoxbpmProcessDefinitionVOFactory {
 	/**
 	 * 创建流程图，包括标记信息
 	 * 
-	 * @param processDefinitionKey
-	 *            流程定义KEY
-	 * @param notEndTask
-	 *            没有完成的任务信息
-	 * @param endTask
-	 *            已经完成的任务信息
+	 * @param taskList
+	 *            所有需要标识的任务信息
 	 * @param deployedProcessDefinition
 	 *            流程定义信息
 	 * @return 包含标记的，流程图字符串
 	 */
 	public abstract String createProcessInstanceSVGImageString(
-			List<Task> notEndTask,
+			List<Task> taskList,
 			ProcessDefinitionEntity deployedProcessDefinition);
 }

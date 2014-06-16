@@ -33,15 +33,15 @@ public interface FoxBpmnViewBuilder {
 	 */
 	public void setWayPoints(List<Point> pointList);
 
-	public void setWidth(String width);
+	public void setWidth(float width);
 
-	public void setHeight(String height);
+	public void setHeight(float height);
 
 	public void setXAndY(float x, float y);
 
 	public void setStroke(String stroke);
 
-	public void setStrokeWidth(String strokeWidth);
+	public void setStrokeWidth(float strokeWidth);
 
 	public void setFill(String fill);
 
@@ -58,7 +58,7 @@ public interface FoxBpmnViewBuilder {
 
 	public void setTextFont(String font);
 
-	public void setTextStrokeWidth(String textStrokeWidth);
+	public void setTextStrokeWidth(float textStrokeWidth);
 
 	public void setTextX(float textX);
 
@@ -73,7 +73,7 @@ public interface FoxBpmnViewBuilder {
 	 */
 	public void setTypeStroke(String stroke);
 
-	public void setTypeStrokeWidth(String strokeWidth);
+	public void setTypeStrokeWidth(float strokeWidth);
 
 	public void setTypeFill(String fill);
 

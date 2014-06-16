@@ -81,11 +81,7 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setStrokeWidth(String strokeWidth) {
-		if (StringUtils.isBlank(strokeWidth)) {
-			this.pathVo.setStrokeWidth(SEQUENCE_STROKEWIDTH_DEFAULT);
-			return;
-		}
+	public void setStrokeWidth(float strokeWidth) {
 		this.pathVo.setStrokeWidth(strokeWidth);
 
 	}
@@ -125,7 +121,7 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setTypeStrokeWidth(String strokeWidth) {
+	public void setTypeStrokeWidth(float strokeWidth) {
 		// TODO Auto-generated method stub
 
 	}
@@ -143,13 +139,13 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setWidth(String width) {
+	public void setWidth(float width) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void setHeight(String height) {
+	public void setHeight(float height) {
 		// TODO Auto-generated method stub
 
 	}
