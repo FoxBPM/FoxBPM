@@ -126,12 +126,12 @@ function checkButton(id){
 
 function imgNotFound(url,that){ 
     var img=$(that); 
-    img.attr("src",url+"/fixflow/images/temp/user-m.png");  
+    img.attr("src",url+"/common/images/temp/user-m.png");  
     img.unbind("error");
 } 
 
 function miniImgNotFound(url,that){ 
     var img=$(that); 
-    img.attr("src", url+"/fixflow/images/temp/user01.jpg");  
+    img.attr("src", url+"/common/images/temp/user01.jpg");  
     img.unbind("error");
 } 

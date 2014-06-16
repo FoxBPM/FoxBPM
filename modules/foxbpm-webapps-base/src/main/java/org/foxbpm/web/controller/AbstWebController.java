@@ -17,12 +17,16 @@
  */
 package org.foxbpm.web.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -107,5 +111,40 @@ public abstract class AbstWebController {
 			throw new FoxbpmWebException(e.getMessage(), "", e);
 		}
 		return requestParams;
+	}
+
+	/**
+	 * 响应客户端
+	 * 
+	 * @param response
+	 *            响应
+	 * @param in
+	 *            将流内容响应给客户端
+	 */
+	public void doResponse(HttpServletResponse response, InputStream in) {
+		try {
+			ServletOutputStream out = response.getOutputStream();
+			response.setContentType("application/octet-stream;charset=UTF-8");
+			out = response.getOutputStream();
+			response.setContentType("application/octet-stream;charset=UTF-8");
+			byte[] buff = new byte[2048];
+			int size = 0;
+			while (in != null && (size = in.read(buff)) != -1) {
+				out.write(buff, 0, size);
+			}
+			out.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new FoxbpmWebException(e.getMessage(), "", e);
+		} finally {
+			if (null != in) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+					throw new FoxbpmWebException(e.getMessage(), "", e);
+				}
+			}
+		}
 	}
 }

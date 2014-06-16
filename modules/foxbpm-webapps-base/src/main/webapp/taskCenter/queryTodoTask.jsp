@@ -279,7 +279,7 @@
 									<td>${dataList.processDefinitionName}</td>
 									<td>${dataList.bizKey}</td>
 									<td><a name="doTask" href="javascript:void(0)"
-										formUri="${dataList.formUri}" tii="${dataList.taskInstanceId}"
+										formUri="${dataList.formUri}" tii="${dataList.id}"
 										pii="${dataList.processInstanceId}" bk="${dataList.bizKey}"
 										pdk="${dataList.processDefinitionKey}">${dataList.description}</a>
 									</td>
