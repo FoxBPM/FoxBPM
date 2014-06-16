@@ -111,7 +111,13 @@ public class ProcessDefinitionBuilder {
 	}
 
 	public ProcessDefinitionBuilder sequenceFlow(String targetFlowNodeId, String sequenceFlowId) {
+		sequenceFlow(targetFlowNodeId, sequenceFlowId,null);
+		return this;
+	}
+	
+	public ProcessDefinitionBuilder sequenceFlow(String targetFlowNodeId, String sequenceFlowId,String sequenceFlowName) {
 		startSequenceFlow(targetFlowNodeId, sequenceFlowId);
+		sequenceFlow.setName(sequenceFlowName);
 		endSequenceFlow();
 		return this;
 	}

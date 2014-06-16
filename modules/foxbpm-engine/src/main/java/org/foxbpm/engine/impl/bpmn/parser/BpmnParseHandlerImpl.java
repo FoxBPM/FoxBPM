@@ -122,7 +122,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 				}
 				List<SequenceFlow>  sequenceFlows=((FlowNode) flowElement).getOutgoing();
 				for (SequenceFlow sequenceFlow : sequenceFlows) {
-					processDefinitionBuilder.sequenceFlow(sequenceFlow.getTargetRef().getId(),sequenceFlow.getId());
+					processDefinitionBuilder.sequenceFlow(sequenceFlow.getTargetRef().getId(),sequenceFlow.getId(),sequenceFlow.getName());
 				}
 				
 				// 
