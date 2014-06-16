@@ -22,8 +22,8 @@ import java.lang.reflect.Method;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
-import org.foxbpm.web.common.log.FoxbpmLogger;
-import org.foxbpm.web.common.log.FoxbpmLoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.AfterReturningAdvice;
 import org.springframework.aop.MethodBeforeAdvice;
 import org.springframework.aop.ThrowsAdvice;
@@ -37,23 +37,19 @@ import org.springframework.aop.ThrowsAdvice;
 public class FoxbpmMethodInvokeLogger implements AfterReturningAdvice, MethodBeforeAdvice, MethodInterceptor, ThrowsAdvice {
 	@Override
 	public void afterReturning(Object returnObj, Method method, Object[] params, Object implObj) throws Throwable {
-		FoxbpmLogger logger = FoxbpmLoggerFactory.createLogger(implObj);
-		logger.info(method.getName() + "将被执行::执行参数是[" + params);
+		Logger logger = LoggerFactory.getLogger(implObj.getClass());
+		logger.debug(method.getName() + "执行完成，执行结果：" + returnObj);
 	}
 
 	@Override
 	public void before(Method method, Object[] params, Object implObj) throws Throwable {
-		FoxbpmLogger logger = FoxbpmLoggerFactory.createLogger(implObj);
-		logger.info(method.getName() + "将被执行::执行参数是" + params);
+		Logger logger = LoggerFactory.getLogger(implObj.getClass());
+		logger.debug(method.getName() + "将被执行,执行参数是" + params);
 	}
 
 	public void afterThrowing(Method method, Object[] args, Object implObj, FoxbpmWebException ex) {
-		FoxbpmLogger logger = FoxbpmLoggerFactory.createLogger(implObj);
-		logger.info("异常信息");
-		logger.info("抛出的异常：" + ex.toString());
-		logger.info("调用方法的名称：" + method.getName());
-		logger.info("方法的参数个数：" + args.length);
-		logger.info("调用的目标对象：" + implObj);
+		Logger logger = LoggerFactory.getLogger(implObj.getClass());
+		logger.error("service执行出错：方法："+method.getName()+"，参数："+args , ex);
 	}
 
 	@Override
