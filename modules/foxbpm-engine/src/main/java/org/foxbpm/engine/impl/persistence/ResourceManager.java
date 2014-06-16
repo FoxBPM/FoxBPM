@@ -41,7 +41,7 @@ public class ResourceManager extends AbstractManager {
 		Map<String,Object> paramsMap = new HashMap<String,Object>();
 		paramsMap.put("deployId", deploymentId);
 		paramsMap.put("name", resourceName);
-		return (ResourceEntity)getSqlSession().selectOne("selectResourceByDeployIdAndName", resourceName);
+		return (ResourceEntity)getSqlSession().selectOne("selectResourceByDeployIdAndName", paramsMap);
 	}
 	
 	public void deleteResourceByDeploymentId(String deploymentId){

@@ -105,6 +105,9 @@ public class BpmnDeployer implements Deployer {
 			processEntity.setDeploymentId(deploymentId);
 			processEntity.setId(processEntityNew.getId());
 			processEntity.setVersion(processEntityNew.getVersion());
+			processEntity.setResourceId(processEntityNew.getResourceId());
+			processEntity.setResourceName(processEntityNew.getResourceName());
+			processEntity.setDiagramResourceName(processEntityNew.getDiagramResourceName());
 		}
 		
 		Context.getProcessEngineConfiguration().getDeploymentManager().getProcessDefinitionCache().add(processEntity.getId(), processEntity);
