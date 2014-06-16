@@ -83,15 +83,12 @@ public class VerificationStartUserCmd implements Command<Boolean>{
 		if(userId.equals(taskEntity.getAssignee())){
 			return true;
 		}
-		if("fixflow_allusers".equals(taskEntity.getAssignee())){
-			return true;
-		}
 		List<Group> groups = Authentication.selectGroupByUserId(userId);
-		for(Group group : groups){
-			for(IdentityLinkEntity identity : taskEntity.getIdentityLinks()){
-				if("fixflow_allusers".equals(identity.getUserId())){
-					return true;
-				}
+		for(IdentityLinkEntity identity : taskEntity.getIdentityLinks()){
+			if("fixflow_allusers".equals(identity.getUserId())){
+				return true;
+			}
+			for(Group group : groups){
 				if(group.getGroupType().equals(identity.getGroupType()) && group.getGroupId().equals(identity.getGroupId())){
 					return true;
 				}

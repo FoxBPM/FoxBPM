@@ -158,7 +158,6 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	public void insert(ProcessInstanceEntity processInstance) {
 		CommandContext commandContext = Context.getCommandContext();
 		commandContext.getTaskManager().insert(this);
-
 		if (processInstance != null) {
 			processInstance.addTask(this);
 		}
@@ -760,8 +759,10 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		identityLinkEntity.setUserId(userId);
 		identityLinkEntity.setGroupId(groupId);
 		identityLinkEntity.setType(type);
-		identityLinkEntity.insert();
-	
+		//判断开始流程权限时会触发add方法，此时不应该存储数据
+		if(this.id != null){
+			identityLinkEntity.insert();
+		}
 		return identityLinkEntity;
 	}
 

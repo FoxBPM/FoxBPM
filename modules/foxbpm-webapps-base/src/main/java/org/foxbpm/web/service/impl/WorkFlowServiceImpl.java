@@ -186,7 +186,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 					Map<String, Object> instanceMap = tmp.getPersistentState();
 					notEndInstanceMaps.add(instanceMap);
 				}
-				Map<String, Map<String, Object>> postionMap = modelService.GetFlowGraphicsElementPosition(processInstance.getProcessDefinitionId());
+				Map<String, Map<String, Object>> postionMap = modelService.getFlowGraphicsElementPositionById(processInstance.getProcessDefinitionId());
 				resultData.put("notEnddataList", notEndInstanceMaps);
 				resultData.put("dataList", instanceMaps);
 				resultData.put("positionInfo", JSONUtil.parseObject2JSON(postionMap));

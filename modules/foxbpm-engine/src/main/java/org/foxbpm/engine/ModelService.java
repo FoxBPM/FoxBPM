@@ -69,7 +69,16 @@ public interface ModelService {
 	 * @return key为节点编号,value为 Map<String,Object> Key(height,width,x,y)
 	 *         (height="36.0" width="36.0" x="100.0" y="100.0")
 	 */
-	Map<String, Map<String, Object>> GetFlowGraphicsElementPosition(String processDefinitionId);
+	Map<String, Map<String, Object>> getFlowGraphicsElementPositionById(String processDefinitionId);
+	
+	/**
+	 * 获取流程图节点信息
+	 * 
+	 * @param processDefinitionKey 流程定义key
+	 * @return key为节点编号,value为 Map<String,Object> Key(height,width,x,y)
+	 *         (height="36.0" width="36.0" x="100.0" y="100.0")
+	 */
+	Map<String, Map<String, Object>> getFlowGraphicsElementPositionByKey(String processDefinitionKey);
 
 	/**
 	 * 获取流程图图片Stream
@@ -120,5 +129,5 @@ public interface ModelService {
 	 * @param processDefinitionId 可为空，流程定义唯一编号
 	 * @return
 	 */
-	boolean verifyStartProcessByUserId(String userId,String processDefinitionKey,String processDefinitionId);
+	boolean verifyStartProcessByUserId(String userId,String processDefinitionId);
 }
