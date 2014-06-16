@@ -56,15 +56,14 @@ public class FlowManageServiceImpl extends AbstWorkFlowService implements IFlowM
 				}
 				deploymentBuilder.deploy();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new FoxbpmWebException(e.getMessage(), "", e);
+		} catch (IOException e) {
+			throw new FoxbpmWebException(e);
 		} finally {
 			if (null != zipInputStream) {
 				try {
 					zipInputStream.close();
 				} catch (IOException e) {
-					throw new FoxbpmWebException(e.getMessage(), "", e);
+					throw new FoxbpmWebException(e);
 				}
 			}
 		}
@@ -81,7 +80,7 @@ public class FlowManageServiceImpl extends AbstWorkFlowService implements IFlowM
 				}
 			}
 		} catch (Exception e) {
-			throw new FoxbpmWebException(e.getMessage(), "", e);
+			throw new FoxbpmWebException(e);
 		}
 	}
 
@@ -89,37 +88,33 @@ public class FlowManageServiceImpl extends AbstWorkFlowService implements IFlowM
 	public List<Map<String, Object>> queryProcessDef(Pagination<String> pageInfor, Map<String, Object> params) throws FoxbpmWebException {
 		// 返回结果
 		List<Map<String, Object>> resultData = new ArrayList<Map<String, Object>>();
-		try {
-			// 创建流程定义查询
-			ProcessDefinitionQuery pdq = modelService.createProcessDefinitionQuery();
-			String processName = StringUtil.getString(params.get("queryProcessName"));
-			if (StringUtil.isNotEmpty(processName)) {
-				pdq.processDefinitionNameLike("%" + processName + "%");
-			}
-			String processId = StringUtil.getString(params.get("queryProcessId"));
-			if (StringUtil.isNotEmpty(processId)) {
-				pdq.processDefinitionKeyLike("%" + processId + "%");
-			}
-			String processCategory = StringUtil.getString(params.get("queryType"));
-			if (StringUtil.isNotEmpty(processCategory)) {
-				pdq.processDefinitionCategoryLike("%" + processCategory + "%");
-			}
-			pdq.orderByDeploymentId().desc();
-			List<ProcessDefinition> pdList = null;
-			if (null == pageInfor) {
-				pdList = pdq.list();
-			} else {
-				pdList = pdq.listPagination(pageInfor.getPageIndex(), pageInfor.getPageSize());
-				pageInfor.setTotal(StringUtil.getInt(pdq.count()));
-			}
-			Map<String, Object> attrMap = null;
-			for (int i = 0, size = (null == pdList) ? 0 : pdList.size(); i < size; i++) {
-				attrMap = pdList.get(i).getPersistentState();
-				attrMap.put("formUrl", "startTask.action");
-				resultData.add(attrMap);
-			}
-		} catch (Exception e) {
-			throw new FoxbpmWebException(e.getMessage(), "", e);
+		// 创建流程定义查询
+		ProcessDefinitionQuery pdq = modelService.createProcessDefinitionQuery();
+		String processName = StringUtil.getString(params.get("queryProcessName"));
+		if (StringUtil.isNotEmpty(processName)) {
+			pdq.processDefinitionNameLike("%" + processName + "%");
+		}
+		String processId = StringUtil.getString(params.get("queryProcessId"));
+		if (StringUtil.isNotEmpty(processId)) {
+			pdq.processDefinitionKeyLike("%" + processId + "%");
+		}
+		String processCategory = StringUtil.getString(params.get("queryType"));
+		if (StringUtil.isNotEmpty(processCategory)) {
+			pdq.processDefinitionCategoryLike("%" + processCategory + "%");
+		}
+		pdq.orderByDeploymentId().desc();
+		List<ProcessDefinition> pdList = null;
+		if (null == pageInfor) {
+			pdList = pdq.list();
+		} else {
+			pdList = pdq.listPagination(pageInfor.getPageIndex(), pageInfor.getPageSize());
+			pageInfor.setTotal(StringUtil.getInt(pdq.count()));
+		}
+		Map<String, Object> attrMap = null;
+		for (int i = 0, size = (null == pdList) ? 0 : pdList.size(); i < size; i++) {
+			attrMap = pdList.get(i).getPersistentState();
+			attrMap.put("formUrl", "startTask.action");
+			resultData.add(attrMap);
 		}
 		return resultData;
 	}

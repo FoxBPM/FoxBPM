@@ -31,8 +31,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.foxbpm.web.common.constant.FoxbpmViewNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmWebContextAttributeNameDefinition;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -42,6 +44,12 @@ import org.springframework.web.servlet.ModelAndView;
  * @date 2014年6月11日
  */
 public abstract class AbstWebController {
+
+	@ExceptionHandler
+	public String exp(HttpServletRequest request, Exception ex) {
+		request.setAttribute("ex", ex);
+		return getPrefix() + FoxbpmViewNameDefinition.ERROR_VIEWNAME;
+	}
 
 	/**
 	 * 根据视图名称创建 modelAndView 视图对象
@@ -108,7 +116,7 @@ public abstract class AbstWebController {
 				}
 			}
 		} catch (Exception e) {
-			throw new FoxbpmWebException(e.getMessage(), "", e);
+			throw new FoxbpmWebException(e);
 		}
 		return requestParams;
 	}
@@ -134,15 +142,13 @@ public abstract class AbstWebController {
 			}
 			out.flush();
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new FoxbpmWebException(e.getMessage(), "", e);
+			throw new FoxbpmWebException(e);
 		} finally {
 			if (null != in) {
 				try {
 					in.close();
 				} catch (IOException e) {
-					e.printStackTrace();
-					throw new FoxbpmWebException(e.getMessage(), "", e);
+					throw new FoxbpmWebException(e);
 				}
 			}
 		}

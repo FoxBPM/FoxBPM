@@ -32,7 +32,6 @@ import org.foxbpm.web.common.constant.FoxbpmActionNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmServiceNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmViewNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmWebContextAttributeNameDefinition;
-import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.common.util.Pagination;
 import org.foxbpm.web.service.interfaces.IWorkFlowService;
 import org.springframework.stereotype.Controller;
@@ -60,22 +59,19 @@ public class WorkFlowController extends AbstWebController {
 	 */
 	@RequestMapping(FoxbpmActionNameDefinition.QUERY_STARTPROCESS_ACTION)
 	public ModelAndView queryStartProcess(HttpServletRequest request) {
-		try {
-			// 请求参数
-			Map<String, Object> requestParams = getRequestParams(request);
-			requestParams.put("userId", "admin");
-			// 查询结果
-			List<Map<String, Object>> resultList = workFlowService.queryStartProcess(requestParams);
-			if (null != resultList) {
-				for (Map<String, Object> map : resultList) {
-					map.put("formUrl", "startTask.action");
-				}
+		// 请求参数
+		Map<String, Object> requestParams = getRequestParams(request);
+		requestParams.put("userId", "admin");
+		// 查询结果
+		List<Map<String, Object>> resultList = workFlowService.queryStartProcess(requestParams);
+		if (null != resultList) {
+			for (Map<String, Object> map : resultList) {
+				map.put("formUrl", "startTask.action");
 			}
-			// 封装参数
-			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultList);
-		} catch (FoxbpmWebException foxbpmException) {
-			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
 		}
+		// 封装参数
+		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultList);
+
 		ModelAndView modelAndView = createModelAndView(FoxbpmViewNameDefinition.QUERY_QUERYALLPROCESSDEF_VIEWNAME);
 		return modelAndView;
 	}
@@ -89,37 +85,33 @@ public class WorkFlowController extends AbstWebController {
 	 */
 	@RequestMapping(FoxbpmActionNameDefinition.QUERY_QUERYALLPROCESSINST_ACTION)
 	public ModelAndView queryProcessInst(HttpServletRequest request) {
-		try {
-			// 请求参数
-			Map<String, Object> requestParams = getRequestParams(request);
+		// 请求参数
+		Map<String, Object> requestParams = getRequestParams(request);
 
-			// 获取分页条件参数
-			String pageI = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINDEX));
-			String pageS = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGESIZE));
+		// 获取分页条件参数
+		String pageI = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINDEX));
+		String pageS = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGESIZE));
 
-			// 处理分页
-			int pageIndex = Pagination.PAGE_INDEX;
-			int pageSize = Pagination.PAGE_SIZE;
-			if (StringUtil.isNotEmpty(pageI)) {
-				pageIndex = StringUtil.getInt(pageI);
-			}
-			if (StringUtil.isNotEmpty(pageS)) {
-				pageSize = StringUtil.getInt(pageS);
-			}
-			// 分页信息
-			Pagination<String> pageInfor = new Pagination<String>(pageIndex, pageSize);
-			// 查询结果
-			List<Map<String, Object>> resultData = workFlowService.queryProcessInst(pageInfor, requestParams);
-			// 封装参数给页面使用
-			Map<String, List<Map<String, Object>>> resultMap = new HashMap<String, List<Map<String, Object>>>();
-			// 获取分页条件参数
-			resultMap.put("dataList", resultData);
-			// 将参数封装给页面使用
-			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
-			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
-		} catch (FoxbpmWebException foxbpmException) {
-			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
+		// 处理分页
+		int pageIndex = Pagination.PAGE_INDEX;
+		int pageSize = Pagination.PAGE_SIZE;
+		if (StringUtil.isNotEmpty(pageI)) {
+			pageIndex = StringUtil.getInt(pageI);
 		}
+		if (StringUtil.isNotEmpty(pageS)) {
+			pageSize = StringUtil.getInt(pageS);
+		}
+		// 分页信息
+		Pagination<String> pageInfor = new Pagination<String>(pageIndex, pageSize);
+		// 查询结果
+		List<Map<String, Object>> resultData = workFlowService.queryProcessInst(pageInfor, requestParams);
+		// 封装参数给页面使用
+		Map<String, List<Map<String, Object>>> resultMap = new HashMap<String, List<Map<String, Object>>>();
+		// 获取分页条件参数
+		resultMap.put("dataList", resultData);
+		// 将参数封装给页面使用
+		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
+		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
 		ModelAndView modelAndView = createModelAndView(FoxbpmViewNameDefinition.QUERY_QUERYALLPROCESSINST_VIEWNAME);
 		return modelAndView;
 	}
@@ -134,15 +126,10 @@ public class WorkFlowController extends AbstWebController {
 	@RequestMapping(FoxbpmActionNameDefinition.QUERY_TASKDETAILINFOR_ACTION)
 	public ModelAndView queryTaskDetailInfor(HttpServletRequest request) {
 
-		try {
-			Map<String, Object> requestParams = getRequestParams(request);
-			// 查询结果
-			Map<String, Object> resultMap = workFlowService.queryTaskDetailInfor(requestParams);
-			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
-		} catch (FoxbpmWebException foxbpmException) {
-			foxbpmException.printStackTrace();
-			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
-		}
+		Map<String, Object> requestParams = getRequestParams(request);
+		// 查询结果
+		Map<String, Object> resultMap = workFlowService.queryTaskDetailInfor(requestParams);
+		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
 		return createModelAndView(FoxbpmViewNameDefinition.QUERY_TASKDETAILINFOR_ACTION);
 	}
 
@@ -156,60 +143,53 @@ public class WorkFlowController extends AbstWebController {
 	@RequestMapping(FoxbpmActionNameDefinition.QUERY_TODOTASK_ACTION)
 	public ModelAndView queryToDoTask(HttpServletRequest request) {
 
-		try {
-			Map<String, Object> requestParams = getRequestParams(request);
-			// 获取分页条件参数
-			String pageI = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINDEX));
-			String pageS = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGESIZE));
+		Map<String, Object> requestParams = getRequestParams(request);
+		// 获取分页条件参数
+		String pageI = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINDEX));
+		String pageS = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGESIZE));
 
-			// 处理分页
-			int pageIndex = Pagination.PAGE_INDEX;
-			int pageSize = Pagination.PAGE_SIZE;
-			if (StringUtil.isNotEmpty(pageI)) {
-				pageIndex = StringUtil.getInt(pageI);
-			}
-			if (StringUtil.isNotEmpty(pageS)) {
-				pageSize = StringUtil.getInt(pageS);
-			}
-			// 分页信息
-			Pagination<String> pageInfor = new Pagination<String>(pageIndex, pageSize);
-			// 查询结果
-			List<Map<String, Object>> resultData = workFlowService.queryToDoTask(pageInfor, requestParams);
-			// 封装参数给页面使用
-			Map<String, List<Map<String, Object>>> resultMap = new HashMap<String, List<Map<String, Object>>>();
-			// 获取分页条件参数
-			resultMap.put("dataList", resultData);
-			// 将参数封装给页面使用
-			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
-			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
-		} catch (FoxbpmWebException foxbpmException) {
-			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
+		// 处理分页
+		int pageIndex = Pagination.PAGE_INDEX;
+		int pageSize = Pagination.PAGE_SIZE;
+		if (StringUtil.isNotEmpty(pageI)) {
+			pageIndex = StringUtil.getInt(pageI);
 		}
+		if (StringUtil.isNotEmpty(pageS)) {
+			pageSize = StringUtil.getInt(pageS);
+		}
+		// 分页信息
+		Pagination<String> pageInfor = new Pagination<String>(pageIndex, pageSize);
+		// 查询结果
+		List<Map<String, Object>> resultData = workFlowService.queryToDoTask(pageInfor, requestParams);
+		// 封装参数给页面使用
+		Map<String, List<Map<String, Object>>> resultMap = new HashMap<String, List<Map<String, Object>>>();
+		// 获取分页条件参数
+		resultMap.put("dataList", resultData);
+		// 将参数封装给页面使用
+		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
+		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
 		return createModelAndView(FoxbpmViewNameDefinition.QUERY_QUERYTODOTASK_VIEWNAME);
 	}
 
 	@RequestMapping(FoxbpmActionNameDefinition.GETFLOWGRAPH_ACTION)
 	public ModelAndView getFlowGraph(HttpServletRequest request, HttpServletResponse response) {
 
-		try {
-			Map<String, Object> requestParams = getRequestParams(request);
-			String flag = StringUtil.getString(requestParams.get("flag"));
-			InputStream in = null;
-			if ("svg".equals(flag)) {
-				String svgContent = workFlowService.getFlowSvgGraph(requestParams);
-				if (StringUtil.isNotEmpty(svgContent)) {
-					in = new ByteArrayInputStream(svgContent.getBytes());
-				}
-			} else {
-				in = workFlowService.getFlowImagGraph(requestParams);
+		Map<String, Object> requestParams = getRequestParams(request);
+		String flag = StringUtil.getString(requestParams.get("flag"));
+		InputStream in = null;
+		if ("svg".equals(flag)) {
+			String svgContent = workFlowService.getFlowSvgGraph(requestParams);
+			if (StringUtil.isNotEmpty(svgContent)) {
+				in = new ByteArrayInputStream(svgContent.getBytes());
 			}
-			if (null != in) {
-				doResponse(response, in);
-			}
-			return null;
-		} catch (Exception e) {
-			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
+		} else {
+			in = workFlowService.getFlowImagGraph(requestParams);
 		}
+		if (null != in) {
+			doResponse(response, in);
+		}
+		return null;
+
 	}
 
 	@Override

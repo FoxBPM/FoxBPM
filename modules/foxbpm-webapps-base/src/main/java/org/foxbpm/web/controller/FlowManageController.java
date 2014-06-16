@@ -17,6 +17,7 @@
  */
 package org.foxbpm.web.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,36 +65,33 @@ public class FlowManageController extends AbstWebController {
 	 */
 	@RequestMapping(FoxbpmActionNameDefinition.PROCESSDEF_ACTION)
 	public ModelAndView processDef(HttpServletRequest request) {
-		try {
-			// 请求参数
-			Map<String, Object> requestParams = getRequestParams(request);
-			String pageI = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINDEX));
-			String pageS = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGESIZE));
+		// 请求参数
+		Map<String, Object> requestParams = getRequestParams(request);
+		String pageI = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINDEX));
+		String pageS = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGESIZE));
 
-			// 处理分页
-			int pageIndex = Pagination.PAGE_INDEX;
-			int pageSize = Pagination.PAGE_SIZE;
-			if (StringUtil.isNotEmpty(pageI)) {
-				pageIndex = StringUtil.getInt(pageI);
-			}
-			if (StringUtil.isNotEmpty(pageS)) {
-				pageSize = StringUtil.getInt(pageS);
-			}
-			// 分页信息
-			Pagination<String> pageInfor = new Pagination<String>(pageIndex, pageSize);
-			// 查询结果
-			List<Map<String, Object>> resultData = flowManageService.queryProcessDef(pageInfor, requestParams);
-			// 封装参数给页面使用
-			Map<String, List<Map<String, Object>>> resultMap = new HashMap<String, List<Map<String, Object>>>();
-			// 获取分页条件参数
-			resultMap.put("dataList", resultData);
-			// 封装参数
-
-			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
-			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
-		} catch (FoxbpmWebException foxbpmException) {
-			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
+		// 处理分页
+		int pageIndex = Pagination.PAGE_INDEX;
+		int pageSize = Pagination.PAGE_SIZE;
+		if (StringUtil.isNotEmpty(pageI)) {
+			pageIndex = StringUtil.getInt(pageI);
 		}
+		if (StringUtil.isNotEmpty(pageS)) {
+			pageSize = StringUtil.getInt(pageS);
+		}
+		// 分页信息
+		Pagination<String> pageInfor = new Pagination<String>(pageIndex, pageSize);
+		// 查询结果
+		List<Map<String, Object>> resultData = flowManageService.queryProcessDef(pageInfor, requestParams);
+		// 封装参数给页面使用
+		Map<String, List<Map<String, Object>>> resultMap = new HashMap<String, List<Map<String, Object>>>();
+		// 获取分页条件参数
+		resultMap.put("dataList", resultData);
+		// 封装参数
+
+		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
+		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
+
 		ModelAndView modelAndView = createModelAndView(FoxbpmViewNameDefinition.PROCESSDEF_VIEWNAME);
 		return modelAndView;
 	}
@@ -107,27 +105,19 @@ public class FlowManageController extends AbstWebController {
 	 */
 	@RequestMapping(FoxbpmActionNameDefinition.DEPLOY_ACTION)
 	public ModelAndView deploy(HttpServletRequest request) {
-		try {
-			// 请求参数
-			Map<String, Object> requestParams = getRequestParams(request);
-			this.flowManageService.deployByZip(requestParams);
-			return processDef(request);
-			// 封装参数
-		} catch (FoxbpmWebException foxbpmException) {
-			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
-		}
+		// 请求参数
+		Map<String, Object> requestParams = getRequestParams(request);
+		flowManageService.deployByZip(requestParams);
+		return processDef(request);
+
 	}
 
 	@RequestMapping(FoxbpmActionNameDefinition.DELETEDEPLOY_ACTION)
 	public ModelAndView deleteDeploy(HttpServletRequest request, HttpServletResponse response) {
-		try {
-			// 请求参数
-			Map<String, Object> requestParams = getRequestParams(request);
-			flowManageService.deleteDeploy(requestParams);
-			return null;
-		} catch (Exception e) {
-			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
-		}
+		// 请求参数
+		Map<String, Object> requestParams = getRequestParams(request);
+		flowManageService.deleteDeploy(requestParams);
+		return null;
 	}
 
 	@RequestMapping(FoxbpmActionNameDefinition.UPDATECACHE_ACTION)
@@ -136,8 +126,8 @@ public class FlowManageController extends AbstWebController {
 			CacheUtil.clearCache();
 			response.getWriter().write("update success!");
 			return null;
-		} catch (Exception e) {
-			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
+		} catch (IOException e) {
+			throw new FoxbpmWebException(e);
 		}
 	}
 

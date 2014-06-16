@@ -55,15 +55,11 @@ public class DemoController extends AbstWebController {
 	@RequestMapping(FoxbpmActionNameDefinition.START_TASK_ACTION)
 	public ModelAndView startTask(HttpServletRequest request) {
 		String viewName = FoxbpmViewNameDefinition.START_TASK_VIEWNAME;
-		try {
-			Map<String, Object> requestParams = getRequestParams(request);
-			Map<String, Object> resultMap = workDemoService.startTask(requestParams);
-			request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
-			// 获取视图处理
-			viewName = StringUtil.getString(resultMap.remove("viewName"));
-		} catch (FoxbpmWebException foxbpmException) {
-			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
-		}
+		Map<String, Object> requestParams = getRequestParams(request);
+		Map<String, Object> resultMap = workDemoService.startTask(requestParams);
+		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
+		// 获取视图处理
+		viewName = StringUtil.getString(resultMap.remove("viewName"));
 		return createModelAndView(viewName);
 	}
 
@@ -76,15 +72,11 @@ public class DemoController extends AbstWebController {
 	 */
 	@RequestMapping(FoxbpmActionNameDefinition.COMPLETE_TASK_ACTION)
 	public ModelAndView completeTask(HttpServletRequest request) {
-		try {
-			Map<String, Object> requestParams = getRequestParams(request);
-			if (StringUtil.isEmpty(StringUtil.getString(requestParams.get("businessKey")))) {
-				throw new FoxbpmWebException("", "businessKey不能为空!");
-			}
-			workDemoService.completeTask(requestParams);
-		} catch (FoxbpmWebException foxbpmException) {
-			return createModelAndView(FoxbpmViewNameDefinition.ERROR_VIEWNAME);
+		Map<String, Object> requestParams = getRequestParams(request);
+		if (StringUtil.isEmpty(StringUtil.getString(requestParams.get("businessKey")))) {
+			throw new FoxbpmWebException("", "businessKey不能为空!");
 		}
+		workDemoService.completeTask(requestParams);
 		return createModelAndView(FoxbpmViewNameDefinition.COMPLETETASK_VIEWNAME);
 	}
 
