@@ -171,7 +171,7 @@ public abstract class AbstractFlowNodeVOFactory {
 	 */
 	public static AbstractFlowNodeVOFactory createSignedSVGFactory(
 			KernelFlowElement kernelFlowElement, String svgTemplateFileName,
-			boolean taskState,
+			String taskState,
 			AbstractFlowNodeVOFactory abstractFlowNodeVOFactory) {
 		// 当前实现是SVG格式，后期可能支持微软的XML
 		return AbstractFlowNodeSVGFactory.createSVGFactory(kernelFlowElement,

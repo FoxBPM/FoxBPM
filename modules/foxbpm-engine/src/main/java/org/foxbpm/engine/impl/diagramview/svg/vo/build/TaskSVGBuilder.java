@@ -17,7 +17,6 @@
  */
 package org.foxbpm.engine.impl.diagramview.svg.vo.build;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,15 +52,7 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 	 */
 	public TaskSVGBuilder(SvgVO svgVo) {
 		super(svgVo);
-		List<RectVO> rectVoList = svgVo.getgVo().getRectVoList();
-		Iterator<RectVO> iterator = rectVoList.iterator();
-		while (iterator.hasNext()) {
-			RectVO next = iterator.next();
-			if (StringUtils.equalsIgnoreCase(next.getId(), BPMN_NODE_ID)) {
-				rectVO = next;
-				break;
-			}
-		}
+		rectVO = SVGUtils.getTaskVOFromSvgVO(svgVo);
 
 		if (this.rectVO == null) {
 			throw new FoxBPMException("TaskSVGBuilder构造 TASK SVG时，无法获取矩形对象");
@@ -109,7 +100,9 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 	public void setXAndY(float x, float y) {
 		// 设置整体坐标，包括子类型
 		this.svgVo.getgVo().setTransform("translate(" + x + ", " + y + ")");
-
+		// 设置相对位置
+		this.rectVO.setX("0");
+		this.rectVO.setY("0");
 		// 设置字体的相对偏移量,X相对是矩形宽度的一半减去文本本身屏宽的一半
 		if (StringUtils.isNotBlank(textVO.getElementValue())) {
 			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
@@ -197,8 +190,9 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 		}
 	}
 
+	// TODO 放射性渐变,目前采用的是线性渐变
 	/**
-	 * 放射性渐变
+	 * 
 	 * 
 	 * @param fill
 	 */

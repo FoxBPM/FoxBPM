@@ -85,7 +85,7 @@ public class ConcreteProcessDefinitionVOFactory extends
 				voNode = this.getNodeSVGFromFactory(kernelFlowNodeImpl,
 						taskType, svgTemplateFileName);
 			} else {
-				boolean taskState = this.confirmTaskNotEnd(notEndTask,
+				String taskState = this.confirmTaskNotEnd(notEndTask,
 						kernelFlowNodeImpl.getId());
 				voNode = this.getSignedNodeSVGFromFactory(kernelFlowNodeImpl,
 						taskType, svgTemplateFileName, taskState);
@@ -130,16 +130,22 @@ public class ConcreteProcessDefinitionVOFactory extends
 	 * @param taskFlowNodeID
 	 * @return
 	 */
-	private boolean confirmTaskNotEnd(List<Task> notEndTask,
+	private String confirmTaskNotEnd(List<Task> notEndTask,
 			String taskFlowNodeID) {
+		String result = "notExists";
 		Iterator<Task> notEndIter = notEndTask.iterator();
 		while (notEndIter.hasNext()) {
 			Task notEnd = notEndIter.next();
-			if (StringUtils.equalsIgnoreCase(notEnd.getId(), taskFlowNodeID)) {
-				return true;
+			if (StringUtils.equalsIgnoreCase(notEnd.getNodeId(), taskFlowNodeID)) {
+				if(notEnd.hasEnded()){
+					result = "end";
+				} else {
+					result = "notEnd";
+				}
+				return result;
 			}
 		}
-		return false;
+		return result;
 	}
 
 	/**
@@ -168,7 +174,7 @@ public class ConcreteProcessDefinitionVOFactory extends
 	 */
 	private VONode getSignedNodeSVGFromFactory(
 			KernelFlowElement kernelFlowNodeImpl, String svgType,
-			String svgTemplateFileName, boolean taskState) {
+			String svgTemplateFileName, String taskState) {
 		// 创建具体工厂
 		AbstractFlowNodeVOFactory conreateFactory = AbstractFlowNodeVOFactory
 				.createSVGFactory(kernelFlowNodeImpl, svgTemplateFileName);

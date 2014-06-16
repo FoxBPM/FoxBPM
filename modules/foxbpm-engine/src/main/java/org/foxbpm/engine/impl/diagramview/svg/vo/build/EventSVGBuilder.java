@@ -17,7 +17,6 @@
  */
 package org.foxbpm.engine.impl.diagramview.svg.vo.build;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -56,15 +55,7 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 	 */
 	public EventSVGBuilder(SvgVO voNode) {
 		super(voNode);
-		List<CircleVO> circleVoList = voNode.getgVo().getCircleVoList();
-		Iterator<CircleVO> iterator = circleVoList.iterator();
-		while (iterator.hasNext()) {
-			CircleVO next = iterator.next();
-			if (StringUtils.equalsIgnoreCase(next.getId(), BPMN_NODE_ID)) {
-				this.circleVO = next;
-				break;
-			}
-		}
+		this.circleVO = SVGUtils.getEventVOFromSvgVO(voNode);
 		if (this.circleVO == null) {
 			throw new FoxBPMException("EventSVGBuilder构造 EVENT SVG时，无法获取圆形对象");
 		}
@@ -164,6 +155,10 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 		this.circleVO.setStyle(style);
 	}
 
+	/**
+	 * @TODO 圆心坐标设置是绝对坐标值，后期如果需要添加子类型，则采用transform的形式
+	 * 
+	 */
 	@Override
 	public void setXAndY(float x, float y) {
 		// 流程图定义的是圆对应矩形左上角的坐标，所以对应的SVG坐标需要将坐标值加半径

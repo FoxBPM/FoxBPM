@@ -87,7 +87,7 @@ public abstract class AbstractFlowNodeSVGFactory extends
 	 */
 	public static AbstractFlowNodeSVGFactory createSVGFactory(
 			KernelFlowElement kernelFlowElement, String svgTemplateFileName,
-			boolean taskState,
+			String taskState,
 			AbstractFlowNodeVOFactory abstractFlowNodeSVGFactory) {
 		return new SignProcessStateSVGFactory(kernelFlowElement,
 				svgTemplateFileName, abstractFlowNodeSVGFactory, taskState);

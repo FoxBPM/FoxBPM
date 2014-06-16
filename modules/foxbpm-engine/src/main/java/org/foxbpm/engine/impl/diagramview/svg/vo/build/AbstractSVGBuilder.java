@@ -36,10 +36,6 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.VONode;
  * @date 2014-06-10
  */
 public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
-	/**
-	 * BPMN节点类型(例如：矩形，圆形)在SVG文档中的ID
-	 */
-	public static final String BPMN_NODE_ID = "bg_frame";
 	public static final String COLOR_FLAG = "#";
 	public static final String STROKE_DEFAULT = "black";
 	public static final String STROKEWIDTH_DEFAULT = "1";
