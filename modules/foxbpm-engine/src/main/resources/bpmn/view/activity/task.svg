@@ -31,6 +31,10 @@
 			<stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
 			<stop id="fill_el" offset="100%" stop-color="#ffffcc" stop-opacity="1"/>
 		</radialGradient>
+		<linearGradient x1="256" gradientUnits="userSpaceOnUse" x2="256" y1="103" y2="152" id="linearGradient3" spreadMethod="pad">
+	        <stop stop-opacity="1" stop-color="rgb(98,194,245)" offset="0%" />
+	        <stop stop-opacity="1" stop-color="rgb(170,255,255)" offset="100%" />
+     	</linearGradient>
 	</defs>
 	
 	<rect id="text_frame" oryx:anchors="bottom top right left" x="1" y="1" width="94" height="79" rx="10" ry="10" stroke="none" stroke-width="0" fill="none" />
