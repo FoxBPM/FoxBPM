@@ -25,6 +25,7 @@ import java.util.Map;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.impl.cmd.DeleteDeploymentCmd;
 import org.foxbpm.engine.impl.cmd.DeployCmd;
+import org.foxbpm.engine.impl.cmd.GetFlowGraphicsElementPositionCmd;
 import org.foxbpm.engine.impl.cmd.GetFlowGraphicsImgStreamCmd;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinitionByKeyAndVersionCmd;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinitionCmd;
@@ -82,9 +83,13 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	}
 
 	@Override
-	public Map<String, Map<String, Object>> GetFlowGraphicsElementPosition(String processDefinitionId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<String, Map<String, Object>> getFlowGraphicsElementPositionById(String processDefinitionId) {
+		return commandExecutor.execute(new GetFlowGraphicsElementPositionCmd(processDefinitionId, null));
+	}
+	
+	@Override
+	public Map<String, Map<String, Object>> getFlowGraphicsElementPositionByKey(String processDefinitionKey) {
+		return commandExecutor.execute(new GetFlowGraphicsElementPositionCmd(null, processDefinitionKey));
 	}
 
 	@Override
@@ -93,8 +98,8 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	}
 	
 	@Override
-	public boolean verifyStartProcessByUserId(String userId, String processDefinitionKey, String processDefinitionId) {
-		return commandExecutor.execute(new VerificationStartUserCmd(userId, processDefinitionKey, processDefinitionId));
+	public boolean verifyStartProcessByUserId(String userId,String processDefinitionId) {
+		return commandExecutor.execute(new VerificationStartUserCmd(userId, null, processDefinitionId));
 	}
 
 }
