@@ -17,6 +17,9 @@
  */
 package org.foxbpm.engine.impl.task;
 
+import org.foxbpm.engine.expression.Expression;
+import org.foxbpm.engine.impl.expression.ExpressionImpl;
+
 /**
  * @author kenshin
  * 
@@ -24,8 +27,19 @@ package org.foxbpm.engine.impl.task;
 public class FormParam {
 
 	private String paramKey;
+	
+	private String paramType;
 
-	private String expressionText;
+
+	public String getParamType() {
+		return paramType;
+	}
+
+	public void setParamType(String paramType) {
+		this.paramType = paramType;
+	}
+
+	private Expression expression;
 
 	public String getParamKey() {
 		return paramKey;
@@ -35,12 +49,12 @@ public class FormParam {
 		this.paramKey = paramKey;
 	}
 
-	public String getExpressionText() {
-		return expressionText;
+	public Expression getExpression() {
+		return expression;
 	}
 
-	public void setExpressionText(String expressionText) {
-		this.expressionText = expressionText;
+	public void setExpression(String expressionText) {
+		this.expression = new ExpressionImpl(expressionText);
 	}
 
 }

@@ -161,8 +161,8 @@
 						<table width="100%" class="fix-table">
 							<thead>
 								<th width="30px">${applicationScope.appInfo["common.no"]}</th>
-								<th>${applicationScope.appInfo["task.bizKey"]}</th>
 								<th>${applicationScope.appInfo["task.processDefinitionName"]}</th>
+								<th>${applicationScope.appInfo["task.bizKey"]}</th>
 								<th>${applicationScope.appInfo["task.subject"]}</th>
 								<c:if test="${result.processType != 'initor'}">
 									<th>${applicationScope.appInfo["task.initor"]}</th>
@@ -179,8 +179,8 @@
 									varStatus="index">
 									<tr>
 										<td style="text-align: center;">${(index.index+1)+pageInfo.pageSize*(pageInfo.pageIndex-1)}</td>
-										<td>${dataList.bizKey}</td>
 										<td>${dataList.processDefinitionName}</td>
+										<td>${dataList.bizKey}</td>
 										<td>${dataList.subject}</td>
 										<c:if test="${result.processType != 'initor'}">
 											<td>${dataList.initiatorName}</td>

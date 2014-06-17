@@ -31,6 +31,7 @@ import org.foxbpm.engine.impl.mgmt.DataVariableMgmtInstance;
 import org.foxbpm.engine.impl.runtime.ContextInstanceImpl;
 import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.GuidUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.runtime.ContextInstance;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.runtime.ProcessInstanceStatus;
@@ -137,6 +138,13 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	public void start() {
 		this.setInstanceStatus(ProcessInstanceStatus.RUNNING);
 		this.setStartTime(ClockUtil.getCurrentTime());
+		
+		ProcessDefinitionEntity processDefinitionEntity=(ProcessDefinitionEntity)getProcessDefinition();
+		if(processDefinitionEntity.getSubject()!=null){
+			this.setSubject(StringUtil.getString(processDefinitionEntity.getSubject().getValue(getRootToken())));
+		}
+		
+		
 		super.start();
 	}
 

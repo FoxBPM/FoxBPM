@@ -46,9 +46,12 @@ import org.foxbpm.engine.impl.task.TaskAssigneeDefinition;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.model.bpmn.foxbpm.AssignPolicyType;
+import org.foxbpm.model.bpmn.foxbpm.CompleteTaskDescription;
+import org.foxbpm.model.bpmn.foxbpm.FormParamContainer;
 import org.foxbpm.model.bpmn.foxbpm.FormUri;
 import org.foxbpm.model.bpmn.foxbpm.FormUriView;
 import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
+import org.foxbpm.model.bpmn.foxbpm.TaskDescription;
 import org.foxbpm.model.bpmn.foxbpm.TaskPriority;
 import org.foxbpm.model.bpmn.foxbpm.TaskSubject;
 
@@ -109,8 +112,48 @@ public class BpmnModelUtil {
 	 */
 	public static String getUserTaskSubject(BaseElement baseElement){
 		TaskSubject taskSubject = (TaskSubject)BpmnModelUtil.getExtensionElement(baseElement,FoxBPMPackage.Literals.DOCUMENT_ROOT__TASK_SUBJECT);
-		if(taskSubject != null){
+		if(taskSubject != null&&taskSubject.getExpression()!=null){
 			return taskSubject.getExpression().getValue();
+		}
+		return null;
+	}
+	
+	
+	/**
+	 * 获取人工任务表单参数
+	 * @param baseElement
+	 * @return
+	 */
+	public static FormParamContainer getFormParamContainer(BaseElement baseElement){
+		FormParamContainer formParamContainer = (FormParamContainer)BpmnModelUtil.getExtensionElement(baseElement,FoxBPMPackage.Literals.DOCUMENT_ROOT__FORM_PARAM_CONTAINER);
+		return formParamContainer;
+	}
+	
+	
+	
+	
+	/**
+	 * 获取人工任务描述
+	 * @param baseElement
+	 * @return
+	 */
+	public static String getUserTaskDescription(BaseElement baseElement){
+		TaskDescription taskDescription = (TaskDescription)BpmnModelUtil.getExtensionElement(baseElement,FoxBPMPackage.Literals.DOCUMENT_ROOT__TASK_DESCRIPTION);
+		if(taskDescription != null&&taskDescription.getExpression()!=null){
+			return taskDescription.getExpression().getValue();
+		}
+		return null;
+	}
+	
+	/**
+	 * 获取人工任务完成后的描述
+	 * @param baseElement
+	 * @return
+	 */
+	public static String getUserTaskCompleteTaskDescription(BaseElement baseElement){
+		CompleteTaskDescription completeTaskDescription = (CompleteTaskDescription)BpmnModelUtil.getExtensionElement(baseElement,FoxBPMPackage.Literals.DOCUMENT_ROOT__COMPLETE_TASK_DESCRIPTION);
+		if(completeTaskDescription != null&&completeTaskDescription.getExpression()!=null){
+			return completeTaskDescription.getExpression().getValue();
 		}
 		return null;
 	}
@@ -122,7 +165,7 @@ public class BpmnModelUtil {
 	 */
 	public static String getFormUri(BaseElement baseElement){
 		FormUri formUri = (FormUri)BpmnModelUtil.getExtensionElement(baseElement, FoxBPMPackage.Literals.DOCUMENT_ROOT__FORM_URI);
-		if(formUri != null){
+		if(formUri != null&&formUri.getExpression()!=null){
 			return formUri.getExpression().getValue();
 		}
 		return null;
@@ -135,7 +178,7 @@ public class BpmnModelUtil {
 	 */
 	public static String getFormUriView(BaseElement baseElement){
 		FormUriView formUri = (FormUriView)BpmnModelUtil.getExtensionElement(baseElement, FoxBPMPackage.Literals.DOCUMENT_ROOT__FORM_URI_VIEW);
-		if(formUri != null){
+		if(formUri != null&&formUri.getExpression()!=null){
 			return formUri.getExpression().getValue();
 		}
 		return null;

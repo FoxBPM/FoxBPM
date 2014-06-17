@@ -260,8 +260,10 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			pageInfor.setTotal(StringUtil.getInt(taskQuery.count()));
 		}
 		Map<String, Object> attrMap = null;
+		Task task = null;
 		for (int i = 0, size = (null == taskList) ? 0 : taskList.size(); i < size; i++) {
-			attrMap = taskList.get(i).getPersistentState();
+			task = taskList.get(i);
+			attrMap = task.getPersistentState();
 			attrMap.put("formUri", "startTask.action");
 			resultData.add(attrMap);
 		}
@@ -358,7 +360,6 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 
 	@Override
 	public InputStream getFlowImagGraph(Map<String, Object> params) {
-
 		String processDefinitionId = StringUtil.getString(params.get("processDefinitionId"));
 		// 流程实例Key
 		if (StringUtil.isEmpty(processDefinitionId)) {

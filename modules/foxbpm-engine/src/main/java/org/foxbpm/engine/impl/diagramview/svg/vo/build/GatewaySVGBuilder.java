@@ -9,7 +9,7 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.PathVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 
 public class GatewaySVGBuilder extends AbstractSVGBuilder {
-	private static final String DEFAULT_FILL = "white";
+	private static final String DEFAULT_FILL = "ffffff";
 	private PathVO pathVo;
 
 	public GatewaySVGBuilder(SvgVO svgVo) {

@@ -76,8 +76,9 @@
 						url += "?";
 					}
 					url += "taskId=" + tii + "&processInstanceId=" + pii
-							+ "&businessKey=" + bizKey + "&processDefinitionKey="
-							+ pdk, obj, "dialogWidth=800px;dialogHeight=600px";
+							+ "&businessKey=" + bizKey
+							+ "&processDefinitionKey=" + pdk, obj,
+							"dialogWidth=800px;dialogHeight=600px";
 					window.open(url);
 				});
 		$("#selectUser").click(function() {
@@ -284,7 +285,7 @@
 										pdk="${dataList.processDefinitionKey}">${dataList.description}</a>
 									</td>
 									<td>${dataList.userName}</td>
-									<td><fmt:formatDate value="${dataList.startTime}"
+									<td><fmt:formatDate value="${dataList.endTime}"
 											type="both" /></td>
 									<td>${dataList.nodeName}</td>
 									<td><fmt:formatDate value="${dataList.createTime}"

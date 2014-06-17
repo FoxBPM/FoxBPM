@@ -26,7 +26,6 @@ import org.foxbpm.engine.impl.diagramview.svg.Point;
 import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
 import org.foxbpm.engine.impl.diagramview.svg.vo.DefsVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.LinearGradient;
-import org.foxbpm.engine.impl.diagramview.svg.vo.RadialGradientVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.RectVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.StopVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
@@ -105,7 +104,7 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 					this.textVO.getElementValue());
 			int languageShift = -5;
 			if (SVGUtils.isChinese(this.textVO.getElementValue().charAt(0))) {
-				languageShift = 12;
+				languageShift = 10;
 			}
 			super.setTextX((this.rectVO.getWidth() / 2) - textWidth / 2
 					- languageShift);
