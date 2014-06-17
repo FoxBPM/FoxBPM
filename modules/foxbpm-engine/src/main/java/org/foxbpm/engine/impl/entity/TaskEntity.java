@@ -209,8 +209,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 
 	public void setProcessInstance(ProcessInstanceEntity processInstance) {
 		setProcessInstanceId(processInstance.getId());
-		setProcessDefinitionId(processInstance.getProcessDefinitionId());
-		setProcessDefinitionKey(processInstance.getProcessDefinitionKey());
+		setProcessDefinition((ProcessDefinitionEntity)processInstance.getProcessDefinition());
 		this.processInstance = processInstance;
 	}
 
@@ -257,6 +256,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		if(processDefinition!=null){
 			processDefinitionId=processDefinition.getId();
 			processDefinitionKey=processDefinition.getKey();
+			processDefinitionName=processDefinition.getName();
 		}
 		this.processDefinition = processDefinition;
 	}

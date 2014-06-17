@@ -64,7 +64,7 @@ public class UserTaskBehavior extends TaskBehavior {
 		((TokenEntity) executionContext).setAssignTask(task);
 
 		ProcessInstanceEntity processInstance = (ProcessInstanceEntity) executionContext.getProcessInstance();
-
+		
 		task.setBizKey(processInstance.getBizKey());
 		task.setSubject(StringUtil.getString(taskDefinition.getTaskSubject().getValue(executionContext)));
 		
