@@ -185,23 +185,4 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 
 		}
 	}
-
-	// TODO 放射性渐变,目前采用的是线性渐变
-	/**
-	 * 
-	 * 
-	 * @param fill
-	 */
-	private void buildRadialGradient(String fill) {
-		DefsVO defsVo = this.svgVo.getgVo().getDefsVo();
-		if (defsVo != null) {
-			RadialGradientVO radialGradientVo = defsVo.getRadialGradientVo();
-			if (radialGradientVo != null) {
-				String backGroudUUID = UUID.randomUUID().toString();
-				radialGradientVo.setId(backGroudUUID);
-				this.rectVO.setFill("url(#" + backGroudUUID + ") #" + fill);
-				return;
-			}
-		}
-	}
 }

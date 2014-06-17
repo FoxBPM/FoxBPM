@@ -19,11 +19,14 @@ package org.foxbpm.engine.impl.diagramview.svg.vo.build;
 
 import java.awt.Font;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.impl.diagramview.builder.FoxBpmnViewBuilder;
 import org.foxbpm.engine.impl.diagramview.svg.Point;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTypeNameConstant;
+import org.foxbpm.engine.impl.diagramview.svg.vo.DefsVO;
+import org.foxbpm.engine.impl.diagramview.svg.vo.RadialGradientVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.TextVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.VONode;
@@ -66,12 +69,15 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 		if (StringUtils.equalsIgnoreCase(type,
 				SVGTypeNameConstant.SVG_TYPE_EVENT)) {
 			return new EventSVGBuilder((SvgVO) svgVo);
-		}
-		if (StringUtils.contains(type, SVGTypeNameConstant.SVG_TYPE_TASK)) {
+		} else if (StringUtils
+				.contains(type, SVGTypeNameConstant.SVG_TYPE_TASK)) {
 			return new TaskSVGBuilder((SvgVO) svgVo);
-		}
-		if (StringUtils.contains(type, SVGTypeNameConstant.SVG_TYPE_CONNECTOR)) {
+		} else if (StringUtils.contains(type,
+				SVGTypeNameConstant.SVG_TYPE_CONNECTOR)) {
 			return new ConnectorSVGBuilder((SvgVO) svgVo);
+		} else if (StringUtils.contains(type,
+				SVGTypeNameConstant.SVT_TYPE_GATEWAY)) {
+			return new GatewaySVGBuilder((SvgVO) svgVo);
 		}
 		return null;
 	}
@@ -148,8 +154,8 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 		this.textVO.setStyle(style);
 	}
 
-	public void setTextStrokeWidth(float textStrokeWidth) { 
-			this.textVO.setStrokeWidth(textStrokeWidth); 
+	public void setTextStrokeWidth(float textStrokeWidth) {
+		this.textVO.setStrokeWidth(textStrokeWidth);
 	}
 
 	/**
@@ -240,5 +246,24 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 	 * @param style
 	 */
 	public abstract void setTypeStyle(String style);
+
+	// TODO 放射性渐变,目前采用的是线性渐变
+	/**
+	 * 
+	 * 
+	 * @param fill
+	 */
+	protected void buildRadialGradient(String fill, VONode svgVo) {
+		DefsVO defsVo = this.svgVo.getgVo().getDefsVo();
+		if (defsVo != null) {
+			RadialGradientVO radialGradientVo = defsVo.getRadialGradientVo();
+			if (radialGradientVo != null) {
+				String backGroudUUID = UUID.randomUUID().toString();
+				radialGradientVo.setId(backGroudUUID);
+				svgVo.setFill("url(#" + backGroudUUID + ") #" + fill);
+				return;
+			}
+		}
+	}
 
 }

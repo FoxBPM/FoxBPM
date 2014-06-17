@@ -54,6 +54,7 @@ public final class SVGUtils {
 	 * BPMN节点类型(例如：矩形，圆形)在SVG文档中的ID
 	 */
 	public static final String BPMN_NODE_ID = "bg_frame";
+	public static final String EDGE = "edge";
 
 	/**
 	 * 获取任务矩形
@@ -103,7 +104,7 @@ public final class SVGUtils {
 			Iterator<GVO> iterator = gVoList.iterator();
 			while (iterator.hasNext()) {
 				GVO next = iterator.next();
-				if (StringUtils.equalsIgnoreCase(next.getId(), "edge")) {
+				if (StringUtils.equalsIgnoreCase(next.getId(), EDGE)) {
 					List<PathVO> pathVoList = next.getPathVoList();
 					Iterator<PathVO> pathIter = pathVoList.iterator();
 					while (pathIter.hasNext()) {
@@ -117,6 +118,25 @@ public final class SVGUtils {
 				}
 			}
 		}
+		return null;
+	}
+
+	/**
+	 * 获取网关路径
+	 * 
+	 * @param svgVo
+	 * @return
+	 */
+	public final static PathVO getGatewayVOFromSvgVO(SvgVO svgVo) {
+		List<PathVO> pathVoList = svgVo.getgVo().getPathVoList();
+		Iterator<PathVO> pathIter = pathVoList.iterator();
+		while (pathIter.hasNext()) {
+			PathVO tempPathVo = pathIter.next();
+			if (StringUtils.equalsIgnoreCase(tempPathVo.getId(), BPMN_NODE_ID)) {
+				return tempPathVo;
+			}
+		}
+
 		return null;
 	}
 

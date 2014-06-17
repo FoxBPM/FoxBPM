@@ -45,6 +45,7 @@ public abstract class AbstractFlowNodeSVGFactory extends
 	private static final String NODE_TYPE_EVENT = "event";
 	private static final String NODE_TYPE_ACTIVITY = "activity";
 	private static final String NODE_TYPE_CONNECTOR = "connector";
+	private static final String NODE_TYPE_GATEWAY = "gateway";
 
 	/**
 	 * 流程定义的SVG画布坐标MINX
@@ -111,6 +112,8 @@ public abstract class AbstractFlowNodeSVGFactory extends
 				NODE_TYPE_CONNECTOR)) {
 			return new ConnectorSVGFactory(kernelFlowElement,
 					svgTemplateFileName);
+		} else if (StringUtils.contains(svgTemplateFileName, NODE_TYPE_GATEWAY)) {
+			return new GatewaySVGFactory(kernelFlowElement, svgTemplateFileName);
 		}
 		return null;
 	}
