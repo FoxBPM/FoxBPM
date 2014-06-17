@@ -87,7 +87,7 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	@Test
 	public void testSVG(){
 		
-		String processDefinitionId = "process_ma_1:1:caffbffe-b7fe-466d-955f-8e7db3252389";
+		String processDefinitionId = "process_test_fang_1:1:3fc97b4d-1fb8-476e-8e05-317fb327d92d";
 		modelService.getProcessDefinitionSVG(processDefinitionId);
 	} 
 }
