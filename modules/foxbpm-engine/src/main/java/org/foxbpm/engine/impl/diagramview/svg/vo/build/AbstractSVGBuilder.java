@@ -152,6 +152,7 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 		Font font = new Font(fonts[0], Font.PLAIN, Integer.valueOf(fonts[1]));
 		this.textVO.setFont(font);
 		this.textVO.setStyle(style);
+		this.textVO.setFontSize(fonts[1]);
 	}
 
 	public void setTextStrokeWidth(float textStrokeWidth) {
