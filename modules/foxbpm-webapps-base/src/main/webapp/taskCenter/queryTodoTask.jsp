@@ -284,7 +284,7 @@
 										pdk="${dataList.processDefinitionKey}">${dataList.description}</a>
 									</td>
 									<td>${dataList.userName}</td>
-									<td><fmt:formatDate value="${dataList.createTime}"
+									<td><fmt:formatDate value="${dataList.startTime}"
 											type="both" /></td>
 									<td>${dataList.nodeName}</td>
 									<td><fmt:formatDate value="${dataList.createTime}"

@@ -188,6 +188,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		resultData.put("taskEndedJson", JSONUtil.parseObject2JSON(instanceMaps));
 		resultData.put("taskNotEndJson", JSONUtil.parseObject2JSON(instancesNotEnd));
 		resultData.put("processName", processName);
+		resultData.put("processInstanceId", processInstance.getId());
 		resultData.put("processDefinitionId", processInstance.getProcessDefinitionId());
 		return resultData;
 	}
@@ -349,12 +350,12 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 	@Override
 	public String getFlowSvgGraph(Map<String, Object> params) {
 
-		String processDefinitionId = StringUtil.getString(params.get("processDefinitionId"));
+		String processInstanceId = StringUtil.getString(params.get("processInstanceId"));
 		// 流程实例Key
-		if (StringUtil.isEmpty("processDefinitionId")) {
-			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_PROCESSDEFID, "processDefinitionId is null !");
+		if (StringUtil.isEmpty(processInstanceId)) {
+			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_PROCESSDEFID, "processInstanceId is null !");
 		}
-		return modelService.getProcessDefinitionSVG(processDefinitionId);
+		return runtimeService.createProcessInstanceSVGImageString(processInstanceId);
 	}
 
 	@Override
@@ -362,7 +363,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 
 		String processDefinitionId = StringUtil.getString(params.get("processDefinitionId"));
 		// 流程实例Key
-		if (StringUtil.isEmpty("processDefinitionId")) {
+		if (StringUtil.isEmpty(processDefinitionId)) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_PROCESSDEFID, "processDefinitionId is null !");
 		}
 		return modelService.GetFlowGraphicsImgStreamByDefId(processDefinitionId);
