@@ -54,6 +54,9 @@ public class SignProcessStateSVGFactory extends AbstractFlowNodeSVGFactory {
 	 */
 	private static final String SIGN_STATE_FILL = "none";
 
+	private static final float SIGN_STATE_RX = 10;
+	private static final float SIGN_STATE_RY = 10;
+
 	/**
 	 * 标识属性
 	 */
@@ -150,6 +153,9 @@ public class SignProcessStateSVGFactory extends AbstractFlowNodeSVGFactory {
 		RectVO rectVo = new RectVO();
 		rectVo.setId(id);
 		rectVo.setX(x);
+		rectVo.setY(y);
+		rectVo.setRx(SIGN_STATE_RX);
+		rectVo.setRy(SIGN_STATE_RY);
 		rectVo.setY(y);
 		rectVo.setWidth(width);
 		rectVo.setHeight(height);
