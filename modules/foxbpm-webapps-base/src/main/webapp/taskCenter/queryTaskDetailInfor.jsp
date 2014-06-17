@@ -7,9 +7,18 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>流程状态</title>
-<jsp:include page="formHead.jsp" flush="true" />
-<link rel="stylesheet" type="text/css" href="common/css/form.css"></link>
-<link rel="stylesheet" type="text/css" href="common/css/flowGraph.css"></link>
+<link rel="stylesheet" type="text/css" href="common/css/reset.css">
+<link rel="stylesheet" type="text/css" href="common/css/global.css">
+<link rel="stylesheet" type="text/css" href="common/css/popup.css">
+<link rel="stylesheet" type="text/css" href="common/css/form.css"/>
+<link rel="stylesheet" type="text/css" href="common/css/flowGraph.css"/>
+<link rel="stylesheet" type="text/css" href="common/css/form.css"/>
+<link rel="stylesheet" type="text/css" href="common/css/flowGraph.css"/>
+
+<script type="text/javascript" src="common/js/jquery.js"></script>
+<script type="text/javascript"src="common/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="common/js/common.js"></script>
+
 
 <script type="text/javascript">
 	var taskListEnd = [];//存放已经结束的节点
@@ -156,6 +165,7 @@
 		</div>
 	</div>
 </body>
+
 <script type="text/javascript">
 	//页面初始化后需要展现流程图
 	$(function() {
@@ -167,15 +177,13 @@
 						.append(
 								"<img src='getFlowGraph.action?processDefinitionId=${result.processDefinitionId}' />");
 				bodyOnload();
-			} 
-			else 
-			{
+			} else {
 				//加载svg图片
 				$.ajax({
 					type : "POST",
 					url : "getFlowGraph.action",
-					data : "flag=svg&processDefinitionId="
-							+ '${result.processDefinitionId}',
+					data : "flag=svg&processInstanceId="
+							+ '${result.processInstanceId}',
 					success : function(src) {
 						$("#flowImg").append(src);
 					}
@@ -184,4 +192,5 @@
 		}
 	});
 </script>
+
 </html>
