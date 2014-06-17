@@ -90,7 +90,7 @@
         and RES.BIZ_KEY = #{businessKey}
       </if>
       <if test="businessKeyLike != null">
-        and RES.BIZ_KEY like #{businessKey}
+        and RES.BIZ_KEY like #{businessKeyLike}
       </if>
        <if test="processDefinitionId != null">
         and RES.PROCESSDEFINITION_ID = #{processDefinitionId}
