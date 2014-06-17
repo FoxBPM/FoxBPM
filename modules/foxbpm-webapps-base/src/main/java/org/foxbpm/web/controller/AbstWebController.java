@@ -133,8 +133,6 @@ public abstract class AbstWebController {
 		try {
 			ServletOutputStream out = response.getOutputStream();
 			response.setContentType("application/octet-stream;charset=UTF-8");
-			out = response.getOutputStream();
-			response.setContentType("application/octet-stream;charset=UTF-8");
 			byte[] buff = new byte[2048];
 			int size = 0;
 			while (in != null && (size = in.read(buff)) != -1) {
@@ -143,14 +141,6 @@ public abstract class AbstWebController {
 			out.flush();
 		} catch (Exception e) {
 			throw new FoxbpmWebException(e);
-		} finally {
-			if (null != in) {
-				try {
-					in.close();
-				} catch (IOException e) {
-					throw new FoxbpmWebException(e);
-				}
-			}
 		}
 	}
 }
