@@ -78,7 +78,12 @@ public abstract class AbstractFlowNodeVOFactory {
 		FoxBpmnViewBuilder svgBuilder = AbstractSVGBuilder.createSVGBuilder(
 				voNode, svgType);
 
-		// 构造节点元素,需要考虑构造顺序，注意以来关系
+		// 构造节点元素,需要考虑构造顺序，注意依赖关系
+		// 1、过滤
+		// 2、构造文本信息
+		// 3、构造宽度，高度，边框
+		// 4、构造XY坐标
+		// 5、构造FILL式样
 		if (kernelFlowElement instanceof KernelFlowNodeImpl) {
 			// 过滤
 			this.filterActivityTaskVO(voNode, new String[] { "callActivity" });
@@ -96,11 +101,7 @@ public abstract class AbstractFlowNodeVOFactory {
 
 			// 如果是事件节点，必须先设置width属性，即设置圆的直径,
 			svgBuilder.setWidth(kernelFlowNodeImpl.getWidth());
-			svgBuilder
-					.setHeight(kernelFlowNodeImpl.getHeight());
-			// 线性渐变设置会用到矩形的Height属性
-			svgBuilder.setFill((String) kernelFlowNodeImpl
-					.getProperty(StyleOption.Background));
+			svgBuilder.setHeight(kernelFlowNodeImpl.getHeight());
 
 			svgBuilder.setStroke((String) kernelFlowNodeImpl
 					.getProperty(StyleOption.Foreground));
@@ -108,10 +109,13 @@ public abstract class AbstractFlowNodeVOFactory {
 			// 设置节点的坐标包括对应文本字体的坐标，文本坐标依赖于文本式样字体大小等
 			svgBuilder.setXAndY(kernelFlowNodeImpl.getX(),
 					kernelFlowNodeImpl.getY());
-			// TODO 未知属性
-			kernelFlowNodeImpl.getProperty(StyleOption.StyleObject);
+			// 线性渐变设置会用到矩形的Height属性，
+			svgBuilder.setFill((String) kernelFlowNodeImpl
+					.getProperty(StyleOption.Background));
+			// TODO 未知属性 StyleOption.StyleObject
 		}
 		// 线条元素
+		// 先构造拐点，再构造文本坐标
 		if (kernelFlowElement instanceof KernelSequenceFlowImpl) {
 			KernelSequenceFlowImpl kernelSequenceFlowImpl = (KernelSequenceFlowImpl) kernelFlowElement;
 			SequenceFlowBehavior sequenceFlowBehavior = (SequenceFlowBehavior) kernelSequenceFlowImpl
@@ -141,7 +145,6 @@ public abstract class AbstractFlowNodeVOFactory {
 					.getProperty(StyleOption.Foreground));
 		}
 		return voNode;
-
 	}
 
 	public abstract String convertNodeListToString(

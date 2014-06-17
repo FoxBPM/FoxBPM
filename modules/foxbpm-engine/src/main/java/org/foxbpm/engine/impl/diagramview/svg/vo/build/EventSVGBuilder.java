@@ -128,6 +128,14 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 			if (linearGradient != null) {
 				String backGroudUUID = UUID.randomUUID().toString();
 				linearGradient.setId(backGroudUUID);
+				linearGradient.setX1(this.circleVO.getCx()
+						- this.circleVO.getR());
+				linearGradient.setX2(this.circleVO.getCx()
+						- this.circleVO.getR());
+				linearGradient.setY1(this.circleVO.getCy()
+						- this.circleVO.getR());
+				linearGradient.setY2(this.circleVO.getCy()
+						+ this.circleVO.getR());
 				List<StopVO> stopVoList = linearGradient.getStopVoList();
 				if (stopVoList != null && stopVoList.size() > 0) {
 					StopVO stopVO = stopVoList.get(LINEARGRADIENT_INDEX);
