@@ -25,15 +25,20 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JLabel;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.diagramview.svg.vo.CircleVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.DefsVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.GVO;
+import org.foxbpm.engine.impl.diagramview.svg.vo.PathVO;
+import org.foxbpm.engine.impl.diagramview.svg.vo.RectVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.VONode;
 
@@ -44,19 +49,90 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.VONode;
  * @date 2014-06-10
  */
 public final class SVGUtils {
-	public static boolean isChinese(char c) { 
-        Character.UnicodeBlock ub = Character.UnicodeBlock.of(c); 
-        if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS 
-                || ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS 
-                || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A 
-                || ub == Character.UnicodeBlock.GENERAL_PUNCTUATION 
-                || ub == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION 
-                || ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS) { 
 
-            return true; 
-        } 
-        return false; 
-    } 
+	/**
+	 * BPMN节点类型(例如：矩形，圆形)在SVG文档中的ID
+	 */
+	public static final String BPMN_NODE_ID = "bg_frame";
+
+	/**
+	 * 获取任务矩形
+	 * 
+	 * @param svgVo
+	 * @return
+	 */
+	public final static RectVO getTaskVOFromSvgVO(SvgVO svgVo) {
+		List<RectVO> rectVoList = svgVo.getgVo().getRectVoList();
+		Iterator<RectVO> iterator = rectVoList.iterator();
+		while (iterator.hasNext()) {
+			RectVO next = iterator.next();
+			if (StringUtils.equalsIgnoreCase(next.getId(), BPMN_NODE_ID)) {
+				return next;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 获取事件圆形
+	 * 
+	 * @param svgVo
+	 * @return
+	 */
+	public final static CircleVO getEventVOFromSvgVO(SvgVO svgVo) {
+		List<CircleVO> circleVoList = svgVo.getgVo().getCircleVoList();
+		Iterator<CircleVO> iterator = circleVoList.iterator();
+		while (iterator.hasNext()) {
+			CircleVO next = iterator.next();
+			if (StringUtils.equalsIgnoreCase(next.getId(), BPMN_NODE_ID)) {
+				return next;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 获取线条路径
+	 * 
+	 * @param svgVo
+	 * @return
+	 */
+	public final static PathVO getSequenceVOFromSvgVO(SvgVO svgVo) {
+		List<GVO> gVoList = svgVo.getgVo().getgVoList();
+		if (gVoList != null && gVoList.size() > 0) {
+			Iterator<GVO> iterator = gVoList.iterator();
+			while (iterator.hasNext()) {
+				GVO next = iterator.next();
+				if (StringUtils.equalsIgnoreCase(next.getId(), "edge")) {
+					List<PathVO> pathVoList = next.getPathVoList();
+					Iterator<PathVO> pathIter = pathVoList.iterator();
+					while (pathIter.hasNext()) {
+						PathVO tempPathVo = pathIter.next();
+						if (StringUtils.equalsIgnoreCase(tempPathVo.getId(),
+								BPMN_NODE_ID)) {
+							return tempPathVo;
+						}
+					}
+
+				}
+			}
+		}
+		return null;
+	}
+
+	public final static boolean isChinese(char c) {
+		Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);
+		if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
+				|| ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
+				|| ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A
+				|| ub == Character.UnicodeBlock.GENERAL_PUNCTUATION
+				|| ub == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION
+				|| ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS) {
+
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * 根据文本的式样，以及文本内容，获取文本在屏幕上展示的像素宽
@@ -67,7 +143,7 @@ public final class SVGUtils {
 	 *            文本
 	 * @return 文本宽度
 	 */
-	public static int getTextWidth(Font font, String text) {
+	public final static int getTextWidth(Font font, String text) {
 		JLabel label = new JLabel(text);
 		label.setFont(font);
 		FontMetrics metrics = label.getFontMetrics(label.getFont());
@@ -80,7 +156,7 @@ public final class SVGUtils {
 	 * @param waypoints
 	 * @return
 	 */
-	public static List<Point> convertWaypointsTOPointList(
+	public final static List<Point> convertWaypointsTOPointList(
 			List<Integer> waypoints) {
 		if (waypoints != null && waypoints.size() > 0
 				&& waypoints.size() % 2 == 0) {
@@ -106,7 +182,7 @@ public final class SVGUtils {
 	 * @param waypoints
 	 * @return
 	 */
-	public static String[] getSequenceFLowWayPointArrayByWayPointList(
+	public final static String[] getSequenceFLowWayPointArrayByWayPointList(
 			List<Integer> waypoints) {
 		if (waypoints != null && waypoints.size() > 0
 				&& waypoints.size() % 2 == 0) {
@@ -133,7 +209,7 @@ public final class SVGUtils {
 	 * @param svgVo
 	 * @return
 	 */
-	public static String createSVGString(VONode svgVo) {
+	public final static String createSVGString(VONode svgVo) {
 		try {
 			JAXBContext context = JAXBContext.newInstance(SvgVO.class);
 			Marshaller marshal = context.createMarshaller();
@@ -155,11 +231,11 @@ public final class SVGUtils {
 	 *            原对象
 	 * @return clone之后的对象
 	 */
-	public static GVO cloneGVO(GVO gVo) {
+	public final static GVO cloneGVO(GVO gVo) {
 		return (GVO) clone(gVo);
 	}
 
-	public static DefsVO cloneDefsVO(DefsVO defsVo) {
+	public final static DefsVO cloneDefsVO(DefsVO defsVo) {
 		return (DefsVO) clone(defsVo);
 	}
 
@@ -170,7 +246,7 @@ public final class SVGUtils {
 	 *            原对象
 	 * @return clone之后的对象
 	 */
-	public static SvgVO cloneSVGVo(SvgVO svgVo) {
+	public final static SvgVO cloneSVGVo(SvgVO svgVo) {
 		return (SvgVO) clone(svgVo);
 	}
 
@@ -181,7 +257,7 @@ public final class SVGUtils {
 	 *            原对象
 	 * @return 目标对象
 	 */
-	public static Object clone(Object object) {
+	public final static Object clone(Object object) {
 		ByteArrayOutputStream bos = null;
 		ObjectOutputStream oos = null;
 		ObjectInputStream ois = null;

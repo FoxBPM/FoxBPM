@@ -17,13 +17,12 @@
  */
 package org.foxbpm.engine.impl.diagramview.svg.vo.build;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.diagramview.svg.Point;
-import org.foxbpm.engine.impl.diagramview.svg.vo.GVO;
+import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
 import org.foxbpm.engine.impl.diagramview.svg.vo.PathVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 
@@ -44,26 +43,7 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 	public ConnectorSVGBuilder(SvgVO svgVo) {
 		super(svgVo);
 		this.textVO = svgVo.getgVo().getgVoList().get(0).getTextVo();
-		List<GVO> gVoList = svgVo.getgVo().getgVoList();
-		if (gVoList != null && gVoList.size() > 0) {
-			Iterator<GVO> iterator = gVoList.iterator();
-			while (iterator.hasNext()) {
-				GVO next = iterator.next();
-				if (StringUtils.equalsIgnoreCase(next.getId(), "edge")) {
-					List<PathVO> pathVoList = next.getPathVoList();
-					Iterator<PathVO> pathIter = pathVoList.iterator();
-					while (pathIter.hasNext()) {
-						PathVO tempPathVo = pathIter.next();
-						if (StringUtils.equalsIgnoreCase(tempPathVo.getId(),
-								BPMN_NODE_ID)) {
-							this.pathVo = tempPathVo;
-							return;
-						}
-					}
-
-				}
-			}
-		}
+		this.pathVo = SVGUtils.getSequenceVOFromSvgVO(svgVo);
 		if (pathVo == null) {
 			throw new FoxBPMException("线条元素初始化工厂时候报错，pathVo对象为空");
 		}
@@ -101,11 +81,7 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setStrokeWidth(String strokeWidth) {
-		if (StringUtils.isBlank(strokeWidth)) {
-			this.pathVo.setStrokeWidth(SEQUENCE_STROKEWIDTH_DEFAULT);
-			return;
-		}
+	public void setStrokeWidth(float strokeWidth) {
 		this.pathVo.setStrokeWidth(strokeWidth);
 
 	}
@@ -145,7 +121,7 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setTypeStrokeWidth(String strokeWidth) {
+	public void setTypeStrokeWidth(float strokeWidth) {
 		// TODO Auto-generated method stub
 
 	}
@@ -163,13 +139,13 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setWidth(String width) {
+	public void setWidth(float width) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void setHeight(String height) {
+	public void setHeight(float height) {
 		// TODO Auto-generated method stub
 
 	}

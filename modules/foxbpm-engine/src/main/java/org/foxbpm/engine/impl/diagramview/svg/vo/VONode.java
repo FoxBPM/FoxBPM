@@ -49,20 +49,21 @@ public abstract class VONode implements Serializable {
 	protected String fill;
 	@XmlAttribute(name = "stroke")
 	protected String stroke;
+	// 设置成引用类型，引用类型为null不映射
 	@XmlAttribute(name = "stroke-width")
-	protected String strokeWidth;
+	protected Float strokeWidth;
 	@XmlAttribute(name = "stroke-linecap")
 	protected String strokeLinecap;
 	@XmlAttribute(name = "stroke-linejoin")
 	protected String strokeLinejoin;
 	@XmlAttribute(name = "width")
-	protected String width;
+	protected Float width;
 	@XmlAttribute(name = "height")
-	protected String height;
+	protected Float height;
 	@XmlAttribute(name = "x")
-	protected String x;
+	protected Float x;
 	@XmlAttribute(name = "y")
-	protected String y;
+	protected Float y;
 	@XmlValue
 	protected String elementValue;
 
@@ -74,19 +75,19 @@ public abstract class VONode implements Serializable {
 		this.elementValue = elementValue;
 	}
 
-	public String getX() {
+	public Float getX() {
 		return x;
 	}
 
-	public void setX(String x) {
+	public void setX(Float x) {
 		this.x = x;
 	}
 
-	public String getY() {
+	public Float getY() {
 		return y;
 	}
 
-	public void setY(String y) {
+	public void setY(Float y) {
 		this.y = y;
 	}
 
@@ -114,27 +115,27 @@ public abstract class VONode implements Serializable {
 		this.stroke = stroke;
 	}
 
-	public String getStrokeWidth() {
+	public float getStrokeWidth() {
 		return strokeWidth;
 	}
 
-	public void setStrokeWidth(String strokeWidth) {
+	public void setStrokeWidth(float strokeWidth) {
 		this.strokeWidth = strokeWidth;
 	}
 
-	public String getWidth() {
+	public float getWidth() {
 		return width;
 	}
 
-	public void setWidth(String width) {
+	public void setWidth(float width) {
 		this.width = width;
 	}
 
-	public String getHeight() {
+	public float getHeight() {
 		return height;
 	}
 
-	public void setHeight(String height) {
+	public void setHeight(float height) {
 		this.height = height;
 	}
 

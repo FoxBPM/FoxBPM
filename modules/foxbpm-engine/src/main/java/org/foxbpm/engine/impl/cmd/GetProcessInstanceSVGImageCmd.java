@@ -47,17 +47,17 @@ public class GetProcessInstanceSVGImageCmd implements Command<String> {
 	public String execute(CommandContext commandContext) {
 		ProcessInstanceEntity processEntity = commandContext
 				.getProcessInstanceManager().findProcessInstanceById(
-						processInstanceID);
-		String processDefinitionID = processEntity.getDefinitionId();
+						processInstanceID); 
+		String processDefinitionID = processEntity.getProcessDefinitionId();
 		ProcessDefinitionEntity deployedProcessDefinition = commandContext
 				.getProcessEngineConfigurationImpl().getDeploymentManager()
 				.findDeployedProcessDefinitionById(processDefinitionID);
 		TaskQuery taskQuery = new TaskQueryImpl(commandContext);
-		List<Task> listNotEndTask = taskQuery
-				.processInstanceId(processInstanceID).taskNotEnd().list();
+		List<Task> listTask = taskQuery
+				.processInstanceId(processInstanceID).list();
 		// SVG上一层接口，独立于SVG，后期支持动态切换到微软SVG实现
 		FoxbpmProcessDefinitionVOFactory svgFactory = new ConcreteProcessDefinitionVOFactory();
-		return svgFactory.createProcessInstanceSVGImageString(listNotEndTask,
+		return svgFactory.createProcessInstanceSVGImageString(listTask,
 				deployedProcessDefinition);
 
 	}

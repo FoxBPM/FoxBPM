@@ -37,23 +37,23 @@ public class RectVO extends NamespaceAttributesVO {
 	 */
 	private static final long serialVersionUID = 995236243017598074L;
 	@XmlAttribute(name = "rx")
-	private String rx;
+	private Float rx;
 	@XmlAttribute(name = "ry")
-	private String ry;
+	private Float ry;
 
-	public String getRx() {
+	public Float getRx() {
 		return rx;
 	}
 
-	public void setRx(String rx) {
+	public void setRx(Float rx) {
 		this.rx = rx;
 	}
 
-	public String getRy() {
+	public Float getRy() {
 		return ry;
 	}
 
-	public void setRy(String ry) {
+	public void setRy(Float ry) {
 		this.ry = ry;
 	}
 

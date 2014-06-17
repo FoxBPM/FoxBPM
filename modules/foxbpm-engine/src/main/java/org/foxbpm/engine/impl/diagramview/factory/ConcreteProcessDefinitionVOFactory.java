@@ -61,8 +61,16 @@ public class ConcreteProcessDefinitionVOFactory extends
 	 */
 	private AbstractFlowNodeVOFactory flowNodeVOFactory;
 
-	@Override
-	public String createProcessInstanceSVGImageString(List<Task> notEndTask,
+	/**
+	 * 创建流程图，包括标记信息
+	 * 
+	 * @param taskList
+	 *            所有需要标识的任务信息
+	 * @param deployedProcessDefinition
+	 *            流程定义信息
+	 * @return 包含标记的，流程图字符串
+	 */
+	public String createProcessInstanceSVGImageString(List<Task> taskList,
 			ProcessDefinitionEntity deployedProcessDefinition) {
 		List<KernelFlowNodeImpl> flowNodes = deployedProcessDefinition
 				.getFlowNodes();
@@ -81,11 +89,11 @@ public class ConcreteProcessDefinitionVOFactory extends
 			taskType = typeTemplateArray[ARRAY_INDEX_FIRST];
 			svgTemplateFileName = typeTemplateArray[ARRAY_INDEX_SECOND];
 			VONode voNode = null;
-			if (notEndTask == null || notEndTask.size() == EMPTY_LIST) {
+			if (taskList == null || taskList.size() == EMPTY_LIST) {
 				voNode = this.getNodeSVGFromFactory(kernelFlowNodeImpl,
 						taskType, svgTemplateFileName);
 			} else {
-				boolean taskState = this.confirmTaskNotEnd(notEndTask,
+				String taskState = this.confirmTaskNotEnd(taskList,
 						kernelFlowNodeImpl.getId());
 				voNode = this.getSignedNodeSVGFromFactory(kernelFlowNodeImpl,
 						taskType, svgTemplateFileName, taskState);
@@ -126,20 +134,26 @@ public class ConcreteProcessDefinitionVOFactory extends
 	/**
 	 * 判断任务节点是否已经处理过
 	 * 
-	 * @param notEndTask
+	 * @param taskList
 	 * @param taskFlowNodeID
 	 * @return
 	 */
-	private boolean confirmTaskNotEnd(List<Task> notEndTask,
-			String taskFlowNodeID) {
-		Iterator<Task> notEndIter = notEndTask.iterator();
+	private String confirmTaskNotEnd(List<Task> taskList, String taskFlowNodeID) {
+		String result = "notExists";
+		Iterator<Task> notEndIter = taskList.iterator();
 		while (notEndIter.hasNext()) {
 			Task notEnd = notEndIter.next();
-			if (StringUtils.equalsIgnoreCase(notEnd.getId(), taskFlowNodeID)) {
-				return true;
+			if (StringUtils
+					.equalsIgnoreCase(notEnd.getNodeId(), taskFlowNodeID)) {
+				if (notEnd.hasEnded()) {
+					result = "end";
+				} else {
+					result = "notEnd";
+				}
+				return result;
 			}
 		}
-		return false;
+		return result;
 	}
 
 	/**
@@ -168,7 +182,7 @@ public class ConcreteProcessDefinitionVOFactory extends
 	 */
 	private VONode getSignedNodeSVGFromFactory(
 			KernelFlowElement kernelFlowNodeImpl, String svgType,
-			String svgTemplateFileName, boolean taskState) {
+			String svgTemplateFileName, String taskState) {
 		// 创建具体工厂
 		AbstractFlowNodeVOFactory conreateFactory = AbstractFlowNodeVOFactory
 				.createSVGFactory(kernelFlowNodeImpl, svgTemplateFileName);

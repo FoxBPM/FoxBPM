@@ -23,13 +23,13 @@ public class LinearGradient extends VONode {
 	 */
 	private static final long serialVersionUID = -868070769119888506L;
 	@XmlAttribute(name = "x1")
-	private String x1;
+	private Float x1;
 	@XmlAttribute(name = "x2")
-	private String x2;
+	private Float x2;
 	@XmlAttribute(name = "y1")
-	private String y1;
+	private Float y1;
 	@XmlAttribute(name = "y2")
-	private String y2;
+	private Float y2;
 	@XmlAttribute(name = "gradientUnits")
 	private String gradientUnits;
 	@XmlAttribute(name = "spreadMethod")
@@ -37,35 +37,35 @@ public class LinearGradient extends VONode {
 	@XmlElement(name = "stop")
 	private List<StopVO> stopVoList;
 
-	public String getX1() {
+	public Float getX1() {
 		return x1;
 	}
 
-	public void setX1(String x1) {
+	public void setX1(Float x1) {
 		this.x1 = x1;
 	}
 
-	public String getX2() {
+	public Float getX2() {
 		return x2;
 	}
 
-	public void setX2(String x2) {
+	public void setX2(Float x2) {
 		this.x2 = x2;
 	}
 
-	public String getY1() {
+	public Float getY1() {
 		return y1;
 	}
 
-	public void setY1(String y1) {
+	public void setY1(Float y1) {
 		this.y1 = y1;
 	}
 
-	public String getY2() {
+	public Float getY2() {
 		return y2;
 	}
 
-	public void setY2(String y2) {
+	public void setY2(Float y2) {
 		this.y2 = y2;
 	}
 

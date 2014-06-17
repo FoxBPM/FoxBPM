@@ -17,7 +17,6 @@
  */
 package org.foxbpm.engine.impl.diagramview.svg.vo.build;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,15 +52,7 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 	 */
 	public TaskSVGBuilder(SvgVO svgVo) {
 		super(svgVo);
-		List<RectVO> rectVoList = svgVo.getgVo().getRectVoList();
-		Iterator<RectVO> iterator = rectVoList.iterator();
-		while (iterator.hasNext()) {
-			RectVO next = iterator.next();
-			if (StringUtils.equalsIgnoreCase(next.getId(), BPMN_NODE_ID)) {
-				rectVO = next;
-				break;
-			}
-		}
+		rectVO = SVGUtils.getTaskVOFromSvgVO(svgVo);
 
 		if (this.rectVO == null) {
 			throw new FoxBPMException("TaskSVGBuilder构造 TASK SVG时，无法获取矩形对象");
@@ -70,12 +61,12 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setWidth(String width) {
+	public void setWidth(float width) {
 		rectVO.setWidth(width);
 	}
 
 	@Override
-	public void setHeight(String height) {
+	public void setHeight(float height) {
 		this.rectVO.setHeight(height);
 	}
 
@@ -89,11 +80,7 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setStrokeWidth(String strokeWidth) {
-		if (StringUtils.isBlank(strokeWidth)) {
-			this.rectVO.setStroke(STROKEWIDTH_DEFAULT);
-			return;
-		}
+	public void setStrokeWidth(float strokeWidth) {
 		this.rectVO.setStrokeWidth(strokeWidth);
 	}
 
@@ -109,7 +96,9 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 	public void setXAndY(float x, float y) {
 		// 设置整体坐标，包括子类型
 		this.svgVo.getgVo().setTransform("translate(" + x + ", " + y + ")");
-
+		// 设置相对位置
+		this.rectVO.setX(0.0F);
+		this.rectVO.setY(0.0F);
 		// 设置字体的相对偏移量,X相对是矩形宽度的一半减去文本本身屏宽的一半
 		if (StringUtils.isNotBlank(textVO.getElementValue())) {
 			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
@@ -118,9 +107,9 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 			if (SVGUtils.isChinese(this.textVO.getElementValue().charAt(0))) {
 				languageShift = 12;
 			}
-			super.setTextX((Integer.valueOf(this.rectVO.getWidth()) / 2)
-					- textWidth / 2 - languageShift);
-			super.setTextY(Float.valueOf(this.rectVO.getHeight()) / 2 + 5);
+			super.setTextX((this.rectVO.getWidth() / 2) - textWidth / 2
+					- languageShift);
+			super.setTextY(this.rectVO.getHeight() / 2 + 5);
 		}
 	}
 
@@ -147,7 +136,7 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
-	public void setTypeStrokeWidth(String strokeWidth) {
+	public void setTypeStrokeWidth(float strokeWidth) {
 		// TODO Auto-generated method stub
 
 	}
@@ -182,9 +171,9 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 			if (linearGradient != null) {
 				String backGroudUUID = UUID.randomUUID().toString();
 				linearGradient.setId(backGroudUUID);
-				linearGradient.setX1("0");
-				linearGradient.setX2("0");
-				linearGradient.setY1("0");
+				linearGradient.setX1(0.0F);
+				linearGradient.setX2(0.0F);
+				linearGradient.setY1(0.0F);
 				linearGradient.setY2(this.rectVO.getHeight());
 				List<StopVO> stopVoList = linearGradient.getStopVoList();
 				if (stopVoList != null && stopVoList.size() > 0) {
@@ -197,8 +186,9 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 		}
 	}
 
+	// TODO 放射性渐变,目前采用的是线性渐变
 	/**
-	 * 放射性渐变
+	 * 
 	 * 
 	 * @param fill
 	 */
