@@ -17,6 +17,7 @@
  */
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.bpmn2.BaseElement;
@@ -25,12 +26,12 @@ import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
+import org.foxbpm.engine.impl.task.FormParam;
 import org.foxbpm.engine.impl.task.TaskCommandImpl;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.util.BpmnModelUtil;
-import org.foxbpm.model.bpmn.foxbpm.CompleteTaskDescription;
+import org.foxbpm.model.bpmn.foxbpm.FormParamContainer;
 import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
-import org.foxbpm.model.bpmn.foxbpm.TaskDescription;
 
 
 
@@ -48,7 +49,7 @@ import org.foxbpm.model.bpmn.foxbpm.TaskDescription;
  * 操作表单
  * 浏览表单
  * @author ych
- * 
+ * @author kenshin
  */
 public class UserTaskParser extends TaskParser {
 	
@@ -60,6 +61,14 @@ public class UserTaskParser extends TaskParser {
 		
 		TaskDefinition taskDefinition=new TaskDefinition();
 		UserTask userTask=(UserTask)baseElement;
+		
+		taskDefinition.setId(userTask.getId());
+		
+		taskDefinition.setName(userTask.getName());
+		
+		
+		
+		
 		List<org.foxbpm.model.bpmn.foxbpm.TaskCommand> taskCommandsObj  =BpmnModelUtil.getExtensionElementList(org.foxbpm.model.bpmn.foxbpm.TaskCommand.class,userTask,FoxBPMPackage.Literals.DOCUMENT_ROOT__TASK_COMMAND);
 		
 		if(taskCommandsObj!=null){
@@ -81,16 +90,7 @@ public class UserTaskParser extends TaskParser {
 			}
 		}
 		
-		TaskDescription taskDescription=(TaskDescription)BpmnModelUtil.getExtensionElement(userTask,FoxBPMPackage.Literals.DOCUMENT_ROOT__TASK_DESCRIPTION);
-		if(taskDescription != null && taskDescription.getExpression()!=null){
-			taskDefinition.setTaskDescription(taskDescription.getExpression().getValue());
-		}
-		
-		CompleteTaskDescription completeTaskDescription=(CompleteTaskDescription)BpmnModelUtil.getExtensionElement(userTask,FoxBPMPackage.Literals.DOCUMENT_ROOT__COMPLETE_TASK_DESCRIPTION);
-		if(completeTaskDescription != null && completeTaskDescription.getExpression()!=null){
-			taskDefinition.setCompleteTaskDescription(completeTaskDescription.getExpression().getValue());
-		}
-		
+
 		
 		
 		
@@ -106,28 +106,36 @@ public class UserTaskParser extends TaskParser {
 		ProcessDefinitionEntity processDefinition=(ProcessDefinitionEntity)getFlowElementsContainer();
 		processDefinition.getTaskDefinitions().put(userTask.getId(), taskDefinition);
 		
-		/*String subject = BpmnModelUtil.getUserTaskSubject(baseElement);
+		FormParamContainer formParamContainer=BpmnModelUtil.getFormParamContainer(baseElement);
+		
+		if(formParamContainer!=null){
+			List<FormParam> formParams=new ArrayList<FormParam>();
+			for (org.foxbpm.model.bpmn.foxbpm.FormParam formParam : formParamContainer.getFormParam()) {
+				
+				FormParam formParamObj=new FormParam();
+				formParamObj.setParamKey(formParam.getParamKey());
+				formParamObj.setExpression(formParam.getExpression()!=null?formParam.getExpression().getValue():null);
+				formParamObj.setParamType(formParam.getParamType());
+				formParams.add(formParamObj);
+			}
+			taskDefinition.setFormParams(formParams);
+		}
+		
+		
+		String subject = BpmnModelUtil.getUserTaskSubject(baseElement);
 		String formUri = BpmnModelUtil.getFormUri(baseElement);
 		String formUriView = BpmnModelUtil.getFormUriView(baseElement);
-		String assigneePolicy = BpmnModelUtil.getUserTaskAssigneePolicyType(baseElement);
-		String assigneeExpression = BpmnModelUtil.getUserTaskAssigneeExpression(baseElement);
-		String taskPriority = BpmnModelUtil.getUserTaskPriority(baseElement);
+		String taskDescription = BpmnModelUtil.getUserTaskDescription(baseElement);
+		String taskCompleteDescription = BpmnModelUtil.getUserTaskCompleteTaskDescription(baseElement);
 		
-		//任务分配
-		List<TaskAssigneeDefinition> assignees = BpmnModelUtil.getUserTaskAssignees(baseElement);
-		TaskDefinition taskDefinition = new TaskDefinition();
-		taskDefinition.setTaskAssignees(assignees);
-		taskDefinition.setAssignPolicyType(assigneePolicy);
-		taskDefinition.setAssigneeExpression(assigneeExpression);
-		//任务命令
-		List<TaskCommandDefinition> taskCommands = BpmnModelUtil.getUserTaskCommands(baseElement);
-		taskDefinition.setTaskCommands(taskCommands);
+
 		
-		userTaskBehavior.setFormUri(formUri);
-		userTaskBehavior.setFormUriView(formUriView);
-		userTaskBehavior.setTaskSubject(subject);
-		userTaskBehavior.setTaskPriority(taskPriority);
-		userTaskBehavior.setTaskDefinition(taskDefinition);*/
+		taskDefinition.setTaskSubject(subject);
+		taskDefinition.setFormUri(formUri);
+		taskDefinition.setFormUriView(formUriView);
+		taskDefinition.setTaskDescription(taskDescription);
+		taskDefinition.setCompleteTaskDescription(taskCompleteDescription);
+		
 		return super.parser(baseElement);
 	}
 

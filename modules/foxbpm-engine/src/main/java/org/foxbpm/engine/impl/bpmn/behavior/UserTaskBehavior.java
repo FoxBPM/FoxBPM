@@ -18,13 +18,18 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
+import org.foxbpm.engine.impl.task.FormParam;
 import org.foxbpm.engine.impl.task.TaskDefinition;
-import org.foxbpm.engine.task.TaskType;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 
@@ -36,29 +41,12 @@ import org.foxbpm.kernel.runtime.ListenerExecutionContext;
  */
 public class UserTaskBehavior extends TaskBehavior {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * 操作表单
-	 */
-	private String formUri;
-	/**
-	 * 浏览表单
-	 */
-	private String formUriView;
-	/**
-	 * 任务信息定义
-	 */
-	private TaskDefinition taskDefinition;
-	/**
-	 * 任务主题
-	 */
-	private String taskSubject;
 
-	private String taskPriority;
+	/** 任务信息定义 */
+	private TaskDefinition taskDefinition;
+
 
 	@Override
 	public void execute(FlowNodeExecutionContext executionContext) {
@@ -78,9 +66,30 @@ public class UserTaskBehavior extends TaskBehavior {
 		ProcessInstanceEntity processInstance = (ProcessInstanceEntity) executionContext.getProcessInstance();
 
 		task.setBizKey(processInstance.getBizKey());
-		task.setDescription("任务主题");
+		task.setSubject(StringUtil.getString(taskDefinition.getTaskSubject().getValue(executionContext)));
+		
+		task.setDescription(StringUtil.getString(taskDefinition.getTaskDescription().getValue(executionContext)));
+		task.setCompleteDescription(StringUtil.getString(taskDefinition.getCompleteTaskDescription().getValue(executionContext)));
 		task.setToken((TokenEntity) executionContext);
-		task.setTaskType(TaskType.FOXBPMTASK);
+		task.setTaskType(taskDefinition.getTaskType());
+		
+		task.setFormUri(StringUtil.getString(taskDefinition.getFormUri().getValue(executionContext)));
+		task.setFormUriView(StringUtil.getString(taskDefinition.getFormUriView().getValue(executionContext)));
+		
+		task.setPriority(StringUtil.getInt(taskDefinition.getTaskPriority().getValue(executionContext)));
+		
+		
+		List<FormParam> formParams = taskDefinition.getFormParams();
+		if(formParams!=null&&formParams.size()>0){
+			Map<String, Object> paramMap=new HashMap<String, Object>();
+			for (FormParam formParam : formParams) {
+				
+				paramMap.put(formParam.getParamKey(), formParam.getExpression().getValue(executionContext));
+			}
+			task.setParamMap(paramMap);
+		}
+		
+		
 
 		for (Connector connector : taskDefinition.getActorConnectors()) {
 			try {
@@ -96,21 +105,7 @@ public class UserTaskBehavior extends TaskBehavior {
 
 	}
 
-	public String getFormUri() {
-		return formUri;
-	}
-
-	public void setFormUri(String formUri) {
-		this.formUri = formUri;
-	}
-
-	public String getFormUriView() {
-		return formUriView;
-	}
-
-	public void setFormUriView(String formUriView) {
-		this.formUriView = formUriView;
-	}
+	
 
 	public TaskDefinition getTaskDefinition() {
 		return taskDefinition;
@@ -120,20 +115,6 @@ public class UserTaskBehavior extends TaskBehavior {
 		this.taskDefinition = taskDefinition;
 	}
 
-	public String getTaskSubject() {
-		return taskSubject;
-	}
 
-	public void setTaskSubject(String taskSubject) {
-		this.taskSubject = taskSubject;
-	}
-
-	public String getTaskPriority() {
-		return taskPriority;
-	}
-
-	public void setTaskPriority(String taskPriority) {
-		this.taskPriority = taskPriority;
-	}
 
 }

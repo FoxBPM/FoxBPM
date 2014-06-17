@@ -21,7 +21,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.connector.Connector;
+import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.task.TaskCommand;
 
 public class TaskDefinition implements Serializable {
@@ -32,56 +34,63 @@ public class TaskDefinition implements Serializable {
 	private static final long serialVersionUID = 1357653109003002722L;
 	
 	private String id;
-
 	
-	private String completeTaskDescription;
+	private String name;
+	
+	
+	private String taskType;
+	
 	
 
-	private String taskDescription;
+
+	private Expression completeTaskDescription;
+	
+
+	private Expression taskDescription;
 	
 	private boolean isAutoClaim;
 	
-	private String taskSubject;
+	private Expression taskSubject;
 	
-	private String taskPriority;
+	private Expression taskPriority;
 	
-	private String formUri;
+	private Expression formUri;
 	
-	private String formUriView;
+	private Expression formUriView;
 	
 	private List<FormParam> formParams;
 	
 	
-	public String getTaskSubject() {
+	public Expression getTaskSubject() {
 		return taskSubject;
 	}
 
 	public void setTaskSubject(String taskSubject) {
-		this.taskSubject = taskSubject;
+		this.taskSubject = new ExpressionImpl(taskSubject);
 	}
 
-	public String getTaskPriority() {
+	public Expression getTaskPriority() {
 		return taskPriority;
 	}
 
 	public void setTaskPriority(String taskPriority) {
-		this.taskPriority = taskPriority;
+		this.taskPriority = new ExpressionImpl(taskPriority);
 	}
 
-	public String getFormUri() {
+	public Expression getFormUri() {
 		return formUri;
 	}
 
 	public void setFormUri(String formUri) {
-		this.formUri = formUri;
+		this.formUri = new ExpressionImpl(formUri);
 	}
 
-	public String getFormUriView() {
+	public Expression getFormUriView() {
 		return formUriView;
 	}
 
 	public void setFormUriView(String formUriView) {
-		this.formUriView = formUriView;
+		this.formUriView = new ExpressionImpl(formUriView);
 	}
 
 	public List<FormParam> getFormParams() {
@@ -148,21 +157,36 @@ public class TaskDefinition implements Serializable {
 		this.id = id;
 	}
 	
-	public String getCompleteTaskDescription() {
+	public Expression getCompleteTaskDescription() {
 		return completeTaskDescription;
 	}
 
 	public void setCompleteTaskDescription(String completeTaskDescription) {
-		this.completeTaskDescription = completeTaskDescription;
+		this.completeTaskDescription =  new ExpressionImpl(completeTaskDescription);
 	}
 
-	public String getTaskDescription() {
+	public Expression getTaskDescription() {
 		return taskDescription;
 	}
 
 	public void setTaskDescription(String taskDescription) {
-		this.taskDescription = taskDescription;
+		this.taskDescription =  new ExpressionImpl(taskDescription);
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getTaskType() {
+		return taskType;
+	}
+
+	public void setTaskType(String taskType) {
+		this.taskType = taskType;
+	}
 
 }

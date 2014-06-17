@@ -23,7 +23,9 @@ import java.util.Map;
 
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtDefinition;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.repository.ProcessDefinition;
@@ -44,7 +46,7 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 
 	protected String diagramResourceName;
 
-	protected String subject;
+	protected Expression subject;
 	
 	protected String resourceId;
 	
@@ -88,12 +90,12 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 
 	}
 
-	public String getSubject() {
+	public Expression getSubject() {
 		return subject;
 	}
 
 	public void setSubject(String subject) {
-		this.subject = subject;
+		this.subject = new ExpressionImpl(subject);
 	}
 
 	/**
@@ -138,6 +140,8 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 		if (bizKey != null) {
 			processInstance.setBizKey(bizKey);
 		}
+		
+		
 		
 		Context.getCommandContext().getProcessInstanceManager()
 	      .insert(processInstance);

@@ -39,8 +39,17 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	protected String id;
 
 	protected String name;
+	
+	protected String subject;
+	
+
+	
 
 	protected String description;
+	
+	protected String completeDescription;
+	
+	
 
 	protected String processInstanceId;
 
@@ -140,7 +149,10 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	protected TaskEntity parentTask;
 
 	protected boolean isAutoClaim = false;
+	
+	protected Map<String, Object>  paramMap=new HashMap<String, Object>();
 
+	
 	public TaskEntity() {
 	}
 
@@ -681,6 +693,22 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+	
+	public String getCompleteDescription() {
+		return completeDescription;
+	}
+
+	public void setCompleteDescription(String completeDescription) {
+		this.completeDescription = completeDescription;
+	}
 
 	public String getEventName() {
 		// TODO Auto-generated method stub
@@ -829,7 +857,9 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		Map<String,Object> persistentState = new HashMap<String, Object>();
 		persistentState.put("id", getId());		
 		persistentState.put("name", getName());		
+		persistentState.put("taskSubject", getSubject());
 		persistentState.put("description", getDescription());
+		persistentState.put("completeDescription",getCompleteDescription());
 		persistentState.put("processInstanceId", getProcessInstanceId());
 		persistentState.put("processDefinitionId", getProcessDefinitionId());
 		persistentState.put("processDefinitionKey", getProcessDefinitionKey());		
@@ -854,7 +884,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		persistentState.put("formUri", getFormUri());
 		persistentState.put("formUriView", getFormUriView());		
 		persistentState.put("taskGroup", getTaskGroup());		
-		persistentState.put("taskInstanceType", StringUtil.getString(getTaskType()));		
+		persistentState.put("taskType", StringUtil.getString(getTaskType()));		
 		persistentState.put("isBlocking", String.valueOf(isBlocking()));
 		persistentState.put("isCancelled", String.valueOf(isCancelled()));		
 		persistentState.put("isSuspended", String.valueOf(isSuspended()));		
@@ -883,6 +913,15 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	@Override
 	public boolean hasEnded() {
 		return endTime!=null;
+	}
+
+	
+	public Map<String, Object> getParamMap() {
+		return paramMap;
+	}
+
+	public void setParamMap(Map<String, Object> paramMap) {
+		this.paramMap = paramMap;
 	}
 
 
