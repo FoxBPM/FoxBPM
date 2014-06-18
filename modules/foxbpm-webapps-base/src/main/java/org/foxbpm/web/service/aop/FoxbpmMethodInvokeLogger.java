@@ -21,7 +21,9 @@ import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
+import org.foxbpm.web.service.impl.AbstWorkFlowService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.AfterReturningAdvice;
@@ -45,6 +47,9 @@ public class FoxbpmMethodInvokeLogger implements AfterReturningAdvice, MethodBef
 	public void before(Method method, Object[] params, Object implObj) throws Throwable {
 		Logger logger = LoggerFactory.getLogger(implObj.getClass());
 		logger.debug("方法名:{}",method.getName());
+		if(implObj instanceof AbstWorkFlowService){
+			Authentication.setAuthenticatedUserId("admin");
+		}
 //		StringBuilder paramsBuilder = new StringBuilder();
 //		for(Object param : params){
 //			paramsBuilder.append(param);
@@ -56,7 +61,7 @@ public class FoxbpmMethodInvokeLogger implements AfterReturningAdvice, MethodBef
 //		logger.debug("参数：{}" , paramsBuilder.toString().substring(0, paramsBuilder.toString().length()-1));
 	}
 
-	public void afterThrowing(Method method, Object[] args, Object implObj, FoxbpmWebException ex) {
+	public void afterThrowing(Method method, Object[] args, Object implObj, Exception ex) {
 		Logger logger = LoggerFactory.getLogger(implObj.getClass());
 		logger.error("service执行出错：方法："+method.getName()+"，参数："+args , ex);
 	}

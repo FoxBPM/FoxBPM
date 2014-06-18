@@ -61,6 +61,8 @@
 	<bean id="modelService" factory-bean="processEngine" factory-method="getModelService" />
 	<!-- 运行时服务 -->
 	<bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
+	<!-- 运行时服务 -->
+	<bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService" />
 
 	<bean id="exceptionEnvironment" class="org.foxbpm.web.common.env.ExceptionEnvironment" scope="singleton" init-method="init" />
 	<bean id="propertiesUtil" class="org.foxbpm.web.I18N.PropertiesUtil" scope="singleton" init-method="initProperties" />

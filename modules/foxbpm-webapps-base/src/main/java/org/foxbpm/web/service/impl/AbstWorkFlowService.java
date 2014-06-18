@@ -17,6 +17,7 @@
  */
 package org.foxbpm.web.service.impl;
 
+import org.foxbpm.engine.IdentityService;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.TaskService;
@@ -38,6 +39,9 @@ public abstract class AbstWorkFlowService {
 	// 运行时服务
 	@Autowired
 	protected RuntimeService runtimeService;
+	
+	@Autowired
+	protected IdentityService identityService;
 
 	/**
 	 * 拼装参数like %xx%

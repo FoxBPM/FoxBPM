@@ -183,7 +183,7 @@
 										<td>${dataList.bizKey}</td>
 										<td>${dataList.subject}</td>
 										<c:if test="${result.processType != 'initor'}">
-											<td>${dataList.startAuthorName}</td>
+											<td>${dataList.initiatorName}</td>
 										</c:if>
 										<td><fmt:formatDate value="${dataList.startTime}"
 												type="both" /></td>

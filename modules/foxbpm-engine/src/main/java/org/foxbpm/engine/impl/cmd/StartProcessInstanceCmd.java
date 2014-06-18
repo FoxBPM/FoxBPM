@@ -28,6 +28,7 @@ import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
+import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
@@ -85,6 +86,8 @@ public class StartProcessInstanceCmd<T> implements Command<ProcessInstance>, Ser
 		if (transientVariables != null) {
 			processInstance.setVariables(transientVariables);
 		}
+		String initiator = Authentication.getAuthenticatedUserId();
+		processInstance.setInitiator(initiator);
 		processInstance.start();
 
 		return processInstance;
