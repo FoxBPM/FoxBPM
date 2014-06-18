@@ -103,17 +103,17 @@ public class ConcreteProcessDefinitionVOFactory extends
 			svgTemplateFileName = typeTemplateArray[ARRAY_INDEX_SECOND];
 			VONode voNode = null;
 			// 如果任务列表为空，或者当前节点是网关节点，则不添加标识
-			if (taskList == null
-					|| taskList.size() == EMPTY_LIST
-					|| kernelFlowNodeImpl.getKernelFlowNodeBehavior() instanceof GatewayBehavior) {
+//			if (taskList == null
+//					|| taskList.size() == EMPTY_LIST
+//					|| kernelFlowNodeImpl.getKernelFlowNodeBehavior() instanceof GatewayBehavior) {
 				voNode = this.getNodeSVGFromFactory(kernelFlowNodeImpl,
 						taskType, svgTemplateFileName);
-			} else {
-				String taskState = this.confirmTaskNotEnd(taskList,
-						kernelFlowNodeImpl.getId());
-				voNode = this.getSignedNodeSVGFromFactory(kernelFlowNodeImpl,
-						taskType, svgTemplateFileName, taskState);
-			}
+			// } else {
+			// String taskState = this.confirmTaskNotEnd(taskList,
+			// kernelFlowNodeImpl.getId());
+			// voNode = this.getSignedNodeSVGFromFactory(kernelFlowNodeImpl,
+			// taskType, svgTemplateFileName, taskState);
+			// }
 			voNodeList.add(voNode);
 		}
 

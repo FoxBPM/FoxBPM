@@ -114,7 +114,7 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setID(String id) {
-
+		this.rectVO.setId(id);
 	}
 
 	@Override
