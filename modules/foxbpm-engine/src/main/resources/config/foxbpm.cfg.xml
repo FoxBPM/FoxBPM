@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <foxbpmconfig:FoxBPMConfig xmlns:foxbpmconfig="http://www.foxbpm.org/foxbpmconfig">
 	<resourcePathConfig>
-	
-		<resourcePath id="foxbpmflowconnector" name="流程连接器路径" type="flowConnector" projectName="foxbpm-connector"
+
+		<resourcePath id="foxbpmflowconnector" name="流程连接器路径"
+			type="flowConnector" projectName="foxbpm-connector"
 			virtualPath="src/main/java/org/foxbpm/connector/flowconnector/" src="org/foxbpm/connector/flowconnector/" />
-		<resourcePath id="foxbpmactorconnector" name="处理者选择器路径" type="actorConnector" projectName="foxbpm-connector"
+		<resourcePath id="foxbpmactorconnector" name="处理者选择器路径"
+			type="actorConnector" projectName="foxbpm-connector"
 			virtualPath="src/main/java/org/foxbpm/connector/actorconnector/" src="org/foxbpm/connector/actorconnector/" />
 
-		<resourcePath id="flowconnector2" name="流程连接器路径" type="flowConnector" projectName="connector2"
+	<resourcePath id="flowconnector2" name="流程连接器路径" type="flowConnector" projectName="connector2"
 				virtualPath="src/main/java/org/foxbpm/connector/flowconnector/" src="connector/flowconnector/" />
 			<resourcePath id="actorconnector2" name="处理者选择器路径" type="actorConnector" projectName="connector2"
 				virtualPath="src/main/java/org/foxbpm/connector/actorconnector/" src="connector/actorconnector/" />
 		</resourcePathConfig>
 
+	</resourcePathConfig>
+	<scriptLanguageConfig selected="Groovy">
+		<scriptLanguage id="BeanShell"
+			classImpl="org.foxbpm.engine.impl.scriptlanguage.BeanShellScriptLanguageMgmtImpl" />
+		<scriptLanguage id="Groovy"
+			classImpl="org.foxbpm.engine.impl.scriptlanguage.GroovyScriptLanguageMgmtImpl" />
+	</scriptLanguageConfig
+	
 	<taskCommandConfig>
 
 		<taskCommandDefinition id="general" name="通用"
