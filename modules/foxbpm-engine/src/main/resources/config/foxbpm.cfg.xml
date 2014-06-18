@@ -13,7 +13,6 @@
 				virtualPath="src/main/java/org/foxbpm/connector/flowconnector/" src="connector/flowconnector/" />
 			<resourcePath id="actorconnector2" name="处理者选择器路径" type="actorConnector" projectName="connector2"
 				virtualPath="src/main/java/org/foxbpm/connector/actorconnector/" src="connector/actorconnector/" />
-		</resourcePathConfig>
 
 	</resourcePathConfig>
 	<scriptLanguageConfig selected="Groovy">
@@ -21,7 +20,7 @@
 			classImpl="org.foxbpm.engine.impl.scriptlanguage.BeanShellScriptLanguageMgmtImpl" />
 		<scriptLanguage id="Groovy"
 			classImpl="org.foxbpm.engine.impl.scriptlanguage.GroovyScriptLanguageMgmtImpl" />
-	</scriptLanguageConfig
+	</scriptLanguageConfig>
 	
 	<taskCommandConfig>
 
