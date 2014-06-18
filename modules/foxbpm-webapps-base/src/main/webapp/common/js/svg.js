@@ -1,19 +1,28 @@
+/**
+ * 标记常量属性
+ */
 var TASK_END_COLOR = "green";
 var TASK_END_WIDTH = "2";
 var TASK_ING_COLOR = "red";
 var TASK_ING_WIDTH = "2";
-var TASK_BACKUP_COLOR;
-var TASK_BACKUP_WIDTH;
 /**
- * 
+ * 保存流程节点本身式样
+ */
+var backUpColorDictionary = new Object();
+var backUpWidthDictionary = new Object();
+/**
+ * 标记流程状态
  */
 function signProcessState() {
 	signEndTaskState();
 	signIngTaskState();
 }
-function clearTaskState() { 
-		clearEndTaskState();
-		clearIngTaskState();
+/**
+ * 取消流程状态标记
+ */
+function clearTaskState() {
+	clearEndTaskState();
+	clearIngTaskState();
 }
 function clearEndTaskState() {
 	for (var i = 0; i < taskListEnd.length; i++) {
@@ -22,10 +31,10 @@ function clearEndTaskState() {
 		for (var j = 0; j < rectAttributes.length; j++) {
 			var rectAttribute = rectAttributes[j];
 			if (rectAttribute.name == "stroke") {
-				rectAttribute.nodeValue = TASK_BACKUP_COLOR;
+				rectAttribute.nodeValue = backUpColorDictionary[endTask.nodeId];
 			}
 			if (rectAttribute.name == "stroke-width") {
-				rectAttribute.nodeValue = TASK_BACKUP_WIDTH;
+				rectAttribute.nodeValue = backUpWidthDictionary[endTask.nodeId];
 			}
 		}
 	}
@@ -38,10 +47,10 @@ function clearIngTaskState() {
 		for (var j = 0; j < rectAttributes.length; j++) {
 			var rectAttribute = rectAttributes[j];
 			if (rectAttribute.name == "stroke") {
-				rectAttribute.nodeValue = TASK_BACKUP_COLOR;
+				rectAttribute.nodeValue = backUpColorDictionary[ingTask.nodeId];
 			}
 			if (rectAttribute.name == "stroke-width") {
-				rectAttribute.nodeValue = TASK_BACKUP_WIDTH;
+				rectAttribute.nodeValue = backUpWidthDictionary[ingTask.nodeId];
 			}
 		}
 	}
@@ -57,11 +66,11 @@ function signEndTaskState() {
 			for (var j = 0; j < rectAttributes.length; j++) {
 				var rectAttribute = rectAttributes[j];
 				if (rectAttribute.name == "stroke") {
-					TASK_BACKUP_COLOR = rectAttribute.nodeValue;
+					backUpColorDictionary[endTask.nodeId] = rectAttribute.nodeValue;
 					rectAttribute.nodeValue = TASK_END_COLOR;
 				}
 				if (rectAttribute.name == "stroke-width") {
-					TASK_BACKUP_WIDTH = rectAttribute.nodeValue;
+					backUpWidthDictionary[endTask.nodeId] = rectAttribute.nodeValue;
 					rectAttribute.nodeValue = TASK_END_WIDTH;
 				}
 
@@ -79,11 +88,11 @@ function signIngTaskState() {
 			for (var j = 0; j < rectAttributes.length; j++) {
 				var rectAttribute = rectAttributes[j];
 				if (rectAttribute.name == "stroke") {
-					TASK_BACKUP_COLOR = rectAttribute.nodeValue;
+					backUpColorDictionary[ingTask.nodeId] = rectAttribute.nodeValue;
 					rectAttribute.nodeValue = TASK_ING_COLOR;
 				}
 				if (rectAttribute.name == "stroke-width") {
-					TASK_BACKUP_WIDTH = rectAttribute.nodeValue;
+					backUpWidthDictionary[ingTask.nodeId] = rectAttribute.nodeValue;
 					rectAttribute.nodeValue = TASK_ING_WIDTH;
 				}
 
