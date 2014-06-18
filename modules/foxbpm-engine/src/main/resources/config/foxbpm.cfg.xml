@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <foxbpmconfig:FoxBPMConfig xmlns:foxbpmconfig="http://www.foxbpm.org/foxbpmconfig">
 	<resourcePathConfig>
-	
+
 		<resourcePath id="foxbpmflowconnector" name="流程连接器路径"
 			type="flowConnector" projectName="foxbpm-connector"
 			virtualPath="src/main/java/org/foxbpm/connector/flowconnector/" src="org/foxbpm/connector/flowconnector/" />
@@ -10,7 +10,13 @@
 			virtualPath="src/main/java/org/foxbpm/connector/actorconnector/" src="org/foxbpm/connector/actorconnector/" />
 
 	</resourcePathConfig>
-
+	<scriptLanguageConfig selected="Groovy">
+		<scriptLanguage id="BeanShell"
+			classImpl="org.foxbpm.engine.impl.scriptlanguage.BeanShellScriptLanguageMgmtImpl" />
+		<scriptLanguage id="Groovy"
+			classImpl="org.foxbpm.engine.impl.scriptlanguage.GroovyScriptLanguageMgmtImpl" />
+	</scriptLanguageConfig
+	
 	<taskCommandConfig>
 
 		<taskCommandDefinition id="general" name="通用"
