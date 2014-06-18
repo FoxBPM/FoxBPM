@@ -62,7 +62,6 @@ import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 public class ConcreteProcessDefinitionVOFactory extends
 		AbstractProcessDefinitionVOFactory {
 	private static final String EMPTY_STRING = "";
-	private static final int EMPTY_LIST = 0;
 	private static final int ARRAY_INDEX_FIRST = 0;
 	private static final int ARRAY_INDEX_SECOND = 1;
 	private static final String TASK_END = "end";
@@ -87,9 +86,6 @@ public class ConcreteProcessDefinitionVOFactory extends
 			ProcessDefinitionEntity deployedProcessDefinition) {
 		List<KernelFlowNodeImpl> flowNodes = deployedProcessDefinition
 				.getFlowNodes();
-		Map<String, KernelSequenceFlowImpl> sequenceFlows = deployedProcessDefinition
-				.getSequenceFlows();
-
 		List<VONode> voNodeList = new ArrayList<VONode>();
 		// 遍历所有的流程节点
 		Iterator<KernelFlowNodeImpl> flowNodeIterator = flowNodes.iterator();
@@ -103,20 +99,68 @@ public class ConcreteProcessDefinitionVOFactory extends
 			svgTemplateFileName = typeTemplateArray[ARRAY_INDEX_SECOND];
 			VONode voNode = null;
 			// 如果任务列表为空，或者当前节点是网关节点，则不添加标识
-//			if (taskList == null
-//					|| taskList.size() == EMPTY_LIST
-//					|| kernelFlowNodeImpl.getKernelFlowNodeBehavior() instanceof GatewayBehavior) {
+			if (kernelFlowNodeImpl.getKernelFlowNodeBehavior() instanceof GatewayBehavior) {
 				voNode = this.getNodeSVGFromFactory(kernelFlowNodeImpl,
 						taskType, svgTemplateFileName);
-			// } else {
-			// String taskState = this.confirmTaskNotEnd(taskList,
-			// kernelFlowNodeImpl.getId());
-			// voNode = this.getSignedNodeSVGFromFactory(kernelFlowNodeImpl,
-			// taskType, svgTemplateFileName, taskState);
-			// }
+			} else {
+				String taskState = this.confirmTaskNotEnd(taskList,
+						kernelFlowNodeImpl.getId());
+				voNode = this.getSignedNodeSVGFromFactory(kernelFlowNodeImpl,
+						taskType, svgTemplateFileName, taskState);
+			}
+			voNodeList.add(voNode);
+		}
+		this.createSequenceVO(deployedProcessDefinition, voNodeList);
+		String svgStr = flowNodeVOFactory.convertNodeListToString(
+				deployedProcessDefinition.getProperties(), voNodeList);
+		System.out.println(svgStr);
+		return svgStr;
+	}
+
+	/**
+	 * 根据所有流程节点，和流程连接创建流程SVG文档字符串
+	 */
+	public String createProcessDefinitionVOString(
+			ProcessDefinitionEntity deployedProcessDefinition) {
+		List<KernelFlowNodeImpl> flowNodes = deployedProcessDefinition
+				.getFlowNodes();
+		List<VONode> voNodeList = new ArrayList<VONode>();
+		// 遍历所有的流程节点
+		Iterator<KernelFlowNodeImpl> flowNodeIterator = flowNodes.iterator();
+		String taskType = EMPTY_STRING;
+		String svgTemplateFileName = EMPTY_STRING;
+		while (flowNodeIterator.hasNext()) {
+			KernelFlowNodeImpl kernelFlowNodeImpl = flowNodeIterator.next();
+			String[] typeTemplateArray = this
+					.getTypeAndTemplateNameByFlowNode(kernelFlowNodeImpl);
+			taskType = typeTemplateArray[ARRAY_INDEX_FIRST];
+			svgTemplateFileName = typeTemplateArray[ARRAY_INDEX_SECOND];
+			VONode voNode = null;
+			voNode = this.getNodeSVGFromFactory(kernelFlowNodeImpl, taskType,
+					svgTemplateFileName);
 			voNodeList.add(voNode);
 		}
 
+		this.createSequenceVO(deployedProcessDefinition, voNodeList);
+		String svgStr = flowNodeVOFactory.convertNodeListToString(
+				deployedProcessDefinition.getProperties(), voNodeList);
+		System.out.println(svgStr);
+		return svgStr;
+	}
+
+	/**
+	 * 创建连线VO
+	 * 
+	 * @param deployedProcessDefinition
+	 * @param voNodeList
+	 */
+	private void createSequenceVO(
+			ProcessDefinitionEntity deployedProcessDefinition,
+			List<VONode> voNodeList) {
+		String taskType = EMPTY_STRING;
+		String svgTemplateFileName = EMPTY_STRING;
+		Map<String, KernelSequenceFlowImpl> sequenceFlows = deployedProcessDefinition
+				.getSequenceFlows();
 		// 遍历所有的流程连线
 		Iterator<Entry<String, KernelSequenceFlowImpl>> sequenceFlowterator = sequenceFlows
 				.entrySet().iterator();
@@ -130,21 +174,6 @@ public class ConcreteProcessDefinitionVOFactory extends
 					taskType, svgTemplateFileName);
 			voNodeList.add(voNode);
 		}
-
-		String svgStr = flowNodeVOFactory.convertNodeListToString(
-				deployedProcessDefinition.getProperties(), voNodeList);
-		System.out.println(svgStr);
-		return svgStr;
-	}
-
-	/**
-	 * 根据所有流程节点，和流程连接创建流程SVG文档字符串
-	 */
-	public String createProcessDefinitionVOString(
-			ProcessDefinitionEntity deployedProcessDefinition) {
-		// 内部处理
-		return this.createProcessInstanceSVGImageString(null,
-				deployedProcessDefinition);
 	}
 
 	/**
