@@ -20,7 +20,6 @@ package org.foxbpm.rest.common.listener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.rest.service.api.config.FlowResourceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +42,6 @@ public class FoxBpmRestServletContextListener implements ServletContextListener{
 	}
 	
 	public void contextDestroyed(ServletContextEvent sce) {
-		ProcessEngineManagement.getDefaultProcessEngine().closeEngine();
+//		ProcessEngineManagement.getDefaultProcessEngine().closeEngine();
 	}
 }
