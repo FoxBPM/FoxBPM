@@ -172,7 +172,7 @@ public class SignProcessStateSVGFactory extends AbstractFlowNodeSVGFactory {
 
 	@Override
 	public void filterParentVO(VONode voNode, String[] filterCondition) {
-		this.filterParentVO(voNode, filterCondition);
+		abstractFlowNodeSVGFactory.filterParentVO(voNode, filterCondition);
 	}
 
 	@Override
