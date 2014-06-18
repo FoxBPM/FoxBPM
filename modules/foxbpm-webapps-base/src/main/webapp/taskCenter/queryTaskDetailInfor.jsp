@@ -28,17 +28,6 @@
 	var taskListEnd = [];//存放已经结束的节点
 	var taskListIng = [];//存放正在处理的节点
 	var noPostion = 0;
-	function bodyOnload() {
-		var flag = "${param.noGraphic}";
-		if (flag != "1") {
-			//初始化流程信息
-			initFlowInfo();
-			//添加图信息
-			addGraphicInfo();
-			//标记流程图
-			markImags();
-		}
-	}
 
 	//初始化已完成和未完成的节点信息。
 	function initFlowInfo() {
@@ -90,7 +79,6 @@
 		}
 	}
 
-	
 	function viewPostion() {
 		if ($("#yczt").attr("checked") == "checked") {
 			if (isIE) {
@@ -183,12 +171,17 @@
 	$(function() {
 		var noGraphic = (1 != '${param.noGraphic}');
 		if (true == noGraphic) {
+			//初始化流程信息
+			initFlowInfo();
+			//添加图信息
+			addGraphicInfo();
 			//判断浏览器类型为IE
 			if (isIE) {
 				$("#flowImg")
 						.append(
 								"<img src='getFlowGraph.action?processDefinitionId=${result.processDefinitionId}' />");
-				bodyOnload();
+				//标记流程图
+				markImags();
 			} else {
 				//加载svg图片
 				$.ajax({
@@ -197,12 +190,13 @@
 					data : "flag=svg&processDefinitionId="
 							+ '${result.processDefinitionId}',
 					success : function(src) {
-						$("#flowImg").append(src);
+						$("#flowImg").html(src);
+						//标记流程图
+						signProcessState();
 					}
 				});
 			}
 		}
 	});
 </script>
-
 </html>
