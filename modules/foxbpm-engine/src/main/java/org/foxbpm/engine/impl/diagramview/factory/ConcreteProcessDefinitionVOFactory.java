@@ -86,11 +86,11 @@ public class ConcreteProcessDefinitionVOFactory extends
 			ProcessDefinitionEntity deployedProcessDefinition) {
 		List<KernelFlowNodeImpl> flowNodes = deployedProcessDefinition
 				.getFlowNodes();
-		List<VONode> voNodeList = new ArrayList<VONode>();
 		// 遍历所有的流程节点
 		Iterator<KernelFlowNodeImpl> flowNodeIterator = flowNodes.iterator();
 		String taskType = EMPTY_STRING;
 		String svgTemplateFileName = EMPTY_STRING;
+		List<VONode> voNodeList = new ArrayList<VONode>();
 		while (flowNodeIterator.hasNext()) {
 			KernelFlowNodeImpl kernelFlowNodeImpl = flowNodeIterator.next();
 			String[] typeTemplateArray = this
@@ -111,10 +111,8 @@ public class ConcreteProcessDefinitionVOFactory extends
 			voNodeList.add(voNode);
 		}
 		this.createSequenceVO(deployedProcessDefinition, voNodeList);
-		String svgStr = flowNodeVOFactory.convertNodeListToString(
+		return flowNodeVOFactory.convertNodeListToString(
 				deployedProcessDefinition.getProperties(), voNodeList);
-		System.out.println(svgStr);
-		return svgStr;
 	}
 
 	/**
@@ -142,10 +140,8 @@ public class ConcreteProcessDefinitionVOFactory extends
 		}
 
 		this.createSequenceVO(deployedProcessDefinition, voNodeList);
-		String svgStr = flowNodeVOFactory.convertNodeListToString(
+		return flowNodeVOFactory.convertNodeListToString(
 				deployedProcessDefinition.getProperties(), voNodeList);
-		System.out.println(svgStr);
-		return svgStr;
 	}
 
 	/**
