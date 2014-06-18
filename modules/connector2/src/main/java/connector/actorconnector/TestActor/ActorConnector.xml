@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<connector:ConnectorDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:connector="http://www.foxbpm.org/connector" id="TestActor" name="选择人" note="选择人" categoryId="082094ea-516c-4873-9d07-fcb6c400a614" icon="TestActor.png">
+  <definitionImpl className="TestActor" packageName="com.founder.fix.fixflow.expand.actorconnector.TestActor"/>
+</connector:ConnectorDefinition>
