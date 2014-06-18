@@ -76,9 +76,9 @@ public class UserTaskBehavior extends TaskBehavior {
 		task.setFormUri(StringUtil.getString(taskDefinition.getFormUri().getValue(executionContext)));
 		task.setFormUriView(StringUtil.getString(taskDefinition.getFormUriView().getValue(executionContext)));
 		
-		task.setPriority(StringUtil.getInt(taskDefinition.getTaskPriority().getValue(executionContext)));
-		
-		
+		if(taskDefinition.getTaskPriority() !=null){
+			task.setPriority(StringUtil.getInt(taskDefinition.getTaskPriority().getValue(executionContext)));
+		}
 		List<FormParam> formParams = taskDefinition.getFormParams();
 		if(formParams!=null&&formParams.size()>0){
 			Map<String, Object> paramMap=new HashMap<String, Object>();
