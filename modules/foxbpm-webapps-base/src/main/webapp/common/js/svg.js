@@ -1,9 +1,9 @@
 /**
  * 标记常量属性
  */
-var TASK_END_COLOR = "green";
+var TASK_END_COLOR = "#458f05";
 var TASK_END_WIDTH = "2";
-var TASK_ING_COLOR = "red";
+var TASK_ING_COLOR = "#ff7200";
 var TASK_ING_WIDTH = "2";
 /**
  * 保存流程节点本身式样
