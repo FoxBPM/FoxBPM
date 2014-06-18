@@ -24,6 +24,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.foxbpm.engine.impl.diagramview.vo.VONode;
+
 /**
  * SVG对象，映射SVG文件模型
  * 

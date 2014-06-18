@@ -32,7 +32,7 @@ import javax.xml.transform.sax.SAXSource;
 
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
-import org.foxbpm.engine.impl.diagramview.svg.vo.VONode;
+import org.foxbpm.engine.impl.diagramview.vo.VONode;
 import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;

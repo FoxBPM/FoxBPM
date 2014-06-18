@@ -26,7 +26,7 @@ import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
 import org.foxbpm.engine.impl.diagramview.svg.vo.CircleVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.RectVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
-import org.foxbpm.engine.impl.diagramview.svg.vo.VONode;
+import org.foxbpm.engine.impl.diagramview.vo.VONode;
 import org.foxbpm.kernel.process.KernelFlowElement;
 
 /**

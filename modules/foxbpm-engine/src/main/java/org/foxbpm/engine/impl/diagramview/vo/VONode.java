@@ -15,7 +15,7 @@
  * 
  * @author MAENLIANG
  */
-package org.foxbpm.engine.impl.diagramview.svg.vo;
+package org.foxbpm.engine.impl.diagramview.vo;
 
 import java.io.Serializable;
 

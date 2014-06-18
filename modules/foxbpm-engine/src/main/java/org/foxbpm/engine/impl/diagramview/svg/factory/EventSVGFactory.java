@@ -20,7 +20,7 @@ package org.foxbpm.engine.impl.diagramview.svg.factory;
 import java.util.List;
 
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
-import org.foxbpm.engine.impl.diagramview.svg.vo.VONode;
+import org.foxbpm.engine.impl.diagramview.vo.VONode;
 import org.foxbpm.kernel.process.KernelFlowElement;
 
 /**

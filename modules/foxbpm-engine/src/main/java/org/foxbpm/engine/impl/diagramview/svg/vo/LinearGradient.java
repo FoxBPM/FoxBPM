@@ -8,6 +8,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.foxbpm.engine.impl.diagramview.vo.VONode;
+
 /**
  * 渐变定义
  * 

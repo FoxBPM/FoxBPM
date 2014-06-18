@@ -24,6 +24,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.foxbpm.engine.impl.diagramview.vo.VONode;
+
 /**
  * 
  * @author MAENLIANG

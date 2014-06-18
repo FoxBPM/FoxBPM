@@ -28,6 +28,11 @@ import org.foxbpm.engine.impl.diagramview.svg.Point;
  * @date 2014-06-10
  */
 public interface FoxBpmnViewBuilder {
+	public static final String SEQUENCE_STROKEWIDTH_DEFAULT = "2";
+	public static final String COLOR_FLAG = "#";
+	public static final String STROKE_DEFAULT = "black";
+	public static final String STROKEWIDTH_DEFAULT = "1";
+	public static final int LINEARGRADIENT_INDEX = 0;
 	/**
 	 * 设置节点信息
 	 */

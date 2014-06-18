@@ -44,7 +44,7 @@ import org.foxbpm.engine.impl.bpmn.behavior.TaskBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateNameConstant;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTypeNameConstant;
-import org.foxbpm.engine.impl.diagramview.svg.vo.VONode;
+import org.foxbpm.engine.impl.diagramview.vo.VONode;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;

@@ -33,7 +33,6 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
  * @date 2014-06-10
  */
 public class ConnectorSVGBuilder extends AbstractSVGBuilder {
-	public static final String SEQUENCE_STROKEWIDTH_DEFAULT = "2";
 	private static final String FILL_DEFAULT = "none";
 	private static final String MOVETO_FLAG = "M";
 	private static final String LINETO_FLAG = "L";

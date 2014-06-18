@@ -24,6 +24,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.foxbpm.engine.impl.diagramview.vo.VONode;
+
 /**
  * 用于定义SVG中的渲染效果,例如渐变
  * 

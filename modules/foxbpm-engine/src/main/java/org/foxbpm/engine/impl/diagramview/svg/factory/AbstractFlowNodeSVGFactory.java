@@ -30,7 +30,7 @@ import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateNameConstant;
 import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
 import org.foxbpm.engine.impl.diagramview.svg.vo.GVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
-import org.foxbpm.engine.impl.diagramview.svg.vo.VONode;
+import org.foxbpm.engine.impl.diagramview.vo.VONode;
 import org.foxbpm.kernel.process.KernelFlowElement;
 
 /**
@@ -42,33 +42,6 @@ import org.foxbpm.kernel.process.KernelFlowElement;
  */
 public abstract class AbstractFlowNodeSVGFactory extends
 		AbstractFlowNodeVOFactory {
-	private static final String NODE_TYPE_EVENT = "event";
-	private static final String NODE_TYPE_ACTIVITY = "activity";
-	private static final String NODE_TYPE_CONNECTOR = "connector";
-	private static final String NODE_TYPE_GATEWAY = "gateway";
-
-	/**
-	 * 流程定义的SVG画布坐标MINX
-	 */
-	protected static final String SVG_MINX = "canvas_minX";
-	/**
-	 * 流程定义的SVG画布坐标MINY
-	 */
-	protected static final String SVG_MINY = "canvas_minY";
-	/**
-	 * 流程定义的SVG画布坐标MAXX
-	 */
-	protected static final String SVG_MAXX = "canvas_maxX";
-	/**
-	 * 流程定义的SVG画布坐标MAXY
-	 */
-	protected static final String SVG_MAXY = "canvas_maxY";
-
-	/**
-	 * SVG模版容器VO对象ID
-	 */
-	protected static final String SVG_CONTAINER = "SVG_CONTAINER";
-
 	/**
 	 * 
 	 * @param kernelFlowElement
@@ -177,10 +150,10 @@ public abstract class AbstractFlowNodeSVGFactory extends
 			Map<String, Object> processDefinitionPorperties) {
 		SvgVO svgTemplateContainer = (SvgVO) AbstractFlowNodeSVGFactory
 				.createSVGTemplateContainerVO(processDefinitionPorperties);
-		Float svgMinX = (Float) processDefinitionPorperties.get(SVG_MINX);
-		Float svgMinY = (Float) processDefinitionPorperties.get(SVG_MINY);
-		Float svgMaxX = (Float) processDefinitionPorperties.get(SVG_MAXX);
-		Float svgMaxY = (Float) processDefinitionPorperties.get(SVG_MAXY);
+		Float svgMinX = (Float) processDefinitionPorperties.get(CANVAS_MINX);
+		Float svgMinY = (Float) processDefinitionPorperties.get(CANVAS_MINY);
+		Float svgMaxX = (Float) processDefinitionPorperties.get(CANVAS_MAXX);
+		Float svgMaxY = (Float) processDefinitionPorperties.get(CANVAS_MAXY);
 		svgTemplateContainer.setWidth(svgMaxX);
 		svgTemplateContainer.setHeight(svgMaxY);
 		svgTemplateContainer.setMinHeight(String.valueOf(svgMinY));

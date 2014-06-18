@@ -29,7 +29,7 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.DefsVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.RadialGradientVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.TextVO;
-import org.foxbpm.engine.impl.diagramview.svg.vo.VONode;
+import org.foxbpm.engine.impl.diagramview.vo.VONode;
 
 /**
  * 组件式样的构造，包括EVENT、ACTIVITY等组件
@@ -39,10 +39,6 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.VONode;
  * @date 2014-06-10
  */
 public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
-	public static final String COLOR_FLAG = "#";
-	public static final String STROKE_DEFAULT = "black";
-	public static final String STROKEWIDTH_DEFAULT = "1";
-	public static final int LINEARGRADIENT_INDEX = 0;
 	/**
 	 * SVG 对象
 	 */

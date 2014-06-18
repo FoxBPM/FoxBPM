@@ -27,7 +27,7 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.GVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.MarkerVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.PathVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
-import org.foxbpm.engine.impl.diagramview.svg.vo.VONode;
+import org.foxbpm.engine.impl.diagramview.vo.VONode;
 import org.foxbpm.kernel.process.KernelFlowElement;
 
 /**

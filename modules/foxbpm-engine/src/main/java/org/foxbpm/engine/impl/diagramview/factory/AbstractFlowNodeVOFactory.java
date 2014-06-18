@@ -30,8 +30,8 @@ import org.foxbpm.engine.impl.diagramview.svg.PointUtils;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTypeNameConstant;
 import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
 import org.foxbpm.engine.impl.diagramview.svg.factory.AbstractFlowNodeSVGFactory;
-import org.foxbpm.engine.impl.diagramview.svg.vo.VONode;
 import org.foxbpm.engine.impl.diagramview.svg.vo.build.AbstractSVGBuilder;
+import org.foxbpm.engine.impl.diagramview.vo.VONode;
 import org.foxbpm.kernel.process.KernelFlowElement;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
@@ -44,7 +44,27 @@ import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
  * 
  */
 public abstract class AbstractFlowNodeVOFactory {
-	public static final String SPLIT_SEPERATOR = "/";
+	protected static final String SPLIT_SEPERATOR = "/";
+	protected static final String NODE_TYPE_EVENT = "event";
+	protected static final String NODE_TYPE_ACTIVITY = "activity";
+	protected static final String NODE_TYPE_CONNECTOR = "connector";
+	protected static final String NODE_TYPE_GATEWAY = "gateway";
+	/**
+	 * 流程定义的画布坐标MINX
+	 */
+	protected static final String CANVAS_MINX = "canvas_minX";
+	/**
+	 * 流程定义的画布坐标MINY
+	 */
+	protected static final String CANVAS_MINY = "canvas_minY";
+	/**
+	 * 流程定义的画布坐标MAXX
+	 */
+	protected static final String CANVAS_MAXX = "canvas_maxX";
+	/**
+	 * 流程定义的画布坐标MAXY
+	 */
+	protected static final String CANVAS_MAXY = "canvas_maxY";
 	protected String voTemplateFileName;
 	protected KernelFlowElement kernelFlowElement;
 
@@ -148,10 +168,6 @@ public abstract class AbstractFlowNodeVOFactory {
 		return voNode;
 	}
 
-	public abstract String convertNodeListToString(
-			Map<String, Object> processDefinitionPorperties,
-			List<VONode> voNodeList);
-
 	/**
 	 * 创建具体的工厂类
 	 * 
@@ -181,6 +197,10 @@ public abstract class AbstractFlowNodeVOFactory {
 		return AbstractFlowNodeSVGFactory.createSVGFactory(kernelFlowElement,
 				svgTemplateFileName, taskState, abstractFlowNodeVOFactory);
 	}
+
+	public abstract String convertNodeListToString(
+			Map<String, Object> processDefinitionPorperties,
+			List<VONode> voNodeList);
 
 	/**
 	 * 文档内容过滤

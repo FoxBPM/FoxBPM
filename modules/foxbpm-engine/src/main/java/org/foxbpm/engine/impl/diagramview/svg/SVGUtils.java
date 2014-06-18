@@ -40,7 +40,7 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.GVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.PathVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.RectVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
-import org.foxbpm.engine.impl.diagramview.svg.vo.VONode;
+import org.foxbpm.engine.impl.diagramview.vo.VONode;
 
 /**
  * SVG工具类
@@ -53,8 +53,8 @@ public final class SVGUtils {
 	/**
 	 * BPMN节点类型(例如：矩形，圆形)在SVG文档中的ID
 	 */
-	public static final String BPMN_NODE_ID = "bg_frame";
-	public static final String EDGE = "edge";
+	private static final String BPMN_NODE_ID = "bg_frame";
+	private static final String EDGE = "edge";
 
 	/**
 	 * 获取任务矩形
@@ -140,6 +140,12 @@ public final class SVGUtils {
 		return null;
 	}
 
+	/**
+	 * 中文两字节，英文是一字节所以要区分中英文
+	 * 
+	 * @param c
+	 * @return 判断是否是两字节
+	 */
 	public final static boolean isChinese(char c) {
 		Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);
 		if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
@@ -184,9 +190,7 @@ public final class SVGUtils {
 			Point point = null;
 			for (int i = 0; i < waypoints.size(); i++) {
 				if (i % 2 != 0) {
-					point = new Point(Float.valueOf(String.valueOf(waypoints
-							.get(i - 1))), Float.valueOf(String
-							.valueOf(waypoints.get(i))));
+					point = new Point(waypoints.get(i - 1), waypoints.get(i));
 					pointList.add(point);
 				}
 			}
@@ -293,11 +297,17 @@ public final class SVGUtils {
 			throw new FoxBPMException("SVG对象G节点克隆出现问题", e);
 		} finally {
 			try {
-				bos.close();
-				oos.close();
-				ois.close();
+				if (bos != null) {
+					bos.close();
+				}
+				if (oos != null) {
+					oos.close();
+				}
+				if (ois != null) {
+					ois.close();
+				}
 			} catch (Exception e) {
-				throw new FoxBPMException("关闭对象流时出现问题", e);
+				throw new FoxBPMException("克隆之后关闭对象流时出现问题", e);
 			}
 		}
 
