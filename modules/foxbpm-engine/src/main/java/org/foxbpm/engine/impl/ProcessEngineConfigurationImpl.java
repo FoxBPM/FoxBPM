@@ -477,6 +477,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	public ModelService getModelService() {
 		return modelService;
 	}
+	
+	public ResourcePathConfig getResourcePathConfig() {
+		return resourcePathConfig;
+	}
 
 	public TransactionContextFactory getTransactionContextFactory() {
 		return transactionContextFactory;

@@ -146,7 +146,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			pi = piList.get(i);
 			attrMap = pi.getPersistentState();
 			attrMap.put("processDefinitionName", modelService.getProcessDefinition(pi.getProcessDefinitionId()).getName());
-			attrMap.put("initiatorName",  getUserName(StringUtil.getString(attrMap.get("initiator"))));
+			attrMap.put("initiatorName", getUserName(StringUtil.getString(attrMap.get("initiator"))));
 			resultData.add(attrMap);
 		}
 
@@ -331,7 +331,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
 		// 命令类型，可以从流程引擎配置中查询 启动并提交为startandsubmit
 		expandTaskCommand.setCommandType(commandType);
-		
+
 		// 设置命令的id,需和节点上配置的按钮编号对应，会执行按钮中的脚本。
 		expandTaskCommand.setTaskCommandId(commandId);
 		expandTaskCommand.setTaskComment(taskComment);
@@ -350,12 +350,12 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 	@Override
 	public String getFlowSvgGraph(Map<String, Object> params) {
 
-		String processInstanceId = StringUtil.getString(params.get("processInstanceId"));
+		String processDefinitionId = StringUtil.getString(params.get("processDefinitionId"));
 		// 流程实例Key
-		if (StringUtil.isEmpty(processInstanceId)) {
-			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_PROCESSDEFID, "processInstanceId is null !");
+		if (StringUtil.isEmpty(processDefinitionId)) {
+			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_PROCESSDEFID, "processDefinitionId is null !");
 		}
-		return runtimeService.createProcessInstanceSVGImageString(processInstanceId);
+		return modelService.getProcessDefinitionSVG(processDefinitionId);
 	}
 
 	@Override
@@ -367,17 +367,17 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		}
 		return modelService.GetFlowGraphicsImgStreamByDefId(processDefinitionId);
 	}
-	
-	private String getUserName(String userId){
-		if(userId == null || "".equals(userId)){
+
+	private String getUserName(String userId) {
+		if (userId == null || "".equals(userId)) {
 			return "空用户名";
 		}
 		User tmpUser = identityService.getUser(userId);
-		if(tmpUser!=null){
+		if (tmpUser != null) {
 			return tmpUser.getUserName();
-		}else{
-			return "未知用户:"+userId;
+		} else {
+			return "未知用户:" + userId;
 		}
-		
+
 	}
 }

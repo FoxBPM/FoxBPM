@@ -9,6 +9,12 @@
 			type="actorConnector" projectName="foxbpm-connector"
 			virtualPath="src/main/java/org/foxbpm/connector/actorconnector/" src="org/foxbpm/connector/actorconnector/" />
 
+	<resourcePath id="flowconnector2" name="流程连接器路径" type="flowConnector" projectName="connector2"
+				virtualPath="src/main/java/org/foxbpm/connector/flowconnector/" src="connector/flowconnector/" />
+			<resourcePath id="actorconnector2" name="处理者选择器路径" type="actorConnector" projectName="connector2"
+				virtualPath="src/main/java/org/foxbpm/connector/actorconnector/" src="connector/actorconnector/" />
+		</resourcePathConfig>
+
 	</resourcePathConfig>
 	<scriptLanguageConfig selected="Groovy">
 		<scriptLanguage id="BeanShell"

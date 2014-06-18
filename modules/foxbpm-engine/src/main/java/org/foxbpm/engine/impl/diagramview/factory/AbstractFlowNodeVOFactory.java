@@ -90,6 +90,7 @@ public abstract class AbstractFlowNodeVOFactory {
 			this.filterChildVO(voNode,
 					Arrays.asList(svgType.split(SPLIT_SEPERATOR)));
 			KernelFlowNodeImpl kernelFlowNodeImpl = (KernelFlowNodeImpl) kernelFlowElement;
+			svgBuilder.setID(kernelFlowNodeImpl.getId());
 			if (StringUtils.isNotBlank(kernelFlowNodeImpl.getName())) {
 				svgBuilder.setText(kernelFlowNodeImpl.getName());
 				svgBuilder.setTextStroke((String) kernelFlowNodeImpl

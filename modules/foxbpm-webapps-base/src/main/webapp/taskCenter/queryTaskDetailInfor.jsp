@@ -10,17 +10,21 @@
 <link rel="stylesheet" type="text/css" href="common/css/reset.css">
 <link rel="stylesheet" type="text/css" href="common/css/global.css">
 <link rel="stylesheet" type="text/css" href="common/css/popup.css">
-<link rel="stylesheet" type="text/css" href="common/css/form.css"/>
-<link rel="stylesheet" type="text/css" href="common/css/flowGraph.css"/>
-<link rel="stylesheet" type="text/css" href="common/css/form.css"/>
-<link rel="stylesheet" type="text/css" href="common/css/flowGraph.css"/>
+<link rel="stylesheet" type="text/css" href="common/css/form.css" />
+<link rel="stylesheet" type="text/css" href="common/css/flowGraph.css" />
+<link rel="stylesheet" type="text/css" href="common/css/form.css" />
+<link rel="stylesheet" type="text/css" href="common/css/flowGraph.css" />
 
 <script type="text/javascript" src="common/js/jquery.js"></script>
-<script type="text/javascript"src="common/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript"
+	src="common/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="common/js/common.js"></script>
+<script type="text/javascript" src="common/js/svg.js"></script>
 
 
 <script type="text/javascript">
+	//判断是否为IE浏览器标示
+	var isIE = window.ActiveXObject && $.browser.msie;
 	var taskListEnd = [];//存放已经结束的节点
 	var taskListIng = [];//存放正在处理的节点
 	var noPostion = 0;
@@ -85,13 +89,21 @@
 			svgElement.css('z-index', zIndex);
 		}
 	}
+
+	
 	function viewPostion() {
-		if (noPostion == 0) {
-			$(".nodeclass").css('display', 'none');
-			noPostion = 1;
+		if ($("#yczt").attr("checked") == "checked") {
+			if (isIE) {
+				$(".nodeclass").css('display', 'none');
+			} else {
+				clearTaskState();
+			}
 		} else {
-			markImags();
-			noPostion = 0;
+			if (isIE) {
+				markImags();
+			} else {
+				signProcessState();
+			}
 		}
 	}
 </script>
@@ -172,7 +184,7 @@
 		var noGraphic = (1 != '${param.noGraphic}');
 		if (true == noGraphic) {
 			//判断浏览器类型为IE
-			if (window.ActiveXObject && $.browser.msie) {
+			if (isIE) {
 				$("#flowImg")
 						.append(
 								"<img src='getFlowGraph.action?processDefinitionId=${result.processDefinitionId}' />");
@@ -182,8 +194,8 @@
 				$.ajax({
 					type : "POST",
 					url : "getFlowGraph.action",
-					data : "flag=svg&processInstanceId="
-							+ '${result.processInstanceId}',
+					data : "flag=svg&processDefinitionId="
+							+ '${result.processDefinitionId}',
 					success : function(src) {
 						$("#flowImg").append(src);
 					}
