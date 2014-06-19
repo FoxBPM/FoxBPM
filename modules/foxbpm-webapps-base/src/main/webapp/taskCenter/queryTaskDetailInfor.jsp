@@ -12,84 +12,10 @@
 <link rel="stylesheet" type="text/css" href="common/css/flowGraph.css" />
 
 <script type="text/javascript" src="common/js/jquery.js"></script>
-<script type="text/javascript" src="common/js/svg.js"></script>
+<script type="text/javascript" src="common/js/flowGraphic.js"></script>
 
-<style type="text/css">
-.pos_absb {
-	_height: 200px;
-	min-height: 200px /* css 注释：两个放置不分前后顺序，兼容所有浏览器 */
-}
-</style>
 <script type="text/javascript">
-	//判断是否为IE浏览器标示
-	var isIE = window.ActiveXObject && $.browser.msie;
-	var taskListEnd = [];//存放已经结束的节点
-	var taskListIng = [];//存放正在处理的节点
-	var noPostion = 0;
-
-	//初始化已完成和未完成的节点信息。
-	function initFlowInfo() {
-		taskListEnd = $.parseJSON('${result.taskEndedJson}');
-		taskListIng = $.parseJSON('${result.taskNotEndJson}');
-	}
-	//给流程图加坐标
-	function addGraphicInfo(key, instid) {
-		var divcontent = "";
-		var nodeInfoArr = $.parseJSON('${result.positionInfo}');
-		for ( var nodeInfo in nodeInfoArr) {
-			var nodeInfoObj = nodeInfoArr[nodeInfo];
-			divcontent = divcontent
-					+ getDiv(nodeInfo, nodeInfoObj.x - 4, nodeInfoObj.y - 4,
-							nodeInfoObj.width + 4, nodeInfoObj.height + 4);
-		}
-		$("#flowImg").append(divcontent);
-	}
-
-	//获取图标的div
-	function getDiv(nodeId, x, y, w, h) {
-		return "<DIV id='"+nodeId+"' class='nodeclass' style='display:none;position: absolute; left: "+x+"px; top: "+y+"px;WIDTH:"+w+"px;HEIGHT:"+h+"px'  ></DIV>";
-	}
-
-	//标记节点
-	function markImags() {
-		$.each(taskListEnd, function(i, task) {
-			markImg(task.nodeId, "green", 2, 0);
-		});
-
-		$.each(taskListIng, function(i, task) {
-			if (task.taskType == "callactivitytask") {
-				//如果是正在运行的，则将z-idnex设为最大，因为子流程如果折叠起来，会有重叠的DIV
-				markImg(task.nodeId, "#ff6000", 4, 999);
-			} else {
-				markImg(task.nodeId, "#ff6000", 2, 999);
-			}
-		});
-	}
-	//标记单个节点
-	function markImg(svgNodeId, color, width, zIndex) {
-		var svgElement = $("#" + svgNodeId);
-		if (svgElement) {
-			svgElement.css('display', 'block');
-			svgElement.css('border', '2px solid ' + color);
-			svgElement.css('z-index', zIndex);
-		}
-	}
-
-	function viewPostion() {
-		if ($("#yczt").attr("checked") == "checked") {
-			if (isIE) {
-				$(".nodeclass").css('display', 'none');
-			} else {
-				clearTaskState();
-			}
-		} else {
-			if (isIE) {
-				markImags();
-			} else {
-				signProcessState();
-			}
-		}
-	}
+	
 </script>
 </head>
 <body>
@@ -115,15 +41,12 @@
 							<c:forEach items="${result.dataList}" var="row"
 								varStatus="status">
 								<tr <c:if test="${status.index%2!=0}">class="gray"</c:if>>
-
 									<td>${row.nodeName}</td>
 									<td><fmt:formatDate value="${row.createTime}" type="both" /></td>
 									<td><fmt:formatDate value="${row.endTime}" type="both" /></td>
 									<td>${row.assgneeUserName}</td>
-									<%-- 							<td>${row.expectedExecutionTime}</td> --%>
 									<td class="left">${row.commandMessage}</td>
 									<td class="left">${row.taskComment}</td>
-									<!-- 							<td class="left">已完成</td> -->
 								</tr>
 							</c:forEach>
 							<c:forEach items="${result.notEnddataList}" var="row"
@@ -133,10 +56,8 @@
 									<td><fmt:formatDate value="${row.createTime}" type="both" /></td>
 									<td><fmt:formatDate value="${row.endTime}" type="both" /></td>
 									<td>${row.assgneeUserName}</td>
-									<%-- 							<td>${row.expectedExecutionTime}</td> --%>
 									<td class="left">${row.commandMessage}</td>
 									<td class="left">${row.taskComment}</td>
-									<!-- 							<td class="left">进行中</td> -->
 								</tr>
 							</c:forEach>
 						</c:if>
@@ -155,44 +76,41 @@
 					</ul>
 				</h3>
 				<!---流程图 START--->
-				<div id="flowImg" class="pos_abs" style='position: relative;overflow-x:auto; width:100%;'>
-				</div>
+				<div id="flowImg" class="pos_abs"
+					style='position: relative; overflow-x: auto; width: 100%;'></div>
 			</div>
 		</div>
 	</div>
 </body>
 
 <script type="text/javascript">
+	//判断是否为IE浏览器标示
+	var isIE = window.ActiveXObject && $.browser.msie;
 	//页面初始化后需要展现流程图
+	var taskListEnd = $.parseJSON('${result.taskEndedJson}');//存放已经结束的节点
+	var taskListIng = $.parseJSON('${result.taskNotEndJson}');//存放正在处理的节点
+	var nodeInfoArr = $.parseJSON('${result.positionInfo}');//存放流程节点信息
+	//创建任务详细对象
+	var flowGraphic = FlowGraphic({
+		'taskListEnd' : taskListEnd,
+		'taskListIng' : taskListIng,
+		'nodeInfoArr' : nodeInfoArr,
+		'isIE' : isIE,
+		'parentId' : 'flowImg',
+		'action' : 'getFlowGraph.action',
+		'processDefinitionId' : '${result.processDefinitionId}'
+	});
 	$(function() {
-		var noGraphic = (1 != '${param.noGraphic}');
-		if (true == noGraphic) {
-			//初始化流程信息
-			initFlowInfo();
-			//添加图信息
-			addGraphicInfo();
-			//判断浏览器类型为IE
-			if (isIE) {
-				$("#flowImg")
-						.append(
-								"<img src='getFlowGraph.action?processDefinitionId=${result.processDefinitionId}' />");
-				//标记流程图
-				markImags();
-			} else {
-				//加载svg图片
-				$.ajax({
-					type : "POST",
-					url : "getFlowGraph.action",
-					data : "flag=svg&processDefinitionId="
-							+ '${result.processDefinitionId}',
-					success : function(src) {
-						$("#flowImg").html(src);
-						//标记流程图
-						signProcessState();
-					}
-				});
-			}
-		}
+
+		//判断浏览器类型为IE
+		flowGraphic.loadFlowImg();
+		$("#yczt")
+				.bind(
+						"click",
+						function() {
+							flowGraphic.hideFlowImgStatus(($(this).attr(
+									"checked") == 'checked'));
+						});
 	});
 </script>
 </html>
