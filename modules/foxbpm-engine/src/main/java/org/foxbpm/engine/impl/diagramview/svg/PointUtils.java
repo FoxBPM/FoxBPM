@@ -18,9 +18,55 @@
 package org.foxbpm.engine.impl.diagramview.svg;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
-public class PointUtils {
+/**
+ * 坐标工具类
+ * 
+ * @author MAENLIANG
+ * @date 2014-06-19
+ * 
+ */
+public final class PointUtils {
+	/**
+	 * X、Y允许的最大便宜量，超过最大偏移量需要设置文本相对线条的中心位置，如果小于这个值则不需要设置
+	 */
+	private static final float X_Y_LOCATION_MAXSHIFT = 100F;
+
+	/**
+	 * 计算中心点位置，包括复杂情况，和简单情况
+	 * 
+	 * @param pointList
+	 * @return
+	 */
+	public final static Point caclDetailCenterPoint(List<Point> pointList) {
+		Float[] xArrays = getXLocationArray(pointList);
+		Float[] yArrays = getYLocationArray(pointList);
+		float xShift = calCariance(xArrays);
+		float yShift = calCariance(yArrays);
+		// 如果偏差过大就计算中心点
+		if (xShift > X_Y_LOCATION_MAXSHIFT && yShift < X_Y_LOCATION_MAXSHIFT) {
+			// X坐标拐点幅度大，Y不大,计算线条X中心位置，Y取平均值
+			return caclXCenter(xArrays, yArrays);
+
+		} else if (yShift > X_Y_LOCATION_MAXSHIFT
+				&& xShift < X_Y_LOCATION_MAXSHIFT) {
+			// Y坐标拐点幅度大，X不大,计算线条Y中心位置，X取平均值
+			return caclYCenter(xArrays, yArrays);
+
+		} else if (yShift > X_Y_LOCATION_MAXSHIFT
+				&& xShift > X_Y_LOCATION_MAXSHIFT) {
+			// XY拐点幅度都比较大
+			return caclCenterPoint(pointList);
+		}
+
+		// 如果没有计算中心点
+		return null;
+
+	}
+
 	/**
 	 * 勾股定理, 取线段长度
 	 * 
@@ -28,7 +74,7 @@ public class PointUtils {
 	 * @param pointB
 	 * @return
 	 */
-	public static float segmentLength(Point pointA, Point pointB) {
+	public final static float segmentLength(Point pointA, Point pointB) {
 		double length = 0;
 		float width = pointA.getX() - pointA.getX();
 		float height = pointA.getY() - pointB.getY();
@@ -45,7 +91,7 @@ public class PointUtils {
 	 * @param pointList
 	 * @return
 	 */
-	private static List<Float> getSegmentsLength(List<Point> pointList) {
+	private final static List<Float> getSegmentsLength(List<Point> pointList) {
 		List<Float> segList = new ArrayList<Float>();
 
 		float segLen = 0f;
@@ -61,12 +107,107 @@ public class PointUtils {
 	}
 
 	/**
+	 * 计算所有x坐标值或者y坐标值的方差，判断是否需要重新设置所有拐点的中心点
+	 * 
+	 * @param array
+	 * @return
+	 */
+	public final static Float calCariance(Float[] array) {
+		int arrayLength = array.length;
+		Float ave = 0.0F;
+		for (int i = 0; i < arrayLength; i++) {
+			ave += array[i];
+		}
+		ave /= arrayLength;
+		Float sum = 0.0F;
+		for (int i = 0; i < arrayLength; i++) {
+			sum += (array[i] - ave) * (array[i] - ave);
+		}
+		sum = sum / arrayLength;
+		return sum;
+	}
+
+	/**
+	 * 获取所有点的X坐标
+	 * 
+	 * @param pointList
+	 * @return
+	 */
+	private final static Float[] getXLocationArray(List<Point> pointList) {
+		int pointListsize = pointList.size();
+		Float[] xLocationArray = new Float[pointListsize];
+		Iterator<Point> iterator = pointList.iterator();
+		for (int i = 0; i < pointListsize; i++) {
+			Point next = iterator.next();
+			Float x = next.getX();
+			xLocationArray[i] = x;
+		}
+		return xLocationArray;
+	}
+
+	/**
+	 * 获取所有点的Y坐标
+	 * 
+	 * @param pointList
+	 * @return
+	 */
+	private final static Float[] getYLocationArray(List<Point> pointList) {
+		int pointListsize = pointList.size();
+		Float[] yLocationArray = new Float[pointListsize];
+		Iterator<Point> iterator = pointList.iterator();
+		for (int i = 0; i < pointListsize; i++) {
+			Point next = iterator.next();
+			Float y = next.getY();
+			yLocationArray[i] = y;
+		}
+		return yLocationArray;
+	}
+
+	/**
+	 * 计算线条在X方向上的中心位置
+	 * 
+	 * @param xArrays
+	 * @param yArrays
+	 * @return
+	 */
+	public final static Point caclXCenter(Float[] xArrays, Float[] yArrays) {
+		Arrays.sort(xArrays);
+		Float xCenter = xArrays[0] + (xArrays[xArrays.length - 1] - xArrays[0])
+				/ 2;
+		Float tempV = 0.0f;
+		for (int i = 0; i < yArrays.length; i++) {
+			tempV += yArrays[i];
+		}
+		Float y = tempV / yArrays.length;
+		return new Point(xCenter, y);
+	}
+
+	/**
+	 * 计算线条在y方向上的中心位置
+	 * 
+	 * @param xArrays
+	 * @param yArrays
+	 * @return
+	 */
+	public final static Point caclYCenter(Float[] xArrays, Float[] yArrays) {
+		Arrays.sort(yArrays);
+		Float yCenter = yArrays[0] + (yArrays[yArrays.length - 1] - yArrays[0])
+				/ 2;
+		Float tempV = 0.0f;
+		for (int i = 0; i < xArrays.length; i++) {
+			tempV += xArrays[i];
+		}
+		Float x = tempV / xArrays.length;
+		return new Point(yCenter, x);
+	}
+
+	/**
 	 * 计算中心点
 	 * 
 	 * @param svgLine
 	 * @return
 	 */
-	public static Point caclCenterPoint(List<Point> pointList) {
+	public final static Point caclCenterPoint(List<Point> pointList) {
 		List<Float> segList = PointUtils.getSegmentsLength(pointList);
 		float totalLength = 0f;
 		for (float seg : segList) {

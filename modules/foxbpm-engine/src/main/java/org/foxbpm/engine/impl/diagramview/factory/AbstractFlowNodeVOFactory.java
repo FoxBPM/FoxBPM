@@ -157,7 +157,7 @@ public abstract class AbstractFlowNodeVOFactory {
 			if (StringUtils.isNotBlank(kernelSequenceFlowImpl.getName())) {
 				svgBuilder.setText(kernelSequenceFlowImpl.getName());
 				// 设置文本的相对位置
-				Point textPoint = PointUtils.caclCenterPoint(pointList);
+				Point textPoint = PointUtils.caclDetailCenterPoint(pointList);
 				svgBuilder.setTextX(textPoint.getX());
 				svgBuilder.setTextY(textPoint.getY());
 			}
