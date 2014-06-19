@@ -163,7 +163,11 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		if (StringUtil.isEmpty(processInstanceId)) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_PROCESSINSTID, "processInstanceId is null!");
 		}
-		ProcessInstance processInstance = piq.processInstanceId(processInstanceId).list().get(0);
+		List<ProcessInstance> pinstanceList = piq.processInstanceId(processInstanceId).list();
+		if (null == pinstanceList || pinstanceList.isEmpty()) {
+			throw new IllegalArgumentException("processInstanceId=" + processInstanceId + " is Invalid parameter value!");
+		}
+		ProcessInstance processInstance = pinstanceList.get(0);
 		String processName = modelService.getProcessDefinition(processInstance.getProcessDefinitionId()).getName();
 		TaskQuery tq = taskService.createTaskQuery();
 		tq.processInstanceId(processInstanceId);

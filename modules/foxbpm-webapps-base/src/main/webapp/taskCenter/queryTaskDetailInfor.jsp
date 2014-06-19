@@ -8,20 +8,18 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>流程状态</title>
 <link rel="stylesheet" type="text/css" href="common/css/reset.css">
-<link rel="stylesheet" type="text/css" href="common/css/global.css">
-<link rel="stylesheet" type="text/css" href="common/css/popup.css">
-<link rel="stylesheet" type="text/css" href="common/css/form.css" />
-<link rel="stylesheet" type="text/css" href="common/css/flowGraph.css" />
 <link rel="stylesheet" type="text/css" href="common/css/form.css" />
 <link rel="stylesheet" type="text/css" href="common/css/flowGraph.css" />
 
 <script type="text/javascript" src="common/js/jquery.js"></script>
-<script type="text/javascript"
-	src="common/js/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="common/js/common.js"></script>
 <script type="text/javascript" src="common/js/svg.js"></script>
 
-
+<style type="text/css">
+.pos_absb {
+	_height: 200px;
+	min-height: 200px /* css 注释：两个放置不分前后顺序，兼容所有浏览器 */
+}
+</style>
 <script type="text/javascript">
 	//判断是否为IE浏览器标示
 	var isIE = window.ActiveXObject && $.browser.msie;
@@ -31,10 +29,8 @@
 
 	//初始化已完成和未完成的节点信息。
 	function initFlowInfo() {
-		var taskEnded = '${result.taskEndedJson}';
-		var taskIng = '${result.taskNotEndJson}';
-		taskListEnd = $.parseJSON(taskEnded);
-		taskListIng = $.parseJSON(taskIng);
+		taskListEnd = $.parseJSON('${result.taskEndedJson}');
+		taskListIng = $.parseJSON('${result.taskNotEndJson}');
 	}
 	//给流程图加坐标
 	function addGraphicInfo(key, instid) {
@@ -51,7 +47,7 @@
 
 	//获取图标的div
 	function getDiv(nodeId, x, y, w, h) {
-		return "<DIV id='"+nodeId+"' class='nodeclass' style='display:none;position:  absolute; left: "+x+"px; top: "+y+"px;WIDTH:"+w+"px;HEIGHT:"+h+"px'  ></DIV>";
+		return "<DIV id='"+nodeId+"' class='nodeclass' style='display:none;position: absolute; left: "+x+"px; top: "+y+"px;WIDTH:"+w+"px;HEIGHT:"+h+"px'  ></DIV>";
 	}
 
 	//标记节点
@@ -159,7 +155,7 @@
 					</ul>
 				</h3>
 				<!---流程图 START--->
-				<div id="flowImg" class="pos_abs" style='position: relative;'>
+				<div id="flowImg" class="pos_abs" style='position: relative;overflow-x:auto; width:100%;'>
 				</div>
 			</div>
 		</div>
