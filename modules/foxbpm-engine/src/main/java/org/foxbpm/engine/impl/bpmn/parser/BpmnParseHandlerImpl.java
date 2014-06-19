@@ -58,6 +58,7 @@ import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.ProcessDefinitionEntityBuilder;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.ProcessBehavior;
 import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.util.BpmnModelUtil;
@@ -105,6 +106,14 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		String category=BpmnModelUtil.getProcessCategory(process);
 		List<FlowElement> flowElements=process.getFlowElements();
 		ProcessDefinitionBuilder processDefinitionBuilder = new ProcessDefinitionEntityBuilder(processObjId);
+		ProcessBehavior processBehavior=BpmnBehaviorEMFConverter.getProcessBehavior(process, processDefinitionBuilder.getProcessDefinition());
+		if(processBehavior!=null){
+			for (Connector connector :processBehavior.getConnectors()) {
+				processDefinitionBuilder.executionListener(connector.getEventType(), connector);
+			}
+		}
+
+		
 		for(FlowElement flowElement :flowElements){
 			KernelFlowNodeBehavior flowNodeBehavior = BpmnBehaviorEMFConverter.getFlowNodeBehavior(flowElement,processDefinitionBuilder.getProcessDefinition());
 			if(flowElement instanceof FlowNode){
