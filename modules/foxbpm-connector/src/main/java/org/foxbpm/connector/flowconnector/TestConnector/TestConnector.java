@@ -13,7 +13,7 @@ public class TestConnector implements FlowConnectorHandler {
 	@Override
 	public void execute(ConnectorExecutionContext executionContext) throws Exception {
 		// TODO Auto-generated method stub
-		
+		System.out.println(id);
 	}
 	
 	public void  setId(java.lang.String id){

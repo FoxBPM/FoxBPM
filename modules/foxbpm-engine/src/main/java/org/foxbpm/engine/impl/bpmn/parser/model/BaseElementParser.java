@@ -138,8 +138,8 @@ public class BaseElementParser {
 				connectorOutputParam.setVariableTarget(connectorOutputParamEmf.getVariableTarget());
 				connectorOutputParameters.add(connectorOutputParam);
 			}
-
-			
+			connectorInstanceBehavior.setConnectorInputsParam(connectorInputParameters);
+			connectorInstanceBehavior.setConnectorOutputsParam(connectorOutputParameters);
 			connectors.add(connectorInstanceBehavior);
 		}
 		

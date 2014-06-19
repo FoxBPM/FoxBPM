@@ -44,7 +44,9 @@ public class Connector implements KernelListener {
 	protected String errorHandling;
 	protected String errorCode;
 	protected List<ConnectorInputParam> connectorInputsParam;
+	
 	protected List<ConnectorOutputParam> connectorOutputsParam;
+	
 
 	protected boolean isTimeExecute = false;
 
@@ -163,6 +165,14 @@ public class Connector implements KernelListener {
 			this.connectorOutputsParam = new ArrayList<ConnectorOutputParam>();
 		}
 		return connectorOutputsParam;
+	}
+	
+	public void setConnectorInputsParam(List<ConnectorInputParam> connectorInputsParam) {
+		this.connectorInputsParam = connectorInputsParam;
+	}
+
+	public void setConnectorOutputsParam(List<ConnectorOutputParam> connectorOutputsParam) {
+		this.connectorOutputsParam = connectorOutputsParam;
 	}
 
 	public void notify(ListenerExecutionContext executionContext) throws Exception  {

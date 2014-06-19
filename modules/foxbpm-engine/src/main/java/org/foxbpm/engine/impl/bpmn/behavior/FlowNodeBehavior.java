@@ -20,7 +20,7 @@ public abstract class FlowNodeBehavior extends FlowElementBehavior implements Ke
 	}
 
 	public void leave(FlowNodeExecutionContext executionContext) {
-		executionContext.take(executionContext.getFlowNode().getOutgoingSequenceFlows().get(0));
+		executionContext.leave();
 	}
 
 	public void cleanData(FlowNodeExecutionContext executionContext) {
