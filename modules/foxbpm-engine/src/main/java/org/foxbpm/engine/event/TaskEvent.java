@@ -15,35 +15,15 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.kernel.runtime;
+package org.foxbpm.engine.event;
 
+import org.foxbpm.engine.impl.event.TaskEventAssign;
 import org.foxbpm.kernel.event.KernelEvent;
-import org.foxbpm.kernel.process.KernelFlowNode;
-import org.foxbpm.kernel.process.KernelSequenceFlow;
-import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
-import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
 
 /**
  * @author kenshin
- * 
+ *
  */
-public interface FlowNodeExecutionContext extends DelegateExecutionContext {
-	
-	KernelProcessInstanceImpl getProcessInstance();
-	
-	KernelFlowNode getFlowNode();
-	
-	void execute();
-
-	void signal();
-	
-	void leave();
-	
-	void fireEvent(KernelEvent kernelEvent);
-
-	public void take(KernelSequenceFlow sequenceFlow);
-
-	public void take(KernelFlowNodeImpl flowNode);
-	
-	void end();
+public interface TaskEvent extends KernelEvent {
+	KernelEvent TASK_ASSIGN = new TaskEventAssign();
 }

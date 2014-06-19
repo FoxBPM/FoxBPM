@@ -19,7 +19,7 @@ package org.foxbpm.kernel.test.behavior;
 
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
-public class EndBehavior extends CommonNodeBehavior {
+public class TestEndBehavior extends CommonNodeBehavior {
 
 	/**
 	 * 

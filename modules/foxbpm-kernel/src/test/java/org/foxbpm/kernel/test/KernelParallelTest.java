@@ -21,8 +21,8 @@ import org.foxbpm.kernel.ProcessDefinitionBuilder;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.runtime.KernelProcessInstance;
 import org.foxbpm.kernel.test.behavior.AutomaticBehavior;
-import org.foxbpm.kernel.test.behavior.EndBehavior;
-import org.foxbpm.kernel.test.behavior.ParallelGatewayBehavior;
+import org.foxbpm.kernel.test.behavior.TestEndBehavior;
+import org.foxbpm.kernel.test.behavior.TestParallelGatewayBehavior;
 
 public class KernelParallelTest extends KernelTestCase {
 	
@@ -36,7 +36,7 @@ public class KernelParallelTest extends KernelTestCase {
 		      .sequenceFlow("fork","sequenceFlow_1")
 		    .endFlowNode()
 		    .createFlowNode("fork")
-		      .behavior(new ParallelGatewayBehavior("Diverging"))
+		      .behavior(new TestParallelGatewayBehavior("Diverging"))
 		      .sequenceFlow("c1","sequenceFlow_2")
 		      .sequenceFlow("c2","sequenceFlow_3")
 		    .endFlowNode()
@@ -49,11 +49,11 @@ public class KernelParallelTest extends KernelTestCase {
 		      .sequenceFlow("join","sequenceFlow_5")
 		    .endFlowNode()
 		    .createFlowNode("join")
-		      .behavior(new ParallelGatewayBehavior("Converging"))
+		      .behavior(new TestParallelGatewayBehavior("Converging"))
 		      .sequenceFlow("end","sequenceFlow_6")
 		    .endFlowNode()
 		    .createFlowNode("end")
-		      .behavior(new EndBehavior())
+		      .behavior(new TestEndBehavior())
 		    .endFlowNode()
 		  .buildProcessDefinition();
 		  
@@ -85,15 +85,15 @@ public class KernelParallelTest extends KernelTestCase {
 	      .sequenceFlow("fork","sequenceFlow_1")
 	    .endFlowNode()
 	    .createFlowNode("fork")
-	      .behavior(new ParallelGatewayBehavior("Diverging"))
+	      .behavior(new TestParallelGatewayBehavior("Diverging"))
 	      .sequenceFlow("end1","sequenceFlow_2")
 	      .sequenceFlow("end2","sequenceFlow_3")
 	    .endFlowNode()
 	    .createFlowNode("end1")
-	      .behavior(new EndBehavior())
+	      .behavior(new TestEndBehavior())
 	    .endFlowNode()
 	    .createFlowNode("end2")
-	      .behavior(new EndBehavior())
+	      .behavior(new TestEndBehavior())
 	    .endFlowNode()
 	  .buildProcessDefinition();
 	  

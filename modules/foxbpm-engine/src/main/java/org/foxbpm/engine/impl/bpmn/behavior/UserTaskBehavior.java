@@ -27,6 +27,7 @@ import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
+import org.foxbpm.engine.impl.event.AbstractTaskEvent;
 import org.foxbpm.engine.impl.task.FormParam;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.util.StringUtil;
@@ -102,6 +103,12 @@ public class UserTaskBehavior extends TaskBehavior {
 				}
 			}
 		}
+		
+		TokenEntity tokenEntity=(TokenEntity)executionContext;
+		tokenEntity.setAssignTask(task);
+		/** 触发分配事件(后事件) */
+		executionContext.fireEvent(AbstractTaskEvent.TASK_ASSIGN);
+		tokenEntity.setAssignTask(null);
 
 	}
 
@@ -115,6 +122,14 @@ public class UserTaskBehavior extends TaskBehavior {
 		this.taskDefinition = taskDefinition;
 	}
 
+
+
+	@Override
+	public void cleanData(FlowNodeExecutionContext executionContext) {
+		super.cleanData(executionContext);
+	}
+
+	
 
 
 }

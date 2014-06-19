@@ -1,15 +1,7 @@
 package org.foxbpm.kernel.runtime.impl;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.runtime.KernelVariableScope;
 
 public abstract class KernelVariableScopeImpl implements KernelVariableScope, Serializable {

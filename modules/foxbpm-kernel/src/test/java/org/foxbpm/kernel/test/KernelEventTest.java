@@ -25,7 +25,7 @@ import org.foxbpm.kernel.event.KernelEventType;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.runtime.KernelProcessInstance;
 import org.foxbpm.kernel.test.behavior.AutomaticBehavior;
-import org.foxbpm.kernel.test.behavior.EndBehavior;
+import org.foxbpm.kernel.test.behavior.TestEndBehavior;
 import org.foxbpm.kernel.test.listener.EventCollector;
 
 /**
@@ -53,7 +53,7 @@ public class KernelEventTest extends KernelTestCase  {
 	        .endSequenceFlow()
 	      .endFlowNode()
 	      .createFlowNode("end")
-	        .behavior(new EndBehavior())
+	        .behavior(new TestEndBehavior())
 	        .executionListener(KernelEventType.EVENTTYPE_NODE_ENTER, eventCollector)
 	        .executionListener(KernelEventType.EVENTTYPE_NODE_EXECUTE, eventCollector)
 	      .endFlowNode()

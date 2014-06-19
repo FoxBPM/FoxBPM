@@ -21,7 +21,7 @@ import org.foxbpm.kernel.ProcessDefinitionBuilder;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.runtime.KernelProcessInstance;
 import org.foxbpm.kernel.test.behavior.AutomaticBehavior;
-import org.foxbpm.kernel.test.behavior.EndBehavior;
+import org.foxbpm.kernel.test.behavior.TestEndBehavior;
 
 
 /**
@@ -44,7 +44,7 @@ public class KernelTest extends KernelTestCase {
         .sequenceFlow("end")
         .endFlowNode()
         .createFlowNode("end")
-        .behavior(new EndBehavior())
+        .behavior(new TestEndBehavior())
         .endFlowNode()
 		.buildProcessDefinition();
 

@@ -24,7 +24,7 @@ import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
-public class ParallelGatewayBehavior extends CommonNodeBehavior {
+public class TestParallelGatewayBehavior extends CommonNodeBehavior {
 
 
 	protected String gatewayDirection;
@@ -33,7 +33,7 @@ public class ParallelGatewayBehavior extends CommonNodeBehavior {
 	 * 构建并行网关
 	 * @param gatewayDirection Diverging 发散、Converging 汇聚
 	 */
-	public ParallelGatewayBehavior(String gatewayDirection){
+	public TestParallelGatewayBehavior(String gatewayDirection){
 		this.gatewayDirection=gatewayDirection;
 	}
 	/**
