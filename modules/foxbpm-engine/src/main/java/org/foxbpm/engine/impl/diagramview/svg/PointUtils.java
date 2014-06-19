@@ -42,8 +42,9 @@ public final class PointUtils {
 	 * @return
 	 */
 	public final static Point caclDetailCenterPoint(List<Point> pointList) {
-		Float[] xArrays = getXLocationArray(pointList);
-		Float[] yArrays = getYLocationArray(pointList);
+		Float[][] xyArrays = getXYLocationArray(pointList);
+		Float[] xArrays = xyArrays[0];
+		Float[] yArrays = xyArrays[1];
 		float xShift = calCariance(xArrays);
 		float yShift = calCariance(yArrays);
 		// 如果偏差过大就计算中心点
@@ -128,39 +129,21 @@ public final class PointUtils {
 	}
 
 	/**
-	 * 获取所有点的X坐标
+	 * 获取所有点的XY坐标
 	 * 
 	 * @param pointList
 	 * @return
 	 */
-	private final static Float[] getXLocationArray(List<Point> pointList) {
+	private final static Float[][] getXYLocationArray(List<Point> pointList) {
 		int pointListsize = pointList.size();
-		Float[] xLocationArray = new Float[pointListsize];
+		Float[][] xyLocationArray = new Float[2][pointListsize];
 		Iterator<Point> iterator = pointList.iterator();
 		for (int i = 0; i < pointListsize; i++) {
 			Point next = iterator.next();
-			Float x = next.getX();
-			xLocationArray[i] = x;
+			xyLocationArray[0][i] = next.getX();
+			xyLocationArray[1][i] = next.getY();
 		}
-		return xLocationArray;
-	}
-
-	/**
-	 * 获取所有点的Y坐标
-	 * 
-	 * @param pointList
-	 * @return
-	 */
-	private final static Float[] getYLocationArray(List<Point> pointList) {
-		int pointListsize = pointList.size();
-		Float[] yLocationArray = new Float[pointListsize];
-		Iterator<Point> iterator = pointList.iterator();
-		for (int i = 0; i < pointListsize; i++) {
-			Point next = iterator.next();
-			Float y = next.getY();
-			yLocationArray[i] = y;
-		}
-		return yLocationArray;
+		return xyLocationArray;
 	}
 
 	/**
