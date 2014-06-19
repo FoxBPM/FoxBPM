@@ -58,6 +58,7 @@ import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.ProcessDefinitionEntityBuilder;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.ProcessBehavior;
 import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.util.BpmnModelUtil;
@@ -82,36 +83,29 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			throw new FoxBPMException("文件中没有对应的流程定义，请检查bpmn文件内容和流程key是否对应！");
 		}
 		KernelProcessDefinition processDefinition=loadBehavior(process);
-		// 加载事件定义.
-		loadConnector(processDefinition);
 //		// 加载数据变量
 //		loadVariable(processDefinition);
 //		// 设置FlowNode元素的子流程
 //		loadSubProcess(processDefinition);
-//		processDefinition.persistentInit(processDataMap);
-//		deploymentCache.addProcessDefinition(processDefinition);
 		return processDefinition;
 	}
-	
-	
-	private void loadConnector(KernelProcessDefinition processDefinition) {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 	private KernelProcessDefinition loadBehavior(Process process){
 		String processObjId = BpmnModelUtil.getProcessId(process);
 		String category=BpmnModelUtil.getProcessCategory(process);
 		List<FlowElement> flowElements=process.getFlowElements();
 		ProcessDefinitionBuilder processDefinitionBuilder = new ProcessDefinitionEntityBuilder(processObjId);
+		ProcessBehavior processBehavior=BpmnBehaviorEMFConverter.getProcessBehavior(process, processDefinitionBuilder.getProcessDefinition());
+		if(processBehavior!=null){
+			for (Connector connector :processBehavior.getConnectors()) {
+				processDefinitionBuilder.executionListener(connector.getEventType(), connector);
+			}
+		}
+		
 		for(FlowElement flowElement :flowElements){
 			KernelFlowNodeBehavior flowNodeBehavior = BpmnBehaviorEMFConverter.getFlowNodeBehavior(flowElement,processDefinitionBuilder.getProcessDefinition());
 			if(flowElement instanceof FlowNode){
-				
-				
 				processDefinitionBuilder.createFlowNode(flowElement.getId(),flowElement.getName()).behavior(flowNodeBehavior);
-
 				if(flowNodeBehavior instanceof BaseElementBehavior){
 					for (Connector connector :((BaseElementBehavior) flowNodeBehavior).getConnectors()) {
 						processDefinitionBuilder.executionListener(connector.getEventType(), connector);
@@ -124,9 +118,6 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 				for (SequenceFlow sequenceFlow : sequenceFlows) {
 					processDefinitionBuilder.sequenceFlow(sequenceFlow.getTargetRef().getId(),sequenceFlow.getId(),sequenceFlow.getName());
 				}
-				
-				// 
-				
 				processDefinitionBuilder.endFlowNode();
 			}
 		}
@@ -139,48 +130,33 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		return processDefinition;
 	}
 	
-
-	
 	private void processDI(ProcessDefinitionEntity processDefinition,Process process){
-		
 		ProcessEngineConfigurationImpl processEngineConfiguration = Context.getProcessEngineConfiguration();
-		
 		Definitions definitions = (Definitions) process.eResource().getContents().get(0).eContents().get(0);
 		List<BPMNDiagram> diagrams = definitions.getDiagrams();
 		if(diagrams==null||diagrams.size()==0){
 			return;
-			
 		}
-
-
 		float maxX=0;
 		float maxY=0;
 		float minY=0;
 		float minX=0;
 		for (BPMNDiagram bpmnDiagram : diagrams) {
-
-			
 			for (DiagramElement diagramElement : bpmnDiagram.getPlane().getPlaneElement()) {
-				
 				if (diagramElement instanceof BPMNShape) {
 					BPMNShape bpmnShape = (BPMNShape) diagramElement;
-					if(bpmnShape.getBounds().getX()+bpmnShape.getBounds().getWidth()>maxX)
-					{
+					if(bpmnShape.getBounds().getX()+bpmnShape.getBounds().getWidth()>maxX){
 						maxX=bpmnShape.getBounds().getX()+bpmnShape.getBounds().getWidth();
-			
-					}
-					if(bpmnShape.getBounds().getY()+bpmnShape.getBounds().getHeight()>maxY)
-					{
-						maxY=bpmnShape.getBounds().getY()+bpmnShape.getBounds().getHeight();
-						
 					}
 					
+					if(bpmnShape.getBounds().getY()+bpmnShape.getBounds().getHeight()>maxY){
+						maxY=bpmnShape.getBounds().getY()+bpmnShape.getBounds().getHeight();
+					}
 				
 					if(minY==0){
 						minY=bpmnShape.getBounds().getY();
 					}else{
-						if(bpmnShape.getBounds().getY()<minY)
-						{
+						if(bpmnShape.getBounds().getY()<minY){
 							minY=bpmnShape.getBounds().getY();
 						}
 					}
@@ -188,21 +164,13 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 					if(minX==0){
 						minX=bpmnShape.getBounds().getX();
 					}else{
-						if(bpmnShape.getBounds().getX()<minX)
-						{
+						if(bpmnShape.getBounds().getX()<minX){
 							minX=bpmnShape.getBounds().getX();
-						
 						}
 					}
 					
 					BaseElement bpmnElement=getBaseElement(bpmnShape.getBpmnElement());
-				
-					
 					KernelFlowNodeImpl findFlowNode = processDefinition.findFlowNode(bpmnElement.getId());
-					
-	
-					
-					
 					if(findFlowNode!=null){
 						findFlowNode.setWidth((new Float(bpmnShape.getBounds().getWidth())).intValue());
 						findFlowNode.setHeight((new Float(bpmnShape.getBounds().getHeight())).intValue());
@@ -210,48 +178,26 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 						findFlowNode.setY((new Float(bpmnShape.getBounds().getY())).intValue());
 					}
 					Style style=null;
-					
-					
-			
-					
-					
-				
-					
 					if (bpmnElement instanceof StartEvent) {
-						
-						
 						style=processEngineConfiguration.getStyle("StartEvent");
-						//String startEventSVG = startEventToSVG(bpmnShape);
-						//svg.addChildren(startEventSVG);
-
 					}
 					if (bpmnElement instanceof EndEvent) {
-						//String endEventSVG = endEventToSVG(bpmnShape);
 						style=processEngineConfiguration.getStyle("EndEvent");
-
 					}
 				
-
 					if (bpmnElement instanceof Task) {
-
-						//String endEventSVG = endEventToSVG(bpmnShape);
 						style=processEngineConfiguration.getStyle("UserTask");
-
 					}
 					
 					/*
 					if (bpmnElement instanceof IntermediateCatchEventBehavior) {
 						String intermediateTimerEventSVG = intermediateTimerEventToSVG(bpmnShape);
 						svg.addChildren(intermediateTimerEventSVG);
-						
 					}
-					
-					
 					if (bpmnElement instanceof CallActivity) {
 
 						String taskSVG = callActivityToSVG(bpmnShape);
 						svg.addChildren(taskSVG);
-
 					}
 
 					if (bpmnElement instanceof Gateway) {
@@ -336,48 +282,29 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 						findFlowNode.setProperty(StyleOption.SelectedColor, style.getSelectedColor());
 						findFlowNode.setProperty(StyleOption.TextColor, style.getTextColor());
 					}
-					
-					
 				}
 				if (diagramElement instanceof BPMNEdge) {
 					BPMNEdge bpmnEdge = (BPMNEdge) diagramElement;
-					
 					List<Point> pointList = bpmnEdge.getWaypoint();
 					for (Point point : pointList) {
-						
-						
-						if(point.getX()>maxX)
-						{
+						if(point.getX()>maxX){
 							maxX=point.getX();
-						
 						}
-						if(point.getY()>maxY)
-						{
+						if(point.getY()>maxY){
 							maxY=point.getY();
 						}
-						
-						
-	
 					}
 					BaseElement bpmnElement=getBaseElement(bpmnEdge.getBpmnElement());
 					if (bpmnElement instanceof SequenceFlow) {
 						KernelSequenceFlowImpl findSequenceFlow = processDefinition.findSequenceFlow(bpmnElement.getId());
-			
 						Style style=processEngineConfiguration.getStyle("StartEvent");
 						List<Integer> waypoints=new ArrayList<Integer>();
-						
 						for (Point point : pointList) {
-							
-							
 							waypoints.add((new Float(point.getX())).intValue());
 							waypoints.add((new Float(point.getY())).intValue());
-							
-							
-		
 						}
 						
 						findSequenceFlow.setWaypoints(waypoints);
-						
 						if(style!=null){
 							findSequenceFlow.setProperty(StyleOption.Background, style.getBackground());
 							findSequenceFlow.setProperty(StyleOption.Font, style.getFont());
@@ -387,8 +314,6 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 							findSequenceFlow.setProperty(StyleOption.SelectedColor, style.getSelectedColor());
 							findSequenceFlow.setProperty(StyleOption.TextColor, style.getTextColor());
 						}
-						
-
 						//String sequenceFlowSVG = sequenceFlowToSVG(bpmnEdge);
 						//svg.addEdge(sequenceFlowSVG);
 					}
@@ -399,12 +324,8 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 					if (bpmnElement instanceof MessageFlow) {
 						//String messageFlowSVG = messageFlowToSVG(bpmnEdge);
 						//svg.addChildren(messageFlowSVG);
-
 					}
-					
 				}
-			
-
 			}
 		}
 		
@@ -412,21 +333,10 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		processDefinition.setProperty("canvas_maxY", maxY+70);
 		processDefinition.setProperty("canvas_minX", minX);
 		processDefinition.setProperty("canvas_minY", minY);
-		
-		//svg.setWidth(maxX+30);
-		//svg.setHight(maxY+70);
-		//svg.setMhight(minY);
-		//svg.setMwidth(minX);
-		//return svg.release();
-
 	}
-	
 	
 	private  BaseElement getBaseElement(BaseElement baseElement)
 	{
-		
-		
-		
 		if(baseElement==null){
 			return null;
 		}
@@ -435,7 +345,6 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			BasicEObjectImpl basicEObjectImpl=(BasicEObjectImpl)baseElement;
 			if(basicEObjectImpl!=null&&basicEObjectImpl.eProxyURI()!=null){
 				String elementId=basicEObjectImpl.eProxyURI().fragment();
-				
 				BaseElement bpmnElement=BpmnModelUtil.findElement(elementId, baseElement);
 				return bpmnElement;
 			}
@@ -445,11 +354,6 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		}else{
 			return baseElement;
 		}
-		
-		
-		
-		
-		
 	} 
 
 	private Process createProcess(String processId, InputStream is) {

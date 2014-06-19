@@ -3,10 +3,10 @@
   <bpmn2:process id="test_connector_1" name="测试连接器">
     <bpmn2:extensionElements>
       <foxbpm:connectorInstanceElements connrctorType="flowConnector">
-        <foxbpm:connectorInstance connectorId="TestConnector2" packageName="org.foxbpm.flowconnector.TestConnector2" className="TestConnector2" connectorInstanceId="d67bc864-755c-41bc-af57-572bae64a15a" connectorInstanceName="测试启动" eventType="process-start" errorHandling="抛出异常" errorCode="" type="flowconnector">
+        <foxbpm:connectorInstance connectorId="TestConnector2" packageName="connector.flowconnector.TestConnector2" className="TestConnector2" connectorInstanceId="d67bc864-755c-41bc-af57-572bae64a15a" connectorInstanceName="测试启动" eventType="process-start" errorHandling="抛出异常" errorCode="" type="flowconnector">
           <documentation xsi:type="foxbpm:Documentation" id="Documentation_1"></documentation>
         </foxbpm:connectorInstance>
-        <foxbpm:connectorInstance connectorId="TestConnector2" packageName="org.foxbpm.flowconnector.TestConnector2" className="TestConnector2" connectorInstanceId="0bbfdb0c-0411-46b1-956d-aaf4272b9302" connectorInstanceName="测试结束事件" eventType="process-end" errorHandling="抛出异常" errorCode="" type="flowconnector">
+        <foxbpm:connectorInstance connectorId="TestConnector2" packageName="connector.flowconnector.TestConnector2" className="TestConnector2" connectorInstanceId="0bbfdb0c-0411-46b1-956d-aaf4272b9302" connectorInstanceName="测试结束事件" eventType="process-end" errorHandling="抛出异常" errorCode="" type="flowconnector">
           <documentation xsi:type="foxbpm:Documentation" id="Documentation_2"></documentation>
         </foxbpm:connectorInstance>
       </foxbpm:connectorInstanceElements>
@@ -77,11 +77,14 @@ return false;]]></foxbpm:expression>
           <foxbpm:connectorInstance connectorId="TestConnector" packageName="org.foxbpm.connector.flowconnector.TestConnector" className="TestConnector" connectorInstanceId="2851607f-ee3e-41f8-a0bc-3206143fcdd7" connectorInstanceName="test" eventType="node-leave" errorHandling="抛出异常" errorCode="" type="flowconnector">
             <documentation xsi:type="foxbpm:Documentation" id="Documentation_5"></documentation>
             <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="id" name="编号" dataType="java.lang.String" isExecute="true">
-              <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_13" name="222"><![CDATA["离开事件"]]></foxbpm:expression>
+              <foxbpm:expression xsi:type="foxbpm:Expression" name="222"><![CDATA["离开事件"]]></foxbpm:expression>
             </foxbpm:connectorParameterInputs>
             <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="name" name="名称" dataType="java.lang.String" isExecute="true">
               <foxbpm:expression xsi:type="foxbpm:Expression" name=""><![CDATA[]]></foxbpm:expression>
             </foxbpm:connectorParameterInputs>
+            <foxbpm:skipComment xsi:type="foxbpm:SkipComment">
+              <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_14" name="true"><![CDATA[return true;]]></foxbpm:expression>
+            </foxbpm:skipComment>
           </foxbpm:connectorInstance>
         </foxbpm:connectorInstanceElements>
       </bpmn2:extensionElements>
