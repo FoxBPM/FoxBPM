@@ -10,5 +10,5 @@
       <widgetExpression expressionValue=""/>
     </widget>
   </page>
-  <definitionImpl className="TestConnector" packageName="org.foxbpm.flowconnector.TestConnector"/>
+  <definitionImpl className="TestConnector" packageName="org.foxbpm.connector.flowconnector.TestConnector"/>
 </connector:ConnectorDefinition>

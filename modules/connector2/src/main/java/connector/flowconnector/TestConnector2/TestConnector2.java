@@ -10,6 +10,7 @@ public class TestConnector2 implements FlowConnectorHandler {
 	public void execute(ConnectorExecutionContext executionContext) throws Exception {
 		// TODO Auto-generated method stub
 		
+		System.out.println("**************************测试连接器****************************");
 	}
 
 }

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:foxbpm="http://www.foxbpm.org/foxbpm" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="Definitions_1" targetNamespace="http://www.foxbpm.org">
+  <bpmn2:process id="test_connector_1" name="测试连接器">
+    <bpmn2:extensionElements>
+      <foxbpm:connectorInstanceElements connrctorType="flowConnector">
+        <foxbpm:connectorInstance connectorId="TestConnector2" packageName="org.foxbpm.flowconnector.TestConnector2" className="TestConnector2" connectorInstanceId="d67bc864-755c-41bc-af57-572bae64a15a" connectorInstanceName="测试启动" eventType="process-start" errorHandling="抛出异常" errorCode="" type="flowconnector">
+          <documentation xsi:type="foxbpm:Documentation" id="Documentation_1"></documentation>
+        </foxbpm:connectorInstance>
+        <foxbpm:connectorInstance connectorId="TestConnector2" packageName="org.foxbpm.flowconnector.TestConnector2" className="TestConnector2" connectorInstanceId="0bbfdb0c-0411-46b1-956d-aaf4272b9302" connectorInstanceName="测试结束事件" eventType="process-end" errorHandling="抛出异常" errorCode="" type="flowconnector">
+          <documentation xsi:type="foxbpm:Documentation" id="Documentation_2"></documentation>
+        </foxbpm:connectorInstance>
+      </foxbpm:connectorInstanceElements>
+    </bpmn2:extensionElements>
+    <bpmn2:startEvent id="StartEvent_1" name="开始">
+      <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="StartEvent_1" targetRef="UserTask_1"/>
+    <bpmn2:userTask id="UserTask_1" name="提交">
+      <bpmn2:extensionElements>
+        <foxbpm:taskCommand id="HandleCommand_1" name="提交" commandType="general" isVerification="false" isSaveData="false" isSimulationRun="false"/>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="PotentialOwner_1">
+        <bpmn2:extensionElements>
+          <foxbpm:connectorInstanceElements connrctorType="actorConnector">
+            <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="d13fa99a-db54-4231-b6f5-87d77f6fc248" connectorInstanceName="所有人" errorHandling="" type="actorconnector">
+              <documentation xsi:type="foxbpm:Documentation" id="Documentation_1"></documentation>
+            </foxbpm:connectorInstance>
+          </foxbpm:connectorInstanceElements>
+        </bpmn2:extensionElements>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+    <bpmn2:endEvent id="EndEvent_1" name="结束">
+      <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:userTask id="UserTask_2" foxbpm:taskType="foxbpmtask" name="审批">
+      <bpmn2:extensionElements>
+        <foxbpm:taskCommand id="HandleCommand_1" name="同意" commandType="general" isVerification="false" isSaveData="false" isSimulationRun="false"/>
+        <foxbpm:taskPriority>
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_1" name="一般"><![CDATA[40]]></foxbpm:expression>
+        </foxbpm:taskPriority>
+        <foxbpm:expectedExecutionTime/>
+        <foxbpm:connectorInstanceElements connrctorType="flowConnector">
+          <foxbpm:connectorInstance connectorId="TestConnector" packageName="org.foxbpm.connector.flowconnector.TestConnector" className="TestConnector" connectorInstanceId="4124c97b-984b-475b-a9f0-7d44f3d1c1f6" connectorInstanceName="test" eventType="node-enter" errorHandling="抛出异常" errorCode="" type="flowconnector">
+            <documentation xsi:type="foxbpm:Documentation" id="Documentation_3"></documentation>
+            <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="id" name="编号" dataType="java.lang.String" isExecute="true">
+              <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_11" name="22"><![CDATA[System.out.println "测试进入";
+
+return "进入事件";]]></foxbpm:expression>
+            </foxbpm:connectorParameterInputs>
+            <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="name" name="名称" dataType="java.lang.String" isExecute="true">
+              <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_2" name="33"><![CDATA[return "33";]]></foxbpm:expression>
+            </foxbpm:connectorParameterInputs>
+            <foxbpm:connectorParameterOutputs xsi:type="foxbpm:ConnectorParameterOutput" variableTarget="">
+              <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_3"><![CDATA[]]></foxbpm:expression>
+            </foxbpm:connectorParameterOutputs>
+            <foxbpm:skipComment xsi:type="foxbpm:SkipComment">
+              <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_4" name="false"><![CDATA[System.out.println "跳过策略";
+
+
+
+
+
+return false;]]></foxbpm:expression>
+            </foxbpm:skipComment>
+          </foxbpm:connectorInstance>
+          <foxbpm:connectorInstance connectorId="TestConnector" packageName="org.foxbpm.connector.flowconnector.TestConnector" className="TestConnector" connectorInstanceId="8452ff08-9a21-4c75-b242-ba1d121cd14e" connectorInstanceName="Test" eventType="task-assign" errorHandling="抛出异常" errorCode="" type="flowconnector">
+            <documentation xsi:type="foxbpm:Documentation" id="Documentation_4"></documentation>
+            <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="id" name="编号" dataType="java.lang.String" isExecute="true">
+              <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_8" name="222"><![CDATA[return "分配事件连接器";]]></foxbpm:expression>
+            </foxbpm:connectorParameterInputs>
+            <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="name" name="名称" dataType="java.lang.String" isExecute="true">
+              <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_10" name=""><![CDATA["222"]]></foxbpm:expression>
+            </foxbpm:connectorParameterInputs>
+          </foxbpm:connectorInstance>
+          <foxbpm:connectorInstance connectorId="TestConnector" packageName="org.foxbpm.connector.flowconnector.TestConnector" className="TestConnector" connectorInstanceId="2851607f-ee3e-41f8-a0bc-3206143fcdd7" connectorInstanceName="test" eventType="node-leave" errorHandling="抛出异常" errorCode="" type="flowconnector">
+            <documentation xsi:type="foxbpm:Documentation" id="Documentation_5"></documentation>
+            <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="id" name="编号" dataType="java.lang.String" isExecute="true">
+              <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_13" name="222"><![CDATA["离开事件"]]></foxbpm:expression>
+            </foxbpm:connectorParameterInputs>
+            <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="name" name="名称" dataType="java.lang.String" isExecute="true">
+              <foxbpm:expression xsi:type="foxbpm:Expression" name=""><![CDATA[]]></foxbpm:expression>
+            </foxbpm:connectorParameterInputs>
+          </foxbpm:connectorInstance>
+        </foxbpm:connectorInstanceElements>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="PotentialOwner_2">
+        <bpmn2:extensionElements>
+          <foxbpm:connectorInstanceElements connrctorType="actorConnector">
+            <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="9dcdf97f-8c0c-41a9-a6ce-05287c0e03ee" connectorInstanceName="所有人" errorHandling="" type="actorconnector">
+              <documentation xsi:type="foxbpm:Documentation" id="Documentation_3"></documentation>
+            </foxbpm:connectorInstance>
+          </foxbpm:connectorInstanceElements>
+        </bpmn2:extensionElements>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_3" sourceRef="UserTask_1" targetRef="UserTask_2"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_4" sourceRef="UserTask_2" targetRef="EndEvent_1"/>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="test_connector_1">
+      <bpmndi:BPMNShape id="BPMNShape_1" bpmnElement="StartEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="70.0" y="109.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_2" bpmnElement="EndEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="610.0" y="103.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_1" bpmnElement="UserTask_1">
+        <dc:Bounds height="50.0" width="110.0" x="200.0" y="103.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_2" bpmnElement="UserTask_2">
+        <dc:Bounds height="50.0" width="110.0" x="420.0" y="103.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_1" targetElement="BPMNShape_UserTask_1">
+        <di:waypoint xsi:type="dc:Point" x="106.0" y="127.0"/>
+        <di:waypoint xsi:type="dc:Point" x="197.0" y="127.0"/>
+        <di:waypoint xsi:type="dc:Point" x="197.0" y="128.0"/>
+        <di:waypoint xsi:type="dc:Point" x="200.0" y="128.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="BPMNShape_UserTask_1" targetElement="BPMNShape_UserTask_2">
+        <di:waypoint xsi:type="dc:Point" x="310.0" y="128.0"/>
+        <di:waypoint xsi:type="dc:Point" x="409.0" y="128.0"/>
+        <di:waypoint xsi:type="dc:Point" x="409.0" y="128.0"/>
+        <di:waypoint xsi:type="dc:Point" x="420.0" y="128.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4" sourceElement="BPMNShape_UserTask_2" targetElement="BPMNShape_2">
+        <di:waypoint xsi:type="dc:Point" x="530.0" y="128.0"/>
+        <di:waypoint xsi:type="dc:Point" x="590.0" y="128.0"/>
+        <di:waypoint xsi:type="dc:Point" x="590.0" y="121.0"/>
+        <di:waypoint xsi:type="dc:Point" x="610.0" y="121.0"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>
