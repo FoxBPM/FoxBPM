@@ -17,10 +17,6 @@
  */
 package org.foxbpm.engine.impl.diagramview.svg;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -105,38 +101,21 @@ public class SVGTemplateContainer {
 	 * @param templateName
 	 */
 	private void init(String templateName) {
-		BufferedReader bufferReader = null;
 		try {
-			InputStreamReader inputReader = new InputStreamReader(
-					ReflectUtil.getResourceAsStream(BPMN_PATH + FILE_SPERATOR
-							+ templateName));
-			bufferReader = new BufferedReader(inputReader);
-			String tempLineStr = "";
-			StringBuffer svgStrBuffer = new StringBuffer(tempLineStr);
-			while ((tempLineStr = bufferReader.readLine()) != null) {
-				svgStrBuffer.append(tempLineStr);
-			}
-			StringReader stringReader = new StringReader(
-					svgStrBuffer.toString());
-
 			JAXBContext context = JAXBContext.newInstance(SvgVO.class);
 			Unmarshaller unMarshaller = context.createUnmarshaller();
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 			// 解析的时候忽略SVG命名空间，否则会出错
 			factory.setNamespaceAware(true);
 			XMLReader reader = factory.newSAXParser().getXMLReader();
-			Source source = new SAXSource(reader, new InputSource(stringReader));
+			Source source = new SAXSource(reader, new InputSource(
+					ReflectUtil.getResourceAsStream(BPMN_PATH + FILE_SPERATOR
+							+ templateName)));
 			VONode object = (VONode) unMarshaller.unmarshal(source);
 			this.svgTemplets.put(templateName, object);
 		} catch (Exception e) {
 			throw new FoxBPMException("template svg file load exception", e);
 		} finally {
-			if (bufferReader != null) {
-				try {
-					bufferReader.close();
-				} catch (IOException e) {
-				}
-			}
 		}
 
 	}
