@@ -15,6 +15,12 @@
 				virtualPath="src/main/java/org/foxbpm/connector/actorconnector/" src="connector/actorconnector/" />
 
 	</resourcePathConfig>
+	<scriptLanguageConfig selected="Groovy">
+		<scriptLanguage id="BeanShell"
+			classImpl="org.foxbpm.engine.impl.scriptlanguage.BeanShellScriptLanguageMgmtImpl" />
+		<scriptLanguage id="Groovy"
+			classImpl="org.foxbpm.engine.impl.scriptlanguage.GroovyScriptLanguageMgmtImpl" />
+	</scriptLanguageConfig>
 	
 	<taskCommandConfig>
 
