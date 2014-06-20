@@ -25,6 +25,7 @@ import java.util.Map;
 import org.foxbpm.kernel.event.KernelEvent;
 import org.foxbpm.kernel.process.KernelBaseElement;
 import org.foxbpm.kernel.process.KernelException;
+import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.process.KernelSequenceFlow;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
@@ -168,9 +169,12 @@ InterpretableExecutionContext  {
 		KernelListenerIndex = kernelListenerIndex;
 	}
 	
+	public void leave(){
+		leave(true);
+	}
 
 	
-	public void leave() {
+	public void leave(boolean verify) {
 		
 
 		// 发生节点离开事件
@@ -198,15 +202,22 @@ InterpretableExecutionContext  {
 		
 		//定义可通过线条集合
 		List<KernelSequenceFlow> sequenceFlowList = new ArrayList<KernelSequenceFlow>();
+		//并行网关会忽略掉后面的线条的条件
+		if(verify){
+			//获取正常离开的所有线条
+			for (KernelSequenceFlow sequenceFlow : getFlowNode().getOutgoingSequenceFlows()) {
+				//验证线条上的条件
+				if (sequenceFlow.isContinue(this)) {
+					sequenceFlowList.add(sequenceFlow);
+				}
 
-		//获取正常离开的所有线条
-		for (KernelSequenceFlow sequenceFlow : getFlowNode().getOutgoingSequenceFlows()) {
-			//验证线条上的条件
-			if (sequenceFlow.isContinue(this)) {
-				sequenceFlowList.add(sequenceFlow);
 			}
-
 		}
+		else{
+			sequenceFlowList=getFlowNode().getOutgoingSequenceFlows();
+		}
+
+		
 
 		// 节点后面没有线的处理
 		if (sequenceFlowList.size() == 0) {
@@ -507,6 +518,29 @@ InterpretableExecutionContext  {
 	public Object getVariableLocal(Object variableName) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<KernelToken> findInactiveToken(KernelFlowNode flowNode) {
+		  List<KernelToken> inactiveTokenInActivity = new ArrayList<KernelToken>();
+		    List<KernelToken> otherToken = new ArrayList<KernelToken>();
+		   
+		      List< ? extends KernelTokenImpl> tokenChildren = getParent().getChildren();
+		      for (KernelTokenImpl token: tokenChildren) {
+		        if (token.getFlowNode().getId().equals(flowNode.getId())) {
+		          if (!token.isActive()) {
+		        	  inactiveTokenInActivity.add(token);
+		          }
+		        } else {
+		        	otherToken.add(token);
+		        }
+		      }
+		    
+		    if (LOG.isDebugEnabled()) {
+		    	LOG.debug("非激活的令牌 在 '{}': {}", flowNode, inactiveTokenInActivity);
+		    	LOG.debug("激活的令牌 : {}", otherToken);
+		    }
+		    return inactiveTokenInActivity;
 	}
 
 

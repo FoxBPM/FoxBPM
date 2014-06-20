@@ -103,7 +103,7 @@ public class TestParallelGatewayBehavior extends CommonNodeBehavior {
 	
 
 	public void leave(FlowNodeExecutionContext executionContext) {
-		executionContext.leave();
+		((KernelTokenImpl)executionContext).leave();
 	}
 
 
