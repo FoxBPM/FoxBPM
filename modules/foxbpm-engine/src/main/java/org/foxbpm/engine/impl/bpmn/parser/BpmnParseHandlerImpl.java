@@ -30,6 +30,7 @@ import org.eclipse.bpmn2.EndEvent;
 import org.eclipse.bpmn2.FlowElement;
 import org.eclipse.bpmn2.FlowNode;
 import org.eclipse.bpmn2.MessageFlow;
+import org.eclipse.bpmn2.ParallelGateway;
 import org.eclipse.bpmn2.Process;
 import org.eclipse.bpmn2.RootElement;
 import org.eclipse.bpmn2.SequenceFlow;
@@ -184,6 +185,10 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 					if (bpmnElement instanceof EndEvent) {
 						style=processEngineConfiguration.getStyle("EndEvent");
 					}
+					
+					if (bpmnElement instanceof ParallelGateway) {
+						style=processEngineConfiguration.getStyle("ParallelGateway");
+					}
 				
 					if (bpmnElement instanceof Task) {
 						style=processEngineConfiguration.getStyle("UserTask");
@@ -297,7 +302,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 					BaseElement bpmnElement=getBaseElement(bpmnEdge.getBpmnElement());
 					if (bpmnElement instanceof SequenceFlow) {
 						KernelSequenceFlowImpl findSequenceFlow = processDefinition.findSequenceFlow(bpmnElement.getId());
-						Style style=processEngineConfiguration.getStyle("StartEvent");
+						Style style=processEngineConfiguration.getStyle("SequenceFlow");
 						List<Integer> waypoints=new ArrayList<Integer>();
 						for (Point point : pointList) {
 							waypoints.add((new Float(point.getX())).intValue());
