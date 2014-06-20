@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.User;
+import org.foxbpm.engine.impl.agent.AgentTo;
 
 public class UserEntity implements User {
 	
@@ -33,6 +34,7 @@ public class UserEntity implements User {
 	private String email;
 	private Map<String,Object> propertyMap;
 	private List<Group> groups = new ArrayList<Group>();
+	private List<AgentTo> agentInfo;
 	public UserEntity (){
 		
 	}
@@ -91,6 +93,15 @@ public class UserEntity implements User {
 			return this.propertyMap.get(propertyName);
 		}
 		return null;
+	}
+	
+	@Override
+	public List<AgentTo> getAgentInfo() {
+		return agentInfo;
+	}
+	
+	public void setAgentInfo(List<AgentTo> agentInfo) {
+		this.agentInfo = agentInfo;
 	}
 
 }

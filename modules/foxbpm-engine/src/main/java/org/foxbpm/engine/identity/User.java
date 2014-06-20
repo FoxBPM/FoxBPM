@@ -19,6 +19,9 @@ package org.foxbpm.engine.identity;
 
 import java.util.List;
 import java.util.Map;
+
+import org.foxbpm.engine.impl.agent.AgentTo;
+
 public interface User {
 
 	public String getUserId();
@@ -28,4 +31,5 @@ public interface User {
 	public Map<String, Object> getPropertyMap();
 	public Object getPropertyValue(String propertyName);
 
+	public List<AgentTo> getAgentInfo();
 }

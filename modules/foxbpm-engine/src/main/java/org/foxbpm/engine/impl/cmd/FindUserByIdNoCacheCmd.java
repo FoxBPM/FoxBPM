@@ -17,9 +17,16 @@
  */
 package org.foxbpm.engine.impl.cmd;
 
+import java.util.List;
+
+import org.foxbpm.engine.identity.Group;
+import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.identity.User;
+import org.foxbpm.engine.impl.agent.AgentTo;
+import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.persistence.AgentManager;
 
 /**
  * 从数据库中查询user对象
@@ -34,8 +41,25 @@ public class FindUserByIdNoCacheCmd implements Command<User>{
 	public FindUserByIdNoCacheCmd(String userId) {
 		this.userId = userId;
 	}
+	
 	@Override
-	public User execute(CommandContext commandContext) {
-		return commandContext.getUserEntityManager().findUserById(userId);
+	public UserEntity execute(CommandContext commandContext) {
+		UserEntity user = commandContext.getUserEntityManager().findUserById(userId);
+		
+		//处理组织机构
+		List<GroupDefinition> groupDefinitions = commandContext.getProcessEngineConfigurationImpl().getGroupDefinitions();
+		for(GroupDefinition groupDefinition : groupDefinitions){
+			List<Group> tmpGroups = groupDefinition.selectGroupByUserId(userId);
+			if(tmpGroups != null && tmpGroups.size() >0){
+				user.getGroups().addAll(tmpGroups);
+			}
+		}
+		
+		//处理代理信息
+		AgentManager agentManager = commandContext.getAgentManager();
+		List<AgentTo> agentTos = agentManager.getAgentTos(userId);
+		user.setAgentInfo(agentTos);
+		
+		return user;
 	}
 }

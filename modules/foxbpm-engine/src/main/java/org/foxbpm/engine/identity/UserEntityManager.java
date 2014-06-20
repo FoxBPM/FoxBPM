@@ -20,9 +20,11 @@ package org.foxbpm.engine.identity;
 
 import java.util.List;
 
+import org.foxbpm.engine.impl.entity.UserEntity;
+
 public interface UserEntityManager {
 
-	public User findUserById(String userId);
+	public UserEntity findUserById(String userId);
 	
 	public List<User> findUsers(String idLike,String nameLike);
 }

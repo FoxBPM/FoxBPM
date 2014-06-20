@@ -24,6 +24,7 @@ import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.identity.UserEntityManager;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
+import org.foxbpm.engine.impl.persistence.AgentManager;
 import org.foxbpm.engine.impl.persistence.DeploymentEntityManager;
 import org.foxbpm.engine.impl.persistence.HistoryManager;
 import org.foxbpm.engine.impl.persistence.IdentityLinkManager;
@@ -98,6 +99,10 @@ public class CommandContext {
 
 	public IdentityLinkManager getIdentityLinkManager() {
 		return getSession(IdentityLinkManager.class);
+	}
+	
+	public AgentManager getAgentManager() {
+		return getSession(AgentManager.class);
 	}
 	
 	public VariableManager getVariableManager() {
