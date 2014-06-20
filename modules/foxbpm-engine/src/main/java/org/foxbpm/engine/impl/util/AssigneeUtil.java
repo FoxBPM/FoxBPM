@@ -21,8 +21,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 

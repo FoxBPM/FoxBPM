@@ -17,11 +17,14 @@
  */
 package org.foxbpm.kernel.runtime;
 
+import java.util.List;
+
 import org.foxbpm.kernel.event.KernelEvent;
 import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.process.KernelSequenceFlow;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
+
 
 /**
  * @author kenshin
@@ -37,8 +40,6 @@ public interface FlowNodeExecutionContext extends DelegateExecutionContext {
 
 	void signal();
 	
-	void leave();
-	
 	void fireEvent(KernelEvent kernelEvent);
 
 	public void take(KernelSequenceFlow sequenceFlow);
@@ -46,4 +47,6 @@ public interface FlowNodeExecutionContext extends DelegateExecutionContext {
 	public void take(KernelFlowNodeImpl flowNode);
 	
 	void end();
+
+	List<KernelToken> findInactiveToken(KernelFlowNode flowNode);
 }
