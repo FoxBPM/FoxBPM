@@ -71,8 +71,7 @@
 					<ul>
 						<li class="img01">已完成</li>
 						<li class="img02">进行中</li>
-						<li><input id="yczt" type="checkbox" name="cczt"
-							onclick="viewPostion()" />&nbsp;&nbsp;隐藏状态</li>
+						<li><input id="yczt" type="checkbox" name="cczt" />&nbsp;&nbsp;隐藏状态</li>
 					</ul>
 				</h3>
 				<!---流程图 START--->

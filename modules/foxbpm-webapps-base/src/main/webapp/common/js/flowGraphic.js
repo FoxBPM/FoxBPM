@@ -197,7 +197,7 @@ function FlowGraphic(param) {
 			// 加载svg图片
 			$.ajax({
 				type : "POST",
-				url : this.action,
+				url : action,
 				data : "flag=svg&processDefinitionId=" + processDefinitionId,
 				success : function(src) {
 					$('#' + parentId).html(src);
