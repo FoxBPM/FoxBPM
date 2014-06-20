@@ -14,10 +14,10 @@ import org.slf4j.LoggerFactory;
 public class ParallelGatewayBehavior extends GatewayBehavior {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private static Logger LOG = LoggerFactory.getLogger(ParallelGatewayBehavior.class);
-	
-	protected String convergType="flowNum";//tokenNum
+
+	protected String convergType = "flowNum";// tokenNum
 
 	public String getConvergType() {
 		return convergType;
@@ -27,21 +27,17 @@ public class ParallelGatewayBehavior extends GatewayBehavior {
 		this.convergType = convergType;
 	}
 
-
-
 	public void execute(FlowNodeExecutionContext executionContext) {
-		
+
 		/** 获取当前的pvm节点 */
-		KernelFlowNode flowNode=executionContext.getFlowNode();
+		KernelFlowNode flowNode = executionContext.getFlowNode();
 		/** 获取pvm节点的进入线条 */
 		List<KernelSequenceFlow> incomingSequenceFlows = flowNode.getIncomingSequenceFlows();
 		/** 获取pvm节点的输出线条 */
-		//List<KernelSequenceFlow> outgoingSequenceFlows = flowNode.getOutgoingSequenceFlows();
 		
-
+		/** 按照令牌数量合并方式 */
 		if (this.convergType.equals("tokenNum")) {
-			
-			
+
 			KernelTokenImpl token = (KernelTokenImpl) executionContext;
 
 			KernelTokenImpl parentToken = token.getParent();
@@ -53,7 +49,7 @@ public class ParallelGatewayBehavior extends GatewayBehavior {
 
 					token.setActive(false);
 
-					// 当子令牌都处于非激活状态才会驱动父令牌向下  ！！这里可能会出现一种情况有问题,
+					// 当子令牌都处于非激活状态才会驱动父令牌向下 ！！这里可能会出现一种情况有问题,
 					boolean reactivateParent = !parentToken.hasActiveChildren();
 
 					// 判断是否需要把父令牌移动到下一个节点
@@ -74,11 +70,9 @@ public class ParallelGatewayBehavior extends GatewayBehavior {
 				// 没有父令牌则直接离开
 				executionContext.signal();
 			}
-			
-			
-			
+
 		} else {
-			
+			/** 按照进入线的数量合并方式 */
 			KernelTokenImpl token = (KernelTokenImpl) executionContext;
 
 			KernelTokenImpl parentToken = token.getParent();
@@ -90,29 +84,32 @@ public class ParallelGatewayBehavior extends GatewayBehavior {
 
 					token.setActive(false);
 
-					  List<KernelToken> joinedExecutions = executionContext.findInactiveToken(flowNode);
-					    int nbrOfExecutionsToJoin = incomingSequenceFlows.size();
-					    int nbrOfExecutionsJoined = joinedExecutions.size();
+					List<KernelToken> joinedExecutions = executionContext.findInactiveToken(flowNode);
+					int nbrOfExecutionsToJoin = incomingSequenceFlows.size();
+					int nbrOfExecutionsJoined = joinedExecutions.size();
 
-					    if (nbrOfExecutionsJoined==nbrOfExecutionsToJoin) {
-					        
-					        // Fork
-					        if(LOG.isDebugEnabled()) {
-					        	LOG.debug("parallel gateway '{}' activates: {} of {} joined", flowNode.getId(), nbrOfExecutionsJoined, nbrOfExecutionsToJoin);
-					        }
-					        
-					    	List<KernelTokenImpl> cTokens = parentToken.getChildren();
-							for (KernelTokenImpl cToken : cTokens) {
-								cToken.end(false);
-							}
+					if (nbrOfExecutionsJoined == nbrOfExecutionsToJoin) {
 
-							parentToken.setFlowNode((KernelFlowNodeImpl) executionContext.getFlowNode());
-							parentToken.signal();
-					        //execution.takeAll(outgoingTransitions, joinedExecutions);
-					        
-					      } else if (LOG.isDebugEnabled()){
-					    	  LOG.debug("parallel gateway '{}' does not activate: {} of {} joined", flowNode.getId(), nbrOfExecutionsJoined, nbrOfExecutionsToJoin);
-					      }
+						// Fork
+						if (LOG.isDebugEnabled()) {
+							LOG.debug("并行网关 '{}' activates: {} of {} joined", flowNode.getId(), nbrOfExecutionsJoined,
+									nbrOfExecutionsToJoin);
+						}
+
+						List<KernelTokenImpl> cTokens = parentToken.getChildren();
+						for (KernelTokenImpl cToken : cTokens) {
+							cToken.end(false);
+						}
+
+						parentToken.setFlowNode((KernelFlowNodeImpl) executionContext.getFlowNode());
+						
+						parentToken.signal();
+
+
+					} else if (LOG.isDebugEnabled()) {
+						LOG.debug("并行网关 '{}' does not activate: {} of {} joined", flowNode.getId(), nbrOfExecutionsJoined,
+								nbrOfExecutionsToJoin);
+					}
 
 				}
 
@@ -122,10 +119,9 @@ public class ParallelGatewayBehavior extends GatewayBehavior {
 			}
 		}
 	}
-	
 
 	public void leave(FlowNodeExecutionContext executionContext) {
-		((KernelTokenImpl)executionContext).leave(false);
+		((KernelTokenImpl) executionContext).leave(false);
 	}
 
 }

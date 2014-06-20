@@ -27,6 +27,7 @@ import org.eclipse.bpmn2.Documentation;
 import org.eclipse.bpmn2.Expression;
 import org.eclipse.bpmn2.ExtensionAttributeValue;
 import org.eclipse.bpmn2.FormalExpression;
+import org.eclipse.bpmn2.ParallelGateway;
 import org.eclipse.bpmn2.Process;
 import org.eclipse.bpmn2.ResourceRole;
 import org.eclipse.bpmn2.SequenceFlow;
@@ -66,6 +67,11 @@ public class BpmnModelUtil {
 	/** 获取任务领取方式*/
 	public static boolean isAutoClaim(UserTask userTask){
 		return StringUtil.getBoolean(getExtensionAttribute(userTask,FoxBPMPackage.Literals.DOCUMENT_ROOT__IS_AUTO_CLAIM));
+	}
+	
+	/** 获取并行网关合并策略*/
+	public static String convergType(ParallelGateway parallelGateway){
+		return StringUtil.getString(getExtensionAttribute(parallelGateway,FoxBPMPackage.Literals.DOCUMENT_ROOT__CONVERG_TYPE));
 	}
 	
 	/** 获取流程的分类*/
@@ -222,7 +228,7 @@ public class BpmnModelUtil {
 					String resourceType = StringUtil.getString(resource.eGet(FoxBPMPackage.Literals.DOCUMENT_ROOT__RESOURCE_TYPE, true));
 					boolean isContainsSub = StringUtil.getBoolean(resource.eGet(FoxBPMPackage.Literals.DOCUMENT_ROOT__IS_CONTAINS_SUB, true));
 					String resourceExpression = BpmnModelUtil.getExpression(resource.getResourceAssignmentExpression().getExpression());
-					String resourceName = resource.getName();
+					//String resourceName = resource.getName();
 					TaskAssigneeDefinition assignee = new TaskAssigneeDefinition();
 					assignee.setContainsSub(isContainsSub);
 					assignee.setUserIdExpression(resourceExpression);
