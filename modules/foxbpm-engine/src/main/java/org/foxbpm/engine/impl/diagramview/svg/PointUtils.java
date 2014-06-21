@@ -31,7 +31,7 @@ import java.util.List;
  */
 public final class PointUtils {
 	/**
-	 * X、Y允许的最大便宜量，超过最大偏移量需要设置文本相对线条的中心位置，如果小于这个值则不需要设置
+	 * X、Y允许的最大偏移量，超过最大偏移量需要设置文本相对线条的中心位置，如果小于这个值则不需要设置
 	 */
 	private static final float X_Y_LOCATION_MAXSHIFT = 100F;
 
