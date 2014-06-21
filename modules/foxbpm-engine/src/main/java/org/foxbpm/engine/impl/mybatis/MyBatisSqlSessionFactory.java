@@ -42,6 +42,8 @@ import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.agent.AgentDetailsEntity;
+import org.foxbpm.engine.impl.agent.AgentEntity;
 import org.foxbpm.engine.impl.entity.DeploymentEntity;
 import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
@@ -89,6 +91,8 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 		insertStatements.put(ResourceEntity.class, "insertResource");
 		insertStatements.put(IdentityLinkEntity.class, "insertIdentityLink");
 		insertStatements.put(VariableInstanceEntity.class, "insertVariable");
+		insertStatements.put(AgentEntity.class, "insertAgent");
+		insertStatements.put(AgentDetailsEntity.class, "insertAgentDetails");
 		
 		updateStatements.put(ProcessInstanceEntity.class, "updateProcessInstance");
 		updateStatements.put(TaskEntity.class, "updateTask");
@@ -97,6 +101,8 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 		updateStatements.put(ProcessDefinitionEntity.class, "updateProcessDefinition");
 		updateStatements.put(ResourceEntity.class, "updateResource");
 		updateStatements.put(VariableInstanceEntity.class, "updateVariable");
+		updateStatements.put(AgentEntity.class, "updateAgentEntity");
+		updateStatements.put(AgentDetailsEntity.class, "updateAgentDetailsEntity");
 		
 		selectStatements.put(ProcessInstanceEntity.class, "selectProcessInstanceById");
 		selectStatements.put(TaskEntity.class, "selectTaskById");

@@ -50,9 +50,9 @@ public class MybatisSqlSession implements ISqlSession,Session {
 		cachePut(persistentObject, false);
 	}
 
-//	public void update(PersistentObject persistentObject) {
-//	    cachePut(persistentObject,true);
-//	}
+	public void update(PersistentObject persistentObject) {
+	    cachePut(persistentObject,false);
+	}
 
 	@SuppressWarnings("unchecked")
 	public <T extends PersistentObject> T selectById(Class<T> entityClass,String id) {

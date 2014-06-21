@@ -17,7 +17,16 @@
  */
 package org.foxbpm.engine.impl.agent;
 
-public class AgentDetailsEntity {
+import java.util.HashMap;
+import java.util.Map;
+
+import org.foxbpm.engine.db.PersistentObject;
+
+/**
+ * 代理信息的子类，用来存储代理信息明细 
+ * @author ych
+ */
+public class AgentDetailsEntity implements PersistentObject{
 
 	/**
 	 * 主键
@@ -69,6 +78,21 @@ public class AgentDetailsEntity {
 
 	public void setAgentTo(String agentTo) {
 		this.agentTo = agentTo;
+	}
+	
+	@Override
+	public Map<String, Object> getPersistentState() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("agentId", agentId);
+		map.put("processKey", processKey);
+		map.put("agentTo", agentTo);
+		return map;
+	}
+	
+	@Override
+	public boolean isModified() {
+		return false;
 	}
 	
 }

@@ -17,28 +17,44 @@
  */
 package org.foxbpm.engine.impl.agent;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.foxbpm.engine.db.PersistentObject;
 
 /**
  * 用户代理对象
  * @author ych
  *
  */
-public class AgentEntity {
+public class AgentEntity implements PersistentObject{
 
+	
+	private String id;
 	/**
 	 * 代理发起人
 	 */
 	private String agentFrom;
 	
+	/**
+	 * 代理开始时间
+	 */
 	private Date startTime;
+	
+	/**
+	 * 代理结束时间
+	 */
 	private Date endTime;
+	
+	private String status = "1";
 	
 	/**
 	 * 代理信息明细
 	 */
-	private List<AgentDetailsEntity> agentDetails;
+	private List<AgentDetailsEntity> agentDetails = new ArrayList<AgentDetailsEntity>();
 	
 	
 	public void setAgentDetails(List<AgentDetailsEntity> agentDetails) {
@@ -72,5 +88,39 @@ public class AgentEntity {
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	@Override
+	public Map<String, Object> getPersistentState() {
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("agentFrom", agentFrom);
+		map.put("startTime", startTime);
+		map.put("endTime", endTime);
+		map.put("status", status);
+		return map;
+	}
+	
+	@Override
+	public boolean isModified() {
+		return false;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	
 	
 }

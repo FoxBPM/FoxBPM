@@ -14,8 +14,44 @@
   <select id="selectAgentToByUserId" parameterType="java.lang.String" resultMap="agentTo">
 	  select a.id ,a.processdefinition_key,a.agent_id,b.agent_user,b.startTime,b.endTime from 
  		foxbpm_agent_details a inner join foxbpm_agent b on a.agent_id = b.id 
- 		where a.agent_touser = #{userId} and b.staus='1'
+ 		where a.agent_touser = #{userId} and b.status='1'
   </select>
   
+  <insert id="insertAgent" parameterType="org.foxbpm.engine.impl.agent.AgentEntity">
+	   insert into foxbpm_agent (id, agent_user, startTime,endTime,status)
+	    values (#{id,jdbcType=VARCHAR}, #{agentFrom,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP},#{status,jdbcType=VARCHAR})
+  </insert>
   
+  <insert id="insertAgentDetails" parameterType="org.foxbpm.engine.impl.agent.AgentDetailsEntity">
+  		insert into foxbpm_agent_details(id,agent_id,processDefinition_key,agent_toUser)
+  		values
+  		(#{id,jdbcType=VARCHAR}, #{agentId,jdbcType=VARCHAR}, #{processKey,jdbcType=VARCHAR},#{agentTo,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="updateAgentEntity" parameterType="org.foxbpm.engine.impl.agent.AgentEntity">
+  	update foxbpm_agent
+  		set startTime= #{startTime,jdbcType=TIMESTAMP},
+  			endTime =  #{endTime,jdbcType=TIMESTAMP},
+  			status = #{status,jdbcType=VARCHAR}
+  		where 
+  			id=#{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateAgentDetailsEntity" parameterType="org.foxbpm.engine.impl.agent.AgentDetailsEntity">
+  	update foxbpm_agent_details
+  		set processDefinition_key= #{processKey,jdbcType=VARCHAR},
+  			agent_touser =  #{agentTo,jdbcType=VARCHAR}
+  		where 
+  			id=#{id,jdbcType=VARCHAR}
+  </update>
+  
+  <delete id="deleteAgentById" parameterType="java.lang.String">
+  	delete from foxbpm_agent where id= #{id}
+  </delete>
+   <delete id="deleteAgentDetailsByAgentId" parameterType="java.lang.String">
+  	delete from foxbpm_agent_details where agent_id= #{id}
+  </delete>
+  <delete id="deleteAgentDetailsById" parameterType="java.lang.String">
+  	delete from foxbpm_agent_details where id= #{id}
+  </delete>
 </mapper>
