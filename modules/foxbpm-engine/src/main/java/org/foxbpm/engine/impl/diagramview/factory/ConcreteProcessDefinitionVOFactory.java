@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.bpmn.behavior.ActivityBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.BusinessRuleTaskBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.CallActivityBehavior;
@@ -97,6 +98,10 @@ public class ConcreteProcessDefinitionVOFactory extends
 					.getTypeAndTemplateNameByFlowNode(kernelFlowNodeImpl);
 			taskType = typeTemplateArray[ARRAY_INDEX_FIRST];
 			svgTemplateFileName = typeTemplateArray[ARRAY_INDEX_SECOND];
+			if (StringUtils.isBlank(taskType)
+					|| StringUtils.isBlank(svgTemplateFileName)) {
+				continue;
+			}
 			VONode voNode = null;
 			// 如果任务列表为空，或者当前节点是网关节点，则不添加标识
 			if (kernelFlowNodeImpl.getKernelFlowNodeBehavior() instanceof GatewayBehavior) {
@@ -133,6 +138,10 @@ public class ConcreteProcessDefinitionVOFactory extends
 					.getTypeAndTemplateNameByFlowNode(kernelFlowNodeImpl);
 			taskType = typeTemplateArray[ARRAY_INDEX_FIRST];
 			svgTemplateFileName = typeTemplateArray[ARRAY_INDEX_SECOND];
+			if (StringUtils.isBlank(taskType)
+					|| StringUtils.isBlank(svgTemplateFileName)) {
+				continue;
+			}
 			VONode voNode = null;
 			voNode = this.getNodeSVGFromFactory(kernelFlowNodeImpl, taskType,
 					svgTemplateFileName);
@@ -245,6 +254,10 @@ public class ConcreteProcessDefinitionVOFactory extends
 			KernelFlowNodeImpl kernelFlowNodeImpl) {
 		KernelFlowNodeBehavior kernelFlowNodeBehavior = kernelFlowNodeImpl
 				.getKernelFlowNodeBehavior();
+		if (kernelFlowNodeBehavior == null) {
+			throw new FoxBPMException(kernelFlowNodeImpl.getId()
+					+ " 对应的behavior 是空！导致获取VOFactory 异常！");
+		}
 		String taskType = EMPTY_STRING;
 		String svgTemplateFileName = EMPTY_STRING;
 		// 活动任务，先判断父类以减少判断次数，提高效率
@@ -285,11 +298,14 @@ public class ConcreteProcessDefinitionVOFactory extends
 				taskType = SVGTypeNameConstant.SVT_TYPE_GATEWAY;
 				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_GATEWAY_EXCLUSIVE;
 			} else if (kernelFlowNodeBehavior instanceof InclusiveGatewayBehavior) {
-				// 并行网关
+				// 包容网关
 				taskType = SVGTypeNameConstant.SVT_TYPE_GATEWAY;
 				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_GATEWAY_INCLUSIVE;
 			} else if (kernelFlowNodeBehavior instanceof ParallelGatewayBehavior) {
-				// 包容网关
+				// 并行网关
+				taskType = SVGTypeNameConstant.SVT_TYPE_GATEWAY;
+				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_GATEWAY_INCLUSIVE;
+
 			}
 			// 事件
 		} else if (kernelFlowNodeBehavior instanceof EventBehavior) {
