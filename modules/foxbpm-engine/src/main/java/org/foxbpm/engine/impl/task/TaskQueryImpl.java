@@ -22,8 +22,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.foxbpm.engine.exception.FoxBPMBizException;
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.identity.Group;
+import org.foxbpm.engine.identity.User;
+import org.foxbpm.engine.impl.agent.AgentTo;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
@@ -66,6 +70,8 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	protected String initiator;
 	protected String isSuspended;
 	protected String tokenId;
+	//查询代理任务时，用来存放原始任务处理人
+	protected String oldAssigneeId;
 	protected List<String> taskTypeList=new ArrayList<String>();
 
 	
@@ -107,14 +113,63 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	}
 	
 	//isAgent
+	/**
+	 * 查询agentId代理给当前用户的所有流程，
+	 * 如果存在"_all_flow_" 或者不是代理状态,则返回空的list；
+	 * @return
+	 */
+	public List<String> getAgentProcessKey(){
+		List<String> processKeys = new ArrayList<String>();
+		if(!this.isAgent){
+			return processKeys;
+		}
+		User user = Authentication.selectUserByUserId(this.oldAssigneeId);
+		if(user == null){
+			throw new FoxBPMException("未找到userid为{}的代理人信息！",oldAssigneeId);
+		}
+		List<AgentTo> agentInfo = user.getAgentInfo();
+		Date nowDate = new Date();
+		if(agentInfo != null){
+			for(AgentTo agent : agentInfo){
+				if(agent.getAgentFrom().equals(this.agentId) && (agent.getEndTime().after(nowDate))){
+					//如果存在_all_flow_，则直接清空所有key，并中断循环,返回空List
+					if(agent.getProcessKey().equals("_all_flow_")){
+						processKeys.clear();
+						break;
+					}
+					processKeys.add(agent.getProcessKey());
+				}
+			}
+		}
+		return processKeys;
+	}
 	
 	public TaskQueryImpl isAgent(boolean isAgent){
 		this.isAgent=isAgent;
 		return this;
 	}
 
+	/**
+	 * 逻辑：
+	 * 使用方法 
+	 * @param agentId
+	 * @return
+	 */
 	public TaskQuery agentId(String agentId) {
-		this.agentId=agentId;
+		if(this.assignee == null && this.candidateUser == null){
+			throw new FoxBPMBizException("agentId()方法必须要在assignee()方法或candidateUser()方法之后调用");
+		}
+		if(this.assignee != null){
+			this.oldAssigneeId = this.assignee;
+			this.assignee = agentId;
+		}
+		if(this.candidateUser != null){
+			if(this.oldAssigneeId == null){
+				this.oldAssigneeId = this.candidateUser;
+			}
+			this.candidateUser = agentId;
+		}
+		this.agentId = agentId;
 		return this;
 	}
 	
@@ -180,6 +235,9 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 		if (assignee == null) {
 			throw new FoxBPMIllegalArgumentException("Assignee is null");
 		}
+		if(this.agentId != null){
+			throw new FoxBPMBizException("请在agentId()方法之前调用此方法！");
+		}
 		this.assignee = assignee;
 		return this;
 	}
@@ -198,9 +256,11 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	}
 
 	public TaskQueryImpl taskCandidateUser(String candidateUser) {
-		
 		if (candidateUser == null) {
 			throw new FoxBPMIllegalArgumentException("candidateUser  is null!");
+		}
+		if(this.agentId != null){
+			throw new FoxBPMBizException("请在agentId()方法之前调用此方法！");
 		}
 		this.candidateUser = candidateUser;
 		return this;

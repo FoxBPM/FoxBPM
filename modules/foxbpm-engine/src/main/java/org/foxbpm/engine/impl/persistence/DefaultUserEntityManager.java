@@ -24,11 +24,12 @@ import java.util.Map;
 
 import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.identity.UserEntityManager;
+import org.foxbpm.engine.impl.entity.UserEntity;
 
 public class DefaultUserEntityManager extends AbstractManager implements UserEntityManager {
 	
-	public User findUserById(String userId) {
-		return (User)getSqlSession().selectOne("selectUserById", userId);
+	public UserEntity findUserById(String userId) {
+		return (UserEntity)getSqlSession().selectOne("selectUserById", userId);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -43,4 +44,6 @@ public class DefaultUserEntityManager extends AbstractManager implements UserEnt
 		}
 		return (List<User>)getSqlSession().selectListWithRawParameter("selectUsers", map);
 	}
+	
+	
 }

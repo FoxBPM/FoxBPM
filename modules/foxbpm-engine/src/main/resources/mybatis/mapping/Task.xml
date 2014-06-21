@@ -286,6 +286,14 @@
       	</if>
       </if>
       
+      <if test="agentProcessKey.size() &gt; 0">
+      	  and PROCESSDEFINITION_KEY in 
+        <foreach item="processKey" index="index" collection="agentProcessKey" 
+                     open="(" separator="," close=")">
+              #{processKey}
+        </foreach>
+      </if>
+      
       <if test="end != null">
       	and RES.END_TIME IS ${end}
       </if>

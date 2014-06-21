@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="org.foxbpm.engine.impl.agent.AgentEntity">
+
+ <resultMap id="agentTo" type="org.foxbpm.engine.impl.agent.AgentTo" >
+ 	<id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="processdefinition_key" property="processKey" jdbcType="VARCHAR" />
+    <result column="agent_user" property="agentFrom" jdbcType="VARCHAR" />
+    <result column="startTime" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="endTime" property="endTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <select id="selectAgentToByUserId" parameterType="java.lang.String" resultMap="agentTo">
+	  select a.id ,a.processdefinition_key,a.agent_id,b.agent_user,b.startTime,b.endTime from 
+ 		foxbpm_agent_details a inner join foxbpm_agent b on a.agent_id = b.id 
+ 		where a.agent_touser = #{userId} and b.staus='1'
+  </select>
+  
+  
+</mapper>
