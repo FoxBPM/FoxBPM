@@ -17,22 +17,11 @@ a {
 		<jsp:include page="top.jsp" flush="true" />
 		<div class="center-panel">
 			<div class="type-box">
-
 				<div class="type">
-					<h1>最近使用的流程</h1>
-					<c:forEach items="${lastest}" var="process" varStatus="status">
-						<a href="javascript:void(0)" formUrl="${process.formUrl}"
-							processDefinitionKey="${process.processDefinitionKey}"><div>${process.processDefinitionName}</div></a>
-					</c:forEach>
-				</div>
-				<div class="type">
+					<h1>流程定义</h1>
 					<c:forEach items="${result}" var="row" varStatus="status">
 						<a href="javascript:void(0)" formUrl="${row.formUrl}"
-							processDefinitionKey="${row.key}"><div>${row.name}</div></a>
-						<%-- <c:forEach items="${row.value}" var="tmp" varStatus="status">
-	        		<a href="javascript:void(0)" formUrl="${tmp.formUrl}" processDefinitionKey="${tmp.key}"><div>${tmp.name}</div></a>
-	        	</c:forEach> --%>
-
+							processDefinitionKey="${row.key}" processDefinitionId="${row.id}"><div>${row.name}</div></a>
 					</c:forEach>
 				</div>
 			</div>
@@ -40,19 +29,25 @@ a {
 	</div>
 </body>
 <script>
-$(function(){
-  $("a[processDefinitionKey]").click(function(){
-     var pdk = $(this).attr("processDefinitionKey");
-     var formUrl = $(this).attr("formUrl");//"FlowCenter?action=startOneTask";
-     var url = formUrl;
-     if(formUrl.indexOf("?")!=-1){
-    	 url+="&";
-     }else{
-    	 url+="?";
-     }
-     url+="userId=<%=request.getAttribute("userId")%>&processDefinitionKey="+pdk;
-     window.open(url);
-  });
-});
+	//这里启动表单操作
+	$(function() {
+		$("a[processDefinitionKey]").click(
+				function() {
+					var pdk = $(this).attr("processDefinitionKey");
+					var pdi = $(this).attr("processDefinitionId");
+					var userId =<%=request.getAttribute("userId")%>;
+
+					var formUrl = $(this).attr("formUrl");
+					var url = "startTask.action";
+					if (formUrl.indexOf("?") != -1) {
+						url += "&";
+					} else {
+						url += "?";
+					}
+					url += "userId=" + userId + "&processDefinitionKey=" + pdk
+							+ "&processDefinitionId=" + pdi;
+					window.open(url);
+				});
+	});
 </script>
 </html>

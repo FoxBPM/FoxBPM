@@ -131,6 +131,41 @@ public class FlowManageController extends AbstWebController {
 		}
 	}
 
+	@RequestMapping(FoxbpmActionNameDefinition.PROCESSINSTMANAGE_ACTION)
+	public ModelAndView processInstManage(HttpServletRequest request, HttpServletResponse response) {
+		// 请求参数
+		Map<String, Object> requestParams = getRequestParams(request);
+
+		// 获取分页条件参数
+		String pageI = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINDEX));
+		String pageS = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGESIZE));
+
+		// 处理分页
+		int pageIndex = Pagination.PAGE_INDEX;
+		int pageSize = Pagination.PAGE_SIZE;
+		if (StringUtil.isNotEmpty(pageI)) {
+			pageIndex = StringUtil.getInt(pageI);
+		}
+		if (StringUtil.isNotEmpty(pageS)) {
+			pageSize = StringUtil.getInt(pageS);
+		}
+		// 分页信息
+		Pagination<String> pageInfor = new Pagination<String>(pageIndex, pageSize);
+		// 查询结果
+		List<Map<String, Object>> resultData = workFlowService.queryProcessInst(pageInfor, requestParams);
+		// 封装参数给页面使用
+		Map<String, List<Map<String, Object>>> resultMap = new HashMap<String, List<Map<String, Object>>>();
+		// 获取分页条件参数
+		resultMap.put("dataList", resultData);
+		// 将参数封装给页面使用
+		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ACTIONNAME, FoxbpmActionNameDefinition.PROCESSINSTMANAGE_ACTION);
+		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
+		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
+		ModelAndView modelAndView = createModelAndView(FoxbpmViewNameDefinition.PROCESSINSTMANAGE_VIEWNAME);
+		return modelAndView;
+
+	}
+
 	@Override
 	protected String getPrefix() {
 		return "manageCenter/";

@@ -55,6 +55,7 @@
 						function() {
 							var pdk = $(this).attr("pdk");
 							var pii = $(this).attr("pii");
+							var pdi = $(this).attr("pdi");
 							window
 									.open("queryTaskDetailInfor.action?processDefinitionKey="
 											+ pdk + "&processInstanceId=" + pii);

@@ -56,4 +56,17 @@ public interface IFlowManageService {
 	 * @param params
 	 */
 	void deleteDeploy(Map<String, Object> params);
+
+	/**
+	 * 查询所有流程实例信息
+	 * 
+	 * @param pageInfor
+	 *            分页对象
+	 * @param params
+	 *            查询条件参数
+	 * @return 返回查询结果
+	 * @throws FoxbpmWebException
+	 */
+	List<Map<String, Object>> queryProcessInst(Pagination<String> pageInfor, Map<String, Object> params);
+
 }

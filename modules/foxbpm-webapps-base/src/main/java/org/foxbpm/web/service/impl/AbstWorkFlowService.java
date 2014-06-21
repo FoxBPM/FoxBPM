@@ -21,6 +21,7 @@ import org.foxbpm.engine.IdentityService;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.TaskService;
+import org.foxbpm.engine.identity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -39,7 +40,7 @@ public abstract class AbstWorkFlowService {
 	// 运行时服务
 	@Autowired
 	protected RuntimeService runtimeService;
-	
+
 	@Autowired
 	protected IdentityService identityService;
 
@@ -52,5 +53,25 @@ public abstract class AbstWorkFlowService {
 	 */
 	protected String assembleLikeParam(String param) {
 		return "%" + param + "%";
+	}
+
+	/**
+	 * 根据用户Id获取用户名称
+	 * 
+	 * @param userId
+	 *            用户Id
+	 * @return 返回用户名
+	 */
+	protected String getUserName(String userId) {
+		if (userId == null || "".equals(userId)) {
+			return "空用户名";
+		}
+		User tmpUser = identityService.getUser(userId);
+		if (tmpUser != null) {
+			return tmpUser.getUserName();
+		} else {
+			return "未知用户:" + userId;
+		}
+
 	}
 }

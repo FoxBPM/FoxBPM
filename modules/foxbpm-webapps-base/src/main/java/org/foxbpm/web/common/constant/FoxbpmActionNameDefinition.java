@@ -7,6 +7,7 @@ package org.foxbpm.web.common.constant;
  * @date 2014-06-06
  */
 public final class FoxbpmActionNameDefinition {
+
 	/*************************** 任务中心action ************************************************/
 	public final static String COMPLETE_TASK_ACTION = "completeTask";
 	public final static String QUERY_TASK_ACTION = "queryTask";
@@ -22,4 +23,5 @@ public final class FoxbpmActionNameDefinition {
 	public final static String DEPLOY_ACTION = "deploy";
 	public final static String DELETEDEPLOY_ACTION = "deleteDeploy";
 	public final static String UPDATECACHE_ACTION = "updateCache";
+	public final static String PROCESSINSTMANAGE_ACTION = "processInstManage";
 }
