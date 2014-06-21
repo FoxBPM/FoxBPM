@@ -6,6 +6,8 @@ import java.util.Map;
 import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.impl.BaseElementImpl;
 import org.eclipse.bpmn2.impl.EndEventImpl;
+import org.eclipse.bpmn2.impl.ExclusiveGatewayImpl;
+import org.eclipse.bpmn2.impl.InclusiveGatewayImpl;
 import org.eclipse.bpmn2.impl.ParallelGatewayImpl;
 import org.eclipse.bpmn2.impl.ProcessImpl;
 import org.eclipse.bpmn2.impl.ScriptTaskImpl;
@@ -15,6 +17,8 @@ import org.eclipse.bpmn2.impl.TaskImpl;
 import org.eclipse.bpmn2.impl.UserTaskImpl;
 import org.foxbpm.engine.impl.bpmn.parser.model.BaseElementParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.EndEventParser;
+import org.foxbpm.engine.impl.bpmn.parser.model.ExclusiveGatewayParser;
+import org.foxbpm.engine.impl.bpmn.parser.model.InclusiveGatewayParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.ParallelGatewayParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.ProcessParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.StartEventParser;
@@ -39,6 +43,8 @@ public class BpmnBehaviorEMFConverter {
 		elementParserMap.put(EndEventImpl.class, EndEventParser.class);
 		elementParserMap.put(ProcessImpl.class, ProcessParser.class);
 		elementParserMap.put(ParallelGatewayImpl.class, ParallelGatewayParser.class);
+		elementParserMap.put(InclusiveGatewayImpl.class, InclusiveGatewayParser.class);
+		elementParserMap.put(ExclusiveGatewayImpl.class, ExclusiveGatewayParser.class);
 	}
 
 	public static KernelFlowNodeBehavior getFlowNodeBehavior(BaseElement baseElement,KernelFlowElementsContainerImpl  flowElementsContainer) {
