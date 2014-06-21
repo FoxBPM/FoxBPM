@@ -37,11 +37,9 @@ import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNodeExecutionContext, 
-ListenerExecutionContext, 
-KernelToken,
-InterpretableExecutionContext  {
-	
+public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNodeExecutionContext, ListenerExecutionContext, KernelToken,
+		InterpretableExecutionContext {
+
 	private static Logger LOG = LoggerFactory.getLogger(KernelTokenImpl.class);
 
 	/**
@@ -56,15 +54,14 @@ InterpretableExecutionContext  {
 	protected boolean isActive = true;
 
 	protected KernelFlowNodeImpl currentFlowNode;
-	
+
 	/**
 	 * 临时需要跳转的节点
 	 */
 	protected KernelFlowNodeImpl toFlowNode;
-	
 
 	protected String name;
-	
+
 	protected KernelTokenImpl parent;
 
 	protected boolean isLocked = false;
@@ -72,21 +69,15 @@ InterpretableExecutionContext  {
 	protected boolean isSuspended = false;
 
 	protected boolean isSubProcessRootToken = false;
-	
+
 	protected KernelSequenceFlowImpl sequenceFlow;
-
-	
-
-	
 
 	/**
 	 * 子令牌集合
 	 */
 	protected List<KernelTokenImpl> children = new ArrayList<KernelTokenImpl>();
-	
-	protected HashMap<String, KernelTokenImpl> namedChildren=new HashMap<String, KernelTokenImpl>();
-	
-	
+
+	protected HashMap<String, KernelTokenImpl> namedChildren = new HashMap<String, KernelTokenImpl>();
 
 	// 事件 ///////////////////////////////////////////////////////////////////
 	protected String eventName;
@@ -99,11 +90,11 @@ InterpretableExecutionContext  {
 		ensureFlowNodeInitialized();
 		return currentFlowNode;
 	}
-	
-	/** 子类需要重写这个类*/
+
+	/** 子类需要重写这个类 */
 	protected void ensureFlowNodeInitialized() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void setFlowNode(KernelFlowNodeImpl flowNode) {
@@ -119,32 +110,30 @@ InterpretableExecutionContext  {
 		return processInstance;
 	}
 
-	/** 子类需要重写这个方法*/
+	/** 子类需要重写这个方法 */
 	protected void ensureProcessInstanceInitialized() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void setProcessInstance(KernelProcessInstanceImpl processInstance) {
 		this.processInstance = processInstance;
 	}
-	
+
 	public void enter(KernelFlowNodeImpl flowNode) {
 		setFlowNode(flowNode);
 		fireEvent(KernelEvent.NODE_ENTER);
 		flowNode.getKernelFlowNodeBehavior().enter(this);
 	}
+
 	public void execute() {
 		fireEvent(KernelEvent.NODE_EXECUTE);
 		getFlowNode().getKernelFlowNodeBehavior().execute(this);
 	}
-	
 
 	public void signal() {
 		getFlowNode().getKernelFlowNodeBehavior().leave(this);
 	}
-
-
 
 	public void fireEvent(KernelEvent kernelEvent) {
 
@@ -168,70 +157,70 @@ InterpretableExecutionContext  {
 	public void setKernelListenerIndex(int kernelListenerIndex) {
 		KernelListenerIndex = kernelListenerIndex;
 	}
+
+	/*** 默认离开，验证每个线条。 */
+	public void leave() {
+		// 定义可通过线条集合
+		List<KernelSequenceFlow> sequenceFlowList = new ArrayList<KernelSequenceFlow>();
+		// 并行网关会忽略掉后面的线条的条件
+
+		// 获取正常离开的所有线条
+		for (KernelSequenceFlow sequenceFlow : getFlowNode().getOutgoingSequenceFlows()) {
+			// 验证线条上的条件
+			if (sequenceFlow.isContinue(this)) {
+				sequenceFlowList.add(sequenceFlow);
+			}
+
+		}
+
+		leave(sequenceFlowList);
+	}
 	
-	public void leave(){
-		leave(true);
+	/*** 根据指定的线条离开 */
+	public void leave(KernelSequenceFlow sequenceFlow) {
+		
+		List<KernelSequenceFlow> sequenceFlows=new ArrayList<KernelSequenceFlow>();
+		sequenceFlows.add(sequenceFlow);
+		leave(sequenceFlows);
 	}
 
-	
-	public void leave(boolean verify) {
-		
-
+	/*** 根据指定的线条离开 */
+	public void leave(List<KernelSequenceFlow> sequenceFlowList) {
 		// 发生节点离开事件
 		fireEvent(KernelEvent.NODE_LEAVE);
 		// 执行线条的进入方法
 		getFlowNode().getKernelFlowNodeBehavior().cleanData(this);
-		
-		// kenshin  2013.1.2
+
+		// kenshin 2013.1.2
 		// 用来处理非线条流转令牌,如退回、跳转
-	
-		
-		if(getToFlowNode()!=null){
-			
-			//发现上下文中有直接跳转节点,则流程引擎不走正常处理直接跳转到指定借点。
-			
-			
-			LOG.debug("＝＝执行跳转机制,跳转目标: {}({}),离开节点: {}({}),令牌号: {}({}).",toFlowNode.getName(),toFlowNode.getId(), getFlowNode().getName(),getFlowNode().getId(),this.getName(),this.getId());
+
+		if (getToFlowNode() != null) {
+
+			// 发现上下文中有直接跳转节点,则流程引擎不走正常处理直接跳转到指定借点。
+
+			LOG.debug("＝＝执行跳转机制,跳转目标: {}({}),离开节点: {}({}),令牌号: {}({}).", toFlowNode.getName(), toFlowNode.getId(), getFlowNode().getName(),
+					getFlowNode().getId(), this.getName(), this.getId());
 
 			setToFlowNode(null);
 			enter(getToFlowNode());
-			
+
 			return;
 		}
-		
-		
-		//定义可通过线条集合
-		List<KernelSequenceFlow> sequenceFlowList = new ArrayList<KernelSequenceFlow>();
-		//并行网关会忽略掉后面的线条的条件
-		if(verify){
-			//获取正常离开的所有线条
-			for (KernelSequenceFlow sequenceFlow : getFlowNode().getOutgoingSequenceFlows()) {
-				//验证线条上的条件
-				if (sequenceFlow.isContinue(this)) {
-					sequenceFlowList.add(sequenceFlow);
-				}
-
-			}
-		}
-		else{
-			sequenceFlowList=getFlowNode().getOutgoingSequenceFlows();
-		}
-
-		
 
 		// 节点后面没有线的处理
 		if (sequenceFlowList.size() == 0) {
 			if (getFlowNode().getOutgoingSequenceFlows().size() == 0) {
-				
-				LOG.error("节点: {}({}) 后面没有配置处理线条！",getFlowNode().getName(),getFlowNode().getId());
-				
-				throw new KernelException("节点: "+getFlowNode().getName()+"("+getFlowNode().getId()+") 后面没有配置处理线条！");
-				
+
+				LOG.error("节点: {}({}) 后面没有配置处理线条！", getFlowNode().getName(), getFlowNode().getId());
+
+				throw new KernelException("节点: " + getFlowNode().getName() + "(" + getFlowNode().getId() + ") 后面没有配置处理线条！");
+
 			} else {
-				
-				LOG.error("节点: {}({}) 后面的条件都不满足导致节点后面没有处理线条,请检查后续线条条件！",getFlowNode().getName(),this.getId());
-				
-				throw new KernelException("节点: "+getFlowNode().getName()+"("+getFlowNode().getId()+") 后面的条件都不满足导致节点后面没有处理线条,请检查后续线条条件！");
+
+				LOG.error("节点: {}({}) 后面的条件都不满足导致节点后面没有处理线条,请检查后续线条条件！", getFlowNode().getName(), this.getId());
+
+				throw new KernelException("节点: " + getFlowNode().getName() + "(" + getFlowNode().getId()
+						+ ") 后面的条件都不满足导致节点后面没有处理线条,请检查后续线条条件！");
 			}
 		}
 
@@ -243,35 +232,11 @@ InterpretableExecutionContext  {
 
 		// 节点后面大于一条线的处理
 		if (sequenceFlowList.size() > 1) {
-
-			// 创建分支令牌集合
-			ArrayList<ForkedToken> forkedTokens = new ArrayList<ForkedToken>();
-
-			
-			//这里为什么做两个遍历,因为一定要在令牌都生成出来之后才能进行线条的take
-			
-			
-			// 遍历满足条件线条
-			for (KernelSequenceFlow sequenceFlow : sequenceFlowList) {
-				// 获取线条名称
-				String sequenceFlowId = sequenceFlow.getId();
-				// 创建分支令牌并添加到集合中
-				forkedTokens.add(this.createForkedToken(this, sequenceFlowId));
-			}
-			// 遍历分支令牌集合
-			for (ForkedToken forkedToken : forkedTokens) {
-				// 获取令牌
-				KernelTokenImpl childToken = forkedToken.token;
-				// 获取令牌编号
-				String leavingSequenceFlowId = forkedToken.leavingSequenceFlowId;
-	
-				// 执行节点离开方法
-				childToken.take(this.getFlowNode().findOutgoingSequenceFlow(leavingSequenceFlowId));
-
-			}
+			takeAll(sequenceFlowList);
+			return;
 		}
 	}
-	
+
 	// 分支处理///////////////////////////////
 
 	public ForkedToken createForkedToken(KernelTokenImpl parent, String sequenceFlowId) {
@@ -296,11 +261,42 @@ InterpretableExecutionContext  {
 		}
 	}
 
-
-
 	public void take(KernelSequenceFlow sequenceFlow) {
 
 		sequenceFlow.take(this);
+	}
+
+	public void takeAll(List<KernelSequenceFlow> sequenceFlows) {
+
+		// 节点后面就一条线的处理
+		if (sequenceFlows.size() == 1) {
+			take(sequenceFlows.get(0));
+			return;
+		}
+
+		// 创建分支令牌集合
+		ArrayList<ForkedToken> forkedTokens = new ArrayList<ForkedToken>();
+
+		// 这里为什么做两个遍历,因为一定要在令牌都生成出来之后才能进行线条的take
+
+		// 遍历满足条件线条
+		for (KernelSequenceFlow sequenceFlow : sequenceFlows) {
+			// 获取线条名称
+			String sequenceFlowId = sequenceFlow.getId();
+			// 创建分支令牌并添加到集合中
+			forkedTokens.add(this.createForkedToken(this, sequenceFlowId));
+		}
+		// 遍历分支令牌集合
+		for (ForkedToken forkedToken : forkedTokens) {
+			// 获取令牌
+			KernelTokenImpl childToken = forkedToken.token;
+			// 获取令牌编号
+			String leavingSequenceFlowId = forkedToken.leavingSequenceFlowId;
+
+			// 执行节点离开方法
+			childToken.take(this.getFlowNode().findOutgoingSequenceFlow(leavingSequenceFlowId));
+
+		}
 	}
 
 	public void take(KernelFlowNodeImpl flowNode) {
@@ -310,7 +306,6 @@ InterpretableExecutionContext  {
 	public void end() {
 		end(true);
 	}
-
 
 	public void end(boolean verifyParentTermination) {
 
@@ -355,12 +350,11 @@ InterpretableExecutionContext  {
 					// 推动父令牌向后执行
 					getParent().signal();
 
-				}else{
+				} else {
 					if (!getParent().hasActiveChildren()) {
 						getParent().end();
 					}
 				}
-
 
 			}
 		}
@@ -456,12 +450,12 @@ InterpretableExecutionContext  {
 	public void addChild(KernelTokenImpl token) {
 
 		if (token != null) {
-			
+
 			getChildren().add(token);
-			
+
 			if (token.getId() != null) {
 				if (namedChildren.containsKey(token.getId())) {
-					throw new KernelException("token "+token.getId()+"已经存在");
+					throw new KernelException("token " + token.getId() + "已经存在");
 				}
 				namedChildren.put(token.getId(), token);
 			}
@@ -474,9 +468,8 @@ InterpretableExecutionContext  {
 	}
 
 	public void setSequenceFlow(KernelSequenceFlowImpl sequenceFlow) {
-		this.sequenceFlow=sequenceFlow;
+		this.sequenceFlow = sequenceFlow;
 	}
-
 
 	public Object getProperty(String name) {
 		// TODO Auto-generated method stub
@@ -496,8 +489,6 @@ InterpretableExecutionContext  {
 		this.toFlowNode = toFlowNode;
 	}
 
-	
-	
 	public String getName() {
 		return name;
 	}
@@ -522,26 +513,25 @@ InterpretableExecutionContext  {
 
 	@Override
 	public List<KernelToken> findInactiveToken(KernelFlowNode flowNode) {
-		  List<KernelToken> inactiveTokenInActivity = new ArrayList<KernelToken>();
-		    List<KernelToken> otherToken = new ArrayList<KernelToken>();
-		   
-		      List< ? extends KernelTokenImpl> tokenChildren = getParent().getChildren();
-		      for (KernelTokenImpl token: tokenChildren) {
-		        if (token.getFlowNode().getId().equals(flowNode.getId())) {
-		          if (!token.isActive()) {
-		        	  inactiveTokenInActivity.add(token);
-		          }
-		        } else {
-		        	otherToken.add(token);
-		        }
-		      }
-		    
-		    if (LOG.isDebugEnabled()) {
-		    	LOG.debug("非激活的令牌 在 '{}': {}", flowNode, inactiveTokenInActivity);
-		    	LOG.debug("激活的令牌 : {}", otherToken);
-		    }
-		    return inactiveTokenInActivity;
-	}
+		List<KernelToken> inactiveTokenInActivity = new ArrayList<KernelToken>();
+		List<KernelToken> otherToken = new ArrayList<KernelToken>();
 
+		List<? extends KernelTokenImpl> tokenChildren = getParent().getChildren();
+		for (KernelTokenImpl token : tokenChildren) {
+			if (token.getFlowNode().getId().equals(flowNode.getId())) {
+				if (!token.isActive()) {
+					inactiveTokenInActivity.add(token);
+				}
+			} else {
+				otherToken.add(token);
+			}
+		}
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("非激活的令牌 在 '{}': {}", flowNode, inactiveTokenInActivity);
+			LOG.debug("激活的令牌 : {}", otherToken);
+		}
+		return inactiveTokenInActivity;
+	}
 
 }
