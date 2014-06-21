@@ -19,6 +19,7 @@ package org.foxbpm.web.service.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipInputStream;
@@ -28,8 +29,11 @@ import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.repository.DeploymentBuilder;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.repository.ProcessDefinitionQuery;
+import org.foxbpm.engine.runtime.ProcessInstance;
+import org.foxbpm.engine.runtime.ProcessInstanceQuery;
 import org.foxbpm.web.common.constant.FoxbpmExceptionCode;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
+import org.foxbpm.web.common.util.DateUtil;
 import org.foxbpm.web.common.util.Pagination;
 import org.foxbpm.web.service.interfaces.IFlowManageService;
 import org.springframework.stereotype.Service;
@@ -118,6 +122,107 @@ public class FlowManageServiceImpl extends AbstWorkFlowService implements IFlowM
 			attrMap.put("formUrl", "startTask.action");
 			resultData.add(attrMap);
 		}
+		return resultData;
+	}
+
+	/**
+	 * 查询所有流程实例信息
+	 * 
+	 * @param pageInfor
+	 *            分页对象
+	 * @param params
+	 *            查询条件参数
+	 * @return 返回查询结果
+	 * @throws FoxbpmWebException
+	 */
+	@Override
+	public List<Map<String, Object>> queryProcessInst(Pagination<String> pageInfor, Map<String, Object> params) throws FoxbpmWebException {
+		// 返回结果
+		List<Map<String, Object>> resultData = new ArrayList<Map<String, Object>>();
+		ProcessInstanceQuery piq = runtimeService.createProcessInstanceQuery();
+		// 获取查询条件参数
+		String userId = StringUtil.getString(params.get("userId"));
+		String processDefinitionKey = StringUtil.getString(params.get("processDefinitionKey"));
+		String processInstanceId = StringUtil.getString(params.get("processInstanceId"));
+		String processDefinitionName = StringUtil.getString(params.get("processDefinitionName"));
+		String title = StringUtil.getString(params.get("title"));
+		String bizKey = StringUtil.getString(params.get("bizKey"));
+		String initor = StringUtil.getString(params.get("initor"));
+		String status = StringUtil.getString(params.get("status"));
+		String processType = StringUtil.getString(params.get("processType"));
+
+		String dss = StringUtil.getString(params.get("startTimeS"));
+		String dse = StringUtil.getString(params.get("startTimeE"));
+		if (StringUtil.isNotEmpty(processDefinitionKey)) {
+			piq.processDefinitionKey(processDefinitionKey);
+		}
+		if (StringUtil.isNotEmpty(processInstanceId)) {
+			piq.processInstanceId(processInstanceId);
+		}
+		if (StringUtil.isNotEmpty(title)) {
+			piq.subjectLike(assembleLikeParam(title));
+		}
+		if (StringUtil.isNotEmpty(bizKey)) {
+			piq.processInstanceBusinessKeyLike(assembleLikeParam(bizKey));
+		}
+		if (StringUtil.isNotEmpty(status)) {
+			piq.processInstanceStatus(status);
+		}
+
+		if (StringUtil.isNotEmpty(initor)) {
+			piq.initiator(initor);
+		}
+
+		if (StringUtil.isNotEmpty(processType)) {
+			if (processType.equals("initor")) {
+				piq.initiator(userId);
+			} else {
+				piq.taskParticipants(userId);
+			}
+
+		}
+		if (StringUtil.isNotEmpty(processDefinitionName)) {
+			piq.processDefinitionNameLike(assembleLikeParam(processDefinitionName));
+		}
+		Date dates = null;
+		Date datee = null;
+
+		if (StringUtil.isNotEmpty(dss)) {
+			dates = DateUtil.stringToDate(dss, "yyyy-MM-dd");
+		}
+		if (StringUtil.isNotEmpty(dse)) {
+			String endTime = "235959999";
+			dse += endTime;
+			datee = DateUtil.stringToDate(dse, "yyyy-MM-ddHHmmssSSS");
+		}
+		if (null != dates) {
+			piq.startTimeBefore(dates);
+		}
+		if (null != datee) {
+			piq.startTimeAfter(datee);
+		}
+
+		List<ProcessInstance> piList = null;
+		piq.orderByUpdateTime().desc();
+		if (null == pageInfor) {
+			piList = piq.list();
+		} else {
+			// 执行分页查询
+			piList = piq.listPagination(pageInfor.getPageIndex(), pageInfor.getPageSize());
+			// 设置分页信息
+			pageInfor.setTotal(StringUtil.getInt(piq.count()));
+		}
+		// 流程实例属性集
+		Map<String, Object> attrMap = null;
+		ProcessInstance pi = null;
+		for (int i = 0, size = (null == piList) ? 0 : piList.size(); i < size; i++) {
+			pi = piList.get(i);
+			attrMap = pi.getPersistentState();
+			attrMap.put("processDefinitionName", modelService.getProcessDefinition(pi.getProcessDefinitionId()).getName());
+			attrMap.put("initiatorName", getUserName(StringUtil.getString(attrMap.get("initiator"))));
+			resultData.add(attrMap);
+		}
+
 		return resultData;
 	}
 

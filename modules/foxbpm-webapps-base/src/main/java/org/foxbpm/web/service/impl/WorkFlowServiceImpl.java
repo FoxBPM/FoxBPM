@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.runtime.ProcessInstance;
@@ -63,7 +62,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 	}
 
 	@Override
-	public List<Map<String, Object>> queryProcessInst(Pagination<String> pageInfor, Map<String, Object> params) throws FoxbpmWebException {
+	public List<Map<String, Object>> queryProcessInst(Pagination<String> pageInfor, Map<String, Object> params) {
 		// 返回结果
 		List<Map<String, Object>> resultData = new ArrayList<Map<String, Object>>();
 		ProcessInstanceQuery piq = runtimeService.createProcessInstanceQuery();
@@ -157,47 +156,54 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 	public Map<String, Object> queryTaskDetailInfor(Map<String, Object> params) {
 		// 返回结果
 		Map<String, Object> resultData = new HashMap<String, Object>();
+
 		String processInstanceId = StringUtil.getString(params.get("processInstanceId"));
-		ProcessInstanceQuery piq = runtimeService.createProcessInstanceQuery();
-		// 参数校验
-		if (StringUtil.isEmpty(processInstanceId)) {
-			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_PROCESSINSTID, "processInstanceId is null!");
+		String processDefinitionId = StringUtil.getString(params.get("processDefinitionId"));
+
+		if (StringUtil.isNotEmpty(processInstanceId)) {
+			ProcessInstanceQuery piq = runtimeService.createProcessInstanceQuery();
+			List<ProcessInstance> pinstanceList = piq.processInstanceId(processInstanceId).list();
+			if (null == pinstanceList || pinstanceList.isEmpty()) {
+				throw new IllegalArgumentException("processInstanceId=" + processInstanceId + " is Invalid parameter value!");
+			}
+			ProcessInstance processInstance = pinstanceList.get(0);
+			String processName = modelService.getProcessDefinition(processInstance.getProcessDefinitionId()).getName();
+
+			TaskQuery tq = taskService.createTaskQuery();
+			tq.processInstanceId(processInstanceId);
+			tq.taskIsEnd().orderByEndTime().asc();
+			List<Task> instances = tq.list();
+			List<Map<String, Object>> instanceMaps = new ArrayList<Map<String, Object>>();
+			// 获取任务详细信息
+			for (Task tmp : instances) {
+				Map<String, Object> instanceMap = tmp.getPersistentState();
+				String assigneeUserId = tmp.getAssignee();
+				instanceMap.put("assgneeUserName", getUserName(assigneeUserId));
+				instanceMaps.add(instanceMap);
+			}
+
+			// 获取任务结束信息
+			tq.taskNotEnd().orderByTaskCreateTime().asc();
+			List<Task> instancesNotEnd = tq.list();
+			List<Map<String, Object>> notEndInstanceMaps = new ArrayList<Map<String, Object>>();
+			for (Task tmp : instancesNotEnd) {
+				Map<String, Object> instanceMap = tmp.getPersistentState();
+				String assigneeUserId = tmp.getAssignee();
+				instanceMap.put("assgneeUserName", getUserName(assigneeUserId));
+				notEndInstanceMaps.add(instanceMap);
+			}
+			Map<String, Map<String, Object>> postionMap = modelService.getFlowGraphicsElementPositionById(processInstance.getProcessDefinitionId());
+			resultData.put("dataList", instanceMaps);
+			resultData.put("notEnddataList", notEndInstanceMaps);
+			resultData.put("positionInfo", JSONUtil.parseObject2JSON(postionMap));
+			resultData.put("taskEndedJson", JSONUtil.parseObject2JSON(instanceMaps));
+			resultData.put("taskNotEndJson", JSONUtil.parseObject2JSON(instancesNotEnd));
+			resultData.put("processName", processName);
+			resultData.put("processInstanceId", processInstance.getId());
+			resultData.put("processDefinitionId", processInstance.getProcessDefinitionId());
+		} else if (StringUtil.isNotEmpty(processDefinitionId)) {
+			resultData.put("processDefinitionId", processDefinitionId);
 		}
-		List<ProcessInstance> pinstanceList = piq.processInstanceId(processInstanceId).list();
-		if (null == pinstanceList || pinstanceList.isEmpty()) {
-			throw new IllegalArgumentException("processInstanceId=" + processInstanceId + " is Invalid parameter value!");
-		}
-		ProcessInstance processInstance = pinstanceList.get(0);
-		String processName = modelService.getProcessDefinition(processInstance.getProcessDefinitionId()).getName();
-		TaskQuery tq = taskService.createTaskQuery();
-		tq.processInstanceId(processInstanceId);
-		tq.taskIsEnd().orderByEndTime().asc();
-		List<Task> instances = tq.list();
-		List<Map<String, Object>> instanceMaps = new ArrayList<Map<String, Object>>();
-		for (Task tmp : instances) {
-			Map<String, Object> instanceMap = tmp.getPersistentState();
-			String assigneeUserId = tmp.getAssignee();
-			instanceMap.put("assgneeUserName", getUserName(assigneeUserId));
-			instanceMaps.add(instanceMap);
-		}
-		tq.taskNotEnd().orderByTaskCreateTime().asc();
-		List<Task> instancesNotEnd = tq.list();
-		List<Map<String, Object>> notEndInstanceMaps = new ArrayList<Map<String, Object>>();
-		for (Task tmp : instancesNotEnd) {
-			Map<String, Object> instanceMap = tmp.getPersistentState();
-			String assigneeUserId = tmp.getAssignee();
-			instanceMap.put("assgneeUserName", getUserName(assigneeUserId));
-			notEndInstanceMaps.add(instanceMap);
-		}
-		Map<String, Map<String, Object>> postionMap = modelService.getFlowGraphicsElementPositionById(processInstance.getProcessDefinitionId());
-		resultData.put("notEnddataList", notEndInstanceMaps);
-		resultData.put("dataList", instanceMaps);
-		resultData.put("positionInfo", JSONUtil.parseObject2JSON(postionMap));
-		resultData.put("taskEndedJson", JSONUtil.parseObject2JSON(instanceMaps));
-		resultData.put("taskNotEndJson", JSONUtil.parseObject2JSON(instancesNotEnd));
-		resultData.put("processName", processName);
-		resultData.put("processInstanceId", processInstance.getId());
-		resultData.put("processDefinitionId", processInstance.getProcessDefinitionId());
 		return resultData;
 	}
 
@@ -370,18 +376,5 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_PROCESSDEFID, "processDefinitionId is null !");
 		}
 		return modelService.GetFlowGraphicsImgStreamByDefId(processDefinitionId);
-	}
-
-	private String getUserName(String userId) {
-		if (userId == null || "".equals(userId)) {
-			return "空用户名";
-		}
-		User tmpUser = identityService.getUser(userId);
-		if (tmpUser != null) {
-			return tmpUser.getUserName();
-		} else {
-			return "未知用户:" + userId;
-		}
-
 	}
 }

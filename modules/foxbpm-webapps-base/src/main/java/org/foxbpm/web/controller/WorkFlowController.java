@@ -64,11 +64,7 @@ public class WorkFlowController extends AbstWebController {
 		requestParams.put("userId", "admin");
 		// 查询结果
 		List<Map<String, Object>> resultList = workFlowService.queryStartProcess(requestParams);
-		if (null != resultList) {
-			for (Map<String, Object> map : resultList) {
-				map.put("formUrl", "startTask.action");
-			}
-		}
+
 		// 封装参数
 		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultList);
 

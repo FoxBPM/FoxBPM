@@ -111,5 +111,4 @@ public interface IWorkFlowService {
 	 * @return 返回结果信息
 	 */
 	InputStream getFlowImagGraph(Map<String, Object> params);
-
 }

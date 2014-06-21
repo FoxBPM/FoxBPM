@@ -119,7 +119,6 @@
 			var flag = true;
 			$("tbody tr.selected", $table).each(function() {
 				var state = $("td:eq(10)", $(this)).html();
-				//alert(state);
 				if (state.trim() == "运行中" || state.trim() == "暂停") {
 					flag = false;
 				}
@@ -137,7 +136,7 @@
 							var pii = $(this).attr("pii");
 							var obj = {};
 							window
-									.open("FlowCenter?action=getTaskDetailInfo&processDefinitionKey="
+									.open("queryTaskDetailInfor.action?processDefinitionKey="
 											+ pdk + "&processInstanceId=" + pii);
 						});
 
@@ -174,7 +173,7 @@
 	<div class="main-panel">
 		<jsp:include page="top.jsp" flush="true" />
 		<div class="center-panel">
-			<form id="subForm" method="post" action="FlowManager">
+			<form id="subForm" method="post" action="processInstManage.action">
 				<!-- 左 -->
 				<div class="right">
 					<!-- 隐藏参数部分 -->
@@ -201,12 +200,12 @@
 										<tr>
 											<td>
 												<div class="btn-normal">
-													<a href="#" onclick="$('#subForm').submit();">${applicationScope.appInfo["common.search"]}</a>
+													<a href="javascript:void(0)" onclick="$('#subForm').submit();">${applicationScope.appInfo["common.search"]}</a>
 												</div>
 											</td>
 											<td>
 												<div class="btn-normal">
-													<a href="#" onclick="clearInfo();">${applicationScope.appInfo["common.clear"]}</a>
+													<a href="javascript:void(0)" onclick="clearInfo();">${applicationScope.appInfo["common.clear"]}</a>
 												</div>
 											</td>
 										</tr>

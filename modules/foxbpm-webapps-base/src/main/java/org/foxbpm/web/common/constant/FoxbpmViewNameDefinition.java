@@ -26,6 +26,8 @@ public final class FoxbpmViewNameDefinition {
 	/*************************** 管控中心 ***********************************/
 	// 流程定义视图
 	public final static String PROCESSDEF_VIEWNAME = "processDef";
+	// 流程定义视图
+	public final static String PROCESSINSTMANAGE_VIEWNAME = "processInstManage";
 	// 成功视图
 	public final static String COMPLETETASK_VIEWNAME = "result";
 }
