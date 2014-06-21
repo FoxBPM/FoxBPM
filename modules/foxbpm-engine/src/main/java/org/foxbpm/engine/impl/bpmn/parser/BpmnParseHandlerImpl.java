@@ -27,8 +27,10 @@ import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.Bpmn2Package;
 import org.eclipse.bpmn2.Definitions;
 import org.eclipse.bpmn2.EndEvent;
+import org.eclipse.bpmn2.ExclusiveGateway;
 import org.eclipse.bpmn2.FlowElement;
 import org.eclipse.bpmn2.FlowNode;
+import org.eclipse.bpmn2.InclusiveGateway;
 import org.eclipse.bpmn2.MessageFlow;
 import org.eclipse.bpmn2.ParallelGateway;
 import org.eclipse.bpmn2.Process;
@@ -188,6 +190,14 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 					
 					if (bpmnElement instanceof ParallelGateway) {
 						style=processEngineConfiguration.getStyle("ParallelGateway");
+					}
+					
+					if (bpmnElement instanceof InclusiveGateway) {
+						style=processEngineConfiguration.getStyle("InclusiveGateway");
+					}
+					
+					if (bpmnElement instanceof ExclusiveGateway) {
+						style=processEngineConfiguration.getStyle("ExclusiveGateway");
 					}
 				
 					if (bpmnElement instanceof Task) {
