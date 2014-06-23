@@ -45,7 +45,7 @@
 		<property name="transactionManager" ref="foxbpmTransactionManager">
 		</property>
 		<!-- 延迟30秒启动Scheduler -->
-		<property name="startupDelay" value="5"></property>
+		<property name="startupDelay" value="500000"></property>
 		<!-- 通过applicationContextSchedulerContextKey属性配置spring上下文 -->
 		<property name="applicationContextSchedulerContextKey">
 			<value>applicationContext</value>
