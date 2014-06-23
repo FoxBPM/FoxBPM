@@ -19,8 +19,10 @@ package org.foxbpm.engine.impl.bpmn.parser.model;
 
 
 import org.eclipse.bpmn2.BaseElement;
+import org.eclipse.bpmn2.Process;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ProcessBehavior;
+import org.foxbpm.engine.impl.util.BpmnModelUtil;
 
 
 public class ProcessParser extends BaseElementParser {
@@ -28,7 +30,14 @@ public class ProcessParser extends BaseElementParser {
 
 	@Override
 	public BaseElementBehavior parser(BaseElement baseElement) {
-
+		Process process=(Process)baseElement;
+		ProcessBehavior processBehavior=(ProcessBehavior)baseElementBehavior;
+		String category=BpmnModelUtil.getProcessCategory(process);
+		processBehavior.setCategory(category);
+		processBehavior.setFormUri(BpmnModelUtil.getFormUri(process));
+		processBehavior.setFormUriView(BpmnModelUtil.getFormUriView(process));
+		processBehavior.setKey(process.getId());
+		processBehavior.setName(process.getName());
 		return super.parser(baseElement);
 	}
 
