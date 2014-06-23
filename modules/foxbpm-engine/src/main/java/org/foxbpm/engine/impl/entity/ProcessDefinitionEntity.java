@@ -48,6 +48,10 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 
 	protected Expression subject;
 	
+	private Expression formUri;
+
+	private Expression formUriView;
+	
 	protected String resourceId;
 	
 	protected String deploymentId;
@@ -96,6 +100,23 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 
 	public void setSubject(String subject) {
 		this.subject = new ExpressionImpl(subject);
+	}
+	
+	
+	public Expression getFormUri() {
+		return formUri;
+	}
+
+	public void setFormUri(String formUri) {
+		this.formUri = new ExpressionImpl(formUri);
+	}
+
+	public Expression getFormUriView() {
+		return formUriView;
+	}
+
+	public void setFormUriView(String formUriView) {
+		this.formUriView = new ExpressionImpl(formUriView);
 	}
 
 	/**

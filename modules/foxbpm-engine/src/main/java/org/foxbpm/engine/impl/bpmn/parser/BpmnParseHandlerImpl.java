@@ -95,7 +95,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 
 	private KernelProcessDefinition loadBehavior(Process process){
 		String processObjId = BpmnModelUtil.getProcessId(process);
-		String category=BpmnModelUtil.getProcessCategory(process);
+		//String category=BpmnModelUtil.getProcessCategory(process);
 		List<FlowElement> flowElements=process.getFlowElements();
 		ProcessDefinitionBuilder processDefinitionBuilder = new ProcessDefinitionEntityBuilder(processObjId);
 		ProcessBehavior processBehavior=BpmnBehaviorEMFConverter.getProcessBehavior(process, processDefinitionBuilder.getProcessDefinition());
@@ -124,11 +124,15 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 				processDefinitionBuilder.endFlowNode();
 			}
 		}
-		
+
 		ProcessDefinitionEntity processDefinition=(ProcessDefinitionEntity)processDefinitionBuilder.buildProcessDefinition();
-		processDefinition.setKey(process.getId());
-		processDefinition.setName(process.getName());
-		processDefinition.setCategory(category);
+	
+		
+		processDefinition.setKey(processBehavior.getId());
+		processDefinition.setName(processBehavior.getName());
+		processDefinition.setCategory(processBehavior.getCategory());
+		processDefinition.setFormUri(processBehavior.getFormUri());
+		processDefinition.setFormUriView(processBehavior.getFormUriView());
 		processDI(processDefinition,process);
 		return processDefinition;
 	}
