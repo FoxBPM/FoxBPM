@@ -24,4 +24,8 @@ public final class FoxbpmActionNameDefinition {
 	public final static String DELETEDEPLOY_ACTION = "deleteDeploy";
 	public final static String UPDATECACHE_ACTION = "updateCache";
 	public final static String PROCESSINSTMANAGE_ACTION = "processInstManage";
+	public static final String SUSPENDPROCESS_ACTION = "suspendProcess";
+	public static final String CONTINUEPROCESS_ACTION = "continueProcess";
+	public static final String TERMINATPROCESS_ACTION = "terminatProcess";
+	public static final String DELETEPROCESS_ACTION = "deleteProcess";
 }

@@ -123,8 +123,16 @@ public class WorkFlowController extends AbstWebController {
 	public ModelAndView queryTaskDetailInfor(HttpServletRequest request) {
 
 		Map<String, Object> requestParams = getRequestParams(request);
-		// 查询结果
+		// 根据流程实例id查询结果
 		Map<String, Object> resultMap = workFlowService.queryTaskDetailInfor(requestParams);
+		// 如果没有查询结果,说明是启动流程时 点击“流程状态”查询操作
+		if (resultMap.isEmpty()) {
+			String processDefinitionId = StringUtil.getString(requestParams.get("processDefinitionId"));
+			if (StringUtil.isNotEmpty(processDefinitionId)) {
+				resultMap.put("processDefinitionId", processDefinitionId);
+			}
+		}
+
 		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
 		return createModelAndView(FoxbpmViewNameDefinition.QUERY_TASKDETAILINFOR_ACTION);
 	}

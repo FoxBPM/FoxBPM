@@ -8,6 +8,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <jsp:include page="../common/head.jsp" flush="true" />
+<script type="text/javascript" src="common/js/processInstManage.js"></script>
 <script type="text/javascript">
 	$('#checkall').click(function() {
 		var tii = $(this).attr("checked");
@@ -22,97 +23,6 @@
 			}
 		}
 	});
-	function updateVariables() {
-		if (checkButton("updateVariables")) {
-			return false;
-		}
-		var checkboxs = $("input[name=checked]");
-		var id = "";
-
-		for (var i = 0; i < checkboxs.length; i++) {
-			if (checkboxs[i].checked == true) {
-				id = $(checkboxs[i]).val();
-				break;
-			}
-		}
-		if (id != "") {
-			var obj = {};
-			window
-					.open("FlowManager?action=toProcessVariable&processInstanceId="
-							+ id);
-		}
-	}
-
-	function updateToken() {
-		if (checkButton("updateToken")) {
-			return false;
-		}
-		var checkboxs = $("input[name=checked]");
-		var id = "";
-
-		for (var i = 0; i < checkboxs.length; i++) {
-			if (checkboxs[i].checked == true) {
-				id = $(checkboxs[i]).val();
-				break;
-			}
-		}
-		if (id != "") {
-			var obj = {};
-			window
-					.open("FlowManager?action=processTokenList&processInstanceId="
-							+ id);
-		}
-	}
-	function doSuspend() {
-		if (checkButton("doSuspend")) {
-			return false;
-		}
-		doProcess("suspendProcessInstance");
-	}
-	function doContinue() {
-		if (checkButton("doContinue")) {
-			return false;
-		}
-		doProcess("continueProcessInstance");
-	}
-	function doTerminat() {
-		if (checkButton("doTerminat")) {
-			return false;
-		}
-		doProcess("terminatProcessInstance");
-	}
-	function doDelete() {
-		if (checkButton("doDelete")) {
-			return false;
-		}
-		doProcess("deleteProcessInstance");
-	}
-	function setHis() {
-		if (checkButton("setHis")) {
-			return false;
-		}
-		doProcess("setHis");
-	}
-	function doProcess(action) {
-		var checkboxs = $("input:checked[name=checked]");
-		var id = "";
-		if (checkboxs.length != 1) {
-			alert("请选中一个流程实例！");
-			return;
-		} else {
-			for (var i = 0; i < checkboxs.length; i++) {
-				if (i != 0) {
-					id += ',';
-				}
-				id += $(checkboxs[i]).val();
-			}
-		}
-		if (confirm("确认提交?")) {
-			$("#action").val(action);
-			$("#operProcessInstanceId").val(id);
-			$("#subForm").submit();
-		}
-	}
 
 	$(function() {
 		Fix.Util.ClickTr(null, false, true, 0, function($table) {
@@ -134,10 +44,9 @@
 						function() {
 							var pdk = $(this).attr("pdk");
 							var pii = $(this).attr("pii");
-							var obj = {};
-							window
-									.open("queryTaskDetailInfor.action?processDefinitionKey="
-											+ pdk + "&processInstanceId=" + pii);
+							var url = "queryTaskDetailInfor.action?processDefinitionKey="
+									+ pdk + "&processInstanceId=" + pii;
+							window.open(url);
 						});
 
 		$("#selectUser").click(function() {
@@ -156,16 +65,20 @@
 			$("#status").val(status);
 	});
 
+	//表单清空
 	function clearInfo() {
 		$("#processDefinitionKey").val("");
 		$("#processInstanceId").val("");
-		$("#processName").val("");
+		$("#processDefinitionName").val("");
 		$("#subject").val("");
 		$("#bizKey").val("");
 		$("#initor").val("");
 		$("#initorName").val("");
 		$("#status").val("");
 	}
+
+	var pinstManage = new ProcessInstManage({formId:'subForm'});
+	
 </script>
 </head>
 
@@ -176,17 +89,13 @@
 			<form id="subForm" method="post" action="processInstManage.action">
 				<!-- 左 -->
 				<div class="right">
-					<!-- 隐藏参数部分 -->
-					<input type="hidden" id="operProcessInstanceId"
-						name="operProcessInstanceId"> <input type="hidden"
-						id="action" name="action" value="processManageList" />
 					<div class="search">
 						<table>
 							<tr>
 								<td class="title-r">${applicationScope.appInfo["task.processDefinitionName"]}：</td>
-								<td><input type="text" id="processName" name="processName"
-									class="fix-input" style="width: 160px;"
-									value="${result.processName}" /></td>
+								<td><input type="text" id="processDefinitionName"
+									name="processDefinitionName" class="fix-input"
+									style="width: 160px;" value="${result.processDefinitionName}" /></td>
 								<td class="title-r">${applicationScope.appInfo["task.processInstanceId"]}：</td>
 								<td><input type="text" id="processInstanceId"
 									name="processInstanceId" class="fix-input"
@@ -200,7 +109,8 @@
 										<tr>
 											<td>
 												<div class="btn-normal">
-													<a href="javascript:void(0)" onclick="$('#subForm').submit();">${applicationScope.appInfo["common.search"]}</a>
+													<a href="javascript:void(0)"
+														onclick="$('#subForm').submit();">${applicationScope.appInfo["common.search"]}</a>
 												</div>
 											</td>
 											<td>
@@ -239,10 +149,10 @@
 								<td><select id="status" name="status" class="fix-input"
 									style="width: 172px;">
 										<option value="">请选择</option>
-										<option value="SUSPEND">暂停</option>
-										<option value="RUNNING">运行中</option>
-										<option value="COMPLETE">完成</option>
-										<option value="TERMINATION">终止</option>
+										<option value="suspend">暂停</option>
+										<option value="running">运行中</option>
+										<option value="complete">完成</option>
+										<option value="termination">终止</option>
 								</select></td>
 								<td></td>
 							</tr>
@@ -252,31 +162,32 @@
 						style="padding-right: 2px; text-align: right; margin-bottom: 4px;">
 						<div id="doSuspend" class="btn-normal" data-scope=single
 							style="display: inline-block; margin-left: 5px;">
-							<a href="#" onclick="doSuspend();">暂停</a>
+							<a href="javascript:void(0)" onclick="pinstManage.doSuspend();">暂停</a>
 						</div>
 						<div id="doContinue" class="btn-normal" data-scope=single
 							style="display: inline-block; margin-left: 5px;">
-							<a href="#" onclick="doContinue();">恢复</a>
+							<a href="javascript:void(0)" onclick="pinstManage.doContinue();">恢复</a>
 						</div>
 						<div id="doTerminat" class="btn-normal" data-scope=single
 							style="display: inline-block; margin-left: 5px;">
-							<a href="#" onclick="doTerminat();">作废</a>
+							<a href="javascript:void(0)" onclick="pinstManage.doTerminat();">作废</a>
 						</div>
 						<div id="doDelete" class="btn-normal" data-scope=single
 							style="display: inline-block; margin-left: 5px;">
-							<a href="#" onclick="doDelete();">删除</a>
+							<a href="javascript:void(0)" onclick="pinstManage.doDelete();">删除</a>
 						</div>
 						<div id="updateVariables" class="btn-normal" data-scope=single
 							style="display: inline-block; margin-left: 5px;">
-							<a href="#" onclick="updateVariables();">变量管理</a>
+							<a href="javascript:void(0)"
+								onclick="pinstManage.updateVariables();">变量管理</a>
 						</div>
 						<div id="updateToken" class="btn-normal" data-scope=single
 							style="display: inline-block; margin-left: 5px;">
-							<a href="#" onclick="updateToken();">令牌管理</a>
+							<a href="javascript:void(0)" onclick="pinstManage.updateToken();">令牌管理</a>
 						</div>
 						<div id="setHis" class="btn-normal" data-scope=multi
 							style="display: inline-block; margin-left: 5px;">
-							<a href="#" onclick="setHis();">归档</a>
+							<a href="javascript:void(0)" onclick="pinstManage.setHis();">归档</a>
 						</div>
 					</div>
 					<div class="content">
@@ -299,9 +210,9 @@
 								varStatus="index">
 								<tr>
 									<td class="num"><input type="radio" name="checked"
-										value="${dataList.processInstanceId}"></td>
+										value="${dataList.id}"></td>
 									<td style="text-align: center;">${(index.index+1)+pageInfo.pageSize*(pageInfo.pageIndex-1)}</td>
-									<td>${dataList.processInstanceId}</td>
+									<td>${dataList.id}</td>
 									<td>${dataList.processDefinitionName}</td>
 									<td>${dataList.subject}</td>
 									<td>${dataList.bizKey}</td>
@@ -311,17 +222,16 @@
 											value="${dataList.updateTime}" type="both" /></td>
 									<td>${dataList.startAuthorName}</td>
 									<td>${dataList.nowNodeInfo}</td>
-									<td><c:if test="${dataList.instanceStatus == 'SUSPEND'}"
+									<td><c:if test="${dataList.instanceStatus == 'suspend'}"
 											var="runStatue">暂停</c:if> <c:if
-											test="${dataList.instanceStatus == 'RUNNING'}"
+											test="${dataList.instanceStatus == 'running'}"
 											var="runStatue">运行中</c:if> <c:if
-											test="${dataList.instanceStatus == 'COMPLETE'}"
+											test="${dataList.instanceStatus == 'complete'}"
 											var="runStatue">完成</c:if> <c:if
-											test="${dataList.instanceStatus == 'TERMINATION'}"
+											test="${dataList.instanceStatus == 'termination'}"
 											var="runStatue">终止</c:if></td>
-									<td><a name="flowGraph" href="#"
-										pii="${dataList.processInstanceId}"
-										pdk="${dataList.processDefinitionKey}">查看</a></td>
+									<td><a name="flowGraph" href="javascript:void(0)"
+										pii="${dataList.id}" pdk="${dataList.processDefinitionKey}">查看</a></td>
 								</tr>
 							</c:forEach>
 						</table>
@@ -332,6 +242,5 @@
 			</form>
 		</div>
 	</div>
-
 </body>
 </html>
