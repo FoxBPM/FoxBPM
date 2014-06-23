@@ -35,6 +35,90 @@ public final class PointUtils {
 	 */
 	private static final float X_Y_LOCATION_MAXSHIFT = 100F;
 
+	public static void main(String[] args) {
+		Point start = new Point(100, 100);
+		Point center = new Point(50, 60);
+		String result = caclBeralControlPointString(start, center, 5);
+		// Point end = new Point(500, 36);
+		// Point result = caclControlPoint(start, center, end, 0.25f);
+		System.out.println(result);
+		// Point result2 = caclControlPoint(start, center, end, 0.75f);
+		// System.out.println(result2.getX() + " " + result2.getY());
+
+	}
+
+	public final static String caclBeralControlPointString(Point startEndPoint,
+			Point center, float roundScale) {
+		Point point = caclBeralControlPoint(startEndPoint, center, roundScale);
+		return point.getX() + " " + point.getY();
+	}
+
+	/**
+	 * 计算三次贝塞尔曲线控制点
+	 * 
+	 * @param startEndPoint
+	 * @param center
+	 * @return
+	 */
+	public final static Point caclBeralControlPoint(Point startEndPoint,
+			Point center, float roundScale) {
+		float startX = 0.0f;
+		float startY = 0.0f;
+		float lengthStartHerizon = 0.0f;
+		float lengthStartVertical = 0.0f;
+		float lengthStartCenter = 0.0f;
+
+		lengthStartHerizon = Math.abs(startEndPoint.getX() - center.getX());
+		lengthStartVertical = Math.abs(startEndPoint.getY() - center.getY());
+		lengthStartCenter = (float) Math.sqrt(lengthStartHerizon
+				* lengthStartHerizon + lengthStartVertical
+				* lengthStartVertical);
+		if (lengthStartCenter < roundScale) {
+			return null;
+		}
+		if (startEndPoint.getX() > center.getX()) {
+			startX = ((roundScale * lengthStartHerizon) / lengthStartCenter)
+					+ center.getX();
+		} else {
+			startX = (((lengthStartCenter - roundScale) * lengthStartHerizon) / lengthStartCenter)
+					+ startEndPoint.getX();
+		}
+
+		if (startEndPoint.getY() > center.getY()) {
+			startY = ((roundScale * lengthStartVertical) / lengthStartCenter)
+					+ center.getY();
+		} else {
+			startY = (((lengthStartCenter - roundScale) * lengthStartVertical) / lengthStartCenter)
+					+ startEndPoint.getY();
+		}
+
+		Point resultPoint = new Point(startX, startY);
+		return resultPoint;
+
+	}
+
+	/**
+	 * 计算二次贝塞尔曲线
+	 * 
+	 * @param startPoint
+	 * @param center
+	 * @param end
+	 * @param scale
+	 * @return
+	 */
+	public final static Point caclControlPoint(Point startPoint, Point center,
+			Point end, float scale) {
+		float x = 0.0f;
+		float y = 0.0f;
+		x = ((1 - scale) * (1 - scale) * startPoint.getX())
+				+ (2 * scale * (1 - scale) * center.getX())
+				+ (scale * scale * end.getX());
+		y = ((1 - scale) * (1 - scale) * startPoint.getY())
+				+ (2 * scale * (1 - scale) * center.getY())
+				+ (scale * scale * end.getY());
+		return new Point(x, y);
+	}
+
 	/**
 	 * 计算中心点位置，包括复杂情况，和简单情况
 	 * 
