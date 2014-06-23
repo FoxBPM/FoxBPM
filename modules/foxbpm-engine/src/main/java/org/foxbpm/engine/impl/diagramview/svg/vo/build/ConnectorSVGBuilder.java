@@ -22,6 +22,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.diagramview.svg.Point;
+import org.foxbpm.engine.impl.diagramview.svg.PointUtils;
 import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
 import org.foxbpm.engine.impl.diagramview.svg.vo.PathVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
@@ -36,6 +37,8 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 	private static final String FILL_DEFAULT = "none";
 	private static final String MOVETO_FLAG = "M";
 	private static final String LINETO_FLAG = "L";
+	private static final String PATHCIRCLE_FLAG = "C";
+
 	private static final String D_SPACE = " ";
 	private PathVO pathVo;
 
@@ -50,33 +53,57 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	/**
-	 * 设置线条的拐点信息
+	 * 设置线条的拐点信息,拐角划圆形
 	 */
 	public void setWayPoints(List<Point> pointList) {
 		StringBuffer pathBuffer = new StringBuffer();
 		int size = pointList.size();
 		for (int i = 0; i < size; i++) {
 			Point point = pointList.get(i);
+			// 第二个坐标
 			if (i != 0) {
-				pathBuffer.append(LINETO_FLAG)
-						.append(String.valueOf(point.getX())).append(D_SPACE)
-						.append(String.valueOf(point.getY()));
-				if (i != size - 1) {
-//					pathBuffer.append(PATHCIRCLE_FLAG)
-//							.append(String.valueOf(point.getX() + 10))
-//							.append(D_SPACE)
-//							.append(String.valueOf(point.getY()))
-//							.append(D_SPACE)
-//							.append(String.valueOf(point.getX() + 15))
-//							.append(D_SPACE)
-//							.append(String.valueOf(point.getY() + 5))
-//							.append(D_SPACE)
-//							.append(String.valueOf(point.getX() + 15))
-//							.append(D_SPACE)
-//							.append(String.valueOf(point.getY() + 15))
-//							.append(D_SPACE);
+				// 判断是否只有两个坐标
+				if (size < 3) {
+					pathBuffer.append(LINETO_FLAG)
+							.append(String.valueOf(point.getX()))
+							.append(D_SPACE)
+							.append(String.valueOf(point.getY()));
+				} else {
+					if (i != size - 1) {
+						// 以当前坐标为中心点
+						Point[] bezalPoints = PointUtils.caclBeralPoints(
+								pointList.get(i - 1), pointList.get(i),
+								pointList.get(i + 1));
+						if (bezalPoints[0].getX() != 0.0f
+								&& bezalPoints[0].getY() != 0.0f) {
+							pathBuffer.append(LINETO_FLAG).append(
+									bezalPoints[0].getX() + D_SPACE
+											+ bezalPoints[0].getY() + D_SPACE);
+						}
 
+						if (bezalPoints[1].getX() != 0.0f
+								&& bezalPoints[1].getY() != 0.0f
+								&& bezalPoints[2].getX() != 0.0f
+								&& bezalPoints[2].getY() != 0.0f
+								&& bezalPoints[3].getX() != 0.0f
+								&& bezalPoints[3].getY() != 0.0f) {
+							pathBuffer
+									.append(PATHCIRCLE_FLAG)
+									.append(bezalPoints[1].getX() + D_SPACE
+											+ bezalPoints[1].getY() + D_SPACE)
+									.append(bezalPoints[2].getX() + D_SPACE
+											+ bezalPoints[2].getY() + D_SPACE)
+									.append(bezalPoints[3].getX() + D_SPACE
+											+ bezalPoints[3].getY() + D_SPACE);
+						}
+
+						pathBuffer.append(LINETO_FLAG)
+								.append(pointList.get(i + 1).getX())
+								.append(D_SPACE)
+								.append(pointList.get(i + 1).getY());
+					}
 				}
+
 			} else {
 				pathBuffer.append(MOVETO_FLAG)
 						.append(String.valueOf(point.getX())).append(D_SPACE)
