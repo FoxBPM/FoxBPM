@@ -11,6 +11,10 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 public class GatewaySVGBuilder extends AbstractSVGBuilder {
 	private static final String DEFAULT_FILL = "ffffff";
 	private PathVO pathVo;
+	private float tempX;
+	private float tempY;
+	private float tempWidth;
+	private float tempHeight;
 
 	public GatewaySVGBuilder(SvgVO svgVo) {
 		super(svgVo);
@@ -18,9 +22,35 @@ public class GatewaySVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
+	public void setWidth(float width) {
+		this.tempWidth = width;
+	}
+
+	@Override
+	public void setHeight(float height) {
+		this.tempHeight = height;
+	}
+
+	@Override
 	public void setXAndY(float x, float y) {
+		this.tempX = x;
+		this.tempY = y;
 		// 设置整体坐标，包括子类型
-		this.svgVo.getgVo().setTransform("translate(" + x + ", " + y + ")");
+		this.svgVo.getgVo().setTransform(
+				"translate(" + tempX + ", " + tempY + ")");
+
+		// 设置文本坐标
+		if (StringUtils.isNotBlank(textVO.getElementValue())) {
+			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
+					this.textVO.getElementValue());
+			int languageShift = -5;
+			if (SVGUtils.isChinese(this.textVO.getElementValue().charAt(0))) {
+				languageShift = 10;
+			}
+			super.setTextX(this.tempWidth - textWidth - languageShift);
+			super.setTextY(this.tempHeight + 5);
+		}
+
 	}
 
 	@Override
@@ -28,7 +58,7 @@ public class GatewaySVGBuilder extends AbstractSVGBuilder {
 		if (StringUtils.isBlank(stroke)) {
 			stroke = STROKE_DEFAULT;
 		}
-		this.pathVo.setStroke(stroke);
+		this.pathVo.setStroke(COLOR_FLAG + stroke);
 	}
 
 	@Override
@@ -41,7 +71,7 @@ public class GatewaySVGBuilder extends AbstractSVGBuilder {
 		if (StringUtils.isBlank(fill)) {
 			fill = DEFAULT_FILL;
 		}
-		this.buildRadialGradient(fill, this.pathVo);
+		this.buildLinearGradient(fill, pathVo, 0, 0, 0, 40);
 	}
 
 	@Override
@@ -91,17 +121,4 @@ public class GatewaySVGBuilder extends AbstractSVGBuilder {
 		// TODO Auto-generated method stub
 
 	}
-
-	@Override
-	public void setWidth(float width) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setHeight(float height) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

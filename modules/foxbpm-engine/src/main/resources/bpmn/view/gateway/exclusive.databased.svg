@@ -19,30 +19,16 @@
 			<stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
 			<stop id="fill_el" offset="100%" stop-color="#ffffff" stop-opacity="1"/>
 		</radialGradient>
+		<linearGradient x1="411" gradientUnits="userSpaceOnUse" x2="411" y1="96" y2="144" id="linearGradient4" spreadMethod="pad">
+	        <stop stop-opacity="1" stop-color="rgb(237,208,129)" offset="0%" />
+	        <stop stop-opacity="1" stop-color="rgb(255,255,201)" offset="100%" />
+     	</linearGradient>
 	</defs>
 	
-    <path
-       d="M -4.5,16 L 16,-4.5 L 35.5,16 L 16,35.5z"
-       id="bg_frame"
-       fill="url(#background) white"
-       stroke="black"
-       style="stroke-width:1" />
-    <g
-       id="cross">
-      <path
-      	id="crosspath"
-      	stroke="black"
-      	fill="black"
-        d="M 8.75,7.55 L 12.75,7.55 L 23.15,24.45 L 19.25,24.45 z"
-        style="stroke-width:1" />
-      <path
-      	id="crosspath2"
-      	stroke="black"
-      	fill="black"
-        d="M 8.75,24.45 L 19.25,7.55 L 23.15,7.55 L 12.75,24.45 z"
-        style="stroke-width:1" />
-    </g>
-	
+    <path d="M 0,24 L 24,0 L 48,24 L 24,48 ZM0 24" id="bg_frame" fill="url(#background) white" stroke="black" style="stroke-width:1" /> 
+	<path fill="none" d="M15 15 L34 34" fill-rule="evenodd" stroke="rgb(100,100,100)" stroke-width="3" />
+  	<path fill="none" d="M34 15 L15 34" fill-rule="evenodd" stroke="rgb(100,100,100)" stroke-width="3" />
+ 
 	<text id="text_name" x="26" y="26" oryx:align="left top"/>
 	
   </g>

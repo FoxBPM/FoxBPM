@@ -17,19 +17,21 @@
 			<stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
 			<stop id="fill_el" offset="100%" stop-color="#ffffff" stop-opacity="1"/>
 		</radialGradient>
+		<linearGradient x1="411" gradientUnits="userSpaceOnUse" x2="411" y1="96" y2="144" id="linearGradient4" spreadMethod="pad">
+	        <stop stop-opacity="1" stop-color="rgb(237,208,129)" offset="0%" />
+	        <stop stop-opacity="1" stop-color="rgb(255,255,201)" offset="100%" />
+     	</linearGradient>
 	</defs>
 	
     <path
-       d="M -4.5,16 L 16,-4.5 L 35.5,16 L 16,35.5z"
+       d="M 0,24 L 24,0 L 48,24 L 24,48 ZM0 24"
        id="bg_frame"
        fill="url(#background) white"
        stroke="black"
        style="stroke-width:1" />
-    <path
-       d="M 6.75,16 L 25.75,16 M 16,6.75 L 16,25.75"
-       id="path9"
-       stroke="black"
-       style="fill:none;stroke-width:3" />
+ 
+    <path fill="none" fill-rule="evenodd" d="M24 8 L24 40" stroke="rgb(100,100,100)" stroke-width="3" />
+	<path fill="none" fill-rule="evenodd" d="M8 24 L40 24" stroke="rgb(100,100,100)" stroke-width="3" />
     
 	<text id="text_name" x="26" y="26" oryx:align="left top"/>
 	

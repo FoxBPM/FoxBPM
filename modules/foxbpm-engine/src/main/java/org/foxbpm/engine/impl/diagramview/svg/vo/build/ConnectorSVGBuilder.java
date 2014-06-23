@@ -54,12 +54,29 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 	 */
 	public void setWayPoints(List<Point> pointList) {
 		StringBuffer pathBuffer = new StringBuffer();
-		for (int i = 0; i < pointList.size(); i++) {
+		int size = pointList.size();
+		for (int i = 0; i < size; i++) {
 			Point point = pointList.get(i);
 			if (i != 0) {
 				pathBuffer.append(LINETO_FLAG)
 						.append(String.valueOf(point.getX())).append(D_SPACE)
 						.append(String.valueOf(point.getY()));
+				if (i != size - 1) {
+//					pathBuffer.append(PATHCIRCLE_FLAG)
+//							.append(String.valueOf(point.getX() + 10))
+//							.append(D_SPACE)
+//							.append(String.valueOf(point.getY()))
+//							.append(D_SPACE)
+//							.append(String.valueOf(point.getX() + 15))
+//							.append(D_SPACE)
+//							.append(String.valueOf(point.getY() + 5))
+//							.append(D_SPACE)
+//							.append(String.valueOf(point.getX() + 15))
+//							.append(D_SPACE)
+//							.append(String.valueOf(point.getY() + 15))
+//							.append(D_SPACE);
+
+				}
 			} else {
 				pathBuffer.append(MOVETO_FLAG)
 						.append(String.valueOf(point.getX())).append(D_SPACE)

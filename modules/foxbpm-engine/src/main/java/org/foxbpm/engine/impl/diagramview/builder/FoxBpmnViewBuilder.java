@@ -33,6 +33,7 @@ public interface FoxBpmnViewBuilder {
 	public static final String STROKE_DEFAULT = "black";
 	public static final String STROKEWIDTH_DEFAULT = "1";
 	public static final int LINEARGRADIENT_INDEX = 0;
+
 	/**
 	 * 设置节点信息
 	 */
@@ -72,6 +73,8 @@ public interface FoxBpmnViewBuilder {
 	public void setTextFontSize(String textFontSize);
 
 	public void setTextStroke(String textStroke);
+
+	public void setTextFill(String textFill);
 
 	/**
 	 * 设置子类型的信息

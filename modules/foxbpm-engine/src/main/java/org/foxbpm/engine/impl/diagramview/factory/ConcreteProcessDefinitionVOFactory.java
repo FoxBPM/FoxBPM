@@ -304,8 +304,7 @@ public class ConcreteProcessDefinitionVOFactory extends
 			} else if (kernelFlowNodeBehavior instanceof ParallelGatewayBehavior) {
 				// 并行网关
 				taskType = SVGTypeNameConstant.SVT_TYPE_GATEWAY;
-				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_GATEWAY_INCLUSIVE;
-
+				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_GATEWAY_PARALLEL;
 			}
 			// 事件
 		} else if (kernelFlowNodeBehavior instanceof EventBehavior) {

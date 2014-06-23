@@ -45,14 +45,14 @@ public class GVO extends NamespaceAttributesVO {
 	private String transform;
 	@XmlElement(name = "rect")
 	private List<RectVO> rectVoList;
-	@XmlElement(name = "circle")
-	private List<CircleVO> circleVoList;
 	@XmlElement(name = "defs")
 	private DefsVO defsVo;
 	@XmlElement(name = "g")
 	private List<GVO> gVoList;
 	@XmlElement(name = "path")
 	private List<PathVO> pathVoList;
+	@XmlElement(name = "circle")
+	private List<CircleVO> circleVoList;
 	@XmlElement(name = "text")
 	private TextVO textVo;
 	@XmlElement(name = "polygon")

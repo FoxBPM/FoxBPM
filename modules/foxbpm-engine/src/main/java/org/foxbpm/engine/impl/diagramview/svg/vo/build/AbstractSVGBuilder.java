@@ -26,7 +26,9 @@ import org.foxbpm.engine.impl.diagramview.builder.FoxBpmnViewBuilder;
 import org.foxbpm.engine.impl.diagramview.svg.Point;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTypeNameConstant;
 import org.foxbpm.engine.impl.diagramview.svg.vo.DefsVO;
+import org.foxbpm.engine.impl.diagramview.svg.vo.LinearGradient;
 import org.foxbpm.engine.impl.diagramview.svg.vo.RadialGradientVO;
+import org.foxbpm.engine.impl.diagramview.svg.vo.StopVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.TextVO;
 import org.foxbpm.engine.impl.diagramview.vo.VONode;
@@ -195,6 +197,13 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 		this.textVO.setStroke(COLOR_FLAG + textStroke);
 	}
 
+	public void setTextFill(String fill) {
+		if (StringUtils.isBlank(fill)) {
+			this.textVO.setFill("black");
+		}
+		this.textVO.setFill(COLOR_FLAG + fill);
+	}
+
 	/**
 	 * 设置元素ID
 	 * 
@@ -260,6 +269,34 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 				svgVo.setFill("url(#" + backGroudUUID + ") #" + fill);
 				return;
 			}
+		}
+	}
+
+	/**
+	 * 线性渐变
+	 * 
+	 * @param fill
+	 */
+	protected void buildLinearGradient(String fill, VONode svgVo, float x1,
+			float x2, float y1, float y2) {
+		DefsVO defsVo = this.svgVo.getgVo().getDefsVo();
+		if (defsVo != null) {
+			LinearGradient linearGradient = defsVo.getLinearGradient();
+			if (linearGradient != null) {
+				String backGroudUUID = UUID.randomUUID().toString();
+				linearGradient.setId(backGroudUUID);
+				linearGradient.setX1(x1);
+				linearGradient.setX2(x2);
+				linearGradient.setY1(y1);
+				linearGradient.setY2(y2);
+				List<StopVO> stopVoList = linearGradient.getStopVoList();
+				if (stopVoList != null && stopVoList.size() > 0) {
+					StopVO stopVO = stopVoList.get(LINEARGRADIENT_INDEX);
+					svgVo.setFill("url(#" + backGroudUUID + ")");
+					stopVO.setStopColor(COLOR_FLAG + fill);
+				}
+			}
+
 		}
 	}
 

@@ -17,22 +17,13 @@
 			<stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
 			<stop id="fill_el" offset="100%" stop-color="#ffffff" stop-opacity="1"/>
 		</radialGradient>
+		<linearGradient x1="411" gradientUnits="userSpaceOnUse" x2="411" y1="96" y2="144" id="linearGradient4" spreadMethod="pad">
+	        <stop stop-opacity="1" stop-color="rgb(237,208,129)" offset="0%" />
+	        <stop stop-opacity="1" stop-color="rgb(255,255,201)" offset="100%" />
+     	</linearGradient>
 	</defs>
-	
-    <path
-       d="M -4.5,16 L 16,-4.5 L 35.5,16 L 16,35.5z"
-       id="bg_frame"
-       fill="url(#background) white"
-       stroke="black"
-       style="stroke-width:1" />
-    <circle
-    	id="circle"
-    	stroke="black"
-		cx="16"
-		cy="16"
-		r="9.75"
-		style="fill:none;stroke-width:2.5" />
-    
+	<path d="M 0,24 L 24,0 L 48,24 L 24,48 ZM0 24" id="bg_frame" fill="url(#background) white" stroke="black" style="stroke-width:1" />
+    <circle id="circle" stroke="rgb(100,100,100)" cx="24" cy="24" r="12" style="fill:none;stroke-width:3" />
 	<text id="text_name" x="26" y="26" oryx:align="left top"/>
 	
   </g>

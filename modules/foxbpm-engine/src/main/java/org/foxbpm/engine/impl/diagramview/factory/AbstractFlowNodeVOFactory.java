@@ -115,6 +115,8 @@ public abstract class AbstractFlowNodeVOFactory {
 				svgBuilder.setText(kernelFlowNodeImpl.getName());
 				svgBuilder.setTextStroke((String) kernelFlowNodeImpl
 						.getProperty(StyleOption.TextColor));
+				svgBuilder.setTextFill((String) kernelFlowNodeImpl
+						.getProperty(StyleOption.TextColor));
 				svgBuilder.setTextStrokeWidth(0);
 				svgBuilder.setTextFont((String) kernelFlowNodeImpl
 						.getProperty(StyleOption.Font));
