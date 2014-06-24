@@ -85,6 +85,12 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	protected Date endTime;
 
 	protected Date dueDate;
+	
+	/** 流程实例启动时间 */
+	protected Date processStartTime;
+	
+	/** 流程任务的发起人 */
+	protected String processInitiator;
 
 	protected boolean isBlocking = false;
 
@@ -875,6 +881,8 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		persistentState.put("startTime", getStartTime());		
 		persistentState.put("endTime", getEndTime());		
 		persistentState.put("dueDate", getDueDate());		
+		persistentState.put("processStartTime", getProcessStartTime());		
+		persistentState.put("processInitiator", getProcessInitiator());		
 		persistentState.put("priority", String.valueOf(getPriority()));		
 		persistentState.put("category", String.valueOf(getCategory()));		
 		persistentState.put("owner", getOwner());		
@@ -922,6 +930,23 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 
 	public void setParamMap(Map<String, Object> paramMap) {
 		this.paramMap = paramMap;
+	}
+	
+
+	public Date getProcessStartTime() {
+		return processStartTime;
+	}
+
+	public void setProcessStartTime(Date processStartTime) {
+		this.processStartTime = processStartTime;
+	}
+
+	public String getProcessInitiator() {
+		return processInitiator;
+	}
+
+	public void setProcessInitiator(String processInitiator) {
+		this.processInitiator = processInitiator;
 	}
 
 
