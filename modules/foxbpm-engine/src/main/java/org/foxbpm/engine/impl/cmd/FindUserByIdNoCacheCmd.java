@@ -56,9 +56,9 @@ public class FindUserByIdNoCacheCmd implements Command<User>{
 		}
 		
 		//处理代理信息
-		AgentManager agentManager = commandContext.getAgentManager();
-		List<AgentTo> agentTos = agentManager.getAgentTos(userId);
-		user.setAgentInfo(agentTos);
+		//AgentManager agentManager = commandContext.getAgentManager();
+		//List<AgentTo> agentTos = agentManager.getAgentTos(userId);
+		//user.setAgentInfo(agentTos);
 		
 		return user;
 	}

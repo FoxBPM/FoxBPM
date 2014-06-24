@@ -25,49 +25,56 @@ import org.foxbpm.engine.impl.agent.AgentDetailsEntity;
 import org.foxbpm.engine.impl.agent.AgentEntity;
 import org.foxbpm.engine.impl.cmd.DeleteAgentCmd;
 import org.foxbpm.engine.impl.cmd.DeleteAgentDetailsCmd;
+import org.foxbpm.engine.impl.cmd.FindAgentEntityCmd;
 import org.foxbpm.engine.impl.cmd.FindUserByIdCmd;
 import org.foxbpm.engine.impl.cmd.FindUsersCmd;
 import org.foxbpm.engine.impl.cmd.SaveAgentDetailsEntityCmd;
 import org.foxbpm.engine.impl.cmd.SaveAgentEntityCmd;
 import org.foxbpm.engine.impl.cmd.UpdatePersistentObjectCmd;
-public class IdentityServiceImpl  extends ServiceImpl implements IdentityService {
+
+public class IdentityServiceImpl extends ServiceImpl implements IdentityService {
 
 	@Override
 	public User getUser(String userId) {
-		return  commandExecutor.execute(new FindUserByIdCmd(userId));
+		return commandExecutor.execute(new FindUserByIdCmd(userId));
 	}
-	
+
 	@Override
 	public List<User> getUsers(String idLike, String nameLike) {
-		return commandExecutor.execute(new FindUsersCmd(idLike,nameLike));
+		return commandExecutor.execute(new FindUsersCmd(idLike, nameLike));
 	}
-	
+
 	@Override
 	public void addAgent(AgentEntity agentInfo) {
 		commandExecutor.execute(new SaveAgentEntityCmd(agentInfo));
 	}
-	
+
 	@Override
 	public void addAgentDetails(AgentDetailsEntity agentDetails) {
 		commandExecutor.execute(new SaveAgentDetailsEntityCmd(agentDetails));
 	}
-	
-	public void updateAgentEntity(AgentEntity agentInfo){
+
+	public void updateAgentEntity(AgentEntity agentInfo) {
 		commandExecutor.execute(new UpdatePersistentObjectCmd(agentInfo));
 	}
-	
-	public void updateAgentDetailsEntity(AgentDetailsEntity agentDetails){
+
+	public void updateAgentDetailsEntity(AgentDetailsEntity agentDetails) {
 		commandExecutor.execute(new UpdatePersistentObjectCmd(agentDetails));
 	}
-	
+
 	@Override
 	public void deleteAgent(String agentId) {
 		commandExecutor.execute(new DeleteAgentCmd(agentId));
 	}
-	
+
 	@Override
 	public void deleteAgentDetails(String agentDetailsId) {
 		commandExecutor.execute(new DeleteAgentDetailsCmd(agentDetailsId));
+	}
+
+	@Override
+	public AgentEntity queryAgent(String agentUser) {
+		return commandExecutor.execute(new FindAgentEntityCmd(agentUser));
 	}
 
 }

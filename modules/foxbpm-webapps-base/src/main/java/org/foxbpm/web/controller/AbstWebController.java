@@ -18,6 +18,7 @@
 package org.foxbpm.web.controller;
 
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -137,6 +138,25 @@ public abstract class AbstWebController {
 			while (in != null && (size = in.read(buff)) != -1) {
 				out.write(buff, 0, size);
 			}
+			out.flush();
+		} catch (Exception e) {
+			throw new FoxbpmWebException(e);
+		}
+	}
+
+	/**
+	 * 响应客户端
+	 * 
+	 * @param response
+	 *            响应
+	 * @param in
+	 *            将流内容响应给客户端
+	 */
+	public void doResponse(HttpServletResponse response, String content) {
+		try {
+			PrintWriter out = response.getWriter(); 
+			response.setContentType("text/html;charset=UTF-8");
+			out.print(content);
 			out.flush();
 		} catch (Exception e) {
 			throw new FoxbpmWebException(e);

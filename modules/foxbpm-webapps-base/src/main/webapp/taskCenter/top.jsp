@@ -4,7 +4,7 @@
 	<div class="top-right">
 		<ul>
 			<li><a id="updateCache" href="javascript:void(0)">${applicationScope.appInfo["common.clearCache"]}</a></li>
-			<li><a id="setAgent" href="#">${applicationScope.appInfo["common.agent"]}</a></li>
+			<li><a id="setAgent" href="javascript:void(0)">${applicationScope.appInfo["common.agent"]}</a></li>
 			<li><a href="#" onclick="updateMyself();">${sessionScope.LOGIN_USER_NAME}</a></li>
 			<li><a href="LoginServlet?doLogOut=true">${applicationScope.appInfo["common.logOut"]}</a></li>
 			<li><a href="processDef.action" target='_blank'>管控中心</a></li>
@@ -48,11 +48,11 @@
 		$("#updateCache").click(function(){ 
 			$.get("updateCache.action",function(msg){
 				alert(msg);
-			})
+			});
 		});
 		
 		$("#setAgent").click(function(){
-			var url = "FlowCenter?action=viewDelegation";
+			var url = "delegateAuthority.action";
 			Fix.OpenMethod.openWindow(url);
 		});
 		
