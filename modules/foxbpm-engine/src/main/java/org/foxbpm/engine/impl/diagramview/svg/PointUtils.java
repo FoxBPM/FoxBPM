@@ -34,8 +34,12 @@ public final class PointUtils {
 	 * X、Y允许的最大偏移量，超过最大偏移量需要设置文本相对线条的中心位置，如果小于这个值则不需要设置
 	 */
 	private static final float X_Y_LOCATION_MAXSHIFT = 100F;
-	private final static float SEQUENCE_ROUNDCONTROL_FLAG = 5.0f;
-	private final static float SEQUENCE_ROUNDSTARTEND_FLAG = 15.0f;
+	/**
+	 * 默认圆角的大小,暂时分三个梯度
+	 */
+	private final static float SEQUENCE_ROUNDCONTROL_FLAG = 15.0f;
+	private final static float SEQUENCE_ROUNDCONTROL_MIN_FLAG = 3.0f;
+	private final static float NONE_SCALE = 1.0f;
 
 	/**
 	 * 计算三次贝塞尔曲线的起始点，控制点以及终点
@@ -43,14 +47,48 @@ public final class PointUtils {
 	 * @param startEndPoint
 	 * @param center
 	 * @param end
-	 * @return
+	 * @return 起始点 控制点 终点坐标数组
 	 */
 	public final static Point[] caclBeralPoints(Point start, Point center,
 			Point end) {
+		float lengthStartHerizon = 0.0f;
+		float lengthStartVertical = 0.0f;
+		float lengthStartCenter = 0.0f;
+		float lengthEndHerizon = 0.0f;
+		float lengthEndVertical = 0.0f;
+		float lengthEndCenter = 0.0f;
+
+		lengthStartHerizon = Math.abs(start.getX() - center.getX());
+		lengthStartVertical = Math.abs(start.getY() - center.getY());
+		lengthStartCenter = (float) Math.sqrt(lengthStartHerizon
+				* lengthStartHerizon + lengthStartVertical
+				* lengthStartVertical);
+		lengthEndHerizon = Math.abs(end.getX() - center.getX());
+		lengthEndVertical = Math.abs(end.getY() - center.getY());
+		lengthEndCenter = (float) Math.sqrt(lengthEndHerizon * lengthEndHerizon
+				+ lengthEndVertical * lengthEndVertical);
+
+		float scale = SEQUENCE_ROUNDCONTROL_FLAG;
+		if (lengthEndCenter <= SEQUENCE_ROUNDCONTROL_FLAG
+				|| lengthStartCenter <= SEQUENCE_ROUNDCONTROL_FLAG) {
+			if (lengthEndCenter <= SEQUENCE_ROUNDCONTROL_MIN_FLAG
+					|| lengthStartCenter <= SEQUENCE_ROUNDCONTROL_MIN_FLAG) {
+				scale = NONE_SCALE;
+			} else {
+				scale = SEQUENCE_ROUNDCONTROL_MIN_FLAG;
+			}
+
+		}
+		float controlScale = scale / 3;
 		Point[] points = new Point[4];
-		points[1] = caclBeralControlPoint(start, center);
-		points[2] = caclBeralControlPoint(end, center);
-		points[3] = caclBeralStartEndPoint(end, center);
+		points[0] = caclBeralControlPoint(start, center, scale,
+				lengthStartHerizon, lengthStartVertical, lengthStartCenter);
+		points[1] = caclBeralControlPoint(start, center, controlScale,
+				lengthStartHerizon, lengthStartVertical, lengthStartCenter);
+		points[2] = caclBeralControlPoint(end, center, controlScale,
+				lengthEndHerizon, lengthEndVertical, lengthEndCenter);
+		points[3] = caclBeralControlPoint(end, center, scale, lengthEndHerizon,
+				lengthEndVertical, lengthEndCenter);
 		return points;
 	}
 
@@ -61,81 +99,22 @@ public final class PointUtils {
 	 * @param center
 	 * @return
 	 */
-	public final static Point caclBeralStartEndPoint(Point startEndPoint,
-			Point center) {
+	private final static Point caclBeralControlPoint(Point startEndPoint,
+			Point center, float scale, float lengthHerizon,
+			float lengthVertical, float lengthCenter) {
 		float startX = 0.0f;
 		float startY = 0.0f;
-		float lengthStartHerizon = 0.0f;
-		float lengthStartVertical = 0.0f;
-		float lengthStartCenter = 0.0f;
 
-		lengthStartHerizon = Math.abs(startEndPoint.getX() - center.getX());
-		lengthStartVertical = Math.abs(startEndPoint.getY() - center.getY());
-		lengthStartCenter = (float) Math.sqrt(lengthStartHerizon
-				* lengthStartHerizon + lengthStartVertical
-				* lengthStartVertical);
-		float scale = SEQUENCE_ROUNDSTARTEND_FLAG;
-		if (lengthStartCenter < SEQUENCE_ROUNDSTARTEND_FLAG) {
-			scale = lengthStartCenter;
-		}
 		if (startEndPoint.getX() > center.getX()) {
-			startX = ((scale * lengthStartHerizon) / lengthStartCenter)
-					+ center.getX();
+			startX = ((scale * lengthHerizon) / lengthCenter) + center.getX();
 		} else {
-			startX = (((lengthStartCenter - scale) * lengthStartHerizon) / lengthStartCenter)
+			startX = (((lengthCenter - scale) * lengthHerizon) / lengthCenter)
 					+ startEndPoint.getX();
 		}
-
 		if (startEndPoint.getY() > center.getY()) {
-			startY = ((scale * lengthStartVertical) / lengthStartCenter)
-					+ center.getY();
+			startY = ((scale * lengthVertical) / lengthCenter) + center.getY();
 		} else {
-			startY = (((lengthStartCenter - scale) * lengthStartVertical) / lengthStartCenter)
-					+ startEndPoint.getY();
-		}
-
-		Point resultPoint = new Point(Math.round(startX), Math.round(startY));
-		return resultPoint;
-
-	}
-
-	/**
-	 * 计算三次贝塞尔曲线控制点
-	 * 
-	 * @param startEndPoint
-	 * @param center
-	 * @return
-	 */
-	public final static Point caclBeralControlPoint(Point startEndPoint,
-			Point center) {
-		float startX = 0.0f;
-		float startY = 0.0f;
-		float lengthStartHerizon = 0.0f;
-		float lengthStartVertical = 0.0f;
-		float lengthStartCenter = 0.0f;
-
-		lengthStartHerizon = Math.abs(startEndPoint.getX() - center.getX());
-		lengthStartVertical = Math.abs(startEndPoint.getY() - center.getY());
-		lengthStartCenter = (float) Math.sqrt(lengthStartHerizon
-				* lengthStartHerizon + lengthStartVertical
-				* lengthStartVertical);
-		float scale = SEQUENCE_ROUNDCONTROL_FLAG;
-		if (lengthStartCenter < SEQUENCE_ROUNDCONTROL_FLAG) {
-			scale = lengthStartCenter / 3;
-		}
-		if (startEndPoint.getX() > center.getX()) {
-			startX = ((scale * lengthStartHerizon) / lengthStartCenter)
-					+ center.getX();
-		} else {
-			startX = (((lengthStartCenter - scale) * lengthStartHerizon) / lengthStartCenter)
-					+ startEndPoint.getX();
-		}
-
-		if (startEndPoint.getY() > center.getY()) {
-			startY = ((scale * lengthStartVertical) / lengthStartCenter)
-					+ center.getY();
-		} else {
-			startY = (((lengthStartCenter - scale) * lengthStartVertical) / lengthStartCenter)
+			startY = (((lengthCenter - scale) * lengthVertical) / lengthCenter)
 					+ startEndPoint.getY();
 		}
 
