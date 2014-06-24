@@ -4,6 +4,16 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 
 public class FoxbpmJobExecutionContext {
+	/**
+	 * 自动调度环境变量名称
+	 */
+	public final static String PROCESS_DEFINITION_ID = "processId";
+	public final static String PROCESS_INSTANCE_ID = "processInstanceId";
+	public final static String NODE_ID = "nodeId";
+	public final static String PROCESS_DEFINITION_KEY = "processKey";
+	public final static String PROCESS_DEFINITION_NAME = "processName";
+	public final static String BUSINESS_KEY = "bizKey";
+	public final static String TOKEN_ID = "tokenId";
 
 	public Job getScheduleJob() {
 		return scheduleJob;
@@ -31,19 +41,19 @@ public class FoxbpmJobExecutionContext {
 	public FoxbpmJobExecutionContext(JobExecutionContext jobExecutionContext) {
 		scheduleJob = jobExecutionContext.getJobInstance();
 		this.tokenId = jobExecutionContext.getJobDetail().getJobDataMap()
-				.getString("tokenId");
+				.getString(TOKEN_ID);
 		this.processInstanceId = jobExecutionContext.getJobDetail()
-				.getJobDataMap().getString("processInstanceId");
+				.getJobDataMap().getString(PROCESS_INSTANCE_ID);
 		this.nodeId = jobExecutionContext.getJobDetail().getJobDataMap()
-				.getString("nodeId");
+				.getString(NODE_ID);
 		this.processKey = jobExecutionContext.getJobDetail().getJobDataMap()
-				.getString("processKey");
+				.getString(PROCESS_DEFINITION_KEY);
 		this.processId = jobExecutionContext.getJobDetail().getJobDataMap()
-				.getString("processId");
+				.getString(PROCESS_DEFINITION_ID);
 		this.processName = jobExecutionContext.getJobDetail().getJobDataMap()
-				.getString("processName");
+				.getString(PROCESS_DEFINITION_NAME);
 		this.bizKey = jobExecutionContext.getJobDetail().getJobDataMap()
-				.getString("bizKey");
+				.getString(BUSINESS_KEY);
 		this.jobType = jobExecutionContext.getJobDetail().getJobDataMap()
 				.getString("jobType");
 		this.connectorId = jobExecutionContext.getJobDetail().getJobDataMap()
