@@ -133,6 +133,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		processDefinition.setCategory(processBehavior.getCategory());
 		processDefinition.setFormUri(processBehavior.getFormUri());
 		processDefinition.setFormUriView(processBehavior.getFormUriView());
+		processDefinition.setSubject(processBehavior.getSubject());
 		processDI(processDefinition,process);
 		return processDefinition;
 	}

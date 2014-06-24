@@ -119,7 +119,11 @@ public class BpmnModelUtil {
 	public static String getUserTaskSubject(BaseElement baseElement){
 		TaskSubject taskSubject = (TaskSubject)BpmnModelUtil.getExtensionElement(baseElement,FoxBPMPackage.Literals.DOCUMENT_ROOT__TASK_SUBJECT);
 		if(taskSubject != null&&taskSubject.getExpression()!=null){
+			
+			
+			
 			return taskSubject.getExpression().getValue();
+			
 		}
 		return null;
 	}
