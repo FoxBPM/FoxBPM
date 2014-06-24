@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.connector.Connector;
+import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
@@ -69,7 +70,22 @@ public class UserTaskBehavior extends TaskBehavior {
 		ProcessInstanceEntity processInstance = (ProcessInstanceEntity) executionContext.getProcessInstance();
 		
 		task.setBizKey(processInstance.getBizKey());
-		task.setSubject(StringUtil.getString(taskDefinition.getTaskSubject().getValue(executionContext)));
+		
+		ProcessDefinitionEntity processDefinition=(ProcessDefinitionEntity)processInstance.getProcessDefinition();
+		
+		if(taskDefinition.getTaskSubject()==null||StringUtil.isEmpty(taskDefinition.getTaskSubject().getExpressionText())){
+			
+			task.setSubject(StringUtil.getString(processDefinition.getSubject().getValue(executionContext)));
+		}else{
+			task.setSubject(StringUtil.getString(taskDefinition.getTaskSubject().getValue(executionContext)));
+		}
+		
+		if(StringUtil.isEmpty(task.getSubject())){
+			task.setSubject(getName());
+		}
+		
+		
+		
 		
 		task.setDescription(StringUtil.getString(taskDefinition.getTaskDescription().getValue(executionContext)));
 		task.setCompleteDescription(StringUtil.getString(taskDefinition.getCompleteTaskDescription().getValue(executionContext)));

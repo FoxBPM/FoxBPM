@@ -38,6 +38,7 @@ public class ProcessParser extends BaseElementParser {
 		processBehavior.setFormUriView(BpmnModelUtil.getFormUriView(process));
 		processBehavior.setKey(process.getId());
 		processBehavior.setName(process.getName());
+		processBehavior.setSubject(BpmnModelUtil.getUserTaskSubject(baseElement));
 		return super.parser(baseElement);
 	}
 
