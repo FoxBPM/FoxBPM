@@ -85,7 +85,9 @@ public class UserTaskBehavior extends TaskBehavior {
 		}
 		
 		
+		task.setProcessInitiator(processInstance.getInitiator());
 		
+		task.setProcessStartTime(processInstance.getStartTime());
 		
 		task.setDescription(StringUtil.getString(taskDefinition.getTaskDescription().getValue(executionContext)));
 		task.setCompleteDescription(StringUtil.getString(taskDefinition.getCompleteTaskDescription().getValue(executionContext)));
