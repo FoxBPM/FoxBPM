@@ -1,57 +1,99 @@
 <?xml version="1.0" encoding="UTF-8" ?> 
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.foxbpm.engine.impl.agent.AgentEntity">
 
- <resultMap id="agentTo" type="org.foxbpm.engine.impl.agent.AgentTo" >
- 	<id column="id" property="id" jdbcType="VARCHAR" />
-    <result column="processdefinition_key" property="processKey" jdbcType="VARCHAR" />
-    <result column="agent_user" property="agentFrom" jdbcType="VARCHAR" />
-    <result column="startTime" property="startTime" jdbcType="TIMESTAMP" />
-    <result column="endTime" property="endTime" jdbcType="TIMESTAMP" />
-  </resultMap>
+	<resultMap id="agentTo" type="org.foxbpm.engine.impl.agent.AgentTo">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="processdefinition_key" property="processKey"
+			jdbcType="VARCHAR" />
+		<result column="agent_user" property="agentFrom" jdbcType="VARCHAR" />
+		<result column="startTime" property="startTime" jdbcType="TIMESTAMP" />
+		<result column="endTime" property="endTime" jdbcType="TIMESTAMP" />
+	</resultMap>
 
-  <select id="selectAgentToByUserId" parameterType="java.lang.String" resultMap="agentTo">
-	  select a.id ,a.processdefinition_key,a.agent_id,b.agent_user,b.startTime,b.endTime from 
- 		foxbpm_agent_details a inner join foxbpm_agent b on a.agent_id = b.id 
- 		where a.agent_touser = #{userId} and b.status='1'
-  </select>
-  
-  <insert id="insertAgent" parameterType="org.foxbpm.engine.impl.agent.AgentEntity">
-	   insert into foxbpm_agent (id, agent_user, startTime,endTime,status)
-	    values (#{id,jdbcType=VARCHAR}, #{agentFrom,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP},#{status,jdbcType=VARCHAR})
-  </insert>
-  
-  <insert id="insertAgentDetails" parameterType="org.foxbpm.engine.impl.agent.AgentDetailsEntity">
-  		insert into foxbpm_agent_details(id,agent_id,processDefinition_key,agent_toUser)
-  		values
-  		(#{id,jdbcType=VARCHAR}, #{agentId,jdbcType=VARCHAR}, #{processKey,jdbcType=VARCHAR},#{agentTo,jdbcType=VARCHAR})
-  </insert>
-  
-  <update id="updateAgentEntity" parameterType="org.foxbpm.engine.impl.agent.AgentEntity">
-  	update foxbpm_agent
-  		set startTime= #{startTime,jdbcType=TIMESTAMP},
-  			endTime =  #{endTime,jdbcType=TIMESTAMP},
-  			status = #{status,jdbcType=VARCHAR}
-  		where 
-  			id=#{id,jdbcType=VARCHAR}
-  </update>
-  
-  <update id="updateAgentDetailsEntity" parameterType="org.foxbpm.engine.impl.agent.AgentDetailsEntity">
-  	update foxbpm_agent_details
-  		set processDefinition_key= #{processKey,jdbcType=VARCHAR},
-  			agent_touser =  #{agentTo,jdbcType=VARCHAR}
-  		where 
-  			id=#{id,jdbcType=VARCHAR}
-  </update>
-  
-  <delete id="deleteAgentById" parameterType="java.lang.String">
-  	delete from foxbpm_agent where id= #{id}
-  </delete>
-   <delete id="deleteAgentDetailsByAgentId" parameterType="java.lang.String">
-  	delete from foxbpm_agent_details where agent_id= #{id}
-  </delete>
-  <delete id="deleteAgentDetailsById" parameterType="java.lang.String">
-  	delete from foxbpm_agent_details where id= #{id}
-  </delete>
+	<resultMap id="agentResultMap" type="org.foxbpm.engine.impl.agent.AgentEntity">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="AGENT_USER" property="agentFrom" jdbcType="VARCHAR" />
+		<result column="STARTTIME" property="startTime" jdbcType="TIMESTAMP" />
+		<result column="ENDTIME" property="endTime" jdbcType="TIMESTAMP" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<collection property="agentDetails"
+			ofType="org.foxbpm.engine.impl.agent.AgentDetailsEntity" javaType="ArrayList">
+			<id column="ID" property="id" jdbcType="VARCHAR" />
+			<result column="AGENT_ID" property="agentId" jdbcType="VARCHAR" />
+			<result column="AGENT_TOUSER" property="agentTo" jdbcType="VARCHAR" />
+			<result column="PROCESSDEFINITION_KEY" property="processKey"
+				jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+
+	<select id="selectAgentToByUserId" parameterType="java.lang.String"
+		resultMap="agentTo">
+		select a.id
+		,a.processdefinition_key,a.agent_id,b.agent_user,b.startTime,b.endTime
+		from
+		foxbpm_agent_details a inner join foxbpm_agent b on a.agent_id =
+		b.id
+		where a.agent_touser = #{userId} and b.status='1'
+	</select>
+
+	<insert id="insertAgent" parameterType="org.foxbpm.engine.impl.agent.AgentEntity">
+		insert into foxbpm_agent
+		(id, agent_user, startTime,endTime,status)
+		values
+		(#{id,jdbcType=VARCHAR}, #{agentFrom,jdbcType=VARCHAR},
+		#{startTime,jdbcType=TIMESTAMP},
+		#{endTime,jdbcType=TIMESTAMP},#{status,jdbcType=VARCHAR})
+	</insert>
+
+	<insert id="insertAgentDetails" parameterType="org.foxbpm.engine.impl.agent.AgentDetailsEntity">
+		insert into
+		foxbpm_agent_details(id,agent_id,processDefinition_key,agent_toUser)
+		values
+		(#{id,jdbcType=VARCHAR}, #{agentId,jdbcType=VARCHAR},
+		#{processKey,jdbcType=VARCHAR},#{agentTo,jdbcType=VARCHAR})
+	</insert>
+
+	<update id="updateAgentEntity" parameterType="org.foxbpm.engine.impl.agent.AgentEntity">
+		update foxbpm_agent
+		set startTime= #{startTime,jdbcType=TIMESTAMP},
+		endTime =
+		#{endTime,jdbcType=TIMESTAMP},
+		status = #{status,jdbcType=VARCHAR}
+		where
+		id=#{id,jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateAgentDetailsEntity" parameterType="org.foxbpm.engine.impl.agent.AgentDetailsEntity">
+		update
+		foxbpm_agent_details
+		set processDefinition_key=
+		#{processKey,jdbcType=VARCHAR},
+		agent_touser =
+		#{agentTo,jdbcType=VARCHAR}
+		where
+		id=#{id,jdbcType=VARCHAR}
+	</update>
+
+	<delete id="deleteAgentById" parameterType="java.lang.String">
+		delete from
+		foxbpm_agent where id= #{id}
+	</delete>
+	<delete id="deleteAgentDetailsByAgentId" parameterType="java.lang.String">
+		delete
+		from foxbpm_agent_details where agent_id= #{id}
+	</delete>
+	<delete id="deleteAgentDetailsById" parameterType="java.lang.String">
+		delete from
+		foxbpm_agent_details where id= #{id}
+	</delete>
+	<select id="selectAgentByAgentUser" parameterType="java.lang.String"
+		resultMap="agentResultMap">
+		select a.*,b.* from
+		foxbpm_agent a,foxbpm_agent_details b
+		where
+		a.agent_user = #{agentFrom}
+		and a.id = b.agent_id
+	</select>
 </mapper>

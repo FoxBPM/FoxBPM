@@ -18,6 +18,7 @@ public final class FoxbpmActionNameDefinition {
 	public final static String QUERY_TASKDETAILINFOR_ACTION = "queryTaskDetailInfor";
 	public final static String GETFLOWGRAPH_ACTION = "getFlowGraph";
 	public final static String START_TASK_ACTION = "startTask";
+	public final static String DELEGATE_AUTHORITY = "delegateAuthority";
 	/*************************** 管控中心action ************************************************/
 	public final static String PROCESSDEF_ACTION = "processDef";
 	public final static String DEPLOY_ACTION = "deploy";
@@ -28,4 +29,5 @@ public final class FoxbpmActionNameDefinition {
 	public static final String CONTINUEPROCESS_ACTION = "continueProcess";
 	public static final String TERMINATPROCESS_ACTION = "terminatProcess";
 	public static final String DELETEPROCESS_ACTION = "deleteProcess";
+	public static final String PROCESSVARIABLEMANAGE_ACTION = "processVariableManage";
 }
