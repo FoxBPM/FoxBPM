@@ -76,9 +76,11 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 								pointList.get(i + 1));
 						if (bezalPoints[0].getX() != 0.0f
 								&& bezalPoints[0].getY() != 0.0f) {
-							pathBuffer.append(LINETO_FLAG).append(
-									bezalPoints[0].getX() + D_SPACE
-											+ bezalPoints[0].getY() + D_SPACE);
+							pathBuffer.append(LINETO_FLAG)
+									.append(bezalPoints[0].getX())
+									.append(D_SPACE)
+									.append(bezalPoints[0].getY())
+									.append(D_SPACE);
 						}
 
 						if (bezalPoints[1].getX() != 0.0f
@@ -87,14 +89,19 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 								&& bezalPoints[2].getY() != 0.0f
 								&& bezalPoints[3].getX() != 0.0f
 								&& bezalPoints[3].getY() != 0.0f) {
-							pathBuffer
-									.append(PATHCIRCLE_FLAG)
-									.append(bezalPoints[1].getX() + D_SPACE
-											+ bezalPoints[1].getY() + D_SPACE)
-									.append(bezalPoints[2].getX() + D_SPACE
-											+ bezalPoints[2].getY() + D_SPACE)
-									.append(bezalPoints[3].getX() + D_SPACE
-											+ bezalPoints[3].getY() + D_SPACE);
+							pathBuffer.append(PATHCIRCLE_FLAG)
+									.append(bezalPoints[1].getX())
+									.append(D_SPACE)
+									.append(bezalPoints[1].getY())
+									.append(D_SPACE)
+									.append(bezalPoints[2].getX())
+									.append(D_SPACE)
+									.append(bezalPoints[2].getY())
+									.append(D_SPACE)
+									.append(bezalPoints[3].getX())
+									.append(D_SPACE)
+									.append(bezalPoints[3].getY())
+									.append(D_SPACE);
 						}
 
 						pathBuffer.append(LINETO_FLAG)

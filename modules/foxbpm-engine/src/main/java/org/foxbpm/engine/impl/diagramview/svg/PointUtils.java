@@ -48,8 +48,6 @@ public final class PointUtils {
 	public final static Point[] caclBeralPoints(Point start, Point center,
 			Point end) {
 		Point[] points = new Point[4];
-		// 分别计算起始点，控制点A，控制点B，终点
-		points[0] = caclBeralStartEndPoint(start, center);
 		points[1] = caclBeralControlPoint(start, center);
 		points[2] = caclBeralControlPoint(end, center);
 		points[3] = caclBeralStartEndPoint(end, center);
