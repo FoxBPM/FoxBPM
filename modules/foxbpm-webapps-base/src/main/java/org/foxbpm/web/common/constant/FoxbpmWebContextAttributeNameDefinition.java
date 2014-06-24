@@ -22,5 +22,11 @@ public final class FoxbpmWebContextAttributeNameDefinition {
 	public static final String ATTRIBUTE_NAME_ARRIVALTIMEE = "arrivalTimeE";
 	public static final String ATTRIBUTE_DEPLOYMENTID = "deploymentId";
 	public static final String ACTIONNAME = "nowAction";
-	
+	/**
+	 * 操作类型
+	 */
+	public static final String OPERTYPE = "operType";
+	public static final String ADD_VARIABLE = "add";
+	public static final String DEL_VARIABLE = "del";
+
 }

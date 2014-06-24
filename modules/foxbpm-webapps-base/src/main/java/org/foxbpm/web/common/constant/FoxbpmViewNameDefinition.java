@@ -23,11 +23,14 @@ public final class FoxbpmViewNameDefinition {
 	public final static String START_TASK_VIEWNAME = "startTask";
 	// 处理任务视图
 	public final static String DO_TASK_VIEWNAME = "doTask";
+	public final static String SET_DELEGATION = "setDelegation";
 	/*************************** 管控中心 ***********************************/
 	// 流程定义视图
 	public final static String PROCESSDEF_VIEWNAME = "processDef";
-	// 流程定义视图
+	// 流程管理视图
 	public final static String PROCESSINSTMANAGE_VIEWNAME = "processInstManage";
+	// 流程变量视图
+	public final static String PROCESSVARIABLEMANAGE_VIEWNAME = "processVariableManage";
 	// 成功视图
 	public final static String COMPLETETASK_VIEWNAME = "result";
 }

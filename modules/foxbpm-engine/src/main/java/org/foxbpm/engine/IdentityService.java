@@ -26,62 +26,83 @@ import org.foxbpm.engine.impl.agent.AgentEntity;
 
 /**
  * foxbpm中与用户相关的操作均放在此service里
+ * 
  * @author ych
- *
+ * 
  */
 public interface IdentityService {
-	
+
 	/**
 	 * 根据用户编号查询用户
-	 * @param userId 用户编号 主键
+	 * 
+	 * @param userId
+	 *            用户编号 主键
 	 * @return
 	 */
 	User getUser(String userId);
-	
+
 	/**
 	 * 根据编号或名称模糊匹配
-	 * @param idLike 示例： %200802%
-	 * @param nameLike 示例： %张%
+	 * 
+	 * @param idLike
+	 *            示例： %200802%
+	 * @param nameLike
+	 *            示例： %张%
 	 * 
 	 * @return 参数可为null,参数之间为or关系，如果都为null代表查询所有
 	 */
-	List<User> getUsers(String idLike,String nameLike);
-	
+	List<User> getUsers(String idLike, String nameLike);
+
 	/**
-	 * 增加代理
-	 * 会级联插入对象中的代理明细信息
-	 * @param agentInfo 代理实体
+	 * 增加代理 会级联插入对象中的代理明细信息
+	 * 
+	 * @param agentInfo
+	 *            代理实体
 	 */
 	void addAgent(AgentEntity agentInfo);
-	
+
 	/**
 	 * 增加代理明细
-	 * @param agentDetails 代理明细
+	 * 
+	 * @param agentDetails
+	 *            代理明细
 	 */
 	void addAgentDetails(AgentDetailsEntity agentDetails);
-	
+
 	/**
 	 * 更新代理主表信息，{不会}级联更新明细
+	 * 
 	 * @param agentInfo
 	 */
 	void updateAgentEntity(AgentEntity agentInfo);
-	
+
 	/**
 	 * 更新代理明细
+	 * 
 	 * @param agentDetails
 	 */
 	void updateAgentDetailsEntity(AgentDetailsEntity agentDetails);
-	
+
 	/**
-	 * 删除代理信息，
-	 * 会级联删除代理明细
+	 * 删除代理信息， 会级联删除代理明细
+	 * 
 	 * @param agentId
 	 */
 	void deleteAgent(String agentId);
-	
+
 	/**
 	 * 删除代理明细
+	 * 
 	 * @param agentDetailsId
 	 */
 	void deleteAgentDetails(String agentDetailsId);
+
+	/**
+	 * 查询代理
+	 * 
+	 * @param agentUser
+	 *            代理者
+	 * @return 返回代理对象
+	 */
+	AgentEntity queryAgent(String agentUser);
 }

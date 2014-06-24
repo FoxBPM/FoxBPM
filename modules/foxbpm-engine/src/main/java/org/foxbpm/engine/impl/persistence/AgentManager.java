@@ -24,23 +24,23 @@ import org.foxbpm.engine.impl.agent.AgentEntity;
 import org.foxbpm.engine.impl.agent.AgentTo;
 
 /**
- * 代理信息的实体管理器
- * 处理包含代理信息和代理明细信息
+ * 代理信息的实体管理器 处理包含代理信息和代理明细信息
+ * 
  * @author ych
- *
+ * 
  */
-public class AgentManager extends AbstractManager{
+public class AgentManager extends AbstractManager {
 
 	@SuppressWarnings("unchecked")
-	public List<AgentTo> getAgentTos(String userId){
-		return (List<AgentTo>)getSqlSession().selectListWithRawParameter("selectAgentToByUserId", userId);
+	public List<AgentTo> getAgentTos(String userId) {
+		return (List<AgentTo>) getSqlSession().selectListWithRawParameter("selectAgentToByUserId", userId);
 	}
-	
-	public void saveAgentEntity(AgentEntity agentEntity){
+
+	public void saveAgentEntity(AgentEntity agentEntity) {
 		insert(agentEntity);
-		if(agentEntity.getAgentDetails() != null){
-			for(AgentDetailsEntity agentDetails : agentEntity.getAgentDetails()){
-				if(agentDetails.getAgentId() == null){
+		if (agentEntity.getAgentDetails() != null) {
+			for (AgentDetailsEntity agentDetails : agentEntity.getAgentDetails()) {
+				if (agentDetails.getAgentId() == null) {
 					agentDetails.setAgentId(agentEntity.getId());
 				}
 				insert(agentDetails);
@@ -54,10 +54,21 @@ public class AgentManager extends AbstractManager{
 
 	public void deleteAgentById(String agentId) {
 		getSqlSession().delete("deleteAgentById", agentId);
-		getSqlSession().delete("deleteAgentDetailsByAgentId",agentId);
+		getSqlSession().delete("deleteAgentDetailsByAgentId", agentId);
 	}
-	
-	public void deleteAgentDetailsById(String agentDetailsId){
-		getSqlSession().delete("deleteAgentDetailsById" , agentDetailsId);
+
+	public void deleteAgentDetailsById(String agentDetailsId) {
+		getSqlSession().delete("deleteAgentDetailsById", agentDetailsId);
+	}
+
+	/**
+	 * 查询代理实例
+	 * 
+	 * @param agentId
+	 *            代理id
+	 * @return 返回代理实体
+	 */
+	public AgentEntity queryAgentEntity(String agentUser) {
+		return (AgentEntity) getSqlSession().selectOne("selectAgentByAgentUser", agentUser);
 	}
 }
