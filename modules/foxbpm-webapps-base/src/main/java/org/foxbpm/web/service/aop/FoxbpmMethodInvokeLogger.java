@@ -22,7 +22,6 @@ import java.lang.reflect.Method;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.foxbpm.engine.impl.identity.Authentication;
-import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.service.impl.AbstWorkFlowService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +38,8 @@ import org.springframework.aop.ThrowsAdvice;
 public class FoxbpmMethodInvokeLogger implements AfterReturningAdvice, MethodBeforeAdvice, MethodInterceptor, ThrowsAdvice {
 	@Override
 	public void afterReturning(Object returnObj, Method method, Object[] params, Object implObj) throws Throwable {
-		Logger logger = LoggerFactory.getLogger(implObj.getClass());
-		logger.debug(method.getName() + "执行完成，执行结果：" + returnObj);
+//		Logger logger = LoggerFactory.getLogger(implObj.getClass());
+//		logger.debug(method.getName() + "执行完成，执行结果：" + returnObj);
 	}
 
 	@Override
