@@ -49,7 +49,7 @@ public class ConnectorGenerator implements IZipGenerator {
 
 	Logger log = LoggerFactory.getLogger(ConnectorGenerator.class);
 	public void generate(ZipOutputStream out) {
-		log.debug("处理connector开始");
+		log.debug("开始处理connector。。.");
 		try{
 			Map<String,Map<String,String>> pathMap = new HashMap<String,Map<String,String>>();
 			ProcessEngineConfigurationImpl processEngineConfigurationImpl = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration();
@@ -111,7 +111,7 @@ public class ConnectorGenerator implements IZipGenerator {
 					log.debug("位置：" + dirPath + " 处理完毕");
 				}
 			}
-			log.debug("处理connector完毕");
+			log.debug("处理connector完毕!");
 		}catch(Exception ex){
 			log.error("转换connector时出错",ex);
 			throw new FoxBPMException("转换connector时出错", ex);

@@ -13,7 +13,7 @@ public class StyleGenerator implements IZipGenerator {
 	Logger log = LoggerFactory.getLogger(StyleGenerator.class);
 	@Override
 	public void generate(ZipOutputStream out) {
-		log.debug("开始生成style.xml文件");
+		log.debug("开始处理style.xml文件");
 		try{
 			String path = "config/style.xml";
 			
@@ -30,7 +30,7 @@ public class StyleGenerator implements IZipGenerator {
 			}
 			out.closeEntry();
 			is.close();
-			log.debug("成功生成style.xml文件");
+			log.debug("处理style.xml文件完毕");
 		}catch(Exception ex){
 			log.error("解析style.xml文件失败！生成zip文件失败！");
 			throw new FoxBPMException("解析style.xml文件失败",ex);

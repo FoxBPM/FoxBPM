@@ -36,7 +36,7 @@ public class TemplateGenerator implements IZipGenerator {
 	Logger log = LoggerFactory.getLogger(TemplateGenerator.class);
 	@Override
 	public void generate(ZipOutputStream out) {
-		log.debug("template处理开始");
+		log.debug("开始处理template...");
 		try{
 			String dirPath = "template";
 			URL url = this.getClass().getClassLoader().getResource(dirPath);
@@ -71,7 +71,7 @@ public class TemplateGenerator implements IZipGenerator {
 					is.close();
 				}
 			}
-			log.debug("template 处理完毕");
+			log.debug("处理 template 完毕");
 		}catch(Exception ex){
 			log.error("转换template时出错",ex);
 			throw new FoxBPMException("转换template时出错", ex);

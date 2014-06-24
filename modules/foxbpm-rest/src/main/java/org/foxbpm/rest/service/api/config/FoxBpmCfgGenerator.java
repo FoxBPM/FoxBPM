@@ -37,7 +37,7 @@ public class FoxBpmCfgGenerator implements IZipGenerator {
 	Logger log = LoggerFactory.getLogger(FoxBpmCfgGenerator.class);
 	@Override
 	public void generate(ZipOutputStream out) {
-		log.debug("开始生成foxbpm.cfg.xml文件");
+		log.debug("开始处理foxbpm.cfg.xml文件");
 		try{
 			String path = "config/foxbpm.cfg.xml";
 			
@@ -54,9 +54,9 @@ public class FoxBpmCfgGenerator implements IZipGenerator {
 			}
 			out.closeEntry();
 			is.close();
-			log.debug("成功生成foxbpm.cfg.xml文件");
+			log.debug("处理foxbpm.cfg.xml文件完毕");
 		}catch(Exception ex){
-			log.error("解析foxbpm.cfg.xml文件失败！生成zip文件失败！");
+			log.error("处理foxbpm.cfg.xml文件失败！生成zip文件失败！",ex);
 			throw new FoxBPMException("解析foxbpm.cfg.xml文件失败",ex);
 		}
 		

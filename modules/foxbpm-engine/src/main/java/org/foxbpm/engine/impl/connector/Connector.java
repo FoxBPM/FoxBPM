@@ -204,12 +204,13 @@ public class Connector implements KernelListener {
 				Method m = connectorHandlerClass.getMethod(methodString, ptypes);
 
 				if (connectorParameterInputs.getExpression() != null) {
-					
+					Object arg[] = new Object[1];
 					if (!connectorParameterInputs.getExpression().isNullText()&&connectorParameterInputs.isExecute()) {
-						Object arg[] = new Object[1];
 						arg[0] = connectorParameterInputs.getExpression().getValue((FlowNodeExecutionContext)executionContext);
-						m.invoke(connectorInstance, arg);
+					}else{
+						arg[0] = connectorParameterInputs.getExpression().getExpressionText();
 					}
+					m.invoke(connectorInstance, arg);
 				}
 
 			}

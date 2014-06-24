@@ -48,7 +48,7 @@ public class FlowResourceService {
 	}
 	public void generateFlowResouceZipFile(){
 		ZipOutputStream out = null;
-		log.info("开始生成connector的临时文件...");
+		log.info("开始生成flowResouceZip.zip临时文件...");
 		try{
 			String systemPath = this.getClass().getResource("/").getPath();
 			String tmpFilePath = systemPath + File.separator + fileName;
