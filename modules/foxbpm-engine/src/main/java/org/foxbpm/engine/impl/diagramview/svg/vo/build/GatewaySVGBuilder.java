@@ -43,7 +43,7 @@ public class GatewaySVGBuilder extends AbstractSVGBuilder {
 		if (StringUtils.isNotBlank(textVO.getElementValue())) {
 			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
 					this.textVO.getElementValue());
-			int languageShift = -5;
+			int languageShift = -12;
 			if (SVGUtils.isChinese(this.textVO.getElementValue().charAt(0))) {
 				languageShift = 10;
 			}
