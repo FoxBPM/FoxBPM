@@ -10,7 +10,9 @@
     <result column="VERSION" property="version" jdbcType="INTEGER" />
     <result column="TOKEN_ID" property="tokenId" jdbcType="VARCHAR" />
     <result column="NODE_ID" property="nodeId" jdbcType="VARCHAR" />
+    <result column="SUBJECT" property="subject" jdbcType="VARCHAR" />
     <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="COMPLETEDESCRIPTION" property="completeDescription" jdbcType="VARCHAR" />
     <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
     <result column="ASSIGNEE" property="assignee" jdbcType="VARCHAR" />
     <result column="CLAIM_TIME" property="claimTime" jdbcType="TIMESTAMP" />
@@ -28,7 +30,7 @@
     <result column="COMMAND_TYPE" property="commandType" jdbcType="VARCHAR" />
     <result column="COMMAND_MESSAGE" property="commandMessage" jdbcType="VARCHAR" />
     <result column="TASK_COMMENT" property="taskComment" jdbcType="VARCHAR" />
-    <result column="NODE_NAME" property="nodeName" jdbcType="VARCHAR" />
+    <result column="NODE_NAME" property="name" jdbcType="VARCHAR" />
     <result column="PROCESSDEFINITION_KEY" property="processDefinitionKey" jdbcType="VARCHAR" />
     <result column="FORMURI" property="formUri" jdbcType="VARCHAR" />
     <result column="TASKGROUP" property="taskGroup" jdbcType="VARCHAR" />
@@ -51,7 +53,8 @@
   
   <insert id="insertTask" parameterType="org.foxbpm.engine.impl.entity.TaskEntity" >
     insert into foxbpm_run_task (ID, PROCESSINSTANCE_ID, PROCESSDEFINITION_ID, 
-      VERSION, TOKEN_ID, NODE_ID, 
+      VERSION, TOKEN_ID, NODE_ID,
+      SUBJECT,COMPLETEDESCRIPTION, 
       DESCRIPTION, PARENT_ID, ASSIGNEE, 
       CLAIM_TIME, NAME, CREATE_TIME, 
       START_TIME, ISBLOCKING, END_TIME, 
@@ -67,6 +70,7 @@
       )
     values (#{id,jdbcType=VARCHAR}, #{processInstanceId,jdbcType=VARCHAR}, #{processDefinitionId,jdbcType=VARCHAR}, 
       #{version,jdbcType=INTEGER}, #{tokenId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, 
+      #{subject,jdbcType=VARCHAR}, #{completeDescription,jdbcType=VARCHAR}, 
       #{description,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{assignee,jdbcType=VARCHAR}, 
       #{claimTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{startTime,jdbcType=TIMESTAMP}, #{isBlocking,jdbcType=VARCHAR}, #{endTime,jdbcType=TIMESTAMP}, 
@@ -91,6 +95,8 @@
       VERSION = #{version,jdbcType=INTEGER},
       TOKEN_ID = #{tokenId,jdbcType=VARCHAR},
       NODE_ID = #{nodeId,jdbcType=VARCHAR},
+      SUBJECT = #{subject,jdbcType=VARCHAR},
+      COMPLETEDESCRIPTION = #{completeDescription,jdbcType=VARCHAR},
       DESCRIPTION = #{description,jdbcType=VARCHAR},
       PARENT_ID = #{parentId,jdbcType=VARCHAR},
       ASSIGNEE = #{assignee,jdbcType=VARCHAR},
@@ -109,7 +115,7 @@
       COMMAND_TYPE = #{commandType,jdbcType=VARCHAR},
       COMMAND_MESSAGE = #{commandMessage,jdbcType=VARCHAR},
       TASK_COMMENT = #{taskComment,jdbcType=VARCHAR},
-      NODE_NAME = #{nodeName,jdbcType=VARCHAR},
+      NODE_NAME = #{name,jdbcType=VARCHAR},
       PROCESSDEFINITION_KEY = #{processDefinitionKey,jdbcType=VARCHAR},
       FORMURI = #{formUri,jdbcType=VARCHAR},
       TASKGROUP = #{taskGroup,jdbcType=VARCHAR},
@@ -132,7 +138,7 @@
   </update>
   
   <sql id="Task_Column_List" >
-    ID, PROCESSINSTANCE_ID, PROCESSDEFINITION_ID, VERSION, TOKEN_ID, NODE_ID, DESCRIPTION, 
+    ID, PROCESSINSTANCE_ID, PROCESSDEFINITION_ID, VERSION, TOKEN_ID, NODE_ID,SUBJECT,COMPLETEDESCRIPTION, DESCRIPTION, 
     PARENT_ID, ASSIGNEE, CLAIM_TIME, NAME, CREATE_TIME, START_TIME, ISBLOCKING, END_TIME, 
     DUEDATE, PRIORITY, CATEGORY, OWNER, DELEGATIONSTATE, BIZKEY, COMMAND_TYPE, 
     COMMAND_MESSAGE, TASK_COMMENT, NODE_NAME, PROCESSDEFINITION_KEY, FORMURI, TASKGROUP, 
