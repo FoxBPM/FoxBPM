@@ -857,7 +857,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		Map<String,Object> persistentState = new HashMap<String, Object>();
 		persistentState.put("id", getId());		
 		persistentState.put("name", getName());		
-		persistentState.put("taskSubject", getSubject());
+		persistentState.put("subject", getSubject());
 		persistentState.put("description", getDescription());
 		persistentState.put("completeDescription",getCompleteDescription());
 		persistentState.put("processInstanceId", getProcessInstanceId());

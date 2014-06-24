@@ -59,6 +59,8 @@ public class UserTaskBehavior extends TaskBehavior {
 		task.setAutoClaim(taskDefinition.isAutoClaim());
 
 		task.setNodeId(getId());
+		
+		
 
 		task.setNodeName(getName());
 
