@@ -285,8 +285,8 @@
 										pii="${dataList.processInstanceId}" bk="${dataList.bizKey}"
 										pdk="${dataList.processDefinitionKey}">${dataList.subject}</a>
 									</td>
-									<td>${dataList.userName}</td>
-									<td><fmt:formatDate value="${dataList.endTime}"
+									<td>${dataList.processInitiator}</td>
+									<td><fmt:formatDate value="${dataList.processStartTime}"
 											type="both" /></td>
 									<td>${dataList.nodeName}</td>
 									<td><fmt:formatDate value="${dataList.createTime}"
