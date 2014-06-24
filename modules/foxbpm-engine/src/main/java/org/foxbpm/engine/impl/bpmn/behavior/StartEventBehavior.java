@@ -21,10 +21,9 @@ import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 public class StartEventBehavior extends CatchEventBehavior {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	
+	
 	
 	private boolean isPersistence;
 
