@@ -132,6 +132,17 @@ public class TaskDefinition implements Serializable {
 	public List<TaskCommand> getTaskCommands() {
 		return taskCommands;
 	}
+	
+	public List<TaskCommand> getTaskCommands(String type) {
+		List<TaskCommand> taskCommands=new ArrayList<TaskCommand>();
+		for (TaskCommand taskCommand : getTaskCommands()) {
+			if(taskCommand.getTaskCommandType().equals(type)){
+				taskCommands.add(taskCommand);
+			}
+		}
+		
+		return taskCommands;
+	}
 
 	public TaskCommand getTaskCommand(String taskCommandId) {
 

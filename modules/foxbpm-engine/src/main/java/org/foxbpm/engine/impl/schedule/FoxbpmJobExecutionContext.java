@@ -1,18 +1,52 @@
+/**
+ * Copyright 1996-2014 FoxBPM ORG.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * @author MAENLIANG
+ */
 package org.foxbpm.engine.impl.schedule;
 
+import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.quartz.Job;
+import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 
+/**
+ * FOXBPM 工作上下文
+ * 
+ * @author MAENLIANG
+ * @date 2014-06-25
+ * 
+ */
 public class FoxbpmJobExecutionContext {
-
-	public Job getScheduleJob() {
-		return scheduleJob;
-	}
-
-	public void setScheduleJob(Job scheduleJob) {
-		this.scheduleJob = scheduleJob;
-	}
-
+	/**
+	 * 工作、组名称后缀
+	 */
+	public final static String NAME_SUFFIX_JOBDETAIL = "_JOBDETAIL";
+	public final static String NAME_SUFFIX_JOBTRIGGER = "_TRIGGER";
+	public final static String NAME_SUFFIX_JOBGROUP = "_TRIGGER";
+	/**
+	 * 自动调度环境变量名称
+	 */
+	public final static String PROCESS_DEFINITION_ID = "processId";
+	public final static String PROCESS_INSTANCE_ID = "processInstanceId";
+	public final static String NODE_ID = "nodeId";
+	public final static String FLOW_NODE = "flowNode";
+	public final static String PROCESS_DEFINITION_KEY = "processKey";
+	public final static String PROCESS_DEFINITION_NAME = "processName";
+	public final static String BUSINESS_KEY = "bizKey";
+	public final static String TOKEN_ID = "tokenId";
 	private String tokenId;
 	private String processInstanceId;
 	private String nodeId;
@@ -27,35 +61,37 @@ public class FoxbpmJobExecutionContext {
 	private String eventType;
 	private String taskId;
 	private Job scheduleJob;
+	private KernelFlowNodeImpl kernelFlowNodeImpl;
 
 	public FoxbpmJobExecutionContext(JobExecutionContext jobExecutionContext) {
+		JobDataMap jobDataMap = jobExecutionContext.getJobDetail()
+				.getJobDataMap();
 		scheduleJob = jobExecutionContext.getJobInstance();
-		this.tokenId = jobExecutionContext.getJobDetail().getJobDataMap()
-				.getString("tokenId");
-		this.processInstanceId = jobExecutionContext.getJobDetail()
-				.getJobDataMap().getString("processInstanceId");
-		this.nodeId = jobExecutionContext.getJobDetail().getJobDataMap()
-				.getString("nodeId");
-		this.processKey = jobExecutionContext.getJobDetail().getJobDataMap()
-				.getString("processKey");
-		this.processId = jobExecutionContext.getJobDetail().getJobDataMap()
-				.getString("processId");
-		this.processName = jobExecutionContext.getJobDetail().getJobDataMap()
-				.getString("processName");
-		this.bizKey = jobExecutionContext.getJobDetail().getJobDataMap()
-				.getString("bizKey");
-		this.jobType = jobExecutionContext.getJobDetail().getJobDataMap()
-				.getString("jobType");
-		this.connectorId = jobExecutionContext.getJobDetail().getJobDataMap()
-				.getString("connectorId");
-		this.connectorInstanceId = jobExecutionContext.getJobDetail()
-				.getJobDataMap().getString("connectorInstanceId");
-		this.connectorInstanceName = jobExecutionContext.getJobDetail()
-				.getJobDataMap().getString("connectorInstanceName");
-		this.eventType = jobExecutionContext.getJobDetail().getJobDataMap()
-				.getString("eventType");
-		this.taskId = jobExecutionContext.getJobDetail().getJobDataMap()
-				.getString("taskId");
+		this.tokenId = jobDataMap.getString(TOKEN_ID);
+		this.processInstanceId = jobDataMap.getString(PROCESS_INSTANCE_ID);
+		this.nodeId = jobDataMap.getString(NODE_ID);
+		this.kernelFlowNodeImpl = (KernelFlowNodeImpl) jobDataMap
+				.get(FLOW_NODE);
+		this.processKey = jobDataMap.getString(PROCESS_DEFINITION_KEY);
+		this.processId = jobDataMap.getString(PROCESS_DEFINITION_ID);
+		this.processName = jobDataMap.getString(PROCESS_DEFINITION_NAME);
+		this.bizKey = jobDataMap.getString(BUSINESS_KEY);
+		this.jobType = jobDataMap.getString("jobType");
+		this.connectorId = jobDataMap.getString("connectorId");
+		this.connectorInstanceId = jobDataMap.getString("connectorInstanceId");
+		this.connectorInstanceName = jobDataMap
+				.getString("connectorInstanceName");
+		this.eventType = jobDataMap.getString("eventType");
+		this.taskId = jobDataMap.getString("taskId");
+
+	}
+
+	public Job getScheduleJob() {
+		return scheduleJob;
+	}
+
+	public void setScheduleJob(Job scheduleJob) {
+		this.scheduleJob = scheduleJob;
 	}
 
 	public String getTokenId() {
@@ -160,6 +196,14 @@ public class FoxbpmJobExecutionContext {
 
 	public void setTaskId(String taskId) {
 		this.taskId = taskId;
+	}
+
+	public KernelFlowNodeImpl getKernelFlowNodeImpl() {
+		return kernelFlowNodeImpl;
+	}
+
+	public void setKernelFlowNodeImpl(KernelFlowNodeImpl kernelFlowNodeImpl) {
+		this.kernelFlowNodeImpl = kernelFlowNodeImpl;
 	}
 
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2014 FoxBPM Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM ORG.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,25 +15,16 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.engine.impl.bpmn.behavior;
+package org.foxbpm.engine.impl.task.command;
 
-import java.util.ArrayList;
-import java.util.List;
+/**
+ * @author kenshin
+ * 
+ */
+public class SubmitTaskCommand extends AbstractCustomExpandTaskCommand {
 
+	public SubmitTaskCommand(ExpandTaskCommand expandTaskCommand) {
+		super(expandTaskCommand);
 
-public abstract class CatchEventBehavior extends EventBehavior {
-
-	private static final long serialVersionUID = 1L;
-	
-	private List<EventDefinition> eventDefinitions=new ArrayList<EventDefinition>();
-	
-	public List<EventDefinition> getEventDefinitions() {
-		return eventDefinitions;
 	}
-
-	public void setEventDefinitions(List<EventDefinition> eventDefinitions) {
-		this.eventDefinitions = eventDefinitions;
-	}
-
-	
 }

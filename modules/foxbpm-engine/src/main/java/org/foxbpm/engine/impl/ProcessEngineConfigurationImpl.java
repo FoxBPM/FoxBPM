@@ -47,6 +47,8 @@ import org.foxbpm.engine.exception.ExceptionI18NCore;
 import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
 import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.identity.User;
+import org.foxbpm.engine.impl.bpmn.deployer.AbstractDeployer;
+import org.foxbpm.engine.impl.bpmn.deployer.BpmnAutoStartDeployer;
 import org.foxbpm.engine.impl.bpmn.deployer.BpmnDeployer;
 import org.foxbpm.engine.impl.cache.DefaultCache;
 import org.foxbpm.engine.impl.db.DefaultDataSourceManage;
@@ -124,7 +126,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected int userCacheLimit = -1;
 	protected Cache<User> userCache;
 
-	protected BpmnDeployer bpmnDeployer;
+	protected AbstractDeployer bpmnDeployer;
 	protected ProcessModelParseHandler processModelParseHandler;
 	protected List<Deployer> customPreDeployers;
 	protected List<Deployer> customPostDeployers;
@@ -355,7 +357,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		List<Deployer> defaultDeployers = new ArrayList<Deployer>();
 
 		if (bpmnDeployer == null) {
-			bpmnDeployer = new BpmnDeployer();
+			// 添加部署的时候自动启动流程实例 功能，修改时间 2014-06-24
+			bpmnDeployer = new BpmnAutoStartDeployer(new BpmnDeployer());
 		}
 
 		if (processModelParseHandler == null) {

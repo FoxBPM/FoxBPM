@@ -15,40 +15,49 @@
  * 
  * @author MAENLIANG
  */
-package org.foxbpm.engine.impl.schedule;
+package org.foxbpm.engine;
 
-import org.foxbpm.engine.impl.interceptor.CommandExecutor;
-import org.quartz.JobExecutionException;
+import java.util.List;
+
+import org.foxbpm.engine.impl.schedule.FoxbpmScheduler;
+import org.quartz.Trigger;
 
 /**
- * FOXBPM 工作
+ * 调度器服务类
  * 
  * @author MAENLIANG
- * @date 2014-06-25
+ * @date 2014-06-24
  * 
  */
-public abstract class FoxbpmScheduleJob {
-
+public interface SchedulerService {
 	/**
-	 * 执行任务的命令
-	 */
-	protected CommandExecutor commandExecutor;
-
-	public CommandExecutor getCommandExecutor() {
-		return commandExecutor;
-	}
-
-	public void setCommandExecutor(CommandExecutor commandExecutor) {
-		this.commandExecutor = commandExecutor;
-	}
-
-	/**
-	 * 执行任务的方法
+	 * 设置调度器
 	 * 
-	 * @param foxpmJobExecutionContext
-	 * @throws JobExecutionException
+	 * @param foxbpmScheduler
 	 */
-	public abstract void executeJob(
-			FoxbpmJobExecutionContext foxpmJobExecutionContext)
-			throws JobExecutionException;
+	public void setFoxbpmScheduler(FoxbpmScheduler foxbpmScheduler);
+
+	/**
+	 * 暂停任务
+	 * 
+	 * @param name
+	 * @param group
+	 */
+	public void suspendJob(String name, String group);
+
+	/**
+	 * 继续任务
+	 * 
+	 * @param name
+	 * @param group
+	 */
+	public void continueJob(String name, String group);
+
+	/**
+	 * 获取所有的触发器
+	 * 
+	 * @param name
+	 * @param group
+	 */
+	public List<Trigger> getTriggerList(String jobName, String jobGroup);
 }

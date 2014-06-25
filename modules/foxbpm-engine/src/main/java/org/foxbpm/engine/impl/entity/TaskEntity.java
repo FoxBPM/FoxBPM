@@ -823,12 +823,12 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 
 
 	public boolean isAutoClaim() {
-		return isAutoClaim;
+		
+		
+		return getTaskDefinition().isAutoClaim();
 	}
 
-	public void setAutoClaim(boolean isAutoClaim) {
-		this.isAutoClaim = isAutoClaim;
-	}
+
 
 	public void complete() {
 

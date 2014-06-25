@@ -25,15 +25,6 @@ import org.foxbpm.engine.task.TaskCommand;
 
 public abstract class AbstractCommandFilter {
 
-	/**
-	 * 自动领取
-	 */
-	public static String AUTO_CLAIM="autoclaim";
-	/**
-	 * 手动领取
-	 */
-	public static String MANUAL_CLAIM="manualclaim";
-	
 	
 	protected boolean isProcessTracking=false;
 	

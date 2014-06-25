@@ -22,11 +22,9 @@ import java.util.List;
 import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.identity.User;
-import org.foxbpm.engine.impl.agent.AgentTo;
 import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
-import org.foxbpm.engine.impl.persistence.AgentManager;
 
 /**
  * 从数据库中查询user对象

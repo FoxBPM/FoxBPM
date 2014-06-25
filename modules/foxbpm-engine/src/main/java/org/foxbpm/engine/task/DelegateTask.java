@@ -136,8 +136,6 @@ public interface DelegateTask extends KernelVariableScope {
 	
 	/** 是否自动领取 */
 	boolean isAutoClaim();
-	
-	/** 是否自动领取*/
-	void setAutoClaim(boolean isAutoClaim);
+
 
 }

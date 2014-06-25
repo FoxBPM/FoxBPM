@@ -9,10 +9,12 @@
 			type="actorConnector" projectName="foxbpm-connector"
 			virtualPath="src/main/java/org/foxbpm/connector/actorconnector/" src="org/foxbpm/connector/actorconnector/" />
 
-	<resourcePath id="flowconnector2" name="流程连接器路径" type="flowConnector" projectName="connector2"
-				virtualPath="src/main/java/connector/flowconnector/" src="connector/flowconnector/" />
-			<resourcePath id="actorconnector2" name="处理者选择器路径" type="actorConnector" projectName="connector2"
-				virtualPath="src/main/java/connector/actorconnector/" src="connector/actorconnector/" />
+		<resourcePath id="flowconnector2" name="流程连接器路径" type="flowConnector"
+			projectName="connector2" virtualPath="src/main/java/connector/flowconnector/"
+			src="connector/flowconnector/" />
+		<resourcePath id="actorconnector2" name="处理者选择器路径" type="actorConnector"
+			projectName="connector2" virtualPath="src/main/java/connector/actorconnector/"
+			src="connector/actorconnector/" />
 
 	</resourcePathConfig>
 	<scriptLanguageConfig selected="Groovy">
@@ -21,13 +23,38 @@
 		<scriptLanguage id="Groovy"
 			classImpl="org.foxbpm.engine.impl.scriptlanguage.GroovyScriptLanguageMgmtImpl" />
 	</scriptLanguageConfig>
-	
-	<taskCommandConfig>
 
+	<taskCommandConfig>
 		<taskCommandDefinition id="general" name="通用"
 			isEnabled="true" type="toDoTasks"
 			command="org.foxbpm.engine.impl.task.command.GeneralTaskCommand" cmd="org.foxbpm.engine.impl.task.cmd.CompleteGeneralTaskCmd"
 			filter="org.foxbpm.engine.impl.task.filter.CompleteGeneralTaskFilter" />
+		<taskCommandDefinition id="startandsubmit" name="启动并提交"
+			command="org.foxbpm.engine.impl.task.command.StartAndSubmitTaskCommand"
+			cmd="org.foxbpm.engine.impl.task.cmd.StartAndSubmitTaskCmd"
+			isEnabled="true" type="toDoTasks"
+			filter="org.foxbpm.engine.impl.task.filter.StartAndSubmitTaskFilter"
+			isVerification="true" isSaveData="true" isSimulationRun="false" />
+		<taskCommandDefinition id="submit" name="提交"
+			command="org.foxbpm.engine.impl.task.command.SubmitTaskCommand" cmd="org.foxbpm.engine.impl.task.cmd.SubmitTaskCmd"
+			isEnabled="true" type="toDoTasks"
+			filter="org.foxbpm.engine.impl.task.filter.SubmitTaskFilter"
+			isVerification="true" isSaveData="true" isSimulationRun="false" />
+		<taskCommandDefinition id="claim" name="接收任务"
+			command="org.foxbpm.engine.impl.task.command.ClaimTaskCommand" cmd="org.foxbpm.engine.impl.task.cmd.ClaimTaskCmd"
+			isEnabled="true" type="sharedTasks"
+			filter="org.foxbpm.engine.impl.task.filter.ClaimTaskFilter"
+			isVerification="false" isSaveData="false" isSimulationRun="false" />
+		<taskCommandDefinition id="releaseTask" name="释放任务"
+			command="org.foxbpm.engine.impl.task.command.ReleaseTaskCommand" cmd="org.foxbpm.engine.impl.task.cmd.ReleaseTaskCmd"
+			isEnabled="true" type="toDoTasks"
+			filter="org.foxbpm.engine.impl.task.filter.ReleaseTaskFilter"
+			isVerification="false" isSaveData="false" isSimulationRun="false" />
+		<taskCommandDefinition id="saveTaskDraft" name="保存草稿"
+			command="org.foxbpm.engine.impl.task.command.SaveTaskDraftCommand"
+			cmd="org.foxbpm.engine.impl.task.cmd.SaveTaskDraftCmd" isEnabled="true"
+			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.SaveTaskDraftFilter"
+			isVerification="true" isSaveData="true" isSimulationRun="false" />
 		<taskCommandDefinition id="processStatus" name="流程状态"
 			isEnabled="true" type="all" />
 

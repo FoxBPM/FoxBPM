@@ -28,6 +28,7 @@ import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.task.command.AbstractCustomExpandTaskCommand;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
@@ -136,6 +137,10 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 		return (FlowNodeExecutionContext)task.getToken();
 	}
 	
+	protected CommandExecutor getCommandExecutor(){
+		CommandExecutor commandExecutor = Context.getProcessEngineConfiguration().getCommandExecutor();
+		return commandExecutor;
+	}
 	
 
 }
