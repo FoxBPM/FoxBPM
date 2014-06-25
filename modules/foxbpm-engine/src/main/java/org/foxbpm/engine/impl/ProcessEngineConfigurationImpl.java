@@ -48,7 +48,6 @@ import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
 import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.bpmn.deployer.AbstractDeployer;
-import org.foxbpm.engine.impl.bpmn.deployer.BpmnAutoStartDeployer;
 import org.foxbpm.engine.impl.bpmn.deployer.BpmnDeployer;
 import org.foxbpm.engine.impl.cache.DefaultCache;
 import org.foxbpm.engine.impl.db.DefaultDataSourceManage;
