@@ -34,10 +34,6 @@ import org.slf4j.LoggerFactory;
 
 public class BpmnDeployer extends AbstractDeployer {
 	Logger log = LoggerFactory.getLogger(BpmnDeployer.class);
-	public static final String BPMN_RESOURCE_SUFFIX = ".bpmn";
-
-	public static final String DIAGRAM_SUFFIXES = ".png";
-
 	public String deploy(DeploymentEntity deployment) {
 		ResourceEntity resourceBpmn = null;
 		ResourceEntity resourcePng = null;

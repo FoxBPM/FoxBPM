@@ -22,11 +22,15 @@ import org.foxbpm.engine.impl.persistence.deploy.Deployer;
 import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
 
 /**
+ * 抽象类，提取了流程模型转换类 ProcessModelParseHandler
  * 
  * @author MAENLIANG
  * @date 2014-06-25
  */
 public abstract class AbstractDeployer implements Deployer {
+	/**
+	 * 部署时候 流程模型转换
+	 */
 	protected ProcessModelParseHandler processModelParseHandler;
 
 	public ProcessModelParseHandler getProcessModelParseHandler() {
