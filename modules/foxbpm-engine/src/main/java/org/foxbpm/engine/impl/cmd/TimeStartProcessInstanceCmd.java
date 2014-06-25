@@ -18,24 +18,22 @@
 package org.foxbpm.engine.impl.cmd;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
-import org.foxbpm.engine.impl.bpmn.behavior.StartEventBehavior;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
-import org.foxbpm.engine.impl.persistence.ProcessDefinitionManager;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
 import org.foxbpm.engine.runtime.ProcessInstance;
-import org.foxbpm.kernel.event.KernelEvent;
+import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 
 public class TimeStartProcessInstanceCmd<T> implements
 		Command<ProcessInstance>, Serializable {
+
 	private static final long serialVersionUID = -4054848927162120048L;
 
 	/**
@@ -72,6 +70,8 @@ public class TimeStartProcessInstanceCmd<T> implements
 	 * 定时启动的节点
 	 */
 	protected String nodeId;
+
+	protected KernelFlowNodeImpl startFlowNode;
 
 	/**
 	 * 流程实例启动操作
@@ -116,14 +116,25 @@ public class TimeStartProcessInstanceCmd<T> implements
 					+ processDefinition.getId() + ") 为暂停状态");
 		}
 
-		// 启动流程实例
+		// 根据开始节点 启动流程实例
 		ProcessInstanceEntity processInstance = processDefinition
-				.createProcessInstance(this.businessKey);
+				.createProcessInstance(this.businessKey,
+						this.getStartFlowNode());
 		if (transientVariables != null) {
 			processInstance.setVariables(transientVariables);
 		}
+		String initiator = "";
+		processInstance.setStartAuthor(initiator);
 		processInstance.start();
 		return processInstance;
+	}
+
+	public KernelFlowNodeImpl getStartFlowNode() {
+		return startFlowNode;
+	}
+
+	public void setStartFlowNode(KernelFlowNodeImpl startFlowNode) {
+		this.startFlowNode = startFlowNode;
 	}
 
 	public String getProcessDefinitionId() {

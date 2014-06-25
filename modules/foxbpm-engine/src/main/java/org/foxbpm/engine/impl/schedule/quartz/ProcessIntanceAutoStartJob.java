@@ -6,6 +6,7 @@ import java.util.Map;
 import org.foxbpm.engine.impl.cmd.TimeStartProcessInstanceCmd;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.foxbpm.engine.runtime.ProcessInstance;
+import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.quartz.JobExecutionException;
 
 public class ProcessIntanceAutoStartJob extends AbstractQuartzScheduleJob {
@@ -18,13 +19,16 @@ public class ProcessIntanceAutoStartJob extends AbstractQuartzScheduleJob {
 		String processDefinitionKey = foxpmJobExecutionContext.getProcessKey();
 		String businessKey = foxpmJobExecutionContext.getBizKey();
 		Map<String, Object> transientVariableMap = new HashMap<String, Object>();
-
+		KernelFlowNodeImpl startFlowNode = foxpmJobExecutionContext
+				.getKernelFlowNodeImpl();
 		TimeStartProcessInstanceCmd<ProcessInstance> timeStartProcessInstanceCmd = new TimeStartProcessInstanceCmd<ProcessInstance>();
 		timeStartProcessInstanceCmd.setNodeId(nodeId);
 		timeStartProcessInstanceCmd.setProcessDefinitionId(processDefinitionId);
 		timeStartProcessInstanceCmd.setTransientVariables(transientVariableMap);
 		timeStartProcessInstanceCmd
 				.setProcessDefinitionKey(processDefinitionKey);
+		timeStartProcessInstanceCmd.setStartFlowNode(startFlowNode);
+
 		timeStartProcessInstanceCmd.setBusinessKey(businessKey);
 		// 执行流程启动命令
 		this.commandExecutor.execute(timeStartProcessInstanceCmd);
