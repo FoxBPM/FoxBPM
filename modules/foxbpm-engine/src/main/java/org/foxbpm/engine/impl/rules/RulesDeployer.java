@@ -5,9 +5,9 @@ import org.foxbpm.engine.impl.persistence.deploy.Deployer;
 
 public class RulesDeployer implements Deployer {
 
-	public void deploy(DeploymentEntity deployment) {
+	public String deploy(DeploymentEntity deployment) {
 		// TODO Auto-generated method stub
-
+		return null;
 	}
 
 }

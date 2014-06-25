@@ -35,8 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class BpmnDeployer implements Deployer {
-	
-	
+
 	Logger log = LoggerFactory.getLogger(BpmnDeployer.class);
 	public static final String BPMN_RESOURCE_SUFFIX = ".bpmn";
 
@@ -47,74 +46,92 @@ public class BpmnDeployer implements Deployer {
 		return processModelParseHandler;
 	}
 
-	public void deploy(DeploymentEntity deployment) {
+	public String deploy(DeploymentEntity deployment) {
 		ResourceEntity resourceBpmn = null;
 		ResourceEntity resourcePng = null;
 		Map<String, ResourceEntity> resources = deployment.getResources();
 		for (String resourceName : resources.keySet()) {
 			if (resourceName.toLowerCase().endsWith(BPMN_RESOURCE_SUFFIX)) {
 				resourceBpmn = resources.get(resourceName);
-			} 
+			}
 			if (resourceName.toLowerCase().endsWith(DIAGRAM_SUFFIXES)) {
 				resourcePng = resources.get(resourceName);
-			} 
+			}
 		}
-		if(resourceBpmn == null){
+		if (resourceBpmn == null) {
 			throw new FoxBPMBizException("发布文件中不存在.bpmn文件");
 		}
 		InputStream input = new ByteArrayInputStream(resourceBpmn.getBytes());
-		ProcessDefinitionManager processDefinitionManager = Context.getCommandContext().getProcessDefinitionManager();
-		ProcessDefinitionEntity processEntity = (ProcessDefinitionEntity)processModelParseHandler.createProcessDefinition("dddd", input);
-		if(deployment.isNew()){//需要更新数据库（新发布或更新）
+		ProcessDefinitionManager processDefinitionManager = Context
+				.getCommandContext().getProcessDefinitionManager();
+		ProcessDefinitionEntity processEntity = (ProcessDefinitionEntity) processModelParseHandler
+				.createProcessDefinition("dddd", input);
+		if (deployment.isNew()) {// 需要更新数据库（新发布或更新）
 			processEntity.setResourceName(resourceBpmn.getName());
 			processEntity.setResourceId(resourceBpmn.getId());
-			if(resourcePng != null){
+			if (resourcePng != null) {
 				processEntity.setDiagramResourceName(resourcePng.getName());
 			}
-			
-			if(deployment.getUpdateDeploymentId() == null || deployment.getUpdateDeploymentId().equals("")){
-				//发布
+
+			if (deployment.getUpdateDeploymentId() == null
+					|| deployment.getUpdateDeploymentId().equals("")) {
+				// 发布
 				int processDefinitionVersion = 1;
-				//如果外部传了version，则优先处理
-				if(resourceBpmn.getVersion() != -1){
+				// 如果外部传了version，则优先处理
+				if (resourceBpmn.getVersion() != -1) {
 					processDefinitionVersion = resourceBpmn.getVersion();
-				}else { //没有version,则取数据库中的最大version+1,数据库中也不存在时，则version=1
-					ProcessDefinitionEntity latestProcessDefinition = processDefinitionManager.findLatestProcessDefinitionByKey(processEntity.getKey());
+				} else { // 没有version,则取数据库中的最大version+1,数据库中也不存在时，则version=1
+					ProcessDefinitionEntity latestProcessDefinition = processDefinitionManager
+							.findLatestProcessDefinitionByKey(processEntity
+									.getKey());
 					if (latestProcessDefinition != null)
-						processDefinitionVersion = latestProcessDefinition.getVersion() + 1;
+						processDefinitionVersion = latestProcessDefinition
+								.getVersion() + 1;
 				}
-				//新的发布号
+				// 新的发布号
 				processEntity.setDeploymentId(deployment.getId());
-				//新的版本号
+				// 新的版本号
 				processEntity.setVersion(processDefinitionVersion);
-				String processDefinitionId = processEntity.getKey() + ":" + processEntity.getVersion() + ":" + GuidUtil.CreateGuid(); // GUID
-				//新的定义ID
+				String processDefinitionId = processEntity.getKey() + ":"
+						+ processEntity.getVersion() + ":"
+						+ GuidUtil.CreateGuid(); // GUID
+				// 新的定义ID
 				processEntity.setId(processDefinitionId);
 				processDefinitionManager.insert(processEntity);
-			}else{
-				//更新
+			} else {
+				// 更新
 				String deploymentId = deployment.getId();
-				ProcessDefinitionEntity processEntityNew = processDefinitionManager.findProcessDefinitionByDeploymentAndKey(deploymentId, processEntity.getKey());
+				ProcessDefinitionEntity processEntityNew = processDefinitionManager
+						.findProcessDefinitionByDeploymentAndKey(deploymentId,
+								processEntity.getKey());
 				processEntityNew.setCategory(processEntity.getCategory());
 				processEntityNew.setName(processEntity.getName());
-				processEntityNew.setResourceName(processEntity.getResourceName());
+				processEntityNew.setResourceName(processEntity
+						.getResourceName());
 			}
-		}else{//不需要处理数据库,从数据库中查询出来的实体转换为虚拟机定义，用来进行流程运转
+		} else {// 不需要处理数据库,从数据库中查询出来的实体转换为虚拟机定义，用来进行流程运转
 			String deploymentId = deployment.getId();
-			ProcessDefinitionEntity processEntityNew = processDefinitionManager.findProcessDefinitionByDeploymentAndKey(deploymentId, processEntity.getKey());
+			ProcessDefinitionEntity processEntityNew = processDefinitionManager
+					.findProcessDefinitionByDeploymentAndKey(deploymentId,
+							processEntity.getKey());
 			processEntity.setDeploymentId(deploymentId);
 			processEntity.setId(processEntityNew.getId());
 			processEntity.setVersion(processEntityNew.getVersion());
 			processEntity.setResourceId(processEntityNew.getResourceId());
 			processEntity.setResourceName(processEntityNew.getResourceName());
-			processEntity.setDiagramResourceName(processEntityNew.getDiagramResourceName());
+			processEntity.setDiagramResourceName(processEntityNew
+					.getDiagramResourceName());
 		}
-		
-		Context.getProcessEngineConfiguration().getDeploymentManager().getProcessDefinitionCache().add(processEntity.getId(), processEntity);
+
+		Context.getProcessEngineConfiguration().getDeploymentManager()
+				.getProcessDefinitionCache()
+				.add(processEntity.getId(), processEntity);
+		return processEntity.getId();
 	}
-	
-	 public void setProcessModelParseHandler(ProcessModelParseHandler processModelParseHandler) {
-		    this.processModelParseHandler = processModelParseHandler;
+
+	public void setProcessModelParseHandler(
+			ProcessModelParseHandler processModelParseHandler) {
+		this.processModelParseHandler = processModelParseHandler;
 	}
 
 }
