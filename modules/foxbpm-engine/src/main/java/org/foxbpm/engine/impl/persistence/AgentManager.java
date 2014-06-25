@@ -69,6 +69,14 @@ public class AgentManager extends AbstractManager {
 	 * @return 返回代理实体
 	 */
 	public AgentEntity queryAgentEntity(String agentUser) {
-		return (AgentEntity) getSqlSession().selectOne("selectAgentByAgentUser", agentUser);
+		AgentEntity agentEntity = (AgentEntity) getSqlSession().selectOne("selectAgentByAgentUser", agentUser);
+		if (null != agentEntity) {
+			@SuppressWarnings("unchecked")
+			List<AgentDetailsEntity> agentDetails = (List<AgentDetailsEntity>) getSqlSession().selectListWithRawParameter("selectAgentDetailById", agentEntity.getId());
+			if (null != agentDetails && !agentDetails.isEmpty()) {
+				agentEntity.getAgentDetails().addAll(agentDetails);
+			}
+		}
+		return agentEntity;
 	}
 }
