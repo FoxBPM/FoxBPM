@@ -29,6 +29,7 @@ public class TimerEventDefinition extends EventDefinition {
 	private Expression timeCycle;
 
 	public Expression getTimeDate() {
+		
 		return timeDate;
 	}
 
