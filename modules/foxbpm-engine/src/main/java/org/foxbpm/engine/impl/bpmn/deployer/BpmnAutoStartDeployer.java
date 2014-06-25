@@ -18,10 +18,10 @@
  */
 package org.foxbpm.engine.impl.bpmn.deployer;
 
-import static org.quartz.CronScheduleBuilder.cronSchedule;
-import static org.quartz.TriggerBuilder.newTrigger;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.quartz.CronScheduleBuilder.cronSchedule;
+import static org.quartz.TriggerBuilder.newTrigger;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -54,7 +54,7 @@ import org.quartz.TriggerBuilder;
  * @author MAENLIANG
  * @date 2014-06-25
  */
-public class BpmnAutoStartDeployer implements Deployer {
+public class BpmnAutoStartDeployer extends AbstractDeployer {
 	private Deployer deployer;
 
 	public BpmnAutoStartDeployer(Deployer deployer) {

@@ -28,23 +28,15 @@ import org.foxbpm.engine.impl.entity.DeploymentEntity;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ResourceEntity;
 import org.foxbpm.engine.impl.persistence.ProcessDefinitionManager;
-import org.foxbpm.engine.impl.persistence.deploy.Deployer;
 import org.foxbpm.engine.impl.util.GuidUtil;
-import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BpmnDeployer implements Deployer {
-
+public class BpmnDeployer extends AbstractDeployer {
 	Logger log = LoggerFactory.getLogger(BpmnDeployer.class);
 	public static final String BPMN_RESOURCE_SUFFIX = ".bpmn";
 
 	public static final String DIAGRAM_SUFFIXES = ".png";
-	protected ProcessModelParseHandler processModelParseHandler;
-
-	public ProcessModelParseHandler getProcessModelParseHandler() {
-		return processModelParseHandler;
-	}
 
 	public String deploy(DeploymentEntity deployment) {
 		ResourceEntity resourceBpmn = null;
@@ -128,10 +120,4 @@ public class BpmnDeployer implements Deployer {
 				.add(processEntity.getId(), processEntity);
 		return processEntity.getId();
 	}
-
-	public void setProcessModelParseHandler(
-			ProcessModelParseHandler processModelParseHandler) {
-		this.processModelParseHandler = processModelParseHandler;
-	}
-
 }
