@@ -24,7 +24,18 @@ import org.foxbpm.engine.impl.entity.DeploymentEntity;
  * 
  */
 public interface Deployer {
+	/**
+	 * 部署文件名称后缀名
+	 */
+	public static final String BPMN_RESOURCE_SUFFIX = ".bpmn";
+	public static final String DIAGRAM_SUFFIXES = ".png";
 
-	void deploy(DeploymentEntity deployment);
+	/**
+	 * 添加结构返回值；修改人：马恩亮;修改时间：2014-06-25
+	 * 
+	 * @param deployment
+	 * @return ProcessDefinitionID
+	 */
+	String deploy(DeploymentEntity deployment);
 
 }
