@@ -358,7 +358,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 		if (bpmnDeployer == null) {
 			// 添加部署的时候自动启动流程实例 功能，修改时间 2014-06-24
-			bpmnDeployer = new BpmnAutoStartDeployer(new BpmnDeployer());
+			bpmnDeployer = new BpmnDeployer();
 		}
 
 		if (processModelParseHandler == null) {
