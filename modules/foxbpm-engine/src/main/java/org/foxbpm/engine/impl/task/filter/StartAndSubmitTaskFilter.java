@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2014 FoxBPM ORG.
+ * Copyright 1996-2013 Founder International Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,22 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.engine.impl.task.command;
+package org.foxbpm.engine.impl.task.filter;
 
-public class GeneralTaskCommand  extends AbstractCustomExpandTaskCommand {
-	
-	public GeneralTaskCommand(ExpandTaskCommand expandTaskCommand) {
-		super(expandTaskCommand);
-		// TODO Auto-generated constructor stub
+import org.foxbpm.engine.task.Task;
+
+public class StartAndSubmitTaskFilter extends AbstractCommandFilter {
+
+	@Override
+	public boolean accept(Task task) {
+		if(task==null){
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
+
 }
+

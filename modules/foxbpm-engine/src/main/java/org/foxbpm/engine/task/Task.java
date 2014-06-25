@@ -150,4 +150,7 @@ public interface Task{
 	boolean hasEnded();
 
 	Object getDelegationState();
+	
+	/** 是否自动领取 */
+	boolean isAutoClaim();
 }
