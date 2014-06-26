@@ -211,7 +211,7 @@
 								<tr>
 									<td class="num"><input type="radio" name="checked"
 										value="${dataList.id}"></td>
-									<td style="text-align: center;">${(index.index+1)+pageInfo.pageSize*(pageInfo.pageIndex-1)}</td>
+									<td style="text-align: center;">${(index.index+1)+pageInfor.pageSize*(pageInfor.pageIndex-1)}</td>
 									<td>${dataList.id}</td>
 									<td>${dataList.processDefinitionName}</td>
 									<td>${dataList.subject}</td>

@@ -22,20 +22,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.foxbpm.engine.impl.cache.CacheUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.web.common.constant.FoxbpmActionNameDefinition;
-import org.foxbpm.web.common.constant.FoxbpmServiceNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmViewNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmWebContextAttributeNameDefinition;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.common.util.Pagination;
-import org.foxbpm.web.service.interfaces.IFlowManageService;
-import org.foxbpm.web.service.interfaces.IWorkFlowService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -48,13 +44,6 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class FlowManageController extends AbstWebController {
-
-	// 工作流服务
-	@Resource(name = FoxbpmServiceNameDefinition.WORKFLOW_SERVICENAME)
-	private IWorkFlowService workFlowService;
-	// 流程管理服务
-	@Resource(name = FoxbpmServiceNameDefinition.FLOWMANAGE_SERVICENAME)
-	private IFlowManageService flowManageService;
 
 	/**
 	 * 流程定义 action请求
@@ -164,6 +153,79 @@ public class FlowManageController extends AbstWebController {
 		ModelAndView modelAndView = createModelAndView(FoxbpmViewNameDefinition.PROCESSINSTMANAGE_VIEWNAME);
 		return modelAndView;
 
+	}
+
+	@RequestMapping(FoxbpmActionNameDefinition.SELECT_PROCESSDEF)
+	public ModelAndView selectProcessDef(HttpServletRequest request) {
+		// 请求参数
+		Map<String, Object> requestParams = getRequestParams(request);
+		String pageI = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINDEX));
+		String pageS = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGESIZE));
+
+		// 处理分页
+		int pageIndex = Pagination.PAGE_INDEX;
+		int pageSize = Pagination.PAGE_SIZE;
+		if (StringUtil.isNotEmpty(pageI)) {
+			pageIndex = StringUtil.getInt(pageI);
+		}
+		if (StringUtil.isNotEmpty(pageS)) {
+			pageSize = StringUtil.getInt(pageS);
+		}
+
+		// 分页信息
+		Pagination<String> pageInfor = new Pagination<String>(pageIndex, pageSize);
+		// 查询结果
+		List<Map<String, Object>> resultData = flowManageService.queryProcessDef(pageInfor, requestParams);
+		// 封装参数给页面使用
+		Map<String, List<Map<String, Object>>> resultMap = new HashMap<String, List<Map<String, Object>>>();
+		// 获取分页条件参数
+		resultMap.put("dataList", resultData);
+		// 封装参数
+
+		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
+		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
+
+		ModelAndView modelAndView = createModelAndView(FoxbpmViewNameDefinition.SELECT_PROCESSDEF);
+		return modelAndView;
+
+	}
+
+	/**
+	 * 委托授权
+	 * 
+	 * @param request
+	 *            请求
+	 * @return 返回响应视图
+	 */
+	@RequestMapping(FoxbpmActionNameDefinition.DELEGATE_AUTHORITY)
+	public ModelAndView delegateAuthority(HttpServletRequest request) {
+		Map<String, Object> requestParams = getRequestParams(request);
+		// 封装参数给页面使用
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("agentInfo", workFlowService.queryUserDelegationInfo(requestParams));
+		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
+		return createModelAndView(FoxbpmViewNameDefinition.SET_DELEGATION);
+	}
+
+	/**
+	 * 保存代理设置
+	 * 
+	 * @param request
+	 *            请求
+	 * @param response
+	 *            响应
+	 */
+	@RequestMapping(FoxbpmActionNameDefinition.SAVE_USER_DELEGATIONINFO)
+	public void saveUserDelegationInfo(HttpServletRequest request, HttpServletResponse response) {
+
+		try {
+			Map<String, Object> requestParams = getRequestParams(request);
+			// 删除代理授权信息
+			flowManageService.saveUserDelegationInfo(requestParams);
+			doResponse(response, "{statusCode:0}");
+		} catch (Exception e) {
+			throw new FoxbpmWebException(e);
+		}
 	}
 
 	@Override

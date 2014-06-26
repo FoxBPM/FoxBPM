@@ -23,75 +23,87 @@ import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.impl.db.ListQueryParameterObject;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 
+@SuppressWarnings("rawtypes")
 public class JdbcSqlSession implements ISqlSession {
 	public void closeSession() {
 		// TODO Auto-generated method stub
-		
+
 	}
+
 	public void delete(String deleteStatement, Object parameter) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
+	@Override
+	public List selectList(String statement, Object parameter, int firstResult, int maxResults) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public void insert(PersistentObject persistentObject) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
 	public void delete(String deleteStatement, PersistentObject persistentObject) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
 	public void update(PersistentObject persistentObject) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
 	public List<?> selectList(String statement) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	public List<?> selectList(String statement, Object parameter) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	public Object selectOne(String statement, Object parameter) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public <T extends PersistentObject> T selectById(Class<T> entityClass,
-			String id) {
+
+	public <T extends PersistentObject> T selectById(Class<T> entityClass, String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	@SuppressWarnings("rawtypes")
+
 	public List selectList(String statement, ListQueryParameterObject parameter) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	@SuppressWarnings("rawtypes")
+
 	public List selectListWithRawParameter(String statement, Object parameter) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	public void flush() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	public void commit() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	public void rollback() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void delete(PersistentObject persistentObject) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

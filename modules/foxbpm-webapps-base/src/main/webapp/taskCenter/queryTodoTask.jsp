@@ -86,11 +86,11 @@
 			var obj = {
 				type : "user"
 			};
-			var d = FixSelect(obj);
-			var userId = d[0].USERID;
-			var userName = d[0].USERNAME;
-			$("#initor").val(userId);
-			$("#initorName").val(userName);
+			var data = FoxbpmSelect(obj);
+			if (data && data.length > 0) {
+				$("#initor").val(data[0].userId);
+				$("#initorName").val(data[0].userName);
+			}
 		});
 		$("#agent_" + $("#agentUserId").val()).css("background-color",
 				"#ffffff");
@@ -273,7 +273,7 @@
 							<c:forEach items="${result.dataList}" var="dataList"
 								varStatus="index">
 								<tr>
-									<td style="text-align: center;">${(index.index+1)+pageInfo.pageSize*(pageInfo.pageIndex-1)}</td>
+									<td style="text-align: center;">${(index.index+1)+pageInfor.pageSize*(pageInfor.pageIndex-1)}</td>
 
 									<td><img src="common\images\temp\user01.jpg" height="30"
 										width="30" alt="头像"

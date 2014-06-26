@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.common.util.Pagination;
@@ -111,4 +112,33 @@ public interface IWorkFlowService {
 	 * @return 返回结果信息
 	 */
 	InputStream getFlowImagGraph(Map<String, Object> params);
+
+	/**
+	 * 获取代理信息
+	 * 
+	 * @param params
+	 *            查询参数
+	 * @return 返回代理信息
+	 */
+	Map<String, Object> queryUserDelegationInfo(Map<String, Object> params);
+
+	/**
+	 * 查询用户信息
+	 * 
+	 * @param pageInfor
+	 *            分页信息
+	 * @param params
+	 *            查询参数
+	 * @return 返回查询结果
+	 */
+	List<User> queryUsers(Pagination<String> pageInfor, Map<String, Object> params);
+
+	/**
+	 * 查询用户数
+	 * 
+	 * @param params
+	 *            查询参数
+	 * @return 返回查询记录数
+	 */
+	Long queryUsersCount(Map<String, Object> params);
 }

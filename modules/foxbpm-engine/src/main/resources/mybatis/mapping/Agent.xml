@@ -18,14 +18,13 @@
 		<result column="STARTTIME" property="startTime" jdbcType="TIMESTAMP" />
 		<result column="ENDTIME" property="endTime" jdbcType="TIMESTAMP" />
 		<result column="STATUS" property="status" jdbcType="VARCHAR" />
-		<collection property="agentDetails"
-			ofType="org.foxbpm.engine.impl.agent.AgentDetailsEntity" javaType="ArrayList">
-			<id column="ID" property="id" jdbcType="VARCHAR" />
-			<result column="AGENT_ID" property="agentId" jdbcType="VARCHAR" />
-			<result column="AGENT_TOUSER" property="agentTo" jdbcType="VARCHAR" />
-			<result column="PROCESSDEFINITION_KEY" property="processKey"
-				jdbcType="VARCHAR" />
-		</collection>
+	</resultMap>
+
+	<resultMap id="agentDetailResultMap" type="org.foxbpm.engine.impl.agent.AgentDetailsEntity">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="AGENT_ID" property="agentId" jdbcType="VARCHAR" />
+		<result column="AGENT_TOUSER" property="agentTo" jdbcType="VARCHAR" />
+		<result column="PROCESSDEFINITION_KEY" property="processKey" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<select id="selectAgentToByUserId" parameterType="java.lang.String"
@@ -90,10 +89,10 @@
 	</delete>
 	<select id="selectAgentByAgentUser" parameterType="java.lang.String"
 		resultMap="agentResultMap">
-		select a.*,b.* from
-		foxbpm_agent a,foxbpm_agent_details b
-		where
-		a.agent_user = #{agentFrom}
-		and a.id = b.agent_id
+		select * from foxbpm_agent where agent_user = #{agentFrom}
+	</select>
+	<select id="selectAgentDetailById" parameterType="java.lang.String"
+		resultMap="agentDetailResultMap">
+		select * from foxbpm_agent_details where agent_id = #{id}
 	</select>
 </mapper>

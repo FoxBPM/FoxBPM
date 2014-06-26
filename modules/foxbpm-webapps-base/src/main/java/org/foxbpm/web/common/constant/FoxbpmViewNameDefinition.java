@@ -31,6 +31,10 @@ public final class FoxbpmViewNameDefinition {
 	public final static String PROCESSINSTMANAGE_VIEWNAME = "processInstManage";
 	// 流程变量视图
 	public final static String PROCESSVARIABLEMANAGE_VIEWNAME = "processVariableManage";
+
+	// 流程定义视图
+	public final static String SELECT_PROCESSDEF = "selectProcessDefList";
+	public final static String SELECT_USER = "selectUserList";
 	// 成功视图
 	public final static String COMPLETETASK_VIEWNAME = "result";
 }

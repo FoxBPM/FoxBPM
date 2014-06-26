@@ -24,6 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.engine.identity.User;
+import org.foxbpm.engine.impl.agent.AgentEntity;
+import org.foxbpm.engine.impl.db.Page;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.runtime.ProcessInstance;
@@ -156,10 +159,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 	public Map<String, Object> queryTaskDetailInfor(Map<String, Object> params) {
 		// 返回结果
 		Map<String, Object> resultData = new HashMap<String, Object>();
-
 		String processInstanceId = StringUtil.getString(params.get("processInstanceId"));
-		String processDefinitionId = StringUtil.getString(params.get("processDefinitionId"));
-
 		if (StringUtil.isNotEmpty(processInstanceId)) {
 			ProcessInstanceQuery piq = runtimeService.createProcessInstanceQuery();
 			List<ProcessInstance> pinstanceList = piq.processInstanceId(processInstanceId).list();
@@ -201,8 +201,6 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			resultData.put("processName", processName);
 			resultData.put("processInstanceId", processInstance.getId());
 			resultData.put("processDefinitionId", processInstance.getProcessDefinitionId());
-		} else if (StringUtil.isNotEmpty(processDefinitionId)) {
-			resultData.put("processDefinitionId", processDefinitionId);
 		}
 		return resultData;
 	}
@@ -376,5 +374,46 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_PROCESSDEFID, "processDefinitionId is null !");
 		}
 		return modelService.GetFlowGraphicsImgStreamByDefId(processDefinitionId);
+	}
+
+	@Override
+	public Map<String, Object> queryUserDelegationInfo(Map<String, Object> params) {
+		String agentUser = StringUtil.getString(params.get("agentUser"));
+		Map<String, Object> resultData = new HashMap<String, Object>();
+		if (StringUtil.isNotEmpty(agentUser)) {
+			AgentEntity agentEntity = identityService.queryAgent(agentUser);
+			if (null != agentEntity) {
+				resultData.putAll(agentEntity.getPersistentState());
+				resultData.put("detailInfoList", agentEntity.getAgentDetails());
+			}
+		}
+		return resultData;
+	}
+
+	@Override
+	public List<User> queryUsers(Pagination<String> pageInfor, Map<String, Object> params) {
+
+		String id = StringUtil.getString(params.get("id"));
+		String name = StringUtil.getString(params.get("name"));
+		String idLike = null;
+		String nameLike = null;
+		if (StringUtil.isNotEmpty(id)) {
+			idLike = assembleLikeParam(id);
+		}
+		if (StringUtil.isNotEmpty(name)) {
+			nameLike = assembleLikeParam(name);
+		}
+		int pageNum = pageInfor.getPageIndex();
+		int rowNum = pageInfor.getPageSize();
+
+		Page page = new Page(pageNum * rowNum - rowNum, rowNum);
+		return identityService.getUsers(idLike, nameLike, page);
+	}
+
+	@Override
+	public Long queryUsersCount(Map<String, Object> params) {
+		String idLike = StringUtil.getString(params.get("idLike"));
+		String nameLike = StringUtil.getString(params.get("nameLike"));
+		return (Long) identityService.getUsersCount(idLike, nameLike);
 	}
 }

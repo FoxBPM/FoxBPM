@@ -22,28 +22,49 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.identity.UserEntityManager;
 import org.foxbpm.engine.impl.entity.UserEntity;
 
+@SuppressWarnings("unchecked")
 public class DefaultUserEntityManager extends AbstractManager implements UserEntityManager {
-	
+
 	public UserEntity findUserById(String userId) {
-		return (UserEntity)getSqlSession().selectOne("selectUserById", userId);
+		return (UserEntity) getSqlSession().selectOne("selectUserById", userId);
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	@Override
-	public List<User> findUsers(String idLike, String nameLike) {
-		Map<String,Object> map = new HashMap<String,Object>();
-		if(idLike != null){
+	public List<UserEntity> findUsers(String idLike, String nameLike) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (idLike != null) {
 			map.put("userId", idLike);
 		}
-		if(nameLike != null){
+		if (nameLike != null) {
 			map.put("userName", nameLike);
 		}
-		return (List<User>)getSqlSession().selectListWithRawParameter("selectUsers", map);
+		return (List<UserEntity>) getSqlSession().selectListWithRawParameter("selectUsers", map);
 	}
-	
-	
+
+	@Override
+	public List<UserEntity> findUsers(String idLike, String nameLike, int firstResult, int maxResults) {
+		Map<String, Object> queryMap = new HashMap<String, Object>();
+		if (idLike != null) {
+			queryMap.put("userId", idLike);
+		}
+		if (nameLike != null) {
+			queryMap.put("userName", nameLike);
+		}
+		return (List<UserEntity>) getSqlSession().selectList("selectUsersByPage", queryMap, firstResult, maxResults);
+	}
+
+	@Override
+	public Object findUserCount(String idLike, String nameLike) {
+		Map<String, Object> queryMap = new HashMap<String, Object>();
+		if (idLike != null) {
+			queryMap.put("userId", idLike);
+		}
+		if (nameLike != null) {
+			queryMap.put("userName", nameLike);
+		}
+		return getSqlSession().selectOne("selectUsersCount", queryMap);
+	}
 }

@@ -69,4 +69,19 @@ public interface IFlowManageService {
 	 */
 	List<Map<String, Object>> queryProcessInst(Pagination<String> pageInfor, Map<String, Object> params);
 
+	/**
+	 * 保存用户代理授权信息
+	 * 
+	 * @param params
+	 *            授权信息
+	 */
+	void saveUserDelegationInfo(Map<String, Object> params);
+
+	/**
+	 * 删除用户代理授权信息
+	 * 
+	 * @param params
+	 *            授权信息
+	 */
+	void deleUserDelegationInfo(Map<String, Object> params);
 }

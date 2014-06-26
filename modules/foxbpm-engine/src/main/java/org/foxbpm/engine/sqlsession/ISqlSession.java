@@ -24,26 +24,33 @@ import org.foxbpm.engine.impl.db.ListQueryParameterObject;
 
 public interface ISqlSession {
 	public void insert(PersistentObject persistentObject);
+
 	public void delete(String deleteStatement, Object parameter);
+
 	public void delete(PersistentObject persistentObject);
+
 	public void update(PersistentObject persistentObject);
 
 	public List<?> selectList(String statement);
-	 @SuppressWarnings("rawtypes")
-	public List selectList(String statement, ListQueryParameterObject parameter) ;
-	 
+
 	@SuppressWarnings("rawtypes")
-	public List selectListWithRawParameter(String statement,Object parameter);
+	public List selectList(String statement, ListQueryParameterObject parameter);
+
+	@SuppressWarnings("rawtypes")
+	public List selectList(String statement, Object parameter, int firstResult, int maxResults);
+
+	@SuppressWarnings("rawtypes")
+	public List selectListWithRawParameter(String statement, Object parameter);
 
 	public Object selectOne(String statement, Object parameter);
-	
+
 	public <T extends PersistentObject> T selectById(Class<T> entityClass, String id);
-	
+
 	public void flush();
-	
+
 	public void closeSession();
-	
+
 	public void commit();
-	
+
 	public void rollback();
 }

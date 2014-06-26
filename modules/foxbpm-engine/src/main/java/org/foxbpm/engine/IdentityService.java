@@ -23,6 +23,7 @@ import java.util.List;
 import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentDetailsEntity;
 import org.foxbpm.engine.impl.agent.AgentEntity;
+import org.foxbpm.engine.impl.db.Page;
 
 /**
  * foxbpm中与用户相关的操作均放在此service里
@@ -52,6 +53,29 @@ public interface IdentityService {
 	 * @return 参数可为null,参数之间为or关系，如果都为null代表查询所有
 	 */
 	List<User> getUsers(String idLike, String nameLike);
+
+	/**
+	 * 查询用户
+	 * 
+	 * @param idLike
+	 *            示例： %200802%
+	 * @param nameLike
+	 *            示例： %张%
+	 * @page 分页对象
+	 * @return 返回查询结果
+	 */
+	List<User> getUsers(String idLike, String nameLike, Page page);
+
+	/**
+	 * 查询用户数
+	 * 
+	 * @param idLike
+	 *            示例： %200802%
+	 * @param nameLike
+	 *            示例： %张%
+	 * @return 返回查询结果
+	 */
+	Object getUsersCount(String idLike, String nameLike);
 
 	/**
 	 * 增加代理 会级联插入对象中的代理明细信息

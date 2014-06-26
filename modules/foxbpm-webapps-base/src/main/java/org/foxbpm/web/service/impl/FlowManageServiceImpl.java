@@ -20,11 +20,16 @@ package org.foxbpm.web.service.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.zip.ZipInputStream;
 
 import org.apache.commons.fileupload.FileItem;
+import org.foxbpm.engine.impl.agent.AgentDetailsEntity;
+import org.foxbpm.engine.impl.agent.AgentEntity;
+import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.repository.DeploymentBuilder;
 import org.foxbpm.engine.repository.ProcessDefinition;
@@ -34,6 +39,7 @@ import org.foxbpm.engine.runtime.ProcessInstanceQuery;
 import org.foxbpm.web.common.constant.FoxbpmExceptionCode;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.common.util.DateUtil;
+import org.foxbpm.web.common.util.JSONUtil;
 import org.foxbpm.web.common.util.Pagination;
 import org.foxbpm.web.service.interfaces.IFlowManageService;
 import org.springframework.stereotype.Service;
@@ -43,6 +49,7 @@ import org.springframework.stereotype.Service;
  * @date 2014年6月12日
  */
 @Service("flowManageServiceImpl")
+@SuppressWarnings("unchecked")
 public class FlowManageServiceImpl extends AbstWorkFlowService implements IFlowManageService {
 
 	@Override
@@ -102,12 +109,17 @@ public class FlowManageServiceImpl extends AbstWorkFlowService implements IFlowM
 		}
 		String processId = StringUtil.getString(params.get("queryProcessId"));
 		if (StringUtil.isNotEmpty(processId)) {
-			pdq.processDefinitionKeyLike(assembleLikeParam(processId));
+			pdq.processDefinitionId(processId);
 		}
 		String processCategory = StringUtil.getString(params.get("queryType"));
 		if (StringUtil.isNotEmpty(processCategory)) {
 			pdq.processDefinitionCategoryLike(assembleLikeParam(processCategory));
 		}
+		String queryProcessKey = StringUtil.getString(params.get("queryProcessKey"));
+		if (StringUtil.isNotEmpty(queryProcessKey)) {
+			pdq.processDefinitionKeyLike(assembleLikeParam(queryProcessKey));
+		}
+
 		pdq.orderByDeploymentId().desc();
 		List<ProcessDefinition> pdList = null;
 		if (null == pageInfor) {
@@ -224,6 +236,98 @@ public class FlowManageServiceImpl extends AbstWorkFlowService implements IFlowM
 		}
 
 		return resultData;
+	}
+
+	@Override
+	public void saveUserDelegationInfo(Map<String, Object> params) {
+		String addInfo = StringUtil.getString(params.get("add"));
+		String updateInfo = StringUtil.getString(params.get("update"));
+		String deleteInfo = StringUtil.getString(params.get("delete"));
+
+		String agentUser = StringUtil.getString(params.get("agentUser"));
+		String agentId = StringUtil.getString(params.get("agentId"));
+		String startTime = StringUtil.getString(params.get("startTime"));
+		String endTime = StringUtil.getString(params.get("endTime"));
+		String status = StringUtil.getString(params.get("status"));
+
+		if (StringUtil.isNotEmpty(agentUser)) {
+
+			AgentEntity agentEntity = new AgentEntity();
+			agentEntity.setAgentFrom(agentUser);
+			agentEntity.setStatus(status);
+			agentEntity.setId(agentId);
+			if (StringUtil.isNotEmpty(startTime)) {
+				agentEntity.setStartTime(DateUtil.stringToyyyyMmDdDate(startTime));
+			}
+			if (StringUtil.isNotEmpty(endTime)) {
+				agentEntity.setEndTime(DateUtil.stringToyyyyMmDdDate(endTime));
+			}
+
+			// 代理id为空说明是新增
+			if (StringUtil.isEmpty(agentId)) {
+				agentEntity.setId(GuidUtil.CreateGuid());
+				identityService.addAgent(agentEntity);
+			} else {
+				identityService.updateAgentEntity(agentEntity);
+			}
+
+			// 新增
+			if (StringUtil.isNotEmpty(addInfo)) {
+				Map<String, Object> agentInfo = JSONUtil.parseJSON2Map(addInfo);
+				Iterator<String> iterator = agentInfo.keySet().iterator();
+				String key = null;
+				AgentDetailsEntity agentDetailsEntity = null;
+				while (iterator.hasNext()) {
+					key = iterator.next();
+					agentDetailsEntity = new AgentDetailsEntity();
+					agentDetailsEntity.setId(GuidUtil.CreateGuid());
+					agentDetailsEntity.setAgentId(agentEntity.getId());
+					agentDetailsEntity.setAgentTo(StringUtil.getString(agentInfo.get(key)));
+					agentDetailsEntity.setProcessKey(key);
+					identityService.addAgentDetails(agentDetailsEntity);
+				}
+			}
+			// 更新
+			if (StringUtil.isNotEmpty(updateInfo)) {
+				Map<String, Object> agentInfo = JSONUtil.parseJSON2Map(updateInfo);
+				Iterator<String> iterator = agentInfo.keySet().iterator();
+				String key = null;
+				Map<String, String> value = null;
+				AgentDetailsEntity agentDetailsEntity = null;
+				while (iterator.hasNext()) {
+					key = iterator.next();
+					value = (Map<String, String>) agentInfo.get(key);
+					agentDetailsEntity = new AgentDetailsEntity();
+					agentDetailsEntity.setId(key);
+					agentDetailsEntity.setAgentId(agentEntity.getId());
+					agentDetailsEntity.setAgentTo(value.get("user"));
+					agentDetailsEntity.setProcessKey(value.get("key"));
+					identityService.updateAgentDetailsEntity(agentDetailsEntity);
+				}
+			}
+			// 删除
+			if (StringUtil.isNotEmpty(deleteInfo)) {
+				StringTokenizer st = new StringTokenizer(deleteInfo, ",");
+				while (st.hasMoreTokens()) {
+					identityService.deleteAgentDetails(st.nextToken());
+				}
+			}
+		}
+
+	}
+
+	@Override
+	public void deleUserDelegationInfo(Map<String, Object> params) {
+		String agentInfoJson = StringUtil.getString(params.get("deleteIndex"));
+		String agentId = StringUtil.getString(params.get("agentId"));
+		if (StringUtil.isNotEmpty(agentId)) {
+			if (StringUtil.isNotEmpty(agentInfoJson)) {
+				StringTokenizer st = new StringTokenizer(agentInfoJson, ",");
+				while (st.hasMoreTokens()) {
+					identityService.deleteAgentDetails(st.nextToken());
+				}
+			}
+		}
 	}
 
 }
