@@ -54,7 +54,7 @@ public class DeploymentManager {
 		}
 		ProcessDefinitionEntity processDefinition = Context.getCommandContext().getProcessDefinitionManager().findProcessDefinitionById(processDefinitionId);
 		if (processDefinition == null) {
-			throw new FoxBPMObjectNotFoundException("数据库中未找到id = '" + processDefinitionId + "'的流程定义！");
+			return null;
 		}
 		processDefinition = resolveProcessDefinition(processDefinition);
 		return processDefinition;
@@ -83,8 +83,9 @@ public class DeploymentManager {
 		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) Context.getCommandContext()
 				.getProcessDefinitionManager().findProcessDefinitionByKeyAndVersion(processDefinitionKey, processDefinitionVersion);
 		if (processDefinition == null) {
-			throw new FoxBPMObjectNotFoundException("数据库中未找到key = '" + processDefinitionKey + "' ， version 为='"
-					+ processDefinitionVersion + "'的流程定义");
+			return null;
+//			throw new FoxBPMObjectNotFoundException("数据库中未找到key = '" + processDefinitionKey + "' ， version 为='"
+//					+ processDefinitionVersion + "'的流程定义");
 		}
 		processDefinition = resolveProcessDefinition(processDefinition);
 		return processDefinition;
