@@ -80,9 +80,9 @@
 	out.print(sb.toString());
 %>
 <input type="hidden" id="pageIndex" name="pageIndex"
-	value="${pageInfo.pageIndex}" />
+	value="${pageInfor.pageIndex}" />
 <input type="hidden" id="pageSize" name="pageSize"
-	value="${pageInfo.pageSize}" />
+	value="${pageInfor.pageSize}" />
 <script>
 	function submit(index, size) {
 		$("#pageIndex").val(index);

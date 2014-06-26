@@ -178,7 +178,7 @@ a {
 											<td><input type="radio" name="chk"
 												deploymentId="${dataList.deploymentId}"
 												processDefinitionId="${dataList.processDefinitionId}" /></td>
-											<td style="text-align: center;">${(index.index+1)+pageInfo.pageSize*(pageInfo.pageIndex-1)}</td>
+											<td style="text-align: center;">${(index.index+1)+pageInfor.pageSize*(pageInfor.pageIndex-1)}</td>
 											<td>${dataList.name}</td>
 											<td>${dataList.key}</td>
 											<td>${dataList.version}</td>

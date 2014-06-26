@@ -217,7 +217,7 @@ public class Pagination<T> implements Serializable {
 		if (distable) {
 			sb.append("<li>上一页</li>");
 		} else {
-			sb.append("<li><a href='#' onclick='toIndex(\""+pageIndex+"\")'>上一页</a></li>");
+			sb.append("<li><a href='javascript:void(0)' onclick='toIndex(\""+pageIndex+"\")'>上一页</a></li>");
 		}
 		return sb.toString();
 	}
@@ -226,14 +226,14 @@ public class Pagination<T> implements Serializable {
 		if (distable) {
 			sb.append("<li>下一页 </li>");
 		} else {
-			sb.append("<li><a href='#' onclick='toIndex(\""+pageIndex+"\")'>下一页 </a></li>");
+			sb.append("<li><a href='javascript:void(0)' onclick='toIndex(\""+pageIndex+"\")'>下一页 </a></li>");
 		}
 		return sb.toString();
 	}
 	public String createPageIndex(int pageIndex, boolean cur) {
 		StringBuilder sb = new StringBuilder();
 		if (!cur) {
-			sb.append("<li><a onclick='toIndex(\""+pageIndex+"\")' href='#'>");
+			sb.append("<li><a onclick='toIndex(\""+pageIndex+"\")' href='javascript:void(0)'>");
 			sb.append(pageIndex);
 			sb.append("</a></li>");
 		} else {

@@ -125,6 +125,7 @@ function SETDelegation(config) {
 							if (typeof (jsonObj) != undefined) {
 								// 成功需要刷新页面数据
 								if ('0' == jsonObj.statusCode) {
+									alert("操作成功!");
 									$("#" + formId).submit();
 								} else {
 									alert(jsonObj.errorMsg);

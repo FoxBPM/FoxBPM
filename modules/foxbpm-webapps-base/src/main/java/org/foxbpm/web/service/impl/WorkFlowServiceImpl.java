@@ -403,7 +403,10 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		if (StringUtil.isNotEmpty(name)) {
 			nameLike = assembleLikeParam(name);
 		}
-		Page page = new Page(pageInfor.getPageIndex() - 1, pageInfor.getPageSize());
+		int pageNum = pageInfor.getPageIndex();
+		int rowNum = pageInfor.getPageSize();
+
+		Page page = new Page(pageNum * rowNum - rowNum, rowNum);
 		return identityService.getUsers(idLike, nameLike, page);
 	}
 
