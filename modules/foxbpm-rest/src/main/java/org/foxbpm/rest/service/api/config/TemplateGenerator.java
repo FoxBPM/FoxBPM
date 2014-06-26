@@ -17,7 +17,6 @@
  */
 package org.foxbpm.rest.service.api.config;
 
-import java.io.File;
 import java.io.InputStream;
 import java.net.JarURLConnection;
 import java.net.URL;
@@ -58,7 +57,7 @@ public class TemplateGenerator implements IZipGenerator {
 				if(name.startsWith(dirPath) && !entry.isDirectory() && !name.endsWith(".class")){
 					int size = 1024;
 					InputStream is = jarFile.getInputStream(entry);
-					String tmpEntryName = dirPath + File.separator + name.substring(dirPath.length()+1);
+					String tmpEntryName = dirPath + "/" + name.substring(dirPath.length()+1);
 					ZipEntry zipEntry = new ZipEntry(tmpEntryName);
 					zipEntry.setMethod(ZipEntry.DEFLATED);// 设置条目的压缩方式
 					out.putNextEntry(zipEntry);

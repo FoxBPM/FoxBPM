@@ -17,7 +17,6 @@
  */
 package org.foxbpm.rest.service.api.config;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -42,7 +41,7 @@ public class FoxBpmCfgGenerator implements IZipGenerator {
 			String path = "config/foxbpm.cfg.xml";
 			
 			InputStream is = this.getClass().getClassLoader().getResourceAsStream(path);
-			String tmpEntryName = "coreconfig" + File.separator + "foxbpm.cfg.xml";
+			String tmpEntryName = "coreconfig/foxbpm.cfg.xml";
 			ZipEntry zipEntry = new ZipEntry(tmpEntryName);
 			zipEntry.setMethod(ZipEntry.DEFLATED);// 设置条目的压缩方式
 			out.putNextEntry(zipEntry);

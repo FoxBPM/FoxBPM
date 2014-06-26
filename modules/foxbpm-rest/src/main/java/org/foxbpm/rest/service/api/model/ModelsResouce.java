@@ -116,12 +116,10 @@ public class ModelsResouce extends AbstractRestResource{
 									deploymentBuilder.deploy();
 								}else if(PREFIX_UPDATE.equals(operation)){
 									ProcessDefinition processDefinition = null;
-									try{//查询是否已经存在，已存在，则更新，否则新增
-										processDefinition = modelService.getProcessDefinition(processKey, version);
+									processDefinition = modelService.getProcessDefinition(processKey, version);
+									if(processDefinition != null){
 										String deploymentId = processDefinition.getDeploymentId();
 										deploymentBuilder.updateDeploymentId(deploymentId);
-									}catch(FoxBPMObjectNotFoundException ex){
-										//此异常代表数据库中不存在此流程定义
 									}
 									deploymentBuilder.deploy();
 								}else if(PREFIX_DELETE.equals(operation)){

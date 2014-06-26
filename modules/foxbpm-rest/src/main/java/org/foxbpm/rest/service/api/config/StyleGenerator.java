@@ -1,6 +1,5 @@
 package org.foxbpm.rest.service.api.config;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -18,7 +17,7 @@ public class StyleGenerator implements IZipGenerator {
 			String path = "config/style.xml";
 			
 			InputStream is = this.getClass().getClassLoader().getResourceAsStream(path);
-			String tmpEntryName = "coreconfig" + File.separator + "style.xml";
+			String tmpEntryName = "coreconfig/style.xml";
 			ZipEntry zipEntry = new ZipEntry(tmpEntryName);
 			zipEntry.setMethod(ZipEntry.DEFLATED);// 设置条目的压缩方式
 			out.putNextEntry(zipEntry);
