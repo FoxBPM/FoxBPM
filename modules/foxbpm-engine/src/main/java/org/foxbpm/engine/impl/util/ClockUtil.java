@@ -17,7 +17,11 @@
  */
 package org.foxbpm.engine.impl.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.foxbpm.engine.exception.FoxBPMException;
 
 /**
  * @author kenshin
@@ -27,6 +31,17 @@ public class ClockUtil {
 
 	private volatile static Date CURRENT_TIME = null;
 
+	private final static String NORMAL_FORMAT = "yyyy-MM-dd HH:mm:ss";
+	public final static Date parseStringToDate(String dateTime){
+		Date date = null;
+		try {
+			date = new SimpleDateFormat(NORMAL_FORMAT)
+					.parse((String) dateTime);
+		} catch (ParseException e) {
+			throw new FoxBPMException("日期时间转换错误 parseStringToDate！");
+		}
+		return date;
+	}
 	public static void setCurrentTime(Date currentTime) {
 		ClockUtil.CURRENT_TIME = currentTime;
 	}

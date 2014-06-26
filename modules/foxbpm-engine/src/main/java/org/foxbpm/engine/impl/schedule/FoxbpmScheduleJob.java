@@ -34,6 +34,7 @@ public abstract class FoxbpmScheduleJob implements Job {
 	protected String groupName;
 	protected Trigger trigger;
 
+	public FoxbpmScheduleJob(){}
 	public FoxbpmScheduleJob(String name, String groupName, Trigger trigger) {
 		this.name = name;
 		this.groupName = groupName;

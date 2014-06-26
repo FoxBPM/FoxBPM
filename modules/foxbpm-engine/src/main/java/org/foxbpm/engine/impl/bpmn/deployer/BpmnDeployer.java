@@ -46,6 +46,7 @@ import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduleJob;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduler;
 import org.foxbpm.engine.impl.schedule.quartz.ProcessIntanceAutoStartJob;
+import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
@@ -192,7 +193,8 @@ public class BpmnDeployer extends AbstractDeployer {
 								foxbpmJob);
 
 						// 设置调度变量
-						JobDataMap jobDataMap = jobDetail.getJobDataMap();
+						JobDataMap jobDataMap = jobDetail.getJobDetail()
+								.getJobDataMap();
 						jobDataMap
 								.put(FoxbpmJobExecutionContext.PROCESS_DEFINITION_ID,
 										processDefinitionID);
@@ -202,8 +204,8 @@ public class BpmnDeployer extends AbstractDeployer {
 						jobDataMap
 								.put(FoxbpmJobExecutionContext.PROCESS_DEFINITION_NAME,
 										processDefinition.getName());
-						jobDataMap.put(FoxbpmJobExecutionContext.FLOW_NODE,
-								kernelFlowNodeImpl);
+						jobDataMap.put(FoxbpmJobExecutionContext.NODE_ID,
+								kernelFlowNodeImpl.getId());
 						// 调度
 						this.scheduleFoxbpmJob(
 								new JobKey(detailName, groupName), jobDetail);
@@ -238,6 +240,9 @@ public class BpmnDeployer extends AbstractDeployer {
 			// Date 启动
 			if (startDate instanceof Date) {
 				Date date = (Date) startDate;
+				trigger = withIdentity.startAt(date).build();
+			} else if (startDate instanceof String) {
+				Date date = ClockUtil.parseStringToDate((String) startDate);
 				trigger = withIdentity.startAt(date).build();
 			} else {
 				throw new FoxBPMException("自动启动流程实例，启动时间表达式有错误！");

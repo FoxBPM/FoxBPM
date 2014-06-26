@@ -33,9 +33,12 @@ import org.quartz.Trigger;
  */
 public abstract class AbstractQuartzScheduleJob extends FoxbpmScheduleJob {
 
-	public AbstractQuartzScheduleJob(String name, String groupName, Trigger trigger) {
-		super(name,groupName,trigger);
+	public AbstractQuartzScheduleJob(){}
+	public AbstractQuartzScheduleJob(String name, String groupName,
+			Trigger trigger) {
+		super(name, groupName, trigger);
 	}
+
 	@Override
 	public void execute(JobExecutionContext context)
 			throws JobExecutionException {

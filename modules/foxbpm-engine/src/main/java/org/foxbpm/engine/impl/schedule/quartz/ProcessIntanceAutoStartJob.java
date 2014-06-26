@@ -23,7 +23,6 @@ import java.util.Map;
 import org.foxbpm.engine.impl.cmd.TimeStartProcessInstanceCmd;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.foxbpm.engine.runtime.ProcessInstance;
-import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.quartz.JobExecutionException;
 import org.quartz.Trigger;
 
@@ -35,6 +34,20 @@ import org.quartz.Trigger;
  * 
  */
 public class ProcessIntanceAutoStartJob extends AbstractQuartzScheduleJob {
+	/**
+	 * quartz系统创建
+	 */
+	public ProcessIntanceAutoStartJob() {
+
+	}
+
+	/**
+	 * 本地自动调度创建
+	 * 
+	 * @param name
+	 * @param groupName
+	 * @param trigger
+	 */
 	public ProcessIntanceAutoStartJob(String name, String groupName,
 			Trigger trigger) {
 		super(name, groupName, trigger);
@@ -48,15 +61,12 @@ public class ProcessIntanceAutoStartJob extends AbstractQuartzScheduleJob {
 		String processDefinitionKey = foxpmJobExecutionContext.getProcessKey();
 		String businessKey = foxpmJobExecutionContext.getBizKey();
 		Map<String, Object> transientVariableMap = new HashMap<String, Object>();
-		KernelFlowNodeImpl startFlowNode = foxpmJobExecutionContext
-				.getKernelFlowNodeImpl();
 		TimeStartProcessInstanceCmd<ProcessInstance> timeStartProcessInstanceCmd = new TimeStartProcessInstanceCmd<ProcessInstance>();
 		timeStartProcessInstanceCmd.setNodeId(nodeId);
 		timeStartProcessInstanceCmd.setProcessDefinitionId(processDefinitionId);
 		timeStartProcessInstanceCmd.setTransientVariables(transientVariableMap);
 		timeStartProcessInstanceCmd
 				.setProcessDefinitionKey(processDefinitionKey);
-		timeStartProcessInstanceCmd.setStartFlowNode(startFlowNode);
 
 		timeStartProcessInstanceCmd.setBusinessKey(businessKey);
 		// 执行流程启动命令
