@@ -116,7 +116,7 @@ public class TimeStartProcessInstanceCmd<T> implements
 					+ processDefinition.getId() + ") 为暂停状态");
 		}
 
-		// 根据开始节点 启动流程实例
+		// 根据开始节点 启动流程实例，因为自动启动的开始节点可以有多个
 		ProcessInstanceEntity processInstance = processDefinition
 				.createProcessInstance(this.businessKey,
 						this.getStartFlowNode());

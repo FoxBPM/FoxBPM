@@ -48,7 +48,6 @@ import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
 import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.bpmn.deployer.AbstractDeployer;
-import org.foxbpm.engine.impl.bpmn.deployer.BpmnAutoStartDeployer;
 import org.foxbpm.engine.impl.bpmn.deployer.BpmnDeployer;
 import org.foxbpm.engine.impl.cache.DefaultCache;
 import org.foxbpm.engine.impl.db.DefaultDataSourceManage;
@@ -358,7 +357,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 		if (bpmnDeployer == null) {
 			// 添加部署的时候自动启动流程实例 功能，修改时间 2014-06-24
-			bpmnDeployer = new BpmnAutoStartDeployer(new BpmnDeployer());
+			bpmnDeployer = new BpmnDeployer();
 		}
 
 		if (processModelParseHandler == null) {
