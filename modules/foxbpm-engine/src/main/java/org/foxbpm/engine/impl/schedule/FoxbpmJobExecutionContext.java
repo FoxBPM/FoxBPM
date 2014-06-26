@@ -35,7 +35,7 @@ public class FoxbpmJobExecutionContext {
 	 */
 	public final static String NAME_SUFFIX_JOBDETAIL = "_JOBDETAIL";
 	public final static String NAME_SUFFIX_JOBTRIGGER = "_TRIGGER";
-	public final static String NAME_SUFFIX_JOBGROUP = "_TRIGGER";
+	public final static String NAME_SUFFIX_JOBGROUP = "_GROUP";
 	/**
 	 * 自动调度环境变量名称
 	 */
