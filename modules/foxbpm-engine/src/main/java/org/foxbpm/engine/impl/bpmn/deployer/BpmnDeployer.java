@@ -43,6 +43,7 @@ import org.foxbpm.engine.impl.entity.ResourceEntity;
 import org.foxbpm.engine.impl.persistence.ProcessDefinitionManager;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobDetail;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
+import org.foxbpm.engine.impl.schedule.FoxbpmScheduleJob;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduler;
 import org.foxbpm.engine.impl.schedule.quartz.ProcessIntanceAutoStartJob;
 import org.foxbpm.engine.impl.util.GuidUtil;
@@ -158,6 +159,7 @@ public class BpmnDeployer extends AbstractDeployer {
 			KernelFlowNodeImpl kernelFlowNodeImpl = iterator.next();
 			KernelFlowNodeBehavior kernelFlowNodeBehavior = kernelFlowNodeImpl
 					.getKernelFlowNodeBehavior();
+			// 获取START EVENT节点
 			if (kernelFlowNodeBehavior instanceof StartEventBehavior) {
 				List<EventDefinition> eventDefinitions = ((StartEventBehavior) kernelFlowNodeBehavior)
 						.getEventDefinitions();
@@ -167,11 +169,10 @@ public class BpmnDeployer extends AbstractDeployer {
 					EventDefinition eventDefinition = eventDefIter.next();
 					// 如果开始节点存在自动启动属性，那么就调度或者刷新 工作任务
 					if (eventDefinition instanceof TimerEventDefinition) {
-						Object dateObj = ((TimerEventDefinition) eventDefinition)
+						Object startDate = ((TimerEventDefinition) eventDefinition)
 								.getTimeDate().getValue(null);
-						String expressionText = ((TimerEventDefinition) eventDefinition)
+						String cronExpression = ((TimerEventDefinition) eventDefinition)
 								.getTimeCycle().getExpressionText();
-						Trigger trigger = null;
 						String eventID = eventDefinition.getId();
 						String groupName = processDefinitionID
 								+ eventID
@@ -182,29 +183,13 @@ public class BpmnDeployer extends AbstractDeployer {
 						String detailName = processDefinitionID
 								+ eventID
 								+ FoxbpmJobExecutionContext.NAME_SUFFIX_JOBDETAIL;
-						TriggerBuilder<Trigger> withIdentity = newTrigger()
-								.withIdentity(triggerName, groupName);
-						if (dateObj == null && isBlank(expressionText)) {
-							throw new FoxBPMException("自动启动流程实例，启动时间表达式为空！");
-						} else if (dateObj == null
-								&& isNotBlank(expressionText)) {
-							// CRON表达式启动
-							trigger = withIdentity.withSchedule(
-									cronSchedule(expressionText)).build();
-						} else if (dateObj != null && isBlank(expressionText)) {
-							// Date 启动
-							if (dateObj instanceof Date) {
-								Date date = (Date) dateObj;
-								trigger = withIdentity.startAt(date).build();
-							} else {
-								throw new FoxBPMException(
-										"自动启动流程实例，启动时间表达式有错误！");
-							}
-						}
-
-						FoxbpmJobDetail<ProcessIntanceAutoStartJob> jobDetail = new FoxbpmJobDetail<ProcessIntanceAutoStartJob>(
-								new ProcessIntanceAutoStartJob(), detailName,
-								groupName, trigger);
+						// 创建TRIGGER==>>>JOB==>>>>JOBDETAIL
+						Trigger trigger = this.createTrigger(startDate,
+								cronExpression, triggerName, groupName);
+						FoxbpmScheduleJob foxbpmJob = new ProcessIntanceAutoStartJob(
+								detailName, groupName, trigger);
+						FoxbpmJobDetail<FoxbpmScheduleJob> jobDetail = new FoxbpmJobDetail<FoxbpmScheduleJob>(
+								foxbpmJob);
 
 						// 设置调度变量
 						JobDataMap jobDataMap = jobDetail.getJobDataMap();
@@ -219,26 +204,69 @@ public class BpmnDeployer extends AbstractDeployer {
 										processDefinition.getName());
 						jobDataMap.put(FoxbpmJobExecutionContext.FLOW_NODE,
 								kernelFlowNodeImpl);
-						try {
-							FoxbpmScheduler foxbpmScheduler = ProcessEngineManagement
-									.getDefaultProcessEngine()
-									.getProcessEngineConfiguration()
-									.getFoxbpmScheduler();
-							if (foxbpmScheduler == null) {
-								throw new FoxBPMException(
-										"FOXBPM 自动启动类型的部署时候，调度器没有初始化！");
-							}
+						// 调度
+						this.scheduleFoxbpmJob(
+								new JobKey(detailName, groupName), jobDetail);
 
-							// 先清空，后调度
-							foxbpmScheduler.deleteJob(new JobKey(detailName,
-									groupName));
-							foxbpmScheduler.scheduleFoxbpmJob(jobDetail);
-						} catch (SchedulerException e) {
-							throw new FoxBPMException("调度  《流程自动启动JOB》时候出现问题！");
-						}
 					}
 				}
 			}
+		}
+	}
+
+	/**
+	 * 创建两种类型TRIGGER
+	 * 
+	 * @param startDate
+	 * @param cronExpression
+	 * @param triggerName
+	 * @param groupName
+	 * @return trigger
+	 */
+	private Trigger createTrigger(Object startDate, String cronExpression,
+			String triggerName, String groupName) {
+		Trigger trigger = null;
+		TriggerBuilder<Trigger> withIdentity = newTrigger().withIdentity(
+				triggerName, groupName);
+		if (startDate == null && isBlank(cronExpression)) {
+			throw new FoxBPMException("自动启动流程实例，启动时间表达式为空！");
+		} else if (startDate == null && isNotBlank(cronExpression)) {
+			// CRON表达式启动
+			trigger = withIdentity.withSchedule(cronSchedule(cronExpression))
+					.build();
+		} else if (startDate != null && isBlank(cronExpression)) {
+			// Date 启动
+			if (startDate instanceof Date) {
+				Date date = (Date) startDate;
+				trigger = withIdentity.startAt(date).build();
+			} else {
+				throw new FoxBPMException("自动启动流程实例，启动时间表达式有错误！");
+			}
+		}
+		return trigger;
+
+	}
+
+	/**
+	 * 调度，先清空后调度
+	 * 
+	 * @param jobKey
+	 * @param jobDetail
+	 */
+	private void scheduleFoxbpmJob(JobKey jobKey, FoxbpmJobDetail<?> jobDetail) {
+		try {
+			FoxbpmScheduler foxbpmScheduler = ProcessEngineManagement
+					.getDefaultProcessEngine().getProcessEngineConfiguration()
+					.getFoxbpmScheduler();
+			if (foxbpmScheduler == null) {
+				throw new FoxBPMException("FOXBPM 自动启动类型的部署时候，调度器没有初始化！");
+			}
+
+			// 先清空，后调度
+			foxbpmScheduler.deleteJob(jobKey);
+			foxbpmScheduler.scheduleFoxbpmJob(jobDetail);
+		} catch (SchedulerException e) {
+			throw new FoxBPMException("调度  《流程自动启动JOB》时候出现问题！");
 		}
 	}
 
