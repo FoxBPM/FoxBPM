@@ -25,11 +25,18 @@ import org.foxbpm.engine.impl.agent.AgentTo;
 public interface User {
 
 	public String getUserId();
+
 	public String getUserName();
+
 	public String getEmail();
+
 	public List<Group> getGroups();
+
 	public Map<String, Object> getPropertyMap();
+
 	public Object getPropertyValue(String propertyName);
+
+	public Map<String, Object> getPersistentState();
 
 	public List<AgentTo> getAgentInfo();
 }

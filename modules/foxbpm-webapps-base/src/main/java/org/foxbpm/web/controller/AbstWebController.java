@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,9 +32,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.foxbpm.web.common.constant.FoxbpmServiceNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmViewNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmWebContextAttributeNameDefinition;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
+import org.foxbpm.web.service.interfaces.IFlowManageService;
+import org.foxbpm.web.service.interfaces.IWorkFlowService;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -44,6 +48,13 @@ import org.springframework.web.servlet.ModelAndView;
  * @date 2014年6月11日
  */
 public abstract class AbstWebController {
+
+	// 工作流服务
+	@Resource(name = FoxbpmServiceNameDefinition.WORKFLOW_SERVICENAME)
+	protected IWorkFlowService workFlowService;
+	// 流程管理服务
+	@Resource(name = FoxbpmServiceNameDefinition.FLOWMANAGE_SERVICENAME)
+	protected IFlowManageService flowManageService;
 
 	@ExceptionHandler
 	public String exp(HttpServletRequest request, Exception ex) {
@@ -154,7 +165,7 @@ public abstract class AbstWebController {
 	 */
 	public void doResponse(HttpServletResponse response, String content) {
 		try {
-			PrintWriter out = response.getWriter(); 
+			PrintWriter out = response.getWriter();
 			response.setContentType("text/html;charset=UTF-8");
 			out.print(content);
 			out.flush();

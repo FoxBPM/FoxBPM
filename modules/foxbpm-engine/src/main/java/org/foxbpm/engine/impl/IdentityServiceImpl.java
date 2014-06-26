@@ -28,9 +28,11 @@ import org.foxbpm.engine.impl.cmd.DeleteAgentDetailsCmd;
 import org.foxbpm.engine.impl.cmd.FindAgentEntityCmd;
 import org.foxbpm.engine.impl.cmd.FindUserByIdCmd;
 import org.foxbpm.engine.impl.cmd.FindUsersCmd;
+import org.foxbpm.engine.impl.cmd.FindUsersCountCmd;
 import org.foxbpm.engine.impl.cmd.SaveAgentDetailsEntityCmd;
 import org.foxbpm.engine.impl.cmd.SaveAgentEntityCmd;
 import org.foxbpm.engine.impl.cmd.UpdatePersistentObjectCmd;
+import org.foxbpm.engine.impl.db.Page;
 
 public class IdentityServiceImpl extends ServiceImpl implements IdentityService {
 
@@ -41,7 +43,7 @@ public class IdentityServiceImpl extends ServiceImpl implements IdentityService 
 
 	@Override
 	public List<User> getUsers(String idLike, String nameLike) {
-		return commandExecutor.execute(new FindUsersCmd(idLike, nameLike));
+		return commandExecutor.execute(new FindUsersCmd(idLike, nameLike, null));
 	}
 
 	@Override
@@ -77,4 +79,13 @@ public class IdentityServiceImpl extends ServiceImpl implements IdentityService 
 		return commandExecutor.execute(new FindAgentEntityCmd(agentUser));
 	}
 
+	@Override
+	public List<User> getUsers(String idLike, String nameLike, Page page) {
+		return commandExecutor.execute(new FindUsersCmd(idLike, nameLike, page));
+	}
+
+	@Override
+	public Object getUsersCount(String idLike, String nameLike) {
+		return commandExecutor.execute(new FindUsersCountCmd(idLike, nameLike));
+	}
 }

@@ -25,6 +25,32 @@ import org.foxbpm.engine.impl.entity.UserEntity;
 public interface UserEntityManager {
 
 	public UserEntity findUserById(String userId);
-	
-	public List<User> findUsers(String idLike,String nameLike);
+
+	public List<UserEntity> findUsers(String idLike, String nameLike);
+
+	/**
+	 * 查询用户
+	 * 
+	 * @param idLike
+	 *            id
+	 * @param nameLike
+	 *            名称
+	 * @param firstResult
+	 *            记录起始位置
+	 * @param maxResults
+	 *            最大记录数
+	 * @return 返回用户列表
+	 */
+	List<UserEntity> findUsers(String idLike, String nameLike, int firstResult, int maxResults);
+
+	/**
+	 * 查询用户数
+	 * 
+	 * @param idLike
+	 *            id
+	 * @param nameLike
+	 *            名称
+	 * @return 用户数
+	 */
+	Object findUserCount(String idLike, String nameLike);
 }

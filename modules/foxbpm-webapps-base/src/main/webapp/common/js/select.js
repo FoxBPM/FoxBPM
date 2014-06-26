@@ -21,8 +21,8 @@ function FoxbpmSelect(obj, fn, params) {
 	};
 	switch (obj.type) {
 	case "user":
-		rv = window.showModalDialog("queryUser.action&isMulti=" + isMulti,
-				passObj, "dialogWidth=" + w + ";dialogHeight=" + h);
+		rv = window.showModalDialog("selectUserList.action", passObj,
+				"dialogWidth=" + w + ";dialogHeight=" + h);
 		break;
 	case "node":
 		rv = window.showModalDialog("FlowCenter?action=selectNodeList&taskId="
@@ -35,9 +35,8 @@ function FoxbpmSelect(obj, fn, params) {
 				+ h);
 		break;
 	case "processDef":
-		rv = window.showModalDialog(
-				"queryProcessDef.action=selectStepList&taskId=" + obj.taskId,
-				passObj, "dialogWidth=" + w + ";dialogHeight=" + h);
+		rv = window.showModalDialog("selectProcessDefList.action", passObj,
+				"dialogWidth=" + w + ";dialogHeight=" + h);
 		break;
 	default:
 		break;

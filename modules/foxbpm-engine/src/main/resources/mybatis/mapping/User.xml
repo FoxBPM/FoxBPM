@@ -1,36 +1,72 @@
 <?xml version="1.0" encoding="UTF-8" ?> 
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.foxbpm.engine.impl.entity.UserEntity">
 
- <resultMap id="userResultMap" type="org.foxbpm.engine.impl.entity.UserEntity" >
-    <id column="USERID" property="userId" jdbcType="VARCHAR" />
-    <result column="USERNAME" property="userName" jdbcType="VARCHAR" />
-    <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
-    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
-  </resultMap>
-  
-   <select id="selectUserById" parameterType="java.lang.String" resultMap="userResultMap">
-	    select 
-	    *
-	    from au_userinfo
-	    where USERID = #{id,jdbcType=VARCHAR}
-  </select>
-  
-  <select id="selectUsers" parameterType="java.util.Map" resultMap="userResultMap">
-	    select 
-	    *
-	    from au_userinfo
-	    <where> 
-	     <if test="_parameter.containsKey('userId')">  
-        	AND USERID LIKE #{userId,jdbcType=VARCHAR} 
-    	</if>  
-    	<if test="_parameter.containsKey('userName')">  
-        	AND USERNAME LIKE #{userName,jdbcType=VARCHAR}
-    	</if>  
-	    </where>
-	   
-	    
-  </select>
-  
+	<resultMap id="userResultMap" type="org.foxbpm.engine.impl.entity.UserEntity">
+		<id column="USERID" property="userId" jdbcType="VARCHAR" />
+		<result column="USERNAME" property="userName" jdbcType="VARCHAR" />
+		<result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+		<result column="EMAIL" property="email" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="selectUserById" parameterType="java.lang.String"
+		resultMap="userResultMap">
+		select
+		*
+		from au_userinfo
+		where USERID = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectUsers" parameterType="java.util.Map"
+		resultMap="userResultMap">
+		select
+		*
+		from au_userinfo
+		<where>
+			<if test="_parameter.containsKey('userId')">
+				AND USERID LIKE #{userId,jdbcType=VARCHAR}
+			</if>
+			<if test="_parameter.containsKey('userName')">
+				AND USERNAME LIKE #{userName,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectUsersByPage" parameterType="org.foxbpm.engine.impl.db.ListQueryParameterObject"
+		resultMap="userResultMap">
+		${limitBefore}
+		select * ${limitBetween}
+		from au_userinfo
+		<where>
+			<if test=" 1==1">
+				1=1
+			</if>
+			<if test="parameter.userId != null">
+				AND USERID LIKE #{parameter.userId}
+			</if>
+			<if test="parameter.userName != null">
+				AND USERNAME LIKE #{parameter.userName}
+			</if>
+		</where>
+		${limitAfter}
+	</select>
+
+	<select id="selectUsersCount" parameterType="java.util.Map"
+		resultType="long">
+		select
+		count(a.userid)
+		from au_userinfo a
+		<where>
+			<if test=" 1==1">
+				1=1
+			</if>
+			<if test="_parameter.containsKey('userId')">
+				AND USERID LIKE #{userId,jdbcType=VARCHAR}
+			</if>
+			<if test="_parameter.containsKey('userName')">
+				AND USERNAME LIKE #{userName,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
 </mapper>

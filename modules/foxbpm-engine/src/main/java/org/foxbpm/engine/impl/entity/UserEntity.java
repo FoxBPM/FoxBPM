@@ -19,6 +19,7 @@
 package org.foxbpm.engine.impl.entity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,20 +28,21 @@ import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentTo;
 
 public class UserEntity implements User {
-	
+
 	private String userId;
 	private String userName;
 	private String password;
 	private String email;
-	private Map<String,Object> propertyMap;
+	private Map<String, Object> propertyMap;
 	private List<Group> groups = new ArrayList<Group>();
 	private List<AgentTo> agentInfo;
-	public UserEntity (){
-		
+
+	public UserEntity() {
+
 	}
 
-	public UserEntity (String userId){
-		
+	public UserEntity(String userId) {
+
 	}
 
 	public String getPassword() {
@@ -82,26 +84,35 @@ public class UserEntity implements User {
 	public String getEmail() {
 		return this.email;
 	}
-	
+
 	@Override
 	public List<Group> getGroups() {
 		return groups;
 	}
 
 	public Object getPropertyValue(String propertyName) {
-		if(this.propertyMap != null){
+		if (this.propertyMap != null) {
 			return this.propertyMap.get(propertyName);
 		}
 		return null;
 	}
-	
+
 	@Override
 	public List<AgentTo> getAgentInfo() {
 		return agentInfo;
 	}
-	
+
 	public void setAgentInfo(List<AgentTo> agentInfo) {
 		this.agentInfo = agentInfo;
+	}
+
+	@Override
+	public Map<String, Object> getPersistentState() {
+		Map<String, Object> persistentState = new HashMap<String, Object>();
+		persistentState.put("userId", userId);
+		persistentState.put("userName", userName);
+		persistentState.put("email", email);
+		return persistentState;
 	}
 
 }
