@@ -17,10 +17,10 @@
  */
 package org.foxbpm.engine.impl.schedule;
 
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
-import org.quartz.Trigger;
 import org.quartz.impl.JobDetailImpl;
 
 /**
@@ -36,31 +36,18 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 	 */
 	private static final long serialVersionUID = -1555130032039717646L;
 	private JobDetail jobDetail;
-	private String foxpmnJobName;
-	private String foxpmnJobGroup;
 	private T foxbpmJob;
-	private Trigger trigger;
-
-	public FoxbpmJobDetail(T foxbpmJob, String foxpmnJobName,
-			String foxpmnJobGroup, Trigger trigger) {
-		this.foxpmnJobGroup = foxpmnJobGroup;
-		this.foxpmnJobName = foxpmnJobName;
-		this.trigger = trigger;
-		this.jobDetail = JobBuilder.newJob(foxbpmJob.getClass())
-				.withIdentity(foxpmnJobName, foxpmnJobGroup).build();
-	}
 
 	public FoxbpmJobDetail(T foxbpmJob) {
-		this.foxbpmJob = foxbpmJob;
-		this.jobDetail = JobBuilder.newJob(foxbpmJob.getClass()).build();
-	}
-
-	public Trigger getTrigger() {
-		return trigger;
-	}
-
-	public void setTrigger(Trigger trigger) {
-		this.trigger = trigger;
+		if(foxbpmJob instanceof FoxbpmScheduleJob){
+			this.jobDetail = JobBuilder
+					.newJob(foxbpmJob.getClass())
+					.withIdentity(((FoxbpmScheduleJob) foxbpmJob).getName(),
+							((FoxbpmScheduleJob) foxbpmJob).getGroupName()).build();
+		}else{
+			throw new FoxBPMException("非 FoxbpmScheduleJob ，无法创建FoxbpmJobDetail！");
+		}
+		
 	}
 
 	public JobDetail getJobDetail() {
@@ -69,22 +56,6 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 
 	public void setJobDetail(JobDetail jobDetail) {
 		this.jobDetail = jobDetail;
-	}
-
-	public String getFoxpmnJobName() {
-		return foxpmnJobName;
-	}
-
-	public void setFoxpmnJobName(String foxpmnJobName) {
-		this.foxpmnJobName = foxpmnJobName;
-	}
-
-	public String getFoxpmnJobGroup() {
-		return foxpmnJobGroup;
-	}
-
-	public void setFoxpmnJobGroup(String foxpmnJobGroup) {
-		this.foxpmnJobGroup = foxpmnJobGroup;
 	}
 
 	public T getFoxbpmJob() {

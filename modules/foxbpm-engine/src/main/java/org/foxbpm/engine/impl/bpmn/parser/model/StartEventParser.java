@@ -28,7 +28,7 @@ import org.foxbpm.engine.impl.util.BpmnModelUtil;
  * 是否持久化开始任务
  * @author ych
  */
-public class StartEventParser extends FlowNodeParser {
+public class StartEventParser extends CatchEventParser {
 
 	@Override
 	public BaseElementBehavior parser(BaseElement baseElement) {

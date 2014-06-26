@@ -73,6 +73,9 @@ public class StartAndSubmitTaskCmd extends AbstractExpandTaskCmd<StartAndSubmitT
 				List<TaskCommand> taskCommands = submitTask.getTaskDefinition().getTaskCommands("submit");
 				if (taskCommands.size() > 0) {
 					expandTaskCommand.setTaskCommandId(taskCommands.get(0).getId());
+				}else{
+					throw new FoxBPMException("发起节点必须包含一个提交命令");
+					//expandTaskCommand.setTaskCommandId(this.taskCommandId);
 				}
 
 				expandTaskCommand.setTransientVariables(transientVariables);

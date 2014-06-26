@@ -20,9 +20,9 @@ package org.foxbpm.engine.impl.schedule.quartz;
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduleJob;
-import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.quartz.Trigger;
 
 /**
  * 初始化FoxbpmJobExecution上下文，初始化commandExecutor
@@ -31,9 +31,11 @@ import org.quartz.JobExecutionException;
  * @date 2014-06-25
  * 
  */
-public abstract class AbstractQuartzScheduleJob extends FoxbpmScheduleJob
-		implements Job {
+public abstract class AbstractQuartzScheduleJob extends FoxbpmScheduleJob {
 
+	public AbstractQuartzScheduleJob(String name, String groupName, Trigger trigger) {
+		super(name,groupName,trigger);
+	}
 	@Override
 	public void execute(JobExecutionContext context)
 			throws JobExecutionException {

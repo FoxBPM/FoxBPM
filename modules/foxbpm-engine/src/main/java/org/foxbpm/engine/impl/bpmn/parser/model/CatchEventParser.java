@@ -48,8 +48,8 @@ public class CatchEventParser extends EventParser {
 				TimerEventDefinition timerEventDefinition=(TimerEventDefinition)eventDefinition;
 				timerEventDefinitionNew.setId(timerEventDefinition.getId());
 				timerEventDefinitionNew.setTimeCycle(timerEventDefinition.getTimeCycle()!=null?((FormalExpression)timerEventDefinition.getTimeCycle()).getBody():null);
-				timerEventDefinitionNew.setTimeDate(timerEventDefinition.getTimeCycle()!=null?((FormalExpression)timerEventDefinition.getTimeDate()).getBody():null);
-				timerEventDefinitionNew.setTimeDuration(timerEventDefinition.getTimeCycle()!=null?((FormalExpression)timerEventDefinition.getTimeDuration()).getBody():null);
+				timerEventDefinitionNew.setTimeDate(timerEventDefinition.getTimeDate()!=null?((FormalExpression)timerEventDefinition.getTimeDate()).getBody():null);
+				timerEventDefinitionNew.setTimeDuration(timerEventDefinition.getTimeDuration()!=null?((FormalExpression)timerEventDefinition.getTimeDuration()).getBody():null);
 				catchEventBehavior.getEventDefinitions().add(timerEventDefinitionNew);
 			}
 			

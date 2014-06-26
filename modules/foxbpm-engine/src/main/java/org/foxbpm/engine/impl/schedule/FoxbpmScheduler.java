@@ -63,7 +63,8 @@ public class FoxbpmScheduler implements Scheduler {
 			// 进行FOXBPM操作
 			FoxbpmJobDetail<?> foxbpmJobDetail = (FoxbpmJobDetail<?>) jobDetail;
 			return this.scheduler.scheduleJob(foxbpmJobDetail.getJobDetail(),
-					foxbpmJobDetail.getTrigger());
+					((FoxbpmScheduleJob) foxbpmJobDetail.getFoxbpmJob())
+							.getTrigger());
 		} else {
 			throw new FoxBPMException("jobDetail 不是 FoxbpmJobDetail");
 		}

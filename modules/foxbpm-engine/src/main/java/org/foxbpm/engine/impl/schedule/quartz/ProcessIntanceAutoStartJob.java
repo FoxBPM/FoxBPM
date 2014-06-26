@@ -25,6 +25,7 @@ import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.quartz.JobExecutionException;
+import org.quartz.Trigger;
 
 /**
  * 流程实例自动启动JOB
@@ -34,6 +35,10 @@ import org.quartz.JobExecutionException;
  * 
  */
 public class ProcessIntanceAutoStartJob extends AbstractQuartzScheduleJob {
+	public ProcessIntanceAutoStartJob(String name, String groupName,
+			Trigger trigger) {
+		super(name, groupName, trigger);
+	}
 
 	@Override
 	public void executeJob(FoxbpmJobExecutionContext foxpmJobExecutionContext)

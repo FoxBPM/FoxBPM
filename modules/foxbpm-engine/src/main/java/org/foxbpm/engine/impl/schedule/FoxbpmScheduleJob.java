@@ -18,7 +18,9 @@
 package org.foxbpm.engine.impl.schedule;
 
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
+import org.quartz.Job;
 import org.quartz.JobExecutionException;
+import org.quartz.Trigger;
 
 /**
  * FOXBPM 工作
@@ -27,7 +29,16 @@ import org.quartz.JobExecutionException;
  * @date 2014-06-25
  * 
  */
-public abstract class FoxbpmScheduleJob {
+public abstract class FoxbpmScheduleJob implements Job {
+	protected String name;
+	protected String groupName;
+	protected Trigger trigger;
+
+	public FoxbpmScheduleJob(String name, String groupName, Trigger trigger) {
+		this.name = name;
+		this.groupName = groupName;
+		this.trigger = trigger;
+	}
 
 	/**
 	 * 执行任务的命令
@@ -40,6 +51,30 @@ public abstract class FoxbpmScheduleJob {
 
 	public void setCommandExecutor(CommandExecutor commandExecutor) {
 		this.commandExecutor = commandExecutor;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getGroupName() {
+		return groupName;
+	}
+
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+
+	public Trigger getTrigger() {
+		return trigger;
+	}
+
+	public void setTrigger(Trigger trigger) {
+		this.trigger = trigger;
 	}
 
 	/**
