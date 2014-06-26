@@ -143,6 +143,11 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 	public List<TaskCommand> getTaskCommandByTaskId(String taskId) {
 		return commandExecutor.execute(new GetTaskCommandByTaskIdCmd(taskId,false));
 	}
+	
+	@Override
+	public List<TaskCommand> getTaskCommandByTaskId(String taskId,boolean isProcessTracking) {
+		return commandExecutor.execute(new GetTaskCommandByTaskIdCmd(taskId,isProcessTracking));
+	}
 
 
 }

@@ -81,7 +81,7 @@ public class BaseElementParser {
 			String errorHandlingString = connectorInstance.getErrorHandling();
 			String errorCodeString = connectorInstance.getErrorCode();
 			boolean isTimeExecute = connectorInstance.isIsTimeExecute();
-			String documentationString = connectorInstance.getDocumentation().getValue();
+			String documentationString = connectorInstance.getDocumentation()!=null?connectorInstance.getDocumentation().getValue():null;
 			String skipExpression = null;
 			if (connectorInstance.getSkipComment() != null) {
 				skipExpression = connectorInstance.getSkipComment().getExpression().getValue();
