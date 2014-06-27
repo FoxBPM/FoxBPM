@@ -18,6 +18,7 @@
 package org.foxbpm.engine.impl.schedule;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -57,14 +58,27 @@ public class FoxbpmScheduler implements Scheduler {
 		this.scheduler = scheduler;
 	}
 
-	public Date scheduleFoxbpmJob(JobDetail jobDetail)
+	public void scheduleFoxbpmJob(JobDetail jobDetail)
 			throws SchedulerException {
 		if (jobDetail instanceof FoxbpmJobDetail) {
 			// 进行FOXBPM操作
 			FoxbpmJobDetail<?> foxbpmJobDetail = (FoxbpmJobDetail<?>) jobDetail;
-			return this.scheduler.scheduleJob(foxbpmJobDetail.getJobDetail(),
-					((FoxbpmScheduleJob) foxbpmJobDetail.getFoxbpmJob())
-							.getTrigger());
+			List<Trigger> triggerList = ((FoxbpmScheduleJob) foxbpmJobDetail
+					.getFoxbpmJob()).getTriggerList();
+			if (triggerList != null && triggerList.size() != 0) {
+				if (triggerList.size() == 1) {
+					this.scheduler
+							.scheduleJob(foxbpmJobDetail.getJobDetail(),
+									((FoxbpmScheduleJob) foxbpmJobDetail
+											.getFoxbpmJob()).getTrigger());
+				} else {
+					Map<JobDetail, List<Trigger>> triggersAndJobs = new HashMap<JobDetail, List<Trigger>>();
+					triggersAndJobs.put(foxbpmJobDetail.getJobDetail(),
+							triggerList);
+					this.scheduler.scheduleJobs(triggersAndJobs, true);
+				}
+			}
+
 		} else {
 			throw new FoxBPMException("jobDetail 不是 FoxbpmJobDetail");
 		}
@@ -206,6 +220,19 @@ public class FoxbpmScheduler implements Scheduler {
 	@Override
 	public boolean deleteJob(JobKey jobKey) throws SchedulerException {
 		return this.getScheduler().deleteJob(jobKey);
+	}
+
+	public boolean deleteJob(FoxbpmJobDetail<?> jobDetail) {
+		FoxbpmScheduleJob foxbpmScheduleJob = (FoxbpmScheduleJob) jobDetail
+				.getFoxbpmJob();
+		try {
+			return this.getScheduler().deleteJob(
+					new JobKey(foxbpmScheduleJob.getName(), foxbpmScheduleJob
+							.getGroupName()));
+		} catch (SchedulerException e) {
+			// TODO Auto-generated catch block
+		}
+		return false;
 	}
 
 	@Override

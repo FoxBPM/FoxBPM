@@ -43,8 +43,6 @@ import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.QuartzUtil;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
-import org.quartz.JobDataMap;
-import org.quartz.JobKey;
 import org.quartz.Trigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -182,24 +180,21 @@ public class BpmnDeployer extends AbstractDeployer {
 								detailName, groupName, trigger);
 						FoxbpmJobDetail<FoxbpmScheduleJob> jobDetail = new FoxbpmJobDetail<FoxbpmScheduleJob>(
 								foxbpmJob);
-
 						// 设置调度变量
-						JobDataMap jobDataMap = jobDetail.getJobDetail()
-								.getJobDataMap();
-						jobDataMap
-								.put(FoxbpmJobExecutionContext.PROCESS_DEFINITION_ID,
+						jobDetail.putContextAttribute(
+										FoxbpmJobExecutionContext.PROCESS_DEFINITION_ID,
 										processDefinitionID);
-						jobDataMap
-								.put(FoxbpmJobExecutionContext.PROCESS_DEFINITION_KEY,
+						jobDetail.putContextAttribute(
+										FoxbpmJobExecutionContext.PROCESS_DEFINITION_KEY,
 										processDefinition.getKey());
-						jobDataMap
-								.put(FoxbpmJobExecutionContext.PROCESS_DEFINITION_NAME,
+						jobDetail.putContextAttribute(
+										FoxbpmJobExecutionContext.PROCESS_DEFINITION_NAME,
 										processDefinition.getName());
-						jobDataMap.put(FoxbpmJobExecutionContext.NODE_ID,
+						jobDetail.putContextAttribute(
+								FoxbpmJobExecutionContext.NODE_ID,
 								kernelFlowNodeImpl.getId());
 						// 调度
-						QuartzUtil.scheduleFoxbpmJob(new JobKey(detailName,
-								groupName), jobDetail);
+						QuartzUtil.scheduleFoxbpmJob(jobDetail);
 
 					}
 				}
