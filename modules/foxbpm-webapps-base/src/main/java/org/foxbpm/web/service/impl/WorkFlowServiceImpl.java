@@ -347,9 +347,8 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		if (StringUtil.isNotEmpty(taskId)) {
 			expandTaskCommand.setTaskId(taskId);
 		} else {
-			String processInstanceId = runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey).getId();
-			Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).taskNotEnd().singleResult();
-			expandTaskCommand.setTaskId(task.getId());
+			expandTaskCommand.setBusinessKey(businessKey);
+			expandTaskCommand.setProcessDefinitionKey(processDefinitionKey);
 		}
 		processInstance = taskService.expandTaskComplete(expandTaskCommand, null);
 		return processInstance;
