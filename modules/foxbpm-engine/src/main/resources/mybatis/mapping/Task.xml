@@ -10,6 +10,7 @@
     <result column="VERSION" property="version" jdbcType="INTEGER" />
     <result column="TOKEN_ID" property="tokenId" jdbcType="VARCHAR" />
     <result column="NODE_ID" property="nodeId" jdbcType="VARCHAR" />
+    <result column="NODE_NAME" property="nodeName" jdbcType="VARCHAR" />
     <result column="SUBJECT" property="subject" jdbcType="VARCHAR" />
     <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
     <result column="COMPLETEDESCRIPTION" property="completeDescription" jdbcType="VARCHAR" />
