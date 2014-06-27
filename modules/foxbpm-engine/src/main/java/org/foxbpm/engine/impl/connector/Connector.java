@@ -174,75 +174,97 @@ public class Connector implements KernelListener {
 	public void setConnectorOutputsParam(List<ConnectorOutputParam> connectorOutputsParam) {
 		this.connectorOutputsParam = connectorOutputsParam;
 	}
-
-	public void notify(ListenerExecutionContext executionContext) throws Exception  {
+	
+	public void notifyNoTime(ListenerExecutionContext executionContext) throws Exception  {
 		// TODO Auto-generated method stub
 
-		try {
+				try {
 
-			if (this.skipExpression != null && this.skipExpression.getExpressionText() != null && !this.skipExpression.getExpressionText().equals("")) {
-				Object timeExpressionObj = skipExpression.getValue((FlowNodeExecutionContext)executionContext);
-				if (StringUtil.getBoolean(timeExpressionObj)) {
-					return;
-				}
-			}
-
-			String classNameObj = packageName + "." + className;
-			Class<?> connectorHandlerClass = Class.forName(classNameObj);
-			FlowConnectorHandler connectorInstance = (FlowConnectorHandler) connectorHandlerClass.newInstance();
-
-			for (ConnectorInputParam connectorParameterInputs : this.getConnectorInputsParam()) {
-
-				Class<?> ptypes[] = new Class[1];
-
-				ptypes[0] = Class.forName(connectorParameterInputs.getDataType());
-
-				String parameterInputsId = connectorParameterInputs.getId();
-
-				String methodString = "set" + parameterInputsId.substring(0, 1).toUpperCase()
-						+ parameterInputsId.substring(1, parameterInputsId.length());
-				Method m = connectorHandlerClass.getMethod(methodString, ptypes);
-
-				if (connectorParameterInputs.getExpression() != null) {
-					Object arg[] = new Object[1];
-					if (!connectorParameterInputs.getExpression().isNullText()&&connectorParameterInputs.isExecute()) {
-						arg[0] = connectorParameterInputs.getExpression().getValue((FlowNodeExecutionContext)executionContext);
-					}else{
-						arg[0] = connectorParameterInputs.getExpression().getExpressionText();
+					if (this.skipExpression != null && this.skipExpression.getExpressionText() != null && !this.skipExpression.getExpressionText().equals("")) {
+						Object timeExpressionObj = skipExpression.getValue((FlowNodeExecutionContext)executionContext);
+						if (StringUtil.getBoolean(timeExpressionObj)) {
+							return;
+						}
 					}
-					m.invoke(connectorInstance, arg);
+
+					String classNameObj = packageName + "." + className;
+					Class<?> connectorHandlerClass = Class.forName(classNameObj);
+					FlowConnectorHandler connectorInstance = (FlowConnectorHandler) connectorHandlerClass.newInstance();
+
+					for (ConnectorInputParam connectorParameterInputs : this.getConnectorInputsParam()) {
+
+						Class<?> ptypes[] = new Class[1];
+
+						ptypes[0] = Class.forName(connectorParameterInputs.getDataType());
+
+						String parameterInputsId = connectorParameterInputs.getId();
+
+						String methodString = "set" + parameterInputsId.substring(0, 1).toUpperCase()
+								+ parameterInputsId.substring(1, parameterInputsId.length());
+						Method m = connectorHandlerClass.getMethod(methodString, ptypes);
+
+						if (connectorParameterInputs.getExpression() != null) {
+							Object arg[] = new Object[1];
+							if (!connectorParameterInputs.getExpression().isNullText()&&connectorParameterInputs.isExecute()) {
+								arg[0] = connectorParameterInputs.getExpression().getValue((FlowNodeExecutionContext)executionContext);
+							}else{
+								arg[0] = connectorParameterInputs.getExpression().getExpressionText();
+							}
+							m.invoke(connectorInstance, arg);
+						}
+
+					}
+
+					connectorInstance.execute((ConnectorExecutionContext)executionContext);
+
+					for (ConnectorOutputParam connectorParameterOutputs : this.getConnectorOutputsParam()) {
+
+						if (!StringUtil.isEmpty(connectorParameterOutputs.getOutputId())) {
+							String parameterOutputsId = connectorParameterOutputs.getOutputId();
+
+							String methodString = "get" + parameterOutputsId.substring(0, 1).toUpperCase()
+									+ parameterOutputsId.substring(1, parameterOutputsId.length());
+							Method m = connectorHandlerClass.getMethod(methodString);
+
+							String variableTarget = connectorParameterOutputs.getVariableTarget();
+							// Object arg[] = new Object[1];
+							// arg[0] =Context.getBshInterpreter().eval(scriptString);
+
+							Object objectValue = m.invoke(connectorInstance);
+
+							ExpressionMgmt.setVariable(variableTarget, objectValue, (FlowNodeExecutionContext)executionContext);
+						}
+
+					}
+
+				} catch (Exception e) {
+
+					throw new FoxBPMConnectorException(e.getMessage(), e);
+
 				}
+	}
 
+	public void notify(ListenerExecutionContext executionContext) throws Exception  {
+		if(getSkipExpression()!=null&&!getSkipExpression().equals("")){
+			Object skipExpressionObj=getSkipExpression().getValue((FlowNodeExecutionContext)executionContext);
+			if(StringUtil.getBoolean(skipExpressionObj)){
+				return ;
 			}
-
-			connectorInstance.execute((ConnectorExecutionContext)executionContext);
-
-			for (ConnectorOutputParam connectorParameterOutputs : this.getConnectorOutputsParam()) {
-
-				if (!StringUtil.isEmpty(connectorParameterOutputs.getOutputId())) {
-					String parameterOutputsId = connectorParameterOutputs.getOutputId();
-
-					String methodString = "get" + parameterOutputsId.substring(0, 1).toUpperCase()
-							+ parameterOutputsId.substring(1, parameterOutputsId.length());
-					Method m = connectorHandlerClass.getMethod(methodString);
-
-					String variableTarget = connectorParameterOutputs.getVariableTarget();
-					// Object arg[] = new Object[1];
-					// arg[0] =Context.getBshInterpreter().eval(scriptString);
-
-					Object objectValue = m.invoke(connectorInstance);
-
-					ExpressionMgmt.setVariable(variableTarget, objectValue, (FlowNodeExecutionContext)executionContext);
-				}
-
-			}
-
-		} catch (Exception e) {
-
-			throw new FoxBPMConnectorException(e.getMessage(), e);
-
+		}
+		
+		if (isTimeExecute()) {
+			// 定时器执行方式
+			notifyTime(executionContext);
+		} else {
+			// 直接执行方式
+			notifyNoTime(executionContext);
 		}
 	}
+	
+	private void notifyTime(ListenerExecutionContext executionContext) throws Exception  {
+		//马恩亮需要在这里添加时间执行的代码
+	}
+	
 
 	
 
