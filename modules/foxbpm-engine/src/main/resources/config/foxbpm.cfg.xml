@@ -33,28 +33,23 @@
 			command="org.foxbpm.engine.impl.task.command.StartAndSubmitTaskCommand"
 			cmd="org.foxbpm.engine.impl.task.cmd.StartAndSubmitTaskCmd"
 			isEnabled="true" type="toDoTasks"
-			filter="org.foxbpm.engine.impl.task.filter.StartAndSubmitTaskFilter"
-		 />
+			filter="org.foxbpm.engine.impl.task.filter.StartAndSubmitTaskFilter" />
 		<taskCommandDefinition id="submit" name="提交"
 			command="org.foxbpm.engine.impl.task.command.SubmitTaskCommand" cmd="org.foxbpm.engine.impl.task.cmd.SubmitTaskCmd"
 			isEnabled="true" type="toDoTasks"
-			filter="org.foxbpm.engine.impl.task.filter.SubmitTaskFilter"
-		/>
-		<!-- <taskCommandDefinition id="claim" name="接收任务"
+			filter="org.foxbpm.engine.impl.task.filter.SubmitTaskFilter" />
+		<taskCommandDefinition id="claim" name="接收任务"
 			command="org.foxbpm.engine.impl.task.command.ClaimTaskCommand" cmd="org.foxbpm.engine.impl.task.cmd.ClaimTaskCmd"
 			isEnabled="true" type="sharedTasks"
-			filter="org.foxbpm.engine.impl.task.filter.ClaimTaskFilter"
-			/>
+			filter="org.foxbpm.engine.impl.task.filter.ClaimTaskFilter" />
 		<taskCommandDefinition id="releaseTask" name="释放任务"
 			command="org.foxbpm.engine.impl.task.command.ReleaseTaskCommand" cmd="org.foxbpm.engine.impl.task.cmd.ReleaseTaskCmd"
 			isEnabled="true" type="toDoTasks"
-			filter="org.foxbpm.engine.impl.task.filter.ReleaseTaskFilter"
-	/>
+			filter="org.foxbpm.engine.impl.task.filter.ReleaseTaskFilter" />
 		<taskCommandDefinition id="saveTaskDraft" name="保存草稿"
 			command="org.foxbpm.engine.impl.task.command.SaveTaskDraftCommand"
 			cmd="org.foxbpm.engine.impl.task.cmd.SaveTaskDraftCmd" isEnabled="true"
-			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.SaveTaskDraftFilter"
-		/> -->
+			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.SaveTaskDraftFilter" />
 		<taskCommandDefinition id="processStatus" name="流程状态"
 			isEnabled="true" type="all" />
 

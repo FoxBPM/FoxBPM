@@ -19,18 +19,45 @@ package org.foxbpm.engine.impl.task.filter;
 
 import org.foxbpm.engine.task.Task;
 
-public class StartAndSubmitTaskFilter extends AbstractCommandFilter {
+public class ReleaseTaskFilter extends AbstractCommandFilter {
 
 	@Override
 	public boolean accept(Task task) {
-		if(task==null){
-			return true;
-		}
-		else {
+		
+		if (task == null) {
 			return false;
 		}
+
+		if (task.isAutoClaim()) {
+			return false;
+		}
+
+		if (task.isSuspended()) {
+			return false;
+		}
+
+		if (task.hasEnded()) {
+			return false;
+		}
+
+		if (isProcessTracking()) {
+			return false;
+		}
+
+		if (task.getDelegationState() != null) {
+			return false;
+		}
+
+		if (task.getAssignee() != null) {
+
+			return true;
+
+		} else {
+
+			return false;
+
+		}
+
 	}
 
-
 }
-
