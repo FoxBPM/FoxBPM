@@ -35,6 +35,10 @@ public abstract class Authentication {
 	public static void setAuthenticatedUserId(String authenticatedUserId) {
 		authenticatedUserIdThreadLocal.set(authenticatedUserId);
 	}
+	
+	public static void getSystemId(){
+		
+	}
 
 	public static String getAuthenticatedUserId() {
 		return authenticatedUserIdThreadLocal.get();
