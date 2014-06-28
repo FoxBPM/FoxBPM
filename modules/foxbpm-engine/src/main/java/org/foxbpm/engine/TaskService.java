@@ -93,5 +93,7 @@ public interface TaskService {
 	 * @return
 	 */
 	List<TaskCommand> getSubTaskCommandByKey(String Key);
+	
+	List<TaskCommand> getTaskCommandByTaskId(String taskId,boolean isProcessTracking);
 
 }

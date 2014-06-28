@@ -35,7 +35,7 @@ public class FoxbpmJobExecutionContext {
 	 */
 	public final static String NAME_SUFFIX_JOBDETAIL = "_JOBDETAIL";
 	public final static String NAME_SUFFIX_JOBTRIGGER = "_TRIGGER";
-	public final static String NAME_SUFFIX_JOBGROUP = "_TRIGGER";
+	public final static String NAME_SUFFIX_JOBGROUP = "_GROUP";
 	/**
 	 * 自动调度环境变量名称
 	 */
@@ -47,6 +47,14 @@ public class FoxbpmJobExecutionContext {
 	public final static String PROCESS_DEFINITION_NAME = "processName";
 	public final static String BUSINESS_KEY = "bizKey";
 	public final static String TOKEN_ID = "tokenId";
+	public final static String CONNECTOR_ID = "connectorId";
+	public final static String EVENT_NAME = "eventName";
+
+	public final static String CONNECTOR_INSTANCE_ID = "connectorInstanceId";
+	public final static String CONNECTOR_INSTANCE_NAME = "connectorInstanceName";
+	public final static String EVENT_TYPE = "eventType";
+	public final static String TASK_ID = "taskId";
+
 	private String tokenId;
 	private String processInstanceId;
 	private String nodeId;
@@ -59,6 +67,7 @@ public class FoxbpmJobExecutionContext {
 	private String connectorInstanceId;
 	private String connectorInstanceName;
 	private String eventType;
+	private String eventName;
 	private String taskId;
 	private Job scheduleJob;
 	private KernelFlowNodeImpl kernelFlowNodeImpl;
@@ -77,13 +86,21 @@ public class FoxbpmJobExecutionContext {
 		this.processName = jobDataMap.getString(PROCESS_DEFINITION_NAME);
 		this.bizKey = jobDataMap.getString(BUSINESS_KEY);
 		this.jobType = jobDataMap.getString("jobType");
-		this.connectorId = jobDataMap.getString("connectorId");
-		this.connectorInstanceId = jobDataMap.getString("connectorInstanceId");
+		this.connectorId = jobDataMap.getString(CONNECTOR_ID);
+		this.connectorInstanceId = jobDataMap.getString(CONNECTOR_INSTANCE_ID);
 		this.connectorInstanceName = jobDataMap
-				.getString("connectorInstanceName");
-		this.eventType = jobDataMap.getString("eventType");
-		this.taskId = jobDataMap.getString("taskId");
+				.getString(CONNECTOR_INSTANCE_NAME);
+		this.eventType = jobDataMap.getString(EVENT_TYPE);
+		this.taskId = jobDataMap.getString(TASK_ID);
 
+	}
+
+	public String getEventName() {
+		return eventName;
+	}
+
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
 	}
 
 	public Job getScheduleJob() {

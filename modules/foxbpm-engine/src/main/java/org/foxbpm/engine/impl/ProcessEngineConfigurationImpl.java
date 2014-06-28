@@ -77,8 +77,10 @@ import org.foxbpm.engine.impl.persistence.VariableManager;
 import org.foxbpm.engine.impl.persistence.deploy.Deployer;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduler;
+import org.foxbpm.engine.impl.task.filter.AbstractCommandFilter;
 import org.foxbpm.engine.impl.transaction.DefaultTransactionContextFactory;
 import org.foxbpm.engine.impl.util.ReflectUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
@@ -141,7 +143,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected TaskCommandConfig taskCommandConfig;
 
 	protected Map<String, TaskCommandDefinition> taskCommandDefinitionMap;
+	
+	protected Map<String, AbstractCommandFilter> abstractCommandFilterMap;
 
+	
 	/**
 	 * FOXBPM任务调度器
 	 */
@@ -191,7 +196,26 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		// 加载主题样式文件
 		initStyle();
 		// 加载SVG模版资源
+		initSVG();
+		//加载任务命令过滤器
+		initAbstractCommandFilter();
+	}
+	
+	
+	protected void initSVG(){
 		SVGTemplateContainer.getContainerInstance();
+	}
+	
+	protected void initAbstractCommandFilter() {
+
+		abstractCommandFilterMap = new HashMap<String, AbstractCommandFilter>();
+		List<TaskCommandDefinition> taskCommandDefs = foxBpmConfig.getTaskCommandConfig().getTaskCommandDefinition();
+		for (TaskCommandDefinition taskCommandDef : taskCommandDefs) {
+			if (StringUtil.getBoolean(taskCommandDef.getIsEnabled()) && taskCommandDef.getFilter() != null && !taskCommandDef.getFilter().equals("")) {
+				AbstractCommandFilter abstractCommandFilter = (AbstractCommandFilter) ReflectUtil.instantiate(taskCommandDef.getFilter());
+				abstractCommandFilterMap.put(taskCommandDef.getId(), abstractCommandFilter);
+			}
+		}
 	}
 
 	private void initStyle() {
@@ -688,5 +712,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	public void setFoxbpmScheduler(FoxbpmScheduler foxbpmScheduler) {
 		this.foxbpmScheduler = foxbpmScheduler;
 	}
+	
+	public Map<String, AbstractCommandFilter> getAbstractCommandFilterMap() {
+		return abstractCommandFilterMap;
+	}
+
 
 }

@@ -18,6 +18,8 @@
 package org.foxbpm.engine.impl.cmd;
 
 import java.io.Serializable;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -71,8 +73,6 @@ public class TimeStartProcessInstanceCmd<T> implements
 	 */
 	protected String nodeId;
 
-	protected KernelFlowNodeImpl startFlowNode;
-
 	/**
 	 * 流程实例启动操作
 	 * 
@@ -119,7 +119,7 @@ public class TimeStartProcessInstanceCmd<T> implements
 		// 根据开始节点 启动流程实例，因为自动启动的开始节点可以有多个
 		ProcessInstanceEntity processInstance = processDefinition
 				.createProcessInstance(this.businessKey,
-						this.getStartFlowNode());
+						this.getStartFlowNode(processDefinition));
 		if (transientVariables != null) {
 			processInstance.setVariables(transientVariables);
 		}
@@ -129,12 +129,17 @@ public class TimeStartProcessInstanceCmd<T> implements
 		return processInstance;
 	}
 
-	public KernelFlowNodeImpl getStartFlowNode() {
-		return startFlowNode;
-	}
-
-	public void setStartFlowNode(KernelFlowNodeImpl startFlowNode) {
-		this.startFlowNode = startFlowNode;
+	private KernelFlowNodeImpl getStartFlowNode(
+			ProcessDefinitionEntity processDefinition) {
+		List<KernelFlowNodeImpl> flowNodes = processDefinition.getFlowNodes();
+		Iterator<KernelFlowNodeImpl> iterator = flowNodes.iterator();
+		while (iterator.hasNext()) {
+			KernelFlowNodeImpl next = iterator.next();
+			if (StringUtils.equalsIgnoreCase(next.getId(), this.getNodeId())) {
+				return next;
+			}
+		}
+		return null;
 	}
 
 	public String getProcessDefinitionId() {

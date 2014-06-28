@@ -17,6 +17,9 @@
  */
 package org.foxbpm.engine.impl.schedule;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 import org.quartz.Job;
 import org.quartz.JobExecutionException;
@@ -33,17 +36,57 @@ public abstract class FoxbpmScheduleJob implements Job {
 	protected String name;
 	protected String groupName;
 	protected Trigger trigger;
-
-	public FoxbpmScheduleJob(String name, String groupName, Trigger trigger) {
-		this.name = name;
-		this.groupName = groupName;
-		this.trigger = trigger;
-	}
-
+	protected List<Trigger> triggerList;
 	/**
 	 * 执行任务的命令
 	 */
 	protected CommandExecutor commandExecutor;
+
+	/**
+	 * 系统自动调度 创建一个新的实例 FoxbpmScheduleJob.
+	 * 
+	 */
+	public FoxbpmScheduleJob() {
+	}
+
+	/**
+	 * 设置调度器，保存调度状态，单触发器 创建一个新的实例 FoxbpmScheduleJob.
+	 * 
+	 * @param name
+	 * @param groupName
+	 * @param trigger
+	 */
+	public FoxbpmScheduleJob(String name, String groupName, Trigger trigger) {
+		this.name = name;
+		this.groupName = groupName;
+		this.trigger = trigger;
+		this.triggerList = new ArrayList<Trigger>();
+		triggerList.add(trigger);
+	}
+
+	/**
+	 * 设置调度器，保存调度状态，多触发器 创建一个新的实例 FoxbpmScheduleJob.
+	 * 
+	 * @param name
+	 * @param groupName
+	 * @param triggerList
+	 */
+	public FoxbpmScheduleJob(String name, String groupName,
+			List<Trigger> triggerList) {
+		this.name = name;
+		this.groupName = groupName;
+		this.triggerList = triggerList;
+	}
+
+	/**
+	 * 执行任务的方法
+	 * 
+	 * @param foxpmJobExecutionContext
+	 * @throws JobExecutionException
+	 */
+	public abstract void executeJob(
+			FoxbpmJobExecutionContext foxpmJobExecutionContext)
+			throws JobExecutionException;
 
 	public CommandExecutor getCommandExecutor() {
 		return commandExecutor;
@@ -77,13 +120,11 @@ public abstract class FoxbpmScheduleJob implements Job {
 		this.trigger = trigger;
 	}
 
-	/**
-	 * 执行任务的方法
-	 * 
-	 * @param foxpmJobExecutionContext
-	 * @throws JobExecutionException
-	 */
-	public abstract void executeJob(
-			FoxbpmJobExecutionContext foxpmJobExecutionContext)
-			throws JobExecutionException;
+	public List<Trigger> getTriggerList() {
+		return triggerList;
+	}
+
+	public void setTriggerList(List<Trigger> triggerList) {
+		this.triggerList = triggerList;
+	}
 }

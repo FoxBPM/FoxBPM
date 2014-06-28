@@ -47,7 +47,8 @@ public class GroovyScriptLanguageMgmtImpl extends AbstractScriptLanguageMgmt {
 	}
 
 	@Override
-	public Object execute(String scriptText, ProcessDefinitionEntity processDefinition) {
+	public Object execute(String scriptText,
+			ProcessDefinitionEntity processDefinition) {
 
 		List<String> dvList = getDataVariableList(scriptText);
 
@@ -55,7 +56,8 @@ public class GroovyScriptLanguageMgmtImpl extends AbstractScriptLanguageMgmt {
 
 			for (String expressionId : dvList) {
 
-				List<DataVariableDefinition> dataVariableBehaviors = processDefinition.getDataVariableMgmtDefinition()
+				List<DataVariableDefinition> dataVariableBehaviors = processDefinition
+						.getDataVariableMgmtDefinition()
 						.getDataVariableBehaviorsByProcess();
 				for (DataVariableDefinition dataVariableBehavior : dataVariableBehaviors) {
 
@@ -63,10 +65,13 @@ public class GroovyScriptLanguageMgmtImpl extends AbstractScriptLanguageMgmt {
 
 						Object object = null;
 						if (dataVariableBehavior.getExpression() != null) {
-							object = ExpressionMgmt.execute(dataVariableBehavior.getExpression(), processDefinition);
+							object = ExpressionMgmt.execute(
+									dataVariableBehavior.getExpression(),
+									processDefinition);
 						}
 
-						ExpressionMgmt.setVariable(dataVariableBehavior.getId(), object);
+						ExpressionMgmt.setVariable(
+								dataVariableBehavior.getId(), object);
 
 					}
 
@@ -92,7 +97,8 @@ public class GroovyScriptLanguageMgmtImpl extends AbstractScriptLanguageMgmt {
 	}
 
 	@Override
-	public void setVariable(String variableName, Object variableObj, FlowNodeExecutionContext executionContext) {
+	public void setVariable(String variableName, Object variableObj,
+			FlowNodeExecutionContext executionContext) {
 		dataVariableCalculate(variableName, executionContext);
 		String scriptText = getExpressionAll(variableName);
 
@@ -108,19 +114,20 @@ public class GroovyScriptLanguageMgmtImpl extends AbstractScriptLanguageMgmt {
 	}
 
 	@Override
-	public Object execute(String scriptText, FlowNodeExecutionContext executionContext) {
+	public Object execute(String scriptText,
+			FlowNodeExecutionContext executionContext) {
 		if (scriptText == null) {
 			return null;
 		}
 
-		dataVariableCalculate(scriptText, executionContext);
-
 		Object resultObj = false;
 
-		//groovyShell.setVariable("bizData", Context.getProcessEngineConfiguration().getBizData());
+		// groovyShell.setVariable("bizData",
+		// Context.getProcessEngineConfiguration().getBizData());
 
 		// 绑定变量
 		if (executionContext != null) {
+			dataVariableCalculate(scriptText, executionContext);
 			groovyShell.setVariable("processInfo", executionContext);
 		}
 		String scriptTextTemp = getExpressionAll(scriptText);
@@ -131,10 +138,7 @@ public class GroovyScriptLanguageMgmtImpl extends AbstractScriptLanguageMgmt {
 
 	@Override
 	public Object execute(String scriptText) {
-		 return groovyShell.evaluate(scriptText);
+		return groovyShell.evaluate(scriptText);
 	}
-
-	
-
 
 }

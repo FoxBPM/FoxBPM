@@ -39,17 +39,23 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 	private T foxbpmJob;
 
 	public FoxbpmJobDetail(T foxbpmJob) {
-		if(foxbpmJob instanceof FoxbpmScheduleJob){
+		this.foxbpmJob = foxbpmJob;
+		if (foxbpmJob instanceof FoxbpmScheduleJob) {
 			this.jobDetail = JobBuilder
 					.newJob(foxbpmJob.getClass())
 					.withIdentity(((FoxbpmScheduleJob) foxbpmJob).getName(),
-							((FoxbpmScheduleJob) foxbpmJob).getGroupName()).build();
-		}else{
-			throw new FoxBPMException("非 FoxbpmScheduleJob ，无法创建FoxbpmJobDetail！");
+							((FoxbpmScheduleJob) foxbpmJob).getGroupName())
+					.build();
+		} else {
+			throw new FoxBPMException(
+					"非 FoxbpmScheduleJob ，无法创建FoxbpmJobDetail！");
 		}
-		
+
 	}
 
+	public void putContextAttribute(String attributeName, Object attribute){
+		this.jobDetail.getJobDataMap().put(attributeName, attribute);
+	}
 	public JobDetail getJobDetail() {
 		return jobDetail;
 	}

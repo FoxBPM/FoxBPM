@@ -21,8 +21,10 @@ package org.foxbpm.engine.impl.persistence;
 import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.task.TaskQueryImpl;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.Task;
 
 /**
@@ -37,10 +39,14 @@ public class TaskManager extends AbstractManager {
 	}
 
 	public long findTaskCountByNativeQuery(Map<String, Object> parameterMap) {
-		return 0;
+		throw new FoxBPMBizException("findTaskCountByNativeQuery 方法未实现");
+		//return 0;
 	}
 	
 	public TaskEntity findTaskById(String taskId){
+		if(StringUtil.isEmpty(taskId)){
+			return null;
+		}
 		return selectById(TaskEntity.class, taskId);
 	}
 	
