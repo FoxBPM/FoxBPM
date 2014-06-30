@@ -21,6 +21,7 @@ package org.foxbpm.engine.impl.cmd;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
@@ -29,6 +30,7 @@ import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.kernel.event.KernelListener;
+import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
@@ -61,6 +63,36 @@ public class TimeExecuteConnectorCmd implements Command<KernelListener>,
 						processInstanceID);
 		KernelProcessDefinitionImpl processDefinition = processInstance
 				.getProcessDefinition();
+
+		// 获取当前任务记录的CONNECTOR
+		Connector tempConnector = this
+				.getListenersByDefinition(processDefinition);
+		if (tempConnector == null) {
+			tempConnector = this.getListenersFromDefinition(processDefinition);
+		}
+		try {
+			if (tempConnector == null) {
+				throw new FoxBPMException(
+						"TimeExecuteConnectorCmd自动执行连接器时候,连接器无法获取");
+			}
+			tempConnector.notifyNoTime(this
+					.getExecutionContextFromInstance(processInstance));
+		} catch (Exception e) {
+			throw new FoxBPMException("TimeExecuteConnectorCmd自动执行连接器时候报异常");
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 * getListenersByDefinition(直接从definitions获取) (这里描述这个方法适用条件 – 可选)
+	 * 
+	 * @param processDefinition
+	 * @return Connector
+	 * @since 1.0.0
+	 */
+	private Connector getListenersByDefinition(
+			KernelProcessDefinitionImpl processDefinition) {
 		// 获取所有EVEN NAME记录的LISTENER
 		List<KernelListener> kernelListeners = processDefinition
 				.getKernelListeners(eventName);
@@ -72,16 +104,44 @@ public class TimeExecuteConnectorCmd implements Command<KernelListener>,
 				Connector tempConnector = (Connector) listener;
 				if (StringUtils.equalsIgnoreCase(
 						tempConnector.getConnectorId(), this.connectorID)) {
-					try {
-						tempConnector
-								.notifyNoTime(this
-										.getExecutionContextFromInstance(processInstance));
-					} catch (Exception e) {
-						throw new FoxBPMException(
-								"TimeExecuteConnectorCmd自动执行连接器时候报异常");
-					}
+					return tempConnector;
 				}
-				return tempConnector;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 * getListenersFromDefinition(从特定节点获取) (这里描述这个方法适用条件 – 可选)
+	 * 
+	 * @param processDefinition
+	 * @return Connector
+	 * @since 1.0.0
+	 */
+	private Connector getListenersFromDefinition(
+			KernelProcessDefinitionImpl processDefinition) {
+		List<KernelFlowNodeImpl> flowNodes = processDefinition.getFlowNodes();
+		Iterator<KernelFlowNodeImpl> iterator = flowNodes.iterator();
+		while (iterator.hasNext()) {
+			KernelFlowNodeImpl next = iterator.next();
+			Map<String, List<KernelListener>> kernelListeners = next
+					.getKernelListeners();
+
+			List<KernelListener> list = kernelListeners.get(eventName);
+			if (list != null && list.size() > 0) {
+				Iterator<KernelListener> connectorIter = list.iterator();
+				while (connectorIter.hasNext()) {
+					KernelListener listener = connectorIter.next();
+					if (listener instanceof Connector) {
+						Connector tempConnector = (Connector) listener;
+						if (StringUtils.equalsIgnoreCase(
+								tempConnector.getConnectorId(), connectorID)) {
+							return tempConnector;
+						}
+					}
+
+				}
 			}
 		}
 		return null;

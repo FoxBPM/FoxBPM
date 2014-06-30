@@ -67,10 +67,8 @@ public class FoxbpmScheduler implements Scheduler {
 					.getFoxbpmJob()).getTriggerList();
 			if (triggerList != null && triggerList.size() != 0) {
 				if (triggerList.size() == 1) {
-					this.scheduler
-							.scheduleJob(foxbpmJobDetail.getJobDetail(),
-									((FoxbpmScheduleJob) foxbpmJobDetail
-											.getFoxbpmJob()).getTrigger());
+					this.scheduler.scheduleJob(foxbpmJobDetail.getJobDetail(),
+							triggerList.get(0));
 				} else {
 					Map<JobDetail, List<Trigger>> triggersAndJobs = new HashMap<JobDetail, List<Trigger>>();
 					triggersAndJobs.put(foxbpmJobDetail.getJobDetail(),
