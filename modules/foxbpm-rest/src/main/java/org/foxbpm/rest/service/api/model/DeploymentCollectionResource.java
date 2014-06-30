@@ -23,7 +23,9 @@ import java.util.zip.ZipInputStream;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
+import org.foxbpm.engine.repository.Deployment;
 import org.foxbpm.engine.repository.DeploymentBuilder;
+import org.foxbpm.engine.repository.ProcessDefinitionQuery;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
 import org.restlet.data.Status;
@@ -41,7 +43,7 @@ public class DeploymentCollectionResource extends AbstractRestResource {
 	@Post
 	public String deploy(Representation entity){
 		InputStream input = null;
-		String deploymentId = null;
+		String processDefinitionKey = null;
 		try {
 			input = entity.getStream();
 			if(input == null){
@@ -51,14 +53,16 @@ public class DeploymentCollectionResource extends AbstractRestResource {
 			ZipInputStream zip = new ZipInputStream(input);
 			DeploymentBuilder deploymentBuilder = modelService.createDeployment();
 			deploymentBuilder.addZipInputStream(zip);
-			deploymentBuilder.deploy();
+			Deployment deployment = deploymentBuilder.deploy();
 			setStatus(Status.SUCCESS_CREATED);
+			ProcessDefinitionQuery processDefinitionQuery = modelService.createProcessDefinitionQuery();
+			processDefinitionKey = processDefinitionQuery.deploymentId(deployment.getId()).singleResult().getId();
 		} catch (Exception e) {
 			if (e instanceof FoxBPMException) {
 				throw (FoxBPMException) e;
 			}
 			throw new FoxBPMException(e.getMessage(), e);
 		}		
-		return deploymentId;
+		return processDefinitionKey;
 	}
 }
