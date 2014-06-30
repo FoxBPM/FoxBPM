@@ -26,12 +26,14 @@ import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.TaskEntity;
+import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.task.command.AbstractCustomExpandTaskCommand;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
@@ -102,8 +104,12 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 
 	public T execute(CommandContext commandContext) {
 
-		if (taskId == null) {
+		if (StringUtil.isEmpty(taskId)) {
 			throw new FoxBPMIllegalArgumentException("taskId is null");
+		}
+		
+		if(StringUtil.isEmpty(Authentication.getAuthenticatedUserId())){
+			throw new FoxBPMException("authenticatedUserId is null");
 		}
 
 		TaskEntity task = Context.getCommandContext().getTaskManager().findTaskById(taskId);
@@ -114,6 +120,10 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 
 		if (task.isSuspended()) {
 			throw new FoxBPMException("task is suspended");
+		}
+		
+		if (task.hasEnded()) {
+			throw new FoxBPMException("task is end");
 		}
 
 		return execute(commandContext, task);

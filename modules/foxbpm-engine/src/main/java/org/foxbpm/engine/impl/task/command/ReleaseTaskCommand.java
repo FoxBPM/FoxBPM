@@ -15,22 +15,12 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.engine.impl.task.filter;
+package org.foxbpm.engine.impl.task.command;
 
-import org.foxbpm.engine.task.Task;
+public class ReleaseTaskCommand extends AbstractCustomExpandTaskCommand{
 
-public class StartAndSubmitTaskFilter extends AbstractCommandFilter {
-
-	@Override
-	public boolean accept(Task task) {
-		if(task==null){
-			return true;
-		}
-		else {
-			return false;
-		}
+	public ReleaseTaskCommand(ExpandTaskCommand expandTaskCommand) {
+		super(expandTaskCommand);
 	}
 
-
 }
-
