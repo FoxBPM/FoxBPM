@@ -17,10 +17,26 @@
  */
 package org.foxbpm.engine.impl.schedule;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.quartz.CronScheduleBuilder.cronSchedule;
+import static org.quartz.TriggerBuilder.newTrigger;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.expression.Expression;
+import org.foxbpm.engine.impl.expression.ExpressionMgmt;
+import org.foxbpm.engine.impl.util.ClockUtil;
+import org.foxbpm.engine.impl.util.QuartzUtil;
+import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 import org.quartz.impl.JobDetailImpl;
 
 /**
@@ -35,8 +51,9 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = -1555130032039717646L;
-	private JobDetail jobDetail;
-	private T foxbpmJob;
+	protected JobDetail jobDetail;
+	protected T foxbpmJob;
+	protected List<Trigger> triggerList = new ArrayList<Trigger>();
 
 	public FoxbpmJobDetail(T foxbpmJob) {
 		this.foxbpmJob = foxbpmJob;
@@ -53,9 +70,76 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 
 	}
 
-	public void putContextAttribute(String attributeName, Object attribute){
+	/**
+	 * 创建两种类型TRIGGER
+	 * 
+	 * @param startDate
+	 * @param cronExpression
+	 * @param triggerName
+	 * @param groupName
+	 * @return trigger
+	 */
+	public void createTrigger(Object startDate, String cronExpression,
+			String durationExpression, String triggerName, String groupName) {
+		Trigger trigger = null;
+		TriggerBuilder<Trigger> withIdentity = newTrigger().withIdentity(
+				triggerName, groupName);
+		if (startDate == null && isBlank(cronExpression)
+				&& isBlank(durationExpression)) {
+			throw new FoxBPMException("自动启动流程实例，启动时间表达式为空！");
+		} else if (startDate != null) {
+			// Date 启动
+			if (startDate instanceof Date) {
+				Date date = (Date) startDate;
+				trigger = withIdentity.startAt(date).build();
+			} else if (startDate instanceof String) {
+				Date date = ClockUtil.parseStringToDate((String) startDate);
+				trigger = withIdentity.startAt(date).build();
+			} else {
+				throw new FoxBPMException("自动启动流程实例，启动时间表达式有错误！");
+			}
+		} else if (isNotBlank(cronExpression)) {
+			// CRON表达式启动
+			trigger = withIdentity.withSchedule(cronSchedule(cronExpression))
+					.build();
+		} else if (isNotBlank(durationExpression)) {
+			// TODO DURATION Expression暂时未实现
+		}
+
+		triggerList.add(trigger);
+
+	}
+
+	public void createTriggerList(Expression timeExpression,
+			ListenerExecutionContext executionContext) {
+		List<Trigger> triggersList = new ArrayList<Trigger>();
+		Object triggerObj = ExpressionMgmt.execute(
+				timeExpression.getExpressionText(), executionContext);
+		if (triggerObj instanceof List) {
+			try {
+				triggersList = (List<Trigger>) triggerObj;
+			} catch (Exception e) {
+				throw new FoxBPMException("定时连接器的触发器集合必须为List<Trigger>");
+			}
+
+		} else if (triggerObj instanceof Trigger) {
+			try {
+				triggersList.add((Trigger) triggerObj);
+			} catch (Exception e) {
+				throw new FoxBPMException("定时连接器的触发器集合必须为List<Trigger>", e);
+			}
+		} else if (triggerObj instanceof String) {
+			triggersList.add(QuartzUtil.createTrigger(triggerObj,
+					executionContext.getProcessInstanceId()));
+		}
+
+		this.triggerList = triggersList;
+	}
+
+	public void putContextAttribute(String attributeName, Object attribute) {
 		this.jobDetail.getJobDataMap().put(attributeName, attribute);
 	}
+
 	public JobDetail getJobDetail() {
 		return jobDetail;
 	}
@@ -70,6 +154,14 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 
 	public void setFoxbpmJob(T foxbpmJob) {
 		this.foxbpmJob = foxbpmJob;
+	}
+
+	public List<Trigger> getTriggerList() {
+		return triggerList;
+	}
+
+	public void setTriggerList(List<Trigger> triggerList) {
+		this.triggerList = triggerList;
 	}
 
 }

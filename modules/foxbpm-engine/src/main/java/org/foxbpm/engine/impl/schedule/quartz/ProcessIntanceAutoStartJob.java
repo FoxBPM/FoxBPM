@@ -24,7 +24,6 @@ import org.foxbpm.engine.impl.cmd.TimeStartProcessInstanceCmd;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.quartz.JobExecutionException;
-import org.quartz.Trigger;
 
 /**
  * 流程实例自动启动JOB
@@ -48,9 +47,8 @@ public class ProcessIntanceAutoStartJob extends AbstractQuartzScheduleJob {
 	 * @param groupName
 	 * @param trigger
 	 */
-	public ProcessIntanceAutoStartJob(String name, String groupName,
-			Trigger trigger) {
-		super(name, groupName, trigger);
+	public ProcessIntanceAutoStartJob(String name, String groupName) {
+		super(name, groupName);
 	}
 
 	@Override
@@ -61,14 +59,15 @@ public class ProcessIntanceAutoStartJob extends AbstractQuartzScheduleJob {
 		String processDefinitionKey = foxpmJobExecutionContext.getProcessKey();
 		String businessKey = foxpmJobExecutionContext.getBizKey();
 		Map<String, Object> transientVariableMap = new HashMap<String, Object>();
+
 		TimeStartProcessInstanceCmd<ProcessInstance> timeStartProcessInstanceCmd = new TimeStartProcessInstanceCmd<ProcessInstance>();
 		timeStartProcessInstanceCmd.setNodeId(nodeId);
 		timeStartProcessInstanceCmd.setProcessDefinitionId(processDefinitionId);
 		timeStartProcessInstanceCmd.setTransientVariables(transientVariableMap);
 		timeStartProcessInstanceCmd
 				.setProcessDefinitionKey(processDefinitionKey);
-
 		timeStartProcessInstanceCmd.setBusinessKey(businessKey);
+
 		// 执行流程启动命令
 		this.commandExecutor.execute(timeStartProcessInstanceCmd);
 	}

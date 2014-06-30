@@ -17,12 +17,9 @@
  */
 package org.foxbpm.engine.impl.schedule.quartz;
 
-import java.util.List;
-
 import org.foxbpm.engine.impl.cmd.TimeExecuteConnectorCmd;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.quartz.Trigger;
 
 /**
  * 
@@ -39,31 +36,17 @@ public class ConnectorAutoExecuteJob extends AbstractQuartzScheduleJob {
 	 * quartz系统创建
 	 */
 	public ConnectorAutoExecuteJob() {
-
 	}
 
 	/**
-	 * 本地自动调度创建、单触发器
+	 * 本地自动调度创建
 	 * 
 	 * @param name
 	 * @param groupName
 	 * @param trigger
 	 */
-	public ConnectorAutoExecuteJob(String name, String groupName,
-			Trigger trigger) {
-		super(name, groupName, trigger);
-	}
-
-	/**
-	 * 本地自动调度创建、多触发器
-	 * 
-	 * @param name
-	 * @param groupName
-	 * @param trigger
-	 */
-	public ConnectorAutoExecuteJob(String name, String groupName,
-			List<Trigger> triggerList) {
-		super(name, groupName, triggerList);
+	public ConnectorAutoExecuteJob(String name, String groupName) {
+		super(name, groupName);
 	}
 
 	@Override
@@ -74,11 +57,15 @@ public class ConnectorAutoExecuteJob extends AbstractQuartzScheduleJob {
 		String connectorID = foxpmJobExecutionContext.getConnectorId();
 		String tokenID = foxpmJobExecutionContext.getTokenId();
 		String eventName = foxpmJobExecutionContext.getEventName();
+		String nodeID = foxpmJobExecutionContext.getNodeId();
+
 		TimeExecuteConnectorCmd timeExecuteConnectorCmd = new TimeExecuteConnectorCmd();
 		timeExecuteConnectorCmd.setConnectorID(connectorID);
 		timeExecuteConnectorCmd.setProcessInstanceID(processInstanceID);
 		timeExecuteConnectorCmd.setTokenID(tokenID);
 		timeExecuteConnectorCmd.setEventName(eventName);
+		timeExecuteConnectorCmd.setNodeID(nodeID);
+
 		this.commandExecutor.execute(timeExecuteConnectorCmd);
 	}
 

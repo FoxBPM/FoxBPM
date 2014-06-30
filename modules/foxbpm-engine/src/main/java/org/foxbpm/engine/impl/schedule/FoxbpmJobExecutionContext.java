@@ -17,7 +17,6 @@
  */
 package org.foxbpm.engine.impl.schedule;
 
-import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -70,7 +69,6 @@ public class FoxbpmJobExecutionContext {
 	private String eventName;
 	private String taskId;
 	private Job scheduleJob;
-	private KernelFlowNodeImpl kernelFlowNodeImpl;
 
 	public FoxbpmJobExecutionContext(JobExecutionContext jobExecutionContext) {
 		JobDataMap jobDataMap = jobExecutionContext.getJobDetail()
@@ -79,8 +77,6 @@ public class FoxbpmJobExecutionContext {
 		this.tokenId = jobDataMap.getString(TOKEN_ID);
 		this.processInstanceId = jobDataMap.getString(PROCESS_INSTANCE_ID);
 		this.nodeId = jobDataMap.getString(NODE_ID);
-		this.kernelFlowNodeImpl = (KernelFlowNodeImpl) jobDataMap
-				.get(FLOW_NODE);
 		this.processKey = jobDataMap.getString(PROCESS_DEFINITION_KEY);
 		this.processId = jobDataMap.getString(PROCESS_DEFINITION_ID);
 		this.processName = jobDataMap.getString(PROCESS_DEFINITION_NAME);
@@ -91,7 +87,7 @@ public class FoxbpmJobExecutionContext {
 		this.connectorInstanceName = jobDataMap
 				.getString(CONNECTOR_INSTANCE_NAME);
 		this.eventType = jobDataMap.getString(EVENT_TYPE);
-		this.eventName =  jobDataMap.getString(EVENT_NAME);
+		this.eventName = jobDataMap.getString(EVENT_NAME);
 		this.taskId = jobDataMap.getString(TASK_ID);
 
 	}
@@ -215,13 +211,4 @@ public class FoxbpmJobExecutionContext {
 	public void setTaskId(String taskId) {
 		this.taskId = taskId;
 	}
-
-	public KernelFlowNodeImpl getKernelFlowNodeImpl() {
-		return kernelFlowNodeImpl;
-	}
-
-	public void setKernelFlowNodeImpl(KernelFlowNodeImpl kernelFlowNodeImpl) {
-		this.kernelFlowNodeImpl = kernelFlowNodeImpl;
-	}
-
 }

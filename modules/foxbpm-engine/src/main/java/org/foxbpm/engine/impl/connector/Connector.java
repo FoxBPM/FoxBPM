@@ -19,26 +19,22 @@ package org.foxbpm.engine.impl.connector;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMConnectorException;
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobDetail;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.foxbpm.engine.impl.schedule.quartz.ConnectorAutoExecuteJob;
-import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.QuartzUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.event.KernelListener;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
-import org.quartz.Trigger;
 
 public class Connector implements KernelListener {
 
@@ -71,14 +67,14 @@ public class Connector implements KernelListener {
 
 		if (isTimeExecute()) {
 			// 定时器执行方式
-			notifyTime(executionContext);
+			scheduleAutoExecuteJob(executionContext);
 		} else {
 			// 直接执行方式
-			notifyNoTime(executionContext);
+			executeJob(executionContext);
 		}
 	}
 
-	public void notifyNoTime(ListenerExecutionContext executionContext)
+	public void executeJob(ListenerExecutionContext executionContext)
 			throws Exception {
 		try {
 			String classNameObj = packageName + "." + className;
@@ -165,17 +161,16 @@ public class Connector implements KernelListener {
 	 * @throws Exception
 	 * @since 1.0.0
 	 */
-	private void notifyTime(ListenerExecutionContext executionContext)
-			throws Exception {
+	private void scheduleAutoExecuteJob(
+			ListenerExecutionContext executionContext) throws Exception {
 		// TODO QuartzUtil类是否需要改方法参数，processDefinitionID改成 processInstanceID
-		List<Trigger> triggersList = this.getTriggerList(executionContext);
-		ConnectorAutoExecuteJob connectorAutoExecuteJob = new ConnectorAutoExecuteJob(
-				GuidUtil.CreateGuid(), executionContext.getProcessInstanceId(),
-				triggersList);
 		FoxbpmJobDetail<ConnectorAutoExecuteJob> connectorAutoExecuteJobDetail = new FoxbpmJobDetail<ConnectorAutoExecuteJob>(
-				connectorAutoExecuteJob);
+				new ConnectorAutoExecuteJob(GuidUtil.CreateGuid(),
+						executionContext.getProcessInstanceId()));
+		connectorAutoExecuteJobDetail.createTriggerList(timeExpression,
+				executionContext);
 		connectorAutoExecuteJobDetail.putContextAttribute(
-				FoxbpmJobExecutionContext.CONNECTOR_ID, connectorId);
+				FoxbpmJobExecutionContext.CONNECTOR_ID, this.connectorId);
 		connectorAutoExecuteJobDetail.putContextAttribute(
 				FoxbpmJobExecutionContext.PROCESS_INSTANCE_ID,
 				executionContext.getProcessInstanceId());
@@ -183,34 +178,11 @@ public class Connector implements KernelListener {
 				FoxbpmJobExecutionContext.EVENT_NAME, this.getEventType());
 		connectorAutoExecuteJobDetail.putContextAttribute(
 				FoxbpmJobExecutionContext.TOKEN_ID, executionContext.getId());
+		connectorAutoExecuteJobDetail.putContextAttribute(
+				FoxbpmJobExecutionContext.NODE_ID, executionContext
+						.getEventSource().getId());
 
 		QuartzUtil.scheduleFoxbpmJob(connectorAutoExecuteJobDetail);
-	}
-
-	private List<Trigger> getTriggerList(
-			ListenerExecutionContext executionContext) {
-		List<Trigger> triggersList = new ArrayList<Trigger>();
-		Object triggerObj = ExpressionMgmt.execute(
-				this.timeExpression.getExpressionText(), executionContext);
-		if (triggerObj instanceof List) {
-			try {
-				triggersList = (List<Trigger>) triggerObj;
-			} catch (Exception e) {
-				throw new FoxBPMException("定时连接器的触发器集合必须为List<Trigger>");
-			}
-
-		} else if (triggerObj instanceof Trigger) {
-			try {
-				triggersList.add((Trigger) triggerObj);
-			} catch (Exception e) {
-				throw new FoxBPMException("定时连接器的触发器集合必须为List<Trigger>", e);
-			}
-		} else if (triggerObj instanceof String) {
-			triggersList.add(QuartzUtil.createTrigger(triggerObj,
-					executionContext.getProcessInstanceId()));
-		}
-
-		return triggersList;
 	}
 
 	public String getConnectorId() {

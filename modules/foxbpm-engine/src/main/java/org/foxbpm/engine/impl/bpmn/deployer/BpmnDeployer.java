@@ -43,7 +43,6 @@ import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.QuartzUtil;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
-import org.quartz.Trigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -174,20 +173,22 @@ public class BpmnDeployer extends AbstractDeployer {
 								+ eventID
 								+ FoxbpmJobExecutionContext.NAME_SUFFIX_JOBDETAIL;
 						// 创建TRIGGER JOB JOBDETAIL
-						Trigger trigger = QuartzUtil.createTrigger(startDate,
-								cronExpression, null, triggerName, groupName);
-						FoxbpmScheduleJob foxbpmJob = new ProcessIntanceAutoStartJob(
-								detailName, groupName, trigger);
 						FoxbpmJobDetail<FoxbpmScheduleJob> jobDetail = new FoxbpmJobDetail<FoxbpmScheduleJob>(
-								foxbpmJob);
+								new ProcessIntanceAutoStartJob(detailName,
+										groupName));
+						jobDetail.createTrigger(startDate, cronExpression,
+								null, triggerName, groupName);
 						// 设置调度变量
-						jobDetail.putContextAttribute(
+						jobDetail
+								.putContextAttribute(
 										FoxbpmJobExecutionContext.PROCESS_DEFINITION_ID,
 										processDefinitionID);
-						jobDetail.putContextAttribute(
+						jobDetail
+								.putContextAttribute(
 										FoxbpmJobExecutionContext.PROCESS_DEFINITION_KEY,
 										processDefinition.getKey());
-						jobDetail.putContextAttribute(
+						jobDetail
+								.putContextAttribute(
 										FoxbpmJobExecutionContext.PROCESS_DEFINITION_NAME,
 										processDefinition.getName());
 						jobDetail.putContextAttribute(

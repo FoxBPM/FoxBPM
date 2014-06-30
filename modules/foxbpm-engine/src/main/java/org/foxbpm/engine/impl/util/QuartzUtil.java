@@ -23,11 +23,15 @@ import static org.quartz.CronScheduleBuilder.cronSchedule;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.expression.Expression;
+import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobDetail;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduler;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
@@ -43,13 +47,23 @@ import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
 import org.quartz.impl.StdSchedulerFactory;
 
-public class QuartzUtil {
+/**
+ * 
+ * 
+ * QuartzUtil QUARTZ框架的工具辅助类
+ * 
+ * MAENLIANG 2014年6月30日 下午4:41:20
+ * 
+ * @version 1.0.0
+ * 
+ */
+public final class QuartzUtil {
 	/**
 	 * 创建定时任务工厂
 	 * 
 	 * @return
 	 */
-	public static SchedulerFactory createSchedulerFactory() {
+	public final static SchedulerFactory createSchedulerFactory() {
 		SchedulerFactory sf = new StdSchedulerFactory();
 		return sf;
 	}
@@ -60,7 +74,7 @@ public class QuartzUtil {
 	 * @param props
 	 * @return
 	 */
-	public static SchedulerFactory createSchedulerFactory(Properties props) {
+	public final static SchedulerFactory createSchedulerFactory(Properties props) {
 		SchedulerFactory sf = null;
 		try {
 			sf = new StdSchedulerFactory(props);
@@ -78,7 +92,7 @@ public class QuartzUtil {
 	 *            任务工厂
 	 * @return
 	 */
-	public static Scheduler getScheduler(SchedulerFactory schedulerFactory) {
+	public final static Scheduler getScheduler(SchedulerFactory schedulerFactory) {
 		Scheduler scheduler = null;
 		try {
 			scheduler = schedulerFactory.getScheduler();
@@ -100,8 +114,8 @@ public class QuartzUtil {
 	 *            组名称
 	 * @return
 	 */
-	public static JobDetail createJobDetail(Class<? extends Job> jobClass,
-			String jobName, String groupName) {
+	public final static JobDetail createJobDetail(
+			Class<? extends Job> jobClass, String jobName, String groupName) {
 		JobDetail job = newJob(jobClass).withIdentity(jobName, groupName)
 				.build();
 		return job;
@@ -118,8 +132,8 @@ public class QuartzUtil {
 	 *            启动时间
 	 * @return
 	 */
-	public static Trigger createSimpleTrigger(String jobName, String groupName,
-			Date DataTime) {
+	public final static Trigger createSimpleTrigger(String jobName,
+			String groupName, Date DataTime) {
 		Trigger trigger = newTrigger().withIdentity(jobName, groupName)
 				.startAt(DataTime).build();
 		return trigger;
@@ -136,8 +150,8 @@ public class QuartzUtil {
 	 *            cron表达式
 	 * @return
 	 */
-	public static Trigger createCronTrigger(String jobName, String groupName,
-			String cronExpression) {
+	public final static Trigger createCronTrigger(String jobName,
+			String groupName, String cronExpression) {
 		CronTrigger trigger = newTrigger().withIdentity(jobName, groupName)
 				.withSchedule(cronSchedule(cronExpression)).build();
 		return trigger;
@@ -154,7 +168,7 @@ public class QuartzUtil {
 	 *            启动时间
 	 * @return
 	 */
-	public static Trigger createSimpleTrigger(
+	public final static Trigger createSimpleTrigger(
 			ListenerExecutionContext executionContext, Date DataTime) {
 		Trigger trigger = newTrigger()
 				.withIdentity(GuidUtil.CreateGuid(),
@@ -174,7 +188,7 @@ public class QuartzUtil {
 	 *            cron表达式
 	 * @return
 	 */
-	public static Trigger createCronTrigger(
+	public final static Trigger createCronTrigger(
 			ListenerExecutionContext executionContext, String cronExpression) {
 		CronTrigger trigger = newTrigger()
 				.withIdentity(GuidUtil.CreateGuid(),
@@ -198,7 +212,7 @@ public class QuartzUtil {
 	 *            结束时间
 	 * @return
 	 */
-	public static Trigger createCronTrigger(
+	public final static Trigger createCronTrigger(
 			ListenerExecutionContext executionContext, String cronExpression,
 			Date startTime, Date endTime) {
 
@@ -226,7 +240,8 @@ public class QuartzUtil {
 	 *            作业名称
 	 * @return
 	 */
-	public static JobDetail getJobDetail(Scheduler scheduler, String jobKey) {
+	public final static JobDetail getJobDetail(Scheduler scheduler,
+			String jobKey) {
 		JobDetail jobDetail = null;
 		try {
 			jobDetail = scheduler.getJobDetail(new JobKey(jobKey));
@@ -246,7 +261,8 @@ public class QuartzUtil {
 	 *            触发器名称
 	 * @return
 	 */
-	public static Trigger getTrigger(Scheduler scheduler, String triggerKey) {
+	public final static Trigger getTrigger(Scheduler scheduler,
+			String triggerKey) {
 		Trigger trigger = null;
 		try {
 			trigger = scheduler.getTrigger(new TriggerKey(triggerKey));
@@ -320,7 +336,7 @@ public class QuartzUtil {
 	 * @param jobKey
 	 * @param jobDetail
 	 */
-	public static final void scheduleFoxbpmJob(FoxbpmJobDetail<?> jobDetail) {
+	public final static void scheduleFoxbpmJob(FoxbpmJobDetail<?> jobDetail) {
 		try {
 			FoxbpmScheduler foxbpmScheduler = ProcessEngineManagement
 					.getDefaultProcessEngine().getProcessEngineConfiguration()
@@ -335,6 +351,32 @@ public class QuartzUtil {
 		} catch (SchedulerException e) {
 			throw new FoxBPMException("调度  《流程自动启动JOB》时候出现问题！");
 		}
+	}
+
+	public final static List<Trigger> getTriggerList(Expression timeExpression,
+			ListenerExecutionContext executionContext) {
+		List<Trigger> triggersList = new ArrayList<Trigger>();
+		Object triggerObj = ExpressionMgmt.execute(
+				timeExpression.getExpressionText(), executionContext);
+		if (triggerObj instanceof List) {
+			try {
+				triggersList = (List<Trigger>) triggerObj;
+			} catch (Exception e) {
+				throw new FoxBPMException("定时连接器的触发器集合必须为List<Trigger>");
+			}
+
+		} else if (triggerObj instanceof Trigger) {
+			try {
+				triggersList.add((Trigger) triggerObj);
+			} catch (Exception e) {
+				throw new FoxBPMException("定时连接器的触发器集合必须为List<Trigger>", e);
+			}
+		} else if (triggerObj instanceof String) {
+			triggersList.add(createTrigger(triggerObj,
+					executionContext.getProcessInstanceId()));
+		}
+
+		return triggersList;
 	}
 
 }
