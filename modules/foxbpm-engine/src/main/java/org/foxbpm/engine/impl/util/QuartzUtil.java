@@ -29,8 +29,8 @@ import java.util.Properties;
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobDetail;
-import org.foxbpm.engine.impl.schedule.FoxbpmScheduleJob;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduler;
+import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.quartz.CronTrigger;
 import org.quartz.Job;
 import org.quartz.JobDetail;
@@ -154,10 +154,11 @@ public class QuartzUtil {
 	 *            启动时间
 	 * @return
 	 */
-	public static Trigger createSimpleTrigger(String processDefinitionID,
-			Date DataTime) {
+	public static Trigger createSimpleTrigger(
+			ListenerExecutionContext executionContext, Date DataTime) {
 		Trigger trigger = newTrigger()
-				.withIdentity(GuidUtil.CreateGuid(), processDefinitionID)
+				.withIdentity(GuidUtil.CreateGuid(),
+						executionContext.getProcessInstanceId())
 				.startAt(DataTime).build();
 		return trigger;
 	}
@@ -173,10 +174,11 @@ public class QuartzUtil {
 	 *            cron表达式
 	 * @return
 	 */
-	public static Trigger createCronTrigger(String processDefinitionID,
-			String cronExpression) {
+	public static Trigger createCronTrigger(
+			ListenerExecutionContext executionContext, String cronExpression) {
 		CronTrigger trigger = newTrigger()
-				.withIdentity(GuidUtil.CreateGuid(), processDefinitionID)
+				.withIdentity(GuidUtil.CreateGuid(),
+						executionContext.getProcessInstanceId())
 				.withSchedule(cronSchedule(cronExpression)).build();
 		return trigger;
 	}
@@ -196,12 +198,13 @@ public class QuartzUtil {
 	 *            结束时间
 	 * @return
 	 */
-	public static Trigger createCronTrigger(String processDefinitionID,
-			String cronExpression, Date startTime, Date endTime) {
+	public static Trigger createCronTrigger(
+			ListenerExecutionContext executionContext, String cronExpression,
+			Date startTime, Date endTime) {
 
 		TriggerBuilder<CronTrigger> triggerBuilder = newTrigger().withIdentity(
-				GuidUtil.CreateGuid(), processDefinitionID).withSchedule(
-				cronSchedule(cronExpression));
+				GuidUtil.CreateGuid(), executionContext.getProcessInstanceId())
+				.withSchedule(cronSchedule(cronExpression));
 
 		if (startTime != null) {
 			triggerBuilder.startAt(startTime);
@@ -252,6 +255,24 @@ public class QuartzUtil {
 			e.printStackTrace();
 		}
 		return trigger;
+	}
+
+	/**
+	 * 创建两种类型TRIGGER
+	 * 
+	 * @param startDate
+	 * @param cronExpression
+	 * @param triggerName
+	 * @param groupName
+	 * @return trigger
+	 */
+	public final static Trigger createTrigger(Object dateTime,
+			String processInstanceID) {
+		Date startDateTime = ClockUtil.parseStringToDate((String) dateTime);
+		return newTrigger()
+				.withIdentity(GuidUtil.CreateGuid(), processInstanceID)
+				.startAt(startDateTime).build();
+
 	}
 
 	/**

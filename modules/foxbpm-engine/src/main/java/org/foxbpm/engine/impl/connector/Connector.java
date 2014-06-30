@@ -19,6 +19,7 @@ package org.foxbpm.engine.impl.connector;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +31,7 @@ import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobDetail;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.foxbpm.engine.impl.schedule.quartz.ConnectorAutoExecuteJob;
+import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.QuartzUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
@@ -165,7 +167,6 @@ public class Connector implements KernelListener {
 	 */
 	private void notifyTime(ListenerExecutionContext executionContext)
 			throws Exception {
-		// 马恩亮需要在这里添加时间执行的代码
 		// TODO QuartzUtil类是否需要改方法参数，processDefinitionID改成 processInstanceID
 		List<Trigger> triggersList = this.getTriggerList(executionContext);
 		ConnectorAutoExecuteJob connectorAutoExecuteJob = new ConnectorAutoExecuteJob(
@@ -179,8 +180,7 @@ public class Connector implements KernelListener {
 				FoxbpmJobExecutionContext.PROCESS_INSTANCE_ID,
 				executionContext.getProcessInstanceId());
 		connectorAutoExecuteJobDetail.putContextAttribute(
-				FoxbpmJobExecutionContext.EVENT_NAME,
-				executionContext.getEventName());
+				FoxbpmJobExecutionContext.EVENT_NAME, this.getEventType());
 		connectorAutoExecuteJobDetail.putContextAttribute(
 				FoxbpmJobExecutionContext.TOKEN_ID, executionContext.getId());
 
@@ -190,22 +190,26 @@ public class Connector implements KernelListener {
 	private List<Trigger> getTriggerList(
 			ListenerExecutionContext executionContext) {
 		List<Trigger> triggersList = new ArrayList<Trigger>();
-		Object triggerListObj = ExpressionMgmt.execute(
+		Object triggerObj = ExpressionMgmt.execute(
 				this.timeExpression.getExpressionText(), executionContext);
-		if (triggerListObj instanceof List) {
+		if (triggerObj instanceof List) {
 			try {
-				triggersList = (List<Trigger>) triggerListObj;
+				triggersList = (List<Trigger>) triggerObj;
 			} catch (Exception e) {
 				throw new FoxBPMException("定时连接器的触发器集合必须为List<Trigger>");
 			}
 
-		} else {
-			if (triggerListObj instanceof Trigger) {
-				triggersList.add((Trigger) triggerListObj);
-			} else {
-				throw new FoxBPMException("定时连接器的触发器集合必须为List<Trigger>");
+		} else if (triggerObj instanceof Trigger) {
+			try {
+				triggersList.add((Trigger) triggerObj);
+			} catch (Exception e) {
+				throw new FoxBPMException("定时连接器的触发器集合必须为List<Trigger>", e);
 			}
+		} else if (triggerObj instanceof String) {
+			triggersList.add(QuartzUtil.createTrigger(triggerObj,
+					executionContext.getProcessInstanceId()));
 		}
+
 		return triggersList;
 	}
 

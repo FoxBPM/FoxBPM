@@ -91,6 +91,7 @@ public class FoxbpmJobExecutionContext {
 		this.connectorInstanceName = jobDataMap
 				.getString(CONNECTOR_INSTANCE_NAME);
 		this.eventType = jobDataMap.getString(EVENT_TYPE);
+		this.eventName =  jobDataMap.getString(EVENT_NAME);
 		this.taskId = jobDataMap.getString(TASK_ID);
 
 	}
