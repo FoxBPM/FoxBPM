@@ -54,6 +54,10 @@
 			isEnabled="true" type="all" />
 
 	</taskCommandConfig>
+	
+	<sysMailConfig selected="方正国际邮箱">
+   	 <mailInfo mailAddress="jiang_nan@founder.com" mailName="方正国际邮箱" smtpHost="mail.founder.com.cn" smtpPort="25" userName="kenshin" passWord="kenshin"/>
+ 	</sysMailConfig>
 
 	<connectionManagementConfig selected="General">
 		<connectionManagement id="General" name="通用连接管理"
