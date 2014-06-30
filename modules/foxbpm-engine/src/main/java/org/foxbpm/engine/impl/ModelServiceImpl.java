@@ -30,6 +30,7 @@ import org.foxbpm.engine.impl.cmd.GetFlowGraphicsImgStreamCmd;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinitionByKeyAndVersionCmd;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinitionCmd;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinitionSVGCmd;
+import org.foxbpm.engine.impl.cmd.GetResouceByDeployIdAndNameCmd;
 import org.foxbpm.engine.impl.cmd.GetStartProcessByUserIdCmd;
 import org.foxbpm.engine.impl.cmd.VerificationStartUserCmd;
 import org.foxbpm.engine.impl.model.DeploymentBuilderImpl;
@@ -100,6 +101,11 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	@Override
 	public boolean verifyStartProcessByUserId(String userId,String processDefinitionId) {
 		return commandExecutor.execute(new VerificationStartUserCmd(userId, null, processDefinitionId));
+	}
+	
+	@Override
+	public InputStream getResourceByDeployIdAndName(String deployId, String resourceName) {
+		return commandExecutor.execute(new GetResouceByDeployIdAndNameCmd(deployId,resourceName));
 	}
 
 }
