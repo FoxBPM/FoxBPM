@@ -17,21 +17,15 @@
  */
 package org.foxbpm.engine.impl.util;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.quartz.CronScheduleBuilder.cronSchedule;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.expression.Expression;
-import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobDetail;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduler;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
@@ -292,45 +286,6 @@ public final class QuartzUtil {
 	}
 
 	/**
-	 * 创建两种类型TRIGGER
-	 * 
-	 * @param startDate
-	 * @param cronExpression
-	 * @param triggerName
-	 * @param groupName
-	 * @return trigger
-	 */
-	public final static Trigger createTrigger(Object startDate,
-			String cronExpression, String durationExpression,
-			String triggerName, String groupName) {
-		Trigger trigger = null;
-		TriggerBuilder<Trigger> withIdentity = newTrigger().withIdentity(
-				triggerName, groupName);
-		if (startDate == null && isBlank(cronExpression)
-				&& isBlank(durationExpression)) {
-			throw new FoxBPMException("自动启动流程实例，启动时间表达式为空！");
-		} else if (startDate != null) {
-			// Date 启动
-			if (startDate instanceof Date) {
-				Date date = (Date) startDate;
-				trigger = withIdentity.startAt(date).build();
-			} else if (startDate instanceof String) {
-				Date date = ClockUtil.parseStringToDate((String) startDate);
-				trigger = withIdentity.startAt(date).build();
-			} else {
-				throw new FoxBPMException("自动启动流程实例，启动时间表达式有错误！");
-			}
-		} else if (isNotBlank(cronExpression)) {
-			// CRON表达式启动
-			trigger = withIdentity.withSchedule(cronSchedule(cronExpression))
-					.build();
-		} else if (isNotBlank(durationExpression)) {
-			// TODO DURATION Expression暂时未实现
-		}
-		return trigger;
-	}
-
-	/**
 	 * 调度，先清空后调度
 	 * 
 	 * @param jobKey
@@ -352,31 +307,4 @@ public final class QuartzUtil {
 			throw new FoxBPMException("调度  《流程自动启动JOB》时候出现问题！");
 		}
 	}
-
-	public final static List<Trigger> getTriggerList(Expression timeExpression,
-			ListenerExecutionContext executionContext) {
-		List<Trigger> triggersList = new ArrayList<Trigger>();
-		Object triggerObj = ExpressionMgmt.execute(
-				timeExpression.getExpressionText(), executionContext);
-		if (triggerObj instanceof List) {
-			try {
-				triggersList = (List<Trigger>) triggerObj;
-			} catch (Exception e) {
-				throw new FoxBPMException("定时连接器的触发器集合必须为List<Trigger>");
-			}
-
-		} else if (triggerObj instanceof Trigger) {
-			try {
-				triggersList.add((Trigger) triggerObj);
-			} catch (Exception e) {
-				throw new FoxBPMException("定时连接器的触发器集合必须为List<Trigger>", e);
-			}
-		} else if (triggerObj instanceof String) {
-			triggersList.add(createTrigger(triggerObj,
-					executionContext.getProcessInstanceId()));
-		}
-
-		return triggersList;
-	}
-
 }
