@@ -56,7 +56,7 @@
 	</taskCommandConfig>
 	
 	<sysMailConfig selected="方正国际邮箱">
-   	 <mailInfo mailAddress="jiang_nan@founder.com" mailName="方正国际邮箱" smtpHost="mail.founder.com.cn" smtpPort="25" userName="kenshin" passWord="kenshin"/>
+   	 <mailInfo mailAddress="jiang_nan@founder.com" mailName="方正国际邮箱" smtpHost="mail.founder.com.cn" smtpPort="25" userName="kenshin" password="kenshin"/>
  	</sysMailConfig>
 
 	<connectionManagementConfig selected="General">
