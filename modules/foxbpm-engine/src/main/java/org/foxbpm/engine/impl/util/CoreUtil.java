@@ -17,6 +17,72 @@
  */
 package org.foxbpm.engine.impl.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.entity.TaskEntity;
+import org.foxbpm.engine.impl.task.TaskDefinition;
+import org.foxbpm.engine.impl.task.filter.AbstractCommandFilter;
+import org.foxbpm.engine.task.TaskCommand;
+
 public class CoreUtil {
 
+	public static List<TaskCommand> getTaskCommand(TaskEntity task, boolean isProcessTracking) {
+
+		List<TaskCommand> taskCommands = new ArrayList<TaskCommand>();
+
+		if (task != null) {
+
+			for (TaskCommand taskCommand : task.getTaskDefinition().getTaskCommands()) {
+				AbstractCommandFilter abstractCommandFilter = Context.getProcessEngineConfiguration().getAbstractCommandFilterMap()
+						.get(taskCommand.getTaskCommandType());
+				if (abstractCommandFilter != null) {
+					abstractCommandFilter.setProcessTracking(isProcessTracking);
+					abstractCommandFilter.setTaskCommandInst(taskCommand);
+					if (abstractCommandFilter.accept(task)) {
+						taskCommands.add(taskCommand);
+					}
+				} else {
+					if (!isProcessTracking) {
+						taskCommands.add(taskCommand);
+					}
+
+				}
+			}
+		}
+
+		return taskCommands;
+	}
+	
+	
+	public static List<TaskCommand> getSubmitNodeTaskCommand(TaskDefinition taskDefinition) {
+
+		List<TaskCommand> taskCommandInsts = taskDefinition.getTaskCommands();
+		List<TaskCommand> taskCommandInstsNew = new ArrayList<TaskCommand>();
+		for (TaskCommand taskCommandInst : taskCommandInsts) {
+			AbstractCommandFilter abstractCommandFilter = Context.getProcessEngineConfiguration().getAbstractCommandFilterMap()
+					.get(taskCommandInst.getTaskCommandType());
+			if (abstractCommandFilter != null) {
+				abstractCommandFilter.setProcessTracking(false);
+				abstractCommandFilter.setTaskCommandInst(taskCommandInst);
+				if (abstractCommandFilter.accept(null)) {
+					taskCommandInstsNew.add(taskCommandInst);
+				}
+			} else {
+				taskCommandInstsNew.add(taskCommandInst);
+			}
+		}
+		
+		
+//		for (TaskCommandInst taskCommandInstObj : taskCommandInstsNew) {
+//					taskCommandInstObj.clearParamMap();
+//					taskCommandInstObj.execExpressionParam(null,null);
+//				}
+			
+		
+		//taskCommandInstsNew.get(0).getParamMap();
+
+		return taskCommandInstsNew;
+	}
 }

@@ -197,6 +197,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initStyle();
 		// 加载SVG模版资源
 		initSVG();
+		//加载任务命令过滤器
+		initAbstractCommandFilter();
 	}
 	
 	
