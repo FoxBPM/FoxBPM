@@ -53,6 +53,9 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 
 	}
 
+	public void putContextAttribute(String attributeName, Object attribute){
+		this.jobDetail.getJobDataMap().put(attributeName, attribute);
+	}
 	public JobDetail getJobDetail() {
 		return jobDetail;
 	}

@@ -21,17 +21,24 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMConnectorException;
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
+import org.foxbpm.engine.impl.schedule.FoxbpmJobDetail;
+import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
+import org.foxbpm.engine.impl.schedule.quartz.ConnectorAutoExecuteJob;
+import org.foxbpm.engine.impl.util.GuidUtil;
+import org.foxbpm.engine.impl.util.QuartzUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.event.KernelListener;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
+import org.quartz.Trigger;
 
 public class Connector implements KernelListener {
-
 
 	private static final long serialVersionUID = 1L;
 	protected String connectorId;
@@ -39,20 +46,168 @@ public class Connector implements KernelListener {
 	protected String className;
 	protected String connectorInstanceId;
 	protected String connectorInstanceName;
- 	protected String eventType;
+	protected String eventType;
 	protected String documentation;
 	protected String errorHandling;
 	protected String errorCode;
 	protected List<ConnectorInputParam> connectorInputsParam;
-	
 	protected List<ConnectorOutputParam> connectorOutputsParam;
-	
-
 	protected boolean isTimeExecute = false;
-
 	protected Expression timeExpression;
-
 	protected Expression skipExpression;
+
+	public void notify(ListenerExecutionContext executionContext)
+			throws Exception {
+		if (skipExpression != null
+				&& StringUtils.isNotBlank(skipExpression.getExpressionText())) {
+			Object skipExpressionObj = getSkipExpression().getValue(
+					(FlowNodeExecutionContext) executionContext);
+			if (StringUtil.getBoolean(skipExpressionObj)) {
+				return;
+			}
+		}
+
+		if (isTimeExecute()) {
+			// 定时器执行方式
+			notifyTime(executionContext);
+		} else {
+			// 直接执行方式
+			notifyNoTime(executionContext);
+		}
+	}
+
+	public void notifyNoTime(ListenerExecutionContext executionContext)
+			throws Exception {
+		try {
+			String classNameObj = packageName + "." + className;
+			Class<?> connectorHandlerClass = Class.forName(classNameObj);
+			FlowConnectorHandler connectorInstance = (FlowConnectorHandler) connectorHandlerClass
+					.newInstance();
+
+			for (ConnectorInputParam connectorParameterInputs : this
+					.getConnectorInputsParam()) {
+
+				Class<?> ptypes[] = new Class[1];
+
+				ptypes[0] = Class.forName(connectorParameterInputs
+						.getDataType());
+
+				String parameterInputsId = connectorParameterInputs.getId();
+
+				String methodString = "set"
+						+ parameterInputsId.substring(0, 1).toUpperCase()
+						+ parameterInputsId.substring(1,
+								parameterInputsId.length());
+				Method m = connectorHandlerClass
+						.getMethod(methodString, ptypes);
+
+				if (connectorParameterInputs.getExpression() != null) {
+					Object arg[] = new Object[1];
+					if (!connectorParameterInputs.getExpression().isNullText()
+							&& connectorParameterInputs.isExecute()) {
+						arg[0] = connectorParameterInputs
+								.getExpression()
+								.getValue(
+										(FlowNodeExecutionContext) executionContext);
+					} else {
+						arg[0] = connectorParameterInputs.getExpression()
+								.getExpressionText();
+					}
+					m.invoke(connectorInstance, arg);
+				}
+
+			}
+
+			connectorInstance
+					.execute((ConnectorExecutionContext) executionContext);
+
+			for (ConnectorOutputParam connectorParameterOutputs : this
+					.getConnectorOutputsParam()) {
+
+				if (!StringUtil
+						.isEmpty(connectorParameterOutputs.getOutputId())) {
+					String parameterOutputsId = connectorParameterOutputs
+							.getOutputId();
+
+					String methodString = "get"
+							+ parameterOutputsId.substring(0, 1).toUpperCase()
+							+ parameterOutputsId.substring(1,
+									parameterOutputsId.length());
+					Method m = connectorHandlerClass.getMethod(methodString);
+
+					String variableTarget = connectorParameterOutputs
+							.getVariableTarget();
+					// Object arg[] = new Object[1];
+					// arg[0] =Context.getBshInterpreter().eval(scriptString);
+
+					Object objectValue = m.invoke(connectorInstance);
+
+					ExpressionMgmt.setVariable(variableTarget, objectValue,
+							(FlowNodeExecutionContext) executionContext);
+				}
+
+			}
+
+		} catch (Exception e) {
+
+			throw new FoxBPMConnectorException(e.getMessage(), e);
+
+		}
+	}
+
+	/**
+	 * 
+	 * notifyTime(保存调度信息)
+	 * 
+	 * @param executionContext
+	 * @throws Exception
+	 * @since 1.0.0
+	 */
+	private void notifyTime(ListenerExecutionContext executionContext)
+			throws Exception {
+		// 马恩亮需要在这里添加时间执行的代码
+		// TODO QuartzUtil类是否需要改方法参数，processDefinitionID改成 processInstanceID
+		List<Trigger> triggersList = this.getTriggerList(executionContext);
+		ConnectorAutoExecuteJob connectorAutoExecuteJob = new ConnectorAutoExecuteJob(
+				GuidUtil.CreateGuid(), executionContext.getProcessInstanceId(),
+				triggersList);
+		FoxbpmJobDetail<ConnectorAutoExecuteJob> connectorAutoExecuteJobDetail = new FoxbpmJobDetail<ConnectorAutoExecuteJob>(
+				connectorAutoExecuteJob);
+		connectorAutoExecuteJobDetail.putContextAttribute(
+				FoxbpmJobExecutionContext.CONNECTOR_ID, connectorId);
+		connectorAutoExecuteJobDetail.putContextAttribute(
+				FoxbpmJobExecutionContext.PROCESS_INSTANCE_ID,
+				executionContext.getProcessInstanceId());
+		connectorAutoExecuteJobDetail.putContextAttribute(
+				FoxbpmJobExecutionContext.EVENT_NAME,
+				executionContext.getEventName());
+		connectorAutoExecuteJobDetail.putContextAttribute(
+				FoxbpmJobExecutionContext.TOKEN_ID, executionContext.getId());
+
+		QuartzUtil.scheduleFoxbpmJob(connectorAutoExecuteJobDetail);
+	}
+
+	private List<Trigger> getTriggerList(
+			ListenerExecutionContext executionContext) {
+		List<Trigger> triggersList = new ArrayList<Trigger>();
+		Object triggerListObj = ExpressionMgmt.execute(
+				this.timeExpression.getExpressionText(), executionContext);
+		if (triggerListObj instanceof List) {
+			try {
+				triggersList = (List<Trigger>) triggerListObj;
+			} catch (Exception e) {
+				throw new FoxBPMException("定时连接器的触发器集合必须为List<Trigger>");
+			}
+
+		} else {
+			if (triggerListObj instanceof Trigger) {
+				triggersList.add((Trigger) triggerListObj);
+			} else {
+				throw new FoxBPMException("定时连接器的触发器集合必须为List<Trigger>");
+			}
+		}
+		return triggersList;
+	}
 
 	public String getConnectorId() {
 		return connectorId;
@@ -166,106 +321,15 @@ public class Connector implements KernelListener {
 		}
 		return connectorOutputsParam;
 	}
-	
-	public void setConnectorInputsParam(List<ConnectorInputParam> connectorInputsParam) {
+
+	public void setConnectorInputsParam(
+			List<ConnectorInputParam> connectorInputsParam) {
 		this.connectorInputsParam = connectorInputsParam;
 	}
 
-	public void setConnectorOutputsParam(List<ConnectorOutputParam> connectorOutputsParam) {
+	public void setConnectorOutputsParam(
+			List<ConnectorOutputParam> connectorOutputsParam) {
 		this.connectorOutputsParam = connectorOutputsParam;
 	}
-	
-	public void notifyNoTime(ListenerExecutionContext executionContext) throws Exception  {
-		// TODO Auto-generated method stub
-
-				try {
-
-					if (this.skipExpression != null && this.skipExpression.getExpressionText() != null && !this.skipExpression.getExpressionText().equals("")) {
-						Object timeExpressionObj = skipExpression.getValue((FlowNodeExecutionContext)executionContext);
-						if (StringUtil.getBoolean(timeExpressionObj)) {
-							return;
-						}
-					}
-
-					String classNameObj = packageName + "." + className;
-					Class<?> connectorHandlerClass = Class.forName(classNameObj);
-					FlowConnectorHandler connectorInstance = (FlowConnectorHandler) connectorHandlerClass.newInstance();
-
-					for (ConnectorInputParam connectorParameterInputs : this.getConnectorInputsParam()) {
-
-						Class<?> ptypes[] = new Class[1];
-
-						ptypes[0] = Class.forName(connectorParameterInputs.getDataType());
-
-						String parameterInputsId = connectorParameterInputs.getId();
-
-						String methodString = "set" + parameterInputsId.substring(0, 1).toUpperCase()
-								+ parameterInputsId.substring(1, parameterInputsId.length());
-						Method m = connectorHandlerClass.getMethod(methodString, ptypes);
-
-						if (connectorParameterInputs.getExpression() != null) {
-							Object arg[] = new Object[1];
-							if (!connectorParameterInputs.getExpression().isNullText()&&connectorParameterInputs.isExecute()) {
-								arg[0] = connectorParameterInputs.getExpression().getValue((FlowNodeExecutionContext)executionContext);
-							}else{
-								arg[0] = connectorParameterInputs.getExpression().getExpressionText();
-							}
-							m.invoke(connectorInstance, arg);
-						}
-
-					}
-
-					connectorInstance.execute((ConnectorExecutionContext)executionContext);
-
-					for (ConnectorOutputParam connectorParameterOutputs : this.getConnectorOutputsParam()) {
-
-						if (!StringUtil.isEmpty(connectorParameterOutputs.getOutputId())) {
-							String parameterOutputsId = connectorParameterOutputs.getOutputId();
-
-							String methodString = "get" + parameterOutputsId.substring(0, 1).toUpperCase()
-									+ parameterOutputsId.substring(1, parameterOutputsId.length());
-							Method m = connectorHandlerClass.getMethod(methodString);
-
-							String variableTarget = connectorParameterOutputs.getVariableTarget();
-							// Object arg[] = new Object[1];
-							// arg[0] =Context.getBshInterpreter().eval(scriptString);
-
-							Object objectValue = m.invoke(connectorInstance);
-
-							ExpressionMgmt.setVariable(variableTarget, objectValue, (FlowNodeExecutionContext)executionContext);
-						}
-
-					}
-
-				} catch (Exception e) {
-
-					throw new FoxBPMConnectorException(e.getMessage(), e);
-
-				}
-	}
-
-	public void notify(ListenerExecutionContext executionContext) throws Exception  {
-		if(getSkipExpression()!=null&&!getSkipExpression().equals("")){
-			Object skipExpressionObj=getSkipExpression().getValue((FlowNodeExecutionContext)executionContext);
-			if(StringUtil.getBoolean(skipExpressionObj)){
-				return ;
-			}
-		}
-		
-		if (isTimeExecute()) {
-			// 定时器执行方式
-			notifyTime(executionContext);
-		} else {
-			// 直接执行方式
-			notifyNoTime(executionContext);
-		}
-	}
-	
-	private void notifyTime(ListenerExecutionContext executionContext) throws Exception  {
-		//马恩亮需要在这里添加时间执行的代码
-	}
-	
-
-	
 
 }

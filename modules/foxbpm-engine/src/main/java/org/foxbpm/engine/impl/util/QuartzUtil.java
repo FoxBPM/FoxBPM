@@ -29,6 +29,7 @@ import java.util.Properties;
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobDetail;
+import org.foxbpm.engine.impl.schedule.FoxbpmScheduleJob;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduler;
 import org.quartz.CronTrigger;
 import org.quartz.Job;
@@ -298,8 +299,7 @@ public class QuartzUtil {
 	 * @param jobKey
 	 * @param jobDetail
 	 */
-	public static final void scheduleFoxbpmJob(JobKey jobKey,
-			FoxbpmJobDetail<?> jobDetail) {
+	public static final void scheduleFoxbpmJob(FoxbpmJobDetail<?> jobDetail) {
 		try {
 			FoxbpmScheduler foxbpmScheduler = ProcessEngineManagement
 					.getDefaultProcessEngine().getProcessEngineConfiguration()
@@ -309,7 +309,7 @@ public class QuartzUtil {
 			}
 
 			// 先清空，后调度
-			foxbpmScheduler.deleteJob(jobKey);
+			foxbpmScheduler.deleteJob(jobDetail);
 			foxbpmScheduler.scheduleFoxbpmJob(jobDetail);
 		} catch (SchedulerException e) {
 			throw new FoxBPMException("调度  《流程自动启动JOB》时候出现问题！");
