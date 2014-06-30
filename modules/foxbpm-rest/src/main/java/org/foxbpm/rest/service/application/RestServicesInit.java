@@ -35,6 +35,7 @@ public class RestServicesInit {
 		router.attach("/models", ModelsResouce.class);
 		router.attach("/model/deployments", DeploymentCollectionResource.class);
 	    router.attach("/model/deployment/{deploymentId}", DeploymentResource.class);
+	    router.attach("/model/deployment/{deploymentId}/{resourceName}", DeploymentResource.class);
 	    router.attach("/process-definition/{processDefinitionId}", ProcessDefinitionResouce.class);
 	    router.attach("/process-definitions", ProcessDefinitionCollectionResouce.class);
 	    router.attach("/flowconfig", FlowConfigResouce.class);

@@ -123,11 +123,19 @@ public interface ModelService {
 	/**
 	 * 判断用户是否有权限发起流程
 	 * 根据流程定义上开始节点后面第一个人工节点的任务分配判断权限
-	 * processDefinitionKey和processDefinitionId不能同时为空
 	 * @param userId 用户编号 不能为空
-	 * @param processDefinitionKey 可为空，流程定义Key 
-	 * @param processDefinitionId 可为空，流程定义唯一编号
+	 * @param processDefinitionId 流程定义唯一编号
 	 * @return
 	 */
 	boolean verifyStartProcessByUserId(String userId,String processDefinitionId);
+	
+	
+	/**
+	 * 根据发布号和资源名称获取资源流
+	 * @param deployId
+	 * @param resourceName
+	 * @return
+	 */
+	InputStream getResourceByDeployIdAndName(String deployId,String resourceName);
+	
 }
