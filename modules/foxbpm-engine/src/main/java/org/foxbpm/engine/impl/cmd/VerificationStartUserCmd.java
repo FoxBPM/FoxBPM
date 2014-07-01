@@ -68,6 +68,9 @@ public class VerificationStartUserCmd implements Command<Boolean>{
 		TaskEntity taskEntity = new TaskEntity();
 		TokenEntity tokenEntity = new TokenEntity();
 		tokenEntity.setAssignTask(taskEntity);
+		if(taskDefinition==null){
+			return false;
+		}
 		for (Connector connector : taskDefinition.getActorConnectors()) {
 			try {
 				connector.notify((ListenerExecutionContext) tokenEntity);

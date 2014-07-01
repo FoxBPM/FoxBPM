@@ -31,6 +31,8 @@ public class KernelLaneImpl extends KernelBaseElementImpl implements KernelLane,
 		super(id, processDefinition);
 	}
 
+	
+	protected KernelLaneSet childLaneSet;
 	/**
 	 * 
 	 */
@@ -52,23 +54,21 @@ public class KernelLaneImpl extends KernelBaseElementImpl implements KernelLane,
 	}
 
 	public KernelLaneSet getChildLaneSet() {
-		// TODO Auto-generated method stub
-		return null;
+		return childLaneSet;
 	}
 
-	public void setChildLaneSet(KernelLaneSet value) {
-		// TODO Auto-generated method stub
-
+	public void setChildLaneSet(KernelLaneSet childLaneSet) {
+		this.childLaneSet=childLaneSet;
 	}
 
+	protected String name;
+	
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 
-	public void setName(String value) {
-		// TODO Auto-generated method stub
-
+	public void setName(String name) {
+		this.name=name;
 	}
 
 	public KernelBaseElement getPartitionElementRef() {
@@ -80,45 +80,43 @@ public class KernelLaneImpl extends KernelBaseElementImpl implements KernelLane,
 		// TODO Auto-generated method stub
 
 	}
-
-	public int getWidth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public int getHeight() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	
+	// 图形信息
+	protected int x = -1;
+	protected int y = -1;
+	protected int width = -1;
+	protected int height = -1;
 
 	public int getX() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public int getY() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public void setWidth(int width) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setHeight(int height) {
-		// TODO Auto-generated method stub
-		
+		return x;
 	}
 
 	public void setX(int x) {
-		// TODO Auto-generated method stub
-		
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
 	}
 
 	public void setY(int y) {
-		// TODO Auto-generated method stub
-		
+		this.y = y;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
 	}
 
 }

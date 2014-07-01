@@ -28,5 +28,8 @@ public interface KernelLaneSet extends KernelBaseElement {
     String getName();
 
     void setName(String value);
+    
+    
+    KernelLane getLaneForId(String id);
 
 } // LaneSet
