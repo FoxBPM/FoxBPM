@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.quartz.Calendar;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
@@ -58,27 +57,21 @@ public class FoxbpmScheduler implements Scheduler {
 		this.scheduler = scheduler;
 	}
 
-	public void scheduleFoxbpmJob(JobDetail jobDetail)
+	public void scheduleFoxbpmJob(FoxbpmJobDetail<?> jobDetail)
 			throws SchedulerException {
-		if (jobDetail instanceof FoxbpmJobDetail) {
-			// 进行FOXBPM操作
-			FoxbpmJobDetail<?> foxbpmJobDetail = (FoxbpmJobDetail<?>) jobDetail;
-			List<Trigger> triggerList = ((FoxbpmScheduleJob) foxbpmJobDetail
-					.getFoxbpmJob()).getTriggerList();
-			if (triggerList != null && triggerList.size() != 0) {
-				if (triggerList.size() == 1) {
-					this.scheduler.scheduleJob(foxbpmJobDetail.getJobDetail(),
-							triggerList.get(0));
-				} else {
-					Map<JobDetail, List<Trigger>> triggersAndJobs = new HashMap<JobDetail, List<Trigger>>();
-					triggersAndJobs.put(foxbpmJobDetail.getJobDetail(),
-							triggerList);
-					this.scheduler.scheduleJobs(triggersAndJobs, true);
-				}
+		// 进行FOXBPM操作
+		FoxbpmJobDetail<?> foxbpmJobDetail = (FoxbpmJobDetail<?>) jobDetail;
+		List<Trigger> triggerList = foxbpmJobDetail.getTriggerList();
+		if (triggerList != null && triggerList.size() != 0) {
+			if (triggerList.size() == 1) {
+				this.scheduler.scheduleJob(foxbpmJobDetail.getJobDetail(),
+						triggerList.get(0));
+			} else {
+				Map<JobDetail, List<Trigger>> triggersAndJobs = new HashMap<JobDetail, List<Trigger>>();
+				triggersAndJobs
+						.put(foxbpmJobDetail.getJobDetail(), triggerList);
+				this.scheduler.scheduleJobs(triggersAndJobs, true);
 			}
-
-		} else {
-			throw new FoxBPMException("jobDetail 不是 FoxbpmJobDetail");
 		}
 	}
 

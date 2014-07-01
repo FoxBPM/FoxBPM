@@ -17,14 +17,11 @@
  */
 package org.foxbpm.engine.impl.schedule.quartz;
 
-import java.util.List;
-
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduleJob;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.quartz.Trigger;
 
 /**
  * 初始化FoxbpmJobExecution上下文，初始化commandExecutor
@@ -44,28 +41,14 @@ public abstract class AbstractQuartzScheduleJob extends FoxbpmScheduleJob {
 
 	/**
 	 * 
-	 * 单触发器JOB、创建一个新的实例 AbstractQuartzScheduleJob.
+	 * 创建一个新的实例 AbstractQuartzScheduleJob.
 	 * 
 	 * @param name
 	 * @param groupName
 	 * @param trigger
 	 */
-	public AbstractQuartzScheduleJob(String name, String groupName,
-			Trigger trigger) {
-		super(name, groupName, trigger);
-	}
-
-	/**
-	 * 
-	 * 多触发器JOB、创建一个新的实例 AbstractQuartzScheduleJob.
-	 * 
-	 * @param name
-	 * @param groupName
-	 * @param triggerList
-	 */
-	public AbstractQuartzScheduleJob(String name, String groupName,
-			List<Trigger> triggerList) {
-		super(name, groupName, triggerList);
+	public AbstractQuartzScheduleJob(String name, String groupName) {
+		super(name, groupName);
 	}
 
 	@Override

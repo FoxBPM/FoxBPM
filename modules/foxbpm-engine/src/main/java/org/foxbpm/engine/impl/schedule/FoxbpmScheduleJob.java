@@ -17,13 +17,9 @@
  */
 package org.foxbpm.engine.impl.schedule;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 import org.quartz.Job;
 import org.quartz.JobExecutionException;
-import org.quartz.Trigger;
 
 /**
  * FOXBPM 工作
@@ -33,10 +29,14 @@ import org.quartz.Trigger;
  * 
  */
 public abstract class FoxbpmScheduleJob implements Job {
+	/**
+	 * JOB名称
+	 */
 	protected String name;
+	/**
+	 * 组的名称
+	 */
 	protected String groupName;
-	protected Trigger trigger;
-	protected List<Trigger> triggerList;
 	/**
 	 * 执行任务的命令
 	 */
@@ -56,26 +56,9 @@ public abstract class FoxbpmScheduleJob implements Job {
 	 * @param groupName
 	 * @param trigger
 	 */
-	public FoxbpmScheduleJob(String name, String groupName, Trigger trigger) {
+	public FoxbpmScheduleJob(String name, String groupName) {
 		this.name = name;
 		this.groupName = groupName;
-		this.trigger = trigger;
-		this.triggerList = new ArrayList<Trigger>();
-		triggerList.add(trigger);
-	}
-
-	/**
-	 * 设置调度器，保存调度状态，多触发器 创建一个新的实例 FoxbpmScheduleJob.
-	 * 
-	 * @param name
-	 * @param groupName
-	 * @param triggerList
-	 */
-	public FoxbpmScheduleJob(String name, String groupName,
-			List<Trigger> triggerList) {
-		this.name = name;
-		this.groupName = groupName;
-		this.triggerList = triggerList;
 	}
 
 	/**
@@ -110,21 +93,5 @@ public abstract class FoxbpmScheduleJob implements Job {
 
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
-	}
-
-	public Trigger getTrigger() {
-		return trigger;
-	}
-
-	public void setTrigger(Trigger trigger) {
-		this.trigger = trigger;
-	}
-
-	public List<Trigger> getTriggerList() {
-		return triggerList;
-	}
-
-	public void setTriggerList(List<Trigger> triggerList) {
-		this.triggerList = triggerList;
 	}
 }

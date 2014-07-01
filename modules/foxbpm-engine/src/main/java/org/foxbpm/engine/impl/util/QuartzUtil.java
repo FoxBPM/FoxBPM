@@ -17,8 +17,6 @@
  */
 package org.foxbpm.engine.impl.util;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.quartz.CronScheduleBuilder.cronSchedule;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
@@ -43,13 +41,23 @@ import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
 import org.quartz.impl.StdSchedulerFactory;
 
-public class QuartzUtil {
+/**
+ * 
+ * 
+ * QuartzUtil QUARTZ框架的工具辅助类
+ * 
+ * MAENLIANG 2014年6月30日 下午4:41:20
+ * 
+ * @version 1.0.0
+ * 
+ */
+public final class QuartzUtil {
 	/**
 	 * 创建定时任务工厂
 	 * 
 	 * @return
 	 */
-	public static SchedulerFactory createSchedulerFactory() {
+	public final static SchedulerFactory createSchedulerFactory() {
 		SchedulerFactory sf = new StdSchedulerFactory();
 		return sf;
 	}
@@ -60,7 +68,7 @@ public class QuartzUtil {
 	 * @param props
 	 * @return
 	 */
-	public static SchedulerFactory createSchedulerFactory(Properties props) {
+	public final static SchedulerFactory createSchedulerFactory(Properties props) {
 		SchedulerFactory sf = null;
 		try {
 			sf = new StdSchedulerFactory(props);
@@ -78,7 +86,7 @@ public class QuartzUtil {
 	 *            任务工厂
 	 * @return
 	 */
-	public static Scheduler getScheduler(SchedulerFactory schedulerFactory) {
+	public final static Scheduler getScheduler(SchedulerFactory schedulerFactory) {
 		Scheduler scheduler = null;
 		try {
 			scheduler = schedulerFactory.getScheduler();
@@ -100,8 +108,8 @@ public class QuartzUtil {
 	 *            组名称
 	 * @return
 	 */
-	public static JobDetail createJobDetail(Class<? extends Job> jobClass,
-			String jobName, String groupName) {
+	public final static JobDetail createJobDetail(
+			Class<? extends Job> jobClass, String jobName, String groupName) {
 		JobDetail job = newJob(jobClass).withIdentity(jobName, groupName)
 				.build();
 		return job;
@@ -118,8 +126,8 @@ public class QuartzUtil {
 	 *            启动时间
 	 * @return
 	 */
-	public static Trigger createSimpleTrigger(String jobName, String groupName,
-			Date DataTime) {
+	public final static Trigger createSimpleTrigger(String jobName,
+			String groupName, Date DataTime) {
 		Trigger trigger = newTrigger().withIdentity(jobName, groupName)
 				.startAt(DataTime).build();
 		return trigger;
@@ -136,8 +144,8 @@ public class QuartzUtil {
 	 *            cron表达式
 	 * @return
 	 */
-	public static Trigger createCronTrigger(String jobName, String groupName,
-			String cronExpression) {
+	public final static Trigger createCronTrigger(String jobName,
+			String groupName, String cronExpression) {
 		CronTrigger trigger = newTrigger().withIdentity(jobName, groupName)
 				.withSchedule(cronSchedule(cronExpression)).build();
 		return trigger;
@@ -154,7 +162,7 @@ public class QuartzUtil {
 	 *            启动时间
 	 * @return
 	 */
-	public static Trigger createSimpleTrigger(
+	public final static Trigger createSimpleTrigger(
 			ListenerExecutionContext executionContext, Date DataTime) {
 		Trigger trigger = newTrigger()
 				.withIdentity(GuidUtil.CreateGuid(),
@@ -174,7 +182,7 @@ public class QuartzUtil {
 	 *            cron表达式
 	 * @return
 	 */
-	public static Trigger createCronTrigger(
+	public final static Trigger createCronTrigger(
 			ListenerExecutionContext executionContext, String cronExpression) {
 		CronTrigger trigger = newTrigger()
 				.withIdentity(GuidUtil.CreateGuid(),
@@ -198,7 +206,7 @@ public class QuartzUtil {
 	 *            结束时间
 	 * @return
 	 */
-	public static Trigger createCronTrigger(
+	public final static Trigger createCronTrigger(
 			ListenerExecutionContext executionContext, String cronExpression,
 			Date startTime, Date endTime) {
 
@@ -226,7 +234,8 @@ public class QuartzUtil {
 	 *            作业名称
 	 * @return
 	 */
-	public static JobDetail getJobDetail(Scheduler scheduler, String jobKey) {
+	public final static JobDetail getJobDetail(Scheduler scheduler,
+			String jobKey) {
 		JobDetail jobDetail = null;
 		try {
 			jobDetail = scheduler.getJobDetail(new JobKey(jobKey));
@@ -246,7 +255,8 @@ public class QuartzUtil {
 	 *            触发器名称
 	 * @return
 	 */
-	public static Trigger getTrigger(Scheduler scheduler, String triggerKey) {
+	public final static Trigger getTrigger(Scheduler scheduler,
+			String triggerKey) {
 		Trigger trigger = null;
 		try {
 			trigger = scheduler.getTrigger(new TriggerKey(triggerKey));
@@ -266,7 +276,7 @@ public class QuartzUtil {
 	 * @param groupName
 	 * @return trigger
 	 */
-	public final static Trigger createTrigger(Object dateTime,
+	public final static Trigger createTriggerByDateTimeStr(Object dateTime,
 			String processInstanceID) {
 		Date startDateTime = ClockUtil.parseStringToDate((String) dateTime);
 		return newTrigger()
@@ -284,34 +294,13 @@ public class QuartzUtil {
 	 * @param groupName
 	 * @return trigger
 	 */
-	public final static Trigger createTrigger(Object startDate,
-			String cronExpression, String durationExpression,
-			String triggerName, String groupName) {
-		Trigger trigger = null;
-		TriggerBuilder<Trigger> withIdentity = newTrigger().withIdentity(
-				triggerName, groupName);
-		if (startDate == null && isBlank(cronExpression)
-				&& isBlank(durationExpression)) {
-			throw new FoxBPMException("自动启动流程实例，启动时间表达式为空！");
-		} else if (startDate != null) {
-			// Date 启动
-			if (startDate instanceof Date) {
-				Date date = (Date) startDate;
-				trigger = withIdentity.startAt(date).build();
-			} else if (startDate instanceof String) {
-				Date date = ClockUtil.parseStringToDate((String) startDate);
-				trigger = withIdentity.startAt(date).build();
-			} else {
-				throw new FoxBPMException("自动启动流程实例，启动时间表达式有错误！");
-			}
-		} else if (isNotBlank(cronExpression)) {
-			// CRON表达式启动
-			trigger = withIdentity.withSchedule(cronSchedule(cronExpression))
-					.build();
-		} else if (isNotBlank(durationExpression)) {
-			// TODO DURATION Expression暂时未实现
-		}
-		return trigger;
+	public final static Trigger createTriggerByDateTime(Object dateTimeObj,
+			String processInstanceID) {
+		Date dateTime = (Date) dateTimeObj;
+		return newTrigger()
+				.withIdentity(GuidUtil.CreateGuid(), processInstanceID)
+				.startAt(dateTime).build();
+
 	}
 
 	/**
@@ -320,7 +309,7 @@ public class QuartzUtil {
 	 * @param jobKey
 	 * @param jobDetail
 	 */
-	public static final void scheduleFoxbpmJob(FoxbpmJobDetail<?> jobDetail) {
+	public final static void scheduleFoxbpmJob(FoxbpmJobDetail<?> jobDetail) {
 		try {
 			FoxbpmScheduler foxbpmScheduler = ProcessEngineManagement
 					.getDefaultProcessEngine().getProcessEngineConfiguration()
@@ -336,5 +325,4 @@ public class QuartzUtil {
 			throw new FoxBPMException("调度  《流程自动启动JOB》时候出现问题！");
 		}
 	}
-
 }
