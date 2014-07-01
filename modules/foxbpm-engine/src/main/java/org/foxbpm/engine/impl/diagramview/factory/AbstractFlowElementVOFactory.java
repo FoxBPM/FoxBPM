@@ -29,26 +29,29 @@ import org.foxbpm.engine.impl.diagramview.svg.Point;
 import org.foxbpm.engine.impl.diagramview.svg.PointUtils;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTypeNameConstant;
 import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
-import org.foxbpm.engine.impl.diagramview.svg.factory.AbstractFlowNodeSVGFactory;
+import org.foxbpm.engine.impl.diagramview.svg.factory.AbstractFlowElementSVGFactory;
 import org.foxbpm.engine.impl.diagramview.svg.vo.build.AbstractSVGBuilder;
 import org.foxbpm.engine.impl.diagramview.vo.VONode;
+import org.foxbpm.kernel.process.KernelBaseElement;
 import org.foxbpm.kernel.process.KernelFlowElement;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 
 /**
- * FLOW单个节点VO工厂类
+ * FLOW单个节点VO工厂类、构造元素包括，事件、活动、线条、网关、泳道、附件
  * 
  * @author MAENLIANG
  * @date 2014-06-10
  * 
  */
-public abstract class AbstractFlowNodeVOFactory {
+public abstract class AbstractFlowElementVOFactory {
 	protected static final String SPLIT_SEPERATOR = "/";
-	protected static final String NODE_TYPE_EVENT = "event";
-	protected static final String NODE_TYPE_ACTIVITY = "activity";
-	protected static final String NODE_TYPE_CONNECTOR = "connector";
-	protected static final String NODE_TYPE_GATEWAY = "gateway";
+	protected static final String ELEMENT_TYPE_EVENT = "event";
+	protected static final String ELEMENT_TYPE_ACTIVITY = "activity";
+	protected static final String ELEMENT_TYPE_CONNECTOR = "connector";
+	protected static final String ELEMENT_TYPE_GATEWAY = "gateway";
+	protected static final String ELEMENT_TYPE_LANE = "lane";
+
 	/**
 	 * 流程定义的画布坐标MINX
 	 */
@@ -66,17 +69,17 @@ public abstract class AbstractFlowNodeVOFactory {
 	 */
 	protected static final String CANVAS_MAXY = "canvas_maxY";
 	protected String voTemplateFileName;
-	protected KernelFlowElement kernelFlowElement;
+	protected KernelBaseElement kernelBaseElement;
 
 	/**
 	 * 
 	 * @param kernelFlowElement
 	 * @param svgTemplateFileName
 	 */
-	public AbstractFlowNodeVOFactory(KernelFlowElement kernelFlowElement,
+	public AbstractFlowElementVOFactory(KernelBaseElement kernelBaseElement,
 			String voTemplateFileName) {
 		this.voTemplateFileName = voTemplateFileName;
-		this.kernelFlowElement = kernelFlowElement;
+		this.kernelBaseElement = kernelBaseElement;
 	}
 
 	/**
@@ -104,12 +107,12 @@ public abstract class AbstractFlowNodeVOFactory {
 		// 3、构造宽度，高度，边框
 		// 4、构造XY坐标
 		// 5、构造FILL式样
-		if (kernelFlowElement instanceof KernelFlowNodeImpl) {
+		if (kernelBaseElement instanceof KernelFlowNodeImpl) {
 			// 过滤
 			this.filterActivityTaskVO(voNode, new String[] { "callActivity" });
 			this.filterChildVO(voNode,
 					Arrays.asList(svgType.split(SPLIT_SEPERATOR)));
-			KernelFlowNodeImpl kernelFlowNodeImpl = (KernelFlowNodeImpl) kernelFlowElement;
+			KernelFlowNodeImpl kernelFlowNodeImpl = (KernelFlowNodeImpl) kernelBaseElement;
 			svgBuilder.setID(kernelFlowNodeImpl.getId());
 			if (StringUtils.isNotBlank(kernelFlowNodeImpl.getName())) {
 				svgBuilder.setText(kernelFlowNodeImpl.getName());
@@ -139,8 +142,8 @@ public abstract class AbstractFlowNodeVOFactory {
 		}
 		// 线条元素
 		// 先构造拐点，再构造文本坐标
-		if (kernelFlowElement instanceof KernelSequenceFlowImpl) {
-			KernelSequenceFlowImpl kernelSequenceFlowImpl = (KernelSequenceFlowImpl) kernelFlowElement;
+		if (kernelBaseElement instanceof KernelSequenceFlowImpl) {
+			KernelSequenceFlowImpl kernelSequenceFlowImpl = (KernelSequenceFlowImpl) kernelBaseElement;
 			SequenceFlowBehavior sequenceFlowBehavior = (SequenceFlowBehavior) kernelSequenceFlowImpl
 					.getSequenceFlowBehavior();
 			String[] filterConfition = new String[] { "", "default" };
@@ -177,11 +180,11 @@ public abstract class AbstractFlowNodeVOFactory {
 	 * @param svgTemplateFileName
 	 * @return
 	 */
-	public static AbstractFlowNodeVOFactory createSVGFactory(
-			KernelFlowElement kernelFlowElement, String svgTemplateFileName) {
+	public static AbstractFlowElementVOFactory createSVGFactory(
+			KernelBaseElement kernelBaseElement, String svgTemplateFileName) {
 		// 当前实现是SVG格式，后期可能支持微软的XML
-		return AbstractFlowNodeSVGFactory.createSVGFactory(kernelFlowElement,
-				svgTemplateFileName);
+		return AbstractFlowElementSVGFactory.createSVGFactory(
+				kernelBaseElement, svgTemplateFileName);
 	}
 
 	/**
@@ -191,13 +194,14 @@ public abstract class AbstractFlowNodeVOFactory {
 	 * @param svgTemplateFileName
 	 * @return
 	 */
-	public static AbstractFlowNodeVOFactory createSignedSVGFactory(
+	public static AbstractFlowElementVOFactory createSignedSVGFactory(
 			KernelFlowElement kernelFlowElement, String svgTemplateFileName,
 			String taskState,
-			AbstractFlowNodeVOFactory abstractFlowNodeVOFactory) {
+			AbstractFlowElementVOFactory abstractFlowNodeVOFactory) {
 		// 当前实现是SVG格式，后期可能支持微软的XML
-		return AbstractFlowNodeSVGFactory.createSVGFactory(kernelFlowElement,
-				svgTemplateFileName, taskState, abstractFlowNodeVOFactory);
+		return AbstractFlowElementSVGFactory.createSVGFactory(
+				kernelFlowElement, svgTemplateFileName, taskState,
+				abstractFlowNodeVOFactory);
 	}
 
 	public abstract String convertNodeListToString(

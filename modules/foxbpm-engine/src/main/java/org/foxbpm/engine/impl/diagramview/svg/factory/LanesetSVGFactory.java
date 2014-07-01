@@ -19,42 +19,33 @@ package org.foxbpm.engine.impl.diagramview.svg.factory;
 
 import java.util.List;
 
-import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.diagramview.vo.VONode;
 import org.foxbpm.kernel.process.KernelBaseElement;
 
 /**
- * BPMN2.0事件元素的工厂类
  * 
- * @author MAENLIANG
- * @date 2014-06-10
+ * 泳道元素构建类 LaneSetSVGFactory
+ * 
+ * MAENLIANG 2014年7月1日 下午8:14:46
+ * 
+ * @version 1.0.0
  * 
  */
-public class EventSVGFactory extends AbstractFlowElementSVGFactory {
+public class LanesetSVGFactory extends AbstractFlowElementSVGFactory {
 
-	/**
-	 * 
-	 * @param kernelFlowElement
-	 *            事件节点
-	 * @param voTemplateFileName
-	 *            SVG模版文件名
-	 */
-	public EventSVGFactory(KernelBaseElement kernelBaseElement,
-			String voTemplateFileName) {
-		super(kernelBaseElement, voTemplateFileName);
-	}
-
-	@Override
-	public VONode createSVGVO() {
-		SvgVO startEventNone = (SvgVO) super.loadSVGVO(voTemplateFileName);
-		return startEventNone;
+	public LanesetSVGFactory(KernelBaseElement kernelBaseElement,
+			String svgTemplateFileName) {
+		super(kernelBaseElement, svgTemplateFileName);
 	}
 
 	@Override
 	public VONode createSVGVO(String svgType) {
-		SvgVO startEventNone = (SvgVO) super.loadSVGVO(voTemplateFileName);
-		// 过滤之类的操作
-		return startEventNone;
+		return this.loadSVGVO(this.voTemplateFileName);
+	}
+
+	@Override
+	public VONode createSVGVO() {
+		return super.loadSVGVO(voTemplateFileName);
 	}
 
 	@Override
@@ -80,5 +71,4 @@ public class EventSVGFactory extends AbstractFlowElementSVGFactory {
 		// TODO Auto-generated method stub
 
 	}
-
 }

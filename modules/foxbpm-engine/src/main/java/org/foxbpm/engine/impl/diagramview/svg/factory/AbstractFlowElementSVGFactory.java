@@ -24,13 +24,14 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.impl.diagramview.factory.AbstractFlowNodeVOFactory;
+import org.foxbpm.engine.impl.diagramview.factory.AbstractFlowElementVOFactory;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateContainer;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateNameConstant;
 import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
 import org.foxbpm.engine.impl.diagramview.svg.vo.GVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.diagramview.vo.VONode;
+import org.foxbpm.kernel.process.KernelBaseElement;
 import org.foxbpm.kernel.process.KernelFlowElement;
 
 /**
@@ -40,16 +41,16 @@ import org.foxbpm.kernel.process.KernelFlowElement;
  * @date 2014-06-10
  * 
  */
-public abstract class AbstractFlowNodeSVGFactory extends
-		AbstractFlowNodeVOFactory {
+public abstract class AbstractFlowElementSVGFactory extends
+		AbstractFlowElementVOFactory {
 	/**
 	 * 
 	 * @param kernelFlowElement
 	 * @param svgTemplateFileName
 	 */
-	public AbstractFlowNodeSVGFactory(KernelFlowElement kernelFlowElement,
+	public AbstractFlowElementSVGFactory(KernelBaseElement kernelBaseElement,
 			String svgTemplateFileName) {
-		super(kernelFlowElement, svgTemplateFileName);
+		super(kernelBaseElement, svgTemplateFileName);
 	}
 
 	/**
@@ -59,10 +60,10 @@ public abstract class AbstractFlowNodeSVGFactory extends
 	 * @param svgTemplateFileName
 	 * @return
 	 */
-	public static AbstractFlowNodeSVGFactory createSVGFactory(
+	public static AbstractFlowElementSVGFactory createSVGFactory(
 			KernelFlowElement kernelFlowElement, String svgTemplateFileName,
 			String taskState,
-			AbstractFlowNodeVOFactory abstractFlowNodeSVGFactory) {
+			AbstractFlowElementVOFactory abstractFlowNodeSVGFactory) {
 		return new SignProcessStateSVGFactory(kernelFlowElement,
 				svgTemplateFileName, abstractFlowNodeSVGFactory, taskState);
 	}
@@ -74,19 +75,22 @@ public abstract class AbstractFlowNodeSVGFactory extends
 	 * @param svgTemplateFileName
 	 * @return
 	 */
-	public static AbstractFlowNodeSVGFactory createSVGFactory(
-			KernelFlowElement kernelFlowElement, String svgTemplateFileName) {
-		if (StringUtils.contains(svgTemplateFileName, NODE_TYPE_EVENT)) {
-			return new EventSVGFactory(kernelFlowElement, svgTemplateFileName);
-		} else if (StringUtils
-				.contains(svgTemplateFileName, NODE_TYPE_ACTIVITY)) {
-			return new TaskSVGFactory(kernelFlowElement, svgTemplateFileName);
+	public static AbstractFlowElementSVGFactory createSVGFactory(
+			KernelBaseElement kernelBaseElement, String svgTemplateFileName) {
+		if (StringUtils.contains(svgTemplateFileName, ELEMENT_TYPE_EVENT)) {
+			return new EventSVGFactory(kernelBaseElement, svgTemplateFileName);
 		} else if (StringUtils.contains(svgTemplateFileName,
-				NODE_TYPE_CONNECTOR)) {
-			return new ConnectorSVGFactory(kernelFlowElement,
+				ELEMENT_TYPE_ACTIVITY)) {
+			return new TaskSVGFactory(kernelBaseElement, svgTemplateFileName);
+		} else if (StringUtils.contains(svgTemplateFileName,
+				ELEMENT_TYPE_CONNECTOR)) {
+			return new ConnectorSVGFactory(kernelBaseElement,
 					svgTemplateFileName);
-		} else if (StringUtils.contains(svgTemplateFileName, NODE_TYPE_GATEWAY)) {
-			return new GatewaySVGFactory(kernelFlowElement, svgTemplateFileName);
+		} else if (StringUtils.contains(svgTemplateFileName,
+				ELEMENT_TYPE_GATEWAY)) {
+			return new GatewaySVGFactory(kernelBaseElement, svgTemplateFileName);
+		} else if (StringUtils.contains(svgTemplateFileName, ELEMENT_TYPE_LANE)) {
+			return new LanesetSVGFactory(kernelBaseElement, svgTemplateFileName);
 		}
 		return null;
 	}
@@ -148,7 +152,7 @@ public abstract class AbstractFlowNodeSVGFactory extends
 	 */
 	private VONode getDefaultSVGContainerFromFactory(
 			Map<String, Object> processDefinitionPorperties) {
-		SvgVO svgTemplateContainer = (SvgVO) AbstractFlowNodeSVGFactory
+		SvgVO svgTemplateContainer = (SvgVO) AbstractFlowElementSVGFactory
 				.createSVGTemplateContainerVO(processDefinitionPorperties);
 		Float svgMinX = (Float) processDefinitionPorperties.get(CANVAS_MINX);
 		Float svgMinY = (Float) processDefinitionPorperties.get(CANVAS_MINY);

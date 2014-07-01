@@ -49,7 +49,10 @@ import org.foxbpm.engine.impl.diagramview.vo.VONode;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
+import org.foxbpm.kernel.process.KernelBaseElement;
 import org.foxbpm.kernel.process.KernelFlowElement;
+import org.foxbpm.kernel.process.KernelLane;
+import org.foxbpm.kernel.process.KernelLaneSet;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 
@@ -72,7 +75,7 @@ public class ConcreteProcessDefinitionVOFactory extends
 	/**
 	 * 创建节点工厂
 	 */
-	private AbstractFlowNodeVOFactory flowNodeVOFactory;
+	private AbstractFlowElementVOFactory flowNodeVOFactory;
 
 	/**
 	 * 创建流程图，包括标记信息
@@ -149,8 +152,38 @@ public class ConcreteProcessDefinitionVOFactory extends
 		}
 
 		this.createSequenceVO(deployedProcessDefinition, voNodeList);
+		this.createLaneSetVO(deployedProcessDefinition.getLaneSets(),
+				voNodeList);
 		return flowNodeVOFactory.convertNodeListToString(
 				deployedProcessDefinition.getProperties(), voNodeList);
+	}
+
+	/**
+	 * 泳道VO
+	 * 
+	 * @param deployedProcessDefinition
+	 * @param voNodeList
+	 */
+	private void createLaneSetVO(List<KernelLaneSet> laneSets,
+			List<VONode> voNodeList) {
+		Iterator<KernelLaneSet> laneSetIter = laneSets.iterator();
+		while (laneSetIter.hasNext()) {
+			KernelLaneSet laneSet = laneSetIter.next();
+			this.createLaneVO(laneSet, voNodeList);
+		}
+	}
+
+	private void createLaneVO(KernelLaneSet laneSet, List<VONode> voNodeList) {
+		List<KernelLane> lanes = laneSet.getLanes();
+		Iterator<KernelLane> laneIter = lanes.iterator();
+		while (laneIter.hasNext()) {
+			KernelLane lane = laneIter.next();
+			KernelLaneSet childLaneSet = lane.getChildLaneSet();
+			if (childLaneSet != null) {
+				this.createLaneVO(childLaneSet, voNodeList);
+			}
+
+		}
 	}
 
 	/**
@@ -214,11 +247,11 @@ public class ConcreteProcessDefinitionVOFactory extends
 	 * @param svgTemplateFileName
 	 * @return
 	 */
-	private VONode getNodeSVGFromFactory(KernelFlowElement kernelFlowNodeImpl,
+	private VONode getNodeSVGFromFactory(KernelBaseElement kernelBaseElement,
 			String svgType, String svgTemplateFileName) {
 		// 调用节点构造方法，创建SVG VALUE OBJECT 对象
-		flowNodeVOFactory = AbstractFlowNodeVOFactory.createSVGFactory(
-				kernelFlowNodeImpl, svgTemplateFileName);
+		flowNodeVOFactory = AbstractFlowElementVOFactory.createSVGFactory(
+				kernelBaseElement, svgTemplateFileName);
 		return flowNodeVOFactory.createFlowElementSVGVO(svgType);
 	}
 
@@ -234,10 +267,10 @@ public class ConcreteProcessDefinitionVOFactory extends
 			KernelFlowElement kernelFlowNodeImpl, String svgType,
 			String svgTemplateFileName, String taskState) {
 		// 创建具体工厂
-		AbstractFlowNodeVOFactory conreateFactory = AbstractFlowNodeVOFactory
+		AbstractFlowElementVOFactory conreateFactory = AbstractFlowElementVOFactory
 				.createSVGFactory(kernelFlowNodeImpl, svgTemplateFileName);
 		// 创建标记工厂，标记工厂
-		flowNodeVOFactory = AbstractFlowNodeVOFactory.createSignedSVGFactory(
+		flowNodeVOFactory = AbstractFlowElementVOFactory.createSignedSVGFactory(
 				kernelFlowNodeImpl, svgTemplateFileName, taskState,
 				conreateFactory);
 		// 标记构造独自实现，非侵入,独自扩展，对应SgnProcessStateSVGFactory工厂，

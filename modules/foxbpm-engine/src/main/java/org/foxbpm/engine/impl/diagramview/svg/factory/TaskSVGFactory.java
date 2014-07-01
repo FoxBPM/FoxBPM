@@ -25,7 +25,7 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.GVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.RectVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.diagramview.vo.VONode;
-import org.foxbpm.kernel.process.KernelFlowElement;
+import org.foxbpm.kernel.process.KernelBaseElement;
 
 /**
  * 任务SVG对象的工厂类
@@ -33,7 +33,7 @@ import org.foxbpm.kernel.process.KernelFlowElement;
  * @author MAENLIANG
  * @date 2014-06-10
  */
-public class TaskSVGFactory extends AbstractFlowNodeSVGFactory {
+public class TaskSVGFactory extends AbstractFlowElementSVGFactory {
 	/**
 	 * 
 	 * @param kernelFlowElement
@@ -41,9 +41,9 @@ public class TaskSVGFactory extends AbstractFlowNodeSVGFactory {
 	 * @param voTemplateFileName
 	 *            SVG模版文件名
 	 */
-	public TaskSVGFactory(KernelFlowElement kernelFlowElement,
+	public TaskSVGFactory(KernelBaseElement kernelBaseElement,
 			String voTemplateFileName) {
-		super(kernelFlowElement, voTemplateFileName);
+		super(kernelBaseElement, voTemplateFileName);
 	}
 
 	@Override
