@@ -21,6 +21,7 @@ import org.foxbpm.engine.impl.bpmn.parser.model.ExclusiveGatewayParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.InclusiveGatewayParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.ParallelGatewayParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.ProcessParser;
+import org.foxbpm.engine.impl.bpmn.parser.model.ScriptTaskParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.StartEventParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.UserTaskParser;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
@@ -38,7 +39,7 @@ public class BpmnBehaviorEMFConverter {
 		elementParserMap.put(TaskImpl.class, null);
 		elementParserMap.put(UserTaskImpl.class, UserTaskParser.class);
 		elementParserMap.put(ServiceTaskImpl.class, null);
-		elementParserMap.put(ScriptTaskImpl.class, null);
+		elementParserMap.put(ScriptTaskImpl.class, ScriptTaskParser.class);
 		elementParserMap.put(StartEventImpl.class, StartEventParser.class);
 		elementParserMap.put(EndEventImpl.class, EndEventParser.class);
 		elementParserMap.put(ProcessImpl.class, ProcessParser.class);
