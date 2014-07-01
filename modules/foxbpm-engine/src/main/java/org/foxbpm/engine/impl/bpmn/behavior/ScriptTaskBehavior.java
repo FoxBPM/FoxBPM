@@ -19,6 +19,7 @@ package org.foxbpm.engine.impl.bpmn.behavior;
 
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 public class ScriptTaskBehavior extends TaskBehavior {
 
@@ -42,6 +43,16 @@ public class ScriptTaskBehavior extends TaskBehavior {
 
 	public void setScript(String script) {
 		this.script = new ExpressionImpl(script);
+	}
+	
+	@Override
+	public void execute(FlowNodeExecutionContext executionContext) {
+		
+		
+		getScript().getValue(executionContext);
+		
+		executionContext.signal();
+		
 	}
 
 }
