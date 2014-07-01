@@ -115,22 +115,31 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 		List<Trigger> triggersList = new ArrayList<Trigger>();
 		Object triggerObj = ExpressionMgmt.execute(
 				timeExpression.getExpressionText(), executionContext);
+		if (triggerObj == null) {
+			throw new FoxBPMException("创建TIGGER  LIST时候，TIMER 表达式执行结果为NULL");
+		}
 		if (triggerObj instanceof List) {
 			try {
 				triggersList = (List<Trigger>) triggerObj;
 			} catch (Exception e) {
 				throw new FoxBPMException("定时连接器的触发器集合必须为List<Trigger>");
 			}
-
 		} else if (triggerObj instanceof Trigger) {
+			Trigger tempTrigger = null;
 			try {
-				triggersList.add((Trigger) triggerObj);
+				tempTrigger = (Trigger) triggerObj;
 			} catch (Exception e) {
 				throw new FoxBPMException("定时连接器的触发器集合必须为List<Trigger>", e);
 			}
-		} else if (triggerObj instanceof String) {
-			triggersList.add(QuartzUtil.createTrigger(triggerObj,
+			triggersList.add(tempTrigger);
+		} else if (triggerObj instanceof Date) {
+			triggersList.add(QuartzUtil.createTriggerByDateTime(triggerObj,
 					executionContext.getProcessInstanceId()));
+		} else if (triggerObj instanceof String) {
+			triggersList.add(QuartzUtil.createTriggerByDateTimeStr(triggerObj,
+					executionContext.getProcessInstanceId()));
+		} else {
+			throw new FoxBPMException("创建TIGGER  LIST时候，TIMER 表达式执行错误");
 		}
 
 		this.triggerList = triggersList;

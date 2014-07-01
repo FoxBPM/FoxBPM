@@ -276,12 +276,30 @@ public final class QuartzUtil {
 	 * @param groupName
 	 * @return trigger
 	 */
-	public final static Trigger createTrigger(Object dateTime,
+	public final static Trigger createTriggerByDateTimeStr(Object dateTime,
 			String processInstanceID) {
 		Date startDateTime = ClockUtil.parseStringToDate((String) dateTime);
 		return newTrigger()
 				.withIdentity(GuidUtil.CreateGuid(), processInstanceID)
 				.startAt(startDateTime).build();
+
+	}
+
+	/**
+	 * 创建两种类型TRIGGER
+	 * 
+	 * @param startDate
+	 * @param cronExpression
+	 * @param triggerName
+	 * @param groupName
+	 * @return trigger
+	 */
+	public final static Trigger createTriggerByDateTime(Object dateTimeObj,
+			String processInstanceID) {
+		Date dateTime = (Date) dateTimeObj;
+		return newTrigger()
+				.withIdentity(GuidUtil.CreateGuid(), processInstanceID)
+				.startAt(dateTime).build();
 
 	}
 
