@@ -17,8 +17,6 @@
  */
 package org.foxbpm.kernel.process.impl;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import org.foxbpm.kernel.process.KernelDefinitions;
 import org.foxbpm.kernel.process.KernelException;
@@ -39,7 +37,6 @@ public class KernelProcessDefinitionImpl extends KernelFlowElementsContainerImpl
 	protected String key;
 	protected String description;
 	protected KernelFlowNodeImpl initial;
-	protected List<KernelLaneSet> laneSets;
 	protected KernelDefinitions definitions;
 
 
@@ -134,12 +131,6 @@ public class KernelProcessDefinitionImpl extends KernelFlowElementsContainerImpl
 	}
 
 
-	public List<KernelLaneSet> getLaneSets() {
-		if (laneSets == null) {
-			laneSets = new ArrayList<KernelLaneSet>();
-		}
-		return laneSets;
-	}
 
 	public void setDefinitions(KernelDefinitions definitions) {
 		this.definitions = definitions;

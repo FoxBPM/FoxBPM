@@ -17,6 +17,7 @@
  */
 package org.foxbpm.kernel.process.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.foxbpm.kernel.process.KernelLane;
@@ -33,21 +34,31 @@ public class KernelLaneSetImpl extends KernelBaseElementImpl implements KernelLa
 		super(id, processDefinition);
 	}
 
-
+	protected List<KernelLane> lanes=new ArrayList<KernelLane>();
 
 	public List<KernelLane> getLanes() {
-		// TODO Auto-generated method stub
-		return null;
+		return lanes;
 	}
 
+	protected String name;
+	
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 
-	public void setName(String value) {
-		// TODO Auto-generated method stub
-
+	public void setName(String name) {
+		this.name=name;
 	}
+	
+	public KernelLane getLaneForId(String id) {
+	    if(lanes != null && lanes.size() > 0) {
+	      for(KernelLane lane : lanes) {
+	        if(id.equals(lane.getId())) {
+	          return lane;
+	        }
+	      }
+	    }
+	    return null;
+	  }
 
 }

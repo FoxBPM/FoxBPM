@@ -31,6 +31,8 @@ import org.eclipse.bpmn2.ExclusiveGateway;
 import org.eclipse.bpmn2.FlowElement;
 import org.eclipse.bpmn2.FlowNode;
 import org.eclipse.bpmn2.InclusiveGateway;
+import org.eclipse.bpmn2.Lane;
+import org.eclipse.bpmn2.LaneSet;
 import org.eclipse.bpmn2.MessageFlow;
 import org.eclipse.bpmn2.ParallelGateway;
 import org.eclipse.bpmn2.Process;
@@ -69,8 +71,12 @@ import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
 import org.foxbpm.kernel.ProcessDefinitionBuilder;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
+import org.foxbpm.kernel.process.KernelLane;
+import org.foxbpm.kernel.process.KernelLaneSet;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
+import org.foxbpm.kernel.process.impl.KernelLaneImpl;
+import org.foxbpm.kernel.process.impl.KernelLaneSetImpl;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
 import org.foxbpm.model.config.style.Style;
@@ -124,8 +130,22 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 				processDefinitionBuilder.endFlowNode();
 			}
 		}
+		
+
+		
 
 		ProcessDefinitionEntity processDefinition=(ProcessDefinitionEntity)processDefinitionBuilder.buildProcessDefinition();
+		
+		if(process.getLaneSets()!=null&&process.getLaneSets().size()>0){
+			for (LaneSet laneSet : process.getLaneSets()) {
+
+				KernelLaneSetImpl laneSetObj=new KernelLaneSetImpl(laneSet.getId(), processDefinition);
+				laneSetObj.setName(laneSet.getName());
+				loadLane(laneSetObj, laneSet, processDefinition);
+				
+				processDefinition.getLaneSets().add(laneSetObj);
+			}
+		}
 	
 		
 		processDefinition.setKey(processBehavior.getId());
@@ -137,6 +157,29 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		processDI(processDefinition,process);
 		return processDefinition;
 	}
+	
+	private void loadLane(KernelLaneSet kernelLaneSet,LaneSet laneSet,ProcessDefinitionEntity processDefinition){
+		kernelLaneSet.setName(laneSet.getName());
+				for (Lane lane : laneSet.getLanes()) {
+					if(lane!=null){
+						
+						KernelLaneImpl KernelLaneImpl=new KernelLaneImpl(lane.getId(), processDefinition);
+						kernelLaneSet.getLanes().add(KernelLaneImpl);
+						if(lane.getChildLaneSet()!=null){
+							KernelLaneSetImpl KernelLaneSetImpl=new KernelLaneSetImpl(lane.getChildLaneSet().getId(), processDefinition);
+							KernelLaneSetImpl.setName(lane.getChildLaneSet().getName());
+							loadLane(KernelLaneSetImpl,lane.getChildLaneSet(),processDefinition);
+						}else{
+							continue;
+						}
+					}
+
+						
+				}
+		
+	}
+	
+
 	
 	private void processDI(ProcessDefinitionEntity processDefinition,Process process){
 		ProcessEngineConfigurationImpl processEngineConfiguration = Context.getProcessEngineConfiguration();
@@ -185,6 +228,15 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 						findFlowNode.setX((new Float(bpmnShape.getBounds().getX())).intValue());
 						findFlowNode.setY((new Float(bpmnShape.getBounds().getY())).intValue());
 					}
+					KernelLane lane=processDefinition.getLaneForId(bpmnElement.getId());
+					if(lane!=null){
+						KernelLaneImpl LaneImpl=(KernelLaneImpl)lane;
+						LaneImpl.setWidth((new Float(bpmnShape.getBounds().getWidth())).intValue());
+						LaneImpl.setHeight((new Float(bpmnShape.getBounds().getHeight())).intValue());
+						LaneImpl.setX((new Float(bpmnShape.getBounds().getX())).intValue());
+						LaneImpl.setY((new Float(bpmnShape.getBounds().getY())).intValue());
+					}
+					
 					Style style=null;
 					if (bpmnElement instanceof StartEvent) {
 						style=processEngineConfiguration.getStyle("StartEvent");

@@ -26,6 +26,7 @@ import java.util.Map;
 import org.foxbpm.kernel.event.KernelListener;
 import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.process.KernelFlowElementsContainer;
+import org.foxbpm.kernel.process.KernelLane;
 import org.foxbpm.kernel.process.KernelLaneSet;
 
 public class KernelFlowElementsContainerImpl extends KernelFlowElementImpl implements KernelFlowElementsContainer {
@@ -39,6 +40,8 @@ public class KernelFlowElementsContainerImpl extends KernelFlowElementImpl imple
 	protected Map<String, KernelFlowNodeImpl> namedFlowNodes = new HashMap<String, KernelFlowNodeImpl>();
 	protected Map<String,KernelSequenceFlowImpl> sequenceFlows=new HashMap<String,KernelSequenceFlowImpl>();
 	
+	protected List<KernelLaneSet> laneSets=new ArrayList<KernelLaneSet>();
+	  
 	
 
 	protected Map<String, List<KernelListener>> kernelListeners = new HashMap<String, List<KernelListener>>();
@@ -148,14 +151,29 @@ public class KernelFlowElementsContainerImpl extends KernelFlowElementImpl imple
 	// getters and setters
 	// //////////////////////////////////////////////////////
 
-
+	  
 	public List<KernelLaneSet> getLaneSets() {
-		return null;
+		return laneSets;
 	}
 
+	public KernelLane getLaneForId(String id) {
+	    if(laneSets != null && laneSets.size() > 0) {
+	    	KernelLane lane;
+	      for(KernelLaneSet set : laneSets) {
+	        lane = set.getLaneForId(id);
+	        if(lane != null) {
+	          return lane;
+	        }
+	      }
+	    }
+	    return null;
+	  }
+	
 	public List<KernelFlowNodeImpl> getFlowNodes() {
 		return flowNodes;
 	}
+	
+	
 
 
 
