@@ -261,6 +261,10 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 						style=processEngineConfiguration.getStyle("UserTask");
 					}
 					
+					if (bpmnElement instanceof Lane) {
+						style=processEngineConfiguration.getStyle("Lane");
+					}
+					
 					/*
 					if (bpmnElement instanceof IntermediateCatchEventBehavior) {
 						String intermediateTimerEventSVG = intermediateTimerEventToSVG(bpmnShape);
