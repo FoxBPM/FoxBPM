@@ -116,7 +116,7 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 		Object triggerObj = ExpressionMgmt.execute(
 				timeExpression.getExpressionText(), executionContext);
 		if (triggerObj == null) {
-			throw new FoxBPMException("创建TIGGER  LIST时候，TIMER 表达式执行结果为NULL");
+			throw new FoxBPMException("创建TRIGGER  LIST时候，TIMER 表达式执行结果为NULL");
 		}
 		if (triggerObj instanceof List) {
 			try {
@@ -139,7 +139,7 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 			triggersList.add(QuartzUtil.createTriggerByDateTimeStr(triggerObj,
 					executionContext.getProcessInstanceId()));
 		} else {
-			throw new FoxBPMException("创建TIGGER  LIST时候，TIMER 表达式执行错误");
+			throw new FoxBPMException("创建TRIGGER  LIST时候，TIMER 表达式执行错误");
 		}
 
 		this.triggerList = triggersList;

@@ -25,6 +25,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.expression.Expression;
+import org.foxbpm.engine.impl.entity.TaskEntity;
+import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobDetail;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
@@ -32,6 +34,7 @@ import org.foxbpm.engine.impl.schedule.quartz.ConnectorAutoExecuteJob;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.QuartzUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.kernel.event.KernelEventType;
 import org.foxbpm.kernel.event.KernelListener;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
@@ -178,6 +181,16 @@ public class Connector implements KernelListener {
 				FoxbpmJobExecutionContext.EVENT_NAME, this.getEventType());
 		connectorAutoExecuteJobDetail.putContextAttribute(
 				FoxbpmJobExecutionContext.TOKEN_ID, executionContext.getId());
+		if (StringUtils.equalsIgnoreCase(this.getEventType(),
+				KernelEventType.EVENTTYPE_TASK_ASSIGN)) {
+			TaskEntity assignTask = ((TokenEntity) executionContext)
+					.getAssignTask();
+			if (assignTask != null) {
+				connectorAutoExecuteJobDetail.putContextAttribute(
+						FoxbpmJobExecutionContext.TASK_ID, assignTask.getId());
+			}
+		}
+
 		connectorAutoExecuteJobDetail.putContextAttribute(
 				FoxbpmJobExecutionContext.NODE_ID, executionContext
 						.getEventSource().getId());

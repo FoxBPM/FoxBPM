@@ -58,6 +58,7 @@ public class ConnectorAutoExecuteJob extends AbstractQuartzScheduleJob {
 		String tokenID = foxpmJobExecutionContext.getTokenId();
 		String eventName = foxpmJobExecutionContext.getEventName();
 		String nodeID = foxpmJobExecutionContext.getNodeId();
+		String taskID = foxpmJobExecutionContext.getTaskId();
 
 		TimeExecuteConnectorCmd timeExecuteConnectorCmd = new TimeExecuteConnectorCmd();
 		timeExecuteConnectorCmd.setConnectorID(connectorID);
@@ -65,7 +66,7 @@ public class ConnectorAutoExecuteJob extends AbstractQuartzScheduleJob {
 		timeExecuteConnectorCmd.setTokenID(tokenID);
 		timeExecuteConnectorCmd.setEventName(eventName);
 		timeExecuteConnectorCmd.setNodeID(nodeID);
-
+		timeExecuteConnectorCmd.setTaskID(taskID);
 		this.commandExecutor.execute(timeExecuteConnectorCmd);
 	}
 
