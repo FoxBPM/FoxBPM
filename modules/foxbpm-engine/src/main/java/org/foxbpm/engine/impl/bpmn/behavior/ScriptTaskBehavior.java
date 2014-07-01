@@ -17,11 +17,42 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
+import org.foxbpm.engine.expression.Expression;
+import org.foxbpm.engine.impl.expression.ExpressionImpl;
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
+
 public class ScriptTaskBehavior extends TaskBehavior {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	
+	protected String scriptFormat;
+
+	protected Expression script;
+	
+	public String getScriptFormat() {
+		return scriptFormat;
+	}
+
+	public void setScriptFormat(String scriptFormat) {
+		this.scriptFormat = scriptFormat;
+	}
+
+	public Expression getScript() {
+		return script;
+	}
+
+	public void setScript(String script) {
+		this.script = new ExpressionImpl(script);
+	}
+	
+	@Override
+	public void execute(FlowNodeExecutionContext executionContext) {
+		
+		
+		getScript().getValue(executionContext);
+		
+		executionContext.signal();
+		
+	}
 
 }
