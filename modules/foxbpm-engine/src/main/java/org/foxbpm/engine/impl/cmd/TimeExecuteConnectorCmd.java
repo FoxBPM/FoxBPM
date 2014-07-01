@@ -27,6 +27,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
+import org.foxbpm.engine.impl.entity.TaskEntity;
+import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.kernel.event.KernelListener;
@@ -71,6 +73,11 @@ public class TimeExecuteConnectorCmd implements Command<KernelListener>,
 	 */
 	protected String nodeID;
 
+	/**
+	 * 当前分派任务的ID
+	 */
+	protected String taskID;
+
 	@Override
 	public KernelListener execute(CommandContext commandContext) {
 		ProcessInstanceEntity processInstance = commandContext
@@ -79,8 +86,10 @@ public class TimeExecuteConnectorCmd implements Command<KernelListener>,
 		KernelProcessDefinitionImpl processDefinition = processInstance
 				.getProcessDefinition();
 
-		KernelTokenImpl kernelTokenImpl = this
+		TokenEntity tokenEntity = (TokenEntity) this
 				.getExecutionContextFromInstance(processInstance);
+		tokenEntity.setAssignTask(this.getTaskEntity(tokenEntity));
+
 		// 获取当前任务记录的CONNECTOR
 		Connector connector = this
 				.getListenersFromDefinition(processDefinition);
@@ -89,9 +98,21 @@ public class TimeExecuteConnectorCmd implements Command<KernelListener>,
 					"TimeExecuteConnectorCmd自动执行连接器时候,连接器无法获取");
 		}
 		try {
-			connector.executeJob(kernelTokenImpl);
+			connector.executeJob(tokenEntity);
 		} catch (Exception e) {
 			throw new FoxBPMException("TimeExecuteConnectorCmd自动执行连接器时候报异常", e);
+		}
+		return null;
+	}
+
+	private TaskEntity getTaskEntity(TokenEntity tokenEntity) {
+		List<TaskEntity> tasks = tokenEntity.getTasks();
+		Iterator<TaskEntity> iterator = tasks.iterator();
+		while (iterator.hasNext()) {
+			TaskEntity next = iterator.next();
+			if (StringUtils.equalsIgnoreCase(this.taskID, next.getId())) {
+				return next;
+			}
 		}
 		return null;
 	}
@@ -175,5 +196,9 @@ public class TimeExecuteConnectorCmd implements Command<KernelListener>,
 
 	public void setNodeID(String nodeID) {
 		this.nodeID = nodeID;
+	}
+
+	public void setTaskID(String taskID) {
+		this.taskID = taskID;
 	}
 }
