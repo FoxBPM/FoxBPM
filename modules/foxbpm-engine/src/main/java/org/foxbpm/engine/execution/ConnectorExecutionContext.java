@@ -17,6 +17,7 @@
  */
 package org.foxbpm.engine.execution;
 
+import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 
 /**
@@ -31,6 +32,8 @@ public interface ConnectorExecutionContext extends ListenerExecutionContext {
 	String getAuthenticatedUserId();
 	
 	String getStartAuthor();
+	
+	TaskEntity getAssignTask();
 	
 
 }
