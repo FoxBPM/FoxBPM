@@ -17,6 +17,7 @@
  */
 package org.foxbpm.engine.impl.identity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.foxbpm.engine.ProcessEngine;
@@ -25,6 +26,7 @@ import org.foxbpm.engine.cache.Cache;
 import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
 import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.User;
+import org.foxbpm.engine.impl.cmd.FindUserByGroupIdAndTypeCmd;
 import org.foxbpm.engine.impl.cmd.FindUserByIdNoCacheCmd;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 
@@ -64,6 +66,20 @@ public abstract class Authentication {
 		User user = commandExecutor.execute(new FindUserByIdNoCacheCmd(userId));
 		userCache.add(userId, user);
 		return user;
+	}
+	
+	public List<User> selectUserByGroupIdAndType(String groupId,String groupType){
+		List<User> users = new ArrayList<User>();
+		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
+		CommandExecutor commandExecutor = processEngine.getProcessEngineConfiguration().getCommandExecutor();
+		List<String> userIds = commandExecutor.execute(new FindUserByGroupIdAndTypeCmd(groupId,groupType));
+		for(String userId :userIds){
+			User user = selectUserByUserId(userId);
+			if(user != null){
+				users.add(user);
+			}
+		}
+		return users;
 	}
 
 }

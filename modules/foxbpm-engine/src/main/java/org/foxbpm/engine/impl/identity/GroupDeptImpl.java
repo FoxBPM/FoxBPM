@@ -32,5 +32,18 @@ public class GroupDeptImpl implements GroupDefinition {
 		List<Group> groups = (List<Group>)sqlsession.selectListWithRawParameter("selectDeptByUserId", userId);
 		return groups;
 	}
+	
+	@Override
+	public String getType() {
+		return "dept";
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> selectUserIdsByGroupId(String groupId) {
+		ISqlSession sqlsession = Context.getCommandContext().getSqlSession();
+		List<String> userIds = (List<String>)sqlsession.selectListWithRawParameter("selectUserIdsByDeptId", groupId);
+		return userIds;
+	}
 
 }

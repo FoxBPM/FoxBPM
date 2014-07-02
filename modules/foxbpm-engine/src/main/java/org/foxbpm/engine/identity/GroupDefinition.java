@@ -21,5 +21,9 @@ import java.util.List;
 
 public interface GroupDefinition {
 
-	public List<Group> selectGroupByUserId(String userId);
+	List<Group> selectGroupByUserId(String userId);
+	
+	String getType();
+	
+	List<String> selectUserIdsByGroupId(String groupId);
 }

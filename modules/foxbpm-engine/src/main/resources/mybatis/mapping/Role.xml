@@ -7,6 +7,10 @@
 	  where 
 	  G.USERID=#{userId,jdbcType=VARCHAR} and G.GROUPTYPE='role'
   </select>
-  
+  <select id="selectUserIdsByRoleId" parameterType="java.lang.String" resultType="java.lang.String">
+	  select userId from AU_GROUP_RELATION G 
+	  where 
+	  G.groupId=#{groupId,jdbcType=VARCHAR} and G.GROUPTYPE='role'
+  </select>
   
 </mapper>

@@ -32,6 +32,19 @@ public class GroupRoleImpl implements GroupDefinition {
 		List<Group> groups = (List<Group>)sqlsession.selectListWithRawParameter("selectRoleByUserId", userId);
 		return groups;
 	}
+	
+	@Override
+	public String getType() {
+		return "role";
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> selectUserIdsByGroupId(String groupId) {
+		ISqlSession sqlsession = Context.getCommandContext().getSqlSession();
+		List<String> userIds = (List<String>)sqlsession.selectListWithRawParameter("selectUserIdsByRoleId", groupId);
+		return userIds;
+	}
 
 
 }
