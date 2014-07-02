@@ -55,6 +55,13 @@ public class KernelLaneSetImpl extends KernelBaseElementImpl implements KernelLa
 	      for(KernelLane lane : lanes) {
 	        if(id.equals(lane.getId())) {
 	          return lane;
+	        }else{
+	        	if(lane.getChildLaneSet()!=null&&lane.getChildLaneSet().getLanes().size()>0){
+	        		KernelLane kernelLane=lane.getChildLaneSet().getLaneForId(id);
+	        		if(kernelLane!=null){
+	        			return kernelLane;
+	        		}
+	        	}
 	        }
 	      }
 	    }
