@@ -75,7 +75,7 @@
 			<style object="InclusiveGateway" foreground="DCA567"
 				background="F5D889" textColor="755809" mulitSelectedColor="F4FFFF"
 				selectedColor="B4C7D8" font="arial,10,-,-" />
-			<style object="Lane" foreground="ABBFD3" background="FFFFFF"
+			<style object="Lane" foreground="ABBFD3" background="f7f7f7"
 				textColor="505050" mulitSelectedColor="F4FFFF" selectedColor="B4C7D8"
 				font="arial,10,-,-" />
 			<style object="SubChoreography" foreground="97CEE6" background="C0E9FE"
