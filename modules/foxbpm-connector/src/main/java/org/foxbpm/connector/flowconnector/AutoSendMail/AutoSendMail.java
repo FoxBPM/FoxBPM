@@ -18,9 +18,11 @@
 package org.foxbpm.connector.flowconnector.AutoSendMail;
 
 import java.util.Date;
+import java.util.List;
 
 import org.foxbpm.connector.mail.MailEngine;
 import org.foxbpm.connector.mail.MailEntity;
+import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.IdentityService;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
@@ -73,76 +75,91 @@ public class AutoSendMail implements FlowConnectorHandler {
 
 		String taskUrl = "http://localhost:8889/foxbpm-webapps-base";
 		if (StringUtil.isEmpty(content)) {
-			content = "<br>Hello,<br>你好,<br><br> " + mailTitle + "+<br><br>" + "Please click url to deal with job: <br>请访问此链接地址进入任务:<br> <a href=" + taskUrl + ">" + taskUrl + "</a><br><br>"
+			content = "<br>Hello,<br>你好,<br><br> " + mailTitle + "<br><br>" + "Please click url to deal with job: <br>请访问此链接地址进入任务:<br> <a href=" + taskUrl + ">" + taskUrl + "</a><br><br>"
 					+ "Best Regards!<br>诚挚问候!<br>Note: Please do not reply to this email , This mailbox does not allow incoming messages." + "<br>注意: 本邮件为工作流系统发送，请勿回复。 ";
 		}
 		// 获取用户
 		IdentityService identityService = Context.getProcessEngineConfiguration().getIdentityService();
 		// 判断是否独占任务
 		User user = null;
-		MailEntity mailEntity = null;
 		taskEntity.setAssignee("admin");
 		if (StringUtil.isNotEmpty(taskEntity.getAssignee())) {
 			user = identityService.getUser(taskEntity.getAssignee());
+			// 判断用户是否为空
 			if (null != user) {
+				// 如果用户存在邮件地址即发生邮件
 				if (StringUtil.isNotEmpty(user.getEmail())) {
-					mailEntity = new MailEntity();
-					mailEntity.setMailName(title);
-					mailEntity.setMailSubject(title);
-					mailEntity.setMailTo(user.getEmail());
-					mailEntity.setMailBody(content);
-					mailEntity.setCreateTime(new Date());
-					mailEntity.setBizType("taskremind");
-					mailEntity.setBizValue(taskEntity.getId());
-					mailEntity.setCreateUser(Authentication.getAuthenticatedUserId());
-					MailEngine.getInstance().saveMail(mailEntity);
+					// 保存邮件实体
+					saveMail(user.getEmail(), title, content, taskEntity.getId());
 				}
 			}
 		} else {
+			// 处理共享任务
 			StringBuffer to = new StringBuffer();
+			String userId = null;
 			for (IdentityLinkEntity identityLink : taskEntity.getTaskIdentityLinks()) {
-				if (StringUtil.isNotEmpty(identityLink.getUserId())) {
+				userId = identityLink.getUserId();
+				if (StringUtil.isNotEmpty(userId) && !Constant.FOXBPM_ALL_USER.equals(userId)) {
 					user = Authentication.selectUserByUserId(identityLink.getUserId());
 					if (null != user) {
 						if (StringUtil.isNotEmpty(user.getEmail())) {
 							to.append(user.getEmail()).append(",");
 						}
 					}
-				} else {/*
-					
-					String groupIdString = identityLink.getGroupId();
-					String groupTypeString = identityLink.getGroupType();
-					GroupTo groupTo = Authentication.findGroupByGroupIdAndType(groupIdString, groupTypeString);
-					if (groupTo != null) {
-
-						for (GroupDefinition groupDefinition : groupDefinitions) {
-							if (groupDefinition.getId().equals(groupTypeString)) {
-								List<UserTo> userTos = groupDefinition.findUserByGroupId(groupIdString);
-								for (UserTo userTo : userTos) {
-									if (userTo != null) {
-										
-									}
-								}
+				} else if (Constant.FOXBPM_ALL_USER.equals(userId)) {
+					// 处理所有者
+					List<User> users = identityService.getUsers(null, null);
+					for (User u : users) {
+						if (StringUtil.isNotEmpty(u.getEmail())) {
+							to.append(u.getEmail()).append(",");
+						}
+					}
+				} else {
+					// 获取组下面所有用户
+					List<User> users = Authentication.selectUserByGroupIdAndType(identityLink.getGroupId(), identityLink.getGroupType());
+					if (null != users) {
+						for (User u : users) {
+							if (StringUtil.isNotEmpty(u.getEmail())) {
+								to.append(u.getEmail()).append(",");
 							}
 						}
-
-					}*/
+					}
 				}
 			}
 			if (to.length() > 0) {
+				// 删除最后一个','
 				to.deleteCharAt(to.length() - 1);
-				mailEntity = new MailEntity();
-				mailEntity.setMailName(title);
-				mailEntity.setMailSubject(title);
-				mailEntity.setMailTo(StringUtil.getString(to));
-				mailEntity.setMailBody(content);
-				mailEntity.setCreateTime(new Date());
-				mailEntity.setBizType("taskremind");
-				mailEntity.setBizValue(taskEntity.getId());
-				mailEntity.setCreateUser(Authentication.getAuthenticatedUserId());
-				MailEngine.getInstance().saveMail(mailEntity);
+				// 保存邮件实体
+				saveMail(to.toString(), title, content, taskEntity.getId());
 			}
 		}
+	}
+
+	/**
+	 * 保存邮件
+	 * 
+	 * @param to
+	 *            发给人
+	 * @param title
+	 *            主题
+	 * @param mailContent
+	 *            邮件内容
+	 * @param taskId
+	 *            任务id
+	 */
+	private void saveMail(String to, String mailtitle, String mailContent, String taskId) {
+		// 创建邮件实体
+		MailEntity mailEntity = new MailEntity();
+		mailEntity.setMailName(mailtitle);
+		mailEntity.setMailSubject(mailtitle);
+		mailEntity.setMailTo(to);
+		mailEntity.setMailBody(mailContent);
+		mailEntity.setCreateTime(new Date());
+		mailEntity.setBizType("taskremind");
+		mailEntity.setBizValue(taskId);
+		mailEntity.setCreateUser(Authentication.getAuthenticatedUserId());
+		// 调用引擎保存邮件
+		MailEngine.getInstance().saveMail(mailEntity);
 	}
 
 	public void setTitle(java.lang.String title) {
