@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.connector.common.constant.EntityFieldName;
-import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
@@ -102,7 +101,7 @@ public class MailEngine {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
 				// 获取邮件配置
-				SysMailConfig sysMailConfig = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getSysMailConfig();
+				SysMailConfig sysMailConfig = Context.getProcessEngineConfiguration().getSysMailConfig();
 				MailInfo mailInfoObj = null;
 				for (MailInfo mailInfo : sysMailConfig.getMailInfo()) {
 					if (mailInfo.getMailName().equals(sysMailConfig.getSelected())) {
