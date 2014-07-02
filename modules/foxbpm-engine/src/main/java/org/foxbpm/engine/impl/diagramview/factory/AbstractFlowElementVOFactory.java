@@ -195,6 +195,9 @@ public abstract class AbstractFlowElementVOFactory {
 			// 线性渐变设置会用到矩形的Height属性，
 			svgBuilder.setFill((String) kernelLaneImpl
 					.getProperty(StyleOption.Background));
+			svgBuilder.setStrokeWidth(0.5f);
+			svgBuilder.setTextLocationByHerizonFlag((Boolean) kernelLaneImpl
+					.getProperty(StyleOption.IsHorizontal));
 		}
 		return voNode;
 	}

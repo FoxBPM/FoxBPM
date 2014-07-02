@@ -43,6 +43,8 @@ public class TextVO extends NamespaceAttributesVO {
 	private String fontSize;
 	@XmlTransient
 	private Font font;
+	@XmlAttribute(name = "transform")
+	private String transform;
 
 	public String getFontSize() {
 		return fontSize;
@@ -60,4 +62,11 @@ public class TextVO extends NamespaceAttributesVO {
 		this.font = font;
 	}
 
+	public String getTransform() {
+		return transform;
+	}
+
+	public void setTransform(String transform) {
+		this.transform = transform;
+	}
 }
