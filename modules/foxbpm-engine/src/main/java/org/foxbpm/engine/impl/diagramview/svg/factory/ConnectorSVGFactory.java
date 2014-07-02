@@ -28,7 +28,7 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.MarkerVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.PathVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.diagramview.vo.VONode;
-import org.foxbpm.kernel.process.KernelFlowElement;
+import org.foxbpm.kernel.process.KernelBaseElement;
 
 /**
  * BPMN2.0事件元素之线条定义
@@ -37,7 +37,7 @@ import org.foxbpm.kernel.process.KernelFlowElement;
  * @date 2014-06-10
  * 
  */
-public class ConnectorSVGFactory extends AbstractFlowNodeSVGFactory {
+public class ConnectorSVGFactory extends AbstractFlowElementSVGFactory {
 
 	/**
 	 * 
@@ -45,9 +45,9 @@ public class ConnectorSVGFactory extends AbstractFlowNodeSVGFactory {
 	 *            连接线对象
 	 * @param voTemplateFileName
 	 */
-	public ConnectorSVGFactory(KernelFlowElement kernelFlowElement,
+	public ConnectorSVGFactory(KernelBaseElement kernelBaseElement,
 			String voTemplateFileName) {
-		super(kernelFlowElement, voTemplateFileName);
+		super(kernelBaseElement, voTemplateFileName);
 	}
 
 	@Override

@@ -4,6 +4,7 @@
     <menuConnector id="TestConnector" name="测试连接器" note="测试连接器" ico="TestConnector.png"/>
   </node>
   <node id="91a54e61-4bc9-4298-88c4-186f96cd998c" name="Messaging" ico="icoimages.jpg">
-    <menuConnector id="SendMail" name="发邮件" note="根据引擎的邮件配置发送邮件" ico="SendMail.jpg"/>
+    <menuConnector id="SendMail" name="发送邮件" note="根据引擎的邮件配置发送邮件" ico="SendMail.jpg"/>
+    <menuConnector id="AutoSendMail" name="自动邮件发送" note="自动发送邮件给当前处理人" ico="AutoSendMail.jpg"/>
   </node>
 </connectormenu:Menu>

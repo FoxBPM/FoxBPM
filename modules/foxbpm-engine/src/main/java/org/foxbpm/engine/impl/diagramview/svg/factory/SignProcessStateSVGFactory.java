@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.foxbpm.engine.impl.diagramview.factory.AbstractFlowNodeVOFactory;
+import org.foxbpm.engine.impl.diagramview.factory.AbstractFlowElementVOFactory;
 import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
 import org.foxbpm.engine.impl.diagramview.svg.vo.CircleVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.RectVO;
@@ -36,7 +36,7 @@ import org.foxbpm.kernel.process.KernelFlowElement;
  * @date 2014-06-16
  * 
  */
-public class SignProcessStateSVGFactory extends AbstractFlowNodeSVGFactory {
+public class SignProcessStateSVGFactory extends AbstractFlowElementSVGFactory {
 	/**
 	 * 流程实例所在节点状态色,红色
 	 */
@@ -70,7 +70,7 @@ public class SignProcessStateSVGFactory extends AbstractFlowNodeSVGFactory {
 	/**
 	 * 节点创建工厂
 	 */
-	private AbstractFlowNodeVOFactory abstractFlowNodeSVGFactory;
+	private AbstractFlowElementVOFactory abstractFlowNodeSVGFactory;
 	private String taskStateFlag;
 
 	/**
@@ -86,7 +86,7 @@ public class SignProcessStateSVGFactory extends AbstractFlowNodeSVGFactory {
 	 */
 	public SignProcessStateSVGFactory(KernelFlowElement kernelFlowElement,
 			String svgTemplateFileName,
-			AbstractFlowNodeVOFactory abstractFlowNodeSVGFactory,
+			AbstractFlowElementVOFactory abstractFlowNodeSVGFactory,
 			String taskStateFlag) {
 		super(kernelFlowElement, svgTemplateFileName);
 		this.abstractFlowNodeSVGFactory = abstractFlowNodeSVGFactory;

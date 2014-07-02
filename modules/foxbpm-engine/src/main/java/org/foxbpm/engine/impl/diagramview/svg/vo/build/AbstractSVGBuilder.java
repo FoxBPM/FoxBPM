@@ -76,6 +76,9 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 		} else if (StringUtils.contains(type,
 				SVGTypeNameConstant.SVT_TYPE_GATEWAY)) {
 			return new GatewaySVGBuilder((SvgVO) svgVo);
+		} else if (StringUtils
+				.contains(type, SVGTypeNameConstant.SVG_TYPE_LANE)) {
+			return new LanesetSVGBuilder((SvgVO) svgVo);
 		}
 		return null;
 	}

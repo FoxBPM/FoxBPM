@@ -71,4 +71,9 @@ public final class SVGTemplateNameConstant {
 	public static final String TEMPLATE_GATEWAY_EXCLUSIVE = "gateway/exclusive.databased.svg";
 	public static final String TEMPLATE_GATEWAY_INCLUSIVE = "gateway/inclusive.svg";
 	public static final String TEMPLATE_GATEWAY_PARALLEL = "gateway/parallel.svg";
+
+	/**
+	 * lane
+	 */
+	public static final String TEMPLATE_LANESET = "swimlane/lane.svg";
 }

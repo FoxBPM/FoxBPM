@@ -3,16 +3,20 @@
   <bpmn2:process id="mailmonitor_1" name="邮件监听">
     <bpmn2:startEvent id="StartEvent_1" name="开始">
       <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
-       <bpmn2:timerEventDefinition id="TimerEventDefinition_1">
+      <bpmn2:timerEventDefinition id="TimerEventDefinition_1">
         <bpmn2:timeCycle xsi:type="bpmn2:tFormalExpression" id="FormalExpression_1" foxbpm:name="00/10-23**?"><![CDATA[0 0/1 0-23 * * ?]]></bpmn2:timeCycle>
       </bpmn2:timerEventDefinition>
     </bpmn2:startEvent>
     <bpmn2:endEvent id="EndEvent_1" name="结束">
       <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
     </bpmn2:endEvent>
-    <bpmn2:scriptTask id="ScriptTask_1" name="发送邮件">
+    <bpmn2:scriptTask id="ScriptTask_1" foxbpm:scriptName="sendMail" name="发送邮件" scriptFormat="Groovy">
       <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
+      <bpmn2:script>import org.foxbpm.connector.mail.MailEngine;&#xD;
+MailEngine.getInstance().sendMail();&#xD;
+&#xD;
+</bpmn2:script>
     </bpmn2:scriptTask>
     <bpmn2:sequenceFlow id="SequenceFlow_3" sourceRef="StartEvent_1" targetRef="ScriptTask_1"/>
     <bpmn2:sequenceFlow id="SequenceFlow_4" sourceRef="ScriptTask_1" targetRef="EndEvent_1"/>
