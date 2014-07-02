@@ -34,62 +34,70 @@ import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * 验证用户是否由于权限发起对应流程
- * 根据流程定义开始节点后面第一个人工节点的任务分配判断
+ * 验证用户是否由于权限发起对应流程 根据流程定义开始节点后面第一个人工节点的任务分配判断
+ * 
  * @author ych
- *
+ * 
  */
-public class VerificationStartUserCmd implements Command<Boolean>{
+public class VerificationStartUserCmd implements Command<Boolean> {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(VerificationStartUserCmd.class);
 	private String userId;
 	private String processDefinitionKey;
 	private String processDefinitionId;
-	public VerificationStartUserCmd(String userId,String processDefinitionKey,String processDefinitionId) {
+
+	public VerificationStartUserCmd(String userId, String processDefinitionKey, String processDefinitionId) {
 		this.userId = userId;
 		this.processDefinitionKey = processDefinitionKey;
 		this.processDefinitionId = processDefinitionId;
 	}
-	
+
 	@Override
 	public Boolean execute(CommandContext commandContext) {
 		DeploymentManager deployCache = commandContext.getProcessEngineConfigurationImpl().getDeploymentManager();
 		ProcessDefinitionEntity processDefinition = null;
-		if(processDefinitionId != null && !"".equals(processDefinitionId)){
+		if (processDefinitionId != null && !"".equals(processDefinitionId)) {
 			processDefinition = deployCache.findDeployedProcessDefinitionById(processDefinitionId);
-		}else if(processDefinitionKey != null && !"".equals(processDefinitionKey)){
+		} else if (processDefinitionKey != null && !"".equals(processDefinitionKey)) {
 			processDefinition = deployCache.findDeployedLatestProcessDefinitionByKey(processDefinitionKey);
-		}else{
+		} else {
 			throw new FoxBPMIllegalArgumentException("验证发起权限时，流程编号和流程唯一键不能同时为空");
 		}
-		
+
 		TaskDefinition taskDefinition = processDefinition.getSubTaskDefinition();
 		TaskEntity taskEntity = new TaskEntity();
 		TokenEntity tokenEntity = new TokenEntity();
 		tokenEntity.setAssignTask(taskEntity);
+		if (null == taskDefinition) {
+			LOGGER.debug("流程定义不存在提交节点 ,流程id:" + processDefinition.getId());
+			return false;
+		}
 		for (Connector connector : taskDefinition.getActorConnectors()) {
 			try {
 				connector.notify((ListenerExecutionContext) tokenEntity);
 			} catch (Exception e) {
-				if(e instanceof FoxBPMException)
-					throw (FoxBPMException)e;
-				else{
-					throw new FoxBPMException("开始节点选择人处理器执行失败，处理器："+connector.getConnectorId() , e);
+				if (e instanceof FoxBPMException)
+					throw (FoxBPMException) e;
+				else {
+					throw new FoxBPMException("开始节点选择人处理器执行失败，处理器：" + connector.getConnectorId(), e);
 				}
 			}
 		}
-		
-		if(userId.equals(taskEntity.getAssignee())){
+
+		if (userId.equals(taskEntity.getAssignee())) {
 			return true;
 		}
 		List<Group> groups = Authentication.selectGroupByUserId(userId);
-		for(IdentityLinkEntity identity : taskEntity.getIdentityLinks()){
-			if("fixflow_allusers".equals(identity.getUserId())){
+		for (IdentityLinkEntity identity : taskEntity.getIdentityLinks()) {
+			if ("fixflow_allusers".equals(identity.getUserId())) {
 				return true;
 			}
-			for(Group group : groups){
-				if(group.getGroupType().equals(identity.getGroupType()) && group.getGroupId().equals(identity.getGroupId())){
+			for (Group group : groups) {
+				if (group.getGroupType().equals(identity.getGroupType()) && group.getGroupId().equals(identity.getGroupId())) {
 					return true;
 				}
 			}
