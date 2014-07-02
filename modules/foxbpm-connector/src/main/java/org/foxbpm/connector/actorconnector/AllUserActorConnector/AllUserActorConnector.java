@@ -17,6 +17,7 @@
  */
 package org.foxbpm.connector.actorconnector.AllUserActorConnector;
 
+import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
 import org.foxbpm.engine.task.DelegateTask;
 
@@ -27,7 +28,7 @@ public class AllUserActorConnector extends ActorConnectorHandler {
 
 	@Override
 	public void assign(DelegateTask task) throws Exception {
-		task.addCandidateUser("fixflow_allusers");
+		task.addCandidateUser(Constant.FOXBPM_ALL_USER);
 	}
 
 }

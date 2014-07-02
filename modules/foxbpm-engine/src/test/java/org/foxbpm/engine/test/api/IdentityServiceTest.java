@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentDetailsEntity;
 import org.foxbpm.engine.impl.agent.AgentEntity;
@@ -82,7 +83,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		agentDetailsEntity.setId(agentDetailsId);
 		agentDetailsEntity.setAgentId(agentId);
 		agentDetailsEntity.setAgentTo("admin2");
-		agentDetailsEntity.setProcessKey("_all_flow_");
+		agentDetailsEntity.setProcessKey(Constant.FOXBPM_ALL_FLOW);
 		
 		agentEntity.getAgentDetails().add(agentDetailsEntity);
 		

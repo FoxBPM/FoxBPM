@@ -24,4 +24,9 @@ public class Constant {
 	 * foxbpm引擎中所有用户的标识
 	 */
 	public final static String FOXBPM_ALL_USER = "foxbpm_all_user";
+	
+	/**
+	 * foxbpm引擎中所有流程标识
+	 */
+	public final static String FOXBPM_ALL_FLOW = "foxbpm_all_flow";
 }
