@@ -88,17 +88,21 @@ public class MailEngine {
 		if (mailInfoObj == null) {
 			throw new FoxBPMException("系统邮件配置错误请检查流程邮件配置！");
 		}
-		List<Object> pObjects = new ArrayList<Object>();
-		pObjects.add(MailStatus.NOSEND.toString());
 
+		List<Object> pObjects = new ArrayList<Object>();
+		// 添加查询条件
+		pObjects.add(MailStatus.NOSEND.toString());
 		SqlCommand sqlCommand = new SqlCommand(DBUtils.getConnection());
 		String sqlText = getPaginationSql("SELECT * FROM " + EntityFieldName.T_MAIL + " WHERE MAIL_STATUS=?", 1, 10, "*", null);
 		List<Map<String, Object>> dataList = sqlCommand.queryForList(sqlText, pObjects);
+		// 邮件表字段更新变量
+		Map<String, Object> objectParam = new HashMap<String, Object>();
+		// 处理未发送的邮件
 		for (Map<String, Object> mapData : dataList) {
+			MailEntity mailEntity = new MailEntity();
 			try {
-				MailEntity mailEntity = new MailEntity();
 				mailEntity.persistentInit(mapData);
-
+				// 邮件处理
 				MailUtil mailUtil = new MailUtil();
 				mailUtil.setSmtpHost(mailInfoObj.getSmtpHost(), StringUtil.getInt(mailInfoObj.getSmtpPort()));
 				mailUtil.setSmtpAuthentication(mailInfoObj.getUserName(), mailInfoObj.getPassword());
@@ -107,9 +111,9 @@ public class MailEngine {
 				if (StringUtil.isEmpty(StringUtil.trim(to))) {
 					throw new FoxBPMBizException("mailTo is null");
 				}
-				String[] str = to.split(",");
+				String[] strTo = to.split(",");
 				List<String> userMailToList = new ArrayList<String>();
-				for (String userMail : str) {
+				for (String userMail : strTo) {
 					if (StringUtil.isNotEmpty(StringUtil.trim(userMail))) {
 						userMailToList.add(userMail);
 					}
@@ -117,12 +121,10 @@ public class MailEngine {
 				if (userMailToList.size() == 0) {
 					throw new FoxBPMBizException("Mail toaddress is null");
 				}
-				String[] userMailToFinStrings = (String[]) userMailToList.toArray(new String[userMailToList.size()]);
-
-				mailUtil.setTo(userMailToFinStrings);
+				mailUtil.setTo(userMailToList.toArray(new String[0]));
 
 				String cc = mailEntity.getMailCc();
-				if (cc != null && !cc.equals("")) {
+				if (StringUtil.isNotEmpty(StringUtil.trim(cc))) {
 					String[] strCC = cc.split(",");
 					List<String> userMailCCList = new ArrayList<String>();
 					for (String userMail : strCC) {
@@ -133,42 +135,40 @@ public class MailEngine {
 					if (userMailCCList.size() == 0) {
 						throw new FoxBPMBizException("Mail ccaddress is null");
 					}
-					String[] userMailCCFinStrings = (String[]) userMailCCList.toArray(new String[userMailCCList.size()]);
-					mailUtil.setCC(userMailCCFinStrings);
+					mailUtil.setCC(userMailCCList.toArray(new String[0]));
 				}
-				String title = mailEntity.getMailSubject();
-				String mailContent = mailEntity.getMailBody();
+
 				mailUtil.setFrom(mailInfoObj.getMailAddress());
-				mailUtil.setSubject(title);
-				mailUtil.setBody(mailContent);
+				mailUtil.setSubject(mailEntity.getMailSubject());
+				mailUtil.setBody(mailEntity.getMailBody());
 				mailUtil.setContentType(MailUtil.MODE_HTML);
 				// 同步发送
 				mailUtil.send();
-				// 更新邮件状态
-				Map<String, Object> objectParam = new HashMap<String, Object>();
+				// 清空数据
+				objectParam.clear();
+				// 设置邮件状态为完成
 				objectParam.put(EntityFieldName.MAIL_STATUS, MailStatus.COMPLETE.toString());
-				// 构建Where查询参数
-				Object[] objectParamWhere = { StringUtil.getString(mapData.get(EntityFieldName.MAIL_ID)) };
-				sqlCommand.update(EntityFieldName.T_MAIL, objectParam, " MAIL_ID=?", objectParamWhere);
+				sqlCommand.update(EntityFieldName.T_MAIL, objectParam, " MAIL_ID=?", new Object[] { mailEntity.getMailId() });
 			} catch (Exception e) {
 				try {
-					Map<String, Object> objectParam = new HashMap<String, Object>();
+					// 清空数据
+					objectParam.clear();
+					// 设置邮件状态为失败
 					objectParam.put(EntityFieldName.MAIL_STATUS, MailStatus.FAILURE.toString());
+					// 设置邮件失败原因
 					objectParam.put(EntityFieldName.MAIL_FAILURE_REASON, e.getMessage());
-					// 构建Where查询参数
-					Object[] objectParamWhere = { StringUtil.getString(mapData.get(EntityFieldName.MAIL_ID)) };
-					sqlCommand.update(EntityFieldName.T_MAIL, objectParam, " MAIL_ID=?", objectParamWhere);
+					sqlCommand.update(EntityFieldName.T_MAIL, objectParam, " MAIL_ID=?", new Object[] { mailEntity.getMailId() });
 				} catch (Exception e2) {
 					e.printStackTrace();
 					e2.printStackTrace();
 				}
 			} finally {
 				try {
-					Map<String, Object> objectParam = new HashMap<String, Object>();
+					// 清除参数
+					objectParam.clear();
+					// 设置邮件发送时间
 					objectParam.put(EntityFieldName.MAIL_SEND_TIME, new Date());
-					// 构建Where查询参数
-					Object[] objectParamWhere = { StringUtil.getString(mapData.get(EntityFieldName.MAIL_ID)) };
-					sqlCommand.update(EntityFieldName.T_MAIL, objectParam, " MAIL_ID=?", objectParamWhere);
+					sqlCommand.update(EntityFieldName.T_MAIL, objectParam, " MAIL_ID=?", new Object[] { mailEntity.getMailId() });
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
