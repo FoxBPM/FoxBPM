@@ -71,7 +71,6 @@ import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
 import org.foxbpm.kernel.ProcessDefinitionBuilder;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
-import org.foxbpm.kernel.process.KernelLane;
 import org.foxbpm.kernel.process.KernelLaneSet;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
@@ -228,13 +227,13 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 						findFlowNode.setX((new Float(bpmnShape.getBounds().getX())).intValue());
 						findFlowNode.setY((new Float(bpmnShape.getBounds().getY())).intValue());
 					}
-					KernelLane lane=processDefinition.getLaneForId(bpmnElement.getId());
+					KernelLaneImpl lane=(KernelLaneImpl)processDefinition.getLaneForId(bpmnElement.getId());
 					if(lane!=null){
-						KernelLaneImpl LaneImpl=(KernelLaneImpl)lane;
-						LaneImpl.setWidth((new Float(bpmnShape.getBounds().getWidth())).intValue());
-						LaneImpl.setHeight((new Float(bpmnShape.getBounds().getHeight())).intValue());
-						LaneImpl.setX((new Float(bpmnShape.getBounds().getX())).intValue());
-						LaneImpl.setY((new Float(bpmnShape.getBounds().getY())).intValue());
+						
+						lane.setWidth((new Float(bpmnShape.getBounds().getWidth())).intValue());
+						lane.setHeight((new Float(bpmnShape.getBounds().getHeight())).intValue());
+						lane.setX((new Float(bpmnShape.getBounds().getX())).intValue());
+						lane.setY((new Float(bpmnShape.getBounds().getY())).intValue());
 					}
 					
 					Style style=null;
@@ -349,7 +348,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 					
 					*/
 					
-					if(style!=null){
+					if(style!=null&&findFlowNode!=null){
 						findFlowNode.setProperty(StyleOption.Background, style.getBackground());
 						findFlowNode.setProperty(StyleOption.Font, style.getFont());
 						findFlowNode.setProperty(StyleOption.Foreground, style.getForeground());
@@ -357,6 +356,18 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 						findFlowNode.setProperty(StyleOption.StyleObject, style.getObject());
 						findFlowNode.setProperty(StyleOption.SelectedColor, style.getSelectedColor());
 						findFlowNode.setProperty(StyleOption.TextColor, style.getTextColor());
+					}else{
+						if(style!=null&&lane!=null){
+							lane.setProperty(StyleOption.Background, style.getBackground());
+							lane.setProperty(StyleOption.Font, style.getFont());
+							lane.setProperty(StyleOption.Foreground, style.getForeground());
+							lane.setProperty(StyleOption.MulitSelectedColor, style.getMulitSelectedColor());
+					 		lane.setProperty(StyleOption.StyleObject, style.getObject());
+							lane.setProperty(StyleOption.SelectedColor, style.getSelectedColor());
+							lane.setProperty(StyleOption.TextColor, style.getTextColor());
+						}
+
+						
 					}
 				}
 				if (diagramElement instanceof BPMNEdge) {
