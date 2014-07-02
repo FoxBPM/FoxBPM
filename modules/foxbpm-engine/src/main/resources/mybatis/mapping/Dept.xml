@@ -15,5 +15,10 @@
 	  G.USERID=#{userId,jdbcType=VARCHAR} and G.GROUPTYPE='dept'
   </select>
   
+  <select id="selectUserIdsByDeptId" parameterType="java.lang.String" resultType="java.lang.String">
+	  select userId from AU_GROUP_RELATION G 
+	  where 
+	  G.groupId=#{groupId,jdbcType=VARCHAR} and G.GROUPTYPE='dept'
+  </select>
   
 </mapper>

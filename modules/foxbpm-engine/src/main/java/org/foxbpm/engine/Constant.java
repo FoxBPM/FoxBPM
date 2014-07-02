@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
+ * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.identity;
+package org.foxbpm.engine;
 
-import java.util.List;
+public class Constant {
 
-public interface GroupDefinition {
-
-	List<Group> selectGroupByUserId(String userId);
-	
-	String getType();
-	
-	List<String> selectUserIdsByGroupId(String groupId);
+	/**
+	 * foxbpm引擎中所有用户的标识
+	 */
+	public final static String FOXBPM_ALL_USER = "foxbpm_all_user";
 }
