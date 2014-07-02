@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<connector:ConnectorDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:connector="http://www.foxbpm.org/connector" id="AutoSendMail" name="自动发送邮件" note="自动发送邮件给当前处理人" categoryId="91a54e61-4bc9-4298-88c4-186f96cd998c" icon="AutoSendMail.jpg">
+  <input id="title" type="java.lang.String" mandatory="Mandatory" defaultValue="" isExecute="true"/>
+  <input id="content" type="java.lang.String" mandatory="Mandatory" defaultValue="" isExecute="true"/>
+  <page id="mailInfo" name="邮件参数" note="标题和内容不填写则使用默认标题和内容">
+    <widget xsi:type="connector:Text" id="Widget_0" name="邮件标题" inputId="title">
+      <widgetExpression expressionValue=""/>
+    </widget>
+    <widget xsi:type="connector:Text" id="Widget_1" name="邮件内容" inputId="content">
+      <widgetExpression expressionValue=""/>
+    </widget>
+  </page>
+  <definitionImpl className="AutoSendMail" packageName="org.foxbpm.connector.flowconnector.AutoSendMail"/>
+</connector:ConnectorDefinition>

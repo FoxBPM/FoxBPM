@@ -129,4 +129,12 @@ public interface IdentityService {
 	 * @return 返回代理对象
 	 */
 	AgentEntity queryAgent(String agentUser);
+
+	/**
+	 * 通过组对象
+	 * 
+	 * @param groupId组编号
+	 * @return 组对象
+	 */
+	// Group findGroupByGroupId(String groupId);
 }

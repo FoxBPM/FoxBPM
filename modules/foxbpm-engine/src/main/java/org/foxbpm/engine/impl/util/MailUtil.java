@@ -37,8 +37,9 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
 
-import org.apache.log4j.Logger;
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>
@@ -67,7 +68,10 @@ import org.foxbpm.engine.exception.FoxBPMException;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class MailUtil {
 
-	private final static Logger logger = Logger.getLogger(MailUtil.class);
+	/**
+	 * 日志
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(MailUtil.class);
 
 	/**
 	 * 邮件地址标示
@@ -292,11 +296,11 @@ public class MailUtil {
 	 * 发送邮件
 	 */
 	public void send() {
-		logger.debug("start send()");
+		LOGGER.debug("start send()");
 		try {
 			Properties server = new Properties();
 			if (StringUtil.isEmpty(this.smtpHost)) {
-				logger.error("The smtpHost is empty,Please set SMTP host");
+				LOGGER.error("Please set SMTP host");
 				throw new NullPointerException("Please set SMTP host");
 			} else {
 				server.put("mail.smtp.host", this.smtpHost);
@@ -309,7 +313,7 @@ public class MailUtil {
 
 			MimeMessage msg = new MimeMessage(conn);
 			if (StringUtil.isEmpty(this.from)) {
-				logger.error("The sender is empty,Please set FROM address");
+				LOGGER.error("Please set FROM address");
 				throw new NullPointerException("Please set FROM address");
 			} else {
 				msg.setFrom(new InternetAddress(this.from));
@@ -326,8 +330,7 @@ public class MailUtil {
 			try {
 				msg.setSubject(MimeUtility.encodeText(this.title));
 			} catch (UnsupportedEncodingException e) {
-				logger.error("The mail header conversion failed", e);
-				e.printStackTrace();
+				LOGGER.error("The mail header conversion failed", e);
 				throw new FoxBPMException("The mail header conversion failed", e);
 			}
 			if (!hasAttachment()) {
@@ -391,15 +394,13 @@ public class MailUtil {
 				Transport.send(msg, msg.getAllRecipients());
 			}
 		} catch (javax.mail.internet.AddressException e) {
-			logger.error(e);
-			e.printStackTrace();
+			LOGGER.error("邮件地址出现异常", e);
 			throw new FoxBPMException(e.getMessage(), e);
 		} catch (javax.mail.MessagingException e) {
-			logger.error(e);
-			e.printStackTrace();
+			LOGGER.error("邮件消息出现异常", e);
 			throw new FoxBPMException(e.getMessage(), e);
 		}
-		logger.debug("end send()");
+		LOGGER.debug("end send()");
 	}
 
 	/**
@@ -424,7 +425,7 @@ public class MailUtil {
 			try {
 				a[i] = new InternetAddress(add[i]);
 			} catch (AddressException e) {
-				logger.error(e);
+				LOGGER.error("地址出现异常", e);
 				e.printStackTrace();
 			}
 		}

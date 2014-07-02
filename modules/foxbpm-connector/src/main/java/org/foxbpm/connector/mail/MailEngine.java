@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.connector.common.constant.EntityFieldName;
-import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
@@ -35,6 +34,8 @@ import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.spring.ProcessEngineConfigurationSpring;
 import org.foxbpm.model.config.foxbpmconfig.MailInfo;
 import org.foxbpm.model.config.foxbpmconfig.SysMailConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -47,7 +48,14 @@ import org.springframework.transaction.support.TransactionTemplate;
  * @date 2014年6月30日
  */
 public class MailEngine {
+	/**
+	 * 日志
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(MailEngine.class);
 	private static final String SQL_END_DELIMITER = ";";
+	/**
+	 * 邮件引擎实例
+	 */
 	private static MailEngine instance;
 
 	/**
@@ -84,15 +92,16 @@ public class MailEngine {
 	 * 同步执行发送邮件 该方法有定时任务执行
 	 */
 	public synchronized void sendMail() {
-		
-		ProcessEngineConfigurationSpring processEngineConfig = (ProcessEngineConfigurationSpring)Context.getProcessEngineConfiguration();
+		LOGGER.debug("start sendMail()");
+		ProcessEngineConfigurationSpring processEngineConfig = (ProcessEngineConfigurationSpring) Context.getProcessEngineConfiguration();
 		PlatformTransactionManager transactionManager = processEngineConfig.getTransactionManager();
 		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
 		transactionTemplate.setPropagationBehavior(TransactionTemplate.PROPAGATION_REQUIRES_NEW);
-	    transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
-				SysMailConfig sysMailConfig = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getSysMailConfig();
+				// 获取邮件配置
+				SysMailConfig sysMailConfig = Context.getProcessEngineConfiguration().getSysMailConfig();
 				MailInfo mailInfoObj = null;
 				for (MailInfo mailInfo : sysMailConfig.getMailInfo()) {
 					if (mailInfo.getMailName().equals(sysMailConfig.getSelected())) {
@@ -100,43 +109,50 @@ public class MailEngine {
 					}
 				}
 				if (mailInfoObj == null) {
+					LOGGER.error("系统邮件配置错误请检查流程邮件配置！");
 					throw new FoxBPMException("系统邮件配置错误请检查流程邮件配置！");
 				}
-				List<Object> pObjects = new ArrayList<Object>();
-				pObjects.add(MailStatus.NOSEND.toString());
 
+				List<Object> pObjects = new ArrayList<Object>();
+				// 添加查询条件
+				pObjects.add(MailStatus.NOSEND.toString());
 				SqlCommand sqlCommand = new SqlCommand(DBUtils.getConnection());
 				String sqlText = getPaginationSql("SELECT * FROM " + EntityFieldName.T_MAIL + " WHERE MAIL_STATUS=?", 1, 10, "*", null);
 				List<Map<String, Object>> dataList = sqlCommand.queryForList(sqlText, pObjects);
+				// 邮件表字段更新变量
+				Map<String, Object> objectParam = new HashMap<String, Object>();
+				// 邮件实体
+				MailEntity mailEntity = null;
+				// 处理未发送的邮件
 				for (Map<String, Object> mapData : dataList) {
+					mailEntity = new MailEntity();
 					try {
-						MailEntity mailEntity = new MailEntity();
 						mailEntity.persistentInit(mapData);
-
+						// 邮件处理
 						MailUtil mailUtil = new MailUtil();
 						mailUtil.setSmtpHost(mailInfoObj.getSmtpHost(), StringUtil.getInt(mailInfoObj.getSmtpPort()));
 						mailUtil.setSmtpAuthentication(mailInfoObj.getUserName(), mailInfoObj.getPassword());
 						// 支持发送多人邮件 #4185
 						String to = mailEntity.getMailTo();
 						if (StringUtil.isEmpty(StringUtil.trim(to))) {
+							LOGGER.error("mailTo is null");
 							throw new FoxBPMBizException("mailTo is null");
 						}
-						String[] str = to.split(",");
+						String[] strTo = to.split(",");
 						List<String> userMailToList = new ArrayList<String>();
-						for (String userMail : str) {
+						for (String userMail : strTo) {
 							if (StringUtil.isNotEmpty(StringUtil.trim(userMail))) {
 								userMailToList.add(userMail);
 							}
 						}
 						if (userMailToList.size() == 0) {
+							LOGGER.error("Mail toaddress is null");
 							throw new FoxBPMBizException("Mail toaddress is null");
 						}
-						String[] userMailToFinStrings = (String[]) userMailToList.toArray(new String[userMailToList.size()]);
-
-						mailUtil.setTo(userMailToFinStrings);
+						mailUtil.setTo(userMailToList.toArray(new String[0]));
 
 						String cc = mailEntity.getMailCc();
-						if (cc != null && !cc.equals("")) {
+						if (StringUtil.isNotEmpty(StringUtil.trim(cc))) {
 							String[] strCC = cc.split(",");
 							List<String> userMailCCList = new ArrayList<String>();
 							for (String userMail : strCC) {
@@ -147,51 +163,48 @@ public class MailEngine {
 							if (userMailCCList.size() == 0) {
 								throw new FoxBPMBizException("Mail ccaddress is null");
 							}
-							String[] userMailCCFinStrings = (String[]) userMailCCList.toArray(new String[userMailCCList.size()]);
-							mailUtil.setCC(userMailCCFinStrings);
+							mailUtil.setCC(userMailCCList.toArray(new String[0]));
 						}
-						String title = mailEntity.getMailSubject();
-						String mailContent = mailEntity.getMailBody();
+
 						mailUtil.setFrom(mailInfoObj.getMailAddress());
-						mailUtil.setSubject(title);
-						mailUtil.setBody(mailContent);
+						mailUtil.setSubject(mailEntity.getMailSubject());
+						mailUtil.setBody(mailEntity.getMailBody());
 						mailUtil.setContentType(MailUtil.MODE_HTML);
 						// 同步发送
 						mailUtil.send();
-						// 更新邮件状态
-						Map<String, Object> objectParam = new HashMap<String, Object>();
+						// 清空数据
+						objectParam.clear();
+						// 设置邮件状态为完成
 						objectParam.put(EntityFieldName.MAIL_STATUS, MailStatus.COMPLETE.toString());
-						// 构建Where查询参数
-						Object[] objectParamWhere = { StringUtil.getString(mapData.get(EntityFieldName.MAIL_ID)) };
-						sqlCommand.update(EntityFieldName.T_MAIL, objectParam, " MAIL_ID=?", objectParamWhere);
+						sqlCommand.update(EntityFieldName.T_MAIL, objectParam, " MAIL_ID=?", new Object[] { mailEntity.getMailId() });
 					} catch (Exception e) {
+						LOGGER.error("邮件发送失败，邮件id：" + mailEntity.getMailId(), e);
 						try {
-							Map<String, Object> objectParam = new HashMap<String, Object>();
+							// 清空数据
+							objectParam.clear();
+							// 设置邮件状态为失败
 							objectParam.put(EntityFieldName.MAIL_STATUS, MailStatus.FAILURE.toString());
+							// 设置邮件失败原因
 							objectParam.put(EntityFieldName.MAIL_FAILURE_REASON, e.getMessage());
-							// 构建Where查询参数
-							Object[] objectParamWhere = { StringUtil.getString(mapData.get(EntityFieldName.MAIL_ID)) };
-							sqlCommand.update(EntityFieldName.T_MAIL, objectParam, " MAIL_ID=?", objectParamWhere);
-						} catch (Exception e2) {
-							e.printStackTrace();
-							e2.printStackTrace();
+							sqlCommand.update(EntityFieldName.T_MAIL, objectParam, " MAIL_ID=?", new Object[] { mailEntity.getMailId() });
+						} catch (Exception e1) {
+							LOGGER.error("更新邮件状态失败，邮件id：" + mailEntity.getMailId(), e1);
 						}
 					} finally {
 						try {
-							Map<String, Object> objectParam = new HashMap<String, Object>();
+							// 清除参数
+							objectParam.clear();
+							// 设置邮件发送时间
 							objectParam.put(EntityFieldName.MAIL_SEND_TIME, new Date());
-							// 构建Where查询参数
-							Object[] objectParamWhere = { StringUtil.getString(mapData.get(EntityFieldName.MAIL_ID)) };
-							sqlCommand.update(EntityFieldName.T_MAIL, objectParam, " MAIL_ID=?", objectParamWhere);
+							sqlCommand.update(EntityFieldName.T_MAIL, objectParam, " MAIL_ID=?", new Object[] { mailEntity.getMailId() });
 						} catch (Exception e) {
-							e.printStackTrace();
+							LOGGER.error("更新邮件状态失败，邮件id：" + mailEntity.getMailId(), e);
 						}
 					}
 				}
 			}
 		});
-		
-		
+		LOGGER.debug("end sendMail()");
 	}
 
 	/**
