@@ -35,6 +35,8 @@ import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.spring.ProcessEngineConfigurationSpring;
 import org.foxbpm.model.config.foxbpmconfig.MailInfo;
 import org.foxbpm.model.config.foxbpmconfig.SysMailConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -47,7 +49,14 @@ import org.springframework.transaction.support.TransactionTemplate;
  * @date 2014年6月30日
  */
 public class MailEngine {
+	/**
+	 * 日志
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(MailEngine.class);
 	private static final String SQL_END_DELIMITER = ";";
+	/**
+	 * 邮件引擎实例
+	 */
 	private static MailEngine instance;
 
 	/**
@@ -84,7 +93,7 @@ public class MailEngine {
 	 * 同步执行发送邮件 该方法有定时任务执行
 	 */
 	public synchronized void sendMail() {
-
+		LOGGER.debug("start sendMail()");
 		ProcessEngineConfigurationSpring processEngineConfig = (ProcessEngineConfigurationSpring) Context.getProcessEngineConfiguration();
 		PlatformTransactionManager transactionManager = processEngineConfig.getTransactionManager();
 		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
@@ -101,6 +110,7 @@ public class MailEngine {
 					}
 				}
 				if (mailInfoObj == null) {
+					LOGGER.error("系统邮件配置错误请检查流程邮件配置！");
 					throw new FoxBPMException("系统邮件配置错误请检查流程邮件配置！");
 				}
 
@@ -112,9 +122,11 @@ public class MailEngine {
 				List<Map<String, Object>> dataList = sqlCommand.queryForList(sqlText, pObjects);
 				// 邮件表字段更新变量
 				Map<String, Object> objectParam = new HashMap<String, Object>();
+				// 邮件实体
+				MailEntity mailEntity = null;
 				// 处理未发送的邮件
 				for (Map<String, Object> mapData : dataList) {
-					MailEntity mailEntity = new MailEntity();
+					mailEntity = new MailEntity();
 					try {
 						mailEntity.persistentInit(mapData);
 						// 邮件处理
@@ -124,6 +136,7 @@ public class MailEngine {
 						// 支持发送多人邮件 #4185
 						String to = mailEntity.getMailTo();
 						if (StringUtil.isEmpty(StringUtil.trim(to))) {
+							LOGGER.error("mailTo is null");
 							throw new FoxBPMBizException("mailTo is null");
 						}
 						String[] strTo = to.split(",");
@@ -134,6 +147,7 @@ public class MailEngine {
 							}
 						}
 						if (userMailToList.size() == 0) {
+							LOGGER.error("Mail toaddress is null");
 							throw new FoxBPMBizException("Mail toaddress is null");
 						}
 						mailUtil.setTo(userMailToList.toArray(new String[0]));
@@ -165,6 +179,7 @@ public class MailEngine {
 						objectParam.put(EntityFieldName.MAIL_STATUS, MailStatus.COMPLETE.toString());
 						sqlCommand.update(EntityFieldName.T_MAIL, objectParam, " MAIL_ID=?", new Object[] { mailEntity.getMailId() });
 					} catch (Exception e) {
+						LOGGER.error("邮件发送失败，邮件id：" + mailEntity.getMailId(), e);
 						try {
 							// 清空数据
 							objectParam.clear();
@@ -173,9 +188,8 @@ public class MailEngine {
 							// 设置邮件失败原因
 							objectParam.put(EntityFieldName.MAIL_FAILURE_REASON, e.getMessage());
 							sqlCommand.update(EntityFieldName.T_MAIL, objectParam, " MAIL_ID=?", new Object[] { mailEntity.getMailId() });
-						} catch (Exception e2) {
-							e.printStackTrace();
-							e2.printStackTrace();
+						} catch (Exception e1) {
+							LOGGER.error("更新邮件状态失败，邮件id：" + mailEntity.getMailId(), e1);
 						}
 					} finally {
 						try {
@@ -185,13 +199,13 @@ public class MailEngine {
 							objectParam.put(EntityFieldName.MAIL_SEND_TIME, new Date());
 							sqlCommand.update(EntityFieldName.T_MAIL, objectParam, " MAIL_ID=?", new Object[] { mailEntity.getMailId() });
 						} catch (Exception e) {
-							e.printStackTrace();
+							LOGGER.error("更新邮件状态失败，邮件id：" + mailEntity.getMailId(), e);
 						}
 					}
 				}
 			}
 		});
-
+		LOGGER.debug("end sendMail()");
 	}
 
 	/**
