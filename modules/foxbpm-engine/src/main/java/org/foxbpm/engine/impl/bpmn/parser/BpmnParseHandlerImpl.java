@@ -236,7 +236,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 						lane.setHeight((new Float(bpmnShape.getBounds().getHeight())).intValue());
 						lane.setX((new Float(bpmnShape.getBounds().getX())).intValue());
 						lane.setY((new Float(bpmnShape.getBounds().getY())).intValue());
-						lane.getProperties().put(StyleOption.IsHorizontal,bpmnShape.isIsHorizontal());
+						lane.setProperty(StyleOption.IsHorizontal,bpmnShape.isIsHorizontal());
 						
 					}
 					
