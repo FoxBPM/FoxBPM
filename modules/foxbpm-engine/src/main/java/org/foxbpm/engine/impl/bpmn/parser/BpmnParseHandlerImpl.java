@@ -163,10 +163,12 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 					if(lane!=null){
 						
 						KernelLaneImpl KernelLaneImpl=new KernelLaneImpl(lane.getId(), processDefinition);
+						KernelLaneImpl.setName(lane.getName());
 						kernelLaneSet.getLanes().add(KernelLaneImpl);
 						if(lane.getChildLaneSet()!=null){
 							KernelLaneSetImpl KernelLaneSetImpl=new KernelLaneSetImpl(lane.getChildLaneSet().getId(), processDefinition);
 							KernelLaneSetImpl.setName(lane.getChildLaneSet().getName());
+							KernelLaneImpl.setChildLaneSet(KernelLaneSetImpl);
 							loadLane(KernelLaneSetImpl,lane.getChildLaneSet(),processDefinition);
 						}else{
 							continue;
