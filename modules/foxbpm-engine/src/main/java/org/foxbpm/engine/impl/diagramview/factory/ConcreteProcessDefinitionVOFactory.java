@@ -131,6 +131,8 @@ public class ConcreteProcessDefinitionVOFactory extends
 		List<KernelFlowNodeImpl> flowNodes = deployedProcessDefinition
 				.getFlowNodes();
 		List<VONode> voNodeList = new ArrayList<VONode>();
+		this.createLaneSetVO(deployedProcessDefinition.getLaneSets(),
+				voNodeList);
 		// 遍历所有的流程节点
 		Iterator<KernelFlowNodeImpl> flowNodeIterator = flowNodes.iterator();
 		String taskType = EMPTY_STRING;
@@ -150,12 +152,11 @@ public class ConcreteProcessDefinitionVOFactory extends
 					svgTemplateFileName);
 			voNodeList.add(voNode);
 		}
-
 		this.createSequenceVO(deployedProcessDefinition, voNodeList);
-		this.createLaneSetVO(deployedProcessDefinition.getLaneSets(),
-				voNodeList);
-		return flowNodeVOFactory.convertNodeListToString(
+		String str = flowNodeVOFactory.convertNodeListToString(
 				deployedProcessDefinition.getProperties(), voNodeList);
+		System.out.println(str);
+		return str;
 	}
 
 	/**
@@ -173,11 +174,23 @@ public class ConcreteProcessDefinitionVOFactory extends
 		}
 	}
 
+	/**
+	 * 
+	 * createLaneVO(泳道VO)
+	 * 
+	 * @param laneSet
+	 * @param voNodeList
+	 * @since 1.0.0
+	 */
 	private void createLaneVO(KernelLaneSet laneSet, List<VONode> voNodeList) {
 		List<KernelLane> lanes = laneSet.getLanes();
 		Iterator<KernelLane> laneIter = lanes.iterator();
 		while (laneIter.hasNext()) {
 			KernelLane lane = laneIter.next();
+			VONode voNode = this.getNodeSVGFromFactory(lane,
+					SVGTypeNameConstant.SVG_TYPE_LANE,
+					SVGTemplateNameConstant.TEMPLATE_LANESET);
+			voNodeList.add(voNode);
 			KernelLaneSet childLaneSet = lane.getChildLaneSet();
 			if (childLaneSet != null) {
 				this.createLaneVO(childLaneSet, voNodeList);
@@ -270,9 +283,9 @@ public class ConcreteProcessDefinitionVOFactory extends
 		AbstractFlowElementVOFactory conreateFactory = AbstractFlowElementVOFactory
 				.createSVGFactory(kernelFlowNodeImpl, svgTemplateFileName);
 		// 创建标记工厂，标记工厂
-		flowNodeVOFactory = AbstractFlowElementVOFactory.createSignedSVGFactory(
-				kernelFlowNodeImpl, svgTemplateFileName, taskState,
-				conreateFactory);
+		flowNodeVOFactory = AbstractFlowElementVOFactory
+				.createSignedSVGFactory(kernelFlowNodeImpl,
+						svgTemplateFileName, taskState, conreateFactory);
 		// 标记构造独自实现，非侵入,独自扩展，对应SgnProcessStateSVGFactory工厂，
 		return flowNodeVOFactory.createFlowElementSVGVO(svgType);
 	}

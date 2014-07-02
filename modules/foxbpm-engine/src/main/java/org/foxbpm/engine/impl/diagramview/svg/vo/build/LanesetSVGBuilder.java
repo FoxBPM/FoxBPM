@@ -35,7 +35,7 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
  * 
  */
 public class LanesetSVGBuilder extends AbstractSVGBuilder {
-
+	private static final String FILL_DEFAULT = "F7F7F7";
 	/**
 	 * 矩形对象
 	 */
@@ -44,12 +44,6 @@ public class LanesetSVGBuilder extends AbstractSVGBuilder {
 	public LanesetSVGBuilder(SvgVO svgVo) {
 		super(svgVo);
 		rectVO = SVGUtils.getTaskVOFromSvgVO(svgVo);
-	}
-
-	@Override
-	public void setWayPoints(List<Point> pointList) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -84,7 +78,14 @@ public class LanesetSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setFill(String fill) {
-		// TODO Auto-generated method stub
+		if (StringUtils.isBlank(fill)) {
+			fill = FILL_DEFAULT;
+		}
+		float x1 = this.rectVO.getX();
+		float x2 = x1;
+		float y1 = this.rectVO.getY();
+		float y2 = this.rectVO.getY() + this.rectVO.getHeight();
+		this.buildLinearGradient(fill, rectVO, x1, x2, y1, y2);
 
 	}
 
@@ -126,6 +127,12 @@ public class LanesetSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setTypeStyle(String style) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setWayPoints(List<Point> pointList) {
 		// TODO Auto-generated method stub
 
 	}

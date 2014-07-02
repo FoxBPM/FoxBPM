@@ -34,7 +34,9 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.build.AbstractSVGBuilder;
 import org.foxbpm.engine.impl.diagramview.vo.VONode;
 import org.foxbpm.kernel.process.KernelBaseElement;
 import org.foxbpm.kernel.process.KernelFlowElement;
+import org.foxbpm.kernel.process.KernelLane;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
+import org.foxbpm.kernel.process.impl.KernelLaneImpl;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 
 /**
@@ -139,10 +141,9 @@ public abstract class AbstractFlowElementVOFactory {
 			svgBuilder.setFill((String) kernelFlowNodeImpl
 					.getProperty(StyleOption.Background));
 			// TODO 未知属性 StyleOption.StyleObject
-		}
-		// 线条元素
-		// 先构造拐点，再构造文本坐标
-		if (kernelBaseElement instanceof KernelSequenceFlowImpl) {
+		} else if (kernelBaseElement instanceof KernelSequenceFlowImpl) {
+			// 线条元素
+			// 先构造拐点，再构造文本坐标
 			KernelSequenceFlowImpl kernelSequenceFlowImpl = (KernelSequenceFlowImpl) kernelBaseElement;
 			SequenceFlowBehavior sequenceFlowBehavior = (SequenceFlowBehavior) kernelSequenceFlowImpl
 					.getSequenceFlowBehavior();
@@ -169,6 +170,31 @@ public abstract class AbstractFlowElementVOFactory {
 
 			svgBuilder.setStroke((String) kernelSequenceFlowImpl
 					.getProperty(StyleOption.Foreground));
+		} else if (kernelBaseElement instanceof KernelLane) {
+			KernelLaneImpl kernelLaneImpl = (KernelLaneImpl) kernelBaseElement;
+			svgBuilder.setID(kernelLaneImpl.getId());
+			if (StringUtils.isNotBlank(kernelLaneImpl.getName())) {
+				svgBuilder.setText(kernelLaneImpl.getName());
+				svgBuilder.setTextStroke((String) kernelLaneImpl
+						.getProperty(StyleOption.TextColor));
+				svgBuilder.setTextFill((String) kernelLaneImpl
+						.getProperty(StyleOption.TextColor));
+				svgBuilder.setTextStrokeWidth(0);
+				svgBuilder.setTextFont((String) kernelLaneImpl
+						.getProperty(StyleOption.Font));
+			}
+
+			svgBuilder.setWidth(kernelLaneImpl.getWidth());
+			svgBuilder.setHeight(kernelLaneImpl.getHeight());
+
+			svgBuilder.setStroke((String) kernelLaneImpl
+					.getProperty(StyleOption.Foreground));
+
+			// 设置节点的坐标包括对应文本字体的坐标，文本坐标依赖于文本式样字体大小等
+			svgBuilder.setXAndY(kernelLaneImpl.getX(), kernelLaneImpl.getY());
+			// 线性渐变设置会用到矩形的Height属性，
+			svgBuilder.setFill((String) kernelLaneImpl
+					.getProperty(StyleOption.Background));
 		}
 		return voNode;
 	}
