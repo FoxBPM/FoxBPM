@@ -64,6 +64,9 @@ public class LanesetSVGBuilder extends AbstractSVGBuilder {
 
 	}
 
+	/**
+	 * 根据垂直水平泳道设置 泳道文本坐标
+	 */
 	public void setTextLocationByHerizonFlag(boolean herizonFlag) {
 		// 设置文本坐标
 		float textX = 0;
@@ -76,6 +79,10 @@ public class LanesetSVGBuilder extends AbstractSVGBuilder {
 			textY = this.rectVO.getY() + this.rectVO.getHeight() / 2
 					+ textWidth / 2;
 			this.textVO.setTransform("rotate(180 " + textX + "," + textY + ")");
+			StringBuffer styleBuffer = new StringBuffer(this.textVO.getStyle());
+			this.textVO.setStyle(styleBuffer.append("writing-mode: tb;")
+					.toString());
+
 		} else {
 			// 垂直泳道 文本不需要旋转
 			textX = this.rectVO.getX() + this.rectVO.getWidth() / 2 - textWidth
@@ -122,9 +129,8 @@ public class LanesetSVGBuilder extends AbstractSVGBuilder {
 		}
 		String[] fonts = fontStr.split(",");
 		StringBuffer styleBuffer = new StringBuffer();
-		String style = styleBuffer.append("writing-mode: tb;")
-				.append("font-family:").append(fonts[0]).append(";font-size:")
-				.append(fonts[1]).toString();
+		String style = styleBuffer.append("font-family:").append(fonts[0])
+				.append(";font-size:").append(fonts[1]).toString();
 		Font font = new Font(fonts[0], Font.PLAIN, Integer.valueOf(fonts[1]));
 		this.textVO.setFont(font);
 		this.textVO.setStyle(style);
