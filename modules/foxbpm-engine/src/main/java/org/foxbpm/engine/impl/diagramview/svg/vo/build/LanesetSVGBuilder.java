@@ -80,7 +80,7 @@ public class LanesetSVGBuilder extends AbstractSVGBuilder {
 					+ textWidth / 2;
 			this.textVO.setTransform("rotate(180 " + textX + "," + textY + ")");
 			StringBuffer styleBuffer = new StringBuffer(this.textVO.getStyle());
-			this.textVO.setStyle(styleBuffer.append("writing-mode: tb;")
+			this.textVO.setStyle(styleBuffer.append(";writing-mode: tb;")
 					.toString());
 
 		} else {
