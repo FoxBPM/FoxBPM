@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<connector:ConnectorDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:connector="http://www.foxbpm.org/connector" id="WebServiceCall" name="执行一个Web服务" note="执行一个Web服务" categoryId="4edf6340-fe6e-437d-aa96-9d40b52bd56e" icon="WebServiceCall.jpg">
+  <input id="namespaceURI" type="java.lang.String" mandatory="Mandatory" defaultValue="" isExecute="true"/>
+  <input id="serviceName" type="java.lang.String" mandatory="Mandatory" defaultValue="" isExecute="true"/>
+  <input id="portName" type="java.lang.String" mandatory="Mandatory" defaultValue="" isExecute="true"/>
+  <input id="endpointAddress" type="java.lang.String" mandatory="Mandatory" defaultValue="" isExecute="true"/>
+  <input id="request" type="java.lang.String" mandatory="Mandatory" defaultValue="" isExecute="true"/>
+  <output id="response" name="响应" type="java.lang.String"/>
+  <page id="webServiceConf" name="webService配置" note="webService配置">
+    <widget xsi:type="connector:Text" id="Widget_0" name="命名空间" inputId="namespaceURI">
+      <widgetExpression expressionValue=""/>
+    </widget>
+    <widget xsi:type="connector:Text" id="Widget_1" name="服务名称" inputId="serviceName">
+      <widgetExpression expressionValue=""/>
+    </widget>
+    <widget xsi:type="connector:Text" id="Widget_2" name="端口名称" inputId="portName">
+      <widgetExpression expressionValue=""/>
+    </widget>
+    <widget xsi:type="connector:Text" id="Widget_3" name="服务地址" inputId="endpointAddress">
+      <widgetExpression expressionValue=""/>
+    </widget>
+    <widget xsi:type="connector:Text" id="Widget_4" name="请求内容" inputId="request">
+      <widgetExpression expressionValue=""/>
+    </widget>
+  </page>
+  <definitionImpl className="WebServiceCall" packageName="org.foxbpm.connector.flowconnector.WebServiceCall"/>
+</connector:ConnectorDefinition>
