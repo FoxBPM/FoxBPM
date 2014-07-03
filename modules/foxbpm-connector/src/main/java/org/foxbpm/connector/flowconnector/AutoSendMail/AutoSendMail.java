@@ -73,7 +73,7 @@ public class AutoSendMail implements FlowConnectorHandler {
 			mailTitle.append("[" + taskEntity.getProcessDefinitionName() + "] ").append(taskEntity.getDescription()).append(" is pending for your approval or handle");
 		}
 
-		String taskUrl = "http://localhost:8889/foxbpm-webapps-base";
+		String taskUrl = "http://www.baidu.com";
 		if (StringUtil.isEmpty(content)) {
 			content = "<br>Hello,<br>你好,<br><br> " + mailTitle + "<br><br>" + "Please click url to deal with job: <br>请访问此链接地址进入任务:<br> <a href=" + taskUrl + ">" + taskUrl + "</a><br><br>"
 					+ "Best Regards!<br>诚挚问候!<br>Note: Please do not reply to this email , This mailbox does not allow incoming messages." + "<br>注意: 本邮件为工作流系统发送，请勿回复。 ";
@@ -98,19 +98,23 @@ public class AutoSendMail implements FlowConnectorHandler {
 			String userId = null;
 			for (IdentityLinkEntity identityLink : taskEntity.getTaskIdentityLinks()) {
 				userId = identityLink.getUserId();
-				if (StringUtil.isNotEmpty(userId) && !Constant.FOXBPM_ALL_USER.equals(userId)) {
-					user = Authentication.selectUserByUserId(identityLink.getUserId());
-					if (null != user) {
-						if (StringUtil.isNotEmpty(user.getEmail())) {
-							to.append(user.getEmail()).append(",");
+				if (StringUtil.isNotEmpty(userId)) {
+					if (!Constant.FOXBPM_ALL_USER.equals(userId)) {
+						user = Authentication.selectUserByUserId(userId);
+						if (null != user) {
+							if (StringUtil.isNotEmpty(user.getEmail())) {
+								to.append(user.getEmail()).append(",");
+							}
 						}
-					}
-				} else if (Constant.FOXBPM_ALL_USER.equals(userId)) {
-					// 处理所有者
-					List<User> users = identityService.getUsers(null, null);
-					for (User u : users) {
-						if (StringUtil.isNotEmpty(u.getEmail())) {
-							to.append(u.getEmail()).append(",");
+					} else {
+						// 处理所有者
+						List<User> users = identityService.getUsers(null, null);
+						if (null != users) {
+							for (User u : users) {
+								if (StringUtil.isNotEmpty(u.getEmail())) {
+									to.append(u.getEmail()).append(",");
+								}
+							}
 						}
 					}
 				} else {
