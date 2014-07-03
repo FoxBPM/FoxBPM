@@ -41,15 +41,10 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	protected String name;
 	
 	protected String subject;
-	
-
-	
 
 	protected String description;
 	
 	protected String completeDescription;
-	
-	
 
 	protected String processInstanceId;
 
@@ -59,10 +54,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	
 	protected ProcessDefinitionEntity processDefinition;
 
-	
-
 	protected String processDefinitionName;
-
 	
 	protected int version;
 
@@ -157,9 +149,9 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	protected boolean isAutoClaim = false;
 	
 	protected Map<String, Object>  paramMap=new HashMap<String, Object>();
-
 	
 	public TaskEntity() {
+		
 	}
 
 	public TaskEntity(String taskId) {
@@ -183,7 +175,6 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	}
 
 	public void update() {
-		// Needed to make history work: the setter will also update the historic
 		// task
 		setOwner(this.getOwner());
 		setAssignee(this.getAssignee());
@@ -193,11 +184,6 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		setPriority(this.getPriority());
 		setCreateTime(this.getCreateTime());
 		setDueDate(this.getDueDate());
-		// setParentTaskId(this.getParentTaskId());
-
-		// CommandContext commandContext = Context.getCommandContext();
-		// commandContext.getTaskManager().u
-		// dbSqlSession.update(this);
 	}
 
 	/** 创建任务 */
@@ -336,17 +322,14 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	}
 
 	public void setRevision(int revision) {
-		// TODO Auto-generated method stub
-
+		throw new FoxBPMException("未实现");
 	}
 
 	public int getRevision() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public int getRevisionNext() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -686,18 +669,15 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	}
 
 	public Object getVariableLocal(Object variableName) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new FoxBPMException("未实现");
 	}
 
 	public String getTaskDefinitionKey() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new FoxBPMException("未实现");
 	}
 
 	public ConnectorExecutionContext getExecutionContext() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new FoxBPMException("未实现");
 	}
 	
 	public String getSubject() {
@@ -717,8 +697,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	}
 
 	public String getEventName() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new FoxBPMException("未实现");
 	}
 
 	public void addCandidateUser(String userId) {
@@ -726,37 +705,43 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	}
 
 	public void addCandidateUserEntity(UserEntity user) {
-		// TODO Auto-generated method stub
-
+		 addIdentityLink(user.getUserId(), null,null, IdentityLinkType.CANDIDATE);
 	}
 
 	public void addCandidateUsers(Collection<String> candidateUsers) {
-		// TODO Auto-generated method stub
-
+		if(candidateUsers != null){
+			for(String userId : candidateUsers){
+				addCandidateUser(userId);
+			}
+		}
 	}
 
 	public void addCandidateUserEntitys(Collection<UserEntity> candidateUsers) {
-		// TODO Auto-generated method stub
-
+		if(candidateUsers != null){
+			for(UserEntity user : candidateUsers){
+				addCandidateUserEntity(user);
+			}
+		}
 	}
 
 	public void addCandidateGroup(String groupId, String groupType) {
-		// TODO Auto-generated method stub
-
+		addGroupIdentityLink(groupId,groupType,IdentityLinkType.CANDIDATE);
 	}
 
 	public void addCandidateGroupEntity(GroupEntity group) {
-		addGroupIdentityLink(group.getGroupId(),group.getGroupType(),IdentityLinkType.CANDIDATE);
+		addCandidateGroup(group.getGroupId(),group.getGroupType());
 	}
 
 	public void addCandidateGroupEntitys(Collection<GroupEntity> candidateGroups) {
-		// TODO Auto-generated method stub
-
+		if(candidateGroups != null){
+			for(GroupEntity group : candidateGroups){
+				addCandidateGroupEntity(group);
+			}
+		}
 	}
 
 	public void addUserIdentityLink(String userId, String identityLinkType) {
-		// TODO Auto-generated method stub
-
+		addIdentityLink(userId, null, null, identityLinkType);
 	}
 
 	public void addGroupIdentityLink(String groupId, String groupType, String identityLinkType) {
@@ -764,23 +749,19 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	}
 
 	public void deleteCandidateUser(String userId) {
-		// TODO Auto-generated method stub
-
+		throw new FoxBPMException("未实现");
 	}
 
 	public void deleteCandidateGroup(String groupId) {
-		// TODO Auto-generated method stub
-
+		throw new FoxBPMException("未实现");
 	}
 
 	public void deleteUserIdentityLink(String userId, String identityLinkType) {
-		// TODO Auto-generated method stub
-
+		throw new FoxBPMException("未实现");
 	}
 
 	public void deleteGroupIdentityLink(String groupId, String groupType, String identityLinkType) {
-		// TODO Auto-generated method stub
-
+		throw new FoxBPMException("未实现");
 	}
 	
 	public IdentityLinkEntity addIdentityLink(String userId, String groupId,String groupType, String type) {
@@ -800,8 +781,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	}
 
 	public Set<IdentityLink> getCandidates() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new FoxBPMException("未实现");
 	}
 	
 	public void setProcessInstanceTransientVariables(Map<String, Object> parameters) {
@@ -809,7 +789,6 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 			if (parameters == null) {
 				return;
 			}
-
 			for (String mapKey : parameters.keySet()) {
 				ExpressionMgmt.setVariable(mapKey, parameters.get(mapKey));
 			}
@@ -820,33 +799,22 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		throw new FoxBPMException("未实现");
 	}
 
-
 	public boolean isAutoClaim() {
-		
-		
 		return getTaskDefinition().isAutoClaim();
 	}
 
-
-
 	public void complete() {
-
 		// 设置是否为草稿
 		this.isDraft = false;
-
 		if (this.endTime != null) {
 			throw new FoxBPMException("任务已经结束,不能再进行处理.");
 		}
 		if (this.isSuspended) {
 			throw new FoxBPMException("任务已经暂停不能再处理");
 		}
-
 		this.endTime = new Date();
-
 		this.isOpen = false;
-
 		// 触发事件
-
 		if (tokenId != null) {
 			TokenEntity token = getToken();
 			token.removeTask(this);
@@ -854,11 +822,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		}
 	}
 	
-
-	
 	public Map<String, Object> getPersistentState() {
-		
-		
 		Map<String,Object> persistentState = new HashMap<String, Object>();
 		persistentState.put("id", getId());		
 		persistentState.put("name", getName());		
@@ -907,13 +871,6 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		persistentState.put("commandType", getCommandType());		
 		persistentState.put("commandMessage", getCommandMessage());
 		
-		/*
-		Map<String,Object> extensionFields=getExtensionFields();	
-			
-		for (String key : extensionFields.keySet()) {
-			persistentState.put(key, extensionFields.get(key));
-		}*/
-		
 		return persistentState;
 	}
 
@@ -921,7 +878,6 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	public boolean hasEnded() {
 		return endTime!=null;
 	}
-
 	
 	public Map<String, Object> getParamMap() {
 		return paramMap;
@@ -930,7 +886,6 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	public void setParamMap(Map<String, Object> paramMap) {
 		this.paramMap = paramMap;
 	}
-	
 
 	public Date getProcessStartTime() {
 		return processStartTime;
