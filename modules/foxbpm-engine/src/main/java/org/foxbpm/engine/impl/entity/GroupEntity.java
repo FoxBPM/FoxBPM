@@ -33,7 +33,8 @@ public class GroupEntity implements Group{
 	}
 	
 	public GroupEntity(String groupId,String groupType){
-		
+		this.groupId = groupId;
+		this.groupType = groupType;
 	}
 	
 	public void setGroupId(String groupId) {
