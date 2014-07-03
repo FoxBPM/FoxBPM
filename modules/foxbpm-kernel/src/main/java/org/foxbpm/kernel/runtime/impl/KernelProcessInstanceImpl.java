@@ -29,7 +29,8 @@ import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 import org.foxbpm.kernel.runtime.InterpretableProcessInstance;
 import org.foxbpm.kernel.runtime.KernelProcessInstance;
 
-public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implements InterpretableProcessInstance {
+public class KernelProcessInstanceImpl extends KernelVariableScopeImpl
+		implements InterpretableProcessInstance {
 
 	/**
 	 * 
@@ -69,7 +70,8 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 	 * @param parentProcessInstance
 	 *            父流程实例
 	 */
-	public void setParentProcessInstance(KernelProcessInstanceImpl parentProcessInstance) {
+	public void setParentProcessInstance(
+			KernelProcessInstanceImpl parentProcessInstance) {
 		this.parentProcessInstance = parentProcessInstance;
 	}
 
@@ -82,7 +84,8 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 		return parentProcessInstanceToken;
 	}
 
-	public void setParentProcessInstanceToken(KernelTokenImpl parentProcessInstanceToken) {
+	public void setParentProcessInstanceToken(
+			KernelTokenImpl parentProcessInstanceToken) {
 		this.parentProcessInstanceToken = parentProcessInstanceToken;
 	}
 
@@ -99,18 +102,17 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 		// 设置流程实例启动的节点
 		this.startFlowNode = flowNode;
 
-
 	}
 
 	public KernelTokenImpl createRootToken() {
-		if(rootToken==null){
+		if (rootToken == null) {
 			this.rootToken = createToken();
 			this.rootToken.setProcessInstance(this);
 			return this.rootToken;
-		}else{
+		} else {
 			throw new KernelException("RootToken已经存在");
 		}
-		
+
 	}
 
 	/** 子类需要重写这个方法 */
@@ -164,12 +166,12 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 
 	/** 启动流程实例 */
 	public void start() {
-
-		if (getRootToken().getFlowNode() == null) {
+		KernelTokenImpl tempToken = getRootToken();
+		if (tempToken.getFlowNode() == null) {
 			// 触发流程实例启动事件
-			getRootToken().fireEvent(KernelEvent.PROCESS_START);
+			tempToken.fireEvent(KernelEvent.PROCESS_START);
 			// 将令牌放置到开始节点中
-			getRootToken().enter(startFlowNode);
+			tempToken.enter(startFlowNode);
 
 		} else {
 			throw new KernelException("流程实例已经启动!");
@@ -182,11 +184,13 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 		return new KernelProcessInstanceImpl();
 	}
 
-	public KernelProcessInstance createSubProcessInstance(KernelProcessDefinitionImpl processDefinition) {
+	public KernelProcessInstance createSubProcessInstance(
+			KernelProcessDefinitionImpl processDefinition) {
 		return createSubProcessInstance(processDefinition, this.rootToken);
 	}
 
-	public KernelProcessInstance createSubProcessInstance(KernelProcessDefinitionImpl processDefinition, KernelTokenImpl token) {
+	public KernelProcessInstance createSubProcessInstance(
+			KernelProcessDefinitionImpl processDefinition, KernelTokenImpl token) {
 		KernelProcessInstanceImpl subProcessInstance = newProcessInstance();
 		subProcessInstance.setParentProcessInstance(this);
 		subProcessInstance.setProcessDefinition(processDefinition);
@@ -227,7 +231,8 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 
 	}
 
-	public void setProcessDefinition(KernelProcessDefinitionImpl processDefinition) {
+	public void setProcessDefinition(
+			KernelProcessDefinitionImpl processDefinition) {
 		this.processDefinition = processDefinition;
 	}
 
@@ -296,12 +301,9 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 	protected void signalParentProcessInstance() {
 		getParentProcessInstanceToken().signal();
 	}
-	
+
 	public void setRootToken(KernelTokenImpl rootToken) {
 		this.rootToken = rootToken;
 	}
-
-	
-
 
 }
