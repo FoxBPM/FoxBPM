@@ -82,7 +82,6 @@ public class AutoSendMail implements FlowConnectorHandler {
 		IdentityService identityService = Context.getProcessEngineConfiguration().getIdentityService();
 		// 判断是否独占任务
 		User user = null;
-		taskEntity.setAssignee("admin");
 		if (StringUtil.isNotEmpty(taskEntity.getAssignee())) {
 			user = identityService.getUser(taskEntity.getAssignee());
 			// 判断用户是否为空
