@@ -195,19 +195,19 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements
 		flowNode.getKernelFlowNodeBehavior().cleanData(this);
 		// kenshin 2013.1.2
 		// 用来处理非线条流转令牌,如退回、跳转
-		if (getToFlowNode() != null) {
+		if (this.toFlowNode != null) {
 			// 发现上下文中有直接跳转节点,则流程引擎不走正常处理直接跳转到指定借点。
 			LOG.debug("＝＝执行跳转机制,跳转目标: {}({}),离开节点: {}({}),令牌号: {}({}).",
 					toFlowNode.getName(), toFlowNode.getId(),
 					flowNode.getName(), flowNode.getId(), this.getName(),
 					this.getId());
 			setToFlowNode(null);
-			enter(getToFlowNode());
+			enter(toFlowNode);
 			return;
 		}
 
 		// 节点后面没有线的处理
-		if (sequenceFlowList.size() == 0) {
+		if (sequenceFlowList == null || sequenceFlowList.size() == 0) {
 			if (flowNode.getOutgoingSequenceFlows().size() == 0) {
 				LOG.error("节点: {}({}) 后面没有配置处理线条！", flowNode.getName(),
 						flowNode.getId());
