@@ -722,7 +722,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	}
 
 	public void addCandidateUser(String userId) {
-		 addIdentityLink(userId, null, IdentityLinkType.CANDIDATE);
+		 addIdentityLink(userId, null,null, IdentityLinkType.CANDIDATE);
 	}
 
 	public void addCandidateUserEntity(UserEntity user) {
@@ -746,8 +746,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	}
 
 	public void addCandidateGroupEntity(GroupEntity group) {
-		// TODO Auto-generated method stub
-
+		addGroupIdentityLink(group.getGroupId(),group.getGroupType(),IdentityLinkType.CANDIDATE);
 	}
 
 	public void addCandidateGroupEntitys(Collection<GroupEntity> candidateGroups) {
@@ -761,8 +760,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	}
 
 	public void addGroupIdentityLink(String groupId, String groupType, String identityLinkType) {
-		// TODO Auto-generated method stub
-
+		addIdentityLink(null, groupId, groupType , identityLinkType);
 	}
 
 	public void deleteCandidateUser(String userId) {
@@ -785,7 +783,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 
 	}
 	
-	public IdentityLinkEntity addIdentityLink(String userId, String groupId, String type) {
+	public IdentityLinkEntity addIdentityLink(String userId, String groupId,String groupType, String type) {
 		IdentityLinkEntity identityLinkEntity = new IdentityLinkEntity();
 		identityLinkEntity.setId(GuidUtil.CreateGuid());
 		getIdentityLinks().add(identityLinkEntity);
@@ -793,6 +791,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		identityLinkEntity.setUserId(userId);
 		identityLinkEntity.setGroupId(groupId);
 		identityLinkEntity.setType(type);
+		identityLinkEntity.setGroupType(groupType);
 		//判断开始流程权限时会触发add方法，此时不应该存储数据
 		if(this.id != null){
 			identityLinkEntity.insert();

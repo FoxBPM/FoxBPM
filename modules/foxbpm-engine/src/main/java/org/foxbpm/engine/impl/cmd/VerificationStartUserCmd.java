@@ -65,6 +65,7 @@ public class VerificationStartUserCmd implements Command<Boolean> {
 			processDefinition = deployCache.findDeployedProcessDefinitionById(processDefinitionId);
 		} else if (processDefinitionKey != null && !"".equals(processDefinitionKey)) {
 			processDefinition = deployCache.findDeployedLatestProcessDefinitionByKey(processDefinitionKey);
+			return true;
 		} else {
 			throw new FoxBPMIllegalArgumentException("验证发起权限时，流程编号和流程唯一键不能同时为空");
 		}
