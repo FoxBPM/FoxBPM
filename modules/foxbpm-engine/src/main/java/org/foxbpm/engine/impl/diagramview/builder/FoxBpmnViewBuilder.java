@@ -39,10 +39,32 @@ public interface FoxBpmnViewBuilder {
 	 */
 	public void setWayPoints(List<Point> pointList);
 
+	/**
+	 * 
+	 * setWidth(设置元素宽度)
+	 * 
+	 * @param width
+	 * @since 1.0.0
+	 */
 	public void setWidth(float width);
 
+	/**
+	 * 
+	 * setHeight(设置元素高度)
+	 * 
+	 * @param height
+	 * @since 1.0.0
+	 */
 	public void setHeight(float height);
 
+	/**
+	 * 
+	 * setXAndY(设置元素坐标)
+	 * 
+	 * @param x
+	 * @param y
+	 * @since 1.0.0
+	 */
 	public void setXAndY(float x, float y);
 
 	public void setStroke(String stroke);
@@ -86,4 +108,9 @@ public interface FoxBpmnViewBuilder {
 	public void setTypeFill(String fill);
 
 	public void setTypeStyle(String style);
+
+	/**
+	 * 泳道负责重写该方法 setTextLocationByHerizonFlag
+	 */
+	public void setTextLocationByHerizonFlag(boolean herizonFlag);
 }

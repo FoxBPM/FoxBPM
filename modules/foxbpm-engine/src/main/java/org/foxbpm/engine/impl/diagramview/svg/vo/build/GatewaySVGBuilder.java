@@ -69,12 +69,14 @@ public class GatewaySVGBuilder extends AbstractSVGBuilder {
 		if (StringUtils.isNotBlank(textVO.getElementValue())) {
 			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
 					this.textVO.getElementValue());
-			int languageShift = -12;
+			int languageShift = 0;
 			if (SVGUtils.isChinese(this.textVO.getElementValue().charAt(0))) {
 				languageShift = 10;
+				languageShift = languageShift + (textWidth >= 40 ? 5 : 0);
+				textWidth = textWidth / 2;
 			}
-			super.setTextX(this.tempWidth - textWidth - languageShift);
-			super.setTextY(this.tempHeight + 5);
+			super.setTextX((this.tempWidth / 2) - textWidth / 2 - languageShift);
+			super.setTextY(this.tempHeight + 10);
 		}
 
 	}

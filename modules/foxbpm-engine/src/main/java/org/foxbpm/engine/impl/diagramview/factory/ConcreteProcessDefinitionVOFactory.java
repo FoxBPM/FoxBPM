@@ -153,10 +153,8 @@ public class ConcreteProcessDefinitionVOFactory extends
 			voNodeList.add(voNode);
 		}
 		this.createSequenceVO(deployedProcessDefinition, voNodeList);
-		String str = flowNodeVOFactory.convertNodeListToString(
+		return flowNodeVOFactory.convertNodeListToString(
 				deployedProcessDefinition.getProperties(), voNodeList);
-		System.out.println(str);
-		return str;
 	}
 
 	/**

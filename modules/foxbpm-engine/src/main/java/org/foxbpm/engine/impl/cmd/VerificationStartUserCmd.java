@@ -20,6 +20,7 @@ package org.foxbpm.engine.impl.cmd;
 
 import java.util.List;
 
+import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.identity.Group;
@@ -64,6 +65,7 @@ public class VerificationStartUserCmd implements Command<Boolean> {
 			processDefinition = deployCache.findDeployedProcessDefinitionById(processDefinitionId);
 		} else if (processDefinitionKey != null && !"".equals(processDefinitionKey)) {
 			processDefinition = deployCache.findDeployedLatestProcessDefinitionByKey(processDefinitionKey);
+			return true;
 		} else {
 			throw new FoxBPMIllegalArgumentException("验证发起权限时，流程编号和流程唯一键不能同时为空");
 		}
@@ -93,7 +95,7 @@ public class VerificationStartUserCmd implements Command<Boolean> {
 		}
 		List<Group> groups = Authentication.selectGroupByUserId(userId);
 		for (IdentityLinkEntity identity : taskEntity.getIdentityLinks()) {
-			if ("fixflow_allusers".equals(identity.getUserId())) {
+			if (Constant.FOXBPM_ALL_USER.equals(identity.getUserId())) {
 				return true;
 			}
 			for (Group group : groups) {

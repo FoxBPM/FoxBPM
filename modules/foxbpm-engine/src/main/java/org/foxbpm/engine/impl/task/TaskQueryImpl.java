@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
@@ -115,7 +116,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	//isAgent
 	/**
 	 * 查询agentId代理给当前用户的所有流程，
-	 * 如果存在"_all_flow_" 或者不是代理状态,则返回空的list；
+	 * 如果存在"foxbpm_all_flow" 或者不是代理状态,则返回空的list；
 	 * @return
 	 */
 	public List<String> getAgentProcessKey(){
@@ -132,8 +133,8 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 		if(agentInfo != null){
 			for(AgentTo agent : agentInfo){
 				if(agent.getAgentFrom().equals(this.agentId) && (agent.getEndTime().after(nowDate))){
-					//如果存在_all_flow_，则直接清空所有key，并中断循环,返回空List
-					if(agent.getProcessKey().equals("_all_flow_")){
+					//如果存在foxbpm_all_flow，则直接清空所有key，并中断循环,返回空List
+					if(agent.getProcessKey().equals(Constant.FOXBPM_ALL_FLOW)){
 						processKeys.clear();
 						break;
 					}

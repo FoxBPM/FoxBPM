@@ -89,6 +89,12 @@ public class SVGTemplateContainer {
 		this.init(SVGTemplateNameConstant.TEMPLATE_ENDEVENT_NONE);
 		// 初始化加载空白UserTask
 		this.init(SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK);
+		// 加载网关
+		this.init(SVGTemplateNameConstant.TEMPLATE_GATEWAY_PARALLEL);
+		this.init(SVGTemplateNameConstant.TEMPLATE_GATEWAY_EXCLUSIVE);
+		this.init(SVGTemplateNameConstant.TEMPLATE_GATEWAY_INCLUSIVE);
+		// 加载泳道
+		this.init(SVGTemplateNameConstant.TEMPLATE_LANESET);
 		// 初始化加载空白UserTask
 		this.init(SVGTemplateNameConstant.TEMPLATE_CONNECTOR_SEQUENCEFLOW);
 		// 初始化加载模版容器

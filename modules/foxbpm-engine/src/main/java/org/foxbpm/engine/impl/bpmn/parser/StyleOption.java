@@ -36,4 +36,9 @@ public class StyleOption {
 	public static String StyleObject="styleObject";
 	/** 文字颜色 */
 	public static String TextColor="textColor";
+	
+	/** 是否水平 */
+	public static String IsHorizontal="isHorizontal";
+	
+	
 }

@@ -110,6 +110,7 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public void createTriggerList(Expression timeExpression,
 			ListenerExecutionContext executionContext) {
 		List<Trigger> triggersList = new ArrayList<Trigger>();

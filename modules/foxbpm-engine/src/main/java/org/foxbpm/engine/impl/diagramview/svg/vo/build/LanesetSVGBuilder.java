@@ -17,6 +17,7 @@
  */
 package org.foxbpm.engine.impl.diagramview.svg.vo.build;
 
+import java.awt.Font;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -60,6 +61,37 @@ public class LanesetSVGBuilder extends AbstractSVGBuilder {
 	public void setXAndY(float x, float y) {
 		this.rectVO.setX(x);
 		this.rectVO.setY(y);
+
+	}
+
+	/**
+	 * 根据垂直水平泳道设置 泳道文本坐标
+	 */
+	public void setTextLocationByHerizonFlag(boolean herizonFlag) {
+		// 设置文本坐标
+		float textX = 0;
+		float textY = 0;
+		int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
+				this.textVO.getElementValue());
+		if (herizonFlag) {
+			// 水平泳道文本需要旋转
+			textX = this.rectVO.getX() + 10.0f;
+			textY = this.rectVO.getY() + this.rectVO.getHeight() / 2
+					+ textWidth / 2;
+			this.textVO.setTransform("rotate(180 " + textX + "," + textY + ")");
+			StringBuffer styleBuffer = new StringBuffer(this.textVO.getStyle());
+			this.textVO.setStyle(styleBuffer.append(";writing-mode: tb;")
+					.toString());
+
+		} else {
+			// 垂直泳道 文本不需要旋转
+			textX = this.rectVO.getX() + this.rectVO.getWidth() / 2 - textWidth
+					/ 2;
+			textY = this.rectVO.getY() + 10.0f;
+		}
+		this.textVO.setX(textX);
+		this.textVO.setY(textY);
+
 	}
 
 	@Override
@@ -87,6 +119,22 @@ public class LanesetSVGBuilder extends AbstractSVGBuilder {
 		float y2 = this.rectVO.getY() + this.rectVO.getHeight();
 		this.buildLinearGradient(fill, rectVO, x1, x2, y1, y2);
 
+	}
+
+	public void setTextFont(String fontStr) {
+		if (StringUtils.isBlank(fontStr)) {
+			Font font = new Font("arial", Font.CENTER_BASELINE, 11);
+			this.textVO.setFont(font);
+			return;
+		}
+		String[] fonts = fontStr.split(",");
+		StringBuffer styleBuffer = new StringBuffer();
+		String style = styleBuffer.append("font-family:").append(fonts[0])
+				.append(";font-size:").append(fonts[1]).toString();
+		Font font = new Font(fonts[0], Font.PLAIN, Integer.valueOf(fonts[1]));
+		this.textVO.setFont(font);
+		this.textVO.setStyle(style);
+		this.textVO.setFontSize(fonts[1]);
 	}
 
 	@Override

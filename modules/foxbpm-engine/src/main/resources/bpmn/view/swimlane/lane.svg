@@ -17,26 +17,7 @@
         	<stop stop-opacity="1" stop-color="white" offset="100%" />
       	</linearGradient> 
 	</defs>
-	
-  	<rect id="border_invisible" class="stripable-element-force" oryx:resize="vertical horizontal" x="0" y="0" width="600" height="250" fill="none" stroke-width="10" stroke="white" visibility="hidden" pointer-events="stroke"/>		
 	<rect id="bg_frame" oryx:resize="vertical horizontal" x="0" y="0" width="600" height="250" stroke="black" stroke-width="1" fill="url(#background) white" pointer-events="none" />
-	
-	
-	<rect 
-		id="caption"
-		oryx:anchors="left top bottom"
-		x="0"
-		y="1"
-		width="30"
-		height="248"
-		stroke="black"
-		stroke-width="0"
-		fill="white"
-		visibility="hidden"
-		class="stripable-element-force"
-		pointer-events="all"
-	/>
- 
     <text 
 		x="13"
 		y="125"
