@@ -99,12 +99,15 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 		this.rectVO.setX(0.0F);
 		this.rectVO.setY(0.0F);
 		// 设置字体的相对偏移量,X相对是矩形宽度的一半减去文本本身屏宽的一半
+		// TODO 目前支持全英文或者全中文、全日文、全韩文。
 		if (StringUtils.isNotBlank(textVO.getElementValue())) {
 			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
 					this.textVO.getElementValue());
-			int languageShift = -5;
+			int languageShift = 0;
 			if (SVGUtils.isChinese(this.textVO.getElementValue().charAt(0))) {
 				languageShift = 10;
+				languageShift = languageShift + (textWidth >= 40 ? 3 : 0);
+				textWidth = textWidth / 2;
 			}
 			super.setTextX((this.rectVO.getWidth() / 2) - textWidth / 2
 					- languageShift);
