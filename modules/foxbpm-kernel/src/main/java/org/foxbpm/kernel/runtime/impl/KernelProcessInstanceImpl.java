@@ -155,7 +155,7 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl
 			for (KernelTokenImpl kernelTokenImpl : tokens) {
 				if (StringUtils.equals(kernelTokenImpl.getId(), tokenId)) {
 					kernelTokenImpl.signal();
-					break;
+					return;
 				}
 			}
 		}
