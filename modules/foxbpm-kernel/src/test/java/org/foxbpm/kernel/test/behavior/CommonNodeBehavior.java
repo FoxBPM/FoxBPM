@@ -20,6 +20,7 @@ package org.foxbpm.kernel.test.behavior;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
 import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
+import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,11 +45,12 @@ public class CommonNodeBehavior implements KernelFlowNodeBehavior {
 	public void leave(FlowNodeExecutionContext executionContext) {
 		LOG.debug("离开节点: "+executionContext.getFlowNode().getId());
 		
-		KernelFlowNode flowNode=executionContext.getFlowNode();
+		((KernelTokenImpl)executionContext).leave();
 		
-		if(flowNode.getOutgoingSequenceFlows().size()>0){
-			executionContext.take(flowNode.getOutgoingSequenceFlows().get(0));
-		}
+//		KernelFlowNode flowNode=executionContext.getFlowNode();
+//		if(flowNode.getOutgoingSequenceFlows().size()>0){
+//			executionContext.take(flowNode.getOutgoingSequenceFlows().get(0));
+//		}
 		
 		
 	}

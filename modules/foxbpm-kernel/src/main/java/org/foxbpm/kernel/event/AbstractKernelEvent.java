@@ -33,12 +33,13 @@ public abstract class AbstractKernelEvent implements KernelEvent {
 	public void execute(InterpretableExecutionContext executionContext) {
 	
 		KernelFlowElementsContainerImpl container = getContainer(executionContext);		
-		List<KernelListener> kernelListeners = container.getKernelListeners(getEventName());
+		String eventName = getEventName();
+		List<KernelListener> kernelListeners = container.getKernelListeners(eventName);
 		
 		int kernelListenerIndex = executionContext.getKernelListenerIndex();
 
 		if (kernelListeners.size() > kernelListenerIndex) {
-			executionContext.setEventName(getEventName());
+			executionContext.setEventName(eventName);
 			executionContext.setEventSource(container);
 			KernelListener listener = kernelListeners.get(kernelListenerIndex);
 			try {

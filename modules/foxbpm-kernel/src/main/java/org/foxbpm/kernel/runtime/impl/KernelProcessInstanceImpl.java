@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.kernel.event.KernelEvent;
 import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
@@ -149,19 +150,16 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl
 	}
 
 	public void signal(String tokenId) {
-		List<KernelTokenImpl> tokenImpls = getTokens();
-		KernelTokenImpl tokenObj = null;
-		for (KernelTokenImpl kernelTokenImpl : tokenImpls) {
-			if (kernelTokenImpl.getId().equals(tokenId)) {
-				tokenObj = kernelTokenImpl;
-				break;
+		// getTokens 没有子类重写所以直接调用属性
+		if (tokens != null && tokens.size() > 0) {
+			for (KernelTokenImpl kernelTokenImpl : tokens) {
+				if (StringUtils.equals(kernelTokenImpl.getId(), tokenId)) {
+					kernelTokenImpl.signal();
+					return;
+				}
 			}
 		}
-		if (tokenObj != null) {
-			tokenObj.signal();
-		} else {
-			// 异常
-		}
+		// 异常
 	}
 
 	/** 启动流程实例 */
