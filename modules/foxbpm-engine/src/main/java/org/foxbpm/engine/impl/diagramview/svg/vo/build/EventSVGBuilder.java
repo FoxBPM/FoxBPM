@@ -182,7 +182,7 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 				languageShift = languageShift - (textWidth <= 16 ? 2 : 0);
 			}
 			this.setTextX(x - textWidth / 2 - languageShift);
-			this.setTextY(y + this.circleVO.getR() + 20);
+			this.setTextY(y + this.circleVO.getR() + 15);
 		}
 
 		// 如果存在子类型，例如ERROR
