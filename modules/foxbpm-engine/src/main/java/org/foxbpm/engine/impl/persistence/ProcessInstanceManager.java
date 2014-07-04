@@ -26,44 +26,54 @@ import org.foxbpm.engine.runtime.ProcessInstance;
 
 /**
  * 流程实例管理器
+ * 
  * @author kenshin
- *
+ * 
  */
 public class ProcessInstanceManager extends AbstractManager {
 
 	public ProcessInstanceEntity findProcessInstanceById(String id) {
 		return selectById(ProcessInstanceEntity.class, id);
 	}
-	
-	public long findProcessInstanceCountByQueryCriteria(ProcessInstanceQueryImpl processsInstanceQuery){
-		return (Long) getSqlSession().selectOne("selectProcessInstanceCountByQueryCriteria", processsInstanceQuery);
+
+	public long findProcessInstanceCountByQueryCriteria(
+			ProcessInstanceQueryImpl processsInstanceQuery) {
+		return (Long) getSqlSession().selectOne("selectProcessInstanceCountByQueryCriteria",
+				processsInstanceQuery);
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public List<ProcessInstance> findProcessInstanceByQueryCriteria(ProcessInstanceQueryImpl processInstaceQuery){
-		return getSqlSession().selectList("selectProcessInstanceByQueryCriteria", processInstaceQuery);
+	public List<ProcessInstance> findProcessInstanceByQueryCriteria(
+			ProcessInstanceQueryImpl processInstaceQuery) {
+		return getSqlSession().selectList("selectProcessInstanceByQueryCriteria",
+				processInstaceQuery);
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public void deleteProcessInstancesByProcessDefinition(String processDefinitionId, boolean cascade){
-		//删除流程实例
+	public void deleteProcessInstancesByProcessDefinition(String processDefinitionId,
+			boolean cascade) {
+		// 删除流程实例
 		deleteProcessInstanceByProcessDefinitionId(processDefinitionId);
-		if(cascade){
-			//循环删除其他信息
-			List<String> processInstanceIds = getSqlSession().selectListWithRawParameter("selectProcessInstanceIdsByProcessDefinitionId", processDefinitionId);
-			for (String processInstanceId : processInstanceIds) {	
-				//删除令牌
-				getTokenManager().deleteTokenByProcessInstanceId(processInstanceId);
-				//删除任务
-				getTaskManager().deleteTaskByProcessInstanceId(processInstanceId);
-				//删除变量
-				getVariableManager().deleteVariableByProcessInstanceId(processInstanceId);
+		if (cascade) {
+			// 循环删除其他信息
+			TokenManager tokenManager = getTokenManager();
+			TaskManager taskManager = getTaskManager();
+			VariableManager variableManager = getVariableManager();
+			List<String> processInstanceIds = getSqlSession().selectListWithRawParameter(
+					"selectProcessInstanceIdsByProcessDefinitionId", processDefinitionId);
+			for (String processInstanceId : processInstanceIds) {
+				// 删除令牌
+				tokenManager.deleteTokenByProcessInstanceId(processInstanceId);
+				// 删除任务
+				taskManager.deleteTaskByProcessInstanceId(processInstanceId);
+				// 删除变量
+				variableManager.deleteVariableByProcessInstanceId(processInstanceId);
 			}
 		}
 	}
 
 	private void deleteProcessInstanceByProcessDefinitionId(String processInstanceId) {
-		getSqlSession().delete("deleteProcessInstanceByProcessDefinitionId",processInstanceId);
+		getSqlSession().delete("deleteProcessInstanceByProcessDefinitionId", processInstanceId);
 	}
 
 }

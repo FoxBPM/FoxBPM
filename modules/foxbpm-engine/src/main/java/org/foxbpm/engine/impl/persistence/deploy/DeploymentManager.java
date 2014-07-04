@@ -53,10 +53,9 @@ public class DeploymentManager {
 			throw new FoxBPMIllegalArgumentException("processDefinitionId不能为 : null");
 		}
 		ProcessDefinitionEntity processDefinition = Context.getCommandContext().getProcessDefinitionManager().findProcessDefinitionById(processDefinitionId);
-		if (processDefinition == null) {
-			return null;
+		if (processDefinition != null) {
+			processDefinition = resolveProcessDefinition(processDefinition);
 		}
-		processDefinition = resolveProcessDefinition(processDefinition);
 		return processDefinition;
 	}
 	

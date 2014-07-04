@@ -42,9 +42,10 @@ public class DeploymentEntityManager extends AbstractManager {
 	public void insertDeployment(DeploymentEntity deployment){
 		getSqlSession().insert(deployment);
 		Map<String,ResourceEntity> resources = deployment.getResources();
+		ResourceManager resourceManager = Context.getCommandContext().getResourceManager();
 		for(ResourceEntity resource : resources.values()){
 			resource.setDeploymentId(deployment.getId());
-			Context.getCommandContext().getResourceManager().insert(resource);
+			resourceManager.insert(resource);
 		}
 	}
 	  
@@ -55,8 +56,10 @@ public class DeploymentEntityManager extends AbstractManager {
 		//删除所有的流程定义
 		if (cascade) {
 			List<ProcessDefinition> processDefinitions = new ProcessDefinitionQueryImpl().deploymentId(deploymentId).list();
+			ProcessDefinitionManager processDefinitionManager = Context.getCommandContext()
+					.getProcessDefinitionManager();
 			for (ProcessDefinition processDefinition : processDefinitions) {
-				Context.getCommandContext().getProcessDefinitionManager().deleteProcessDefinition(processDefinition.getId(), cascade);
+				processDefinitionManager.deleteProcessDefinition(processDefinition.getId(), cascade);
 			}
 		}
 		//删除deployment发布记录
