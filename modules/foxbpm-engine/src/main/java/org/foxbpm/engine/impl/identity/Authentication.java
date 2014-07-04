@@ -68,7 +68,7 @@ public abstract class Authentication {
 		return user;
 	}
 	
-	public List<User> selectUserByGroupIdAndType(String groupId,String groupType){
+	public static List<User> selectUserByGroupIdAndType(String groupId,String groupType){
 		List<User> users = new ArrayList<User>();
 		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
 		CommandExecutor commandExecutor = processEngine.getProcessEngineConfiguration().getCommandExecutor();
