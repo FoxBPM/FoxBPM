@@ -27,7 +27,7 @@ public class ConnectorInputParam {
 
 	protected String dataType;
 
-	protected boolean isExecute=true;
+	protected boolean isExecute = true;
 
 	protected Expression expression;
 

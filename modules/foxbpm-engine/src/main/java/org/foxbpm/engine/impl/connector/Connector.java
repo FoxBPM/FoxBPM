@@ -42,6 +42,8 @@ import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 public class Connector implements KernelListener {
 
 	private static final long serialVersionUID = 1L;
+	private static final String SETFUNCTION_PREFFIX = "set";
+	private static final String GETFUNCTION_PREFFIX = "get";
 	protected String connectorId;
 	protected String packageName;
 	protected String className;
@@ -57,10 +59,8 @@ public class Connector implements KernelListener {
 	protected Expression timeExpression;
 	protected Expression skipExpression;
 
-	public void notify(ListenerExecutionContext executionContext)
-			throws Exception {
-		if (skipExpression != null
-				&& StringUtils.isNotBlank(skipExpression.getExpressionText())) {
+	public void notify(ListenerExecutionContext executionContext) throws Exception {
+		if (skipExpression != null && StringUtils.isNotBlank(skipExpression.getExpressionText())) {
 			Object skipExpressionObj = getSkipExpression().getValue(
 					(FlowNodeExecutionContext) executionContext);
 			if (StringUtil.getBoolean(skipExpressionObj)) {
@@ -77,82 +77,55 @@ public class Connector implements KernelListener {
 		}
 	}
 
-	public void executeJob(ListenerExecutionContext executionContext)
-			throws Exception {
+	public void executeJob(ListenerExecutionContext executionContext) throws Exception {
 		try {
 			String classNameObj = packageName + "." + className;
 			Class<?> connectorHandlerClass = Class.forName(classNameObj);
 			FlowConnectorHandler connectorInstance = (FlowConnectorHandler) connectorHandlerClass
 					.newInstance();
 
-			for (ConnectorInputParam connectorParameterInputs : this
-					.getConnectorInputsParam()) {
-
+			FlowNodeExecutionContext flowNodeExecutionContext =(FlowNodeExecutionContext) executionContext;
+			for (ConnectorInputParam connectorParameterInputs : this.getConnectorInputsParam()) {
 				Class<?> ptypes[] = new Class[1];
-
-				ptypes[0] = Class.forName(connectorParameterInputs
-						.getDataType());
-
+				ptypes[0] = Class.forName(connectorParameterInputs.getDataType());
 				String parameterInputsId = connectorParameterInputs.getId();
-
-				String methodString = "set"
+				String methodString = SETFUNCTION_PREFFIX
 						+ parameterInputsId.substring(0, 1).toUpperCase()
-						+ parameterInputsId.substring(1,
-								parameterInputsId.length());
-				Method m = connectorHandlerClass
-						.getMethod(methodString, ptypes);
-
+						+ parameterInputsId.substring(1, parameterInputsId.length());
+				Method m = connectorHandlerClass.getMethod(methodString, ptypes);
 				if (connectorParameterInputs.getExpression() != null) {
 					Object arg[] = new Object[1];
 					if (!connectorParameterInputs.getExpression().isNullText()
 							&& connectorParameterInputs.isExecute()) {
-						arg[0] = connectorParameterInputs
-								.getExpression()
-								.getValue(
-										(FlowNodeExecutionContext) executionContext);
+						arg[0] = connectorParameterInputs.getExpression().getValue(flowNodeExecutionContext);
 					} else {
-						arg[0] = connectorParameterInputs.getExpression()
-								.getExpressionText();
+						arg[0] = connectorParameterInputs.getExpression().getExpressionText();
 					}
 					m.invoke(connectorInstance, arg);
 				}
 
 			}
 
-			connectorInstance
-					.execute((ConnectorExecutionContext) executionContext);
-
-			for (ConnectorOutputParam connectorParameterOutputs : this
-					.getConnectorOutputsParam()) {
-
-				if (!StringUtil
-						.isEmpty(connectorParameterOutputs.getOutputId())) {
-					String parameterOutputsId = connectorParameterOutputs
-							.getOutputId();
-
-					String methodString = "get"
+			connectorInstance.execute((ConnectorExecutionContext) executionContext);
+			for (ConnectorOutputParam connectorParameterOutputs : this.getConnectorOutputsParam()) {
+				if (!StringUtil.isEmpty(connectorParameterOutputs.getOutputId())) {
+					String parameterOutputsId = connectorParameterOutputs.getOutputId();
+					String methodString = GETFUNCTION_PREFFIX
 							+ parameterOutputsId.substring(0, 1).toUpperCase()
-							+ parameterOutputsId.substring(1,
-									parameterOutputsId.length());
+							+ parameterOutputsId.substring(1, parameterOutputsId.length());
 					Method m = connectorHandlerClass.getMethod(methodString);
-
-					String variableTarget = connectorParameterOutputs
-							.getVariableTarget();
+					String variableTarget = connectorParameterOutputs.getVariableTarget();
 					// Object arg[] = new Object[1];
 					// arg[0] =Context.getBshInterpreter().eval(scriptString);
 
 					Object objectValue = m.invoke(connectorInstance);
-
-					ExpressionMgmt.setVariable(variableTarget, objectValue,
-							(FlowNodeExecutionContext) executionContext);
+					ExpressionMgmt.setVariable(variableTarget, objectValue,flowNodeExecutionContext);
 				}
 
 			}
 
 		} catch (Exception e) {
-
 			throw new FoxBPMConnectorException(e.getMessage(), e);
-
 		}
 	}
 
@@ -164,36 +137,32 @@ public class Connector implements KernelListener {
 	 * @throws Exception
 	 * @since 1.0.0
 	 */
-	private void scheduleAutoExecuteJob(
-			ListenerExecutionContext executionContext) throws Exception {
+	private void scheduleAutoExecuteJob(ListenerExecutionContext executionContext) throws Exception {
 		// TODO QuartzUtil类是否需要改方法参数，processDefinitionID改成 processInstanceID
 		FoxbpmJobDetail<ConnectorAutoExecuteJob> connectorAutoExecuteJobDetail = new FoxbpmJobDetail<ConnectorAutoExecuteJob>(
 				new ConnectorAutoExecuteJob(GuidUtil.CreateGuid(),
 						executionContext.getProcessInstanceId()));
-		connectorAutoExecuteJobDetail.createTriggerList(timeExpression,
-				executionContext);
-		connectorAutoExecuteJobDetail.putContextAttribute(
-				FoxbpmJobExecutionContext.CONNECTOR_ID, this.connectorId);
+		connectorAutoExecuteJobDetail.createTriggerList(timeExpression, executionContext);
+		connectorAutoExecuteJobDetail.putContextAttribute(FoxbpmJobExecutionContext.CONNECTOR_ID,
+				this.connectorId);
 		connectorAutoExecuteJobDetail.putContextAttribute(
 				FoxbpmJobExecutionContext.PROCESS_INSTANCE_ID,
 				executionContext.getProcessInstanceId());
-		connectorAutoExecuteJobDetail.putContextAttribute(
-				FoxbpmJobExecutionContext.EVENT_NAME, this.getEventType());
-		connectorAutoExecuteJobDetail.putContextAttribute(
-				FoxbpmJobExecutionContext.TOKEN_ID, executionContext.getId());
-		if (StringUtils.equalsIgnoreCase(this.getEventType(),
-				KernelEventType.EVENTTYPE_TASK_ASSIGN)) {
-			TaskEntity assignTask = ((TokenEntity) executionContext)
-					.getAssignTask();
+		connectorAutoExecuteJobDetail.putContextAttribute(FoxbpmJobExecutionContext.EVENT_NAME,
+				this.getEventType());
+		connectorAutoExecuteJobDetail.putContextAttribute(FoxbpmJobExecutionContext.TOKEN_ID,
+				executionContext.getId());
+		if (StringUtils
+				.equalsIgnoreCase(this.getEventType(), KernelEventType.EVENTTYPE_TASK_ASSIGN)) {
+			TaskEntity assignTask = ((TokenEntity) executionContext).getAssignTask();
 			if (assignTask != null) {
 				connectorAutoExecuteJobDetail.putContextAttribute(
 						FoxbpmJobExecutionContext.TASK_ID, assignTask.getId());
 			}
 		}
 
-		connectorAutoExecuteJobDetail.putContextAttribute(
-				FoxbpmJobExecutionContext.NODE_ID, executionContext
-						.getEventSource().getId());
+		connectorAutoExecuteJobDetail.putContextAttribute(FoxbpmJobExecutionContext.NODE_ID,
+				executionContext.getEventSource().getId());
 
 		QuartzUtil.scheduleFoxbpmJob(connectorAutoExecuteJobDetail);
 	}
@@ -311,13 +280,11 @@ public class Connector implements KernelListener {
 		return connectorOutputsParam;
 	}
 
-	public void setConnectorInputsParam(
-			List<ConnectorInputParam> connectorInputsParam) {
+	public void setConnectorInputsParam(List<ConnectorInputParam> connectorInputsParam) {
 		this.connectorInputsParam = connectorInputsParam;
 	}
 
-	public void setConnectorOutputsParam(
-			List<ConnectorOutputParam> connectorOutputsParam) {
+	public void setConnectorOutputsParam(List<ConnectorOutputParam> connectorOutputsParam) {
 		this.connectorOutputsParam = connectorOutputsParam;
 	}
 
