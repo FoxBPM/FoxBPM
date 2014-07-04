@@ -7,4 +7,7 @@
     <menuConnector id="SendMail" name="发送邮件" note="根据引擎的邮件配置发送邮件" ico="SendMail.jpg"/>
     <menuConnector id="AutoSendMail" name="自动邮件发送" note="自动发送邮件给当前处理人" ico="AutoSendMail.jpg"/>
   </node>
+  <node id="4edf6340-fe6e-437d-aa96-9d40b52bd56e" name="WebServices" ico="category.png">
+    <menuConnector id="WebServiceCall" name="执行一个Web服务" note="执行一个Web服务" ico="WebServiceCall.png"/>
+  </node>
 </connectormenu:Menu>
