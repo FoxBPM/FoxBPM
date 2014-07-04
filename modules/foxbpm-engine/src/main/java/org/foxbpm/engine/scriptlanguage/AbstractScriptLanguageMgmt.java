@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.impl.datavariable.DataVariableDefinition;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
@@ -31,69 +32,77 @@ import org.foxbpm.engine.impl.mgmt.DataVariableMgmtInstance;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 public abstract class AbstractScriptLanguageMgmt {
-	
-	
-	
-	
+
+	private static String __REGEX_SIGNS = "\\$\\{[^}{]+\\}";
 	/**
 	 * 执行表达式
-	 * @param scriptText 表达式文本
+	 * 
+	 * @param scriptText
+	 *            表达式文本
 	 * @return
 	 */
 	public abstract Object execute(String scriptText);
-	
-	
-	
+
 	/**
 	 * 执行表达式,对于没有流程上下文环境的时候,执行表达式的时候需要传入流程定义。
-	 * @param scriptText 表达式文本
-	 * @param processDefinition 流程定义
+	 * 
+	 * @param scriptText
+	 *            表达式文本
+	 * @param processDefinition
+	 *            流程定义
 	 * @return
 	 */
 	public abstract Object execute(String scriptText, ProcessDefinitionEntity processDefinition);
-	
 
-
-	
 	/**
 	 * 向表达式环境中放入变量
-	 * @param variableName 变量名称
-	 * @param variableObj 变量值
+	 * 
+	 * @param variableName
+	 *            变量名称
+	 * @param variableObj
+	 *            变量值
 	 */
 	public abstract void setVariable(String variableName, Object variableObj);
-	
+
 	/**
 	 * 向表达式环境中放入变量,这个变量将是流程变量${var}
-	 * @param variableName 变量名称
-	 * @param variableObj 变量值
-	 * @param executionContext 流程上下文
+	 * 
+	 * @param variableName
+	 *            变量名称
+	 * @param variableObj
+	 *            变量值
+	 * @param executionContext
+	 *            流程上下文
 	 */
-	public abstract void setVariable(String variableName, Object variableObj,FlowNodeExecutionContext executionContext);
-	
+	public abstract void setVariable(String variableName, Object variableObj, FlowNodeExecutionContext executionContext);
+
 	/**
 	 * 获取变量值
-	 * @param variableName 变量名称
+	 * 
+	 * @param variableName
+	 *            变量名称
 	 * @return
 	 */
 	public abstract Object getVariable(String variableName);
-	
+
 	/**
 	 * 执行表达式
-	 * @param scriptText 表达式字符串
-	 * @param executionContext 流程上下文
+	 * 
+	 * @param scriptText
+	 *            表达式字符串
+	 * @param executionContext
+	 *            流程上下文
 	 * @return
 	 */
 	public abstract Object execute(String scriptText, FlowNodeExecutionContext executionContext);
-	
-	
-	
+
 	/**
 	 * 脚本管理器初始化方法
 	 */
 	public abstract AbstractScriptLanguageMgmt init();
-	
+
 	public abstract void close();
-	
+
 	public static List<String> getDataVariableList(String scriptText) {
 		String inexp = scriptText;
 		// ${test} afdfs ${test1}erewr ${test3}
@@ -109,8 +118,6 @@ public abstract class AbstractScriptLanguageMgmt {
 		}
 		return list;
 	}
-
-	private static String __REGEX_SIGNS = "\\$\\{[^}{]+\\}";
 
 	public static String getExpressionAll(String inexp) {
 		String str = null;
@@ -128,36 +135,26 @@ public abstract class AbstractScriptLanguageMgmt {
 		str = sb.toString();
 		return str;
 	}
-	
-	
-	protected void dataVariableCalculate(String scriptText, FlowNodeExecutionContext executionContext){
-		
-		
-		ProcessInstanceEntity processInstance=(ProcessInstanceEntity)executionContext.getProcessInstance();
-		
+
+	protected void dataVariableCalculate(String scriptText, FlowNodeExecutionContext executionContext) {
+
+		ProcessInstanceEntity processInstance = (ProcessInstanceEntity) executionContext.getProcessInstance();
 		DataVariableMgmtInstance dataVariableMgmtInstance = processInstance.getDataVariableMgmtInstance();
-		
-		ProcessDefinitionEntity processDefinition=(ProcessDefinitionEntity)processInstance.getProcessDefinition();
-
+		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) processInstance.getProcessDefinition();
+		List<DataVariableDefinition> dataVariableBehaviors = processDefinition.getDataVariableMgmtDefinition()
+				.getDataVariableBehaviorsByProcess();
 		List<String> dataVariableList = getDataVariableList(scriptText);
-
 		for (String expressionId : dataVariableList) {
-
 			if (dataVariableMgmtInstance.getDataVariableByExpressionId(expressionId) == null) {
-
-				List<DataVariableDefinition> dataVariableBehaviors = processDefinition.getDataVariableMgmtDefinition().getDataVariableBehaviorsByProcess();
 				for (DataVariableDefinition dataVariableBehavior : dataVariableBehaviors) {
-
-
-					if (dataVariableBehavior.getId().equals(expressionId)) {
-
-						VariableInstanceEntity dataVariableEntity = dataVariableMgmtInstance.createDataVariableInstance(dataVariableBehavior);
-						dataVariableEntity.executeExpression(executionContext);
-
-					}else{
-						if(dataVariableBehavior.getBizType()!=null&&!dataVariableBehavior.getBizType().equals("")&&dataVariableBehavior.getBizType().equals(VariableInstanceEntity.QUERY_DATA_KEY)){
-							VariableInstanceEntity dataVariableEntity = dataVariableMgmtInstance.createDataVariableInstance(dataVariableBehavior);
-							dataVariableEntity.executeExpression(executionContext);
+					if (StringUtils.equals(dataVariableBehavior.getId(), expressionId)) {
+						dataVariableMgmtInstance.createDataVariableInstance(dataVariableBehavior).executeExpression(
+								executionContext);
+					} else {
+						if (StringUtils
+								.equals(dataVariableBehavior.getBizType(), VariableInstanceEntity.QUERY_DATA_KEY)) {
+							dataVariableMgmtInstance.createDataVariableInstance(dataVariableBehavior)
+									.executeExpression(executionContext);
 						}
 					}
 
