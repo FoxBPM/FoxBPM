@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<connector:ConnectorDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:connector="http://www.foxbpm.org/connector" id="RunGroovyExpression" name="Groovy" note="执行Groovy表达式" categoryId="1cd6f11a-f0de-4f07-ac74-9219b81f62d9" icon="RunGroovyExpression.jpg">
+  <input id="expressionText" type="java.lang.String" mandatory="Mandatory" defaultValue="" isExecute="false"/>
+  <output id="outputObj" name="返回结果" type="java.lang.Object"/>
+  <page id="script" name="表达式内容" note="表达式内容">
+    <widget xsi:type="connector:Text" id="Widget_0" name="脚本表达式" inputId="expressionText">
+      <widgetExpression expressionValue=""/>
+    </widget>
+  </page>
+  <definitionImpl className="RunGroovyExpression" packageName="org.foxbpm.connector.flowconnector.RunGroovyExpression"/>
+</connector:ConnectorDefinition>
