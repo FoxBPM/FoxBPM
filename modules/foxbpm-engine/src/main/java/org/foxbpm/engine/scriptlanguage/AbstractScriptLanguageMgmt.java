@@ -34,6 +34,7 @@ import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 public abstract class AbstractScriptLanguageMgmt {
 
 	private static String __REGEX_SIGNS = "\\$\\{[^}{]+\\}";
+
 	/**
 	 * 执行表达式
 	 * 
@@ -141,20 +142,19 @@ public abstract class AbstractScriptLanguageMgmt {
 		ProcessInstanceEntity processInstance = (ProcessInstanceEntity) executionContext.getProcessInstance();
 		DataVariableMgmtInstance dataVariableMgmtInstance = processInstance.getDataVariableMgmtInstance();
 		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) processInstance.getProcessDefinition();
-		List<DataVariableDefinition> dataVariableBehaviors = processDefinition.getDataVariableMgmtDefinition()
-				.getDataVariableBehaviorsByProcess();
+		List<DataVariableDefinition> dataVariableBehaviors = null;
 		List<String> dataVariableList = getDataVariableList(scriptText);
+		if(dataVariableList != null && dataVariableList.size() > 0){
+			dataVariableBehaviors = processDefinition.getDataVariableMgmtDefinition().getDataVariableBehaviorsByProcess();
+		}
 		for (String expressionId : dataVariableList) {
 			if (dataVariableMgmtInstance.getDataVariableByExpressionId(expressionId) == null) {
 				for (DataVariableDefinition dataVariableBehavior : dataVariableBehaviors) {
 					if (StringUtils.equals(dataVariableBehavior.getId(), expressionId)) {
-						dataVariableMgmtInstance.createDataVariableInstance(dataVariableBehavior).executeExpression(
-								executionContext);
+						dataVariableMgmtInstance.createDataVariableInstance(dataVariableBehavior).executeExpression(executionContext);
 					} else {
-						if (StringUtils
-								.equals(dataVariableBehavior.getBizType(), VariableInstanceEntity.QUERY_DATA_KEY)) {
-							dataVariableMgmtInstance.createDataVariableInstance(dataVariableBehavior)
-									.executeExpression(executionContext);
+						if (StringUtils.equals(dataVariableBehavior.getBizType(), VariableInstanceEntity.QUERY_DATA_KEY)) {
+							dataVariableMgmtInstance.createDataVariableInstance(dataVariableBehavior).executeExpression(executionContext);
 						}
 					}
 
