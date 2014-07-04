@@ -6,7 +6,7 @@
         <foxbpm:taskCommand id="HandleCommand_1" name="同意" commandType="general" isVerification="false" isSaveData="false" isSimulationRun="false"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="流程状态" commandType="processStatus" isVerification="false" isSaveData="false" isSimulationRun="false"/>
       </bpmn2:extensionElements>
-      <bpmn2:potentialOwner id="PotentialOwner_1">
+      <bpmn2:potentialOwner>
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="d13fa99a-db54-4231-b6f5-87d77f6fc248" connectorInstanceName="所有人" errorHandling="" type="actorconnector">
