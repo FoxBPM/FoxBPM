@@ -17,11 +17,11 @@
  */
 package org.foxbpm.engine.impl.connector;
 
-
 public class ConnectorOutputParam {
-	
+
 	protected String outputId;
-	
+	protected String variableTarget;
+
 	public String getOutputId() {
 		return outputId;
 	}
@@ -30,9 +30,6 @@ public class ConnectorOutputParam {
 		this.outputId = outputId;
 	}
 
-	protected String variableTarget;
-
-
 	public String getVariableTarget() {
 		return variableTarget;
 	}
@@ -40,6 +37,5 @@ public class ConnectorOutputParam {
 	public void setVariableTarget(String variableTarget) {
 		this.variableTarget = variableTarget;
 	}
-
 
 }

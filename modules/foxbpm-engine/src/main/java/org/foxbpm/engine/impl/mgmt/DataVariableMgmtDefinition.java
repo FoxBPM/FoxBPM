@@ -25,26 +25,14 @@ import org.foxbpm.engine.impl.datavariable.DataVariableDefinition;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 
 public class DataVariableMgmtDefinition implements Serializable {
-	
-
-	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-
-
-
-	protected List<DataVariableDefinition> dataVariableDefinitions=new ArrayList<DataVariableDefinition>();
-	
-	
-	
-
+	protected List<DataVariableDefinition> dataVariableDefinitions = new ArrayList<DataVariableDefinition>();
 	protected KernelProcessDefinitionImpl processDefinition;
-
-	public DataVariableMgmtDefinition(KernelProcessDefinitionImpl processDefinition){
-		this.processDefinition=processDefinition;
+	public DataVariableMgmtDefinition(KernelProcessDefinitionImpl processDefinition) {
+		this.processDefinition = processDefinition;
 	}
 
 	public KernelProcessDefinitionImpl getProcessDefinition() {
@@ -54,44 +42,46 @@ public class DataVariableMgmtDefinition implements Serializable {
 	public void addDataVariableDefinition(DataVariableDefinition dataVariableDefinition) {
 		this.dataVariableDefinitions.add(dataVariableDefinition);
 	}
-	
+
 	/**
 	 * 获取流程定义的全局变量
+	 * 
 	 * @return
 	 */
-	public List<DataVariableDefinition> getDataVariableDefinitions(){
+	public List<DataVariableDefinition> getDataVariableDefinitions() {
 		return dataVariableDefinitions;
 	}
-	
+
 	/**
 	 * 获取流程定义的全局变量
+	 * 
 	 * @return
 	 */
-	public List<DataVariableDefinition> getDataVariableBehaviorsByProcess(){
-		List<DataVariableDefinition> dataVariableBehaviorsTemp=new ArrayList<DataVariableDefinition>();
+	public List<DataVariableDefinition> getDataVariableBehaviorsByProcess() {
+		List<DataVariableDefinition> dataVariableBehaviorsTemp = new ArrayList<DataVariableDefinition>();
 		for (DataVariableDefinition dataVariableBehavior : this.dataVariableDefinitions) {
-			if(dataVariableBehavior.isPubilc()){
+			if (dataVariableBehavior.isPubilc()) {
 				dataVariableBehaviorsTemp.add(dataVariableBehavior);
 			}
 		}
 		return dataVariableBehaviorsTemp;
 	}
-	
+
 	/**
 	 * 获取指定节点的数据变量
-	 * @param nodeId 节点编号
+	 * 
+	 * @param nodeId
+	 *            节点编号
 	 * @return
 	 */
-	public List<DataVariableDefinition> getDataVariableBehaviorsByNodeId(String nodeId){
-		List<DataVariableDefinition> dataVariableDefinitionsTemp=new ArrayList<DataVariableDefinition>();
+	public List<DataVariableDefinition> getDataVariableBehaviorsByNodeId(String nodeId) {
+		List<DataVariableDefinition> dataVariableDefinitionsTemp = new ArrayList<DataVariableDefinition>();
 		for (DataVariableDefinition dataVariableDefinition : this.dataVariableDefinitions) {
-			if(dataVariableDefinition.getNodeId().equals(nodeId)){
+			if (dataVariableDefinition.getNodeId().equals(nodeId)) {
 				dataVariableDefinitionsTemp.add(dataVariableDefinition);
 			}
 		}
 		return dataVariableDefinitionsTemp;
 	}
-
-	
 
 }

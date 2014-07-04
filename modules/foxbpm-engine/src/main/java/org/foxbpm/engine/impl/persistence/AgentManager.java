@@ -22,6 +22,7 @@ import java.util.List;
 import org.foxbpm.engine.impl.agent.AgentDetailsEntity;
 import org.foxbpm.engine.impl.agent.AgentEntity;
 import org.foxbpm.engine.impl.agent.AgentTo;
+import org.foxbpm.engine.sqlsession.ISqlSession;
 
 /**
  * 代理信息的实体管理器 处理包含代理信息和代理明细信息
@@ -38,8 +39,9 @@ public class AgentManager extends AbstractManager {
 
 	public void saveAgentEntity(AgentEntity agentEntity) {
 		insert(agentEntity);
-		if (agentEntity.getAgentDetails() != null) {
-			for (AgentDetailsEntity agentDetails : agentEntity.getAgentDetails()) {
+		List<AgentDetailsEntity> agentDetailList = agentEntity.getAgentDetails();
+		if (agentDetailList != null) {
+			for (AgentDetailsEntity agentDetails : agentDetailList) {
 				if (agentDetails.getAgentId() == null) {
 					agentDetails.setAgentId(agentEntity.getId());
 				}
@@ -53,8 +55,9 @@ public class AgentManager extends AbstractManager {
 	}
 
 	public void deleteAgentById(String agentId) {
-		getSqlSession().delete("deleteAgentById", agentId);
-		getSqlSession().delete("deleteAgentDetailsByAgentId", agentId);
+		ISqlSession sqlSession = getSqlSession();
+		sqlSession.delete("deleteAgentById", agentId);
+		sqlSession.delete("deleteAgentDetailsByAgentId", agentId);
 	}
 
 	public void deleteAgentDetailsById(String agentDetailsId) {
@@ -69,10 +72,11 @@ public class AgentManager extends AbstractManager {
 	 * @return 返回代理实体
 	 */
 	public AgentEntity queryAgentEntity(String agentUser) {
-		AgentEntity agentEntity = (AgentEntity) getSqlSession().selectOne("selectAgentByAgentUser", agentUser);
+		ISqlSession sqlSession = getSqlSession();
+		AgentEntity agentEntity = (AgentEntity) sqlSession.selectOne("selectAgentByAgentUser", agentUser);
 		if (null != agentEntity) {
 			@SuppressWarnings("unchecked")
-			List<AgentDetailsEntity> agentDetails = (List<AgentDetailsEntity>) getSqlSession().selectListWithRawParameter("selectAgentDetailById", agentEntity.getId());
+			List<AgentDetailsEntity> agentDetails = (List<AgentDetailsEntity>) sqlSession.selectListWithRawParameter("selectAgentDetailById", agentEntity.getId());
 			if (null != agentDetails && !agentDetails.isEmpty()) {
 				agentEntity.getAgentDetails().addAll(agentDetails);
 			}

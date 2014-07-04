@@ -22,26 +22,12 @@ import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.task.DelegateTask;
 
 public abstract class ActorConnectorHandler implements FlowConnectorHandler {
-
-	
-	
-	
-	
-	public void execute(ConnectorExecutionContext executionContext) throws Exception {
-
-		assign(((TokenEntity)executionContext).getAssignTask());
-		
-		
-	}
-
-	public abstract void assign(DelegateTask task)  throws Exception;
-	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	
-	
-
+	public void execute(ConnectorExecutionContext executionContext) throws Exception {
+		assign(((TokenEntity) executionContext).getAssignTask());
+	}
+	public abstract void assign(DelegateTask task) throws Exception;
 }

@@ -46,7 +46,11 @@ import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
  * @author kenshin
  * 
  */
-public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements ProcessInstance, PersistentObject, HasRevision {
+public class ProcessInstanceEntity extends KernelProcessInstanceImpl
+		implements
+			ProcessInstance,
+			PersistentObject,
+			HasRevision {
 
 	private static final long serialVersionUID = 1L;
 
@@ -138,13 +142,13 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	public void start() {
 		this.setInstanceStatus(ProcessInstanceStatus.RUNNING);
 		this.setStartTime(ClockUtil.getCurrentTime());
-		
-		ProcessDefinitionEntity processDefinitionEntity=(ProcessDefinitionEntity)getProcessDefinition();
-		if(processDefinitionEntity.getSubject()!=null){
-			this.setSubject(StringUtil.getString(processDefinitionEntity.getSubject().getValue(getRootToken())));
+
+		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) getProcessDefinition();
+		if (processDefinitionEntity.getSubject() != null) {
+			this.setSubject(StringUtil.getString(processDefinitionEntity.getSubject().getValue(
+					getRootToken())));
 		}
-		
-		
+
 		super.start();
 	}
 
@@ -174,10 +178,11 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	protected void ensureTasksInitialized() {
 		if (tasks == null) {
-			tasks = (List) Context.getCommandContext().getTaskManager().findTasksByProcessInstanceId(id);
+			tasks = (List) Context.getCommandContext().getTaskManager()
+					.findTasksByProcessInstanceId(id);
 		}
 	}
 
@@ -202,7 +207,8 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	public void ensureParentProcessInstanceTokenInitialized() {
 
 		if (parentProcessInstanceToken == null && parentTokenId != null) {
-			TokenEntity token = Context.getCommandContext().getTokenManager().findTokenById(parentTokenId);
+			TokenEntity token = Context.getCommandContext().getTokenManager()
+					.findTokenById(parentTokenId);
 			setParentProcessInstanceToken(token);
 		}
 
@@ -211,8 +217,8 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	@Override
 	protected void ensureParentProcessInstanceInitialized() {
 		if (parentProcessInstance == null && parentId != null) {
-			ProcessInstanceEntity parentProcessInstance = Context.getCommandContext().getProcessInstanceManager()
-					.findProcessInstanceById(parentId);
+			ProcessInstanceEntity parentProcessInstance = Context.getCommandContext()
+					.getProcessInstanceManager().findProcessInstanceById(parentId);
 			setParentProcessInstance(parentProcessInstance);
 		}
 	}
@@ -220,7 +226,8 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	@Override
 	public void ensureRootTokenInitialized() {
 		if (rootToken == null && rootTokenId != null) {
-			TokenEntity token = Context.getCommandContext().getTokenManager().findTokenById(rootTokenId);
+			TokenEntity token = Context.getCommandContext().getTokenManager()
+					.findTokenById(rootTokenId);
 			setRootToken(token);
 		}
 	}
@@ -228,24 +235,27 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	@Override
 	public void ensureProcessDefinitionInitialized() {
 		if ((processDefinition == null) && (processDefinitionId != null)) {
-			ProcessDefinitionEntity deployedProcessDefinition = Context.getProcessEngineConfiguration().getDeploymentManager()
+			ProcessDefinitionEntity deployedProcessDefinition = Context
+					.getProcessEngineConfiguration().getDeploymentManager()
 					.findDeployedProcessDefinitionById(processDefinitionId);
 			setProcessDefinition(deployedProcessDefinition);
 		}
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Override
 	protected void ensureTokensInitialized() {
 		if (tokens == null) {
-			this.tokens = (List) Context.getCommandContext().getTokenManager().findChildTokensByProcessInstanceId(id);
+			this.tokens = (List) Context.getCommandContext().getTokenManager()
+					.findChildTokensByProcessInstanceId(id);
 		}
 	}
 
 	@Override
 	public void setParentProcessInstance(KernelProcessInstanceImpl parentProcessInstance) {
-		this.parentProcessInstance = (ProcessInstanceEntity) parentProcessInstance;
-		this.parentId = ((ProcessInstanceEntity) parentProcessInstance).getParentId();
+		ProcessInstanceEntity processInstanceEntity = ((ProcessInstanceEntity) parentProcessInstance);
+		this.parentProcessInstance = processInstanceEntity;
+		this.parentId = processInstanceEntity.getParentId();
 	}
 
 	@Override
@@ -433,7 +443,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	}
 
 	public Map<String, Object> getPersistentState() {
-		Map<String,Object> mapPersistentState = new HashMap<String, Object>();
+		Map<String, Object> mapPersistentState = new HashMap<String, Object>();
 		mapPersistentState.put("id", id);
 		mapPersistentState.put("subject", subject);
 		mapPersistentState.put("processDefinitionKey", processDefinitionKey);
@@ -465,24 +475,22 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	}
 
 	public boolean isEnd() {
-		
-		return endTime!=null;
+
+		return endTime != null;
 	}
 
 	@Override
 	public void end() {
-		endTime=ClockUtil.getCurrentTime();
+		endTime = ClockUtil.getCurrentTime();
 		super.end();
 	}
 
 	public String getProcessDefinitionName() {
 		ensureProcessDefinitionInitialized();
-		if(processDefinition!=null){
+		if (processDefinition != null) {
 			return processDefinition.getName();
 		}
 		return null;
 	}
-	
-	
 
 }
