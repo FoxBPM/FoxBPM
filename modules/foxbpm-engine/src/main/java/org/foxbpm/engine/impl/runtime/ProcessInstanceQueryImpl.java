@@ -31,13 +31,16 @@ import org.foxbpm.engine.runtime.ProcessInstanceQuery;
 
 /**
  * 流程实例查询实现
+ * 
  * @author kenshin
- *
+ * 
  */
-public class ProcessInstanceQueryImpl  extends AbstractQuery<ProcessInstanceQuery, ProcessInstance> implements ProcessInstanceQuery {
-	
+public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery, ProcessInstance>
+		implements
+			ProcessInstanceQuery {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	protected String processInstanceId;
 	protected String businessKey;
 	protected String businessKeyLike;
@@ -47,7 +50,7 @@ public class ProcessInstanceQueryImpl  extends AbstractQuery<ProcessInstanceQuer
 	protected String taskParticipants;
 	protected Date updateTime;
 	protected String isSuspended;
-	protected List<String> processDefinitionKeyList=new ArrayList<String>();
+	protected List<String> processDefinitionKeyList = new ArrayList<String>();
 	protected String status;
 	protected String processDefinitionName;
 	protected String processDefinitionNameLike;
@@ -63,9 +66,14 @@ public class ProcessInstanceQueryImpl  extends AbstractQuery<ProcessInstanceQuer
 	protected Date endTimeAfter;
 
 	protected CommandExecutor commandExecutor;
-	
+
+	/* 变量查询 */
+	protected String processInstanceVariableKey;
+	protected String processInstanceVariableValue;
+	protected boolean processInstanceVariableValueIsLike;
+
 	public ProcessInstanceQueryImpl() {
-		
+
 	}
 
 	public ProcessInstanceQueryImpl(CommandContext commandContext) {
@@ -91,9 +99,7 @@ public class ProcessInstanceQueryImpl  extends AbstractQuery<ProcessInstanceQuer
 		this.businessKey = businessKey;
 		return this;
 	}
-	
-	
-	
+
 	public ProcessInstanceQuery processInstanceBusinessKeyLike(String businessKey) {
 		if (businessKey == null) {
 			throw new FoxBPMIllegalArgumentException("Business key is null");
@@ -109,30 +115,26 @@ public class ProcessInstanceQueryImpl  extends AbstractQuery<ProcessInstanceQuer
 		this.processDefinitionId = processDefinitionId;
 		return this;
 	}
-	
+
 	public ProcessInstanceQueryImpl taskParticipants(String taskParticipants) {
-		this.taskParticipants=taskParticipants;
+		this.taskParticipants = taskParticipants;
 		return this;
 	}
-	
-	
+
 	public ProcessInstanceQueryImpl initiator(String initiator) {
-		this.initiator=initiator;
+		this.initiator = initiator;
 		return this;
 	}
-	
-	
-	
+
 	public ProcessInstanceQuery isEnd() {
 		isEnd = " not null";
 		return this;
 	}
 
 	public ProcessInstanceQuery notEnd() {
-		isEnd= " null";
+		isEnd = " null";
 		return this;
 	}
-
 
 	public ProcessInstanceQueryImpl processDefinitionKey(String processDefinitionKey) {
 		if (processDefinitionKey == null) {
@@ -141,12 +143,11 @@ public class ProcessInstanceQueryImpl  extends AbstractQuery<ProcessInstanceQuer
 		this.processDefinitionKey = processDefinitionKey;
 		return this;
 	}
-	
+
 	public ProcessInstanceQuery processDefinitionKey(List<String> processDefinitionKeyList) {
-		if(processDefinitionKeyList!=null&&processDefinitionKeyList.size()>0){
-			this.processDefinitionKeyList=processDefinitionKeyList;
-		}
-		else{
+		if (processDefinitionKeyList != null && processDefinitionKeyList.size() > 0) {
+			this.processDefinitionKeyList = processDefinitionKeyList;
+		} else {
 			throw new FoxBPMIllegalArgumentException("processDefinitionKeyList is null!");
 		}
 		return this;
@@ -156,12 +157,11 @@ public class ProcessInstanceQueryImpl  extends AbstractQuery<ProcessInstanceQuer
 		this.orderProperty = ProcessInstanceQueryProperty.PROCESS_INSTANCE_ID;
 		return this;
 	}
-	
+
 	public ProcessInstanceQuery orderByStartTime() {
 		this.orderProperty = ProcessInstanceQueryProperty.START_TIME;
 		return this;
 	}
-	
 
 	public ProcessInstanceQuery orderByProcessDefinitionId() {
 		this.orderProperty = ProcessInstanceQueryProperty.PROCESS_DEFINITION_ID;
@@ -172,22 +172,22 @@ public class ProcessInstanceQueryImpl  extends AbstractQuery<ProcessInstanceQuer
 		this.orderProperty = ProcessInstanceQueryProperty.PROCESS_DEFINITION_KEY;
 		return this;
 	}
-	//按更新时间排序--by ych 2013-07-23
+	// 按更新时间排序--by ych 2013-07-23
 	public ProcessInstanceQuery orderByUpdateTime() {
 		this.orderProperty = ProcessInstanceQueryProperty.UPDATE_TIME;
 		return this;
 	}
-	
+
 	public ProcessInstanceQuery processInstanceStatus(String status) {
 		this.status = status;
 		return this;
 	}
-	
+
 	public ProcessInstanceQuery processDefinitionName(String definitionName) {
 		this.processDefinitionName = definitionName;
 		return this;
 	}
-	
+
 	public ProcessInstanceQuery processDefinitionNameLike(String definitionNameLike) {
 		this.processDefinitionNameLike = definitionNameLike;
 		return this;
@@ -201,11 +201,11 @@ public class ProcessInstanceQueryImpl  extends AbstractQuery<ProcessInstanceQuer
 		return commandContext.getProcessInstanceManager().findProcessInstanceCountByQueryCriteria(this);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	public List<ProcessInstance> executeList(CommandContext commandContext) {
 		checkQueryOk();
 		// ensureVariablesInitialized();
-		return (List)commandContext.getProcessInstanceManager().findProcessInstanceByQueryCriteria(this);
+		return (List) commandContext.getProcessInstanceManager().findProcessInstanceByQueryCriteria(this);
 	}
 
 	// getters /////////////////////////////////////////////////////////////////
@@ -221,7 +221,7 @@ public class ProcessInstanceQueryImpl  extends AbstractQuery<ProcessInstanceQuer
 	public String getBusinessKey() {
 		return businessKey;
 	}
-	
+
 	public String getBusinessKeyLike() {
 		return businessKeyLike;
 	}
@@ -237,7 +237,7 @@ public class ProcessInstanceQueryImpl  extends AbstractQuery<ProcessInstanceQuer
 	public String getProcessDefinitionName() {
 		return processDefinitionName;
 	}
-	
+
 	public String getProcessDefinitionNameLike() {
 		return processDefinitionNameLike;
 	}
@@ -245,15 +245,15 @@ public class ProcessInstanceQueryImpl  extends AbstractQuery<ProcessInstanceQuer
 	public String getInitiator() {
 		return initiator;
 	}
-	
+
 	public String getTaskParticipants() {
 		return taskParticipants;
 	}
-	
+
 	public String getStatus() {
 		return status;
 	}
-	
+
 	public Date getEndTime() {
 		return endTime;
 	}
@@ -267,50 +267,50 @@ public class ProcessInstanceQueryImpl  extends AbstractQuery<ProcessInstanceQuer
 	}
 
 	public ProcessInstanceQuery initiatorLike(String initiatorLike) {
-		this.initiatorLike=initiatorLike;
+		this.initiatorLike = initiatorLike;
 		return this;
 	}
 
 	public ProcessInstanceQuery subject(String subject) {
-		this.subject=subject;
+		this.subject = subject;
 		return this;
 	}
 
 	public ProcessInstanceQuery subjectLike(String subjectLike) {
-		this.subjectLike=subjectLike;
+		this.subjectLike = subjectLike;
 		return this;
 	}
 
 	public ProcessInstanceQuery startTimeOn(Date startTime) {
-		this.startTime=startTime;
+		this.startTime = startTime;
 		return this;
 	}
 
 	public ProcessInstanceQuery startTimeBefore(Date startTimeBefore) {
-		this.startTimeBefore=startTimeBefore;
+		this.startTimeBefore = startTimeBefore;
 		return this;
 	}
 
 	public ProcessInstanceQuery startTimeAfter(Date startTimeAfter) {
-		this.startTimeAfter=startTimeAfter;
+		this.startTimeAfter = startTimeAfter;
 		return this;
 	}
-	
+
 	public ProcessInstanceQuery endTimeOn(Date endTime) {
 		this.endTime = endTime;
 		return this;
 	}
-	
+
 	public ProcessInstanceQuery endTimeBefore(Date endTimeBefore) {
 		this.endTimeBefore = endTimeBefore;
 		return this;
 	}
-	
+
 	public ProcessInstanceQuery endTimeAfter(Date endTimeAfter) {
 		this.endTimeAfter = endTimeAfter;
 		return this;
 	}
-	
+
 	public Date getUpdateTime() {
 		return updateTime;
 	}
@@ -346,36 +346,27 @@ public class ProcessInstanceQueryImpl  extends AbstractQuery<ProcessInstanceQuer
 	public String getIsEnd() {
 		return isEnd;
 	}
-	
+
 	public String getIsSuspended() {
 		return isSuspended;
 	}
 
-	
 	public List<String> getProcessDefinitionKeyList() {
 		return processDefinitionKeyList;
 	}
-
-	/* 变量查询 */
-	protected String processInstanceVariableKey;
-	protected String processInstanceVariableValue;
-	protected boolean processInstanceVariableValueIsLike;
-
 	public ProcessInstanceQuery processInstanceVariableData(String variableValue, boolean isLike) {
-		this.processInstanceVariableValue=variableValue;
-		this.processInstanceVariableValueIsLike=isLike;
+		this.processInstanceVariableValue = variableValue;
+		this.processInstanceVariableValueIsLike = isLike;
 		return this;
 	}
 
 	public ProcessInstanceQuery processInstanceVariableData(String variableKey, String variableValue, boolean isLike) {
-		this.processInstanceVariableValue=variableValue;
-		this.processInstanceVariableValueIsLike=isLike;
-		this.processInstanceVariableKey=variableKey;
+		this.processInstanceVariableValue = variableValue;
+		this.processInstanceVariableValueIsLike = isLike;
+		this.processInstanceVariableKey = variableKey;
 		return this;
 	}
 
-
-	
 	public String getProcessInstanceVariableKey() {
 		return processInstanceVariableKey;
 	}
