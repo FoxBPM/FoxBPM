@@ -10,4 +10,13 @@
   <node id="4edf6340-fe6e-437d-aa96-9d40b52bd56e" name="WebServices" ico="category.png">
     <menuConnector id="WebServiceCall" name="执行一个Web服务" note="执行一个Web服务" ico="WebServiceCall.png"/>
   </node>
+  <node id="1cd6f11a-f0de-4f07-ac74-9219b81f62d9" name="Script" ico="founderico.jpg">
+    <menuConnector id="RunGroovyExpression" name="Groovy" note="执行Groovy表达式" ico="RunGroovyExpression.jpg"/>
+  </node>
+  <node id="17c6836d-e95f-4341-adfb-3cdbb8f62421" name="Database" ico="category.png">
+    <node id="67db3acf-5965-43e8-bfd8-91e276eb0901" name="Generic" ico="category.png">
+      <menuConnector id="DatasourceDatabaseQuery" name="通过Datasource方式执行sql语句" note="执行sql语句返回数据集" ico="DatasourceDatabaseQuery.png"/>
+      <menuConnector id="JDBCDatabaseQuery" name="通过JDBC方式执行sql语句" note="执行sql语句返回数据集" ico="JDBCDatabaseQuery.png"/>
+    </node>
+  </node>
 </connectormenu:Menu>
