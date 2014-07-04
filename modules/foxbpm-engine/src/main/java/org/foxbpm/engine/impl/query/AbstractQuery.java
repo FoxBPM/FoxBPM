@@ -34,11 +34,13 @@ import org.foxbpm.engine.query.QueryProperty;
 /**
  * Abstract superclass for all query types.
  * 
- * @author 
+ * @author
  */
-public abstract class AbstractQuery<T extends Query<?, ?>, U> extends
-		ListQueryParameterObject implements Command<Object>, Query<T, U>,
-		Serializable {
+public abstract class AbstractQuery<T extends Query<?, ?>, U> extends ListQueryParameterObject
+		implements
+			Command<Object>,
+			Query<T, U>,
+			Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -73,7 +75,7 @@ public abstract class AbstractQuery<T extends Query<?, ?>, U> extends
 		this.commandExecutor = commandExecutor;
 		return this;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public T orderBy(QueryProperty property) {
 		this.orderProperty = property;
@@ -134,17 +136,16 @@ public abstract class AbstractQuery<T extends Query<?, ?>, U> extends
 		}
 		return executeList(Context.getCommandContext());
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<U> listPagination(int pageNum, int rowNum) {
-		this.firstResult = pageNum*rowNum-rowNum;
+		this.firstResult = pageNum * rowNum - rowNum;
 		this.maxResults = rowNum;
 		this.resultType = ResultType.LIST_PAGE;
 		if (commandExecutor != null) {
-			List<U> returnList=(List<U>) commandExecutor.execute(this);
-			if(returnList==null)
-			{
-				returnList=new ArrayList<U>();
+			List<U> returnList = (List<U>) commandExecutor.execute(this);
+			if (returnList == null) {
+				returnList = new ArrayList<U>();
 			}
 			return returnList;
 		}
@@ -160,12 +161,10 @@ public abstract class AbstractQuery<T extends Query<?, ?>, U> extends
 	}
 
 	public Object execute(CommandContext commandContext) {
-		if (resultType == ResultType.LIST) {
+		if (resultType == ResultType.LIST || resultType == ResultType.LIST_PAGE) {
 			return executeList(commandContext);
 		} else if (resultType == ResultType.SINGLE_RESULT) {
 			return executeSingleResult(commandContext);
-		} else if (resultType == ResultType.LIST_PAGE) {
-			return executeList(commandContext);
 		} else {
 			return executeCount(commandContext);
 		}
@@ -187,21 +186,21 @@ public abstract class AbstractQuery<T extends Query<?, ?>, U> extends
 		if (results.size() == 1) {
 			return results.get(0);
 		} else if (results.size() > 1) {
-			throw new FoxBPMException("Query return " + results.size() + " results instead of max 1");
+			throw new FoxBPMException("Query return " + results.size()
+					+ " results instead of max 1");
 		}
 		return null;
 	}
 
-	protected void addOrder(String column, String sortOrder) {
-		if (orderBy == null) {
-			orderBy = "";
-		} else {
-			orderBy = orderBy + ", ";
-		}
-		orderBy = orderBy + column + " " + sortOrder;
-	}
-
 	public String getOrderBy() {
 		return orderBy;
+	}
+
+	protected void addOrder(String column, String sortOrder) {
+		if (orderBy == null) {
+			orderBy = column + " " + sortOrder;
+		} else {
+			orderBy = orderBy + ", " + column + " " + sortOrder;
+		}
 	}
 }
