@@ -33,9 +33,9 @@ public class ResourceEntity implements Serializable, PersistentObject {
 	protected byte[] bytes;
 	protected String deploymentId;
 	protected boolean generated = false;
-	//数据库中不存储，
+	// 数据库中不存储，
 	private int version = -1;
-	
+
 	public ResourceEntity() {
 		this.id = GuidUtil.CreateGuid();
 	}
@@ -73,12 +73,12 @@ public class ResourceEntity implements Serializable, PersistentObject {
 	}
 
 	public Map<String, Object> getPersistentState() {
-		Map<String,Object> mapState = new HashMap<String,Object>();
+		Map<String, Object> mapState = new HashMap<String, Object>();
 		mapState.put("id", this.id);
-		mapState.put("deploymentId",this.deploymentId);
+		mapState.put("deploymentId", this.deploymentId);
 		mapState.put("bytes", this.bytes);
 		return mapState;
-	} 
+	}
 
 	public void setGenerated(boolean generated) {
 		this.generated = generated;
@@ -91,14 +91,7 @@ public class ResourceEntity implements Serializable, PersistentObject {
 	public boolean isGenerated() {
 		return generated;
 	}
-
 	// common methods //////////////////////////////////////////////////////////
-
-	@Override
-	public String toString() {
-		return "ResourceEntity[id=" + id + ", name=" + name + "]";
-	}
-
 	public boolean isModified() {
 		// TODO Auto-generated method stub
 		return false;
@@ -111,5 +104,9 @@ public class ResourceEntity implements Serializable, PersistentObject {
 	public void setVersion(int version) {
 		this.version = version;
 	}
-
+	@Override
+	public String toString() {
+		return new StringBuffer("ResourceEntity[id=").append(id).append(", name=").append(name)
+				.append("]").toString();
+	}
 }
