@@ -21,15 +21,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.impl.datavariable.DataVariableDefinition;
 import org.foxbpm.engine.impl.entity.VariableInstanceEntity;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
 
-
-
-
 public class DataVariableMgmtInstance implements Serializable {
-	
 
 	/**
 	 * 
@@ -37,56 +34,46 @@ public class DataVariableMgmtInstance implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	protected DataVariableMgmtDefinition dataVariableMgmtDefinition;
-	
 	protected KernelProcessInstanceImpl processInstance;
-	
-	public DataVariableMgmtInstance(KernelProcessInstanceImpl processInstance){		
-		this.processInstance=processInstance;	
+	protected List<VariableInstanceEntity> variableInstanceEntities = new ArrayList<VariableInstanceEntity>();
+
+	public DataVariableMgmtInstance(KernelProcessInstanceImpl processInstance) {
+		this.processInstance = processInstance;
 	}
 
-
-	
-	
-	protected List<VariableInstanceEntity> variableInstanceEntities=new ArrayList<VariableInstanceEntity>();
-	
 	public List<VariableInstanceEntity> getDataVariableEntities() {
 		return variableInstanceEntities;
 	}
-	
-	
-	public VariableInstanceEntity getDataVariableById(String id){
-		
+
+	public VariableInstanceEntity getDataVariableById(String id) {
 		for (VariableInstanceEntity dataVariableInstance : variableInstanceEntities) {
-			if(dataVariableInstance.getId().equals(id)){
+			if (StringUtils.equals(dataVariableInstance.getId(), id)) {
 				return dataVariableInstance;
 			}
 		}
 		return null;
-		
+
 	}
-	
-	public VariableInstanceEntity getDataVariableByExpressionId(String expressionId){
+
+	public VariableInstanceEntity getDataVariableByExpressionId(String expressionId) {
 		for (VariableInstanceEntity dataVariableInstance : variableInstanceEntities) {
-			if(dataVariableInstance.getId().equals(expressionId)){
+			if (StringUtils.equals(dataVariableInstance.getId(), expressionId)) {
 				return dataVariableInstance;
 			}
 		}
 		return null;
 	}
 
-
-	public VariableInstanceEntity createDataVariableInstance(DataVariableDefinition dataVariableDefinition){
-		VariableInstanceEntity dataVariableInstance=new VariableInstanceEntity(dataVariableDefinition,this);
+	public VariableInstanceEntity createDataVariableInstance(
+			DataVariableDefinition dataVariableDefinition) {
+		VariableInstanceEntity dataVariableInstance = new VariableInstanceEntity(
+				dataVariableDefinition, this);
 		variableInstanceEntities.add(dataVariableInstance);
 		return dataVariableInstance;
 	}
-	
 
 	public KernelProcessInstanceImpl getProcessInstance() {
 		return processInstance;
 	}
 
-
-
-	
 }
