@@ -62,7 +62,9 @@ public class GatewaySVGBuilder extends AbstractSVGBuilder {
 		this.tempX = x;
 		this.tempY = y;
 		// 设置整体坐标，包括子类型
-		this.svgVo.getgVo().setTransform("translate(" + tempX + ", " + tempY + ")");
+		this.svgVo.getgVo().setTransform(
+				new StringBuffer(TRANSLANT_PREFIX).append(tempX).append(COMMA).append(tempY)
+						.append(BRACKET_SUFFIX).toString());
 
 		// 设置文本坐标
 		String elementValue = textVO.getElementValue();
@@ -79,7 +81,6 @@ public class GatewaySVGBuilder extends AbstractSVGBuilder {
 		}
 
 	}
-
 	@Override
 	public void setStroke(String stroke) {
 		if (StringUtils.isBlank(stroke)) {

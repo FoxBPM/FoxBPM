@@ -71,22 +71,18 @@ public class LanesetSVGBuilder extends AbstractSVGBuilder {
 		// 设置文本坐标
 		float textX = 0;
 		float textY = 0;
-		int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
-				this.textVO.getElementValue());
+		int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(), this.textVO.getElementValue());
 		if (herizonFlag) {
 			// 水平泳道文本需要旋转
 			textX = this.rectVO.getX() + 10.0f;
-			textY = this.rectVO.getY() + this.rectVO.getHeight() / 2
-					+ textWidth / 2;
-			this.textVO.setTransform("rotate(180 " + textX + "," + textY + ")");
+			textY = this.rectVO.getY() + this.rectVO.getHeight() / 2 + textWidth / 2;
+			this.textVO.setTransform("rotate(180 " + textX + COMMA + textY + BRACKET_SUFFIX);
 			StringBuffer styleBuffer = new StringBuffer(this.textVO.getStyle());
-			this.textVO.setStyle(styleBuffer.append(";writing-mode: tb;")
-					.toString());
+			this.textVO.setStyle(styleBuffer.append(";writing-mode: tb;").toString());
 
 		} else {
 			// 垂直泳道 文本不需要旋转
-			textX = this.rectVO.getX() + this.rectVO.getWidth() / 2 - textWidth
-					/ 2;
+			textX = this.rectVO.getX() + this.rectVO.getWidth() / 2 - textWidth / 2;
 			textY = this.rectVO.getY() + 10.0f;
 		}
 		this.textVO.setX(textX);
@@ -116,21 +112,21 @@ public class LanesetSVGBuilder extends AbstractSVGBuilder {
 		float x1 = this.rectVO.getX();
 		float x2 = x1;
 		float y1 = this.rectVO.getY();
-		float y2 = this.rectVO.getY() + this.rectVO.getHeight();
+		float y2 = y1 + this.rectVO.getHeight();
 		this.buildLinearGradient(fill, rectVO, x1, x2, y1, y2);
 
 	}
 
 	public void setTextFont(String fontStr) {
 		if (StringUtils.isBlank(fontStr)) {
-			Font font = new Font("arial", Font.CENTER_BASELINE, 11);
+			Font font = new Font(ARIAL, Font.CENTER_BASELINE, 11);
 			this.textVO.setFont(font);
 			return;
 		}
-		String[] fonts = fontStr.split(",");
+		String[] fonts = fontStr.split(COMMA);
 		StringBuffer styleBuffer = new StringBuffer();
-		String style = styleBuffer.append("font-family:").append(fonts[0])
-				.append(";font-size:").append(fonts[1]).toString();
+		String style = styleBuffer.append("font-family:").append(fonts[0]).append(";font-size:")
+				.append(fonts[1]).toString();
 		Font font = new Font(fonts[0], Font.PLAIN, Integer.valueOf(fonts[1]));
 		this.textVO.setFont(font);
 		this.textVO.setStyle(style);

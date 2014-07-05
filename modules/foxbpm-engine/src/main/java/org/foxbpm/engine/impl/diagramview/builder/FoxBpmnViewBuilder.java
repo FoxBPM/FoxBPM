@@ -33,6 +33,15 @@ public interface FoxBpmnViewBuilder {
 	public static final String STROKE_DEFAULT = "black";
 	public static final String STROKEWIDTH_DEFAULT = "1";
 	public static final int LINEARGRADIENT_INDEX = 0;
+	public static final String COMMA = ",";
+	public static final String BACK_GROUND_PREFIX = "url(#";
+	public static final String BACK_GROUND_SUFFIX = ") #";
+	
+	public static final String BRACKET_SUFFIX = ")";
+	public static final String TRANSLANT_PREFIX = "translate(";
+	public static final String ARIAL = "arial";
+	
+	
 
 	/**
 	 * 设置节点信息

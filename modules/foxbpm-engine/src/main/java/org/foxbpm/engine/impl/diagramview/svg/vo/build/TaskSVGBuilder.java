@@ -94,7 +94,9 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 	@Override
 	public void setXAndY(float x, float y) {
 		// 设置整体坐标，包括子类型
-		this.svgVo.getgVo().setTransform("translate(" + x + ", " + y + ")");
+		this.svgVo.getgVo().setTransform(
+				new StringBuffer(TRANSLANT_PREFIX).append(x).append(COMMA).append(y)
+						.append(BRACKET_SUFFIX).toString());
 		// 设置相对位置
 		this.rectVO.setX(0.0F);
 		this.rectVO.setY(0.0F);
@@ -102,16 +104,14 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 		// TODO 目前支持全英文或者全中文、全日文、全韩文。
 		String elementValue = textVO.getElementValue();
 		if (StringUtils.isNotBlank(elementValue)) {
-			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
-					elementValue);
+			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(), elementValue);
 			int languageShift = 0;
 			if (SVGUtils.isChinese(elementValue.charAt(0))) {
 				languageShift = 10;
 				languageShift = languageShift + (textWidth >= 40 ? 3 : 0);
 				textWidth = textWidth / 2;
 			}
-			super.setTextX((this.rectVO.getWidth() / 2) - textWidth / 2
-					- languageShift);
+			super.setTextX((this.rectVO.getWidth() / 2) - textWidth / 2 - languageShift);
 			super.setTextY(this.rectVO.getHeight() / 2 + 5);
 		}
 	}
@@ -181,7 +181,8 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 				List<StopVO> stopVoList = linearGradient.getStopVoList();
 				if (stopVoList != null && stopVoList.size() > 0) {
 					StopVO stopVO = stopVoList.get(LINEARGRADIENT_INDEX);
-					this.rectVO.setFill("url(#" + backGroudUUID + ")");
+					this.rectVO.setFill(new StringBuffer(BACK_GROUND_PREFIX).append(backGroudUUID)
+							.append(BRACKET_SUFFIX).toString());
 					stopVO.setStopColor(COLOR_FLAG + fill);
 				}
 			}
