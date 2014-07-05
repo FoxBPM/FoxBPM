@@ -49,8 +49,7 @@ public final class PointUtils {
 	 * @param end
 	 * @return 起始点 控制点 终点坐标数组
 	 */
-	public final static Point[] caclBeralPoints(Point start, Point center,
-			Point end) {
+	public final static Point[] caclBeralPoints(Point start, Point center, Point end) {
 		float lengthStartHerizon = 0.0f;
 		float lengthStartVertical = 0.0f;
 		float lengthStartCenter = 0.0f;
@@ -60,13 +59,12 @@ public final class PointUtils {
 
 		lengthStartHerizon = Math.abs(start.getX() - center.getX());
 		lengthStartVertical = Math.abs(start.getY() - center.getY());
-		lengthStartCenter = (float) Math.sqrt(lengthStartHerizon
-				* lengthStartHerizon + lengthStartVertical
-				* lengthStartVertical);
+		lengthStartCenter = (float) Math.sqrt(lengthStartHerizon * lengthStartHerizon
+				+ lengthStartVertical * lengthStartVertical);
 		lengthEndHerizon = Math.abs(end.getX() - center.getX());
 		lengthEndVertical = Math.abs(end.getY() - center.getY());
-		lengthEndCenter = (float) Math.sqrt(lengthEndHerizon * lengthEndHerizon
-				+ lengthEndVertical * lengthEndVertical);
+		lengthEndCenter = (float) Math.sqrt(lengthEndHerizon * lengthEndHerizon + lengthEndVertical
+				* lengthEndVertical);
 
 		float scale = SEQUENCE_ROUNDCONTROL_FLAG;
 		if (lengthEndCenter <= SEQUENCE_ROUNDCONTROL_FLAG
@@ -81,14 +79,14 @@ public final class PointUtils {
 		}
 		float controlScale = scale / 3;
 		Point[] points = new Point[4];
-		points[0] = caclBeralControlPoint(start, center, scale,
-				lengthStartHerizon, lengthStartVertical, lengthStartCenter);
-		points[1] = caclBeralControlPoint(start, center, controlScale,
-				lengthStartHerizon, lengthStartVertical, lengthStartCenter);
-		points[2] = caclBeralControlPoint(end, center, controlScale,
-				lengthEndHerizon, lengthEndVertical, lengthEndCenter);
-		points[3] = caclBeralControlPoint(end, center, scale, lengthEndHerizon,
+		points[0] = caclBeralControlPoint(start, center, scale, lengthStartHerizon,
+				lengthStartVertical, lengthStartCenter);
+		points[1] = caclBeralControlPoint(start, center, controlScale, lengthStartHerizon,
+				lengthStartVertical, lengthStartCenter);
+		points[2] = caclBeralControlPoint(end, center, controlScale, lengthEndHerizon,
 				lengthEndVertical, lengthEndCenter);
+		points[3] = caclBeralControlPoint(end, center, scale, lengthEndHerizon, lengthEndVertical,
+				lengthEndCenter);
 		return points;
 	}
 
@@ -99,9 +97,8 @@ public final class PointUtils {
 	 * @param center
 	 * @return
 	 */
-	private final static Point caclBeralControlPoint(Point startEndPoint,
-			Point center, float scale, float lengthHerizon,
-			float lengthVertical, float lengthCenter) {
+	private final static Point caclBeralControlPoint(Point startEndPoint, Point center,
+			float scale, float lengthHerizon, float lengthVertical, float lengthCenter) {
 		float startX = 0.0f;
 		float startY = 0.0f;
 
@@ -132,16 +129,14 @@ public final class PointUtils {
 	 * @param scale
 	 * @return
 	 */
-	public final static Point caclControlPoint(Point startPoint, Point center,
-			Point end, float scale) {
+	public final static Point caclControlPoint(Point startPoint, Point center, Point end,
+			float scale) {
 		float x = 0.0f;
 		float y = 0.0f;
 		x = ((1 - scale) * (1 - scale) * startPoint.getX())
-				+ (2 * scale * (1 - scale) * center.getX())
-				+ (scale * scale * end.getX());
+				+ (2 * scale * (1 - scale) * center.getX()) + (scale * scale * end.getX());
 		y = ((1 - scale) * (1 - scale) * startPoint.getY())
-				+ (2 * scale * (1 - scale) * center.getY())
-				+ (scale * scale * end.getY());
+				+ (2 * scale * (1 - scale) * center.getY()) + (scale * scale * end.getY());
 		return new Point(x, y);
 	}
 
@@ -162,13 +157,11 @@ public final class PointUtils {
 			// X坐标拐点幅度大，Y不大,计算线条X中心位置，Y取平均值
 			return caclXCenter(xArrays, yArrays);
 
-		} else if (yShift > X_Y_LOCATION_MAXSHIFT
-				&& xShift < X_Y_LOCATION_MAXSHIFT) {
+		} else if (yShift > X_Y_LOCATION_MAXSHIFT && xShift < X_Y_LOCATION_MAXSHIFT) {
 			// Y坐标拐点幅度大，X不大,计算线条Y中心位置，X取平均值
 			return caclYCenter(xArrays, yArrays);
 
-		} else if (yShift > X_Y_LOCATION_MAXSHIFT
-				&& xShift > X_Y_LOCATION_MAXSHIFT) {
+		} else if (yShift > X_Y_LOCATION_MAXSHIFT && xShift > X_Y_LOCATION_MAXSHIFT) {
 			// XY拐点幅度都比较大
 			return caclCenterPoint(pointList);
 		}
@@ -206,7 +199,9 @@ public final class PointUtils {
 		List<Float> segList = new ArrayList<Float>();
 
 		float segLen = 0f;
-		for (int i = 0; i < pointList.size() - 1; i++) {
+		int size = pointList.size();
+		size = size - 1;
+		for (int i = 0; i < size; i++) {
 			Point pointA = pointList.get(i);
 			Point pointB = pointList.get(i + 1);
 
@@ -265,13 +260,13 @@ public final class PointUtils {
 	 */
 	public final static Point caclXCenter(Float[] xArrays, Float[] yArrays) {
 		Arrays.sort(xArrays);
-		Float xCenter = xArrays[0] + (xArrays[xArrays.length - 1] - xArrays[0])
-				/ 2;
+		int length = yArrays.length;
+		Float xCenter = xArrays[0] + (xArrays[xArrays.length - 1] - xArrays[0]) / 2;
 		Float tempV = 0.0f;
-		for (int i = 0; i < yArrays.length; i++) {
+		for (int i = 0; i < length; i++) {
 			tempV += yArrays[i];
 		}
-		Float y = tempV / yArrays.length;
+		Float y = tempV / length;
 		return new Point(xCenter, y);
 	}
 
@@ -284,13 +279,13 @@ public final class PointUtils {
 	 */
 	public final static Point caclYCenter(Float[] xArrays, Float[] yArrays) {
 		Arrays.sort(yArrays);
-		Float yCenter = yArrays[0] + (yArrays[yArrays.length - 1] - yArrays[0])
-				/ 2;
+		Float yCenter = yArrays[0] + (yArrays[yArrays.length - 1] - yArrays[0]) / 2;
 		Float tempV = 0.0f;
-		for (int i = 0; i < xArrays.length; i++) {
+		int length = xArrays.length;
+		for (int i = 0; i < length; i++) {
 			tempV += xArrays[i];
 		}
-		Float x = tempV / xArrays.length;
+		Float x = tempV / length;
 		return new Point(yCenter, x);
 	}
 
@@ -331,10 +326,8 @@ public final class PointUtils {
 
 		float scale = lastLen / keySeg;
 
-		float x = startPoint.getX() + (endPoint.getX() - startPoint.getX())
-				* scale;
-		float y = startPoint.getY() + (endPoint.getY() - startPoint.getY())
-				* scale;
+		float x = startPoint.getX() + (endPoint.getX() - startPoint.getX()) * scale;
+		float y = startPoint.getY() + (endPoint.getY() - startPoint.getY()) * scale;
 		Point point = new Point(x, y);
 		return point;
 	}

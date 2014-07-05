@@ -62,15 +62,14 @@ public class GatewaySVGBuilder extends AbstractSVGBuilder {
 		this.tempX = x;
 		this.tempY = y;
 		// 设置整体坐标，包括子类型
-		this.svgVo.getgVo().setTransform(
-				"translate(" + tempX + ", " + tempY + ")");
+		this.svgVo.getgVo().setTransform("translate(" + tempX + ", " + tempY + ")");
 
 		// 设置文本坐标
-		if (StringUtils.isNotBlank(textVO.getElementValue())) {
-			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
-					this.textVO.getElementValue());
+		String elementValue = textVO.getElementValue();
+		if (StringUtils.isNotBlank(elementValue)) {
+			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(), elementValue);
 			int languageShift = 0;
-			if (SVGUtils.isChinese(this.textVO.getElementValue().charAt(0))) {
+			if (SVGUtils.isChinese(elementValue.charAt(0))) {
 				languageShift = 10;
 				languageShift = languageShift + (textWidth >= 40 ? 5 : 0);
 				textWidth = textWidth / 2;
