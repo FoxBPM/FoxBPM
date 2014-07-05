@@ -463,9 +463,10 @@ public class BpmnModelUtil {
 		List<DiagramElement> diagramElements=definitions.getDiagrams().get(0).getPlane().getPlaneElement();
 		for (DiagramElement diagramElement : diagramElements) {
 			if(diagramElement instanceof BPMNEdge){
-				String bpmnId=((BPMNEdge)diagramElement).getBpmnElement().getId();
+				BPMNEdge bPMNEdge = (BPMNEdge)diagramElement;
+				String bpmnId=bPMNEdge.getBpmnElement().getId();
 				if(elementId.equals(bpmnId)){
-					return (BPMNEdge)diagramElement;
+					return bPMNEdge;
 				}
 			}
 		}
