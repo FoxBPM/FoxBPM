@@ -32,7 +32,7 @@ public class KernelEventSequenceFlowTake implements KernelEvent {
 
 	public void execute(InterpretableExecutionContext executionContext) {
 		KernelSequenceFlowImpl transition = executionContext.getSequenceFlow();
-		
+
 		List<KernelListener> kernelListeners = transition.getKernelListeners();
 		int kernelListenerIndex = executionContext.getKernelListenerIndex();
 

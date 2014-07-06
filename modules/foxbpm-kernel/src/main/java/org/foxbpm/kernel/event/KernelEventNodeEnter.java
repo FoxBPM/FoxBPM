@@ -23,8 +23,9 @@ import org.foxbpm.kernel.runtime.InterpretableExecutionContext;
 public class KernelEventNodeEnter extends AbstractKernelEvent {
 
 	@Override
-	protected KernelFlowElementsContainerImpl getContainer(InterpretableExecutionContext executionContext) {
-		return (KernelFlowElementsContainerImpl)executionContext.getFlowNode();
+	protected KernelFlowElementsContainerImpl getContainer(
+			InterpretableExecutionContext executionContext) {
+		return (KernelFlowElementsContainerImpl) executionContext.getFlowNode();
 	}
 
 	@Override
@@ -35,7 +36,7 @@ public class KernelEventNodeEnter extends AbstractKernelEvent {
 	@Override
 	protected void eventNotificationsCompleted(InterpretableExecutionContext executionContext) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

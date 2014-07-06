@@ -35,7 +35,7 @@ public class KernelEventProcessStart extends AbstractKernelEvent {
 	@Override
 	protected void eventNotificationsCompleted(InterpretableExecutionContext executionContext) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

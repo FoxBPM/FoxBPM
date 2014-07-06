@@ -7,7 +7,8 @@ public class KernelVariableInstanceImpl implements KernelVariableInstance {
 	private static final long serialVersionUID = 1L;
 
 	protected String name;
-	
+	protected Object value;
+
 	public String getName() {
 		return name;
 	}
@@ -16,8 +17,6 @@ public class KernelVariableInstanceImpl implements KernelVariableInstance {
 		this.name = name;
 	}
 
-	protected Object value;
-
 	public Object getValue() {
 		return value;
 	}
@@ -25,9 +24,9 @@ public class KernelVariableInstanceImpl implements KernelVariableInstance {
 	public void setValue(Object value) {
 		this.value = value;
 	}
-	
-	public void delete(){
-		
+
+	public void delete() {
+
 	}
 
 }
