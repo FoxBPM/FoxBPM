@@ -60,43 +60,38 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 			return;
 		}
 		StringBuffer pathBuffer = new StringBuffer();
-		pathBuffer.append(MOVETO_FLAG)
-				.append(String.valueOf(pointList.get(0).getX()))
-				.append(D_SPACE)
-				.append(String.valueOf(pointList.get(0).getY()));
+		pathBuffer.append(MOVETO_FLAG).append(String.valueOf(pointList.get(0).getX()))
+				.append(D_SPACE).append(String.valueOf(pointList.get(0).getY()));
 		int size = pointList.size();
+		Point point = null;
+		Point startPoint = null;
+		Point center = null;
+		Point end = null;
+		Point[] bezalPoints = null;
 		for (int i = 1; i < size; i++) {
-			Point point = pointList.get(i);
+			point = pointList.get(i);
 			if (size < 3) {
 				// 小于三个断点的，直接画直线
-				pathBuffer.append(LINETO_FLAG)
-						.append(String.valueOf(point.getX())).append(D_SPACE)
+				pathBuffer.append(LINETO_FLAG).append(String.valueOf(point.getX())).append(D_SPACE)
 						.append(String.valueOf(point.getY()));
 			} else {
 				if (i != size - 1) {
 					// 根据三个端点计算 三次贝塞尔曲线的起始点 控制点 终点
-					Point startPoint = pointList.get(i - 1);
-					Point center = point;
-					Point end = pointList.get(i + 1);
+					startPoint = pointList.get(i - 1);
+					center = point;
+					end = pointList.get(i + 1);
 					// 以当前坐标为中心点，数组大小是4，结构依次是 [起始点] [控制点A] [控制点B] [终点]
-					Point[] bezalPoints = PointUtils.caclBeralPoints(
-							startPoint, center, end);
-					if (bezalPoints[0].getX() != 0.0f
-							&& bezalPoints[0].getY() != 0.0f) {
-						pathBuffer.append(LINETO_FLAG)
-								.append(bezalPoints[0].getX()).append(D_SPACE)
-								.append(bezalPoints[0].getY()).append(D_SPACE);
+					bezalPoints = PointUtils.caclBeralPoints(startPoint, center, end);
+					if (bezalPoints[0].getX() != 0.0f && bezalPoints[0].getY() != 0.0f) {
+						pathBuffer.append(LINETO_FLAG).append(bezalPoints[0].getX())
+								.append(D_SPACE).append(bezalPoints[0].getY()).append(D_SPACE);
 					}
 
-					if (bezalPoints[1].getX() != 0.0f
-							&& bezalPoints[1].getY() != 0.0f
-							&& bezalPoints[2].getX() != 0.0f
-							&& bezalPoints[2].getY() != 0.0f
-							&& bezalPoints[3].getX() != 0.0f
-							&& bezalPoints[3].getY() != 0.0f) {
-						pathBuffer.append(PATHCIRCLE_FLAG)
-								.append(bezalPoints[1].getX()).append(D_SPACE)
-								.append(bezalPoints[1].getY()).append(D_SPACE)
+					if (bezalPoints[1].getX() != 0.0f && bezalPoints[1].getY() != 0.0f
+							&& bezalPoints[2].getX() != 0.0f && bezalPoints[2].getY() != 0.0f
+							&& bezalPoints[3].getX() != 0.0f && bezalPoints[3].getY() != 0.0f) {
+						pathBuffer.append(PATHCIRCLE_FLAG).append(bezalPoints[1].getX())
+								.append(D_SPACE).append(bezalPoints[1].getY()).append(D_SPACE)
 								.append(bezalPoints[2].getX()).append(D_SPACE)
 								.append(bezalPoints[2].getY()).append(D_SPACE)
 								.append(bezalPoints[3].getX()).append(D_SPACE)
@@ -104,8 +99,8 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 					}
 
 					if (i == size - 2) {
-						pathBuffer.append(LINETO_FLAG).append(end.getX())
-								.append(D_SPACE).append(end.getY());
+						pathBuffer.append(LINETO_FLAG).append(end.getX()).append(D_SPACE)
+								.append(end.getY());
 					}
 				}
 			}

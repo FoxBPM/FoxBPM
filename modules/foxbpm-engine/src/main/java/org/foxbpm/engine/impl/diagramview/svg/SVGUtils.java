@@ -65,8 +65,9 @@ public final class SVGUtils {
 	public final static RectVO getTaskVOFromSvgVO(SvgVO svgVo) {
 		List<RectVO> rectVoList = svgVo.getgVo().getRectVoList();
 		Iterator<RectVO> iterator = rectVoList.iterator();
+		RectVO next = null;
 		while (iterator.hasNext()) {
-			RectVO next = iterator.next();
+			next = iterator.next();
 			if (StringUtils.equalsIgnoreCase(next.getId(), BPMN_NODE_ID)) {
 				return next;
 			}
@@ -83,8 +84,9 @@ public final class SVGUtils {
 	public final static CircleVO getEventVOFromSvgVO(SvgVO svgVo) {
 		List<CircleVO> circleVoList = svgVo.getgVo().getCircleVoList();
 		Iterator<CircleVO> iterator = circleVoList.iterator();
+		CircleVO next = null;
 		while (iterator.hasNext()) {
-			CircleVO next = iterator.next();
+			next = iterator.next();
 			if (StringUtils.equalsIgnoreCase(next.getId(), BPMN_NODE_ID)) {
 				return next;
 			}
@@ -102,13 +104,17 @@ public final class SVGUtils {
 		List<GVO> gVoList = svgVo.getgVo().getgVoList();
 		if (gVoList != null && gVoList.size() > 0) {
 			Iterator<GVO> iterator = gVoList.iterator();
+			GVO next = null;
+			List<PathVO> pathVoList = null;
+			Iterator<PathVO> pathIter = null;
+			PathVO tempPathVo = null;
 			while (iterator.hasNext()) {
-				GVO next = iterator.next();
+				next = iterator.next();
 				if (StringUtils.equalsIgnoreCase(next.getId(), EDGE)) {
-					List<PathVO> pathVoList = next.getPathVoList();
-					Iterator<PathVO> pathIter = pathVoList.iterator();
+					pathVoList = next.getPathVoList();
+					pathIter = pathVoList.iterator();
 					while (pathIter.hasNext()) {
-						PathVO tempPathVo = pathIter.next();
+						tempPathVo = pathIter.next();
 						if (StringUtils.equalsIgnoreCase(tempPathVo.getId(), BPMN_NODE_ID)) {
 							return tempPathVo;
 						}
@@ -129,8 +135,9 @@ public final class SVGUtils {
 	public final static PathVO getGatewayVOFromSvgVO(SvgVO svgVo) {
 		List<PathVO> pathVoList = svgVo.getgVo().getPathVoList();
 		Iterator<PathVO> pathIter = pathVoList.iterator();
+		PathVO tempPathVo = null;
 		while (pathIter.hasNext()) {
-			PathVO tempPathVo = pathIter.next();
+			tempPathVo = pathIter.next();
 			if (StringUtils.equalsIgnoreCase(tempPathVo.getId(), BPMN_NODE_ID)) {
 				return tempPathVo;
 			}

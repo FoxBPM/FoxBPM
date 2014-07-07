@@ -201,9 +201,11 @@ public final class PointUtils {
 		float segLen = 0f;
 		int size = pointList.size();
 		size = size - 1;
+		Point pointA = null;
+		Point pointB = null;
 		for (int i = 0; i < size; i++) {
-			Point pointA = pointList.get(i);
-			Point pointB = pointList.get(i + 1);
+			pointA = pointList.get(i);
+			pointB = pointList.get(i + 1);
 
 			segLen = segmentLength(pointA, pointB);
 			segList.add(segLen);
