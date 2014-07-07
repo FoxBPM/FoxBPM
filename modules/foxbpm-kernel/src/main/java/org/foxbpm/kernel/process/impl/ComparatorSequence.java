@@ -21,35 +21,27 @@ import java.util.Comparator;
 
 import org.foxbpm.kernel.process.KernelSequenceFlow;
 
-
-
 public class ComparatorSequence implements Comparator<KernelSequenceFlow> {
-
 
 	public int compare(KernelSequenceFlow sequenceFlow1, KernelSequenceFlow sequenceFlow2) {
 
-		
-		KernelSequenceFlow sequenceFlowBehavior1=sequenceFlow1;
-		KernelSequenceFlow sequenceFlowBehavior2=sequenceFlow2;
+		KernelSequenceFlow sequenceFlowBehavior1 = sequenceFlow1;
+		KernelSequenceFlow sequenceFlowBehavior2 = sequenceFlow2;
 
+		int orderId1 = sequenceFlowBehavior1.getOrderId();
+		int orderId2 = sequenceFlowBehavior2.getOrderId();
 
-		int orderId1=sequenceFlowBehavior1.getOrderId();
-		int orderId2=sequenceFlowBehavior2.getOrderId();
-		
-		
-		if(orderId1>orderId2){
+		if (orderId1 > orderId2) {
 			return 1;
-		}
-		else{
-			if(orderId1==orderId2){
+		} else {
+			if (orderId1 == orderId2) {
 				return 0;
-			}else{
+			} else {
 				return -1;
 			}
-			
+
 		}
 
-		
 	}
 
 }

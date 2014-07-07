@@ -45,6 +45,7 @@ import org.eclipse.bpmn2.di.BPMNEdge;
 import org.eclipse.bpmn2.di.BPMNShape;
 import org.eclipse.bpmn2.di.BpmnDiPackage;
 import org.eclipse.bpmn2.util.Bpmn2ResourceFactoryImpl;
+import org.eclipse.dd.dc.Bounds;
 import org.eclipse.dd.dc.DcPackage;
 import org.eclipse.dd.dc.Point;
 import org.eclipse.dd.di.DiPackage;
@@ -85,375 +86,372 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	public KernelProcessDefinition createProcessDefinition(String processId, Object processFile) {
 		Process process = null;
 		if (processFile != null) {
-			process = createProcess(processId, (InputStream)processFile);
+			process = createProcess(processId, (InputStream) processFile);
 		}
-		if(process == null){
+		if (process == null) {
 			throw new FoxBPMException("文件中没有对应的流程定义，请检查bpmn文件内容和流程key是否对应！");
 		}
-		KernelProcessDefinition processDefinition=loadBehavior(process);
-//		// 加载数据变量
-//		loadVariable(processDefinition);
-//		// 设置FlowNode元素的子流程
-//		loadSubProcess(processDefinition);
+		KernelProcessDefinition processDefinition = loadBehavior(process);
+		// // 加载数据变量
+		// loadVariable(processDefinition);
+		// // 设置FlowNode元素的子流程
+		// loadSubProcess(processDefinition);
 		return processDefinition;
 	}
 
-	private KernelProcessDefinition loadBehavior(Process process){
+	private KernelProcessDefinition loadBehavior(Process process) {
 		String processObjId = BpmnModelUtil.getProcessId(process);
-		//String category=BpmnModelUtil.getProcessCategory(process);
-		List<FlowElement> flowElements=process.getFlowElements();
-		ProcessDefinitionBuilder processDefinitionBuilder = new ProcessDefinitionEntityBuilder(processObjId);
-		ProcessBehavior processBehavior=BpmnBehaviorEMFConverter.getProcessBehavior(process, processDefinitionBuilder.getProcessDefinition());
-		if(processBehavior!=null){
-			for (Connector connector :processBehavior.getConnectors()) {
+		// String category=BpmnModelUtil.getProcessCategory(process);
+		List<FlowElement> flowElements = process.getFlowElements();
+		ProcessDefinitionBuilder processDefinitionBuilder = new ProcessDefinitionEntityBuilder(
+				processObjId);
+		ProcessBehavior processBehavior = BpmnBehaviorEMFConverter.getProcessBehavior(process,
+				processDefinitionBuilder.getProcessDefinition());
+		if (processBehavior != null) {
+			for (Connector connector : processBehavior.getConnectors()) {
 				processDefinitionBuilder.executionListener(connector.getEventType(), connector);
 			}
 		}
-		
-		for(FlowElement flowElement :flowElements){
-			KernelFlowNodeBehavior flowNodeBehavior = BpmnBehaviorEMFConverter.getFlowNodeBehavior(flowElement,processDefinitionBuilder.getProcessDefinition());
-			if(flowElement instanceof FlowNode){
-				processDefinitionBuilder.createFlowNode(flowElement.getId(),flowElement.getName()).behavior(flowNodeBehavior);
-				if(flowNodeBehavior instanceof BaseElementBehavior){
-					for (Connector connector :((BaseElementBehavior) flowNodeBehavior).getConnectors()) {
-						processDefinitionBuilder.executionListener(connector.getEventType(), connector);
+
+		for (FlowElement flowElement : flowElements) {
+			KernelFlowNodeBehavior flowNodeBehavior = BpmnBehaviorEMFConverter.getFlowNodeBehavior(
+					flowElement, processDefinitionBuilder.getProcessDefinition());
+			if (flowElement instanceof FlowNode) {
+				processDefinitionBuilder.createFlowNode(flowElement.getId(), flowElement.getName())
+						.behavior(flowNodeBehavior);
+				if (flowNodeBehavior instanceof BaseElementBehavior) {
+					for (Connector connector : ((BaseElementBehavior) flowNodeBehavior)
+							.getConnectors()) {
+						processDefinitionBuilder.executionListener(connector.getEventType(),
+								connector);
 					}
 				}
-				if(flowElement instanceof StartEvent){
+				if (flowElement instanceof StartEvent) {
 					processDefinitionBuilder.initial();
 				}
-				List<SequenceFlow>  sequenceFlows=((FlowNode) flowElement).getOutgoing();
+				List<SequenceFlow> sequenceFlows = ((FlowNode) flowElement).getOutgoing();
 				for (SequenceFlow sequenceFlow : sequenceFlows) {
-					processDefinitionBuilder.sequenceFlow(sequenceFlow.getTargetRef().getId(),sequenceFlow.getId(),sequenceFlow.getName());
+					processDefinitionBuilder.sequenceFlow(sequenceFlow.getTargetRef().getId(),
+							sequenceFlow.getId(), sequenceFlow.getName());
 				}
 				processDefinitionBuilder.endFlowNode();
 			}
 		}
-		
 
-		
+		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) processDefinitionBuilder
+				.buildProcessDefinition();
 
-		ProcessDefinitionEntity processDefinition=(ProcessDefinitionEntity)processDefinitionBuilder.buildProcessDefinition();
-		
-		if(process.getLaneSets()!=null&&process.getLaneSets().size()>0){
+		if (process.getLaneSets() != null && process.getLaneSets().size() > 0) {
 			for (LaneSet laneSet : process.getLaneSets()) {
 
-				KernelLaneSetImpl laneSetObj=new KernelLaneSetImpl(laneSet.getId(), processDefinition);
+				KernelLaneSetImpl laneSetObj = new KernelLaneSetImpl(laneSet.getId(),
+						processDefinition);
 				laneSetObj.setName(laneSet.getName());
 				loadLane(laneSetObj, laneSet, processDefinition);
-				
+
 				processDefinition.getLaneSets().add(laneSetObj);
 			}
 		}
-	
-		
+
 		processDefinition.setKey(processBehavior.getId());
 		processDefinition.setName(processBehavior.getName());
 		processDefinition.setCategory(processBehavior.getCategory());
 		processDefinition.setFormUri(processBehavior.getFormUri());
 		processDefinition.setFormUriView(processBehavior.getFormUriView());
 		processDefinition.setSubject(processBehavior.getSubject());
-		processDI(processDefinition,process);
+		processDI(processDefinition, process);
 		return processDefinition;
 	}
-	
-	private void loadLane(KernelLaneSet kernelLaneSet,LaneSet laneSet,ProcessDefinitionEntity processDefinition){
+
+	private void loadLane(KernelLaneSet kernelLaneSet, LaneSet laneSet,
+			ProcessDefinitionEntity processDefinition) {
 		kernelLaneSet.setName(laneSet.getName());
-				for (Lane lane : laneSet.getLanes()) {
-					if(lane!=null){
-						
-						KernelLaneImpl KernelLaneImpl=new KernelLaneImpl(lane.getId(), processDefinition);
-						KernelLaneImpl.setName(lane.getName());
-						kernelLaneSet.getLanes().add(KernelLaneImpl);
-						if(lane.getChildLaneSet()!=null){
-							KernelLaneSetImpl KernelLaneSetImpl=new KernelLaneSetImpl(lane.getChildLaneSet().getId(), processDefinition);
-							KernelLaneSetImpl.setName(lane.getChildLaneSet().getName());
-							KernelLaneImpl.setChildLaneSet(KernelLaneSetImpl);
-							loadLane(KernelLaneSetImpl,lane.getChildLaneSet(),processDefinition);
-						}else{
-							continue;
-						}
-					}
+		for (Lane lane : laneSet.getLanes()) {
+			if (lane != null) {
 
-						
+				KernelLaneImpl KernelLaneImpl = new KernelLaneImpl(lane.getId(), processDefinition);
+				KernelLaneImpl.setName(lane.getName());
+				kernelLaneSet.getLanes().add(KernelLaneImpl);
+				LaneSet childLaneSet = lane.getChildLaneSet();
+				if (childLaneSet != null) {
+					KernelLaneSetImpl KernelLaneSetImpl = new KernelLaneSetImpl(childLaneSet.getId(), processDefinition);
+					KernelLaneSetImpl.setName(childLaneSet.getName());
+					KernelLaneImpl.setChildLaneSet(KernelLaneSetImpl);
+					loadLane(KernelLaneSetImpl, childLaneSet, processDefinition);
+				} else {
+					continue;
 				}
-		
-	}
-	
+			}
 
-	
-	private void processDI(ProcessDefinitionEntity processDefinition,Process process){
-		ProcessEngineConfigurationImpl processEngineConfiguration = Context.getProcessEngineConfiguration();
-		Definitions definitions = (Definitions) process.eResource().getContents().get(0).eContents().get(0);
+		}
+
+	}
+
+	private void processDI(ProcessDefinitionEntity processDefinition, Process process) {
+		ProcessEngineConfigurationImpl processEngineConfiguration = Context
+				.getProcessEngineConfiguration();
+		Definitions definitions = (Definitions) process.eResource().getContents().get(0)
+				.eContents().get(0);
 		List<BPMNDiagram> diagrams = definitions.getDiagrams();
-		if(diagrams==null||diagrams.size()==0){
+		if (diagrams == null || diagrams.size() == 0) {
 			return;
 		}
-		float maxX=0;
-		float maxY=0;
-		float minY=0;
-		float minX=0;
+		float maxX = 0;
+		float maxY = 0;
+		float minY = 0;
+		float minX = 0;
 		for (BPMNDiagram bpmnDiagram : diagrams) {
 			for (DiagramElement diagramElement : bpmnDiagram.getPlane().getPlaneElement()) {
 				if (diagramElement instanceof BPMNShape) {
 					BPMNShape bpmnShape = (BPMNShape) diagramElement;
-					if(bpmnShape.getBounds().getX()+bpmnShape.getBounds().getWidth()>maxX){
-						maxX=bpmnShape.getBounds().getX()+bpmnShape.getBounds().getWidth();
+					Bounds bounds = bpmnShape.getBounds();
+					float x = bounds.getX();
+					float y = bounds.getY();
+					float width = bounds.getWidth();
+					float height = bounds.getHeight();
+					if (x + width > maxX) {
+						maxX = x + width;
 					}
-					
-					if(bpmnShape.getBounds().getY()+bpmnShape.getBounds().getHeight()>maxY){
-						maxY=bpmnShape.getBounds().getY()+bpmnShape.getBounds().getHeight();
+
+					if (y + height > maxY) {
+						maxY = y + height;
 					}
-				
-					if(minY==0){
-						minY=bpmnShape.getBounds().getY();
-					}else{
-						if(bpmnShape.getBounds().getY()<minY){
-							minY=bpmnShape.getBounds().getY();
+
+					if (minY == 0) {
+						minY = y;
+					} else {
+						if (y < minY) {
+							minY = y;
 						}
 					}
-					
-					if(minX==0){
-						minX=bpmnShape.getBounds().getX();
-					}else{
-						if(bpmnShape.getBounds().getX()<minX){
-							minX=bpmnShape.getBounds().getX();
+
+					if (minX == 0) {
+						minX = x;
+					} else {
+						if (x < minX) {
+							minX = x;
 						}
 					}
-					
-					BaseElement bpmnElement=getBaseElement(bpmnShape.getBpmnElement());
-					KernelFlowNodeImpl findFlowNode = processDefinition.findFlowNode(bpmnElement.getId());
-					if(findFlowNode!=null){
-						findFlowNode.setWidth((new Float(bpmnShape.getBounds().getWidth())).intValue());
-						findFlowNode.setHeight((new Float(bpmnShape.getBounds().getHeight())).intValue());
-						findFlowNode.setX((new Float(bpmnShape.getBounds().getX())).intValue());
-						findFlowNode.setY((new Float(bpmnShape.getBounds().getY())).intValue());
+
+					BaseElement bpmnElement = getBaseElement(bpmnShape.getBpmnElement());
+					KernelFlowNodeImpl findFlowNode = processDefinition.findFlowNode(bpmnElement
+							.getId());
+					if (findFlowNode != null) {
+						findFlowNode.setWidth((new Float(width)).intValue());
+						findFlowNode.setHeight((new Float(height)).intValue());
+						findFlowNode.setX((new Float(x)).intValue());
+						findFlowNode.setY((new Float(y)).intValue());
 					}
-					KernelLaneImpl lane=(KernelLaneImpl)processDefinition.getLaneForId(bpmnElement.getId());
-					if(lane!=null){
-						
-						lane.setWidth((new Float(bpmnShape.getBounds().getWidth())).intValue());
-						lane.setHeight((new Float(bpmnShape.getBounds().getHeight())).intValue());
-						lane.setX((new Float(bpmnShape.getBounds().getX())).intValue());
-						lane.setY((new Float(bpmnShape.getBounds().getY())).intValue());
-						lane.setProperty(StyleOption.IsHorizontal,bpmnShape.isIsHorizontal());
-						
+					KernelLaneImpl lane = (KernelLaneImpl) processDefinition
+							.getLaneForId(bpmnElement.getId());
+					if (lane != null) {
+
+						lane.setWidth((new Float(width)).intValue());
+						lane.setHeight((new Float(height)).intValue());
+						lane.setX((new Float(x)).intValue());
+						lane.setY((new Float(y)).intValue());
+						lane.setProperty(StyleOption.IsHorizontal, bpmnShape.isIsHorizontal());
+
 					}
-					
-					Style style=null;
+
+					Style style = null;
 					if (bpmnElement instanceof StartEvent) {
-						style=processEngineConfiguration.getStyle("StartEvent");
+						style = processEngineConfiguration.getStyle("StartEvent");
 					}
 					if (bpmnElement instanceof EndEvent) {
-						style=processEngineConfiguration.getStyle("EndEvent");
+						style = processEngineConfiguration.getStyle("EndEvent");
 					}
-					
+
 					if (bpmnElement instanceof ParallelGateway) {
-						style=processEngineConfiguration.getStyle("ParallelGateway");
+						style = processEngineConfiguration.getStyle("ParallelGateway");
 					}
-					
+
 					if (bpmnElement instanceof InclusiveGateway) {
-						style=processEngineConfiguration.getStyle("InclusiveGateway");
+						style = processEngineConfiguration.getStyle("InclusiveGateway");
 					}
-					
+
 					if (bpmnElement instanceof ExclusiveGateway) {
-						style=processEngineConfiguration.getStyle("ExclusiveGateway");
+						style = processEngineConfiguration.getStyle("ExclusiveGateway");
 					}
-				
+
 					if (bpmnElement instanceof Task) {
-						style=processEngineConfiguration.getStyle("UserTask");
+						style = processEngineConfiguration.getStyle("UserTask");
 					}
-					
+
 					if (bpmnElement instanceof Lane) {
-						style=processEngineConfiguration.getStyle("Lane");
+						style = processEngineConfiguration.getStyle("Lane");
 					}
-					
+
 					/*
-					if (bpmnElement instanceof IntermediateCatchEventBehavior) {
-						String intermediateTimerEventSVG = intermediateTimerEventToSVG(bpmnShape);
-						svg.addChildren(intermediateTimerEventSVG);
-					}
-					if (bpmnElement instanceof CallActivity) {
+					 * if (bpmnElement instanceof
+					 * IntermediateCatchEventBehavior) { String
+					 * intermediateTimerEventSVG =
+					 * intermediateTimerEventToSVG(bpmnShape);
+					 * svg.addChildren(intermediateTimerEventSVG); } if
+					 * (bpmnElement instanceof CallActivity) {
+					 * 
+					 * String taskSVG = callActivityToSVG(bpmnShape);
+					 * svg.addChildren(taskSVG); }
+					 * 
+					 * if (bpmnElement instanceof Gateway) { String gatewaySVG =
+					 * gatewayToSVG(bpmnShape); svg.addChildren(gatewaySVG); }
+					 * 
+					 * if(bpmnElement instanceof Lane) { String laneSVG =
+					 * laneToSVG(bpmnShape); svg.addChildren(laneSVG); }
+					 * 
+					 * if(bpmnElement instanceof Participant) { String laneSVG =
+					 * participantToSVG(bpmnShape); svg.addChildren(laneSVG); }
+					 * 
+					 * 
+					 * 
+					 * if(bpmnElement instanceof SubProcess) { String
+					 * subProcessSVG = subProcessToSVG(bpmnShape);
+					 * svg.addChildren(subProcessSVG); } if(bpmnElement
+					 * instanceof Group) { String subProcessSVG =
+					 * groupToSVG(bpmnShape,bpmnElement);
+					 * svg.addChildren(subProcessSVG); } if(bpmnElement
+					 * instanceof DataObject) { String dataObjectSVG=
+					 * dataObjectToSVG(bpmnShape,bpmnElement);
+					 * svg.addChildren(dataObjectSVG); } //DataStoreReference
+					 * //DataInput //DataOutput //Message if(bpmnElement
+					 * instanceof DataStoreReference) { String
+					 * dataStoreReferenceSVG=
+					 * dataStoreReferenceToSVG(bpmnShape,bpmnElement);
+					 * svg.addChildren(dataStoreReferenceSVG); } if(bpmnElement
+					 * instanceof DataInput) { String dataInputSVG=
+					 * dataInputToSVG(bpmnShape,bpmnElement);
+					 * svg.addChildren(dataInputSVG); } if(bpmnElement
+					 * instanceof DataOutput) { String dataOutputSVG=
+					 * dataOutputToSVG(bpmnShape,bpmnElement);
+					 * svg.addChildren(dataOutputSVG); } if(bpmnElement
+					 * instanceof Message) { String messageSVG=
+					 * messageToSVG(bpmnShape,bpmnElement);
+					 * svg.addChildren(messageSVG); }
+					 * 
+					 * 
+					 * if(bpmnElement instanceof TextAnnotation) { String
+					 * messageSVG= textAnnotationToSVG(bpmnShape,bpmnElement);
+					 * svg.addChildren(messageSVG); }
+					 * 
+					 * 
+					 * if(bpmnElement instanceof BoundaryEvent) { String
+					 * messageSVG= boundaryEventToSVG(bpmnShape,bpmnElement);
+					 * svg.addChildren(messageSVG); }
+					 */
 
-						String taskSVG = callActivityToSVG(bpmnShape);
-						svg.addChildren(taskSVG);
-					}
-
-					if (bpmnElement instanceof Gateway) {
-						String gatewaySVG = gatewayToSVG(bpmnShape);
-						svg.addChildren(gatewaySVG);
-					}
-					
-					if(bpmnElement instanceof Lane)
-					{
-						String laneSVG = laneToSVG(bpmnShape);
-						svg.addChildren(laneSVG);
-					}
-					
-					if(bpmnElement instanceof Participant)
-					{
-						String laneSVG = participantToSVG(bpmnShape);
-						svg.addChildren(laneSVG);
-					}
-					
-					
-					
-					if(bpmnElement instanceof SubProcess)
-					{
-						String subProcessSVG = subProcessToSVG(bpmnShape);
-						svg.addChildren(subProcessSVG);
-					}
-					if(bpmnElement instanceof Group)
-					{
-						String subProcessSVG = groupToSVG(bpmnShape,bpmnElement);
-						svg.addChildren(subProcessSVG);
-					}
-					if(bpmnElement instanceof DataObject)
-					{
-						String dataObjectSVG= dataObjectToSVG(bpmnShape,bpmnElement);
-						svg.addChildren(dataObjectSVG);
-					}
-					//DataStoreReference  //DataInput  //DataOutput  //Message
-					if(bpmnElement instanceof DataStoreReference)
-					{
-						String dataStoreReferenceSVG= dataStoreReferenceToSVG(bpmnShape,bpmnElement);
-						svg.addChildren(dataStoreReferenceSVG);
-					}
-					if(bpmnElement instanceof DataInput)
-					{
-						String dataInputSVG= dataInputToSVG(bpmnShape,bpmnElement);
-						svg.addChildren(dataInputSVG);
-					}
-					if(bpmnElement instanceof DataOutput)
-					{
-						String dataOutputSVG= dataOutputToSVG(bpmnShape,bpmnElement);
-						svg.addChildren(dataOutputSVG);
-					}
-					if(bpmnElement instanceof Message)
-					{
-						String messageSVG= messageToSVG(bpmnShape,bpmnElement);
-						svg.addChildren(messageSVG);
-					}
-					
-					
-					if(bpmnElement instanceof TextAnnotation)
-					{
-						String messageSVG= textAnnotationToSVG(bpmnShape,bpmnElement);
-						svg.addChildren(messageSVG);
-					}
-					
-					
-					if(bpmnElement instanceof BoundaryEvent)
-					{
-						String messageSVG= boundaryEventToSVG(bpmnShape,bpmnElement);
-						svg.addChildren(messageSVG);
-					}
-					
-					
-					*/
-					
-					if(style!=null&&findFlowNode!=null){
+					if (style != null && findFlowNode != null) {
 						findFlowNode.setProperty(StyleOption.Background, style.getBackground());
 						findFlowNode.setProperty(StyleOption.Font, style.getFont());
 						findFlowNode.setProperty(StyleOption.Foreground, style.getForeground());
-						findFlowNode.setProperty(StyleOption.MulitSelectedColor, style.getMulitSelectedColor());
+						findFlowNode.setProperty(StyleOption.MulitSelectedColor,
+								style.getMulitSelectedColor());
 						findFlowNode.setProperty(StyleOption.StyleObject, style.getObject());
-						findFlowNode.setProperty(StyleOption.SelectedColor, style.getSelectedColor());
+						findFlowNode.setProperty(StyleOption.SelectedColor,
+								style.getSelectedColor());
 						findFlowNode.setProperty(StyleOption.TextColor, style.getTextColor());
-					}else{
-						if(style!=null&&lane!=null){
+					} else {
+						if (style != null && lane != null) {
 							lane.setProperty(StyleOption.Background, style.getBackground());
 							lane.setProperty(StyleOption.Font, style.getFont());
 							lane.setProperty(StyleOption.Foreground, style.getForeground());
-							lane.setProperty(StyleOption.MulitSelectedColor, style.getMulitSelectedColor());
-					 		lane.setProperty(StyleOption.StyleObject, style.getObject());
+							lane.setProperty(StyleOption.MulitSelectedColor,
+									style.getMulitSelectedColor());
+							lane.setProperty(StyleOption.StyleObject, style.getObject());
 							lane.setProperty(StyleOption.SelectedColor, style.getSelectedColor());
 							lane.setProperty(StyleOption.TextColor, style.getTextColor());
 						}
 
-						
 					}
 				}
 				if (diagramElement instanceof BPMNEdge) {
 					BPMNEdge bpmnEdge = (BPMNEdge) diagramElement;
 					List<Point> pointList = bpmnEdge.getWaypoint();
 					for (Point point : pointList) {
-						if(point.getX()>maxX){
-							maxX=point.getX();
+						float x = point.getX();
+						float y = point.getY();
+						if (x > maxX) {
+							maxX = x;
 						}
-						if(point.getY()>maxY){
-							maxY=point.getY();
+						if (y > maxY) {
+							maxY = y;
 						}
 					}
-					BaseElement bpmnElement=getBaseElement(bpmnEdge.getBpmnElement());
+					BaseElement bpmnElement = getBaseElement(bpmnEdge.getBpmnElement());
 					if (bpmnElement instanceof SequenceFlow) {
-						KernelSequenceFlowImpl findSequenceFlow = processDefinition.findSequenceFlow(bpmnElement.getId());
-						Style style=processEngineConfiguration.getStyle("SequenceFlow");
-						List<Integer> waypoints=new ArrayList<Integer>();
+						KernelSequenceFlowImpl findSequenceFlow = processDefinition
+								.findSequenceFlow(bpmnElement.getId());
+						Style style = processEngineConfiguration.getStyle("SequenceFlow");
+						List<Integer> waypoints = new ArrayList<Integer>();
 						for (Point point : pointList) {
 							waypoints.add((new Float(point.getX())).intValue());
 							waypoints.add((new Float(point.getY())).intValue());
 						}
-						
+
 						findSequenceFlow.setWaypoints(waypoints);
-						if(style!=null){
-							findSequenceFlow.setProperty(StyleOption.Background, style.getBackground());
+						if (style != null) {
+							findSequenceFlow.setProperty(StyleOption.Background,
+									style.getBackground());
 							findSequenceFlow.setProperty(StyleOption.Font, style.getFont());
-							findSequenceFlow.setProperty(StyleOption.Foreground, style.getForeground());
-							findSequenceFlow.setProperty(StyleOption.MulitSelectedColor, style.getMulitSelectedColor());
-							findSequenceFlow.setProperty(StyleOption.StyleObject, style.getObject());
-							findSequenceFlow.setProperty(StyleOption.SelectedColor, style.getSelectedColor());
-							findSequenceFlow.setProperty(StyleOption.TextColor, style.getTextColor());
+							findSequenceFlow.setProperty(StyleOption.Foreground,
+									style.getForeground());
+							findSequenceFlow.setProperty(StyleOption.MulitSelectedColor,
+									style.getMulitSelectedColor());
+							findSequenceFlow
+									.setProperty(StyleOption.StyleObject, style.getObject());
+							findSequenceFlow.setProperty(StyleOption.SelectedColor,
+									style.getSelectedColor());
+							findSequenceFlow.setProperty(StyleOption.TextColor,
+									style.getTextColor());
 						}
-						//String sequenceFlowSVG = sequenceFlowToSVG(bpmnEdge);
-						//svg.addEdge(sequenceFlowSVG);
+						// String sequenceFlowSVG = sequenceFlowToSVG(bpmnEdge);
+						// svg.addEdge(sequenceFlowSVG);
 					}
 					if (bpmnElement instanceof Association) {
-						//String associationSVG = associationToSVG(bpmnEdge);
-						//svg.addEdge(associationSVG);
+						// String associationSVG = associationToSVG(bpmnEdge);
+						// svg.addEdge(associationSVG);
 					}
 					if (bpmnElement instanceof MessageFlow) {
-						//String messageFlowSVG = messageFlowToSVG(bpmnEdge);
-						//svg.addChildren(messageFlowSVG);
+						// String messageFlowSVG = messageFlowToSVG(bpmnEdge);
+						// svg.addChildren(messageFlowSVG);
 					}
 				}
 			}
 		}
-		
-		processDefinition.setProperty("canvas_maxX", maxX+30);
-		processDefinition.setProperty("canvas_maxY", maxY+70);
+
+		processDefinition.setProperty("canvas_maxX", maxX + 30);
+		processDefinition.setProperty("canvas_maxY", maxY + 70);
 		processDefinition.setProperty("canvas_minX", minX);
 		processDefinition.setProperty("canvas_minY", minY);
 	}
-	
-	private  BaseElement getBaseElement(BaseElement baseElement)
-	{
-		if(baseElement==null){
+
+	private BaseElement getBaseElement(BaseElement baseElement) {
+		if (baseElement == null) {
 			return null;
 		}
-		
-		if(baseElement.getId()==null){
-			BasicEObjectImpl basicEObjectImpl=(BasicEObjectImpl)baseElement;
-			if(basicEObjectImpl!=null&&basicEObjectImpl.eProxyURI()!=null){
-				String elementId=basicEObjectImpl.eProxyURI().fragment();
-				BaseElement bpmnElement=BpmnModelUtil.findElement(elementId, baseElement);
+
+		if (baseElement.getId() == null) {
+			BasicEObjectImpl basicEObjectImpl = (BasicEObjectImpl) baseElement;
+			if (basicEObjectImpl != null && basicEObjectImpl.eProxyURI() != null) {
+				String elementId = basicEObjectImpl.eProxyURI().fragment();
+				BaseElement bpmnElement = BpmnModelUtil.findElement(elementId, baseElement);
 				return bpmnElement;
-			}
-			else{
+			} else {
 				return null;
 			}
-		}else{
+		} else {
 			return baseElement;
 		}
-	} 
+	}
 
 	private Process createProcess(String processId, InputStream is) {
 
 		ResourceSet resourceSet = getResourceSet();
-		String fixflowFilePath = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getNoneTemplateFilePath();
+		String fixflowFilePath = ProcessEngineManagement.getDefaultProcessEngine()
+				.getProcessEngineConfiguration().getNoneTemplateFilePath();
 		URL url = ReflectUtil.getResource(fixflowFilePath);
 		if (url == null) {
-			throw new FoxBPMClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION_FILENOTFOUND, fixflowFilePath);
+			throw new FoxBPMClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION_FILENOTFOUND,
+					fixflowFilePath);
 		}
 		String filePath = url.toString();
 		Resource ddddResource = null;
@@ -468,7 +466,8 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		} catch (Exception e) {
 			throw new FoxBPMClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION, e);
 		}
-		Definitions definitions = (Definitions) ddddResource.getContents().get(0).eContents().get(0);
+		Definitions definitions = (Definitions) ddddResource.getContents().get(0).eContents()
+				.get(0);
 		for (RootElement rootElement : definitions.getRootElements()) {
 			if (rootElement instanceof Process) {
 				Process processObj = (Process) rootElement;
@@ -482,11 +481,15 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 
 	private ResourceSet getResourceSet() {
 		ResourceSet resourceSet = new ResourceSetImpl();
-		(EPackage.Registry.INSTANCE).put("http://www.omg.org/spec/BPMN/20100524/MODEL", Bpmn2Package.eINSTANCE);
+		(EPackage.Registry.INSTANCE).put("http://www.omg.org/spec/BPMN/20100524/MODEL",
+				Bpmn2Package.eINSTANCE);
 		(EPackage.Registry.INSTANCE).put("http://www.foxbpm.org/foxbpm", FoxBPMPackage.eINSTANCE);
-		(EPackage.Registry.INSTANCE).put("http://www.omg.org/spec/DD/20100524/DI", DiPackage.eINSTANCE);
-		(EPackage.Registry.INSTANCE).put("http://www.omg.org/spec/DD/20100524/DC", DcPackage.eINSTANCE);
-		(EPackage.Registry.INSTANCE).put("http://www.omg.org/spec/BPMN/20100524/DI", BpmnDiPackage.eINSTANCE);
+		(EPackage.Registry.INSTANCE).put("http://www.omg.org/spec/DD/20100524/DI",
+				DiPackage.eINSTANCE);
+		(EPackage.Registry.INSTANCE).put("http://www.omg.org/spec/DD/20100524/DC",
+				DcPackage.eINSTANCE);
+		(EPackage.Registry.INSTANCE).put("http://www.omg.org/spec/BPMN/20100524/DI",
+				BpmnDiPackage.eINSTANCE);
 		FoxBPMPackage.eINSTANCE.eClass();
 		FoxBPMPackage xxxPackage = FoxBPMPackage.eINSTANCE;
 		EPackage.Registry.INSTANCE.put(xxxPackage.getNsURI(), xxxPackage);

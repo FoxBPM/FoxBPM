@@ -20,6 +20,7 @@ package org.foxbpm.engine.impl.cmd;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
@@ -51,7 +52,8 @@ public class VerificationStartUserCmd implements Command<Boolean> {
 	private String processDefinitionKey;
 	private String processDefinitionId;
 
-	public VerificationStartUserCmd(String userId, String processDefinitionKey, String processDefinitionId) {
+	public VerificationStartUserCmd(String userId, String processDefinitionKey,
+			String processDefinitionId) {
 		this.userId = userId;
 		this.processDefinitionKey = processDefinitionKey;
 		this.processDefinitionId = processDefinitionId;
@@ -59,12 +61,14 @@ public class VerificationStartUserCmd implements Command<Boolean> {
 
 	@Override
 	public Boolean execute(CommandContext commandContext) {
-		DeploymentManager deployCache = commandContext.getProcessEngineConfigurationImpl().getDeploymentManager();
+		DeploymentManager deployCache = commandContext.getProcessEngineConfigurationImpl()
+				.getDeploymentManager();
 		ProcessDefinitionEntity processDefinition = null;
-		if (processDefinitionId != null && !"".equals(processDefinitionId)) {
+		if (StringUtils.isNotBlank(processDefinitionId)) {
 			processDefinition = deployCache.findDeployedProcessDefinitionById(processDefinitionId);
-		} else if (processDefinitionKey != null && !"".equals(processDefinitionKey)) {
-			processDefinition = deployCache.findDeployedLatestProcessDefinitionByKey(processDefinitionKey);
+		} else if (StringUtils.isNotBlank(processDefinitionKey)) {
+			processDefinition = deployCache
+					.findDeployedLatestProcessDefinitionByKey(processDefinitionKey);
 			return true;
 		} else {
 			throw new FoxBPMIllegalArgumentException("验证发起权限时，流程编号和流程唯一键不能同时为空");
@@ -95,11 +99,12 @@ public class VerificationStartUserCmd implements Command<Boolean> {
 		}
 		List<Group> groups = Authentication.selectGroupByUserId(userId);
 		for (IdentityLinkEntity identity : taskEntity.getIdentityLinks()) {
-			if (Constant.FOXBPM_ALL_USER.equals(identity.getUserId())) {
+			if (StringUtils.equals(Constant.FOXBPM_ALL_USER, identity.getUserId())) {
 				return true;
 			}
 			for (Group group : groups) {
-				if (group.getGroupType().equals(identity.getGroupType()) && group.getGroupId().equals(identity.getGroupId())) {
+				if (StringUtils.equals(group.getGroupType(), identity.getGroupType())
+						&& StringUtils.equals(group.getGroupId(), identity.getGroupId())) {
 					return true;
 				}
 			}

@@ -64,20 +64,15 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 	 */
 	public static AbstractSVGBuilder createSVGBuilder(VONode svgVo, String type) {
 
-		if (StringUtils.equalsIgnoreCase(type,
-				SVGTypeNameConstant.SVG_TYPE_EVENT)) {
+		if (StringUtils.equalsIgnoreCase(type, SVGTypeNameConstant.SVG_TYPE_EVENT)) {
 			return new EventSVGBuilder((SvgVO) svgVo);
-		} else if (StringUtils
-				.contains(type, SVGTypeNameConstant.SVG_TYPE_TASK)) {
+		} else if (StringUtils.contains(type, SVGTypeNameConstant.SVG_TYPE_TASK)) {
 			return new TaskSVGBuilder((SvgVO) svgVo);
-		} else if (StringUtils.contains(type,
-				SVGTypeNameConstant.SVG_TYPE_CONNECTOR)) {
+		} else if (StringUtils.contains(type, SVGTypeNameConstant.SVG_TYPE_CONNECTOR)) {
 			return new ConnectorSVGBuilder((SvgVO) svgVo);
-		} else if (StringUtils.contains(type,
-				SVGTypeNameConstant.SVT_TYPE_GATEWAY)) {
+		} else if (StringUtils.contains(type, SVGTypeNameConstant.SVT_TYPE_GATEWAY)) {
 			return new GatewaySVGBuilder((SvgVO) svgVo);
-		} else if (StringUtils
-				.contains(type, SVGTypeNameConstant.SVG_TYPE_LANE)) {
+		} else if (StringUtils.contains(type, SVGTypeNameConstant.SVG_TYPE_LANE)) {
 			return new LanesetSVGBuilder((SvgVO) svgVo);
 		}
 		return null;
@@ -144,12 +139,13 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 
 	public void setTextFont(String fontStr) {
 		if (StringUtils.isBlank(fontStr)) {
-			Font font = new Font("arial", Font.CENTER_BASELINE, 11);
+			Font font = new Font(ARIAL, Font.CENTER_BASELINE, 11);
 			this.textVO.setFont(font);
 			return;
 		}
-		String[] fonts = fontStr.split(",");
-		String style = "font-family:" + fonts[0] + ";font-size:" + fonts[1];
+		String[] fonts = fontStr.split(COMMA);
+		String style = new StringBuffer("font-family:").append(fonts[0]).append(";font-size:")
+				.append(fonts[1]).toString();
 		Font font = new Font(fonts[0], Font.PLAIN, Integer.valueOf(fonts[1]));
 		this.textVO.setFont(font);
 		this.textVO.setStyle(style);
@@ -206,7 +202,7 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 	 */
 	public void setTextStroke(String textStroke) {
 		if (StringUtils.isBlank(textStroke)) {
-			this.textVO.setStroke("black");
+			this.textVO.setStroke(STROKE_DEFAULT);
 			return;
 		}
 		this.textVO.setStroke(COLOR_FLAG + textStroke);
@@ -214,7 +210,7 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 
 	public void setTextFill(String fill) {
 		if (StringUtils.isBlank(fill)) {
-			this.textVO.setFill("black");
+			this.textVO.setFill(STROKE_DEFAULT);
 		}
 		this.textVO.setFill(COLOR_FLAG + fill);
 	}
@@ -281,7 +277,8 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 			if (radialGradientVo != null) {
 				String backGroudUUID = UUID.randomUUID().toString();
 				radialGradientVo.setId(backGroudUUID);
-				svgVo.setFill("url(#" + backGroudUUID + ") #" + fill);
+				svgVo.setFill(new StringBuffer(BACK_GROUND_PREFIX).append(backGroudUUID)
+						.append(BACK_GROUND_SUFFIX).append(fill).toString());
 				return;
 			}
 		}
@@ -292,8 +289,8 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 	 * 
 	 * @param fill
 	 */
-	protected void buildLinearGradient(String fill, VONode svgVo, float x1,
-			float x2, float y1, float y2) {
+	protected void buildLinearGradient(String fill, VONode svgVo, float x1, float x2, float y1,
+			float y2) {
 		DefsVO defsVo = this.svgVo.getgVo().getDefsVo();
 		if (defsVo != null) {
 			LinearGradient linearGradient = defsVo.getLinearGradient();
@@ -307,7 +304,7 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 				List<StopVO> stopVoList = linearGradient.getStopVoList();
 				if (stopVoList != null && stopVoList.size() > 0) {
 					StopVO stopVO = stopVoList.get(LINEARGRADIENT_INDEX);
-					svgVo.setFill("url(#" + backGroudUUID + ")");
+					svgVo.setFill(BACK_GROUND_PREFIX + backGroudUUID + BRACKET_SUFFIX);
 					stopVO.setStopColor(COLOR_FLAG + fill);
 				}
 			}

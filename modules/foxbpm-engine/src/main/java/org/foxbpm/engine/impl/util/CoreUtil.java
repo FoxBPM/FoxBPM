@@ -19,6 +19,7 @@ package org.foxbpm.engine.impl.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.TaskEntity;
@@ -29,13 +30,12 @@ import org.foxbpm.engine.task.TaskCommand;
 public class CoreUtil {
 
 	public static List<TaskCommand> getTaskCommand(TaskEntity task, boolean isProcessTracking) {
-
 		List<TaskCommand> taskCommands = new ArrayList<TaskCommand>();
-
 		if (task != null) {
-
+			Map<String, AbstractCommandFilter> abstractCommandFilterMap = Context
+					.getProcessEngineConfiguration().getAbstractCommandFilterMap();
 			for (TaskCommand taskCommand : task.getTaskDefinition().getTaskCommands()) {
-				AbstractCommandFilter abstractCommandFilter = Context.getProcessEngineConfiguration().getAbstractCommandFilterMap()
+				AbstractCommandFilter abstractCommandFilter = abstractCommandFilterMap
 						.get(taskCommand.getTaskCommandType());
 				if (abstractCommandFilter != null) {
 					abstractCommandFilter.setProcessTracking(isProcessTracking);
@@ -54,15 +54,15 @@ public class CoreUtil {
 
 		return taskCommands;
 	}
-	
-	
+
 	public static List<TaskCommand> getSubmitNodeTaskCommand(TaskDefinition taskDefinition) {
 
 		List<TaskCommand> taskCommandInsts = taskDefinition.getTaskCommands();
 		List<TaskCommand> taskCommandInstsNew = new ArrayList<TaskCommand>();
+		Map<String, AbstractCommandFilter> abstractCommandFilterMap = Context
+				.getProcessEngineConfiguration().getAbstractCommandFilterMap();
 		for (TaskCommand taskCommandInst : taskCommandInsts) {
-			AbstractCommandFilter abstractCommandFilter = Context.getProcessEngineConfiguration().getAbstractCommandFilterMap()
-					.get(taskCommandInst.getTaskCommandType());
+			AbstractCommandFilter abstractCommandFilter = abstractCommandFilterMap.get(taskCommandInst.getTaskCommandType());
 			if (abstractCommandFilter != null) {
 				abstractCommandFilter.setProcessTracking(false);
 				abstractCommandFilter.setTaskCommandInst(taskCommandInst);
@@ -73,15 +73,13 @@ public class CoreUtil {
 				taskCommandInstsNew.add(taskCommandInst);
 			}
 		}
-		
-		
-//		for (TaskCommandInst taskCommandInstObj : taskCommandInstsNew) {
-//					taskCommandInstObj.clearParamMap();
-//					taskCommandInstObj.execExpressionParam(null,null);
-//				}
-			
-		
-		//taskCommandInstsNew.get(0).getParamMap();
+
+		// for (TaskCommandInst taskCommandInstObj : taskCommandInstsNew) {
+		// taskCommandInstObj.clearParamMap();
+		// taskCommandInstObj.execExpressionParam(null,null);
+		// }
+
+		// taskCommandInstsNew.get(0).getParamMap();
 
 		return taskCommandInstsNew;
 	}

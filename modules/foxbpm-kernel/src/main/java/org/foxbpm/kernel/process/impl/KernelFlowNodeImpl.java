@@ -29,7 +29,10 @@ import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.process.KernelSequenceFlow;
 
-public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl implements KernelFlowNode, KernelDIBounds {
+public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl
+		implements
+			KernelFlowNode,
+			KernelDIBounds {
 
 	private static final long serialVersionUID = 1L;
 	protected List<KernelSequenceFlowImpl> outgoingSequenceFlows = new ArrayList<KernelSequenceFlowImpl>();
@@ -40,7 +43,6 @@ public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl implemen
 	protected boolean isScope;
 	protected boolean isAsync;
 	protected boolean isExclusive;
-	
 
 	// 图形信息
 	protected int x = -1;
@@ -57,13 +59,15 @@ public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl implemen
 	}
 
 	public KernelSequenceFlowImpl createOutgoingSequenceFlow(String sequenceFlowId) {
-		KernelSequenceFlowImpl sequenceFlow = new KernelSequenceFlowImpl(sequenceFlowId, processDefinition);
+		KernelSequenceFlowImpl sequenceFlow = new KernelSequenceFlowImpl(sequenceFlowId,
+				processDefinition);
 		sequenceFlow.setSourceRef(this);
 		outgoingSequenceFlows.add(sequenceFlow);
 
 		if (sequenceFlowId != null) {
 			if (namedOutgoingSequenceFlows.containsKey(sequenceFlowId)) {
-				throw new KernelException("flownode '" + id + " has duplicate transition '" + sequenceFlowId + "'");
+				throw new KernelException("flownode '" + id + " has duplicate transition '"
+						+ sequenceFlowId + "'");
 			}
 			namedOutgoingSequenceFlows.put(sequenceFlowId, sequenceFlow);
 		}
@@ -75,19 +79,12 @@ public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl implemen
 		return namedOutgoingSequenceFlows.get(sequenceFlowId);
 	}
 
-	public String toString() {
-		return "FlowNode(" + id + ")";
-	}
-
 	public KernelFlowNodeImpl getParentFlowNode() {
 		if (parent instanceof KernelFlowNodeImpl) {
 			return (KernelFlowNodeImpl) parent;
 		}
 		return null;
 	}
-
-	// restricted setters
-	// ///////////////////////////////////////////////////////
 
 	protected void setOutgoingSequenceFlows(List<KernelSequenceFlowImpl> outgoingSequenceFlows) {
 		this.outgoingSequenceFlows = outgoingSequenceFlows;
@@ -101,17 +98,12 @@ public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl implemen
 		this.incomingSequenceFlows = incomingSequenceFlows;
 	}
 
-	// getters and setters
-	// //////////////////////////////////////////////////////
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	public List<KernelSequenceFlow> getOutgoingSequenceFlows() {
-
 		// 创建比较器对象
 		ComparatorSequence comparatorSequence = new ComparatorSequence();
 		// 调用排序方法
 		Collections.sort(outgoingSequenceFlows, comparatorSequence);
-
 		return (List) outgoingSequenceFlows;
 	}
 
@@ -127,7 +119,7 @@ public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl implemen
 		return parent;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	public List<KernelSequenceFlow> getIncomingSequenceFlows() {
 		return (List) incomingSequenceFlows;
 	}
@@ -186,6 +178,10 @@ public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl implemen
 
 	public void setExclusive(boolean isExclusive) {
 		this.isExclusive = isExclusive;
+	}
+
+	public String toString() {
+		return new StringBuffer("FlowNode(").append(id).append(")").toString();
 	}
 
 }

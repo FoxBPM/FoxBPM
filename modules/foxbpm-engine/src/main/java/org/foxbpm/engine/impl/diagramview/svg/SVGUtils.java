@@ -55,7 +55,7 @@ public final class SVGUtils {
 	 */
 	private static final String BPMN_NODE_ID = "bg_frame";
 	private static final String EDGE = "edge";
-
+	private static final String SPACE = " ";
 	/**
 	 * 获取任务矩形
 	 * 
@@ -109,8 +109,7 @@ public final class SVGUtils {
 					Iterator<PathVO> pathIter = pathVoList.iterator();
 					while (pathIter.hasNext()) {
 						PathVO tempPathVo = pathIter.next();
-						if (StringUtils.equalsIgnoreCase(tempPathVo.getId(),
-								BPMN_NODE_ID)) {
+						if (StringUtils.equalsIgnoreCase(tempPathVo.getId(), BPMN_NODE_ID)) {
 							return tempPathVo;
 						}
 					}
@@ -182,13 +181,13 @@ public final class SVGUtils {
 	 * @param waypoints
 	 * @return
 	 */
-	public final static List<Point> convertWaypointsTOPointList(
-			List<Integer> waypoints) {
-		if (waypoints != null && waypoints.size() > 0
-				&& waypoints.size() % 2 == 0) {
+	public final static List<Point> convertWaypointsTOPointList(List<Integer> waypoints) {
+		int size;
+		if (waypoints != null && (size = waypoints.size()) > 0 && size % 2 == 0) {
 			List<Point> pointList = new ArrayList<Point>();
 			Point point = null;
-			for (int i = 0; i < waypoints.size(); i++) {
+
+			for (int i = 0; i < size; i++) {
 				if (i % 2 != 0) {
 					point = new Point(waypoints.get(i - 1), waypoints.get(i));
 					pointList.add(point);
@@ -206,18 +205,16 @@ public final class SVGUtils {
 	 * @param waypoints
 	 * @return
 	 */
-	public final static String[] getSequenceFLowWayPointArrayByWayPointList(
-			List<Integer> waypoints) {
-		if (waypoints != null && waypoints.size() > 0
-				&& waypoints.size() % 2 == 0) {
-			String[] wayPointArray = new String[waypoints.size() / 2];
+	public final static String[] getSequenceFLowWayPointArrayByWayPointList(List<Integer> waypoints) {
+		int wayPointSize;
+		if (waypoints != null && (wayPointSize = waypoints.size()) > 0 && wayPointSize % 2 == 0) {
+			String[] wayPointArray = new String[wayPointSize / 2];
 			int arrayIndex = 0;
-			for (int i = 0; i < waypoints.size(); i++) {
+
+			for (int i = 0; i < wayPointSize; i++) {
 				if (i % 2 != 0) {
-					wayPointArray[arrayIndex] = String.valueOf(waypoints
-							.get(i - 1))
-							+ " "
-							+ String.valueOf(waypoints.get(i)) + " ";
+					wayPointArray[arrayIndex] = String.valueOf(waypoints.get(i - 1)) + SPACE
+							+ String.valueOf(waypoints.get(i)) + SPACE;
 					arrayIndex++;
 				}
 			}
@@ -243,8 +240,7 @@ public final class SVGUtils {
 			marshal.marshal(svgVo, writer);
 			return writer.toString();
 		} catch (Exception e) {
-			throw new FoxBPMException("svg object convert to String exception",
-					e);
+			throw new FoxBPMException("svg object convert to String exception", e);
 		}
 	}
 
@@ -290,8 +286,7 @@ public final class SVGUtils {
 			bos = new ByteArrayOutputStream();
 			oos = new ObjectOutputStream(bos);
 			oos.writeObject(object);
-			ois = new ObjectInputStream(new ByteArrayInputStream(
-					bos.toByteArray()));
+			ois = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()));
 			cloneObject = ois.readObject();
 		} catch (Exception e) {
 			throw new FoxBPMException("SVG对象G节点克隆出现问题", e);

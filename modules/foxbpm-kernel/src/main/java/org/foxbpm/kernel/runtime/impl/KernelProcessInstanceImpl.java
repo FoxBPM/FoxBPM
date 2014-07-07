@@ -31,7 +31,8 @@ import org.foxbpm.kernel.runtime.InterpretableProcessInstance;
 import org.foxbpm.kernel.runtime.KernelProcessInstance;
 
 public class KernelProcessInstanceImpl extends KernelVariableScopeImpl
-		implements InterpretableProcessInstance {
+		implements
+			InterpretableProcessInstance {
 
 	/**
 	 * 
@@ -71,8 +72,7 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl
 	 * @param parentProcessInstance
 	 *            父流程实例
 	 */
-	public void setParentProcessInstance(
-			KernelProcessInstanceImpl parentProcessInstance) {
+	public void setParentProcessInstance(KernelProcessInstanceImpl parentProcessInstance) {
 		this.parentProcessInstance = parentProcessInstance;
 	}
 
@@ -85,8 +85,7 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl
 		return parentProcessInstanceToken;
 	}
 
-	public void setParentProcessInstanceToken(
-			KernelTokenImpl parentProcessInstanceToken) {
+	public void setParentProcessInstanceToken(KernelTokenImpl parentProcessInstanceToken) {
 		this.parentProcessInstanceToken = parentProcessInstanceToken;
 	}
 
@@ -229,8 +228,7 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl
 
 	}
 
-	public void setProcessDefinition(
-			KernelProcessDefinitionImpl processDefinition) {
+	public void setProcessDefinition(KernelProcessDefinitionImpl processDefinition) {
 		this.processDefinition = processDefinition;
 	}
 
@@ -288,8 +286,9 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl
 
 	public void end() {
 		isEnded = true;
-		getRootToken().end();
-		getRootToken().fireEvent(KernelEvent.PROCESS_END);
+		KernelTokenImpl tempToken = getRootToken();
+		tempToken.end();
+		tempToken.fireEvent(KernelEvent.PROCESS_END);
 		if (getParentProcessInstance() != null) {
 			signalParentProcessInstance();
 		}

@@ -71,7 +71,8 @@ public class ConnectorSVGFactory extends AbstractFlowElementSVGFactory {
 
 	@Override
 	public void filterConnectorVO(VONode voNode, String[] filterCondition) {
-		for (int i = 0; i < filterCondition.length; i++) {
+		int length = filterCondition.length;
+		for (int i = 0; i < length; i++) {
 			List<MarkerVO> markerVOList = ((SvgVO) voNode).getgVo().getDefsVo()
 					.getMarkerVOList();
 			Iterator<MarkerVO> markterIter = markerVOList.iterator();

@@ -29,43 +29,42 @@ public class KernelLaneSetImpl extends KernelBaseElementImpl implements KernelLa
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+	protected List<KernelLane> lanes = new ArrayList<KernelLane>();
+	protected String name;
+
 	public KernelLaneSetImpl(String id, KernelProcessDefinitionImpl processDefinition) {
 		super(id, processDefinition);
 	}
-
-	protected List<KernelLane> lanes=new ArrayList<KernelLane>();
 
 	public List<KernelLane> getLanes() {
 		return lanes;
 	}
 
-	protected String name;
-	
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
-		this.name=name;
+		this.name = name;
 	}
-	
+
 	public KernelLane getLaneForId(String id) {
-	    if(lanes != null && lanes.size() > 0) {
-	      for(KernelLane lane : lanes) {
-	        if(id.equals(lane.getId())) {
-	          return lane;
-	        }else{
-	        	if(lane.getChildLaneSet()!=null&&lane.getChildLaneSet().getLanes().size()>0){
-	        		KernelLane kernelLane=lane.getChildLaneSet().getLaneForId(id);
-	        		if(kernelLane!=null){
-	        			return kernelLane;
-	        		}
-	        	}
-	        }
-	      }
-	    }
-	    return null;
-	  }
+		if (lanes != null && lanes.size() > 0) {
+			for (KernelLane lane : lanes) {
+				if (id.equals(lane.getId())) {
+					return lane;
+				} else {
+					KernelLaneSet childLaneSet = lane.getChildLaneSet();
+					if (childLaneSet != null && childLaneSet.getLanes().size() > 0) {
+						KernelLane kernelLane = childLaneSet.getLaneForId(id);
+						if (kernelLane != null) {
+							return kernelLane;
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
 
 }

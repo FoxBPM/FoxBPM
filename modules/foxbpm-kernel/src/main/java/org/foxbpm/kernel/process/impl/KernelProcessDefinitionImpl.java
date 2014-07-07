@@ -17,7 +17,6 @@
  */
 package org.foxbpm.kernel.process.impl;
 
-
 import org.foxbpm.kernel.process.KernelDefinitions;
 import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.process.KernelLaneSet;
@@ -26,7 +25,9 @@ import org.foxbpm.kernel.runtime.InterpretableProcessInstance;
 import org.foxbpm.kernel.runtime.KernelProcessInstance;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
 
-public class KernelProcessDefinitionImpl extends KernelFlowElementsContainerImpl implements KernelProcessDefinition {
+public class KernelProcessDefinitionImpl extends KernelFlowElementsContainerImpl
+		implements
+			KernelProcessDefinition {
 
 	/**
 	 * 
@@ -39,7 +40,6 @@ public class KernelProcessDefinitionImpl extends KernelFlowElementsContainerImpl
 	protected KernelFlowNodeImpl initial;
 	protected KernelDefinitions definitions;
 
-
 	public KernelProcessDefinitionImpl(String id) {
 		super(id, null);
 		processDefinition = this;
@@ -47,10 +47,7 @@ public class KernelProcessDefinitionImpl extends KernelFlowElementsContainerImpl
 
 	public KernelProcessInstance createProcessInstance() {
 		if (initial == null) {
-			throw new KernelException(
-					"流程 '"
-							+ name
-							+ "' 没有指定启动节点不能启动.");
+			throw new KernelException("流程 '" + name + "' 没有指定启动节点不能启动.");
 		}
 		return createProcessInstanceForInitial(initial);
 	}
@@ -59,23 +56,21 @@ public class KernelProcessDefinitionImpl extends KernelFlowElementsContainerImpl
 	public KernelProcessInstance createProcessInstanceForInitial(KernelFlowNodeImpl initial) {
 
 		if (initial == null) {
-			throw new KernelException("Cannot start process instance, initial activity where the process instance should start is null.");
+			throw new KernelException(
+					"Cannot start process instance, initial activity where the process instance should start is null.");
 		}
 
 		InterpretableProcessInstance processInstance = newProcessInstance(initial);
 		processInstance.setProcessDefinition(this);
 		processInstance.initialize();
 
-		
-
 		return processInstance;
 	}
-	
-	public KernelSequenceFlowImpl createSequenceFlow(String id, KernelProcessDefinitionImpl processDefinition){
+
+	public KernelSequenceFlowImpl createSequenceFlow(String id,
+			KernelProcessDefinitionImpl processDefinition) {
 		return new KernelSequenceFlowImpl(id, processDefinition);
 	}
-
-
 
 	protected InterpretableProcessInstance newProcessInstance(KernelFlowNodeImpl startFlowNode) {
 		return new KernelProcessInstanceImpl(startFlowNode);
@@ -92,8 +87,6 @@ public class KernelProcessDefinitionImpl extends KernelFlowElementsContainerImpl
 	public void addLaneSet(KernelLaneSet newLaneSet) {
 		getLaneSets().add(newLaneSet);
 	}
-
-
 
 	// getters and setters
 	// //////////////////////////////////////////////////////
@@ -130,8 +123,6 @@ public class KernelProcessDefinitionImpl extends KernelFlowElementsContainerImpl
 		return (String) getProperty("documentation");
 	}
 
-
-
 	public void setDefinitions(KernelDefinitions definitions) {
 		this.definitions = definitions;
 	}
@@ -140,7 +131,4 @@ public class KernelProcessDefinitionImpl extends KernelFlowElementsContainerImpl
 		return definitions;
 	}
 
-
-
-	
 }

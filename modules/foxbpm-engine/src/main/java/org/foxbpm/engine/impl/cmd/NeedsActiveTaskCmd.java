@@ -10,45 +10,34 @@ import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
-
-public abstract class NeedsActiveTaskCmd<T> implements Command<T>, Serializable  {
+public abstract class NeedsActiveTaskCmd<T> implements Command<T>, Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	
+
 	protected String taskId;
-	  
-	  public NeedsActiveTaskCmd(String taskId) {
-	    this.taskId = taskId;
-	  }
-	  
-	  public T execute(CommandContext commandContext) {
-	    
-	    if(taskId == null) {
-	      throw new FoxBPMIllegalArgumentException("taskId is null");
-	    }
-	    
-	    TaskEntity task = Context
-	      .getCommandContext()
-	      .getTaskManager()
-	      .findTaskById(taskId);
-	    
-	    if (task == null) {
-	      throw new FoxBPMObjectNotFoundException("Cannot find task with id " + taskId);
-	    }
-	    
-	    if (task.isSuspended()) {
-	      throw new FoxBPMException("task is suspended");
-	    }
-	    
-	    return execute(commandContext, task);
-	  }
-	  
-	  /** 子类需要实现这个方法*/
-	  protected abstract T execute(CommandContext commandContext, TaskEntity task);
-	  
+	public NeedsActiveTaskCmd(String taskId) {
+		this.taskId = taskId;
+	}
+
+	public T execute(CommandContext commandContext) {
+		if (taskId == null) {
+			throw new FoxBPMIllegalArgumentException("taskId is null");
+		}
+		TaskEntity task = Context.getCommandContext().getTaskManager().findTaskById(taskId);
+		if (task == null) {
+			throw new FoxBPMObjectNotFoundException("Cannot find task with id " + taskId);
+		}
+		if (task.isSuspended()) {
+			throw new FoxBPMException("task is suspended");
+		}
+
+		return execute(commandContext, task);
+	}
+
+	/** 子类需要实现这个方法 */
+	protected abstract T execute(CommandContext commandContext, TaskEntity task);
 
 }

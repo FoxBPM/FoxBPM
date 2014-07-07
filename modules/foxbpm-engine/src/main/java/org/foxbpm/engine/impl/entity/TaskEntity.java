@@ -344,7 +344,6 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	
 
 	public boolean isModified() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

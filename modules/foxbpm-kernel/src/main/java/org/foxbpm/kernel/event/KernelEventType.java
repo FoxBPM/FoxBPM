@@ -42,6 +42,4 @@ public class KernelEventType {
 	public static final String EVENTTYPE_TASK_END = "task-end";
 	public static final String EVENTTYPE_TIMER = "timer";
 
-	
-
 }

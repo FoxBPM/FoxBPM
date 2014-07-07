@@ -23,7 +23,8 @@ import org.foxbpm.kernel.runtime.InterpretableExecutionContext;
 public class KernelEventProcessAbort extends AbstractKernelEvent {
 
 	@Override
-	protected KernelFlowElementsContainerImpl getContainer(InterpretableExecutionContext executionContext) {
+	protected KernelFlowElementsContainerImpl getContainer(
+			InterpretableExecutionContext executionContext) {
 		return executionContext.getProcessDefinition();
 	}
 
@@ -35,9 +36,7 @@ public class KernelEventProcessAbort extends AbstractKernelEvent {
 	@Override
 	protected void eventNotificationsCompleted(InterpretableExecutionContext executionContext) {
 		// TODO Auto-generated method stub
-		
+
 	}
-
-
 
 }

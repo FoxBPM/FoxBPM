@@ -78,7 +78,8 @@ public class TaskSVGFactory extends AbstractFlowElementSVGFactory {
 
 	@Override
 	public void filterActivityTaskVO(VONode svgVO, String[] filterCondition) {
-		for (int i = 0; i < filterCondition.length; i++) {
+		int length = filterCondition.length;
+		for (int i = 0; i < length; i++) {
 			List<RectVO> rectVoList = ((SvgVO) svgVO).getgVo().getRectVoList();
 			Iterator<RectVO> rectVOIter = rectVoList.iterator();
 			while (rectVOIter.hasNext()) {

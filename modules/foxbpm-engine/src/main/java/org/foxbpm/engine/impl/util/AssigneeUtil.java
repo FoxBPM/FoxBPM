@@ -24,86 +24,57 @@ import java.util.List;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
-
 public class AssigneeUtil {
-	
-	
-	public static List<String> executionExpression(String expression, FlowNodeExecutionContext executionContext) {
 
+	public static List<String> executionExpression(String expression,
+			FlowNodeExecutionContext executionContext) {
 		List<String> resultList = new ArrayList<String>();
-
 		Object result = ExpressionMgmt.execute(expression, executionContext);
 		if (result != null) {
-
 			if (result instanceof String) {
-
 				String[] dddStrings = result.toString().split(",");
-
-				for (int i = 0; i < dddStrings.length; i++) {
+				int length = dddStrings.length;
+				for (int i = 0; i < length; i++) {
 					resultList.add(dddStrings[i]);
 				}
-
-			}
-
-			if (result instanceof Integer) {
+			} else if (result instanceof Integer) {
 				resultList.add(result.toString());
-			}
-			if (result instanceof BigDecimal) {
+			} else if (result instanceof BigDecimal) {
 				resultList.add(result.toString());
-			}
-	
-
-			if (result instanceof Collection) {
+			} else if (result instanceof Collection) {
 				Collection<?> resultTempList = (Collection<?>) result;
 				for (Object resultObj : resultTempList) {
 					resultList.add(resultObj.toString());
 				}
 			}
 
-
 		}
 
 		return resultList;
 	}
-	
-	
+
 	public static List<String> executionExpressionObj(Object result) {
-
 		List<String> resultList = new ArrayList<String>();
-
-
 		if (result != null) {
-
 			if (result instanceof String) {
-
 				String[] dddStrings = result.toString().split(",");
-
 				for (int i = 0; i < dddStrings.length; i++) {
 					resultList.add(dddStrings[i]);
 				}
-
-			}
-
-			if (result instanceof Integer) {
+			} else if (result instanceof Integer) {
 				resultList.add(result.toString());
-			}
-			if (result instanceof BigDecimal) {
+			} else if (result instanceof BigDecimal) {
 				resultList.add(result.toString());
-			}
-	
-			if (result instanceof Collection) {
+			} else if (result instanceof Collection) {
 				Collection<?> resultTempList = (Collection<?>) result;
 				for (Object resultObj : resultTempList) {
 					resultList.add(resultObj.toString());
 				}
 			}
 
-
-
 		}
 
 		return resultList;
 	}
-
 
 }

@@ -135,6 +135,10 @@ public class CommandContext {
 		}
 	}
 	
+	public Throwable getException() {
+		return exception;
+	}
+
 	public void close(){
 		try{
 			try{

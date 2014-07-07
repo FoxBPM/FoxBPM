@@ -38,12 +38,9 @@ public class KernelSequenceFlowImpl extends KernelFlowElementImpl implements Ker
 	protected KernelFlowNodeImpl sourceRef;
 	protected KernelFlowNodeImpl targetRef;
 	protected List<KernelListener> kernelListeners;
-	protected int orderId=0;
-	
-	protected KernelSequenceFlowBehavior sequenceFlowBehavior;
+	protected int orderId = 0;
 
-	
-	
+	protected KernelSequenceFlowBehavior sequenceFlowBehavior;
 
 	/** Graphical information: a list of waypoints: x1, y1, x2, y2, x3, y3, .. */
 	protected List<Integer> waypoints = new ArrayList<Integer>();
@@ -51,6 +48,24 @@ public class KernelSequenceFlowImpl extends KernelFlowElementImpl implements Ker
 	public KernelSequenceFlowImpl(String id, KernelProcessDefinitionImpl processDefinition) {
 		super(id, processDefinition);
 		processDefinition.getSequenceFlows().put(id, this);
+	}
+
+	public boolean isContinue(FlowNodeExecutionContext executionContext) {
+		if (sequenceFlowBehavior == null) {
+			return true;
+		} else {
+			return sequenceFlowBehavior.isContinue(executionContext);
+		}
+	}
+
+	public void take(InterpretableExecutionContext executionContext) {
+		executionContext.setFlowNode(null);
+		executionContext.setSequenceFlow(this);
+		// 执行令牌进入条线事件
+		executionContext.fireEvent(KernelEvent.SEQUENCEFLOW_TAKE);
+		executionContext.setSequenceFlow(null);
+
+		executionContext.enter(getTargetRef());
 	}
 
 	public KernelFlowNodeImpl getSourceRef() {
@@ -62,25 +77,11 @@ public class KernelSequenceFlowImpl extends KernelFlowElementImpl implements Ker
 		targetRef.getIncomingSequenceFlows().add(this);
 	}
 
-	
 	public void addKernelListener(KernelListener kernelListener) {
 		if (kernelListeners == null) {
 			kernelListeners = new ArrayList<KernelListener>();
 		}
 		kernelListeners.add(kernelListener);
-	}
-
-	public String toString() {
-		return "(" + sourceRef.getId() + ")--" + (id != null ? id + "-->(" : ">(") + targetRef.getId() + ")";
-	}
-
-	
-	@SuppressWarnings("unchecked")
-	public List<KernelListener> getKernelListeners() {
-		if (kernelListeners == null) {
-			return Collections.EMPTY_LIST;
-		}
-		return kernelListeners;
 	}
 
 	// getters and setters
@@ -89,12 +90,18 @@ public class KernelSequenceFlowImpl extends KernelFlowElementImpl implements Ker
 	protected void setSourceRef(KernelFlowNodeImpl sourceRef) {
 		this.sourceRef = sourceRef;
 	}
+	@SuppressWarnings("unchecked")
+	public List<KernelListener> getKernelListeners() {
+		if (kernelListeners == null) {
+			return Collections.EMPTY_LIST;
+		}
+		return kernelListeners;
+	}
 
 	public KernelFlowNodeImpl getTargetRef() {
 		return targetRef;
 	}
 
-	
 	public void setKernelListeners(List<KernelListener> kernelListeners) {
 		this.kernelListeners = kernelListeners;
 	}
@@ -105,27 +112,6 @@ public class KernelSequenceFlowImpl extends KernelFlowElementImpl implements Ker
 
 	public void setWaypoints(List<Integer> waypoints) {
 		this.waypoints = waypoints;
-	}
-
-	public boolean isContinue(FlowNodeExecutionContext executionContext) {
-		if(sequenceFlowBehavior==null){
-			return true;
-		}else{
-			return sequenceFlowBehavior.isContinue(executionContext);
-		}
-	}
-
-	public void take(InterpretableExecutionContext executionContext) {
-
-		
-		executionContext.setFlowNode(null);
-		executionContext.setSequenceFlow(this);
-		// 执行令牌进入条线事件
-		executionContext.fireEvent(KernelEvent.SEQUENCEFLOW_TAKE);
-		executionContext.setSequenceFlow(null);
-		
-		executionContext.enter(getTargetRef());
-
 	}
 
 	public int getOrderId() {
@@ -144,4 +130,9 @@ public class KernelSequenceFlowImpl extends KernelFlowElementImpl implements Ker
 		this.sequenceFlowBehavior = sequenceFlowBehavior;
 	}
 
+	public String toString() {
+		return new StringBuffer("(").append(sourceRef.getId()).append(")--")
+				.append(id != null ? id + "-->(" : ">(").append(targetRef.getId()).append(")")
+				.toString();
+	}
 }

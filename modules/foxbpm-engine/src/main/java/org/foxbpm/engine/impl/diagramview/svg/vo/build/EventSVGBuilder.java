@@ -128,18 +128,18 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 			if (linearGradient != null) {
 				String backGroudUUID = UUID.randomUUID().toString();
 				linearGradient.setId(backGroudUUID);
-				linearGradient.setX1(this.circleVO.getCx()
-						- this.circleVO.getR());
-				linearGradient.setX2(this.circleVO.getCx()
-						- this.circleVO.getR());
-				linearGradient.setY1(this.circleVO.getCy()
-						- this.circleVO.getR());
-				linearGradient.setY2(this.circleVO.getCy()
-						+ this.circleVO.getR());
+				Float cx = this.circleVO.getCx();
+				Float cy = this.circleVO.getCy();
+				Float r = this.circleVO.getR();
+				linearGradient.setX1(cx - r);
+				linearGradient.setX2(cx - r);
+				linearGradient.setY1(cy - r);
+				linearGradient.setY2(cy + r);
 				List<StopVO> stopVoList = linearGradient.getStopVoList();
 				if (stopVoList != null && stopVoList.size() > 0) {
 					StopVO stopVO = stopVoList.get(LINEARGRADIENT_INDEX);
-					this.circleVO.setFill("url(#" + backGroudUUID + ")");
+					this.circleVO.setFill(new StringBuffer(BACK_GROUND_PREFIX)
+							.append(backGroudUUID).append(BRACKET_SUFFIX).toString());
 					stopVO.setStopColor(COLOR_FLAG + fill);
 					return;
 				}
@@ -173,11 +173,11 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 		y = y + this.circleVO.getR();
 		x = x + this.circleVO.getR();
 		// 如果是事件节点，字体横坐标和圆心的横坐标一直，纵坐标等圆心坐标值加圆的半径值
-		if (StringUtils.isNotBlank(textVO.getElementValue())) {
-			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(),
-					this.textVO.getElementValue());
+		String elementValue = textVO.getElementValue();
+		if (StringUtils.isNotBlank(elementValue)) {
+			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(), elementValue);
 			int languageShift = -3;
-			if (SVGUtils.isChinese(this.textVO.getElementValue().charAt(0))) {
+			if (SVGUtils.isChinese(elementValue.charAt(0))) {
 				languageShift = 4;
 				languageShift = languageShift - (textWidth <= 16 ? 2 : 0);
 			}
@@ -188,7 +188,9 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 		// 如果存在子类型，例如ERROR
 		if (this.pathVo != null) {
 			// 整体 SHIFT
-			this.svgVo.getgVo().setTransform("translate(" + x + ", " + y + ")");
+			this.svgVo.getgVo().setTransform(
+					new StringBuffer(TRANSLANT_PREFIX).append(x).append(COMMA).append(y)
+							.append(BRACKET_SUFFIX).toString());
 			// TODO 同时需要设置文本的相对偏移量
 		} else {
 			this.circleVO.setCx(x);
