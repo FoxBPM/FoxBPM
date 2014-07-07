@@ -29,4 +29,14 @@ public interface Constants {
 	 * 查询sql标示
 	 */
 	String SQL_SELECT = "select";
+
+	/**
+	 * 逗号标示
+	 */
+	String COMMA = ",";
+
+	/**
+	 * 角色类型
+	 */
+	String ROLE_TYPE = "role";
 }

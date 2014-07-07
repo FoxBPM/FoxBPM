@@ -1,3 +1,20 @@
+/**
+ * Copyright 1996-2014 FoxBPM ORG.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * @author yangguangftlp
+ */
 package org.foxbpm.connector.flowconnector.WebServiceCall;
 
 import java.io.ByteArrayOutputStream;
@@ -13,9 +30,17 @@ import javax.xml.ws.Dispatch;
 import javax.xml.ws.Service;
 import javax.xml.ws.soap.SOAPBinding;
 
+import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.impl.connector.FlowConnectorHandler;
+import org.foxbpm.engine.impl.util.StringUtil;
 
+/**
+ * WebService 调用
+ * 
+ * @author yangguangftlp
+ * @date 2014年7月7日
+ */
 public class WebServiceCall implements FlowConnectorHandler {
 
 	/**
@@ -36,6 +61,23 @@ public class WebServiceCall implements FlowConnectorHandler {
 	private java.lang.String response;
 
 	public void execute(ConnectorExecutionContext executionContext) throws Exception {
+		if (StringUtil.isEmpty(namespaceURI)) {
+			throw new FoxBPMConnectorException("namespaceURI is null!");
+		}
+		if (StringUtil.isEmpty(portName)) {
+			throw new FoxBPMConnectorException("portName is null!");
+		}
+		if (StringUtil.isEmpty(serviceName)) {
+			throw new FoxBPMConnectorException("serviceName is null!");
+		}
+
+		if (StringUtil.isEmpty(endpointAddress)) {
+			throw new FoxBPMConnectorException("endpointAddress is null!");
+		}
+		if (StringUtil.isEmpty(request)) {
+			throw new FoxBPMConnectorException("request is null!");
+		}
+
 		QName portQName = new QName(namespaceURI, portName);
 		Service service = Service.create(new QName(namespaceURI, serviceName));
 		service.addPort(portQName, SOAPBinding.SOAP11HTTP_BINDING, endpointAddress);

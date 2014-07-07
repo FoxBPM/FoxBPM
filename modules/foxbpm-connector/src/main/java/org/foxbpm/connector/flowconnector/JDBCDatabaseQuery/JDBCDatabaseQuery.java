@@ -1,15 +1,38 @@
+/**
+ * Copyright 1996-2014 FoxBPM ORG.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * @author yangguangftlp
+ */
 package org.foxbpm.connector.flowconnector.JDBCDatabaseQuery;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 
 import org.foxbpm.connector.common.constant.Constants;
-import org.foxbpm.engine.exception.FoxBPMBizException;
+import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.impl.connector.FlowConnectorHandler;
 import org.foxbpm.engine.impl.db.SqlCommand;
 import org.foxbpm.engine.impl.util.StringUtil;
 
+/**
+ * JDBC数据库查询
+ * 
+ * @author yangguangftlp
+ * @date 2014年7月7日
+ */
 public class JDBCDatabaseQuery implements FlowConnectorHandler {
 
 	/**
@@ -32,19 +55,19 @@ public class JDBCDatabaseQuery implements FlowConnectorHandler {
 	public void execute(ConnectorExecutionContext executionContext) throws Exception {
 
 		if (StringUtil.isEmpty(driverClassName)) {
-			throw new FoxBPMBizException("driverClassName is null!");
+			throw new FoxBPMConnectorException("driverClassName is null!");
 		}
 		if (StringUtil.isEmpty(url)) {
-			throw new FoxBPMBizException("url is null!");
+			throw new FoxBPMConnectorException("url is null!");
 		}
 		if (StringUtil.isEmpty(username)) {
-			throw new FoxBPMBizException("username is null!");
+			throw new FoxBPMConnectorException("username is null!");
 		}
 		if (StringUtil.isEmpty(password)) {
-			throw new FoxBPMBizException("password is null!");
+			throw new FoxBPMConnectorException("password is null!");
 		}
 		if (StringUtil.isEmpty(sqlText)) {
-			throw new FoxBPMBizException("sqlText is null!");
+			throw new FoxBPMConnectorException("sqlText is null!");
 		}
 		// 只处理查询sql
 		if (StringUtil.trim(sqlText).toLowerCase().startsWith(Constants.SQL_SELECT)) {
@@ -64,7 +87,7 @@ public class JDBCDatabaseQuery implements FlowConnectorHandler {
 			}
 		} else {
 			// 如果不是select 查询语句
-			throw new FoxBPMBizException("执行无效的查询sql错误,请检查sql语句:" + sqlText);
+			throw new FoxBPMConnectorException("执行无效的查询sql错误,请检查sql语句:" + sqlText);
 		}
 	}
 
