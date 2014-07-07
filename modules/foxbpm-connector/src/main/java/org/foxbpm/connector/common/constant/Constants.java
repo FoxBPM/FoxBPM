@@ -39,4 +39,14 @@ public interface Constants {
 	 * 角色类型
 	 */
 	String ROLE_TYPE = "role";
+
+	/**
+	 * biz type
+	 */
+	String BIZ_TYPE = "taskremind";
+	
+	/**
+	 * sql 
+	 */
+	String SQL_END_DELIMITER = ";";
 }

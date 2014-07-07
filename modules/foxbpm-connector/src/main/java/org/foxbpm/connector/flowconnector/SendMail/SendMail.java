@@ -70,8 +70,6 @@ public class SendMail implements FlowConnectorHandler {
 		mailEntity.setMailCc(cc);
 		mailEntity.setMailBody(content);
 		mailEntity.setCreateTime(new Date());
-		mailEntity.setBizType("fixother");
-		mailEntity.setBizValue("proxessinsid:" + executionContext.getProcessInstanceId() + "_FIX_nodeid:" + executionContext.getId());
 		mailEntity.setCreateUser(Authentication.getAuthenticatedUserId());
 		MailEngine.getInstance().saveMail(mailEntity);
 	}
