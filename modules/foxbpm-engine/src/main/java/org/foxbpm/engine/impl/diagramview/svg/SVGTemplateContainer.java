@@ -114,9 +114,10 @@ public class SVGTemplateContainer {
 			// 解析的时候忽略SVG命名空间，否则会出错
 			factory.setNamespaceAware(true);
 			XMLReader reader = factory.newSAXParser().getXMLReader();
+			String sourcePath = new StringBuffer(BPMN_PATH).append(FILE_SPERATOR)
+					.append(templateName).toString();
 			Source source = new SAXSource(reader, new InputSource(
-					ReflectUtil.getResourceAsStream(BPMN_PATH + FILE_SPERATOR
-							+ templateName)));
+					ReflectUtil.getResourceAsStream(sourcePath)));
 			VONode object = (VONode) unMarshaller.unmarshal(source);
 			this.svgTemplets.put(templateName, object);
 		} catch (Exception e) {
