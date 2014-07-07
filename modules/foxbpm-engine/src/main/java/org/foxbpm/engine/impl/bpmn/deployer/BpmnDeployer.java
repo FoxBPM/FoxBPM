@@ -48,7 +48,7 @@ import org.slf4j.LoggerFactory;
 
 public class BpmnDeployer extends AbstractDeployer {
 	Logger log = LoggerFactory.getLogger(BpmnDeployer.class);
-
+	private final static String VERSION_FLAG = ":";
 	public String deploy(DeploymentEntity deployment) {
 		ResourceEntity resourceBpmn = null;
 		ResourceEntity resourcePng = null;
@@ -92,8 +92,9 @@ public class BpmnDeployer extends AbstractDeployer {
 				processEntity.setDeploymentId(deployment.getId());
 				// 新的版本号
 				processEntity.setVersion(processDefinitionVersion);
-				String processDefinitionId = processEntity.getKey() + ":"
-						+ processEntity.getVersion() + ":" + GuidUtil.CreateGuid(); // GUID
+				String processDefinitionId = new StringBuffer(processEntity.getKey())
+						.append(VERSION_FLAG).append(processEntity.getVersion())
+						.append(VERSION_FLAG).append(GuidUtil.CreateGuid()).toString(); // GUID
 				// 新的定义ID
 				processEntity.setId(processDefinitionId);
 				processDefinitionManager.insert(processEntity);
