@@ -19,22 +19,21 @@
 
 package org.foxbpm.engine.impl.interceptor;
 
-
 /**
  * @author kenshin
  */
-public abstract class CommandInterceptor{
+public abstract class CommandInterceptor {
 
-  /** will be initialized by the {@link CommandInterceptorChains} */
-  protected CommandInterceptor next;
+	/** will be initialized by the {@link CommandInterceptorChains} */
+	protected CommandInterceptor next;
 
-  public CommandInterceptor getNext() {
-    return next;
-  }
-  
-  public void setNext(CommandInterceptor commandInterceptor) {
-    this.next = commandInterceptor;
-  }
-  
-  public abstract <T> T execute(Command<T> command);
+	public CommandInterceptor getNext() {
+		return next;
+	}
+
+	public void setNext(CommandInterceptor commandInterceptor) {
+		this.next = commandInterceptor;
+	}
+
+	public abstract <T> T execute(CommandConfig config, Command<T> command);
 }

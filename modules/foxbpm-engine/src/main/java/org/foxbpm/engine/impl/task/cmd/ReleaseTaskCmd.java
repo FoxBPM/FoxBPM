@@ -37,7 +37,7 @@ public class ReleaseTaskCmd extends AbstractExpandTaskCmd<ReleaseTaskCommand, Vo
 		if (task.getAssignee() != null) {
 			if (!task.getAssignee().equals(Authentication.getAuthenticatedUserId())) {
 				// 当任务已经被另一个不是自己的用户占有，则抛出异常。
-				throw new FoxBPMException("任务 " + taskId + " 已经被另一个用户领取!您不能做还回操作!");
+				throw new FoxBPMException("任务 " + taskId + " 已经被另一个用户领取!您不能做释放操作!");
 			}
 			else{
 				

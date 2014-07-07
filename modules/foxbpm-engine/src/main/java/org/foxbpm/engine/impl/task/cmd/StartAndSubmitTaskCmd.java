@@ -19,6 +19,7 @@ package org.foxbpm.engine.impl.task.cmd;
 
 import java.util.List;
 
+import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.cmd.StartProcessInstanceCmd;
@@ -93,7 +94,7 @@ public class StartAndSubmitTaskCmd extends AbstractExpandTaskCmd<StartAndSubmitT
 		} else {
 
 			/** 流程引擎启动了之后点击启动并提交按钮 */
-			throw new FoxBPMException("启动并提交按钮不能在已经启动的流程上被执行");
+			throw new FoxBPMBizException("启动并提交按钮不能在已经启动的流程上被执行");
 		}
 
 		return processInstance;

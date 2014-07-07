@@ -13,29 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.impl.interceptor;
-
-import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.impl.Context;
+package org.foxbpm.engine.config;
 
 /**
- * foxbpm command执行器
+ * foxbpm支持的事务传播类型
  * @author ych
  *
  */
-public class CommandInvoker extends CommandInterceptor {
-
-	@Override
-	public <T> T execute(CommandConfig config,Command<T> command) {
-		return command.execute(Context.getCommandContext());
-	}
-	
-	@Override
-	public void setNext(CommandInterceptor commandInterceptor) {
-		throw new FoxBPMException("commandInvoke必须是最后一个拦截器");
-	}
-
+public enum TransactionPropagation {
+	  REQUIRED,
+	  REQUIRES_NEW,
+	  NOT_SUPPORTED,
 }
+

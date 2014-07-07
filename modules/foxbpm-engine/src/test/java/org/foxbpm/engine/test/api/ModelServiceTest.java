@@ -18,12 +18,10 @@
 package org.foxbpm.engine.test.api;
 
 import java.util.List;
-import java.util.Map;
 
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.repository.ProcessDefinitionQuery;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
-import org.foxbpm.engine.test.Clear;
 import org.foxbpm.engine.test.Deployment;
 import org.junit.Test;
 import org.springframework.util.Assert;
@@ -51,24 +49,6 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 		String userId = "admin";
 		boolean result = modelService.verifyStartProcessByUserId(userId, null);
 		Assert.isTrue(result);
-	}
-	
-	@Test
-	public void testDeploy(){
-//		ZipInputStream zipInput = new ZipInputStream(this.getClass().getClassLoader().getResourceAsStream("process_test222.zip"));
-//		modelService.deployByZip(zipInput);
-		Map<String,Map<String,Object>> result = modelService.getFlowGraphicsElementPositionByKey("process_test_fang_1");
-		System.out.println(result);
-//		modelService.GetFlowGraphicsImgStreamByDefId("process_test_fang_1:1:3fc97b4d-1fb8-476e-8e05-317fb327d92d");
-	}
-	
-	public void testUpdateDeploy(){
-//		ZipInputStream zipInput = new ZipInputStream(this.getClass().getClassLoader().getResourceAsStream("process_2222.zip"));
-//		modelService.updateByZip("e3aa6ab3-3c2b-4e38-8567-97223e3a346b", zipInput);
-	}
-	
-	public void testCmd(){
-//		modelService.testCmd("admin");
 	}
 	
 	public void testProcessDefinitionQuery(){

@@ -54,6 +54,7 @@ import org.foxbpm.engine.impl.db.DefaultDataSourceManage;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateContainer;
 import org.foxbpm.engine.impl.identity.GroupDeptImpl;
 import org.foxbpm.engine.impl.identity.GroupRoleImpl;
+import org.foxbpm.engine.impl.interceptor.CommandConfig;
 import org.foxbpm.engine.impl.interceptor.CommandContextFactory;
 import org.foxbpm.engine.impl.interceptor.CommandContextInterceptor;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
@@ -492,7 +493,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	public void initGeneralCommandExecutor() {
 		CommandInterceptor first = initInterceptorChain(commandInterceptors);
-		commandExecutor = new CommandExecutorImpl(first);
+		CommandConfig config = new CommandConfig();
+		commandExecutor = new CommandExecutorImpl(config,first);
 	}
 
 	protected CommandInterceptor initInterceptorChain(List<CommandInterceptor> chain) {

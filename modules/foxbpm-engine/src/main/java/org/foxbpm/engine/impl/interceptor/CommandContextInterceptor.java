@@ -42,7 +42,7 @@ public class CommandContextInterceptor extends CommandInterceptor {
 		this.processEngineConfiguration = processEngineConfiguration;
 	}
 
-	public <T> T execute(Command<T> command) {
+	public <T> T execute(final CommandConfig config,Command<T> command) {
 
 		CommandContext context = Context.getCommandContext();
 
@@ -52,7 +52,7 @@ public class CommandContextInterceptor extends CommandInterceptor {
 		 * 只有最上层的cmd调用完毕时，此变量为false,关闭commandContext和变量管理器等。
 		 */
 		boolean contextReused = false;
-		if (context == null) {
+		if (context == null || !config.isContextReuse() || context.getException() !=null) {
 			context = commandContextFactory.createCommandContext(command);
 		} else {
 			log.debug("CommandContext已经存在，共享此commandContext '{}'", command.getClass().getCanonicalName());
@@ -62,7 +62,7 @@ public class CommandContextInterceptor extends CommandInterceptor {
 			// Push on stack
 			Context.setCommandContext(context);
 			Context.setProcessEngineConfiguration(processEngineConfiguration);
-			return next.execute(command);
+			return next.execute(config,command);
 
 		} catch (Exception ex) {
 			context.exception(ex);
