@@ -1,7 +1,6 @@
 package org.foxbpm.engine.test.api.query;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.foxbpm.engine.impl.identity.Authentication;

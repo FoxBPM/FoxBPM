@@ -13,33 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author kenshin
  * @author ych
  */
 package org.foxbpm.engine.impl.interceptor;
 
+import org.foxbpm.engine.config.TransactionPropagation;
+
 /**
- * @author kenshin
+ * 命令执行配置
+ * @author ych
+ *
  */
-public class CommandExecutorImpl implements CommandExecutor {
+public class CommandConfig {
 
+	//默认复用commandContext
+	private boolean isContextReuse = true;
+	//默认required事务传播类型
+	private TransactionPropagation propagation = TransactionPropagation.REQUIRED;
 
-	private CommandInterceptor first;
-	private CommandConfig defaultConfig;
-	
-	public CommandExecutorImpl(CommandConfig defaultConfig,CommandInterceptor first) {
-		this.defaultConfig = defaultConfig;
-		this.first = first;
+	public boolean isContextReuse() {
+		return isContextReuse;
 	}
-	public <T> T execute(CommandConfig config,Command<T> command) {
-		return first.execute(config,command);
+
+	public void setContextReuse(boolean isContextReuse) {
+		this.isContextReuse = isContextReuse;
 	}
-	@Override
-	public <T> T execute(Command<T> command) {
-		return execute(defaultConfig,command);
+
+	public TransactionPropagation getPropagation() {
+		return propagation;
 	}
-	
-	public CommandConfig getDefaultConfig() {
-		return defaultConfig;
+
+	public void setPropagation(TransactionPropagation propagation) {
+		this.propagation = propagation;
 	}
+
 }

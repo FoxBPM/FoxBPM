@@ -29,4 +29,7 @@ public interface CommandExecutor {
 
 	<T> T execute(Command<T> command);
 
+	<T> T execute(CommandConfig config,Command<T> command);
+	
+	CommandConfig getDefaultConfig();
 }
