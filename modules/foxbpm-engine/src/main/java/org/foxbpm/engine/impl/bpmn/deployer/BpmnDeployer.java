@@ -65,8 +65,8 @@ public class BpmnDeployer extends AbstractDeployer {
 			throw new FoxBPMBizException("发布文件中不存在.bpmn文件");
 		}
 		InputStream input = new ByteArrayInputStream(resourceBpmn.getBytes());
-		ProcessDefinitionManager processDefinitionManager = Context
-				.getCommandContext().getProcessDefinitionManager();
+		ProcessDefinitionManager processDefinitionManager = Context.getCommandContext()
+				.getProcessDefinitionManager();
 		ProcessDefinitionEntity processEntity = (ProcessDefinitionEntity) processModelParseHandler
 				.createProcessDefinition("dddd", input);
 		if (deployment.isNew()) {// 需要更新数据库（新发布或更新）
@@ -84,19 +84,16 @@ public class BpmnDeployer extends AbstractDeployer {
 					processDefinitionVersion = resourceBpmn.getVersion();
 				} else { // 没有version,则取数据库中的最大version+1,数据库中也不存在时，则version=1
 					ProcessDefinitionEntity latestProcessDefinition = processDefinitionManager
-							.findLatestProcessDefinitionByKey(processEntity
-									.getKey());
+							.findLatestProcessDefinitionByKey(processEntity.getKey());
 					if (latestProcessDefinition != null)
-						processDefinitionVersion = latestProcessDefinition
-								.getVersion() + 1;
+						processDefinitionVersion = latestProcessDefinition.getVersion() + 1;
 				}
 				// 新的发布号
 				processEntity.setDeploymentId(deployment.getId());
 				// 新的版本号
 				processEntity.setVersion(processDefinitionVersion);
 				String processDefinitionId = processEntity.getKey() + ":"
-						+ processEntity.getVersion() + ":"
-						+ GuidUtil.CreateGuid(); // GUID
+						+ processEntity.getVersion() + ":" + GuidUtil.CreateGuid(); // GUID
 				// 新的定义ID
 				processEntity.setId(processDefinitionId);
 				processDefinitionManager.insert(processEntity);
@@ -108,8 +105,7 @@ public class BpmnDeployer extends AbstractDeployer {
 								processEntity.getKey());
 				processEntityNew.setCategory(processEntity.getCategory());
 				processEntityNew.setName(processEntity.getName());
-				processEntityNew.setResourceName(processEntity
-						.getResourceName());
+				processEntityNew.setResourceName(processEntity.getResourceName());
 			}
 			// 添加自动调度，启动流程实例
 			this.addAutoStartProcessInstanceJob(processEntity);
@@ -117,19 +113,16 @@ public class BpmnDeployer extends AbstractDeployer {
 		} else {// 不需要处理数据库,从数据库中查询出来的实体转换为虚拟机定义，用来进行流程运转
 			String deploymentId = deployment.getId();
 			ProcessDefinitionEntity processEntityNew = processDefinitionManager
-					.findProcessDefinitionByDeploymentAndKey(deploymentId,
-							processEntity.getKey());
+					.findProcessDefinitionByDeploymentAndKey(deploymentId, processEntity.getKey());
 			processEntity.setDeploymentId(deploymentId);
 			processEntity.setId(processEntityNew.getId());
 			processEntity.setVersion(processEntityNew.getVersion());
 			processEntity.setResourceId(processEntityNew.getResourceId());
 			processEntity.setResourceName(processEntityNew.getResourceName());
-			processEntity.setDiagramResourceName(processEntityNew
-					.getDiagramResourceName());
+			processEntity.setDiagramResourceName(processEntityNew.getDiagramResourceName());
 		}
 
-		Context.getProcessEngineConfiguration().getDeploymentManager()
-				.getProcessDefinitionCache()
+		Context.getProcessEngineConfiguration().getDeploymentManager().getProcessDefinitionCache()
 				.add(processEntity.getId(), processEntity);
 		return processEntity.getId();
 	}
@@ -139,8 +132,7 @@ public class BpmnDeployer extends AbstractDeployer {
 	 * 
 	 * @param processDefinition
 	 */
-	private void addAutoStartProcessInstanceJob(
-			ProcessDefinitionEntity processDefinition) {
+	private void addAutoStartProcessInstanceJob(ProcessDefinitionEntity processDefinition) {
 		String processDefinitionID = processDefinition.getId();
 		List<KernelFlowNodeImpl> flowNodes = processDefinition.getFlowNodes();
 		Iterator<KernelFlowNodeImpl> iterator = flowNodes.iterator();
@@ -152,47 +144,32 @@ public class BpmnDeployer extends AbstractDeployer {
 			if (kernelFlowNodeBehavior instanceof StartEventBehavior) {
 				List<EventDefinition> eventDefinitions = ((StartEventBehavior) kernelFlowNodeBehavior)
 						.getEventDefinitions();
-				Iterator<EventDefinition> eventDefIter = eventDefinitions
-						.iterator();
+				Iterator<EventDefinition> eventDefIter = eventDefinitions.iterator();
 				while (eventDefIter.hasNext()) {
 					EventDefinition eventDefinition = eventDefIter.next();
 					// 如果开始节点存在自动启动属性，那么就调度或者刷新 工作任务
 					if (eventDefinition instanceof TimerEventDefinition) {
-						Object startDate = ((TimerEventDefinition) eventDefinition)
-								.getTimeDate().getValue(null);
-						String cronExpression = ((TimerEventDefinition) eventDefinition)
-								.getTimeCycle().getExpressionText();
+						TimerEventDefinition timerEventDefinition = (TimerEventDefinition) eventDefinition;
+						Object startDate = timerEventDefinition.getTimeDate().getValue(null);
+						String cronExpression = timerEventDefinition.getTimeCycle()
+								.getExpressionText();
 						String eventID = eventDefinition.getId();
-						String groupName = processDefinitionID
-								+ eventID
-								+ FoxbpmJobExecutionContext.NAME_SUFFIX_JOBGROUP;
-						String triggerName = processDefinitionID
-								+ eventID
-								+ FoxbpmJobExecutionContext.NAME_SUFFIX_JOBTRIGGER;
-						String detailName = processDefinitionID
-								+ eventID
-								+ FoxbpmJobExecutionContext.NAME_SUFFIX_JOBDETAIL;
 						// 创建TRIGGER JOB JOBDETAIL
 						FoxbpmJobDetail<FoxbpmScheduleJob> jobDetail = new FoxbpmJobDetail<FoxbpmScheduleJob>(
-								new ProcessIntanceAutoStartJob(detailName,
-										groupName));
-						jobDetail.createTrigger(startDate, cronExpression,
-								null, triggerName, groupName);
+								new ProcessIntanceAutoStartJob(GuidUtil.CreateGuid(), eventID));
+						jobDetail.createTrigger(startDate, cronExpression, null,
+								GuidUtil.CreateGuid(), eventID);
 						// 设置调度变量
-						jobDetail
-								.putContextAttribute(
-										FoxbpmJobExecutionContext.PROCESS_DEFINITION_ID,
-										processDefinitionID);
-						jobDetail
-								.putContextAttribute(
-										FoxbpmJobExecutionContext.PROCESS_DEFINITION_KEY,
-										processDefinition.getKey());
-						jobDetail
-								.putContextAttribute(
-										FoxbpmJobExecutionContext.PROCESS_DEFINITION_NAME,
-										processDefinition.getName());
 						jobDetail.putContextAttribute(
-								FoxbpmJobExecutionContext.NODE_ID,
+								FoxbpmJobExecutionContext.PROCESS_DEFINITION_ID,
+								processDefinitionID);
+						jobDetail.putContextAttribute(
+								FoxbpmJobExecutionContext.PROCESS_DEFINITION_KEY,
+								processDefinition.getKey());
+						jobDetail.putContextAttribute(
+								FoxbpmJobExecutionContext.PROCESS_DEFINITION_NAME,
+								processDefinition.getName());
+						jobDetail.putContextAttribute(FoxbpmJobExecutionContext.NODE_ID,
 								kernelFlowNodeImpl.getId());
 						// 调度
 						QuartzUtil.scheduleFoxbpmJob(jobDetail);
