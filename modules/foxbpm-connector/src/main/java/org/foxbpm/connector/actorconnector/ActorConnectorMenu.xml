@@ -8,6 +8,9 @@
     <menuConnector id="UserIdActorConnector" name="系统登陆人" note="当前系统的登陆用户" ico="UserIdActorConnector.png"/>
     <menuConnector id="SelectUserActorConnector" name="选择用户" note="输入用户编号来指定处理者" ico="SelectUserActorConnector.png"/>
     <menuConnector id="SelectDeptActorConnector" name="选择部门" note="选择一个或者多个部门" ico="SelectDeptActorConnector.png"/>
-    <menuConnector id="DDD" name="DDD" note="DDD" ico="DDD.png"/>
+    <menuConnector id="SelectARole" name="选择角色" note="选择一个或者多个角色" ico="SelectARole.png"/>
+    <menuConnector id="SelectTaskByLeast" name="资源中任务最少者" note="选择一个或者多个用户" ico="SelectTaskByLeast.png"/>
+    <menuConnector id="RandomAssign" name="资源中随机分配" note="选择一个或者多个用户" ico="RandomAssign.png"/>
+    <menuConnector id="SelectDepartmentAndRole" name="选择部门和角色" note="选择部门和某角色" ico="SelectDepartmentAndRole.png"/>
   </node>
 </connectormenu:Menu>

@@ -6,7 +6,7 @@ package org.foxbpm.web.common.constant;
  * @author MEL
  * @date 2014-06-06
  */
-public final class FoxbpmViewNameDefinition {
+public final class WebViewName {
 	public final static String START_PROCESS_VIEWNAME = "startProcess";
 	// 错误视图
 	public final static String ERROR_VIEWNAME = "error";

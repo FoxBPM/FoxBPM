@@ -27,6 +27,7 @@ import java.util.Map;
 import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentEntity;
 import org.foxbpm.engine.impl.db.Page;
+import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.runtime.ProcessInstance;
@@ -35,7 +36,7 @@ import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.engine.task.TaskQuery;
 import org.foxbpm.web.common.constant.FoxbpmExceptionCode;
-import org.foxbpm.web.common.constant.FoxbpmWebContextAttributeNameDefinition;
+import org.foxbpm.web.common.constant.WebContextAttributeName;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.common.util.DateUtil;
 import org.foxbpm.web.common.util.JSONUtil;
@@ -55,12 +56,11 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 	@Override
 	public List<Map<String, Object>> queryStartProcess(Map<String, Object> params) throws FoxbpmWebException {
 		// 创建流程定义查询
-		String userId = StringUtil.getString(params.get("userId"));
+		String userId = StringUtil.getString(params.get(WebContextAttributeName.USERID));
 		// 参数校验
 		if (StringUtil.isEmpty(userId)) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_USERID, "userId is null !");
 		}
-
 		return modelService.getStartProcessByUserId(userId);
 	}
 
@@ -70,7 +70,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		List<Map<String, Object>> resultData = new ArrayList<Map<String, Object>>();
 		ProcessInstanceQuery piq = runtimeService.createProcessInstanceQuery();
 		// 获取查询条件参数
-		String userId = StringUtil.getString(params.get("userId"));
+		String userId = StringUtil.getString(params.get(WebContextAttributeName.USERID));
 		String processDefinitionKey = StringUtil.getString(params.get("processDefinitionKey"));
 		String processInstanceId = StringUtil.getString(params.get("processInstanceId"));
 		String processDefinitionName = StringUtil.getString(params.get("processDefinitionName"));
@@ -212,15 +212,13 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		List<Map<String, Object>> resultData = new ArrayList<Map<String, Object>>();
 		TaskQuery taskQuery = taskService.createTaskQuery();
 		// 获取基本查询条件参数
-		String userId = (String) params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_USERID);
-		String initiator = (String) params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_INITIATOR);
-		String processDefinitionName = (String) params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PROCESSDEFINITIONNAME);
-		String businessKey = (String) params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_BUSINESSKEY);
-		String title = (String) params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_TITLE);
-		String dss = (String) params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_ARRIVALTIMES);
-		String dse = (String) params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_ARRIVALTIMEE);
-
-		userId = "admin";
+		String userId = (String) params.get(WebContextAttributeName.USERID);
+		String initiator = (String) params.get(WebContextAttributeName.ATTRIBUTE_NAME_INITIATOR);
+		String processDefinitionName = (String) params.get(WebContextAttributeName.ATTRIBUTE_NAME_PROCESSDEFINITIONNAME);
+		String businessKey = (String) params.get(WebContextAttributeName.ATTRIBUTE_NAME_BUSINESSKEY);
+		String title = (String) params.get(WebContextAttributeName.ATTRIBUTE_NAME_TITLE);
+		String dss = (String) params.get(WebContextAttributeName.ATTRIBUTE_NAME_ARRIVALTIMES);
+		String dse = (String) params.get(WebContextAttributeName.ATTRIBUTE_NAME_ARRIVALTIMEE);
 
 		// 处理查询参数
 		if (StringUtil.isNotEmpty(userId)) {
@@ -311,35 +309,36 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		String processDefinitionKey = StringUtil.getString(params.get("processDefinitionKey"));
 		String businessKey = StringUtil.getString(params.get("businessKey"));
 		String taskComment = StringUtil.getString(params.get("_taskComment"));
+		String userId = Authentication.getAuthenticatedUserId();
 		// 参数校验
 		// 命令类型
-		if (StringUtil.isEmpty("commandType")) {
+		if (StringUtil.isEmpty(commandType)) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_COMMANDTYPE, "commandType is null !");
 		}
 		// 命令Id
-		if (StringUtil.isEmpty("commandId")) {
+		if (StringUtil.isEmpty(commandId)) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_COMMANDID, "commandId is null !");
 		}
 		// 流程实例Key
-		if (StringUtil.isEmpty("processDefinitionKey")) {
+		if (StringUtil.isEmpty(processDefinitionKey)) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_PROCESSDEFKEY, "processDefinitionKey is null !");
 		}
 		// 业务key
-		if (StringUtil.isEmpty("businessKey")) {
+		if (StringUtil.isEmpty(businessKey)) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_BUSINESSKEY, "businessKey is null !");
 		}
 		// 用户Id
-		if (StringUtil.isEmpty("userId")) {
+		if (StringUtil.isEmpty(userId)) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_USERID, "businessKey is null !");
 		}
-		if (StringUtil.isEmpty("_taskComment")) {
+		if (StringUtil.isEmpty(taskComment)) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_TASKCOMMENT, "_taskComment is null !");
 		}
 
 		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
 		// 命令类型，可以从流程引擎配置中查询 启动并提交为startandsubmit
 		expandTaskCommand.setCommandType(commandType);
-
+		expandTaskCommand.setInitiator(userId);
 		// 设置命令的id,需和节点上配置的按钮编号对应，会执行按钮中的脚本。
 		expandTaskCommand.setTaskCommandId(commandId);
 		expandTaskCommand.setTaskComment(taskComment);

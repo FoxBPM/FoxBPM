@@ -21,7 +21,24 @@
 			
 	<!-- 使Spring支持自动检测组件，如注解的Controller -->
 	<context:component-scan base-package="org.foxbpm.web.controller" />
-
+	<!-- 完成请求和注解POJO的映射 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+	<!-- 处理在类级别上的@RequestMapping注解 -->
+	<!-- 
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<property name="interceptors">
+			<list>
+				<ref bean="foxbpmMVCInterceptor" />
+			</list>
+		</property>
+	</bean>
+	-->
+	<!-- 完成请求和注解POJO的映射 -->
+	<!--
+	<bean id="foxbpmMVCInterceptor" class="org.foxbpm.web.interceptor.FoxbpmMVCInterceptor"/>
+	-->
  	<!-- 完成请求和注解POJO的映射 -->  
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" /> 
 

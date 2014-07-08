@@ -64,13 +64,7 @@
 		<property name="transactionManager" ref="foxbpmTransactionManager" />
 		<property name="foxbpmScheduler" ref="foxbpmScheduler"></property>
 	</bean>
-	<!-- foxbpm数据库连接工厂 -->
-	<bean id="foxbpmConnectionFactory" class="org.foxbpm.web.db.factory.FoxbpmDBConnectionFactory"
-		scope="singleton">
-		<property name="dataSource">
-			<ref bean="foxbpmDataSource" />
-		</property>
-	</bean>
+	
 	<!-- 流程引擎 -->
 	<bean id="processEngine" class="org.foxbpm.engine.spring.ProcessEngineFactoryBean">
 		<property name="processEngineConfiguration" ref="processEngineConfigurationSpring" />
