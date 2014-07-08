@@ -13,7 +13,7 @@ public final class FoxbpmActionNameDefinition {
 	public final static String QUERY_TASK_ACTION = "queryTask";
 	public final static String QUERY_TODOTASK_ACTION = "queryToDoTask";
 	public final static String QUERY_PROCESSDEFINITION_ACTION = "queryProcessDefinition";
-	public final static String QUERY_STARTPROCESS_ACTION = "queryStartProcess";
+	public final static String QUERY_STARTPROCESS_ACTION = "queryStartProcess/{userid}/tastk";
 	public final static String QUERY_QUERYALLPROCESSINST_ACTION = "queryProcessInst";
 	public final static String QUERY_TASKDETAILINFOR_ACTION = "queryTaskDetailInfor";
 	public final static String GETFLOWGRAPH_ACTION = "getFlowGraph";

@@ -53,7 +53,7 @@ public class WorkFlowController extends AbstWebController {
 	 *            http请求参数
 	 * @return 返回响应视图
 	 */
-	@RequestMapping(FoxbpmActionNameDefinition.QUERY_STARTPROCESS_ACTION)
+	@RequestMapping("queryStartProcess/{userid}/{processid}/tastk")
 	public ModelAndView queryStartProcess(HttpServletRequest request) {
 		// 请求参数
 		Map<String, Object> requestParams = getRequestParams(request);
