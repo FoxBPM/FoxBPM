@@ -269,7 +269,7 @@
       <!-- 共享任务 -->
       <if test="candidateUser != null  || (candidateGroups != null &amp;&amp; candidateGroups.size() &gt; 0)" >
       and (
-        RES.ASSIGNEE is null
+        (RES.ASSIGNEE is null
         and I.TYPE = 'candidate'
         and 
         ( 
@@ -285,7 +285,7 @@
               (I.GROUP_ID = #{group.groupId} AND group_type =#{group.groupType})
             </foreach>
           </if>
-        )
+        ))
          <!-- 共享任务和独占任务同时存在 -->
          <if test="assignee != null" >
        		or RES.ASSIGNEE = #{assignee}

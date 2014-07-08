@@ -54,6 +54,9 @@ public class CommandContextInterceptor extends CommandInterceptor {
 		boolean contextReused = false;
 		if (context == null || !config.isContextReuse() || context.getException() !=null) {
 			context = commandContextFactory.createCommandContext(command);
+			if(!config.getCommit()){
+				context.setCommit(config.getCommit());
+			}
 		} else {
 			log.debug("CommandContext已经存在，共享此commandContext '{}'", command.getClass().getCanonicalName());
 			contextReused = true;
