@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.foxbpm.engine.identity.User;
+import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.web.common.constant.FoxbpmActionNameDefinition;
 import org.foxbpm.web.common.constant.FoxbpmViewNameDefinition;
@@ -57,6 +58,7 @@ public class WorkFlowController extends AbstWebController {
 	public ModelAndView queryStartProcess(HttpServletRequest request) {
 		// 请求参数
 		Map<String, Object> requestParams = getRequestParams(request);
+		requestParams.put(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_USERID, Authentication.getAuthenticatedUserId());
 		// 查询结果
 		List<Map<String, Object>> resultList = workFlowService.queryStartProcess(requestParams);
 
@@ -78,6 +80,7 @@ public class WorkFlowController extends AbstWebController {
 	public ModelAndView queryProcessInst(HttpServletRequest request) {
 		// 请求参数
 		Map<String, Object> requestParams = getRequestParams(request);
+		requestParams.put(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_USERID, Authentication.getAuthenticatedUserId());
 
 		// 获取分页条件参数
 		String pageI = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINDEX));
@@ -143,6 +146,7 @@ public class WorkFlowController extends AbstWebController {
 	public ModelAndView queryToDoTask(HttpServletRequest request) {
 
 		Map<String, Object> requestParams = getRequestParams(request);
+		requestParams.put(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_USERID, Authentication.getAuthenticatedUserId());
 		// 获取分页条件参数
 		String pageI = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINDEX));
 		String pageS = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGESIZE));

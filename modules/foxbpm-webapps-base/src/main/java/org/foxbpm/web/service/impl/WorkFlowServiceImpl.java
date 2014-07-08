@@ -56,7 +56,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 	@Override
 	public List<Map<String, Object>> queryStartProcess(Map<String, Object> params) throws FoxbpmWebException {
 		// 创建流程定义查询
-		String userId = Authentication.getAuthenticatedUserId();
+		String userId = StringUtil.getString(params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_USERID));
 		// 参数校验
 		if (StringUtil.isEmpty(userId)) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_USERID, "userId is null !");
@@ -70,7 +70,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		List<Map<String, Object>> resultData = new ArrayList<Map<String, Object>>();
 		ProcessInstanceQuery piq = runtimeService.createProcessInstanceQuery();
 		// 获取查询条件参数
-		String userId = StringUtil.getString(params.get("userId"));
+		String userId = StringUtil.getString(params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_USERID));
 		String processDefinitionKey = StringUtil.getString(params.get("processDefinitionKey"));
 		String processInstanceId = StringUtil.getString(params.get("processInstanceId"));
 		String processDefinitionName = StringUtil.getString(params.get("processDefinitionName"));
@@ -219,8 +219,6 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		String title = (String) params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_TITLE);
 		String dss = (String) params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_ARRIVALTIMES);
 		String dse = (String) params.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_ARRIVALTIMEE);
-
-		userId = "admin";
 
 		// 处理查询参数
 		if (StringUtil.isNotEmpty(userId)) {

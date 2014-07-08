@@ -36,17 +36,12 @@ public interface Constants {
 	String COMMA = ",";
 
 	/**
-	 * 角色类型
-	 */
-	String ROLE_TYPE = "role";
-
-	/**
 	 * biz type
 	 */
 	String BIZ_TYPE = "taskremind";
-	
+
 	/**
-	 * sql 
+	 * sql
 	 */
 	String SQL_END_DELIMITER = ";";
 }
