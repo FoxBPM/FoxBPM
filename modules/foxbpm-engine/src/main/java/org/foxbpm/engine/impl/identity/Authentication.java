@@ -81,5 +81,12 @@ public abstract class Authentication {
 		}
 		return users;
 	}
+	
+	public static List<String>  selectUserIdsByGroupIdAndType(String groupId,String groupType){
+		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
+		CommandExecutor commandExecutor = processEngine.getProcessEngineConfiguration().getCommandExecutor();
+		List<String> userIds = commandExecutor.execute(new FindUserByGroupIdAndTypeCmd(groupId,groupType));
+		return userIds;
+	}
 
 }

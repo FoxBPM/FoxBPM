@@ -19,17 +19,27 @@ package org.foxbpm.engine.impl.identity;
 
 import java.util.List;
 
+import org.foxbpm.engine.cache.Cache;
 import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.cache.DefaultCache;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 
 public class GroupRoleImpl implements GroupDefinition {
 
+	private static Cache<List<String>> roleUserCache = new DefaultCache<List<String>>(256);
+	private static Cache<List<Group>> userRoleCache = new DefaultCache<List<Group>>(256);
+	
 	@SuppressWarnings("unchecked")
 	public List<Group> selectGroupByUserId(String userId) {
+		List<Group> groups = userRoleCache.get(userId);
+		if(groups != null){
+			return groups;
+		}
 		ISqlSession sqlsession = Context.getCommandContext().getSqlSession();
-		List<Group> groups = (List<Group>)sqlsession.selectListWithRawParameter("selectRoleByUserId", userId);
+		groups = (List<Group>)sqlsession.selectListWithRawParameter("selectRoleByUserId", userId);
+		userRoleCache.add(userId, groups);
 		return groups;
 	}
 	
@@ -41,8 +51,13 @@ public class GroupRoleImpl implements GroupDefinition {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> selectUserIdsByGroupId(String groupId) {
+		List<String> userIds = roleUserCache.get(groupId);
+		if(userIds != null){
+			return userIds;
+		}
 		ISqlSession sqlsession = Context.getCommandContext().getSqlSession();
-		List<String> userIds = (List<String>)sqlsession.selectListWithRawParameter("selectUserIdsByRoleId", groupId);
+		userIds = (List<String>)sqlsession.selectListWithRawParameter("selectUserIdsByRoleId", groupId);
+		roleUserCache.add(groupId, userIds);
 		return userIds;
 	}
 
