@@ -252,12 +252,13 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		abstractCommandFilterMap = new HashMap<String, AbstractCommandFilter>();
 		List<TaskCommandDefinition> taskCommandDefs = foxBpmConfig.getTaskCommandConfig()
 				.getTaskCommandDefinition();
+		String filter = null;
 		for (TaskCommandDefinition taskCommandDef : taskCommandDefs) {
+			filter = taskCommandDef.getFilter();
 			if (StringUtil.getBoolean(taskCommandDef.getIsEnabled())
-					&& taskCommandDef.getFilter() != null && !taskCommandDef.getFilter().equals("")) {
-				AbstractCommandFilter abstractCommandFilter = (AbstractCommandFilter) ReflectUtil
-						.instantiate(taskCommandDef.getFilter());
-				abstractCommandFilterMap.put(taskCommandDef.getId(), abstractCommandFilter);
+					&& StringUtil.isNotBlank(filter)) {
+				abstractCommandFilterMap.put(taskCommandDef.getId(),
+						(AbstractCommandFilter) ReflectUtil.instantiate(filter));
 			}
 		}
 	}
@@ -303,12 +304,9 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 		EList<ElementStyle> elementStyleList = foxBPMStyleConfig.getElementStyleConfig()
 				.getElementStyle();
-
 		for (ElementStyle elementStyle : elementStyleList) {
-
 			for (Style style : elementStyle.getStyle()) {
-				String key = elementStyle.getStyleId() + style.getObject();
-				styleMap.put(key, style);
+				styleMap.put(elementStyle.getStyleId() + style.getObject(), style);
 			}
 		}
 	}
@@ -317,8 +315,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		this.taskCommandConfig = foxBpmConfig.getTaskCommandConfig();
 		taskCommandDefinitionMap = new HashMap<String, TaskCommandDefinition>();
 		for (TaskCommandDefinition taskCommandDef : taskCommandConfig.getTaskCommandDefinition()) {
-			String id = taskCommandDef.getId();
-			taskCommandDefinitionMap.put(id, taskCommandDef);
+			taskCommandDefinitionMap.put(taskCommandDef.getId(), taskCommandDef);
 		}
 	}
 
@@ -548,7 +545,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 
 	protected CommandInterceptor initInterceptorChain(List<CommandInterceptor> chain) {
-		for (int i = 0; i < chain.size() - 1; i++) {
+		int size = chain.size() - 1;
+		for (int i = 0; i < size; i++) {
 			chain.get(i).setNext(chain.get(i + 1));
 		}
 		return chain.get(0);
@@ -669,7 +667,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	public ResourcePath getResourcePath(String resourceId) {
 		List<ResourcePath> resourcePaths = this.resourcePathConfig.getResourcePath();
 		for (ResourcePath resourcePath : resourcePaths) {
-			if (resourcePath.getId().equals(resourceId)) {
+			if (StringUtil.equals(resourcePath.getId(), resourceId)) {
 				return resourcePath;
 			}
 		}
@@ -718,12 +716,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 
 	public ElementStyle getElementStyle(String styleId) {
-
 		EList<ElementStyle> elementStyleList = foxBPMStyleConfig.getElementStyleConfig()
 				.getElementStyle();
-
 		for (ElementStyle elementStyle : elementStyleList) {
-			if (elementStyle.getStyleId().equals(styleId)) {
+			if (StringUtil.equals(elementStyle.getStyleId(), styleId)) {
 				return elementStyle;
 			}
 		}
@@ -747,28 +743,21 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 
 	public MailInfo getSysMail(String mailId) {
-
 		for (MailInfo mailInfo : sysMailConfig.getMailInfo()) {
-			if (mailInfo.getMailName().equals(mailId)) {
+			if (StringUtil.equals(mailInfo.getMailName(), mailId)) {
 				return mailInfo;
 			}
-
 		}
-
 		return null;
 	}
 
 	public MailInfo getDefaultSysMail() {
-
 		String mailId = sysMailConfig.getSelected();
-
 		for (MailInfo mailInfo : sysMailConfig.getMailInfo()) {
-			if (mailInfo.getMailName().equals(mailId)) {
+			if (StringUtil.equals(mailInfo.getMailName(), mailId)) {
 				return mailInfo;
 			}
-
 		}
-
 		return null;
 	}
 
