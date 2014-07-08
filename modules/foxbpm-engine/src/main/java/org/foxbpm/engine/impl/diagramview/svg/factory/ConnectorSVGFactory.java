@@ -45,8 +45,7 @@ public class ConnectorSVGFactory extends AbstractFlowElementSVGFactory {
 	 *            连接线对象
 	 * @param voTemplateFileName
 	 */
-	public ConnectorSVGFactory(KernelBaseElement kernelBaseElement,
-			String voTemplateFileName) {
+	public ConnectorSVGFactory(KernelBaseElement kernelBaseElement, String voTemplateFileName) {
 		super(kernelBaseElement, voTemplateFileName);
 	}
 
@@ -73,18 +72,20 @@ public class ConnectorSVGFactory extends AbstractFlowElementSVGFactory {
 	public void filterConnectorVO(VONode voNode, String[] filterCondition) {
 		int length = filterCondition.length;
 		for (int i = 0; i < length; i++) {
-			List<MarkerVO> markerVOList = ((SvgVO) voNode).getgVo().getDefsVo()
-					.getMarkerVOList();
+			List<MarkerVO> markerVOList = ((SvgVO) voNode).getgVo().getDefsVo().getMarkerVOList();
 			Iterator<MarkerVO> markterIter = markerVOList.iterator();
+			MarkerVO maker = null;
+			List<PathVO> pathVOList = null;
+			Iterator<PathVO> pathVoIter = null;
 			while (markterIter.hasNext()) {
-				MarkerVO maker = markterIter.next();
-				List<PathVO> pathVOList = maker.getPathVOList();
-				Iterator<PathVO> pathVoIter = pathVOList.iterator();
+				maker = markterIter.next();
+				pathVOList = maker.getPathVOList();
+				pathVoIter = pathVOList.iterator();
+				PathVO pathVo = null;
 				while (pathVoIter.hasNext()) {
-					PathVO pathVo = pathVoIter.next();
+					pathVo = pathVoIter.next();
 					if (StringUtils.isNotBlank(filterCondition[i])
-							&& StringUtils.equalsIgnoreCase(pathVo.getId(),
-									filterCondition[i])) {
+							&& StringUtils.equalsIgnoreCase(pathVo.getId(), filterCondition[i])) {
 						pathVoIter.remove();
 					}
 				}

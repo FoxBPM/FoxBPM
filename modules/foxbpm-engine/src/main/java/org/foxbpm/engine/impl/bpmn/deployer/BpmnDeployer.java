@@ -137,17 +137,21 @@ public class BpmnDeployer extends AbstractDeployer {
 		String processDefinitionID = processDefinition.getId();
 		List<KernelFlowNodeImpl> flowNodes = processDefinition.getFlowNodes();
 		Iterator<KernelFlowNodeImpl> iterator = flowNodes.iterator();
+		KernelFlowNodeImpl kernelFlowNodeImpl = null;
+		KernelFlowNodeBehavior kernelFlowNodeBehavior = null;
+		List<EventDefinition> eventDefinitions = null;
+		Iterator<EventDefinition> eventDefIter = null;
+		EventDefinition eventDefinition = null;
 		while (iterator.hasNext()) {
-			KernelFlowNodeImpl kernelFlowNodeImpl = iterator.next();
-			KernelFlowNodeBehavior kernelFlowNodeBehavior = kernelFlowNodeImpl
-					.getKernelFlowNodeBehavior();
+			kernelFlowNodeImpl = iterator.next();
+			kernelFlowNodeBehavior = kernelFlowNodeImpl.getKernelFlowNodeBehavior();
 			// 获取START EVENT节点
 			if (kernelFlowNodeBehavior instanceof StartEventBehavior) {
-				List<EventDefinition> eventDefinitions = ((StartEventBehavior) kernelFlowNodeBehavior)
+				eventDefinitions = ((StartEventBehavior) kernelFlowNodeBehavior)
 						.getEventDefinitions();
-				Iterator<EventDefinition> eventDefIter = eventDefinitions.iterator();
+				eventDefIter = eventDefinitions.iterator();
 				while (eventDefIter.hasNext()) {
-					EventDefinition eventDefinition = eventDefIter.next();
+					eventDefinition = eventDefIter.next();
 					// 如果开始节点存在自动启动属性，那么就调度或者刷新 工作任务
 					if (eventDefinition instanceof TimerEventDefinition) {
 						TimerEventDefinition timerEventDefinition = (TimerEventDefinition) eventDefinition;

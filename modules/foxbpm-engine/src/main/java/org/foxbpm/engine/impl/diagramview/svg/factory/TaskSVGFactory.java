@@ -41,8 +41,7 @@ public class TaskSVGFactory extends AbstractFlowElementSVGFactory {
 	 * @param voTemplateFileName
 	 *            SVG模版文件名
 	 */
-	public TaskSVGFactory(KernelBaseElement kernelBaseElement,
-			String voTemplateFileName) {
+	public TaskSVGFactory(KernelBaseElement kernelBaseElement, String voTemplateFileName) {
 		super(kernelBaseElement, voTemplateFileName);
 	}
 
@@ -67,8 +66,9 @@ public class TaskSVGFactory extends AbstractFlowElementSVGFactory {
 	 */
 	private boolean confirmGVOExistsByID(List<String> gIDList, String id) {
 		Iterator<String> idIter = gIDList.iterator();
+		String tempID = null;
 		while (idIter.hasNext()) {
-			String tempID = idIter.next();
+			tempID = idIter.next();
 			if (StringUtils.equalsIgnoreCase(tempID, id)) {
 				return true;
 			}
@@ -79,13 +79,15 @@ public class TaskSVGFactory extends AbstractFlowElementSVGFactory {
 	@Override
 	public void filterActivityTaskVO(VONode svgVO, String[] filterCondition) {
 		int length = filterCondition.length;
+		List<RectVO> rectVoList = null;
+		Iterator<RectVO> rectVOIter = null;
+		RectVO rectVo = null;
 		for (int i = 0; i < length; i++) {
-			List<RectVO> rectVoList = ((SvgVO) svgVO).getgVo().getRectVoList();
-			Iterator<RectVO> rectVOIter = rectVoList.iterator();
+			rectVoList = ((SvgVO) svgVO).getgVo().getRectVoList();
+			rectVOIter = rectVoList.iterator();
 			while (rectVOIter.hasNext()) {
-				RectVO rectVo = rectVOIter.next();
-				if (StringUtils.equalsIgnoreCase(rectVo.getId(),
-						filterCondition[i])) {
+				rectVo = rectVOIter.next();
+				if (StringUtils.equalsIgnoreCase(rectVo.getId(), filterCondition[i])) {
 					rectVOIter.remove();
 				}
 			}
@@ -97,8 +99,9 @@ public class TaskSVGFactory extends AbstractFlowElementSVGFactory {
 		GVO gvo = ((SvgVO) voNode).getgVo();
 		List<GVO> gvoList = gvo.getgVoList();
 		Iterator<GVO> gvoIter = gvoList.iterator();
+		GVO subGVo = null;
 		while (gvoIter.hasNext()) {
-			GVO subGVo = gvoIter.next();
+			subGVo = gvoIter.next();
 			if (!this.confirmGVOExistsByID(gIDList, subGVo.getId())) {
 				gvoIter.remove();
 				continue;

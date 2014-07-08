@@ -63,8 +63,7 @@ import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
  * @date 2014-06-11
  * 
  */
-public class ConcreteProcessDefinitionVOFactory extends
-		AbstractProcessDefinitionVOFactory {
+public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitionVOFactory {
 	private static final String EMPTY_STRING = "";
 	private static final int ARRAY_INDEX_FIRST = 0;
 	private static final int ARRAY_INDEX_SECOND = 1;
@@ -88,73 +87,68 @@ public class ConcreteProcessDefinitionVOFactory extends
 	 */
 	public String createProcessInstanceSVGImageString(List<Task> taskList,
 			ProcessDefinitionEntity deployedProcessDefinition) {
-		List<KernelFlowNodeImpl> flowNodes = deployedProcessDefinition
-				.getFlowNodes();
+		List<KernelFlowNodeImpl> flowNodes = deployedProcessDefinition.getFlowNodes();
 		// 遍历所有的流程节点
 		Iterator<KernelFlowNodeImpl> flowNodeIterator = flowNodes.iterator();
 		String taskType = EMPTY_STRING;
 		String svgTemplateFileName = EMPTY_STRING;
 		List<VONode> voNodeList = new ArrayList<VONode>();
+		VONode voNode = null;
+		KernelFlowNodeImpl kernelFlowNodeImpl = null;
 		while (flowNodeIterator.hasNext()) {
-			KernelFlowNodeImpl kernelFlowNodeImpl = flowNodeIterator.next();
-			String[] typeTemplateArray = this
-					.getTypeAndTemplateNameByFlowNode(kernelFlowNodeImpl);
+			kernelFlowNodeImpl = flowNodeIterator.next();
+			String[] typeTemplateArray = this.getTypeAndTemplateNameByFlowNode(kernelFlowNodeImpl);
 			taskType = typeTemplateArray[ARRAY_INDEX_FIRST];
 			svgTemplateFileName = typeTemplateArray[ARRAY_INDEX_SECOND];
-			if (StringUtils.isBlank(taskType)
-					|| StringUtils.isBlank(svgTemplateFileName)) {
+			if (StringUtils.isBlank(taskType) || StringUtils.isBlank(svgTemplateFileName)) {
 				continue;
 			}
-			VONode voNode = null;
+
 			// 如果任务列表为空，或者当前节点是网关节点，则不添加标识
 			if (kernelFlowNodeImpl.getKernelFlowNodeBehavior() instanceof GatewayBehavior) {
-				voNode = this.getNodeSVGFromFactory(kernelFlowNodeImpl,
-						taskType, svgTemplateFileName);
+				voNode = this.getNodeSVGFromFactory(kernelFlowNodeImpl, taskType,
+						svgTemplateFileName);
 			} else {
-				String taskState = this.confirmTaskNotEnd(taskList,
-						kernelFlowNodeImpl.getId());
-				voNode = this.getSignedNodeSVGFromFactory(kernelFlowNodeImpl,
-						taskType, svgTemplateFileName, taskState);
+				String taskState = this.confirmTaskNotEnd(taskList, kernelFlowNodeImpl.getId());
+				voNode = this.getSignedNodeSVGFromFactory(kernelFlowNodeImpl, taskType,
+						svgTemplateFileName, taskState);
 			}
 			voNodeList.add(voNode);
 		}
 		this.createSequenceVO(deployedProcessDefinition, voNodeList);
-		return flowNodeVOFactory.convertNodeListToString(
-				deployedProcessDefinition.getProperties(), voNodeList);
+		return flowNodeVOFactory.convertNodeListToString(deployedProcessDefinition.getProperties(),
+				voNodeList);
 	}
 
 	/**
 	 * 根据所有流程节点，和流程连接创建流程SVG文档字符串
 	 */
-	public String createProcessDefinitionVOString(
-			ProcessDefinitionEntity deployedProcessDefinition) {
-		List<KernelFlowNodeImpl> flowNodes = deployedProcessDefinition
-				.getFlowNodes();
+	public String createProcessDefinitionVOString(ProcessDefinitionEntity deployedProcessDefinition) {
+		List<KernelFlowNodeImpl> flowNodes = deployedProcessDefinition.getFlowNodes();
 		List<VONode> voNodeList = new ArrayList<VONode>();
-		this.createLaneSetVO(deployedProcessDefinition.getLaneSets(),
-				voNodeList);
+		this.createLaneSetVO(deployedProcessDefinition.getLaneSets(), voNodeList);
 		// 遍历所有的流程节点
 		Iterator<KernelFlowNodeImpl> flowNodeIterator = flowNodes.iterator();
 		String taskType = EMPTY_STRING;
 		String svgTemplateFileName = EMPTY_STRING;
+		KernelFlowNodeImpl kernelFlowNodeImpl = null;
+		VONode voNode = null;
+		String[] typeTemplateArray = null;
 		while (flowNodeIterator.hasNext()) {
-			KernelFlowNodeImpl kernelFlowNodeImpl = flowNodeIterator.next();
-			String[] typeTemplateArray = this
-					.getTypeAndTemplateNameByFlowNode(kernelFlowNodeImpl);
+			kernelFlowNodeImpl = flowNodeIterator.next();
+			typeTemplateArray = this.getTypeAndTemplateNameByFlowNode(kernelFlowNodeImpl);
 			taskType = typeTemplateArray[ARRAY_INDEX_FIRST];
 			svgTemplateFileName = typeTemplateArray[ARRAY_INDEX_SECOND];
-			if (StringUtils.isBlank(taskType)
-					|| StringUtils.isBlank(svgTemplateFileName)) {
+			if (StringUtils.isBlank(taskType) || StringUtils.isBlank(svgTemplateFileName)) {
 				continue;
 			}
-			VONode voNode = null;
-			voNode = this.getNodeSVGFromFactory(kernelFlowNodeImpl, taskType,
-					svgTemplateFileName);
+
+			voNode = this.getNodeSVGFromFactory(kernelFlowNodeImpl, taskType, svgTemplateFileName);
 			voNodeList.add(voNode);
 		}
 		this.createSequenceVO(deployedProcessDefinition, voNodeList);
-		return flowNodeVOFactory.convertNodeListToString(
-				deployedProcessDefinition.getProperties(), voNodeList);
+		return flowNodeVOFactory.convertNodeListToString(deployedProcessDefinition.getProperties(),
+				voNodeList);
 	}
 
 	/**
@@ -163,11 +157,11 @@ public class ConcreteProcessDefinitionVOFactory extends
 	 * @param deployedProcessDefinition
 	 * @param voNodeList
 	 */
-	private void createLaneSetVO(List<KernelLaneSet> laneSets,
-			List<VONode> voNodeList) {
+	private void createLaneSetVO(List<KernelLaneSet> laneSets, List<VONode> voNodeList) {
 		Iterator<KernelLaneSet> laneSetIter = laneSets.iterator();
+		KernelLaneSet laneSet = null;
 		while (laneSetIter.hasNext()) {
-			KernelLaneSet laneSet = laneSetIter.next();
+			laneSet = laneSetIter.next();
 			this.createLaneVO(laneSet, voNodeList);
 		}
 	}
@@ -183,13 +177,15 @@ public class ConcreteProcessDefinitionVOFactory extends
 	private void createLaneVO(KernelLaneSet laneSet, List<VONode> voNodeList) {
 		List<KernelLane> lanes = laneSet.getLanes();
 		Iterator<KernelLane> laneIter = lanes.iterator();
+		KernelLane lane = null;
+		VONode voNode = null;
+		KernelLaneSet childLaneSet = null;
 		while (laneIter.hasNext()) {
-			KernelLane lane = laneIter.next();
-			VONode voNode = this.getNodeSVGFromFactory(lane,
-					SVGTypeNameConstant.SVG_TYPE_LANE,
+			lane = laneIter.next();
+			voNode = this.getNodeSVGFromFactory(lane, SVGTypeNameConstant.SVG_TYPE_LANE,
 					SVGTemplateNameConstant.TEMPLATE_LANESET);
 			voNodeList.add(voNode);
-			KernelLaneSet childLaneSet = lane.getChildLaneSet();
+			childLaneSet = lane.getChildLaneSet();
 			if (childLaneSet != null) {
 				this.createLaneVO(childLaneSet, voNodeList);
 			}
@@ -203,8 +199,7 @@ public class ConcreteProcessDefinitionVOFactory extends
 	 * @param deployedProcessDefinition
 	 * @param voNodeList
 	 */
-	private void createSequenceVO(
-			ProcessDefinitionEntity deployedProcessDefinition,
+	private void createSequenceVO(ProcessDefinitionEntity deployedProcessDefinition,
 			List<VONode> voNodeList) {
 		String taskType = EMPTY_STRING;
 		String svgTemplateFileName = EMPTY_STRING;
@@ -213,14 +208,15 @@ public class ConcreteProcessDefinitionVOFactory extends
 		// 遍历所有的流程连线
 		Iterator<Entry<String, KernelSequenceFlowImpl>> sequenceFlowterator = sequenceFlows
 				.entrySet().iterator();
+		VONode voNode = null;
+		Entry<String, KernelSequenceFlowImpl> nextConnector = null;
+		KernelSequenceFlowImpl sequenceFlowImpl = null;
 		while (sequenceFlowterator.hasNext()) {
-			Entry<String, KernelSequenceFlowImpl> nextConnector = sequenceFlowterator
-					.next();
-			KernelSequenceFlowImpl sequenceFlowImpl = nextConnector.getValue();
+			nextConnector = sequenceFlowterator.next();
+			sequenceFlowImpl = nextConnector.getValue();
 			taskType = SVGTypeNameConstant.SVG_TYPE_CONNECTOR;
 			svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_CONNECTOR_SEQUENCEFLOW;
-			VONode voNode = this.getNodeSVGFromFactory(sequenceFlowImpl,
-					taskType, svgTemplateFileName);
+			voNode = this.getNodeSVGFromFactory(sequenceFlowImpl, taskType, svgTemplateFileName);
 			voNodeList.add(voNode);
 		}
 	}
@@ -235,10 +231,10 @@ public class ConcreteProcessDefinitionVOFactory extends
 	private String confirmTaskNotEnd(List<Task> taskList, String taskFlowNodeID) {
 		String result = TASK_NOTEXISTS;
 		Iterator<Task> notEndIter = taskList.iterator();
+		Task notEnd = null;
 		while (notEndIter.hasNext()) {
-			Task notEnd = notEndIter.next();
-			if (StringUtils
-					.equalsIgnoreCase(notEnd.getNodeId(), taskFlowNodeID)) {
+			notEnd = notEndIter.next();
+			if (StringUtils.equalsIgnoreCase(notEnd.getNodeId(), taskFlowNodeID)) {
 				if (notEnd.hasEnded()) {
 					result = TASK_END;
 				} else {
@@ -258,11 +254,11 @@ public class ConcreteProcessDefinitionVOFactory extends
 	 * @param svgTemplateFileName
 	 * @return
 	 */
-	private VONode getNodeSVGFromFactory(KernelBaseElement kernelBaseElement,
-			String svgType, String svgTemplateFileName) {
+	private VONode getNodeSVGFromFactory(KernelBaseElement kernelBaseElement, String svgType,
+			String svgTemplateFileName) {
 		// 调用节点构造方法，创建SVG VALUE OBJECT 对象
-		flowNodeVOFactory = AbstractFlowElementVOFactory.createSVGFactory(
-				kernelBaseElement, svgTemplateFileName);
+		flowNodeVOFactory = AbstractFlowElementVOFactory.createSVGFactory(kernelBaseElement,
+				svgTemplateFileName);
 		return flowNodeVOFactory.createFlowElementSVGVO(svgType);
 	}
 
@@ -274,16 +270,14 @@ public class ConcreteProcessDefinitionVOFactory extends
 	 * @param svgTemplateFileName
 	 * @return
 	 */
-	private VONode getSignedNodeSVGFromFactory(
-			KernelFlowElement kernelFlowNodeImpl, String svgType,
-			String svgTemplateFileName, String taskState) {
+	private VONode getSignedNodeSVGFromFactory(KernelFlowElement kernelFlowNodeImpl,
+			String svgType, String svgTemplateFileName, String taskState) {
 		// 创建具体工厂
 		AbstractFlowElementVOFactory conreateFactory = AbstractFlowElementVOFactory
 				.createSVGFactory(kernelFlowNodeImpl, svgTemplateFileName);
 		// 创建标记工厂，标记工厂
-		flowNodeVOFactory = AbstractFlowElementVOFactory
-				.createSignedSVGFactory(kernelFlowNodeImpl,
-						svgTemplateFileName, taskState, conreateFactory);
+		flowNodeVOFactory = AbstractFlowElementVOFactory.createSignedSVGFactory(kernelFlowNodeImpl,
+				svgTemplateFileName, taskState, conreateFactory);
 		// 标记构造独自实现，非侵入,独自扩展，对应SgnProcessStateSVGFactory工厂，
 		return flowNodeVOFactory.createFlowElementSVGVO(svgType);
 	}
@@ -294,8 +288,7 @@ public class ConcreteProcessDefinitionVOFactory extends
 	 * @param kernelFlowNodeImpl
 	 * @return
 	 */
-	private String[] getTypeAndTemplateNameByFlowNode(
-			KernelFlowNodeImpl kernelFlowNodeImpl) {
+	private String[] getTypeAndTemplateNameByFlowNode(KernelFlowNodeImpl kernelFlowNodeImpl) {
 		KernelFlowNodeBehavior kernelFlowNodeBehavior = kernelFlowNodeImpl
 				.getKernelFlowNodeBehavior();
 		if (kernelFlowNodeBehavior == null) {
@@ -363,7 +356,7 @@ public class ConcreteProcessDefinitionVOFactory extends
 			}
 		}
 
-		return new String[] { taskType, svgTemplateFileName };
+		return new String[]{taskType, svgTemplateFileName};
 	}
 
 }

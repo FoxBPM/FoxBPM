@@ -17,8 +17,26 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
+import java.util.Iterator;
+import java.util.List;
+
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
+
 public class BoundaryEventBehavior extends CatchEventBehavior {
-
 	private static final long serialVersionUID = 1L;
+	@Override
+	public void execute(FlowNodeExecutionContext executionContext) {
+		// TODO Auto-generated method stub
+		List<EventDefinition> eventDefinitions = super.getEventDefinitions();
+		Iterator<EventDefinition> iterator = eventDefinitions.iterator();
+		EventDefinition eventDefinition = null;
+		while (iterator.hasNext()) {
+			eventDefinition = iterator.next();
+			if (eventDefinition instanceof TimerEventDefinition) {
+				// 边界事件的定时任务
+			}
 
+		}
+		super.execute(executionContext);
+	}
 }
