@@ -17,8 +17,10 @@
  */
 package org.foxbpm.engine.impl.identity;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.impl.Context;
@@ -41,7 +43,7 @@ public class GroupRoleImpl implements GroupDefinition {
 	
 	@Override
 	public String getType() {
-		return "role";
+		return Constant.ROLE_TYPE;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -56,6 +58,27 @@ public class GroupRoleImpl implements GroupDefinition {
 		CacheUtil.getIdentityCache().add("roleUserCache_" + groupId, userIds);
 		return userIds;
 	}
-
+	
+	@Override
+	public List<Group> selectChildrenByGroupId(String groupId) {
+		List<Group> groups = new ArrayList<Group>();
+		Group role = selectGroupByGroupId(groupId);
+		if(role != null){
+			groups.add(role);
+		}
+		return groups;
+	}
+	
+	@Override
+	public Group selectGroupByGroupId(String groupId) {
+		Group group = (Group)CacheUtil.getIdentityCache().get("roleCache_" + groupId);
+		if(group != null){
+			return group;
+		}
+		ISqlSession sqlSession = Context.getCommandContext().getSqlSession();
+		group = (Group) sqlSession.selectOne("selectRoleById", groupId);
+		CacheUtil.getIdentityCache().add("roleCache_" + groupId, group);
+		return group;
+	}
 
 }

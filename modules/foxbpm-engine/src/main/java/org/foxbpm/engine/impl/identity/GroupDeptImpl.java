@@ -17,8 +17,10 @@
  */
 package org.foxbpm.engine.impl.identity;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.impl.Context;
@@ -41,7 +43,7 @@ public class GroupDeptImpl implements GroupDefinition {
 	
 	@Override
 	public String getType() {
-		return "dept";
+		return Constant.DEPT_TYPE;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -55,6 +57,53 @@ public class GroupDeptImpl implements GroupDefinition {
 		userIds = (List<String>)sqlsession.selectListWithRawParameter("selectUserIdsByDeptId", groupId);
 		CacheUtil.getIdentityCache().add("deptUserCache_" + groupId, userIds);
 		return userIds;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Group> selectChildrenByGroupId(String groupId) {
+		List<Group> groups = (List<Group>)CacheUtil.getIdentityCache().get("selectChildrenByGroupId_" + groupId);
+		if(groups != null){
+			return groups;
+		}
+		groups = new ArrayList<Group>();
+		//获取本身
+		Group group = selectGroupByGroupId(groupId);
+		if(group != null){
+			groups.add(group);
+			//递归子组
+			selectSubDept(groupId,groups);
+		}
+		return groups;
+	}
+	
+	/**
+	 * 递归子组
+	 * @param groupId
+	 * @param groups
+	 */
+	@SuppressWarnings("unchecked")
+	public void selectSubDept(String groupId,List<Group> groups){
+		ISqlSession sqlSession = Context.getCommandContext().getSqlSession();
+		List<Group> tmpGroups = (List<Group>)sqlSession.selectListWithRawParameter("selectDeptBySupId", groupId);
+		if(tmpGroups != null){
+			groups.addAll(tmpGroups);
+			for(Group tmp : tmpGroups){
+				selectSubDept(tmp.getGroupId(),groups);
+			}
+		}
+	}
+	
+	@Override
+	public Group selectGroupByGroupId(String groupId) {
+		Group group = (Group)CacheUtil.getIdentityCache().get("deptCache_" + groupId);
+		if(group != null){
+			return group;
+		}
+		ISqlSession sqlSession = Context.getCommandContext().getSqlSession();
+		group = (Group) sqlSession.selectOne("selectDeptById", groupId);
+		CacheUtil.getIdentityCache().add("deptCache_" + groupId, group);
+		return group;
 	}
 
 }
