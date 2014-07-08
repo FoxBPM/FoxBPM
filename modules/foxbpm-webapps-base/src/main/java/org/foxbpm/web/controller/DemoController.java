@@ -23,10 +23,10 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.foxbpm.engine.impl.util.StringUtil;
-import org.foxbpm.web.common.constant.FoxbpmActionNameDefinition;
+import org.foxbpm.web.common.constant.WebActionName;
 import org.foxbpm.web.common.constant.FoxbpmServiceNameDefinition;
-import org.foxbpm.web.common.constant.FoxbpmViewNameDefinition;
-import org.foxbpm.web.common.constant.FoxbpmWebContextAttributeNameDefinition;
+import org.foxbpm.web.common.constant.WebViewName;
+import org.foxbpm.web.common.constant.WebContextAttributeName;
 import org.foxbpm.web.service.interfaces.IDemoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,12 +51,12 @@ public class DemoController extends AbstWebController {
 	 *            http请求参数
 	 * @return 返回响应视图
 	 */
-	@RequestMapping(FoxbpmActionNameDefinition.START_TASK_ACTION)
+	@RequestMapping(WebActionName.START_TASK_ACTION)
 	public ModelAndView startTask(HttpServletRequest request) {
-		String viewName = FoxbpmViewNameDefinition.START_TASK_VIEWNAME;
+		String viewName = WebViewName.START_TASK_VIEWNAME;
 		Map<String, Object> requestParams = getRequestParams(request);
 		Map<String, Object> resultMap = workDemoService.startTask(requestParams);
-		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
+		request.setAttribute(WebContextAttributeName.ATTRIBUTE_NAME_RESULT, resultMap);
 		// 获取视图处理
 		viewName = StringUtil.getString(resultMap.remove("viewName"));
 		return createModelAndView(viewName);
@@ -69,11 +69,11 @@ public class DemoController extends AbstWebController {
 	 *            http请求参数
 	 * @return 返回响应视图
 	 */
-	@RequestMapping(FoxbpmActionNameDefinition.COMPLETE_TASK_ACTION)
+	@RequestMapping(WebActionName.COMPLETE_TASK_ACTION)
 	public ModelAndView completeTask(HttpServletRequest request) {
 		Map<String, Object> requestParams = getRequestParams(request);
 		workDemoService.completeTask(requestParams);
-		return createModelAndView(FoxbpmViewNameDefinition.COMPLETETASK_VIEWNAME);
+		return createModelAndView(WebViewName.COMPLETETASK_VIEWNAME);
 	}
 
 	protected String getPrefix() {

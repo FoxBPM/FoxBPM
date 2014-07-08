@@ -28,11 +28,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.foxbpm.engine.identity.User;
-import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
-import org.foxbpm.web.common.constant.FoxbpmActionNameDefinition;
-import org.foxbpm.web.common.constant.FoxbpmViewNameDefinition;
-import org.foxbpm.web.common.constant.FoxbpmWebContextAttributeNameDefinition;
+import org.foxbpm.web.common.constant.WebActionName;
+import org.foxbpm.web.common.constant.WebContextAttributeName;
+import org.foxbpm.web.common.constant.WebViewName;
 import org.foxbpm.web.common.util.Pagination;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,18 +53,18 @@ public class WorkFlowController extends AbstWebController {
 	 *            http请求参数
 	 * @return 返回响应视图
 	 */
-	@RequestMapping(FoxbpmActionNameDefinition.QUERY_STARTPROCESS_ACTION)
+	@RequestMapping(WebActionName.QUERY_STARTPROCESS_ACTION)
 	public ModelAndView queryStartProcess(HttpServletRequest request) {
 		// 请求参数
 		Map<String, Object> requestParams = getRequestParams(request);
-		requestParams.put(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_USERID, Authentication.getAuthenticatedUserId());
+		requestParams.put(WebContextAttributeName.USERID, "admin");
 		// 查询结果
 		List<Map<String, Object>> resultList = workFlowService.queryStartProcess(requestParams);
 
 		// 封装参数
-		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultList);
+		request.setAttribute(WebContextAttributeName.ATTRIBUTE_NAME_RESULT, resultList);
 
-		ModelAndView modelAndView = createModelAndView(FoxbpmViewNameDefinition.QUERY_QUERYALLPROCESSDEF_VIEWNAME);
+		ModelAndView modelAndView = createModelAndView(WebViewName.QUERY_QUERYALLPROCESSDEF_VIEWNAME);
 		return modelAndView;
 	}
 
@@ -76,15 +75,15 @@ public class WorkFlowController extends AbstWebController {
 	 *            http请求参数
 	 * @return 返回响应视图
 	 */
-	@RequestMapping(FoxbpmActionNameDefinition.QUERY_QUERYALLPROCESSINST_ACTION)
+	@RequestMapping(WebActionName.QUERY_QUERYALLPROCESSINST_ACTION)
 	public ModelAndView queryProcessInst(HttpServletRequest request) {
 		// 请求参数
 		Map<String, Object> requestParams = getRequestParams(request);
-		requestParams.put(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_USERID, Authentication.getAuthenticatedUserId());
+		requestParams.put(WebContextAttributeName.USERID, "admin");
 
 		// 获取分页条件参数
-		String pageI = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINDEX));
-		String pageS = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGESIZE));
+		String pageI = StringUtil.getString(requestParams.get(WebContextAttributeName.ATTRIBUTE_NAME_PAGEINDEX));
+		String pageS = StringUtil.getString(requestParams.get(WebContextAttributeName.ATTRIBUTE_NAME_PAGESIZE));
 
 		// 处理分页
 		int pageIndex = Pagination.PAGE_INDEX;
@@ -104,9 +103,9 @@ public class WorkFlowController extends AbstWebController {
 		// 获取分页条件参数
 		resultMap.put("dataList", resultData);
 		// 将参数封装给页面使用
-		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
-		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
-		ModelAndView modelAndView = createModelAndView(FoxbpmViewNameDefinition.QUERY_QUERYALLPROCESSINST_VIEWNAME);
+		request.setAttribute(WebContextAttributeName.ATTRIBUTE_NAME_RESULT, resultMap);
+		request.setAttribute(WebContextAttributeName.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
+		ModelAndView modelAndView = createModelAndView(WebViewName.QUERY_QUERYALLPROCESSINST_VIEWNAME);
 		return modelAndView;
 	}
 
@@ -117,7 +116,7 @@ public class WorkFlowController extends AbstWebController {
 	 *            http请求参数
 	 * @return 返回响应视图
 	 */
-	@RequestMapping(FoxbpmActionNameDefinition.QUERY_TASKDETAILINFOR_ACTION)
+	@RequestMapping(WebActionName.QUERY_TASKDETAILINFOR_ACTION)
 	public ModelAndView queryTaskDetailInfor(HttpServletRequest request) {
 
 		Map<String, Object> requestParams = getRequestParams(request);
@@ -131,8 +130,8 @@ public class WorkFlowController extends AbstWebController {
 			}
 		}
 
-		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
-		return createModelAndView(FoxbpmViewNameDefinition.QUERY_TASKDETAILINFOR_ACTION);
+		request.setAttribute(WebContextAttributeName.ATTRIBUTE_NAME_RESULT, resultMap);
+		return createModelAndView(WebViewName.QUERY_TASKDETAILINFOR_ACTION);
 	}
 
 	/**
@@ -142,14 +141,14 @@ public class WorkFlowController extends AbstWebController {
 	 *            http请求参数
 	 * @return 返回响应视图
 	 */
-	@RequestMapping(FoxbpmActionNameDefinition.QUERY_TODOTASK_ACTION)
+	@RequestMapping(WebActionName.QUERY_TODOTASK_ACTION)
 	public ModelAndView queryToDoTask(HttpServletRequest request) {
 
 		Map<String, Object> requestParams = getRequestParams(request);
-		requestParams.put(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_USERID, Authentication.getAuthenticatedUserId());
+		requestParams.put(WebContextAttributeName.USERID, "admin");
 		// 获取分页条件参数
-		String pageI = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINDEX));
-		String pageS = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGESIZE));
+		String pageI = StringUtil.getString(requestParams.get(WebContextAttributeName.ATTRIBUTE_NAME_PAGEINDEX));
+		String pageS = StringUtil.getString(requestParams.get(WebContextAttributeName.ATTRIBUTE_NAME_PAGESIZE));
 
 		// 处理分页
 		int pageIndex = Pagination.PAGE_INDEX;
@@ -169,9 +168,9 @@ public class WorkFlowController extends AbstWebController {
 		// 获取分页条件参数
 		resultMap.put("dataList", resultData);
 		// 将参数封装给页面使用
-		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
-		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
-		return createModelAndView(FoxbpmViewNameDefinition.QUERY_QUERYTODOTASK_VIEWNAME);
+		request.setAttribute(WebContextAttributeName.ATTRIBUTE_NAME_RESULT, resultMap);
+		request.setAttribute(WebContextAttributeName.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
+		return createModelAndView(WebViewName.QUERY_QUERYTODOTASK_VIEWNAME);
 	}
 
 	/**
@@ -183,7 +182,7 @@ public class WorkFlowController extends AbstWebController {
 	 *            响应
 	 * @return 返回响应视图
 	 */
-	@RequestMapping(FoxbpmActionNameDefinition.GETFLOWGRAPH_ACTION)
+	@RequestMapping(WebActionName.GETFLOWGRAPH_ACTION)
 	public ModelAndView getFlowGraph(HttpServletRequest request, HttpServletResponse response) {
 
 		Map<String, Object> requestParams = getRequestParams(request);
@@ -204,13 +203,13 @@ public class WorkFlowController extends AbstWebController {
 
 	}
 
-	@RequestMapping(FoxbpmActionNameDefinition.SELECT_USER)
+	@RequestMapping(WebActionName.SELECT_USER)
 	public ModelAndView selectUserList(HttpServletRequest request) {
 		Map<String, Object> requestParams = getRequestParams(request);
 
 		// 获取分页条件参数
-		String pageI = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINDEX));
-		String pageS = StringUtil.getString(requestParams.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGESIZE));
+		String pageI = StringUtil.getString(requestParams.get(WebContextAttributeName.ATTRIBUTE_NAME_PAGEINDEX));
+		String pageS = StringUtil.getString(requestParams.get(WebContextAttributeName.ATTRIBUTE_NAME_PAGESIZE));
 
 		// 处理分页
 		int pageIndex = Pagination.PAGE_INDEX;
@@ -238,9 +237,9 @@ public class WorkFlowController extends AbstWebController {
 		resultMap.put("dataList", userList);
 		resultMap.put("pageInfo", pageInfor);
 		// 将参数封装给页面使用
-		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_RESULT, resultMap);
-		request.setAttribute(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
-		return createModelAndView(FoxbpmViewNameDefinition.SELECT_USER);
+		request.setAttribute(WebContextAttributeName.ATTRIBUTE_NAME_RESULT, resultMap);
+		request.setAttribute(WebContextAttributeName.ATTRIBUTE_NAME_PAGEINFOR, pageInfor);
+		return createModelAndView(WebViewName.SELECT_USER);
 
 	}
 

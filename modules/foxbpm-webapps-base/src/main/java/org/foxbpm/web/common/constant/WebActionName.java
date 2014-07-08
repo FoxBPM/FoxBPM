@@ -6,7 +6,7 @@ package org.foxbpm.web.common.constant;
  * @author MEL
  * @date 2014-06-06
  */
-public final class FoxbpmActionNameDefinition {
+public final class WebActionName {
 
 	/*************************** 任务中心action ************************************************/
 	public final static String COMPLETE_TASK_ACTION = "completeTask";

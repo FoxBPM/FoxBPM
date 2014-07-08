@@ -33,8 +33,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.foxbpm.web.common.constant.FoxbpmServiceNameDefinition;
-import org.foxbpm.web.common.constant.FoxbpmViewNameDefinition;
-import org.foxbpm.web.common.constant.FoxbpmWebContextAttributeNameDefinition;
+import org.foxbpm.web.common.constant.WebViewName;
+import org.foxbpm.web.common.constant.WebContextAttributeName;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.service.interfaces.IFlowManageService;
 import org.foxbpm.web.service.interfaces.IWorkFlowService;
@@ -59,7 +59,7 @@ public abstract class AbstWebController {
 	@ExceptionHandler
 	public String exp(HttpServletRequest request, Exception ex) {
 		request.setAttribute("ex", ex);
-		return getPrefix() + FoxbpmViewNameDefinition.ERROR_VIEWNAME;
+		return getPrefix() + WebViewName.ERROR_VIEWNAME;
 	}
 
 	/**
@@ -100,8 +100,8 @@ public abstract class AbstWebController {
 				List<FileItem> fileItems = Uploader.parseRequest(request);
 				for (FileItem item : fileItems) {
 					requestParams.put(item.getFieldName(), item);
-					if (FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_DEPLOYMENTID.equals(item.getFieldName())) {
-						requestParams.put(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_DEPLOYMENTID, item.getString());
+					if (WebContextAttributeName.ATTRIBUTE_DEPLOYMENTID.equals(item.getFieldName())) {
+						requestParams.put(WebContextAttributeName.ATTRIBUTE_DEPLOYMENTID, item.getString());
 					}
 				}
 			} else {
