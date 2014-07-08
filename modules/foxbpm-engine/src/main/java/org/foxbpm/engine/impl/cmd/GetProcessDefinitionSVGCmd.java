@@ -17,11 +17,14 @@
  */
 package org.foxbpm.engine.impl.cmd;
 
+import java.util.Map;
+
 import org.foxbpm.engine.impl.diagramview.factory.FoxbpmProcessDefinitionVOFactory;
 import org.foxbpm.engine.impl.diagramview.factory.ConcreteProcessDefinitionVOFactory;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.StringUtil;
 
 /**
  * 获取流程定义SVG图像
@@ -31,6 +34,7 @@ import org.foxbpm.engine.impl.interceptor.CommandContext;
  * 
  */
 public class GetProcessDefinitionSVGCmd implements Command<String> {
+	private static final String SVG_PROPERTIES_NAME = "svgDocument";
 	private String processDefinitionId;
 
 	public GetProcessDefinitionSVGCmd(String processDefinitionId) {
@@ -42,9 +46,18 @@ public class GetProcessDefinitionSVGCmd implements Command<String> {
 		ProcessDefinitionEntity deployedProcessDefinition = commandContext
 				.getProcessEngineConfigurationImpl().getDeploymentManager()
 				.findDeployedProcessDefinitionById(processDefinitionId);
+		Map<String, Object> properties = deployedProcessDefinition.getProperties();
+		String svgDocument = (String) properties.get(SVG_PROPERTIES_NAME);
+		if (StringUtil.isNotBlank(svgDocument)) {
+			return svgDocument;
+		}
 		// SVG上一层接口，独立于SVG，后期支持动态切换到微软SVG实现
 		FoxbpmProcessDefinitionVOFactory svgFactory = new ConcreteProcessDefinitionVOFactory();
-		return svgFactory
+		String tempSVGDocument = svgFactory
 				.createProcessDefinitionVOString(deployedProcessDefinition);
+		deployedProcessDefinition.getProperties().put(SVG_PROPERTIES_NAME, tempSVGDocument);
+		return tempSVGDocument;
+
 	}
+
 }
