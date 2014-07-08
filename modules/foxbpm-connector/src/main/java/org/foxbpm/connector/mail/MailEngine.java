@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.connector.common.constant.Constants;
 import org.foxbpm.connector.common.constant.EntityFieldName;
 import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.exception.FoxBPMException;
@@ -52,7 +53,7 @@ public class MailEngine {
 	 * 日志
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(MailEngine.class);
-	private static final String SQL_END_DELIMITER = ";";
+
 	/**
 	 * 邮件引擎实例
 	 */
@@ -153,7 +154,7 @@ public class MailEngine {
 
 						String cc = mailEntity.getMailCc();
 						if (StringUtil.isNotEmpty(StringUtil.trim(cc))) {
-							String[] strCC = cc.split(",");
+							String[] strCC = cc.split(Constants.COMMA);
 							List<String> userMailCCList = new ArrayList<String>();
 							for (String userMail : strCC) {
 								if (StringUtil.isNotEmpty(StringUtil.trim(userMail))) {
@@ -243,8 +244,8 @@ public class MailEngine {
 
 	private String trim(String sql) {
 		sql = sql.trim();
-		if (sql.endsWith(SQL_END_DELIMITER)) {
-			sql = sql.substring(0, sql.length() - 1 - SQL_END_DELIMITER.length());
+		if (sql.endsWith(Constants.SQL_END_DELIMITER)) {
+			sql = sql.substring(0, sql.length() - 1 - Constants.SQL_END_DELIMITER.length());
 		}
 		return sql;
 	}

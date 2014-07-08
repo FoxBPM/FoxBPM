@@ -20,6 +20,7 @@ package org.foxbpm.connector.flowconnector.AutoSendMail;
 import java.util.Date;
 import java.util.List;
 
+import org.foxbpm.connector.common.constant.Constants;
 import org.foxbpm.connector.mail.MailEngine;
 import org.foxbpm.connector.mail.MailEntity;
 import org.foxbpm.engine.Constant;
@@ -28,6 +29,7 @@ import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.connector.FlowConnectorHandler;
 import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
@@ -54,8 +56,11 @@ public class AutoSendMail implements FlowConnectorHandler {
 	private java.lang.String content;
 
 	public void execute(ConnectorExecutionContext executionContext) throws Exception {
+
+		// 从上下文拿引擎
+		ProcessEngineConfigurationImpl peconfig = Context.getProcessEngineConfiguration();
 		// 获取邮件配置
-		SysMailConfig sysMailConfig = Context.getProcessEngineConfiguration().getSysMailConfig();
+		SysMailConfig sysMailConfig = peconfig.getSysMailConfig();
 		MailInfo mailInfoObj = null;
 		for (MailInfo mailInfo : sysMailConfig.getMailInfo()) {
 			if (mailInfo.getMailName().equals(sysMailConfig.getSelected())) {
@@ -70,7 +75,7 @@ public class AutoSendMail implements FlowConnectorHandler {
 		StringBuffer mailTitle = new StringBuffer();
 		// 如果主题为空
 		if (StringUtil.isEmpty(StringUtil.trim(title))) {
-			mailTitle.append("[" + taskEntity.getProcessDefinitionName() + "] ").append(taskEntity.getDescription()).append(" is pending for your approval or handle");
+			mailTitle.append('[').append(taskEntity.getProcessDefinitionName()).append(']').append(taskEntity.getDescription()).append(" is pending for your approval or handle");
 		}
 
 		String taskUrl = "http://www.baidu.com";
@@ -79,7 +84,7 @@ public class AutoSendMail implements FlowConnectorHandler {
 					+ "Best Regards!<br>诚挚问候!<br>Note: Please do not reply to this email , This mailbox does not allow incoming messages." + "<br>注意: 本邮件为工作流系统发送，请勿回复。 ";
 		}
 		// 获取用户
-		IdentityService identityService = Context.getProcessEngineConfiguration().getIdentityService();
+		IdentityService identityService = peconfig.getIdentityService();
 		// 判断是否独占任务
 		User user = null;
 		if (StringUtil.isNotEmpty(taskEntity.getAssignee())) {
@@ -103,7 +108,7 @@ public class AutoSendMail implements FlowConnectorHandler {
 						user = Authentication.selectUserByUserId(userId);
 						if (null != user) {
 							if (StringUtil.isNotEmpty(user.getEmail())) {
-								to.append(user.getEmail()).append(",");
+								to.append(user.getEmail()).append(Constants.COMMA);
 							}
 						}
 					} else {
@@ -112,7 +117,7 @@ public class AutoSendMail implements FlowConnectorHandler {
 						if (null != users) {
 							for (User u : users) {
 								if (StringUtil.isNotEmpty(u.getEmail())) {
-									to.append(u.getEmail()).append(",");
+									to.append(u.getEmail()).append(Constants.COMMA);
 								}
 							}
 						}
@@ -123,7 +128,7 @@ public class AutoSendMail implements FlowConnectorHandler {
 					if (null != users) {
 						for (User u : users) {
 							if (StringUtil.isNotEmpty(u.getEmail())) {
-								to.append(u.getEmail()).append(",");
+								to.append(u.getEmail()).append(Constants.COMMA);
 							}
 						}
 					}
@@ -158,8 +163,6 @@ public class AutoSendMail implements FlowConnectorHandler {
 		mailEntity.setMailTo(to);
 		mailEntity.setMailBody(mailContent);
 		mailEntity.setCreateTime(new Date());
-		mailEntity.setBizType("taskremind");
-		mailEntity.setBizValue(taskId);
 		mailEntity.setCreateUser(Authentication.getAuthenticatedUserId());
 		// 调用引擎保存邮件
 		MailEngine.getInstance().saveMail(mailEntity);

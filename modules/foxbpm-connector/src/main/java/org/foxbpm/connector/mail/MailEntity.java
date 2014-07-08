@@ -58,14 +58,7 @@ public class MailEntity implements PersistentObject {
 	 * 邮件体
 	 */
 	protected String mailBody;
-	/**
-	 * 不加类型
-	 */
-	protected String bizType;
-	/**
-	 * 附件内容
-	 */
-	protected String bizValue;
+
 	/**
 	 * 邮件状态
 	 */
@@ -148,22 +141,6 @@ public class MailEntity implements PersistentObject {
 		this.mailBody = mailBody;
 	}
 
-	public String getBizType() {
-		return bizType;
-	}
-
-	public void setBizType(String bizType) {
-		this.bizType = bizType;
-	}
-
-	public String getBizValue() {
-		return bizValue;
-	}
-
-	public void setBizValue(String bizValue) {
-		this.bizValue = bizValue;
-	}
-
 	public MailStatus getMailStatus() {
 		return mailStatus;
 	}
@@ -197,34 +174,19 @@ public class MailEntity implements PersistentObject {
 	}
 
 	public void persistentInit(Map<String, Object> entityMap) {
-		for (String dataKey : entityMap.keySet()) {
-			if (dataKey.equals(EntityFieldName.MAIL_ID)) {
-				this.mailId = StringUtil.getString(entityMap.get(dataKey));
-			} else if (dataKey.equals(EntityFieldName.MAIL_NAME)) {
-				this.mailName = StringUtil.getString(entityMap.get(dataKey));
-			} else if (dataKey.equals(EntityFieldName.MAIL_TO)) {
-				this.mailTo = StringUtil.getString(entityMap.get(dataKey));
-			} else if (dataKey.equals(EntityFieldName.MAIL_SUBJECT)) {
-				this.mailSubject = StringUtil.getString(entityMap.get(dataKey));
-			} else if (dataKey.equals(EntityFieldName.MAIL_BODY) && null != entityMap.get(dataKey)) {
-				this.mailBody = new String((byte[]) entityMap.get(dataKey));
-			} else if (dataKey.equals(EntityFieldName.MAIL_BIZ_TYPE)) {
-				this.bizType = StringUtil.getString(entityMap.get(dataKey));
-			} else if (dataKey.equals(EntityFieldName.MAIL_BIZ_VALUE)) {
-				this.bizValue = StringUtil.getString(entityMap.get(dataKey));
-			} else if (dataKey.equals(EntityFieldName.MAIL_STATUS)) {
-				this.mailStatus = MailStatus.valueOf(StringUtil.getString(entityMap.get(dataKey)));
-			} else if (dataKey.equals(EntityFieldName.MAIL_CREATE_TIME)) {
-				this.createTime = StringUtil.getDate((entityMap.get(dataKey)));
-			} else if (dataKey.equals(EntityFieldName.MAIL_SEND_TIME)) {
-				this.sendTime = StringUtil.getDate(entityMap.get(dataKey));
-			} else if (dataKey.equals(EntityFieldName.MAIL_CC)) {
-				this.mailCc = StringUtil.getString(entityMap.get(dataKey));
-			} else if (dataKey.equals(EntityFieldName.MAIL_CREATE_USER)) {
-				this.createUser = StringUtil.getString(entityMap.get(dataKey));
-			} else if (dataKey.equals(EntityFieldName.MAIL_FAILURE_REASON)) {
-				this.failureReason = StringUtil.getString(entityMap.get(dataKey));
-			}
+		this.mailId = StringUtil.getString(entityMap.get(EntityFieldName.MAIL_ID));
+		this.mailName = StringUtil.getString(entityMap.get(EntityFieldName.MAIL_NAME));
+		this.mailTo = StringUtil.getString(entityMap.get(EntityFieldName.MAIL_TO));
+		this.mailSubject = StringUtil.getString(entityMap.get(EntityFieldName.MAIL_SUBJECT));
+		this.mailStatus = MailStatus.valueOf(StringUtil.getString(entityMap.get(EntityFieldName.MAIL_STATUS)));
+		this.createTime = StringUtil.getDate((entityMap.get(EntityFieldName.MAIL_CREATE_TIME)));
+		this.sendTime = StringUtil.getDate(entityMap.get(EntityFieldName.MAIL_SEND_TIME));
+		this.mailCc = StringUtil.getString(entityMap.get(EntityFieldName.MAIL_CC));
+		this.createUser = StringUtil.getString(entityMap.get(EntityFieldName.MAIL_CREATE_USER));
+		this.failureReason = StringUtil.getString(entityMap.get(EntityFieldName.MAIL_FAILURE_REASON));
+		Object dataKey = entityMap.get(EntityFieldName.MAIL_BODY);
+		if (null != dataKey) {
+			this.mailBody = new String((byte[]) dataKey);
 		}
 	}
 
@@ -239,8 +201,6 @@ public class MailEntity implements PersistentObject {
 		objectParam.put(EntityFieldName.MAIL_TO, getMailTo());
 		objectParam.put(EntityFieldName.MAIL_SUBJECT, getMailSubject());
 		objectParam.put(EntityFieldName.MAIL_BODY, getMailBody().getBytes());
-		objectParam.put(EntityFieldName.MAIL_BIZ_TYPE, getBizType());
-		objectParam.put(EntityFieldName.MAIL_BIZ_VALUE, getBizValue());
 		objectParam.put(EntityFieldName.MAIL_STATUS, getMailStatus().toString());
 		objectParam.put(EntityFieldName.MAIL_CREATE_TIME, getCreateTime());
 		objectParam.put(EntityFieldName.MAIL_SEND_TIME, getSendTime());
