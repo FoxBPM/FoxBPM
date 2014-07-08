@@ -43,21 +43,15 @@ public class FindUserByIdNoCacheCmd implements Command<User>{
 	@Override
 	public UserEntity execute(CommandContext commandContext) {
 		UserEntity user = commandContext.getUserEntityManager().findUserById(userId);
-		
 		//处理组织机构
 		List<GroupDefinition> groupDefinitions = commandContext.getProcessEngineConfigurationImpl().getGroupDefinitions();
+		List<Group> tmpGroups = null;
 		for(GroupDefinition groupDefinition : groupDefinitions){
-			List<Group> tmpGroups = groupDefinition.selectGroupByUserId(userId);
+			tmpGroups = groupDefinition.selectGroupByUserId(userId);
 			if(tmpGroups != null && tmpGroups.size() >0){
 				user.getGroups().addAll(tmpGroups);
 			}
 		}
-		
-		//处理代理信息
-		//AgentManager agentManager = commandContext.getAgentManager();
-		//List<AgentTo> agentTos = agentManager.getAgentTos(userId);
-		//user.setAgentInfo(agentTos);
-		
 		return user;
 	}
 }

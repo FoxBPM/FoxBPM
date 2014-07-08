@@ -26,4 +26,5 @@ public interface GroupDefinition {
 	String getType();
 	
 	List<String> selectUserIdsByGroupId(String groupId);
+	
 }

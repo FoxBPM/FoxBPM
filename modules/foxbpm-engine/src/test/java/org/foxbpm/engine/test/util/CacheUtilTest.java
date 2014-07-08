@@ -19,7 +19,6 @@
 package org.foxbpm.engine.test.util;
 
 import org.foxbpm.engine.cache.Cache;
-import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.cache.CacheUtil;
 import org.foxbpm.engine.impl.cache.DefaultCache;
 import org.foxbpm.engine.repository.ProcessDefinition;
@@ -39,12 +38,12 @@ public class CacheUtilTest extends AbstractFoxBpmTestCase {
 		
 		//查询一次用户后，userCache中应该存在一个user缓存对象
 		identityService.getUser("admin");
-		Cache<User> userCache = CacheUtil.getUserCache();
-		Assert.assertEquals(1, ((DefaultCache<User>)userCache).size());
+		Cache<Object> userCache = CacheUtil.getIdentityCache();
+		Assert.assertEquals(1, ((DefaultCache<Object>)userCache).size());
 		CacheUtil.clearCache();
 		//清空缓存后，缓存数量应该为0
 		Assert.assertEquals(0, ((DefaultCache<ProcessDefinition>)processDefinitionCache).size());
-		Assert.assertEquals(0, ((DefaultCache<User>)userCache).size());
+		Assert.assertEquals(0, ((DefaultCache<Object>)userCache).size());
 	}
 	
 }

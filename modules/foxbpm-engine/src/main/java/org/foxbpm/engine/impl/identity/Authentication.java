@@ -22,10 +22,10 @@ import java.util.List;
 
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineManagement;
-import org.foxbpm.engine.cache.Cache;
 import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
 import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.User;
+import org.foxbpm.engine.impl.cache.CacheUtil;
 import org.foxbpm.engine.impl.cmd.FindUserByGroupIdAndTypeCmd;
 import org.foxbpm.engine.impl.cmd.FindUserByIdNoCacheCmd;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
@@ -57,14 +57,13 @@ public abstract class Authentication {
 	public static User selectUserByUserId(String userId){
 		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
 		
-		Cache<User> userCache = processEngine.getProcessEngineConfiguration().getUserCache();
-		User result = userCache.get(userId);
+		User result = (User)CacheUtil.getIdentityCache().get("user_" + userId);
 		if(result != null){
 			return result;
 		}
 		CommandExecutor commandExecutor = processEngine.getProcessEngineConfiguration().getCommandExecutor();
 		User user = commandExecutor.execute(new FindUserByIdNoCacheCmd(userId));
-		userCache.add(userId, user);
+		CacheUtil.getIdentityCache().add("user_" + userId, user);
 		return user;
 	}
 	
