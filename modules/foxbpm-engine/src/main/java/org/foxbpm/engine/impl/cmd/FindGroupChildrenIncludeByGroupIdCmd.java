@@ -17,41 +17,43 @@
  */
 package org.foxbpm.engine.impl.cmd;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.GroupDefinition;
-import org.foxbpm.engine.identity.User;
-import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
 /**
- * 从数据库中查询user对象
- * 此方法不加载组织机构
- * 如果需要完整user对象，请使用Authentication.selectUserByUserId(String userId)
+ * 获取组编号下的所有子组（包含自身）
  * @author ych
  *
  */
-public class FindUserByIdNoCacheCmd implements Command<User>{
+public class FindGroupChildrenIncludeByGroupIdCmd  implements Command<List<Group>>{
+
+	private String groupType;
+	private String groupId;
 	
-	private String userId;
-	public FindUserByIdNoCacheCmd(String userId) {
-		this.userId = userId;
+	public FindGroupChildrenIncludeByGroupIdCmd(String groupType,String groupId) {
+		this.groupId = groupId;
+		this.groupType = groupType;
 	}
 	
 	@Override
-	public UserEntity execute(CommandContext commandContext) {
-		UserEntity user = commandContext.getUserEntityManager().findUserById(userId);
-		//处理组织机构
+	public List<Group> execute(CommandContext commandContext) {
+		if(groupId == null || groupType == null){
+			throw new FoxBPMIllegalArgumentException("参数不能为空:groupId="+groupId+",groupType="+groupType);
+		}
+		List<Group> groups = new ArrayList<Group>();
 		List<GroupDefinition> groupDefinitions = commandContext.getProcessEngineConfigurationImpl().getGroupDefinitions();
-		List<Group> tmpGroups = null;
 		for(GroupDefinition groupDefinition : groupDefinitions){
-			tmpGroups = groupDefinition.selectGroupByUserId(userId);
-			if(tmpGroups != null && tmpGroups.size() >0){
-				user.getGroups().addAll(tmpGroups);
+			if(groupDefinition.getType().equals(groupType)){
+				groups = groupDefinition.selectChildrenByGroupId(groupId);
+				return groups;
 			}
 		}
-		return user;
+		throw new FoxBPMIllegalArgumentException("不支持的组类型：" + groupType);
 	}
 }

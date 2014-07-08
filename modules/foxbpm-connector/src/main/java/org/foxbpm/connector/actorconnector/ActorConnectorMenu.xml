@@ -8,5 +8,6 @@
     <menuConnector id="UserIdActorConnector" name="系统登陆人" note="当前系统的登陆用户" ico="UserIdActorConnector.png"/>
     <menuConnector id="SelectUserActorConnector" name="选择用户" note="输入用户编号来指定处理者" ico="SelectUserActorConnector.png"/>
     <menuConnector id="SelectDeptActorConnector" name="选择部门" note="选择一个或者多个部门" ico="SelectDeptActorConnector.png"/>
+    <menuConnector id="DDD" name="DDD" note="DDD" ico="DDD.png"/>
   </node>
 </connectormenu:Menu>

@@ -49,7 +49,6 @@ import org.foxbpm.engine.exception.ExceptionI18NCore;
 import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.identity.GroupDefinition;
-import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.bpmn.deployer.AbstractDeployer;
 import org.foxbpm.engine.impl.bpmn.deployer.BpmnDeployer;
 import org.foxbpm.engine.impl.cache.DefaultCache;
@@ -127,14 +126,11 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected int processDefinitionCacheLimit = -1; // By default, no limit
 	protected Cache<ProcessDefinition> processDefinitionCache;
 
-	protected int knowledgeBaseCacheLimit = -1;
-	protected Cache<ProcessDefinition> knowledgeBaseCache;
-
 	protected int userProcessDefinitionCacheLimit = -1;
 	protected Cache<Object> userProcessDefinitionCache;
 
-	protected int userCacheLimit = -1;
-	protected Cache<User> userCache;
+	protected int identityCacheLimit = -1;
+	protected Cache<Object> identityCache;
 
 	protected AbstractDeployer bpmnDeployer;
 	protected ProcessModelParseHandler processModelParseHandler;
@@ -335,11 +331,11 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	protected void initCache() {
 		// userCache
-		if (userCache == null) {
-			if (userCacheLimit <= 0) {
-				userCache = new DefaultCache<User>();
+		if (identityCache == null) {
+			if (identityCacheLimit <= 0) {
+				identityCache = new DefaultCache<Object>();
 			} else {
-				userCache = new DefaultCache<User>(userCacheLimit);
+				identityCache = new DefaultCache<Object>(identityCacheLimit);
 			}
 		}
 		// Process Definition cache
@@ -347,16 +343,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			if (processDefinitionCacheLimit <= 0) {
 				processDefinitionCache = new DefaultCache<ProcessDefinition>();
 			} else {
-				processDefinitionCache = new DefaultCache<ProcessDefinition>(
-						processDefinitionCacheLimit);
-			}
-		}
-		// Knowledge base cache (used for Drools business task)
-		if (knowledgeBaseCache == null) {
-			if (knowledgeBaseCacheLimit <= 0) {
-				knowledgeBaseCache = new DefaultCache<ProcessDefinition>();
-			} else {
-				knowledgeBaseCache = new DefaultCache<ProcessDefinition>(knowledgeBaseCacheLimit);
+				processDefinitionCache = new DefaultCache<ProcessDefinition>(processDefinitionCacheLimit);
 			}
 		}
 		if (userProcessDefinitionCache == null) {
@@ -405,7 +392,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			deploymentManager = new DeploymentManager();
 			deploymentManager.setDeployers(deployers);
 			deploymentManager.setProcessDefinitionCache(processDefinitionCache);
-			deploymentManager.setKnowledgeBaseCache(knowledgeBaseCache);
 		}
 	}
 
@@ -612,16 +598,12 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return sessionFactories;
 	}
 
-	public Cache<User> getUserCache() {
-		return userCache;
+	public Cache<Object> getIdentityCache() {
+		return identityCache;
 	}
 
-	public int getUserCacheLimit() {
-		return userCacheLimit;
-	}
-
-	public void setUserCacheLimit(int userCacheLimit) {
-		this.userCacheLimit = userCacheLimit;
+	public void setIdentityCacheLimit(int identityCacheLimit) {
+		this.identityCacheLimit = identityCacheLimit;
 	}
 
 	public int getUserProcessDefinitionCacheLimit() {

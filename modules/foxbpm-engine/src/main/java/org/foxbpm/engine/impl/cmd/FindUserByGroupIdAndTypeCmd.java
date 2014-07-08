@@ -20,6 +20,7 @@ package org.foxbpm.engine.impl.cmd;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
@@ -47,8 +48,9 @@ public class FindUserByGroupIdAndTypeCmd implements Command<List<String>>{
 		for(GroupDefinition groupDefinition : groupDefinitions){
 			if(groupDefinition.getType().equals(groupType)){
 				userIds = groupDefinition.selectUserIdsByGroupId(groupId);
+				return userIds;
 			}
 		}
-		return userIds;
+		throw new FoxBPMIllegalArgumentException("不支持的组类型：" + groupType);
 	}
 }

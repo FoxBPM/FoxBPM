@@ -99,7 +99,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		
 		/*******测试updateDetails*************************/
 		//清楚缓存，为下一次测试做准备
-		CacheUtil.clearUserCache();
+		CacheUtil.clearIdentityCache();
 		
 		//重新构造代理明细，id相同
 		agentDetailsEntity = new AgentDetailsEntity();
@@ -122,7 +122,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		
 		/**  测试updateAgent方法      **/
 		
-		CacheUtil.clearUserCache();
+		CacheUtil.clearIdentityCache();
 		//重新构造代理实体，id相同
 		agentEntity = new AgentEntity();
 		agentEntity.setId(agentId);
@@ -150,7 +150,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		/**测试删除代理明细***/
 		identityService.deleteAgentDetails(agentDetailsId);
 		
-		CacheUtil.clearUserCache();
+		CacheUtil.clearIdentityCache();
 		user = identityService.getUser("admin2");
 		agentInfos = user.getAgentInfo();
 		assertEquals(0, agentInfos.size());
@@ -163,7 +163,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		agentDetailsEntity.setProcessKey("_all_");
 		identityService.addAgentDetails(agentDetailsEntity);
 		
-		CacheUtil.clearUserCache();
+		CacheUtil.clearIdentityCache();
 		user = identityService.getUser("admin2");
 		agentInfos = user.getAgentInfo();
 		assertEquals(1, agentInfos.size());
@@ -171,7 +171,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		/*** 测试删除代理主对象** */
 		identityService.deleteAgent(agentId);
 		
-		CacheUtil.clearUserCache();
+		CacheUtil.clearIdentityCache();
 		user = identityService.getUser("admin2");
 		agentInfos = user.getAgentInfo();
 		assertEquals(0, agentInfos.size());

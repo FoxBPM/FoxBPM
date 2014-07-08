@@ -21,4 +21,14 @@
 	  G.groupId=#{groupId,jdbcType=VARCHAR} and G.GROUPTYPE='dept'
   </select>
   
+  
+  <select id="selectDeptById" parameterType="java.lang.String" resultType="groupResultMap">
+	 SELECT ORGID AS GROUPID,ORGNAME AS GROUPNAME ,'dept' AS GROUPTYPE  FROM AU_ORGINFO WHERE ORGID = #{orgId,jdbcType=VARCHAR} 
+  </select>
+  
+   <select id="selectDeptBySupId" parameterType="java.lang.String" resultType="groupResultMap">
+	 SELECT ORGID AS GROUPID,ORGNAME AS GROUPNAME ,'dept' AS GROUPTYPE  FROM AU_ORGINFO WHERE SUPORGID = #{orgId,jdbcType=VARCHAR} 
+  </select>
+  
+  
 </mapper>

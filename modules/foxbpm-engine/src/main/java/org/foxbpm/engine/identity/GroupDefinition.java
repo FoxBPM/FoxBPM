@@ -19,11 +19,45 @@ package org.foxbpm.engine.identity;
 
 import java.util.List;
 
+/**
+ * 用户组定义
+ * @author ych
+ *
+ */
 public interface GroupDefinition {
 
+	/**
+	 * 获取用户所在的组集合
+	 * @param userId
+	 * @return
+	 */
 	List<Group> selectGroupByUserId(String userId);
 	
+	/**
+	 * 获取组类型
+	 * @return
+	 */
 	String getType();
 	
+	/**
+	 * 获取组下的所有人员ID
+	 * @param groupId
+	 * @return
+	 */
 	List<String> selectUserIdsByGroupId(String groupId);
+	
+	/**
+	 * 获取指定组编号的所有子组（包含自身）
+	 * @param groupId
+	 * @return
+	 */
+	List<Group> selectChildrenByGroupId(String groupId);
+	
+	/**
+	 * 根据组编号获取组对象
+	 * @param groupId
+	 * @return
+	 */
+	Group selectGroupByGroupId(String groupId);
+	
 }

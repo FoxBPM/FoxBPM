@@ -22,6 +22,7 @@ public class FoxbpmWebContext {
 						processDefinitionList);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Object> getProcessDefinitionLisd() {
 		return (List<Object>) this.contextMap
 				.get(FoxbpmWebContextAttributeNameDefinition.ATTRIBUTE_NAME_PROCESSDEFINITIONLIST);

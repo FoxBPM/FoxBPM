@@ -39,7 +39,6 @@ import org.foxbpm.engine.repository.ProcessDefinition;
 public class DeploymentManager {
 
 	protected Cache<ProcessDefinition> processDefinitionCache;
-	protected Cache<ProcessDefinition> knowledgeBaseCache; // Needs to be object
 	protected List<Deployer> deployers;
 
 	public void deploy(DeploymentEntity deployment) {
@@ -138,13 +137,4 @@ public class DeploymentManager {
 	public void setProcessDefinitionCache(Cache<ProcessDefinition> processDefinitionCache) {
 		this.processDefinitionCache = processDefinitionCache;
 	}
-
-	public Cache<ProcessDefinition> getKnowledgeBaseCache() {
-		return knowledgeBaseCache;
-	}
-
-	public void setKnowledgeBaseCache(Cache<ProcessDefinition> knowledgeBaseCache) {
-		this.knowledgeBaseCache = knowledgeBaseCache;
-	}
-
 }
