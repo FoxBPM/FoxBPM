@@ -29,7 +29,9 @@ import org.foxbpm.engine.impl.task.TaskQueryImpl;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskQuery;
 
+//TODO 该类暂未使用
 /**
+ * 
  * 获取具有状态标记的流程实例SVG图像
  * 
  * @author MAENLIANG
@@ -45,20 +47,17 @@ public class GetProcessInstanceSVGImageCmd implements Command<String> {
 
 	@Override
 	public String execute(CommandContext commandContext) {
-		ProcessInstanceEntity processEntity = commandContext
-				.getProcessInstanceManager().findProcessInstanceById(
-						processInstanceID); 
+		ProcessInstanceEntity processEntity = commandContext.getProcessInstanceManager()
+				.findProcessInstanceById(processInstanceID);
 		String processDefinitionID = processEntity.getProcessDefinitionId();
 		ProcessDefinitionEntity deployedProcessDefinition = commandContext
 				.getProcessEngineConfigurationImpl().getDeploymentManager()
 				.findDeployedProcessDefinitionById(processDefinitionID);
 		TaskQuery taskQuery = new TaskQueryImpl(commandContext);
-		List<Task> listTask = taskQuery
-				.processInstanceId(processInstanceID).list();
+		List<Task> listTask = taskQuery.processInstanceId(processInstanceID).list();
 		// SVG上一层接口，独立于SVG，后期支持动态切换到微软SVG实现
 		FoxbpmProcessDefinitionVOFactory svgFactory = new ConcreteProcessDefinitionVOFactory();
-		return svgFactory.createProcessInstanceSVGImageString(listTask,
-				deployedProcessDefinition);
+		return svgFactory.createProcessInstanceSVGImageString(listTask, deployedProcessDefinition);
 
 	}
 }
