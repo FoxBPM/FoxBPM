@@ -27,6 +27,7 @@ import java.util.Map;
 import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentEntity;
 import org.foxbpm.engine.impl.db.Page;
+import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.runtime.ProcessInstance;
@@ -55,12 +56,11 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 	@Override
 	public List<Map<String, Object>> queryStartProcess(Map<String, Object> params) throws FoxbpmWebException {
 		// 创建流程定义查询
-		String userId = StringUtil.getString(params.get("userId"));
+		String userId = Authentication.getAuthenticatedUserId();
 		// 参数校验
 		if (StringUtil.isEmpty(userId)) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_USERID, "userId is null !");
 		}
-
 		return modelService.getStartProcessByUserId(userId);
 	}
 
@@ -311,35 +311,36 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		String processDefinitionKey = StringUtil.getString(params.get("processDefinitionKey"));
 		String businessKey = StringUtil.getString(params.get("businessKey"));
 		String taskComment = StringUtil.getString(params.get("_taskComment"));
+		String userId = Authentication.getAuthenticatedUserId();
 		// 参数校验
 		// 命令类型
-		if (StringUtil.isEmpty("commandType")) {
+		if (StringUtil.isEmpty(commandType)) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_COMMANDTYPE, "commandType is null !");
 		}
 		// 命令Id
-		if (StringUtil.isEmpty("commandId")) {
+		if (StringUtil.isEmpty(commandId)) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_COMMANDID, "commandId is null !");
 		}
 		// 流程实例Key
-		if (StringUtil.isEmpty("processDefinitionKey")) {
+		if (StringUtil.isEmpty(processDefinitionKey)) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_PROCESSDEFKEY, "processDefinitionKey is null !");
 		}
 		// 业务key
-		if (StringUtil.isEmpty("businessKey")) {
+		if (StringUtil.isEmpty(businessKey)) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_BUSINESSKEY, "businessKey is null !");
 		}
 		// 用户Id
-		if (StringUtil.isEmpty("userId")) {
+		if (StringUtil.isEmpty(userId)) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_USERID, "businessKey is null !");
 		}
-		if (StringUtil.isEmpty("_taskComment")) {
+		if (StringUtil.isEmpty(taskComment)) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_TASKCOMMENT, "_taskComment is null !");
 		}
 
 		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
 		// 命令类型，可以从流程引擎配置中查询 启动并提交为startandsubmit
 		expandTaskCommand.setCommandType(commandType);
-
+		expandTaskCommand.setInitiator(userId);
 		// 设置命令的id,需和节点上配置的按钮编号对应，会执行按钮中的脚本。
 		expandTaskCommand.setTaskCommandId(commandId);
 		expandTaskCommand.setTaskComment(taskComment);

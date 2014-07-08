@@ -6,7 +6,7 @@
 			<li><a id="updateCache" href="javascript:void(0)">${applicationScope.appInfo["common.clearCache"]}</a></li>
 			<li><a id="setAgent" href="javascript:void(0)">${applicationScope.appInfo["common.agent"]}</a></li>
 			<li><a href="#" onclick="updateMyself();">${sessionScope.LOGIN_USER_NAME}</a></li>
-			<li><a href="LoginServlet?doLogOut=true">${applicationScope.appInfo["common.logOut"]}</a></li>
+			<li><a href="login.action?doLogOut=true">${applicationScope.appInfo["common.logOut"]}</a></li>
 			<li><a href="processDef.action" target='_blank'>管控中心</a></li>
 			<li><a href="#" id="red" name="theme_color"
 				style="background-color: #dc562e; display: block; width: 10px; height: 10px; margin-top: 5px; border: 1px solid #404040"></a></li>
