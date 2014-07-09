@@ -6,9 +6,9 @@ package org.foxbpm.web.common.constant;
  * @author MEL
  * @date 2014-06-06
  */
-public final class FoxbpmWebContextAttributeNameDefinition {
+public final class WebContextAttributeName {
 	public final static String ATTRIBUTE_NAME_PROCESSDEFINITIONLIST = "processDefinitionList";
-	public final static String ATTRIBUTE_NAME_USERID = "userId";
+	public final static String USERID = "userId";
 	public final static String ATTRIBUTE_NAME_INITIATOR = "initiator";
 	public final static String ATTRIBUTE_NAME_PROCESSDEFINITIONNAME = "processDefinitionName";
 	public final static String ATTRIBUTE_NAME_BUSINESSKEY = "bizKey";

@@ -25,7 +25,7 @@ import java.util.Map;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.web.common.constant.FoxbpmExceptionCode;
-import org.foxbpm.web.common.constant.FoxbpmViewNameDefinition;
+import org.foxbpm.web.common.constant.WebViewName;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.db.interfaces.IDemoDao;
 import org.foxbpm.web.model.TDemo;
@@ -53,7 +53,7 @@ public class DemoServiceImpl implements IDemoService {
 	@Override
 	public Map<String, Object> startTask(Map<String, Object> params) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("viewName", FoxbpmViewNameDefinition.START_TASK_VIEWNAME);
+		resultMap.put("viewName", WebViewName.START_TASK_VIEWNAME);
 		// 调用工作流程服务开启一个任务,并存放获取信息
 		resultMap.putAll(workFlowService.startTask(params));
 		// 业务处理
@@ -65,7 +65,7 @@ public class DemoServiceImpl implements IDemoService {
 			if (null != resultList && !resultList.isEmpty()) {
 				resultMap.put("demoObject", resultList.get(0).getPersistentState());
 			}
-			resultMap.put("viewName", FoxbpmViewNameDefinition.DO_TASK_VIEWNAME);
+			resultMap.put("viewName", WebViewName.DO_TASK_VIEWNAME);
 		}
 		return resultMap;
 	}

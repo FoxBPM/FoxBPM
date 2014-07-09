@@ -52,6 +52,7 @@ public class CommandContext {
 	protected TransactionContext transactionContext;
 	protected Throwable exception = null;
 	protected ProcessEngineConfigurationImpl processEngineConfigurationImpl;
+	protected boolean isCommit = true;
 
 	public CommandContext(Command<?> command,
 			ProcessEngineConfigurationImpl processEngineConfigurationImpl) {
@@ -147,10 +148,15 @@ public class CommandContext {
 		return exception;
 	}
 
+	public void setCommit(boolean isCommit) {
+		this.isCommit = isCommit;
+	}
+
 	public void close() {
 		try {
 			try {
 				if (exception == null) {
+
 					flushSession();
 				}
 			} catch (Exception ex) {

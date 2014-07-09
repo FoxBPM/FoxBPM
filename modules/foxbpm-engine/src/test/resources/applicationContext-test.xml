@@ -38,11 +38,34 @@
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="foxbpmDataSource" />
 	</bean>
-     <!-- 流程引擎配置 -->
+	
+	<bean id="scheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<!-- 注入数据源 -->
+		<property name="dataSource">
+			<ref bean="foxbpmDataSource" />
+		</property>
+		<property name="transactionManager" ref="foxbpmTransactionManager">
+		</property>
+		<!-- 延迟30秒启动Scheduler -->
+		<property name="startupDelay" value="5"></property>
+		<!-- 通过applicationContextSchedulerContextKey属性配置spring上下文 -->
+		<property name="applicationContextSchedulerContextKey">
+			<value>applicationContext</value>
+		</property>
+	</bean>
+	<bean id="foxbpmScheduler" class="org.foxbpm.engine.impl.schedule.FoxbpmScheduler">
+		<constructor-arg>
+			<ref bean="scheduler" />
+		</constructor-arg>
+	</bean>
+
+	<!-- 流程引擎配置 -->
 	<bean id="processEngineConfigurationSpring"
 		class="org.foxbpm.engine.spring.ProcessEngineConfigurationSpring">
 		<property name="dataSourceManager" ref="foxbpmDataSourceManager" />
 		<property name="transactionManager" ref="foxbpmTransactionManager" />
+		<property name="foxbpmScheduler" ref="foxbpmScheduler"></property>
 	</bean>
 	
 	<!-- 流程引擎 -->
