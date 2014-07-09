@@ -49,6 +49,7 @@ import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.ResourceEntity;
+import org.foxbpm.engine.impl.entity.RunningTrackEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.entity.VariableInstanceEntity;
@@ -93,6 +94,7 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 		insertStatements.put(VariableInstanceEntity.class, "insertVariable");
 		insertStatements.put(AgentEntity.class, "insertAgent");
 		insertStatements.put(AgentDetailsEntity.class, "insertAgentDetails");
+		insertStatements.put(RunningTrackEntity.class, "insertRunningTrack");
 		
 		updateStatements.put(ProcessInstanceEntity.class, "updateProcessInstance");
 		updateStatements.put(TaskEntity.class, "updateTask");
@@ -112,6 +114,7 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 		selectStatements.put(ResourceEntity.class, "selectResourceById");
 		selectStatements.put(IdentityLinkEntity.class, "selectIdentityLinkById");
 		selectStatements.put(VariableInstanceEntity.class, "selectVariableById");
+		selectStatements.put(RunningTrackEntity.class, "selectRunningTrackByInstanceId");
 		
 		 //mysql specific
 	    databaseSpecificLimitBeforeStatements.put("mysql", "");

@@ -125,6 +125,7 @@ public class BpmnDeployer extends AbstractDeployer {
 
 		Context.getProcessEngineConfiguration().getDeploymentManager().getProcessDefinitionCache()
 				.add(processEntity.getId(), processEntity);
+
 		return processEntity.getId();
 	}
 

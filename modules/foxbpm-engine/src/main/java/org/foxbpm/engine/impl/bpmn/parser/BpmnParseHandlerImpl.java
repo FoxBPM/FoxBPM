@@ -20,7 +20,11 @@ package org.foxbpm.engine.impl.bpmn.parser;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import org.eclipse.bpmn2.Association;
 import org.eclipse.bpmn2.BaseElement;
@@ -67,11 +71,14 @@ import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ProcessBehavior;
 import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
+import org.foxbpm.engine.impl.runningtrack.AbstractEventListener;
 import org.foxbpm.engine.impl.util.BpmnModelUtil;
 import org.foxbpm.engine.impl.util.ReflectUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
 import org.foxbpm.kernel.ProcessDefinitionBuilder;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
+import org.foxbpm.kernel.event.KernelEventType;
 import org.foxbpm.kernel.process.KernelLaneSet;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
@@ -79,6 +86,7 @@ import org.foxbpm.kernel.process.impl.KernelLaneImpl;
 import org.foxbpm.kernel.process.impl.KernelLaneSetImpl;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
+import org.foxbpm.model.config.foxbpmconfig.EventListener;
 import org.foxbpm.model.config.style.Style;
 
 public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
@@ -160,7 +168,68 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		processDefinition.setFormUriView(processBehavior.getFormUriView());
 		processDefinition.setSubject(processBehavior.getSubject());
 		processDI(processDefinition, process);
+
+		// 加载运行轨迹监听器
+		this.registRunningTrackListener(processDefinition);
 		return processDefinition;
+	}
+
+	/**
+	 * 加载运行轨迹监听器
+	 * 
+	 * @param processEntity
+	 */
+	private void registRunningTrackListener(ProcessDefinitionEntity processEntity) {
+		// 加载运行轨迹监听器
+		List<EventListener> eventListenerList = Context.getProcessEngineConfiguration()
+				.getFoxBpmConfig().getEventListenerConfig().getEventListener();
+		AbstractEventListener foxbpmEventListener = null;
+		try {
+			for (EventListener eventListener : eventListenerList) {
+				foxbpmEventListener = (AbstractEventListener) Class.forName(
+						eventListener.getListenerClass()).newInstance();
+				if (StringUtil.equals(eventListener.getEventType(),
+						KernelEventType.EVENTTYPE_PROCESS_START)) {
+					// 注册启动轨迹监听
+					processEntity.addKernelListener(KernelEventType.EVENTTYPE_PROCESS_START,
+							foxbpmEventListener);
+				} else if (StringUtil.equals(eventListener.getEventType(),
+						KernelEventType.EVENTTYPE_PROCESS_END)) {
+					// 注册结束轨迹监听
+					processEntity.addKernelListener(KernelEventType.EVENTTYPE_PROCESS_END,
+							foxbpmEventListener);
+				} else {
+					if (StringUtil.equals(eventListener.getEventType(),
+							KernelEventType.EVENTTYPE_SEQUENCEFLOW_TAKE)) {
+						// 注册线条轨迹监听
+						Map<String, KernelSequenceFlowImpl> sequenceFlows = processEntity
+								.getSequenceFlows();
+						Set<Entry<String, KernelSequenceFlowImpl>> sequenceEntrySet = sequenceFlows
+								.entrySet();
+						Iterator<Entry<String, KernelSequenceFlowImpl>> sequenceEntryIter = sequenceEntrySet
+								.iterator();
+						Entry<String, KernelSequenceFlowImpl> sequenceFlow = null;
+						KernelSequenceFlowImpl kernelSequenceFlowImpl = null;
+						while (sequenceEntryIter.hasNext()) {
+							sequenceFlow = sequenceEntryIter.next();
+							kernelSequenceFlowImpl = sequenceFlow.getValue();
+							kernelSequenceFlowImpl.addKernelListener(foxbpmEventListener);
+						}
+					} else {
+						// 注册节点的轨迹监听
+						List<KernelFlowNodeImpl> flowNodes = processEntity.getFlowNodes();
+						for (KernelFlowNodeImpl kernelFlowNodeImpl : flowNodes) {
+							kernelFlowNodeImpl.addKernelListener(eventListener.getEventType(),
+									foxbpmEventListener);
+						}
+					}
+
+				}
+
+			}
+		} catch (Exception e) {
+			throw new FoxBPMException("加载运行轨迹监听器时出现问题", e);
+		}
 	}
 
 	private void loadLane(KernelLaneSet kernelLaneSet, LaneSet laneSet,
@@ -174,7 +243,8 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 				kernelLaneSet.getLanes().add(KernelLaneImpl);
 				LaneSet childLaneSet = lane.getChildLaneSet();
 				if (childLaneSet != null) {
-					KernelLaneSetImpl KernelLaneSetImpl = new KernelLaneSetImpl(childLaneSet.getId(), processDefinition);
+					KernelLaneSetImpl KernelLaneSetImpl = new KernelLaneSetImpl(
+							childLaneSet.getId(), processDefinition);
 					KernelLaneSetImpl.setName(childLaneSet.getName());
 					KernelLaneImpl.setChildLaneSet(KernelLaneSetImpl);
 					loadLane(KernelLaneSetImpl, childLaneSet, processDefinition);

@@ -28,8 +28,6 @@ public class CommandConfig {
 
 	//默认复用commandContext
 	private boolean isContextReuse = true;
-	
-	private boolean isCommit = true;
 	//默认required事务传播类型
 	private TransactionPropagation propagation = TransactionPropagation.REQUIRED;
 
@@ -48,15 +46,5 @@ public class CommandConfig {
 	public void setPropagation(TransactionPropagation propagation) {
 		this.propagation = propagation;
 	}
-	
-	
-	public void setCommit(boolean commit){
-		this.isCommit = commit;
-	}
-	
-	public boolean getCommit(){
-		return isCommit;
-	}
-	
 
 }
