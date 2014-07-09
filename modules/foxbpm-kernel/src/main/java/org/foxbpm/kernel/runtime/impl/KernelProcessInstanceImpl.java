@@ -33,7 +33,6 @@ import org.foxbpm.kernel.runtime.KernelProcessInstance;
 public class KernelProcessInstanceImpl extends KernelVariableScopeImpl
 		implements
 			InterpretableProcessInstance {
-
 	/**
 	 * 
 	 */
@@ -303,4 +302,7 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl
 		this.rootToken = rootToken;
 	}
 
+	public KernelFlowNodeImpl getStartFlowNode() {
+		return startFlowNode;
+	}
 }
