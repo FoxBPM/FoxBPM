@@ -88,6 +88,7 @@ public class StartProcessInstanceCmd<T> implements Command<ProcessInstance>, Ser
 		}
 		String initiator = Authentication.getAuthenticatedUserId();
 		processInstance.setInitiator(initiator);
+		processInstance.setStartAuthor(initiator);
 		processInstance.start();
 
 		return processInstance;
