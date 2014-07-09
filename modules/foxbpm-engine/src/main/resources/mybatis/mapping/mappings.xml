@@ -3,22 +3,23 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
-  <settings>
-    <setting name="lazyLoadingEnabled" value="false" />
-  </settings>
-  <mappers>
-  <mapper resource="mybatis/mapping/Task.xml" />
-    <mapper resource="mybatis/mapping/ProcessInstance.xml" />
-    <mapper resource="mybatis/mapping/Token.xml" />
-    <mapper resource="mybatis/mapping/Group.xml" />
-    <mapper resource="mybatis/mapping/Deployment.xml" />
-    <mapper resource="mybatis/mapping/Resource.xml" />
-    <mapper resource="mybatis/mapping/ProcessDefinition.xml" />
-    <mapper resource="mybatis/mapping/Dept.xml" />
-    <mapper resource="mybatis/mapping/Role.xml" />
-    <mapper resource="mybatis/mapping/TaskIdentityLink.xml" />
-    <mapper resource="mybatis/mapping/Variable.xml" />
-    <mapper resource="mybatis/mapping/User.xml" />
-     <mapper resource="mybatis/mapping/Agent.xml" />
-  </mappers>
+	<settings>
+		<setting name="lazyLoadingEnabled" value="false" />
+	</settings>
+	<mappers>
+		<mapper resource="mybatis/mapping/Task.xml" />
+		<mapper resource="mybatis/mapping/ProcessInstance.xml" />
+		<mapper resource="mybatis/mapping/Token.xml" />
+		<mapper resource="mybatis/mapping/Group.xml" />
+		<mapper resource="mybatis/mapping/Deployment.xml" />
+		<mapper resource="mybatis/mapping/Resource.xml" />
+		<mapper resource="mybatis/mapping/ProcessDefinition.xml" />
+		<mapper resource="mybatis/mapping/Dept.xml" />
+		<mapper resource="mybatis/mapping/Role.xml" />
+		<mapper resource="mybatis/mapping/TaskIdentityLink.xml" />
+		<mapper resource="mybatis/mapping/Variable.xml" />
+		<mapper resource="mybatis/mapping/User.xml" />
+		<mapper resource="mybatis/mapping/Agent.xml" />
+		<mapper resource="mybatis/mapping/RunningTrack.xml" />
+	</mappers>
 </configuration>

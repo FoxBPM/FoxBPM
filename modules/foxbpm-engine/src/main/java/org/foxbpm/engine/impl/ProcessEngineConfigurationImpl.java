@@ -73,6 +73,7 @@ import org.foxbpm.engine.impl.persistence.IdentityLinkManager;
 import org.foxbpm.engine.impl.persistence.ProcessDefinitionManager;
 import org.foxbpm.engine.impl.persistence.ProcessInstanceManager;
 import org.foxbpm.engine.impl.persistence.ResourceManager;
+import org.foxbpm.engine.impl.persistence.RunningTrackManager;
 import org.foxbpm.engine.impl.persistence.TaskManager;
 import org.foxbpm.engine.impl.persistence.TokenManager;
 import org.foxbpm.engine.impl.persistence.UserEntityManagerFactory;
@@ -372,6 +373,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			addSessionFactory(new GenericManagerFactory(IdentityLinkManager.class));
 			addSessionFactory(new GenericManagerFactory(VariableManager.class));
 			addSessionFactory(new GenericManagerFactory(AgentManager.class));
+			addSessionFactory(new GenericManagerFactory(RunningTrackManager.class));
 			addSessionFactory(new UserEntityManagerFactory());
 		}
 	}

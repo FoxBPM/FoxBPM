@@ -24,6 +24,8 @@ import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.RunningTrackEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.GuidUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.kernel.event.KernelEventType;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
@@ -52,17 +54,29 @@ public class FoxbpmEventListener extends AbstractEventListener {
 		runningTrackEntity.setExecutionTime(new Date());
 		runningTrackEntity.setOperator(Authentication.getAuthenticatedUserId());
 
+		String nodeId = null;
+		String nodeName = null;
 		// 区分处理节点和线条
-		KernelFlowNodeImpl flowNode = kernelTokenImpl.getFlowNode();
-		if (flowNode != null) {
-			runningTrackEntity.setNodeId(flowNode.getId());
-			runningTrackEntity.setNodeName(flowNode.getName());
+		if (StringUtil.equals(kernelTokenImpl.getEventName(),
+				KernelEventType.EVENTTYPE_PROCESS_START)) {
+			nodeId = processInstanceEntity.getStartFlowNode().getId();
+			nodeName = processInstanceEntity.getStartFlowNode().getName();
 		} else {
-			KernelSequenceFlowImpl sequenceFlow = kernelTokenImpl.getSequenceFlow();
-			runningTrackEntity.setNodeId(sequenceFlow.getId());
-			runningTrackEntity.setNodeName(sequenceFlow.getName());
+			KernelFlowNodeImpl flowNode = kernelTokenImpl.getFlowNode();
+			if (flowNode != null) {
+				nodeId = flowNode.getId();
+				nodeName = flowNode.getName();
+			} else {
+				KernelSequenceFlowImpl sequenceFlow = kernelTokenImpl.getSequenceFlow();
+				nodeId = sequenceFlow.getId();
+				nodeName = sequenceFlow.getName();
+			}
 		}
 
+		runningTrackEntity.setNodeId(nodeId);
+		runningTrackEntity.setNodeName(nodeName);
+
+		runningTrackEntity.setEventName(kernelTokenImpl.getEventName());
 		runningTrackEntity.setTokenId(kernelTokenImpl.getId());
 		runningTrackEntity.setArchiveTime(processInstanceEntity.getArchiveTime());
 		this.saveRunningTrackEntity(runningTrackEntity);
