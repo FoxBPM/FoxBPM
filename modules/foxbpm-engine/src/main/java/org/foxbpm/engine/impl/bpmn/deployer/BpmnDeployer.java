@@ -25,11 +25,8 @@ import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import org.foxbpm.engine.exception.FoxBPMBizException;
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.bpmn.behavior.EventDefinition;
 import org.foxbpm.engine.impl.bpmn.behavior.StartEventBehavior;
@@ -38,19 +35,14 @@ import org.foxbpm.engine.impl.entity.DeploymentEntity;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ResourceEntity;
 import org.foxbpm.engine.impl.persistence.ProcessDefinitionManager;
-import org.foxbpm.engine.impl.runningtrack.AbstractEventListener;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobDetail;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduleJob;
 import org.foxbpm.engine.impl.schedule.quartz.ProcessIntanceAutoStartJob;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.QuartzUtil;
-import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
-import org.foxbpm.kernel.event.KernelEventType;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
-import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
-import org.foxbpm.model.config.foxbpmconfig.EventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -130,71 +122,13 @@ public class BpmnDeployer extends AbstractDeployer {
 			processEntity.setResourceName(processEntityNew.getResourceName());
 			processEntity.setDiagramResourceName(processEntityNew.getDiagramResourceName());
 		}
-		// 加载运行轨迹监听器
-		this.registRunningTrackListener(processEntity);
+
 		Context.getProcessEngineConfiguration().getDeploymentManager().getProcessDefinitionCache()
 				.add(processEntity.getId(), processEntity);
 
 		return processEntity.getId();
 	}
 
-	/**
-	 * 加载运行轨迹监听器
-	 * 
-	 * @param processEntity
-	 */
-	private void registRunningTrackListener(ProcessDefinitionEntity processEntity) {
-		// 加载运行轨迹监听器
-		List<EventListener> eventListenerList = Context.getProcessEngineConfiguration()
-				.getFoxBpmConfig().getEventListenerConfig().getEventListener();
-		AbstractEventListener foxbpmEventListener = null;
-		try {
-			for (EventListener eventListener : eventListenerList) {
-				foxbpmEventListener = (AbstractEventListener) eventListener.getClass()
-						.newInstance();
-				if (StringUtil.equals(eventListener.getEventType(),
-						KernelEventType.EVENTTYPE_PROCESS_START)) {
-					// 注册启动轨迹监听
-					processEntity.addKernelListener(KernelEventType.EVENTTYPE_PROCESS_START,
-							foxbpmEventListener);
-				} else if (StringUtil.equals(eventListener.getEventType(),
-						KernelEventType.EVENTTYPE_PROCESS_END)) {
-					// 注册结束轨迹监听
-					processEntity.addKernelListener(KernelEventType.EVENTTYPE_PROCESS_END,
-							foxbpmEventListener);
-				} else {
-					if (StringUtil.equals(eventListener.getEventType(),
-							KernelEventType.EVENTTYPE_SEQUENCEFLOW_TAKE)) {
-						// 注册线条轨迹监听
-						Map<String, KernelSequenceFlowImpl> sequenceFlows = processEntity
-								.getSequenceFlows();
-						Set<Entry<String, KernelSequenceFlowImpl>> sequenceEntrySet = sequenceFlows
-								.entrySet();
-						Iterator<Entry<String, KernelSequenceFlowImpl>> sequenceEntryIter = sequenceEntrySet
-								.iterator();
-						Entry<String, KernelSequenceFlowImpl> sequenceFlow = null;
-						KernelSequenceFlowImpl kernelSequenceFlowImpl = null;
-						while (sequenceEntryIter.hasNext()) {
-							sequenceFlow = sequenceEntryIter.next();
-							kernelSequenceFlowImpl = sequenceFlow.getValue();
-							kernelSequenceFlowImpl.addKernelListener(foxbpmEventListener);
-						}
-					} else {
-						// 注册节点的轨迹监听
-						List<KernelFlowNodeImpl> flowNodes = processEntity.getFlowNodes();
-						for (KernelFlowNodeImpl kernelFlowNodeImpl : flowNodes) {
-							kernelFlowNodeImpl.addKernelListener(eventListener.getEventType(),
-									foxbpmEventListener);
-						}
-					}
-
-				}
-
-			}
-		} catch (Exception e) {
-			throw new FoxBPMException("加载运行轨迹监听器时出现问题", e);
-		}
-	}
 	/**
 	 * 部署时候自动调度流程实例启动任务
 	 * 
