@@ -29,4 +29,6 @@ public final class WebContextAttributeName {
 	public static final String ADD_VARIABLE = "add";
 	public static final String DEL_VARIABLE = "del";
 
+	public static final String USERNAME = "userName";
+
 }

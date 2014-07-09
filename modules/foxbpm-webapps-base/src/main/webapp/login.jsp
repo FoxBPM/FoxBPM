@@ -29,12 +29,12 @@
 						<tbody>
 							<tr>
 								<td><span class="label-orange">用户名：</span></td>
-								<td><input type="text" id="userName" name="userName"
+								<td><input type="text" id="userName" name="userName" value="admin"
 									class="inputset" /></td>
 							</tr>
 							<tr>
 								<td><span class="label-orange">密 码：</span></td>
-								<td><input type="password" id="password" name="password"
+								<td><input type="password" id="password" name="password" value="1"
 									class="inputset" /></td>
 							</tr>
 							<tr>

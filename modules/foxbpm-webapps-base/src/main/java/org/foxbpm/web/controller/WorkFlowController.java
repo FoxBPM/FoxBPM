@@ -57,7 +57,6 @@ public class WorkFlowController extends AbstWebController {
 	public ModelAndView queryStartProcess(HttpServletRequest request) {
 		// 请求参数
 		Map<String, Object> requestParams = getRequestParams(request);
-		requestParams.put(WebContextAttributeName.USERID, "admin");
 		// 查询结果
 		List<Map<String, Object>> resultList = workFlowService.queryStartProcess(requestParams);
 
@@ -79,8 +78,6 @@ public class WorkFlowController extends AbstWebController {
 	public ModelAndView queryProcessInst(HttpServletRequest request) {
 		// 请求参数
 		Map<String, Object> requestParams = getRequestParams(request);
-		requestParams.put(WebContextAttributeName.USERID, "admin");
-
 		// 获取分页条件参数
 		String pageI = StringUtil.getString(requestParams.get(WebContextAttributeName.ATTRIBUTE_NAME_PAGEINDEX));
 		String pageS = StringUtil.getString(requestParams.get(WebContextAttributeName.ATTRIBUTE_NAME_PAGESIZE));
@@ -145,7 +142,6 @@ public class WorkFlowController extends AbstWebController {
 	public ModelAndView queryToDoTask(HttpServletRequest request) {
 
 		Map<String, Object> requestParams = getRequestParams(request);
-		requestParams.put(WebContextAttributeName.USERID, "admin");
 		// 获取分页条件参数
 		String pageI = StringUtil.getString(requestParams.get(WebContextAttributeName.ATTRIBUTE_NAME_PAGEINDEX));
 		String pageS = StringUtil.getString(requestParams.get(WebContextAttributeName.ATTRIBUTE_NAME_PAGESIZE));
@@ -206,7 +202,6 @@ public class WorkFlowController extends AbstWebController {
 	@RequestMapping(WebActionName.SELECT_USER)
 	public ModelAndView selectUserList(HttpServletRequest request) {
 		Map<String, Object> requestParams = getRequestParams(request);
-
 		// 获取分页条件参数
 		String pageI = StringUtil.getString(requestParams.get(WebContextAttributeName.ATTRIBUTE_NAME_PAGEINDEX));
 		String pageS = StringUtil.getString(requestParams.get(WebContextAttributeName.ATTRIBUTE_NAME_PAGESIZE));

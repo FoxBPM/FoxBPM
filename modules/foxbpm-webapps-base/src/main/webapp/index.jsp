@@ -8,8 +8,8 @@
 </head>
 <body>
 	<script type="text/javascript">
-		window.location.href = "queryToDoTask.action";
-		//window.location.href = "login.jsp";
+		//window.location.href = "queryToDoTask.action";
+		window.location.href = "login.jsp";
 	</script>
 </body>
 </html>
