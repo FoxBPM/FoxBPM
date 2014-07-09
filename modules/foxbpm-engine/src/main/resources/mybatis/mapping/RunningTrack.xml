@@ -22,19 +22,19 @@
 		<result column="ARCHIVE_TIME" property="archiveTime" jdbcType="TIMESTAMP" />
 	</resultMap>
 
-	<insert id="insertRunningTrack"
-		parameterType="org.foxbpm.engine.impl.runningtrack.RunningTrackEntity">
-		INSERT INTO foxbpm_run_runningtrack
-		(ID,PROCESSINSTANCE_ID,PROCESSDEFINITION_ID,PROCESSDEFINITION_KEY,
-		TOKEN_ID,EXECUTION_TIME,OPERATOR,NODE_ID,NODE_NAME,EVENT_NAME,ARCHIVE_TIME)
-		VALUES
-		( #{id,jdbcType=VARCHAR}, #{processInstanceId,jdbcType=VARCHAR},
-		#{processDefinitionId,jdbcType=VARCHAR},
-		#{processDefinitionKey,jdbcType=VARCHAR}, #{tokenId,jdbcType=VARCHAR},
-		#{executionTime,jdbcType=TIMESTAMP}, #{operator,jdbcType=VARCHAR},
-		#{nodeId,jdbcType=VARCHAR},
-		#{nodeName,jdbcType=VARCHAR},
-		#{eventName,jdbcType=VARCHAR}, #{archiveTime,jdbcType=TIMESTAMP})
+	<insert id="insertRunningTrack" parameterType="org.foxbpm.engine.impl.entity.RunningTrackEntity">
+	INSERT INTO
+	foxbpm_run_runningtrack
+	(ID,PROCESSINSTANCE_ID,PROCESSDEFINITION_ID,PROCESSDEFINITION_KEY,
+	TOKEN_ID,EXECUTION_TIME,OPERATOR,NODE_ID,NODE_NAME,EVENT_NAME,ARCHIVE_TIME)
+	VALUES
+	( #{id,jdbcType=VARCHAR}, #{processInstanceId,jdbcType=VARCHAR},
+	#{processDefinitionId,jdbcType=VARCHAR},
+	#{processDefinitionKey,jdbcType=VARCHAR}, #{tokenId,jdbcType=VARCHAR},
+	#{executionTime,jdbcType=TIMESTAMP}, #{operator,jdbcType=VARCHAR},
+	#{nodeId,jdbcType=VARCHAR},
+	#{nodeName,jdbcType=VARCHAR},
+	#{eventName,jdbcType=VARCHAR}, #{archiveTime,jdbcType=TIMESTAMP})
 	</insert>
 
 	<select id="selectRunningTrackByProcessInstanceId" parameterType="java.lang.String"
