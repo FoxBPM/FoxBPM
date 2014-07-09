@@ -213,9 +213,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	protected void initQuartz() {
 		if (this.foxbpmScheduler == null) {
-			foxbpmScheduler = new FoxbpmScheduler();
 			InputStream inputStream = null;
-
 			try {
 				inputStream = ReflectUtil.getResourceAsStream("config/quartz.properties");
 				Properties props = new Properties();
@@ -223,6 +221,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 				// TODO 多数据库源事务问题处理
 				SchedulerFactory factory = new StdSchedulerFactory(props);
 				Scheduler scheduler = factory.getScheduler();
+				foxbpmScheduler = new FoxbpmScheduler();
 				foxbpmScheduler.setScheduler(scheduler);
 				// TODO 获取系统配置中的调度系统是否启动配置
 				// scheduler.startDelayed(10);

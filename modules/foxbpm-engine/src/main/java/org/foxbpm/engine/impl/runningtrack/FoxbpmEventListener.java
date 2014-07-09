@@ -21,6 +21,7 @@ import java.util.Date;
 
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
+import org.foxbpm.engine.impl.entity.RunningTrackEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
