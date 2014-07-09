@@ -220,10 +220,13 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 				inputStream = ReflectUtil.getResourceAsStream("config/quartz.properties");
 				Properties props = new Properties();
 				props.load(inputStream);
-				// TODO 多数据库源事物问题处理
+				// TODO 多数据库源事务问题处理
 				SchedulerFactory factory = new StdSchedulerFactory(props);
 				Scheduler scheduler = factory.getScheduler();
 				foxbpmScheduler.setScheduler(scheduler);
+				// TODO 获取系统配置中的调度系统是否启动配置
+				// scheduler.startDelayed(10);
+
 			} catch (IOException e) {
 				throw new FoxBPMException("流程引擎初始化加载 QUARTZ调度器配置文件时候出问题", e);
 			} catch (SchedulerException e) {
@@ -343,7 +346,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			if (processDefinitionCacheLimit <= 0) {
 				processDefinitionCache = new DefaultCache<ProcessDefinition>();
 			} else {
-				processDefinitionCache = new DefaultCache<ProcessDefinition>(processDefinitionCacheLimit);
+				processDefinitionCache = new DefaultCache<ProcessDefinition>(
+						processDefinitionCacheLimit);
 			}
 		}
 		if (userProcessDefinitionCache == null) {
