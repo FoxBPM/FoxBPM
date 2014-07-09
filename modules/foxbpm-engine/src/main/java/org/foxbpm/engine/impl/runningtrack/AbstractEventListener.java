@@ -17,6 +17,10 @@
  */
 package org.foxbpm.engine.impl.runningtrack;
 
+import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.entity.RunningTrackEntity;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.event.KernelListener;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 
@@ -30,9 +34,24 @@ public abstract class AbstractEventListener implements KernelListener {
 	@Override
 	public void notify(ListenerExecutionContext executionContext) throws Exception {
 		// 记录流程实例的运行轨迹
-		this.recordRunningTrack(executionContext);
+		RunningTrackEntity runningTrackEntity = this.recordRunningTrack(executionContext);
+		if (runningTrackEntity == null || StringUtil.isBlank(runningTrackEntity.getId())) {
+			throw new FoxBPMException("分类构造的运行轨迹实体 不能为空，实体唯一标识不能为空 ");
+		}
+		this.saveRunningTrackEntity(runningTrackEntity);
 
 		// TODO 用户定制其他的监听操作
 	}
-	protected abstract void recordRunningTrack(ListenerExecutionContext executionContext);
+	protected abstract RunningTrackEntity recordRunningTrack(
+			ListenerExecutionContext executionContext);
+	/**
+	 * 
+	 * saveRunningTrackEntity 保存数据
+	 * 
+	 * @param runningTrackEntity
+	 * @since 1.0.0
+	 */
+	private void saveRunningTrackEntity(RunningTrackEntity runningTrackEntity) {
+		Context.getCommandContext().getRunningTrackManager().insert(runningTrackEntity);
+	}
 }
