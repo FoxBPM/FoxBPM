@@ -20,8 +20,8 @@ package org.foxbpm.web.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.web.common.constant.WebContextAttributeName;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,17 +35,16 @@ public class FoxbpmMVCInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		String userId = StringUtil.getString(request.getSession().getAttribute("loginId"));
 		// 过滤登陆action
-		if (request.getRequestURI().contains("login.action")) {
+		if (request.getRequestURI().equals(request.getContextPath() + "/login.action")) {
 			return true;
 		}
+		// 其他页面统一进行鉴权
+		String userId = StringUtil.getString(request.getSession().getAttribute(WebContextAttributeName.USERID));
 		if (StringUtil.isEmpty(userId)) {
 			String context = request.getContextPath();
 			response.sendRedirect(context + "/login.jsp");
 			return false;
-		} else if (StringUtil.isEmpty(Authentication.getAuthenticatedUserId())) {
-			Authentication.setAuthenticatedUserId(userId);
 		}
 		return true;
 	}

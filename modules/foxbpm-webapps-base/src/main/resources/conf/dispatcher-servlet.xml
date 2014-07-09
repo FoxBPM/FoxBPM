@@ -25,7 +25,6 @@
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
 	<!-- 处理在类级别上的@RequestMapping注解 -->
-	<!-- 
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
 		<property name="interceptors">
@@ -34,11 +33,8 @@
 			</list>
 		</property>
 	</bean>
-	-->
 	<!-- 完成请求和注解POJO的映射 -->
-	<!--
 	<bean id="foxbpmMVCInterceptor" class="org.foxbpm.web.interceptor.FoxbpmMVCInterceptor"/>
-	-->
  	<!-- 完成请求和注解POJO的映射 -->  
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" /> 
 

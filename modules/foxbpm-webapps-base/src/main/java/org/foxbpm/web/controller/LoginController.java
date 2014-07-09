@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.web.common.constant.WebContextAttributeName;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -59,14 +60,12 @@ public class LoginController extends AbstWebController {
 			if (StringUtil.isNotEmpty(logout)) {
 				request.getSession().invalidate();
 				response.sendRedirect(contextPath + "/login.jsp");
-				Authentication.setAuthenticatedUserId(null);
 			} else {
-
 				UserEntity userEntity = (UserEntity) Authentication.selectUserByUserId(userName);
-				if (null != userEntity && StringUtil.endsWith(password, userEntity.getPassword())) {
+				if (null != userEntity && StringUtil.equals(password, userEntity.getPassword())) {
 					// 这里约定了一个参数，流程引擎在运行时会默认从session里按照这两个key来获取参数，如果替换了登录的方式，请保证这两个key依然可以获取到正确的数据
-					request.getSession().setAttribute("loginId", userEntity.getUserId());
-					request.getSession().setAttribute("loginId", userName);
+					request.getSession().setAttribute(WebContextAttributeName.USERID, userEntity.getUserId());
+					request.getSession().setAttribute(WebContextAttributeName.USERNAME, userName);
 					Authentication.setAuthenticatedUserId(userEntity.getUserId());
 					// 登录时根据登录的目标切换跳转目标
 					String loginType = request.getParameter("loginType");
