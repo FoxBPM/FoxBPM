@@ -31,6 +31,7 @@ import org.foxbpm.engine.impl.persistence.IdentityLinkManager;
 import org.foxbpm.engine.impl.persistence.ProcessDefinitionManager;
 import org.foxbpm.engine.impl.persistence.ProcessInstanceManager;
 import org.foxbpm.engine.impl.persistence.ResourceManager;
+import org.foxbpm.engine.impl.persistence.RunningTrackManager;
 import org.foxbpm.engine.impl.persistence.TaskManager;
 import org.foxbpm.engine.impl.persistence.TokenManager;
 import org.foxbpm.engine.impl.persistence.VariableManager;
@@ -46,30 +47,33 @@ public class CommandContext {
 
 	Logger log = LoggerFactory.getLogger(CommandContext.class);
 	protected Command<?> command;
-	protected Map<Class< ? >, SessionFactory> sessionFactories;
-	protected Map<Class< ? >, Session> sessions = new HashMap<Class< ? >, Session>();
-	protected TransactionContext transactionContext ;
+	protected Map<Class<?>, SessionFactory> sessionFactories;
+	protected Map<Class<?>, Session> sessions = new HashMap<Class<?>, Session>();
+	protected TransactionContext transactionContext;
 	protected Throwable exception = null;
 	protected ProcessEngineConfigurationImpl processEngineConfigurationImpl;
 
-	public CommandContext(Command<?> command, ProcessEngineConfigurationImpl processEngineConfigurationImpl) {
+	public CommandContext(Command<?> command,
+			ProcessEngineConfigurationImpl processEngineConfigurationImpl) {
 		this.command = command;
 		this.processEngineConfigurationImpl = processEngineConfigurationImpl;
 		sessionFactories = processEngineConfigurationImpl.getSessionFactories();
-		this.transactionContext = processEngineConfigurationImpl.getTransactionContextFactory().openTransactionContext(this);
+		this.transactionContext = processEngineConfigurationImpl.getTransactionContextFactory()
+				.openTransactionContext(this);
 	}
 
 	public ProcessEngineConfigurationImpl getProcessEngineConfigurationImpl() {
 		return processEngineConfigurationImpl;
 	}
-	
+
 	@SuppressWarnings({"unchecked"})
 	public <T> T getSession(Class<T> sessionClass) {
 		Session session = sessions.get(sessionClass);
 		if (session == null) {
 			SessionFactory sessionFactory = sessionFactories.get(sessionClass);
 			if (sessionFactory == null) {
-				throw new FoxBPMClassLoadingException("no session factory configured for " + sessionClass.getName());
+				throw new FoxBPMClassLoadingException("no session factory configured for "
+						+ sessionClass.getName());
 			}
 			session = sessionFactory.openSession();
 			sessions.put(sessionClass, session);
@@ -100,11 +104,11 @@ public class CommandContext {
 	public IdentityLinkManager getIdentityLinkManager() {
 		return getSession(IdentityLinkManager.class);
 	}
-	
+
 	public AgentManager getAgentManager() {
 		return getSession(AgentManager.class);
 	}
-	
+
 	public VariableManager getVariableManager() {
 		return getSession(VariableManager.class);
 	}
@@ -112,43 +116,47 @@ public class CommandContext {
 	public TokenManager getTokenManager() {
 		return getSession(TokenManager.class);
 	}
-	
-	public HistoryManager getHistoryManager(){
+
+	public RunningTrackManager getRunningTrackManager() {
+		return getSession(RunningTrackManager.class);
+	}
+
+	public HistoryManager getHistoryManager() {
 		return getSession(HistoryManager.class);
 	}
-	
-	public UserEntityManager getUserEntityManager(){
+
+	public UserEntityManager getUserEntityManager() {
 		return getSession(UserEntityManager.class);
 	}
 
 	public Command<?> getCommand() {
 		return command;
 	}
-	
-	public ISqlSession getSqlSession(){
+
+	public ISqlSession getSqlSession() {
 		return getSession(ISqlSession.class);
 	}
-	
-	public void flushSession(){
-		for(Session session : sessions.values()) {
-		    session.flush();
+
+	public void flushSession() {
+		for (Session session : sessions.values()) {
+			session.flush();
 		}
 	}
-	
+
 	public Throwable getException() {
 		return exception;
 	}
 
-	public void close(){
-		try{
-			try{
-				if(exception == null){
+	public void close() {
+		try {
+			try {
+				if (exception == null) {
 					flushSession();
 				}
-			}catch(Exception ex){
+			} catch (Exception ex) {
 				exception(ex);
-			}finally{
-				
+			} finally {
+
 				try {
 					if (exception == null) {
 						transactionContext.commit();
@@ -156,18 +164,18 @@ public class CommandContext {
 				} catch (Throwable exception) {
 					exception(exception);
 				}
-				
-				if(exception != null){
+
+				if (exception != null) {
 					transactionContext.rollback();
 				}
 			}
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			exception(ex);
-		}finally{
+		} finally {
 			closeSessions();
 		}
-		
-		if(exception != null){
+
+		if (exception != null) {
 			if (exception instanceof Error) {
 				throw (Error) exception;
 			} else if (exception instanceof RuntimeException) {
@@ -176,10 +184,10 @@ public class CommandContext {
 				throw new FoxBPMException("exception while executing command " + command, exception);
 			}
 		}
-		
+
 	}
-	
-	public void closeSessions(){
+
+	public void closeSessions() {
 		for (Session session : sessions.values()) {
 			try {
 				session.close();
@@ -188,12 +196,14 @@ public class CommandContext {
 			}
 		}
 	}
-	
-	public void exception(Throwable e){
+
+	public void exception(Throwable e) {
 		if (this.exception == null) {
 			this.exception = e;
 		} else {
-			log.error("masked exception in command context. for root cause, see below as it will be rethrown later.", exception);
+			log.error(
+					"masked exception in command context. for root cause, see below as it will be rethrown later.",
+					exception);
 		}
 	}
 }
