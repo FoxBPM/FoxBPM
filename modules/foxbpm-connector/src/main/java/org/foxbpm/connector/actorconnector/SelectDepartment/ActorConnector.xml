@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<connector:ConnectorDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:connector="http://www.foxbpm.org/connector" id="SelectDepartment" name="选择部门(只包含子部门)" note="选择一个或者多个部门" categoryId="71e8d50f-5d55-4b03-88b0-dbe37bc8fedf" icon="SelectDepartment.png">
+  <input id="departmentId" type="java.lang.String" mandatory="Mandatory" defaultValue="" isExecute="true"/>
+  <page id="selectDept" name="选择部门" note="可以输入一个或者多个部门的编号(多个以,分隔)">
+    <widget xsi:type="connector:Text" id="Widget_0" name="部门ID" inputId="departmentId">
+      <widgetExpression expressionValue=""/>
+    </widget>
+  </page>
+  <definitionImpl className="SelectDepartment" packageName="org.foxbpm.connector.actorconnector.SelectDepartment"/>
+</connector:ConnectorDefinition>

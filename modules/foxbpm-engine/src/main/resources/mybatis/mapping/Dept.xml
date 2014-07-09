@@ -27,7 +27,7 @@
   </select>
   
    <select id="selectDeptBySupId" parameterType="java.lang.String" resultMap="groupResultMap">
-	 SELECT ORGID AS GROUPID,ORGNAME AS GROUPNAME ,'dept' AS GROUPTYPE  FROM AU_ORGINFO WHERE SUPORGID = #{orgId,jdbcType=VARCHAR} 
+	 SELECT ORGID AS GROUPID,ORGNAME AS GROUPNAME ,'dept' AS GROUPTYPE  FROM AU_ORGINFO WHERE  SUPORGID != ORGID  and SUPORGID = #{orgId,jdbcType=VARCHAR} 
   </select>
   
   

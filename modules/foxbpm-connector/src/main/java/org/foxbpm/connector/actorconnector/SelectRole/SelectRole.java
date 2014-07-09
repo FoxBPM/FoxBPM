@@ -15,7 +15,7 @@
  * 
  * @author yangguangftlp
  */
-package org.foxbpm.connector.actorconnector.SelectARole;
+package org.foxbpm.connector.actorconnector.SelectRole;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -35,7 +35,7 @@ import org.foxbpm.engine.task.IdentityLinkType;
  * @author yangguangftlp
  * @date 2014年7月7日
  */
-public class SelectARole extends ActorConnectorHandler {
+public class SelectRole extends ActorConnectorHandler {
 
 	/**
 	 * 

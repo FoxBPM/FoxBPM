@@ -36,7 +36,7 @@ public class FindGroupChildrenIncludeByGroupIdCmd  implements Command<List<Group
 	private String groupType;
 	private String groupId;
 	
-	public FindGroupChildrenIncludeByGroupIdCmd(String groupType,String groupId) {
+	public FindGroupChildrenIncludeByGroupIdCmd(String groupId,String groupType) {
 		this.groupId = groupId;
 		this.groupType = groupType;
 	}
