@@ -41,6 +41,7 @@
 	
 	<bean id="scheduler"
 		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="autoStartup" value="false"></property>
 		<!-- 注入数据源 -->
 		<property name="dataSource">
 			<ref bean="foxbpmDataSource" />
