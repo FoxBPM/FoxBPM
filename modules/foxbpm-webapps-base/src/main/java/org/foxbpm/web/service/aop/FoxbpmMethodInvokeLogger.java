@@ -21,7 +21,6 @@ import java.lang.reflect.Method;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.web.service.impl.AbstWorkFlowService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +46,7 @@ public class FoxbpmMethodInvokeLogger implements AfterReturningAdvice, MethodBef
 		Logger logger = LoggerFactory.getLogger(implObj.getClass());
 		logger.debug("方法名:{}",method.getName());
 		if(implObj instanceof AbstWorkFlowService){
-			Authentication.setAuthenticatedUserId("admin");
+			//Authentication.setAuthenticatedUserId("admin0");
 		}
 //		StringBuilder paramsBuilder = new StringBuilder();
 //		for(Object param : params){

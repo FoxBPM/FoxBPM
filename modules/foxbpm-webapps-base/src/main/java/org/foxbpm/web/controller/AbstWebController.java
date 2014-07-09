@@ -126,6 +126,8 @@ public abstract class AbstWebController {
 					requestParams.put(key, request.getAttribute(key));
 				}
 			}
+			// 取登陆用户信息
+			requestParams.put(WebContextAttributeName.USERID, request.getSession().getAttribute(WebContextAttributeName.USERID));
 		} catch (Exception e) {
 			throw new FoxbpmWebException(e);
 		}
