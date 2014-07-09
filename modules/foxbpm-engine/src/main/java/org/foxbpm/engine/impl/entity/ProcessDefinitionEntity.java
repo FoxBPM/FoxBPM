@@ -60,6 +60,8 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 	
 	protected String category;
 	
+	private boolean isPersistence=true;
+	
 	protected DataVariableMgmtDefinition dataVariableMgmtDefinition;
 	
 	protected Map<String, TaskDefinition> taskDefinitions=new HashMap<String, TaskDefinition>();
@@ -274,7 +276,13 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 		return this.verification;
 
 	}
+	public boolean isPersistence() {
+		return isPersistence;
+	}
 
+	public void setPersistence(boolean isPersistence) {
+		this.isPersistence = isPersistence;
+	}
 	
 
 	public DataVariableMgmtDefinition getDataVariableMgmtDefinition() {
