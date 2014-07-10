@@ -72,48 +72,60 @@ public class AutoSendMail implements FlowConnectorHandler {
 			throw new FoxBPMException("系统邮件配置错误请检查流程邮件配置！");
 		}
 		TaskEntity taskEntity = executionContext.getAssignTask();
-		StringBuffer mailTitle = new StringBuffer();
-		// 如果主题为空
-		if (StringUtil.isEmpty(StringUtil.trim(title))) {
-			mailTitle.append('[').append(taskEntity.getProcessDefinitionName()).append(']').append(taskEntity.getDescription()).append(" is pending for your approval or handle");
-		}
-
-		String taskUrl = "http://www.baidu.com";
-		if (StringUtil.isEmpty(content)) {
-			content = "<br>Hello,<br>你好,<br><br> " + mailTitle + "<br><br>" + "Please click url to deal with job: <br>请访问此链接地址进入任务:<br> <a href=" + taskUrl + ">" + taskUrl + "</a><br><br>"
-					+ "Best Regards!<br>诚挚问候!<br>Note: Please do not reply to this email , This mailbox does not allow incoming messages." + "<br>注意: 本邮件为工作流系统发送，请勿回复。 ";
-		}
-		// 获取用户
-		IdentityService identityService = peconfig.getIdentityService();
-		// 判断是否独占任务
-		User user = null;
-		if (StringUtil.isNotEmpty(taskEntity.getAssignee())) {
-			user = identityService.getUser(taskEntity.getAssignee());
-			// 判断用户是否为空
-			if (null != user) {
-				// 如果用户存在邮件地址即发生邮件
-				if (StringUtil.isNotEmpty(user.getEmail())) {
-					// 保存邮件实体
-					saveMail(user.getEmail(), title, content, taskEntity.getId());
-				}
+		if (null != taskEntity) {
+			StringBuffer mailTitle = new StringBuffer();
+			// 如果主题为空
+			if (StringUtil.isEmpty(StringUtil.trim(title))) {
+				mailTitle.append('[').append(taskEntity.getProcessDefinitionName()).append(']').append(taskEntity.getDescription()).append(" is pending for your approval or handle");
 			}
-		} else {
-			// 处理共享任务
-			StringBuffer to = new StringBuffer();
-			String userId = null;
-			for (IdentityLinkEntity identityLink : taskEntity.getTaskIdentityLinks()) {
-				userId = identityLink.getUserId();
-				if (StringUtil.isNotEmpty(userId)) {
-					if (!Constant.FOXBPM_ALL_USER.equals(userId)) {
-						user = Authentication.selectUserByUserId(userId);
-						if (null != user) {
-							if (StringUtil.isNotEmpty(user.getEmail())) {
-								to.append(user.getEmail()).append(Constants.COMMA);
+
+			String taskUrl = "http://www.baidu.com";
+			if (StringUtil.isEmpty(content)) {
+				content = "<br>Hello,<br>你好,<br><br> " + mailTitle + "<br><br>" + "Please click url to deal with job: <br>请访问此链接地址进入任务:<br> <a href=" + taskUrl + ">" + taskUrl + "</a><br><br>"
+						+ "Best Regards!<br>诚挚问候!<br>Note: Please do not reply to this email , This mailbox does not allow incoming messages." + "<br>注意: 本邮件为工作流系统发送，请勿回复。 ";
+			}
+			// 获取用户
+			IdentityService identityService = peconfig.getIdentityService();
+			// 判断是否独占任务
+			User user = null;
+			if (StringUtil.isNotEmpty(taskEntity.getAssignee())) {
+				user = identityService.getUser(taskEntity.getAssignee());
+				// 判断用户是否为空
+				if (null != user) {
+					// 如果用户存在邮件地址即发生邮件
+					if (StringUtil.isNotEmpty(user.getEmail())) {
+						// 保存邮件实体
+						saveMail(user.getEmail(), title, content, taskEntity.getId());
+					}
+				}
+			} else {
+				// 处理共享任务
+				StringBuffer to = new StringBuffer();
+				String userId = null;
+				for (IdentityLinkEntity identityLink : taskEntity.getTaskIdentityLinks()) {
+					userId = identityLink.getUserId();
+					if (StringUtil.isNotEmpty(userId)) {
+						if (!Constant.FOXBPM_ALL_USER.equals(userId)) {
+							user = Authentication.selectUserByUserId(userId);
+							if (null != user) {
+								if (StringUtil.isNotEmpty(user.getEmail())) {
+									to.append(user.getEmail()).append(Constants.COMMA);
+								}
+							}
+						} else {
+							// 处理所有者
+							List<User> users = identityService.getUsers(null, null);
+							if (null != users) {
+								for (User u : users) {
+									if (StringUtil.isNotEmpty(u.getEmail())) {
+										to.append(u.getEmail()).append(Constants.COMMA);
+									}
+								}
 							}
 						}
 					} else {
-						// 处理所有者
-						List<User> users = identityService.getUsers(null, null);
+						// 获取组下面所有用户
+						List<User> users = Authentication.selectUserByGroupIdAndType(identityLink.getGroupId(), identityLink.getGroupType());
 						if (null != users) {
 							for (User u : users) {
 								if (StringUtil.isNotEmpty(u.getEmail())) {
@@ -122,23 +134,13 @@ public class AutoSendMail implements FlowConnectorHandler {
 							}
 						}
 					}
-				} else {
-					// 获取组下面所有用户
-					List<User> users = Authentication.selectUserByGroupIdAndType(identityLink.getGroupId(), identityLink.getGroupType());
-					if (null != users) {
-						for (User u : users) {
-							if (StringUtil.isNotEmpty(u.getEmail())) {
-								to.append(u.getEmail()).append(Constants.COMMA);
-							}
-						}
-					}
 				}
-			}
-			if (to.length() > 0) {
-				// 删除最后一个','
-				to.deleteCharAt(to.length() - 1);
-				// 保存邮件实体
-				saveMail(to.toString(), title, content, taskEntity.getId());
+				if (to.length() > 0) {
+					// 删除最后一个','
+					to.deleteCharAt(to.length() - 1);
+					// 保存邮件实体
+					saveMail(to.toString(), title, content, taskEntity.getId());
+				}
 			}
 		}
 	}
