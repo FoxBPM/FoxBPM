@@ -66,7 +66,6 @@ public class LoginController extends AbstWebController {
 					// 这里约定了一个参数，流程引擎在运行时会默认从session里按照这两个key来获取参数，如果替换了登录的方式，请保证这两个key依然可以获取到正确的数据
 					request.getSession().setAttribute(WebContextAttributeName.USERID, userEntity.getUserId());
 					request.getSession().setAttribute(WebContextAttributeName.USERNAME, userName);
-					Authentication.setAuthenticatedUserId(userEntity.getUserId());
 					// 登录时根据登录的目标切换跳转目标
 					String loginType = request.getParameter("loginType");
 					if ("on".equalsIgnoreCase(loginType)) {

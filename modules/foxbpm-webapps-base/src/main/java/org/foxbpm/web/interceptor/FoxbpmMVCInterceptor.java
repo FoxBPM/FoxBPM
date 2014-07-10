@@ -20,6 +20,7 @@ package org.foxbpm.web.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.web.common.constant.WebContextAttributeName;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -46,6 +47,7 @@ public class FoxbpmMVCInterceptor implements HandlerInterceptor {
 			response.sendRedirect(context + "/login.jsp");
 			return false;
 		}
+		Authentication.setAuthenticatedUserId(userId);
 		return true;
 	}
 
