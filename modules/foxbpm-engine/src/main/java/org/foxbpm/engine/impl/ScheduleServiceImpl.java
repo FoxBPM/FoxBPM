@@ -19,7 +19,7 @@ package org.foxbpm.engine.impl;
 
 import java.util.List;
 
-import org.foxbpm.engine.SchedulerService;
+import org.foxbpm.engine.ScheduleService;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduler;
 import org.quartz.JobKey;
@@ -33,7 +33,7 @@ import org.quartz.Trigger;
  * @date 2014-06-24
  * 
  */
-public class SchedulerServiceImpl implements SchedulerService {
+public class ScheduleServiceImpl implements ScheduleService {
 	private FoxbpmScheduler foxbpmScheduler;
 
 	public void setFoxbpmScheduler(FoxbpmScheduler foxbpmScheduler) {

@@ -22,8 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.impl.runningtrack.RunningTrack;
 
-public class RunningTrackEntity implements PersistentObject {
+public class RunningTrackEntity implements RunningTrack, PersistentObject {
 	protected String id;
 	protected String processInstanceId;
 	protected String processDefinitionId;

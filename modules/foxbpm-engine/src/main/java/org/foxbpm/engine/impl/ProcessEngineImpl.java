@@ -40,7 +40,6 @@ public class ProcessEngineImpl implements ProcessEngine {
 	protected FormService formService;
 	protected ScheduleService scheduleService;
 	protected ManagementService managementService;
-	
 
 	protected ProcessEngineConfigurationImpl processEngineConfiguration;
 
@@ -50,12 +49,14 @@ public class ProcessEngineImpl implements ProcessEngine {
 		this.name = processEngineConfiguration.getProcessEngineName();
 		this.modelService = processEngineConfiguration.getModelService();
 		this.runtimeService = processEngineConfiguration.getRuntimeService();
-//		this.historyService = processEngineConfiguration.getHistoryService();
+		// this.historyService = processEngineConfiguration.getHistoryService();
 		this.identityService = processEngineConfiguration.getIdentityService();
 		this.taskService = processEngineConfiguration.getTaskService();
-//		this.formService = processEngineConfiguration.getFormService();
-//		this.scheduleService = processEngineConfiguration.getScheduleService();
-//		this.managementService = processEngineConfiguration.getManagementService();
+		// this.formService = processEngineConfiguration.getFormService();
+		// this.scheduleService =
+		// processEngineConfiguration.getScheduleService();
+		// this.managementService =
+		// processEngineConfiguration.getManagementService();
 		ProcessEngineManagement.registerProcessEngine(this);
 	}
 
@@ -102,33 +103,34 @@ public class ProcessEngineImpl implements ProcessEngine {
 	public void setExternalContent(ExternalContent externalContent) {
 		String authenticatedUserId = externalContent.getAuthenticatedUserId();
 		Authentication.setAuthenticatedUserId(authenticatedUserId);
-//		String languageType = externalContent.getLanguageType();
-		
-//		if (externalContent.getConnectionManagement() != null && !externalContent.getConnectionManagement().equals("")) {
-//			Context.setConnectionManagementDefault(externalContent.getConnectionManagement());
-//		}
-		
-		//国际化语言
-//		if (languageType == null || languageType.equals("")) {
-//
-//		} else {
-//			processEngineConfiguration.getFixFlowResources().setNowLanguage(languageType);
-//		}
+		// String languageType = externalContent.getLanguageType();
+
+		// if (externalContent.getConnectionManagement() != null &&
+		// !externalContent.getConnectionManagement().equals("")) {
+		// Context.setConnectionManagementDefault(externalContent.getConnectionManagement());
+		// }
+
+		// 国际化语言
+		// if (languageType == null || languageType.equals("")) {
+		//
+		// } else {
+		// processEngineConfiguration.getFixFlowResources().setNowLanguage(languageType);
+		// }
 
 	}
 
 	public void contextClose() {
 		Context.removeCommandContext();
 		Context.removeProcessEngineConfiguration();
-//		Context.removeAbstractScriptLanguageMgmt();
-//		Context.removeLanguageType();
+		// Context.removeAbstractScriptLanguageMgmt();
+		// Context.removeLanguageType();
 	}
 
 	public void closeEngine() {
 		try {
-//			contextClose();
+			// contextClose();
 		} catch (Exception e) {
-//			e.printStackTrace();
+			// e.printStackTrace();
 		}
 		ProcessEngineManagement.unregister(this);
 	}
