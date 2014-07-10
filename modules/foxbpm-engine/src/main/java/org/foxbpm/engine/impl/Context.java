@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.foxbpm.engine.impl.interceptor.CommandContext;
-import org.foxbpm.engine.impl.scriptlanguage.GroovyScriptLanguageMgmtImpl;
 import org.foxbpm.engine.scriptlanguage.AbstractScriptLanguageMgmt;
 
 /**
@@ -72,17 +71,14 @@ public class Context {
 	public static AbstractScriptLanguageMgmt getAbstractScriptLanguageMgmt() {
 		Stack<AbstractScriptLanguageMgmt> stack = getStack(abstractScriptLanguageMgmtThreadLocal);
 		if (stack.isEmpty()) {
-			AbstractScriptLanguageMgmt abstractScriptLanguageMgmt = null;
-			abstractScriptLanguageMgmt = new GroovyScriptLanguageMgmtImpl();
-			Context.setAbstractScriptLanguageMgmt(abstractScriptLanguageMgmt.init());
-			return abstractScriptLanguageMgmt;
+			return null;
 		}
 		return stack.peek();
 	}
 	
-	public static void removeAbstractScriptLanguageMgmt() {
+	public static void clearAbstractScriptLanguageMgmt() {
 		Stack<AbstractScriptLanguageMgmt> stack = getStack(abstractScriptLanguageMgmtThreadLocal);
-		if (!stack.isEmpty()) {
+		while(!stack.isEmpty()){
 			AbstractScriptLanguageMgmt scriptManagement = stack.pop();
 			if(scriptManagement != null){
 				scriptManagement.close();
