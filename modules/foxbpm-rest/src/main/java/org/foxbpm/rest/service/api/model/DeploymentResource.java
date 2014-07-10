@@ -28,6 +28,7 @@ import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
+import org.restlet.resource.Delete;
 import org.restlet.resource.Get;
 import org.restlet.resource.Put;
 
@@ -67,5 +68,14 @@ public class DeploymentResource extends AbstractRestResource {
 		ModelService modelService = FoxBpmUtil.getProcessEngine().getModelService();
 		InputStream input = modelService.getResourceByDeployIdAndName(deploymentId, resourceName);
 		return input;
+	}
+	
+	
+	@Delete
+	public String deleteDeployment(){
+		String deploymentId = getAttribute("deploymentId");
+		ModelService modelService = FoxBpmUtil.getProcessEngine().getModelService();
+		modelService.deleteDeployment(deploymentId);
+		return "SUCCESS";
 	}
 }

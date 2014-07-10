@@ -83,6 +83,7 @@
 </body>
 
 <script type="text/javascript">
+	var runningTrackInfo = $.parseJSON('${result.runningTrackInfo}');//运行轨迹
 	//判断是否为IE浏览器标示
 	var isIE = window.ActiveXObject && $.browser.msie;
 	//页面初始化后需要展现流程图

@@ -20,13 +20,15 @@
 		<result column="NODE_NAME" property="nodeName" jdbcType="VARCHAR" />
 		<result column="EVENT_NAME" property="eventName" jdbcType="VARCHAR" />
 		<result column="ARCHIVE_TIME" property="archiveTime" jdbcType="TIMESTAMP" />
+		<result column="TRACK_RECORD" property="trackRecord" jdbcType="BIGINT" />
+		
 	</resultMap>
 
 	<insert id="insertRunningTrack" parameterType="org.foxbpm.engine.impl.entity.RunningTrackEntity">
 	INSERT INTO
 	foxbpm_run_runningtrack
 	(ID,PROCESSINSTANCE_ID,PROCESSDEFINITION_ID,PROCESSDEFINITION_KEY,
-	TOKEN_ID,EXECUTION_TIME,OPERATOR,NODE_ID,NODE_NAME,EVENT_NAME,ARCHIVE_TIME)
+	TOKEN_ID,EXECUTION_TIME,OPERATOR,NODE_ID,NODE_NAME,EVENT_NAME,ARCHIVE_TIME,TRACK_RECORD)
 	VALUES
 	( #{id,jdbcType=VARCHAR}, #{processInstanceId,jdbcType=VARCHAR},
 	#{processDefinitionId,jdbcType=VARCHAR},
@@ -34,14 +36,14 @@
 	#{executionTime,jdbcType=TIMESTAMP}, #{operator,jdbcType=VARCHAR},
 	#{nodeId,jdbcType=VARCHAR},
 	#{nodeName,jdbcType=VARCHAR},
-	#{eventName,jdbcType=VARCHAR}, #{archiveTime,jdbcType=TIMESTAMP})
+	#{eventName,jdbcType=VARCHAR}, #{archiveTime,jdbcType=TIMESTAMP}, #{trackRecord,jdbcType=BIGINT} )
 	</insert>
 
 	<select id="selectRunningTrackByProcessInstanceId" parameterType="java.lang.String"
 		resultMap="RunningTrackResultMap">
 		select * from foxbpm_run_runningtrack
 		where
-		PROCESSINSTANCE_ID = #{processInstanceId,jdbcType=VARCHAR}
+		PROCESSINSTANCE_ID = #{processInstanceId,jdbcType=VARCHAR} order by TRACK_RECORD
 	</select>
 
 </mapper>

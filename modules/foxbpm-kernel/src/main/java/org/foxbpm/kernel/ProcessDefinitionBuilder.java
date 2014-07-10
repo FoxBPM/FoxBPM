@@ -34,11 +34,9 @@ import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 public class ProcessDefinitionBuilder {
 
 	protected KernelProcessDefinitionImpl processDefinition;
-	
 
 	protected Stack<KernelFlowElementsContainerImpl> containerStack = new Stack<KernelFlowElementsContainerImpl>();
 	protected KernelBaseElementImpl processElement = processDefinition;
-	
 
 	protected KernelSequenceFlowImpl sequenceFlow;
 	protected List<Object[]> unresolvedSequenceFlows = new ArrayList<Object[]>();
@@ -51,17 +49,17 @@ public class ProcessDefinitionBuilder {
 		processDefinition = createProcessDefinition(processDefinitionId);
 		containerStack.push(processDefinition);
 	}
-	
-	protected KernelProcessDefinitionImpl createProcessDefinition(String processDefinitionId){
+
+	protected KernelProcessDefinitionImpl createProcessDefinition(String processDefinitionId) {
 		return new KernelProcessDefinitionImpl(processDefinitionId);
 	}
 
 	public ProcessDefinitionBuilder createFlowNode(String id) {
-		createFlowNode(id,null);
+		createFlowNode(id, null);
 		return this;
 	}
-	
-	public ProcessDefinitionBuilder createFlowNode(String id,String name) {
+
+	public ProcessDefinitionBuilder createFlowNode(String id, String name) {
 		KernelFlowNodeImpl flowNode = containerStack.peek().createFlowNode(id);
 		flowNode.setName(name);
 		containerStack.push(flowNode);
@@ -95,7 +93,7 @@ public class ProcessDefinitionBuilder {
 		}
 		KernelFlowNodeImpl flowNode = getFlowNode();
 		sequenceFlow = flowNode.createOutgoingSequenceFlow(sequenceFlowId);
-		unresolvedSequenceFlows.add(new Object[] { sequenceFlow, targetFlowNodeId });
+		unresolvedSequenceFlows.add(new Object[]{sequenceFlow, targetFlowNodeId});
 		processElement = sequenceFlow;
 		return this;
 	}
@@ -111,11 +109,12 @@ public class ProcessDefinitionBuilder {
 	}
 
 	public ProcessDefinitionBuilder sequenceFlow(String targetFlowNodeId, String sequenceFlowId) {
-		sequenceFlow(targetFlowNodeId, sequenceFlowId,null);
+		sequenceFlow(targetFlowNodeId, sequenceFlowId, null);
 		return this;
 	}
-	
-	public ProcessDefinitionBuilder sequenceFlow(String targetFlowNodeId, String sequenceFlowId,String sequenceFlowName) {
+
+	public ProcessDefinitionBuilder sequenceFlow(String targetFlowNodeId, String sequenceFlowId,
+			String sequenceFlowName) {
 		startSequenceFlow(targetFlowNodeId, sequenceFlowId);
 		sequenceFlow.setName(sequenceFlowName);
 		endSequenceFlow();
@@ -133,12 +132,16 @@ public class ProcessDefinitionBuilder {
 	}
 
 	public KernelProcessDefinition buildProcessDefinition() {
+		KernelSequenceFlowImpl sequenceFlow = null;
+		String targetFlowNodeName = null;
+		KernelFlowNodeImpl destination = null;
 		for (Object[] unresolvedSequenceFlow : unresolvedSequenceFlows) {
-			KernelSequenceFlowImpl sequenceFlow = (KernelSequenceFlowImpl) unresolvedSequenceFlow[0];
-			String targetFlowNodeName = (String) unresolvedSequenceFlow[1];
-			KernelFlowNodeImpl destination = processDefinition.findFlowNode(targetFlowNodeName);
+			sequenceFlow = (KernelSequenceFlowImpl) unresolvedSequenceFlow[0];
+			targetFlowNodeName = (String) unresolvedSequenceFlow[1];
+			destination = processDefinition.findFlowNode(targetFlowNodeName);
 			if (destination == null) {
-				throw new RuntimeException("target '" + targetFlowNodeName + "' not found.  (referenced from sequenceFlow in '"
+				throw new RuntimeException("target '" + targetFlowNodeName
+						+ "' not found.  (referenced from sequenceFlow in '"
 						+ sequenceFlow.getSourceRef().getId() + "')");
 			}
 			sequenceFlow.setTargetRef(destination);
@@ -155,7 +158,6 @@ public class ProcessDefinitionBuilder {
 		return this;
 	}
 
-	
 	public ProcessDefinitionBuilder executionListener(KernelListener kernelListener) {
 		if (sequenceFlow != null) {
 			sequenceFlow.addKernelListener(kernelListener);
@@ -165,7 +167,8 @@ public class ProcessDefinitionBuilder {
 		return this;
 	}
 
-	public ProcessDefinitionBuilder executionListener(String eventName, KernelListener kernelListener) {
+	public ProcessDefinitionBuilder executionListener(String eventName,
+			KernelListener kernelListener) {
 		if (sequenceFlow == null) {
 			containerStack.peek().addKernelListener(eventName, kernelListener);
 		} else {
@@ -173,13 +176,13 @@ public class ProcessDefinitionBuilder {
 		}
 		return this;
 	}
-	
+
 	public KernelProcessDefinitionImpl getProcessDefinition() {
 		return processDefinition;
 	}
-	
+
 	public KernelBaseElementImpl getProcessElement() {
 		return processElement;
 	}
-	
+
 }

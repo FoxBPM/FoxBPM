@@ -15,26 +15,17 @@
  * 
  * @author MAENLIANG
  */
-package org.foxbpm.engine.impl.persistence;
+package org.foxbpm.engine.impl;
 
-import java.util.List;
+import org.foxbpm.engine.RunningTrackService;
+import org.foxbpm.engine.impl.runningtrack.RunningTrackQuery;
+import org.foxbpm.engine.impl.runningtrack.RunningTrackQueryImpl;
 
-import org.foxbpm.engine.impl.runningtrack.RunningTrack;
+public class RunningTrackServiceImpl extends ServiceImpl implements RunningTrackService {
 
-/**
- * 
- * 
- * RunningTrackManager 运行轨迹管理
- * 
- * MAENLIANG 2014年7月9日 上午9:56:12
- * 
- * @version 1.0.0
- * 
- */
-public class RunningTrackManager extends AbstractManager {
-	@SuppressWarnings({"unchecked"})
-	public List<RunningTrack> findRunningTrackByProcessInstanceId(String processInstanceId) {
-		return (List<RunningTrack>) getSqlSession().selectListWithRawParameter(
-				"selectRunningTrackByProcessInstanceId", processInstanceId);
+	@Override
+	public RunningTrackQuery createRunningTrackQuery() {
+		return new RunningTrackQueryImpl(commandExecutor);
 	}
+
 }

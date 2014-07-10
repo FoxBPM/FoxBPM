@@ -13,11 +13,51 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author kenshin
- * @author ych
+ * @author MAENLIANG
  */
 package org.foxbpm.engine;
 
-public interface ScheduleService {
+import java.util.List;
 
+import org.foxbpm.engine.impl.schedule.FoxbpmScheduler;
+import org.quartz.Trigger;
+
+/**
+ * 调度器服务类
+ * 
+ * @author MAENLIANG
+ * @date 2014-06-24
+ * 
+ */
+public interface ScheduleService {
+	/**
+	 * 设置调度器
+	 * 
+	 * @param foxbpmScheduler
+	 */
+	public void setFoxbpmScheduler(FoxbpmScheduler foxbpmScheduler);
+
+	/**
+	 * 暂停任务
+	 * 
+	 * @param name
+	 * @param group
+	 */
+	public void suspendJob(String name, String group);
+
+	/**
+	 * 继续任务
+	 * 
+	 * @param name
+	 * @param group
+	 */
+	public void continueJob(String name, String group);
+
+	/**
+	 * 获取所有的触发器
+	 * 
+	 * @param name
+	 * @param group
+	 */
+	public List<Trigger> getTriggerList(String jobName, String jobGroup);
 }

@@ -22,8 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.impl.runningtrack.RunningTrack;
 
-public class RunningTrackEntity implements PersistentObject {
+public class RunningTrackEntity implements RunningTrack, PersistentObject {
 	protected String id;
 	protected String processInstanceId;
 	protected String processDefinitionId;
@@ -35,6 +36,7 @@ public class RunningTrackEntity implements PersistentObject {
 	protected String nodeName;
 	protected String eventName;
 	protected Date archiveTime;
+	protected long trackRecord;
 
 	@Override
 	public Map<String, Object> getPersistentState() {
@@ -50,6 +52,7 @@ public class RunningTrackEntity implements PersistentObject {
 		objectParam.put("archiveTime", this.archiveTime);
 		objectParam.put("nodeId", this.nodeId);
 		objectParam.put("nodeName", this.nodeName);
+		objectParam.put("trackRecord", this.trackRecord);
 
 		return objectParam;
 	}
@@ -130,6 +133,13 @@ public class RunningTrackEntity implements PersistentObject {
 	}
 	public void setArchiveTime(Date archiveTime) {
 		this.archiveTime = archiveTime;
+	}
+	public long getTrackRecord() {
+		return trackRecord;
+	}
+
+	public void setTrackRecord(long trackRecord) {
+		this.trackRecord = trackRecord;
 	}
 
 }
