@@ -135,8 +135,7 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setID(String id) {
-		// TODO Auto-generated method stub
-
+		this.pathVo.setId(id);
 	}
 
 	@Override

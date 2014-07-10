@@ -72,6 +72,8 @@
 						<li class="img01">已完成</li>
 						<li class="img02">进行中</li>
 						<li><input id="yczt" type="checkbox" name="cczt" />&nbsp;&nbsp;隐藏状态</li>
+						<li><input id="runningTrack" type="checkbox"
+							name="runningTrack" />&nbsp;&nbsp;运行轨迹</li>
 					</ul>
 				</h3>
 				<!---流程图 START--->
@@ -84,12 +86,26 @@
 
 <script type="text/javascript">
 	var runningTrackInfo = $.parseJSON('${result.runningTrackInfo}');//运行轨迹
+	var runningTrackIndex = 0;
+	var runningTrackLength = runningTrackInfo.length;
+	var currentRunningTrack;
+	var runningTrackThreadId;
 	//判断是否为IE浏览器标示
 	var isIE = window.ActiveXObject && $.browser.msie;
 	//页面初始化后需要展现流程图
 	var taskListEnd = $.parseJSON('${result.taskEndedJson}');//存放已经结束的节点
 	var taskListIng = $.parseJSON('${result.taskNotEndJson}');//存放正在处理的节点
 	var nodeInfoArr = $.parseJSON('${result.positionInfo}');//存放流程节点信息
+
+	/**
+	 * 保存流程节点本身式样
+	 */
+	var backUpColorDictionary = {};
+	var backUpWidthDictionary = {};
+
+	var backUpRunningTrackColorDictionary = {};
+	var backUpRunningTrackWidthDictionary = {};
+
 	//创建任务详细对象
 	var flowGraphic = FlowGraphic({
 		'taskListEnd' : taskListEnd,
@@ -100,6 +116,63 @@
 		'action' : 'getFlowGraph.action',
 		'processDefinitionId' : '${result.processDefinitionId}'
 	});
+	var tempNodeID;
+	var previousNodeId;
+	function moveRunningTrack() {
+		if (runningTrackLength != 0 && runningTrackIndex < runningTrackLength) {
+			currentRunningTrack = runningTrackInfo[runningTrackIndex];
+			removePreviousRunningTrack(currentRunningTrack);
+			var rectAttributes = $("#" + currentRunningTrack.nodeId)[0].attributes;
+			for (var j = 0; j < rectAttributes.length; j++) {
+				var rectAttribute = rectAttributes[j];
+				if (rectAttribute.name == "stroke") {
+					if (tempNodeID != currentRunningTrack.nodeId) {
+						backUpRunningTrackColorDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue;
+						rectAttribute.nodeValue = RUNNING_TRACK_COLOR;
+					}
+					if (tempNodeID == currentRunningTrack.nodeId) {
+						rectAttribute.nodeValue = backUpRunningTrackColorDictionary[currentRunningTrack.nodeId];
+					}
+				}
+				if (rectAttribute.name == "stroke-width") {
+					if (tempNodeID != currentRunningTrack.nodeId) {
+						backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue;
+						rectAttribute.nodeValue = 3;
+					}
+					if (tempNodeID == currentRunningTrack.nodeId) {
+						rectAttribute.nodeValue = 3;
+						rectAttribute.nodeValue = backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId];
+					}
+				}
+
+			}
+			//removePreviousRunningTrack(currentRunningTrack);
+			tempNodeID = currentRunningTrack.nodeId;
+		} else {
+			clearInterval(runningTrackThreadId);
+		}
+		runningTrackIndex = runningTrackIndex + 1;
+	}
+	//清空前一个节点的轨迹
+	function removePreviousRunningTrack(currentTrack) {
+		if (runningTrackIndex != 0
+				&& currentTrack.nodeId != runningTrackInfo[runningTrackIndex - 1].nodeId) {
+			var rectAttributes = $("#"
+					+ runningTrackInfo[runningTrackIndex - 1].nodeId)[0].attributes;
+			for (var j = 0; j < rectAttributes.length; j++) {
+				var rectAttribute = rectAttributes[j];
+				if (rectAttribute.name == "stroke") {
+					rectAttribute.nodeValue = backUpRunningTrackColorDictionary[runningTrackInfo[runningTrackIndex - 1].nodeId];
+
+				}
+				if (rectAttribute.name == "stroke-width") {
+					rectAttribute.nodeValue = backUpRunningTrackWidthDictionary[runningTrackInfo[runningTrackIndex - 1].nodeId];
+				}
+
+			}
+		}
+	}
+
 	$(function() {
 
 		//判断浏览器类型为IE
@@ -111,6 +184,15 @@
 							flowGraphic.hideFlowImgStatus(($(this).attr(
 									"checked") == 'checked'));
 						});
+		$("#runningTrack").bind("click", function() {
+			//flowGraphic.runningTrack(($(this).attr("checked") == 'checked'));
+			if ($(this).attr("checked") == 'checked') {
+				runningTrackIndex = 0;
+			} else {
+				//flowGraphic.hideFlowImgStatus(false);
+			}
+			runningTrackThreadId = setInterval("moveRunningTrack()", 300);
+		});
 	});
 </script>
 </html>

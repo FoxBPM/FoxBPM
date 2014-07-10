@@ -145,6 +145,7 @@ public abstract class AbstractFlowElementVOFactory {
 			// 线条元素
 			// 先构造拐点，再构造文本坐标
 			KernelSequenceFlowImpl kernelSequenceFlowImpl = (KernelSequenceFlowImpl) kernelBaseElement;
+			svgBuilder.setID(kernelSequenceFlowImpl.getId());
 			SequenceFlowBehavior sequenceFlowBehavior = (SequenceFlowBehavior) kernelSequenceFlowImpl
 					.getSequenceFlowBehavior();
 			String[] filterConfition = new String[] { "", "default" };

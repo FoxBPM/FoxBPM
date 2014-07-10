@@ -5,15 +5,11 @@ var TASK_END_COLOR = "#458f05";
 var TASK_END_WIDTH = "2";
 var TASK_ING_COLOR = "#ff7200";
 var TASK_ING_WIDTH = "2";
+var RUNNING_TRACK_COLOR = "#0000FF";
 
 /**
- * 流程图处理类 
- * taskListEnd 任务结束节点 
- * taskListIng 任务进入节点 
- * nodeInfoArr 节点信息 
- * isIE 是否IE
- * parentId 流程图添加到该元素中 <div id='xxx'><img /></div> 
- * action 图形加载后台action
+ * 流程图处理类 taskListEnd 任务结束节点 taskListIng 任务进入节点 nodeInfoArr 节点信息 isIE 是否IE
+ * parentId 流程图添加到该元素中 <div id='xxx'><img /></div> action 图形加载后台action
  * processDefinitionId 流程定义id
  */
 function FlowGraphic(param) {
@@ -81,11 +77,6 @@ function FlowGraphic(param) {
 	}
 	/** svg图形处理方式* */
 
-	/**
-	 * 保存流程节点本身式样
-	 */
-	this.backUpColorDictionary = {};
-	this.backUpWidthDictionary = {};
 	/**
 	 * 标记流程状态
 	 */
@@ -159,6 +150,7 @@ function FlowGraphic(param) {
 			}
 		}
 	}
+
 	function signIngTaskState() {
 		if (taskListIng == null || taskListIng.length == 0) {
 			return;
@@ -178,6 +170,36 @@ function FlowGraphic(param) {
 					}
 
 				}
+			}
+		}
+	}
+
+	function markRunningTrack() {
+		var trackInfo = runningTrackInfo;
+		if (trackInfo == null || trackInfo.length == 0) {
+			return;
+		} else {
+			var element;
+			var tempNodeId = "";
+			for (var i = 0; i < trackInfo.length; i++) {
+				element = trackInfo[i];
+				if (tempNodeId != element.nodeId) {
+					wait(1000);
+				}
+				var rectAttributes = $("#" + element.nodeId)[0].attributes;
+				for (var j = 0; j < rectAttributes.length; j++) {
+					var rectAttribute = rectAttributes[j];
+					if (rectAttribute.name == "stroke") {
+						backUpColorDictionary[element.nodeId] = rectAttribute.nodeValue;
+						rectAttribute.nodeValue = RUNNING_TRACK_COLOR;
+					}
+					if (rectAttribute.name == "stroke-width") {
+						backUpWidthDictionary[element.nodeId] = rectAttribute.nodeValue;
+						rectAttribute.nodeValue = 2;
+					}
+
+				}
+				tempNodeId = element.nodeId;
 			}
 		}
 	}
