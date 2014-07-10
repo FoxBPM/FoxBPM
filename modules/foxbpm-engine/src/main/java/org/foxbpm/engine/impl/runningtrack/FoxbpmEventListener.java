@@ -17,15 +17,11 @@
  */
 package org.foxbpm.engine.impl.runningtrack;
 
-import java.util.Date;
-
+import org.foxbpm.engine.impl.bpmn.behavior.EndEventBehavior;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.RunningTrackEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
-import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
-import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
-import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
@@ -39,39 +35,17 @@ public class FoxbpmEventListener extends AbstractEventListener {
 		KernelTokenImpl kernelTokenImpl = (KernelTokenImpl) executionContext;
 		ProcessInstanceEntity processInstanceEntity = (ProcessInstanceEntity) kernelTokenImpl
 				.getProcessInstance();
-		KernelProcessDefinitionImpl processDefinition = kernelTokenImpl.getProcessDefinition();
-
 		// 创建运行轨迹
 		RunningTrackEntity runningTrackEntity = new RunningTrackEntity();
-		runningTrackEntity.setId(GuidUtil.CreateGuid());
-		runningTrackEntity.setProcessInstanceId(kernelTokenImpl.getProcessInstanceId());
-		runningTrackEntity.setProcessDefinitionId(processDefinition.getId());
-		runningTrackEntity.setProcessDefinitionKey(processDefinition.getKey());
-		runningTrackEntity.setExecutionTime(new Date());
-
 		runningTrackEntity.setOperator(Authentication.getAuthenticatedUserId());
-
-		String nodeId = null;
-		String nodeName = null;
-		// 区分处理节点和线条
-
 		KernelFlowNodeImpl flowNode = kernelTokenImpl.getFlowNode();
-		if (flowNode != null) {
-			nodeId = flowNode.getId();
-			nodeName = flowNode.getName();
-		} else {
-			KernelSequenceFlowImpl sequenceFlow = kernelTokenImpl.getSequenceFlow();
-			nodeId = sequenceFlow.getId();
-			nodeName = sequenceFlow.getName();
+		runningTrackEntity.setNodeId(flowNode.getId());
+		runningTrackEntity.setNodeName(flowNode.getName());
+		// 结束事件记录归档时间
+		if (flowNode.getKernelFlowNodeBehavior() instanceof EndEventBehavior) {
+			runningTrackEntity.setArchiveTime(processInstanceEntity.getArchiveTime());
 		}
 
-		runningTrackEntity.setNodeId(nodeId);
-		runningTrackEntity.setNodeName(nodeName);
-
-		runningTrackEntity.setEventName(kernelTokenImpl.getEventName());
-		runningTrackEntity.setTokenId(kernelTokenImpl.getId());
-		runningTrackEntity.setArchiveTime(processInstanceEntity.getArchiveTime());
 		return runningTrackEntity;
 	}
-
 }
