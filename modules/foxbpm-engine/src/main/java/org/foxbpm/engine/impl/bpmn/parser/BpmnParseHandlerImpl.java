@@ -101,6 +101,8 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			throw new FoxBPMException("文件中没有对应的流程定义，请检查bpmn文件内容和流程key是否对应！");
 		}
 		KernelProcessDefinition processDefinition = loadBehavior(process);
+		// 加载运行轨迹监听器
+		this.registRunningTrackListener((ProcessDefinitionEntity) processDefinition);
 		// // 加载数据变量
 		// loadVariable(processDefinition);
 		// // 设置FlowNode元素的子流程
@@ -108,6 +110,13 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		return processDefinition;
 	}
 
+	/**
+	 * 
+	 * loadBehavior 根据Process模型加载流程定义对象
+	 * 
+	 * @param process
+	 * @return 流程定义对象
+	 */
 	private KernelProcessDefinition loadBehavior(Process process) {
 		String processObjId = BpmnModelUtil.getProcessId(process);
 		// String category=BpmnModelUtil.getProcessCategory(process);
@@ -170,13 +179,12 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		processDefinition.setSubject(processBehavior.getSubject());
 		processDI(processDefinition, process);
 
-		// 加载运行轨迹监听器
-		this.registRunningTrackListener(processDefinition);
 		return processDefinition;
 	}
 
 	/**
-	 * 加载运行轨迹监听器
+	 * 加载运行轨迹监听器、 独立加载 和嵌入流程定义创建代码中，算法效率是一样的 监听器集合SIZE * 节点集合SIZE
+	 * 不建议侵入到流程定义的LOAD代码中
 	 * 
 	 * @param processEntity
 	 */
@@ -192,14 +200,11 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 					foxbpmEventListener = (AbstractEventListener) Class.forName(
 							eventListener.getListenerClass()).newInstance();
 					if (StringUtil.equals(eventListener.getEventType(),
-							KernelEventType.EVENTTYPE_PROCESS_START)) {
+							KernelEventType.EVENTTYPE_PROCESS_START)
+							|| StringUtil.equals(eventListener.getEventType(),
+									KernelEventType.EVENTTYPE_PROCESS_END)) {
 						// 注册启动轨迹监听
-						processEntity.addKernelListener(KernelEventType.EVENTTYPE_PROCESS_START,
-								foxbpmEventListener);
-					} else if (StringUtil.equals(eventListener.getEventType(),
-							KernelEventType.EVENTTYPE_PROCESS_END)) {
-						// 注册结束轨迹监听
-						processEntity.addKernelListener(KernelEventType.EVENTTYPE_PROCESS_END,
+						processEntity.addKernelListener(eventListener.getEventType(),
 								foxbpmEventListener);
 					} else {
 						if (StringUtil.equals(eventListener.getEventType(),

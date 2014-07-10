@@ -1,20 +1,3 @@
-/**
- * Copyright 1996-2014 FoxBPM ORG.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * 
- * @author MAENLIANG
- */
 package org.foxbpm.engine.impl.runningtrack;
 
 import java.util.Date;
@@ -25,15 +8,17 @@ import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
-import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
-public class FoxbpmEventListener extends AbstractEventListener {
+public class FoxbpmStartEventListener extends AbstractEventListener {
+
 	/**
 	 * serialVersionUID:序列化ID
+	 * 
 	 */
-	private static final long serialVersionUID = -4927827964817111540L;
+	private static final long serialVersionUID = -4666204303153498711L;
+
 	@Override
 	protected RunningTrackEntity recordRunningTrack(ListenerExecutionContext executionContext) {
 		KernelTokenImpl kernelTokenImpl = (KernelTokenImpl) executionContext;
@@ -51,22 +36,9 @@ public class FoxbpmEventListener extends AbstractEventListener {
 
 		runningTrackEntity.setOperator(Authentication.getAuthenticatedUserId());
 
-		String nodeId = null;
-		String nodeName = null;
-		// 区分处理节点和线条
-
-		KernelFlowNodeImpl flowNode = kernelTokenImpl.getFlowNode();
-		if (flowNode != null) {
-			nodeId = flowNode.getId();
-			nodeName = flowNode.getName();
-		} else {
-			KernelSequenceFlowImpl sequenceFlow = kernelTokenImpl.getSequenceFlow();
-			nodeId = sequenceFlow.getId();
-			nodeName = sequenceFlow.getName();
-		}
-
-		runningTrackEntity.setNodeId(nodeId);
-		runningTrackEntity.setNodeName(nodeName);
+		KernelFlowNodeImpl startFlowNode = processInstanceEntity.getStartFlowNode();
+		runningTrackEntity.setNodeId(startFlowNode.getId());
+		runningTrackEntity.setNodeName(startFlowNode.getName());
 
 		runningTrackEntity.setEventName(kernelTokenImpl.getEventName());
 		runningTrackEntity.setTokenId(kernelTokenImpl.getId());
