@@ -117,7 +117,6 @@
 		'processDefinitionId' : '${result.processDefinitionId}'
 	});
 	var tempNodeID;
-	var previousNodeId;
 	function moveRunningTrack() {
 		if (runningTrackLength != 0 && runningTrackIndex < runningTrackLength) {
 			currentRunningTrack = runningTrackInfo[runningTrackIndex];
@@ -137,23 +136,22 @@
 				if (rectAttribute.name == "stroke-width") {
 					if (tempNodeID != currentRunningTrack.nodeId) {
 						backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue;
-						rectAttribute.nodeValue = 3;
+						rectAttribute.nodeValue = 4;
 					}
 					if (tempNodeID == currentRunningTrack.nodeId) {
-						rectAttribute.nodeValue = 3;
+						rectAttribute.nodeValue = 4;
 						rectAttribute.nodeValue = backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId];
 					}
 				}
 
 			}
-			//removePreviousRunningTrack(currentRunningTrack);
 			tempNodeID = currentRunningTrack.nodeId;
 		} else {
 			clearInterval(runningTrackThreadId);
 		}
 		runningTrackIndex = runningTrackIndex + 1;
 	}
-	//清空前一个节点的轨迹
+	//如果前一个节点只存在单个执行事件，用这个方法清空前一个节点的轨迹
 	function removePreviousRunningTrack(currentTrack) {
 		if (runningTrackIndex != 0
 				&& currentTrack.nodeId != runningTrackInfo[runningTrackIndex - 1].nodeId) {
@@ -188,8 +186,6 @@
 			//flowGraphic.runningTrack(($(this).attr("checked") == 'checked'));
 			if ($(this).attr("checked") == 'checked') {
 				runningTrackIndex = 0;
-			} else {
-				//flowGraphic.hideFlowImgStatus(false);
 			}
 			runningTrackThreadId = setInterval("moveRunningTrack()", 300);
 		});
