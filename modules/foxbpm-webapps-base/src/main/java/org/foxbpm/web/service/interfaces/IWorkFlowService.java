@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.identity.User;
+import org.foxbpm.engine.impl.runningtrack.RunningTrack;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.common.util.Pagination;
@@ -55,7 +56,19 @@ public interface IWorkFlowService {
 	 * @return 返回查询结果
 	 * @throws FoxbpmWebException
 	 */
-	List<Map<String, Object>> queryProcessInst(Pagination<String> pageInfor, Map<String, Object> params);
+	List<Map<String, Object>> queryProcessInst(Pagination<String> pageInfor,
+			Map<String, Object> params);
+
+	/**
+	 * 
+	 * queryRunningTrack(根据流程实例ID查询该流程的运行轨迹)
+	 * 
+	 * @param processInstanceID
+	 * @return List<RunningTrack>
+	 * @exception
+	 * @since 1.0.0
+	 */
+	public List<RunningTrack> queryRunningTrack(String processInstanceID);
 
 	/**
 	 * 查询任务详细信息

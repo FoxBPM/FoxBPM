@@ -71,6 +71,9 @@
 		<property name="processEngineConfiguration" ref="processEngineConfigurationSpring" />
 	</bean>
 
+	<!-- 运行轨迹服务 -->
+	<bean id="runningTrackService" factory-bean="processEngine"
+		factory-method="getRunningTrackService" />
 	<!-- 任务服务 -->
 	<bean id="taskService" factory-bean="processEngine"
 		factory-method="getTaskService" />
@@ -96,7 +99,7 @@
 		parent="abstrJdbcTemplate" />
 
 	<!-- foxbmp日志处理 -->
-	<bean id="foxbpmUserInterceptor" class="org.foxbpm.web.service.aop.FoxbpmUserInterceptor"/>
+	<bean id="foxbpmUserInterceptor" class="org.foxbpm.web.service.aop.FoxbpmUserInterceptor" />
 	<!-- 事务通知 -->
 	<tx:advice id="foxbpmTransactionAdvice" transaction-manager="foxbpmTransactionManager">
 		<tx:attributes>
