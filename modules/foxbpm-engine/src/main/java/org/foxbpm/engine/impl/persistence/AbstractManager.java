@@ -40,6 +40,10 @@ public abstract class AbstractManager implements Session{
 		getSqlSession().insert(persistentObject);
 	}
 	
+	public void update(PersistentObject persistentObject){
+		getSqlSession().update(persistentObject);
+	}
+	
 	protected DeploymentEntityManager getDeploymentManager() {
 		return getSession(DeploymentEntityManager.class);
 	}
