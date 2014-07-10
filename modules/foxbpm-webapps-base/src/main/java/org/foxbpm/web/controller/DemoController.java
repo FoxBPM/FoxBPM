@@ -73,7 +73,7 @@ public class DemoController extends AbstWebController {
 	public ModelAndView completeTask(HttpServletRequest request) {
 		Map<String, Object> requestParams = getRequestParams(request);
 		workDemoService.completeTask(requestParams);
-		return createModelAndView(WebViewName.COMPLETETASK_VIEWNAME);
+		return new ModelAndView(WebViewName.RESULT);
 	}
 
 	protected String getPrefix() {

@@ -97,8 +97,7 @@ public class FlowManageController extends AbstWebController {
 		// 请求参数
 		Map<String, Object> requestParams = getRequestParams(request);
 		flowManageService.deployByZip(requestParams);
-		return processDef(request);
-
+		return new ModelAndView(WebViewName.RESULT);
 	}
 
 	@RequestMapping(WebActionName.DELETEDEPLOY_ACTION)
