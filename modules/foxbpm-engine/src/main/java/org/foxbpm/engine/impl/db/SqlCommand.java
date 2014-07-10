@@ -363,7 +363,7 @@ public class SqlCommand {
 
 	/**
 	 * 执行查询
-	 * 
+	 * @deprecated
 	 * @param sql
 	 * @throws DAOException
 	 */
