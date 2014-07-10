@@ -274,7 +274,7 @@
         and 
         ( 
           <if test="candidateUser != null">
-            I.USER_ID = #{candidateUser}  or I.USER_ID='fixflow_allusers'         
+            I.USER_ID = #{candidateUser}  or I.USER_ID='foxbpm_all_user'         
           </if>
           <if test="candidateUser != null &amp;&amp; candidateGroups != null &amp;&amp; candidateGroups.size() &gt; 0">
             or
