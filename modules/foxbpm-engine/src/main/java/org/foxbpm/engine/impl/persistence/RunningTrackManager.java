@@ -18,9 +18,8 @@
 package org.foxbpm.engine.impl.persistence;
 
 import java.util.List;
-import java.util.Map;
 
-import org.foxbpm.engine.task.Task;
+import org.foxbpm.engine.impl.runningtrack.RunningTrack;
 
 /**
  * 
@@ -33,9 +32,9 @@ import org.foxbpm.engine.task.Task;
  * 
  */
 public class RunningTrackManager extends AbstractManager {
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	public List<Task> findRunningTrackByProcessInstanceId(Map<String, Object> parameterMap) {
-		return (List) getSqlSession().selectListWithRawParameter(
-				"selectRunningTrackByProcessInstanceId", parameterMap);
+	@SuppressWarnings({"unchecked"})
+	public List<RunningTrack> findRunningTrackByProcessInstanceId(String processInstanceId) {
+		return (List<RunningTrack>) getSqlSession().selectListWithRawParameter(
+				"selectRunningTrackByProcessInstanceId", processInstanceId);
 	}
 }

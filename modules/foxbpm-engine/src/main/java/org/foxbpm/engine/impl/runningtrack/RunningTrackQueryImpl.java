@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author kenshin
+ * @author MAENLIANG
  */
 package org.foxbpm.engine.impl.runningtrack;
 
@@ -24,7 +24,9 @@ import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 import org.foxbpm.engine.impl.query.AbstractQuery;
 
 /**
- * @author kenshin
+ * 运行轨迹的查询
+ * 
+ * @author MAENLIANG
  */
 public class RunningTrackQueryImpl extends AbstractQuery<RunningTrackQuery, RunningTrack>
 		implements
@@ -46,11 +48,10 @@ public class RunningTrackQueryImpl extends AbstractQuery<RunningTrackQuery, Runn
 		super(commandExecutor);
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
 	public List<RunningTrack> executeList(CommandContext commandContext) {
 		checkQueryOk();
-		return (List) commandContext.getRunningTrackManager().findRunningTrackByProcessInstanceId(
-				null);
+		return (List<RunningTrack>) commandContext.getRunningTrackManager()
+				.findRunningTrackByProcessInstanceId(processInstanceID);
 	}
 	@Override
 	public RunningTrackQuery processInstanceID(String processInstanceID) {
