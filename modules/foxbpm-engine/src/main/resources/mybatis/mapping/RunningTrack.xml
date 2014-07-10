@@ -43,7 +43,7 @@
 		resultMap="RunningTrackResultMap">
 		select * from foxbpm_run_runningtrack
 		where
-		PROCESSINSTANCE_ID = #{processInstanceId,jdbcType=VARCHAR}
+		PROCESSINSTANCE_ID = #{processInstanceId,jdbcType=VARCHAR} order by TRACK_RECORD
 	</select>
 
 </mapper>

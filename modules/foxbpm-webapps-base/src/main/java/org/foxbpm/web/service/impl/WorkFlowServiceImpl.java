@@ -204,6 +204,13 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			}
 			Map<String, Map<String, Object>> postionMap = modelService
 					.getFlowGraphicsElementPositionById(processInstance.getProcessDefinitionId());
+
+			// 获取运行轨迹信息
+			List<RunningTrack> runningTrackInfo = this.queryRunningTrack(processInstanceId);
+			if (runningTrackInfo != null) {
+				resultData.put("runningTrackInfo", JSONUtil.parseObject2JSON(runningTrackInfo));
+			}
+
 			resultData.put("dataList", instanceMaps);
 			resultData.put("notEnddataList", notEndInstanceMaps);
 			resultData.put("positionInfo", JSONUtil.parseObject2JSON(postionMap));
