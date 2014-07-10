@@ -20,6 +20,8 @@ package org.foxbpm.engine.impl.interceptor;
 
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
+import org.foxbpm.engine.impl.scriptlanguage.GroovyScriptLanguageMgmtImpl;
+import org.foxbpm.engine.scriptlanguage.AbstractScriptLanguageMgmt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,10 +56,15 @@ public class CommandContextInterceptor extends CommandInterceptor {
 		boolean contextReused = false;
 		if (context == null || !config.isContextReuse() || context.getException() !=null) {
 			context = commandContextFactory.createCommandContext(command);
+			setAbstractScriptLanguageMgmt();
 		} else {
 			log.debug("CommandContext已经存在，共享此commandContext '{}'", command.getClass().getCanonicalName());
+			if(config.isScriptEngineReuse()){
+				setAbstractScriptLanguageMgmt();
+			}
 			contextReused = true;
 		}
+		
 		try {
 			// Push on stack
 			Context.setCommandContext(context);
@@ -70,8 +77,7 @@ public class CommandContextInterceptor extends CommandInterceptor {
 			try {
 				if (!contextReused) {
 					context.close();
-					// 最后一次cmd调用结束，清空脚本管理器，放置内存泄露，线程副本中只会存在一个scriptMgmt，所以在最后一次关闭即可。
-					Context.removeAbstractScriptLanguageMgmt();
+					Context.clearAbstractScriptLanguageMgmt();
 				}
 			} finally {
 				Context.removeCommandContext();
@@ -79,6 +85,12 @@ public class CommandContextInterceptor extends CommandInterceptor {
 			}
 		}
 		return null;
+	}
+	
+	private void setAbstractScriptLanguageMgmt(){
+		AbstractScriptLanguageMgmt abstractScriptLanguageMgmt = null;
+		abstractScriptLanguageMgmt = new GroovyScriptLanguageMgmtImpl();
+		Context.setAbstractScriptLanguageMgmt(abstractScriptLanguageMgmt.init());
 	}
 
 	public CommandContextFactory getCommandContextFactory() {

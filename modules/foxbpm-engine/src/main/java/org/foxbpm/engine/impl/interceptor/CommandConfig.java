@@ -18,6 +18,7 @@
 package org.foxbpm.engine.impl.interceptor;
 
 import org.foxbpm.engine.config.TransactionPropagation;
+import org.foxbpm.engine.exception.FoxBPMException;
 
 /**
  * 命令执行配置
@@ -30,6 +31,9 @@ public class CommandConfig {
 	private boolean isContextReuse = true;
 	//默认required事务传播类型
 	private TransactionPropagation propagation = TransactionPropagation.REQUIRED;
+	//是否公用脚本引擎，如果context为新建，则脚本引擎也会新建，忽略此参数
+	//如 config.setContextReuse(false);则isScriptEngineReuse默认为false
+	private boolean isScriptEngineReuse = true;
 
 	public boolean isContextReuse() {
 		return isContextReuse;
@@ -45,6 +49,19 @@ public class CommandConfig {
 
 	public void setPropagation(TransactionPropagation propagation) {
 		this.propagation = propagation;
+	}
+	
+	public void setScriptEngineReuse(boolean isScriptEngineReuse) {
+		if(!isScriptEngineReuse){
+			if(!isContextReuse){
+				throw new FoxBPMException("commandContext新建时，scriptEngine也必须新建");
+			}
+		}
+		this.isScriptEngineReuse = isScriptEngineReuse;
+	}
+	
+	public boolean isScriptEngineReuse() {
+		return isScriptEngineReuse;
 	}
 
 }
