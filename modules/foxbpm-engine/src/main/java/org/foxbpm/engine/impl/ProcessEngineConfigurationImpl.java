@@ -40,6 +40,7 @@ import org.foxbpm.engine.IdentityService;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineConfiguration;
+import org.foxbpm.engine.RunningTrackService;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.cache.Cache;
@@ -120,6 +121,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected RuntimeService runtimeService = new RuntimeServiceImpl();
 	protected TaskService taskService = new TaskServiceImpl();
 	protected IdentityService identityService = new IdentityServiceImpl();
+	protected RunningTrackService runningTrackService = new RunningTrackServiceImpl();
 	protected ISqlSessionFactory sqlSessionFactory;
 	protected Map<Class<?>, SessionFactory> sessionFactories;
 	protected DataSourceManage dataSourceManager;
@@ -485,6 +487,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initService(runtimeService);
 		initService(taskService);
 		initService(identityService);
+		this.initService(runningTrackService);
+
 	}
 
 	protected void initService(Object service) {
@@ -746,6 +750,9 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			}
 		}
 		return null;
+	}
+	public RunningTrackService getRunningTrackService() {
+		return runningTrackService;
 	}
 
 }
