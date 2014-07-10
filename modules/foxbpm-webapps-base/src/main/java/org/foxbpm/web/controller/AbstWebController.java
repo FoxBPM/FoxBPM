@@ -58,8 +58,8 @@ public abstract class AbstWebController {
 
 	@ExceptionHandler
 	public String exp(HttpServletRequest request, Exception ex) {
-		request.setAttribute("ex", ex);
-		return getPrefix() + WebViewName.ERROR_VIEWNAME;
+		request.setAttribute("errorMsg", ex);
+		return WebViewName.RESULT;
 	}
 
 	/**

@@ -36,5 +36,5 @@ public final class WebViewName {
 	public final static String SELECT_PROCESSDEF = "selectProcessDefList";
 	public final static String SELECT_USER = "selectUserList";
 	// 成功视图
-	public final static String COMPLETETASK_VIEWNAME = "result";
+	public final static String RESULT = "common/result";
 }
