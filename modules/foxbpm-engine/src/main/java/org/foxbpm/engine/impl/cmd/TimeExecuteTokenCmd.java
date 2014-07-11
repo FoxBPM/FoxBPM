@@ -23,10 +23,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.foxbpm.engine.impl.bpmn.behavior.BoundaryEventBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.CatchEventBehavior;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
+import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
 /**
@@ -53,9 +57,19 @@ public class TimeExecuteTokenCmd implements Command<Void>, Serializable {
 				.findProcessInstanceById(processInstanceID);
 		TokenEntity tokenEntity = (TokenEntity) this
 				.getExecutionContextFromInstance(processInstance);
-		// TODO 结束令牌
-		// 驱动令牌,继续往前执行
-		tokenEntity.signal();
+		KernelFlowNodeImpl flowNode = tokenEntity.getFlowNode();
+		KernelFlowNodeBehavior kernelFlowNodeBehavior = flowNode.getKernelFlowNodeBehavior();
+
+		if (kernelFlowNodeBehavior instanceof BoundaryEventBehavior) {
+			// BoundaryEventBehavior boundaryEventBehavior =
+			// (BoundaryEventBehavior) kernelFlowNodeBehavior;
+			// TODO 如果是终止事件 则结束进入节点的时候的散发的所有子令牌 然后将父令牌 移动到超时节点往下进行 结束令牌
+			// 驱动令牌,继续往前执行
+			tokenEntity.signal();
+		} else if (kernelFlowNodeBehavior instanceof CatchEventBehavior) {
+			// 驱动令牌,继续往前执行
+			tokenEntity.signal();
+		}
 		return null;
 	}
 	/**

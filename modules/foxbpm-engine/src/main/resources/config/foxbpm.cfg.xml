@@ -54,13 +54,27 @@
 			isEnabled="true" type="all" />
 
 	</taskCommandConfig>
-	
+
 	<sysMailConfig selected="方正国际邮箱">
-   	 <mailInfo mailAddress="jiang_nan@founder.com" mailName="方正国际邮箱" smtpHost="mail.founder.com.cn" smtpPort="25" userName="kenshin" password="kenshin"/>
- 	</sysMailConfig>
+		<mailInfo mailAddress="jiang_nan@founder.com" mailName="方正国际邮箱"
+			smtpHost="mail.founder.com.cn" smtpPort="25" userName="kenshin"
+			password="kenshin" />
+	</sysMailConfig>
 
 	<connectionManagementConfig selected="General">
 		<connectionManagement id="General" name="通用连接管理"
 			classImpl="com.founder.fix.fixflow.expand.database.GeneralConnectionManagement" />
 	</connectionManagementConfig>
+	<eventListenerConfig>
+		<eventListener eventType="process-start"
+			listenerClass="org.foxbpm.engine.impl.runningtrack.FoxbpmStartEventListener" />
+		<eventListener eventType="node-enter"
+			listenerClass="org.foxbpm.engine.impl.runningtrack.FoxbpmEventListener" />
+		<eventListener eventType="node-execute"
+			listenerClass="org.foxbpm.engine.impl.runningtrack.FoxbpmEventListener" />
+		<eventListener eventType="node-leave"
+			listenerClass="org.foxbpm.engine.impl.runningtrack.FoxbpmEventListener" />
+		<eventListener eventType="sequenceflow-take"
+			listenerClass="org.foxbpm.engine.impl.runningtrack.FoxbpmSequenceEventListener" />
+	</eventListenerConfig>
 </foxbpmconfig:FoxBPMConfig>
