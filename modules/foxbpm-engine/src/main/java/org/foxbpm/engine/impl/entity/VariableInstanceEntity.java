@@ -201,11 +201,13 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 
 	public Object getExpressionValue() {
 		Object object = ExpressionMgmt.getVariable(getKey());
+		value=ObjectToBytes(object);
 		return object;
 	}
 	
 	public byte[] getExpressionValueByte() {
 		Object object = ExpressionMgmt.getVariable(getKey());
+		value=ObjectToBytes(object);
 		return ObjectToBytes(object);
 	}
 
@@ -213,6 +215,12 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 		setValue(expressionValue);
 		ExpressionMgmt.setVariable(getKey(), expressionValue);
 	}
+	
+	public void setExpressionValueByte(byte[] value) {
+		setValue(value);
+		ExpressionMgmt.setVariable(getKey(), bytesToObject(value));
+	}
+
 
 	public void setRevision(int revision) {
 		// TODO Auto-generated method stub
