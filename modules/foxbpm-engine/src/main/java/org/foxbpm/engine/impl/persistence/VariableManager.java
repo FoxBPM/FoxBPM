@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.engine.datavariable.VariableInstance;
+import org.foxbpm.engine.impl.datavariable.VariableQueryImpl;
 import org.foxbpm.engine.impl.entity.QueryVariablesCommand;
 import org.foxbpm.engine.impl.entity.VariableInstanceEntity;
 import org.foxbpm.kernel.runtime.impl.KernelVariableInstanceImpl;
@@ -69,5 +71,14 @@ public class VariableManager extends AbstractManager {
 	
 	public void deleteVariableByProcessInstanceId(String processInstanceId){
 		getSqlSession().delete("deleteVariableByProcessInstanceId", processInstanceId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<VariableInstanceEntity> findVariablesByQueryCriteria(VariableQueryImpl variableQueryImpl) {
+		return getSqlSession().selectList("findVariablesByQueryCriteria", variableQueryImpl);
+	}
+
+	public long findVariablesCountByQueryCriteria(VariableQueryImpl variableQueryImpl) {
+		return (Long) getSqlSession().selectOne("findVariableCountByQueryCriteria", variableQueryImpl);
 	}
 }

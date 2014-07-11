@@ -15,7 +15,7 @@
  * 
  * @author yangguangftlp
  */
-package org.foxbpm.connector.flowconnector.SendMail;
+package org.foxbpm.connector.test.flowconnector.SendMail;
 
 import static org.junit.Assert.assertEquals;
 
@@ -50,7 +50,7 @@ public class SendMailTest extends AbstractFoxBpmTestCase {
 	 * <p>		1.执行完成后，相应查看数据库表中邮件状态</p>
 	 */
 	@Test
-	@Deployment(resources = { "org/foxbpm/connector/flowconnector/SendMail/SendMailTest_1.bpmn"})
+	@Deployment(resources = { "org/foxbpm/connector/test/flowconnector/SendMail/SendMailTest_1.bpmn"})
 	public void testSendMail(){
 		Authentication.setAuthenticatedUserId("admin");
 		// 启动流程

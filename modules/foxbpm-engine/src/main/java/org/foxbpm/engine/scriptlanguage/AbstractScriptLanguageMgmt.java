@@ -149,6 +149,18 @@ public abstract class AbstractScriptLanguageMgmt {
 		}
 		for (String expressionId : dataVariableList) {
 			if (dataVariableMgmtInstance.getDataVariableByExpressionId(expressionId) == null) {
+				/*
+				//先去数据库查询
+				VariableInstanceEntity variable = Context.getCommandContext().getVariableManager().findVariableByProcessInstanceIdAndKey("", "");
+				if(variable==null){
+					//不存在数据库中
+					
+				}else{
+					//存在数据库中
+					
+				}
+				*/
+				
 				for (DataVariableDefinition dataVariableBehavior : dataVariableBehaviors) {
 					if (StringUtils.equals(dataVariableBehavior.getId(), expressionId)) {
 						dataVariableMgmtInstance.createDataVariableInstance(dataVariableBehavior).executeExpression(executionContext);

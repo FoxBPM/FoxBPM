@@ -26,6 +26,7 @@ import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.connector.ConnectorInputParam;
 import org.foxbpm.engine.impl.connector.ConnectorOutputParam;
+import org.foxbpm.engine.impl.datavariable.DataVariableDefinition;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.util.BpmnModelUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
@@ -34,6 +35,7 @@ import org.foxbpm.model.bpmn.foxbpm.ConnectorInstance;
 import org.foxbpm.model.bpmn.foxbpm.ConnectorInstanceElements;
 import org.foxbpm.model.bpmn.foxbpm.ConnectorParameterInput;
 import org.foxbpm.model.bpmn.foxbpm.ConnectorParameterOutput;
+import org.foxbpm.model.bpmn.foxbpm.DataVariable;
 import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
 
 public class BaseElementParser {
@@ -53,8 +55,30 @@ public class BaseElementParser {
 		 
 		baseElementBehavior.setId(baseElement.getId());
 		baseElementBehavior.getConnectors().addAll(parserConnector(baseElement, "flowConnector"));
-
+		baseElementBehavior.getDataVariableDefinitions().addAll(parserDataVariable(baseElement));
+		
 		return baseElementBehavior;
+	}
+	
+	protected List<DataVariableDefinition> parserDataVariable(BaseElement baseElement){
+		
+		List<DataVariable> dataVariables = BpmnModelUtil.getExtensionElementList(DataVariable.class, baseElement, FoxBPMPackage.Literals.DOCUMENT_ROOT__DATA_VARIABLE);
+		List<DataVariableDefinition> dataVariableDefinitions=new ArrayList<DataVariableDefinition>();
+		if(dataVariables!=null&&dataVariables.size()>0){
+			for (DataVariable dataVariable : dataVariables) {
+				DataVariableDefinition dataVariableDefinition=new DataVariableDefinition();
+				dataVariableDefinition.setId(dataVariable.getId());
+				dataVariableDefinition.setBizType(dataVariable.getBizType());
+				dataVariableDefinition.setDataType(dataVariable.getDataType());
+				dataVariableDefinition.setDocumentation(dataVariable.getDocumentation()!=null&&dataVariable.getDocumentation().size()>0?dataVariable.getDocumentation().get(0).getValue():null);
+				dataVariableDefinition.setExpression(dataVariable.getExpression()!=null?dataVariable.getExpression().getValue():null);
+				dataVariableDefinition.setPubilc(true);
+				dataVariableDefinition.setPersistence(dataVariable.isIsPersistence());
+				dataVariableDefinitions.add(dataVariableDefinition);
+			}
+		}
+		
+		return dataVariableDefinitions;
 	}
 	
 	protected List<Connector> parserConnector(BaseElement baseElement,String connrctorType){

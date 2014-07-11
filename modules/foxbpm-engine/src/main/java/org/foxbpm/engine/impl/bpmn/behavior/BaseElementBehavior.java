@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.foxbpm.engine.impl.connector.Connector;
+import org.foxbpm.engine.impl.datavariable.DataVariableDefinition;
 
 public class BaseElementBehavior {
 	
@@ -44,6 +45,19 @@ public class BaseElementBehavior {
 	public void setConnectors(List<Connector> connectors) {
 		this.connectors = connectors;
 	}
+	
+	protected List<DataVariableDefinition> dataVariableDefinitions=new ArrayList<DataVariableDefinition>();
+
+	public List<DataVariableDefinition> getDataVariableDefinitions() {
+		return dataVariableDefinitions;
+	}
+
+	public void setDataVariableDefinitions(List<DataVariableDefinition> dataVariableDefinitions) {
+		this.dataVariableDefinitions = dataVariableDefinitions;
+	}
+	
+	
+	
 	
 
 	

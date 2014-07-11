@@ -15,7 +15,7 @@
  * 
  * @author yangguangftlp
  */
-package org.foxbpm.connector.flowconnector.DatasourceDatabaseQuery;
+package org.foxbpm.connector.test.flowconnector.JDBCDatabaseQuery;
 
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
@@ -23,13 +23,13 @@ import org.foxbpm.engine.test.Deployment;
 import org.junit.Test;
 
 /**
- * 测试数据源查询sql
+ * 测试jdbc查询sql
  * 
  * @author yangguangftlp
  * @date 2014年7月10日
  */
-public class DatasourceDatabaseQueryTest extends AbstractFoxBpmTestCase {
-	
+public class JDBCDatabaseQueryTest extends AbstractFoxBpmTestCase {
+
 	/**
 	 * 测试进入节点时或离开时查询sql
 	 * <p>1.使用场景：节点进入或离开时查询sql</p>
@@ -40,11 +40,11 @@ public class DatasourceDatabaseQueryTest extends AbstractFoxBpmTestCase {
 	 * <p>		1.执行完成后，相应查看结果</p>
 	 */
 	@Test
-	@Deployment(resources = { "org/foxbpm/connector/flowconnector/DatasourceDatabaseQuery/DatasourceDatabaseQueryTest_1.bpmn" })
-	public void testJDBCDatabaseQuery() {
+	@Deployment(resources = { "org/foxbpm/connector/test/flowconnector/JDBCDatabaseQuery/JDBCDatabaseQueryTest_1.bpmn"})
+	public void testJDBCDatabaseQuery(){
 		Authentication.setAuthenticatedUserId("admin");
 		// 启动流程
-		runtimeService.startProcessInstanceByKey("DatasourceDatabaseQueryTest_1");
-		// 涉及到变量结果
+		runtimeService.startProcessInstanceByKey("JDBCDatabaseQueryTest_1");
+		//涉及到变量结果
 	}
 }

@@ -20,6 +20,7 @@ package org.foxbpm.engine;
 
 import java.util.Map;
 
+import org.foxbpm.engine.datavariable.VariableQuery;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.runtime.ProcessInstanceQuery;
 import org.foxbpm.engine.runtime.TokenQuery;
@@ -28,50 +29,38 @@ public interface RuntimeService {
 
 	ProcessInstance startProcessInstanceByKey(String processDefinitionKey);
 
-	ProcessInstance startProcessInstanceByKey(String processDefinitionKey,
-			String bizKey);
+	ProcessInstance startProcessInstanceByKey(String processDefinitionKey, String bizKey);
 
-	ProcessInstance startProcessInstanceByKey(String processDefinitionKey,
-			Map<String, Object> transientVariables,
-			Map<String, Object> persistenceVariables);
+	ProcessInstance startProcessInstanceByKey(String processDefinitionKey, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
 
-	ProcessInstance startProcessInstanceByKey(String processDefinitionKey,
-			String bizKey, Map<String, Object> transientVariables,
-			Map<String, Object> persistenceVariables);
+	ProcessInstance startProcessInstanceByKey(String processDefinitionKey, String bizKey, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
 
 	ProcessInstance startProcessInstanceById(String processDefinitionId);
 
-	ProcessInstance startProcessInstanceById(String processDefinitionId,
-			String bizKey);
+	ProcessInstance startProcessInstanceById(String processDefinitionId, String bizKey);
 
-	ProcessInstance startProcessInstanceById(String processDefinitionId,
-			Map<String, Object> transientVariables,
-			Map<String, Object> persistenceVariables);
+	ProcessInstance startProcessInstanceById(String processDefinitionId, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
 
-	ProcessInstance startProcessInstanceById(String processDefinitionId,
-			String bizKey, Map<String, Object> transientVariables,
-			Map<String, Object> persistenceVariables);
+	ProcessInstance startProcessInstanceById(String processDefinitionId, String bizKey, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
 
 	ProcessInstance startProcessInstanceByMessage(String messageName);
 
-	ProcessInstance startProcessInstanceByMessage(String messageName,
-			String bizKey);
+	ProcessInstance startProcessInstanceByMessage(String messageName, String bizKey);
 
-	ProcessInstance startProcessInstanceByMessage(String messageName,
-			Map<String, Object> processVariables);
+	ProcessInstance startProcessInstanceByMessage(String messageName, Map<String, Object> processVariables);
 
-	ProcessInstance startProcessInstanceByMessage(String messageName,
-			String bizKey, Map<String, Object> processVariables);
+	ProcessInstance startProcessInstanceByMessage(String messageName, String bizKey, Map<String, Object> processVariables);
 
 	void signal(String tokenId);
 
-	void signal(String tokenId, Map<String, Object> transientVariables,
-			Map<String, Object> persistenceVariables);
+	void signal(String tokenId, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
 
 	TokenQuery createTokenQuery();
 
 	ProcessInstanceQuery createProcessInstanceQuery();
 
 	String createProcessInstanceSVGImageString(String processInstanceID);
+	
+	VariableQuery createVariableQuery();
 
 }
