@@ -27,8 +27,7 @@
        d="M 0,24 L 24,0 L 48,24 L 24,48 ZM0 24"
        id="bg_frame"
        fill="url(#background) white"
-       stroke="black"
-       style="stroke-width:1" />
+       stroke="black" stroke-width="1" />
  
     <path fill="none" fill-rule="evenodd" d="M24 8 L24 40" stroke="rgb(100,100,100)" stroke-width="3" />
 	<path fill="none" fill-rule="evenodd" d="M8 24 L40 24" stroke="rgb(100,100,100)" stroke-width="3" />

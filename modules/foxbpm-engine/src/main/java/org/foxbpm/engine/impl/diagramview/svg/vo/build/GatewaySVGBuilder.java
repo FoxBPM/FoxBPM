@@ -104,8 +104,7 @@ public class GatewaySVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setID(String id) {
-		// TODO Auto-generated method stub
-
+		this.pathVo.setId(id);
 	}
 
 	@Override
