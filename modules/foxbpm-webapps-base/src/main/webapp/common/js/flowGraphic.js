@@ -5,7 +5,9 @@ var TASK_END_COLOR = "#458f05";
 var TASK_END_WIDTH = "2";
 var TASK_ING_COLOR = "#ff7200";
 var TASK_ING_WIDTH = "2";
-var RUNNING_TRACK_COLOR = "#0000FF";
+var RUNNING_TRACK_COLOR = "#ff7200";
+var RUNNING_TRACK_WIDTH = 5;
+var RUNNING_MILLESIMAL_SPEED = 300;
 
 /**
  * 流程图处理类 taskListEnd 任务结束节点 taskListIng 任务进入节点 nodeInfoArr 节点信息 isIE 是否IE

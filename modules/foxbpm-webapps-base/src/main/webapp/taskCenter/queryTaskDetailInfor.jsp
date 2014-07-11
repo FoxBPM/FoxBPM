@@ -132,22 +132,24 @@
 					if (tempNodeID == currentRunningTrack.nodeId) {
 						rectAttribute.nodeValue = backUpRunningTrackColorDictionary[currentRunningTrack.nodeId];
 					}
+
 				}
 				if (rectAttribute.name == "stroke-width") {
 					if (tempNodeID != currentRunningTrack.nodeId) {
 						backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue;
-						rectAttribute.nodeValue = 4;
+						rectAttribute.nodeValue = RUNNING_TRACK_WIDTH;
 					}
 					if (tempNodeID == currentRunningTrack.nodeId) {
-						rectAttribute.nodeValue = 4;
 						rectAttribute.nodeValue = backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId];
 					}
+
 				}
 
 			}
 			tempNodeID = currentRunningTrack.nodeId;
 		} else {
 			clearInterval(runningTrackThreadId);
+			$("#runningTrack").removeAttr("disabled");
 		}
 		runningTrackIndex = runningTrackIndex + 1;
 	}
@@ -170,6 +172,24 @@
 			}
 		}
 	}
+	function clearRunningTracks() {
+		runningTrackIndex = 0;
+		if (runningTrackLength != 0 && runningTrackIndex < runningTrackLength) {
+			currentRunningTrack = runningTrackInfo[runningTrackIndex];
+			var rectAttributes = $("#" + currentRunningTrack.nodeId)[0].attributes;
+			for (var j = 0; j < rectAttributes.length; j++) {
+				var rectAttribute = rectAttributes[j];
+				if (rectAttribute.name == "stroke") {
+					rectAttribute.nodeValue = backUpRunningTrackColorDictionary[currentRunningTrack.nodeId];
+				}
+				if (rectAttribute.name == "stroke-width") {
+					rectAttribute.nodeValue = backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId];
+				}
+
+			}
+			runningTrackIndex = runningTrackIndex + 1;
+		}
+	}
 
 	$(function() {
 
@@ -182,13 +202,30 @@
 							flowGraphic.hideFlowImgStatus(($(this).attr(
 									"checked") == 'checked'));
 						});
-		$("#runningTrack").bind("click", function() {
-			//flowGraphic.runningTrack(($(this).attr("checked") == 'checked'));
-			if ($(this).attr("checked") == 'checked') {
-				runningTrackIndex = 0;
-			}
-			runningTrackThreadId = setInterval("moveRunningTrack()", 300);
-		});
+		$("#runningTrack")
+				.bind(
+						"click",
+						function() {
+							//flowGraphic.runningTrack(($(this).attr("checked") == 'checked'));
+							if ($(this).attr("checked") == 'checked') {
+								runningTrackIndex = 0;
+								runningTrackThreadId = setInterval(
+										"moveRunningTrack()",
+										RUNNING_MILLESIMAL_SPEED);
+								$(this).attr("disabled", "disabled");
+							}
+							//暂停
+							if ($(this).attr("checked") != 'checked') {
+
+							}
+							//如果轨迹是正在运行的则不让它运行
+							if ($(this).attr("checked") != 'checked'
+									&& runningTrackIndex != 0
+									&& runningTrackIndex != runningTrackLength - 1) {
+								//runningTrackIndex = 0;
+							}
+
+						});
 	});
 </script>
 </html>
