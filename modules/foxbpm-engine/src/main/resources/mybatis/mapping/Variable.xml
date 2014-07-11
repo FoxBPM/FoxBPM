@@ -6,6 +6,8 @@
  <resultMap id="VariableResultMap" type="org.foxbpm.engine.impl.entity.VariableInstanceEntity" >
     <id column="ID" property="id" jdbcType="VARCHAR" />
     <result column="PROCESSINSTANCE_ID" property="processInstanceId" jdbcType="VARCHAR" />
+    <result column="PROCESSDEFINITION_ID" property="processDefinitionId" jdbcType="VARCHAR" />
+    <result column="PROCESSDEFINITION_KEY" property="processDefinitionKey" jdbcType="VARCHAR" />
     <result column="KEY" property="key" jdbcType="VARCHAR" />
     <result column="CLASSNAME" property="classname" jdbcType="VARCHAR" />
     <result column="TASK_ID" property="taskId" jdbcType="VARCHAR" />
@@ -16,11 +18,11 @@
   </resultMap>
   
      <insert id="insertVariable" parameterType="org.foxbpm.engine.impl.entity.VariableInstanceEntity" >
-    insert into foxbpm_run_variable (ID, PROCESSINSTANCE_ID, KEY, 
+    insert into foxbpm_run_variable (ID, PROCESSINSTANCE_ID, PROCESSDEFINITION_KEY,PROCESSDEFINITION_ID,KEY, 
       CLASSNAME, TASK_ID, TOKEN_ID, 
       NODE_ID, TYPE, BIZ_DATA, 
       VALUE)
-    values (#{id,jdbcType=VARCHAR}, #{processInstanceId,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{processInstanceId,jdbcType=VARCHAR},#{processDefinitionKey,jdbcType=VARCHAR},#{processDefinitionId,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR}, 
       #{className,jdbcType=VARCHAR}, #{taskId,jdbcType=VARCHAR}, #{tokenId,jdbcType=VARCHAR}, 
       #{nodeId,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{bizData,jdbcType=VARCHAR}, 
       #{value,jdbcType=BLOB})
@@ -51,6 +53,8 @@
     update foxbpm_run_variable
     set 
       PROCESSINSTANCE_ID = #{processInstanceId,jdbcType=VARCHAR},
+      PROCESSDEFINITION_ID = #{processDefinitionId,jdbcType=VARCHAR},
+      PROCESSDEFINITION_KEY = #{processDefinitionKey,jdbcType=VARCHAR},
       KEY = #{key,jdbcType=VARCHAR},
       CLASSNAME = #{className,jdbcType=VARCHAR},
       TASK_ID = #{taskId,jdbcType=VARCHAR},
@@ -60,12 +64,38 @@
       BIZ_DATA = #{bizData,jdbcType=VARCHAR}
    where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="selectVariableByQueryCommand" resultMap="VariableResultMap" parameterType="org.foxbpm.engine.impl.entity.QueryVariablesCommand" >
-  select *
-   from foxbpm_run_variable RES
+  
+   <select id="findVariableCountByQueryCriteria" parameterType="org.foxbpm.engine.impl.datavariable.VariableQueryImpl" resultType="long">
+    select count(RES.ID)
+    <include refid="selectVariablessByQueryCriteriaSql"/>
+  </select>
+  
+  
+  <select id="findVariablesByQueryCriteria" resultMap="VariableResultMap" parameterType="org.foxbpm.engine.impl.datavariable.VariableQueryImpl">
+  	${limitBefore}
+    select RES.* ${limitBetween}
+    <include refid="selectVariablessByQueryCriteriaSql"/>
+    <if test="orderBy != null">
+       ${orderBy}
+    </if>
+    ${limitAfter}
+  </select>
+  
+  
+  <sql id="selectVariablessByQueryCriteriaSql" >
+   	FROM FOXBPM_RUN_VARIABLE RES
     <where>
+    	<if test="id != null">
+         AND RES.ID = #{id}
+      </if>
       <if test="processInstanceId != null">
-        RES.PROCESSINSTANCE_ID = #{processInstanceId}
+         AND RES.PROCESSINSTANCE_ID = #{processInstanceId}
+      </if>
+      <if test="processDefinitionId != null">
+        AND  RES.PROCESSDEFINITION_ID = #{processDefinitionId}
+      </if>
+      <if test="processDefinitionKey != null">
+        AND RES.PROCESSDEFINITION_KEY = #{processDefinitionKey}
       </if>
       <if test="tokenId != null">
         and RES.TOKEN_ID = #{tokenId}
@@ -84,7 +114,7 @@
          </foreach>
        </if>
     </where>
-  </select>
+  </sql>
   
   <delete id="deleteVariableByProcessInstanceId" parameterType="java.lang.String">
   	DELETE FROM FOXBPM_RUN_VARIABLE WHERE PROCESSINSTANCE_ID =#{processInstanceId,jdbcType=VARCHAR}
