@@ -294,7 +294,7 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 				ExpressionMgmt.setVariable(getKey(), returnMap.get(variableName));
 				
 				//更新
-				Context.getCommandContext().getVariableManager().insert(this);
+				Context.getCommandContext().getVariableManager().update(this);
 				
 			} else {
 				Object object = null;

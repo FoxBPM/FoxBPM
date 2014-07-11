@@ -47,7 +47,7 @@ public class DataVariableMgmtInstance implements Serializable {
 
 	public VariableInstanceEntity getDataVariableById(String id) {
 		for (VariableInstanceEntity dataVariableInstance : variableInstanceEntities) {
-			if (StringUtils.equals(dataVariableInstance.getId(), id)) {
+			if (StringUtils.equals(dataVariableInstance.getKey(), id)) {
 				return dataVariableInstance;
 			}
 		}
@@ -57,7 +57,7 @@ public class DataVariableMgmtInstance implements Serializable {
 
 	public VariableInstanceEntity getDataVariableByExpressionId(String expressionId) {
 		for (VariableInstanceEntity dataVariableInstance : variableInstanceEntities) {
-			if (StringUtils.equals(dataVariableInstance.getId(), expressionId)) {
+			if (StringUtils.equals(dataVariableInstance.getKey(), expressionId)) {
 				return dataVariableInstance;
 			}
 		}

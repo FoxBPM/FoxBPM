@@ -71,6 +71,7 @@ import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ProcessBehavior;
 import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
+import org.foxbpm.engine.impl.mgmt.DataVariableMgmtDefinition;
 import org.foxbpm.engine.impl.runningtrack.AbstractEventListener;
 import org.foxbpm.engine.impl.util.BpmnModelUtil;
 import org.foxbpm.engine.impl.util.ReflectUtil;
@@ -177,6 +178,12 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		processDefinition.setFormUri(processBehavior.getFormUri());
 		processDefinition.setFormUriView(processBehavior.getFormUriView());
 		processDefinition.setSubject(processBehavior.getSubject());
+		
+		DataVariableMgmtDefinition dataVariableMgmtDefinition=new DataVariableMgmtDefinition(processDefinition);
+		dataVariableMgmtDefinition.getDataVariableDefinitions().addAll(processBehavior.getDataVariableDefinitions());
+		processDefinition.setDataVariableMgmtDefinition(dataVariableMgmtDefinition);
+		
+		
 		processDI(processDefinition, process);
 
 		return processDefinition;
