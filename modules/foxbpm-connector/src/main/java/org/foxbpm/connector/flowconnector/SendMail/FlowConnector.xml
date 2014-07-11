@@ -2,7 +2,7 @@
 <connector:ConnectorDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:connector="http://www.foxbpm.org/connector" id="SendMail" name="发邮件" note="根据引擎的邮件配置发送邮件" categoryId="91a54e61-4bc9-4298-88c4-186f96cd998c" icon="SendMail.jpg">
   <input id="to" type="java.lang.String" mandatory="Mandatory" defaultValue="" isExecute="true"/>
   <input id="title" type="java.lang.String" mandatory="Mandatory" defaultValue="" isExecute="true"/>
-  <input id="cc" type="java.lang.String" mandatory="Mandatory" defaultValue="" isExecute="true"/>
+  <input id="cc" type="java.lang.String" mandatory="Optional" defaultValue="" isExecute="true"/>
   <input id="content" type="java.lang.String" mandatory="Optional" defaultValue="" isExecute="true"/>
   <page id="SendInfo" name="发件信息配置" note="在这个页面上配置发送邮件所需要的参数">
     <widget xsi:type="connector:Text" id="Widget_0" name="设置收件人地址(多人请以&quot;,&quot;分隔)" inputId="to">
