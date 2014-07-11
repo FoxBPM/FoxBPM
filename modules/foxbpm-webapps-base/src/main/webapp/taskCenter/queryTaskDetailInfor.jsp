@@ -208,11 +208,17 @@
 						function() {
 							//flowGraphic.runningTrack(($(this).attr("checked") == 'checked'));
 							if ($(this).attr("checked") == 'checked') {
-								runningTrackIndex = 0;
-								runningTrackThreadId = setInterval(
-										"moveRunningTrack()",
-										RUNNING_MILLESIMAL_SPEED);
-								$(this).attr("disabled", "disabled");
+								if(runningTrackInfo && runningTrackInfo.length!=0){
+									runningTrackIndex = 0;
+									runningTrackThreadId = setInterval(
+											"moveRunningTrack()",
+											RUNNING_MILLESIMAL_SPEED);
+									$(this).attr("disabled", "disabled");
+								} else{
+									alert("系统还未配置流程运行轨迹监听器，请在foxbpm配置文件中配置!");
+									$(this).attr("disabled", "disabled");
+								}
+								
 							}
 							//暂停
 							if ($(this).attr("checked") != 'checked') {
