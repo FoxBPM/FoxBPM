@@ -74,7 +74,7 @@ public class VariableManager extends AbstractManager {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<VariableInstance> findVariablesByQueryCriteria(VariableQueryImpl variableQueryImpl) {
+	public List<VariableInstanceEntity> findVariablesByQueryCriteria(VariableQueryImpl variableQueryImpl) {
 		return getSqlSession().selectList("findVariablesByQueryCriteria", variableQueryImpl);
 	}
 

@@ -142,9 +142,10 @@ public class VariableQueryImpl extends AbstractQuery<VariableQuery, VariableInst
 		return commandContext.getVariableManager().findVariablesCountByQueryCriteria(this);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public List<VariableInstance> executeList(CommandContext commandContext) {
-		return (List<VariableInstance>)commandContext.getVariableManager().findVariablesByQueryCriteria(this);
+		return (List)commandContext.getVariableManager().findVariablesByQueryCriteria(this);
 	}
 
 }

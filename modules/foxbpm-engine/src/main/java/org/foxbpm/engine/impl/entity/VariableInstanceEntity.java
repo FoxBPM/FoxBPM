@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -246,8 +247,8 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 	}
 
 	public Map<String, Object> getPersistentState() {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String,Object> map = new HashMap<String,Object>();
+		return map;
 	}
 
 	public boolean isModified() {
