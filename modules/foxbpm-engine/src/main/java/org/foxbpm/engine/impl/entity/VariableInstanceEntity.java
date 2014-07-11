@@ -8,16 +8,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.datavariable.VariableInstance;
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
-import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.datavariable.DataVariableDefinition;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtInstance;
@@ -28,8 +25,8 @@ import org.foxbpm.kernel.runtime.impl.KernelVariableInstanceImpl;
 
 public class VariableInstanceEntity extends KernelVariableInstanceImpl implements VariableInstance, PersistentObject, HasRevision,
 		Serializable {
-	
-	public final static String QUERY_DATA_KEY="queryBizVariable";
+
+	public final static String QUERY_DATA_KEY = "queryBizVariable";
 
 	/**
 	 * 
@@ -41,11 +38,9 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 	protected String id;
 
 	protected String processInstanceId;
-	
 
 	protected String processDefinitionId;
 
-	
 	protected String processDefinitionKey;
 
 	protected String key;
@@ -57,7 +52,7 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 	protected String tokenId;
 
 	protected String nodeId;
-	
+
 	protected String taskId;
 
 	protected String type;
@@ -67,34 +62,29 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 	protected boolean isPersistence;
 
 	protected Date archiveTime;
-	
+
 	protected DataVariableDefinition dataVariableDefinition;
 
 	protected DataVariableMgmtInstance dataVariableMgmtInstance;
-	
+
 	protected AbstractScriptLanguageMgmt scriptLanguageMgmt;
-	
-	public VariableInstanceEntity () {
-	
+
+	public VariableInstanceEntity() {
+
 	}
 
+	public VariableInstanceEntity(DataVariableDefinition dataVariableDefinition, DataVariableMgmtInstance dataVariableMgmtInstance) {
 
-	public VariableInstanceEntity (DataVariableDefinition dataVariableDefinition, DataVariableMgmtInstance dataVariableMgmtInstance) {
-	
-		
-		
-		this.id=GuidUtil.CreateGuid();
+		this.id = GuidUtil.CreateGuid();
 		this.dataVariableDefinition = dataVariableDefinition;
-		this.isPersistence=dataVariableDefinition.isPersistence();
-		this.key=dataVariableDefinition.getId();
+		this.isPersistence = dataVariableDefinition.isPersistence();
+		this.key = dataVariableDefinition.getId();
 		this.dataVariableMgmtInstance = dataVariableMgmtInstance;
-		
-		this.processInstanceId=dataVariableMgmtInstance.getProcessInstance().getId();
-		this.type=dataVariableDefinition.getBizType();
+
+		this.processInstanceId = dataVariableMgmtInstance.getProcessInstance().getId();
+		this.type = dataVariableDefinition.getBizType();
 
 	}
-	
-
 
 	// get set //////////////////////////////////////////////////////////
 
@@ -126,7 +116,7 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 	public void setValue(byte[] value) {
 		this.value = value;
 	}
-	
+
 	public void setValue(Object value) {
 		this.value = ObjectToBytes(value);
 	}
@@ -202,26 +192,25 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 
 	public Object getExpressionValue() {
 		Object object = ExpressionMgmt.getVariable(getKey());
-		value=ObjectToBytes(object);
+		value = ObjectToBytes(object);
 		return object;
 	}
-	
+
 	public byte[] getExpressionValueByte() {
 		Object object = ExpressionMgmt.getVariable(getKey());
-		value=ObjectToBytes(object);
+		value = ObjectToBytes(object);
 		return ObjectToBytes(object);
 	}
 
 	public void setExpressionValue(Object expressionValue) {
 		setValue(expressionValue);
-		ExpressionMgmt.setVariable(getKey(), expressionValue);
-	}
-	
-	public void setExpressionValueByte(byte[] value) {
-		setValue(value);
-		ExpressionMgmt.setVariable(getKey(), bytesToObject(value));
+		//ExpressionMgmt.setVariable(getKey(), expressionValue);
 	}
 
+	public void setExpressionValueByte(byte[] value) {
+		setValue(value);
+		//ExpressionMgmt.setVariable(getKey(), bytesToObject(value));
+	}
 
 	public void setRevision(int revision) {
 		// TODO Auto-generated method stub
@@ -247,7 +236,7 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 	}
 
 	public Map<String, Object> getPersistentState() {
-		Map<String,Object> map = new HashMap<String,Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		return map;
 	}
 
@@ -255,74 +244,34 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	public String getProcessDefinitionId() {
 		return processDefinitionId;
 	}
-
 
 	public void setProcessDefinitionId(String processDefinitionId) {
 		this.processDefinitionId = processDefinitionId;
 	}
 
-
 	public String getProcessDefinitionKey() {
 		return processDefinitionKey;
 	}
-
 
 	public void setProcessDefinitionKey(String processDefinitionKey) {
 		this.processDefinitionKey = processDefinitionKey;
 	}
 
 
-	public void executeExpression(FlowNodeExecutionContext executionContext) {
 
-		// 对于需要持久化的数据变量的处理
-		if (this.isPersistence()) {
-
-			String processInstanceId = this.dataVariableMgmtInstance.getProcessInstance().getId();
-			List<String> variableNames = new ArrayList<String>();
-			String variableName = this.dataVariableDefinition.getId();
-			variableNames.add(variableName);
-
-			QueryVariablesCommand queryVariablesCommand = new QueryVariablesCommand();
-			queryVariablesCommand.setKeys(variableNames);
-			queryVariablesCommand.setProcessInstanceId(processInstanceId);
-
-			Map<String, Object> returnMap = Context.getCommandContext().getVariableManager().queryVariable(queryVariablesCommand);
-			if (returnMap != null && returnMap.containsKey(variableName)) {
-				ExpressionMgmt.setVariable(getKey(), returnMap.get(variableName));
-				
-				//更新
-				Context.getCommandContext().getVariableManager().update(this);
-				
-			} else {
-				Object object = null;
-				if (dataVariableDefinition.getExpression() != null) {
-					object = ExpressionMgmt.execute(dataVariableDefinition.getExpression(), executionContext);
-				}
-
-				ExpressionMgmt.setVariable(getKey(), object);
-				
-				//插入
-				Context.getCommandContext().getVariableManager().insert(this);
-				
-			}
-	
-			scriptLanguageMgmt=Context.getAbstractScriptLanguageMgmt();
-
-		} else {
-			// 不需要持久化的数据变量的处理
-			Object object = null;
-			if (dataVariableDefinition.getExpression() != null) {
-				object = ExpressionMgmt.execute(dataVariableDefinition.getExpression(), executionContext);
-			}
-
-			ExpressionMgmt.setVariable(getKey(), object);
-
+	public Object getDefaultExpressionValue(FlowNodeExecutionContext executionContext) {
+		// 不需要持久化的数据变量的处理
+		
+		
+		Object object = null;
+		if (dataVariableDefinition!=null&&dataVariableDefinition.getExpression() != null) {
+			object = dataVariableDefinition.getExpression().getValue(executionContext);
 		}
-
+		return object;
 	}
 
 	/**
@@ -367,10 +316,10 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 
 	public static byte[] ObjectToBytes(Object obj) {
 
-		if(obj==null){
+		if (obj == null) {
 			return null;
 		}
-		
+
 		ObjectOutput out = null;
 		try {
 			ByteArrayOutputStream byteout = new ByteArrayOutputStream();
