@@ -87,11 +87,13 @@ public abstract class AbstractFoxBpmTestCase extends AbstractTransactionalJUnit4
 			if (resources.length == 0) {
 				return;
 			}
-			DeploymentBuilder deploymentBuilder = processEngine.getModelService().createDeployment().name("测试名称");
+			DeploymentBuilder deploymentBuilder = null;//processEngine.getModelService().createDeployment().name("测试名称");
+			//由于当前不支持一次发布多个流程定义
 			for (String resource : resources) {
+				deploymentBuilder = processEngine.getModelService().createDeployment().name("测试名称");
 				deploymentBuilder.addClasspathResource(resource);
+				deploymentBuilder.deploy();
 			}
-			deploymentBuilder.deploy();
 		}
 	}
 	
