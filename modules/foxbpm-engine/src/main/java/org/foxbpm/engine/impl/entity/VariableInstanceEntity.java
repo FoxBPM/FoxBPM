@@ -117,13 +117,17 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 		return value;
 	}
 
-	public Object getVariableObject() {
+	public Object getValueObject() {
 
 		return bytesToObject(value);
 	}
 
-	public void setVariableValue(byte[] value) {
+	public void setValue(byte[] value) {
 		this.value = value;
+	}
+	
+	public void setValue(Object value) {
+		this.value = ObjectToBytes(value);
 	}
 
 	public String getClassName() {
@@ -199,8 +203,14 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 		Object object = ExpressionMgmt.getVariable(getKey());
 		return object;
 	}
+	
+	public byte[] getExpressionValueByte() {
+		Object object = ExpressionMgmt.getVariable(getKey());
+		return ObjectToBytes(object);
+	}
 
 	public void setExpressionValue(Object expressionValue) {
+		setValue(expressionValue);
 		ExpressionMgmt.setVariable(getKey(), expressionValue);
 	}
 
@@ -276,7 +286,7 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 				ExpressionMgmt.setVariable(getKey(), returnMap.get(variableName));
 				
 				//更新
-				//Context.getCommandContext().getVariableManager().insert(this);
+				Context.getCommandContext().getVariableManager().insert(this);
 				
 			} else {
 				Object object = null;
@@ -287,7 +297,7 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 				ExpressionMgmt.setVariable(getKey(), object);
 				
 				//插入
-				//Context.getCommandContext().getVariableManager().insert(this);
+				Context.getCommandContext().getVariableManager().insert(this);
 				
 			}
 	
@@ -348,6 +358,10 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 
 	public static byte[] ObjectToBytes(Object obj) {
 
+		if(obj==null){
+			return null;
+		}
+		
 		ObjectOutput out = null;
 		try {
 			ByteArrayOutputStream byteout = new ByteArrayOutputStream();
