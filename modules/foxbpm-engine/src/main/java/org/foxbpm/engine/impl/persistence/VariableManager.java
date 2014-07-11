@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.foxbpm.engine.datavariable.VariableInstance;
 import org.foxbpm.engine.impl.datavariable.VariableQueryImpl;
 import org.foxbpm.engine.impl.entity.QueryVariablesCommand;
 import org.foxbpm.engine.impl.entity.VariableInstanceEntity;

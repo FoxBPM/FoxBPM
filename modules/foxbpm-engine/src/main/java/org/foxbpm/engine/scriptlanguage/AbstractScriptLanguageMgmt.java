@@ -23,11 +23,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
+import org.foxbpm.engine.datavariable.VariableQuery;
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.datavariable.DataVariableDefinition;
+import org.foxbpm.engine.impl.datavariable.VariableQueryImpl;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.VariableInstanceEntity;
+import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtInstance;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
@@ -142,35 +145,51 @@ public abstract class AbstractScriptLanguageMgmt {
 		ProcessInstanceEntity processInstance = (ProcessInstanceEntity) executionContext.getProcessInstance();
 		DataVariableMgmtInstance dataVariableMgmtInstance = processInstance.getDataVariableMgmtInstance();
 		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) processInstance.getProcessDefinition();
-		List<DataVariableDefinition> dataVariableBehaviors = null;
+		//List<DataVariableDefinition> dataVariableBehaviors = null;
 		List<String> dataVariableList = getDataVariableList(scriptText);
-		if(dataVariableList != null && dataVariableList.size() > 0){
-			dataVariableBehaviors = processDefinition.getDataVariableMgmtDefinition().getDataVariableBehaviorsByProcess();
-		}
+		//if(dataVariableList != null && dataVariableList.size() > 0){
+		//	dataVariableBehaviors = processDefinition.getDataVariableMgmtDefinition().getDataVariableBehaviorsByProcess();
+		//}
 		for (String expressionId : dataVariableList) {
 			if (dataVariableMgmtInstance.getDataVariableByExpressionId(expressionId) == null) {
-				/*
-				//先去数据库查询
-				VariableInstanceEntity variable = Context.getCommandContext().getVariableManager().findVariableByProcessInstanceIdAndKey("", "");
-				if(variable==null){
-					//不存在数据库中
-					
-				}else{
-					//存在数据库中
-					
-				}
-				*/
 				
-				for (DataVariableDefinition dataVariableBehavior : dataVariableBehaviors) {
-					if (StringUtils.equals(dataVariableBehavior.getId(), expressionId)) {
-						dataVariableMgmtInstance.createDataVariableInstance(dataVariableBehavior).executeExpression(executionContext);
-					} else {
-						if (StringUtils.equals(dataVariableBehavior.getBizType(), VariableInstanceEntity.QUERY_DATA_KEY)) {
-							dataVariableMgmtInstance.createDataVariableInstance(dataVariableBehavior).executeExpression(executionContext);
-						}
-					}
 
+				
+				
+				
+				DataVariableDefinition dataVariableDefinition=processDefinition.getDataVariableMgmtDefinition().getProcessDataVariableDefinition(expressionId);
+				
+				if(dataVariableDefinition==null){
+					continue;
 				}
+				
+				if(dataVariableDefinition.isPersistence()){
+					VariableQuery variableQuery = new VariableQueryImpl(Context.getProcessEngineConfiguration().getCommandExecutor());
+					variableQuery.addVariableKey(expressionId);
+					variableQuery.processInstanceId(processInstance.getId());
+					@SuppressWarnings({ "unchecked", "rawtypes" })
+					List<VariableInstanceEntity> variableInstances = (List)variableQuery.list();
+					if(variableInstances!=null&&variableInstances.size()==1){
+						ExpressionMgmt.setVariable(expressionId, variableInstances.get(0).getValueObject());
+
+						// 更新
+						Context.getCommandContext().getVariableManager().update(variableInstances.get(0));
+					}else{
+						Object defaultValue=dataVariableMgmtInstance.createDataVariableInstance(dataVariableDefinition).getDefaultExpressionValue(executionContext);
+						ExpressionMgmt.setVariable(expressionId, defaultValue);
+						// 插入
+						Context.getCommandContext().getVariableManager().insert(variableInstances.get(0));
+
+					}
+					
+				}
+				else{
+					Object defaultValue=dataVariableMgmtInstance.createDataVariableInstance(dataVariableDefinition).getDefaultExpressionValue(executionContext);
+					ExpressionMgmt.setVariable(expressionId, defaultValue);
+				}
+				
+				
+				
 
 			}
 

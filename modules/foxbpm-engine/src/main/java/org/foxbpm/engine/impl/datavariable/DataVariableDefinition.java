@@ -17,6 +17,9 @@
  */
 package org.foxbpm.engine.impl.datavariable;
 
+import org.foxbpm.engine.expression.Expression;
+import org.foxbpm.engine.impl.expression.ExpressionImpl;
+
 
 public class DataVariableDefinition {
 
@@ -28,7 +31,7 @@ public class DataVariableDefinition {
 
 	protected boolean isPersistence;
 
-	protected String expression;
+	protected Expression expression;
 
 	protected String documentation;
 	
@@ -77,12 +80,12 @@ public class DataVariableDefinition {
 		this.isPersistence = isPersistence;
 	}
 
-	public String getExpression() {
+	public Expression getExpression() {
 		return expression;
 	}
 
 	public void setExpression(String expression) {
-		this.expression = expression;
+		this.expression = new ExpressionImpl(expression);
 	}
 
 	public String getDocumentation() {

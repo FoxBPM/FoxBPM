@@ -26,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.impl.datavariable.DataVariableDefinition;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.scriptlanguage.AbstractScriptLanguageMgmt;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
@@ -54,8 +55,10 @@ public class GroovyScriptLanguageMgmtImpl extends AbstractScriptLanguageMgmt {
 				for (DataVariableDefinition dataVariableBehavior : dataVariableBehaviors) {
 					if (StringUtils.equals(dataVariableBehavior.getId(), expressionId)) {
 						Object object = null;
-						String expression = dataVariableBehavior.getExpression();
-						if (StringUtils.isNotBlank(expression)) {
+						
+						
+						String expression = dataVariableBehavior.getExpression().getExpressionText();
+						if (StringUtil.isEmpty(expression)) {
 							object = ExpressionMgmt.execute(expression, processDefinition);
 						}
 						ExpressionMgmt.setVariable(expressionId, object);
@@ -67,7 +70,6 @@ public class GroovyScriptLanguageMgmtImpl extends AbstractScriptLanguageMgmt {
 			}
 
 		}
-
 		String scriptTextTemp = getExpressionAll(scriptText);
 		return groovyShell.evaluate(scriptTextTemp);
 
