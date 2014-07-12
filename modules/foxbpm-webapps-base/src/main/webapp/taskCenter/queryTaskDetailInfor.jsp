@@ -87,7 +87,7 @@
 <script type="text/javascript">
 	var runningTrackInfo = $.parseJSON('${result.runningTrackInfo}');//运行轨迹
 	var runningTrackIndex = 0;
-
+	var tempNodeID;
 	var runningTrackLength;
 	if (runningTrackInfo) {
 		runningTrackLength = runningTrackInfo.length;
@@ -115,85 +115,12 @@
 		'taskListEnd' : taskListEnd,
 		'taskListIng' : taskListIng,
 		'nodeInfoArr' : nodeInfoArr,
+		'runningTrackInfo' : runningTrackInfo,
 		'isIE' : isIE,
 		'parentId' : 'flowImg',
 		'action' : 'getFlowGraph.action',
 		'processDefinitionId' : '${result.processDefinitionId}'
 	});
-	var tempNodeID;
-	function moveRunningTrack() {
-		if (runningTrackLength != 0 && runningTrackIndex < runningTrackLength) {
-			currentRunningTrack = runningTrackInfo[runningTrackIndex];
-			removePreviousRunningTrack(currentRunningTrack);
-			var rectAttributes = $("#" + currentRunningTrack.nodeId)[0].attributes;
-			for (var j = 0; j < rectAttributes.length; j++) {
-				var rectAttribute = rectAttributes[j];
-				if (rectAttribute.name == "stroke") {
-					if (tempNodeID != currentRunningTrack.nodeId) {
-						backUpRunningTrackColorDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue;
-						rectAttribute.nodeValue = RUNNING_TRACK_COLOR;
-					}
-					if (tempNodeID == currentRunningTrack.nodeId) {
-						rectAttribute.nodeValue = backUpRunningTrackColorDictionary[currentRunningTrack.nodeId];
-					}
-
-				}
-				if (rectAttribute.name == "stroke-width") {
-					if (tempNodeID != currentRunningTrack.nodeId) {
-						backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue;
-						rectAttribute.nodeValue = RUNNING_TRACK_WIDTH;
-					}
-					if (tempNodeID == currentRunningTrack.nodeId) {
-						rectAttribute.nodeValue = backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId];
-					}
-
-				}
-
-			}
-			tempNodeID = currentRunningTrack.nodeId;
-		} else {
-			clearInterval(runningTrackThreadId);
-			$("#runningTrack").removeAttr("disabled");
-		}
-		runningTrackIndex = runningTrackIndex + 1;
-	}
-	//如果前一个节点只存在单个执行事件，用这个方法清空前一个节点的轨迹
-	function removePreviousRunningTrack(currentTrack) {
-		if (runningTrackIndex != 0
-				&& currentTrack.nodeId != runningTrackInfo[runningTrackIndex - 1].nodeId) {
-			var rectAttributes = $("#"
-					+ runningTrackInfo[runningTrackIndex - 1].nodeId)[0].attributes;
-			for (var j = 0; j < rectAttributes.length; j++) {
-				var rectAttribute = rectAttributes[j];
-				if (rectAttribute.name == "stroke") {
-					rectAttribute.nodeValue = backUpRunningTrackColorDictionary[runningTrackInfo[runningTrackIndex - 1].nodeId];
-
-				}
-				if (rectAttribute.name == "stroke-width") {
-					rectAttribute.nodeValue = backUpRunningTrackWidthDictionary[runningTrackInfo[runningTrackIndex - 1].nodeId];
-				}
-
-			}
-		}
-	}
-	function clearRunningTracks() {
-		runningTrackIndex = 0;
-		if (runningTrackLength != 0 && runningTrackIndex < runningTrackLength) {
-			currentRunningTrack = runningTrackInfo[runningTrackIndex];
-			var rectAttributes = $("#" + currentRunningTrack.nodeId)[0].attributes;
-			for (var j = 0; j < rectAttributes.length; j++) {
-				var rectAttribute = rectAttributes[j];
-				if (rectAttribute.name == "stroke") {
-					rectAttribute.nodeValue = backUpRunningTrackColorDictionary[currentRunningTrack.nodeId];
-				}
-				if (rectAttribute.name == "stroke-width") {
-					rectAttribute.nodeValue = backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId];
-				}
-
-			}
-			runningTrackIndex = runningTrackIndex + 1;
-		}
-	}
 
 	$(function() {
 		//判断浏览器类型为IE
@@ -213,7 +140,7 @@
 						if (runningTrackInfo && runningTrackInfo.length != 0) {
 							runningTrackIndex = 0;
 							runningTrackThreadId = setInterval(
-									"moveRunningTrack()",
+									"flowGraphic.moveRunningTrack()",
 									RUNNING_MILLESIMAL_SPEED);
 							$(this).attr("disabled", "disabled");
 						} else {
