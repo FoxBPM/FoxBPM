@@ -87,7 +87,11 @@
 <script type="text/javascript">
 	var runningTrackInfo = $.parseJSON('${result.runningTrackInfo}');//运行轨迹
 	var runningTrackIndex = 0;
-	var runningTrackLength = runningTrackInfo.length;
+
+	var runningTrackLength;
+	if (runningTrackInfo) {
+		runningTrackLength = runningTrackInfo.length;
+	}
 	var currentRunningTrack;
 	var runningTrackThreadId;
 	//判断是否为IE浏览器标示
@@ -192,7 +196,6 @@
 	}
 
 	$(function() {
-
 		//判断浏览器类型为IE
 		flowGraphic.loadFlowImg();
 		$("#yczt")
@@ -202,36 +205,35 @@
 							flowGraphic.hideFlowImgStatus(($(this).attr(
 									"checked") == 'checked'));
 						});
-		$("#runningTrack")
-				.bind(
-						"click",
-						function() {
-							//flowGraphic.runningTrack(($(this).attr("checked") == 'checked'));
-							if ($(this).attr("checked") == 'checked') {
-								if(runningTrackInfo && runningTrackInfo.length!=0){
-									runningTrackIndex = 0;
-									runningTrackThreadId = setInterval(
-											"moveRunningTrack()",
-											RUNNING_MILLESIMAL_SPEED);
-									$(this).attr("disabled", "disabled");
-								} else{
-									alert("系统还未配置流程运行轨迹监听器，请在foxbpm配置文件中配置!");
-									$(this).attr("disabled", "disabled");
-								}
-								
-							}
-							//暂停
-							if ($(this).attr("checked") != 'checked') {
+		$("#runningTrack").bind(
+				"click",
+				function() {
+					//flowGraphic.runningTrack(($(this).attr("checked") == 'checked'));
+					if ($(this).attr("checked") == 'checked') {
+						if (runningTrackInfo && runningTrackInfo.length != 0) {
+							runningTrackIndex = 0;
+							runningTrackThreadId = setInterval(
+									"moveRunningTrack()",
+									RUNNING_MILLESIMAL_SPEED);
+							$(this).attr("disabled", "disabled");
+						} else {
+							alert("无流程运行轨迹 数据");
+							$(this).attr("disabled", "disabled");
+						}
 
-							}
-							//如果轨迹是正在运行的则不让它运行
-							if ($(this).attr("checked") != 'checked'
-									&& runningTrackIndex != 0
-									&& runningTrackIndex != runningTrackLength - 1) {
-								//runningTrackIndex = 0;
-							}
+					}
+					//暂停
+					if ($(this).attr("checked") != 'checked') {
 
-						});
+					}
+					//如果轨迹是正在运行的则不让它运行
+					if ($(this).attr("checked") != 'checked'
+							&& runningTrackIndex != 0
+							&& runningTrackIndex != runningTrackLength - 1) {
+						//runningTrackIndex = 0;
+					}
+
+				});
 	});
 </script>
 </html>
