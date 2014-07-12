@@ -248,36 +248,7 @@ function FlowGraphic(param) {
 			}
 		}
 	}
-
-	function markRunningTrack() {
-		var trackInfo = runningTrackInfo;
-		if (trackInfo == null || trackInfo.length == 0) {
-			return;
-		} else {
-			var element;
-			var tempNodeId = "";
-			for (var i = 0; i < trackInfo.length; i++) {
-				element = trackInfo[i];
-				if (tempNodeId != element.nodeId) {
-					wait(1000);
-				}
-				var rectAttributes = $("#" + element.nodeId)[0].attributes;
-				for (var j = 0; j < rectAttributes.length; j++) {
-					var rectAttribute = rectAttributes[j];
-					if (rectAttribute.name == "stroke") {
-						backUpColorDictionary[element.nodeId] = rectAttribute.nodeValue;
-						rectAttribute.nodeValue = RUNNING_TRACK_COLOR;
-					}
-					if (rectAttribute.name == "stroke-width") {
-						backUpWidthDictionary[element.nodeId] = rectAttribute.nodeValue;
-						rectAttribute.nodeValue = 2;
-					}
-
-				}
-				tempNodeId = element.nodeId;
-			}
-		}
-	}
+ 
 
 	/**
 	 * 初始化

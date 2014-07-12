@@ -65,6 +65,41 @@
 				</div>
 				<!---表格 START--->
 			</div>
+			<div id="runningTrackDIV" style="display: none;" class="proc_bg">
+				<h3>
+					<span id="clz">流程运行信息</span>
+				</h3>
+				<div id="taskNotDoneTb">
+					<table width="100%" class="table-list">
+
+						<c:if test="${result.runningTrackInfoList!=null}">
+							<thead>
+								<th style="width: 160px">轨迹编号</th>
+								<th style="width: 160px">轨迹名称</th>
+								<th style="width: 160px">执行时间</th>
+								<th style="width: 160px">事件名称</th>
+								<th style="width: 160px">处理者</th>
+								<th>流程实例编号</th>
+								<th style="width: 160px">归档时间</th>
+							</thead>
+							<c:forEach items="${result.runningTrackInfoList}" var="row"
+								varStatus="status">
+								<tr <c:if test="${status.index%2!=0}">class="gray"</c:if>>
+									<td>${row.nodeId}</td>
+									<td>${row.nodeName}</td>
+									<td><fmt:formatDate value="${row.executionTime}"
+											type="both" /></td>
+									<td>${row.eventName}</td>
+									<td>${row.operator}</td>
+									<td>${row.processInstanceId}</td>
+									<td><fmt:formatDate value="${row.archiveTime}" type="both" /></td>
+								</tr>
+							</c:forEach>
+						</c:if>
+					</table>
+				</div>
+				<!---表格 START--->
+			</div>
 			<div class="proc_bg">
 				<h3>
 					<span id="lct">流程图</span>
@@ -143,15 +178,15 @@
 									"flowGraphic.moveRunningTrack()",
 									RUNNING_MILLESIMAL_SPEED);
 							$(this).attr("disabled", "disabled");
+							$("#runningTrackDIV").show();
 						} else {
 							alert("无流程运行轨迹 数据");
 							$(this).attr("disabled", "disabled");
 						}
-
 					}
 					//暂停
 					if ($(this).attr("checked") != 'checked') {
-
+						$("#runningTrackDIV").hide();
 					}
 					//如果轨迹是正在运行的则不让它运行
 					if ($(this).attr("checked") != 'checked'
