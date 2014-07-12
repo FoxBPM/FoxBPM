@@ -24,6 +24,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.foxbpm.engine.datavariable.VariableQuery;
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.datavariable.DataVariableDefinition;
 import org.foxbpm.engine.impl.datavariable.VariableQueryImpl;
@@ -175,10 +176,23 @@ public abstract class AbstractScriptLanguageMgmt {
 						// 更新
 						Context.getCommandContext().getVariableManager().update(variableInstances.get(0));
 					}else{
-						Object defaultValue=dataVariableMgmtInstance.createDataVariableInstance(dataVariableDefinition).getDefaultExpressionValue(executionContext);
-						ExpressionMgmt.setVariable(expressionId, defaultValue);
-						// 插入
-						Context.getCommandContext().getVariableManager().insert(variableInstances.get(0));
+						if(variableInstances!=null&&variableInstances.size()>1){
+							
+							throw new FoxBPMException("一个流程实例中含有两个相同的key,key("+expressionId+") instanceId("+processInstance.getId()+")");
+							
+						}else{
+							VariableInstanceEntity variableInstanceEntity=dataVariableMgmtInstance.createDataVariableInstance(dataVariableDefinition);
+							Object defaultValue=variableInstanceEntity.getDefaultExpressionValue(executionContext);
+							ExpressionMgmt.setVariable(expressionId, defaultValue);
+							Object aaaObject=ExpressionMgmt.execute(expressionId+"+\"jiasdjianisdnaindiasndasindsaind\"");
+							// 插入
+							Context.getCommandContext().getVariableManager().insert(variableInstanceEntity);
+							
+							aaaObject=ExpressionMgmt.getVariable(expressionId);
+						}
+
+							
+						
 
 					}
 					
