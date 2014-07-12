@@ -209,6 +209,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			List<RunningTrack> runningTrackInfo = this.queryRunningTrack(processInstanceId);
 			if (runningTrackInfo != null) {
 				resultData.put("runningTrackInfo", JSONUtil.parseObject2JSON(runningTrackInfo));
+				resultData.put("runningTrackInfoList", runningTrackInfo);
 			}
 
 			resultData.put("dataList", instanceMaps);

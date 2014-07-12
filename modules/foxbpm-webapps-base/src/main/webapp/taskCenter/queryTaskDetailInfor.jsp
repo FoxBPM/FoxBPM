@@ -65,6 +65,41 @@
 				</div>
 				<!---表格 START--->
 			</div>
+			<div id="runningTrackDIV" style="display: none;" class="proc_bg">
+				<h3>
+					<span id="clz">流程运行信息</span>
+				</h3>
+				<div id="taskNotDoneTb">
+					<table width="100%" class="table-list">
+
+						<c:if test="${result.runningTrackInfoList!=null}">
+							<thead>
+								<th style="width: 160px">轨迹编号</th>
+								<th style="width: 160px">轨迹名称</th>
+								<th style="width: 160px">执行时间</th>
+								<th style="width: 160px">事件名称</th>
+								<th style="width: 160px">处理者</th>
+								<th>流程实例编号</th>
+								<th style="width: 160px">归档时间</th>
+							</thead>
+							<c:forEach items="${result.runningTrackInfoList}" var="row"
+								varStatus="status">
+								<tr <c:if test="${status.index%2!=0}">class="gray"</c:if>>
+									<td>${row.nodeId}</td>
+									<td>${row.nodeName}</td>
+									<td><fmt:formatDate value="${row.executionTime}"
+											type="both" /></td>
+									<td>${row.eventName}</td>
+									<td>${row.operator}</td>
+									<td>${row.processInstanceId}</td>
+									<td><fmt:formatDate value="${row.archiveTime}" type="both" /></td>
+								</tr>
+							</c:forEach>
+						</c:if>
+					</table>
+				</div>
+				<!---表格 START--->
+			</div>
 			<div class="proc_bg">
 				<h3>
 					<span id="lct">流程图</span>
@@ -87,7 +122,11 @@
 <script type="text/javascript">
 	var runningTrackInfo = $.parseJSON('${result.runningTrackInfo}');//运行轨迹
 	var runningTrackIndex = 0;
-	var runningTrackLength = runningTrackInfo.length;
+	var tempNodeID;
+	var runningTrackLength;
+	if (runningTrackInfo) {
+		runningTrackLength = runningTrackInfo.length;
+	}
 	var currentRunningTrack;
 	var runningTrackThreadId;
 	//判断是否为IE浏览器标示
@@ -111,88 +150,14 @@
 		'taskListEnd' : taskListEnd,
 		'taskListIng' : taskListIng,
 		'nodeInfoArr' : nodeInfoArr,
+		'runningTrackInfo' : runningTrackInfo,
 		'isIE' : isIE,
 		'parentId' : 'flowImg',
 		'action' : 'getFlowGraph.action',
 		'processDefinitionId' : '${result.processDefinitionId}'
 	});
-	var tempNodeID;
-	function moveRunningTrack() {
-		if (runningTrackLength != 0 && runningTrackIndex < runningTrackLength) {
-			currentRunningTrack = runningTrackInfo[runningTrackIndex];
-			removePreviousRunningTrack(currentRunningTrack);
-			var rectAttributes = $("#" + currentRunningTrack.nodeId)[0].attributes;
-			for (var j = 0; j < rectAttributes.length; j++) {
-				var rectAttribute = rectAttributes[j];
-				if (rectAttribute.name == "stroke") {
-					if (tempNodeID != currentRunningTrack.nodeId) {
-						backUpRunningTrackColorDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue;
-						rectAttribute.nodeValue = RUNNING_TRACK_COLOR;
-					}
-					if (tempNodeID == currentRunningTrack.nodeId) {
-						rectAttribute.nodeValue = backUpRunningTrackColorDictionary[currentRunningTrack.nodeId];
-					}
-
-				}
-				if (rectAttribute.name == "stroke-width") {
-					if (tempNodeID != currentRunningTrack.nodeId) {
-						backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue;
-						rectAttribute.nodeValue = RUNNING_TRACK_WIDTH;
-					}
-					if (tempNodeID == currentRunningTrack.nodeId) {
-						rectAttribute.nodeValue = backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId];
-					}
-
-				}
-
-			}
-			tempNodeID = currentRunningTrack.nodeId;
-		} else {
-			clearInterval(runningTrackThreadId);
-			$("#runningTrack").removeAttr("disabled");
-		}
-		runningTrackIndex = runningTrackIndex + 1;
-	}
-	//如果前一个节点只存在单个执行事件，用这个方法清空前一个节点的轨迹
-	function removePreviousRunningTrack(currentTrack) {
-		if (runningTrackIndex != 0
-				&& currentTrack.nodeId != runningTrackInfo[runningTrackIndex - 1].nodeId) {
-			var rectAttributes = $("#"
-					+ runningTrackInfo[runningTrackIndex - 1].nodeId)[0].attributes;
-			for (var j = 0; j < rectAttributes.length; j++) {
-				var rectAttribute = rectAttributes[j];
-				if (rectAttribute.name == "stroke") {
-					rectAttribute.nodeValue = backUpRunningTrackColorDictionary[runningTrackInfo[runningTrackIndex - 1].nodeId];
-
-				}
-				if (rectAttribute.name == "stroke-width") {
-					rectAttribute.nodeValue = backUpRunningTrackWidthDictionary[runningTrackInfo[runningTrackIndex - 1].nodeId];
-				}
-
-			}
-		}
-	}
-	function clearRunningTracks() {
-		runningTrackIndex = 0;
-		if (runningTrackLength != 0 && runningTrackIndex < runningTrackLength) {
-			currentRunningTrack = runningTrackInfo[runningTrackIndex];
-			var rectAttributes = $("#" + currentRunningTrack.nodeId)[0].attributes;
-			for (var j = 0; j < rectAttributes.length; j++) {
-				var rectAttribute = rectAttributes[j];
-				if (rectAttribute.name == "stroke") {
-					rectAttribute.nodeValue = backUpRunningTrackColorDictionary[currentRunningTrack.nodeId];
-				}
-				if (rectAttribute.name == "stroke-width") {
-					rectAttribute.nodeValue = backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId];
-				}
-
-			}
-			runningTrackIndex = runningTrackIndex + 1;
-		}
-	}
 
 	$(function() {
-
 		//判断浏览器类型为IE
 		flowGraphic.loadFlowImg();
 		$("#yczt")
@@ -202,36 +167,35 @@
 							flowGraphic.hideFlowImgStatus(($(this).attr(
 									"checked") == 'checked'));
 						});
-		$("#runningTrack")
-				.bind(
-						"click",
-						function() {
-							//flowGraphic.runningTrack(($(this).attr("checked") == 'checked'));
-							if ($(this).attr("checked") == 'checked') {
-								if(runningTrackInfo && runningTrackInfo.length!=0){
-									runningTrackIndex = 0;
-									runningTrackThreadId = setInterval(
-											"moveRunningTrack()",
-											RUNNING_MILLESIMAL_SPEED);
-									$(this).attr("disabled", "disabled");
-								} else{
-									alert("系统还未配置流程运行轨迹监听器，请在foxbpm配置文件中配置!");
-									$(this).attr("disabled", "disabled");
-								}
-								
-							}
-							//暂停
-							if ($(this).attr("checked") != 'checked') {
+		$("#runningTrack").bind(
+				"click",
+				function() {
+					//flowGraphic.runningTrack(($(this).attr("checked") == 'checked'));
+					if ($(this).attr("checked") == 'checked') {
+						if (runningTrackInfo && runningTrackInfo.length != 0) {
+							runningTrackIndex = 0;
+							runningTrackThreadId = setInterval(
+									"flowGraphic.moveRunningTrack()",
+									RUNNING_MILLESIMAL_SPEED);
+							$(this).attr("disabled", "disabled");
+							$("#runningTrackDIV").show();
+						} else {
+							alert("无流程运行轨迹 数据");
+							$(this).attr("disabled", "disabled");
+						}
+					}
+					//暂停
+					if ($(this).attr("checked") != 'checked') {
+						$("#runningTrackDIV").hide();
+					}
+					//如果轨迹是正在运行的则不让它运行
+					if ($(this).attr("checked") != 'checked'
+							&& runningTrackIndex != 0
+							&& runningTrackIndex != runningTrackLength - 1) {
+						//runningTrackIndex = 0;
+					}
 
-							}
-							//如果轨迹是正在运行的则不让它运行
-							if ($(this).attr("checked") != 'checked'
-									&& runningTrackIndex != 0
-									&& runningTrackIndex != runningTrackLength - 1) {
-								//runningTrackIndex = 0;
-							}
-
-						});
+				});
 	});
 </script>
 </html>

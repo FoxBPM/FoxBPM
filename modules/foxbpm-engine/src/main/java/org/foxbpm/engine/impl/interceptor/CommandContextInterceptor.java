@@ -59,7 +59,7 @@ public class CommandContextInterceptor extends CommandInterceptor {
 			setAbstractScriptLanguageMgmt();
 		} else {
 			log.debug("CommandContext已经存在，共享此commandContext '{}'", command.getClass().getCanonicalName());
-			if(config.isScriptEngineReuse()){
+			if(!config.isScriptEngineReuse()){
 				setAbstractScriptLanguageMgmt();
 			}
 			contextReused = true;
