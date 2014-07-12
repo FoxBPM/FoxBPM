@@ -180,7 +180,7 @@
   
   <select id="findTasksByQueryCriteria" parameterType="org.foxbpm.engine.impl.task.TaskQueryImpl" resultMap="TaskResultMap">
   	${limitBefore}
-    select RES.* ${limitBetween}
+    select DISTINCT RES.* ${limitBetween}
     <include refid="selectTasksByQueryCriteriaSql"/>
     <if test="orderBy != null">
        ${orderBy}
@@ -197,7 +197,7 @@
     from FOXBPM_RUN_TASK RES
     
     <if test="candidateUser != null">
-        inner join FOXBPM_RUN_TASKIDENTITYLINK I on I.TASK_ID = RES.ID
+        left join FOXBPM_RUN_TASKIDENTITYLINK I on I.TASK_ID = RES.ID
     </if>
      <if test="initiator != null" >
         inner join FOXBPM_RUN_PROCESSINSTANCE P ON P.ID = RES.PROCESSINSTANCE_ID
