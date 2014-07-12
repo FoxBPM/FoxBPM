@@ -70,7 +70,12 @@ public class SelectDepartmentAndRole extends ActorConnectorHandler {
 				userIds.add(deptList.get(i));
 			}
 		}
-		task.addCandidateUsers(userIds);
+		// 当只有一个用户时直接交给该用户处理
+		if (userIds.size() == 1) {
+			task.setAssignee(userIds.toArray(new String[0])[0]);
+		} else {
+			task.addCandidateUsers(userIds);
+		}
 	}
 
 	public void setDepartmentId(java.lang.String departmentId) {
