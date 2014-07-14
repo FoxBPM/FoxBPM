@@ -146,63 +146,55 @@ public abstract class AbstractScriptLanguageMgmt {
 		ProcessInstanceEntity processInstance = (ProcessInstanceEntity) executionContext.getProcessInstance();
 		DataVariableMgmtInstance dataVariableMgmtInstance = processInstance.getDataVariableMgmtInstance();
 		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) processInstance.getProcessDefinition();
-		//List<DataVariableDefinition> dataVariableBehaviors = null;
+
 		List<String> dataVariableList = getDataVariableList(scriptText);
-		//if(dataVariableList != null && dataVariableList.size() > 0){
-		//	dataVariableBehaviors = processDefinition.getDataVariableMgmtDefinition().getDataVariableBehaviorsByProcess();
-		//}
+
 		for (String expressionId : dataVariableList) {
 			if (dataVariableMgmtInstance.getDataVariableByExpressionId(expressionId) == null) {
-				
 
-				
-				
-				
-				DataVariableDefinition dataVariableDefinition=processDefinition.getDataVariableMgmtDefinition().getProcessDataVariableDefinition(expressionId);
-				
-				if(dataVariableDefinition==null){
+				DataVariableDefinition dataVariableDefinition = processDefinition.getDataVariableMgmtDefinition()
+						.getProcessDataVariableDefinition(expressionId);
+
+				if (dataVariableDefinition == null) {
 					continue;
 				}
-				
-				if(dataVariableDefinition.isPersistence()){
+
+				if (dataVariableDefinition.isPersistence()) {
 					VariableQuery variableQuery = new VariableQueryImpl(Context.getProcessEngineConfiguration().getCommandExecutor());
 					variableQuery.addVariableKey(expressionId);
 					variableQuery.processInstanceId(processInstance.getId());
 					@SuppressWarnings({ "unchecked", "rawtypes" })
-					List<VariableInstanceEntity> variableInstances = (List)variableQuery.list();
-					if(variableInstances!=null&&variableInstances.size()==1){
+					List<VariableInstanceEntity> variableInstances = (List) variableQuery.list();
+					if (variableInstances != null && variableInstances.size() == 1) {
 						ExpressionMgmt.setVariable(expressionId, variableInstances.get(0).getValueObject());
 
 						// 更新
 						Context.getCommandContext().getVariableManager().update(variableInstances.get(0));
-					}else{
-						if(variableInstances!=null&&variableInstances.size()>1){
-							
-							throw new FoxBPMException("一个流程实例中含有两个相同的key,key("+expressionId+") instanceId("+processInstance.getId()+")");
-							
-						}else{
-							VariableInstanceEntity variableInstanceEntity=dataVariableMgmtInstance.createDataVariableInstance(dataVariableDefinition);
-							Object defaultValue=variableInstanceEntity.getDefaultExpressionValue(executionContext);
+						dataVariableMgmtInstance.getDataVariableEntities().add(variableInstances.get(0));
+					} else {
+						if (variableInstances != null && variableInstances.size() > 1) {
+
+							throw new FoxBPMException("一个流程实例中含有两个相同的key,key(" + expressionId + ") instanceId(" + processInstance.getId()
+									+ ")");
+
+						} else {
+							VariableInstanceEntity variableInstanceEntity = dataVariableMgmtInstance
+									.createDataVariableInstance(dataVariableDefinition);
+							Object defaultValue = variableInstanceEntity.getDefaultExpressionValue(executionContext);
 							ExpressionMgmt.setVariable(expressionId, defaultValue);
-							
+
 							// 插入
 							Context.getCommandContext().getVariableManager().insert(variableInstanceEntity);
-							
+
 						}
 
-							
-						
-
 					}
-					
-				}
-				else{
-					Object defaultValue=dataVariableMgmtInstance.createDataVariableInstance(dataVariableDefinition).getDefaultExpressionValue(executionContext);
+
+				} else {
+					Object defaultValue = dataVariableMgmtInstance.createDataVariableInstance(dataVariableDefinition)
+							.getDefaultExpressionValue(executionContext);
 					ExpressionMgmt.setVariable(expressionId, defaultValue);
 				}
-				
-				
-				
 
 			}
 
