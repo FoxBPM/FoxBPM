@@ -27,47 +27,53 @@ import org.junit.Test;
 import org.springframework.util.Assert;
 
 public class ModelServiceTest extends AbstractFoxBpmTestCase {
-	
-	
+
 	/**
-	 * 功能：获取用户有权限发起的流程
-	 * 逻辑：根据流程定义开始节点后面第一个人工任务的任务分配属性获得
+	 * 功能：获取用户有权限发起的流程 逻辑：根据流程定义开始节点后面第一个人工任务的任务分配属性获得
 	 */
 	@Test
 	@Deployment(resources = { "process_ma_1.bpmn" })
-	public void testGetStartProcessByUserId(){
-//		List<Map<String,Object>> list = modelService.getStartProcessByUserId("admin");
-//		System.out.println(list.size());
+	public void testGetStartProcessByUserId() {
+		// List<Map<String,Object>> list =
+		// modelService.getStartProcessByUserId("admin");
+		// System.out.println(list.size());
 	}
-	
+
 	/**
 	 * 判断用户是否有权限发起流程
 	 */
 	@Test
 	@Deployment(resources = { "process_test_1.bpmn" })
-	public void testVerifyStartProcessByUserId(){
+	public void testVerifyStartProcessByUserId() {
 		String userId = "admin";
 		boolean result = modelService.verifyStartProcessByUserId(userId, null);
 		Assert.isTrue(result);
 	}
-	
-	public void testProcessDefinitionQuery(){
+
+	public void testProcessDefinitionQuery() {
 		ProcessDefinitionQuery processQuery = modelService.createProcessDefinitionQuery();
 		processQuery.processDefinitionKey("process_test222").orderByProcessDefinitionKey().asc();
 		List<ProcessDefinition> process = processQuery.listPage(0, 10);
 		System.out.println(process.size());
 	}
-	
+
 	@Test
-	public void testDeleteDeploy(){
+	public void testDeleteDeploy() {
 		String deploymentId = "3e280222-7f82-4182-a7c7-2756a4bc0548";
 		modelService.deleteDeployment(deploymentId);
 	}
-	
+
 	@Test
-	public void testSVG(){
-		
+	public void testSVG() {
+
 		String processDefinitionId = "process_test_fang_1:1:3fc97b4d-1fb8-476e-8e05-317fb327d92d";
 		modelService.getProcessDefinitionSVG(processDefinitionId);
-	} 
+	}
+
+	@Test
+	public void testGetLatestProcessDefinitionByKey() {
+		String processDefinitionKey = "process_test_fang_1";
+		ProcessDefinition pd = modelService.getLatestProcessDefinition(processDefinitionKey);
+		Assert.notNull(pd);
+	}
 }
