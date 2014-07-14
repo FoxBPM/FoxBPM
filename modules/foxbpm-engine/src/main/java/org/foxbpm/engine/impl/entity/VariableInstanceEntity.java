@@ -80,7 +80,8 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 		this.isPersistence = dataVariableDefinition.isPersistence();
 		this.key = dataVariableDefinition.getId();
 		this.dataVariableMgmtInstance = dataVariableMgmtInstance;
-
+		this.processDefinitionId=dataVariableMgmtInstance.getProcessInstance().getProcessDefinition().getId();
+		this.processDefinitionKey=dataVariableMgmtInstance.getProcessInstance().getProcessDefinition().getKey();
 		this.processInstanceId = dataVariableMgmtInstance.getProcessInstance().getId();
 		this.type = dataVariableDefinition.getBizType();
 
