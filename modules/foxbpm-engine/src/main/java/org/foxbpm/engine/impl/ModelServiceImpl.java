@@ -27,6 +27,7 @@ import org.foxbpm.engine.impl.cmd.DeleteDeploymentCmd;
 import org.foxbpm.engine.impl.cmd.DeployCmd;
 import org.foxbpm.engine.impl.cmd.GetFlowGraphicsElementPositionCmd;
 import org.foxbpm.engine.impl.cmd.GetFlowGraphicsImgStreamCmd;
+import org.foxbpm.engine.impl.cmd.GetLatestProcessDefinitionByKey;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinitionByKeyAndVersionCmd;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinitionCmd;
 import org.foxbpm.engine.impl.cmd.GetProcessDefinitionSVGCmd;
@@ -106,6 +107,11 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	@Override
 	public InputStream getResourceByDeployIdAndName(String deployId, String resourceName) {
 		return commandExecutor.execute(new GetResouceByDeployIdAndNameCmd(deployId,resourceName));
+	}
+
+	@Override
+	public ProcessDefinition getLatestProcessDefinition(String processDefinitionKey) {
+		return commandExecutor.execute(new GetLatestProcessDefinitionByKey(processDefinitionKey));
 	}
 
 }

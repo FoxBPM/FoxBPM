@@ -108,18 +108,17 @@ public class GroovyScriptLanguageMgmtImpl extends AbstractScriptLanguageMgmt {
 
 		// groovyShell.setVariable("bizData",
 		// Context.getProcessEngineConfiguration().getBizData());
-		Object aaa=null;
+
 		// 绑定变量
 		if (executionContext != null) {
-			aaa=groovyShell.getVariable("变量1");
+
 			dataVariableCalculate(scriptText, executionContext);
-			aaa=groovyShell.getVariable("变量1");
+
 			groovyShell.setVariable("processInfo", executionContext);
-			aaa=groovyShell.getVariable("变量1");
+
 		}
 		String scriptTextTemp = getExpressionAll(scriptText);
-//变量1
-		aaa=groovyShell.getVariable("变量1");
+
 		resultObj = groovyShell.evaluate(scriptTextTemp);
 
 		return resultObj;

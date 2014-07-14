@@ -23,15 +23,20 @@ import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
 
-
+/**
+ * 上一步骤处理者
+ * 
+ * @author yangguangftlp
+ * @date 2014年7月14日
+ */
 public class LastStepActorConnector extends ActorConnectorHandler {
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	public void assign(DelegateTask task) throws Exception {
-		String userId=Authentication.getAuthenticatedUserId();
-		if(StringUtil.isEmpty(userId)){
+		String userId = Authentication.getAuthenticatedUserId();
+		if (StringUtil.isEmpty(userId)) {
 			throw new FoxBPMConnectorException("上一步处理者未找到,请重新检查借点的人员配置.");
 		}
 		task.setAssignee(userId);

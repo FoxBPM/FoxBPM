@@ -137,5 +137,13 @@ public interface ModelService {
 	 * @return
 	 */
 	InputStream getResourceByDeployIdAndName(String deployId,String resourceName);
-	
+
+	/**
+	 * 获取最新的流程定义
+	 * 
+	 * @param processDefinitionKey
+	 *            流程定义
+	 * @return 返回流程定义实例
+	 */
+	ProcessDefinition getLatestProcessDefinition(String processDefinitionKey);
 }
