@@ -19,45 +19,33 @@ package org.foxbpm.connector.actorconnector.SelectDeptActorConnector;
 
 import java.util.List;
 
+import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
 import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.impl.util.AssigneeUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
 
 public class SelectDeptActorConnector extends ActorConnectorHandler {
 
 	private static final long serialVersionUID = 1L;
-	
-	private java.lang.Object deptId;
 
-	public void setDeptId(java.lang.Object deptId) {
+	private java.lang.String deptId;
+
+	public void setDeptId(java.lang.String deptId) {
 		this.deptId = deptId;
 	}
 
-	
-	
-	/** humanPerformer独占 potentialOwner共享*/
-	@SuppressWarnings("unused")
-	private String assignType;
-
-	public void setAssignType(String assignType) {
-		this.assignType = assignType;
-	}
-	
-	
-
-
 	@Override
 	public void assign(DelegateTask task) throws Exception {
-		
-		List<String> deptList = AssigneeUtil.executionExpressionObj(deptId);
 
+		if (StringUtil.isEmpty(StringUtil.trim(deptId))) {
+			throw new FoxBPMConnectorException("deptId is null !");
+		}
+		List<String> deptList = AssigneeUtil.executionExpressionObj(deptId);
 		for (String deptId : deptList) {
 			GroupEntity group = new GroupEntity(deptId, "dept");
 			task.addCandidateGroupEntity(group);
 		}
-		
 	}
-
-
 }

@@ -15,7 +15,7 @@
  * 
  * @author yangguangftlp
  */
-package org.foxbpm.connector.test.actorconnector.SelectDeptActorConnector;
+package org.foxbpm.connector.test.actorconnector.SelectUserActorConnector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,34 +29,32 @@ import org.junit.Test;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 /**
- * 选择部门
+ * 任务分配给指定用户
  * 
  * @author yangguangftlp
  * @date 2014年7月11日
  */
-public class SelectDeptActorConnectorTest extends AbstractFoxBpmTestCase {
+public class SelectUserActorConnectorTest extends AbstractFoxBpmTestCase {
 
 	/**
-	 * 资源共享
-	 * <p>1.使用场景：将任务分配给某部门(部门可以多个)</p>
-	 * <p>2.预置条件：<p>
-	 *          1.发布一条带有任务分配（分配部门）的流程定义
+	 * 任务分配给指定用户可以多个
+	 * <p>1.使用场景：需要将任务分配指定用户</p>
+	 * <p>2.预置条件：创建一个含有人工任务并且任务分配给指定用户的流程定义并发布<p>
 	 * <p>3.处理过程：首先，启动任务使流程进入分配任务节点上</p>
 	 * <p>4.测试用例：</p>
-	 * <p>		1.执行完成后，相应查看资源分配是否是所以人都能看得到</p>
-	 * <p>		2.执行完成后，相应查看foxbpm_run_taskidentitylink任务是否分配给部门</p>
+	 * <p>		1.执行完成后，相应查看资源是否分配给指定用户</p>
 	 */
 	@Test
-	@Deployment(resources = { "org/foxbpm/connector/test/actorconnector/SelectDeptActorConnector/SelectDeptActorConnectorTest_1.bpmn" })
-	public void testSelectDeptActorConnector() {
+	@Deployment(resources = { "org/foxbpm/connector/test/actorconnector/SelectUserActorConnector/SelectUserActorConnectorTest_1.bpmn" })
+	public void testSelectUserActorConnector() {
 		Authentication.setAuthenticatedUserId("admin");
 		// 启动流程
-		runtimeService.startProcessInstanceByKey("SelectDeptActorConnectorTest_1");
-		Task task = taskService.createTaskQuery().processDefinitionKey("SelectDeptActorConnectorTest_1").taskNotEnd().singleResult();
+		runtimeService.startProcessInstanceByKey("SelectUserActorConnectorTest_1");
+		Task task = taskService.createTaskQuery().processDefinitionKey("SelectUserActorConnectorTest_1").taskNotEnd().singleResult();
 		SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_run_taskidentitylink WHERE TASK_ID = '" + task.getId() + "'");
 		List<String> userIds = new ArrayList<String>();
 		while (sqlRowSet.next()) {
-			userIds.add(sqlRowSet.getString("GROUP_ID"));
+			userIds.add(sqlRowSet.getString("USER_ID"));
 		}
 		if (!userIds.contains("a") || !userIds.contains("b")) {
 			throw new FoxBPMConnectorException("选择用户连接器出现异常");

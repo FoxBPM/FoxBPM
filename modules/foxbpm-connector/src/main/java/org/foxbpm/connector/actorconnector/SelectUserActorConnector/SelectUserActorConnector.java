@@ -22,54 +22,37 @@ import java.util.List;
 import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
 import org.foxbpm.engine.impl.util.AssigneeUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
 
+/**
+ * 选择用户
+ * 
+ * @author yangguangftlp
+ * @date 2014年7月14日
+ */
 public class SelectUserActorConnector extends ActorConnectorHandler {
 
 	private static final long serialVersionUID = 1L;
 
-	private java.lang.Object userId;
+	private java.lang.String userId;
 
-	public void setUserId(java.lang.Object userId) {
+	public void setUserId(java.lang.String userId) {
 		this.userId = userId;
 	}
-	
-	
-	/** humanPerformer独占 potentialOwner共享*/
-	private String assignType;
-
-	public void setAssignType(String assignType) {
-		this.assignType = assignType;
-	}
-	
-	
-
 
 	@Override
 	public void assign(DelegateTask task) throws Exception {
-		
 
-		List<String> userList = AssigneeUtil.executionExpressionObj(userId);
-		
-		if(assignType!=null){
-			if(assignType.equals("humanPerformer")){
-				if(userList.size()==1){
-					task.setAssignee(userList.get(0));
-				}
-				else{
-					throw new FoxBPMConnectorException("独占处理者不存在或者大于1,请重新检查节点配置.");
-				}
-			}
-			else{
-				for (String userId : userList) {
-					task.addCandidateUser(userId);
-				}
-			}
+		if (StringUtil.isEmpty(StringUtil.trim(userId))) {
+			throw new FoxBPMConnectorException("userId is null !");
 		}
 
-		
-
-		
+		List<String> userList = AssigneeUtil.executionExpressionObj(userId);
+		if (userList.size() == 1) {
+			task.setAssignee(userList.get(0));
+		} else {
+			task.addCandidateUsers(userList);
+		}
 	}
-
 }
