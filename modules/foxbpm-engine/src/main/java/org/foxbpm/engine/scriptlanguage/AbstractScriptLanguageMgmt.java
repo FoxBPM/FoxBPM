@@ -184,11 +184,10 @@ public abstract class AbstractScriptLanguageMgmt {
 							VariableInstanceEntity variableInstanceEntity=dataVariableMgmtInstance.createDataVariableInstance(dataVariableDefinition);
 							Object defaultValue=variableInstanceEntity.getDefaultExpressionValue(executionContext);
 							ExpressionMgmt.setVariable(expressionId, defaultValue);
-							Object aaaObject=ExpressionMgmt.execute(expressionId+"+\"jiasdjianisdnaindiasndasindsaind\"");
+							
 							// 插入
 							Context.getCommandContext().getVariableManager().insert(variableInstanceEntity);
 							
-							aaaObject=ExpressionMgmt.getVariable(expressionId);
 						}
 
 							

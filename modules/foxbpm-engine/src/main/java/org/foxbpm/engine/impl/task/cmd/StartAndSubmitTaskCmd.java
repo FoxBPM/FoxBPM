@@ -23,13 +23,16 @@ import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.cmd.StartProcessInstanceCmd;
+import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.task.command.StartAndSubmitTaskCommand;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.task.TaskCommand;
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 public class StartAndSubmitTaskCmd extends AbstractExpandTaskCmd<StartAndSubmitTaskCommand, ProcessInstance> {
 
@@ -61,6 +64,22 @@ public class StartAndSubmitTaskCmd extends AbstractExpandTaskCmd<StartAndSubmitT
 			processInstance = (ProcessInstanceEntity) getCommandExecutor().execute(
 					new StartProcessInstanceCmd<ProcessInstance>(processDefinitionKey, null, businessKey, transientVariables,
 							persistenceVariables));
+			
+			
+			
+			// 获取流程内容执行器
+			FlowNodeExecutionContext executionContext = processInstance.getRootToken();
+			// 获取任务命令
+			TaskDefinition taskDefinition=((ProcessDefinitionEntity)processInstance.getProcessDefinition()).getSubTaskDefinition();
+			if(taskDefinition!=null){
+				TaskCommand taskCommand = taskDefinition.getTaskCommand(taskCommandId);
+				// 任务命令的执行表达式变量
+				taskCommand.getExpressionValue(executionContext);
+			}else{
+				throw new FoxBPMException("流程没有找到提交节点,请重新检查流程定义。");
+			}
+
+		
 
 			List<TaskEntity> submitTasks = processInstance.getTasks();
 
@@ -74,9 +93,9 @@ public class StartAndSubmitTaskCmd extends AbstractExpandTaskCmd<StartAndSubmitT
 				List<TaskCommand> taskCommands = submitTask.getTaskDefinition().getTaskCommands("submit");
 				if (taskCommands.size() > 0) {
 					expandTaskCommand.setTaskCommandId(taskCommands.get(0).getId());
-				}else{
+				} else {
 					throw new FoxBPMException("发起节点必须包含一个提交命令");
-					//expandTaskCommand.setTaskCommandId(this.taskCommandId);
+					// expandTaskCommand.setTaskCommandId(this.taskCommandId);
 				}
 
 				expandTaskCommand.setTransientVariables(transientVariables);
