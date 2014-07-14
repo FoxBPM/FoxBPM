@@ -99,6 +99,7 @@
 		parent="abstrJdbcTemplate" />
 
 	<!-- foxbmp日志处理 -->
+	<bean id="foxbpmLogInterceptor" class="org.foxbpm.web.service.aop.FoxbpmLogInterceptor" />
 	<bean id="foxbpmUserInterceptor" class="org.foxbpm.web.service.aop.FoxbpmUserInterceptor" />
 	<!-- 事务通知 -->
 	<tx:advice id="foxbpmTransactionAdvice" transaction-manager="foxbpmTransactionManager">
@@ -118,11 +119,15 @@
 		<aop:pointcut id="txPointcut"
 			expression="execution(* org.foxbpm.web.service.impl.*.*(..))" />
 		<!-- 日志切入点 -->
+		<aop:pointcut id="logPointcut"
+			expression="execution(* org.foxbpm.web.service.interfaces.*.*(..))" />
 		<aop:pointcut id="userPointcut"
 			expression="execution(* org.foxbpm.web.service.interfaces.*.*(..))" />
 		<aop:advisor advice-ref="foxbpmTransactionAdvice"
 			pointcut-ref="txPointcut" />
 		<aop:advisor advice-ref="foxbpmUserInterceptor"
 			pointcut-ref="userPointcut" />
+		<aop:advisor advice-ref="foxbpmLogInterceptor"
+			pointcut-ref="logPointcut" />
 	</aop:config>
 </beans> 
