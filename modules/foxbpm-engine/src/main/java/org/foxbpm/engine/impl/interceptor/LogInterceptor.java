@@ -17,7 +17,10 @@ public class LogInterceptor extends CommandInterceptor {
 
 			return next.execute(config, command);
 
-		} finally {
+		}catch(RuntimeException ex){
+			log.error("cmd执行出错", ex);
+			throw ex;
+		}finally {
 			log.debug("--- {} finished --------------------------------------------------------", command.getClass().getSimpleName());
 			log.debug("                                                                                                    ");
 		}
