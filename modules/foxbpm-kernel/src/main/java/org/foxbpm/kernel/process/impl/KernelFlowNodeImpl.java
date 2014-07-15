@@ -24,15 +24,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
-import org.foxbpm.kernel.process.KernelDIBounds;
 import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.process.KernelSequenceFlow;
 
-public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl
-		implements
-			KernelFlowNode,
-			KernelDIBounds {
+public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl implements KernelFlowNode {
 
 	private static final long serialVersionUID = 1L;
 	protected List<KernelSequenceFlowImpl> outgoingSequenceFlows = new ArrayList<KernelSequenceFlowImpl>();
@@ -43,12 +39,6 @@ public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl
 	protected boolean isScope;
 	protected boolean isAsync;
 	protected boolean isExclusive;
-
-	// 图形信息
-	protected int x = -1;
-	protected int y = -1;
-	protected int width = -1;
-	protected int height = -1;
 
 	public KernelFlowNodeImpl(String id, KernelProcessDefinitionImpl processDefinition) {
 		super(id, processDefinition);
@@ -130,38 +120,6 @@ public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl
 
 	public void setScope(boolean isScope) {
 		this.isScope = isScope;
-	}
-
-	public int getX() {
-		return x;
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
 	}
 
 	public boolean isAsync() {

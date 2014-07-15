@@ -22,9 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.foxbpm.kernel.process.KernelBaseElement;
+import org.foxbpm.kernel.process.KernelDIBounds;
 
-public class KernelBaseElementImpl implements KernelBaseElement {
-
+public class KernelBaseElementImpl implements KernelBaseElement, KernelDIBounds {
 	/**
 	 * 
 	 */
@@ -33,6 +33,12 @@ public class KernelBaseElementImpl implements KernelBaseElement {
 	protected String id;
 	protected KernelProcessDefinitionImpl processDefinition;
 	protected Map<String, Object> properties;
+
+	// 图形信息
+	protected float x = -1;
+	protected float y = -1;
+	protected float width = -1;
+	protected float height = -1;
 
 	public KernelBaseElementImpl(String id, KernelProcessDefinitionImpl processDefinition) {
 		this.id = id;
@@ -76,4 +82,35 @@ public class KernelBaseElementImpl implements KernelBaseElement {
 		return processDefinition;
 	}
 
+	public float getX() {
+		return x;
+	}
+
+	public void setX(float x) {
+		this.x = x;
+	}
+
+	public float getY() {
+		return y;
+	}
+
+	public void setY(float y) {
+		this.y = y;
+	}
+
+	public float getWidth() {
+		return width;
+	}
+
+	public void setWidth(float width) {
+		this.width = width;
+	}
+
+	public float getHeight() {
+		return height;
+	}
+
+	public void setHeight(float height) {
+		this.height = height;
+	}
 }

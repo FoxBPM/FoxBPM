@@ -20,12 +20,11 @@ package org.foxbpm.kernel.process.impl;
 import java.util.List;
 
 import org.foxbpm.kernel.process.KernelBaseElement;
-import org.foxbpm.kernel.process.KernelDIBounds;
 import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.process.KernelLane;
 import org.foxbpm.kernel.process.KernelLaneSet;
 
-public class KernelLaneImpl extends KernelBaseElementImpl implements KernelLane, KernelDIBounds {
+public class KernelLaneImpl extends KernelBaseElementImpl implements KernelLane {
 
 	/**
 	 * 
@@ -33,12 +32,6 @@ public class KernelLaneImpl extends KernelBaseElementImpl implements KernelLane,
 	private static final long serialVersionUID = 1L;
 	protected KernelLaneSet childLaneSet;
 	protected String name;
-	// 图形信息
-	protected int x = -1;
-	protected int y = -1;
-	protected int width = -1;
-	protected int height = -1;
-
 	public KernelLaneImpl(String id, KernelProcessDefinitionImpl processDefinition) {
 		super(id, processDefinition);
 	}
@@ -83,36 +76,4 @@ public class KernelLaneImpl extends KernelBaseElementImpl implements KernelLane,
 		// TODO Auto-generated method stub
 
 	}
-	public int getX() {
-		return x;
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
 }

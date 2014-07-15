@@ -23,7 +23,7 @@ import org.foxbpm.kernel.process.KernelArtifact;
 public class KernelArtifactImpl extends KernelBaseElementImpl implements KernelArtifact {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	protected KernelArtifactBehavior artifactBehavior;
 
 	public KernelArtifactBehavior getArtifactBehavior() {

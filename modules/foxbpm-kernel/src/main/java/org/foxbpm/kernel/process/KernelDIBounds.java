@@ -17,16 +17,20 @@
  */
 package org.foxbpm.kernel.process;
 
+
 public interface KernelDIBounds {
-	
-	  int getWidth();
-	  int getHeight();
-	  int getX();
-	  int getY();
-	  
-	  void setWidth(int width);
-	  void setHeight(int height);
-	  void setX(int x);
-	  void setY(int y);
+
+	float getWidth();
+	float getHeight();
+	float getX();
+	float getY();
+
+	void setWidth(float width);
+	void setHeight(float height);
+	void setX(float x);
+	void setY(float y);
+
+	public void setProperty(String name, Object value);
+	public Object getProperty(String name);
 
 }
