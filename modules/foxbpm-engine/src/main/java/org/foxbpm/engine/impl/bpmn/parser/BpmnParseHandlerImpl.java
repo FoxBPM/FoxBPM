@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import org.eclipse.bpmn2.Artifact;
 import org.eclipse.bpmn2.Association;
 import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.Bpmn2Package;
@@ -78,10 +79,12 @@ import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
 import org.foxbpm.kernel.ProcessDefinitionBuilder;
+import org.foxbpm.kernel.behavior.KernelArtifactBehavior;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
 import org.foxbpm.kernel.event.KernelEventType;
 import org.foxbpm.kernel.process.KernelLaneSet;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
+import org.foxbpm.kernel.process.impl.KernelArtifactImpl;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelLaneImpl;
 import org.foxbpm.kernel.process.impl.KernelLaneSetImpl;
@@ -131,7 +134,8 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 				processDefinitionBuilder.executionListener(connector.getEventType(), connector);
 			}
 		}
-
+		
+		
 		for (FlowElement flowElement : flowElements) {
 			KernelFlowNodeBehavior flowNodeBehavior = BpmnBehaviorEMFConverter.getFlowNodeBehavior(
 					flowElement, processDefinitionBuilder.getProcessDefinition());
@@ -171,6 +175,17 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 				processDefinition.getLaneSets().add(laneSetObj);
 			}
 		}
+		
+		//加载其他元素
+		for (Artifact artifact : process.getArtifacts()) {
+			KernelArtifactBehavior artifactBehavior=BpmnBehaviorEMFConverter.getArtifactBehavior(
+					artifact, processDefinitionBuilder.getProcessDefinition());
+			KernelArtifactImpl kernelArtifactImpl=new KernelArtifactImpl(artifact.getId(), processDefinition);
+			kernelArtifactImpl.setArtifactBehavior(artifactBehavior);
+			processDefinition.getArtifacts().add(kernelArtifactImpl);
+
+		}
+
 
 		processDefinition.setKey(processBehavior.getId());
 		processDefinition.setName(processBehavior.getName());

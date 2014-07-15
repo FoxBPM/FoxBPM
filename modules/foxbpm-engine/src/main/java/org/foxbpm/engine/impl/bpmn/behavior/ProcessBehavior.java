@@ -18,7 +18,9 @@
 package org.foxbpm.engine.impl.bpmn.behavior;
 
 public class ProcessBehavior extends BaseElementBehavior {
-	
+
+	private static final long serialVersionUID = 1L;
+
 	private String subject;
 	
 	private String formUri;

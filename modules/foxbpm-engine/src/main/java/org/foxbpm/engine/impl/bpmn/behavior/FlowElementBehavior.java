@@ -18,6 +18,8 @@
 package org.foxbpm.engine.impl.bpmn.behavior;
 
 public abstract class FlowElementBehavior extends BaseElementBehavior {
+
+	private static final long serialVersionUID = 1L;
 	
 	protected String name;
 

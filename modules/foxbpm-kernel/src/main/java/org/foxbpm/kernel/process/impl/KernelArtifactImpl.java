@@ -13,35 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author ych
  * @author kenshin
  */
-package org.foxbpm.engine.impl.bpmn.behavior;
+package org.foxbpm.kernel.process.impl;
 
-public class ExpressionDefinition extends BaseElementBehavior {
+import org.foxbpm.kernel.behavior.KernelArtifactBehavior;
+import org.foxbpm.kernel.process.KernelArtifact;
 
+public class KernelArtifactImpl extends KernelBaseElementImpl implements KernelArtifact {
 
 	private static final long serialVersionUID = 1L;
 	
-	private String id;
-	private String name;
-	private String value;
-	public String getId() {
-		return id;
+	protected KernelArtifactBehavior artifactBehavior;
+
+	public KernelArtifactBehavior getArtifactBehavior() {
+		return artifactBehavior;
 	}
-	public void setId(String id) {
-		this.id = id;
+
+	public void setArtifactBehavior(KernelArtifactBehavior artifactBehavior) {
+		this.artifactBehavior = artifactBehavior;
 	}
-	public String getName() {
-		return name;
+
+	public KernelArtifactImpl(String id, KernelProcessDefinitionImpl processDefinition) {
+		super(id, processDefinition);
 	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getValue() {
-		return value;
-	}
-	public void setValue(String value) {
-		this.value = value;
-	}
+
 }

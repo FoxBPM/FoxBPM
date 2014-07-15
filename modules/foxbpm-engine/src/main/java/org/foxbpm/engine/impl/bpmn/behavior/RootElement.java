@@ -19,4 +19,6 @@ package org.foxbpm.engine.impl.bpmn.behavior;
 
 public class RootElement extends BaseElementBehavior {
 
+	private static final long serialVersionUID = 1L;
+
 }

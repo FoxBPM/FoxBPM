@@ -18,7 +18,9 @@
 package org.foxbpm.engine.impl.bpmn.behavior;
 
 public class FormalExpressionBehavior extends ExpressionDefinition {
-	
+
+	private static final long serialVersionUID = 1L;
+
 	protected String body;
 	
 	protected String language;

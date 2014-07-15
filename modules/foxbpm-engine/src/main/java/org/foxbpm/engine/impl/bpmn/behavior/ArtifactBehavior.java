@@ -17,7 +17,13 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
-public class EventDefinition extends RootElement {
+import org.foxbpm.kernel.behavior.KernelArtifactBehavior;
+
+/**
+ * @author kenshin
+ *
+ */
+public class ArtifactBehavior extends BaseElementBehavior implements KernelArtifactBehavior {
 
 	private static final long serialVersionUID = 1L;
 

@@ -17,7 +17,7 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
-public class EventDefinition extends RootElement {
+public class GroupBehavior extends ArtifactBehavior {
 
 	private static final long serialVersionUID = 1L;
 

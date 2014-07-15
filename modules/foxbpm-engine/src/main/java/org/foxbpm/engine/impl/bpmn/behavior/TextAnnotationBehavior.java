@@ -17,42 +17,30 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
-import org.foxbpm.engine.expression.Expression;
-import org.foxbpm.engine.impl.expression.ExpressionImpl;
-
-public class TimerEventDefinition extends EventDefinition {
+public class TextAnnotationBehavior extends ArtifactBehavior {
 
 	private static final long serialVersionUID = 1L;
+	
+	private String text;
+	
+	private String textFormat;
+	
 
-	private Expression timeDate;
-
-	private Expression timeDuration;
-
-	private Expression timeCycle;
-
-	public Expression getTimeDate() {
-		
-		return timeDate;
+	public String getText() {
+		return text;
 	}
 
-	public void setTimeDate(String timeDate) {
-		this.timeDate = new ExpressionImpl(timeDate);
+	public void setText(String text) {
+		this.text = text;
 	}
 
-	public Expression getTimeDuration() {
-		return timeDuration;
+	public String getTextFormat() {
+		return textFormat;
 	}
 
-	public void setTimeDuration(String timeDuration) {
-		this.timeDuration = new ExpressionImpl(timeDuration);
+	public void setTextFormat(String textFormat) {
+		this.textFormat = textFormat;
 	}
 
-	public Expression getTimeCycle() {
-		return timeCycle;
-	}
-
-	public void setTimeCycle(String timeCycle) {
-		this.timeCycle = new ExpressionImpl(timeCycle);
-	}
 
 }

@@ -15,10 +15,20 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.engine.impl.bpmn.behavior;
+package org.foxbpm.engine.impl.bpmn.parser.model;
 
-public class EventDefinition extends RootElement {
+import org.foxbpm.engine.impl.bpmn.behavior.GroupBehavior;
 
-	private static final long serialVersionUID = 1L;
+/**
+ * @author kenshin
+ *
+ */
+public class GroupParser extends BaseElementParser {
+	
+
+	@Override
+	public void init() {
+		baseElementBehavior = new GroupBehavior();
+	}
 
 }
