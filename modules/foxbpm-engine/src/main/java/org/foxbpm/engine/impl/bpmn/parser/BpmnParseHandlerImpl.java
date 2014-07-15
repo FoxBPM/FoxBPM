@@ -90,6 +90,7 @@ import org.foxbpm.kernel.process.KernelLaneSet;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.process.impl.KernelArtifactImpl;
 import org.foxbpm.kernel.process.impl.KernelAssociationImpl;
+import org.foxbpm.kernel.process.impl.KernelBaseElementImpl;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelLaneImpl;
 import org.foxbpm.kernel.process.impl.KernelLaneSetImpl;
@@ -298,6 +299,163 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 
 	}
 
+	private void processDI(ProcessDefinitionEntity processDefinition, Process process) {
+		Definitions definitions = (Definitions) process.eResource().getContents().get(0)
+				.eContents().get(0);
+		List<BPMNDiagram> diagrams = definitions.getDiagrams();
+		if (diagrams == null || diagrams.size() == 0) {
+			return;
+		}
+		float maxX = 0;
+		float maxY = 0;
+		float minY = 0;
+		float minX = 0;
+		for (BPMNDiagram bpmnDiagram : diagrams) {
+			for (DiagramElement diagramElement : bpmnDiagram.getPlane().getPlaneElement()) {
+				// 节点信息
+				if (diagramElement instanceof BPMNShape) {
+					BPMNShape bpmnShape = (BPMNShape) diagramElement;
+					Bounds bounds = bpmnShape.getBounds();
+					float x = bounds.getX();
+					float y = bounds.getY();
+					float width = bounds.getWidth();
+					float height = bounds.getHeight();
+					if (x + width > maxX) {
+						maxX = x + width;
+					}
+					if (y + height > maxY) {
+						maxY = y + height;
+					}
+					if (minY == 0) {
+						minY = y;
+					} else {
+						if (y < minY) {
+							minY = y;
+						}
+					}
+
+					if (minX == 0) {
+						minX = x;
+					} else {
+						if (x < minX) {
+							minX = x;
+						}
+					}
+					this.loadBPMNShape(width, height, x, y, bpmnShape, processDefinition);
+				}
+				// 线条信息
+				if (diagramElement instanceof BPMNEdge) {
+					BPMNEdge bpmnEdge = (BPMNEdge) diagramElement;
+					List<Point> pointList = bpmnEdge.getWaypoint();
+					for (Point point : pointList) {
+						float x = point.getX();
+						float y = point.getY();
+						if (x > maxX) {
+							maxX = x;
+						}
+						if (y > maxY) {
+							maxY = y;
+						}
+					}
+					this.loadBPMNEdge(pointList, bpmnEdge, processDefinition);
+
+				}
+			}
+		}
+
+		processDefinition.setProperty("canvas_maxX", maxX + 30);
+		processDefinition.setProperty("canvas_maxY", maxY + 70);
+		processDefinition.setProperty("canvas_minX", minX);
+		processDefinition.setProperty("canvas_minY", minY);
+	}
+	/**
+	 * 
+	 * loadBPMNShape(加载 bpmnShape信息)
+	 * 
+	 * @param width
+	 * @param height
+	 * @param x
+	 * @param y
+	 * @param bpmnShape
+	 * @param processDefinition
+	 *            void
+	 * @exception
+	 * @since 1.0.0
+	 */
+	private void loadBPMNShape(float width, float height, float x, float y, BPMNShape bpmnShape,
+			ProcessDefinitionEntity processDefinition) {
+		ProcessEngineConfigurationImpl processEngineConfiguration = Context
+				.getProcessEngineConfiguration();
+		BaseElement bpmnElement = getBaseElement(bpmnShape.getBpmnElement());
+		Style style = this.getStyle(bpmnElement, processEngineConfiguration);
+		KernelDIBounds kernelDIBounds = this.getDIElementFromProcessDefinition(processDefinition,
+				bpmnElement.getId());
+		if (kernelDIBounds != null) {
+			// 图形基本属性
+			kernelDIBounds.setWidth(width);
+			kernelDIBounds.setHeight(height);
+			kernelDIBounds.setX(x);
+			kernelDIBounds.setY(y);
+			// 泳道水平垂直属性
+			if (kernelDIBounds instanceof KernelLaneImpl) {
+				kernelDIBounds.setProperty(StyleOption.IsHorizontal, bpmnShape.isIsHorizontal());
+			}
+			// 图形式样属性
+			this.setStyleProperties((KernelBaseElementImpl) kernelDIBounds, style);
+		}
+	}
+	/**
+	 * 
+	 * loadBPMNEdge(加载bpmnEdge信息)
+	 * 
+	 * @param pointList
+	 * @param bpmnEdge
+	 * @param processDefinition
+	 *            void
+	 * @exception
+	 * @since 1.0.0
+	 */
+	private void loadBPMNEdge(List<Point> pointList, BPMNEdge bpmnEdge,
+			ProcessDefinitionEntity processDefinition) {
+		ProcessEngineConfigurationImpl processEngineConfiguration = Context
+				.getProcessEngineConfiguration();
+		BaseElement bpmnElement = getBaseElement(bpmnEdge.getBpmnElement());
+		Style style = null;
+		if (bpmnElement instanceof SequenceFlow) {
+			KernelSequenceFlowImpl findSequenceFlow = processDefinition
+					.findSequenceFlow(bpmnElement.getId());
+			style = processEngineConfiguration.getStyle("SequenceFlow");
+			List<Integer> waypoints = new ArrayList<Integer>();
+			for (Point point : pointList) {
+				waypoints.add((new Float(point.getX())).intValue());
+				waypoints.add((new Float(point.getY())).intValue());
+			}
+
+			findSequenceFlow.setWaypoints(waypoints);
+			if (style != null) {
+				this.setStyleProperties(findSequenceFlow, style);
+			}
+		}
+		if (bpmnElement instanceof Association) {
+			KernelAssociationImpl kernelAssociationImpl = (KernelAssociationImpl) processDefinition
+					.getKernelArtifactById(bpmnElement.getId());
+			style = processEngineConfiguration.getStyle("Association");
+			List<Integer> waypoints = new ArrayList<Integer>();
+			for (Point point : pointList) {
+				waypoints.add((new Float(point.getX())).intValue());
+				waypoints.add((new Float(point.getY())).intValue());
+			}
+
+			kernelAssociationImpl.setWaypoints(waypoints);
+			if (style != null) {
+				this.setStyleProperties(kernelAssociationImpl, style);
+			}
+		}
+		if (bpmnElement instanceof MessageFlow) {
+			// TODO MESSAGEFLOW
+		}
+	}
+
 	/**
 	 * 
 	 * getDIElementFromProcessDefinition(获取BPMN的DI元素包括所有节点，除了线条之外)
@@ -383,215 +541,24 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		return style;
 	}
 
-	private void processDI(ProcessDefinitionEntity processDefinition, Process process) {
-		ProcessEngineConfigurationImpl processEngineConfiguration = Context
-				.getProcessEngineConfiguration();
-		Definitions definitions = (Definitions) process.eResource().getContents().get(0)
-				.eContents().get(0);
-		List<BPMNDiagram> diagrams = definitions.getDiagrams();
-		if (diagrams == null || diagrams.size() == 0) {
-			return;
-		}
-		float maxX = 0;
-		float maxY = 0;
-		float minY = 0;
-		float minX = 0;
-		Style style = null;
-		for (BPMNDiagram bpmnDiagram : diagrams) {
-			for (DiagramElement diagramElement : bpmnDiagram.getPlane().getPlaneElement()) {
-				if (diagramElement instanceof BPMNShape) {
-					BPMNShape bpmnShape = (BPMNShape) diagramElement;
-					Bounds bounds = bpmnShape.getBounds();
-					float x = bounds.getX();
-					float y = bounds.getY();
-					float width = bounds.getWidth();
-					float height = bounds.getHeight();
-					if (x + width > maxX) {
-						maxX = x + width;
-					}
-
-					if (y + height > maxY) {
-						maxY = y + height;
-					}
-
-					if (minY == 0) {
-						minY = y;
-					} else {
-						if (y < minY) {
-							minY = y;
-						}
-					}
-
-					if (minX == 0) {
-						minX = x;
-					} else {
-						if (x < minX) {
-							minX = x;
-						}
-					}
-
-					BaseElement bpmnElement = getBaseElement(bpmnShape.getBpmnElement());
-					style = this.getStyle(bpmnElement, processEngineConfiguration);
-					KernelDIBounds kernelDIBounds = this.getDIElementFromProcessDefinition(
-							processDefinition, bpmnElement.getId());
-					if (kernelDIBounds != null) {
-						kernelDIBounds.setWidth(width);
-						kernelDIBounds.setHeight(height);
-						kernelDIBounds.setX(x);
-						kernelDIBounds.setY(y);
-						if (kernelDIBounds instanceof KernelLaneImpl) {
-							kernelDIBounds.setProperty(StyleOption.IsHorizontal,
-									bpmnShape.isIsHorizontal());
-						}
-						kernelDIBounds.setProperty(StyleOption.Background, style.getBackground());
-						kernelDIBounds.setProperty(StyleOption.Font, style.getFont());
-						kernelDIBounds.setProperty(StyleOption.Foreground, style.getForeground());
-						kernelDIBounds.setProperty(StyleOption.MulitSelectedColor,
-								style.getMulitSelectedColor());
-						kernelDIBounds.setProperty(StyleOption.StyleObject, style.getObject());
-						kernelDIBounds.setProperty(StyleOption.SelectedColor,
-								style.getSelectedColor());
-						kernelDIBounds.setProperty(StyleOption.TextColor, style.getTextColor());
-					}
-
-					/*
-					 * if (bpmnElement instanceof
-					 * IntermediateCatchEventBehavior) { String
-					 * intermediateTimerEventSVG =
-					 * intermediateTimerEventToSVG(bpmnShape);
-					 * svg.addChildren(intermediateTimerEventSVG); } if
-					 * (bpmnElement instanceof CallActivity) {
-					 * 
-					 * String taskSVG = callActivityToSVG(bpmnShape);
-					 * svg.addChildren(taskSVG); }
-					 * 
-					 * if (bpmnElement instanceof Gateway) { String gatewaySVG =
-					 * gatewayToSVG(bpmnShape); svg.addChildren(gatewaySVG); }
-					 * 
-					 * if(bpmnElement instanceof Lane) { String laneSVG =
-					 * laneToSVG(bpmnShape); svg.addChildren(laneSVG); }
-					 * 
-					 * if(bpmnElement instanceof Participant) { String laneSVG =
-					 * participantToSVG(bpmnShape); svg.addChildren(laneSVG); }
-					 * 
-					 * 
-					 * 
-					 * if(bpmnElement instanceof SubProcess) { String
-					 * subProcessSVG = subProcessToSVG(bpmnShape);
-					 * svg.addChildren(subProcessSVG); } if(bpmnElement
-					 * instanceof Group) { String subProcessSVG =
-					 * groupToSVG(bpmnShape,bpmnElement);
-					 * svg.addChildren(subProcessSVG); } if(bpmnElement
-					 * instanceof DataObject) { String dataObjectSVG=
-					 * dataObjectToSVG(bpmnShape,bpmnElement);
-					 * svg.addChildren(dataObjectSVG); } //DataStoreReference
-					 * //DataInput //DataOutput //Message if(bpmnElement
-					 * instanceof DataStoreReference) { String
-					 * dataStoreReferenceSVG=
-					 * dataStoreReferenceToSVG(bpmnShape,bpmnElement);
-					 * svg.addChildren(dataStoreReferenceSVG); } if(bpmnElement
-					 * instanceof DataInput) { String dataInputSVG=
-					 * dataInputToSVG(bpmnShape,bpmnElement);
-					 * svg.addChildren(dataInputSVG); } if(bpmnElement
-					 * instanceof DataOutput) { String dataOutputSVG=
-					 * dataOutputToSVG(bpmnShape,bpmnElement);
-					 * svg.addChildren(dataOutputSVG); } if(bpmnElement
-					 * instanceof Message) { String messageSVG=
-					 * messageToSVG(bpmnShape,bpmnElement);
-					 * svg.addChildren(messageSVG); }
-					 * 
-					 * 
-					 * if(bpmnElement instanceof TextAnnotation) { String
-					 * messageSVG= textAnnotationToSVG(bpmnShape,bpmnElement);
-					 * svg.addChildren(messageSVG); }
-					 * 
-					 * 
-					 * if(bpmnElement instanceof BoundaryEvent) { String
-					 * messageSVG= boundaryEventToSVG(bpmnShape,bpmnElement);
-					 * svg.addChildren(messageSVG); }
-					 */
-
-				}
-				if (diagramElement instanceof BPMNEdge) {
-					BPMNEdge bpmnEdge = (BPMNEdge) diagramElement;
-					List<Point> pointList = bpmnEdge.getWaypoint();
-					for (Point point : pointList) {
-						float x = point.getX();
-						float y = point.getY();
-						if (x > maxX) {
-							maxX = x;
-						}
-						if (y > maxY) {
-							maxY = y;
-						}
-					}
-					BaseElement bpmnElement = getBaseElement(bpmnEdge.getBpmnElement());
-					if (bpmnElement instanceof SequenceFlow) {
-						KernelSequenceFlowImpl findSequenceFlow = processDefinition
-								.findSequenceFlow(bpmnElement.getId());
-						style = processEngineConfiguration.getStyle("SequenceFlow");
-						List<Integer> waypoints = new ArrayList<Integer>();
-						for (Point point : pointList) {
-							waypoints.add((new Float(point.getX())).intValue());
-							waypoints.add((new Float(point.getY())).intValue());
-						}
-
-						findSequenceFlow.setWaypoints(waypoints);
-						if (style != null) {
-							findSequenceFlow.setProperty(StyleOption.Background,
-									style.getBackground());
-							findSequenceFlow.setProperty(StyleOption.Font, style.getFont());
-							findSequenceFlow.setProperty(StyleOption.Foreground,
-									style.getForeground());
-							findSequenceFlow.setProperty(StyleOption.MulitSelectedColor,
-									style.getMulitSelectedColor());
-							findSequenceFlow
-									.setProperty(StyleOption.StyleObject, style.getObject());
-							findSequenceFlow.setProperty(StyleOption.SelectedColor,
-									style.getSelectedColor());
-							findSequenceFlow.setProperty(StyleOption.TextColor,
-									style.getTextColor());
-						}
-					}
-					if (bpmnElement instanceof Association) {
-						KernelAssociationImpl kernelAssociationImpl = (KernelAssociationImpl) processDefinition
-								.getKernelArtifactById(bpmnElement.getId());
-						style = processEngineConfiguration.getStyle("Association");
-						List<Integer> waypoints = new ArrayList<Integer>();
-						for (Point point : pointList) {
-							waypoints.add((new Float(point.getX())).intValue());
-							waypoints.add((new Float(point.getY())).intValue());
-						}
-
-						kernelAssociationImpl.setWaypoints(waypoints);
-						if (style != null) {
-							kernelAssociationImpl.setProperty(StyleOption.Background,
-									style.getBackground());
-							kernelAssociationImpl.setProperty(StyleOption.Font, style.getFont());
-							kernelAssociationImpl.setProperty(StyleOption.Foreground,
-									style.getForeground());
-							kernelAssociationImpl.setProperty(StyleOption.MulitSelectedColor,
-									style.getMulitSelectedColor());
-							kernelAssociationImpl.setProperty(StyleOption.StyleObject,
-									style.getObject());
-							kernelAssociationImpl.setProperty(StyleOption.SelectedColor,
-									style.getSelectedColor());
-							kernelAssociationImpl.setProperty(StyleOption.TextColor,
-									style.getTextColor());
-						}
-					}
-					if (bpmnElement instanceof MessageFlow) {
-						// String messageFlowSVG = messageFlowToSVG(bpmnEdge);
-						// svg.addChildren(messageFlowSVG);
-					}
-				}
-			}
-		}
-
-		processDefinition.setProperty("canvas_maxX", maxX + 30);
-		processDefinition.setProperty("canvas_maxY", maxY + 70);
-		processDefinition.setProperty("canvas_minX", minX);
-		processDefinition.setProperty("canvas_minY", minY);
+	/**
+	 * 
+	 * setStyleProperties(设置元素式样)
+	 * 
+	 * @param kernelBaseElementImpl
+	 * @param style
+	 * @exception
+	 * @since 1.0.0
+	 */
+	private void setStyleProperties(KernelBaseElementImpl kernelBaseElementImpl, Style style) {
+		kernelBaseElementImpl.setProperty(StyleOption.Background, style.getBackground());
+		kernelBaseElementImpl.setProperty(StyleOption.Font, style.getFont());
+		kernelBaseElementImpl.setProperty(StyleOption.Foreground, style.getForeground());
+		kernelBaseElementImpl.setProperty(StyleOption.MulitSelectedColor,
+				style.getMulitSelectedColor());
+		kernelBaseElementImpl.setProperty(StyleOption.StyleObject, style.getObject());
+		kernelBaseElementImpl.setProperty(StyleOption.SelectedColor, style.getSelectedColor());
+		kernelBaseElementImpl.setProperty(StyleOption.TextColor, style.getTextColor());
 	}
 	private BaseElement getBaseElement(BaseElement baseElement) {
 		if (baseElement == null) {
