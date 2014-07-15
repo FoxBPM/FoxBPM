@@ -28,12 +28,16 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.PathVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 
 /**
- * 默认线条式样构造
  * 
- * @author MAENLIANG
- * @date 2014-06-10
+ * 
+ * AssociationSVGBuilder
+ * 
+ * MAENLIANG 2014年7月15日 下午9:00:22
+ * 
+ * @version 1.0.0
+ * 
  */
-public class ConnectorSVGBuilder extends AbstractSVGBuilder {
+public class AssociationSVGBuilder extends AbstractSVGBuilder {
 	private static final String FILL_DEFAULT = "none";
 	private static final String MOVETO_FLAG = "M";
 	private static final String LINETO_FLAG = "L";
@@ -41,20 +45,15 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 
 	private static final String D_SPACE = " ";
 	private PathVO pathVo;
-
-	public ConnectorSVGBuilder(SvgVO svgVo) {
+	public AssociationSVGBuilder(SvgVO svgVo) {
 		super(svgVo);
-		this.textVO = svgVo.getgVo().getgVoList().get(0).getTextVo();
-		this.pathVo = SVGUtils.getSequenceVOFromSvgVO(svgVo);
+		this.pathVo = SVGUtils.getSequenceVOFromSvgVODirectly(svgVo);
 		if (pathVo == null) {
-			throw new FoxBPMException("线条元素初始化工厂时候报错，pathVo对象为空");
+			throw new FoxBPMException("AssociationSVGBuilder初始化时候报错，pathVo对象为空");
 		}
-
 	}
 
-	/**
-	 * 设置线条的拐点信息,拐角划圆形
-	 */
+	@Override
 	public void setWayPoints(List<Point> pointList) {
 		if (pointList == null || pointList.size() == 0) {
 			return;
@@ -109,12 +108,31 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 	}
 
 	@Override
+	public void setWidth(float width) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setHeight(float height) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setXAndY(float x, float y) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
 	public void setStroke(String stroke) {
 		if (StringUtils.isBlank(stroke)) {
 			this.pathVo.setStroke(STROKE_DEFAULT);
 			return;
 		}
 		this.pathVo.setStroke(COLOR_FLAG + stroke);
+
 	}
 
 	@Override
@@ -136,6 +154,7 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 	@Override
 	public void setID(String id) {
 		this.pathVo.setId(id);
+
 	}
 
 	@Override
@@ -174,19 +193,4 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 
 	}
 
-	@Override
-	public void setWidth(float width) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setHeight(float height) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setXAndY(float x, float y) {
-	}
 }

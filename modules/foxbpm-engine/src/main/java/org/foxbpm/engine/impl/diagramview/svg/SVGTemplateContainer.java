@@ -97,6 +97,10 @@ public class SVGTemplateContainer {
 		this.init(SVGTemplateNameConstant.TEMPLATE_LANESET);
 		// 初始化加载空白UserTask
 		this.init(SVGTemplateNameConstant.TEMPLATE_CONNECTOR_SEQUENCEFLOW);
+		// 加载小部件
+		this.init(SVGTemplateNameConstant.TEMPLATE_GROUP);
+		this.init(SVGTemplateNameConstant.TEMPLATE_TEXTANNOTATION);
+		this.init(SVGTemplateNameConstant.TEMPLATE_CONNECTOR_ASSOCIATION);
 		// 初始化加载模版容器
 		this.init(SVGTemplateNameConstant.SVG_TEMPLATE);
 	}

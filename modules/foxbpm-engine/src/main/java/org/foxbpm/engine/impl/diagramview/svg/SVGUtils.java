@@ -100,6 +100,28 @@ public final class SVGUtils {
 	 * @param svgVo
 	 * @return
 	 */
+	public final static PathVO getSequenceVOFromSvgVODirectly(SvgVO svgVo) {
+		GVO getgVo = svgVo.getgVo();
+		if (getgVo != null) {
+			List<PathVO> pathVoList = getgVo.getPathVoList();
+			Iterator<PathVO> iterator = pathVoList.iterator();
+			PathVO tempPathVo = null;
+			while (iterator.hasNext()) {
+				tempPathVo = iterator.next();
+				if (StringUtils.equalsIgnoreCase(tempPathVo.getId(), BPMN_NODE_ID)) {
+					return tempPathVo;
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 获取线条路径
+	 * 
+	 * @param svgVo
+	 * @return
+	 */
 	public final static PathVO getSequenceVOFromSvgVO(SvgVO svgVo) {
 		List<GVO> gVoList = svgVo.getgVo().getgVoList();
 		if (gVoList != null && gVoList.size() > 0) {

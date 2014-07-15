@@ -26,12 +26,14 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.bpmn.behavior.ActivityBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.AssociationBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.BusinessRuleTaskBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.CallActivityBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.EndEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.EventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ExclusiveGatewayBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.GatewayBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.GroupBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.InclusiveGatewayBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ManualTaskBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ParallelGatewayBehavior;
@@ -42,17 +44,21 @@ import org.foxbpm.engine.impl.bpmn.behavior.ServiceTaskBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.StartEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.SubProcessBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.TaskBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.TextAnnotationBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateNameConstant;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTypeNameConstant;
 import org.foxbpm.engine.impl.diagramview.vo.VONode;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.task.Task;
+import org.foxbpm.kernel.behavior.KernelArtifactBehavior;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
+import org.foxbpm.kernel.process.KernelArtifact;
 import org.foxbpm.kernel.process.KernelBaseElement;
 import org.foxbpm.kernel.process.KernelFlowElement;
 import org.foxbpm.kernel.process.KernelLane;
 import org.foxbpm.kernel.process.KernelLaneSet;
+import org.foxbpm.kernel.process.impl.KernelArtifactImpl;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 
@@ -126,6 +132,7 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 	public String createProcessDefinitionVOString(ProcessDefinitionEntity deployedProcessDefinition) {
 		List<KernelFlowNodeImpl> flowNodes = deployedProcessDefinition.getFlowNodes();
 		List<VONode> voNodeList = new ArrayList<VONode>();
+		// 构建泳道
 		this.createLaneSetVO(deployedProcessDefinition.getLaneSets(), voNodeList);
 		// 遍历所有的流程节点
 		Iterator<KernelFlowNodeImpl> flowNodeIterator = flowNodes.iterator();
@@ -143,10 +150,15 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 				continue;
 			}
 
+			// 构造流程节点
 			voNode = this.getNodeSVGFromFactory(kernelFlowNodeImpl, taskType, svgTemplateFileName);
 			voNodeList.add(voNode);
 		}
+		// 构建SEQUENCE
 		this.createSequenceVO(deployedProcessDefinition, voNodeList);
+		// 构建小部件
+		this.createArtifactVO(deployedProcessDefinition, voNodeList);
+		// 转化成SVG字符串
 		return flowNodeVOFactory.convertNodeListToString(deployedProcessDefinition.getProperties(),
 				voNodeList);
 	}
@@ -193,6 +205,47 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 		}
 	}
 
+	/**
+	 * 
+	 * createArtifactVO(构造小部件，包括组，注释，连接线)
+	 * 
+	 * @param deployedProcessDefinition
+	 * @param voNodeList
+	 * @exception
+	 * @since 1.0.0
+	 */
+	private void createArtifactVO(ProcessDefinitionEntity deployedProcessDefinition,
+			List<VONode> voNodeList) {
+		List<KernelArtifact> artifacts = deployedProcessDefinition.getArtifacts();
+		if (artifacts != null && artifacts.size() > 0) {
+			String taskType = EMPTY_STRING;
+			String svgTemplateFileName = EMPTY_STRING;
+			Iterator<KernelArtifact> iterator = artifacts.iterator();
+			VONode voNode = null;
+			KernelArtifactImpl kernelArtifactImpl = null;
+			KernelArtifactBehavior artifactBehavior = null;
+			while (iterator.hasNext()) {
+				kernelArtifactImpl = (KernelArtifactImpl) iterator.next();
+				artifactBehavior = kernelArtifactImpl.getArtifactBehavior();
+				// 小部件分类处理，分别是组、注释、连接线
+				if (artifactBehavior instanceof GroupBehavior) {
+					taskType = SVGTypeNameConstant.SVG_TYPE_GROUP;
+					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_CONNECTOR_ASSOCIATION;
+				} else if (artifactBehavior instanceof TextAnnotationBehavior) {
+					taskType = SVGTypeNameConstant.SVG_TYPE_TEXTANNOTATION;
+					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_TEXTANNOTATION;
+				} else if (artifactBehavior instanceof AssociationBehavior) {
+					taskType = SVGTypeNameConstant.SVG_TYPE_CONNECTOR_ASSOCIATION_UNDIRECTED;
+					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_CONNECTOR_ASSOCIATION;
+				}
+
+				voNode = this.getNodeSVGFromFactory(kernelArtifactImpl, taskType,
+						svgTemplateFileName);
+				voNodeList.add(voNode);
+			}
+		}
+
+	}
 	/**
 	 * 创建连线VO
 	 * 

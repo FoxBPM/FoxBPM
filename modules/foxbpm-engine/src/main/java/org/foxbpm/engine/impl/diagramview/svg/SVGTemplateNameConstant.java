@@ -64,6 +64,10 @@ public final class SVGTemplateNameConstant {
 	 * connector
 	 */
 	public static final String TEMPLATE_CONNECTOR_SEQUENCEFLOW = "connector/sequenceflow.svg";
+	/**
+	 * connector
+	 */
+	public static final String TEMPLATE_CONNECTOR_ASSOCIATION = "connector/association.undirected.svg";
 
 	/**
 	 * gateway
@@ -76,4 +80,14 @@ public final class SVGTemplateNameConstant {
 	 * lane
 	 */
 	public static final String TEMPLATE_LANESET = "swimlane/lane.svg";
+
+	/**
+	 * group
+	 */
+	public static final String TEMPLATE_GROUP = "artifact/group.svg";
+
+	/**
+	 * text annotation
+	 */
+	public static final String TEMPLATE_TEXTANNOTATION = "artifact/text.annotation.svg";
 }

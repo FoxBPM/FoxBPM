@@ -74,6 +74,13 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 			return new GatewaySVGBuilder((SvgVO) svgVo);
 		} else if (StringUtils.contains(type, SVGTypeNameConstant.SVG_TYPE_LANE)) {
 			return new LanesetSVGBuilder((SvgVO) svgVo);
+		} else if (StringUtils.contains(type, SVGTypeNameConstant.SVG_TYPE_GROUP)) {
+			return new GroupSVGBuilder((SvgVO) svgVo);
+		} else if (StringUtils.contains(type, SVGTypeNameConstant.SVG_TYPE_TEXTANNOTATION)) {
+			return new TextAnnotationSVGBuilder((SvgVO) svgVo);
+		} else if (StringUtils.contains(type,
+				SVGTypeNameConstant.SVG_TYPE_CONNECTOR_ASSOCIATION_UNDIRECTED)) {
+			return new AssociationSVGBuilder((SvgVO) svgVo);
 		}
 		return null;
 	}
