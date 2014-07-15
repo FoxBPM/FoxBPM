@@ -32,7 +32,6 @@ import org.foxbpm.kernel.process.KernelLaneSet;
 public class KernelFlowElementsContainerImpl extends KernelFlowElementImpl
 		implements
 			KernelFlowElementsContainer {
-
 	/**
 	 * 
 	 */
@@ -174,6 +173,9 @@ public class KernelFlowElementsContainerImpl extends KernelFlowElementImpl
 		return flowNodes;
 	}
 
+	public Map<String, KernelFlowNodeImpl> getNamedFlowNodes() {
+		return namedFlowNodes;
+	}
 	/*
 	 * public IOSpecification getIoSpecification() { return ioSpecification; }
 	 * 
