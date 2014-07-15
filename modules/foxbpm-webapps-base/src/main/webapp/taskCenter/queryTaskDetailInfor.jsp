@@ -154,7 +154,8 @@
 		'isIE' : isIE,
 		'parentId' : 'flowImg',
 		'action' : 'getFlowGraph.action',
-		'processDefinitionId' : '${result.processDefinitionId}'
+		'processDefinitionId' : '${result.processDefinitionId}',
+		'processDefinitionKey' : '${result.processDefinitionKey}'
 	});
 
 	$(function() {

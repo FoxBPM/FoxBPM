@@ -22,6 +22,7 @@ function FlowGraphic(param) {
 	this.isIE = param.isIE;
 	this.action = param.action;
 	this.processDefinitionId = param.processDefinitionId;
+	this.processDefinitionKey = param.processDefinitionKey;
 
 	this.removePreviousRunningTrack = function(currentTrack) {
 		if (runningTrackIndex != 0
@@ -257,7 +258,9 @@ function FlowGraphic(param) {
 		if (this.isIE) {
 			$('#' + this.parentId).append(
 					"<img src= " + this.action + "?processDefinitionId="
-							+ this.processDefinitionId + " />");
+							+ this.processDefinitionId
+							+ "&processDefinitionKey=" + this.processDefinitionKey
+							+ " />");
 			// 标记流程图
 			this.addGraphicInfo();
 			this.markImags();
@@ -266,7 +269,8 @@ function FlowGraphic(param) {
 			$.ajax({
 				type : "POST",
 				url : action,
-				data : "flag=svg&processDefinitionId=" + processDefinitionId,
+				data : "flag=svg&processDefinitionId=" + processDefinitionId
+						+ "&processDefinitionKey=" + processDefinitionKey,
 				success : function(src) {
 					$('#' + parentId).html(src);
 					// 标记流程图

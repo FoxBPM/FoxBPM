@@ -34,7 +34,6 @@ a {
 		$("a[processDefinitionKey]").click(
 				function() {
 					var pdk = $(this).attr("processDefinitionKey");
-					var pdi = $(this).attr("processDefinitionId");
 					var userId =<%=request.getAttribute("userId")%>;
 
 					var formUrl = $(this).attr("formUrl");
@@ -44,8 +43,7 @@ a {
 					} else {
 						url += "?";
 					}
-					url += "userId=" + userId + "&processDefinitionKey=" + pdk
-							+ "&processDefinitionId=" + pdi;
+					url += "userId=" + userId + "&processDefinitionKey=" + pdk;
 					window.open(url);
 				});
 	});
