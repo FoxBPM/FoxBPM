@@ -24,23 +24,21 @@ import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 
 /**
  * @author kenshin
- *
+ * 
  */
 public class AssociationParser extends BaseElementParser {
-	
+
 	@Override
 	public BaseElementBehavior parser(BaseElement baseElement) {
-		
-		
-		Association association=(Association)baseElement;
-		AssociationBehavior associationBehavior=(AssociationBehavior)baseElementBehavior;
-		associationBehavior.setSourceRef(association.getSourceRef()!=null?association.getSourceRef().getId():null);
-		associationBehavior.setTargetRef(association.getTargetRef()!=null?association.getTargetRef().getId():null);
-		
-		
+		Association association = (Association) baseElement;
+		AssociationBehavior associationBehavior = (AssociationBehavior) baseElementBehavior;
+		associationBehavior.setSourceRef(association.getSourceRef() != null ? association
+				.getSourceRef().getId() : null);
+		associationBehavior.setTargetRef(association.getTargetRef() != null ? association
+				.getTargetRef().getId() : null);
 		return super.parser(baseElement);
 	}
-	
+
 	@Override
 	public void init() {
 		baseElementBehavior = new AssociationBehavior();

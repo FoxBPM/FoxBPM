@@ -21,11 +21,9 @@ import org.foxbpm.engine.impl.bpmn.behavior.GroupBehavior;
 
 /**
  * @author kenshin
- *
+ * 
  */
 public class GroupParser extends BaseElementParser {
-	
-
 	@Override
 	public void init() {
 		baseElementBehavior = new GroupBehavior();

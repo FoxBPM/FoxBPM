@@ -25,22 +25,19 @@ import org.foxbpm.engine.impl.bpmn.behavior.TextAnnotationBehavior;
 
 /**
  * @author kenshin
- *
+ * 
  */
 public class TextAnnotationParser extends BaseElementParser {
-	
+
 	@Override
 	public BaseElementBehavior parser(BaseElement baseElement) {
-		
-		
-		TextAnnotation textAnnotation=(TextAnnotation)baseElement;
-		TextAnnotationBehavior textAnnotationBehavior=(TextAnnotationBehavior)baseElementBehavior;
+		TextAnnotation textAnnotation = (TextAnnotation) baseElement;
+		TextAnnotationBehavior textAnnotationBehavior = (TextAnnotationBehavior) baseElementBehavior;
 		textAnnotationBehavior.setText(textAnnotation.getText());
 		textAnnotationBehavior.setTextFormat(textAnnotation.getTextFormat());
-		
 		return super.parser(baseElement);
 	}
-	
+
 	@Override
 	public void init() {
 		baseElementBehavior = new TextAnnotationBehavior();
