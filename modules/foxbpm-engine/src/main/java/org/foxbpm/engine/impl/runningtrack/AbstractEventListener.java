@@ -17,6 +17,7 @@
  */
 package org.foxbpm.engine.impl.runningtrack;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.foxbpm.engine.exception.FoxBPMException;
@@ -30,12 +31,13 @@ import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
 public abstract class AbstractEventListener implements KernelListener {
 
-	private static long tractRecord = 0000000000000;
+	private static long tractRecord = 0;
 	/**
 	 * serialVersionUID:序列化
 	 */
 	private static final long serialVersionUID = 6870039432248742401L;
 
+	private final static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmssSSS");
 	@Override
 	public void notify(ListenerExecutionContext executionContext) throws Exception {
 		// 记录流程实例的运行轨迹
@@ -57,6 +59,10 @@ public abstract class AbstractEventListener implements KernelListener {
 		if (runningTrackEntity == null) {
 			throw new FoxBPMException("分类构造的运行轨迹实体 不能为空");
 		}
+		if (tractRecord == 0) {
+			tractRecord = Long.parseLong(sdf.format(new Date()));
+		}
+
 		KernelTokenImpl kernelTokenImpl = (KernelTokenImpl) executionContext;
 		KernelProcessDefinitionImpl processDefinition = kernelTokenImpl.getProcessDefinition();
 		runningTrackEntity.setId(GuidUtil.CreateGuid());
