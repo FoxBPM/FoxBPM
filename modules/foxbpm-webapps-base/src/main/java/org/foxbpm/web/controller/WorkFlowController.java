@@ -125,6 +125,10 @@ public class WorkFlowController extends AbstWebController {
 			if (StringUtil.isNotEmpty(processDefinitionId)) {
 				resultMap.put("processDefinitionId", processDefinitionId);
 			}
+			String processDefinitionKey = StringUtil.getString(requestParams.get("processDefinitionKey"));
+			if (StringUtil.isNotEmpty(processDefinitionKey)) {
+				resultMap.put("processDefinitionKey", processDefinitionKey);
+			}
 		}
 
 		request.setAttribute(WebContextAttributeName.ATTRIBUTE_NAME_RESULT, resultMap);
