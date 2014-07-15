@@ -17,7 +17,14 @@
  */
 package org.foxbpm.connector.test.flowconnector.JDBCDatabaseQuery;
 
+import static org.junit.Assert.assertNotNull;
+
+import java.util.List;
+import java.util.Map;
+
+import org.foxbpm.engine.datavariable.VariableInstance;
 import org.foxbpm.engine.impl.identity.Authentication;
+import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
 import org.foxbpm.engine.test.Deployment;
 import org.junit.Test;
@@ -39,12 +46,19 @@ public class JDBCDatabaseQueryTest extends AbstractFoxBpmTestCase {
 	 * <p>4.测试用例：</p>
 	 * <p>		1.执行完成后，相应查看结果</p>
 	 */
+	@SuppressWarnings("unchecked")
 	@Test
 	@Deployment(resources = { "org/foxbpm/connector/test/flowconnector/JDBCDatabaseQuery/JDBCDatabaseQueryTest_1.bpmn"})
-	public void testJDBCDatabaseQuery(){
+	public void testJDBCDatabaseQuery() {
 		Authentication.setAuthenticatedUserId("admin");
 		// 启动流程
-		runtimeService.startProcessInstanceByKey("JDBCDatabaseQueryTest_1");
-		//涉及到变量结果
+		ProcessInstance pi = runtimeService.startProcessInstanceByKey("JDBCDatabaseQueryTest_1");
+		// 涉及到变量结果
+		VariableInstance vi = this.runtimeService.createVariableQuery().processInstanceId(pi.getId()).addVariableKey("data").singleResult();
+		List<Map<String,Object>> dataValue = null;
+		if(null != vi){
+			dataValue = (List<Map<String, Object>>) vi.getValueObject();
+		}
+		assertNotNull(dataValue);
 	}
 }

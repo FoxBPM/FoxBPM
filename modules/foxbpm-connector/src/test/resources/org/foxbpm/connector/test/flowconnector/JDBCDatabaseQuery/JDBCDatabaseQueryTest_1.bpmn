@@ -4,7 +4,7 @@
     <bpmn2:extensionElements>
       <foxbpm:connectorInstanceElements connrctorType="flowConnector">
         <foxbpm:connectorInstance connectorId="JDBCDatabaseQuery" packageName="org.foxbpm.connector.flowconnector.JDBCDatabaseQuery" className="JDBCDatabaseQuery" connectorInstanceId="5c4d4e1b-ea8d-4857-8500-97fe9ad97c6d" connectorInstanceName="sql查询" eventType="process-start" errorHandling="抛出异常" errorCode="" type="flowconnector">
-          <documentation xsi:type="foxbpm:Documentation"></documentation>
+          <documentation xsi:type="foxbpm:Documentation" id="Documentation_1"></documentation>
           <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="driverClassName" name="数据库驱动" dataType="java.lang.String" isExecute="true">
             <foxbpm:expression xsi:type="foxbpm:Expression" name="驱动"><![CDATA['com.mysql.jdbc.Driver']]></foxbpm:expression>
           </foxbpm:connectorParameterInputs>
@@ -20,13 +20,11 @@
           <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="sqlText" name="查询sql语句" dataType="java.lang.String" isExecute="true">
             <foxbpm:expression xsi:type="foxbpm:Expression" name="sql"><![CDATA['select * from au_userinfo']]></foxbpm:expression>
           </foxbpm:connectorParameterInputs>
-          <foxbpm:connectorParameterOutputs xsi:type="foxbpm:ConnectorParameterOutput" variableTarget="${data}">
-            <foxbpm:expression xsi:type="foxbpm:Expression"><![CDATA[outputObj]]></foxbpm:expression>
-          </foxbpm:connectorParameterOutputs>
+          <foxbpm:connectorParameterOutputs xsi:type="foxbpm:ConnectorParameterOutput" variableTarget="${data}" output="outputObj"/>
           <foxbpm:connectorParameterOutputsDef xsi:type="foxbpm:ConnectorParameterOutputDef" id="outputObj" name="返回结果集" dataType="java.util.List&lt;java.util.Map&lt;String, Object>>"/>
         </foxbpm:connectorInstance>
       </foxbpm:connectorInstanceElements>
-      <foxbpm:DataVariable id="data" dataType="java.util.List&lt;java.util.Map&lt;String, Object>>" bizType="customVariable">
+      <foxbpm:DataVariable id="data" dataType="java.lang.String" isPersistence="true" bizType="customVariable">
         <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
       </foxbpm:DataVariable>
     </bpmn2:extensionElements>
