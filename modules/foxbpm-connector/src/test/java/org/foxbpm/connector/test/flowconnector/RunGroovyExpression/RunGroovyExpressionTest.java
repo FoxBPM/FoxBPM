@@ -15,12 +15,9 @@
  * 
  * @author yangguangftlp
  */
-package org.foxbpm.connector.test.flowconnector.JDBCDatabaseQuery;
+package org.foxbpm.connector.test.flowconnector.RunGroovyExpression;
 
 import static org.junit.Assert.assertNotNull;
-
-import java.util.List;
-import java.util.Map;
 
 import org.foxbpm.engine.datavariable.VariableInstance;
 import org.foxbpm.engine.impl.identity.Authentication;
@@ -30,34 +27,33 @@ import org.foxbpm.engine.test.Deployment;
 import org.junit.Test;
 
 /**
- * 测试jdbc查询sql
+ * 脚本执行
  * 
  * @author yangguangftlp
- * @date 2014年7月10日
+ * @date 2014年7月15日
  */
-public class JDBCDatabaseQueryTest extends AbstractFoxBpmTestCase {
-
+public class RunGroovyExpressionTest extends AbstractFoxBpmTestCase {
+	
 	/**
-	 * 测试进入节点时或离开时查询sql
-	 * <p>1.使用场景：节点进入或离开时查询sql</p>
+	 * 测试进入节点时或离开时执行脚本
+	 * <p>1.使用场景：节点进入或离开时执行脚本</p>
 	 * <p>2.预置条件：<p>
 	 *          1.在任务节点进入或离开时配置连接器
 	 * <p>3.处理过程：首先，驱动流程进入节点或离开节点</p>
 	 * <p>4.测试用例：</p>
 	 * <p>		1.执行完成后，相应查看结果</p>
 	 */
-	@SuppressWarnings("unchecked")
 	@Test
-	@Deployment(resources = { "org/foxbpm/connector/test/flowconnector/JDBCDatabaseQuery/JDBCDatabaseQueryTest_1.bpmn"})
-	public void testJDBCDatabaseQuery() {
+	@Deployment(resources = { "org/foxbpm/connector/test/flowconnector/RunGroovyExpression/RunGroovyExpression_1.bpmn" })
+	public void testRunGroovyExpression() {
 		Authentication.setAuthenticatedUserId("admin");
 		// 启动流程
-		ProcessInstance pi = runtimeService.startProcessInstanceByKey("JDBCDatabaseQueryTest_1");
+		ProcessInstance pi = runtimeService.startProcessInstanceByKey("RunGroovyExpression_1");
 		// 涉及到变量结果
 		VariableInstance vi = this.runtimeService.createVariableQuery().processInstanceId(pi.getId()).addVariableKey("data").singleResult();
-		List<Map<String,Object>> dataValue = null;
-		if(null != vi){
-			dataValue = (List<Map<String, Object>>) vi.getValueObject();
+		Object dataValue = null;
+		if (null != vi) {
+			dataValue = vi.getValueObject();
 		}
 		assertNotNull(dataValue);
 	}

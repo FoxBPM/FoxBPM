@@ -17,7 +17,14 @@
  */
 package org.foxbpm.connector.test.flowconnector.DatasourceDatabaseQuery;
 
+import static org.junit.Assert.assertNotNull;
+
+import java.util.List;
+import java.util.Map;
+
+import org.foxbpm.engine.datavariable.VariableInstance;
 import org.foxbpm.engine.impl.identity.Authentication;
+import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
 import org.foxbpm.engine.test.Deployment;
 import org.junit.Test;
@@ -37,14 +44,21 @@ public class DatasourceDatabaseQueryTest extends AbstractFoxBpmTestCase {
 	 *          1.在任务节点进入或离开时配置连接器
 	 * <p>3.处理过程：首先，驱动流程进入节点或离开节点</p>
 	 * <p>4.测试用例：</p>
-	 * <p>		1.执行完成后，相应查看结果</p>
+	 * <p>		1.执行完成后，相应查看变量结果</p>
 	 */
+	@SuppressWarnings("unchecked")
 	@Test
 	@Deployment(resources = { "org/foxbpm/connector/test/flowconnector/DatasourceDatabaseQuery/DatasourceDatabaseQueryTest_1.bpmn" })
 	public void testJDBCDatabaseQuery() {
 		Authentication.setAuthenticatedUserId("admin");
 		// 启动流程
-		runtimeService.startProcessInstanceByKey("DatasourceDatabaseQueryTest_1");
+		ProcessInstance pi = runtimeService.startProcessInstanceByKey("DatasourceDatabaseQueryTest_1");
 		// 涉及到变量结果
+		VariableInstance vi = this.runtimeService.createVariableQuery().processInstanceId(pi.getId()).addVariableKey("data").singleResult();
+		List<Map<String,Object>> dataValue = null;
+		if(null != vi){
+			dataValue = (List<Map<String, Object>>) vi.getValueObject();
+		}
+		assertNotNull(dataValue);
 	}
 }

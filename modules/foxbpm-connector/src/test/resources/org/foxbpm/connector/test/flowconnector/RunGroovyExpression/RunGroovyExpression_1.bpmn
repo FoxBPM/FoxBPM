@@ -1,32 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:foxbpm="http://www.foxbpm.org/foxbpm" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="Definitions_1" targetNamespace="http://www.foxbpm.org">
-  <bpmn2:process id="JDBCDatabaseQueryTest_1" name="JDBCDatabaseQueryTest">
+  <bpmn2:process id="RunGroovyExpression_1" name="RunGroovyExpression">
     <bpmn2:extensionElements>
-      <foxbpm:connectorInstanceElements connrctorType="flowConnector">
-        <foxbpm:connectorInstance connectorId="JDBCDatabaseQuery" packageName="org.foxbpm.connector.flowconnector.JDBCDatabaseQuery" className="JDBCDatabaseQuery" connectorInstanceId="5c4d4e1b-ea8d-4857-8500-97fe9ad97c6d" connectorInstanceName="sql查询" eventType="process-start" errorHandling="抛出异常" errorCode="" type="flowconnector">
-          <documentation xsi:type="foxbpm:Documentation" id="Documentation_1"></documentation>
-          <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="driverClassName" name="数据库驱动" dataType="java.lang.String" isExecute="true">
-            <foxbpm:expression xsi:type="foxbpm:Expression" name="驱动"><![CDATA['com.mysql.jdbc.Driver']]></foxbpm:expression>
-          </foxbpm:connectorParameterInputs>
-          <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="url" name="数据库URL" dataType="java.lang.String" isExecute="true">
-            <foxbpm:expression xsi:type="foxbpm:Expression" name="数据库url"><![CDATA['jdbc:mysql://172.16.40.89/quartz_foxbpm?characterEncoding=UTF-8']]></foxbpm:expression>
-          </foxbpm:connectorParameterInputs>
-          <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="username" name="用户名" dataType="java.lang.String" isExecute="true">
-            <foxbpm:expression xsi:type="foxbpm:Expression" name="用户名"><![CDATA['root']]></foxbpm:expression>
-          </foxbpm:connectorParameterInputs>
-          <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="password" name="密码" dataType="java.lang.String" isExecute="true">
-            <foxbpm:expression xsi:type="foxbpm:Expression" name="密码"><![CDATA['fixflow']]></foxbpm:expression>
-          </foxbpm:connectorParameterInputs>
-          <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="sqlText" name="查询sql语句" dataType="java.lang.String" isExecute="true">
-            <foxbpm:expression xsi:type="foxbpm:Expression" name="sql"><![CDATA['select * from au_userinfo']]></foxbpm:expression>
-          </foxbpm:connectorParameterInputs>
-          <foxbpm:connectorParameterOutputs xsi:type="foxbpm:ConnectorParameterOutput" variableTarget="${data}" output="outputObj"/>
-          <foxbpm:connectorParameterOutputsDef xsi:type="foxbpm:ConnectorParameterOutputDef" id="outputObj" name="返回结果集" dataType="java.util.List&lt;java.util.Map&lt;String, Object>>"/>
-        </foxbpm:connectorInstance>
-      </foxbpm:connectorInstanceElements>
       <foxbpm:DataVariable id="data" dataType="java.lang.String" isPersistence="true" bizType="customVariable">
         <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
       </foxbpm:DataVariable>
+      <foxbpm:connectorInstanceElements connrctorType="flowConnector">
+        <foxbpm:connectorInstance connectorId="RunGroovyExpression" packageName="org.foxbpm.connector.flowconnector.RunGroovyExpression" className="RunGroovyExpression" connectorInstanceId="5b0a4760-69b3-4a96-8312-cbc062e9aefc" connectorInstanceName="执行脚本" eventType="process-start" errorHandling="抛出异常" errorCode="" type="flowconnector">
+          <documentation xsi:type="foxbpm:Documentation"></documentation>
+          <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="expressionText" name="脚本表达式" dataType="java.lang.String" isExecute="false">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_2" name="脚本"><![CDATA[int a = 1;
+int b = 1;
+
+return (a+b);]]></foxbpm:expression>
+          </foxbpm:connectorParameterInputs>
+          <foxbpm:connectorParameterOutputs xsi:type="foxbpm:ConnectorParameterOutput" variableTarget="${data}" output="outputObj"/>
+          <foxbpm:connectorParameterOutputsDef xsi:type="foxbpm:ConnectorParameterOutputDef" id="outputObj" name="返回结果" dataType="java.lang.Object"/>
+        </foxbpm:connectorInstance>
+      </foxbpm:connectorInstanceElements>
     </bpmn2:extensionElements>
     <bpmn2:userTask id="UserTask_1" name="UserTask_1">
       <bpmn2:extensionElements>
@@ -54,7 +45,7 @@
     </bpmn2:endEvent>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="JDBCDatabaseQueryTest_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="RunGroovyExpression_1">
       <bpmndi:BPMNShape id="BPMNShape_1" bpmnElement="StartEvent_1">
         <dc:Bounds height="36.0" width="36.0" x="70.0" y="109.0"/>
       </bpmndi:BPMNShape>
