@@ -75,7 +75,6 @@ import org.foxbpm.engine.impl.bpmn.behavior.ProcessBehavior;
 import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtDefinition;
-import org.foxbpm.engine.impl.runningtrack.AbstractEventListener;
 import org.foxbpm.engine.impl.util.BpmnModelUtil;
 import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
@@ -84,6 +83,7 @@ import org.foxbpm.kernel.ProcessDefinitionBuilder;
 import org.foxbpm.kernel.behavior.KernelArtifactBehavior;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
 import org.foxbpm.kernel.event.KernelEventType;
+import org.foxbpm.kernel.event.KernelListener;
 import org.foxbpm.kernel.process.KernelDIBounds;
 import org.foxbpm.kernel.process.KernelFlowElementsContainer;
 import org.foxbpm.kernel.process.KernelLaneSet;
@@ -208,10 +208,10 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		if (eventListenerConfig != null) {
 			// 加载运行轨迹监听器
 			List<EventListener> eventListenerList = eventListenerConfig.getEventListener();
-			AbstractEventListener foxbpmEventListener = null;
+			KernelListener foxbpmEventListener = null;
 			try {
 				for (EventListener eventListener : eventListenerList) {
-					foxbpmEventListener = (AbstractEventListener) Class.forName(eventListener.getListenerClass()).newInstance();
+					foxbpmEventListener = (KernelListener) Class.forName(eventListener.getListenerClass()).newInstance();
 					if (StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_START) || StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_END)) {
 						// 注册启动轨迹监听
 						processEntity.addKernelListener(eventListener.getEventType(), foxbpmEventListener);
