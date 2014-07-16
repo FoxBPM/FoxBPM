@@ -86,6 +86,41 @@ public class SvgElementBuildDistincter {
 	}
 	/**
 	 * 
+	 * createCommoneElement(构造注释)
+	 * 
+	 * @exception
+	 * @since 1.0.0
+	 */
+	public void createTextAnnotation(String text, String textFormat) {
+		if (svgBuilder != null && kernelBaseElementImpl != null) {
+			// ID
+			svgBuilder.setID(kernelBaseElementImpl.getId());
+			// 文本
+			if (StringUtils.isNotBlank(text)) {
+				svgBuilder.setText(text);
+				svgBuilder.setTextStroke((String) kernelBaseElementImpl
+						.getProperty(StyleOption.TextColor));
+				svgBuilder.setTextFill((String) kernelBaseElementImpl
+						.getProperty(StyleOption.TextColor));
+				svgBuilder.setTextStrokeWidth(0);
+				svgBuilder
+						.setTextFont((String) kernelBaseElementImpl.getProperty(StyleOption.Font));
+			}
+			// 宽度，高度
+			svgBuilder.setWidth(kernelBaseElementImpl.getWidth());
+			svgBuilder.setHeight(kernelBaseElementImpl.getHeight());
+			// 边框式样
+			svgBuilder
+					.setStroke((String) kernelBaseElementImpl.getProperty(StyleOption.Foreground));
+			// 坐标
+			svgBuilder.setXAndY(kernelBaseElementImpl.getX(), kernelBaseElementImpl.getY());
+			// 背景色
+			svgBuilder.setFill((String) kernelBaseElementImpl.getProperty(StyleOption.Background));
+		}
+
+	}
+	/**
+	 * 
 	 * createSequenceElement(构造线条)
 	 * 
 	 * @param id

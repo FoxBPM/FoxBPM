@@ -161,7 +161,10 @@ public abstract class AbstractFlowElementVOFactory {
 				svgElementBuildDistincter.createCommoneElement();
 			} else if (artifactBehavior instanceof TextAnnotationBehavior) {
 				// 小部件-注释
-
+				TextAnnotationBehavior textAnnotationBehavior = (TextAnnotationBehavior) artifactBehavior;
+				svgElementBuildDistincter.setKernelBaseElementImpl(kernelArtifactImpl);
+				svgElementBuildDistincter.createTextAnnotation(textAnnotationBehavior.getText(),
+						textAnnotationBehavior.getTextFormat());
 			}
 
 		}

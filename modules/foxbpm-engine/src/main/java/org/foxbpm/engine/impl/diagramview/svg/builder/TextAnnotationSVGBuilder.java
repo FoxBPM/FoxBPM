@@ -57,8 +57,10 @@ public class TextAnnotationSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setXAndY(float x, float y) {
-		// TODO Auto-generated method stub
-
+		// 设置整体坐标，包括子类型
+		this.svgVo.getgVo().setTransform(
+				new StringBuffer(TRANSLANT_PREFIX).append(x).append(COMMA).append(y)
+						.append(BRACKET_SUFFIX).toString());
 	}
 
 	@Override
