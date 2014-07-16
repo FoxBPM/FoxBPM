@@ -15,7 +15,7 @@
  * 
  * @author MAENLIANG
  */
-package org.foxbpm.engine.impl.diagramview.svg.vo.build;
+package org.foxbpm.engine.impl.diagramview.svg.builder;
 
 import java.awt.Font;
 import java.util.List;

@@ -15,7 +15,7 @@
  * 
  * @author MAENLIANG
  */
-package org.foxbpm.engine.impl.diagramview.svg.vo.build;
+package org.foxbpm.engine.impl.diagramview.svg.builder;
 
 import java.awt.Font;
 import java.util.List;
@@ -68,17 +68,17 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 			return new EventSVGBuilder((SvgVO) svgVo);
 		} else if (StringUtils.contains(type, SVGTypeNameConstant.SVG_TYPE_TASK)) {
 			return new TaskSVGBuilder((SvgVO) svgVo);
-		} else if (StringUtils.contains(type, SVGTypeNameConstant.SVG_TYPE_CONNECTOR)) {
+		} else if (StringUtils.equalsIgnoreCase(type, SVGTypeNameConstant.SVG_TYPE_CONNECTOR)) {
 			return new ConnectorSVGBuilder((SvgVO) svgVo);
-		} else if (StringUtils.contains(type, SVGTypeNameConstant.SVT_TYPE_GATEWAY)) {
+		} else if (StringUtils.equalsIgnoreCase(type, SVGTypeNameConstant.SVT_TYPE_GATEWAY)) {
 			return new GatewaySVGBuilder((SvgVO) svgVo);
-		} else if (StringUtils.contains(type, SVGTypeNameConstant.SVG_TYPE_LANE)) {
+		} else if (StringUtils.equalsIgnoreCase(type, SVGTypeNameConstant.SVG_TYPE_LANE)) {
 			return new LanesetSVGBuilder((SvgVO) svgVo);
-		} else if (StringUtils.contains(type, SVGTypeNameConstant.SVG_TYPE_GROUP)) {
+		} else if (StringUtils.equalsIgnoreCase(type, SVGTypeNameConstant.SVG_TYPE_GROUP)) {
 			return new GroupSVGBuilder((SvgVO) svgVo);
-		} else if (StringUtils.contains(type, SVGTypeNameConstant.SVG_TYPE_TEXTANNOTATION)) {
+		} else if (StringUtils.equalsIgnoreCase(type, SVGTypeNameConstant.SVG_TYPE_TEXTANNOTATION)) {
 			return new TextAnnotationSVGBuilder((SvgVO) svgVo);
-		} else if (StringUtils.contains(type,
+		} else if (StringUtils.equalsIgnoreCase(type,
 				SVGTypeNameConstant.SVG_TYPE_CONNECTOR_ASSOCIATION_UNDIRECTED)) {
 			return new AssociationSVGBuilder((SvgVO) svgVo);
 		}

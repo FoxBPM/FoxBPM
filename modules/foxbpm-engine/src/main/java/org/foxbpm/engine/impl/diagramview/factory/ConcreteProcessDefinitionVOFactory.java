@@ -230,7 +230,7 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 				// 小部件分类处理，分别是组、注释、连接线
 				if (artifactBehavior instanceof GroupBehavior) {
 					taskType = SVGTypeNameConstant.SVG_TYPE_GROUP;
-					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_CONNECTOR_ASSOCIATION;
+					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_GROUP;
 				} else if (artifactBehavior instanceof TextAnnotationBehavior) {
 					taskType = SVGTypeNameConstant.SVG_TYPE_TEXTANNOTATION;
 					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_TEXTANNOTATION;

@@ -22,19 +22,21 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.foxbpm.engine.impl.bpmn.behavior.GroupBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.SequenceFlowBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.TextAnnotationBehavior;
 import org.foxbpm.engine.impl.bpmn.parser.StyleOption;
 import org.foxbpm.engine.impl.diagramview.builder.FoxBpmnViewBuilder;
-import org.foxbpm.engine.impl.diagramview.svg.Point;
-import org.foxbpm.engine.impl.diagramview.svg.PointUtils;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTypeNameConstant;
-import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
+import org.foxbpm.engine.impl.diagramview.svg.builder.AbstractSVGBuilder;
 import org.foxbpm.engine.impl.diagramview.svg.factory.AbstractFlowElementSVGFactory;
-import org.foxbpm.engine.impl.diagramview.svg.vo.build.AbstractSVGBuilder;
 import org.foxbpm.engine.impl.diagramview.vo.VONode;
+import org.foxbpm.kernel.behavior.KernelArtifactBehavior;
 import org.foxbpm.kernel.process.KernelBaseElement;
 import org.foxbpm.kernel.process.KernelFlowElement;
 import org.foxbpm.kernel.process.KernelLane;
+import org.foxbpm.kernel.process.impl.KernelArtifactImpl;
+import org.foxbpm.kernel.process.impl.KernelAssociationImpl;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelLaneImpl;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
@@ -92,16 +94,16 @@ public abstract class AbstractFlowElementVOFactory {
 	 */
 	public VONode createFlowElementSVGVO(String svgType) {
 		VONode voNode = null;
-		if (StringUtils.equalsIgnoreCase(svgType,
-				SVGTypeNameConstant.SVG_TYPE_EVENT)
-				|| StringUtils.equalsIgnoreCase(svgType,
-						SVGTypeNameConstant.SVG_TYPE_CONNECTOR)) {
+		if (StringUtils.equalsIgnoreCase(svgType, SVGTypeNameConstant.SVG_TYPE_EVENT)
+				|| StringUtils.equalsIgnoreCase(svgType, SVGTypeNameConstant.SVG_TYPE_CONNECTOR)) {
 			voNode = this.createSVGVO();
 		} else {
 			voNode = this.createSVGVO(svgType);
 		}
-		FoxBpmnViewBuilder svgBuilder = AbstractSVGBuilder.createSVGBuilder(
-				voNode, svgType);
+		FoxBpmnViewBuilder svgBuilder = AbstractSVGBuilder.createSVGBuilder(voNode, svgType);
+
+		SvgElementBuildDistincter svgElementBuildDistincter = new SvgElementBuildDistincter();
+		svgElementBuildDistincter.setSvgBuilder(svgBuilder);
 
 		// 构造节点元素,需要考虑构造顺序，注意依赖关系
 		// 1、过滤
@@ -110,95 +112,61 @@ public abstract class AbstractFlowElementVOFactory {
 		// 4、构造XY坐标
 		// 5、构造FILL式样
 		if (kernelBaseElement instanceof KernelFlowNodeImpl) {
-			// 过滤
-			this.filterActivityTaskVO(voNode, new String[] { "callActivity" });
-			this.filterChildVO(voNode,
-					Arrays.asList(svgType.split(SPLIT_SEPERATOR)));
+			// 流程节点
+			this.filterActivityTaskVO(voNode, new String[]{"callActivity"});
+			this.filterChildVO(voNode, Arrays.asList(svgType.split(SPLIT_SEPERATOR)));
 			KernelFlowNodeImpl kernelFlowNodeImpl = (KernelFlowNodeImpl) kernelBaseElement;
-			svgBuilder.setID(kernelFlowNodeImpl.getId());
-			if (StringUtils.isNotBlank(kernelFlowNodeImpl.getName())) {
-				svgBuilder.setText(kernelFlowNodeImpl.getName());
-				svgBuilder.setTextStroke((String) kernelFlowNodeImpl
-						.getProperty(StyleOption.TextColor));
-				svgBuilder.setTextFill((String) kernelFlowNodeImpl
-						.getProperty(StyleOption.TextColor));
-				svgBuilder.setTextStrokeWidth(0);
-				svgBuilder.setTextFont((String) kernelFlowNodeImpl
-						.getProperty(StyleOption.Font));
-			}
 
-			// 如果是事件节点，必须先设置width属性，即设置圆的直径,
-			svgBuilder.setWidth(kernelFlowNodeImpl.getWidth());
-			svgBuilder.setHeight(kernelFlowNodeImpl.getHeight());
-
-			svgBuilder.setStroke((String) kernelFlowNodeImpl
-					.getProperty(StyleOption.Foreground));
-
-			// 设置节点的坐标包括对应文本字体的坐标，文本坐标依赖于文本式样字体大小等
-			svgBuilder.setXAndY(kernelFlowNodeImpl.getX(),
-					kernelFlowNodeImpl.getY());
-			// 线性渐变设置会用到矩形的Height属性，
-			svgBuilder.setFill((String) kernelFlowNodeImpl
-					.getProperty(StyleOption.Background));
-			// TODO 未知属性 StyleOption.StyleObject
+			svgElementBuildDistincter.setKernelBaseElementImpl(kernelFlowNodeImpl);
+			svgElementBuildDistincter.createCommoneElement();
 		} else if (kernelBaseElement instanceof KernelSequenceFlowImpl) {
-			// 线条元素
-			// 先构造拐点，再构造文本坐标
+			// 连接线
 			KernelSequenceFlowImpl kernelSequenceFlowImpl = (KernelSequenceFlowImpl) kernelBaseElement;
-			svgBuilder.setID(kernelSequenceFlowImpl.getId());
 			SequenceFlowBehavior sequenceFlowBehavior = (SequenceFlowBehavior) kernelSequenceFlowImpl
 					.getSequenceFlowBehavior();
-			String[] filterConfition = new String[] { "", "default" };
+			String[] filterConfition = new String[]{"", "default"};
 			if (sequenceFlowBehavior == null
-					|| StringUtils.isBlank(sequenceFlowBehavior
-							.getConditionExpression())) {
+					|| StringUtils.isBlank(sequenceFlowBehavior.getConditionExpression())) {
 				filterConfition[0] = "conditional";
 			}
-			// 过滤
 			this.filterConnectorVO(voNode, filterConfition);
-			List<Integer> waypoints = kernelSequenceFlowImpl.getWaypoints();
-			List<Point> pointList = SVGUtils
-					.convertWaypointsTOPointList(waypoints);
-			// 构造
-			svgBuilder.setWayPoints(pointList);
-			if (StringUtils.isNotBlank(kernelSequenceFlowImpl.getName())) {
-				svgBuilder.setText(kernelSequenceFlowImpl.getName());
-				// 设置文本的相对位置
-				Point textPoint = PointUtils.caclDetailCenterPoint(pointList);
-				svgBuilder.setTextX(textPoint.getX());
-				svgBuilder.setTextY(textPoint.getY());
-			}
 
-			svgBuilder.setStroke((String) kernelSequenceFlowImpl
-					.getProperty(StyleOption.Foreground));
+			svgElementBuildDistincter.createSequenceElement(kernelSequenceFlowImpl.getId(),
+					kernelSequenceFlowImpl.getName(),
+					(String) kernelSequenceFlowImpl.getProperty(StyleOption.Foreground),
+					kernelSequenceFlowImpl.getWaypoints());
+		} else if (kernelBaseElement instanceof KernelAssociationImpl) {
+			// 连接线
+			KernelAssociationImpl kernelAssociationImpl = (KernelAssociationImpl) kernelBaseElement;
+			svgElementBuildDistincter.createSequenceElement(kernelAssociationImpl.getId(),
+					kernelAssociationImpl.getName(),
+					(String) kernelAssociationImpl.getProperty(StyleOption.Foreground),
+					kernelAssociationImpl.getWaypoints());
 		} else if (kernelBaseElement instanceof KernelLane) {
+			// 泳道
 			KernelLaneImpl kernelLaneImpl = (KernelLaneImpl) kernelBaseElement;
-			svgBuilder.setID(kernelLaneImpl.getId());
-			if (StringUtils.isNotBlank(kernelLaneImpl.getName())) {
-				svgBuilder.setText(kernelLaneImpl.getName());
-				svgBuilder.setTextStroke((String) kernelLaneImpl
-						.getProperty(StyleOption.TextColor));
-				svgBuilder.setTextFill((String) kernelLaneImpl
-						.getProperty(StyleOption.TextColor));
-				svgBuilder.setTextStrokeWidth(0);
-				svgBuilder.setTextFont((String) kernelLaneImpl
-						.getProperty(StyleOption.Font));
-			}
 
-			svgBuilder.setWidth(kernelLaneImpl.getWidth());
-			svgBuilder.setHeight(kernelLaneImpl.getHeight());
+			svgElementBuildDistincter.setKernelBaseElementImpl(kernelLaneImpl);
+			svgElementBuildDistincter.createCommoneElement();
 
-			svgBuilder.setStroke((String) kernelLaneImpl
-					.getProperty(StyleOption.Foreground));
-
-			// 设置节点的坐标包括对应文本字体的坐标，文本坐标依赖于文本式样字体大小等
-			svgBuilder.setXAndY(kernelLaneImpl.getX(), kernelLaneImpl.getY());
-			// 线性渐变设置会用到矩形的Height属性，
-			svgBuilder.setFill((String) kernelLaneImpl
-					.getProperty(StyleOption.Background));
 			svgBuilder.setStrokeWidth(0.5f);
 			svgBuilder.setTextLocationByHerizonFlag((Boolean) kernelLaneImpl
 					.getProperty(StyleOption.IsHorizontal));
+		} else if (kernelBaseElement instanceof KernelArtifactImpl) {
+			// 小部件
+			KernelArtifactImpl kernelArtifactImpl = (KernelArtifactImpl) kernelBaseElement;
+			KernelArtifactBehavior artifactBehavior = kernelArtifactImpl.getArtifactBehavior();
+			if (artifactBehavior instanceof GroupBehavior) {
+				svgElementBuildDistincter.setKernelBaseElementImpl(kernelArtifactImpl);
+				svgElementBuildDistincter.createCommoneElement();
+			} else if (artifactBehavior instanceof TextAnnotationBehavior) {
+				// 小部件-注释
+				TextAnnotationBehavior textAnnotationBehavior = (TextAnnotationBehavior) artifactBehavior;
+				svgElementBuildDistincter.setKernelBaseElementImpl(kernelArtifactImpl);
+				svgElementBuildDistincter.createTextAnnotation(textAnnotationBehavior.getText(),
+						textAnnotationBehavior.getTextFormat());
+			}
+
 		}
 		return voNode;
 	}
@@ -213,8 +181,8 @@ public abstract class AbstractFlowElementVOFactory {
 	public static AbstractFlowElementVOFactory createSVGFactory(
 			KernelBaseElement kernelBaseElement, String svgTemplateFileName) {
 		// 当前实现是SVG格式，后期可能支持微软的XML
-		return AbstractFlowElementSVGFactory.createSVGFactory(
-				kernelBaseElement, svgTemplateFileName);
+		return AbstractFlowElementSVGFactory.createSVGFactory(kernelBaseElement,
+				svgTemplateFileName);
 	}
 
 	/**
@@ -225,17 +193,14 @@ public abstract class AbstractFlowElementVOFactory {
 	 * @return
 	 */
 	public static AbstractFlowElementVOFactory createSignedSVGFactory(
-			KernelFlowElement kernelFlowElement, String svgTemplateFileName,
-			String taskState,
+			KernelFlowElement kernelFlowElement, String svgTemplateFileName, String taskState,
 			AbstractFlowElementVOFactory abstractFlowNodeVOFactory) {
 		// 当前实现是SVG格式，后期可能支持微软的XML
-		return AbstractFlowElementSVGFactory.createSVGFactory(
-				kernelFlowElement, svgTemplateFileName, taskState,
-				abstractFlowNodeVOFactory);
+		return AbstractFlowElementSVGFactory.createSVGFactory(kernelFlowElement,
+				svgTemplateFileName, taskState, abstractFlowNodeVOFactory);
 	}
 
-	public abstract String convertNodeListToString(
-			Map<String, Object> processDefinitionPorperties,
+	public abstract String convertNodeListToString(Map<String, Object> processDefinitionPorperties,
 			List<VONode> voNodeList);
 
 	/**
@@ -252,8 +217,7 @@ public abstract class AbstractFlowElementVOFactory {
 	 * @param voNode
 	 * @param filterCondition
 	 */
-	public abstract void filterActivityTaskVO(VONode voNode,
-			String[] filterCondition);
+	public abstract void filterActivityTaskVO(VONode voNode, String[] filterCondition);
 
 	/**
 	 * 过滤连接器类型
@@ -261,8 +225,7 @@ public abstract class AbstractFlowElementVOFactory {
 	 * @param voNode
 	 * @param filterCondition
 	 */
-	public abstract void filterConnectorVO(VONode voNode,
-			String[] filterCondition);
+	public abstract void filterConnectorVO(VONode voNode, String[] filterCondition);
 
 	/**
 	 * 过滤子类型
@@ -270,8 +233,7 @@ public abstract class AbstractFlowElementVOFactory {
 	 * @param voNode
 	 * @param filterCondition
 	 */
-	public abstract void filterChildVO(VONode voNode,
-			List<String> filterCondition);
+	public abstract void filterChildVO(VONode voNode, List<String> filterCondition);
 
 	/**
 	 * 根据子类型构造
