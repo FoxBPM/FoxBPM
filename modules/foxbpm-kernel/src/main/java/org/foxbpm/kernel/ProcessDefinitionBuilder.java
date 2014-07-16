@@ -149,7 +149,7 @@ public class ProcessDefinitionBuilder {
 		return processDefinition;
 	}
 
-	protected KernelFlowNodeImpl getFlowNode() {
+	public KernelFlowNodeImpl getFlowNode() {
 		return (KernelFlowNodeImpl) containerStack.peek();
 	}
 
