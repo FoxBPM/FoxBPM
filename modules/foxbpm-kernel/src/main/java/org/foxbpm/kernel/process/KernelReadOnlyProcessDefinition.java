@@ -21,9 +21,10 @@ package org.foxbpm.kernel.process;
  * @author kenshin
  * 
  */
-public interface KernelReadOnlyProcessDefinition extends KernelCallableElement, KernelFlowElementsContainer {
-
-	String getName();
+public interface KernelReadOnlyProcessDefinition
+		extends
+			KernelCallableElement,
+			KernelFlowElementsContainer {
 
 	String getKey();
 

@@ -31,10 +31,6 @@ public interface KernelLane extends KernelBaseElement {
 
 	void setChildLaneSet(KernelLaneSet value);
 
-	String getName();
-
-	void setName(String value);
-
 	KernelBaseElement getPartitionElementRef();
 
 	void setPartitionElementRef(KernelBaseElement value);

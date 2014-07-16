@@ -19,17 +19,10 @@ package org.foxbpm.kernel.process;
 
 import java.util.List;
 
-
 public interface KernelLaneSet extends KernelBaseElement {
 
-    List<KernelLane> getLanes();
+	List<KernelLane> getLanes();
 
-
-    String getName();
-
-    void setName(String value);
-    
-    
-    KernelLane getLaneForId(String id);
+	KernelLane getLaneForId(String id);
 
 } // LaneSet

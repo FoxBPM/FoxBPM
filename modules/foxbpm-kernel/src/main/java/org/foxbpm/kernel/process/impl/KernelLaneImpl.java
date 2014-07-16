@@ -31,7 +31,6 @@ public class KernelLaneImpl extends KernelBaseElementImpl implements KernelLane 
 	 */
 	private static final long serialVersionUID = 1L;
 	protected KernelLaneSet childLaneSet;
-	protected String name;
 	public KernelLaneImpl(String id, KernelProcessDefinitionImpl processDefinition) {
 		super(id, processDefinition);
 	}
@@ -57,14 +56,6 @@ public class KernelLaneImpl extends KernelBaseElementImpl implements KernelLane 
 
 	public void setChildLaneSet(KernelLaneSet childLaneSet) {
 		this.childLaneSet = childLaneSet;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public KernelBaseElement getPartitionElementRef() {

@@ -30,7 +30,6 @@ public class KernelLaneSetImpl extends KernelBaseElementImpl implements KernelLa
 	 */
 	private static final long serialVersionUID = 1L;
 	protected List<KernelLane> lanes = new ArrayList<KernelLane>();
-	protected String name;
 
 	public KernelLaneSetImpl(String id, KernelProcessDefinitionImpl processDefinition) {
 		super(id, processDefinition);
@@ -38,14 +37,6 @@ public class KernelLaneSetImpl extends KernelBaseElementImpl implements KernelLa
 
 	public List<KernelLane> getLanes() {
 		return lanes;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public KernelLane getLaneForId(String id) {

@@ -22,9 +22,4 @@ package org.foxbpm.kernel.process;
  * 
  */
 public interface KernelFlowElement extends KernelBaseElement {
-
-
-    String getName();
-
-  
 }

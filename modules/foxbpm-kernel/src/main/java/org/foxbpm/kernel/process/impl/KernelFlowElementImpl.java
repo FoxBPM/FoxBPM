@@ -23,18 +23,7 @@ public class KernelFlowElementImpl extends KernelBaseElementImpl implements Kern
 
 	private static final long serialVersionUID = 1L;
 
-	protected String name;
-
 	public KernelFlowElementImpl(String id, KernelProcessDefinitionImpl processDefinition) {
 		super(id, processDefinition);
 	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
 }
