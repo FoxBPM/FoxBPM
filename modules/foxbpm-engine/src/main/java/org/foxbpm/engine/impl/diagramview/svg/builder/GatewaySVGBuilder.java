@@ -15,84 +15,101 @@
  * 
  * @author MAENLIANG
  */
-package org.foxbpm.engine.impl.diagramview.svg.vo.build;
+package org.foxbpm.engine.impl.diagramview.svg.builder;
 
 import java.util.List;
 
-import org.foxbpm.engine.exception.FoxBPMException;
+import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.impl.diagramview.svg.Point;
 import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
-import org.foxbpm.engine.impl.diagramview.svg.vo.RectVO;
+import org.foxbpm.engine.impl.diagramview.svg.vo.PathVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 
 /**
  * 
+ * 网关元素 BUILDER GatewaySVGBuilder
  * 
- * GroupSVGBuilder
- * 
- * MAENLIANG 2014年7月15日 下午9:00:39
+ * MAENLIANG 2014年7月1日 下午8:32:28
  * 
  * @version 1.0.0
  * 
  */
-public class GroupSVGBuilder extends AbstractSVGBuilder {
+public class GatewaySVGBuilder extends AbstractSVGBuilder {
+	private static final String DEFAULT_FILL = "ffffff";
+	private PathVO pathVo;
+	private float tempX;
+	private float tempY;
+	private float tempWidth;
+	private float tempHeight;
 
-	private RectVO rectVO;
-	public GroupSVGBuilder(SvgVO svgVo) {
+	public GatewaySVGBuilder(SvgVO svgVo) {
 		super(svgVo);
-		rectVO = SVGUtils.getTaskVOFromSvgVO(svgVo);
-
-		if (this.rectVO == null) {
-			throw new FoxBPMException("GroupSVGBuilder构造 TASK SVG时，无法获取矩形对象");
-		}
-	}
-
-	@Override
-	public void setWayPoints(List<Point> pointList) {
-
+		this.pathVo = SVGUtils.getGatewayVOFromSvgVO(svgVo);
 	}
 
 	@Override
 	public void setWidth(float width) {
-		this.rectVO.setWidth(width);
+		this.tempWidth = width;
 	}
 
 	@Override
 	public void setHeight(float height) {
-		this.rectVO.setHeight(height);
+		this.tempHeight = height;
 	}
 
 	@Override
 	public void setXAndY(float x, float y) {
-		this.rectVO.setX(x);
-		this.rectVO.setY(y);
-	}
+		this.tempX = x;
+		this.tempY = y;
+		// 设置整体坐标，包括子类型
+		this.svgVo.getgVo().setTransform(
+				new StringBuffer(TRANSLANT_PREFIX).append(tempX).append(COMMA).append(tempY)
+						.append(BRACKET_SUFFIX).toString());
 
+		// 设置文本坐标
+		String elementValue = textVO.getElementValue();
+		if (StringUtils.isNotBlank(elementValue)) {
+			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(), elementValue);
+			int languageShift = 0;
+			if (SVGUtils.isChinese(elementValue.charAt(0))) {
+				languageShift = 10;
+				languageShift = languageShift + (textWidth >= 40 ? 5 : 0);
+				textWidth = textWidth / 2;
+			}
+			super.setTextX((this.tempWidth / 2) - textWidth / 2 - languageShift);
+			super.setTextY(this.tempHeight + 10);
+		}
+
+	}
 	@Override
 	public void setStroke(String stroke) {
-		// TODO Auto-generated method stub
-
+		if (StringUtils.isBlank(stroke)) {
+			stroke = STROKE_DEFAULT;
+		}
+		this.pathVo.setStroke(COLOR_FLAG + stroke);
 	}
 
 	@Override
 	public void setStrokeWidth(float strokeWidth) {
-		this.rectVO.setStrokeWidth(strokeWidth);
+		this.pathVo.setStrokeWidth(strokeWidth);
 	}
 
 	@Override
 	public void setFill(String fill) {
-		// TODO Auto-generated method stub
-
+		if (StringUtils.isBlank(fill)) {
+			fill = DEFAULT_FILL;
+		}
+		this.buildLinearGradient(fill, pathVo, 0, 0, 0, 40);
 	}
 
 	@Override
 	public void setID(String id) {
-		this.rectVO.setId(id);
+		this.pathVo.setId(id);
 	}
 
 	@Override
 	public void setName(String name) {
-		this.rectVO.setName(name);
+		// TODO Auto-generated method stub
 
 	}
 
@@ -126,4 +143,9 @@ public class GroupSVGBuilder extends AbstractSVGBuilder {
 
 	}
 
+	@Override
+	public void setWayPoints(List<Point> pointList) {
+		// TODO Auto-generated method stub
+
+	}
 }

@@ -27,7 +27,6 @@ import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.diagramview.factory.AbstractFlowElementVOFactory;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateContainer;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateNameConstant;
-import org.foxbpm.engine.impl.diagramview.svg.SVGTypeNameConstant;
 import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
 import org.foxbpm.engine.impl.diagramview.svg.vo.GVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
@@ -86,13 +85,14 @@ public abstract class AbstractFlowElementSVGFactory extends AbstractFlowElementV
 			return new GatewaySVGFactory(kernelBaseElement, svgTemplateFileName);
 		} else if (StringUtils.contains(svgTemplateFileName, ELEMENT_TYPE_LANE)) {
 			return new LanesetSVGFactory(kernelBaseElement, svgTemplateFileName);
-		} else if (StringUtils.contains(svgTemplateFileName, SVGTypeNameConstant.SVG_TYPE_GROUP)) {
+		} else if (StringUtils
+				.contains(svgTemplateFileName, SVGTemplateNameConstant.TEMPLATE_GROUP)) {
 			return new GroupSVGFactory(kernelBaseElement, svgTemplateFileName);
 		} else if (StringUtils.contains(svgTemplateFileName,
-				SVGTypeNameConstant.SVG_TYPE_TEXTANNOTATION)) {
+				SVGTemplateNameConstant.TEMPLATE_TEXTANNOTATION)) {
 			return new TextAnnotationSVGFactory(kernelBaseElement, svgTemplateFileName);
 		} else if (StringUtils.contains(svgTemplateFileName,
-				SVGTypeNameConstant.SVG_TYPE_CONNECTOR_ASSOCIATION_UNDIRECTED)) {
+				SVGTemplateNameConstant.TEMPLATE_CONNECTOR_ASSOCIATION)) {
 			return new AssociationSVGFactory(kernelBaseElement, svgTemplateFileName);
 		}
 		return null;

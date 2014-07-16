@@ -15,27 +15,37 @@
  * 
  * @author MAENLIANG
  */
-package org.foxbpm.engine.impl.diagramview.svg.vo.build;
+package org.foxbpm.engine.impl.diagramview.svg.builder;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.diagramview.svg.Point;
+import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
+import org.foxbpm.engine.impl.diagramview.svg.vo.RectVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 
 /**
  * 
  * 
- * TextAnnotationSVGBuilder
+ * GroupSVGBuilder
  * 
- * MAENLIANG 2014年7月15日 下午9:00:56
+ * MAENLIANG 2014年7月15日 下午9:00:39
  * 
  * @version 1.0.0
  * 
  */
-public class TextAnnotationSVGBuilder extends AbstractSVGBuilder {
+public class GroupSVGBuilder extends AbstractSVGBuilder {
 
-	public TextAnnotationSVGBuilder(SvgVO svgVo) {
+	private RectVO rectVO;
+	public GroupSVGBuilder(SvgVO svgVo) {
 		super(svgVo);
+		rectVO = SVGUtils.getTaskVOFromSvgVO(svgVo);
+
+		if (this.rectVO == null) {
+			throw new FoxBPMException("GroupSVGBuilder构造 TASK SVG时，无法获取矩形对象");
+		}
 	}
 
 	@Override
@@ -45,20 +55,32 @@ public class TextAnnotationSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setWidth(float width) {
-		// TODO Auto-generated method stub
-
+		this.rectVO.setWidth(width);
 	}
 
 	@Override
 	public void setHeight(float height) {
-		// TODO Auto-generated method stub
-
+		this.rectVO.setHeight(height);
 	}
 
 	@Override
 	public void setXAndY(float x, float y) {
-		// TODO Auto-generated method stub
-
+		this.rectVO.setX(x);
+		this.rectVO.setY(y);
+		// 设置字体的相对偏移量,X相对是矩形宽度的一半减去文本本身屏宽的一半
+		// TODO 目前支持全英文或者全中文、全日文、全韩文。
+		String elementValue = textVO.getElementValue();
+		if (StringUtils.isNotBlank(elementValue)) {
+			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(), elementValue);
+			int languageShift = 0;
+			if (SVGUtils.isChinese(elementValue.charAt(0))) {
+				languageShift = 10;
+				languageShift = languageShift + (textWidth >= 40 ? 3 : 0);
+				textWidth = textWidth / 2;
+			}
+			super.setTextX((x + (this.rectVO.getWidth() / 2)) - textWidth / 2 - languageShift);
+			super.setTextY(y + this.rectVO.getHeight() + 15);
+		}
 	}
 
 	@Override
@@ -69,8 +91,7 @@ public class TextAnnotationSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setStrokeWidth(float strokeWidth) {
-		// TODO Auto-generated method stub
-
+		this.rectVO.setStrokeWidth(strokeWidth);
 	}
 
 	@Override
@@ -81,13 +102,12 @@ public class TextAnnotationSVGBuilder extends AbstractSVGBuilder {
 
 	@Override
 	public void setID(String id) {
-		// TODO Auto-generated method stub
-
+		this.rectVO.setId(id);
 	}
 
 	@Override
 	public void setName(String name) {
-		// TODO Auto-generated method stub
+		this.rectVO.setName(name);
 
 	}
 

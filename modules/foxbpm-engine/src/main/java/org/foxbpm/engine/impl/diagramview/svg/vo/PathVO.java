@@ -42,6 +42,8 @@ public class PathVO extends NamespaceAttributesVO {
 	private String markerStart;
 	@XmlAttribute(name = "marker-end")
 	private String markerEnd;
+	@XmlAttribute(name = "stroke-dasharray")
+	private String strokeDasharray;
 
 	public String getD() {
 		return d;
@@ -49,5 +51,12 @@ public class PathVO extends NamespaceAttributesVO {
 
 	public void setD(String d) {
 		this.d = d;
+	}
+	public String getStrokeDasharray() {
+		return strokeDasharray;
+	}
+
+	public void setStrokeDasharray(String strokeDasharray) {
+		this.strokeDasharray = strokeDasharray;
 	}
 }
