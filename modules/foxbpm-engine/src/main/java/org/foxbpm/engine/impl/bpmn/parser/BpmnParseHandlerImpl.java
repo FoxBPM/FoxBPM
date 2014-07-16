@@ -30,6 +30,8 @@ import org.eclipse.bpmn2.Artifact;
 import org.eclipse.bpmn2.Association;
 import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.Bpmn2Package;
+import org.eclipse.bpmn2.BusinessRuleTask;
+import org.eclipse.bpmn2.CallActivity;
 import org.eclipse.bpmn2.Definitions;
 import org.eclipse.bpmn2.EndEvent;
 import org.eclipse.bpmn2.ExclusiveGateway;
@@ -39,14 +41,20 @@ import org.eclipse.bpmn2.Group;
 import org.eclipse.bpmn2.InclusiveGateway;
 import org.eclipse.bpmn2.Lane;
 import org.eclipse.bpmn2.LaneSet;
+import org.eclipse.bpmn2.ManualTask;
 import org.eclipse.bpmn2.MessageFlow;
 import org.eclipse.bpmn2.ParallelGateway;
 import org.eclipse.bpmn2.Process;
+import org.eclipse.bpmn2.ReceiveTask;
 import org.eclipse.bpmn2.RootElement;
+import org.eclipse.bpmn2.SendTask;
 import org.eclipse.bpmn2.SequenceFlow;
+import org.eclipse.bpmn2.ServiceTask;
 import org.eclipse.bpmn2.StartEvent;
+import org.eclipse.bpmn2.SubProcess;
 import org.eclipse.bpmn2.Task;
 import org.eclipse.bpmn2.TextAnnotation;
+import org.eclipse.bpmn2.UserTask;
 import org.eclipse.bpmn2.di.BPMNDiagram;
 import org.eclipse.bpmn2.di.BPMNEdge;
 import org.eclipse.bpmn2.di.BPMNShape;
@@ -111,7 +119,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			throw new FoxBPMException("文件中没有对应的流程定义，请检查bpmn文件内容和流程key是否对应！");
 		}
 		KernelProcessDefinition processDefinition = loadBehavior(process);
-		// 加载运行轨迹监听器
+		// 加载监听器
 		this.registListener((ProcessDefinitionEntity) processDefinition);
 		return processDefinition;
 	}
@@ -125,7 +133,6 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	 */
 	private KernelProcessDefinition loadBehavior(Process process) {
 		String processObjId = BpmnModelUtil.getProcessId(process);
-		// String category=BpmnModelUtil.getProcessCategory(process);
 		List<FlowElement> flowElements = process.getFlowElements();
 		ProcessDefinitionBuilder processDefinitionBuilder = new ProcessDefinitionEntityBuilder(processObjId);
 		ProcessBehavior processBehavior = BpmnBehaviorEMFConverter.getProcessBehavior(process, processDefinitionBuilder.getProcessDefinition());
@@ -136,23 +143,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		}
 
 		for (FlowElement flowElement : flowElements) {
-			KernelFlowNodeBehavior flowNodeBehavior = BpmnBehaviorEMFConverter.getFlowNodeBehavior(flowElement, processDefinitionBuilder.getProcessDefinition());
-			if (flowElement instanceof FlowNode) {
-				processDefinitionBuilder.createFlowNode(flowElement.getId(), flowElement.getName()).behavior(flowNodeBehavior);
-				if (flowNodeBehavior instanceof BaseElementBehavior) {
-					for (Connector connector : ((BaseElementBehavior) flowNodeBehavior).getConnectors()) {
-						processDefinitionBuilder.executionListener(connector.getEventType(), connector);
-					}
-				}
-				if (flowElement instanceof StartEvent) {
-					processDefinitionBuilder.initial();
-				}
-				List<SequenceFlow> sequenceFlows = ((FlowNode) flowElement).getOutgoing();
-				for (SequenceFlow sequenceFlow : sequenceFlows) {
-					processDefinitionBuilder.sequenceFlow(sequenceFlow.getTargetRef().getId(), sequenceFlow.getId(), sequenceFlow.getName());
-				}
-				processDefinitionBuilder.endFlowNode();
-			}
+			generateBuilder(processDefinitionBuilder,flowElement,false);
 		}
 
 		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) processDefinitionBuilder.buildProcessDefinition();
@@ -195,6 +186,52 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		processDI(processDefinition, process);
 
 		return processDefinition;
+	}
+	
+	/**
+	 * 根据flowElement构造builder(递归内部子流程)
+	 * @param processDefinitionBuilder
+	 * @param flowElement
+	 * @param isSub 是否子流程
+	 */
+	private void generateBuilder(ProcessDefinitionBuilder processDefinitionBuilder ,FlowElement flowElement, boolean isSub){
+		KernelFlowNodeBehavior flowNodeBehavior = BpmnBehaviorEMFConverter.getFlowNodeBehavior(flowElement, processDefinitionBuilder.getProcessDefinition());
+		if (flowElement instanceof FlowNode) {
+			processDefinitionBuilder.createFlowNode(flowElement.getId(), flowElement.getName()).behavior(flowNodeBehavior);
+			KernelFlowNodeImpl kernelFlowNodeImpl = processDefinitionBuilder.getFlowNode();
+			//特殊处理开始节点，如果是子流程，则放到properties属性中，否则，放到processDefinition的initial属性中
+			if (flowElement instanceof StartEvent) {
+				if(!isSub){
+					processDefinitionBuilder.initial();
+				}else{
+					kernelFlowNodeImpl.getParent().setProperty("initial", kernelFlowNodeImpl);
+				}
+			}
+			
+			// 特殊处理子流程，需要递归处理节点
+			if(flowElement instanceof SubProcess){
+				SubProcess subProcess = (SubProcess)flowElement;
+				Iterator<FlowElement> flowElements = subProcess.getFlowElements().iterator();
+				while(flowElements.hasNext()){
+					FlowElement tmpFlowElement = flowElements.next();
+					generateBuilder(processDefinitionBuilder,tmpFlowElement,true);
+				}
+			}
+			
+			//处理连接器
+			if (flowNodeBehavior instanceof BaseElementBehavior) {
+				for (Connector connector : ((BaseElementBehavior) flowNodeBehavior).getConnectors()) {
+					processDefinitionBuilder.executionListener(connector.getEventType(), connector);
+				}
+			}
+			
+			//处理线条
+			List<SequenceFlow> sequenceFlows = ((FlowNode) flowElement).getOutgoing();
+			for (SequenceFlow sequenceFlow : sequenceFlows) {
+				processDefinitionBuilder.sequenceFlow(sequenceFlow.getTargetRef().getId(), sequenceFlow.getId(), sequenceFlow.getName());
+			}
+			processDefinitionBuilder.endFlowNode();
+		}
 	}
 
 	/**
@@ -490,7 +527,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			style = processEngineConfiguration.getStyle("InclusiveGateway");
 		} else if (bpmnElement instanceof ExclusiveGateway) {
 			style = processEngineConfiguration.getStyle("ExclusiveGateway");
-		} else if (bpmnElement instanceof Task) {
+		} else if (bpmnElement instanceof UserTask) {
 			style = processEngineConfiguration.getStyle("UserTask");
 		} else if (bpmnElement instanceof Lane) {
 			style = processEngineConfiguration.getStyle("Lane");
@@ -498,6 +535,26 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			style = processEngineConfiguration.getStyle("TextAnnotation");
 		} else if (bpmnElement instanceof Group) {
 			style = processEngineConfiguration.getStyle("Group");
+		}else if (bpmnElement instanceof SubProcess) {
+			style = processEngineConfiguration.getStyle("SubProcess");
+		}else if (bpmnElement instanceof CallActivity) {
+			style = processEngineConfiguration.getStyle("CallActivity");
+		}else if (bpmnElement instanceof ServiceTask) {
+			style = processEngineConfiguration.getStyle("ServiceTask");
+		}else if (bpmnElement instanceof ManualTask) {
+			style = processEngineConfiguration.getStyle("ManualTask");
+		}else if (bpmnElement instanceof SendTask) {
+			style = processEngineConfiguration.getStyle("SendTask");
+		}else if (bpmnElement instanceof ReceiveTask) {
+			style = processEngineConfiguration.getStyle("ReceiveTask");
+		}else if (bpmnElement instanceof BusinessRuleTask) {
+			style = processEngineConfiguration.getStyle("BusinessRuleTask");
+		}else if (bpmnElement instanceof Task) {
+			style = processEngineConfiguration.getStyle("Task");
+		}
+		
+		if(style == null){
+			throw new FoxBPMException("未找到"+bpmnElement.getClass()+"的style样式");
 		}
 		return style;
 	}

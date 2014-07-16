@@ -76,5 +76,9 @@
 			listenerClass="org.foxbpm.engine.impl.runningtrack.FoxbpmEventListener" />
 		<eventListener eventType="sequenceflow-take"
 			listenerClass="org.foxbpm.engine.impl.runningtrack.FoxbpmSequenceEventListener" />
+		<eventListener eventType="process-start"
+			listenerClass="org.foxbpm.engine.impl.runningtrack.ext.FoxbpmExtStartEventListener" />
+		<eventListener eventType="process-end"
+			listenerClass="org.foxbpm.engine.impl.runningtrack.ext.FoxbpmExtEndEventListener" />
 	</eventListenerConfig>
 </foxbpmconfig:FoxBPMConfig>
