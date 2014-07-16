@@ -40,6 +40,8 @@ public class RectVO extends NamespaceAttributesVO {
 	private Float rx;
 	@XmlAttribute(name = "ry")
 	private Float ry;
+	@XmlAttribute(name = "stroke-dasharray")
+	private String strokeDasharray;
 
 	public Float getRx() {
 		return rx;
@@ -55,6 +57,13 @@ public class RectVO extends NamespaceAttributesVO {
 
 	public void setRy(Float ry) {
 		this.ry = ry;
+	}
+	public String getStrokeDasharray() {
+		return strokeDasharray;
+	}
+
+	public void setStrokeDasharray(String strokeDasharray) {
+		this.strokeDasharray = strokeDasharray;
 	}
 
 }
