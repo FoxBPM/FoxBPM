@@ -375,6 +375,9 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 				} else if (kernelFlowNodeBehavior instanceof ScriptTaskBehavior) {
 					taskType = SVGTypeNameConstant.ACTIVITY_SCRIPTTASK;
 					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK;
+				} else {
+					taskType = SVGTypeNameConstant.SVG_TYPE_TASK;
+					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK;
 				}
 			} else if (kernelFlowNodeBehavior instanceof CallActivityBehavior) {
 				// 外部子流程

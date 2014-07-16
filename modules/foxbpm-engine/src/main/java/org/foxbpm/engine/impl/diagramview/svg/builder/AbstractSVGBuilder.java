@@ -63,9 +63,10 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 	 * @return
 	 */
 	public static AbstractSVGBuilder createSVGBuilder(VONode svgVo, String type) {
-
 		if (StringUtils.equalsIgnoreCase(type, SVGTypeNameConstant.SVG_TYPE_EVENT)) {
 			return new EventSVGBuilder((SvgVO) svgVo);
+		} else if (StringUtils.equalsIgnoreCase(type, SVGTypeNameConstant.ACTIVITY_SERVICETASK)) {
+			return new ServiceTaskSVGBuilder((SvgVO) svgVo);
 		} else if (StringUtils.contains(type, SVGTypeNameConstant.SVG_TYPE_TASK)) {
 			return new TaskSVGBuilder((SvgVO) svgVo);
 		} else if (StringUtils.equalsIgnoreCase(type, SVGTypeNameConstant.SVG_TYPE_CONNECTOR)) {

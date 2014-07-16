@@ -37,7 +37,7 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
  * @date 2014-06-10
  */
 public class TaskSVGBuilder extends AbstractSVGBuilder {
-	private static final String FILL_DEFAULT = "ffffcc";
+	protected static final String FILL_DEFAULT = "ffffcc";
 
 	/**
 	 * 矩形对象

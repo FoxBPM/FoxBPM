@@ -92,12 +92,12 @@
 	</g>
 	
 	<g id="serviceTask" transform="scale(0.7,0.7) translate(8,8)">
-		<polygon oryx:anchors="top left" id="teethForeground" style="opacity:1;fill:#ffffff;stroke:#000000" points="15.392,5.064 17.954,2.502 20.347,4.895 17.786,7.455 
+		<polygon oryx:anchors="top left" id="teethForeground" style="opacity:1;stroke:#000000" points="15.392,5.064 17.954,2.502 20.347,4.895 17.786,7.455 
 			18.729,9.732 22.353,9.732 22.353,13.115 18.731,13.115 17.788,15.392 20.351,17.955 17.958,20.347 15.397,17.786 13.12,18.729 
 			13.12,22.353 9.737,22.353 9.737,18.731 7.46,17.788 4.897,20.35 2.506,17.958 5.066,15.397 4.124,13.12 0.5,13.12 0.5,9.737 
 			4.121,9.737 5.065,7.461 2.503,4.898 4.895,2.506 7.455,5.066 9.732,4.125 9.732,0.5 13.116,0.5 13.116,4.121 "/>
 		<circle oryx:anchors="top left" id="ringForeground" style="opacity:1;fill:none;stroke:#000000" cx="11.427" cy="11.426" r="3.714"/>
-		<polygon oryx:anchors="top left" id="teethBackground" style="opacity:1;fill:#ffffff;stroke:#000000" points="21.392,11.064 23.954,8.502 26.347,10.895 23.786,13.455 
+		<polygon oryx:anchors="top left" id="teethBackground" style="opacity:1;stroke:#000000" points="21.392,11.064 23.954,8.502 26.347,10.895 23.786,13.455 
 			24.729,15.732 28.353,15.732 28.353,19.115 24.731,19.115 23.788,21.392 26.351,23.955 23.958,26.347 21.397,23.786 19.12,24.729 
 			19.12,28.353 15.737,28.353 15.737,24.731 13.46,23.788 10.897,26.35 8.506,23.958 11.066,21.397 10.124,19.12 6.5,19.12 
 			6.5,15.737 10.121,15.737 11.065,13.461 8.503,10.898 10.895,8.506 13.455,11.066 15.732,10.125 15.732,6.5 19.116,6.5 
@@ -106,12 +106,13 @@
 	</g>
 	
 	<g id="sendTask">
-		<path oryx:anchors="left top" stroke="white" fill="black" stroke-width="1" d="M8,11 L8,21 L24,21 L24,11 L16,17z"/>
-		<path oryx:anchors="left top" stroke="white" fill="black" stroke-width="1" d="M7,10 L16,17 L25 10z"/>
+		<path d="M6,6 L6,16 L22,16 L22,6 L14,12z" oryx:anchors="left top" fill="black" stroke="black" stroke-width="1.0"></path>
+        <path d="M6,5 L14,12 L22 5z" oryx:anchors="left top" fill="black" stroke="white" stroke-width="1.0"></path>
+		<path d="M5,5 L23 5z" oryx:anchors="left top" fill="black" stroke="black" stroke-width="1.0"></path>
 	</g>
 	
 	<g id="receiveTask">
-		<path oryx:anchors="left top" stroke="black" fill="none" stroke-width="1" d="M8,11 L8,21 L24,21 L24,11z M8,11 L16,17 L24,11" />
+		<path oryx:anchors="left top" stroke="black" fill="none" stroke-width="1" d="M6,6 L6,16 L22,16 L22,6z M6,6 L14,12 L22,6" />
 	</g>
 	
 	<g id="none"></g>
