@@ -23,33 +23,45 @@ import java.util.Map;
 import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.impl.AssociationImpl;
 import org.eclipse.bpmn2.impl.BaseElementImpl;
+import org.eclipse.bpmn2.impl.BusinessRuleTaskImpl;
+import org.eclipse.bpmn2.impl.CallActivityImpl;
 import org.eclipse.bpmn2.impl.EndEventImpl;
 import org.eclipse.bpmn2.impl.ExclusiveGatewayImpl;
 import org.eclipse.bpmn2.impl.GroupImpl;
 import org.eclipse.bpmn2.impl.InclusiveGatewayImpl;
+import org.eclipse.bpmn2.impl.ManualTaskImpl;
 import org.eclipse.bpmn2.impl.ParallelGatewayImpl;
 import org.eclipse.bpmn2.impl.ProcessImpl;
+import org.eclipse.bpmn2.impl.ReceiveTaskImpl;
 import org.eclipse.bpmn2.impl.ScriptTaskImpl;
+import org.eclipse.bpmn2.impl.SendTaskImpl;
 import org.eclipse.bpmn2.impl.ServiceTaskImpl;
 import org.eclipse.bpmn2.impl.StartEventImpl;
 import org.eclipse.bpmn2.impl.TaskImpl;
 import org.eclipse.bpmn2.impl.TextAnnotationImpl;
 import org.eclipse.bpmn2.impl.UserTaskImpl;
+import org.foxbpm.engine.impl.bpmn.behavior.ArtifactBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.ProcessBehavior;
 import org.foxbpm.engine.impl.bpmn.parser.model.AssociationParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.BaseElementParser;
+import org.foxbpm.engine.impl.bpmn.parser.model.BusinessRuleTaskParser;
+import org.foxbpm.engine.impl.bpmn.parser.model.CallActivityParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.EndEventParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.ExclusiveGatewayParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.GroupParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.InclusiveGatewayParser;
+import org.foxbpm.engine.impl.bpmn.parser.model.ManualTaskParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.ParallelGatewayParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.ProcessParser;
+import org.foxbpm.engine.impl.bpmn.parser.model.ReceiveTaskParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.ScriptTaskParser;
+import org.foxbpm.engine.impl.bpmn.parser.model.SendTaskParser;
+import org.foxbpm.engine.impl.bpmn.parser.model.ServiceTaskParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.StartEventParser;
+import org.foxbpm.engine.impl.bpmn.parser.model.TaskParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.TextAnnotationParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.UserTaskParser;
-import org.foxbpm.engine.impl.bpmn.behavior.ArtifactBehavior;
-import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
-import org.foxbpm.engine.impl.bpmn.behavior.ProcessBehavior;
 import org.foxbpm.kernel.behavior.KernelArtifactBehavior;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
 import org.foxbpm.kernel.process.impl.KernelFlowElementsContainerImpl;
@@ -61,18 +73,25 @@ public class BpmnBehaviorEMFConverter {
 	public static Logger log = LoggerFactory.getLogger(BpmnBehaviorEMFConverter.class);
 	private static Map<Class<? extends BaseElementImpl>, Class<? extends BaseElementParser>> elementParserMap = new HashMap<Class<? extends BaseElementImpl>, Class <? extends BaseElementParser>>();
 	static{
-		elementParserMap.put(TaskImpl.class, null);
+		elementParserMap.put(TaskImpl.class, TaskParser.class);
 		elementParserMap.put(UserTaskImpl.class, UserTaskParser.class);
-		elementParserMap.put(ServiceTaskImpl.class, null);
+		elementParserMap.put(ServiceTaskImpl.class, ServiceTaskParser.class);
 		elementParserMap.put(ScriptTaskImpl.class, ScriptTaskParser.class);
+		elementParserMap.put(SendTaskImpl.class, SendTaskParser.class);
+		elementParserMap.put(ReceiveTaskImpl.class, ReceiveTaskParser.class);
+		elementParserMap.put(ManualTaskImpl.class, ManualTaskParser.class);
+		elementParserMap.put(CallActivityImpl.class, CallActivityParser.class);
+		elementParserMap.put(BusinessRuleTaskImpl.class, BusinessRuleTaskParser.class);
+		
 		elementParserMap.put(StartEventImpl.class, StartEventParser.class);
 		elementParserMap.put(EndEventImpl.class, EndEventParser.class);
+		
 		elementParserMap.put(ProcessImpl.class, ProcessParser.class);
+		
 		elementParserMap.put(ParallelGatewayImpl.class, ParallelGatewayParser.class);
 		elementParserMap.put(InclusiveGatewayImpl.class, InclusiveGatewayParser.class);
 		elementParserMap.put(ExclusiveGatewayImpl.class, ExclusiveGatewayParser.class);
 		
-
 		elementParserMap.put(AssociationImpl.class, AssociationParser.class);
 		elementParserMap.put(GroupImpl.class, GroupParser.class);
 		elementParserMap.put(TextAnnotationImpl.class, TextAnnotationParser.class);
