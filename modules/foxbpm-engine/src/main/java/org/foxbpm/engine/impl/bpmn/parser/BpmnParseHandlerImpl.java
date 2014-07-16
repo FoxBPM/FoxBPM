@@ -30,6 +30,7 @@ import org.eclipse.bpmn2.Artifact;
 import org.eclipse.bpmn2.Association;
 import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.Bpmn2Package;
+import org.eclipse.bpmn2.BusinessRuleTask;
 import org.eclipse.bpmn2.CallActivity;
 import org.eclipse.bpmn2.Definitions;
 import org.eclipse.bpmn2.EndEvent;
@@ -53,6 +54,7 @@ import org.eclipse.bpmn2.StartEvent;
 import org.eclipse.bpmn2.SubProcess;
 import org.eclipse.bpmn2.Task;
 import org.eclipse.bpmn2.TextAnnotation;
+import org.eclipse.bpmn2.UserTask;
 import org.eclipse.bpmn2.di.BPMNDiagram;
 import org.eclipse.bpmn2.di.BPMNEdge;
 import org.eclipse.bpmn2.di.BPMNShape;
@@ -525,7 +527,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			style = processEngineConfiguration.getStyle("InclusiveGateway");
 		} else if (bpmnElement instanceof ExclusiveGateway) {
 			style = processEngineConfiguration.getStyle("ExclusiveGateway");
-		} else if (bpmnElement instanceof Task) {
+		} else if (bpmnElement instanceof UserTask) {
 			style = processEngineConfiguration.getStyle("UserTask");
 		} else if (bpmnElement instanceof Lane) {
 			style = processEngineConfiguration.getStyle("Lane");
@@ -545,7 +547,12 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			style = processEngineConfiguration.getStyle("SendTask");
 		}else if (bpmnElement instanceof ReceiveTask) {
 			style = processEngineConfiguration.getStyle("ReceiveTask");
+		}else if (bpmnElement instanceof BusinessRuleTask) {
+			style = processEngineConfiguration.getStyle("BusinessRuleTask");
+		}else if (bpmnElement instanceof Task) {
+			style = processEngineConfiguration.getStyle("Task");
 		}
+		
 		if(style == null){
 			throw new FoxBPMException("未找到"+bpmnElement.getClass()+"的style样式");
 		}
