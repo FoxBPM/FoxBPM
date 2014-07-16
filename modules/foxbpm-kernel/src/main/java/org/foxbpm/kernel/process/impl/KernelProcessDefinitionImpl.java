@@ -40,7 +40,6 @@ public class KernelProcessDefinitionImpl extends KernelFlowElementsContainerImpl
 	 */
 	private static final long serialVersionUID = 1L;
 
-	protected String name;
 	protected String key;
 	protected String description;
 	protected KernelFlowNodeImpl initial;
@@ -121,14 +120,6 @@ public class KernelProcessDefinitionImpl extends KernelFlowElementsContainerImpl
 
 	public String toString() {
 		return "ProcessDefinition(" + id + ")";
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getKey() {

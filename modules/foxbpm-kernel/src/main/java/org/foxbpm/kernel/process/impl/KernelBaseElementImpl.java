@@ -31,6 +31,7 @@ public class KernelBaseElementImpl implements KernelBaseElement, KernelDIBounds 
 	private static final long serialVersionUID = 1L;
 
 	protected String id;
+	protected String name;
 	protected KernelProcessDefinitionImpl processDefinition;
 	protected Map<String, Object> properties;
 
@@ -43,6 +44,14 @@ public class KernelBaseElementImpl implements KernelBaseElement, KernelDIBounds 
 	public KernelBaseElementImpl(String id, KernelProcessDefinitionImpl processDefinition) {
 		this.id = id;
 		this.processDefinition = processDefinition;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return this.name;
 	}
 
 	public void setProperty(String name, Object value) {

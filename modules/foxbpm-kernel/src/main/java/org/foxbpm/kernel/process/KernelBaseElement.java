@@ -19,7 +19,6 @@ package org.foxbpm.kernel.process;
 
 import java.io.Serializable;
 
-
 public interface KernelBaseElement extends Serializable {
 
 	String getId();
@@ -27,5 +26,9 @@ public interface KernelBaseElement extends Serializable {
 	KernelProcessDefinition getProcessDefinition();
 
 	Object getProperty(String name);
+
+	public void setName(String name);
+
+	public String getName();
 
 }
