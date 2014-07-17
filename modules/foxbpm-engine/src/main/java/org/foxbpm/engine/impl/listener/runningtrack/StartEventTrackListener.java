@@ -1,4 +1,4 @@
-package org.foxbpm.engine.impl.runningtrack;
+package org.foxbpm.engine.impl.listener.runningtrack;
 
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.RunningTrackEntity;
@@ -7,7 +7,7 @@ import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
-public class FoxbpmStartEventListener extends AbstractEventListener {
+public class StartEventTrackListener extends AbstractTrackListener {
 
 	/**
 	 * serialVersionUID:序列化ID

@@ -15,17 +15,15 @@
  * 
  * @author MAENLIANG
  */
-package org.foxbpm.engine.impl.runningtrack;
+package org.foxbpm.engine.impl.listener.runningtrack;
 
-import org.foxbpm.engine.impl.bpmn.behavior.EndEventBehavior;
-import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.RunningTrackEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
-import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
+import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
-public class FoxbpmEventListener extends AbstractEventListener {
+public class SequenceTrackEventListener extends AbstractTrackListener {
 	/**
 	 * serialVersionUID:序列化ID
 	 */
@@ -33,19 +31,13 @@ public class FoxbpmEventListener extends AbstractEventListener {
 	@Override
 	protected RunningTrackEntity recordRunningTrack(ListenerExecutionContext executionContext) {
 		KernelTokenImpl kernelTokenImpl = (KernelTokenImpl) executionContext;
-		ProcessInstanceEntity processInstanceEntity = (ProcessInstanceEntity) kernelTokenImpl
-				.getProcessInstance();
 		// 创建运行轨迹
 		RunningTrackEntity runningTrackEntity = new RunningTrackEntity();
 		runningTrackEntity.setOperator(Authentication.getAuthenticatedUserId());
-		KernelFlowNodeImpl flowNode = kernelTokenImpl.getFlowNode();
-		runningTrackEntity.setNodeId(flowNode.getId());
-		runningTrackEntity.setNodeName(flowNode.getName());
-		// 结束事件记录归档时间
-		if (flowNode.getKernelFlowNodeBehavior() instanceof EndEventBehavior) {
-			runningTrackEntity.setArchiveTime(processInstanceEntity.getArchiveTime());
-		}
-
+		KernelSequenceFlowImpl sequenceFlow = kernelTokenImpl.getSequenceFlow();
+		runningTrackEntity.setNodeId(sequenceFlow.getId());
+		runningTrackEntity.setNodeName(sequenceFlow.getName());
 		return runningTrackEntity;
 	}
+
 }

@@ -21,6 +21,7 @@ package org.foxbpm.engine;
 import java.util.Map;
 
 import org.foxbpm.engine.datavariable.VariableQuery;
+import org.foxbpm.engine.runningtrack.RunningTrackQuery;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.runtime.ProcessInstanceQuery;
 import org.foxbpm.engine.runtime.TokenQuery;
@@ -62,5 +63,15 @@ public interface RuntimeService {
 	String createProcessInstanceSVGImageString(String processInstanceID);
 	
 	VariableQuery createVariableQuery();
+	
+	/**
+	 * 
+	 * createRunningTrackQuery(创建运行轨迹查询对象)
+	 * 
+	 * @return RunningTrackQuery
+	 * @exception
+	 * @since 1.0.0
+	 */
+	RunningTrackQuery createRunningTrackQuery();
 
 }

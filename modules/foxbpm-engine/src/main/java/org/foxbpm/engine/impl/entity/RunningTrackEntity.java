@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.foxbpm.engine.db.PersistentObject;
-import org.foxbpm.engine.impl.runningtrack.RunningTrack;
+import org.foxbpm.engine.runningtrack.RunningTrack;
 
 public class RunningTrackEntity implements RunningTrack, PersistentObject {
 	protected String id;

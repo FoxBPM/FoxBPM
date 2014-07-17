@@ -47,13 +47,6 @@ public interface ProcessEngine {
 	RuntimeService getRuntimeService();
 
 	/**
-	 * 
-	 * 获取流程运行轨迹服务(用于流程运行过程中记录轨迹的操作)
-	 * 
-	 * @return 流程运行轨迹服务
-	 */
-	RunningTrackService getRunningTrackService();
-	/**
 	 * 获取表单服务 (主要作用是用于管理任务表单的操作)
 	 * 
 	 * @return 表单服务

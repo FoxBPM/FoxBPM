@@ -67,18 +67,18 @@
 	</connectionManagementConfig>
 	<eventListenerConfig>
 		<eventListener eventType="process-start"
-			listenerClass="org.foxbpm.engine.impl.runningtrack.FoxbpmStartEventListener" />
+			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.StartEventTrackListener" />
 		<eventListener eventType="node-enter"
-			listenerClass="org.foxbpm.engine.impl.runningtrack.FoxbpmEventListener" />
+			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" />
 		<eventListener eventType="node-execute"
-			listenerClass="org.foxbpm.engine.impl.runningtrack.FoxbpmEventListener" />
+			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" />
 		<eventListener eventType="node-leave"
-			listenerClass="org.foxbpm.engine.impl.runningtrack.FoxbpmEventListener" />
+			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" />
 		<eventListener eventType="sequenceflow-take"
-			listenerClass="org.foxbpm.engine.impl.runningtrack.FoxbpmSequenceEventListener" />
+			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.SequenceTrackEventListener" />
 		<eventListener eventType="process-start"
-			listenerClass="org.foxbpm.engine.impl.runningtrack.ext.FoxbpmExtStartEventListener" />
+			listenerClass="org.foxbpm.engine.impl.listener.task.StartEventTaskListener" />
 		<eventListener eventType="process-end"
-			listenerClass="org.foxbpm.engine.impl.runningtrack.ext.FoxbpmExtEndEventListener" />
+			listenerClass="org.foxbpm.engine.impl.listener.task.EndEventTaskListener" />
 	</eventListenerConfig>
 </foxbpmconfig:FoxBPMConfig>

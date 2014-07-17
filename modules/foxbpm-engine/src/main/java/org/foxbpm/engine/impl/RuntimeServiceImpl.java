@@ -26,8 +26,10 @@ import org.foxbpm.engine.impl.cmd.GetProcessInstanceSVGImageCmd;
 import org.foxbpm.engine.impl.cmd.SignalCmd;
 import org.foxbpm.engine.impl.cmd.StartProcessInstanceCmd;
 import org.foxbpm.engine.impl.datavariable.VariableQueryImpl;
+import org.foxbpm.engine.impl.runningtrack.RunningTrackQueryImpl;
 import org.foxbpm.engine.impl.runtime.ProcessInstanceQueryImpl;
 import org.foxbpm.engine.impl.runtime.TokenQueryImpl;
+import org.foxbpm.engine.runningtrack.RunningTrackQuery;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.runtime.ProcessInstanceQuery;
 import org.foxbpm.engine.runtime.TokenQuery;
@@ -116,6 +118,11 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 	@Override
 	public VariableQuery createVariableQuery() {
 		return new VariableQueryImpl(commandExecutor);
+	}
+	
+	@Override
+	public RunningTrackQuery createRunningTrackQuery() {
+		return new RunningTrackQueryImpl(commandExecutor);
 	}
 
 }

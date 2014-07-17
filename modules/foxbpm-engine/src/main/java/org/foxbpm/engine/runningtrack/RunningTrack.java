@@ -15,7 +15,7 @@
  * 
  * @author MAENLIANG
  */
-package org.foxbpm.engine.impl.runningtrack;
+package org.foxbpm.engine.runningtrack;
 
 import java.util.Date;
 

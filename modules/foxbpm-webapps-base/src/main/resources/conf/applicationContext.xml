@@ -71,9 +71,6 @@
 		<property name="processEngineConfiguration" ref="processEngineConfigurationSpring" />
 	</bean>
 
-	<!-- 运行轨迹服务 -->
-	<bean id="runningTrackService" factory-bean="processEngine"
-		factory-method="getRunningTrackService" />
 	<!-- 任务服务 -->
 	<bean id="taskService" factory-bean="processEngine"
 		factory-method="getTaskService" />

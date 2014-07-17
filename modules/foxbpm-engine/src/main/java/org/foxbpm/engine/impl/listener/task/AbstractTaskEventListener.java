@@ -15,7 +15,7 @@
  * 
  * @author yangguangftlp
  */
-package org.foxbpm.engine.impl.runningtrack.ext;
+package org.foxbpm.engine.impl.listener.task;
 
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
@@ -35,7 +35,7 @@ import org.foxbpm.kernel.runtime.ListenerExecutionContext;
  * @author yangguangftlp
  * @date 2014年7月16日
  */
-public abstract class AbstractExtEventListener implements KernelListener {
+public abstract class AbstractTaskEventListener implements KernelListener {
 
 	/**
 	 * 

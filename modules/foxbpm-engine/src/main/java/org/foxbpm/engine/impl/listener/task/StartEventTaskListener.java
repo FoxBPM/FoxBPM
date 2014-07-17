@@ -15,7 +15,7 @@
  * 
  * @author yangguangftlp
  */
-package org.foxbpm.engine.impl.runningtrack.ext;
+package org.foxbpm.engine.impl.listener.task;
 
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
@@ -24,31 +24,31 @@ import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 
 /**
- * 流程结束事件监听
+ * 流程启动事件监听
  * 
  * @author yangguangftlp
  * @date 2014年7月16日
  */
-public class FoxbpmExtEndEventListener extends AbstractExtEventListener {
-
+public class StartEventTaskListener extends AbstractTaskEventListener {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -261843320544102107L;
+	private static final long serialVersionUID = 8093133229946107408L;
 
-	private static final String END_TYPE = "end";
+	private static final String START_TYPE = "start";
 
 	@Override
 	protected Object handleOperate(ListenerExecutionContext executionContext) {
 		TokenEntity tokenEntity = (TokenEntity) executionContext;
-		KernelFlowNodeImpl kernelFlowNode = tokenEntity.getFlowNode();
+		KernelFlowNodeImpl kernelFlowNode = tokenEntity.getProcessInstance().getStartFlowNode();
 		// 创建流程启动
 		TaskEntity taskEntity = new TaskEntity();
 		taskEntity.setNodeId(kernelFlowNode.getId());
 		taskEntity.setNodeName(kernelFlowNode.getName());
 		taskEntity.setCommandMessage(kernelFlowNode.getName());
-		taskEntity.setCommandType(END_TYPE);
-		taskEntity.setTaskType(TaskType.ENDEVENTTASK);
+		taskEntity.setCommandType(START_TYPE);
+		taskEntity.setTaskType(TaskType.STARTEVENTTASK);
 		return taskEntity;
 	}
+
 }

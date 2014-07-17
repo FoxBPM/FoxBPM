@@ -19,7 +19,7 @@ package org.foxbpm.engine.impl.persistence;
 
 import java.util.List;
 
-import org.foxbpm.engine.impl.runningtrack.RunningTrack;
+import org.foxbpm.engine.runningtrack.RunningTrack;
 
 /**
  * 

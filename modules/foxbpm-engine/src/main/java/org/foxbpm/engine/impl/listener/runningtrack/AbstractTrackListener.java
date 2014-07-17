@@ -15,7 +15,7 @@
  * 
  * @author MAENLIANG
  */
-package org.foxbpm.engine.impl.runningtrack;
+package org.foxbpm.engine.impl.listener.runningtrack;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,7 +29,7 @@ import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
-public abstract class AbstractEventListener implements KernelListener {
+public abstract class AbstractTrackListener implements KernelListener {
 
 	private static long tractRecord = 0;
 	/**

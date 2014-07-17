@@ -25,7 +25,6 @@ import org.foxbpm.engine.ManagementService;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineManagement;
-import org.foxbpm.engine.RunningTrackService;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.ScheduleService;
 import org.foxbpm.engine.TaskService;
@@ -41,7 +40,6 @@ public class ProcessEngineImpl implements ProcessEngine {
 	protected FormService formService;
 	protected ScheduleService scheduleService;
 	protected ManagementService managementService;
-	protected RunningTrackService runningTrackService;
 
 	protected ProcessEngineConfigurationImpl processEngineConfiguration;
 
@@ -54,7 +52,6 @@ public class ProcessEngineImpl implements ProcessEngine {
 		// this.historyService = processEngineConfiguration.getHistoryService();
 		this.identityService = processEngineConfiguration.getIdentityService();
 		this.taskService = processEngineConfiguration.getTaskService();
-		this.runningTrackService = processEngineConfiguration.getRunningTrackService();
 		// this.formService = processEngineConfiguration.getFormService();
 		// this.scheduleService =
 		// processEngineConfiguration.getScheduleService();
@@ -77,10 +74,6 @@ public class ProcessEngineImpl implements ProcessEngine {
 
 	public IdentityService getIdentityService() {
 		return identityService;
-	}
-
-	public RunningTrackService getRunningTrackService() {
-		return runningTrackService;
 	}
 
 	public ModelService getModelService() {

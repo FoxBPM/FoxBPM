@@ -27,10 +27,10 @@ import java.util.Map;
 import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentEntity;
 import org.foxbpm.engine.impl.db.Page;
-import org.foxbpm.engine.impl.runningtrack.RunningTrack;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.repository.ProcessDefinition;
+import org.foxbpm.engine.runningtrack.RunningTrack;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.runtime.ProcessInstanceQuery;
 import org.foxbpm.engine.task.Task;
@@ -66,7 +66,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 	}
 
 	public List<RunningTrack> queryRunningTrack(String processInstanceID) {
-		return runningTrackService.createRunningTrackQuery().processInstanceID(processInstanceID).list();
+		return runtimeService.createRunningTrackQuery().processInstanceID(processInstanceID).list();
 	}
 
 	@Override

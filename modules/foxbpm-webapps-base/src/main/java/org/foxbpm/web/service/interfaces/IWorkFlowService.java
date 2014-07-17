@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.identity.User;
-import org.foxbpm.engine.impl.runningtrack.RunningTrack;
+import org.foxbpm.engine.runningtrack.RunningTrack;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.common.util.Pagination;

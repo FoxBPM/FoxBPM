@@ -22,6 +22,8 @@ import java.util.List;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 import org.foxbpm.engine.impl.query.AbstractQuery;
+import org.foxbpm.engine.runningtrack.RunningTrack;
+import org.foxbpm.engine.runningtrack.RunningTrackQuery;
 
 /**
  * 运行轨迹的查询
