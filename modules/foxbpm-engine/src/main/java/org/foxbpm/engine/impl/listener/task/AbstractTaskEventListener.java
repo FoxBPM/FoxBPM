@@ -56,7 +56,7 @@ public abstract class AbstractTaskEventListener implements KernelListener {
 		// 记录流程实例的运行轨迹
 		TaskEntity taskEntity = handleTaskEntity(executionContext);
 		TokenEntity tokenEntity = (TokenEntity) executionContext;
-		handleTask(tokenEntity, taskEntity);
+		handleCommonTask(tokenEntity, taskEntity);
 		saveTaskEntity(taskEntity);
 	}
 
@@ -68,7 +68,7 @@ public abstract class AbstractTaskEventListener implements KernelListener {
 	 * @param taskEntity
 	 *            任务实例
 	 */
-	protected void handleTask(TokenEntity tokenEntity, TaskEntity taskEntity) {
+	protected void handleCommonTask(TokenEntity tokenEntity, TaskEntity taskEntity) {
 		ProcessInstanceEntity kernelProcessInstance = tokenEntity.getProcessInstance();
 		ProcessDefinitionEntity kernelProcessDefinition = (ProcessDefinitionEntity) tokenEntity.getProcessDefinition();
 		taskEntity.setOpen(false);
