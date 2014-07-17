@@ -243,18 +243,18 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	private void registListener(ProcessDefinitionEntity processEntity) {
 		EventListenerConfig eventListenerConfig = Context.getProcessEngineConfiguration().getFoxBpmConfig().getEventListenerConfig();
 		if (eventListenerConfig != null) {
-			// 加载运行轨迹监听器
+			// 加载监听器
 			List<EventListener> eventListenerList = eventListenerConfig.getEventListener();
 			KernelListener foxbpmEventListener = null;
 			try {
 				for (EventListener eventListener : eventListenerList) {
 					foxbpmEventListener = (KernelListener) Class.forName(eventListener.getListenerClass()).newInstance();
 					if (StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_START) || StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_END)) {
-						// 注册启动轨迹监听
+						// 注册启动监听
 						processEntity.addKernelListener(eventListener.getEventType(), foxbpmEventListener);
 					} else {
 						if (StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_SEQUENCEFLOW_TAKE)) {
-							// 注册线条轨迹监听
+							// 注册线条监听
 							Map<String, KernelSequenceFlowImpl> sequenceFlows = processEntity.getSequenceFlows();
 							Set<Entry<String, KernelSequenceFlowImpl>> sequenceEntrySet = sequenceFlows.entrySet();
 							Iterator<Entry<String, KernelSequenceFlowImpl>> sequenceEntryIter = sequenceEntrySet.iterator();
@@ -266,7 +266,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 								kernelSequenceFlowImpl.addKernelListener(foxbpmEventListener);
 							}
 						} else {
-							// 注册节点的轨迹监听
+							// 注册节点监听
 							List<KernelFlowNodeImpl> flowNodes = processEntity.getFlowNodes();
 							for (KernelFlowNodeImpl kernelFlowNodeImpl : flowNodes) {
 								kernelFlowNodeImpl.addKernelListener(eventListener.getEventType(), foxbpmEventListener);

@@ -37,6 +37,7 @@ import org.eclipse.bpmn2.impl.ScriptTaskImpl;
 import org.eclipse.bpmn2.impl.SendTaskImpl;
 import org.eclipse.bpmn2.impl.ServiceTaskImpl;
 import org.eclipse.bpmn2.impl.StartEventImpl;
+import org.eclipse.bpmn2.impl.SubProcessImpl;
 import org.eclipse.bpmn2.impl.TaskImpl;
 import org.eclipse.bpmn2.impl.TextAnnotationImpl;
 import org.eclipse.bpmn2.impl.UserTaskImpl;
@@ -59,6 +60,7 @@ import org.foxbpm.engine.impl.bpmn.parser.model.ScriptTaskParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.SendTaskParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.ServiceTaskParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.StartEventParser;
+import org.foxbpm.engine.impl.bpmn.parser.model.SubProcessParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.TaskParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.TextAnnotationParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.UserTaskParser;
@@ -87,6 +89,7 @@ public class BpmnBehaviorEMFConverter {
 		elementParserMap.put(EndEventImpl.class, EndEventParser.class);
 		
 		elementParserMap.put(ProcessImpl.class, ProcessParser.class);
+		elementParserMap.put(SubProcessImpl.class, SubProcessParser.class);
 		
 		elementParserMap.put(ParallelGatewayImpl.class, ParallelGatewayParser.class);
 		elementParserMap.put(InclusiveGatewayImpl.class, InclusiveGatewayParser.class);
