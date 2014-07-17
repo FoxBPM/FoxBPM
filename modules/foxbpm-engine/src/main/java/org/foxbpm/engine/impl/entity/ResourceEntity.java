@@ -33,6 +33,7 @@ public class ResourceEntity implements Serializable, PersistentObject {
 	protected byte[] bytes;
 	protected String deploymentId;
 	protected boolean generated = false;
+	protected Map<String,Object> properties;
 	// 数据库中不存储，
 	private int version = -1;
 
@@ -103,6 +104,21 @@ public class ResourceEntity implements Serializable, PersistentObject {
 
 	public void setVersion(int version) {
 		this.version = version;
+	}
+	
+	public void addProperty(String key,Object value){
+		if(properties == null){
+			properties = new HashMap<String, Object>();
+		}
+		properties.put(key, value);
+		
+	}
+	
+	public Object getProperty(String key){
+		if(properties == null){
+			return null;
+		}
+		return properties.get(key);
 	}
 	@Override
 	public String toString() {

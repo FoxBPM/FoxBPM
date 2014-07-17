@@ -69,6 +69,7 @@ public class BpmnDeployer extends AbstractDeployer {
 				.getProcessDefinitionManager();
 		ProcessDefinitionEntity processEntity = (ProcessDefinitionEntity) processModelParseHandler
 				.createProcessDefinition("dddd", input);
+		String processDefinitionId = null;
 		if (deployment.isNew()) {// 需要更新数据库（新发布或更新）
 			processEntity.setResourceName(resourceBpmn.getName());
 			processEntity.setResourceId(resourceBpmn.getId());
@@ -92,7 +93,7 @@ public class BpmnDeployer extends AbstractDeployer {
 				processEntity.setDeploymentId(deployment.getId());
 				// 新的版本号
 				processEntity.setVersion(processDefinitionVersion);
-				String processDefinitionId = new StringBuffer(processEntity.getKey())
+				processDefinitionId = new StringBuffer(processEntity.getKey())
 						.append(VERSION_FLAG).append(processEntity.getVersion())
 						.append(VERSION_FLAG).append(GuidUtil.CreateGuid()).toString(); // GUID
 				// 新的定义ID
@@ -107,7 +108,9 @@ public class BpmnDeployer extends AbstractDeployer {
 				processEntityNew.setCategory(processEntity.getCategory());
 				processEntityNew.setName(processEntity.getName());
 				processEntityNew.setResourceName(processEntity.getResourceName());
+				processDefinitionId = processEntityNew.getId();
 			}
+			resourceBpmn.addProperty("processDefinitionId", processDefinitionId);
 			// 添加自动调度，启动流程实例
 			this.addAutoStartProcessInstanceJob(processEntity);
 
