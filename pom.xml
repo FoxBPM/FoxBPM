@@ -7,6 +7,9 @@
 	<name>FoxBPM</name>
 	<description>FoxBPM流程引擎</description>
 	<packaging>pom</packaging>
+	<properties>
+		<batik.version>1.7</batik.version>
+	</properties>
 	<modules>
 		<module>modules/foxbpm-engine</module>
 		<module>modules/foxbpm-kernel</module>

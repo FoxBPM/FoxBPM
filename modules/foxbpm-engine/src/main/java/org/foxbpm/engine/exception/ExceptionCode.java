@@ -20,123 +20,83 @@ package org.foxbpm.engine.exception;
 
 /**
  * 异常信息的国际化key
+ * 
  * @author ych
- *
+ * 
  */
 public interface ExceptionCode {
-	public static String EXCEPTION_DEFAULT = "exception_default";
-	
-	/**
-	 * 文件加载类异常
-	 */
-	public static String CLASSLOAD_EXCEPTION_DEFAULT = "classloadException_default";
-	public static String CLASSLOAD_EXCEPTION_FILENOTFOUND = "classloadException_filenotfound";
-	public static String CLASSLOAD_EXCEPTION_ENCODING = "classloadException_encoding";
-	public static String CLASSLOAD_EXCEPTION = "classloadException";
-	public static String CLASSLOAD_EXCEPTION_DCUMENT = "classloadException_document";
-	public static String JOB_EXCEPTION_DEFAULT = "jobException_default";
-	public static String QUARZTEXCEPTION_ISENABLE = "quarztException_isEnable";
-	
+	/** 默认异常 */
+	String EXCEPTION_DEFAULT = "exception_default";
+
+	/** 文件加载类异常 */
+	String CLASSLOAD_EXCEPTION_DEFAULT = "classloadException_default";
+	String CLASSLOAD_EXCEPTION_FILENOTFOUND = "classloadException_filenotfound";
+	String CLASSLOAD_EXCEPTION_ENCODING = "classloadException_encoding";
+	String CLASSLOAD_EXCEPTION = "classloadException";
+	String CLASSLOAD_EXCEPTION_DCUMENT = "classloadException_document";
+	String JOB_EXCEPTION_DEFAULT = "jobException_default";
+	String QUARZTEXCEPTION_ISENABLE = "quarztException_isEnable";
+
 	/* 规则类 异常 */
-	/**
-	 * 规则解释类没有找到
-	 */
-	public static String CLASSLOADEXCEPTION_RULECLASS = "classloadException_ruleClass";
-	/**
-	 * 归档异常
-	 */
+	/** 规则解释类没有找到 */
+	String CLASSLOADEXCEPTION_RULECLASS = "classloadException_ruleClass";
+	/** 归档异常 */
 	/* 表达式执行异常 */
-	
-	public static String EXCEPTION_ARCHIVE = "archive";
-	public static String EXCEPTION_ARCHIVE_PARAMS = "archive_params";
-	
-	/**
-	 * 跳过策略表达式异常编码
-	 */
-	public static String EXPRESSION_EXCEPTION_SKIPSTRATEGY = "expressionException_skipStrategy";
-	
-	/**
-	 * 输出结果集表达式集合验证
-	 */
-	public static String EXPRESSION_EXCEPTION_LOOPDATAOUTPUTCOLLECTION_COLLECTIONCHECK = "expressionException_loopDataOutputCollection_collectionCheck";
-	
-	/**
-	 * 多实例输入数据集异常编码
-	 */
-	public static String EXPRESSION_EXCEPTION_LOOPDATAINPUTCOLLECTIONEXPRESSION = "expressionException_loopDataInputCollectionExpression";
-	
-	/**
-	 * 多实例输入数据集集合数量为0
-	 */
-	public static String EXPRESSION_EXCEPTION_LOOPDATAINPUTCOLLECTIONEMPTY = "expressionException_loopDataInputCollectionEmpty";
-	
-	/**
-	 * 多实例输入数据集集合循环插入输入项目
-	 */
-	public static String EXPRESSIONEXCEPTION_COLLECTIONININPUTDATAITEM = "expressionException_collectionInInputDataItem";
-	
-	
-	/**
-	 * 完成条件表达式为空
-	 */
-	public static String EXPRESSIONEXCEPTION_CONDITIONEXPRESSIONEMPTY = "expressionException_conditionExpressionEmpty";
-	
-	/**
-	 * 完成条件表达式执行出错
-	 */
-	public static String EXPRESSIONEXCEPTION_CONDITIONEXPRESSIONERROR = "expressionException_conditionExpressionError";
-	
-	
-	/**
-	 * 节点离开的时候清理quartz出错
-	 */
-	public static String QUARZTEXCEPTION_NODELEAVECLEANQUARTZ = "quarztException_nodeLeaveCleanQuartz";
-	
-	
-	/**
-	 * 节点后面没有配置线条
-	 */
-	public static String SEQUENCEFLOWEXCEPTION_NODENOSEQUENCEFLOW = "sequenceFlowException_nodeNoSequenceFlow";
-	
 
-	/**
-	 * 节点后面没有验证通过的线条
-	 */
-	public static String SEQUENCEFLOWEXCEPTION_NODENOVERIFIEDSEQUENCEFLOW = "sequenceFlowException_nodeNoVerifiedSequenceFlow";
-	
-	
-	
-	/**
-	 * 规则类执行异常
-	 */
-	public static String RULEEXCEPTION_CLASSEXEC = "ruleException_classExec";
-	
-	/**
-	 * 规则脚本执行异常
-	 */
-	public static String RULEEXCEPTION_RULESCRIPTEXEC = "ruleException_ruleScriptExec";
-	
-	/**
-	 * 规则执行类、脚本都为空
-	 */
-	public static String RULEEXCEPTION_CLASSANDSCRIPTEMPTY = "ruleException_classAndScriptEmpty";
-	
-	
-	
-	// 对象没找到异常
-	
-	/**  流程定义对象没找到*/
-	public static String OBJECTNOTFOUNDEXCEPTION_FINDDEFINITIONBYID = "objectNotFoundException_findDefinitionById";
-	
-	/**  流程定义对象没找到*/
-	public static String OBJECTNOTFOUNDEXCEPTION_FINDDEFINITIONBYKEY = "objectNotFoundException_findDefinitionByKey";
-	
-	
-	
-	// 参数异常为空
-	public static String ILLEGALARGUMENTEXCEPTION_ISNULL = "IllegalArgumentException_isNull";
-	
-	
-	
+	String EXCEPTION_ARCHIVE = "archive";
+	String EXCEPTION_ARCHIVE_PARAMS = "archive_params";
 
+	/** 跳过策略表达式异常编码 */
+	String EXPRESSION_EXCEPTION_SKIPSTRATEGY = "expressionException_skipStrategy";
+
+	/** 输出结果集表达式集合验证 */
+	String EXPRESSION_EXCEPTION_LOOPDATAOUTPUTCOLLECTION_COLLECTIONCHECK = "expressionException_loopDataOutputCollection_collectionCheck";
+
+	/** 多实例输入数据集异常编码 */
+	String EXPRESSION_EXCEPTION_LOOPDATAINPUTCOLLECTIONEXPRESSION = "expressionException_loopDataInputCollectionExpression";
+
+	/** 多实例输入数据集集合数量为0 */
+	String EXPRESSION_EXCEPTION_LOOPDATAINPUTCOLLECTIONEMPTY = "expressionException_loopDataInputCollectionEmpty";
+
+	/** 多实例输入数据集集合循环插入输入项目 */
+	String EXPRESSIONEXCEPTION_COLLECTIONININPUTDATAITEM = "expressionException_collectionInInputDataItem";
+
+	/** 完成条件表达式为空 */
+	String EXPRESSIONEXCEPTION_CONDITIONEXPRESSIONEMPTY = "expressionException_conditionExpressionEmpty";
+
+	/** 完成条件表达式执行出错 */
+	String EXPRESSIONEXCEPTION_CONDITIONEXPRESSIONERROR = "expressionException_conditionExpressionError";
+
+	/** 节点离开的时候清理quartz出错 */
+	String QUARZTEXCEPTION_NODELEAVECLEANQUARTZ = "quarztException_nodeLeaveCleanQuartz";
+
+	/** 节点后面没有配置线条 */
+	String SEQUENCEFLOWEXCEPTION_NODENOSEQUENCEFLOW = "sequenceFlowException_nodeNoSequenceFlow";
+
+	/** 节点后面没有验证通过的线条 */
+	String SEQUENCEFLOWEXCEPTION_NODENOVERIFIEDSEQUENCEFLOW = "sequenceFlowException_nodeNoVerifiedSequenceFlow";
+
+	/** 规则类执行异常 */
+	String RULEEXCEPTION_CLASSEXEC = "ruleException_classExec";
+
+	/** 规则脚本执行异常 */
+	String RULEEXCEPTION_RULESCRIPTEXEC = "ruleException_ruleScriptExec";
+
+	/** 规则执行类、脚本都为空 */
+	String RULEEXCEPTION_CLASSANDSCRIPTEMPTY = "ruleException_classAndScriptEmpty";
+
+	/** 流程定义对象没找到 */
+	String OBJECTNOTFOUNDEXCEPTION_FINDDEFINITIONBYID = "objectNotFoundException_findDefinitionById";
+
+	/** 流程定义对象没找到 */
+	String OBJECTNOTFOUNDEXCEPTION_FINDDEFINITIONBYKEY = "objectNotFoundException_findDefinitionByKey";
+
+	/** 参数异常为空 */
+	String ILLEGALARGUMENTEXCEPTION_ISNULL = "IllegalArgumentException_isNull";
+
+	/** 转换SVG出现错误 */
+	String CONVERTERTER_SVG_ERROR = "ConverterterSVG_isError";
+
+	/** 关闭流出现错误 */
+	String IO_CLOSE_ERROR = "IOClose_isError";
 }
