@@ -38,7 +38,7 @@ public class StartEventTaskListener extends AbstractTaskEventListener {
 	private static final String START_TYPE = "start";
 
 	@Override
-	protected Object handleOperate(ListenerExecutionContext executionContext) {
+	protected TaskEntity handleTaskEntity(ListenerExecutionContext executionContext) {
 		TokenEntity tokenEntity = (TokenEntity) executionContext;
 		KernelFlowNodeImpl kernelFlowNode = tokenEntity.getProcessInstance().getStartFlowNode();
 		// 创建流程启动

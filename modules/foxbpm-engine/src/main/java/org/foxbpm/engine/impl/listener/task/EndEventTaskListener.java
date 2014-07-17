@@ -39,7 +39,7 @@ public class EndEventTaskListener extends AbstractTaskEventListener {
 	private static final String END_TYPE = "end";
 
 	@Override
-	protected Object handleOperate(ListenerExecutionContext executionContext) {
+	protected TaskEntity handleTaskEntity(ListenerExecutionContext executionContext) {
 		TokenEntity tokenEntity = (TokenEntity) executionContext;
 		KernelFlowNodeImpl kernelFlowNode = tokenEntity.getFlowNode();
 		// 创建流程启动

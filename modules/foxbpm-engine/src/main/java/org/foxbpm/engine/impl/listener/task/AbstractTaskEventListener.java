@@ -17,7 +17,6 @@
  */
 package org.foxbpm.engine.impl.listener.task;
 
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
@@ -44,7 +43,7 @@ public abstract class AbstractTaskEventListener implements KernelListener {
 
 	@Override
 	public void notify(ListenerExecutionContext executionContext) throws Exception {
-		recordOperate(executionContext);
+		recordTask(executionContext);
 	}
 
 	/**
@@ -53,18 +52,12 @@ public abstract class AbstractTaskEventListener implements KernelListener {
 	 * @param executionContext
 	 *            上下文
 	 */
-	private void recordOperate(ListenerExecutionContext executionContext) {
+	private void recordTask(ListenerExecutionContext executionContext) {
 		// 记录流程实例的运行轨迹
-		Object object = handleOperate(executionContext);
-		if (object == null) {
-			throw new FoxBPMException("分类构造的运行轨迹实体 不能为空");
-		}
+		TaskEntity taskEntity = handleTaskEntity(executionContext);
 		TokenEntity tokenEntity = (TokenEntity) executionContext;
-		if (object instanceof TaskEntity) {
-			TaskEntity taskEntity = (TaskEntity) object;
-			handleTaskEntitly(tokenEntity, taskEntity);
-			saveTaskEntity(taskEntity);
-		}
+		handleTask(tokenEntity, taskEntity);
+		saveTaskEntity(taskEntity);
 	}
 
 	/**
@@ -75,7 +68,7 @@ public abstract class AbstractTaskEventListener implements KernelListener {
 	 * @param taskEntity
 	 *            任务实例
 	 */
-	protected void handleTaskEntitly(TokenEntity tokenEntity, TaskEntity taskEntity) {
+	protected void handleTask(TokenEntity tokenEntity, TaskEntity taskEntity) {
 		ProcessInstanceEntity kernelProcessInstance = tokenEntity.getProcessInstance();
 		ProcessDefinitionEntity kernelProcessDefinition = (ProcessDefinitionEntity) tokenEntity.getProcessDefinition();
 		taskEntity.setOpen(false);
@@ -111,5 +104,5 @@ public abstract class AbstractTaskEventListener implements KernelListener {
 	 *            上下文
 	 * @return 返回处理结果
 	 */
-	protected abstract Object handleOperate(ListenerExecutionContext executionContext);
+	protected abstract TaskEntity handleTaskEntity(ListenerExecutionContext executionContext);
 }
