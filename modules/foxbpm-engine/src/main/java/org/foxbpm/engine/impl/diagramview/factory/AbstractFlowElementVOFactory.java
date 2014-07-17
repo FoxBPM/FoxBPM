@@ -121,7 +121,6 @@ public abstract class AbstractFlowElementVOFactory {
 					.getKernelFlowNodeBehavior();
 			if (kernelFlowNodeBehavior instanceof TaskBehavior
 					|| kernelFlowNodeBehavior instanceof CallActivityBehavior) {
-				this.filterActivityTaskVO(voNode, new String[]{"callActivity"});
 				this.filterChildVO(voNode, Arrays.asList(svgType.split(SPLIT_SEPERATOR)));
 			}
 
@@ -220,14 +219,6 @@ public abstract class AbstractFlowElementVOFactory {
 	 * @param filterCondition
 	 */
 	public abstract void filterParentVO(VONode voNode, String[] filterCondition);
-
-	/**
-	 * 过滤任务类型
-	 * 
-	 * @param voNode
-	 * @param filterCondition
-	 */
-	public abstract void filterActivityTaskVO(VONode voNode, String[] filterCondition);
 
 	/**
 	 * 过滤连接器类型

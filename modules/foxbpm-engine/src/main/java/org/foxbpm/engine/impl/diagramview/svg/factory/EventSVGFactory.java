@@ -39,8 +39,7 @@ public class EventSVGFactory extends AbstractFlowElementSVGFactory {
 	 * @param voTemplateFileName
 	 *            SVG模版文件名
 	 */
-	public EventSVGFactory(KernelBaseElement kernelBaseElement,
-			String voTemplateFileName) {
+	public EventSVGFactory(KernelBaseElement kernelBaseElement, String voTemplateFileName) {
 		super(kernelBaseElement, voTemplateFileName);
 	}
 
@@ -59,12 +58,6 @@ public class EventSVGFactory extends AbstractFlowElementSVGFactory {
 
 	@Override
 	public void filterParentVO(VONode voNode, String[] filterCondition) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void filterActivityTaskVO(VONode voNode, String[] filterCondition) {
 		// TODO Auto-generated method stub
 
 	}

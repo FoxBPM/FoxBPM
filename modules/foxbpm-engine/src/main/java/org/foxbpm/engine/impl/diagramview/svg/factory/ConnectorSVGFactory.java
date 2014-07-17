@@ -100,12 +100,6 @@ public class ConnectorSVGFactory extends AbstractFlowElementSVGFactory {
 	}
 
 	@Override
-	public void filterActivityTaskVO(VONode voNode, String[] filterCondition) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void filterChildVO(VONode voNode, List<String> filterCondition) {
 		// TODO Auto-generated method stub
 

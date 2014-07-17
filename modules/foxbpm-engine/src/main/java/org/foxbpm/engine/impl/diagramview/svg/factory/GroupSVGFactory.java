@@ -56,11 +56,6 @@ public class GroupSVGFactory extends AbstractFlowElementSVGFactory {
 	}
 
 	@Override
-	public void filterActivityTaskVO(VONode voNode, String[] filterCondition) {
-
-	}
-
-	@Override
 	public void filterConnectorVO(VONode voNode, String[] filterCondition) {
 
 	}
