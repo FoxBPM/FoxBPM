@@ -82,6 +82,10 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 		} else if (StringUtils.equalsIgnoreCase(type,
 				SVGTypeNameConstant.SVG_TYPE_CONNECTOR_ASSOCIATION_UNDIRECTED)) {
 			return new AssociationSVGBuilder((SvgVO) svgVo);
+		} else if (StringUtils.equalsIgnoreCase(type, SVGTypeNameConstant.SVG_TYPE_CALLACTIVITY)) {
+			return new CallActivitySVGBuilder((SvgVO) svgVo);
+		} else if (StringUtils.equalsIgnoreCase(type, SVGTypeNameConstant.SVG_TYPE_SUBPROCESS)) {
+			return new SubProcessSVGBuilder((SvgVO) svgVo);
 		}
 		return null;
 	}

@@ -121,7 +121,7 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 			}
 			voNodeList.add(voNode);
 		}
-		this.createSequenceVO(deployedProcessDefinition, voNodeList);
+		this.createSequenceVO(deployedProcessDefinition.getSequenceFlows(), voNodeList);
 		return flowNodeVOFactory.convertNodeListToString(deployedProcessDefinition.getProperties(),
 				voNodeList);
 	}
@@ -130,10 +130,31 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 	 * 根据所有流程节点，和流程连接创建流程SVG文档字符串
 	 */
 	public String createProcessDefinitionVOString(ProcessDefinitionEntity deployedProcessDefinition) {
-		List<KernelFlowNodeImpl> flowNodes = deployedProcessDefinition.getFlowNodes();
 		List<VONode> voNodeList = new ArrayList<VONode>();
 		// 构建泳道
 		this.createLaneSetVO(deployedProcessDefinition.getLaneSets(), voNodeList);
+		// 创建所有的流程节点
+		this.createFlowNodeVO(deployedProcessDefinition.getFlowNodes(), voNodeList);
+		// 构建SEQUENCE
+		this.createSequenceVO(deployedProcessDefinition.getSequenceFlows(), voNodeList);
+		// 构建小部件
+		this.createArtifactVO(deployedProcessDefinition.getArtifacts(), voNodeList);
+		// 转化成SVG字符串
+		return flowNodeVOFactory.convertNodeListToString(deployedProcessDefinition.getProperties(),
+				voNodeList);
+	}
+
+	/**
+	 * 
+	 * createFlowNodeVO(构建节点VO)
+	 * 
+	 * @param flowNodes
+	 * @param voNodeList
+	 *            void
+	 * @exception
+	 * @since 1.0.0
+	 */
+	private void createFlowNodeVO(List<KernelFlowNodeImpl> flowNodes, List<VONode> voNodeList) {
 		// 遍历所有的流程节点
 		Iterator<KernelFlowNodeImpl> flowNodeIterator = flowNodes.iterator();
 		String taskType = EMPTY_STRING;
@@ -153,14 +174,13 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 			// 构造流程节点
 			voNode = this.getNodeSVGFromFactory(kernelFlowNodeImpl, taskType, svgTemplateFileName);
 			voNodeList.add(voNode);
+
+			// 递归创建子流程节点
+			List<KernelFlowNodeImpl> subFlowNodes = kernelFlowNodeImpl.getFlowNodes();
+			if (subFlowNodes != null && subFlowNodes.size() > 0) {
+				createFlowNodeVO(subFlowNodes, voNodeList);
+			}
 		}
-		// 构建SEQUENCE
-		this.createSequenceVO(deployedProcessDefinition, voNodeList);
-		// 构建小部件
-		this.createArtifactVO(deployedProcessDefinition, voNodeList);
-		// 转化成SVG字符串
-		return flowNodeVOFactory.convertNodeListToString(deployedProcessDefinition.getProperties(),
-				voNodeList);
 	}
 
 	/**
@@ -214,9 +234,7 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 	 * @exception
 	 * @since 1.0.0
 	 */
-	private void createArtifactVO(ProcessDefinitionEntity deployedProcessDefinition,
-			List<VONode> voNodeList) {
-		List<KernelArtifact> artifacts = deployedProcessDefinition.getArtifacts();
+	private void createArtifactVO(List<KernelArtifact> artifacts, List<VONode> voNodeList) {
 		if (artifacts != null && artifacts.size() > 0) {
 			String taskType = EMPTY_STRING;
 			String svgTemplateFileName = EMPTY_STRING;
@@ -252,12 +270,10 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 	 * @param deployedProcessDefinition
 	 * @param voNodeList
 	 */
-	private void createSequenceVO(ProcessDefinitionEntity deployedProcessDefinition,
+	private void createSequenceVO(Map<String, KernelSequenceFlowImpl> sequenceFlows,
 			List<VONode> voNodeList) {
 		String taskType = EMPTY_STRING;
 		String svgTemplateFileName = EMPTY_STRING;
-		Map<String, KernelSequenceFlowImpl> sequenceFlows = deployedProcessDefinition
-				.getSequenceFlows();
 		// 遍历所有的流程连线
 		Iterator<Entry<String, KernelSequenceFlowImpl>> sequenceFlowterator = sequenceFlows
 				.entrySet().iterator();
@@ -381,8 +397,12 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 				}
 			} else if (kernelFlowNodeBehavior instanceof CallActivityBehavior) {
 				// 外部子流程
+				taskType = SVGTypeNameConstant.SVG_TYPE_CALLACTIVITY;
+				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_CALLACTIVITY;
 			} else if (kernelFlowNodeBehavior instanceof SubProcessBehavior) {
 				// 子流程
+				taskType = SVGTypeNameConstant.SVG_TYPE_SUBPROCESS;
+				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_SUBPROCESS;
 			}
 			// 网关
 		} else if (kernelFlowNodeBehavior instanceof GatewayBehavior) {

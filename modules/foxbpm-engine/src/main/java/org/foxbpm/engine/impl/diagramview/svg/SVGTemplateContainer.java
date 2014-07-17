@@ -101,6 +101,11 @@ public class SVGTemplateContainer {
 		this.init(SVGTemplateNameConstant.TEMPLATE_GROUP);
 		this.init(SVGTemplateNameConstant.TEMPLATE_TEXTANNOTATION);
 		this.init(SVGTemplateNameConstant.TEMPLATE_CONNECTOR_ASSOCIATION);
+
+		// 加载子流程
+		this.init(SVGTemplateNameConstant.TEMPLATE_ACTIVITY_SUBPROCESS);
+		this.init(SVGTemplateNameConstant.TEMPLATE_ACTIVITY_CALLACTIVITY);
+
 		// 初始化加载模版容器
 		this.init(SVGTemplateNameConstant.SVG_TEMPLATE);
 	}

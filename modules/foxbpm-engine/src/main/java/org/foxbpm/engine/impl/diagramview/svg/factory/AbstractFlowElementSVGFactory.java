@@ -94,6 +94,12 @@ public abstract class AbstractFlowElementSVGFactory extends AbstractFlowElementV
 		} else if (StringUtils.contains(svgTemplateFileName,
 				SVGTemplateNameConstant.TEMPLATE_CONNECTOR_ASSOCIATION)) {
 			return new AssociationSVGFactory(kernelBaseElement, svgTemplateFileName);
+		} else if (StringUtils.contains(svgTemplateFileName,
+				SVGTemplateNameConstant.TEMPLATE_ACTIVITY_SUBPROCESS)) {
+			return new SubProcessSVGFactory(kernelBaseElement, svgTemplateFileName);
+		} else if (StringUtils.contains(svgTemplateFileName,
+				SVGTemplateNameConstant.TEMPLATE_ACTIVITY_CALLACTIVITY)) {
+			return new CallActivitySVGFactory(kernelBaseElement, svgTemplateFileName);
 		}
 		return null;
 	}

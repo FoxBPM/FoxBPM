@@ -42,7 +42,7 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 	/**
 	 * 矩形对象
 	 */
-	private RectVO rectVO;
+	protected RectVO rectVO;
 
 	/**
 	 * 任务节点Builder、获取节点矩形
