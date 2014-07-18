@@ -68,6 +68,10 @@ public final class SVGTemplateNameConstant {
 	 * sub process
 	 */
 	public static final String TEMPLATE_ACTIVITY_SUBPROCESS = "activity/subprocess.expanded.svg";
+	/**
+	 * sub process collapsed
+	 */
+	public static final String TEMPLATE_ACTIVITY_SUBPROCESS_COLLAPSED = "activity/subprocess.collapsed.svg";
 
 	/**
 	 * connector
