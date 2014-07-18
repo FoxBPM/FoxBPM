@@ -6,9 +6,9 @@
 <div class="header">
 	<div class="top-right">
 		<ul>
-			<li><a id="updateCache" href="#">更新缓存</a></li>
+			<li><a id="updateCache" href="javascript:void(0)">更新缓存</a></li>
 			<li><a href="#" onclick="updateMyself();">${sessionScope.LOGIN_USER_NAME}</a></li>
-			<li><a href="LoginServlet?doLogOut=true">退出</a></li>
+			<li><a href="login.action?doLogOut=true">退出</a></li>
 		</ul>
 	</div>
 	<div class="top-right-l2">
@@ -64,9 +64,13 @@
 		}
 		$("#" + color).css("border", "1px solid #fff");
 		$("#updateCache").click(function() {
-			$.get("FlowManager?action=updateCache", function(msg) {
-				alert(msg);
-			})
+			$.ajax({
+				type : "POST",
+				url : "updateCache.action",
+				success : function(msg) {
+					alert(msg);
+				}
+			});
 		});
 
 		$("#setAgent").click(function() {

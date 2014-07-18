@@ -30,62 +30,64 @@
 	</div>
 </div>
 <script>
- 
-	$(function(){
+	$(function() {
 		var color = window.localStorage.getItem("color");
-		if(color){
+		if (color) {
 			var url = $("#color").attr("href");
-			url=url.substring(0,url.lastIndexOf("_")+1);
-			url+=color+".css";
-			$("#color").attr("href",url);
-		}else{
+			url = url.substring(0, url.lastIndexOf("_") + 1);
+			url += color + ".css";
+			$("#color").attr("href", url);
+		} else {
 			var url = $("#color").attr("href");
-			url=url.substring(0,url.lastIndexOf("_")+1);
-			url+="red.css";
-			$("#color").attr("href",url);
+			url = url.substring(0, url.lastIndexOf("_") + 1);
+			url += "red.css";
+			$("#color").attr("href", url);
 		}
-		$("#"+color).css("border","1px solid #fff");
-		$("#updateCache").click(function(){ 
-			$.get("updateCache.action",function(msg){
-				alert(msg);
+		$("#" + color).css("border", "1px solid #fff");
+		$("#updateCache").click(function() {
+			$.ajax({
+				type : "POST",
+				url : "updateCache.action",
+				success : function(msg) {
+					alert(msg);
+				}
 			});
 		});
-		
-		$("#setAgent").click(function(){
+
+		$("#setAgent").click(function() {
 			var url = "delegateAuthority.action";
 			Fix.OpenMethod.openWindow(url);
 		});
-		
-		$("#red").click(function(){
+
+		$("#red").click(function() {
 			var url = $("#color").attr("href");
-			url=url.substring(0,url.lastIndexOf("_")+1);
-			url+="red.css";
-			$("#color").attr("href",url);
-			window.localStorage.setItem("color","red");
-			$("a[name=theme_color]").css("border","1px solid #404040");
-			$(this).css("border","1px solid #fff");
+			url = url.substring(0, url.lastIndexOf("_") + 1);
+			url += "red.css";
+			$("#color").attr("href", url);
+			window.localStorage.setItem("color", "red");
+			$("a[name=theme_color]").css("border", "1px solid #404040");
+			$(this).css("border", "1px solid #fff");
 			return false;
 		});
-		$("#blue").click(function(){
+		$("#blue").click(function() {
 			var url = $("#color").attr("href");
-			url=url.substring(0,url.lastIndexOf("_")+1);
-			url+="blue.css";
-			$("#color").attr("href",url);
-			window.localStorage.setItem("color","blue");
-			$("a[name=theme_color]").css("border","1px solid #404040");
-			$(this).css("border","1px solid #fff");
+			url = url.substring(0, url.lastIndexOf("_") + 1);
+			url += "blue.css";
+			$("#color").attr("href", url);
+			window.localStorage.setItem("color", "blue");
+			$("a[name=theme_color]").css("border", "1px solid #404040");
+			$(this).css("border", "1px solid #fff");
 			return false;
 		});
-	})
+	});
 
 	chooseSelect();
-	function updateMyself(){
-		var obj = {};
+	function updateMyself() {
 		window.open("FlowCenter?action=getUserInfo&isUpdate=true");
 	}
-	
-	function chooseSelect(){
+
+	function chooseSelect() {
 		var now = '${nowAction}';
-		$("#"+now).addClass("select");
+		$("#" + now).addClass("select");
 	}
 </script>
