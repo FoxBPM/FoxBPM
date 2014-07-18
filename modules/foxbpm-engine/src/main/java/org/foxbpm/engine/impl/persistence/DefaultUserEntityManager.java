@@ -57,7 +57,7 @@ public class DefaultUserEntityManager extends AbstractManager implements UserEnt
 	}
 
 	@Override
-	public Object findUserCount(String idLike, String nameLike) {
+	public Long findUserCount(String idLike, String nameLike) {
 		Map<String, Object> queryMap = new HashMap<String, Object>();
 		if (idLike != null) {
 			queryMap.put("userId", idLike);
@@ -65,6 +65,6 @@ public class DefaultUserEntityManager extends AbstractManager implements UserEnt
 		if (nameLike != null) {
 			queryMap.put("userName", nameLike);
 		}
-		return getSqlSession().selectOne("selectUsersCount", queryMap);
+		return (Long)getSqlSession().selectOne("selectUsersCount", queryMap);
 	}
 }

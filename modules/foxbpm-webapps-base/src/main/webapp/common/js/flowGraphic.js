@@ -61,6 +61,7 @@ function FlowGraphic(param) {
 		}
 	};
 
+
 	this.moveRunningTrack = function() {
 		if (runningTrackLength != 0 && runningTrackIndex < runningTrackLength) {
 			currentRunningTrack = runningTrackInfo[runningTrackIndex];
@@ -249,7 +250,6 @@ function FlowGraphic(param) {
 			}
 		}
 	}
- 
 
 	/**
 	 * 初始化
@@ -259,8 +259,8 @@ function FlowGraphic(param) {
 			$('#' + this.parentId).append(
 					"<img src= " + this.action + "?processDefinitionId="
 							+ this.processDefinitionId
-							+ "&processDefinitionKey=" + this.processDefinitionKey
-							+ " />");
+							+ "&processDefinitionKey="
+							+ this.processDefinitionKey + " />");
 			// 标记流程图
 			this.addGraphicInfo();
 			this.markImags();

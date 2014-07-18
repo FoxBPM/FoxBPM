@@ -25,7 +25,6 @@ import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.identity.UserEntityManager;
 import org.foxbpm.engine.impl.db.Page;
 import org.foxbpm.engine.impl.entity.UserEntity;
-import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
@@ -66,7 +65,7 @@ public class FindUsersCmd implements Command<List<User>> {
 		if (null != userEntityList && !userEntityList.isEmpty()) {
 			userList = new ArrayList<User>();
 			for (UserEntity userEntity : userEntityList) {
-				userList.add(Authentication.selectUserByUserId(userEntity.getUserId()));
+				userList.add(userEntity);
 			}
 		}
 		return userList;

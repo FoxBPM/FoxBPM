@@ -26,7 +26,7 @@ import org.foxbpm.engine.impl.interceptor.CommandContext;
  * @author yangguangftlp
  * @date 2014年6月25日
  */
-public class FindUsersCountCmd implements Command<Object> {
+public class FindUsersCountCmd implements Command<Long> {
 	/**
 	 * 示例：%20080101%
 	 */
@@ -42,7 +42,7 @@ public class FindUsersCountCmd implements Command<Object> {
 	}
 
 	@Override
-	public Object execute(CommandContext commandContext) {
+	public Long execute(CommandContext commandContext) {
 		return commandContext.getUserEntityManager().findUserCount(idLike, nameLike);
 	}
 }

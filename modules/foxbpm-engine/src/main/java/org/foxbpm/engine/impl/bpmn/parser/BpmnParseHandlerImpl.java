@@ -436,7 +436,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			if (kernelDIBounds instanceof KernelLaneImpl) {
 				kernelDIBounds.setProperty(StyleOption.IsHorizontal, bpmnShape.isIsHorizontal());
 			}
-			// 内部子流程展开收起属性
+			//内部子流程展开收起属性
 			if (kernelDIBounds instanceof KernelFlowNodeImpl
 					&& ((KernelFlowNodeImpl) kernelDIBounds).getKernelFlowNodeBehavior() instanceof SubProcessBehavior) {
 				kernelDIBounds.setProperty(StyleOption.IsExpanded, bpmnShape.isIsExpanded());
