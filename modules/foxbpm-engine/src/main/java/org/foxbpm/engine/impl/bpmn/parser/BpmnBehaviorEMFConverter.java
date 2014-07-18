@@ -30,6 +30,7 @@ import org.eclipse.bpmn2.impl.ExclusiveGatewayImpl;
 import org.eclipse.bpmn2.impl.GroupImpl;
 import org.eclipse.bpmn2.impl.InclusiveGatewayImpl;
 import org.eclipse.bpmn2.impl.ManualTaskImpl;
+import org.eclipse.bpmn2.impl.MultiInstanceLoopCharacteristicsImpl;
 import org.eclipse.bpmn2.impl.ParallelGatewayImpl;
 import org.eclipse.bpmn2.impl.ProcessImpl;
 import org.eclipse.bpmn2.impl.ReceiveTaskImpl;
@@ -37,6 +38,7 @@ import org.eclipse.bpmn2.impl.ScriptTaskImpl;
 import org.eclipse.bpmn2.impl.SendTaskImpl;
 import org.eclipse.bpmn2.impl.SequenceFlowImpl;
 import org.eclipse.bpmn2.impl.ServiceTaskImpl;
+import org.eclipse.bpmn2.impl.StandardLoopCharacteristicsImpl;
 import org.eclipse.bpmn2.impl.StartEventImpl;
 import org.eclipse.bpmn2.impl.SubProcessImpl;
 import org.eclipse.bpmn2.impl.TaskImpl;
@@ -54,6 +56,7 @@ import org.foxbpm.engine.impl.bpmn.parser.model.ExclusiveGatewayParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.GroupParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.InclusiveGatewayParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.ManualTaskParser;
+import org.foxbpm.engine.impl.bpmn.parser.model.MultiInstanceLoopCharacteristicsParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.ParallelGatewayParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.ProcessParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.ReceiveTaskParser;
@@ -61,6 +64,7 @@ import org.foxbpm.engine.impl.bpmn.parser.model.ScriptTaskParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.SendTaskParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.SequenceFlowParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.ServiceTaskParser;
+import org.foxbpm.engine.impl.bpmn.parser.model.StandardLoopCharacteristicsParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.StartEventParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.SubProcessParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.TaskParser;
@@ -103,6 +107,9 @@ public class BpmnBehaviorEMFConverter {
 		elementParserMap.put(TextAnnotationImpl.class, TextAnnotationParser.class);
 		
 		elementParserMap.put(SequenceFlowImpl.class, SequenceFlowParser.class);
+		
+		elementParserMap.put(MultiInstanceLoopCharacteristicsImpl.class, MultiInstanceLoopCharacteristicsParser.class);
+		elementParserMap.put(StandardLoopCharacteristicsImpl.class, StandardLoopCharacteristicsParser.class);
 		
 		
 	}
@@ -151,24 +158,11 @@ public class BpmnBehaviorEMFConverter {
 	}
 	
 	public static KernelArtifactBehavior getArtifactBehavior(BaseElement baseElement,KernelFlowElementsContainerImpl  flowElementsContainer) {
-		Class<? extends BaseElementParser> baseParserClass = elementParserMap.get(baseElement.getClass());
-		if(baseParserClass != null){
-			BaseElementParser parser = null;
-			try {
-				parser = baseParserClass.newInstance();
-			} catch (Exception e) {
-				log.error("转换元素："+baseElement.getId()+" 失败！",e);
-			}
-			if(parser != null){
-				parser.init();
-				parser.setFlowElementsContainer(flowElementsContainer);
-				BaseElementBehavior baseElementBehavior=parser.parser(baseElement);
-				if(baseElementBehavior instanceof ArtifactBehavior){
-					return (ArtifactBehavior)baseElementBehavior;
-				}
-			}
+		BaseElementBehavior baseElementBehavior = getBaseElementBehavior(baseElement, flowElementsContainer);
+		if (baseElementBehavior instanceof ArtifactBehavior) {
+			return (ArtifactBehavior) baseElementBehavior;
 		}
-		return null;
+  		return null;
 	}
 
 }
