@@ -76,8 +76,7 @@ public interface TaskService {
 	
 	TaskQuery createTaskQuery();
 
-	public NativeTaskQuery createNativeTaskQuery();
-	
+	NativeTaskQuery createNativeTaskQuery();
 	
 	/**
 	 * 获取任务节点上的toolbar

@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Stack;
 
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
+import org.foxbpm.kernel.behavior.KernelSequenceFlowBehavior;
 import org.foxbpm.kernel.event.KernelListener;
 import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
@@ -109,14 +110,21 @@ public class ProcessDefinitionBuilder {
 	}
 
 	public ProcessDefinitionBuilder sequenceFlow(String targetFlowNodeId, String sequenceFlowId) {
-		sequenceFlow(targetFlowNodeId, sequenceFlowId, null);
-		return this;
+		return sequenceFlow(targetFlowNodeId, sequenceFlowId, null);
 	}
 
 	public ProcessDefinitionBuilder sequenceFlow(String targetFlowNodeId, String sequenceFlowId,
 			String sequenceFlowName) {
+		return sequenceFlow(targetFlowNodeId,sequenceFlowId,sequenceFlowName,null);
+	}
+	
+	public ProcessDefinitionBuilder sequenceFlow(String targetFlowNodeId, String sequenceFlowId,
+			String sequenceFlowName , KernelSequenceFlowBehavior sequenceFlowBehavior){
 		startSequenceFlow(targetFlowNodeId, sequenceFlowId);
 		sequenceFlow.setName(sequenceFlowName);
+		if(sequenceFlowBehavior != null){
+			sequenceFlow.setSequenceFlowBehavior(sequenceFlowBehavior);
+		}
 		endSequenceFlow();
 		return this;
 	}

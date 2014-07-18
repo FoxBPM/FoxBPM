@@ -84,7 +84,10 @@ public class StartProcessInstanceCmd<T> implements Command<ProcessInstance>, Ser
 		// 启动流程实例
 		ProcessInstanceEntity processInstance = processDefinition.createProcessInstance(bizKey);
 		if (transientVariables != null) {
-			processInstance.setVariables(transientVariables);
+			processInstance.setTransVariables(transientVariables);
+		}
+		if(persistenceVariables != null){
+			processInstance.setVariables(persistenceVariables);
 		}
 		String initiator = Authentication.getAuthenticatedUserId();
 		processInstance.setInitiator(initiator);
