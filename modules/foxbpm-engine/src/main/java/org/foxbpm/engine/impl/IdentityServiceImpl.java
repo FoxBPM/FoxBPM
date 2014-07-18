@@ -85,7 +85,7 @@ public class IdentityServiceImpl extends ServiceImpl implements IdentityService 
 	}
 
 	@Override
-	public Object getUsersCount(String idLike, String nameLike) {
+	public Long getUsersCount(String idLike, String nameLike) {
 		return commandExecutor.execute(new FindUsersCountCmd(idLike, nameLike));
 	}
 }

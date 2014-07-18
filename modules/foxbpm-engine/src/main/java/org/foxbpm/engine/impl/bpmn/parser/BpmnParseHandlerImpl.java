@@ -80,6 +80,7 @@ import org.foxbpm.engine.impl.ProcessDefinitionEntityBuilder;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ProcessBehavior;
+import org.foxbpm.engine.impl.bpmn.parser.model.BpmnParser;
 import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtDefinition;
@@ -204,7 +205,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 				if(!isSub){
 					processDefinitionBuilder.initial();
 				}else{
-					kernelFlowNodeImpl.getParent().setProperty("initial", kernelFlowNodeImpl);
+					kernelFlowNodeImpl.getParent().setProperty(BpmnParser.INITIAL, kernelFlowNodeImpl);
 				}
 			}
 			
