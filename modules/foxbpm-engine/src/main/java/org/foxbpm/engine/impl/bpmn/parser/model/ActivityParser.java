@@ -34,11 +34,14 @@ public class ActivityParser extends FlowNodeParser {
 		Activity activity = (Activity) baseElement;
 		ActivityBehavior activityBehavior = (ActivityBehavior) baseElementBehavior;
 		LoopCharacteristics loopCharacteristics = activity.getLoopCharacteristics();
+		
+		if(loopCharacteristics!=null){
+			org.foxbpm.engine.impl.bpmn.behavior.LoopCharacteristics loopCharacteristicsbehavior = (org.foxbpm.engine.impl.bpmn.behavior.LoopCharacteristics) BpmnBehaviorEMFConverter
+					.getBaseElementBehavior(loopCharacteristics, null);
 
-		org.foxbpm.engine.impl.bpmn.behavior.LoopCharacteristics loopCharacteristicsbehavior = (org.foxbpm.engine.impl.bpmn.behavior.LoopCharacteristics) BpmnBehaviorEMFConverter
-				.getBaseElementBehavior(loopCharacteristics, null);
-
-		activityBehavior.setLoopCharacteristics(loopCharacteristicsbehavior);
+			activityBehavior.setLoopCharacteristics(loopCharacteristicsbehavior);
+		}
+		
 
 		activityBehavior.setSkipStrategy(BpmnModelUtil.getSkipStrategy(activity));
 
