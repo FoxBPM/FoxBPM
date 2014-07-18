@@ -18,6 +18,7 @@
 package org.foxbpm.engine.impl.bpmn.behavior;
 
 import org.foxbpm.engine.expression.Expression;
+import org.foxbpm.engine.impl.expression.ExpressionImpl;
 
 /**
  * 
@@ -48,32 +49,32 @@ public class MultiInstanceLoopCharacteristics extends LoopCharacteristics {
 	public Expression getLoopDataInputCollection() {
 		return loopDataInputCollection;
 	}
-	public void setLoopDataInputCollection(Expression loopDataInputCollection) {
-		this.loopDataInputCollection = loopDataInputCollection;
+	public void setLoopDataInputCollection(String loopDataInputCollection) {
+		this.loopDataInputCollection = new ExpressionImpl(loopDataInputCollection);
 	}
 	public Expression getLoopDataOutputCollection() {
 		return loopDataOutputCollection;
 	}
-	public void setLoopDataOutputCollection(Expression loopDataOutputCollection) {
-		this.loopDataOutputCollection = loopDataOutputCollection;
+	public void setLoopDataOutputCollection(String loopDataOutputCollection) {
+		this.loopDataOutputCollection = new ExpressionImpl(loopDataOutputCollection);
 	}
 	public Expression getInputDataItem() {
 		return inputDataItem;
 	}
-	public void setInputDataItem(Expression inputDataItem) {
-		this.inputDataItem = inputDataItem;
+	public void setInputDataItem(String inputDataItem) {
+		this.inputDataItem = new ExpressionImpl(inputDataItem);
 	}
 	public Expression getOutputDataItem() {
 		return outputDataItem;
 	}
-	public void setOutputDataItem(Expression outputDataItem) {
-		this.outputDataItem = outputDataItem;
+	public void setOutputDataItem(String outputDataItem) {
+		this.outputDataItem = new ExpressionImpl(outputDataItem);
 	}
 	public Expression getCompletionCondition() {
 		return completionCondition;
 	}
-	public void setCompletionCondition(Expression completionCondition) {
-		this.completionCondition = completionCondition;
+	public void setCompletionCondition(String completionCondition) {
+		this.completionCondition = new ExpressionImpl(completionCondition);
 	}
 	public MultiInstanceBehavior getMultiInstanceBehavior() {
 		return multiInstanceBehavior;

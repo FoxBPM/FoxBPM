@@ -19,26 +19,29 @@ package org.foxbpm.engine.impl.bpmn.parser;
 
 /**
  * 流程图元素样式
+ * 
  * @author kenshin
  */
 public class StyleOption {
 	/** 背景色 */
-	public static String Background="background";
+	public static String Background = "background";
 	/** 前景色 */
-	public static String Foreground="foreground";
+	public static String Foreground = "foreground";
 	/** 字体 */
-	public static String Font="font";
+	public static String Font = "font";
 	/** 选中中间颜色 */
-	public static String MulitSelectedColor="mulitSelectedColor";
+	public static String MulitSelectedColor = "mulitSelectedColor";
 	/** 选中颜色 */
-	public static String SelectedColor="selectedColor";
+	public static String SelectedColor = "selectedColor";
 	/** 样式对象名称 */
-	public static String StyleObject="styleObject";
+	public static String StyleObject = "styleObject";
 	/** 文字颜色 */
-	public static String TextColor="textColor";
-	
+	public static String TextColor = "textColor";
+
 	/** 是否水平 */
-	public static String IsHorizontal="isHorizontal";
-	
-	
+	public static String IsHorizontal = "isHorizontal";
+
+	/** 子流程是否展开 */
+	public static String IsExpanded = "IsExpanded";
+
 }

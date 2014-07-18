@@ -42,6 +42,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.BasicEObjectImpl;
 import org.eclipse.emf.ecore.impl.EStructuralFeatureImpl.SimpleFeatureMapEntry;
 import org.eclipse.emf.ecore.util.FeatureMap;
+import org.foxbpm.engine.impl.bpmn.behavior.SkipStrategy;
 import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.task.TaskAssigneeDefinition;
 import org.foxbpm.engine.impl.util.StringUtil;
@@ -322,6 +323,46 @@ public class BpmnModelUtil {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public static <T> T getExtensionElementOne(Class<T> t ,BaseElement baseElement,EReference eReference){
+	
+		
+		if(baseElement==null){
+			return null;
+		}
+		
+		if (baseElement.getExtensionValues().size() > 0) {
+			for (ExtensionAttributeValue extensionAttributeValue : baseElement.getExtensionValues()) {
+				FeatureMap extensionElements = extensionAttributeValue.getValue();
+				
+				Object objectElement = extensionElements.get(eReference, true);
+				if (objectElement != null) {
+
+					
+					if(objectElement instanceof List){
+						List<T> tObjList = (List<T>) objectElement;
+						if(tObjList.size()>0){
+							return tObjList.get(0);
+						}
+						
+					}else{
+						return (T)objectElement;
+					}
+
+				}
+
+				
+			}
+		}
+		
+		
+		
+		
+		
+		return (T)null;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
 	public static <T> List<T> getExtensionElementList( Class<T> t ,BaseElement baseElement,EReference eReference){
 		
 		
@@ -372,6 +413,17 @@ public class BpmnModelUtil {
   	  		baseElement.getExtensionValues().add(extensionElement);
   	  	} 
 		return false;
+	}
+	
+	/**
+	 * 获取节点的跳过策略
+	 * 
+	 * @return
+	 */
+	public static SkipStrategy getSkipStrategy(BaseElement baseElement) {
+
+		return getExtensionElementOne(SkipStrategy.class,baseElement,FoxBPMPackage.Literals.DOCUMENT_ROOT__SKIP_STRATEGY);
+	
 	}
 	
 	/**

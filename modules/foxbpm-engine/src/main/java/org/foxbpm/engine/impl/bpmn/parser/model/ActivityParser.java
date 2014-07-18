@@ -18,21 +18,36 @@
  */
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
+import org.eclipse.bpmn2.Activity;
 import org.eclipse.bpmn2.BaseElement;
+import org.eclipse.bpmn2.LoopCharacteristics;
 import org.foxbpm.engine.impl.bpmn.behavior.ActivityBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
+import org.foxbpm.engine.impl.bpmn.parser.BpmnBehaviorEMFConverter;
+import org.foxbpm.engine.impl.util.BpmnModelUtil;
 
 public class ActivityParser extends FlowNodeParser {
 
 	@Override
 	public BaseElementBehavior parser(BaseElement baseElement) {
-		// TODO Auto-generated method stub
+
+		Activity activity = (Activity) baseElement;
+		ActivityBehavior activityBehavior = (ActivityBehavior) baseElementBehavior;
+		LoopCharacteristics loopCharacteristics = activity.getLoopCharacteristics();
+
+		org.foxbpm.engine.impl.bpmn.behavior.LoopCharacteristics loopCharacteristicsbehavior = (org.foxbpm.engine.impl.bpmn.behavior.LoopCharacteristics) BpmnBehaviorEMFConverter
+				.getBaseElementBehavior(loopCharacteristics, null);
+
+		activityBehavior.setLoopCharacteristics(loopCharacteristicsbehavior);
+
+		activityBehavior.setSkipStrategy(BpmnModelUtil.getSkipStrategy(activity));
+
 		return super.parser(baseElement);
 	}
 
 	@Override
 	public void init() {
-		baseElementBehavior=new ActivityBehavior();
+		baseElementBehavior = new ActivityBehavior();
 	}
 
 }
