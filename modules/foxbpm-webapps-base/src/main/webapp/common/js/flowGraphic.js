@@ -7,7 +7,7 @@ var TASK_ING_COLOR = "#ff7200";
 var TASK_ING_WIDTH = "2";
 var RUNNING_TRACK_COLOR = "#ff7200";
 var RUNNING_TRACK_WIDTH = 5;
-var RUNNING_MILLESIMAL_SPEED = 300;
+var RUNNING_MILLESIMAL_SPEED = 1000;
 
 /**
  * 流程图处理类 taskListEnd 任务结束节点 taskListIng 任务进入节点 nodeInfoArr 节点信息 isIE 是否IE
@@ -24,11 +24,9 @@ function FlowGraphic(param) {
 	this.processDefinitionId = param.processDefinitionId;
 	this.processDefinitionKey = param.processDefinitionKey;
 
-	this.removePreviousRunningTrack = function(currentTrack) {
-		if (runningTrackIndex != 0
-				&& currentTrack.nodeId != runningTrackInfo[runningTrackIndex - 1].nodeId) {
-			var rectAttributes = $("#"
-					+ runningTrackInfo[runningTrackIndex - 1].nodeId)[0].attributes;
+	this.removePreviousRunningTrack = function(index) {
+		if (index != 0) {
+			var rectAttributes = $("#" + runningTrackInfo[index - 1].nodeId)[0].attributes;
 			for (var j = 0; j < rectAttributes.length; j++) {
 				var rectAttribute = rectAttributes[j];
 				if (rectAttribute.name == "stroke") {
@@ -61,11 +59,31 @@ function FlowGraphic(param) {
 		}
 	};
 
+	// 去掉重复的节点ID
+	this.distinctProcessNodeID = function() {
+		var tempRunningTrackInfo = new Array();
+		var index = 0;
+		for (var i = 0; i < runningTrackInfo.length; i++) {
+			if (!this.confirmExists(tempRunningTrackInfo, runningTrackInfo[i])) {
+				tempRunningTrackInfo[index] = runningTrackInfo[i];
+				index = index + 1;
+			}
+		}
+		runningTrackInfo = tempRunningTrackInfo;
+		runningTrackLength = tempRunningTrackInfo.length;
+	};
+	this.confirmExists = function(tempArray, tempNode) {
+		for (var i = 0; i < tempArray.length; i++) {
+			if (tempArray[i].nodeId == tempNode.nodeId) {
+				return true;
+			}
+		}
+	};
 
+	// 移动节点光标
 	this.moveRunningTrack = function() {
 		if (runningTrackLength != 0 && runningTrackIndex < runningTrackLength) {
 			currentRunningTrack = runningTrackInfo[runningTrackIndex];
-			this.removePreviousRunningTrack(currentRunningTrack);
 			var rectAttributes = $("#" + currentRunningTrack.nodeId)[0].attributes;
 			for (var j = 0; j < rectAttributes.length; j++) {
 				var rectAttribute = rectAttributes[j];
@@ -74,18 +92,11 @@ function FlowGraphic(param) {
 						backUpRunningTrackColorDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue;
 						rectAttribute.nodeValue = RUNNING_TRACK_COLOR;
 					}
-					if (tempNodeID == currentRunningTrack.nodeId) {
-						rectAttribute.nodeValue = backUpRunningTrackColorDictionary[currentRunningTrack.nodeId];
-					}
-
 				}
 				if (rectAttribute.name == "stroke-width") {
 					if (tempNodeID != currentRunningTrack.nodeId) {
 						backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue;
 						rectAttribute.nodeValue = RUNNING_TRACK_WIDTH;
-					}
-					if (tempNodeID == currentRunningTrack.nodeId) {
-						rectAttribute.nodeValue = backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId];
 					}
 
 				}
@@ -93,10 +104,14 @@ function FlowGraphic(param) {
 			}
 			tempNodeID = currentRunningTrack.nodeId;
 		} else {
-			clearInterval(runningTrackThreadId);
 			$("#runningTrack").removeAttr("disabled");
+			if (runningTrackIndex == runningTrackLength) {
+				clearInterval(runningTrackThreadId);
+			}
 		}
+		this.removePreviousRunningTrack(runningTrackIndex);
 		runningTrackIndex = runningTrackIndex + 1;
+
 	};
 	/** img图形处理方式* */
 	/**
