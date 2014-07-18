@@ -22,8 +22,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.foxbpm.engine.impl.bpmn.behavior.CallActivityBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.GroupBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.SequenceFlowBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.TaskBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.TextAnnotationBehavior;
 import org.foxbpm.engine.impl.bpmn.parser.StyleOption;
 import org.foxbpm.engine.impl.diagramview.builder.FoxBpmnViewBuilder;
@@ -32,6 +34,7 @@ import org.foxbpm.engine.impl.diagramview.svg.builder.AbstractSVGBuilder;
 import org.foxbpm.engine.impl.diagramview.svg.factory.AbstractFlowElementSVGFactory;
 import org.foxbpm.engine.impl.diagramview.vo.VONode;
 import org.foxbpm.kernel.behavior.KernelArtifactBehavior;
+import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
 import org.foxbpm.kernel.process.KernelBaseElement;
 import org.foxbpm.kernel.process.KernelFlowElement;
 import org.foxbpm.kernel.process.KernelLane;
@@ -94,6 +97,7 @@ public abstract class AbstractFlowElementVOFactory {
 	 */
 	public VONode createFlowElementSVGVO(String svgType) {
 		VONode voNode = null;
+		// 扩展
 		if (StringUtils.equalsIgnoreCase(svgType, SVGTypeNameConstant.SVG_TYPE_EVENT)
 				|| StringUtils.equalsIgnoreCase(svgType, SVGTypeNameConstant.SVG_TYPE_CONNECTOR)) {
 			voNode = this.createSVGVO();
@@ -113,8 +117,13 @@ public abstract class AbstractFlowElementVOFactory {
 		// 5、构造FILL式样
 		if (kernelBaseElement instanceof KernelFlowNodeImpl) {
 			// 流程节点
-			this.filterActivityTaskVO(voNode, new String[]{"callActivity"});
-			this.filterChildVO(voNode, Arrays.asList(svgType.split(SPLIT_SEPERATOR)));
+			KernelFlowNodeBehavior kernelFlowNodeBehavior = ((KernelFlowNodeImpl) kernelBaseElement)
+					.getKernelFlowNodeBehavior();
+			if (kernelFlowNodeBehavior instanceof TaskBehavior
+					|| kernelFlowNodeBehavior instanceof CallActivityBehavior) {
+				this.filterChildVO(voNode, Arrays.asList(svgType.split(SPLIT_SEPERATOR)));
+			}
+
 			KernelFlowNodeImpl kernelFlowNodeImpl = (KernelFlowNodeImpl) kernelBaseElement;
 
 			svgElementBuildDistincter.setKernelBaseElementImpl(kernelFlowNodeImpl);
@@ -125,8 +134,8 @@ public abstract class AbstractFlowElementVOFactory {
 			SequenceFlowBehavior sequenceFlowBehavior = (SequenceFlowBehavior) kernelSequenceFlowImpl
 					.getSequenceFlowBehavior();
 			String[] filterConfition = new String[]{"", "default"};
-			if (sequenceFlowBehavior == null
-					|| StringUtils.isBlank(sequenceFlowBehavior.getConditionExpression())) {
+			if (sequenceFlowBehavior == null || sequenceFlowBehavior.getConditionExpression() == null 
+					|| StringUtils.isBlank(sequenceFlowBehavior.getConditionExpression().getExpressionText())) {
 				filterConfition[0] = "conditional";
 			}
 			this.filterConnectorVO(voNode, filterConfition);
@@ -210,14 +219,6 @@ public abstract class AbstractFlowElementVOFactory {
 	 * @param filterCondition
 	 */
 	public abstract void filterParentVO(VONode voNode, String[] filterCondition);
-
-	/**
-	 * 过滤任务类型
-	 * 
-	 * @param voNode
-	 * @param filterCondition
-	 */
-	public abstract void filterActivityTaskVO(VONode voNode, String[] filterCondition);
 
 	/**
 	 * 过滤连接器类型

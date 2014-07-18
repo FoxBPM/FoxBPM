@@ -61,6 +61,19 @@ public final class SVGTemplateNameConstant {
 	public static final String TEMPLATE_ACTIVITY_TASK = "activity/task.svg";
 
 	/**
+	 * call activity
+	 */
+	public static final String TEMPLATE_ACTIVITY_CALLACTIVITY = "activity/callactivity.svg";
+	/**
+	 * sub process
+	 */
+	public static final String TEMPLATE_ACTIVITY_SUBPROCESS = "activity/subprocess.expanded.svg";
+	/**
+	 * sub process collapsed
+	 */
+	public static final String TEMPLATE_ACTIVITY_SUBPROCESS_COLLAPSED = "activity/subprocess.collapsed.svg";
+
+	/**
 	 * connector
 	 */
 	public static final String TEMPLATE_CONNECTOR_SEQUENCEFLOW = "connector/sequenceflow.svg";
@@ -90,4 +103,5 @@ public final class SVGTemplateNameConstant {
 	 * text annotation
 	 */
 	public static final String TEMPLATE_TEXTANNOTATION = "artifact/text.annotation.svg";
+
 }

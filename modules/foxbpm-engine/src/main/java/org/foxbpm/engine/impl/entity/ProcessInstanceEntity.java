@@ -23,9 +23,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.engine.datavariable.VariableQuery;
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.datavariable.VariableQueryImpl;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtInstance;
 import org.foxbpm.engine.impl.runtime.ContextInstanceImpl;
@@ -453,13 +456,53 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		return mapPersistentState;
 	}
 
-	public void setVariables(Map<String, Object> transientVariables) {
+	public void setVariables(Map<String, Object> variables) {
+		if (variables == null) {
+			return;
+		}
+		for (String mapKey : variables.keySet()) {
+			VariableQuery variableQuery = new VariableQueryImpl(Context.getProcessEngineConfiguration().getCommandExecutor());
+			variableQuery.addVariableKey(mapKey);
+			variableQuery.processInstanceId(this.id);
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			List<VariableInstanceEntity> variableInstances = (List) variableQuery.list();
+			if (variableInstances != null && variableInstances.size() == 1) {
+				// 更新
+				Context.getCommandContext().getVariableManager().update(variableInstances.get(0));
+				dataVariableMgmtInstance.getDataVariableEntities().add(variableInstances.get(0));
+			} else {
+				if (variableInstances != null && variableInstances.size() > 1) {
+					throw new FoxBPMException("一个流程实例中含有两个相同的key,key(" + mapKey + ") instanceId(" + this.id
+							+ ")");
+				} else {
+					VariableInstanceEntity variableInstanceEntity = addVariableToMgmt(mapKey,variables.get(mapKey));
+					Context.getCommandContext().getVariableManager().insert(variableInstanceEntity);
+				}
+			}
+			ExpressionMgmt.setVariable(mapKey, variables.get(mapKey));
+		}
+	}
+	
+	public void setTransVariables(Map<String, Object> transientVariables) {
 		if (transientVariables == null) {
 			return;
 		}
 		for (String mapKey : transientVariables.keySet()) {
+			addVariableToMgmt(mapKey,transientVariables.get(mapKey));
 			ExpressionMgmt.setVariable(mapKey, transientVariables.get(mapKey));
 		}
+	}
+	
+	private VariableInstanceEntity addVariableToMgmt(String key,Object value){
+		VariableInstanceEntity variableInstanceEntity = new VariableInstanceEntity();
+		variableInstanceEntity.setKey(key);
+		variableInstanceEntity.setValue(value);
+		variableInstanceEntity.setProcessInstanceId(this.id);
+		variableInstanceEntity.setProcessDefinitionId(processDefinitionId);
+		variableInstanceEntity.setProcessDefinitionKey(processDefinitionKey);
+		variableInstanceEntity.setId(GuidUtil.CreateGuid());
+		dataVariableMgmtInstance.getDataVariableEntities().add(variableInstanceEntity);
+		return variableInstanceEntity;
 	}
 
 	public boolean isEnd() {

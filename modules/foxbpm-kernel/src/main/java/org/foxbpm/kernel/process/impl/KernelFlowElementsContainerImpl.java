@@ -20,10 +20,13 @@ package org.foxbpm.kernel.process.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.kernel.event.KernelListener;
+import org.foxbpm.kernel.process.KernelArtifact;
 import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.process.KernelFlowElementsContainer;
 import org.foxbpm.kernel.process.KernelLane;
@@ -42,11 +45,24 @@ public class KernelFlowElementsContainerImpl extends KernelFlowElementImpl
 	protected Map<String, KernelSequenceFlowImpl> sequenceFlows = new HashMap<String, KernelSequenceFlowImpl>();
 
 	protected List<KernelLaneSet> laneSets = new ArrayList<KernelLaneSet>();
-
+	protected List<KernelArtifact> artifacts = new ArrayList<KernelArtifact>();
 	protected Map<String, List<KernelListener>> kernelListeners = new HashMap<String, List<KernelListener>>();
 
 	public KernelFlowElementsContainerImpl(String id, KernelProcessDefinitionImpl processDefinition) {
 		super(id, processDefinition);
+	}
+
+	public KernelArtifact getKernelArtifactById(String id) {
+		if (artifacts.size() > 0) {
+			Iterator<KernelArtifact> iterator = artifacts.iterator();
+			while (iterator.hasNext()) {
+				KernelArtifact next = iterator.next();
+				if (StringUtils.equals(next.getId(), id)) {
+					return next;
+				}
+			}
+		}
+		return null;
 	}
 
 	public KernelFlowNodeImpl findFlowNode(String flowNodeId) {
@@ -175,6 +191,14 @@ public class KernelFlowElementsContainerImpl extends KernelFlowElementImpl
 
 	public Map<String, KernelFlowNodeImpl> getNamedFlowNodes() {
 		return namedFlowNodes;
+	}
+
+	public List<KernelArtifact> getArtifacts() {
+		return artifacts;
+	}
+
+	public void setArtifacts(List<KernelArtifact> artifacts) {
+		this.artifacts = artifacts;
 	}
 	/*
 	 * public IOSpecification getIoSpecification() { return ioSpecification; }

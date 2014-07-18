@@ -176,12 +176,6 @@ public class SignProcessStateSVGFactory extends AbstractFlowElementSVGFactory {
 	}
 
 	@Override
-	public void filterActivityTaskVO(VONode voNode, String[] filterCondition) {
-		abstractFlowNodeSVGFactory
-				.filterActivityTaskVO(voNode, filterCondition);
-	}
-
-	@Override
 	public void filterConnectorVO(VONode voNode, String[] filterCondition) {
 		abstractFlowNodeSVGFactory.filterConnectorVO(voNode, filterCondition);
 	}

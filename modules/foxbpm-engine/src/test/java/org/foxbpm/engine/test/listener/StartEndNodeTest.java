@@ -15,7 +15,7 @@
  * 
  * @author yangguangftlp
  */
-package org.foxbpm.engine.test.impl.runningtrack.ext;
+package org.foxbpm.engine.test.listener;
 
 import static org.junit.Assert.assertTrue;
 

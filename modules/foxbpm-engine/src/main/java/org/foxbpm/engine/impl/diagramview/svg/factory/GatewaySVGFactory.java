@@ -33,8 +33,7 @@ import org.foxbpm.kernel.process.KernelBaseElement;
  */
 public class GatewaySVGFactory extends AbstractFlowElementSVGFactory {
 
-	public GatewaySVGFactory(KernelBaseElement kernelBaseElement,
-			String svgTemplateFileName) {
+	public GatewaySVGFactory(KernelBaseElement kernelBaseElement, String svgTemplateFileName) {
 		super(kernelBaseElement, svgTemplateFileName);
 	}
 
@@ -50,12 +49,6 @@ public class GatewaySVGFactory extends AbstractFlowElementSVGFactory {
 
 	@Override
 	public void filterParentVO(VONode voNode, String[] filterCondition) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void filterActivityTaskVO(VONode voNode, String[] filterCondition) {
 		// TODO Auto-generated method stub
 
 	}

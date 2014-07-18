@@ -52,5 +52,5 @@ public interface UserEntityManager {
 	 *            名称
 	 * @return 用户数
 	 */
-	Object findUserCount(String idLike, String nameLike);
+	Long findUserCount(String idLike, String nameLike);
 }

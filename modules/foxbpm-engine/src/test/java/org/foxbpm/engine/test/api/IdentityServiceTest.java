@@ -29,6 +29,7 @@ import org.foxbpm.engine.impl.agent.AgentDetailsEntity;
 import org.foxbpm.engine.impl.agent.AgentEntity;
 import org.foxbpm.engine.impl.agent.AgentTo;
 import org.foxbpm.engine.impl.cache.CacheUtil;
+import org.foxbpm.engine.impl.db.Page;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
@@ -40,23 +41,77 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 	 * 测试模糊查询用户接口
 	 */
 	@Test
+	public void testGetUser(){
+		String sqlInsertUser = "insert into au_userInfo(userId,USERNAME,EMAIL) VALUES ('test_admin2','管理员2','222@qq.com')";
+		jdbcTemplate.execute(sqlInsertUser);
+		
+		User user = identityService.getUser("test_admin2");
+		assertEquals("test_admin2",user.getUserId());
+		assertEquals("管理员2",user.getUserName());
+		assertEquals("222@qq.com",user.getEmail());
+	}
+	
+	/**
+	 * 测试无分页的获取用户集合
+	 */
+	@Test
+	public void testGetUsersNoPage(){
+		String sqlInsertUser = "insert into au_userInfo(userId,USERNAME,EMAIL) VALUES ('test_admin1','测试管理员1','222@qq.com')";
+		String sqlInsertUser2 = "insert into au_userInfo(userId,USERNAME,EMAIL) VALUES ('test_admin2','测试管理员2','222@qq.com')";
+		String sqlInsertUser3 = "insert into au_userInfo(userId,USERNAME,EMAIL) VALUES ('test_admin3','测试管理员3','222@qq.com')";
+		jdbcTemplate.execute(sqlInsertUser);
+		jdbcTemplate.execute(sqlInsertUser2);
+		jdbcTemplate.execute(sqlInsertUser3);
+		
+		
+		List<User> users = identityService.getUsers("%est_admin2%", "%测试%理员2%");
+		assertEquals(1,users.size());
+		
+		users = identityService.getUsers("%est_admin2%", null);
+		assertEquals(1,users.size());
+		
+		users = identityService.getUsers("%est_admin%", "%测试%理员%");
+		assertEquals(3,users.size());
+	}
+	
+	/**
+	 * 测试有分页的获取用户集合
+	 */
+	@Test
 	public void testGetUsers(){
-		List<User> users = identityService.getUsers("%admi%", null);
-		System.out.println(users.size());
+		String sqlInsertUser = "insert into au_userInfo(userId,USERNAME,EMAIL) VALUES ('test_admin1','测试管理员1','222@qq.com')";
+		String sqlInsertUser2 = "insert into au_userInfo(userId,USERNAME,EMAIL) VALUES ('test_admin2','测试管理员2','222@qq.com')";
+		String sqlInsertUser3 = "insert into au_userInfo(userId,USERNAME,EMAIL) VALUES ('test_admin3','测试管理员3','222@qq.com')";
+		jdbcTemplate.execute(sqlInsertUser);
+		jdbcTemplate.execute(sqlInsertUser2);
+		jdbcTemplate.execute(sqlInsertUser3);
 		
-		users = identityService.getUsers(null, "%管理%");
-		System.out.println(users.size());
+		Page page = new Page(0, 1);
+		List<User> users = identityService.getUsers("%est_admin%", "%测试%理员%",page);
+		assertEquals(1,users.size());
+	}
+	
+	/**
+	 * 测试获取指定查询的用户数量
+	 */
+	@Test
+	public void testGetUsersCount(){
+		String sqlInsertUser = "insert into au_userInfo(userId,USERNAME,EMAIL) VALUES ('test_admin1','测试管理员1','222@qq.com')";
+		String sqlInsertUser2 = "insert into au_userInfo(userId,USERNAME,EMAIL) VALUES ('test_admin2','测试管理员2','222@qq.com')";
+		String sqlInsertUser3 = "insert into au_userInfo(userId,USERNAME,EMAIL) VALUES ('test_admin3','测试管理员3','222@qq.com')";
+		jdbcTemplate.execute(sqlInsertUser);
+		jdbcTemplate.execute(sqlInsertUser2);
+		jdbcTemplate.execute(sqlInsertUser3);
 		
-		users = identityService.getUsers(null, null);
-		System.out.println(users.size());
-		
+		long count = identityService.getUsersCount("%est_admin%", "%测试%理员%");
+		assertEquals(3,count);
 	}
 
 	/**
 	 * 测试增加和更新代理信息
 	 */
 	@Test
-	public void testSaveAgent(){
+	public void testAgent(){
 		
 		//初始化数据
 		String sqlInsertUser = "insert into au_userInfo(userId,USERNAME) VALUES ('admin2','管理员2')";

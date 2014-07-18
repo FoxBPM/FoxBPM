@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.impl.diagramview.svg.vo.GVO;
-import org.foxbpm.engine.impl.diagramview.svg.vo.RectVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.diagramview.vo.VONode;
 import org.foxbpm.kernel.process.KernelBaseElement;
@@ -74,24 +73,6 @@ public class TaskSVGFactory extends AbstractFlowElementSVGFactory {
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public void filterActivityTaskVO(VONode svgVO, String[] filterCondition) {
-		int length = filterCondition.length;
-		List<RectVO> rectVoList = null;
-		Iterator<RectVO> rectVOIter = null;
-		RectVO rectVo = null;
-		for (int i = 0; i < length; i++) {
-			rectVoList = ((SvgVO) svgVO).getgVo().getRectVoList();
-			rectVOIter = rectVoList.iterator();
-			while (rectVOIter.hasNext()) {
-				rectVo = rectVOIter.next();
-				if (StringUtils.equalsIgnoreCase(rectVo.getId(), filterCondition[i])) {
-					rectVOIter.remove();
-				}
-			}
-		}
 	}
 
 	@Override

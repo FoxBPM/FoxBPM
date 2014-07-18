@@ -50,7 +50,8 @@ public interface IdentityService {
 	 * @param nameLike
 	 *            示例： %张%
 	 * 
-	 * @return 参数可为null,参数之间为or关系，如果都为null代表查询所有
+	 * @return 参数可为null,参数之间为and关系，如果都为null代表查询所有,
+	 * 此结果集中的user对象只包含数据库中的基础属性，没有其他扩展属性，如代理信息等
 	 */
 	List<User> getUsers(String idLike, String nameLike);
 
@@ -62,7 +63,8 @@ public interface IdentityService {
 	 * @param nameLike
 	 *            示例： %张%
 	 * @page 分页对象
-	 * @return 返回查询结果
+	 * @return <p>返回查询结果</p>
+	 * <p>此结果集中的user对象只包含数据库中的基础属性，没有其他扩展属性，如代理信息等</p>
 	 */
 	List<User> getUsers(String idLike, String nameLike, Page page);
 
@@ -73,9 +75,9 @@ public interface IdentityService {
 	 *            示例： %200802%
 	 * @param nameLike
 	 *            示例： %张%
-	 * @return 返回查询结果
+	 * @return 返回查询结果数量
 	 */
-	Object getUsersCount(String idLike, String nameLike);
+	Long getUsersCount(String idLike, String nameLike);
 
 	/**
 	 * 增加代理 会级联插入对象中的代理明细信息
@@ -130,11 +132,4 @@ public interface IdentityService {
 	 */
 	AgentEntity queryAgent(String agentUser);
 
-	/**
-	 * 通过组对象
-	 * 
-	 * @param groupId组编号
-	 * @return 组对象
-	 */
-	// Group findGroupByGroupId(String groupId);
 }

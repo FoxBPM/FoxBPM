@@ -70,10 +70,10 @@
 			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.StartEventTrackListener" />
 		<eventListener eventType="node-enter"
 			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" />
-		<eventListener eventType="node-execute"
+		<!-- <eventListener eventType="node-execute"
 			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" />
 		<eventListener eventType="node-leave"
-			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" />
+			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" /> -->
 		<eventListener eventType="sequenceflow-take"
 			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.SequenceTrackEventListener" />
 		<eventListener eventType="process-start"

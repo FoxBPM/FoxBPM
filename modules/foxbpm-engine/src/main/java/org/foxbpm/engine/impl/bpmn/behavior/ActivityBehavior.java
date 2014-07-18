@@ -17,11 +17,46 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ActivityBehavior extends FlowNodeBehavior {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	
+	/** 跳过策略 */
+	protected SkipStrategy skipStrategy;
+
+	
+
+	public SkipStrategy getSkipStrategy() {
+		return skipStrategy;
+	}
+
+	public void setSkipStrategy(SkipStrategy skipStrategy) {
+		this.skipStrategy = skipStrategy;
+	}
+
+	/** 边界事件集合 */
+	protected List<BoundaryEventBehavior> boundaryEvents = new ArrayList<BoundaryEventBehavior>();
+
+	/** 循环对象 */
+	protected LoopCharacteristics loopCharacteristics;
+
+	public List<BoundaryEventBehavior> getBoundaryEvents() {
+		return boundaryEvents;
+	}
+
+	public void setBoundaryEvents(List<BoundaryEventBehavior> boundaryEvents) {
+		this.boundaryEvents = boundaryEvents;
+	}
+
+	public LoopCharacteristics getLoopCharacteristics() {
+		return loopCharacteristics;
+	}
+
+	public void setLoopCharacteristics(LoopCharacteristics loopCharacteristics) {
+		this.loopCharacteristics = loopCharacteristics;
+	}
 
 }

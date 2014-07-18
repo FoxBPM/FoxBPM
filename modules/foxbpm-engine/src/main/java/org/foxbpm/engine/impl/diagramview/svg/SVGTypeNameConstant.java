@@ -27,6 +27,8 @@ public class SVGTypeNameConstant {
 	public static final String SVT_TYPE_GATEWAY = "gateway";
 	public static final String SVG_TYPE_EVENT = "event";
 	public static final String SVG_TYPE_LANE = "Lane";
+	public static final String SVG_TYPE_CALLACTIVITY = "callActivity";
+	public static final String SVG_TYPE_SUBPROCESS = "subProcess";
 
 	// 小部件
 	public static final String SVG_TYPE_GROUP = "group";

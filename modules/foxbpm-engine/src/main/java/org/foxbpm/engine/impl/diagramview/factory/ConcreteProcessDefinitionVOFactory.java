@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
@@ -46,6 +47,7 @@ import org.foxbpm.engine.impl.bpmn.behavior.SubProcessBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.TaskBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.TextAnnotationBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
+import org.foxbpm.engine.impl.bpmn.parser.StyleOption;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateNameConstant;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTypeNameConstant;
 import org.foxbpm.engine.impl.diagramview.vo.VONode;
@@ -58,6 +60,7 @@ import org.foxbpm.kernel.process.KernelBaseElement;
 import org.foxbpm.kernel.process.KernelFlowElement;
 import org.foxbpm.kernel.process.KernelLane;
 import org.foxbpm.kernel.process.KernelLaneSet;
+import org.foxbpm.kernel.process.KernelSequenceFlow;
 import org.foxbpm.kernel.process.impl.KernelArtifactImpl;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
@@ -121,7 +124,7 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 			}
 			voNodeList.add(voNode);
 		}
-		this.createSequenceVO(deployedProcessDefinition, voNodeList);
+		this.createSequenceVO(deployedProcessDefinition.getSequenceFlows(), voNodeList);
 		return flowNodeVOFactory.convertNodeListToString(deployedProcessDefinition.getProperties(),
 				voNodeList);
 	}
@@ -130,10 +133,32 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 	 * 根据所有流程节点，和流程连接创建流程SVG文档字符串
 	 */
 	public String createProcessDefinitionVOString(ProcessDefinitionEntity deployedProcessDefinition) {
-		List<KernelFlowNodeImpl> flowNodes = deployedProcessDefinition.getFlowNodes();
 		List<VONode> voNodeList = new ArrayList<VONode>();
 		// 构建泳道
 		this.createLaneSetVO(deployedProcessDefinition.getLaneSets(), voNodeList);
+		// 创建所有的流程节点
+		this.createFlowNodeVO(deployedProcessDefinition.getFlowNodes(), voNodeList);
+		// 构建SEQUENCE
+		this.filterSubProcessSequence(deployedProcessDefinition);
+		this.createSequenceVO(deployedProcessDefinition.getSequenceFlows(), voNodeList);
+		// 构建小部件
+		this.createArtifactVO(deployedProcessDefinition.getArtifacts(), voNodeList);
+		// 转化成SVG字符串
+		return flowNodeVOFactory.convertNodeListToString(deployedProcessDefinition.getProperties(),
+				voNodeList);
+	}
+
+	/**
+	 * 
+	 * createFlowNodeVO(构建节点VO)
+	 * 
+	 * @param flowNodes
+	 * @param voNodeList
+	 *            void
+	 * @exception
+	 * @since 1.0.0
+	 */
+	private void createFlowNodeVO(List<KernelFlowNodeImpl> flowNodes, List<VONode> voNodeList) {
 		// 遍历所有的流程节点
 		Iterator<KernelFlowNodeImpl> flowNodeIterator = flowNodes.iterator();
 		String taskType = EMPTY_STRING;
@@ -153,14 +178,15 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 			// 构造流程节点
 			voNode = this.getNodeSVGFromFactory(kernelFlowNodeImpl, taskType, svgTemplateFileName);
 			voNodeList.add(voNode);
+
+			// 递归创建子流程节点
+			List<KernelFlowNodeImpl> subFlowNodes = kernelFlowNodeImpl.getFlowNodes();
+
+			if (subFlowNodes != null && subFlowNodes.size() > 0
+					&& (Boolean) kernelFlowNodeImpl.getProperty(StyleOption.IsExpanded)) {
+				createFlowNodeVO(subFlowNodes, voNodeList);
+			}
 		}
-		// 构建SEQUENCE
-		this.createSequenceVO(deployedProcessDefinition, voNodeList);
-		// 构建小部件
-		this.createArtifactVO(deployedProcessDefinition, voNodeList);
-		// 转化成SVG字符串
-		return flowNodeVOFactory.convertNodeListToString(deployedProcessDefinition.getProperties(),
-				voNodeList);
 	}
 
 	/**
@@ -214,9 +240,7 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 	 * @exception
 	 * @since 1.0.0
 	 */
-	private void createArtifactVO(ProcessDefinitionEntity deployedProcessDefinition,
-			List<VONode> voNodeList) {
-		List<KernelArtifact> artifacts = deployedProcessDefinition.getArtifacts();
+	private void createArtifactVO(List<KernelArtifact> artifacts, List<VONode> voNodeList) {
 		if (artifacts != null && artifacts.size() > 0) {
 			String taskType = EMPTY_STRING;
 			String svgTemplateFileName = EMPTY_STRING;
@@ -252,12 +276,10 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 	 * @param deployedProcessDefinition
 	 * @param voNodeList
 	 */
-	private void createSequenceVO(ProcessDefinitionEntity deployedProcessDefinition,
+	private void createSequenceVO(Map<String, KernelSequenceFlowImpl> sequenceFlows,
 			List<VONode> voNodeList) {
 		String taskType = EMPTY_STRING;
 		String svgTemplateFileName = EMPTY_STRING;
-		Map<String, KernelSequenceFlowImpl> sequenceFlows = deployedProcessDefinition
-				.getSequenceFlows();
 		// 遍历所有的流程连线
 		Iterator<Entry<String, KernelSequenceFlowImpl>> sequenceFlowterator = sequenceFlows
 				.entrySet().iterator();
@@ -381,8 +403,16 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 				}
 			} else if (kernelFlowNodeBehavior instanceof CallActivityBehavior) {
 				// 外部子流程
+				taskType = SVGTypeNameConstant.SVG_TYPE_CALLACTIVITY;
+				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_CALLACTIVITY;
 			} else if (kernelFlowNodeBehavior instanceof SubProcessBehavior) {
 				// 子流程
+				taskType = SVGTypeNameConstant.SVG_TYPE_SUBPROCESS;
+				if ((Boolean) kernelFlowNodeImpl.getProperty(StyleOption.IsExpanded)) {
+					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_SUBPROCESS;
+				} else {
+					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_SUBPROCESS_COLLAPSED;
+				}
 			}
 			// 网关
 		} else if (kernelFlowNodeBehavior instanceof GatewayBehavior) {
@@ -413,6 +443,86 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 		}
 
 		return new String[]{taskType, svgTemplateFileName};
+	}
+	/**
+	 * 
+	 * filterSubProcessSequence(过滤流程定义中属于子流程中的线条)
+	 * 
+	 * @param deployedProcessDefinition
+	 *            void
+	 * @exception
+	 * @since 1.0.0
+	 */
+	private void filterSubProcessSequence(ProcessDefinitionEntity deployedProcessDefinition) {
+		List<KernelFlowNodeImpl> flowNodes = deployedProcessDefinition.getFlowNodes();
+		Iterator<KernelFlowNodeImpl> iterator = flowNodes.iterator();
+		KernelFlowNodeImpl kernelFlowNodeImpl = null;
+		List<KernelFlowNodeImpl> subFlowNodes = null;
+		KernelFlowNodeImpl subKernelFlowNodeImpl = null;
+		List<KernelSequenceFlow> outgoingSequenceFlows = null;
+		while (iterator.hasNext()) {
+			kernelFlowNodeImpl = iterator.next();
+			subFlowNodes = kernelFlowNodeImpl.getFlowNodes();
+			if (subFlowNodes != null && subFlowNodes.size() > 0
+					&& !(Boolean) kernelFlowNodeImpl.getProperty(StyleOption.IsExpanded)) {
+				// 如果子流程是收起来的，那么就过滤当前子流程包含的节点所关联的线条，因为所有的线条都是附属在主流程定义上的
+				Iterator<KernelFlowNodeImpl> subIterator = subFlowNodes.iterator();
+				while (subIterator.hasNext()) {
+					subKernelFlowNodeImpl = subIterator.next();
+					outgoingSequenceFlows = subKernelFlowNodeImpl.getOutgoingSequenceFlows();
+					this.filterSubProcessSequenceBySubNodeSequence(deployedProcessDefinition,
+							outgoingSequenceFlows);
+				}
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * filterSubProcessSequenceBySubNodeSequence(根据子流程节点线条集合过滤)
+	 * 
+	 * @param deployedProcessDefinition
+	 * @param outgoingSequenceFlows
+	 *            void
+	 * @exception
+	 * @since 1.0.0
+	 */
+	private void filterSubProcessSequenceBySubNodeSequence(
+			ProcessDefinitionEntity deployedProcessDefinition,
+			List<KernelSequenceFlow> outgoingSequenceFlows) {
+		Iterator<KernelSequenceFlow> iterator = outgoingSequenceFlows.iterator();
+		KernelSequenceFlow kernelSequenceFlow = null;
+		while (iterator.hasNext()) {
+			kernelSequenceFlow = iterator.next();
+			this.filterSubProcessSequenceByID(deployedProcessDefinition, kernelSequenceFlow.getId());
+		}
+	}
+
+	/**
+	 * 
+	 * filterSubProcessSequenceByID(根据ID过滤)
+	 * 
+	 * @param deployedProcessDefinition
+	 * @param id
+	 *            void
+	 * @exception
+	 * @since 1.0.0
+	 */
+	private void filterSubProcessSequenceByID(ProcessDefinitionEntity deployedProcessDefinition,
+			String id) {
+		Map<String, KernelSequenceFlowImpl> sequenceFlows = deployedProcessDefinition
+				.getSequenceFlows();
+		Set<Entry<String, KernelSequenceFlowImpl>> entrySet = sequenceFlows.entrySet();
+		Iterator<Entry<String, KernelSequenceFlowImpl>> iterator = entrySet.iterator();
+		Entry<String, KernelSequenceFlowImpl> next = null;
+		KernelSequenceFlowImpl value = null;
+		while (iterator.hasNext()) {
+			next = iterator.next();
+			value = next.getValue();
+			if (StringUtils.equals(value.getId(), id)) {
+				iterator.remove();
+			}
+		}
 	}
 
 }
