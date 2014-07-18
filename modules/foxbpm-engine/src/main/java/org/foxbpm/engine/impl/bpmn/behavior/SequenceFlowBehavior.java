@@ -18,6 +18,8 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
+import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
+import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.kernel.behavior.KernelSequenceFlowBehavior;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
@@ -28,17 +30,26 @@ public class SequenceFlowBehavior extends FlowElementBehavior implements KernelS
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String conditionExpression;
+	private Expression conditionExpression;
+	
+	private String sequenceFlowId;
 	
 	public boolean isContinue(FlowNodeExecutionContext executionContext) {
-		return false;
+		Object expressionValue = conditionExpression.getValue(executionContext);
+		if(expressionValue == null){
+			return true;
+		}
+		if(expressionValue instanceof Boolean){
+			return (Boolean)expressionValue;
+		}
+		throw new FoxBPMIllegalArgumentException("线条{}表达式需要返回布尔类型结果",sequenceFlowId);
 	}
 
-	public String getConditionExpression() {
+	public Expression getConditionExpression() {
 		return conditionExpression;
 	}
 
-	public void setConditionExpression(String conditionExpression) {
+	public void setConditionExpression(Expression conditionExpression) {
 		this.conditionExpression = conditionExpression;
 	}
 	

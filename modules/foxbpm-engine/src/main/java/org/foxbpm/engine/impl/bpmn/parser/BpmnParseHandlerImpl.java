@@ -91,6 +91,7 @@ import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
 import org.foxbpm.kernel.ProcessDefinitionBuilder;
 import org.foxbpm.kernel.behavior.KernelArtifactBehavior;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
+import org.foxbpm.kernel.behavior.KernelSequenceFlowBehavior;
 import org.foxbpm.kernel.event.KernelEventType;
 import org.foxbpm.kernel.event.KernelListener;
 import org.foxbpm.kernel.process.KernelDIBounds;
@@ -242,8 +243,8 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			// 处理线条
 			List<SequenceFlow> sequenceFlows = ((FlowNode) flowElement).getOutgoing();
 			for (SequenceFlow sequenceFlow : sequenceFlows) {
-				processDefinitionBuilder.sequenceFlow(sequenceFlow.getTargetRef().getId(),
-						sequenceFlow.getId(), sequenceFlow.getName());
+				KernelSequenceFlowBehavior kernelSequenceFlowBehavior = BpmnBehaviorEMFConverter.getSequenceFlowBehavior(sequenceFlow, processDefinitionBuilder.getProcessDefinition());
+				processDefinitionBuilder.sequenceFlow(sequenceFlow.getTargetRef().getId(), sequenceFlow.getId(), sequenceFlow.getName(),kernelSequenceFlowBehavior);
 			}
 			processDefinitionBuilder.endFlowNode();
 		}

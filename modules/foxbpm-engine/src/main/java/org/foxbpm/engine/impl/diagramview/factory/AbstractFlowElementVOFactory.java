@@ -134,8 +134,8 @@ public abstract class AbstractFlowElementVOFactory {
 			SequenceFlowBehavior sequenceFlowBehavior = (SequenceFlowBehavior) kernelSequenceFlowImpl
 					.getSequenceFlowBehavior();
 			String[] filterConfition = new String[]{"", "default"};
-			if (sequenceFlowBehavior == null
-					|| StringUtils.isBlank(sequenceFlowBehavior.getConditionExpression())) {
+			if (sequenceFlowBehavior == null || sequenceFlowBehavior.getConditionExpression() == null 
+					|| StringUtils.isBlank(sequenceFlowBehavior.getConditionExpression().getExpressionText())) {
 				filterConfition[0] = "conditional";
 			}
 			this.filterConnectorVO(voNode, filterConfition);

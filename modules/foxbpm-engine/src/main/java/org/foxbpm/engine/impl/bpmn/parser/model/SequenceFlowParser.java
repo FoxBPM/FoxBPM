@@ -18,8 +18,10 @@
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
 import org.eclipse.bpmn2.BaseElement;
+import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.SequenceFlowBehavior;
+import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.util.BpmnModelUtil;
 
 /**
@@ -34,7 +36,9 @@ public class SequenceFlowParser extends FlowElementParser {
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		String conditionExpression = BpmnModelUtil.getSequenceFlowCondition(baseElement);
 		SequenceFlowBehavior sequenceFlowBehavior = (SequenceFlowBehavior)baseElementBehavior;
-		sequenceFlowBehavior.setConditionExpression(conditionExpression);
+		Expression expression = new ExpressionImpl(conditionExpression);
+		sequenceFlowBehavior.setConditionExpression(expression);
+		sequenceFlowBehavior.setId(baseElement.getId());
 		return super.parser(baseElement);
 	}
 	

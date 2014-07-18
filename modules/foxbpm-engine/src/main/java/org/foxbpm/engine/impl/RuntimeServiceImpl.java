@@ -22,7 +22,7 @@ import java.util.Map;
 
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.datavariable.VariableQuery;
-import org.foxbpm.engine.impl.cmd.GetProcessInstanceSVGImageCmd;
+import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.impl.cmd.SignalCmd;
 import org.foxbpm.engine.impl.cmd.StartProcessInstanceCmd;
 import org.foxbpm.engine.impl.datavariable.VariableQueryImpl;
@@ -75,23 +75,19 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 	}
 
 	public ProcessInstance startProcessInstanceByMessage(String messageName) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new FoxBPMBizException("功能尚未完成");
 	}
 
 	public ProcessInstance startProcessInstanceByMessage(String messageName, String bizKey) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new FoxBPMBizException("功能尚未完成");
 	}
 
 	public ProcessInstance startProcessInstanceByMessage(String messageName, Map<String, Object> processVariables) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new FoxBPMBizException("功能尚未完成");
 	}
 
 	public ProcessInstance startProcessInstanceByMessage(String messageName, String bizKey, Map<String, Object> processVariables) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new FoxBPMBizException("功能尚未完成");
 	}
 
 	public void signal(String executionId) {
@@ -110,11 +106,6 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 		return new ProcessInstanceQueryImpl(commandExecutor);
 	}
 
-	@Override
-	public String createProcessInstanceSVGImageString(String processInstanceID) {
-		return commandExecutor.execute(new GetProcessInstanceSVGImageCmd(processInstanceID));
-	}
-	
 	@Override
 	public VariableQuery createVariableQuery() {
 		return new VariableQueryImpl(commandExecutor);
