@@ -19,6 +19,7 @@ package org.foxbpm.kernel.process.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,10 +91,26 @@ public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl implemen
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	public List<KernelSequenceFlow> getOutgoingSequenceFlows() {
-		// 创建比较器对象
-		ComparatorSequence comparatorSequence = new ComparatorSequence();
 		// 调用排序方法
-		Collections.sort(outgoingSequenceFlows, comparatorSequence);
+		Collections.sort(outgoingSequenceFlows, new Comparator<KernelSequenceFlow>() {
+			@Override
+			public int compare(KernelSequenceFlow sequenceFlowBehavior1,
+					KernelSequenceFlow sequenceFlowBehavior2) {
+				int orderId1 = sequenceFlowBehavior1.getOrderId();
+				int orderId2 = sequenceFlowBehavior2.getOrderId();
+
+				if (orderId1 > orderId2) {
+					return 1;
+				} else {
+					if (orderId1 == orderId2) {
+						return 0;
+					} else {
+						return -1;
+					}
+
+				}
+			}
+		});
 		return (List) outgoingSequenceFlows;
 	}
 
