@@ -121,6 +121,7 @@ public abstract class AbstractFlowElementVOFactory {
 					.getKernelFlowNodeBehavior();
 			if (kernelFlowNodeBehavior instanceof TaskBehavior
 					|| kernelFlowNodeBehavior instanceof CallActivityBehavior) {
+
 				this.filterChildVO(voNode, Arrays.asList(svgType.split(SPLIT_SEPERATOR)));
 			}
 
@@ -134,8 +135,10 @@ public abstract class AbstractFlowElementVOFactory {
 			SequenceFlowBehavior sequenceFlowBehavior = (SequenceFlowBehavior) kernelSequenceFlowImpl
 					.getSequenceFlowBehavior();
 			String[] filterConfition = new String[]{"", "default"};
-			if (sequenceFlowBehavior == null || sequenceFlowBehavior.getConditionExpression() == null 
-					|| StringUtils.isBlank(sequenceFlowBehavior.getConditionExpression().getExpressionText())) {
+			if (sequenceFlowBehavior == null
+					|| sequenceFlowBehavior.getConditionExpression() == null
+					|| StringUtils.isBlank(sequenceFlowBehavior.getConditionExpression()
+							.getExpressionText())) {
 				filterConfition[0] = "conditional";
 			}
 			this.filterConnectorVO(voNode, filterConfition);
