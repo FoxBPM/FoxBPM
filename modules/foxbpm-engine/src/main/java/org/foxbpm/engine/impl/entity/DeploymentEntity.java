@@ -40,7 +40,8 @@ public class DeploymentEntity implements Serializable, Deployment, PersistentObj
 	protected Date deploymentTime;
 	protected boolean isNew = true;
 	protected String updateDeploymentId;
-
+	/** 扩展属性 */
+	protected Map<String, Object> properties;
 	/**
 	 * Will only be used during actual deployment to pass deployed artifacts (eg
 	 * process definitions). Will be null otherwise.
@@ -50,6 +51,7 @@ public class DeploymentEntity implements Serializable, Deployment, PersistentObj
 	public DeploymentEntity() {
 		this.id = GuidUtil.CreateGuid();
 	}
+
 	public ResourceEntity getResource(String resourceName) {
 		return getResources().get(resourceName);
 	}
@@ -67,7 +69,7 @@ public class DeploymentEntity implements Serializable, Deployment, PersistentObj
 		if (resources == null && id != null) {
 			List<ResourceEntity> resourcesList = Context.getCommandContext().getResourceManager().findResourcesByDeploymentId(id);
 			resources = new HashMap<String, ResourceEntity>();
-			if(resourcesList != null){
+			if (resourcesList != null) {
 				for (ResourceEntity resource : resourcesList) {
 					resources.put(resource.getName(), resource);
 				}
@@ -104,6 +106,21 @@ public class DeploymentEntity implements Serializable, Deployment, PersistentObj
 	@SuppressWarnings("unchecked")
 	public <T> List<T> getDeployedArtifacts(Class<T> clazz) {
 		return (List<T>) deployedArtifacts.get(clazz);
+	}
+
+	public void addProperty(String key, Object value) {
+		if (properties == null) {
+			properties = new HashMap<String, Object>();
+		}
+		properties.put(key, value);
+
+	}
+
+	public Object getProperty(String key) {
+		if (properties == null) {
+			return null;
+		}
+		return properties.get(key);
 	}
 
 	// getters and setters
@@ -152,8 +169,6 @@ public class DeploymentEntity implements Serializable, Deployment, PersistentObj
 	public void setNew(boolean isNew) {
 		this.isNew = isNew;
 	}
-	
-	
 
 	// common methods //////////////////////////////////////////////////////////
 

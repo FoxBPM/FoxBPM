@@ -243,29 +243,26 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 		}
 	}
+
 	protected void initSVG() {
 		SVGTemplateContainer.getContainerInstance();
 	}
 
 	protected void initAbstractCommandFilter() {
 		abstractCommandFilterMap = new HashMap<String, AbstractCommandFilter>();
-		List<TaskCommandDefinition> taskCommandDefs = foxBpmConfig.getTaskCommandConfig()
-				.getTaskCommandDefinition();
+		List<TaskCommandDefinition> taskCommandDefs = foxBpmConfig.getTaskCommandConfig().getTaskCommandDefinition();
 		String filter = null;
 		for (TaskCommandDefinition taskCommandDef : taskCommandDefs) {
 			filter = taskCommandDef.getFilter();
-			if (StringUtil.getBoolean(taskCommandDef.getIsEnabled())
-					&& StringUtil.isNotBlank(filter)) {
-				abstractCommandFilterMap.put(taskCommandDef.getId(),
-						(AbstractCommandFilter) ReflectUtil.instantiate(filter));
+			if (StringUtil.getBoolean(taskCommandDef.getIsEnabled()) && StringUtil.isNotBlank(filter)) {
+				abstractCommandFilterMap.put(taskCommandDef.getId(), (AbstractCommandFilter) ReflectUtil.instantiate(filter));
 			}
 		}
 	}
 
 	private void initStyle() {
 		ResourceSet resourceSet = new ResourceSetImpl();
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-				.put("xml", new XMIResourceFactoryImpl());
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xml", new XMIResourceFactoryImpl());
 		InputStream inputStream = null;
 		String classPath = "config/style.xml";
 		inputStream = ReflectUtil.getResourceAsStream("style.xml");
@@ -278,21 +275,18 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		URL url = this.getClass().getClassLoader().getResource(classPath);
 		if (url == null) {
 			log.error("未能从{}目录下找到style.xml文件", classPath);
-			throw new FoxBPMClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION_FILENOTFOUND,
-					"style.xml");
+			throw new FoxBPMClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION_FILENOTFOUND, "style.xml");
 		}
 		String filePath = url.toString();
 		Resource resource = null;
 		try {
 			if (!filePath.startsWith("jar")) {
-				filePath = java.net.URLDecoder.decode(ReflectUtil.getResource(classPath).getFile(),
-						"utf-8");
+				filePath = java.net.URLDecoder.decode(ReflectUtil.getResource(classPath).getFile(), "utf-8");
 				resource = resourceSet.createResource(URI.createFileURI(filePath));
 			} else {
 				resource = resourceSet.createResource(URI.createURI(filePath));
 			}
-			resourceSet.getPackageRegistry().put(StylePackage.eINSTANCE.getNsURI(),
-					StylePackage.eINSTANCE);
+			resourceSet.getPackageRegistry().put(StylePackage.eINSTANCE.getNsURI(), StylePackage.eINSTANCE);
 			resource.load(null);
 		} catch (Exception e) {
 			log.error("style.xml文件加载失败", e);
@@ -301,8 +295,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 		foxBPMStyleConfig = (FoxBPMStyleConfig) resource.getContents().get(0);
 
-		EList<ElementStyle> elementStyleList = foxBPMStyleConfig.getElementStyleConfig()
-				.getElementStyle();
+		EList<ElementStyle> elementStyleList = foxBPMStyleConfig.getElementStyleConfig().getElementStyle();
 		for (ElementStyle elementStyle : elementStyleList) {
 			for (Style style : elementStyle.getStyle()) {
 				styleMap.put(elementStyle.getStyleId() + style.getObject(), style);
@@ -346,16 +339,14 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			if (processDefinitionCacheLimit <= 0) {
 				processDefinitionCache = new DefaultCache<ProcessDefinition>();
 			} else {
-				processDefinitionCache = new DefaultCache<ProcessDefinition>(
-						processDefinitionCacheLimit);
+				processDefinitionCache = new DefaultCache<ProcessDefinition>(processDefinitionCacheLimit);
 			}
 		}
 		if (userProcessDefinitionCache == null) {
 			if (userProcessDefinitionCacheLimit <= 0) {
 				userProcessDefinitionCache = new DefaultCache<Object>();
 			} else {
-				userProcessDefinitionCache = new DefaultCache<Object>(
-						userProcessDefinitionCacheLimit);
+				userProcessDefinitionCache = new DefaultCache<Object>(userProcessDefinitionCacheLimit);
 			}
 		}
 	}
@@ -409,8 +400,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		}
 
 		if (processModelParseHandler == null) {
-			processModelParseHandler = (ProcessModelParseHandler) ReflectUtil
-					.instantiate("org.foxbpm.engine.impl.bpmn.parser.BpmnParseHandlerImpl");
+			processModelParseHandler = (ProcessModelParseHandler) ReflectUtil.instantiate("org.foxbpm.engine.impl.bpmn.parser.BpmnParseHandlerImpl");
 		}
 		bpmnDeployer.setProcessModelParseHandler(processModelParseHandler);
 		defaultDeployers.add(bpmnDeployer);
@@ -430,8 +420,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	protected void initEmfFile() {
 		ResourceSet resourceSet = new ResourceSetImpl();
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-				.put("xml", new XMIResourceFactoryImpl());
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xml", new XMIResourceFactoryImpl());
 		InputStream inputStream = null;
 		String classPath = "config/foxbpm.cfg.xml";
 		inputStream = ReflectUtil.getResourceAsStream("foxbpm.cfg.xml");
@@ -444,26 +433,22 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		URL url = this.getClass().getClassLoader().getResource(classPath);
 		if (url == null) {
 			log.error("未能从{}目录下找到foxbpm.cfg.xml文件", classPath);
-			throw new FoxBPMClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION_FILENOTFOUND,
-					"foxbpm.cfg.xml");
+			throw new FoxBPMClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION_FILENOTFOUND, "foxbpm.cfg.xml");
 		}
 		String filePath = url.toString();
 		Resource resource = null;
 		try {
 			if (!filePath.startsWith("jar")) {
-				filePath = java.net.URLDecoder.decode(ReflectUtil.getResource(classPath).getFile(),
-						"utf-8");
+				filePath = java.net.URLDecoder.decode(ReflectUtil.getResource(classPath).getFile(), "utf-8");
 				resource = resourceSet.createResource(URI.createFileURI(filePath));
 			} else {
 				resource = resourceSet.createResource(URI.createURI(filePath));
 			}
-			resourceSet.getPackageRegistry().put(FoxBPMConfigPackage.eINSTANCE.getNsURI(),
-					FoxBPMConfigPackage.eINSTANCE);
+			resourceSet.getPackageRegistry().put(FoxBPMConfigPackage.eINSTANCE.getNsURI(), FoxBPMConfigPackage.eINSTANCE);
 			resource.load(null);
 		} catch (Exception e) {
 			log.error("fixflowconfig.xml文件加载失败", e);
-			throw new FoxBPMClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION,
-					"fixflowconfig.xml", e);
+			throw new FoxBPMClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION, "fixflowconfig.xml", e);
 		}
 
 		foxBpmConfig = (FoxBPMConfig) resource.getContents().get(0);
@@ -509,8 +494,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		if (transactionInterceptor != null) {
 			commandInterceptors.add(transactionInterceptor);
 		}
-		CommandContextInterceptor commandContextInterceptor = new CommandContextInterceptor(
-				commandContextFactory, this);
+		CommandContextInterceptor commandContextInterceptor = new CommandContextInterceptor(commandContextFactory, this);
 		commandInterceptors.add(commandContextInterceptor);
 		commandInterceptors.add(new CommandInvoker());
 	}
@@ -648,6 +632,14 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return commandExecutor;
 	}
 
+	public List<Deployer> getCustomPostDeployers() {
+		return customPostDeployers;
+	}
+
+	public void setCustomPostDeployers(List<Deployer> customPostDeployers) {
+		this.customPostDeployers = customPostDeployers;
+	}
+
 	public String getInternationPath() {
 		return getResourcePath("internationalization").getSrc();
 	}
@@ -704,8 +696,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 
 	public ElementStyle getElementStyle(String styleId) {
-		EList<ElementStyle> elementStyleList = foxBPMStyleConfig.getElementStyleConfig()
-				.getElementStyle();
+		EList<ElementStyle> elementStyleList = foxBPMStyleConfig.getElementStyleConfig().getElementStyle();
 		for (ElementStyle elementStyle : elementStyleList) {
 			if (StringUtil.equals(elementStyle.getStyleId(), styleId)) {
 				return elementStyle;
