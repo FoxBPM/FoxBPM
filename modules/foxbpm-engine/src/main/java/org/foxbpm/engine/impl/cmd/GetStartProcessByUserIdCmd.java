@@ -19,15 +19,15 @@ package org.foxbpm.engine.impl.cmd;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.foxbpm.engine.cache.Cache;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
+import org.foxbpm.engine.repository.ProcessDefinition;
 
-public class GetStartProcessByUserIdCmd implements Command<List<Map<String, Object>>>{
+public class GetStartProcessByUserIdCmd implements Command<List<ProcessDefinition>>{
 
 	protected String userId;
 	
@@ -36,19 +36,19 @@ public class GetStartProcessByUserIdCmd implements Command<List<Map<String, Obje
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> execute(CommandContext commandContext) {
+	public List<ProcessDefinition> execute(CommandContext commandContext) {
 		Cache<Object> userProcessDefinitionCache = commandContext.getProcessEngineConfigurationImpl().getUserProcessDefinitionCache();
-		List<Map<String,Object>> result = (List<Map<String,Object>>)userProcessDefinitionCache.get(userId);
+		List<ProcessDefinition> result = (List<ProcessDefinition>)userProcessDefinitionCache.get(userId);
 		if(result != null){
 			return result;
 		}
-		result = new ArrayList<Map<String,Object>>();
+		result = new ArrayList<ProcessDefinition>();
 		CommandExecutor commandExecutor = commandContext.getProcessEngineConfigurationImpl().getCommandExecutor();
 		List<ProcessDefinitionEntity> processDefinitions = commandExecutor.execute(new GetProcessDefinitionGroupKeyCmd());
 		for(ProcessDefinitionEntity process : processDefinitions){
 			boolean isVerify = commandExecutor.execute(new VerificationStartUserCmd(userId, null, process.getId()));
 			if(isVerify){
-				result.add(process.getPersistentState());
+				result.add(process);
 			}
 		}
 		userProcessDefinitionCache.add(userId, result);
