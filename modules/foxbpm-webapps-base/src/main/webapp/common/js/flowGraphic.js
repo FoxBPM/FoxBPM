@@ -74,7 +74,7 @@ function FlowGraphic(param) {
 	};
 	this.confirmExists = function(tempArray, tempNode) {
 		for (var i = 0; i < tempArray.length; i++) {
-			if (tempArray[i].nodeId == tempNode.nodeId) {
+			if (tempArray[i].nodeId == tempNode.nodeId && tempArray[i].eventName != tempNode.eventName) {
 				return true;
 			}
 		}
