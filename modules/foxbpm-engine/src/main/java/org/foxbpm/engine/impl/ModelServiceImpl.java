@@ -47,7 +47,7 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 		return new DeploymentBuilderImpl(this);
 	}
 
-	public List<Map<String, Object>> getStartProcessByUserId(String userId) {
+	public List<ProcessDefinition> getStartProcessByUserId(String userId) {
 		return commandExecutor.execute(new GetStartProcessByUserIdCmd(userId));
 		
 	}

@@ -62,7 +62,11 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		if (StringUtil.isEmpty(userId)) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_USERID, "userId is null !");
 		}
-		return modelService.getStartProcessByUserId(userId);
+		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+		for (ProcessDefinition pd : modelService.getStartProcessByUserId(userId)) {
+			result.add(pd.getPersistentState());
+		}
+		return result;
 	}
 
 	public List<RunningTrack> queryRunningTrack(String processInstanceID) {
