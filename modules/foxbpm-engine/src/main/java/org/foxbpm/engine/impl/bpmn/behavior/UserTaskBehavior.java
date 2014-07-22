@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
@@ -54,6 +55,12 @@ public class UserTaskBehavior extends TaskBehavior {
 	public void execute(FlowNodeExecutionContext executionContext) {
 
 		TaskEntity task = TaskEntity.createAndInsert(executionContext);
+		
+		TokenEntity tokenEntity=(TokenEntity)executionContext;
+		
+		if(StringUtil.isNotEmpty(tokenEntity.getGroupID())){
+			task.setTaskGroup(tokenEntity.getGroupID());
+		}
 
 		task.setTaskDefinition(taskDefinition);
 
@@ -122,7 +129,7 @@ public class UserTaskBehavior extends TaskBehavior {
 			}
 		}
 		
-		TokenEntity tokenEntity=(TokenEntity)executionContext;
+		
 		tokenEntity.setAssignTask(task);
 		/** 触发分配事件(后事件) */
 		executionContext.fireEvent(AbstractTaskEvent.TASK_ASSIGN);
@@ -147,6 +154,19 @@ public class UserTaskBehavior extends TaskBehavior {
 		super.cleanData(executionContext);
 	}
 
+	
+	private void removeTaskInstanceSynchronization(TokenEntity token) {
+		if(token!=null){
+			List<TaskEntity> tasks = Context.getCommandContext().getTaskManager().findTasksByTokenId(token.getId());
+			
+			for (TaskEntity taskInstance : tasks) {
+				if (!taskInstance.hasEnded()) {
+					//taskInstance.customEnd(null, null);
+				}
+			}
+		}
+		
+	}
 	
 
 

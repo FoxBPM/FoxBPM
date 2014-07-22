@@ -55,6 +55,11 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 	protected List<TaskEntity> tasks;
 
 	protected TaskEntity assignTask;
+	
+	protected String groupID;
+
+	
+
 
 	@Override
 	public void setFlowNode(KernelFlowNodeImpl flowNode) {
@@ -92,9 +97,16 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 	}
 
 	@Override
-	public void enter(KernelFlowNodeImpl flowNode) {
+	public void ensureEnterInitialized(KernelFlowNodeImpl flowNode) {
+		/** 设置令牌进入节点的时间*/
 		setNodeEnterTime(ClockUtil.getCurrentTime());
-		super.enter(flowNode);
+		super.ensureEnterInitialized(flowNode);
+	}
+
+
+	@Override
+	public void clearExecutionContextData() {
+		super.clearExecutionContextData();
 	}
 
 	@Override
@@ -282,6 +294,15 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		
 		endTime=ClockUtil.getCurrentTime();
 		super.end(verifyParentTermination);
+	}
+	
+
+	public String getGroupID() {
+		return groupID;
+	}
+
+	public void setGroupID(String groupID) {
+		this.groupID = groupID;
 	}
 	
 	

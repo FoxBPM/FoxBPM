@@ -120,10 +120,25 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements
 	public void setProcessInstance(KernelProcessInstanceImpl processInstance) {
 		this.processInstance = processInstance;
 	}
+	
+	public void ensureEnterInitialized(KernelFlowNodeImpl flowNode){
+		/** 设置令牌所在节点 */
+		setFlowNode(flowNode);
+	}
 
 	public void enter(KernelFlowNodeImpl flowNode) {
-		setFlowNode(flowNode);
+		
+		LOG.debug("进入节点: {}({}),令牌号: {}({}).", flowNode.getName(),flowNode.getId(),getName(),getId());
+		
+		/** 移除临时执行内容对象 */
+		clearExecutionContextData();
+		
+		/** 初始化节点进入参数 */
+		ensureEnterInitialized(flowNode);
+		
+		/** 触发节点进入事件 */
 		fireEvent(KernelEvent.NODE_ENTER);
+		/** 执行节点行为 */
 		flowNode.getKernelFlowNodeBehavior().enter(this);
 	}
 
@@ -233,6 +248,15 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements
 			takeAll(sequenceFlowList);
 			return;
 		}
+	}
+	
+	/** 清理令牌数据 */
+	public void clearExecutionContextData() {
+
+		this.setSequenceFlow(null);
+
+		this.setToFlowNode(null);
+
 	}
 
 	// 分支处理///////////////////////////////

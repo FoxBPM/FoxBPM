@@ -103,6 +103,7 @@ public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl implemen
 
 	public void setFlowNodeBehavior(KernelFlowNodeBehavior flowNodeBehavior) {
 		this.flowNodeBehavior = flowNodeBehavior;
+		flowNodeBehavior.setKernelFlowNode(this);
 	}
 
 	public KernelFlowElementsContainerImpl getParent() {
