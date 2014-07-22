@@ -355,6 +355,7 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 					taskType = SVGTypeNameConstant.SVG_TYPE_EVENT;
 					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_STARTEVENT_NONE;
 					if (hasTimerDefinition) {
+						taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_START_TIMER;
 						svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_STARTEVENT_TIMER;
 					}
 				} else if (kernelFlowNodeBehavior instanceof BoundaryEventBehavior) {

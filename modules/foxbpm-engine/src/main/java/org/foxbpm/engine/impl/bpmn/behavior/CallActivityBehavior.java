@@ -17,11 +17,74 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
+
 public class CallActivityBehavior extends ActivityBehavior {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	
+	
+	protected boolean isAsync = false;
 
+	protected String callableElementId;
+	
+	protected String callableElementVersion;
+	
+	protected String callableElementBizKey;
+
+	protected DataSourceToSubProcessMapping dataSourceToSubProcessMapping;
+	
+	protected SubProcessToDataSourceMapping subProcessToDataSourceMapping;
+	
+	
+	
+	
+	
+	
+	@Override
+	public void execute(FlowNodeExecutionContext executionContext) {
+		// TODO Auto-generated method stub
+		super.execute(executionContext);
+	}
+	
+	
+	
+	public boolean isAsync() {
+		return isAsync;
+	}
+	public void setAsync(boolean isAsync) {
+		this.isAsync = isAsync;
+	}
+	public String getCallableElementId() {
+		return callableElementId;
+	}
+	public void setCallableElementId(String callableElementId) {
+		this.callableElementId = callableElementId;
+	}
+	public String getCallableElementVersion() {
+		return callableElementVersion;
+	}
+	public void setCallableElementVersion(String callableElementVersion) {
+		this.callableElementVersion = callableElementVersion;
+	}
+	public String getCallableElementBizKey() {
+		return callableElementBizKey;
+	}
+	public void setCallableElementBizKey(String callableElementBizKey) {
+		this.callableElementBizKey = callableElementBizKey;
+	}
+	public DataSourceToSubProcessMapping getDataSourceToSubProcessMapping() {
+		return dataSourceToSubProcessMapping;
+	}
+	public void setDataSourceToSubProcessMapping(DataSourceToSubProcessMapping dataSourceToSubProcessMapping) {
+		this.dataSourceToSubProcessMapping = dataSourceToSubProcessMapping;
+	}
+	public SubProcessToDataSourceMapping getSubProcessToDataSourceMapping() {
+		return subProcessToDataSourceMapping;
+	}
+	public void setSubProcessToDataSourceMapping(SubProcessToDataSourceMapping subProcessToDataSourceMapping) {
+		this.subProcessToDataSourceMapping = subProcessToDataSourceMapping;
+	}
+	
+	
 }
