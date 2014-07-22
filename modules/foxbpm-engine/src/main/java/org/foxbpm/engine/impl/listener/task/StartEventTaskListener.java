@@ -17,11 +17,14 @@
  */
 package org.foxbpm.engine.impl.listener.task;
 
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
+import org.foxbpm.engine.impl.task.TaskCommandSystemType;
 import org.foxbpm.engine.task.TaskType;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
+import org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition;
 
 /**
  * 流程启动事件监听
@@ -35,7 +38,6 @@ public class StartEventTaskListener extends AbstractTaskEventListener {
 	 */
 	private static final long serialVersionUID = 8093133229946107408L;
 
-	private static final String START_TYPE = "start";
 
 	@Override
 	protected TaskEntity handleTaskEntity(ListenerExecutionContext executionContext) {
@@ -45,9 +47,16 @@ public class StartEventTaskListener extends AbstractTaskEventListener {
 		TaskEntity taskEntity = new TaskEntity();
 		taskEntity.setNodeId(kernelFlowNode.getId());
 		taskEntity.setNodeName(kernelFlowNode.getName());
-		taskEntity.setCommandMessage(kernelFlowNode.getName());
-		taskEntity.setCommandType(START_TYPE);
 		taskEntity.setTaskType(TaskType.STARTEVENTTASK);
+		
+		taskEntity.setCommandId(TaskCommandSystemType.STARTEVENT);
+		taskEntity.setCommandType(TaskCommandSystemType.STARTEVENT);
+		//taskInstance.setCommandMessage("流程启动");
+		TaskCommandDefinition taskCommandDef=Context.getProcessEngineConfiguration().getTaskCommandDefinitionMap().get(TaskCommandSystemType.STARTEVENT);
+		if(taskCommandDef!=null){
+			taskEntity.setCommandMessage(taskCommandDef.getName());
+		}
+		
 		return taskEntity;
 	}
 
