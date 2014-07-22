@@ -23,6 +23,7 @@ import java.util.Map;
 import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.impl.AssociationImpl;
 import org.eclipse.bpmn2.impl.BaseElementImpl;
+import org.eclipse.bpmn2.impl.BoundaryEventImpl;
 import org.eclipse.bpmn2.impl.BusinessRuleTaskImpl;
 import org.eclipse.bpmn2.impl.CallActivityImpl;
 import org.eclipse.bpmn2.impl.EndEventImpl;
@@ -49,6 +50,7 @@ import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ProcessBehavior;
 import org.foxbpm.engine.impl.bpmn.parser.model.AssociationParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.BaseElementParser;
+import org.foxbpm.engine.impl.bpmn.parser.model.BoundaryEventParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.BusinessRuleTaskParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.CallActivityParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.EndEventParser;
@@ -80,8 +82,8 @@ import org.slf4j.LoggerFactory;
 public class BpmnBehaviorEMFConverter {
 
 	public static Logger log = LoggerFactory.getLogger(BpmnBehaviorEMFConverter.class);
-	private static Map<Class<? extends BaseElementImpl>, Class<? extends BaseElementParser>> elementParserMap = new HashMap<Class<? extends BaseElementImpl>, Class <? extends BaseElementParser>>();
-	static{
+	private static Map<Class<? extends BaseElementImpl>, Class<? extends BaseElementParser>> elementParserMap = new HashMap<Class<? extends BaseElementImpl>, Class<? extends BaseElementParser>>();
+	static {
 		elementParserMap.put(TaskImpl.class, TaskParser.class);
 		elementParserMap.put(UserTaskImpl.class, UserTaskParser.class);
 		elementParserMap.put(ServiceTaskImpl.class, ServiceTaskParser.class);
@@ -91,78 +93,90 @@ public class BpmnBehaviorEMFConverter {
 		elementParserMap.put(ManualTaskImpl.class, ManualTaskParser.class);
 		elementParserMap.put(CallActivityImpl.class, CallActivityParser.class);
 		elementParserMap.put(BusinessRuleTaskImpl.class, BusinessRuleTaskParser.class);
-		
+
 		elementParserMap.put(StartEventImpl.class, StartEventParser.class);
 		elementParserMap.put(EndEventImpl.class, EndEventParser.class);
-		
+
 		elementParserMap.put(ProcessImpl.class, ProcessParser.class);
 		elementParserMap.put(SubProcessImpl.class, SubProcessParser.class);
-		
+
 		elementParserMap.put(ParallelGatewayImpl.class, ParallelGatewayParser.class);
 		elementParserMap.put(InclusiveGatewayImpl.class, InclusiveGatewayParser.class);
 		elementParserMap.put(ExclusiveGatewayImpl.class, ExclusiveGatewayParser.class);
-		
+
 		elementParserMap.put(AssociationImpl.class, AssociationParser.class);
 		elementParserMap.put(GroupImpl.class, GroupParser.class);
 		elementParserMap.put(TextAnnotationImpl.class, TextAnnotationParser.class);
-		
+
 		elementParserMap.put(SequenceFlowImpl.class, SequenceFlowParser.class);
-		
-		elementParserMap.put(MultiInstanceLoopCharacteristicsImpl.class, MultiInstanceLoopCharacteristicsParser.class);
-		elementParserMap.put(StandardLoopCharacteristicsImpl.class, StandardLoopCharacteristicsParser.class);
-		
-		
+
+		elementParserMap.put(MultiInstanceLoopCharacteristicsImpl.class,
+				MultiInstanceLoopCharacteristicsParser.class);
+		elementParserMap.put(StandardLoopCharacteristicsImpl.class,
+				StandardLoopCharacteristicsParser.class);
+
+		elementParserMap.put(BoundaryEventImpl.class, BoundaryEventParser.class);
 	}
 
-	public static KernelFlowNodeBehavior getFlowNodeBehavior(BaseElement baseElement,KernelFlowElementsContainerImpl  flowElementsContainer) {
-		BaseElementBehavior baseElementBehavior = getBaseElementBehavior(baseElement,flowElementsContainer);
-		if(baseElementBehavior instanceof KernelFlowNodeBehavior){
-			return (KernelFlowNodeBehavior)baseElementBehavior;
+	public static KernelFlowNodeBehavior getFlowNodeBehavior(BaseElement baseElement,
+			KernelFlowElementsContainerImpl flowElementsContainer) {
+		BaseElementBehavior baseElementBehavior = getBaseElementBehavior(baseElement,
+				flowElementsContainer);
+		if (baseElementBehavior instanceof KernelFlowNodeBehavior) {
+			return (KernelFlowNodeBehavior) baseElementBehavior;
 		}
 		return null;
 	}
-	
-	public static KernelSequenceFlowBehavior getSequenceFlowBehavior(BaseElement baseElement,KernelFlowElementsContainerImpl  flowElementsContainer){
-		BaseElementBehavior baseElementBehavior = getBaseElementBehavior(baseElement,flowElementsContainer);
-		if(baseElementBehavior instanceof KernelSequenceFlowBehavior){
-			return (KernelSequenceFlowBehavior)baseElementBehavior;
+
+	public static KernelSequenceFlowBehavior getSequenceFlowBehavior(BaseElement baseElement,
+			KernelFlowElementsContainerImpl flowElementsContainer) {
+		BaseElementBehavior baseElementBehavior = getBaseElementBehavior(baseElement,
+				flowElementsContainer);
+		if (baseElementBehavior instanceof KernelSequenceFlowBehavior) {
+			return (KernelSequenceFlowBehavior) baseElementBehavior;
 		}
 		return null;
 	}
-	
-	public static BaseElementBehavior getBaseElementBehavior(BaseElement baseElement,KernelFlowElementsContainerImpl  flowElementsContainer){
-		Class<? extends BaseElementParser> baseParserClass = elementParserMap.get(baseElement.getClass());
-		if(baseParserClass != null){
+
+	public static BaseElementBehavior getBaseElementBehavior(BaseElement baseElement,
+			KernelFlowElementsContainerImpl flowElementsContainer) {
+		Class<? extends BaseElementParser> baseParserClass = elementParserMap.get(baseElement
+				.getClass());
+		if (baseParserClass != null) {
 			BaseElementParser parser = null;
 			try {
 				parser = baseParserClass.newInstance();
 			} catch (Exception e) {
-				log.error("转换元素："+baseElement.getId()+" 失败！",e);
+				log.error("转换元素：" + baseElement.getId() + " 失败！", e);
 			}
-			if(parser != null){
+			if (parser != null) {
 				parser.init();
 				parser.setFlowElementsContainer(flowElementsContainer);
-				BaseElementBehavior baseElementBehavior=parser.parser(baseElement);
+				BaseElementBehavior baseElementBehavior = parser.parser(baseElement);
 				return baseElementBehavior;
 			}
 		}
 		return null;
 	}
-	
-	public static ProcessBehavior getProcessBehavior(BaseElement baseElement,KernelFlowElementsContainerImpl  flowElementsContainer) {
-		BaseElementBehavior baseElementBehavior = getBaseElementBehavior(baseElement,flowElementsContainer);
-		if(baseElementBehavior instanceof ProcessBehavior){
-			return (ProcessBehavior)baseElementBehavior;
+
+	public static ProcessBehavior getProcessBehavior(BaseElement baseElement,
+			KernelFlowElementsContainerImpl flowElementsContainer) {
+		BaseElementBehavior baseElementBehavior = getBaseElementBehavior(baseElement,
+				flowElementsContainer);
+		if (baseElementBehavior instanceof ProcessBehavior) {
+			return (ProcessBehavior) baseElementBehavior;
 		}
 		return null;
 	}
-	
-	public static KernelArtifactBehavior getArtifactBehavior(BaseElement baseElement,KernelFlowElementsContainerImpl  flowElementsContainer) {
-		BaseElementBehavior baseElementBehavior = getBaseElementBehavior(baseElement, flowElementsContainer);
+
+	public static KernelArtifactBehavior getArtifactBehavior(BaseElement baseElement,
+			KernelFlowElementsContainerImpl flowElementsContainer) {
+		BaseElementBehavior baseElementBehavior = getBaseElementBehavior(baseElement,
+				flowElementsContainer);
 		if (baseElementBehavior instanceof ArtifactBehavior) {
 			return (ArtifactBehavior) baseElementBehavior;
 		}
-  		return null;
+		return null;
 	}
 
 }

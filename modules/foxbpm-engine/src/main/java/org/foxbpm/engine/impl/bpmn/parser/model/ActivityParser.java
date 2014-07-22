@@ -24,6 +24,7 @@ import org.eclipse.bpmn2.LoopCharacteristics;
 import org.foxbpm.engine.impl.bpmn.behavior.ActivityBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.parser.BpmnBehaviorEMFConverter;
+import org.foxbpm.engine.impl.bpmn.parser.BpmnParseHandlerImpl;
 import org.foxbpm.engine.impl.util.BpmnModelUtil;
 
 public class ActivityParser extends FlowNodeParser {
@@ -34,15 +35,17 @@ public class ActivityParser extends FlowNodeParser {
 		Activity activity = (Activity) baseElement;
 		ActivityBehavior activityBehavior = (ActivityBehavior) baseElementBehavior;
 		LoopCharacteristics loopCharacteristics = activity.getLoopCharacteristics();
-		
-		if(loopCharacteristics!=null){
+
+		if (loopCharacteristics != null) {
 			org.foxbpm.engine.impl.bpmn.behavior.LoopCharacteristics loopCharacteristicsbehavior = (org.foxbpm.engine.impl.bpmn.behavior.LoopCharacteristics) BpmnBehaviorEMFConverter
 					.getBaseElementBehavior(loopCharacteristics, null);
 
 			activityBehavior.setLoopCharacteristics(loopCharacteristicsbehavior);
 		}
-		
-
+		// 记录Activity 以便维护关联关系
+		BpmnParseHandlerImpl.behaviorRelationMemo.setAttachActivity(activity);
+		BpmnParseHandlerImpl.behaviorRelationMemo.setAttachActivityBehavior(activityBehavior);
+		BpmnParseHandlerImpl.behaviorRelationMemo.attachActivityAndBoundaryEventBehaviorRelation();
 		activityBehavior.setSkipStrategy(BpmnModelUtil.getSkipStrategy(activity));
 
 		return super.parser(baseElement);
