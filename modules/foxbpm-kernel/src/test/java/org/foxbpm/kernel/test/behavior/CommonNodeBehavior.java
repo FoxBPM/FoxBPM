@@ -18,6 +18,7 @@
 package org.foxbpm.kernel.test.behavior;
 
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
+import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 import org.slf4j.Logger;
@@ -56,6 +57,12 @@ public class CommonNodeBehavior implements KernelFlowNodeBehavior {
 
 	public void cleanData(FlowNodeExecutionContext executionContext) {
 		LOG.debug("清理节点: "+executionContext.getFlowNode().getId());
+	}
+
+	@Override
+	public void setKernelFlowNode(KernelFlowNodeImpl KernelFlowNode) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

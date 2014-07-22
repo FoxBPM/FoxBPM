@@ -20,7 +20,7 @@ package org.foxbpm.engine.impl.db;
 
 
 /**
- * @author Daniel Meyer
+ * @author kenshin
  */
 public class ListQueryParameterObject {
   

@@ -18,16 +18,18 @@
 package org.foxbpm.engine.impl.bpmn.behavior;
 
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
+import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
 
 public abstract class FlowNodeBehavior extends FlowElementBehavior implements KernelFlowNodeBehavior {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	
+	protected KernelFlowNodeImpl flowNode;
+
+	
 
 	public void enter(FlowNodeExecutionContext executionContext) {
 		executionContext.execute();
@@ -44,6 +46,15 @@ public abstract class FlowNodeBehavior extends FlowElementBehavior implements Ke
 	public void cleanData(FlowNodeExecutionContext executionContext) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void setKernelFlowNode(KernelFlowNodeImpl KernelFlowNode) {
+		this.flowNode=KernelFlowNode;
+	}
+	
+	public KernelFlowNodeImpl getFlowNode() {
+		return flowNode;
 	}
 
 }

@@ -15,6 +15,7 @@ import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.task.TaskCommandSystemType;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.GuidUtil;
@@ -24,10 +25,12 @@ import org.foxbpm.engine.task.DelegationState;
 import org.foxbpm.engine.task.IdentityLink;
 import org.foxbpm.engine.task.IdentityLinkType;
 import org.foxbpm.engine.task.Task;
+import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.engine.task.TaskType;
 import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelVariableScopeImpl;
+import org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition;
 
 public class TaskEntity extends KernelVariableScopeImpl implements Task, DelegateTask, PersistentObject, HasRevision {
 
@@ -821,6 +824,55 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		}
 	}
 	
+	/**
+	 * 这个结束并不会去推动令牌向下。例如用在退回的时候。
+	 */
+	public void complete(TaskCommand taskCommand, String taskComment) {
+
+		if (this.endTime != null) {
+			throw new FoxBPMException("任务已经结束,不能再进行处理.");
+		}
+		if (this.isSuspended) {
+			throw new FoxBPMException("任务已经暂停不能再处理");
+		}
+
+		this.endTime = new Date();
+
+		this.isDraft = false;
+
+		this.isOpen = false;
+
+		this.taskComment = taskComment;
+
+		if (taskCommand != null && taskCommand.getTaskCommandType() != null && !taskCommand.getTaskCommandType().equals("")) {
+			String taskCommandType = taskCommand.getTaskCommandType();
+			String taskCommandName = taskCommand.getName();
+			// 设置流程自动结束信息 autoEnd
+			this.setCommandId(taskCommand.getId());
+			this.setCommandType(taskCommandType);
+			if (taskCommandName == null) {
+				
+				TaskCommandDefinition taskCommandDef = Context.getProcessEngineConfiguration().getTaskCommandDefinition(taskCommandType);
+				if (taskCommandDef != null) {
+					this.setCommandMessage(taskCommandDef.getName());
+				}
+			} else {
+				this.setCommandMessage(taskCommandName);
+
+			}
+
+		} else {
+
+			this.setCommandId(TaskCommandSystemType.AUTOEND);
+			this.setCommandType(TaskCommandSystemType.AUTOEND);
+			TaskCommandDefinition taskCommandDef = Context.getProcessEngineConfiguration().getTaskCommandDefinition(TaskCommandSystemType.AUTOEND);
+			if (taskCommandDef != null) {
+				this.setCommandMessage(taskCommandDef.getName());
+			}
+		}
+
+	}
+	
 	public Map<String, Object> getPersistentState() {
 		Map<String,Object> persistentState = new HashMap<String, Object>();
 		persistentState.put("id", getId());		
@@ -869,7 +921,11 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		persistentState.put("commandId", getCommandId());
 		persistentState.put("commandType", getCommandType());		
 		persistentState.put("commandMessage", getCommandMessage());
+		persistentState.put("processStartTime", getProcessStartTime());
+		persistentState.put("processInitiator", getProcessInitiator());
+		persistentState.put("completeDescription", getCompleteDescription());
 		
+
 		return persistentState;
 	}
 
