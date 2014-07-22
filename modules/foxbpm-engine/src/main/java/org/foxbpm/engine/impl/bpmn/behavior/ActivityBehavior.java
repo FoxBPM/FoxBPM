@@ -198,7 +198,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 			// 在进入多实例的第一次先清空多实例输出集合,以防历史数据影响。
 			if (loopDataOutputCollectionExpressionValue != null && !loopDataOutputCollectionExpressionValue.equals("")) {
 
-				Object valueObj = loopDataInputCollection.getValue(executionContext);
+				Object valueObj = loopDataOutputCollection.getValue(executionContext);
 
 				if (valueObj != null) {
 
@@ -473,52 +473,36 @@ public class ActivityBehavior extends FlowNodeBehavior {
 				LOG.debug("\n【完成条件】: \n{}", completionConditionExpressionValue);
 
 				if (loopDataOutputCollectionExpressionValue != null && !loopDataOutputCollectionExpressionValue.equals("")) {
-
 					Object valueObj = ExpressionMgmt.execute(loopDataOutputCollectionExpressionValue, executionContext);
-
 					if (valueObj != null) {
-
 						if (valueObj instanceof Collection) {
-
 							Collection collection = (Collection) valueObj;
 							collection.add(outputDataItem.getValue(executionContext));
-
 						} else {
-
+							throw new FoxBPMException("输出集合类型必须是Collection");
 						}
 					} else {
-
+						throw new FoxBPMException("输出集合为null:"+loopDataOutputCollectionExpressionValue);
 					}
 				}
 
 				if (completionConditionExpressionValue == null || completionConditionExpressionValue.equals("")) {
-
 					LOG.error("节点: " + getName() + "(" + getId() + ") 多实例完成条件为空.");
-
 					throw new FoxBPMExpressionException(ExceptionCode.EXPRESSIONEXCEPTION_CONDITIONEXPRESSIONEMPTY, this.getId(),
 							this.getName(), "");
-
 				} else {
-
 					boolean isCompletion = false;
 					try {
-
 						isCompletion = StringUtil.getBoolean(ExpressionMgmt.execute(completionConditionExpressionValue, executionContext));
-
 					} catch (Exception e) {
-
 						LOG.error("节点: " + getName() + "(" + getId() + ") 多实例完成条件计算出错.", e);
 						throw new FoxBPMExpressionException(ExceptionCode.EXPRESSIONEXCEPTION_CONDITIONEXPRESSIONERROR, this.getId(),
 								this.getName(), "");
-
 					}
 
 					if (isCompletion) {
-
 						LOG.debug("节点: {}({}) 多实例完成条件验证通过,令牌号: {}({}).", getName(), getId(), token.getName(), token.getId());
-
 						super.leave(executionContext);
-
 					} else {
 						// 不做处理
 						LOG.debug("节点: {}({}) 多实例完成条件验证不通过,令牌将继续停留在当前借点,令牌号: {}({}).", getName(), getId(), token.getName(), token.getId());
@@ -530,13 +514,10 @@ public class ActivityBehavior extends FlowNodeBehavior {
 				// 异常方式也暂时不改了
 				throw new FoxBPMException("串行处理没有实现！");
 			}
-
 		}
 		// 正常处理
 		else {
-
 			super.leave(executionContext);
-
 		}
 	}
 

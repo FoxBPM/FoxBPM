@@ -53,6 +53,19 @@
 		<taskCommandDefinition id="processStatus" name="流程状态"
 			isEnabled="true" type="all" />
 
+		<taskCommandDefinition id="skipNode" name="自动跳过"
+			isEnabled="true" type="system" />
+		<taskCommandDefinition id="autoEnd" name="自动结束"
+			isEnabled="true" type="system" />
+		<taskCommandDefinition id="subProcessEnd" name="子流程结束"
+			isEnabled="true" type="system" />
+		<taskCommandDefinition id="startEvent" name="流程开始"
+			isEnabled="true" type="system" />
+		<taskCommandDefinition id="endEvent" name="流程结束"
+			isEnabled="true" type="system" />
+		<taskCommandDefinition id="receiveEnd" name="等待结束"
+			isEnabled="true" type="system" />
+
 	</taskCommandConfig>
 
 	<sysMailConfig selected="方正国际邮箱">
@@ -70,10 +83,9 @@
 			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.StartEventTrackListener" />
 		<eventListener eventType="node-enter"
 			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" />
-		<!-- <eventListener eventType="node-execute"
-			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" />
-		<eventListener eventType="node-leave"
-			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" /> -->
+		<!-- <eventListener eventType="node-execute" listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" 
+			/> <eventListener eventType="node-leave" listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" 
+			/> -->
 		<eventListener eventType="sequenceflow-take"
 			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.SequenceTrackEventListener" />
 		<eventListener eventType="process-start"

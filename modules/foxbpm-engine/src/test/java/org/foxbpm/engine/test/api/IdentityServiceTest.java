@@ -161,7 +161,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		agentDetailsEntity.setId(agentDetailsId);
 		agentDetailsEntity.setAgentId(agentId);
 		agentDetailsEntity.setAgentTo("admin2");
-		agentDetailsEntity.setProcessKey("_all_");
+		agentDetailsEntity.setProcessKey(Constant.FOXBPM_ALL_FLOW);
 		
 		//更新代理明细
 		identityService.updateAgentDetailsEntity(agentDetailsEntity);
@@ -173,7 +173,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		
 		//验证是否update成功
 		AgentTo agentTo = agentInfos.get(0);
-		assertEquals("_all_", agentTo.getProcessKey());
+		assertEquals(Constant.FOXBPM_ALL_FLOW, agentTo.getProcessKey());
 		
 		/**  测试updateAgent方法      **/
 		
@@ -215,7 +215,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		agentDetailsEntity.setId(agentDetailsId);
 		agentDetailsEntity.setAgentId(agentId);
 		agentDetailsEntity.setAgentTo("admin2");
-		agentDetailsEntity.setProcessKey("_all_");
+		agentDetailsEntity.setProcessKey(Constant.FOXBPM_ALL_FLOW);
 		identityService.addAgentDetails(agentDetailsEntity);
 		
 		CacheUtil.clearIdentityCache();

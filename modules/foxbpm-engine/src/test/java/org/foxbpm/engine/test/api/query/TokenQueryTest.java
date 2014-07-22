@@ -20,6 +20,7 @@ package org.foxbpm.engine.test.api.query;
 import java.util.List;
 
 import static org.junit.Assert.*;
+
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.runtime.Token;
 import org.foxbpm.engine.runtime.TokenQuery;

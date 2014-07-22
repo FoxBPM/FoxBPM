@@ -30,7 +30,7 @@ import org.junit.Test;
 public class CacheUtilTest extends AbstractFoxBpmTestCase {
 
 	@Test
-	@Deployment(resources = {"process_test_1.bpmn"})
+	@Deployment(resources = {"org/foxbpm/test/api/Test_RuntimeService_1.bpmn"})
 	public void testClear(){
 		//注解发布后，processDefinitionCache中应该有且仅有一个缓存定义
 		Cache<ProcessDefinition> processDefinitionCache = CacheUtil.getProcessDefinitionCache();
@@ -39,7 +39,7 @@ public class CacheUtilTest extends AbstractFoxBpmTestCase {
 		//查询一次用户后，userCache中应该存在一个user缓存对象
 		identityService.getUser("admin");
 		Cache<Object> userCache = CacheUtil.getIdentityCache();
-		Assert.assertEquals(1, ((DefaultCache<Object>)userCache).size());
+		Assert.assertEquals(3, ((DefaultCache<Object>)userCache).size());
 		CacheUtil.clearCache();
 		//清空缓存后，缓存数量应该为0
 		Assert.assertEquals(0, ((DefaultCache<ProcessDefinition>)processDefinitionCache).size());

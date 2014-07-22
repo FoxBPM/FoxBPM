@@ -329,6 +329,16 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 	public void setGroupID(String groupID) {
 		this.groupID = groupID;
 	}
+
+	@Override
+	protected boolean isSignalParentToken() {
+		if(isSubProcessRootToken){
+			if (!getParent().isEnded()) {
+				return true;
+			}		
+		}
+		return super.isSignalParentToken();
+	}
 	
 	
 

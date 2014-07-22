@@ -34,7 +34,7 @@ public interface FlowNodeExecutionContext extends DelegateExecutionContext {
 	
 	KernelProcessInstanceImpl getProcessInstance();
 	
-	KernelFlowNode getFlowNode();
+	KernelFlowNodeImpl getFlowNode();
 	
 	void ensureEnterInitialized(KernelFlowNodeImpl flowNode);
 	

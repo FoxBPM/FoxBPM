@@ -26,7 +26,9 @@ import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.cache.CacheUtil;
 import org.foxbpm.engine.repository.DeploymentBuilder;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestName;
@@ -95,6 +97,11 @@ public abstract class AbstractFoxBpmTestCase extends AbstractTransactionalJUnit4
 				deploymentBuilder.deploy();
 			}
 		}
+	}
+	
+	@After
+	public void clearCache(){
+		CacheUtil.clearCache();
 	}
 	
 	protected void cleanData(){

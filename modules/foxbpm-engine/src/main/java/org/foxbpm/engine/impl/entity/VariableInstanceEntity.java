@@ -110,7 +110,9 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 	}
 
 	public Object getValueObject() {
-
+		if(value == null ){
+			return null;
+		}
 		return bytesToObject(value);
 	}
 
