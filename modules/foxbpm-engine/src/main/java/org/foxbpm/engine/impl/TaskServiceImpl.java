@@ -23,10 +23,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.TaskService;
+import org.foxbpm.engine.impl.cmd.ClaimCmd;
 import org.foxbpm.engine.impl.cmd.CompleteTaskCmd;
+import org.foxbpm.engine.impl.cmd.DeleteTasksCmd;
 import org.foxbpm.engine.impl.cmd.FindTaskCmd;
 import org.foxbpm.engine.impl.cmd.GetTaskCommandByKeyCmd;
 import org.foxbpm.engine.impl.cmd.GetTaskCommandByTaskIdCmd;
+import org.foxbpm.engine.impl.cmd.NewTaskCmd;
+import org.foxbpm.engine.impl.cmd.SaveTaskCmd;
+import org.foxbpm.engine.impl.cmd.UnClaimCmd;
 import org.foxbpm.engine.impl.query.NativeTaskQueryImpl;
 import org.foxbpm.engine.impl.task.TaskQueryImpl;
 import org.foxbpm.engine.impl.task.cmd.ExpandTaskCompleteCmd;
@@ -39,13 +44,11 @@ import org.foxbpm.engine.task.TaskQuery;
 public class TaskServiceImpl extends ServiceImpl implements TaskService {
 
 	public Task newTask() {
-		// TODO Auto-generated method stub
-		return null;
+		return newTask(null);
 	}
 
 	public Task newTask(String taskId) {
-		// TODO Auto-generated method stub
-		return null;
+		return commandExecutor.execute(new NewTaskCmd(taskId));
 	}
 
 	public Task findTask(String taskId) {
@@ -53,48 +56,31 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 	}
 
 	public void saveTask(Task task) {
-		// TODO Auto-generated method stub
-
+		commandExecutor.execute(new SaveTaskCmd(task));
 	}
 
 	public void deleteTask(String taskId) {
-		// TODO Auto-generated method stub
-
+		deleteTask(taskId,true);
 	}
 
 	public void deleteTasks(Collection<String> taskIds) {
-		// TODO Auto-generated method stub
-
+		deleteTasks(taskIds,true);
 	}
 
 	public void deleteTask(String taskId, boolean cascade) {
-		// TODO Auto-generated method stub
-
+		commandExecutor.execute( new DeleteTasksCmd(taskId,cascade));
 	}
 
 	public void deleteTasks(Collection<String> taskIds, boolean cascade) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void deleteTask(String taskId, String deleteReason) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void deleteTasks(Collection<String> taskIds, String deleteReason) {
-		// TODO Auto-generated method stub
-
+		commandExecutor.execute( new DeleteTasksCmd(taskIds,cascade));
 	}
 
 	public void claim(String taskId, String userId) {
-		// TODO Auto-generated method stub
-
+		commandExecutor.execute(new ClaimCmd(taskId, userId));
 	}
 
 	public void unclaim(String taskId) {
-		// TODO Auto-generated method stub
-
+		commandExecutor.execute(new UnClaimCmd(taskId));
 	}
 
 	public void complete(String taskId) {
@@ -109,22 +95,6 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 	public <T> T expandTaskComplete(ExpandTaskCommand expandTaskCommand, T classReturn) {
 		return (T) commandExecutor.execute(new ExpandTaskCompleteCmd<T>(expandTaskCommand));
 	}
-
-	public void delegateTask(String taskId, String userId) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void resolveTask(String taskId) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void resolveTask(String taskId, Map<String, Object> variables) {
-		// TODO Auto-generated method stub
-
-	}
-
 
 	public NativeTaskQuery createNativeTaskQuery() {
 		return new NativeTaskQueryImpl(commandExecutor);

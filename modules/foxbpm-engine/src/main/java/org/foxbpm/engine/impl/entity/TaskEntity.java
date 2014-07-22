@@ -956,7 +956,11 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 
 	public void setProcessInitiator(String processInitiator) {
 		this.processInitiator = processInitiator;
+		
 	}
-
-
+	
+	public boolean isIdentityLinksInitialized(){
+		return this.isIdentityLinksInitialized;
+	}
+	
 }
