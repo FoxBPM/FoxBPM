@@ -26,6 +26,7 @@ import java.util.Map;
 import org.foxbpm.engine.datavariable.VariableInstance;
 import org.foxbpm.engine.datavariable.VariableQuery;
 import org.foxbpm.engine.impl.entity.VariableInstanceEntity;
+import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
@@ -128,10 +129,12 @@ public class VariableQueryTest extends AbstractFoxBpmTestCase{
 			if(isUpdate){
 				variableValue.put("test", "Test2");
 				variableInstanceEntity.setExpressionValue(variableValue);
+				ExpressionMgmt.setVariable(variableInstanceEntity.getKey(), variableValue);
 				commandContext.getVariableManager().update(variableInstanceEntity);
 			}else{
 				variableValue.put("test", "Test");
 				variableInstanceEntity.setExpressionValue(variableValue);
+				ExpressionMgmt.setVariable(variableInstanceEntity.getKey(), variableValue);
 				commandContext.getVariableManager().insert(variableInstanceEntity);
 			}
 			return null;

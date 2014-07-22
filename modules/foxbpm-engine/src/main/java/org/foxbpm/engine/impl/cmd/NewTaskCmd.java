@@ -14,38 +14,32 @@
  * limitations under the License.
  * 
  * @author ych
- * @author kenshin
  */
 package org.foxbpm.engine.impl.cmd;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
-import org.foxbpm.engine.impl.util.CoreUtil;
-import org.foxbpm.engine.task.TaskCommand;
 
-public class GetTaskCommandByTaskIdCmd implements Command<List<TaskCommand>> {
+/**
+ * 创建新的任务
+ * @author ych
+ *
+ */
+public class NewTaskCmd implements Command<TaskEntity>{
 
 	private String taskId;
-	private boolean isProcessTracking;
-
-	public GetTaskCommandByTaskIdCmd(String taskId, boolean isProcessTracking) {
+	public NewTaskCmd(String taskId) {
 		this.taskId = taskId;
-		this.isProcessTracking = isProcessTracking;
 	}
-
+	
 	@Override
-	public List<TaskCommand> execute(CommandContext commandContext) {
-		if(this.isProcessTracking){
-			throw new  FoxBPMException("该方法未实现");
+	public TaskEntity execute(CommandContext commandContext) {
+		TaskEntity taskEntity = TaskEntity.create();
+		if(taskId != null){
+			taskEntity.setId(taskId);
 		}
-		List<TaskCommand> taskCommands = new ArrayList<TaskCommand>();
-		TaskEntity taskInstance = commandContext.getTaskManager().findTaskById(taskId);
-		taskCommands=CoreUtil.getTaskCommand(taskInstance, isProcessTracking);
-		return taskCommands;
+		return taskEntity;
 	}
+	
 }

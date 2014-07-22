@@ -322,4 +322,8 @@
   	DELETE FROM FOXBPM_RUN_TASK WHERE PROCESSINSTANCE_ID = #{processInstanceId,jdbcType=VARCHAR}
   </delete>
   
+  <delete id="deleteTaskById" parameterType="java.lang.String">
+  	DELETE FROM FOXBPM_RUN_TASK WHERE ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
 </mapper>

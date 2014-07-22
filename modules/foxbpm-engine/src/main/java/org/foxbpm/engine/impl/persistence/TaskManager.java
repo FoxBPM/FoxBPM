@@ -29,11 +29,17 @@ import org.foxbpm.engine.task.Task;
 
 /**
  * 任务数据管理器
- * 
  * @author kenshin
  */
 public class TaskManager extends AbstractManager {
 
+	/**
+	 * 普通查询
+	 * @param parameterMap 
+	 * @param firstResult
+	 * @param maxResults
+	 * @return
+	 */
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	public List<Task> findTasksByNativeQuery(Map<String, Object> parameterMap, int firstResult,
 			int maxResults) {
@@ -46,6 +52,11 @@ public class TaskManager extends AbstractManager {
 		// return 0;
 	}
 
+	/**
+	 * 根据id查询任务，会优先从sql缓存读取
+	 * @param taskId 任务编号
+	 * @return
+	 */
 	public TaskEntity findTaskById(String taskId) {
 		if (StringUtil.isEmpty(taskId)) {
 			return null;
@@ -53,6 +64,11 @@ public class TaskManager extends AbstractManager {
 		return selectById(TaskEntity.class, taskId);
 	}
 
+	/**
+	 * 根据流程实例编号查询任务
+	 * @param processInstanceId
+	 * @return
+	 */
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	public List<TaskEntity> findTasksByProcessInstanceId(String processInstanceId) {
 		return (List) getSqlSession().selectListWithRawParameter("selectTasksByProcessInstanceId",
@@ -68,12 +84,29 @@ public class TaskManager extends AbstractManager {
 		return (Long) getSqlSession().selectOne("findTaskCountByQueryCriteria", taskQuery);
 	}
 
+	/**
+	 * 根据令牌编号查询任务
+	 * @param tokenId 令牌编号
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<TaskEntity> findTasksByTokenId(String tokenId) {
 		return (List<TaskEntity>) getSqlSession().selectListWithRawParameter(
 				"selectTasksByTokenId", tokenId);
 	}
+	
+	/**
+	 * 根据taskId删除任务信息
+	 * @param taskId
+	 */
+	public void deleteTaskById(String taskId){
+		getSqlSession().delete("deleteTaskById", taskId);
+	}
 
+	/**
+	 * 根据ProcessInstanceId删除任务 ，会级联删除任务下的所有候选人（taskIdentityLink）
+	 * @param processInstanceId 流程实例编号
+	 */
 	public void deleteTaskByProcessInstanceId(String processInstanceId) {
 		// 查询出相关任务
 		List<TaskEntity> taskList = findTasksByProcessInstanceId(processInstanceId);

@@ -133,6 +133,24 @@ public interface Task{
 	String getTaskType();
 	
 	/**
+	 * 获取任务主题
+	 * @return
+	 */
+	String getSubject();
+	
+	/**
+	 * 获取任务描述
+	 * @return
+	 */
+	String getDescription();
+	
+	/**
+	 * 获取完成后任务描述
+	 * @return
+	 */
+	String getCompleteDescription();
+	
+	/**
 	 * 获取任务处理命令编号
 	 * 当任务未结束时此属性为空
 	 * @return
@@ -145,12 +163,120 @@ public interface Task{
 	 */
 	Map<String, Object> getPersistentState();
 
+	/**
+	 * 是否暂停
+	 * @return
+	 */
 	boolean isSuspended(); 
 
+	/**
+	 * 是否结束
+	 * @return
+	 */
 	boolean hasEnded();
 
-	Object getDelegationState();
-	
 	/** 是否自动领取 */
 	boolean isAutoClaim();
+	
+	/**
+	 * 获取任务代理状态
+	 * @return
+	 */
+	DelegationState getDelegationState();
+	
+	/**
+	 * 任务编号
+	 * @param id
+	 */
+	void setId(String id);
+	
+	/**
+	 * 流程实例号
+	 * @param processInstanceId 流程实例号
+	 */
+	void setProcessInstanceId(String processInstanceId);
+	
+	/**
+	 * 流程定义编号
+	 * @param processDefinitionId
+	 */
+	void setProcessDefinitionId(String processDefinitionId);
+	
+	/**
+	 * 流程定义key
+	 * @param processDefinitionKey
+	 */
+	void setProcessDefinitionKey(String processDefinitionKey);
+	
+	/**
+	 * 任务名称
+	 * @param name
+	 */
+	void setName(String name);
+	
+	/**
+	 * 任务描述
+	 * @param description
+	 */
+	void setDescription(String description);
+	
+	/**
+	 * 完成后任务描述
+	 * @param description
+	 */
+	void setCompleteDescription(String description);
+	
+	/**
+	 * 处理人
+	 * @param assignee
+	 */
+	void setAssignee(String assignee);
+	
+	/**
+	 * 结束时间
+	 * @param endTime
+	 */
+	void setEndTime(Date endTime);
+	
+	/**
+	 * 任务主题
+	 * @param subject
+	 */
+	void setSubject(String subject);
+	
+	/**
+	 * 操作表单
+	 * @param formUri
+	 */
+	void setFormUri(String formUri);
+	
+	/**
+	 * 浏览表单
+	 * @param formUri
+	 */
+	void setFormUriView(String formUri);
+	
+	/**
+	 * 业务关连建
+	 * @param bizKey
+	 */
+	void setBizKey(String bizKey);
+	
+	/**
+	 * 令牌编号
+	 * @param tokenId
+	 */
+	void setTokenId(String tokenId);
+	
+	/**
+	 * 节点id
+	 * @param nodeId
+	 */
+	void setNodeId(String nodeId);
+	
+	/**
+	 * 节点名称
+	 * @param nodeName
+	 */
+	void setNodeName(String nodeName);
 }

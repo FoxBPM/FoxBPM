@@ -8,6 +8,9 @@
       <foxbpm:DataVariable id="持久变量" dataType="java.lang.String" isPersistence="true" bizType="customVariable">
         <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_2"></foxbpm:documentation>
       </foxbpm:DataVariable>
+      <foxbpm:taskSubject>
+        <foxbpm:expression xsi:type="foxbpm:Expression" name=""><![CDATA["runtimeService测试流程的主题"]]></foxbpm:expression>
+      </foxbpm:taskSubject>
     </bpmn2:extensionElements>
     <bpmn2:endEvent id="EndEvent_1" name="结束">
       <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
@@ -55,10 +58,9 @@
       <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
     </bpmn2:startEvent>
     <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="StartEvent_1" targetRef="UserTask_1">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_1" foxbpm:name="${持久变量} "><![CDATA[${持久变量} = ${瞬态变量} + "变化";
-
-System.out.println "****************************";
-return true;
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_2" foxbpm:name="${持久变量} "><![CDATA[${持久变量} = ${瞬态变量} + "变化";
+return true;
+
 ]]></bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
   </bpmn2:process>

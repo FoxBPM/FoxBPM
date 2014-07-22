@@ -2,7 +2,7 @@ package org.foxbpm.engine.impl.cmd;
 
 import java.io.Serializable;
 
-import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
 import org.foxbpm.engine.impl.Context;
@@ -30,8 +30,11 @@ public abstract class NeedsActiveTaskCmd<T> implements Command<T>, Serializable 
 		if (task == null) {
 			throw new FoxBPMObjectNotFoundException("Cannot find task with id " + taskId);
 		}
+		if(task.hasEnded()){
+			throw new FoxBPMBizException("task is ended");
+		}
 		if (task.isSuspended()) {
-			throw new FoxBPMException("task is suspended");
+			throw new FoxBPMBizException("task is suspended");
 		}
 
 		return execute(commandContext, task);

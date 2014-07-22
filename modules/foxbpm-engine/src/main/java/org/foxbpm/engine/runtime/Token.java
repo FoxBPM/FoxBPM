@@ -17,10 +17,42 @@
  */
 package org.foxbpm.engine.runtime;
 
+import java.util.Date;
+
 /**
  * @author kenshin
- *
+ * 
  */
 public interface Token {
+
+	/**
+	 * 获取令牌号
+	 * @return
+	 */
+	String getId();
+
+	/**
+	 * 获取流程实例编号
+	 * @return
+	 */
+	String getProcessInstanceId();
+
+	/**
+	 * 获取当前节点号
+	 * @return
+	 */
+	String getNodeId();
+
+	/**
+	 * 获取当前节点进入时间
+	 * @return
+	 */
+	Date getNodeEnterTime();
+
+	/**
+	 * 获取父令牌节点，如果没有则返回null
+	 * @return
+	 */
+	String getParentId();
 
 }
