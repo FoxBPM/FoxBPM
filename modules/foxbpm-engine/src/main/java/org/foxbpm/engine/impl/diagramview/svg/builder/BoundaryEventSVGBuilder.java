@@ -81,7 +81,13 @@ public class BoundaryEventSVGBuilder extends AbstractSVGBuilder {
 				pathVo = pathVoList.get(0);
 			}
 		}
-
+	}
+	public BoundaryEventSVGBuilder(SvgVO voNode, boolean isInterrupt) {
+		this(voNode);
+		if (!isInterrupt) {
+			this.circleVO1.setStyle("stroke-dasharray: 5.5, 3");
+			this.circleVO2.setStyle("stroke-dasharray: 4.5, 3");
+		}
 	}
 
 	public void setTypeStyle(String typeStyle) {

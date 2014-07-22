@@ -360,7 +360,10 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 					}
 				} else if (kernelFlowNodeBehavior instanceof BoundaryEventBehavior) {
 					// 边界事件
-					taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_BOUNDARY_INTERRUPTING_TIME;
+					taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_BOUNDARY_NONEINTERRUPTING_TIME;
+					if (((BoundaryEventBehavior) kernelFlowNodeBehavior).isCancelActivity()) {
+						taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_BOUNDARY_INTERRUPTING_TIME;
+					}
 				} else if (kernelFlowNodeBehavior instanceof IntermediateCatchEventBehavior) {
 					// 中间件事件
 					taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_BOUNDARY_INTERRUPTING_TIME;
