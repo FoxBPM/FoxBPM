@@ -18,15 +18,33 @@
  */
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.bpmn2.BaseElement;
+import org.eclipse.bpmn2.EventDefinition;
+import org.eclipse.bpmn2.impl.EndEventImpl;
+import org.eclipse.bpmn2.impl.TerminateEventDefinitionImpl;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.EndEventBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.TerminateEventDefinition;
 
 public class EndEventParser extends FlowNodeParser {
 
 	
 	@Override
 	public BaseElementBehavior parser(BaseElement baseElement) {
+		EndEventImpl endEventImpl = (EndEventImpl)baseElement;
+		List<EventDefinition> eventDefinitions = endEventImpl.getEventDefinitions();
+		
+		List<org.foxbpm.engine.impl.bpmn.behavior.EventDefinition> behaviorEventDefinitions = new ArrayList<org.foxbpm.engine.impl.bpmn.behavior.EventDefinition>();
+		for(EventDefinition eventDefinition :eventDefinitions){
+			if(eventDefinition instanceof TerminateEventDefinitionImpl){
+				TerminateEventDefinition terminateEventDefinition = new TerminateEventDefinition();
+				behaviorEventDefinitions.add(terminateEventDefinition);
+			}
+		}
+		((EndEventBehavior) baseElementBehavior).setEventDefinitions(behaviorEventDefinitions);
 		return super.parser(baseElement);
 	}
 	
