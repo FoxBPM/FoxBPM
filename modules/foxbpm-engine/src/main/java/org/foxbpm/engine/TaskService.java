@@ -109,7 +109,7 @@ public interface TaskService {
 	 * <p>直接complete任务，不会执行command命令，也不会执行表达式</p>
 	 * <p>结束任务，如果是多实例，则判断是否满足完成表达式，然后决定是否将令牌向下驱动</p>
 	 * <p>与runtimeService.signal(tokenId)的区别：本方法是完成任务，判断是否驱动令牌，后者直接驱动令牌向下</p>
-	 * @param taskId
+	 * @param taskId 任务编号
 	 * @exception FoxbpmBizException
 	 * 如果任务没有被领取，任务被暂停，任务已结束时会抛出异常(不能处理暂停，已结束任务)
 	 */

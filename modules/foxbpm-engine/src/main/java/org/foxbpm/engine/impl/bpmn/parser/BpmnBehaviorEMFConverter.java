@@ -116,6 +116,10 @@ public class BpmnBehaviorEMFConverter {
 				StandardLoopCharacteristicsParser.class);
 
 		elementParserMap.put(BoundaryEventImpl.class, BoundaryEventParser.class);
+		
+		elementParserMap.put(CallActivityImpl.class, CallActivityParser.class);
+		
+		
 	}
 
 	public static KernelFlowNodeBehavior getFlowNodeBehavior(BaseElement baseElement,
