@@ -318,14 +318,13 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 			String deployId = modelService.deploy(deploymentBuilder).getId();
 
 			/************************** 流程驱动 **********************************/
-			jdbcTemplate.execute("insert into au_userInfo(userId,USERNAME) VALUES ('c','管理员4')");
-
 			Authentication.setAuthenticatedUserId("admin");
 			// 启动
 			ProcessInstance pi = runtimeService.startProcessInstanceByKey("testDeleteDeployment_1");
 			// 驱动流程
 			ExpandTaskCommand expandTaskCommand = null;
 			Task task = taskService.createTaskQuery().processInstanceId(pi.getId()).taskNotEnd().singleResult();
+			assertNotNull("获取任务失败", task);
 			expandTaskCommand = new ExpandTaskCommand();
 			expandTaskCommand.setProcessDefinitionKey("testDeleteDeployment_1");
 			expandTaskCommand.setTaskCommandId("HandleCommand_1");
@@ -348,15 +347,15 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 			while (rowSet.next()) {
 				taskIds.add(rowSet.getString("ID"));
 			}
-			assertNotNull("删除task出现错误", taskIds);
+			assertEquals("删除task出现错误", false, taskIds.isEmpty());
 			// 令牌
 			List<String> tokenIds = new ArrayList<String>();
 			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_run_token where PROCESSINSTANCE_ID='" + pi.getId() + "'");
 			while (rowSet.next()) {
 				tokenIds.add(rowSet.getString("ID"));
 			}
-			assertNotNull("删除token出现错误", tokenIds);
-
+			assertEquals("删除token出现错误", false,tokenIds.isEmpty());
+			
 			// 变量
 			List<String> variableIds = new ArrayList<String>();
 			count = 0;
@@ -364,7 +363,7 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 			while (rowSet.next()) {
 				variableIds.add(rowSet.getString("ID"));
 			}
-			assertNotNull("删除variable出现错误", variableIds);
+			assertEquals("删除variable出现错误", false, variableIds.isEmpty());
 
 			// 查流程定义
 			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_processdefinition where DEPLOYMENT_ID='" + deployId + "'");
@@ -571,10 +570,31 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	@Deployment(resources = { "org/foxbpm/engine/test/impl/bpmn/deployer/TestQuery_1.bpmn" })
 	public void testGetFlowGraphicsImgStreamByDefId() {
 		Authentication.setAuthenticatedUserId("admin");
-		runtimeService.startProcessInstanceByKey("TestQuery_1");
 		ProcessInstance pi = runtimeService.startProcessInstanceByKey("TestQuery_1");
 		Object result = modelService.GetFlowGraphicsImgStreamByDefId(pi.getProcessDefinitionId());
 		assertNotNull("根据流程定义Id获取流程图流点失败", result);
+
+		ZipInputStream zipInputStream = null;
+		DeploymentBuilderImpl deploymentBuilder = null;
+		try {
+			// 发布流程定义
+			deploymentBuilder = (DeploymentBuilderImpl) modelService.createDeployment();
+			zipInputStream = new ZipInputStream(ReflectUtil.getResourceAsStream("org/foxbpm/engine/test/impl/bpmn/deployer/deployer_normal.zip"));
+			deploymentBuilder.addZipInputStream(zipInputStream);
+			modelService.deploy(deploymentBuilder).getId();
+			// 启动流程
+			pi = runtimeService.startProcessInstanceByKey("TestTestDeployment2_1");
+			result = modelService.GetFlowGraphicsImgStreamByDefId(pi.getProcessDefinitionId());
+			assertNotNull("根据流程定义Key获取流程图流失败", result);
+		} finally {
+			if (null != zipInputStream) {
+				try {
+					zipInputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	/**
@@ -589,9 +609,28 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	public void testGetFlowGraphicsImgStreamByDefKey() {
 		Authentication.setAuthenticatedUserId("admin");
 		runtimeService.startProcessInstanceByKey("TestQuery_1");
-		ProcessInstance pi = runtimeService.startProcessInstanceByKey("TestQuery_1");
-		Object result = modelService.GetFlowGraphicsImgStreamByDefKey(pi.getProcessDefinitionKey());
+		Object result = modelService.GetFlowGraphicsImgStreamByDefKey("TestQuery_1");
 		assertNotNull("根据流程定义Key获取流程图流失败", result);
+
+		ZipInputStream zipInputStream = null;
+		DeploymentBuilderImpl deploymentBuilder = null;
+		try {
+			// 发布流程定义
+			deploymentBuilder = (DeploymentBuilderImpl) modelService.createDeployment();
+			zipInputStream = new ZipInputStream(ReflectUtil.getResourceAsStream("org/foxbpm/engine/test/impl/bpmn/deployer/deployer_normal.zip"));
+			deploymentBuilder.addZipInputStream(zipInputStream);
+			modelService.deploy(deploymentBuilder).getId();
+			result = modelService.GetFlowGraphicsImgStreamByDefKey("TestTestDeployment2_1");
+			assertNotNull("根据流程定义Key获取流程图流失败", result);
+		} finally {
+			if (null != zipInputStream) {
+				try {
+					zipInputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	/**
@@ -642,7 +681,10 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 		Authentication.setAuthenticatedUserId("admin");
 		ProcessInstance pi = runtimeService.startProcessInstanceByKey("VerifyStartProcessByUserId_1");
 		boolean flag = modelService.verifyStartProcessByUserId("admin", pi.getProcessDefinitionId());
-	    assertEquals("流程权限判断出现错误",true, flag);
+		assertEquals("流程权限判断出现错误", true, flag);
+		jdbcTemplate.execute("insert into au_userInfo(userId,USERNAME) VALUES ('admin0','管理员4')");
+		flag = modelService.verifyStartProcessByUserId("admin0", pi.getProcessDefinitionId());
+		assertEquals("流程权限判断出现错误", false, flag);
 	}
 
 	/**
@@ -680,13 +722,35 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	 * <p>1.使用场景：获取最新发布流程定义</p>
 	 * <p>2.预置条件：存在已发布流程定义<p>
 	 * <p>3.处理过程：通过流程定义key，获取最新发布流程定义</p>
-	 * <p>4.测试用例：1.发布流程2.更新流程</p>
+	 * <p>4.测试用例：1.同一流程发布多次2.查看版本号</p>
 	 */
 	@Test
-	@Deployment(resources = { "org/foxbpm/engine/test/impl/bpmn/deployer/GetLatestProcessDefinie_1.bpmn" })
 	public void testGetLatestProcessDefinition() {
-		String processDefinitionKey = "GetLatestProcessDefinie_1";
+		ZipInputStream zipInputStream = null;
+		DeploymentBuilderImpl deploymentBuilder = null;
+		try {
+			deploymentBuilder = (DeploymentBuilderImpl) modelService.createDeployment();
+			zipInputStream = new ZipInputStream(ReflectUtil.getResourceAsStream("org/foxbpm/engine/test/impl/bpmn/deployer/TestDeployment3_nopng.zip"));
+			deploymentBuilder.addZipInputStream(zipInputStream);
+			modelService.deploy(deploymentBuilder).getId();
+
+			deploymentBuilder = (DeploymentBuilderImpl) modelService.createDeployment();
+			zipInputStream = new ZipInputStream(ReflectUtil.getResourceAsStream("org/foxbpm/engine/test/impl/bpmn/deployer/TestDeployment3_nopng.zip"));
+			deploymentBuilder.addZipInputStream(zipInputStream);
+			modelService.deploy(deploymentBuilder).getId();
+
+		} finally {
+			if (null != zipInputStream) {
+				try {
+					zipInputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		String processDefinitionKey = "TestDeployment3_1";
 		ProcessDefinition pd = modelService.getLatestProcessDefinition(processDefinitionKey);
-		assertNotNull(pd);
+		assertEquals("获取最新流程定义失败", 2, pd.getVersion());
 	}
 }
