@@ -144,10 +144,15 @@ public abstract class AbstractScriptLanguageMgmt {
 	protected void dataVariableCalculate(String scriptText, FlowNodeExecutionContext executionContext) {
 
 		ProcessInstanceEntity processInstance = (ProcessInstanceEntity) executionContext.getProcessInstance();
+		List<String> dataVariableList = getDataVariableList(scriptText);
+		if(processInstance == null){
+			if(!dataVariableList.isEmpty()){
+				throw new FoxBPMException("没有流程实例上下文，不能解释带变量的表达式："+scriptText);
+			}
+			return;
+		}
 		DataVariableMgmtInstance dataVariableMgmtInstance = processInstance.getDataVariableMgmtInstance();
 		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) processInstance.getProcessDefinition();
-
-		List<String> dataVariableList = getDataVariableList(scriptText);
 
 		for (String expressionId : dataVariableList) {
 			if (dataVariableMgmtInstance.getDataVariableByExpressionId(expressionId) == null) {

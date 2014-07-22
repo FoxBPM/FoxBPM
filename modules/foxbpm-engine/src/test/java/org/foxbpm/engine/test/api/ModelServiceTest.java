@@ -19,6 +19,7 @@ package org.foxbpm.engine.test.api;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,10 +53,9 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	@Test
 	@Deployment(resources = { "org/foxbpm/engine/test/impl/bpmn/deployer/GetStartProcessByUserId_1.bpmn" })
 	public void testGetStartProcessByUserId() {
-		Authentication.setAuthenticatedUserId("admin");
-		runtimeService.startProcessInstanceByKey("GetStartProcessByUserId_1");
-		Object result = modelService.getStartProcessByUserId("admin");
-		assertNotNull(result);
+		jdbcTemplate.execute("insert into au_userInfo(userId,USERNAME) VALUES ('admin3','管理员3')");
+		List<ProcessDefinition> result = modelService.getStartProcessByUserId("admin3");
+		assertTrue(result.size() > 1);
 	}
 
 	/**
@@ -84,18 +84,10 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 			updateDeployId = deployId;
 
 			// 查流程定义
-			rowSet = jdbcTemplate.queryForRowSet("select * from FOXBPM_DEF_PROCESSDEFINITION where DEPLOYMENT_ID='" + deployId + "'");
-			count = 0;
-			while (rowSet.next()) {
-				count++;
-			}
+			count = jdbcTemplate.queryForList("select * from FOXBPM_DEF_PROCESSDEFINITION where DEPLOYMENT_ID='" + deployId + "'").size();
 			assertEquals("发布流程出现错误", 1, count);
 			// 查发布
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_deployment where id='" + deployId + "'");
-			count = 0;
-			while (rowSet.next()) {
-				count++;
-			}
+			count = jdbcTemplate.queryForList("select * from foxbpm_def_deployment where id='" + deployId + "'").size();
 			assertEquals("发布流程出现错误", 1, count);
 			// 查资源
 			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_bytearray where DEPLOYMENT_ID='" + deployId + "'");
@@ -138,11 +130,7 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 			assertEquals("发布流程出现错误", 1, count);
 			assertEquals("发布流程出现错误", "2", version);
 			// 查发布
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_deployment where id='" + deployId + "'");
-			count = 0;
-			while (rowSet.next()) {
-				count++;
-			}
+			count = jdbcTemplate.queryForList("select * from foxbpm_def_deployment where id='" + deployId + "'").size();
 			assertEquals("发布流程出现错误", 1, count);
 			// 查资源
 			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_bytearray where DEPLOYMENT_ID='" + deployId + "'");
@@ -173,19 +161,10 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 			deploymentBuilder.updateDeploymentId(updateDeployId);
 			modelService.deploy(deploymentBuilder);
 			// 查流程定义
-			rowSet = jdbcTemplate.queryForRowSet("select * from FOXBPM_DEF_PROCESSDEFINITION where DEPLOYMENT_ID='" + updateDeployId + "'");
-			count = 0;
-
-			while (rowSet.next()) {
-				count++;
-			}
+			count = jdbcTemplate.queryForList("select * from FOXBPM_DEF_PROCESSDEFINITION where DEPLOYMENT_ID='" + updateDeployId + "'").size();
 			assertEquals("发布流程出现错误", 1, count);
 			// 查发布
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_deployment where id='" + updateDeployId + "'");
-			count = 0;
-			while (rowSet.next()) {
-				count++;
-			}
+			count = jdbcTemplate.queryForList("select * from foxbpm_def_deployment where id='" + updateDeployId + "'").size();
 			assertEquals("发布流程出现错误", 1, count);
 			// 查资源
 			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_bytearray where DEPLOYMENT_ID='" + updateDeployId + "'");
@@ -216,19 +195,10 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 			deploymentBuilder.updateDeploymentId(updateDeployId);
 			modelService.deploy(deploymentBuilder);
 			// 查流程定义
-			rowSet = jdbcTemplate.queryForRowSet("select * from FOXBPM_DEF_PROCESSDEFINITION where DEPLOYMENT_ID='" + updateDeployId + "'");
-			count = 0;
-
-			while (rowSet.next()) {
-				count++;
-			}
+			count = jdbcTemplate.queryForList("select * from FOXBPM_DEF_PROCESSDEFINITION where DEPLOYMENT_ID='" + updateDeployId + "'").size();
 			assertEquals("发布流程出现错误", 1, count);
 			// 查发布
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_deployment where id='" + updateDeployId + "'");
-			count = 0;
-			while (rowSet.next()) {
-				count++;
-			}
+			count = jdbcTemplate.queryForList("select * from foxbpm_def_deployment where id='" + updateDeployId + "'").size();
 			assertEquals("发布流程出现错误", 1, count);
 			// 查资源
 			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_bytearray where DEPLOYMENT_ID='" + updateDeployId + "'");
@@ -259,18 +229,10 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 			deploymentBuilder.addZipInputStream(zipInputStream);
 			String deployId = modelService.deploy(deploymentBuilder).getId();
 			// 查流程定义
-			rowSet = jdbcTemplate.queryForRowSet("select * from FOXBPM_DEF_PROCESSDEFINITION where DEPLOYMENT_ID='" + deployId + "'");
-			count = 0;
-			while (rowSet.next()) {
-				count++;
-			}
+			count = jdbcTemplate.queryForList("select * from FOXBPM_DEF_PROCESSDEFINITION where DEPLOYMENT_ID='" + deployId + "'").size();
 			assertEquals("发布流程出现错误", 1, count);
 			// 查发布
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_deployment where id='" + deployId + "'");
-			count = 0;
-			while (rowSet.next()) {
-				count++;
-			}
+			count = jdbcTemplate.queryForList("select * from foxbpm_def_deployment where id='" + deployId + "'").size();
 			assertEquals("发布流程出现错误", 1, count);
 			// 查资源
 			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_bytearray where DEPLOYMENT_ID='" + deployId + "'");
@@ -366,25 +328,13 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 			assertEquals("删除variable出现错误", false, variableIds.isEmpty());
 
 			// 查流程定义
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_processdefinition where DEPLOYMENT_ID='" + deployId + "'");
-			count = 0;
-			while (rowSet.next()) {
-				count++;
-			}
+			count = jdbcTemplate.queryForList("select * from foxbpm_def_processdefinition where DEPLOYMENT_ID='" + deployId + "'").size();
 			assertEquals("删除发布出现错误", 1, count);
 			// 查发布
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_deployment where id='" + deployId + "'");
-			count = 0;
-			while (rowSet.next()) {
-				count++;
-			}
+			count = jdbcTemplate.queryForList("select * from foxbpm_def_deployment where id='" + deployId + "'").size();
 			assertEquals("删除发布出现错误", 1, count);
 			// 查资源
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_bytearray where DEPLOYMENT_ID='" + deployId + "'");
-			count = 0;
-			while (rowSet.next()) {
-				count++;
-			}
+			count = jdbcTemplate.queryForList("select * from foxbpm_def_bytearray where DEPLOYMENT_ID='" + deployId + "'").size();
 			assertEquals("删除发布出现错误", 2, count);
 
 			/************************** 删除发布 **********************************/
@@ -392,56 +342,29 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 			modelService.deleteDeployment(deployId);
 			/************************** 删除发布后数据查看 **********************************/
 			// 令牌
-			count = 0;
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_run_token t WHERE  t.PROCESSINSTANCE_ID ='" + pi.getId() + "'");
-			while (rowSet.next()) {
-				count++;
-			}
+			count = jdbcTemplate.queryForList("select * from foxbpm_run_token t WHERE  t.PROCESSINSTANCE_ID ='" + pi.getId() + "'").size();
 			assertEquals("删除token出现错误", 0, count);
 			// 任务
-			count = 0;
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_run_task t WHERE  t.PROCESSINSTANCE_ID ='" + pi.getId() + "'");
-			while (rowSet.next()) {
-				count++;
-			}
+			
+			count = jdbcTemplate.queryForList("select * from foxbpm_run_task t WHERE  t.PROCESSINSTANCE_ID ='" + pi.getId() + "'").size();
 			assertEquals("删除task出现错误", 0, count);
 			// 变量
-			count = 0;
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_run_variable t WHERE  t.PROCESSINSTANCE_ID ='" + pi.getId() + "'");
-			while (rowSet.next()) {
-				count++;
-			}
+			count = jdbcTemplate.queryForList("select * from foxbpm_run_variable t WHERE  t.PROCESSINSTANCE_ID ='" + pi.getId() + "'").size();
 			assertEquals("删除variable出现错误", 0, count);
 			for (String id : taskIds) {
 				// 任务候选人
-				count = 0;
-				rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_run_taskidentitylink t WHERE  t.TASK_ID ='" + id + "'");
-				while (rowSet.next()) {
-					count++;
-				}
+				count = jdbcTemplate.queryForList("select * from foxbpm_run_taskidentitylink t WHERE  t.TASK_ID ='" + id + "'").size();
 				assertEquals("删除候选人出现错误", 0, count);
 			}
 
 			// 查流程定义
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_processdefinition where DEPLOYMENT_ID='" + deployId + "'");
-			count = 0;
-			while (rowSet.next()) {
-				count++;
-			}
+			count = jdbcTemplate.queryForList("select * from foxbpm_def_processdefinition where DEPLOYMENT_ID='" + deployId + "'").size();
 			assertEquals("删除发布出现错误", 0, count);
 			// 查发布
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_deployment where id='" + deployId + "'");
-			count = 0;
-			while (rowSet.next()) {
-				count++;
-			}
+			count = jdbcTemplate.queryForList("select * from foxbpm_def_deployment where id='" + deployId + "'").size();
 			assertEquals("删除发布出现错误", 0, count);
 			// 查资源
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_bytearray where DEPLOYMENT_ID='" + deployId + "'");
-			count = 0;
-			while (rowSet.next()) {
-				count++;
-			}
+			count = jdbcTemplate.queryForList("select * from foxbpm_def_bytearray where DEPLOYMENT_ID='" + deployId + "'").size();
 			assertEquals("删除发布出现错误", 0, count);
 		} finally {
 			if (null != zipInputStream) {
@@ -465,7 +388,6 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	public void createDeployment() {
 		ZipInputStream zipInputStream = null;
 		DeploymentBuilderImpl deploymentBuilder = null;
-		SqlRowSet rowSet = null;
 		int count = 0;
 		try {
 			// 发布流程定义
@@ -476,24 +398,13 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 			// 删除流程定义
 			modelService.deleteDeployment(deployId);
 			// 查流程定义
-			rowSet = jdbcTemplate.queryForRowSet("select * from FOXBPM_DEF_PROCESSDEFINITION where DEPLOYMENT_ID='" + deployId + "'");
-			while (rowSet.next()) {
-				count++;
-			}
+			count = jdbcTemplate.queryForList("select * from FOXBPM_DEF_PROCESSDEFINITION where DEPLOYMENT_ID='" + deployId + "'").size();
 			assertEquals("发布流程出现错误", 0, count);
 			// 查发布
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_deployment where id='" + deployId + "'");
-			count = 0;
-			while (rowSet.next()) {
-				count++;
-			}
+			count = jdbcTemplate.queryForList("select * from foxbpm_def_deployment where id='" + deployId + "'").size();
 			assertEquals("发布流程出现错误", 0, count);
 			// 查资源
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_bytearray where DEPLOYMENT_ID='" + deployId + "'");
-			count = 0;
-			while (rowSet.next()) {
-				count++;
-			}
+			count = jdbcTemplate.queryForList("select * from foxbpm_def_bytearray where DEPLOYMENT_ID='" + deployId + "'").size();
 			assertEquals("发布流程出现错误", 0, count);
 		} finally {
 			if (null != zipInputStream) {
@@ -517,12 +428,8 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	@Test
 	@Deployment(resources = { "org/foxbpm/engine/test/impl/bpmn/deployer/TestQuery_1.bpmn" })
 	public void testCreateProcessDefinitionQuery() {
-		Authentication.setAuthenticatedUserId("admin");
-		runtimeService.startProcessInstanceByKey("TestQuery_1");
 		ProcessDefinitionQuery processQuery = modelService.createProcessDefinitionQuery();
-		processQuery.processDefinitionKey("TestQuery_1").orderByProcessDefinitionKey().asc();
-		List<ProcessDefinition> process = processQuery.listPage(0, 10);
-		assertNotNull("创建的流程定义查询失败", process);
+		assertNotNull("创建的流程定义查询失败", processQuery);
 	}
 
 	/**
@@ -535,10 +442,8 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	@Test
 	@Deployment(resources = { "org/foxbpm/engine/test/impl/bpmn/deployer/TestQuery_1.bpmn" })
 	public void testGetFlowGraphicsElementPositionById() {
-		Authentication.setAuthenticatedUserId("admin");
-		runtimeService.startProcessInstanceByKey("TestQuery_1");
-		ProcessInstance pi = runtimeService.startProcessInstanceByKey("TestQuery_1");
-		Map<String, Map<String, Object>> result = modelService.getFlowGraphicsElementPositionById(pi.getProcessDefinitionId());
+		String processDefinitionId = modelService.createProcessDefinitionQuery().processDefinitionKey("TestQuery_1").singleResult().getId();
+		Map<String, Map<String, Object>> result = modelService.getFlowGraphicsElementPositionById(processDefinitionId);
 		assertNotNull("根据流程定义Id获取流程图节点失败", result);
 	}
 
@@ -552,10 +457,7 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	@Test
 	@Deployment(resources = { "org/foxbpm/engine/test/impl/bpmn/deployer/TestQuery_1.bpmn" })
 	public void testGetFlowGraphicsElementPositionByKey() {
-		Authentication.setAuthenticatedUserId("admin");
-		runtimeService.startProcessInstanceByKey("TestQuery_1");
-		ProcessInstance pi = runtimeService.startProcessInstanceByKey("TestQuery_1");
-		Map<String, Map<String, Object>> result = modelService.getFlowGraphicsElementPositionByKey(pi.getProcessDefinitionKey());
+		Map<String, Map<String, Object>> result = modelService.getFlowGraphicsElementPositionByKey("TestQuery_1");
 		assertNotNull("根据流程定义Key获取流程图节点失败", result);
 	}
 	
@@ -569,32 +471,9 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	@Test
 	@Deployment(resources = { "org/foxbpm/engine/test/impl/bpmn/deployer/TestQuery_1.bpmn" })
 	public void testGetFlowGraphicsImgStreamByDefId() {
-		Authentication.setAuthenticatedUserId("admin");
-		ProcessInstance pi = runtimeService.startProcessInstanceByKey("TestQuery_1");
-		Object result = modelService.GetFlowGraphicsImgStreamByDefId(pi.getProcessDefinitionId());
+		String processDefinitionId = modelService.createProcessDefinitionQuery().processDefinitionKey("TestQuery_1").singleResult().getId();
+		Object result = modelService.GetFlowGraphicsImgStreamByDefId(processDefinitionId);
 		assertNotNull("根据流程定义Id获取流程图流点失败", result);
-
-		ZipInputStream zipInputStream = null;
-		DeploymentBuilderImpl deploymentBuilder = null;
-		try {
-			// 发布流程定义
-			deploymentBuilder = (DeploymentBuilderImpl) modelService.createDeployment();
-			zipInputStream = new ZipInputStream(ReflectUtil.getResourceAsStream("org/foxbpm/engine/test/impl/bpmn/deployer/deployer_normal.zip"));
-			deploymentBuilder.addZipInputStream(zipInputStream);
-			modelService.deploy(deploymentBuilder).getId();
-			// 启动流程
-			pi = runtimeService.startProcessInstanceByKey("TestTestDeployment2_1");
-			result = modelService.GetFlowGraphicsImgStreamByDefId(pi.getProcessDefinitionId());
-			assertNotNull("根据流程定义Key获取流程图流失败", result);
-		} finally {
-			if (null != zipInputStream) {
-				try {
-					zipInputStream.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
 	}
 
 	/**
@@ -607,30 +486,8 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	@Test
 	@Deployment(resources = { "org/foxbpm/engine/test/impl/bpmn/deployer/TestQuery_1.bpmn" })
 	public void testGetFlowGraphicsImgStreamByDefKey() {
-		Authentication.setAuthenticatedUserId("admin");
-		runtimeService.startProcessInstanceByKey("TestQuery_1");
 		Object result = modelService.GetFlowGraphicsImgStreamByDefKey("TestQuery_1");
 		assertNotNull("根据流程定义Key获取流程图流失败", result);
-
-		ZipInputStream zipInputStream = null;
-		DeploymentBuilderImpl deploymentBuilder = null;
-		try {
-			// 发布流程定义
-			deploymentBuilder = (DeploymentBuilderImpl) modelService.createDeployment();
-			zipInputStream = new ZipInputStream(ReflectUtil.getResourceAsStream("org/foxbpm/engine/test/impl/bpmn/deployer/deployer_normal.zip"));
-			deploymentBuilder.addZipInputStream(zipInputStream);
-			modelService.deploy(deploymentBuilder).getId();
-			result = modelService.GetFlowGraphicsImgStreamByDefKey("TestTestDeployment2_1");
-			assertNotNull("根据流程定义Key获取流程图流失败", result);
-		} finally {
-			if (null != zipInputStream) {
-				try {
-					zipInputStream.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
 	}
 
 	/**
@@ -643,11 +500,10 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	@Test
 	@Deployment(resources = { "org/foxbpm/engine/test/impl/bpmn/deployer/TestQuery_1.bpmn" })
 	public void testGetProcessDefinition() {
-		Authentication.setAuthenticatedUserId("admin");
-		ProcessInstance pi = runtimeService.startProcessInstanceByKey("TestQuery_1");
-		ProcessDefinition pd = modelService.getProcessDefinition(pi.getProcessDefinitionKey(), 1);
+		String processDefinitionId = modelService.createProcessDefinitionQuery().processDefinitionKey("TestQuery_1").singleResult().getId();
+		ProcessDefinition pd = modelService.getProcessDefinition("TestQuery_1", 1);
 		assertNotNull("通过key和version获取流程定义失败", pd);
-		pd = modelService.getProcessDefinition(pi.getProcessDefinitionId());
+		pd = modelService.getProcessDefinition(processDefinitionId);
 		assertNotNull("通过id获取流程定义失败", pd);
 	}
 
@@ -661,10 +517,8 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	@Test
 	@Deployment(resources = { "org/foxbpm/engine/test/impl/bpmn/deployer/TestQuery_1.bpmn" })
 	public void testGetProcessDefinitionSVG() {
-		Authentication.setAuthenticatedUserId("admin");
-		ProcessInstance pi = runtimeService.startProcessInstanceByKey("TestQuery_1");
-		String svg = modelService.getProcessDefinitionSVG(pi.getProcessDefinitionId());
-		System.out.println("svg=" + svg);
+		String processDefinitionId = modelService.createProcessDefinitionQuery().processDefinitionKey("TestQuery_1").singleResult().getId();
+		String svg = modelService.getProcessDefinitionSVG(processDefinitionId);
 		assertNotNull("获取流程定义svg失败", svg);
 	}
 
@@ -678,12 +532,11 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	@Test
 	@Deployment(resources = { "org/foxbpm/engine/test/impl/bpmn/deployer/VerifyStartProcessByUserId_1.bpmn" })
 	public void testVerifyStartProcessByUserId() {
-		Authentication.setAuthenticatedUserId("admin");
-		ProcessInstance pi = runtimeService.startProcessInstanceByKey("VerifyStartProcessByUserId_1");
-		boolean flag = modelService.verifyStartProcessByUserId("admin", pi.getProcessDefinitionId());
+		String processDefinitionId = modelService.createProcessDefinitionQuery().processDefinitionKey("VerifyStartProcessByUserId_1").singleResult().getId();
+		boolean flag = modelService.verifyStartProcessByUserId("admin", processDefinitionId);
 		assertEquals("流程权限判断出现错误", true, flag);
 		jdbcTemplate.execute("insert into au_userInfo(userId,USERNAME) VALUES ('admin0','管理员4')");
-		flag = modelService.verifyStartProcessByUserId("admin0", pi.getProcessDefinitionId());
+		flag = modelService.verifyStartProcessByUserId("admin0", processDefinitionId);
 		assertEquals("流程权限判断出现错误", false, flag);
 	}
 
