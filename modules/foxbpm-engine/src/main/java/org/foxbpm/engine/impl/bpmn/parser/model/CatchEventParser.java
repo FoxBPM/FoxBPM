@@ -28,36 +28,37 @@ import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.CatchEventBehavior;
 
 public class CatchEventParser extends EventParser {
-	
+
 	@Override
 	public BaseElementBehavior parser(BaseElement baseElement) {
-		
-		CatchEventBehavior catchEventBehavior=(CatchEventBehavior)baseElementBehavior;
-		
-		
-		
 
-		CatchEvent catchEvent=(CatchEvent)baseElement;
+		CatchEventBehavior catchEventBehavior = (CatchEventBehavior) baseElementBehavior;
+
+		CatchEvent catchEvent = (CatchEvent) baseElement;
+		catchEventBehavior.setParallelMultiple(catchEvent.isParallelMultiple());
 		List<EventDefinition> eventDefinitions = catchEvent.getEventDefinitions();
 		for (EventDefinition eventDefinition : eventDefinitions) {
-			
-			
-			if(eventDefinition instanceof TimerEventDefinition){
-				org.foxbpm.engine.impl.bpmn.behavior.TimerEventDefinition timerEventDefinitionNew=new org.foxbpm.engine.impl.bpmn.behavior.TimerEventDefinition();
-				
-				TimerEventDefinition timerEventDefinition=(TimerEventDefinition)eventDefinition;
+
+			if (eventDefinition instanceof TimerEventDefinition) {
+				org.foxbpm.engine.impl.bpmn.behavior.TimerEventDefinition timerEventDefinitionNew = new org.foxbpm.engine.impl.bpmn.behavior.TimerEventDefinition();
+
+				TimerEventDefinition timerEventDefinition = (TimerEventDefinition) eventDefinition;
 				timerEventDefinitionNew.setId(timerEventDefinition.getId());
-				timerEventDefinitionNew.setTimeCycle(timerEventDefinition.getTimeCycle()!=null?((FormalExpression)timerEventDefinition.getTimeCycle()).getBody():null);
-				timerEventDefinitionNew.setTimeDate(timerEventDefinition.getTimeDate()!=null?((FormalExpression)timerEventDefinition.getTimeDate()).getBody():null);
-				timerEventDefinitionNew.setTimeDuration(timerEventDefinition.getTimeDuration()!=null?((FormalExpression)timerEventDefinition.getTimeDuration()).getBody():null);
+				timerEventDefinitionNew.setTimeCycle(timerEventDefinition.getTimeCycle() != null
+						? ((FormalExpression) timerEventDefinition.getTimeCycle()).getBody()
+						: null);
+				timerEventDefinitionNew.setTimeDate(timerEventDefinition.getTimeDate() != null
+						? ((FormalExpression) timerEventDefinition.getTimeDate()).getBody()
+						: null);
+				timerEventDefinitionNew
+						.setTimeDuration(timerEventDefinition.getTimeDuration() != null
+								? ((FormalExpression) timerEventDefinition.getTimeDuration())
+										.getBody() : null);
 				catchEventBehavior.getEventDefinitions().add(timerEventDefinitionNew);
 			}
-			
-			
+
 		}
 
-		
 		return super.parser(baseElement);
 	}
-	
 }

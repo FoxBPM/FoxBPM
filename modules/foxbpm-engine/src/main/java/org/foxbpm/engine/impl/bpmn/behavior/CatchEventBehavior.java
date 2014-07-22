@@ -20,13 +20,19 @@ package org.foxbpm.engine.impl.bpmn.behavior;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public abstract class CatchEventBehavior extends EventBehavior {
-
 	private static final long serialVersionUID = 1L;
-	
-	private List<EventDefinition> eventDefinitions=new ArrayList<EventDefinition>();
-	
+
+	private List<EventDefinition> eventDefinitions = new ArrayList<EventDefinition>();
+	private boolean isParallelMultiple;
+	public boolean isParallelMultiple() {
+		return isParallelMultiple;
+	}
+
+	public void setParallelMultiple(boolean isParallelMultiple) {
+		this.isParallelMultiple = isParallelMultiple;
+	}
+
 	public List<EventDefinition> getEventDefinitions() {
 		return eventDefinitions;
 	}
@@ -35,5 +41,4 @@ public abstract class CatchEventBehavior extends EventBehavior {
 		this.eventDefinitions = eventDefinitions;
 	}
 
-	
 }

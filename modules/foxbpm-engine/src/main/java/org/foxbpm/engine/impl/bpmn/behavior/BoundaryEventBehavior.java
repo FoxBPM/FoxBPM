@@ -30,6 +30,8 @@ import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
 public class BoundaryEventBehavior extends CatchEventBehavior {
 	private static final long serialVersionUID = 1L;
+
+	private boolean isCancelActivity;
 	@Override
 	public void execute(FlowNodeExecutionContext executionContext) {
 		List<EventDefinition> eventDefinitions = super.getEventDefinitions();
@@ -74,5 +76,12 @@ public class BoundaryEventBehavior extends CatchEventBehavior {
 				kernelTokenImpl.getFlowNode().getId());
 
 		QuartzUtil.scheduleFoxbpmJob(tokenTimeoutAutoExecuteJobDetail);
+	}
+	public boolean isCancelActivity() {
+		return isCancelActivity;
+	}
+
+	public void setCancelActivity(boolean isCancelActivity) {
+		this.isCancelActivity = isCancelActivity;
 	}
 }

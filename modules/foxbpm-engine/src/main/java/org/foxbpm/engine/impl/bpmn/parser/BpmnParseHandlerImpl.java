@@ -89,6 +89,7 @@ import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ProcessBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.SubProcessBehavior;
+import org.foxbpm.engine.impl.bpmn.parser.model.BehaviorRelationMemo;
 import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtDefinition;
@@ -120,6 +121,7 @@ import org.foxbpm.model.config.style.Style;
 
 public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	private static Map<Class<?>, Style> styleContainer = new HashMap<Class<?>, Style>();
+	public static BehaviorRelationMemo behaviorRelationMemo = new BehaviorRelationMemo();
 	public KernelProcessDefinition createProcessDefinition(String processId, Object processFile) {
 		Process process = null;
 		if (processFile != null) {
