@@ -23,15 +23,20 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.engine.datavariable.VariableInstance;
+import org.foxbpm.engine.datavariable.VariableQuery;
 import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.GuidUtil;
+import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.task.Task;
+import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.engine.task.TaskQuery;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
 import org.foxbpm.engine.test.Deployment;
@@ -286,6 +291,137 @@ public class TaskServiceTest extends AbstractFoxBpmTestCase {
 		//验证结果
 		assertEquals(null, task.getAssignee());
 		
+	}
+	
+	/**
+	 * 完成任务
+	 * 测试用例：启动流程-完成任务，验证流程是否已结束
+	 */
+	@Test
+	@Deployment(resources = {"org/foxbpm/test/api/Test_taskService_1.bpmn"})
+	public void testComplete(){
+		//启动一个流程
+		Authentication.setAuthenticatedUserId("admin");
+		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
+		expandTaskCommand.setInitiator("admin");
+		expandTaskCommand.setProcessDefinitionKey("Test_taskService_1");
+		expandTaskCommand.setBusinessKey("bizKey");
+		expandTaskCommand.setCommandType("startandsubmit");
+		expandTaskCommand.setTaskCommandId("HandleCommand_1");
+		taskService.expandTaskComplete(expandTaskCommand, null);
+		
+		
+		String taskId = taskService.createTaskQuery().processDefinitionKey("Test_taskService_1").taskNotEnd().singleResult().getId();
+		taskService.complete(taskId);
+		ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processDefinitionKey("Test_taskService_1").singleResult();
+		assertNotNull(processInstance.getEndTime());
+	}
+	
+	/**
+	 * 带变量的完成任务
+	 * 测试用例：启动流程-完成任务-验证流程是否结束、验证持久化变量是否存储，验证非持久化变量是否正确（线条表达式中使用了非持久化变量）
+	 */
+	@Test
+	@Deployment(resources = {"org/foxbpm/test/api/Test_taskService_1.bpmn"})
+	public void testCompleteVariable(){
+		//启动一个流程
+		Authentication.setAuthenticatedUserId("admin");
+		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
+		expandTaskCommand.setInitiator("admin");
+		expandTaskCommand.setProcessDefinitionKey("Test_taskService_1");
+		expandTaskCommand.setBusinessKey("bizKey");
+		expandTaskCommand.setCommandType("startandsubmit");
+		expandTaskCommand.setTaskCommandId("HandleCommand_1");
+		taskService.expandTaskComplete(expandTaskCommand, null);
+		
+		
+		String taskId = taskService.createTaskQuery().processDefinitionKey("Test_taskService_1").taskNotEnd().singleResult().getId();
+		Map<String,Object> variableMap = new HashMap<String, Object>();
+		variableMap.put("持久化变量", "变量值");
+		
+		Map<String,Object> transVariableMap = new HashMap<String, Object>();
+		transVariableMap.put("TransVariable", "非持久化变量");
+		
+		taskService.complete(taskId,transVariableMap,variableMap);
+		ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processDefinitionKey("Test_taskService_1").singleResult();
+		assertNotNull(processInstance.getEndTime());
+		
+		String processInstanceId = processInstance.getId();
+		VariableQuery variableQuery = runtimeService.createVariableQuery();
+		variableQuery.addVariableKey("持久化变量").processInstanceId(processInstanceId);
+		VariableInstance  variableInstance = variableQuery.singleResult();
+		assertEquals("变量值", variableInstance.getValueObject());
+		
+		variableQuery = runtimeService.createVariableQuery();
+		variableQuery.addVariableKey("variableKey").processInstanceId(processInstanceId);
+		variableInstance = variableQuery.singleResult();
+		assertEquals("非持久化变量变化", variableInstance.getValueObject());
+	}
+	
+	/**
+	 * 测试根据任务编号获取任务命令
+	 * 测试用例：未领取前：2个（接收任务，流程状态） 领取后：3个（同意，通用，流程状态）
+	 */
+	@Test
+	@Deployment(resources = {"org/foxbpm/test/api/Test_taskService_1.bpmn"})
+	public void testGetTaskCommandByTaskId(){
+		//启动一个流程
+		Authentication.setAuthenticatedUserId("admin");
+		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
+		expandTaskCommand.setInitiator("admin");
+		expandTaskCommand.setProcessDefinitionKey("Test_taskService_1");
+		expandTaskCommand.setBusinessKey("bizKey");
+		expandTaskCommand.setCommandType("startandsubmit");
+		expandTaskCommand.setTaskCommandId("HandleCommand_1");
+		taskService.expandTaskComplete(expandTaskCommand, null);
+		
+		String taskId = taskService.createTaskQuery().processDefinitionKey("Test_taskService_1").taskNotEnd().singleResult().getId();
+		
+		List<TaskCommand> taskCommands = taskService.getTaskCommandByTaskId(taskId);
+		assertEquals(2, taskCommands.size());
+		
+		taskService.claim(taskId, "admin");
+		
+		taskCommands = taskService.getTaskCommandByTaskId(taskId);
+		assertEquals(3, taskCommands.size());
+	}
+	
+	/**
+	 * 测试根据任务编号获取任务命令
+	 * 测试用例：未领取前：2个（接收任务，流程状态） 领取后：3个（同意，通用，流程状态）
+	 */
+	@Test
+	@Deployment(resources = {"org/foxbpm/test/api/Test_taskService_1.bpmn"})
+	public void testGetTaskCommandByTaskIdTracing(){
+		//启动一个流程
+		Authentication.setAuthenticatedUserId("admin");
+		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
+		expandTaskCommand.setInitiator("admin");
+		expandTaskCommand.setProcessDefinitionKey("Test_taskService_1");
+		expandTaskCommand.setBusinessKey("bizKey");
+		expandTaskCommand.setCommandType("startandsubmit");
+		expandTaskCommand.setTaskCommandId("HandleCommand_1");
+		taskService.expandTaskComplete(expandTaskCommand, null);
+		
+		String taskId = taskService.createTaskQuery().processDefinitionKey("Test_taskService_1").taskNotEnd().singleResult().getId();
+		try{
+			taskService.getTaskCommandByTaskId(taskId,true);
+			fail();
+		}catch(FoxBPMBizException ex){
+			
+		}
+		
+	}
+	
+	/**
+	 * 测试根据任务编号获取任务命令
+	 * 测试用例：2个（启动并提交，流程状态）
+	 */
+	@Test
+	@Deployment(resources = {"org/foxbpm/test/api/Test_taskService_1.bpmn"})
+	public void testGetSubTaskCommandByProcessKey(){
+		List<TaskCommand> taskCommands = taskService.getSubTaskCommandByKey("Test_taskService_1");
+		assertEquals(2, taskCommands.size());
 	}
 	
 	

@@ -13,7 +13,6 @@ import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.impl.Context;
-import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.task.TaskCommandSystemType;
 import org.foxbpm.engine.impl.task.TaskDefinition;
@@ -199,7 +198,18 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	}
 
 	public ProcessInstanceEntity getProcessInstance() {
+		ensureProcessInstanceInitialized();
 		return processInstance;
+	}
+	
+	protected void ensureProcessInstanceInitialized() {
+		if ((processInstance == null) && (processInstanceId != null)) {
+			processInstance = Context.getCommandContext().getProcessInstanceManager()
+					.findProcessInstanceById(processInstanceId);
+			if(processInstance != null){
+				processInstanceId = processInstance.getId();
+			}
+		}
 	}
 
 	public void setProcessInstance(ProcessInstanceEntity processInstance) {
@@ -787,18 +797,11 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	}
 	
 	public void setProcessInstanceTransientVariables(Map<String, Object> parameters) {
-		if (getProcessInstance() != null) {
-			if (parameters == null) {
-				return;
-			}
-			for (String mapKey : parameters.keySet()) {
-				ExpressionMgmt.setVariable(mapKey, parameters.get(mapKey));
-			}
-		}
+		getProcessInstance().setTransVariables(parameters);
 	}
 	
-	public void setProcessInstancePersistenceVariablesVariables(Map<String, Object> parameters) {
-		throw new FoxBPMException("未实现");
+	public void setProcessInstanceVariables(Map<String, Object> parameters) {
+		getProcessInstance().setVariables(parameters);
 	}
 
 	public boolean isAutoClaim() {
@@ -837,13 +840,9 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		}
 
 		this.endTime = new Date();
-
 		this.isDraft = false;
-
 		this.isOpen = false;
-
 		this.taskComment = taskComment;
-
 		if (taskCommand != null && taskCommand.getTaskCommandType() != null && !taskCommand.getTaskCommandType().equals("")) {
 			String taskCommandType = taskCommand.getTaskCommandType();
 			String taskCommandName = taskCommand.getName();
@@ -851,18 +850,14 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 			this.setCommandId(taskCommand.getId());
 			this.setCommandType(taskCommandType);
 			if (taskCommandName == null) {
-				
 				TaskCommandDefinition taskCommandDef = Context.getProcessEngineConfiguration().getTaskCommandDefinition(taskCommandType);
 				if (taskCommandDef != null) {
 					this.setCommandMessage(taskCommandDef.getName());
 				}
 			} else {
 				this.setCommandMessage(taskCommandName);
-
 			}
-
 		} else {
-
 			this.setCommandId(TaskCommandSystemType.AUTOEND);
 			this.setCommandType(TaskCommandSystemType.AUTOEND);
 			TaskCommandDefinition taskCommandDef = Context.getProcessEngineConfiguration().getTaskCommandDefinition(TaskCommandSystemType.AUTOEND);
@@ -870,7 +865,6 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 				this.setCommandMessage(taskCommandDef.getName());
 			}
 		}
-
 	}
 	
 	public Map<String, Object> getPersistentState() {
@@ -924,7 +918,6 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		persistentState.put("processStartTime", getProcessStartTime());
 		persistentState.put("processInitiator", getProcessInitiator());
 		persistentState.put("completeDescription", getCompleteDescription());
-		
 
 		return persistentState;
 	}
@@ -956,7 +949,6 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 
 	public void setProcessInitiator(String processInitiator) {
 		this.processInitiator = processInitiator;
-		
 	}
 	
 	public boolean isIdentityLinksInitialized(){
