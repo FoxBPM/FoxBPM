@@ -151,17 +151,20 @@ public class UserTaskBehavior extends TaskBehavior {
 
 	@Override
 	public void cleanData(FlowNodeExecutionContext executionContext) {
+		
+		removeTaskInstanceSynchronization(executionContext);
 		super.cleanData(executionContext);
 	}
 
 	
-	private void removeTaskInstanceSynchronization(TokenEntity token) {
-		if(token!=null){
-			List<TaskEntity> tasks = Context.getCommandContext().getTaskManager().findTasksByTokenId(token.getId());
+	private void removeTaskInstanceSynchronization(FlowNodeExecutionContext executionContext) {
+		if(executionContext!=null){
+			List<TaskEntity> tasks = Context.getCommandContext().getTaskManager().findTasksByTokenId(executionContext.getId());
 			
 			for (TaskEntity taskInstance : tasks) {
 				if (!taskInstance.hasEnded()) {
-					//taskInstance.customEnd(null, null);
+					//强制结束任务.
+					taskInstance.complete(null, null);
 				}
 			}
 		}
