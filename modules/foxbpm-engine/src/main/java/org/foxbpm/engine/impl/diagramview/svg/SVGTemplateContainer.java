@@ -105,6 +105,7 @@ public class SVGTemplateContainer {
 		// 加载子流程
 		this.init(SVGTemplateNameConstant.TEMPLATE_ACTIVITY_SUBPROCESS);
 		this.init(SVGTemplateNameConstant.TEMPLATE_ACTIVITY_CALLACTIVITY);
+		this.init(SVGTemplateNameConstant.TEMPLATE_ACTIVITY_SUBPROCESS_COLLAPSED);
 
 		// 初始化加载模版容器
 		this.init(SVGTemplateNameConstant.SVG_TEMPLATE);

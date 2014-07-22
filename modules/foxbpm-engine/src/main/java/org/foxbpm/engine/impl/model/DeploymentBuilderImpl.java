@@ -37,7 +37,6 @@ import org.foxbpm.engine.repository.DeploymentBuilder;
  */
 public class DeploymentBuilderImpl implements DeploymentBuilder {
 
-
 	protected ModelService modelService;
 	protected DeploymentEntity deployment = new DeploymentEntity();
 	protected boolean isDuplicateFilterEnabled = false;
@@ -48,9 +47,9 @@ public class DeploymentBuilderImpl implements DeploymentBuilder {
 	}
 
 	public DeploymentBuilder addInputStream(String resourceName, InputStream inputStream) {
-		return addInputStream(resourceName,inputStream,-1);
+		return addInputStream(resourceName, inputStream, -1);
 	}
-	
+
 	@Override
 	public DeploymentBuilder addInputStream(String resourceName, InputStream inputStream, int version) {
 		if (inputStream == null) {
@@ -60,9 +59,11 @@ public class DeploymentBuilderImpl implements DeploymentBuilder {
 		ResourceEntity resource = new ResourceEntity();
 		resource.setName(resourceName);
 		resource.setBytes(bytes);
-		if(version != -1){
+		if (version != -1) {
 			resource.setVersion(version);
 		}
+		// 绑定发布Id
+		resource.setDeploymentId(deployment.getId());
 		deployment.addResource(resource);
 		return this;
 	}
@@ -82,14 +83,16 @@ public class DeploymentBuilderImpl implements DeploymentBuilder {
 		ResourceEntity resource = new ResourceEntity();
 		resource.setName(resourceName);
 		resource.setBytes(text.getBytes());
+		// 绑定发布Id
+		resource.setDeploymentId(deployment.getId());
 		deployment.addResource(resource);
 		return this;
 	}
 
 	public DeploymentBuilder addZipInputStream(ZipInputStream zipInputStream) {
-		return addZipInputStream(zipInputStream,-1);
+		return addZipInputStream(zipInputStream, -1);
 	}
-	
+
 	@Override
 	public DeploymentBuilder addZipInputStream(ZipInputStream zipInputStream, int version) {
 		try {
@@ -101,9 +104,11 @@ public class DeploymentBuilderImpl implements DeploymentBuilder {
 					ResourceEntity resource = new ResourceEntity();
 					resource.setName(entryName);
 					resource.setBytes(bytes);
-					if(version != -1){
+					if (version != -1) {
 						resource.setVersion(version);
 					}
+					// 绑定发布Id
+					resource.setDeploymentId(deployment.getId());
 					deployment.addResource(resource);
 				}
 				entry = zipInputStream.getNextEntry();
@@ -142,7 +147,7 @@ public class DeploymentBuilderImpl implements DeploymentBuilder {
 	public DeploymentBuilder updateDeploymentId(String updateDeploymentId) {
 		deployment.setId(updateDeploymentId);
 		deployment.setUpdateDeploymentId(updateDeploymentId);
-		this.updateDeploymentId=updateDeploymentId;
+		this.updateDeploymentId = updateDeploymentId;
 		return this;
 	}
 

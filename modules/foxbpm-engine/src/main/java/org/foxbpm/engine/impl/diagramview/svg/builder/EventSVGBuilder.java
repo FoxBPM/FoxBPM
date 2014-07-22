@@ -176,12 +176,10 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 		String elementValue = textVO.getElementValue();
 		if (StringUtils.isNotBlank(elementValue)) {
 			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(), elementValue);
-			int languageShift = -3;
 			if (SVGUtils.isChinese(elementValue.charAt(0))) {
-				languageShift = 4;
-				languageShift = languageShift - (textWidth <= 16 ? 2 : 0);
+				textWidth = textWidth + (textWidth / 20) * 5;
 			}
-			this.setTextX(x - textWidth / 2 - languageShift);
+			this.setTextX(x - textWidth / 2);
 			this.setTextY(y + this.circleVO.getR() + 15);
 		}
 

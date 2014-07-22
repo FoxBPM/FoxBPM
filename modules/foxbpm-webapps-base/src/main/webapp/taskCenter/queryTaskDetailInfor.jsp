@@ -175,6 +175,8 @@
 					if ($(this).attr("checked") == 'checked') {
 						if (runningTrackInfo && runningTrackInfo.length != 0) {
 							runningTrackIndex = 0;
+							//去掉重复的节点ID
+							flowGraphic.distinctProcessNodeID();
 							runningTrackThreadId = setInterval(
 									"flowGraphic.moveRunningTrack()",
 									RUNNING_MILLESIMAL_SPEED);

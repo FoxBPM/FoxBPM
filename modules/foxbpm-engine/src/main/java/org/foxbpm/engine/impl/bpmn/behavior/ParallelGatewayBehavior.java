@@ -51,7 +51,7 @@ public class ParallelGatewayBehavior extends GatewayBehavior {
 		/** 获取pvm节点的进入线条 */
 		List<KernelSequenceFlow> incomingSequenceFlows = flowNode.getIncomingSequenceFlows();
 		/** 获取pvm节点的输出线条 */
-		
+
 		/** 按照令牌数量合并方式 */
 		if (this.convergType.equals("tokenNum")) {
 
@@ -77,7 +77,8 @@ public class ParallelGatewayBehavior extends GatewayBehavior {
 							cToken.end(false);
 						}
 
-						parentToken.setFlowNode((KernelFlowNodeImpl) executionContext.getFlowNode());
+						parentToken
+								.setFlowNode((KernelFlowNodeImpl) executionContext.getFlowNode());
 						parentToken.leave();
 					}
 
@@ -101,7 +102,8 @@ public class ParallelGatewayBehavior extends GatewayBehavior {
 
 					token.setActive(false);
 
-					List<KernelToken> joinedExecutions = executionContext.findInactiveToken(flowNode);
+					List<KernelToken> joinedExecutions = executionContext
+							.findInactiveToken(flowNode);
 					int nbrOfExecutionsToJoin = incomingSequenceFlows.size();
 					int nbrOfExecutionsJoined = joinedExecutions.size();
 
@@ -109,23 +111,22 @@ public class ParallelGatewayBehavior extends GatewayBehavior {
 
 						// Fork
 						if (LOG.isDebugEnabled()) {
-							LOG.debug("并行网关 '{}' activates: {} of {} joined", flowNode.getId(), nbrOfExecutionsJoined,
-									nbrOfExecutionsToJoin);
+							LOG.debug("并行网关 '{}' activates: {} of {} joined", flowNode.getId(),
+									nbrOfExecutionsJoined, nbrOfExecutionsToJoin);
 						}
 
-						List<KernelTokenImpl> cTokens = parentToken.getChildren();
-						for (KernelTokenImpl cToken : cTokens) {
-							cToken.end(false);
+						for (KernelToken cToken : parentToken.getChildren()) {
+							((KernelTokenImpl) cToken).end(false);
 						}
 
-						parentToken.setFlowNode((KernelFlowNodeImpl) executionContext.getFlowNode());
-						
+						parentToken
+								.setFlowNode((KernelFlowNodeImpl) executionContext.getFlowNode());
+
 						parentToken.signal();
 
-
 					} else if (LOG.isDebugEnabled()) {
-						LOG.debug("并行网关 '{}' does not activate: {} of {} joined", flowNode.getId(), nbrOfExecutionsJoined,
-								nbrOfExecutionsToJoin);
+						LOG.debug("并行网关 '{}' does not activate: {} of {} joined", flowNode.getId(),
+								nbrOfExecutionsJoined, nbrOfExecutionsToJoin);
 					}
 
 				}
@@ -138,12 +139,12 @@ public class ParallelGatewayBehavior extends GatewayBehavior {
 	}
 
 	public void leave(FlowNodeExecutionContext executionContext) {
-		
-		List<KernelSequenceFlow> outgoingSequenceFlows = executionContext.getFlowNode().getOutgoingSequenceFlows();
-		//并行网关 直接忽略所有线条条件产生并发
+
+		List<KernelSequenceFlow> outgoingSequenceFlows = executionContext.getFlowNode()
+				.getOutgoingSequenceFlows();
+		// 并行网关 直接忽略所有线条条件产生并发
 		((KernelTokenImpl) executionContext).leave(outgoingSequenceFlows);
-		
-		
+
 	}
 
 }
