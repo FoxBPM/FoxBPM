@@ -249,7 +249,7 @@ public class TaskServiceTest extends AbstractFoxBpmTestCase {
 	 */
 	@Test
 	@Deployment(resources = {"org/foxbpm/test/api/Test_taskService_1.bpmn"})
-	public void testClaim(){
+	public void testClaimAndUnClaim(){
 		//启动一个流程
 		Authentication.setAuthenticatedUserId("admin");
 		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();

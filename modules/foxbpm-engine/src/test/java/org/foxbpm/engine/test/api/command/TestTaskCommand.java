@@ -18,7 +18,9 @@
 package org.foxbpm.engine.test.api.command;
 
 import static org.junit.Assert.assertEquals;
+
 import java.util.List;
+
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.task.Task;
@@ -62,7 +64,7 @@ public class TestTaskCommand extends AbstractFoxBpmTestCase {
 		TaskQuery taskQuery = taskService.createTaskQuery();
 		taskQuery.processDefinitionKey("simpleTaskCommandTest_1");
 		long result = taskQuery.count();
-		assertEquals(2, result);
+		assertEquals(3, result);
 		taskQuery.taskNotEnd();
 		List<Task> tasks = taskQuery.list();
 		Task task = tasks.get(0);

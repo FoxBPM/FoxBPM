@@ -22,6 +22,7 @@ import java.util.List;
 import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.identity.User;
+import org.foxbpm.engine.impl.agent.AgentTo;
 import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
@@ -52,6 +53,8 @@ public class FindUserByIdNoCacheCmd implements Command<User>{
 				user.getGroups().addAll(tmpGroups);
 			}
 		}
+		List<AgentTo> agentTos = commandContext.getAgentManager().getAgentTos(userId);
+		user.setAgentInfo(agentTos);
 		return user;
 	}
 }
