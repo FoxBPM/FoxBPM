@@ -321,7 +321,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 
 								// 执行令牌进入节点方法
 								// this.tokenEnter(executionContext);
-								super.execute(executionContext);
+								execute(executionContext);
 							}
 
 						} else {
@@ -354,7 +354,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 
 										// 执行节点进入
 										// this.tokenEnter(executionContext);
-										super.execute(executionContext);
+										execute(executionContext);
 									}
 								} else {
 									// 不认识的格式
@@ -401,9 +401,9 @@ public class ActivityBehavior extends FlowNodeBehavior {
 			// 当发现不是多实例的情况下继续节点的执行,以后添加了串行多实例要在这里加判断
 			if (loopCharacteristics instanceof StandardLoopCharacteristics) {
 				// 串行多实例执行
-				super.execute(executionContext);
+				execute(executionContext);
 			} else {
-				super.execute(executionContext);
+				execute(executionContext);
 
 			}
 
@@ -517,7 +517,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 
 						LOG.debug("节点: {}({}) 多实例完成条件验证通过,令牌号: {}({}).", getName(), getId(), token.getName(), token.getId());
 
-						super.leave(executionContext);
+						leave(executionContext);
 
 					} else {
 						// 不做处理
@@ -535,7 +535,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		// 正常处理
 		else {
 
-			super.leave(executionContext);
+			leave(executionContext);
 
 		}
 	}
