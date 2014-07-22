@@ -17,6 +17,9 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class EventBehavior extends FlowNodeBehavior {
 
 	/**
@@ -24,4 +27,12 @@ public abstract class EventBehavior extends FlowNodeBehavior {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	protected List<EventDefinition> eventDefinitions = new ArrayList<EventDefinition>();
+	public List<EventDefinition> getEventDefinitions() {
+		return eventDefinitions;
+	}
+
+	public void setEventDefinitions(List<EventDefinition> eventDefinitions) {
+		this.eventDefinitions = eventDefinitions;
+	}
 }

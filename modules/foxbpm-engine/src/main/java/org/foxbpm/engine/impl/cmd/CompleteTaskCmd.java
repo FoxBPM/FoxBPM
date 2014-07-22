@@ -21,6 +21,7 @@ package org.foxbpm.engine.impl.cmd;
 import java.util.Map;
 
 import org.foxbpm.engine.impl.entity.TaskEntity;
+import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
 public class CompleteTaskCmd extends NeedsActiveTaskCmd<Void> {
@@ -39,10 +40,13 @@ public class CompleteTaskCmd extends NeedsActiveTaskCmd<Void> {
 	@Override
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
 		
-		if (transientVariables != null) {
+		if (transientVariables != null && !transientVariables.isEmpty()) {
 			task.setProcessInstanceTransientVariables(transientVariables);
 		}
-
+		if(persistenceVariables != null && !persistenceVariables.isEmpty()){
+			task.setProcessInstanceVariables(persistenceVariables);
+		}
+		task.setAssignee(Authentication.getAuthenticatedUserId());
 		task.complete();
 		return null;
 	}

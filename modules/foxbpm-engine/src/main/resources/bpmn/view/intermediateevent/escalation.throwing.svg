@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg xmlns:oryx="http://www.b3mn.org/oryx"
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:oryx="http://www.b3mn.org/oryx"
    width="40"
    height="40"
    version="1.0">
@@ -7,27 +9,31 @@
   <oryx:magnets>
   	<oryx:magnet oryx:cx="16" oryx:cy="16" oryx:default="yes" />
   </oryx:magnets>
+  <oryx:docker oryx:cx="16" oryx:cy="16" />
   <g pointer-events="fill">
- 
+  
     <defs>
 		<radialGradient id="background" cx="10%" cy="10%" r="100%" fx="10%" fy="10%">
 			<stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
 			<stop id="fill_el" offset="100%" stop-color="#ffffff" stop-opacity="1"/>
 		</radialGradient>
-		<linearGradient x1="70" gradientUnits="userSpaceOnUse" x2="70" y1="109" y2="145" id="b0bd8528-9671-4914-92fe-288653be1a83" spreadMethod="pad">
-			<stop stop-opacity="1" stop-color="#ffffff" offset="0%" />
-			<stop stop-opacity="1" stop-color="rgb(192,255,192)" offset="100%" />
-	 	</linearGradient>
 	</defs>
 	
-    <circle id="bg_frame" cx="16" cy="16" r="14" stroke="black" fill="url(#background) white" stroke-width="3"/>
-    
-    <circle id="circle1" cx="16" cy="16" r="9" stroke="black" fill="rgb(174,102,30)" stroke-width="1"/>
+    <circle id="bg_frame" cx="16" cy="16" r="15" stroke="black" fill="url(#background) white" stroke-width="1"/>
+    <circle id="frame" cx="16" cy="16" r="12" stroke="black" fill="none" stroke-width="1"/>
+	
+	<path
+       d="M 16,8.75 L22,23.75 L16,17 L10,23.75z "
+       id="path9"
+       stroke="black"
+       fill="black"
+       style="stroke-width:1" />
 	<text font-size="11" 
 		id="text_name" 
-		x="16" y="32" 
+		x="16" y="33" 
 		oryx:align="top center" 
 		stroke="black"
 	></text>
+	
   </g>
 </svg>

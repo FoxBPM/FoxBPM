@@ -21,7 +21,7 @@ package org.foxbpm.engine.impl.cmd;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
@@ -41,7 +41,7 @@ public class GetTaskCommandByTaskIdCmd implements Command<List<TaskCommand>> {
 	@Override
 	public List<TaskCommand> execute(CommandContext commandContext) {
 		if(this.isProcessTracking){
-			throw new  FoxBPMException("该方法未实现");
+			throw new  FoxBPMBizException("该方法未实现");
 		}
 		List<TaskCommand> taskCommands = new ArrayList<TaskCommand>();
 		TaskEntity taskInstance = commandContext.getTaskManager().findTaskById(taskId);

@@ -93,6 +93,50 @@ public final class SVGUtils {
 		}
 		return null;
 	}
+	
+	/**
+	 * 获取事件圆形
+	 * 
+	 * @param svgVo
+	 * @return
+	 */
+	public final static CircleVO getEndTerminateEventVOFromSvgVO(SvgVO svgVo) {
+		List<CircleVO> circleVoList = svgVo.getgVo().getCircleVoList();
+		Iterator<CircleVO> iterator = circleVoList.iterator();
+		CircleVO next = null;
+		while (iterator.hasNext()) {
+			next = iterator.next();
+			if (StringUtils.equalsIgnoreCase(next.getId(), "circle1")) {
+				return next;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 获取事件圆形
+	 * 
+	 * @param svgVo
+	 * @return
+	 */
+	public final static CircleVO getDefinitionEventVOFromSvgVO(SvgVO svgVo, String id) {
+		List<GVO> getgVoList = svgVo.getgVo().getgVoList();
+		Iterator<GVO> gvoIter = getgVoList.iterator();
+		while (gvoIter.hasNext()) {
+			GVO gvo = gvoIter.next();
+			List<CircleVO> circleVoList = gvo.getCircleVoList();
+			Iterator<CircleVO> iterator = circleVoList.iterator();
+			CircleVO next = null;
+			while (iterator.hasNext()) {
+				next = iterator.next();
+				if (StringUtils.equalsIgnoreCase(next.getId(), id)) {
+					return next;
+				}
+			}
+		}
+
+		return null;
+	}
 
 	/**
 	 * 获取线条路径
