@@ -36,6 +36,10 @@ public interface FlowNodeExecutionContext extends DelegateExecutionContext {
 	
 	KernelFlowNode getFlowNode();
 	
+	void ensureEnterInitialized(KernelFlowNodeImpl flowNode);
+	
+	void enter(KernelFlowNodeImpl flowNode);
+	
 	void execute();
 
 	void signal();
@@ -49,4 +53,5 @@ public interface FlowNodeExecutionContext extends DelegateExecutionContext {
 	void end();
 
 	List<KernelToken> findInactiveToken(KernelFlowNode flowNode);
+
 }

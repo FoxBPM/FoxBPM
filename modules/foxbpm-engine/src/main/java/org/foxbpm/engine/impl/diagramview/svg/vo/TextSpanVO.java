@@ -18,12 +18,10 @@
 package org.foxbpm.engine.impl.diagramview.svg.vo;
 
 import java.awt.Font;
-import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
@@ -36,7 +34,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlType
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TextVO extends NamespaceAttributesVO {
+public class TextSpanVO extends NamespaceAttributesVO {
 	/**
 	 * serialVersionUID
 	 */
@@ -47,9 +45,6 @@ public class TextVO extends NamespaceAttributesVO {
 	private Font font;
 	@XmlAttribute(name = "transform")
 	private String transform;
-
-	@XmlElement(name = "tspan")
-	private List<TextSpanVO> textSpanList;
 
 	public String getFontSize() {
 		return fontSize;
@@ -73,12 +68,5 @@ public class TextVO extends NamespaceAttributesVO {
 
 	public void setTransform(String transform) {
 		this.transform = transform;
-	}
-	public List<TextSpanVO> getTextSpanList() {
-		return textSpanList;
-	}
-
-	public void setTextSpanList(List<TextSpanVO> textSpanList) {
-		this.textSpanList = textSpanList;
 	}
 }

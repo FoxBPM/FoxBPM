@@ -17,10 +17,7 @@
  */
 package org.foxbpm.engine.impl.diagramview.factory;
 
-import java.util.List;
-
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
-import org.foxbpm.engine.task.Task;
 
 /**
  * 流程图形信息创建接口
@@ -39,16 +36,4 @@ public interface FoxbpmProcessDefinitionVOFactory {
 	public abstract String createProcessDefinitionVOString(
 			ProcessDefinitionEntity deployedProcessDefinition);
 
-	/**
-	 * 创建流程图，包括标记信息
-	 * 
-	 * @param taskList
-	 *            所有需要标识的任务信息
-	 * @param deployedProcessDefinition
-	 *            流程定义信息
-	 * @return 包含标记的，流程图字符串
-	 */
-	public abstract String createProcessInstanceSVGImageString(
-			List<Task> taskList,
-			ProcessDefinitionEntity deployedProcessDefinition);
 }

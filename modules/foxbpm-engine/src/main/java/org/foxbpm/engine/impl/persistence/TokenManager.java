@@ -26,30 +26,32 @@ import org.foxbpm.engine.runtime.Token;
 
 /**
  * 令牌管理器
+ * 
  * @author kenshin
- *
+ * 
  */
 public class TokenManager extends AbstractManager {
 
 	@SuppressWarnings("unchecked")
 	public List<TokenEntity> findChildTokensByProcessInstanceId(String id) {
-		return (List<TokenEntity>)getSqlSession().selectListWithRawParameter("selectTokensByProcessInstanceId", id);
+		return (List<TokenEntity>) getSqlSession().selectListWithRawParameter(
+				"selectChildTokensByProcessInstanceId", id);
 	}
 
 	public TokenEntity findTokenById(String rootTokenId) {
 		return selectById(TokenEntity.class, rootTokenId);
 	}
-	
-	public long findTokenCountByQueryCriteria(TokenQueryImpl tokenQuery){
-		return (Long)getSqlSession().selectOne("selectTokenCountByQueryCriteria", tokenQuery);
+
+	public long findTokenCountByQueryCriteria(TokenQueryImpl tokenQuery) {
+		return (Long) getSqlSession().selectOne("selectTokenCountByQueryCriteria", tokenQuery);
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public List<Token> findTokenByQueryCriteria(TokenQueryImpl tokenQuery){
+	public List<Token> findTokenByQueryCriteria(TokenQueryImpl tokenQuery) {
 		return getSqlSession().selectList("selectTokensByQueryCriteria", tokenQuery);
 	}
-	
-	public void deleteTokenByProcessInstanceId(String processInstanceId){
+
+	public void deleteTokenByProcessInstanceId(String processInstanceId) {
 		getSqlSession().delete("deleteTokenByProcessInstanceId", processInstanceId);
 	}
 }

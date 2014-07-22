@@ -68,6 +68,12 @@
 	    from foxbpm_run_token
 	    where PROCESSINSTANCE_ID = #{id,jdbcType=VARCHAR}
   </select>
+   <select id="selectChildTokensByProcessInstanceId" parameterType="java.lang.String" resultMap="TokenResultMap">
+	    select 
+	    *
+	    from foxbpm_run_token
+	    where PROCESSINSTANCE_ID = #{id,jdbcType=VARCHAR} and PARENT_ID is not null
+  </select>
   
    <select id="selectTokensByQueryCriteria" parameterType="org.foxbpm.engine.impl.runtime.TokenQueryImpl" resultMap="TokenResultMap">
   	${limitBefore}

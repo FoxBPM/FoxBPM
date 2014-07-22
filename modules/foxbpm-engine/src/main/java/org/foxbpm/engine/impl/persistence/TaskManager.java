@@ -74,6 +74,9 @@ public class TaskManager extends AbstractManager {
 		return (List) getSqlSession().selectListWithRawParameter("selectTasksByProcessInstanceId",
 				processInstanceId);
 	}
+	
+
+
 
 	@SuppressWarnings("unchecked")
 	public List<Task> findTasksByQueryCriteria(TaskQueryImpl taskQuery) {

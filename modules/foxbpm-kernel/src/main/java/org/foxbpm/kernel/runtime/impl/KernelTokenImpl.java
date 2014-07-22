@@ -37,9 +37,12 @@ import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class KernelTokenImpl extends KernelVariableScopeImpl implements
-		FlowNodeExecutionContext, ListenerExecutionContext, KernelToken,
-		InterpretableExecutionContext {
+public class KernelTokenImpl extends KernelVariableScopeImpl
+		implements
+			FlowNodeExecutionContext,
+			ListenerExecutionContext,
+			KernelToken,
+			InterpretableExecutionContext {
 
 	private static Logger LOG = LoggerFactory.getLogger(KernelTokenImpl.class);
 
@@ -120,10 +123,25 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements
 	public void setProcessInstance(KernelProcessInstanceImpl processInstance) {
 		this.processInstance = processInstance;
 	}
+	
+	public void ensureEnterInitialized(KernelFlowNodeImpl flowNode){
+		/** 设置令牌所在节点 */
+		setFlowNode(flowNode);
+	}
 
 	public void enter(KernelFlowNodeImpl flowNode) {
-		setFlowNode(flowNode);
+		
+		LOG.debug("进入节点: {}({}),令牌号: {}({}).", flowNode.getName(),flowNode.getId(),getName(),getId());
+		
+		/** 移除临时执行内容对象 */
+		clearExecutionContextData();
+		
+		/** 初始化节点进入参数 */
+		ensureEnterInitialized(flowNode);
+		
+		/** 触发节点进入事件 */
 		fireEvent(KernelEvent.NODE_ENTER);
+		/** 执行节点行为 */
 		flowNode.getKernelFlowNodeBehavior().enter(this);
 	}
 
@@ -166,8 +184,7 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements
 		// 并行网关会忽略掉后面的线条的条件
 
 		// 获取正常离开的所有线条
-		for (KernelSequenceFlow sequenceFlow : getFlowNode()
-				.getOutgoingSequenceFlows()) {
+		for (KernelSequenceFlow sequenceFlow : getFlowNode().getOutgoingSequenceFlows()) {
 			// 验证线条上的条件
 			if (sequenceFlow.isContinue(this)) {
 				sequenceFlowList.add(sequenceFlow);
@@ -197,9 +214,8 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements
 		// 用来处理非线条流转令牌,如退回、跳转
 		if (this.toFlowNode != null) {
 			// 发现上下文中有直接跳转节点,则流程引擎不走正常处理直接跳转到指定借点。
-			LOG.debug("＝＝执行跳转机制,跳转目标: {}({}),离开节点: {}({}),令牌号: {}({}).",
-					toFlowNode.getName(), toFlowNode.getId(),
-					flowNode.getName(), flowNode.getId(), this.getName(),
+			LOG.debug("＝＝执行跳转机制,跳转目标: {}({}),离开节点: {}({}),令牌号: {}({}).", toFlowNode.getName(),
+					toFlowNode.getId(), flowNode.getName(), flowNode.getId(), this.getName(),
 					this.getId());
 			setToFlowNode(null);
 			enter(toFlowNode);
@@ -209,15 +225,13 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements
 		// 节点后面没有线的处理
 		if (sequenceFlowList == null || sequenceFlowList.size() == 0) {
 			if (flowNode.getOutgoingSequenceFlows().size() == 0) {
-				LOG.error("节点: {}({}) 后面没有配置处理线条！", flowNode.getName(),
-						flowNode.getId());
-				throw new KernelException("节点: " + flowNode.getName() + "("
-						+ flowNode.getId() + ") 后面没有配置处理线条！");
+				LOG.error("节点: {}({}) 后面没有配置处理线条！", flowNode.getName(), flowNode.getId());
+				throw new KernelException("节点: " + flowNode.getName() + "(" + flowNode.getId()
+						+ ") 后面没有配置处理线条！");
 			} else {
-				LOG.error("节点: {}({}) 后面的条件都不满足导致节点后面没有处理线条,请检查后续线条条件！",
-						flowNode.getName(), this.getId());
-				throw new KernelException("节点: " + flowNode.getName() + "("
-						+ flowNode.getId()
+				LOG.error("节点: {}({}) 后面的条件都不满足导致节点后面没有处理线条,请检查后续线条条件！", flowNode.getName(),
+						this.getId());
+				throw new KernelException("节点: " + flowNode.getName() + "(" + flowNode.getId()
 						+ ") 后面的条件都不满足导致节点后面没有处理线条,请检查后续线条条件！");
 			}
 		}
@@ -234,15 +248,22 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements
 			return;
 		}
 	}
+	
+	/** 清理令牌数据 */
+	public void clearExecutionContextData() {
+
+		this.setSequenceFlow(null);
+
+		this.setToFlowNode(null);
+
+	}
 
 	// 分支处理///////////////////////////////
 
-	public ForkedToken createForkedToken(KernelTokenImpl parent,
-			String sequenceFlowId) {
+	public ForkedToken createForkedToken(KernelTokenImpl parent, String sequenceFlowId) {
 		// 创建一个令牌实例
 
-		KernelTokenImpl childToken = getProcessInstance().createChildrenToken(
-				parent);
+		KernelTokenImpl childToken = getProcessInstance().createChildrenToken(parent);
 		childToken.setName(sequenceFlowId);
 
 		// 创建分支令牌
@@ -294,8 +315,7 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements
 			String leavingSequenceFlowId = forkedToken.leavingSequenceFlowId;
 
 			// 执行节点离开方法
-			childToken.take(this.getFlowNode().findOutgoingSequenceFlow(
-					leavingSequenceFlowId));
+			childToken.take(this.getFlowNode().findOutgoingSequenceFlow(leavingSequenceFlowId));
 
 		}
 	}
@@ -426,7 +446,7 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements
 	}
 
 	/** 子类需要重写这个方法从持久层拿父令牌 */
-	public void ensureParentInitialized() {
+	protected void ensureParentInitialized() {
 
 	}
 
@@ -440,7 +460,11 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements
 		this.parent = parent;
 	}
 
+	protected void ensureChildrenInitialized() {
+
+	}
 	public List<KernelTokenImpl> getChildren() {
+		ensureChildrenInitialized();
 		return children;
 	}
 
@@ -517,8 +541,7 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements
 		List<KernelToken> inactiveTokenInActivity = new ArrayList<KernelToken>();
 		List<KernelToken> otherToken = new ArrayList<KernelToken>();
 
-		List<? extends KernelTokenImpl> tokenChildren = getParent()
-				.getChildren();
+		List<? extends KernelTokenImpl> tokenChildren = getParent().getChildren();
 		for (KernelTokenImpl token : tokenChildren) {
 			if (token.getFlowNode().getId().equals(flowNode.getId())) {
 				if (!token.isActive()) {

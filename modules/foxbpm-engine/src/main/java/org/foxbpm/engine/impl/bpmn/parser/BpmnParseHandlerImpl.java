@@ -20,6 +20,7 @@ package org.foxbpm.engine.impl.bpmn.parser;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -30,35 +31,42 @@ import org.eclipse.bpmn2.Artifact;
 import org.eclipse.bpmn2.Association;
 import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.Bpmn2Package;
-import org.eclipse.bpmn2.BusinessRuleTask;
-import org.eclipse.bpmn2.CallActivity;
 import org.eclipse.bpmn2.Definitions;
-import org.eclipse.bpmn2.EndEvent;
-import org.eclipse.bpmn2.ExclusiveGateway;
 import org.eclipse.bpmn2.FlowElement;
 import org.eclipse.bpmn2.FlowNode;
-import org.eclipse.bpmn2.Group;
-import org.eclipse.bpmn2.InclusiveGateway;
 import org.eclipse.bpmn2.Lane;
 import org.eclipse.bpmn2.LaneSet;
-import org.eclipse.bpmn2.ManualTask;
 import org.eclipse.bpmn2.MessageFlow;
-import org.eclipse.bpmn2.ParallelGateway;
 import org.eclipse.bpmn2.Process;
-import org.eclipse.bpmn2.ReceiveTask;
 import org.eclipse.bpmn2.RootElement;
-import org.eclipse.bpmn2.SendTask;
 import org.eclipse.bpmn2.SequenceFlow;
-import org.eclipse.bpmn2.ServiceTask;
 import org.eclipse.bpmn2.StartEvent;
 import org.eclipse.bpmn2.SubProcess;
-import org.eclipse.bpmn2.Task;
-import org.eclipse.bpmn2.TextAnnotation;
-import org.eclipse.bpmn2.UserTask;
 import org.eclipse.bpmn2.di.BPMNDiagram;
 import org.eclipse.bpmn2.di.BPMNEdge;
 import org.eclipse.bpmn2.di.BPMNShape;
 import org.eclipse.bpmn2.di.BpmnDiPackage;
+import org.eclipse.bpmn2.impl.BoundaryEventImpl;
+import org.eclipse.bpmn2.impl.BusinessRuleTaskImpl;
+import org.eclipse.bpmn2.impl.CallActivityImpl;
+import org.eclipse.bpmn2.impl.EndEventImpl;
+import org.eclipse.bpmn2.impl.ExclusiveGatewayImpl;
+import org.eclipse.bpmn2.impl.GroupImpl;
+import org.eclipse.bpmn2.impl.InclusiveGatewayImpl;
+import org.eclipse.bpmn2.impl.IntermediateCatchEventImpl;
+import org.eclipse.bpmn2.impl.IntermediateThrowEventImpl;
+import org.eclipse.bpmn2.impl.LaneImpl;
+import org.eclipse.bpmn2.impl.ManualTaskImpl;
+import org.eclipse.bpmn2.impl.ParallelGatewayImpl;
+import org.eclipse.bpmn2.impl.ReceiveTaskImpl;
+import org.eclipse.bpmn2.impl.ScriptTaskImpl;
+import org.eclipse.bpmn2.impl.SendTaskImpl;
+import org.eclipse.bpmn2.impl.ServiceTaskImpl;
+import org.eclipse.bpmn2.impl.StartEventImpl;
+import org.eclipse.bpmn2.impl.SubProcessImpl;
+import org.eclipse.bpmn2.impl.TaskImpl;
+import org.eclipse.bpmn2.impl.TextAnnotationImpl;
+import org.eclipse.bpmn2.impl.UserTaskImpl;
 import org.eclipse.bpmn2.util.Bpmn2ResourceFactoryImpl;
 import org.eclipse.dd.dc.Bounds;
 import org.eclipse.dd.dc.DcPackage;
@@ -111,7 +119,7 @@ import org.foxbpm.model.config.foxbpmconfig.EventListenerConfig;
 import org.foxbpm.model.config.style.Style;
 
 public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
-
+	private static Map<Class<?>, Style> styleContainer = new HashMap<Class<?>, Style>();
 	public KernelProcessDefinition createProcessDefinition(String processId, Object processFile) {
 		Process process = null;
 		if (processFile != null) {
@@ -243,8 +251,11 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			// 处理线条
 			List<SequenceFlow> sequenceFlows = ((FlowNode) flowElement).getOutgoing();
 			for (SequenceFlow sequenceFlow : sequenceFlows) {
-				KernelSequenceFlowBehavior kernelSequenceFlowBehavior = BpmnBehaviorEMFConverter.getSequenceFlowBehavior(sequenceFlow, processDefinitionBuilder.getProcessDefinition());
-				processDefinitionBuilder.sequenceFlow(sequenceFlow.getTargetRef().getId(), sequenceFlow.getId(), sequenceFlow.getName(),kernelSequenceFlowBehavior);
+				KernelSequenceFlowBehavior kernelSequenceFlowBehavior = BpmnBehaviorEMFConverter
+						.getSequenceFlowBehavior(sequenceFlow,
+								processDefinitionBuilder.getProcessDefinition());
+				processDefinitionBuilder.sequenceFlow(sequenceFlow.getTargetRef().getId(),
+						sequenceFlow.getId(), sequenceFlow.getName(), kernelSequenceFlowBehavior);
 			}
 			processDefinitionBuilder.endFlowNode();
 		}
@@ -437,7 +448,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			if (kernelDIBounds instanceof KernelLaneImpl) {
 				kernelDIBounds.setProperty(StyleOption.IsHorizontal, bpmnShape.isIsHorizontal());
 			}
-			//内部子流程展开收起属性
+			// 内部子流程展开收起属性
 			if (kernelDIBounds instanceof KernelFlowNodeImpl
 					&& ((KernelFlowNodeImpl) kernelDIBounds).getKernelFlowNodeBehavior() instanceof SubProcessBehavior) {
 				kernelDIBounds.setProperty(StyleOption.IsExpanded, bpmnShape.isIsExpanded());
@@ -563,41 +574,46 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	private Style getStyle(BaseElement bpmnElement,
 			ProcessEngineConfigurationImpl processEngineConfiguration) {
 		Style style = null;
-		if (bpmnElement instanceof StartEvent) {
-			style = processEngineConfiguration.getStyle("StartEvent");
-		} else if (bpmnElement instanceof EndEvent) {
-			style = processEngineConfiguration.getStyle("EndEvent");
-		} else if (bpmnElement instanceof ParallelGateway) {
-			style = processEngineConfiguration.getStyle("ParallelGateway");
-		} else if (bpmnElement instanceof InclusiveGateway) {
-			style = processEngineConfiguration.getStyle("InclusiveGateway");
-		} else if (bpmnElement instanceof ExclusiveGateway) {
-			style = processEngineConfiguration.getStyle("ExclusiveGateway");
-		} else if (bpmnElement instanceof UserTask) {
-			style = processEngineConfiguration.getStyle("UserTask");
-		} else if (bpmnElement instanceof Lane) {
-			style = processEngineConfiguration.getStyle("Lane");
-		} else if (bpmnElement instanceof TextAnnotation) {
-			style = processEngineConfiguration.getStyle("TextAnnotation");
-		} else if (bpmnElement instanceof Group) {
-			style = processEngineConfiguration.getStyle("Group");
-		} else if (bpmnElement instanceof SubProcess) {
-			style = processEngineConfiguration.getStyle("SubProcess");
-		} else if (bpmnElement instanceof CallActivity) {
-			style = processEngineConfiguration.getStyle("CallActivity");
-		} else if (bpmnElement instanceof ServiceTask) {
-			style = processEngineConfiguration.getStyle("ServiceTask");
-		} else if (bpmnElement instanceof ManualTask) {
-			style = processEngineConfiguration.getStyle("ManualTask");
-		} else if (bpmnElement instanceof SendTask) {
-			style = processEngineConfiguration.getStyle("SendTask");
-		} else if (bpmnElement instanceof ReceiveTask) {
-			style = processEngineConfiguration.getStyle("ReceiveTask");
-		} else if (bpmnElement instanceof BusinessRuleTask) {
-			style = processEngineConfiguration.getStyle("BusinessRuleTask");
-		} else if (bpmnElement instanceof Task) {
-			style = processEngineConfiguration.getStyle("Task");
+		if (styleContainer.size() == 0) {
+			styleContainer.put(StartEventImpl.class,
+					processEngineConfiguration.getStyle("StartEvent"));
+			styleContainer.put(EndEventImpl.class, processEngineConfiguration.getStyle("EndEvent"));
+			styleContainer.put(ParallelGatewayImpl.class,
+					processEngineConfiguration.getStyle("ParallelGateway"));
+			styleContainer.put(InclusiveGatewayImpl.class,
+					processEngineConfiguration.getStyle("InclusiveGateway"));
+			styleContainer.put(ExclusiveGatewayImpl.class,
+					processEngineConfiguration.getStyle("ExclusiveGateway"));
+			styleContainer.put(UserTaskImpl.class, processEngineConfiguration.getStyle("UserTask"));
+			styleContainer.put(LaneImpl.class, processEngineConfiguration.getStyle("Lane"));
+			styleContainer.put(TextAnnotationImpl.class,
+					processEngineConfiguration.getStyle("TextAnnotation"));
+			styleContainer.put(GroupImpl.class, processEngineConfiguration.getStyle("Group"));
+			styleContainer.put(SubProcessImpl.class,
+					processEngineConfiguration.getStyle("SubProcess"));
+			styleContainer.put(CallActivityImpl.class,
+					processEngineConfiguration.getStyle("CallActivity"));
+			styleContainer.put(ServiceTaskImpl.class,
+					processEngineConfiguration.getStyle("ServiceTask"));
+			styleContainer.put(TaskImpl.class, processEngineConfiguration.getStyle("Task"));
+			styleContainer.put(ManualTaskImpl.class,
+					processEngineConfiguration.getStyle("ManualTask"));
+			styleContainer.put(ScriptTaskImpl.class,
+					processEngineConfiguration.getStyle("ScriptTask"));
+			styleContainer.put(SendTaskImpl.class, processEngineConfiguration.getStyle("SendTask"));
+			styleContainer.put(ReceiveTaskImpl.class,
+					processEngineConfiguration.getStyle("ReceiveTask"));
+			styleContainer.put(BusinessRuleTaskImpl.class,
+					processEngineConfiguration.getStyle("BusinessRuleTask"));
+			styleContainer.put(BoundaryEventImpl.class,
+					processEngineConfiguration.getStyle("BoundaryEvent"));
+			styleContainer.put(IntermediateCatchEventImpl.class,
+					processEngineConfiguration.getStyle("IntermediateCatchEvent"));
+			styleContainer.put(IntermediateThrowEventImpl.class,
+					processEngineConfiguration.getStyle("IntermediateThrowEvent"));
 		}
+
+		style = styleContainer.get(bpmnElement.getClass());
 
 		if (style == null) {
 			throw new FoxBPMException("未找到" + bpmnElement.getClass() + "的style样式");

@@ -20,6 +20,7 @@ package org.foxbpm.engine.impl.entity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,7 @@ import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.ClockUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.runtime.Token;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
@@ -55,6 +57,11 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 	protected List<TaskEntity> tasks;
 
 	protected TaskEntity assignTask;
+	
+	protected String groupID;
+
+	
+
 
 	@Override
 	public void setFlowNode(KernelFlowNodeImpl flowNode) {
@@ -72,10 +79,33 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		}
 	}
 
+	
+	@Override
+	protected void ensureParentInitialized() {
+		if (this.parent == null && StringUtil.isNotBlank(this.parentId)) {
+			this.parent = Context.getCommandContext().getTokenManager()
+					.findTokenById(this.parentId);
+		}
+	}
+	protected void ensureChildrenInitialized() {
+		if (this.children.size() == 0 && StringUtil.isNotBlank(this.processInstanceId)) {
+			List<TokenEntity> listResult = Context.getCommandContext().getTokenManager()
+					.findChildTokensByProcessInstanceId(this.processInstanceId);
+			Iterator<TokenEntity> iterator = listResult.iterator();
+			while (iterator.hasNext()) {
+				TokenEntity next = iterator.next();
+				if (StringUtil.equals(next.getParentId(), this.id)) {
+					children.add(next);
+				}
+			}
+
+		}
+	}
 	@Override
 	protected void ensureProcessInstanceInitialized() {
 		if ((processInstance == null) && (processInstanceId != null)) {
-			processInstance = Context.getCommandContext().getProcessInstanceManager().findProcessInstanceById(processInstanceId);
+			processInstance = Context.getCommandContext().getProcessInstanceManager()
+					.findProcessInstanceById(processInstanceId);
 		}
 	}
 
@@ -92,9 +122,16 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 	}
 
 	@Override
-	public void enter(KernelFlowNodeImpl flowNode) {
+	public void ensureEnterInitialized(KernelFlowNodeImpl flowNode) {
+		/** 设置令牌进入节点的时间*/
 		setNodeEnterTime(ClockUtil.getCurrentTime());
-		super.enter(flowNode);
+		super.ensureEnterInitialized(flowNode);
+	}
+
+
+	@Override
+	public void clearExecutionContextData() {
+		super.clearExecutionContextData();
 	}
 
 	@Override
@@ -282,6 +319,15 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		
 		endTime=ClockUtil.getCurrentTime();
 		super.end(verifyParentTermination);
+	}
+	
+
+	public String getGroupID() {
+		return groupID;
+	}
+
+	public void setGroupID(String groupID) {
+		this.groupID = groupID;
 	}
 	
 	

@@ -70,13 +70,10 @@ public class GatewaySVGBuilder extends AbstractSVGBuilder {
 		String elementValue = textVO.getElementValue();
 		if (StringUtils.isNotBlank(elementValue)) {
 			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(), elementValue);
-			int languageShift = 0;
 			if (SVGUtils.isChinese(elementValue.charAt(0))) {
-				languageShift = 10;
-				languageShift = languageShift + (textWidth >= 40 ? 5 : 0);
-				textWidth = textWidth / 2;
+				textWidth = textWidth + (textWidth / 20) * 5;
 			}
-			super.setTextX((this.tempWidth / 2) - textWidth / 2 - languageShift);
+			super.setTextX((this.tempWidth / 2) - textWidth / 2);
 			super.setTextY(this.tempHeight + 10);
 		}
 

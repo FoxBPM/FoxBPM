@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2014 FoxBPM ORG.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,27 +15,39 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.kernel.behavior;
+package org.foxbpm.engine.impl.task;
 
-import java.io.Serializable;
-
-import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
-import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 /**
+ * 任务处理命令系统类型
  * @author kenshin
- *
  */
-public interface KernelFlowNodeBehavior extends Serializable {
+public class TaskCommandSystemType {
 	
-	void enter(FlowNodeExecutionContext executionContext);
+	/**
+	 * 自动结束
+	 */
+	public static String AUTOEND="autoEnd";
+	/**
+	 * 自动跳过
+	 */
+	public static String SKIPNODE="skipNode";
+	/**
+	 * 子流程结束
+	 */
+	public static String SUBPROCESSEND="subProcessEnd";
+	/**
+	 * 流程开始
+	 */
+	public static String STARTEVENT="startEvent";
+	/**
+	 * 流程结束
+	 */
+	public static String ENDEVENT="endEvent";
 	
-	void execute(FlowNodeExecutionContext executionContext);
-	
-	void leave(FlowNodeExecutionContext executionContext);
-	
-	void cleanData(FlowNodeExecutionContext executionContext);
-	
-	void setKernelFlowNode(KernelFlowNodeImpl KernelFlowNode);
+	/**
+	 * 等待结束
+	 */
+	public static String RECEIVEEND="receiveEnd";
 
 }

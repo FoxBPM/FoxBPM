@@ -17,7 +17,7 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
-public abstract class ThrowEventImpl extends EventBehavior {
+public abstract class ThrowEventBehavior extends EventBehavior {
 
 	/**
 	 * 
