@@ -17,11 +17,42 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
+import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.bpmn.parser.model.BpmnParser;
+import org.foxbpm.engine.impl.entity.TokenEntity;
+import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
+
 public class SubProcessBehavior extends ActivityBehavior {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	@Override
+	public void execute(FlowNodeExecutionContext executionContext) {
+		
+		TokenEntity token=(TokenEntity) executionContext;
+		
+		KernelFlowNodeImpl flowNode =executionContext.getFlowNode();
+		
+		KernelFlowNodeImpl initialFlowNode = (KernelFlowNodeImpl) flowNode.getProperty(BpmnParser.INITIAL);
+	    
+	    if (initialFlowNode == null) {
+	      throw new FoxBPMException("内部子流程("+flowNode.getId()+")里没有找到启动节点");
+	    }
+	    
+	    /** 令牌执行到内部子流程会先创建一个子令牌将这个子令牌进入子流程运行，自己则停在子流程上。 */
+	    TokenEntity nodeToken = (TokenEntity)token.createForkedToken(token, flowNode.getId()).token;
+	    
+	    /** 设置当前令牌为子流程根令牌,子流程根令牌在结束的时候会去驱动父亲令牌向下。 */
+	    nodeToken.setSubProcessRootToken(true);
+	    
+	    nodeToken.enter(initialFlowNode);
+
+	}
+	
+	
 
 }
