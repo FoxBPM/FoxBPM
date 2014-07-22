@@ -39,9 +39,9 @@ public class BoundaryEventBehavior extends CatchEventBehavior {
 		EventDefinition eventDefinition = null;
 		while (iterator.hasNext()) {
 			eventDefinition = iterator.next();
-			if (eventDefinition instanceof TimerEventDefinition) {
+			if (eventDefinition instanceof TimerEventBehavior) {
 				// 边界事件的定时任务
-				TimerEventDefinition timerEventDefinition = (TimerEventDefinition) eventDefinition;
+				TimerEventBehavior timerEventDefinition = (TimerEventBehavior) eventDefinition;
 				// 时间定义，设置自动调度工作
 				this.scheduleAutoExecuteJob(timerEventDefinition,
 						(KernelTokenImpl) executionContext);
@@ -59,7 +59,7 @@ public class BoundaryEventBehavior extends CatchEventBehavior {
 	 * @throws Exception
 	 * @since 1.0.0
 	 */
-	private void scheduleAutoExecuteJob(TimerEventDefinition timerEventDefinition,
+	private void scheduleAutoExecuteJob(TimerEventBehavior timerEventDefinition,
 			KernelTokenImpl kernelTokenImpl) {
 		// TODO QuartzUtil类是否需要改方法参数，processDefinitionID改成 processInstanceID
 		FoxbpmJobDetail<TokenTimeoutAutoExecuteJob> tokenTimeoutAutoExecuteJobDetail = new FoxbpmJobDetail<TokenTimeoutAutoExecuteJob>(

@@ -40,7 +40,7 @@ public class CatchEventParser extends EventParser {
 		for (EventDefinition eventDefinition : eventDefinitions) {
 
 			if (eventDefinition instanceof TimerEventDefinition) {
-				org.foxbpm.engine.impl.bpmn.behavior.TimerEventDefinition timerEventDefinitionNew = new org.foxbpm.engine.impl.bpmn.behavior.TimerEventDefinition();
+				org.foxbpm.engine.impl.bpmn.behavior.TimerEventBehavior timerEventDefinitionNew = new org.foxbpm.engine.impl.bpmn.behavior.TimerEventBehavior();
 
 				TimerEventDefinition timerEventDefinition = (TimerEventDefinition) eventDefinition;
 				timerEventDefinitionNew.setId(timerEventDefinition.getId());

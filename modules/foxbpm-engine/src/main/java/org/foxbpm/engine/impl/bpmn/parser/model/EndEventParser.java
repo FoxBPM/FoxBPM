@@ -27,7 +27,7 @@ import org.eclipse.bpmn2.impl.EndEventImpl;
 import org.eclipse.bpmn2.impl.TerminateEventDefinitionImpl;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.EndEventBehavior;
-import org.foxbpm.engine.impl.bpmn.behavior.TerminateEventDefinition;
+import org.foxbpm.engine.impl.bpmn.behavior.TerminateEventBehavior;
 
 public class EndEventParser extends FlowNodeParser {
 
@@ -40,7 +40,7 @@ public class EndEventParser extends FlowNodeParser {
 		List<org.foxbpm.engine.impl.bpmn.behavior.EventDefinition> behaviorEventDefinitions = new ArrayList<org.foxbpm.engine.impl.bpmn.behavior.EventDefinition>();
 		for(EventDefinition eventDefinition :eventDefinitions){
 			if(eventDefinition instanceof TerminateEventDefinitionImpl){
-				TerminateEventDefinition terminateEventDefinition = new TerminateEventDefinition();
+				TerminateEventBehavior terminateEventDefinition = new TerminateEventBehavior();
 				behaviorEventDefinitions.add(terminateEventDefinition);
 			}
 		}
