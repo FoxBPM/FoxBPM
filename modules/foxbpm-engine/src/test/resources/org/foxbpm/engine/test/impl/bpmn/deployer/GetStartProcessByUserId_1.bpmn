@@ -12,8 +12,11 @@
       <bpmn2:potentialOwner id="PotentialOwner_1">
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
-            <foxbpm:connectorInstance connectorId="UserIdActorConnector" packageName="org.foxbpm.connector.actorconnector.UserIdActorConnector" className="UserIdActorConnector" connectorInstanceId="d8e0801c-13cc-4c6b-b14d-9d00faff4578" connectorInstanceName="系统登录人" errorHandling="" type="actorconnector">
+            <foxbpm:connectorInstance connectorId="SelectUserActorConnector" packageName="org.foxbpm.connector.actorconnector.SelectUserActorConnector" className="SelectUserActorConnector" connectorInstanceId="5c898b88-eaf6-4124-80a6-172d48b59441" connectorInstanceName="admin3" errorHandling="" type="actorconnector">
               <documentation xsi:type="foxbpm:Documentation"></documentation>
+              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="userId" name="用户编号" dataType="java.lang.String" isExecute="true">
+                <foxbpm:expression xsi:type="foxbpm:Expression" name="admin3"><![CDATA["admin3"]]></foxbpm:expression>
+              </foxbpm:connectorParameterInputs>
             </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>

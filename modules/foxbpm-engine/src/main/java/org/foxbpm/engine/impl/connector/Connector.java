@@ -73,11 +73,11 @@ public class Connector implements KernelListener {
 			scheduleAutoExecuteJob(executionContext);
 		} else {
 			// 直接执行方式
-			executeJob(executionContext);
+			execute(executionContext);
 		}
 	}
 
-	public void executeJob(ListenerExecutionContext executionContext) throws Exception {
+	public void execute(ListenerExecutionContext executionContext) throws Exception {
 		try {
 			String classNameObj = packageName + "." + className;
 			Class<?> connectorHandlerClass = Class.forName(classNameObj);
