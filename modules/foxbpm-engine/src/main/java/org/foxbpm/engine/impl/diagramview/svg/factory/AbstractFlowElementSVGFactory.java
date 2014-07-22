@@ -32,7 +32,6 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.GVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.diagramview.vo.VONode;
 import org.foxbpm.kernel.process.KernelBaseElement;
-import org.foxbpm.kernel.process.KernelFlowElement;
 
 /**
  * FLOW单个节点SVG工厂类
@@ -50,20 +49,6 @@ public abstract class AbstractFlowElementSVGFactory extends AbstractFlowElementV
 	public AbstractFlowElementSVGFactory(KernelBaseElement kernelBaseElement,
 			String svgTemplateFileName) {
 		super(kernelBaseElement, svgTemplateFileName);
-	}
-
-	/**
-	 * 创建具体的工厂类,目前支持三种实现
-	 * 
-	 * @param kernelFlowElement
-	 * @param svgTemplateFileName
-	 * @return
-	 */
-	public static AbstractFlowElementSVGFactory createSVGFactory(
-			KernelFlowElement kernelFlowElement, String svgTemplateFileName, String taskState,
-			AbstractFlowElementVOFactory abstractFlowNodeSVGFactory) {
-		return new SignProcessStateSVGFactory(kernelFlowElement, svgTemplateFileName,
-				abstractFlowNodeSVGFactory, taskState);
 	}
 
 	/**

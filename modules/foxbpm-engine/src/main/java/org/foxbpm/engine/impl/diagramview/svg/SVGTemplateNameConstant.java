@@ -32,7 +32,7 @@ public final class SVGTemplateNameConstant {
 	 * start_event
 	 */
 	public static final String TEMPLATE_STARTEVENT_NONE = "startevent/none.svg";
-	public static final String TEMPLATE_STARTEVENT_TIMER = "startevent/time.svg";
+	public static final String TEMPLATE_STARTEVENT_TIMER = "startevent/timer.svg";
 	public static final String TEMPLATE_STARTEVENT_SIGNAL = "startevent/signal.svg";
 	public static final String TEMPLATE_STARTEVENT_MULTIPLE = "startevent/multiple.svg";
 	public static final String TEMPLATE_STARTEVENT_MULTIPLE_PARALLEL = "startevent/multiple.parallel.svg";
@@ -54,6 +54,8 @@ public final class SVGTemplateNameConstant {
 	public static final String TEMPLATE_ENDEVENT_ERROR = "endevent/error.svg";
 	public static final String TEMPLATE_ENDEVENT_TERMINATE = "endevent/terminate.svg";
 	public static final String TEMPLATE_ENDEVENT_COMPENSATION = "endevent/compensation.svg";
+
+	public static final String TEMPLATE_CATCHEVENT_TIMER = "intermediateevent/timer.svg";
 
 	/**
 	 * activity

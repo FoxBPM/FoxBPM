@@ -36,7 +36,6 @@ import org.foxbpm.engine.impl.diagramview.vo.VONode;
 import org.foxbpm.kernel.behavior.KernelArtifactBehavior;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
 import org.foxbpm.kernel.process.KernelBaseElement;
-import org.foxbpm.kernel.process.KernelFlowElement;
 import org.foxbpm.kernel.process.KernelLane;
 import org.foxbpm.kernel.process.impl.KernelArtifactImpl;
 import org.foxbpm.kernel.process.impl.KernelAssociationImpl;
@@ -195,21 +194,6 @@ public abstract class AbstractFlowElementVOFactory {
 		// 当前实现是SVG格式，后期可能支持微软的XML
 		return AbstractFlowElementSVGFactory.createSVGFactory(kernelBaseElement,
 				svgTemplateFileName);
-	}
-
-	/**
-	 * 创建具体的工厂类
-	 * 
-	 * @param kernelFlowElement
-	 * @param svgTemplateFileName
-	 * @return
-	 */
-	public static AbstractFlowElementVOFactory createSignedSVGFactory(
-			KernelFlowElement kernelFlowElement, String svgTemplateFileName, String taskState,
-			AbstractFlowElementVOFactory abstractFlowNodeVOFactory) {
-		// 当前实现是SVG格式，后期可能支持微软的XML
-		return AbstractFlowElementSVGFactory.createSVGFactory(kernelFlowElement,
-				svgTemplateFileName, taskState, abstractFlowNodeVOFactory);
 	}
 
 	public abstract String convertNodeListToString(Map<String, Object> processDefinitionPorperties,

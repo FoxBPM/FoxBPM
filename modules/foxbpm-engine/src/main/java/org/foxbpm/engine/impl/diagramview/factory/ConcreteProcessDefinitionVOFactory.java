@@ -28,14 +28,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.bpmn.behavior.ActivityBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.AssociationBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.BoundaryEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.BusinessRuleTaskBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.CallActivityBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.CatchEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.EndEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.EventBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.EventDefinition;
 import org.foxbpm.engine.impl.bpmn.behavior.ExclusiveGatewayBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.GatewayBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.GroupBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.InclusiveGatewayBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.IntermediateCatchEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ManualTaskBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ParallelGatewayBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ReceiveTaskBehavior;
@@ -45,7 +49,10 @@ import org.foxbpm.engine.impl.bpmn.behavior.ServiceTaskBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.StartEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.SubProcessBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.TaskBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.TerminateEventDefinition;
 import org.foxbpm.engine.impl.bpmn.behavior.TextAnnotationBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.ThrowEventBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.TimerEventDefinition;
 import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
 import org.foxbpm.engine.impl.bpmn.parser.StyleOption;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateNameConstant;
@@ -335,20 +342,85 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 				taskType = SVGTypeNameConstant.SVT_TYPE_GATEWAY;
 				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_GATEWAY_PARALLEL;
 			}
-			// 事件
 		} else if (kernelFlowNodeBehavior instanceof EventBehavior) {
-			if (kernelFlowNodeBehavior instanceof StartEventBehavior) {
-				// 开始事件
-				taskType = SVGTypeNameConstant.SVG_TYPE_EVENT;
-				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_STARTEVENT_NONE;
+			// 捕获事件
+			if (kernelFlowNodeBehavior instanceof CatchEventBehavior) {
+				boolean hasTimerDefinition = this
+						.hasTimerDefinition((CatchEventBehavior) kernelFlowNodeBehavior);
+				if (hasTimerDefinition) {
+					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_CATCHEVENT_TIMER;
+				}
+				if (kernelFlowNodeBehavior instanceof StartEventBehavior) {
+					// 开始事件
+					taskType = SVGTypeNameConstant.SVG_TYPE_EVENT;
+					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_STARTEVENT_NONE;
+					if (hasTimerDefinition) {
+						svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_STARTEVENT_TIMER;
+					}
+				} else if (kernelFlowNodeBehavior instanceof BoundaryEventBehavior) {
+					// 边界事件
+					taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_BOUNDARY_INTERRUPTING_TIME;
+				} else if (kernelFlowNodeBehavior instanceof IntermediateCatchEventBehavior) {
+					// 中间件事件
+					taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_BOUNDARY_INTERRUPTING_TIME;
+				}
 			} else if (kernelFlowNodeBehavior instanceof EndEventBehavior) {
 				// 结束事件
 				taskType = SVGTypeNameConstant.SVG_TYPE_EVENT;
 				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ENDEVENT_NONE;
+				if (this.hasTerminateDefinition((EndEventBehavior) kernelFlowNodeBehavior)) {
+					taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_END_TERMINATE;
+					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ENDEVENT_TERMINATE;
+				}
+
+			} else if (kernelFlowNodeBehavior instanceof ThrowEventBehavior) {
+				// 抛出事件
 			}
 		}
 
 		return new String[]{taskType, svgTemplateFileName};
+	}
+
+	/**
+	 * 
+	 * hasTerminateDefinition(判断是否有终止定义)
+	 * 
+	 * @param endEventBehavior
+	 * @return boolean
+	 * @exception
+	 * @since 1.0.0
+	 */
+	private boolean hasTerminateDefinition(EndEventBehavior endEventBehavior) {
+		List<EventDefinition> eventDefinitions = endEventBehavior.getEventDefinitions();
+		Iterator<EventDefinition> iterator = eventDefinitions.iterator();
+		while (iterator.hasNext()) {
+			EventDefinition next = iterator.next();
+			if (next instanceof TerminateEventDefinition) {
+				return true;
+			}
+		}
+		return false;
+
+	}
+	/**
+	 * 
+	 * hasTimerDefinition(判断捕获事件是否有时间定义)
+	 * 
+	 * @param catchEventBehavior
+	 * @return boolean
+	 * @exception
+	 * @since 1.0.0
+	 */
+	private boolean hasTimerDefinition(CatchEventBehavior catchEventBehavior) {
+		List<EventDefinition> eventDefinitions = catchEventBehavior.getEventDefinitions();
+		Iterator<EventDefinition> iterator = eventDefinitions.iterator();
+		while (iterator.hasNext()) {
+			EventDefinition next = iterator.next();
+			if (next instanceof TimerEventDefinition) {
+				return true;
+			}
+		}
+		return false;
 	}
 	/**
 	 * 
