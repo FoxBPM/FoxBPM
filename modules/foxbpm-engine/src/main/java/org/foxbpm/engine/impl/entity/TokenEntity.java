@@ -20,9 +20,11 @@ package org.foxbpm.engine.impl.entity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
@@ -35,7 +37,12 @@ import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
-public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExecutionContext, PersistentObject, HasRevision {
+public class TokenEntity extends KernelTokenImpl
+		implements
+			Token,
+			ConnectorExecutionContext,
+			PersistentObject,
+			HasRevision {
 
 	/**
 	 * 
@@ -73,9 +80,31 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 	}
 
 	@Override
+	protected void ensureParentInitialized() {
+		if (this.parent == null && StringUtils.isNotBlank(this.parentId)) {
+			this.parent = Context.getCommandContext().getTokenManager()
+					.findTokenById(this.parentId);
+		}
+	}
+	protected void ensureChildrenInitialized() {
+		if (this.children.size() == 0 && StringUtils.isNotBlank(this.processInstanceId)) {
+			List<TokenEntity> listResult = Context.getCommandContext().getTokenManager()
+					.findChildTokensByProcessInstanceId(this.processInstanceId);
+			Iterator<TokenEntity> iterator = listResult.iterator();
+			while (iterator.hasNext()) {
+				TokenEntity next = iterator.next();
+				if (StringUtils.equals(next.getParentId(), this.id)) {
+					children.add(next);
+				}
+			}
+
+		}
+	}
+	@Override
 	protected void ensureProcessInstanceInitialized() {
 		if ((processInstance == null) && (processInstanceId != null)) {
-			processInstance = Context.getCommandContext().getProcessInstanceManager().findProcessInstanceById(processInstanceId);
+			processInstance = Context.getCommandContext().getProcessInstanceManager()
+					.findProcessInstanceById(processInstanceId);
 		}
 	}
 
@@ -191,8 +220,8 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 	}
 
 	public Map<String, Object> getPersistentState() {
-		
-		Map<String,Object> objectParam = new HashMap<String,Object>();
+
+		Map<String, Object> objectParam = new HashMap<String, Object>();
 		objectParam.put("tokenId", getId());
 		objectParam.put("name", getName());
 		objectParam.put("startTime", getStartTime());
@@ -223,7 +252,6 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		return getProcessInstance().getInitiator();
 	}
 
-
 	public String getAuthenticatedUserId() {
 		return Authentication.getAuthenticatedUserId();
 	}
@@ -243,7 +271,7 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 	// 任务对象
 	// ///////////////////////////////////////////////////
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	protected void ensureTasksInitialized() {
 		if (tasks == null) {
 			tasks = (List) Context.getCommandContext().getTaskManager().findTasksByTokenId(id);
@@ -279,11 +307,9 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 
 	@Override
 	public void end(boolean verifyParentTermination) {
-		
-		endTime=ClockUtil.getCurrentTime();
+
+		endTime = ClockUtil.getCurrentTime();
 		super.end(verifyParentTermination);
 	}
-	
-	
 
 }
