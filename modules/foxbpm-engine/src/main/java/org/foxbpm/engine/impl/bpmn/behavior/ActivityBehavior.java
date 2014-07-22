@@ -517,7 +517,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 
 						LOG.debug("节点: {}({}) 多实例完成条件验证通过,令牌号: {}({}).", getName(), getId(), token.getName(), token.getId());
 
-						leave(executionContext);
+						super.leave(executionContext);
 
 					} else {
 						// 不做处理
@@ -535,7 +535,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		// 正常处理
 		else {
 
-			leave(executionContext);
+			super.leave(executionContext);
 
 		}
 	}
