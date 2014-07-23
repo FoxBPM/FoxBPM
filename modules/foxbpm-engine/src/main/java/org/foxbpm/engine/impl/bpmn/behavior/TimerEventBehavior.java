@@ -83,12 +83,11 @@ public class TimerEventBehavior extends EventDefinition {
 		// 创建TRIGGER JOB JOBDETAIL
 		FoxbpmJobDetail<FoxbpmScheduleJob> jobDetail = null;
 		if (StringUtil.equals(eventType, EVENT_TYPE_START)) {
+			/** 定时启动流程实例 */
 			jobDetail = new FoxbpmJobDetail<FoxbpmScheduleJob>(new ProcessIntanceAutoStartJob(
 					GuidUtil.CreateGuid(), (String) params[1]));
 			// 根据三种表达式创建TRIGGER
-			jobDetail.createTriggerList(this.getTimeDate(), null);
-			jobDetail.createTriggerList(this.getTimeDuration(), null);
-			jobDetail.createTriggerList(this.getTimeCycle(), null);
+			this.createTriggerList(jobDetail, null);
 			// 设置调度变量
 			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.PROCESS_DEFINITION_ID,
 					(String) params[0]);
@@ -100,13 +99,12 @@ public class TimerEventBehavior extends EventDefinition {
 
 		} else if (StringUtil.equals(eventType, EVENT_TYPE_BOUNDARY)) {
 			KernelTokenImpl kernelTokenImpl = (KernelTokenImpl) executionContext;
+			/** 边界事件时间定义执行 */
 			jobDetail = new FoxbpmJobDetail<FoxbpmScheduleJob>(new TimeDefinitionExecuteJob(
 					GuidUtil.CreateGuid(), kernelTokenImpl.getProcessInstanceId()));
 
 			// 根据三种表达式创建TRIGGER
-			jobDetail.createTriggerList(this.getTimeDate(), kernelTokenImpl);
-			jobDetail.createTriggerList(this.getTimeDuration(), kernelTokenImpl);
-			jobDetail.createTriggerList(this.getTimeCycle(), kernelTokenImpl);
+			this.createTriggerList(jobDetail, kernelTokenImpl);
 
 			// 设置调度变量
 			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.PROCESS_INSTANCE_ID,
@@ -117,10 +115,11 @@ public class TimerEventBehavior extends EventDefinition {
 					.getFlowNode().getId());
 
 		} else if (StringUtil.equals(eventType, EVENT_TYPE_CONNECTOR)) {
-
+			/** 连接器定时执行 */
 			jobDetail = new FoxbpmJobDetail<FoxbpmScheduleJob>(new ConnectorAutoExecuteJob(
 					GuidUtil.CreateGuid(), executionContext.getProcessInstanceId()));
-			jobDetail.createTriggerList(this.timeDate, (KernelTokenImpl) executionContext);
+			this.createTriggerList(jobDetail, (KernelTokenImpl) executionContext);
+
 			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.CONNECTOR_ID, params[0]);
 			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.PROCESS_INSTANCE_ID,
 					executionContext.getProcessInstanceId());
@@ -141,7 +140,22 @@ public class TimerEventBehavior extends EventDefinition {
 
 		// 保存更新调度信息
 		QuartzUtil.scheduleFoxbpmJob(jobDetail);
-
+	}
+	/**
+	 * 
+	 * createTriggerList(创建TriggerList)
+	 * 
+	 * @param jobDetail
+	 * @param kernelTokenImpl
+	 *            void
+	 * @exception
+	 * @since 1.0.0
+	 */
+	private void createTriggerList(FoxbpmJobDetail<FoxbpmScheduleJob> jobDetail,
+			KernelTokenImpl kernelTokenImpl) {
+		jobDetail.createTriggerList(this.timeDate, kernelTokenImpl);
+		jobDetail.createTriggerList(this.timeDuration, kernelTokenImpl);
+		jobDetail.createTriggerList(this.timeCycle, kernelTokenImpl);
 	}
 	public Expression getTimeDate() {
 		return timeDate;
