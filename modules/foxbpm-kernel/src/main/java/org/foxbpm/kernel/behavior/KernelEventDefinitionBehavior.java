@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2014 FoxBPM Co.,Ltd.
+ * Copyright 1996-2014 FoxBPM ORG.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,22 +15,29 @@
  * 
  * @author MAENLIANG
  */
-package org.foxbpm.engine.impl.bpmn.behavior;
+package org.foxbpm.kernel.behavior;
 
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
-public class TerminateEventBehavior extends EventDefinition {
-
+/**
+ * 
+ * 
+ * KernelEventDefinitionBehavior 事件定义的行为接口，例如时间定义、终止定义、、、
+ * 
+ * MAENLIANG 2014年7月23日 下午1:33:28
+ * 
+ * @version 1.0.0
+ * 
+ */
+public interface KernelEventDefinitionBehavior {
 	/**
-	 * serialVersionUID:TODO（用一句话描述这个变量表示什么）
 	 * 
+	 * execute(事件定义的执行)
+	 * 
+	 * @param executionContext
+	 *            void
+	 * @exception
 	 * @since 1.0.0
 	 */
-	private static final long serialVersionUID = 622240217012994908L;
-
-	@Override
-	public void execute(FlowNodeExecutionContext executionContext) {
-		// TODO 事件执行
-		executionContext.end();
-	}
+	void execute(FlowNodeExecutionContext executionContext);
 }

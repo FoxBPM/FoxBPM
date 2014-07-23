@@ -61,11 +61,15 @@ public class TimeExecuteTokenCmd implements Command<Void>, Serializable {
 		KernelFlowNodeBehavior kernelFlowNodeBehavior = flowNode.getKernelFlowNodeBehavior();
 
 		if (kernelFlowNodeBehavior instanceof BoundaryEventBehavior) {
-			// BoundaryEventBehavior boundaryEventBehavior =
-			// (BoundaryEventBehavior) kernelFlowNodeBehavior;
-			// TODO 如果是终止事件 则结束进入节点的时候的散发的所有子令牌 然后将父令牌 移动到超时节点往下进行 结束令牌
-			// 驱动令牌,继续往前执行
-			tokenEntity.signal();
+			BoundaryEventBehavior boundaryEventBehavior = (BoundaryEventBehavior) kernelFlowNodeBehavior;
+			if (boundaryEventBehavior.isCancelActivity()) {
+				// TODO 如果是终止事件 则结束进入节点的时候的散发的所有子令牌 然后将父令牌 移动到超时节点往下进行 结束令牌
+
+			} else {
+				// 驱动令牌,继续往前执行
+				tokenEntity.signal();
+			}
+
 		} else if (kernelFlowNodeBehavior instanceof CatchEventBehavior) {
 			// 驱动令牌,继续往前执行
 			tokenEntity.signal();

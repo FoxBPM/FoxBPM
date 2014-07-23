@@ -26,6 +26,7 @@ import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.repository.ProcessDefinitionQuery;
+import org.foxbpm.rest.common.RestConstants;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.DataResult;
 import org.restlet.data.Form;
@@ -45,23 +46,17 @@ public class ProcessDefinitionCollectionResouce extends AbstractRestResource {
 		ProcessDefinitionQuery processDefinitionQuery = engine.getModelService().createProcessDefinitionQuery();
 		Form query = getQuery();
 		Set<String> names = query.getNames();
-		if (names.contains("category")) {
-			processDefinitionQuery.processDefinitionCategory(getQueryParameter("category", query));
+		if (names.contains(RestConstants.CATEGORY)) {
+			processDefinitionQuery.processDefinitionCategory(getQueryParameter(RestConstants.CATEGORY, query));
 		}
-		if (names.contains("categoryLike")) {
-			processDefinitionQuery.processDefinitionCategoryLike(getQueryParameter("categoryLike", query));
+		if (names.contains(RestConstants.PROCESS_KEY)) {
+			processDefinitionQuery.processDefinitionKey(getQueryParameter(RestConstants.PROCESS_KEY, query));
 		}
-		if (names.contains("key")) {
-			processDefinitionQuery.processDefinitionKey(getQueryParameter("key", query));
+		if (names.contains(RestConstants.NAME)) {
+			processDefinitionQuery.processDefinitionName(getQueryParameter(RestConstants.NAME, query));
 		}
-		if (names.contains("keyLike")) {
-			processDefinitionQuery.processDefinitionKeyLike(getQueryParameter("keyLike", query));
-		}
-		if (names.contains("name")) {
-			processDefinitionQuery.processDefinitionName(getQueryParameter("name", query));
-		}
-		if (names.contains("nameLike")) {
-			processDefinitionQuery.processDefinitionNameLike(getQueryParameter("nameLike", query));
+		if (names.contains(RestConstants.NAME_LIKE)) {
+			processDefinitionQuery.processDefinitionNameLike(getQueryParameter(RestConstants.NAME_LIKE, query));
 		}
 
 		List<ProcessDefinition> processDefinitions = processDefinitionQuery.list();

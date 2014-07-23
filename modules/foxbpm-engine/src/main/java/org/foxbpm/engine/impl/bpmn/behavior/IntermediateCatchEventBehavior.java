@@ -17,11 +17,18 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
+
 public class IntermediateCatchEventBehavior extends CatchEventBehavior {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	@Override
+	public void execute(FlowNodeExecutionContext executionContext) {
+		// TODO Auto-generated method stub
+	}
 
 }

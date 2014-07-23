@@ -23,6 +23,7 @@ import org.foxbpm.rest.service.api.model.DeploymentResource;
 import org.foxbpm.rest.service.api.model.ModelsResouce;
 import org.foxbpm.rest.service.api.model.ProcessDefinitionCollectionResouce;
 import org.foxbpm.rest.service.api.model.ProcessDefinitionResouce;
+import org.foxbpm.rest.service.api.model.ResourceResource;
 import org.foxbpm.rest.service.api.model.VariableDefinitonResouces;
 import org.restlet.routing.Router;
 
@@ -36,10 +37,11 @@ public class RestServicesInit {
 		router.attach("/models", ModelsResouce.class);
 		router.attach("/model/deployments", DeploymentCollectionResource.class);
 	    router.attach("/model/deployment/{deploymentId}", DeploymentResource.class);
-	    router.attach("/model/deployment/{deploymentId}/{resourceName}", DeploymentResource.class);
-	    router.attach("/process-definition/{processDefinitionId}", ProcessDefinitionResouce.class);
-	    router.attach("/process-definition/{processKey}/{version}/variables", VariableDefinitonResouces.class);
+	    router.attach("/model/resource/{deploymentId}/{resourceName}", ResourceResource.class);
+	    
 	    router.attach("/process-definitions", ProcessDefinitionCollectionResouce.class);
+	    router.attach("/process-definition/{processDefinitionId}", ProcessDefinitionResouce.class);
+	    router.attach("/variable-definition/{key}/{version}/variables", VariableDefinitonResouces.class);
 	    router.attach("/flowconfig", FlowConfigResouce.class);
 	}
 }

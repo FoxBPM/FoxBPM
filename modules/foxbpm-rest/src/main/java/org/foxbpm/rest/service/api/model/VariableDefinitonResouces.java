@@ -24,15 +24,18 @@ import java.util.Map;
 import org.foxbpm.engine.impl.datavariable.DataVariableDefinition;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.rest.common.RestConstants;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.DataResult;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
+import org.restlet.resource.Get;
 
 public class VariableDefinitonResouces extends AbstractRestResource {
 
+	@Get
 	public DataResult getProcessDefinitionVariable(){
-		String processKey = getAttribute("processKey");
-		int version = StringUtil.getInt(getAttribute("version"));
+		String processKey = getAttribute(RestConstants.PROCESS_KEY);
+		int version = StringUtil.getInt(getAttribute(RestConstants.VERSION));
 		
 		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity)FoxBpmUtil.getProcessEngine().getModelService().getProcessDefinition(processKey, version); 
 		if(processDefinition == null){
