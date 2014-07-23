@@ -17,8 +17,18 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
-public class EventDefinition extends RootElement {
+import org.foxbpm.kernel.behavior.KernelEventDefinitionBehavior;
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
+
+public abstract class EventDefinition extends RootElement implements KernelEventDefinitionBehavior {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 事件定义的执行事件
+	 * 
+	 * @param executionContext
+	 *            流程内容上下文
+	 */
+	public abstract void execute(FlowNodeExecutionContext executionContext);
 }

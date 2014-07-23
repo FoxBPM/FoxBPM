@@ -52,8 +52,6 @@ public class BehaviorRelationMemo {
 				&& beAttachedActivity != null && beAttachedActivityBoundaryEventBehavior != null
 				&& StringUtil.equals(attachActivity.getId(), beAttachedActivity.getId())) {
 			attachActivityBehavior.getBoundaryEvents().add(beAttachedActivityBoundaryEventBehavior);
-			this.setAttachActivity(null);
-			this.setAttachActivityBehavior(null);
 			this.setBeAttachedActivity(null);
 			this.setBeAttachedActivityBoundaryEventBehavior(null);
 		}
