@@ -29,20 +29,17 @@ public class SequenceFlowBehavior extends FlowElementBehavior implements KernelS
 	 * @author kenshin
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private Expression conditionExpression;
-	
-	private String sequenceFlowId;
-	
 	public boolean isContinue(FlowNodeExecutionContext executionContext) {
 		Object expressionValue = conditionExpression.getValue(executionContext);
-		if(expressionValue == null){
+		if (expressionValue == null) {
 			return true;
 		}
-		if(expressionValue instanceof Boolean){
-			return (Boolean)expressionValue;
+		if (expressionValue instanceof Boolean) {
+			return (Boolean) expressionValue;
 		}
-		throw new FoxBPMIllegalArgumentException("线条{}表达式需要返回布尔类型结果",sequenceFlowId);
+		throw new FoxBPMIllegalArgumentException("线条{}表达式需要返回布尔类型结果", this.id);
 	}
 
 	public Expression getConditionExpression() {
@@ -52,5 +49,5 @@ public class SequenceFlowBehavior extends FlowElementBehavior implements KernelS
 	public void setConditionExpression(Expression conditionExpression) {
 		this.conditionExpression = conditionExpression;
 	}
-	
+
 }

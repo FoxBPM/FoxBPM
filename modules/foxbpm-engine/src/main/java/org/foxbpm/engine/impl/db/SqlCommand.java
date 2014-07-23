@@ -37,8 +37,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SqlCommand {
-	
-	 private static Logger debugLog = LoggerFactory.getLogger(SqlCommand.class);
+
+	private static Logger debugLog = LoggerFactory.getLogger(SqlCommand.class);
 
 	Connection conn;
 
@@ -65,12 +65,12 @@ public class SqlCommand {
 	 */
 	public Object queryForValue(String sql, List<Object> data) throws FoxBPMException {
 		String resultStr = new String();
-		PreparedStatement pstmt=null;
-		ResultSet rs=null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try {
 			pstmt = conn.prepareStatement(sql);
-			debugLog.debug("FixFlow引擎数据持久化语句: " +sql); 
-			debugLog.debug("参数: " +data); 
+			debugLog.debug("FixFlow引擎数据持久化语句: " + sql);
+			debugLog.debug("参数: " + data);
 			if (null != data && data.size() > 0) {
 				for (int i = 0; i < data.size(); i++) {
 					data.set(i, transformSqlType(data.get(i)));
@@ -85,17 +85,16 @@ public class SqlCommand {
 			}
 		} catch (SQLException e) {
 			throw new FoxBPMException("查询错误：" + e.getMessage(), e);
-		}
-		finally
-		{
+		} finally {
 			try {
-				if(pstmt != null){
+				if (pstmt != null) {
 					pstmt.close();
 				}
-				if(rs != null){
-				rs.close();}
+				if (rs != null) {
+					rs.close();
+				}
 			} catch (SQLException e) {
-				throw new FoxBPMException("关闭游标失败",e);
+				throw new FoxBPMException("关闭游标失败", e);
 			}
 		}
 		return resultStr;
@@ -123,11 +122,11 @@ public class SqlCommand {
 	public Map<String, Object> queryForMap(String sql, Object[] data) throws FoxBPMException {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		ResultSet rs = null;
-		PreparedStatement pstmt=null;
+		PreparedStatement pstmt = null;
 		try {
 			pstmt = conn.prepareStatement(sql);
-			debugLog.debug("FixFlow引擎数据持久化语句: " +sql); 
-			debugLog.debug("参数: " +sql); 
+			debugLog.debug("FixFlow引擎数据持久化语句: " + sql);
+			debugLog.debug("参数: " + sql);
 			if (null != data && data.length > 0) {
 				for (int i = 0; i < data.length; i++) {
 					data[i] = transformSqlType(data[i]);
@@ -143,13 +142,14 @@ public class SqlCommand {
 			}
 			rs = pstmt.executeQuery();
 			ResultSetMetaData rsmd = rs.getMetaData();
-			
+
 			if (rs.next()) {
 
 				for (int i = 1; i <= rsmd.getColumnCount(); i++) {
 					if (rsmd.getColumnType(i) == 93) {
 						if (rs.getTimestamp(i) != null) {
-							resultMap.put(rsmd.getColumnLabel(i), new Date(rs.getTimestamp(i).getTime()));
+							resultMap.put(rsmd.getColumnLabel(i), new Date(rs.getTimestamp(i)
+									.getTime()));
 						}
 
 					} else {
@@ -159,24 +159,24 @@ public class SqlCommand {
 						} else {
 							resultMap.put(rsmd.getColumnLabel(i), rs.getObject(i));
 						}
-				
+
 					}
 				}
 			}
 		} catch (SQLException e) {
 			throw new FoxBPMException("查询错误：" + e.getMessage(), e);
 		}
-		
-		finally
-		{
+
+		finally {
 			try {
-				if(pstmt != null){
+				if (pstmt != null) {
 					pstmt.close();
 				}
-				if(rs != null){
-				rs.close();}
+				if (rs != null) {
+					rs.close();
+				}
 			} catch (SQLException e) {
-				throw new FoxBPMException("关闭游标失败",e);
+				throw new FoxBPMException("关闭游标失败", e);
 			}
 		}
 		return resultMap;
@@ -216,14 +216,15 @@ public class SqlCommand {
 	 * @return List<Map<String, Object>> 结果集
 	 * @throws DAOException
 	 */
-	public List<Map<String, Object>> queryForList(String sql, List<Object> data) throws FoxBPMException {
+	public List<Map<String, Object>> queryForList(String sql, List<Object> data)
+			throws FoxBPMException {
 		List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
 		ResultSet rs = null;
-		PreparedStatement pstmt=null;
+		PreparedStatement pstmt = null;
 		try {
 			pstmt = conn.prepareStatement(sql);
-			debugLog.debug("FixFlow引擎数据持久化语句: " +sql);
-			debugLog.debug("参数："+data);
+			debugLog.debug("FixFlow引擎数据持久化语句: " + sql);
+			debugLog.debug("参数：" + data);
 			if (null != data && data.size() > 0) {
 				for (int i = 0; i < data.size(); i++) {
 
@@ -261,18 +262,16 @@ public class SqlCommand {
 			}
 		} catch (SQLException e) {
 			throw new FoxBPMException("查询错误：" + e.getMessage(), e);
-		}
-		finally
-		{
+		} finally {
 			try {
-				if(pstmt != null){
+				if (pstmt != null) {
 					pstmt.close();
 				}
-				if(rs != null){
+				if (rs != null) {
 					rs.close();
 				}
 			} catch (SQLException e) {
-				throw new FoxBPMException("关闭游标失败",e);
+				throw new FoxBPMException("关闭游标失败", e);
 			}
 		}
 		return resultList;
@@ -296,24 +295,21 @@ public class SqlCommand {
 	 * @throws DAOException
 	 */
 	public void execute(String sql) throws FoxBPMException {
-		Statement stmt=null;
+		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
-			debugLog.debug("FixFlow引擎数据持久化语句: " +sql);
+			debugLog.debug("FixFlow引擎数据持久化语句: " + sql);
 			stmt.execute(sql);
-			 
-			
+
 		} catch (SQLException e) {
 			throw new FoxBPMException("查询错误：" + e.getMessage(), e);
-		}
-		finally
-		{
+		} finally {
 			try {
-				if(stmt != null){
+				if (stmt != null) {
 					stmt.close();
 				}
 			} catch (SQLException e) {
-				throw new FoxBPMException("关闭游标失败",e);
+				throw new FoxBPMException("关闭游标失败", e);
 			}
 		}
 	}
@@ -326,11 +322,11 @@ public class SqlCommand {
 	 * @throws DAOException
 	 */
 	public void execute(String sql, Object[] data) throws FoxBPMException {
-		PreparedStatement pstmt=null;
+		PreparedStatement pstmt = null;
 		try {
 			pstmt = conn.prepareStatement(sql);
-			debugLog.debug("FixFlow引擎数据持久化语句: " +sql); 
-			debugLog.debug("参数: "+ Arrays.asList(data));
+			debugLog.debug("FixFlow引擎数据持久化语句: " + sql);
+			debugLog.debug("参数: " + Arrays.asList(data));
 			if (null != data && data.length > 0) {
 				for (int i = 0; i < data.length; i++) {
 					data[i] = transformSqlType(data[i]);
@@ -347,48 +343,45 @@ public class SqlCommand {
 			pstmt.execute();
 		} catch (SQLException e) {
 			throw new FoxBPMException("查询错误：" + e.getMessage(), e);
-		}
-		finally
-		{
+		} finally {
 			try {
-				if(pstmt != null){
+				if (pstmt != null) {
 					pstmt.close();
 				}
 			} catch (SQLException e) {
-				throw new FoxBPMException("关闭游标失败",e);
+				throw new FoxBPMException("关闭游标失败", e);
 			}
 		}
-		
+
 	}
 
 	/**
 	 * 执行查询
+	 * 
 	 * @deprecated
 	 * @param sql
 	 * @throws DAOException
 	 */
 	public ResultSet query(String sql) throws FoxBPMException {
 		ResultSet result = null;
-		Statement stmt=null;
+		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
-			debugLog.debug("FixFlow引擎数据持久化语句: " +sql); 
+			debugLog.debug("FixFlow引擎数据持久化语句: " + sql);
 			result = stmt.executeQuery(sql);
-			
+
 		} catch (SQLException e) {
 			throw new FoxBPMException("查询错误：" + e.getMessage(), e);
-		}
-		finally
-		{
+		} finally {
 			try {
-				if(stmt != null){
+				if (stmt != null) {
 					stmt.close();
 				}
-				if(result != null){
+				if (result != null) {
 					result.close();
 				}
 			} catch (SQLException e) {
-				throw new FoxBPMException("关闭游标失败",e);
+				throw new FoxBPMException("关闭游标失败", e);
 			}
 		}
 		return result;
@@ -403,11 +396,11 @@ public class SqlCommand {
 	 */
 	public ResultSet query(String sql, Object[] data) throws FoxBPMException {
 		ResultSet result = null;
-		PreparedStatement pstmt=null;
+		PreparedStatement pstmt = null;
 		try {
 			pstmt = conn.prepareStatement(sql);
-			debugLog.debug("FixFlow引擎数据持久化语句: " +sql); 
-			debugLog.debug("参数: "+ Arrays.asList(data));
+			debugLog.debug("FixFlow引擎数据持久化语句: " + sql);
+			debugLog.debug("参数: " + Arrays.asList(data));
 			if (null != data && data.length > 0) {
 				for (int i = 0; i < data.length; i++) {
 
@@ -424,18 +417,16 @@ public class SqlCommand {
 			result = pstmt.executeQuery(sql);
 		} catch (SQLException e) {
 			throw new FoxBPMException("查询错误：" + e.getMessage(), e);
-		}
-		finally
-		{
+		} finally {
 			try {
-				if(pstmt != null){
+				if (pstmt != null) {
 					pstmt.close();
 				}
-				if(result!=null){
+				if (result != null) {
 					result.close();
 				}
 			} catch (SQLException e) {
-				throw new FoxBPMException("关闭游标失败",e);
+				throw new FoxBPMException("关闭游标失败", e);
 			}
 		}
 		return result;
@@ -444,14 +435,15 @@ public class SqlCommand {
 	/**
 	 * 将Map对象插入到数据表中
 	 * 
-	 * @param tableName 要插入的数据表的名称
-	 * @param data 数据对象
+	 * @param tableName
+	 *            要插入的数据表的名称
+	 * @param data
+	 *            数据对象
 	 * @return 影响行数
 	 * @throws DAOException
 	 */
 	public Integer insert(String tableName, Map<String, Object> data) throws FoxBPMException {
-		
-		
+
 		if (data.size() < 1) {
 			throw new FoxBPMException("插入错误: 无效的数据输入");
 		}
@@ -477,12 +469,12 @@ public class SqlCommand {
 		/* 构造插入查询语句 完成 */
 
 		Integer affectRow = 0;
-		PreparedStatement pstmt=null;
+		PreparedStatement pstmt = null;
 		try {
-			debugLog.debug("FixFlow引擎数据持久化语句: " +querySql.toString());
-			debugLog.debug("参数: "+ data);
+			debugLog.debug("FixFlow引擎数据持久化语句: " + querySql.toString());
+			debugLog.debug("参数: " + data);
 			pstmt = conn.prepareStatement(querySql.toString());
-			
+
 			Object[] keyArray = keys.toArray();
 			for (int i = 0; i < keyArray.length; i++) {
 
@@ -494,35 +486,37 @@ public class SqlCommand {
 				}
 
 			}
-			 
+
 			affectRow = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new FoxBPMException("查询错误：" + e.getMessage(), e);
-		}
-		finally
-		{
+		} finally {
 			try {
-				if(pstmt != null){
+				if (pstmt != null) {
 					pstmt.close();
 				}
 			} catch (SQLException e) {
-				throw new FoxBPMException("关闭游标失败",e);
+				throw new FoxBPMException("关闭游标失败", e);
 			}
 		}
-		
+
 		return affectRow;
 	}
 
 	/**
 	 * 将Map对象更新到数据库中
 	 * 
-	 * @param tableName 要更新的数据表
-	 * @param data 要更新的数据对象
-	 * @param sql Where查询条件子句
+	 * @param tableName
+	 *            要更新的数据表
+	 * @param data
+	 *            要更新的数据对象
+	 * @param sql
+	 *            Where查询条件子句
 	 * @return 影响行数
 	 * @throws DAOException
 	 */
-	public Integer update(String tableName, Map<String, Object> data, String sql, Object[] sdata) throws FoxBPMException {
+	public Integer update(String tableName, Map<String, Object> data, String sql, Object[] sdata)
+			throws FoxBPMException {
 		if (data.size() < 1) {
 			throw new FoxBPMException("插入错误: 无效的数据输入");
 		}
@@ -542,12 +536,12 @@ public class SqlCommand {
 			querySql.append(sql);
 		}
 		/* 构造插入查询语句 */
-		PreparedStatement pstmt=null;
+		PreparedStatement pstmt = null;
 		Integer affectRow = 0;
 		try {
-			debugLog.debug("FixFlow引擎数据持久化语句: " +querySql.toString());
-			debugLog.debug("参数data: "+ data);
-			debugLog.debug("参数sdata: "+ Arrays.asList(sdata));
+			debugLog.debug("FixFlow引擎数据持久化语句: " + querySql.toString());
+			debugLog.debug("参数data: " + data);
+			debugLog.debug("参数sdata: " + Arrays.asList(sdata));
 			pstmt = conn.prepareStatement(querySql.toString());
 			Object[] keyArray = keys.toArray();
 			int j = 1;
@@ -576,15 +570,13 @@ public class SqlCommand {
 			affectRow = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new FoxBPMException("查询错误：" + e.getMessage(), e);
-		}
-		finally
-		{
+		} finally {
 			try {
-				if(pstmt != null){
+				if (pstmt != null) {
 					pstmt.close();
 				}
 			} catch (SQLException e) {
-				throw new FoxBPMException("关闭游标失败",e);
+				throw new FoxBPMException("关闭游标失败", e);
 			}
 		}
 		return affectRow;
@@ -593,20 +585,25 @@ public class SqlCommand {
 	/**
 	 * 将Map对象更新到数据库中
 	 * 
-	 * @param tableName 要更新的数据表
-	 * @param data 要更新的数据对象
+	 * @param tableName
+	 *            要更新的数据表
+	 * @param data
+	 *            要更新的数据对象
 	 * @return 影响行数
 	 * @throws DAOException
 	 */
-	public Integer update(String tableName, Map<String, Object> data, String sql) throws FoxBPMException {
+	public Integer update(String tableName, Map<String, Object> data, String sql)
+			throws FoxBPMException {
 		return update(tableName, data, sql, null);
 	}
 
 	/**
 	 * 将Map对象更新到数据库中
 	 * 
-	 * @param tableName 要更新的数据表
-	 * @param data 要更新的数据对象
+	 * @param tableName
+	 *            要更新的数据表
+	 * @param data
+	 *            要更新的数据对象
 	 * @return 影响行数
 	 * @throws DAOException
 	 */
@@ -617,9 +614,12 @@ public class SqlCommand {
 	/**
 	 * 删除记录
 	 * 
-	 * @param tableName 表名
-	 * @param sql WHERE查询子句
-	 * @param data 数据对象
+	 * @param tableName
+	 *            表名
+	 * @param sql
+	 *            WHERE查询子句
+	 * @param data
+	 *            数据对象
 	 * @return
 	 * @throws DAOException
 	 */
@@ -631,12 +631,12 @@ public class SqlCommand {
 			querySql.append(sql);
 		}
 		Integer affectRow = 0;
-		PreparedStatement pstmt=null;
+		PreparedStatement pstmt = null;
 		try {
-			debugLog.debug("FixFlow引擎数据持久化语句: " +querySql.toString());
-			debugLog.debug("参数: "+ Arrays.asList(data));
+			debugLog.debug("FixFlow引擎数据持久化语句: " + querySql.toString());
 			pstmt = conn.prepareStatement(querySql.toString());
 			if (data != null) {
+				debugLog.debug("参数: " + Arrays.asList(data));
 				for (int i = 0; i < data.length; i++) {
 
 					Object returnObj = transformSqlType(data[i]);
@@ -651,15 +651,13 @@ public class SqlCommand {
 			affectRow = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new FoxBPMException("查询错误：" + e.getMessage(), e);
-		}
-		finally
-		{
+		} finally {
 			try {
-				if(pstmt != null){
+				if (pstmt != null) {
 					pstmt.close();
 				}
 			} catch (SQLException e) {
-				throw new FoxBPMException("关闭游标失败",e);
+				throw new FoxBPMException("关闭游标失败", e);
 			}
 		}
 		return affectRow;
@@ -668,8 +666,10 @@ public class SqlCommand {
 	/**
 	 * 删除记录
 	 * 
-	 * @param tableName 表名
-	 * @param sql WHERE查询子句
+	 * @param tableName
+	 *            表名
+	 * @param sql
+	 *            WHERE查询子句
 	 * @return
 	 * @throws DAOException
 	 */
@@ -680,7 +680,8 @@ public class SqlCommand {
 	/**
 	 * 清空表
 	 * 
-	 * @param tableName 表名
+	 * @param tableName
+	 *            表名
 	 * @return
 	 * @throws DAOException
 	 */
@@ -731,7 +732,8 @@ public class SqlCommand {
 	/**
 	 * 将Java类型转换为数据库能接受的Sql类型
 	 * 
-	 * @param object 数据对象
+	 * @param object
+	 *            数据对象
 	 * @return
 	 */
 	private Object transformSqlType(Object object) {

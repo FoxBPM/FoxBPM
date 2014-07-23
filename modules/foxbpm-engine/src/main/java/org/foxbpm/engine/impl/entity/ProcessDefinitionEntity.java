@@ -29,14 +29,17 @@ import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtDefinition;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.repository.ProcessDefinition;
-import org.foxbpm.kernel.process.KernelDefinitions;
 import org.foxbpm.kernel.process.KernelSequenceFlow;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 import org.foxbpm.kernel.runtime.InterpretableProcessInstance;
 
-public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl implements ProcessDefinition,PersistentObject,HasRevision{
+public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl
+		implements
+			ProcessDefinition,
+			PersistentObject,
+			HasRevision {
 
 	private static final long serialVersionUID = 1L;
 
@@ -47,37 +50,36 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 	protected String diagramResourceName;
 
 	protected Expression subject;
-	
+
 	private Expression formUri;
 
 	private Expression formUriView;
-	
+
 	protected String resourceId;
-	
+
 	protected String deploymentId;
-	
+
 	protected String resourceName;
-	
+
 	protected String category;
-	
-	private boolean isPersistence=true;
-	
+
+	private boolean isPersistence = true;
+
 	protected DataVariableMgmtDefinition dataVariableMgmtDefinition;
-	
-	protected Map<String, TaskDefinition> taskDefinitions=new HashMap<String, TaskDefinition>();
-	
-	
+
+	protected Map<String, TaskDefinition> taskDefinitions = new HashMap<String, TaskDefinition>();
+
 	public TaskDefinition getSubTaskDefinition() {
-		if(getInitial()!=null){
-			List<KernelSequenceFlow> sequenceFlows=getInitial().getOutgoingSequenceFlows();
-			if(sequenceFlows!=null&&sequenceFlows.size()>0){
-				String subNodeId=sequenceFlows.get(0).getTargetRef().getId();
+		if (getInitial() != null) {
+			List<KernelSequenceFlow> sequenceFlows = getInitial().getOutgoingSequenceFlows();
+			if (sequenceFlows != null && sequenceFlows.size() > 0) {
+				String subNodeId = sequenceFlows.get(0).getTargetRef().getId();
 				return taskDefinitions.get(subNodeId);
 			}
 		}
 		return null;
 	}
-	
+
 	public Map<String, TaskDefinition> getTaskDefinitions() {
 		return taskDefinitions;
 	}
@@ -90,7 +92,7 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 		super(null);
 
 	}
-	
+
 	public ProcessDefinitionEntity(String id) {
 		super(id);
 
@@ -103,8 +105,7 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 	public void setSubject(String subject) {
 		this.subject = new ExpressionImpl(subject);
 	}
-	
-	
+
 	public Expression getFormUri() {
 		return formUri;
 	}
@@ -136,7 +137,7 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 		return version;
 	}
 
-	/** 设置流程定义本版号*/
+	/** 设置流程定义本版号 */
 	public void setVersion(int version) {
 		this.version = version;
 	}
@@ -145,7 +146,7 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 		return name;
 	}
 
-	/** 增加流程版本号*/
+	/** 增加流程版本号 */
 	public void addVersion() {
 		this.version = this.version + 1;
 	}
@@ -156,19 +157,16 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 		if (initial == null) {
 			processInstance = (ProcessInstanceEntity) super.createProcessInstance();
 		} else {
-			processInstance = (ProcessInstanceEntity) super.createProcessInstanceForInitial(initial);
+			processInstance = (ProcessInstanceEntity) super
+					.createProcessInstanceForInitial(initial);
 		}
 
 		processInstance.setProcessDefinition(processDefinition);
 		if (bizKey != null) {
 			processInstance.setBizKey(bizKey);
 		}
-		
-		
-		
-		Context.getCommandContext().getProcessInstanceManager()
-	      .insert(processInstance);
-	    
+
+		Context.getCommandContext().getProcessInstanceManager().insert(processInstance);
 
 		return processInstance;
 	}
@@ -221,10 +219,9 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 		this.extensionFields.put(fieldName, fieldValue);
 	}
 
-	
-
 	@Override
-	public KernelSequenceFlowImpl createSequenceFlow(String id, KernelProcessDefinitionImpl processDefinition) {
+	public KernelSequenceFlowImpl createSequenceFlow(String id,
+			KernelProcessDefinitionImpl processDefinition) {
 		return super.createSequenceFlow(id, processDefinition);
 	}
 
@@ -259,17 +256,6 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 		this.category = category;
 	}
 
-
-	KernelDefinitions definitions;
-
-	public void setDefinitions(KernelDefinitions definitions) {
-		this.definitions = definitions;
-	}
-
-	public KernelDefinitions getDefinitions() {
-		return definitions;
-	}
-
 	public boolean verification = true;
 
 	public boolean isVerification() {
@@ -283,7 +269,6 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 	public void setPersistence(boolean isPersistence) {
 		this.isPersistence = isPersistence;
 	}
-	
 
 	public DataVariableMgmtDefinition getDataVariableMgmtDefinition() {
 		return dataVariableMgmtDefinition;
@@ -312,12 +297,12 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 	}
 
 	public void setId(String id) {
-		 this.id = id;
+		this.id = id;
 	}
 
 	public void setRevision(int revision) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public int getRevision() {
@@ -335,5 +320,4 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl impleme
 		return false;
 	}
 
-	
 }

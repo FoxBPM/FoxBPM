@@ -193,19 +193,22 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 
 		}
 
-		processDefinition.setKey(processBehavior.getId());
-		processDefinition.setName(processBehavior.getName());
-		processDefinition.setCategory(processBehavior.getCategory());
-		processDefinition.setFormUri(processBehavior.getFormUri());
-		processDefinition.setFormUriView(processBehavior.getFormUriView());
-		processDefinition.setSubject(processBehavior.getSubject());
+		if (processBehavior != null) {
+			processDefinition.setKey(processBehavior.getId());
+			processDefinition.setName(processBehavior.getName());
+			processDefinition.setCategory(processBehavior.getCategory());
+			processDefinition.setFormUri(processBehavior.getFormUri());
+			processDefinition.setFormUriView(processBehavior.getFormUriView());
+			processDefinition.setSubject(processBehavior.getSubject());
+		}
 
 		DataVariableMgmtDefinition dataVariableMgmtDefinition = new DataVariableMgmtDefinition(
 				processDefinition);
-		dataVariableMgmtDefinition.getDataVariableDefinitions().addAll(
-				processBehavior.getDataVariableDefinitions());
+		if (processBehavior != null) {
+			dataVariableMgmtDefinition.getDataVariableDefinitions().addAll(
+					processBehavior.getDataVariableDefinitions());
+		}
 		processDefinition.setDataVariableMgmtDefinition(dataVariableMgmtDefinition);
-
 		processDI(processDefinition, process);
 
 		return processDefinition;

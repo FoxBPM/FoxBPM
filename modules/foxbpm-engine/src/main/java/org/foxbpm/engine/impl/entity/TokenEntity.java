@@ -39,7 +39,12 @@ import org.foxbpm.kernel.runtime.KernelProcessInstance;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
-public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExecutionContext, PersistentObject, HasRevision {
+public class TokenEntity extends KernelTokenImpl
+		implements
+			Token,
+			ConnectorExecutionContext,
+			PersistentObject,
+			HasRevision {
 
 	/**
 	 * 
@@ -53,25 +58,18 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 	protected Date endTime;
 	protected Date nodeEnterTime;
 	protected Date archiveTime;
-	protected boolean isLocked = false;
-	protected boolean isSuspended = false;
 
 	protected List<TaskEntity> tasks;
 
 	protected TaskEntity assignTask;
-	
+
 	protected String groupID;
-	
+
 	/** 流程定义唯一版本编号 */
 	protected String processDefinitionId;
 
-	
-
 	/** 流程定义编号 */
 	protected String processDefinitionKey;
-
-	
-
 
 	@Override
 	public void setFlowNode(KernelFlowNodeImpl flowNode) {
@@ -89,7 +87,6 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		}
 	}
 
-	
 	@Override
 	protected void ensureParentInitialized() {
 		if (this.parent == null && StringUtil.isNotBlank(this.parentId)) {
@@ -133,11 +130,10 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 
 	@Override
 	public void ensureEnterInitialized(KernelFlowNodeImpl flowNode) {
-		/** 设置令牌进入节点的时间*/
+		/** 设置令牌进入节点的时间 */
 		setNodeEnterTime(ClockUtil.getCurrentTime());
 		super.ensureEnterInitialized(flowNode);
 	}
-
 
 	@Override
 	public void clearExecutionContextData() {
@@ -221,25 +217,9 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		this.archiveTime = archiveTime;
 	}
 
-	public boolean isLocked() {
-		return isLocked;
-	}
-
-	public void setLocked(boolean isLocked) {
-		this.isLocked = isLocked;
-	}
-
-	public boolean isSuspended() {
-		return isSuspended;
-	}
-
-	public void setSuspended(boolean isSuspended) {
-		this.isSuspended = isSuspended;
-	}
-
 	public Map<String, Object> getPersistentState() {
-		
-		Map<String,Object> objectParam = new HashMap<String,Object>();
+
+		Map<String, Object> objectParam = new HashMap<String, Object>();
 		objectParam.put("tokenId", getId());
 		objectParam.put("name", getName());
 		objectParam.put("startTime", getStartTime());
@@ -250,11 +230,11 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		objectParam.put("nodeId", getNodeId());
 		objectParam.put("processInstanceId", getProcessInstanceId());
 		objectParam.put("parentId", getParentId());
-		
+
 		objectParam.put("processDefinitionId", getProcessDefinitionId());
-		
-		objectParam.put("processDefinitionKey",getProcessDefinitionKey());
-		
+
+		objectParam.put("processDefinitionKey", getProcessDefinitionKey());
+
 		return objectParam;
 	}
 
@@ -275,7 +255,6 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		return getProcessInstance().getInitiator();
 	}
 
-
 	public String getAuthenticatedUserId() {
 		return Authentication.getAuthenticatedUserId();
 	}
@@ -295,7 +274,7 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 	// 任务对象
 	// ///////////////////////////////////////////////////
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	protected void ensureTasksInitialized() {
 		if (tasks == null) {
 			tasks = (List) Context.getCommandContext().getTaskManager().findTasksByTokenId(id);
@@ -331,11 +310,10 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 
 	@Override
 	public void end(boolean verifyParentTermination) {
-		
-		endTime=ClockUtil.getCurrentTime();
+
+		endTime = ClockUtil.getCurrentTime();
 		super.end(verifyParentTermination);
 	}
-	
 
 	public String getGroupID() {
 		return groupID;
@@ -347,14 +325,14 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 
 	@Override
 	protected boolean isSignalParentToken() {
-		if(isSubProcessRootToken){
+		if (isSubProcessRootToken) {
 			if (!getParent().isEnded()) {
 				return true;
-			}		
+			}
 		}
 		return super.isSignalParentToken();
 	}
-	
+
 	public String getProcessDefinitionId() {
 		return processDefinitionId;
 	}
@@ -373,9 +351,7 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 
 	@Override
 	public KernelProcessInstance createSubProcessInstance(KernelProcessDefinition processDefinition) {
-		
-		
-		
+
 		return super.createSubProcessInstance(processDefinition);
 	}
 

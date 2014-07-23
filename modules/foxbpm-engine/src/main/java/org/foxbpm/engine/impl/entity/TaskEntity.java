@@ -31,21 +31,24 @@ import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelVariableScopeImpl;
 import org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition;
 
-public class TaskEntity extends KernelVariableScopeImpl implements Task, DelegateTask, PersistentObject, HasRevision {
+public class TaskEntity extends KernelVariableScopeImpl
+		implements
+			Task,
+			DelegateTask,
+			PersistentObject,
+			HasRevision {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	protected String id;
-
 	protected String name;
-	
+
 	protected String subject;
 
 	protected String description;
-	
+
 	protected String completeDescription;
 
 	protected String processInstanceId;
@@ -53,11 +56,11 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	protected String processDefinitionId;
 
 	protected String processDefinitionKey;
-	
+
 	protected ProcessDefinitionEntity processDefinition;
 
 	protected String processDefinitionName;
-	
+
 	protected int version;
 
 	protected String tokenId;
@@ -79,10 +82,10 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	protected Date endTime;
 
 	protected Date dueDate;
-	
+
 	/** 流程实例启动时间 */
 	protected Date processStartTime;
-	
+
 	/** 流程任务的发起人 */
 	protected String processInitiator;
 
@@ -149,11 +152,11 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	protected TaskEntity parentTask;
 
 	protected boolean isAutoClaim = false;
-	
-	protected Map<String, Object>  paramMap=new HashMap<String, Object>();
-	
+
+	protected Map<String, Object> paramMap = new HashMap<String, Object>();
+
 	public TaskEntity() {
-		
+
 	}
 
 	public TaskEntity(String taskId) {
@@ -201,12 +204,12 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		ensureProcessInstanceInitialized();
 		return processInstance;
 	}
-	
+
 	protected void ensureProcessInstanceInitialized() {
 		if ((processInstance == null) && (processInstanceId != null)) {
 			processInstance = Context.getCommandContext().getProcessInstanceManager()
 					.findProcessInstanceById(processInstanceId);
-			if(processInstance != null){
+			if (processInstance != null) {
 				processInstanceId = processInstance.getId();
 			}
 		}
@@ -214,13 +217,14 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 
 	public void setProcessInstance(ProcessInstanceEntity processInstance) {
 		setProcessInstanceId(processInstance.getId());
-		setProcessDefinition((ProcessDefinitionEntity)processInstance.getProcessDefinition());
+		setProcessDefinition((ProcessDefinitionEntity) processInstance.getProcessDefinition());
 		this.processInstance = processInstance;
 	}
 
 	public List<IdentityLinkEntity> getIdentityLinks() {
 		if (!isIdentityLinksInitialized) {
-			taskIdentityLinks = Context.getCommandContext().getIdentityLinkManager().findIdentityLinksByTaskId(id);
+			taskIdentityLinks = Context.getCommandContext().getIdentityLinkManager()
+					.findIdentityLinksByTaskId(id);
 			isIdentityLinksInitialized = true;
 		}
 
@@ -241,44 +245,43 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		setProcessInstance(token.getProcessInstance());
 		this.token = token;
 	}
-	
+
 	protected void ensureProcessDefinitionInitialized() {
 
 		if (processDefinition == null && processDefinitionId != null) {
-			ProcessDefinitionEntity processDefinition = Context.getProcessEngineConfiguration().
-					getDeploymentManager().findDeployedProcessDefinitionById(processDefinitionId);
+			ProcessDefinitionEntity processDefinition = Context.getProcessEngineConfiguration()
+					.getDeploymentManager().findDeployedProcessDefinitionById(processDefinitionId);
 			setProcessDefinition(processDefinition);
 		}
-		
+
 	}
-	
+
 	public ProcessDefinitionEntity getProcessDefinition() {
 		ensureProcessDefinitionInitialized();
 		return processDefinition;
 	}
-	
+
 	public void setProcessDefinition(ProcessDefinitionEntity processDefinition) {
-		if(processDefinition!=null){
-			processDefinitionId=processDefinition.getId();
-			processDefinitionKey=processDefinition.getKey();
-			processDefinitionName=processDefinition.getName();
+		if (processDefinition != null) {
+			processDefinitionId = processDefinition.getId();
+			processDefinitionKey = processDefinition.getKey();
+			processDefinitionName = processDefinition.getName();
 		}
 		this.processDefinition = processDefinition;
 	}
 
-
 	protected void ensureNodeInitialized() {
-		
+
 		ensureProcessDefinitionInitialized();
-		
-		if (node == null && nodeId != null&& processDefinition!=null) {
-			KernelFlowNode flowNode=processDefinition.findFlowNode(nodeId);
-			if(flowNode!=null){
+
+		if (node == null && nodeId != null && processDefinition != null) {
+			KernelFlowNode flowNode = processDefinition.findFlowNode(nodeId);
+			if (flowNode != null) {
 				setNode(flowNode);
 			}
 		}
 	}
-	
+
 	public KernelFlowNode getNode() {
 		return node;
 	}
@@ -290,8 +293,8 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 
 	public TaskDefinition getTaskDefinition() {
 		ensureProcessDefinitionInitialized();
-		if(processDefinition!=null&&taskDefinition==null&&nodeId!=null){
-			TaskDefinition taskDefinition=processDefinition.getTaskDefinitions().get(nodeId);
+		if (processDefinition != null && taskDefinition == null && nodeId != null) {
+			TaskDefinition taskDefinition = processDefinition.getTaskDefinitions().get(nodeId);
 			setTaskDefinition(taskDefinition);
 		}
 		return taskDefinition;
@@ -330,8 +333,8 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	}
 
 	public void setDelegationStateString(String delegationStateString) {
-		this.delegationState = (delegationStateString != null ? DelegationState.valueOf(DelegationState.class, delegationStateString)
-				: null);
+		this.delegationState = (delegationStateString != null ? DelegationState.valueOf(
+				DelegationState.class, delegationStateString) : null);
 	}
 
 	public void setRevision(int revision) {
@@ -345,16 +348,6 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	public int getRevisionNext() {
 		return 0;
 	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	
 
 	public boolean isModified() {
 		return false;
@@ -691,7 +684,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	public ConnectorExecutionContext getExecutionContext() {
 		throw new FoxBPMException("未实现");
 	}
-	
+
 	public String getSubject() {
 		return subject;
 	}
@@ -699,7 +692,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
-	
+
 	public String getCompleteDescription() {
 		return completeDescription;
 	}
@@ -713,40 +706,40 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	}
 
 	public void addCandidateUser(String userId) {
-		 addIdentityLink(userId, null,null, IdentityLinkType.CANDIDATE);
+		addIdentityLink(userId, null, null, IdentityLinkType.CANDIDATE);
 	}
 
 	public void addCandidateUserEntity(UserEntity user) {
-		 addIdentityLink(user.getUserId(), null,null, IdentityLinkType.CANDIDATE);
+		addIdentityLink(user.getUserId(), null, null, IdentityLinkType.CANDIDATE);
 	}
 
 	public void addCandidateUsers(Collection<String> candidateUsers) {
-		if(candidateUsers != null){
-			for(String userId : candidateUsers){
+		if (candidateUsers != null) {
+			for (String userId : candidateUsers) {
 				addCandidateUser(userId);
 			}
 		}
 	}
 
 	public void addCandidateUserEntitys(Collection<UserEntity> candidateUsers) {
-		if(candidateUsers != null){
-			for(UserEntity user : candidateUsers){
+		if (candidateUsers != null) {
+			for (UserEntity user : candidateUsers) {
 				addCandidateUserEntity(user);
 			}
 		}
 	}
 
 	public void addCandidateGroup(String groupId, String groupType) {
-		addGroupIdentityLink(groupId,groupType,IdentityLinkType.CANDIDATE);
+		addGroupIdentityLink(groupId, groupType, IdentityLinkType.CANDIDATE);
 	}
 
 	public void addCandidateGroupEntity(GroupEntity group) {
-		addCandidateGroup(group.getGroupId(),group.getGroupType());
+		addCandidateGroup(group.getGroupId(), group.getGroupType());
 	}
 
 	public void addCandidateGroupEntitys(Collection<GroupEntity> candidateGroups) {
-		if(candidateGroups != null){
-			for(GroupEntity group : candidateGroups){
+		if (candidateGroups != null) {
+			for (GroupEntity group : candidateGroups) {
 				addCandidateGroupEntity(group);
 			}
 		}
@@ -757,7 +750,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	}
 
 	public void addGroupIdentityLink(String groupId, String groupType, String identityLinkType) {
-		addIdentityLink(null, groupId, groupType , identityLinkType);
+		addIdentityLink(null, groupId, groupType, identityLinkType);
 	}
 
 	public void deleteCandidateUser(String userId) {
@@ -775,8 +768,9 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	public void deleteGroupIdentityLink(String groupId, String groupType, String identityLinkType) {
 		throw new FoxBPMException("未实现");
 	}
-	
-	public IdentityLinkEntity addIdentityLink(String userId, String groupId,String groupType, String type) {
+
+	public IdentityLinkEntity addIdentityLink(String userId, String groupId, String groupType,
+			String type) {
 		IdentityLinkEntity identityLinkEntity = new IdentityLinkEntity();
 		identityLinkEntity.setId(GuidUtil.CreateGuid());
 		getIdentityLinks().add(identityLinkEntity);
@@ -785,8 +779,8 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		identityLinkEntity.setGroupId(groupId);
 		identityLinkEntity.setType(type);
 		identityLinkEntity.setGroupType(groupType);
-		//判断开始流程权限时会触发add方法，此时不应该存储数据
-		if(this.id != null){
+		// 判断开始流程权限时会触发add方法，此时不应该存储数据
+		if (this.id != null) {
 			identityLinkEntity.insert();
 		}
 		return identityLinkEntity;
@@ -795,11 +789,11 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	public Set<IdentityLink> getCandidates() {
 		throw new FoxBPMException("未实现");
 	}
-	
+
 	public void setProcessInstanceTransientVariables(Map<String, Object> parameters) {
 		getProcessInstance().setTransVariables(parameters);
 	}
-	
+
 	public void setProcessInstanceVariables(Map<String, Object> parameters) {
 		getProcessInstance().setVariables(parameters);
 	}
@@ -826,7 +820,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 			token.signal();
 		}
 	}
-	
+
 	/**
 	 * 这个结束并不会去推动令牌向下。例如用在退回的时候。
 	 */
@@ -843,14 +837,16 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		this.isDraft = false;
 		this.isOpen = false;
 		this.taskComment = taskComment;
-		if (taskCommand != null && taskCommand.getTaskCommandType() != null && !taskCommand.getTaskCommandType().equals("")) {
+		if (taskCommand != null && taskCommand.getTaskCommandType() != null
+				&& !taskCommand.getTaskCommandType().equals("")) {
 			String taskCommandType = taskCommand.getTaskCommandType();
 			String taskCommandName = taskCommand.getName();
 			// 设置流程自动结束信息 autoEnd
 			this.setCommandId(taskCommand.getId());
 			this.setCommandType(taskCommandType);
 			if (taskCommandName == null) {
-				TaskCommandDefinition taskCommandDef = Context.getProcessEngineConfiguration().getTaskCommandDefinition(taskCommandType);
+				TaskCommandDefinition taskCommandDef = Context.getProcessEngineConfiguration()
+						.getTaskCommandDefinition(taskCommandType);
 				if (taskCommandDef != null) {
 					this.setCommandMessage(taskCommandDef.getName());
 				}
@@ -860,60 +856,61 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		} else {
 			this.setCommandId(TaskCommandSystemType.AUTOEND);
 			this.setCommandType(TaskCommandSystemType.AUTOEND);
-			TaskCommandDefinition taskCommandDef = Context.getProcessEngineConfiguration().getTaskCommandDefinition(TaskCommandSystemType.AUTOEND);
+			TaskCommandDefinition taskCommandDef = Context.getProcessEngineConfiguration()
+					.getTaskCommandDefinition(TaskCommandSystemType.AUTOEND);
 			if (taskCommandDef != null) {
 				this.setCommandMessage(taskCommandDef.getName());
 			}
 		}
 	}
-	
+
 	public Map<String, Object> getPersistentState() {
-		Map<String,Object> persistentState = new HashMap<String, Object>();
-		persistentState.put("id", getId());		
-		persistentState.put("name", getName());		
+		Map<String, Object> persistentState = new HashMap<String, Object>();
+		persistentState.put("id", getId());
+		persistentState.put("name", getName());
 		persistentState.put("subject", getSubject());
 		persistentState.put("description", getDescription());
-		persistentState.put("completeDescription",getCompleteDescription());
+		persistentState.put("completeDescription", getCompleteDescription());
 		persistentState.put("processInstanceId", getProcessInstanceId());
 		persistentState.put("processDefinitionId", getProcessDefinitionId());
-		persistentState.put("processDefinitionKey", getProcessDefinitionKey());		
-		persistentState.put("processDefinitionName", getProcessDefinitionName());	
+		persistentState.put("processDefinitionKey", getProcessDefinitionKey());
+		persistentState.put("processDefinitionName", getProcessDefinitionName());
 		persistentState.put("version", getVersion());
 		persistentState.put("tokenId", getTokenId());
 		persistentState.put("nodeId", getNodeId());
-		persistentState.put("nodeName", getNodeName());		
-		persistentState.put("parentId", getParentId());		
+		persistentState.put("nodeName", getNodeName());
+		persistentState.put("parentId", getParentId());
 		persistentState.put("assignee", getAssignee());
-		persistentState.put("claimTime", getClaimTime());		
+		persistentState.put("claimTime", getClaimTime());
 		persistentState.put("createTime", getCreateTime());
-		persistentState.put("startTime", getStartTime());		
-		persistentState.put("endTime", getEndTime());		
-		persistentState.put("dueDate", getDueDate());		
-		persistentState.put("processStartTime", getProcessStartTime());		
-		persistentState.put("processInitiator", getProcessInitiator());		
-		persistentState.put("priority", String.valueOf(getPriority()));		
-		persistentState.put("category", String.valueOf(getCategory()));		
-		persistentState.put("owner", getOwner());		
-		persistentState.put("delegationState", StringUtil.getString(getDelegationState()));		
-		persistentState.put("bizKey", getBizKey());		
-		persistentState.put("taskComment", getTaskComment());		
+		persistentState.put("startTime", getStartTime());
+		persistentState.put("endTime", getEndTime());
+		persistentState.put("dueDate", getDueDate());
+		persistentState.put("processStartTime", getProcessStartTime());
+		persistentState.put("processInitiator", getProcessInitiator());
+		persistentState.put("priority", String.valueOf(getPriority()));
+		persistentState.put("category", String.valueOf(getCategory()));
+		persistentState.put("owner", getOwner());
+		persistentState.put("delegationState", StringUtil.getString(getDelegationState()));
+		persistentState.put("bizKey", getBizKey());
+		persistentState.put("taskComment", getTaskComment());
 		persistentState.put("formUri", getFormUri());
-		persistentState.put("formUriView", getFormUriView());		
-		persistentState.put("taskGroup", getTaskGroup());		
-		persistentState.put("taskType", StringUtil.getString(getTaskType()));		
+		persistentState.put("formUriView", getFormUriView());
+		persistentState.put("taskGroup", getTaskGroup());
+		persistentState.put("taskType", StringUtil.getString(getTaskType()));
 		persistentState.put("isBlocking", String.valueOf(isBlocking()));
-		persistentState.put("isCancelled", String.valueOf(isCancelled()));		
-		persistentState.put("isSuspended", String.valueOf(isSuspended()));		
+		persistentState.put("isCancelled", String.valueOf(isCancelled()));
+		persistentState.put("isSuspended", String.valueOf(isSuspended()));
 		persistentState.put("isOpen", String.valueOf(isOpen()));
 		persistentState.put("isDraft", String.valueOf(isDraft()));
 		persistentState.put("expectedExecutionTime", String.valueOf(getExpectedExecutionTime()));
-		persistentState.put("agent", getAgent());		
-		persistentState.put("admin", getAdmin());		
-		persistentState.put("callActivityInstanceId", getCallActivityInstanceId());		
-		persistentState.put("pendingTaskId",getPendingTaskId());		
-		persistentState.put("archiveTime", getArchiveTime());		
+		persistentState.put("agent", getAgent());
+		persistentState.put("admin", getAdmin());
+		persistentState.put("callActivityInstanceId", getCallActivityInstanceId());
+		persistentState.put("pendingTaskId", getPendingTaskId());
+		persistentState.put("archiveTime", getArchiveTime());
 		persistentState.put("commandId", getCommandId());
-		persistentState.put("commandType", getCommandType());		
+		persistentState.put("commandType", getCommandType());
 		persistentState.put("commandMessage", getCommandMessage());
 		persistentState.put("processStartTime", getProcessStartTime());
 		persistentState.put("processInitiator", getProcessInitiator());
@@ -924,9 +921,9 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 
 	@Override
 	public boolean hasEnded() {
-		return endTime!=null;
+		return endTime != null;
 	}
-	
+
 	public Map<String, Object> getParamMap() {
 		return paramMap;
 	}
@@ -950,9 +947,9 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	public void setProcessInitiator(String processInitiator) {
 		this.processInitiator = processInitiator;
 	}
-	
-	public boolean isIdentityLinksInitialized(){
+
+	public boolean isIdentityLinksInitialized() {
 		return this.isIdentityLinksInitialized;
 	}
-	
+
 }

@@ -39,9 +39,12 @@ import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNodeExecutionContext, ListenerExecutionContext, KernelToken,
-		InterpretableExecutionContext {
-
+public class KernelTokenImpl extends KernelVariableScopeImpl
+		implements
+			FlowNodeExecutionContext,
+			ListenerExecutionContext,
+			KernelToken,
+			InterpretableExecutionContext {
 	private static Logger LOG = LoggerFactory.getLogger(KernelTokenImpl.class);
 
 	/**
@@ -131,7 +134,8 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 
 	public void enter(KernelFlowNodeImpl flowNode) {
 
-		LOG.debug("进入节点: {}({}),令牌号: {}({}).", flowNode.getName(), flowNode.getId(), getName(), getId());
+		LOG.debug("进入节点: {}({}),令牌号: {}({}).", flowNode.getName(), flowNode.getId(), getName(),
+				getId());
 
 		/** 移除临时执行内容对象 */
 		clearExecutionContextData();
@@ -214,8 +218,9 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 		// 用来处理非线条流转令牌,如退回、跳转
 		if (this.toFlowNode != null) {
 			// 发现上下文中有直接跳转节点,则流程引擎不走正常处理直接跳转到指定借点。
-			LOG.debug("＝＝执行跳转机制,跳转目标: {}({}),离开节点: {}({}),令牌号: {}({}).", toFlowNode.getName(), toFlowNode.getId(), flowNode.getName(),
-					flowNode.getId(), this.getName(), this.getId());
+			LOG.debug("＝＝执行跳转机制,跳转目标: {}({}),离开节点: {}({}),令牌号: {}({}).", toFlowNode.getName(),
+					toFlowNode.getId(), flowNode.getName(), flowNode.getId(), this.getName(),
+					this.getId());
 			setToFlowNode(null);
 			enter(toFlowNode);
 			return;
@@ -225,10 +230,13 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 		if (sequenceFlowList == null || sequenceFlowList.size() == 0) {
 			if (flowNode.getOutgoingSequenceFlows().size() == 0) {
 				LOG.error("节点: {}({}) 后面没有配置处理线条！", flowNode.getName(), flowNode.getId());
-				throw new KernelException("节点: " + flowNode.getName() + "(" + flowNode.getId() + ") 后面没有配置处理线条！");
+				throw new KernelException("节点: " + flowNode.getName() + "(" + flowNode.getId()
+						+ ") 后面没有配置处理线条！");
 			} else {
-				LOG.error("节点: {}({}) 后面的条件都不满足导致节点后面没有处理线条,请检查后续线条条件！", flowNode.getName(), this.getId());
-				throw new KernelException("节点: " + flowNode.getName() + "(" + flowNode.getId() + ") 后面的条件都不满足导致节点后面没有处理线条,请检查后续线条条件！");
+				LOG.error("节点: {}({}) 后面的条件都不满足导致节点后面没有处理线条,请检查后续线条条件！", flowNode.getName(),
+						this.getId());
+				throw new KernelException("节点: " + flowNode.getName() + "(" + flowNode.getId()
+						+ ") 后面的条件都不满足导致节点后面没有处理线条,请检查后续线条条件！");
 			}
 		}
 
@@ -564,18 +572,34 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 		return createdToken;
 	}
 
-
 	@Override
 	public KernelProcessInstance createSubProcessInstance(KernelProcessDefinition processDefinition) {
-		
-		KernelProcessInstance processInstance=getProcessInstance().createSubProcessInstance((KernelProcessDefinitionImpl)processDefinition,this);
-		
+
+		KernelProcessInstance processInstance = getProcessInstance().createSubProcessInstance(
+				(KernelProcessDefinitionImpl) processDefinition, this);
+
 		return processInstance;
-		
+
 	}
 
 	public void setProcessDefinition(KernelProcessDefinitionImpl processDefinition) {
 		this.processDefinition = processDefinition;
+	}
+
+	public boolean isLocked() {
+		return isLocked;
+	}
+
+	public void setLocked(boolean isLocked) {
+		this.isLocked = isLocked;
+	}
+
+	public boolean isSuspended() {
+		return isSuspended;
+	}
+
+	public void setSuspended(boolean isSuspended) {
+		this.isSuspended = isSuspended;
 	}
 
 }

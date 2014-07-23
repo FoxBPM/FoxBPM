@@ -37,7 +37,7 @@ public abstract class AbstractTrackListener implements KernelListener {
 	 */
 	private static final long serialVersionUID = 6870039432248742401L;
 
-	private final static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmssSSS");
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmssSSS");
 	@Override
 	public void notify(ListenerExecutionContext executionContext) throws Exception {
 		// 记录流程实例的运行轨迹
