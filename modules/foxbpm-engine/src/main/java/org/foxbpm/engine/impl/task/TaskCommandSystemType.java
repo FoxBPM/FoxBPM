@@ -36,6 +36,18 @@ public class TaskCommandSystemType {
 	 * 子流程结束
 	 */
 	public static String SUBPROCESSEND="subProcessEnd";
+	
+	/**
+	 * 异步子流程结束
+	 */
+	public static String ASYNCSUBPROCESSEND="asyncSubProcessEnd";
+	
+	/**
+	 * 同步子流程结束
+	 */
+	public static String SYNCSUBPROCESSEND="syncSubProcessEnd";
+	
+	
 	/**
 	 * 流程开始
 	 */

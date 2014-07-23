@@ -57,7 +57,9 @@
 			isEnabled="true" type="system" />
 		<taskCommandDefinition id="autoEnd" name="自动结束"
 			isEnabled="true" type="system" />
-		<taskCommandDefinition id="subProcessEnd" name="子流程结束"
+		<taskCommandDefinition id="asyncSubProcessEnd" name="异步子流程结束"
+			isEnabled="true" type="system" />
+			<taskCommandDefinition id="syncSubProcessEnd" name="同步子流程结束"
 			isEnabled="true" type="system" />
 		<taskCommandDefinition id="startEvent" name="流程开始"
 			isEnabled="true" type="system" />
