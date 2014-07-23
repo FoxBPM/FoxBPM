@@ -117,13 +117,13 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 	}
 
 	@Override
-	public void boundaryTimeSignal(String tokenId, String nodeId, Map<String, Object> transientVariables) {
+	public void boundaryTimeSignal(String tokenId, String nodeId,boolean isCancelActivity, Map<String, Object> transientVariables) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void boundaryTimeSignal(String tokenId, String nodeId, Map<String, Object> transientVariables,
+	public void boundaryTimeSignal(String tokenId, String nodeId,boolean isCancelActivity, Map<String, Object> transientVariables,
 			Map<String, Object> persistenceVariables) {
 		// TODO Auto-generated method stub
 		

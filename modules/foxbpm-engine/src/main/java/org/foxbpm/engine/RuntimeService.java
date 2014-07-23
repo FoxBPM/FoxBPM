@@ -147,18 +147,20 @@ public interface RuntimeService {
 	 * 边界事件定时器启动推动令牌
 	 * @param tokenId 令牌编号
 	 * @param nodeId 触发的边界事件节点号
+	 * @param isCancelActivity 是否中断
 	 * @param transientVariables 瞬态变量
 	 */
-	void boundaryTimeSignal(String tokenId,String nodeId,Map<String, Object> transientVariables);
+	void boundaryTimeSignal(String tokenId,String nodeId,boolean isCancelActivity,Map<String, Object> transientVariables);
 	
 	/**
 	 * 边界事件定时器启动推动令牌
 	 * @param tokenId 令牌编号
 	 * @param nodeId 触发的边界事件节点号
+	 * @param isCancelActivity 是否中断
 	 * @param transientVariables 瞬态变量
 	 * @param persistenceVariables 持久化变量
 	 */
-	void boundaryTimeSignal(String tokenId,String nodeId,Map<String, Object> transientVariables,Map<String, Object> persistenceVariables);
+	void boundaryTimeSignal(String tokenId,String nodeId,boolean isCancelActivity,Map<String, Object> transientVariables,Map<String, Object> persistenceVariables);
 
 	/**
 	 * 创建令牌查询对象
