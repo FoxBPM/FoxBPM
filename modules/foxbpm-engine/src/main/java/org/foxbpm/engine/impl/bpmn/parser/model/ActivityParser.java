@@ -43,8 +43,7 @@ public class ActivityParser extends FlowNodeParser {
 			activityBehavior.setLoopCharacteristics(loopCharacteristicsbehavior);
 		}
 		// 记录Activity 以便维护关联关系
-		BpmnParseHandlerImpl.behaviorRelationMemo.setAttachActivity(activity);
-		BpmnParseHandlerImpl.behaviorRelationMemo.setAttachActivityBehavior(activityBehavior);
+		BpmnParseHandlerImpl.behaviorRelationMemo.addActivity(activity, activityBehavior);
 		BpmnParseHandlerImpl.behaviorRelationMemo.attachActivityAndBoundaryEventBehaviorRelation();
 		activityBehavior.setSkipStrategy(BpmnModelUtil.getSkipStrategy(activity));
 

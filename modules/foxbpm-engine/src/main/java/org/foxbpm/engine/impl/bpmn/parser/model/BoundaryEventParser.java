@@ -40,11 +40,8 @@ public class BoundaryEventParser extends CatchEventParser {
 		BoundaryEventImpl boundaryEventImpl = (BoundaryEventImpl) baseElement;
 		boundaryEventBehavior.setCancelActivity(boundaryEventImpl.isCancelActivity());
 
-		BpmnParseHandlerImpl.behaviorRelationMemo.setBeAttachedActivity(boundaryEventImpl
-				.getAttachedToRef());
-		BpmnParseHandlerImpl.behaviorRelationMemo
-				.setBeAttachedActivityBoundaryEventBehavior(boundaryEventBehavior);
-		BpmnParseHandlerImpl.behaviorRelationMemo.attachActivityAndBoundaryEventBehaviorRelation();
+		BpmnParseHandlerImpl.behaviorRelationMemo.addBeAttachedActivity(
+				boundaryEventImpl.getAttachedToRef(), boundaryEventBehavior);
 		return super.parser(baseElement);
 	}
 	@Override

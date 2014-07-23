@@ -17,10 +17,14 @@
  */
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 import org.eclipse.bpmn2.Activity;
 import org.foxbpm.engine.impl.bpmn.behavior.ActivityBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.BoundaryEventBehavior;
-import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.impl.bpmn.behavior.EventBehavior;
 
 /**
  * 
@@ -33,11 +37,9 @@ import org.foxbpm.engine.impl.util.StringUtil;
  * 
  */
 public class BehaviorRelationMemo {
-	private Activity attachActivity;
-	private ActivityBehavior attachActivityBehavior;
-
-	private Activity beAttachedActivity;
-	private BoundaryEventBehavior beAttachedActivityBoundaryEventBehavior;
+	/** 临时存储MAP */
+	private Map<String, ActivityBehavior> attachActivityMap = new HashMap<String, ActivityBehavior>();
+	private Map<String, EventBehavior> beAttachedActivityMap = new HashMap<String, EventBehavior>();
 
 	/**
 	 * 
@@ -48,38 +50,42 @@ public class BehaviorRelationMemo {
 	 * @since 1.0.0
 	 */
 	public void attachActivityAndBoundaryEventBehaviorRelation() {
-		if (this.attachActivity != null && attachActivityBehavior != null
-				&& beAttachedActivity != null && beAttachedActivityBoundaryEventBehavior != null
-				&& StringUtil.equals(attachActivity.getId(), beAttachedActivity.getId())) {
-			attachActivityBehavior.getBoundaryEvents().add(beAttachedActivityBoundaryEventBehavior);
-			this.setBeAttachedActivity(null);
-			this.setBeAttachedActivityBoundaryEventBehavior(null);
+		Set<String> keySet = beAttachedActivityMap.keySet();
+		for (String activityID : keySet) {
+			if (attachActivityMap.containsKey(activityID)) {
+				attachActivityMap.get(activityID).getBoundaryEvents()
+						.add((BoundaryEventBehavior) beAttachedActivityMap.get(activityID));
+			}
 		}
-	}
-	public Activity getAttachActivity() {
-		return attachActivity;
-	}
-	public void setAttachActivity(Activity attachActivity) {
-		this.attachActivity = attachActivity;
+		this.attachActivityMap.clear();
+		this.beAttachedActivityMap.clear();
 	}
 
-	public Activity getBeAttachedActivity() {
-		return beAttachedActivity;
+	/**
+	 * 
+	 * addActivity(保存解释得到的活动节点)
+	 * 
+	 * @param activity
+	 * @param activityBehavior
+	 *            void
+	 * @exception
+	 * @since 1.0.0
+	 */
+	public void addActivity(Activity activity, ActivityBehavior activityBehavior) {
+		this.attachActivityMap.put(activity.getId(), activityBehavior);
 	}
-	public void setBeAttachedActivity(Activity beAttachedActivity) {
-		this.beAttachedActivity = beAttachedActivity;
+	/**
+	 * 
+	 * addActivity(保存解释得到的事件行为)
+	 * 
+	 * @param activity
+	 * @param eventBehavior
+	 *            void
+	 * @exception
+	 * @since 1.0.0
+	 */
+	public void addBeAttachedActivity(Activity activity, EventBehavior eventBehavior) {
+		this.beAttachedActivityMap.put(activity.getId(), eventBehavior);
 	}
-	public BoundaryEventBehavior getBeAttachedActivityBoundaryEventBehavior() {
-		return beAttachedActivityBoundaryEventBehavior;
-	}
-	public void setBeAttachedActivityBoundaryEventBehavior(
-			BoundaryEventBehavior beAttachedActivityBoundaryEventBehavior) {
-		this.beAttachedActivityBoundaryEventBehavior = beAttachedActivityBoundaryEventBehavior;
-	}
-	public ActivityBehavior getAttachActivityBehavior() {
-		return attachActivityBehavior;
-	}
-	public void setAttachActivityBehavior(ActivityBehavior attachActivityBehavior) {
-		this.attachActivityBehavior = attachActivityBehavior;
-	}
+
 }
