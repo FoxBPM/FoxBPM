@@ -116,4 +116,17 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 		return new RunningTrackQueryImpl(commandExecutor);
 	}
 
+	@Override
+	public void boundaryTimeSignal(String tokenId, String nodeId, Map<String, Object> transientVariables) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void boundaryTimeSignal(String tokenId, String nodeId, Map<String, Object> transientVariables,
+			Map<String, Object> persistenceVariables) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
