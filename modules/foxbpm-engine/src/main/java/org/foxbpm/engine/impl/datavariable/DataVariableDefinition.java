@@ -17,6 +17,9 @@
  */
 package org.foxbpm.engine.impl.datavariable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
 
@@ -46,6 +49,20 @@ public class DataVariableDefinition {
 	public DataVariableDefinition() {
 
 
+	}
+	
+	public Map<String,Object> getPersistentState(){
+		Map<String,Object> result = new HashMap<String,Object>();
+		result.put("id", id);
+		result.put("dataType", dataType);
+		result.put("isList", isList);
+		result.put("isPersistence", isPersistence);
+		result.put("expressionText", expression.getExpressionText());
+		result.put("documentation", documentation);
+		result.put("nodeId", nodeId);
+		result.put("bizType", bizType);
+		result.put("isPubilc", isPubilc);
+		return result;
 	}
 
 	public String getId() {

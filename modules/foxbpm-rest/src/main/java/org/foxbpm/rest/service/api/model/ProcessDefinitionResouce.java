@@ -44,8 +44,4 @@ public class ProcessDefinitionResouce extends AbstractRestResource{
 		}
 		return new ProcessDefinitionResponse(processEntity);
 	}
-	
-	 protected String getAttribute(String name) {
-		    return (String) getRequest().getAttributes().get(name);
-	 }
 }
