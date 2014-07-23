@@ -61,16 +61,6 @@ public class DeploymentResource extends AbstractRestResource {
 		return "SUCCESS";
 	}
 	
-	@Get
-	public InputStream getBpmnResource(){
-		String deploymentId = getAttribute("deploymentId");
-		String resourceName = getAttribute("resourceName");
-		ModelService modelService = FoxBpmUtil.getProcessEngine().getModelService();
-		InputStream input = modelService.getResourceByDeployIdAndName(deploymentId, resourceName);
-		return input;
-	}
-	
-	
 	@Delete
 	public String deleteDeployment(){
 		String deploymentId = getAttribute("deploymentId");
