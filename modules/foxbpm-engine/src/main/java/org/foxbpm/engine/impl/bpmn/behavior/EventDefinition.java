@@ -30,5 +30,5 @@ public abstract class EventDefinition extends RootElement implements KernelEvent
 	 * @param executionContext
 	 *            流程内容上下文
 	 */
-	public abstract void execute(FlowNodeExecutionContext executionContext);
+	public abstract void execute(FlowNodeExecutionContext executionContext, String eventType, Object[] params);
 }

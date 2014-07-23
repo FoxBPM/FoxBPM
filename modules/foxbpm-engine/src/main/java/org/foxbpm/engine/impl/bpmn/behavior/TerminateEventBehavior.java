@@ -29,7 +29,7 @@ public class TerminateEventBehavior extends EventDefinition {
 	private static final long serialVersionUID = 622240217012994908L;
 
 	@Override
-	public void execute(FlowNodeExecutionContext executionContext) {
+	public void execute(FlowNodeExecutionContext executionContext, String eventType, Object[] params) {
 		// TODO 事件执行
 		executionContext.end();
 	}

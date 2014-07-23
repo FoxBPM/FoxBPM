@@ -25,22 +25,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.expression.Expression;
-import org.foxbpm.engine.impl.entity.TaskEntity;
-import org.foxbpm.engine.impl.entity.TokenEntity;
+import org.foxbpm.engine.impl.bpmn.behavior.TimerEventBehavior;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
-import org.foxbpm.engine.impl.schedule.FoxbpmJobDetail;
-import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
-import org.foxbpm.engine.impl.schedule.quartz.ConnectorAutoExecuteJob;
-import org.foxbpm.engine.impl.util.GuidUtil;
-import org.foxbpm.engine.impl.util.QuartzUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
-import org.foxbpm.kernel.event.KernelEventType;
 import org.foxbpm.kernel.event.KernelListener;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
+import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
 public class Connector implements KernelListener {
-
 	private static final long serialVersionUID = 1L;
 	private static final String SETFUNCTION_PREFFIX = "set";
 	private static final String GETFUNCTION_PREFFIX = "get";
@@ -55,8 +48,7 @@ public class Connector implements KernelListener {
 	protected String errorCode;
 	protected List<ConnectorInputParam> connectorInputsParam;
 	protected List<ConnectorOutputParam> connectorOutputsParam;
-	protected boolean isTimeExecute = false;
-	protected Expression timeExpression;
+	protected TimerEventBehavior timerEventBehavior;
 	protected Expression skipExpression;
 
 	public void notify(ListenerExecutionContext executionContext) throws Exception {
@@ -68,9 +60,12 @@ public class Connector implements KernelListener {
 			}
 		}
 
-		if (isTimeExecute()) {
+		if (this.timerEventBehavior != null) {
 			// 定时器执行方式
-			scheduleAutoExecuteJob(executionContext);
+			Object[] params = new String[]{this.connectorId, this.getEventType(),
+					executionContext.getEventSource().getId()};
+			timerEventBehavior.execute((KernelTokenImpl) executionContext,
+					TimerEventBehavior.EVENT_TYPE_CONNECTOR, params);
 		} else {
 			// 直接执行方式
 			execute(executionContext);
@@ -84,7 +79,7 @@ public class Connector implements KernelListener {
 			FlowConnectorHandler connectorInstance = (FlowConnectorHandler) connectorHandlerClass
 					.newInstance();
 
-			FlowNodeExecutionContext flowNodeExecutionContext =(FlowNodeExecutionContext) executionContext;
+			FlowNodeExecutionContext flowNodeExecutionContext = (FlowNodeExecutionContext) executionContext;
 			for (ConnectorInputParam connectorParameterInputs : this.getConnectorInputsParam()) {
 				Class<?> ptypes[] = new Class[1];
 				ptypes[0] = Class.forName(connectorParameterInputs.getDataType());
@@ -97,7 +92,8 @@ public class Connector implements KernelListener {
 					Object arg[] = new Object[1];
 					if (!connectorParameterInputs.getExpression().isNullText()
 							&& connectorParameterInputs.isExecute()) {
-						arg[0] = connectorParameterInputs.getExpression().getValue(flowNodeExecutionContext);
+						arg[0] = connectorParameterInputs.getExpression().getValue(
+								flowNodeExecutionContext);
 					} else {
 						arg[0] = connectorParameterInputs.getExpression().getExpressionText();
 					}
@@ -119,7 +115,8 @@ public class Connector implements KernelListener {
 					// arg[0] =Context.getBshInterpreter().eval(scriptString);
 
 					Object objectValue = m.invoke(connectorInstance);
-					ExpressionMgmt.setVariable(variableTarget, objectValue,flowNodeExecutionContext);
+					ExpressionMgmt.setVariable(variableTarget, objectValue,
+							flowNodeExecutionContext);
 				}
 
 			}
@@ -127,44 +124,6 @@ public class Connector implements KernelListener {
 		} catch (Exception e) {
 			throw new FoxBPMConnectorException(e.getMessage(), e);
 		}
-	}
-
-	/**
-	 * 
-	 * notifyTime(保存调度信息)
-	 * 
-	 * @param executionContext
-	 * @throws Exception
-	 * @since 1.0.0
-	 */
-	private void scheduleAutoExecuteJob(ListenerExecutionContext executionContext) throws Exception {
-		// TODO QuartzUtil类是否需要改方法参数，processDefinitionID改成 processInstanceID
-		FoxbpmJobDetail<ConnectorAutoExecuteJob> connectorAutoExecuteJobDetail = new FoxbpmJobDetail<ConnectorAutoExecuteJob>(
-				new ConnectorAutoExecuteJob(GuidUtil.CreateGuid(),
-						executionContext.getProcessInstanceId()));
-		connectorAutoExecuteJobDetail.createTriggerList(timeExpression, executionContext);
-		connectorAutoExecuteJobDetail.putContextAttribute(FoxbpmJobExecutionContext.CONNECTOR_ID,
-				this.connectorId);
-		connectorAutoExecuteJobDetail.putContextAttribute(
-				FoxbpmJobExecutionContext.PROCESS_INSTANCE_ID,
-				executionContext.getProcessInstanceId());
-		connectorAutoExecuteJobDetail.putContextAttribute(FoxbpmJobExecutionContext.EVENT_NAME,
-				this.getEventType());
-		connectorAutoExecuteJobDetail.putContextAttribute(FoxbpmJobExecutionContext.TOKEN_ID,
-				executionContext.getId());
-		if (StringUtils
-				.equalsIgnoreCase(this.getEventType(), KernelEventType.EVENTTYPE_TASK_ASSIGN)) {
-			TaskEntity assignTask = ((TokenEntity) executionContext).getAssignTask();
-			if (assignTask != null) {
-				connectorAutoExecuteJobDetail.putContextAttribute(
-						FoxbpmJobExecutionContext.TASK_ID, assignTask.getId());
-			}
-		}
-
-		connectorAutoExecuteJobDetail.putContextAttribute(FoxbpmJobExecutionContext.NODE_ID,
-				executionContext.getEventSource().getId());
-
-		QuartzUtil.scheduleFoxbpmJob(connectorAutoExecuteJobDetail);
 	}
 
 	public String getConnectorId() {
@@ -247,22 +206,6 @@ public class Connector implements KernelListener {
 		this.skipExpression = skipExpression;
 	}
 
-	public boolean isTimeExecute() {
-		return isTimeExecute;
-	}
-
-	public void setTimeExecute(boolean isTimeExecute) {
-		this.isTimeExecute = isTimeExecute;
-	}
-
-	public Expression getTimeExpression() {
-		return timeExpression;
-	}
-
-	public void setTimeExpression(Expression timeExpression) {
-		this.timeExpression = timeExpression;
-	}
-
 	public List<ConnectorInputParam> getConnectorInputsParam() {
 
 		if (this.connectorInputsParam == null) {
@@ -286,6 +229,13 @@ public class Connector implements KernelListener {
 
 	public void setConnectorOutputsParam(List<ConnectorOutputParam> connectorOutputsParam) {
 		this.connectorOutputsParam = connectorOutputsParam;
+	}
+	public TimerEventBehavior getTimerEventBehavior() {
+		return timerEventBehavior;
+	}
+
+	public void setTimerEventBehavior(TimerEventBehavior timerEventBehavior) {
+		this.timerEventBehavior = timerEventBehavior;
 	}
 
 }

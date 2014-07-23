@@ -39,5 +39,5 @@ public interface KernelEventDefinitionBehavior {
 	 * @exception
 	 * @since 1.0.0
 	 */
-	void execute(FlowNodeExecutionContext executionContext);
+	void execute(FlowNodeExecutionContext executionContext, String eventType, Object[] params);
 }

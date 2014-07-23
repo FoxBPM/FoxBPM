@@ -43,7 +43,7 @@ public class BoundaryEventBehavior extends CatchEventBehavior {
 		// 执行边界事件定义,例如 时间定义
 		List<EventDefinition> eventDefinitions = this.getEventDefinitions();
 		for (EventDefinition eventDefinition : eventDefinitions) {
-			eventDefinition.execute(executionContext);
+			eventDefinition.execute(executionContext, TimerEventBehavior.EVENT_TYPE_BOUNDARY, null);
 		}
 	}
 

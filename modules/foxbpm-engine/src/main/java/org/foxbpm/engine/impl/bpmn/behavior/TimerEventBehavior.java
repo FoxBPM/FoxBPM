@@ -17,19 +17,51 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
+import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.expression.Expression;
+import org.foxbpm.engine.impl.entity.TaskEntity;
+import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobDetail;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
+import org.foxbpm.engine.impl.schedule.FoxbpmScheduleJob;
+import org.foxbpm.engine.impl.schedule.quartz.ConnectorAutoExecuteJob;
+import org.foxbpm.engine.impl.schedule.quartz.ProcessIntanceAutoStartJob;
 import org.foxbpm.engine.impl.schedule.quartz.TimeDefinitionExecuteJob;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.QuartzUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.kernel.event.KernelEventType;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
+/**
+ * 
+ * 
+ * TimerEventBehavior 定时任务调度，包括 定时启动流程实例、边界定时任务、连接器定时执行
+ * 
+ * MAENLIANG 2014年7月23日 下午4:43:55
+ * 
+ * @version 1.0.0
+ * 
+ */
 public class TimerEventBehavior extends EventDefinition {
 
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 时间启动事件
+	 */
+	public final static String EVENT_TYPE_START = "startTimeEvent";
+	/**
+	 * 边界时间事件
+	 */
+	public final static String EVENT_TYPE_BOUNDARY = "boundaryTimeEvent";
+
+	/**
+	 * 连接器自动执行
+	 */
+	public final static String EVENT_TYPE_CONNECTOR = "connectorTimeEvent";
 
 	/**
 	 * 日期表达式
@@ -47,27 +79,70 @@ public class TimerEventBehavior extends EventDefinition {
 	private Expression timeCycle;
 
 	@Override
-	public void execute(FlowNodeExecutionContext executionContext) {
-		KernelTokenImpl kernelTokenImpl = (KernelTokenImpl) executionContext;
-		// TODO QuartzUtil类是否需要改方法参数，processDefinitionID改成 processInstanceID
-		FoxbpmJobDetail<TimeDefinitionExecuteJob> tokenTimeoutAutoExecuteJobDetail = new FoxbpmJobDetail<TimeDefinitionExecuteJob>(
-				new TimeDefinitionExecuteJob(GuidUtil.CreateGuid(),
-						kernelTokenImpl.getProcessInstanceId()));
-		// 根据三种表达式创建TRIGGER
-		tokenTimeoutAutoExecuteJobDetail.createTriggerList(this.getTimeDate(), kernelTokenImpl);
-		tokenTimeoutAutoExecuteJobDetail.createTriggerList(this.getTimeDuration(), kernelTokenImpl);
-		tokenTimeoutAutoExecuteJobDetail.createTriggerList(this.getTimeCycle(), kernelTokenImpl);
-		tokenTimeoutAutoExecuteJobDetail.putContextAttribute(
-				FoxbpmJobExecutionContext.PROCESS_INSTANCE_ID,
-				kernelTokenImpl.getProcessInstanceId());
-		tokenTimeoutAutoExecuteJobDetail.putContextAttribute(FoxbpmJobExecutionContext.TOKEN_ID,
-				kernelTokenImpl.getId());
-		tokenTimeoutAutoExecuteJobDetail.putContextAttribute(FoxbpmJobExecutionContext.NODE_ID,
-				kernelTokenImpl.getFlowNode().getId());
+	public void execute(FlowNodeExecutionContext executionContext, String eventType, Object[] params) {
+		// 创建TRIGGER JOB JOBDETAIL
+		FoxbpmJobDetail<FoxbpmScheduleJob> jobDetail = null;
+		if (StringUtil.equals(eventType, EVENT_TYPE_START)) {
+			jobDetail = new FoxbpmJobDetail<FoxbpmScheduleJob>(new ProcessIntanceAutoStartJob(
+					GuidUtil.CreateGuid(), (String) params[1]));
+			// 根据三种表达式创建TRIGGER
+			jobDetail.createTriggerList(this.getTimeDate(), null);
+			jobDetail.createTriggerList(this.getTimeDuration(), null);
+			jobDetail.createTriggerList(this.getTimeCycle(), null);
+			// 设置调度变量
+			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.PROCESS_DEFINITION_ID,
+					(String) params[0]);
+			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.PROCESS_DEFINITION_KEY,
+					(String) params[1]);
+			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.PROCESS_DEFINITION_NAME,
+					(String) params[2]);
+			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.NODE_ID, (String) params[3]);
 
-		QuartzUtil.scheduleFoxbpmJob(tokenTimeoutAutoExecuteJobDetail);
+		} else if (StringUtil.equals(eventType, EVENT_TYPE_BOUNDARY)) {
+			KernelTokenImpl kernelTokenImpl = (KernelTokenImpl) executionContext;
+			jobDetail = new FoxbpmJobDetail<FoxbpmScheduleJob>(new TimeDefinitionExecuteJob(
+					GuidUtil.CreateGuid(), kernelTokenImpl.getProcessInstanceId()));
+
+			// 根据三种表达式创建TRIGGER
+			jobDetail.createTriggerList(this.getTimeDate(), kernelTokenImpl);
+			jobDetail.createTriggerList(this.getTimeDuration(), kernelTokenImpl);
+			jobDetail.createTriggerList(this.getTimeCycle(), kernelTokenImpl);
+
+			// 设置调度变量
+			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.PROCESS_INSTANCE_ID,
+					kernelTokenImpl.getProcessInstanceId());
+			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.TOKEN_ID,
+					kernelTokenImpl.getId());
+			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.NODE_ID, kernelTokenImpl
+					.getFlowNode().getId());
+
+		} else if (StringUtil.equals(eventType, EVENT_TYPE_CONNECTOR)) {
+
+			jobDetail = new FoxbpmJobDetail<FoxbpmScheduleJob>(new ConnectorAutoExecuteJob(
+					GuidUtil.CreateGuid(), executionContext.getProcessInstanceId()));
+			jobDetail.createTriggerList(this.timeDate, (KernelTokenImpl) executionContext);
+			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.CONNECTOR_ID, params[0]);
+			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.PROCESS_INSTANCE_ID,
+					executionContext.getProcessInstanceId());
+			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.EVENT_NAME, (String) params[1]);
+			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.TOKEN_ID,
+					executionContext.getId());
+			if (StringUtils.equalsIgnoreCase((String) params[1],
+					KernelEventType.EVENTTYPE_TASK_ASSIGN)) {
+				TaskEntity assignTask = ((TokenEntity) executionContext).getAssignTask();
+				if (assignTask != null) {
+					jobDetail.putContextAttribute(FoxbpmJobExecutionContext.TASK_ID,
+							assignTask.getId());
+				}
+			}
+
+			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.NODE_ID, params[2]);
+		}
+
+		// 保存更新调度信息
+		QuartzUtil.scheduleFoxbpmJob(jobDetail);
+
 	}
-
 	public Expression getTimeDate() {
 		return timeDate;
 	}
