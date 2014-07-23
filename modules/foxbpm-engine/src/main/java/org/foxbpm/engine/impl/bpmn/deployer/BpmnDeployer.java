@@ -27,7 +27,7 @@ import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.bpmn.behavior.EventDefinition;
 import org.foxbpm.engine.impl.bpmn.behavior.StartEventBehavior;
-import org.foxbpm.engine.impl.bpmn.behavior.TimerEventDefinition;
+import org.foxbpm.engine.impl.bpmn.behavior.TimerEventBehavior;
 import org.foxbpm.engine.impl.entity.DeploymentEntity;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ResourceEntity;
@@ -187,7 +187,7 @@ public class BpmnDeployer extends AbstractDeployer {
 		Iterator<EventDefinition> eventDefIter = null;
 		EventDefinition eventDefinition = null;
 		FoxbpmJobDetail<FoxbpmScheduleJob> jobDetail = null;
-		TimerEventDefinition timerEventDefinition = null;
+		TimerEventBehavior timerEventDefinition = null;
 		Object startDate = null;
 		String cronExpression = null;
 		String eventID = null;
@@ -202,8 +202,8 @@ public class BpmnDeployer extends AbstractDeployer {
 				while (eventDefIter.hasNext()) {
 					eventDefinition = eventDefIter.next();
 					// 如果开始节点存在自动启动属性，那么就调度或者刷新 工作任务
-					if (eventDefinition instanceof TimerEventDefinition) {
-						timerEventDefinition = (TimerEventDefinition) eventDefinition;
+					if (eventDefinition instanceof TimerEventBehavior) {
+						timerEventDefinition = (TimerEventBehavior) eventDefinition;
 						startDate = timerEventDefinition.getTimeDate().getValue(null);
 						cronExpression = timerEventDefinition.getTimeCycle().getExpressionText();
 						eventID = eventDefinition.getId();

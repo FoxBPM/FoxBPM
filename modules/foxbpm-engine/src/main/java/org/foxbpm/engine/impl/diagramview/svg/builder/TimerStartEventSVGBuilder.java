@@ -103,7 +103,7 @@ public class TimerStartEventSVGBuilder extends AbstractSVGBuilder {
 	public void setWidth(float width) {
 		float tempWidth = width / 2;
 		this.circleVO1.setR(tempWidth);
-		this.circleVO2.setR(tempWidth - 3);
+		this.circleVO2.setR(tempWidth - 8);
 
 	}
 
@@ -185,21 +185,16 @@ public class TimerStartEventSVGBuilder extends AbstractSVGBuilder {
 			if (SVGUtils.isChinese(elementValue.charAt(0))) {
 				textWidth = textWidth + (textWidth / 20) * 5;
 			}
-			this.setTextX(x - textWidth / 2);
-			this.setTextY(y + this.circleVO1.getR() + 15);
+
+			this.setTextX(this.circleVO1.getR() - textWidth / 2);
+			this.setTextY(this.circleVO1.getR() * 2 + 10);
 		}
 
-		// 如果存在子类型，例如ERROR
-		if (this.pathVo != null) {
-			// 整体 SHIFT
-			this.svgVo.getgVo().setTransform(
-					new StringBuffer(TRANSLANT_PREFIX).append(x).append(COMMA).append(y)
-							.append(BRACKET_SUFFIX).toString());
-			// TODO 同时需要设置文本的相对偏移量
-		} else {
-			this.circleVO1.setCx(x);
-			this.circleVO1.setCy(y);
-		}
+		// 整体 SHIFT
+		this.svgVo.getgVo().setTransform(
+				new StringBuffer(TRANSLANT_PREFIX).append(x).append(COMMA).append(y)
+						.append(BRACKET_SUFFIX).toString());
+
 	}
 
 	/**

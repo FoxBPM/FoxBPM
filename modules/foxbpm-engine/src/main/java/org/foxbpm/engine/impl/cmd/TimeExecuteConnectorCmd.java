@@ -98,7 +98,7 @@ public class TimeExecuteConnectorCmd implements Command<KernelListener>,
 					"TimeExecuteConnectorCmd自动执行连接器时候,连接器无法获取");
 		}
 		try {
-			connector.executeJob(tokenEntity);
+			connector.execute(tokenEntity);
 		} catch (Exception e) {
 			throw new FoxBPMException("TimeExecuteConnectorCmd自动执行连接器时候报异常", e);
 		}

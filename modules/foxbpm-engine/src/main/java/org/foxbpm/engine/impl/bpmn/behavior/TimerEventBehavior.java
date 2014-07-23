@@ -20,7 +20,7 @@ package org.foxbpm.engine.impl.bpmn.behavior;
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
 
-public class TimerEventDefinition extends EventDefinition {
+public class TimerEventBehavior extends EventDefinition {
 
 	private static final long serialVersionUID = 1L;
 

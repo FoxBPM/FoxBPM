@@ -49,10 +49,10 @@ import org.foxbpm.engine.impl.bpmn.behavior.ServiceTaskBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.StartEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.SubProcessBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.TaskBehavior;
-import org.foxbpm.engine.impl.bpmn.behavior.TerminateEventDefinition;
+import org.foxbpm.engine.impl.bpmn.behavior.TerminateEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.TextAnnotationBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ThrowEventBehavior;
-import org.foxbpm.engine.impl.bpmn.behavior.TimerEventDefinition;
+import org.foxbpm.engine.impl.bpmn.behavior.TimerEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
 import org.foxbpm.engine.impl.bpmn.parser.StyleOption;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateNameConstant;
@@ -355,11 +355,15 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 					taskType = SVGTypeNameConstant.SVG_TYPE_EVENT;
 					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_STARTEVENT_NONE;
 					if (hasTimerDefinition) {
+						taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_START_TIMER;
 						svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_STARTEVENT_TIMER;
 					}
 				} else if (kernelFlowNodeBehavior instanceof BoundaryEventBehavior) {
 					// 边界事件
-					taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_BOUNDARY_INTERRUPTING_TIME;
+					taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_BOUNDARY_NONEINTERRUPTING_TIME;
+					if (((BoundaryEventBehavior) kernelFlowNodeBehavior).isCancelActivity()) {
+						taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_BOUNDARY_INTERRUPTING_TIME;
+					}
 				} else if (kernelFlowNodeBehavior instanceof IntermediateCatchEventBehavior) {
 					// 中间件事件
 					taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_BOUNDARY_INTERRUPTING_TIME;
@@ -395,7 +399,7 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 		Iterator<EventDefinition> iterator = eventDefinitions.iterator();
 		while (iterator.hasNext()) {
 			EventDefinition next = iterator.next();
-			if (next instanceof TerminateEventDefinition) {
+			if (next instanceof TerminateEventBehavior) {
 				return true;
 			}
 		}
@@ -416,7 +420,7 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 		Iterator<EventDefinition> iterator = eventDefinitions.iterator();
 		while (iterator.hasNext()) {
 			EventDefinition next = iterator.next();
-			if (next instanceof TimerEventDefinition) {
+			if (next instanceof TimerEventBehavior) {
 				return true;
 			}
 		}
