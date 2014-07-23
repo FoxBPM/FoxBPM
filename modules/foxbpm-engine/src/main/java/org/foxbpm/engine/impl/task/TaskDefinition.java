@@ -22,8 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.foxbpm.engine.expression.Expression;
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
+import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.task.ClaimType;
 import org.foxbpm.engine.task.TaskCommand;
 
 public class TaskDefinition implements Serializable {
@@ -32,35 +35,29 @@ public class TaskDefinition implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1357653109003002722L;
-	
-	private String id;
-	
-	private String name;
-	
-	
-	private String taskType;
-	
-	
 
+	private String id;
+
+	private String name;
+
+	private String taskType;
 
 	private Expression completeTaskDescription;
-	
 
 	private Expression taskDescription;
-	
-	private boolean isAutoClaim;
-	
+
+	private String claimType;
+
 	private Expression taskSubject;
-	
+
 	private Expression taskPriority;
-	
+
 	private Expression formUri;
-	
+
 	private Expression formUriView;
-	
+
 	private List<FormParam> formParams;
-	
-	
+
 	public Expression getTaskSubject() {
 		return taskSubject;
 	}
@@ -106,19 +103,8 @@ public class TaskDefinition implements Serializable {
 	 */
 	private List<TaskCommand> taskCommands = new ArrayList<TaskCommand>();
 
-	
-	
-	public boolean isAutoClaim() {
-		return isAutoClaim;
-	}
+	protected List<Connector> actorConnectors = new ArrayList<Connector>();
 
-	public void setAutoClaim(boolean isAutoClaim) {
-		this.isAutoClaim = isAutoClaim;
-	}
-
-	protected List<Connector> actorConnectors=new ArrayList<Connector>();
-
-	
 	public List<Connector> getActorConnectors() {
 		return actorConnectors;
 	}
@@ -127,20 +113,18 @@ public class TaskDefinition implements Serializable {
 		this.actorConnectors = actorConnectors;
 	}
 
-	
-
 	public List<TaskCommand> getTaskCommands() {
 		return taskCommands;
 	}
-	
+
 	public List<TaskCommand> getTaskCommands(String type) {
-		List<TaskCommand> taskCommands=new ArrayList<TaskCommand>();
+		List<TaskCommand> taskCommands = new ArrayList<TaskCommand>();
 		for (TaskCommand taskCommand : getTaskCommands()) {
-			if(taskCommand.getTaskCommandType().equals(type)){
+			if (taskCommand.getTaskCommandType().equals(type)) {
 				taskCommands.add(taskCommand);
 			}
 		}
-		
+
 		return taskCommands;
 	}
 
@@ -159,7 +143,6 @@ public class TaskDefinition implements Serializable {
 		this.taskCommands = taskCommands;
 	}
 
-
 	public String getId() {
 		return id;
 	}
@@ -167,13 +150,13 @@ public class TaskDefinition implements Serializable {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	public Expression getCompleteTaskDescription() {
 		return completeTaskDescription;
 	}
 
 	public void setCompleteTaskDescription(String completeTaskDescription) {
-		this.completeTaskDescription =  new ExpressionImpl(completeTaskDescription);
+		this.completeTaskDescription = new ExpressionImpl(completeTaskDescription);
 	}
 
 	public Expression getTaskDescription() {
@@ -181,7 +164,7 @@ public class TaskDefinition implements Serializable {
 	}
 
 	public void setTaskDescription(String taskDescription) {
-		this.taskDescription =  new ExpressionImpl(taskDescription);
+		this.taskDescription = new ExpressionImpl(taskDescription);
 	}
 
 	public String getName() {
@@ -191,13 +174,52 @@ public class TaskDefinition implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getTaskType() {
 		return taskType;
 	}
 
+	public boolean isAutoClaim() {
+
+		String defaultClaimType = Context.getProcessEngineConfiguration().getTaskCommandConfig().getIsAutoClaim();
+
+		boolean isAutoClaim = false;
+
+		if (defaultClaimType.toLowerCase().equals(ClaimType.AUTO_CLAIM.toLowerCase())) {
+			isAutoClaim = true;
+		} else {
+			isAutoClaim = false;
+		}
+
+		if (StringUtil.isNotEmpty(claimType)) {
+
+			if (claimType.toLowerCase().equals(ClaimType.DEFAULT_CLAIM)) {
+				return isAutoClaim;
+			}
+			if (claimType.toLowerCase().equals(ClaimType.AUTO_CLAIM)) {
+				return true;
+			}
+			if (claimType.toLowerCase().equals(ClaimType.MANUAL_CLAIM)) {
+				return false;
+			}
+
+			return false;
+		} else {
+			return isAutoClaim;
+		}
+
+	}
+
 	public void setTaskType(String taskType) {
 		this.taskType = taskType;
+	}
+
+	public String getClaimType() {
+		return claimType;
+	}
+
+	public void setClaimType(String claimType) {
+		this.claimType = claimType;
 	}
 
 }

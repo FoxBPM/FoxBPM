@@ -66,8 +66,8 @@ public class BpmnModelUtil {
 	}
 	
 	/** 获取任务领取方式*/
-	public static boolean isAutoClaim(UserTask userTask){
-		return StringUtil.getBoolean(getExtensionAttribute(userTask,FoxBPMPackage.Literals.DOCUMENT_ROOT__IS_AUTO_CLAIM));
+	public static String claimType(UserTask userTask){
+		return StringUtil.getString(getExtensionAttribute(userTask,FoxBPMPackage.Literals.DOCUMENT_ROOT__CLAIM_TYPE));
 	}
 	
 	/** 获取并行网关合并策略*/

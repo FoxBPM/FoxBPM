@@ -148,6 +148,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	protected TaskCommandConfig taskCommandConfig;
 
+	
 	protected Map<String, TaskCommandDefinition> taskCommandDefinitionMap;
 
 	protected Map<String, AbstractCommandFilter> abstractCommandFilterMap;
@@ -739,4 +740,9 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		}
 		return null;
 	}
+	
+	public TaskCommandConfig getTaskCommandConfig() {
+		return taskCommandConfig;
+	}
+
 }
