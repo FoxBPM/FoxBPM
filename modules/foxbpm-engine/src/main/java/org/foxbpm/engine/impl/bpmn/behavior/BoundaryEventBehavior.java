@@ -21,9 +21,22 @@ import java.util.List;
 
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
+/**
+ * 
+ * 
+ * BoundaryEventBehavior 编辑事件行为类
+ * 
+ * MAENLIANG 2014年7月23日 下午3:25:31
+ * 
+ * @version 1.0.0
+ * 
+ */
 public class BoundaryEventBehavior extends CatchEventBehavior {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 标识是否终止
+	 */
 	private boolean isCancelActivity;
 	@Override
 	public void execute(FlowNodeExecutionContext executionContext) {

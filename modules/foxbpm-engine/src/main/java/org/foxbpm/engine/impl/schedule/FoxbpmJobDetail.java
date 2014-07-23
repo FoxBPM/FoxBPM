@@ -31,6 +31,7 @@ import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.QuartzUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.quartz.Job;
 import org.quartz.JobBuilder;
@@ -61,11 +62,9 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 			this.jobDetail = JobBuilder
 					.newJob(foxbpmJob.getClass())
 					.withIdentity(((FoxbpmScheduleJob) foxbpmJob).getName(),
-							((FoxbpmScheduleJob) foxbpmJob).getGroupName())
-					.build();
+							((FoxbpmScheduleJob) foxbpmJob).getGroupName()).build();
 		} else {
-			throw new FoxBPMException(
-					"非 FoxbpmScheduleJob ，无法创建FoxbpmJobDetail！");
+			throw new FoxBPMException("非 FoxbpmScheduleJob ，无法创建FoxbpmJobDetail！");
 		}
 
 	}
@@ -79,13 +78,11 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 	 * @param groupName
 	 * @return trigger
 	 */
-	public void createTrigger(Object startDate, String cronExpression,
-			String durationExpression, String triggerName, String groupName) {
+	public void createTrigger(Object startDate, String cronExpression, String durationExpression,
+			String triggerName, String groupName) {
 		Trigger trigger = null;
-		TriggerBuilder<Trigger> withIdentity = newTrigger().withIdentity(
-				triggerName, groupName);
-		if (startDate == null && isBlank(cronExpression)
-				&& isBlank(durationExpression)) {
+		TriggerBuilder<Trigger> withIdentity = newTrigger().withIdentity(triggerName, groupName);
+		if (startDate == null && isBlank(cronExpression) && isBlank(durationExpression)) {
 			throw new FoxBPMException("自动启动流程实例，启动时间表达式为空！");
 		} else if (startDate != null) {
 			// Date 启动
@@ -100,8 +97,7 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 			}
 		} else if (isNotBlank(cronExpression)) {
 			// CRON表达式启动
-			trigger = withIdentity.withSchedule(cronSchedule(cronExpression))
-					.build();
+			trigger = withIdentity.withSchedule(cronSchedule(cronExpression)).build();
 		} else if (isNotBlank(durationExpression)) {
 			// TODO DURATION Expression暂时未实现
 		}
@@ -113,24 +109,27 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 	@SuppressWarnings("unchecked")
 	public void createTriggerList(Expression timeExpression,
 			ListenerExecutionContext executionContext) {
+		if (timeExpression == null || StringUtil.isBlank(timeExpression.getExpressionText())) {
+			return;
+		}
 		List<Trigger> triggersList = new ArrayList<Trigger>();
-		Object triggerObj = ExpressionMgmt.execute(
-				timeExpression.getExpressionText(), executionContext);
+		Object triggerObj = ExpressionMgmt.execute(timeExpression.getExpressionText(),
+				executionContext);
 		if (triggerObj == null) {
-			throw new FoxBPMException("创建TRIGGER  LIST时候，TIMER 表达式执行结果为NULL");
+			throw new FoxBPMException("FoxbpmJobDetail创建TRIGGER LIST时候，TIMER 表达式执行结果为NULL");
 		}
 		if (triggerObj instanceof List) {
 			try {
 				triggersList = (List<Trigger>) triggerObj;
 			} catch (Exception e) {
-				throw new FoxBPMException("定时连接器的触发器集合必须为List<Trigger>");
+				throw new FoxBPMException("FoxbpmJobDetail创建的触发器集合必须为List<Trigger>");
 			}
 		} else if (triggerObj instanceof Trigger) {
 			Trigger tempTrigger = null;
 			try {
 				tempTrigger = (Trigger) triggerObj;
 			} catch (Exception e) {
-				throw new FoxBPMException("定时连接器的触发器集合必须为List<Trigger>", e);
+				throw new FoxBPMException("FoxbpmJobDetail创建的触发器集合必须为Trigger", e);
 			}
 			triggersList.add(tempTrigger);
 		} else if (triggerObj instanceof Date) {

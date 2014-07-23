@@ -21,7 +21,7 @@ import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobDetail;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
-import org.foxbpm.engine.impl.schedule.quartz.TokenTimeoutAutoExecuteJob;
+import org.foxbpm.engine.impl.schedule.quartz.TimeDefinitionExecuteJob;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.QuartzUtil;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
@@ -50,10 +50,13 @@ public class TimerEventBehavior extends EventDefinition {
 	public void execute(FlowNodeExecutionContext executionContext) {
 		KernelTokenImpl kernelTokenImpl = (KernelTokenImpl) executionContext;
 		// TODO QuartzUtil类是否需要改方法参数，processDefinitionID改成 processInstanceID
-		FoxbpmJobDetail<TokenTimeoutAutoExecuteJob> tokenTimeoutAutoExecuteJobDetail = new FoxbpmJobDetail<TokenTimeoutAutoExecuteJob>(
-				new TokenTimeoutAutoExecuteJob(GuidUtil.CreateGuid(),
+		FoxbpmJobDetail<TimeDefinitionExecuteJob> tokenTimeoutAutoExecuteJobDetail = new FoxbpmJobDetail<TimeDefinitionExecuteJob>(
+				new TimeDefinitionExecuteJob(GuidUtil.CreateGuid(),
 						kernelTokenImpl.getProcessInstanceId()));
+		// 根据三种表达式创建TRIGGER
 		tokenTimeoutAutoExecuteJobDetail.createTriggerList(this.getTimeDate(), kernelTokenImpl);
+		tokenTimeoutAutoExecuteJobDetail.createTriggerList(this.getTimeDuration(), kernelTokenImpl);
+		tokenTimeoutAutoExecuteJobDetail.createTriggerList(this.getTimeCycle(), kernelTokenImpl);
 		tokenTimeoutAutoExecuteJobDetail.putContextAttribute(
 				FoxbpmJobExecutionContext.PROCESS_INSTANCE_ID,
 				kernelTokenImpl.getProcessInstanceId());

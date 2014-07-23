@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.quartz.Calendar;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
@@ -57,21 +58,20 @@ public class FoxbpmScheduler implements Scheduler {
 		this.scheduler = scheduler;
 	}
 
-	public void scheduleFoxbpmJob(FoxbpmJobDetail<?> jobDetail)
-			throws SchedulerException {
+	public void scheduleFoxbpmJob(FoxbpmJobDetail<?> jobDetail) throws SchedulerException {
 		// 进行FOXBPM操作
 		FoxbpmJobDetail<?> foxbpmJobDetail = (FoxbpmJobDetail<?>) jobDetail;
 		List<Trigger> triggerList = foxbpmJobDetail.getTriggerList();
 		if (triggerList != null && triggerList.size() != 0) {
 			if (triggerList.size() == 1) {
-				this.scheduler.scheduleJob(foxbpmJobDetail.getJobDetail(),
-						triggerList.get(0));
+				this.scheduler.scheduleJob(foxbpmJobDetail.getJobDetail(), triggerList.get(0));
 			} else {
 				Map<JobDetail, List<Trigger>> triggersAndJobs = new HashMap<JobDetail, List<Trigger>>();
-				triggersAndJobs
-						.put(foxbpmJobDetail.getJobDetail(), triggerList);
+				triggersAndJobs.put(foxbpmJobDetail.getJobDetail(), triggerList);
 				this.scheduler.scheduleJobs(triggersAndJobs, true);
 			}
+		} else {
+			throw new FoxBPMException("FoxbpmSheduler 执行scheduleFoxbpmJob时候 triggerList为空");
 		}
 	}
 
@@ -130,8 +130,7 @@ public class FoxbpmScheduler implements Scheduler {
 	}
 
 	@Override
-	public void shutdown(boolean waitForJobsToComplete)
-			throws SchedulerException {
+	public void shutdown(boolean waitForJobsToComplete) throws SchedulerException {
 		scheduler.shutdown(waitForJobsToComplete);
 	}
 
@@ -146,8 +145,7 @@ public class FoxbpmScheduler implements Scheduler {
 	}
 
 	@Override
-	public List<JobExecutionContext> getCurrentlyExecutingJobs()
-			throws SchedulerException {
+	public List<JobExecutionContext> getCurrentlyExecutingJobs() throws SchedulerException {
 		return scheduler.getCurrentlyExecutingJobs();
 	}
 
@@ -163,8 +161,7 @@ public class FoxbpmScheduler implements Scheduler {
 	}
 
 	@Override
-	public Date scheduleJob(JobDetail jobDetail, Trigger trigger)
-			throws SchedulerException {
+	public Date scheduleJob(JobDetail jobDetail, Trigger trigger) throws SchedulerException {
 		return this.scheduler.scheduleJob(jobDetail, trigger);
 	}
 
@@ -174,36 +171,32 @@ public class FoxbpmScheduler implements Scheduler {
 	}
 
 	@Override
-	public void scheduleJobs(Map<JobDetail, List<Trigger>> triggersAndJobs,
-			boolean replace) throws SchedulerException {
+	public void scheduleJobs(Map<JobDetail, List<Trigger>> triggersAndJobs, boolean replace)
+			throws SchedulerException {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public boolean unscheduleJob(TriggerKey triggerKey)
-			throws SchedulerException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean unscheduleJobs(List<TriggerKey> triggerKeys)
-			throws SchedulerException {
+	public boolean unscheduleJob(TriggerKey triggerKey) throws SchedulerException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public Date rescheduleJob(TriggerKey triggerKey, Trigger newTrigger)
-			throws SchedulerException {
+	public boolean unscheduleJobs(List<TriggerKey> triggerKeys) throws SchedulerException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Date rescheduleJob(TriggerKey triggerKey, Trigger newTrigger) throws SchedulerException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void addJob(JobDetail jobDetail, boolean replace)
-			throws SchedulerException {
+	public void addJob(JobDetail jobDetail, boolean replace) throws SchedulerException {
 		// TODO Auto-generated method stub
 
 	}
@@ -214,12 +207,10 @@ public class FoxbpmScheduler implements Scheduler {
 	}
 
 	public boolean deleteJob(FoxbpmJobDetail<?> jobDetail) {
-		FoxbpmScheduleJob foxbpmScheduleJob = (FoxbpmScheduleJob) jobDetail
-				.getFoxbpmJob();
+		FoxbpmScheduleJob foxbpmScheduleJob = (FoxbpmScheduleJob) jobDetail.getFoxbpmJob();
 		try {
 			return this.getScheduler().deleteJob(
-					new JobKey(foxbpmScheduleJob.getName(), foxbpmScheduleJob
-							.getGroupName()));
+					new JobKey(foxbpmScheduleJob.getName(), foxbpmScheduleJob.getGroupName()));
 		} catch (SchedulerException e) {
 			// TODO Auto-generated catch block
 		}
@@ -239,8 +230,7 @@ public class FoxbpmScheduler implements Scheduler {
 	}
 
 	@Override
-	public void triggerJob(JobKey jobKey, JobDataMap data)
-			throws SchedulerException {
+	public void triggerJob(JobKey jobKey, JobDataMap data) throws SchedulerException {
 		// TODO Auto-generated method stub
 
 	}
@@ -252,8 +242,7 @@ public class FoxbpmScheduler implements Scheduler {
 	}
 
 	@Override
-	public void pauseJobs(GroupMatcher<JobKey> matcher)
-			throws SchedulerException {
+	public void pauseJobs(GroupMatcher<JobKey> matcher) throws SchedulerException {
 		// TODO Auto-generated method stub
 
 	}
@@ -264,8 +253,7 @@ public class FoxbpmScheduler implements Scheduler {
 	}
 
 	@Override
-	public void pauseTriggers(GroupMatcher<TriggerKey> matcher)
-			throws SchedulerException {
+	public void pauseTriggers(GroupMatcher<TriggerKey> matcher) throws SchedulerException {
 		scheduler.pauseTriggers(matcher);
 	}
 
@@ -275,8 +263,7 @@ public class FoxbpmScheduler implements Scheduler {
 	}
 
 	@Override
-	public void resumeJobs(GroupMatcher<JobKey> matcher)
-			throws SchedulerException {
+	public void resumeJobs(GroupMatcher<JobKey> matcher) throws SchedulerException {
 		scheduler.resumeJobs(matcher);
 	}
 
@@ -287,8 +274,7 @@ public class FoxbpmScheduler implements Scheduler {
 	}
 
 	@Override
-	public void resumeTriggers(GroupMatcher<TriggerKey> matcher)
-			throws SchedulerException {
+	public void resumeTriggers(GroupMatcher<TriggerKey> matcher) throws SchedulerException {
 		// TODO Auto-generated method stub
 
 	}
@@ -312,15 +298,13 @@ public class FoxbpmScheduler implements Scheduler {
 	}
 
 	@Override
-	public Set<JobKey> getJobKeys(GroupMatcher<JobKey> matcher)
-			throws SchedulerException {
+	public Set<JobKey> getJobKeys(GroupMatcher<JobKey> matcher) throws SchedulerException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<? extends Trigger> getTriggersOfJob(JobKey jobKey)
-			throws SchedulerException {
+	public List<? extends Trigger> getTriggersOfJob(JobKey jobKey) throws SchedulerException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -357,8 +341,7 @@ public class FoxbpmScheduler implements Scheduler {
 	}
 
 	@Override
-	public TriggerState getTriggerState(TriggerKey triggerKey)
-			throws SchedulerException {
+	public TriggerState getTriggerState(TriggerKey triggerKey) throws SchedulerException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -389,15 +372,13 @@ public class FoxbpmScheduler implements Scheduler {
 	}
 
 	@Override
-	public boolean interrupt(JobKey jobKey)
-			throws UnableToInterruptJobException {
+	public boolean interrupt(JobKey jobKey) throws UnableToInterruptJobException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean interrupt(String fireInstanceId)
-			throws UnableToInterruptJobException {
+	public boolean interrupt(String fireInstanceId) throws UnableToInterruptJobException {
 		// TODO Auto-generated method stub
 		return false;
 	}
