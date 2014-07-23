@@ -72,8 +72,8 @@ public class UserTaskParser extends TaskParser {
 			}
 		}
 
-		boolean isAutoClaim = BpmnModelUtil.isAutoClaim(userTask);
-		taskDefinition.setAutoClaim(isAutoClaim);
+		String claimType = BpmnModelUtil.claimType(userTask);
+		taskDefinition.setClaimType(claimType);
 
 		List<ResourceRole> resources = userTask.getResources();
 		if (resources.size() > 0) {
