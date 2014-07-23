@@ -35,6 +35,9 @@ public class VariableDefinitonResouces extends AbstractRestResource {
 		int version = StringUtil.getInt(getAttribute("version"));
 		
 		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity)FoxBpmUtil.getProcessEngine().getModelService().getProcessDefinition(processKey, version); 
+		if(processDefinition == null){
+			return null;
+		}
 		List<DataVariableDefinition> dataVariableDefinitions = processDefinition.getDataVariableMgmtDefinition().getDataVariableDefinitions();
 		List<Map<String,Object>> results = new ArrayList<Map<String,Object>>();
 		for (DataVariableDefinition variableDefinition : dataVariableDefinitions) {
