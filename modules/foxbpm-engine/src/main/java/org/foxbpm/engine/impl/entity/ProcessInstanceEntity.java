@@ -40,6 +40,7 @@ import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.runtime.ProcessInstanceStatus;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
+import org.foxbpm.kernel.runtime.KernelProcessInstance;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
@@ -164,11 +165,15 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		tokenObj.setId(tokenObjId);
 		tokenObj.setStartTime(ClockUtil.getCurrentTime());
 		tokenObj.setProcessInstance(this);
+		addToken(tokenObj);
 		Context.getCommandContext().getTokenManager().insert(tokenObj);
 
 		return tokenObj;
 	}
 
+	
+	
+	
 	@Override
 	public void initialize() {
 		super.initialize();
@@ -208,6 +213,20 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 			setParentProcessInstanceToken(token);
 		}
 
+	}
+	
+	
+
+	@Override
+	public KernelProcessInstance createSubProcessInstance(KernelProcessDefinitionImpl processDefinition, KernelTokenImpl token) {
+		
+		ProcessInstanceEntity createSubProcessInstance = (ProcessInstanceEntity) super.createSubProcessInstance(processDefinition, token);
+		
+		//创建流程实例，并持久化。
+		
+		Context.getCommandContext().getProcessInstanceManager().insert(createSubProcessInstance);
+
+		return createSubProcessInstance;
 	}
 
 	@Override

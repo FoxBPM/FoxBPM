@@ -33,7 +33,9 @@ import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.runtime.Token;
+import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
+import org.foxbpm.kernel.runtime.KernelProcessInstance;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
@@ -59,6 +61,14 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 	protected TaskEntity assignTask;
 	
 	protected String groupID;
+	
+	/** 流程定义唯一版本编号 */
+	protected String processDefinitionId;
+
+	
+
+	/** 流程定义编号 */
+	protected String processDefinitionKey;
 
 	
 
@@ -240,6 +250,11 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		objectParam.put("nodeId", getNodeId());
 		objectParam.put("processInstanceId", getProcessInstanceId());
 		objectParam.put("parentId", getParentId());
+		
+		objectParam.put("processDefinitionId", getProcessDefinitionId());
+		
+		objectParam.put("processDefinitionKey",getProcessDefinitionKey());
+		
 		return objectParam;
 	}
 
@@ -340,6 +355,28 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		return super.isSignalParentToken();
 	}
 	
-	
+	public String getProcessDefinitionId() {
+		return processDefinitionId;
+	}
+
+	public void setProcessDefinitionId(String processDefinitionId) {
+		this.processDefinitionId = processDefinitionId;
+	}
+
+	public String getProcessDefinitionKey() {
+		return processDefinitionKey;
+	}
+
+	public void setProcessDefinitionKey(String processDefinitionKey) {
+		this.processDefinitionKey = processDefinitionKey;
+	}
+
+	@Override
+	public KernelProcessInstance createSubProcessInstance(KernelProcessDefinition processDefinition) {
+		
+		
+		
+		return super.createSubProcessInstance(processDefinition);
+	}
 
 }

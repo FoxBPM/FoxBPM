@@ -30,9 +30,7 @@ import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 import org.foxbpm.kernel.runtime.InterpretableProcessInstance;
 import org.foxbpm.kernel.runtime.KernelProcessInstance;
 
-public class KernelProcessInstanceImpl extends KernelVariableScopeImpl
-		implements
-			InterpretableProcessInstance {
+public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implements InterpretableProcessInstance {
 	/**
 	 * 
 	 */
@@ -116,7 +114,10 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl
 
 	/** 子类需要重写这个方法 */
 	public KernelTokenImpl createToken() {
-		return new KernelTokenImpl();
+		KernelTokenImpl token = new KernelTokenImpl();
+		// 创建根令牌
+		addToken(token);
+		return token;
 	}
 
 	/** 子类需要重写这个方法创建自己的ID */
@@ -126,10 +127,13 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl
 
 	/** 创建子令牌 */
 	public KernelTokenImpl createChildrenToken(KernelTokenImpl parent) {
+		
 		KernelTokenImpl childrenToken = createToken();
-
 		// 设置令牌的流程实例对象
 		childrenToken.setProcessInstance(this);
+
+		childrenToken.setProcessDefinition(getProcessDefinition());
+
 		// 设置令牌所在的节点
 		childrenToken.setFlowNode(parent.getFlowNode());
 
@@ -137,7 +141,7 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl
 
 		parent.getChildren().add(childrenToken);
 		// 将生成的新节点放入流程实例令牌列表中
-		addToken(childrenToken);
+		//addToken(childrenToken);
 
 		return childrenToken;
 
@@ -180,13 +184,11 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl
 		return new KernelProcessInstanceImpl();
 	}
 
-	public KernelProcessInstance createSubProcessInstance(
-			KernelProcessDefinitionImpl processDefinition) {
+	public KernelProcessInstance createSubProcessInstance(KernelProcessDefinitionImpl processDefinition) {
 		return createSubProcessInstance(processDefinition, this.rootToken);
 	}
 
-	public KernelProcessInstance createSubProcessInstance(
-			KernelProcessDefinitionImpl processDefinition, KernelTokenImpl token) {
+	public KernelProcessInstance createSubProcessInstance(KernelProcessDefinitionImpl processDefinition, KernelTokenImpl token) {
 		KernelProcessInstanceImpl subProcessInstance = newProcessInstance();
 		subProcessInstance.setParentProcessInstance(this);
 		subProcessInstance.setProcessDefinition(processDefinition);
@@ -197,9 +199,8 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl
 	/** 这个方法需要子类重写 */
 	public void initialize() {
 
-		KernelTokenImpl token = createRootToken();
-		// 创建根令牌
-		addToken(token);
+		createRootToken();
+
 	}
 
 	/** 这个方法需要子类重写 */
@@ -244,7 +245,7 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl
 	}
 
 	public void addToken(KernelTokenImpl token) {
-
+		ensureTokensInitialized();
 		if (tokens != null) {
 			tokens.add(token);
 		}

@@ -21,37 +21,45 @@ import java.util.List;
 
 import org.foxbpm.kernel.event.KernelEvent;
 import org.foxbpm.kernel.process.KernelFlowNode;
+import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.process.KernelSequenceFlow;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
-
 
 /**
  * @author kenshin
  * 
  */
 public interface FlowNodeExecutionContext extends DelegateExecutionContext {
-	
+
 	KernelProcessInstanceImpl getProcessInstance();
-	
+
 	KernelFlowNodeImpl getFlowNode();
-	
+
 	void ensureEnterInitialized(KernelFlowNodeImpl flowNode);
-	
+
 	void enter(KernelFlowNodeImpl flowNode);
-	
+
 	void execute();
 
 	void signal();
-	
+
 	void fireEvent(KernelEvent kernelEvent);
 
 	public void take(KernelSequenceFlow sequenceFlow);
 
 	public void take(KernelFlowNodeImpl flowNode);
-	
+
 	void end();
 
 	List<KernelToken> findInactiveToken(KernelFlowNode flowNode);
+
+	FlowNodeExecutionContext createChildrenToken();
+
+	KernelProcessInstance createSubProcessInstance(KernelProcessDefinition processDefinition);
+
+	FlowNodeExecutionContext getParent();
+
+	List<? extends FlowNodeExecutionContext> getChildren();
 
 }
