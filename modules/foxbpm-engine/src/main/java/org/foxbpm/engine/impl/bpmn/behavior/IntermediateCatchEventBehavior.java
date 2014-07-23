@@ -17,18 +17,35 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
+import java.util.List;
+
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
+/**
+ * 
+ * 
+ * IntermediateCatchEventBehavior 中间捕获事件 行为定义
+ * 
+ * MAENLIANG 2014年7月23日 下午7:28:54
+ * 
+ * @version 1.0.0
+ * 
+ */
 public class IntermediateCatchEventBehavior extends CatchEventBehavior {
 
 	/**
-	 * 
+	 * 序列号
 	 */
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	public void execute(FlowNodeExecutionContext executionContext) {
-		// TODO Auto-generated method stub
+		// 执行中间事件定义,例如 时间定义
+		List<EventDefinition> eventDefinitions = this.getEventDefinitions();
+		for (EventDefinition eventDefinition : eventDefinitions) {
+			eventDefinition.execute(executionContext, TimerEventBehavior.EVENT_TYPE_INTERMIDATE,
+					null);
+		}
 	}
 
 }

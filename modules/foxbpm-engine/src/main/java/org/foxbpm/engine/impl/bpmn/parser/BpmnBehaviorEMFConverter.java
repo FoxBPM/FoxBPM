@@ -30,6 +30,7 @@ import org.eclipse.bpmn2.impl.EndEventImpl;
 import org.eclipse.bpmn2.impl.ExclusiveGatewayImpl;
 import org.eclipse.bpmn2.impl.GroupImpl;
 import org.eclipse.bpmn2.impl.InclusiveGatewayImpl;
+import org.eclipse.bpmn2.impl.IntermediateCatchEventImpl;
 import org.eclipse.bpmn2.impl.ManualTaskImpl;
 import org.eclipse.bpmn2.impl.MultiInstanceLoopCharacteristicsImpl;
 import org.eclipse.bpmn2.impl.ParallelGatewayImpl;
@@ -57,6 +58,7 @@ import org.foxbpm.engine.impl.bpmn.parser.model.EndEventParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.ExclusiveGatewayParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.GroupParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.InclusiveGatewayParser;
+import org.foxbpm.engine.impl.bpmn.parser.model.IntermediateEventParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.ManualTaskParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.MultiInstanceLoopCharacteristicsParser;
 import org.foxbpm.engine.impl.bpmn.parser.model.ParallelGatewayParser;
@@ -116,10 +118,10 @@ public class BpmnBehaviorEMFConverter {
 				StandardLoopCharacteristicsParser.class);
 
 		elementParserMap.put(BoundaryEventImpl.class, BoundaryEventParser.class);
-		
+		elementParserMap.put(IntermediateCatchEventImpl.class, IntermediateEventParser.class);
+
 		elementParserMap.put(CallActivityImpl.class, CallActivityParser.class);
-		
-		
+
 	}
 
 	public static KernelFlowNodeBehavior getFlowNodeBehavior(BaseElement baseElement,

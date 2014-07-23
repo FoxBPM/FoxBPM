@@ -57,6 +57,10 @@ public class TimerEventBehavior extends EventDefinition {
 	 * 边界时间事件
 	 */
 	public final static String EVENT_TYPE_BOUNDARY = "boundaryTimeEvent";
+	/**
+	 * 中间事件时间定义
+	 */
+	public final static String EVENT_TYPE_INTERMIDATE = "intermidateTimeEvent";
 
 	/**
 	 * 连接器自动执行
