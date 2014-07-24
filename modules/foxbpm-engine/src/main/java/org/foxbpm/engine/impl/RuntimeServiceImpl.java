@@ -23,6 +23,7 @@ import java.util.Map;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.datavariable.VariableQuery;
 import org.foxbpm.engine.exception.FoxBPMBizException;
+import org.foxbpm.engine.impl.cmd.BoundaryTimeSignalCmd;
 import org.foxbpm.engine.impl.cmd.SignalCmd;
 import org.foxbpm.engine.impl.cmd.StartProcessInstanceCmd;
 import org.foxbpm.engine.impl.datavariable.VariableQueryImpl;
@@ -118,15 +119,13 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 
 	@Override
 	public void boundaryTimeSignal(String tokenId, String nodeId,boolean isCancelActivity, Map<String, Object> transientVariables) {
-		// TODO Auto-generated method stub
-		
+		commandExecutor.execute(new BoundaryTimeSignalCmd(tokenId,nodeId,isCancelActivity,transientVariables,null));
 	}
 
 	@Override
 	public void boundaryTimeSignal(String tokenId, String nodeId,boolean isCancelActivity, Map<String, Object> transientVariables,
 			Map<String, Object> persistenceVariables) {
-		// TODO Auto-generated method stub
-		
+		commandExecutor.execute(new BoundaryTimeSignalCmd(tokenId,nodeId,isCancelActivity,transientVariables,persistenceVariables));
 	}
 
 }
