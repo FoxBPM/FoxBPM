@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.foxbpm.engine.impl.datavariable.BizDataObject;
 
-public interface BizDataObjectSystem {
+public interface BizDataObjectBehavior {
 	/** 获取业务系统数据对象 */
 	List<BizDataObject> getDataObjects();
 
