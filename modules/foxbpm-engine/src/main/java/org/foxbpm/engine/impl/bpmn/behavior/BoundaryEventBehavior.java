@@ -33,7 +33,7 @@ import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
  */
 public class BoundaryEventBehavior extends CatchEventBehavior {
 	private static final long serialVersionUID = 1L;
-
+	
 	/**
 	 * 标识是否终止
 	 */
@@ -43,14 +43,15 @@ public class BoundaryEventBehavior extends CatchEventBehavior {
 		// 执行边界事件定义,例如 时间定义
 		List<EventDefinition> eventDefinitions = this.getEventDefinitions();
 		for (EventDefinition eventDefinition : eventDefinitions) {
-			eventDefinition.execute(executionContext, TimerEventBehavior.EVENT_TYPE_BOUNDARY, null);
+			Object[] params = new String[]{this.getId()};
+			eventDefinition.execute(executionContext, TimerEventBehavior.EVENT_TYPE_BOUNDARY, params);
 		}
 	}
-
+	
 	public boolean isCancelActivity() {
 		return isCancelActivity;
 	}
-
+	
 	public void setCancelActivity(boolean isCancelActivity) {
 		this.isCancelActivity = isCancelActivity;
 	}
