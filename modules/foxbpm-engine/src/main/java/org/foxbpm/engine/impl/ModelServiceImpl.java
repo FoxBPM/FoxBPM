@@ -117,8 +117,8 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	}
 
 	@Override
-	public List<DataObject> getBizSystemDataObject() {
-		return commandExecutor.execute(new GetBizSystemDataObjectCmd());
+	public List<DataObject> getBizSystemDataObject(String type) {
+		return commandExecutor.execute(new GetBizSystemDataObjectCmd(type));
 	}
 
 }

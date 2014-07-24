@@ -8,8 +8,10 @@ import org.foxbpm.engine.impl.interceptor.CommandContext;
 
 public class GetBizSystemDataObjectCmd implements Command<List<DataObject>> {
 	
-	public GetBizSystemDataObjectCmd(){
-		
+	protected String type;
+	
+	public GetBizSystemDataObjectCmd(String type){
+		this.type=type;
 	}
 
 	@Override

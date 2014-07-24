@@ -149,5 +149,5 @@ public interface ModelService {
 	ProcessDefinition getLatestProcessDefinition(String processDefinitionKey);
 	
 	/** 获取业务系统的抽象关联数据对象 */
-	List<DataObject> getBizSystemDataObject();
+	List<DataObject> getBizSystemDataObject(String type);
 }
