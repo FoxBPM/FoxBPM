@@ -338,7 +338,7 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 	public void end(boolean verifyParentTermination) {
 
 		// 如果令牌已经有结束时间则不执行令牌结束方法
-		if (!isEnded) {
+		if (!isEnded()) {
 
 			// 结束令牌.使他不能再启动父令牌
 			setActive(false);
@@ -504,7 +504,7 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 	/** 终止所有子令牌 */
 	public void terminationChildToken() {
 		// 如果令牌已经有结束时间则不执行令牌结束方法
-		if (isEnded()) {
+		if (!isEnded()) {
 			// 结束所有子令牌
 			if (getChildren() != null) {
 
