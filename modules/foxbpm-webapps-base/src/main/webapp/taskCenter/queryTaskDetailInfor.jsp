@@ -74,19 +74,20 @@
 
 						<c:if test="${result.runningTrackInfoList!=null}">
 							<thead>
-								<th style="width: 160px">轨迹编号</th>
-								<th style="width: 160px">轨迹名称</th>
-								<th style="width: 160px">执行时间</th>
-								<th style="width: 160px">事件名称</th>
-								<th style="width: 160px">处理者</th>
-								<th>流程实例编号</th>
-								<th style="width: 160px">归档时间</th>
+								<th style="width: 100px">轨迹编号</th>
+								<th style="width: 270px">轨迹令牌编号</th>
+								<th style="width: 270px">轨迹父令牌编号</th>
+								<th style="width: 130px">执行时间</th>
+								<th style="width: 130px">事件名称</th>
+								<th style="width: 60px">处理者</th>
+								<th>流程实例编号</th> 
 							</thead>
 							<c:forEach items="${result.runningTrackInfoList}" var="row"
 								varStatus="status">
 								<tr <c:if test="${status.index%2!=0}">class="gray"</c:if>>
 									<td>${row.nodeId}</td>
-									<td>${row.nodeName}</td>
+									<td>${row.tokenId}</td>
+									<td>${row.parentTokenId}</td>
 									<td><fmt:formatDate value="${row.executionTime}"
 											type="both" /></td>
 									<td>${row.eventName}</td>

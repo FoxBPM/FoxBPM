@@ -30,23 +30,23 @@ import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
 public abstract class AbstractTrackListener implements KernelListener {
-
+	
 	private static long tractRecord = 0;
 	/**
 	 * serialVersionUID:序列化
 	 */
 	private static final long serialVersionUID = 6870039432248742401L;
-
+	
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmssSSS");
 	@Override
 	public void notify(ListenerExecutionContext executionContext) throws Exception {
 		// 记录流程实例的运行轨迹
 		this.recordOperate(executionContext);
-
+		
 		// TODO 用户定制其他的监听操作
 		// otherOperate(executionContext);
 	}
-
+	
 	/**
 	 * recordOperate(记录流程实例的运行轨迹)
 	 * 
@@ -62,7 +62,7 @@ public abstract class AbstractTrackListener implements KernelListener {
 		if (tractRecord == 0) {
 			tractRecord = Long.parseLong(sdf.format(new Date()));
 		}
-
+		
 		KernelTokenImpl kernelTokenImpl = (KernelTokenImpl) executionContext;
 		KernelProcessDefinitionImpl processDefinition = kernelTokenImpl.getProcessDefinition();
 		runningTrackEntity.setId(GuidUtil.CreateGuid());
@@ -72,6 +72,7 @@ public abstract class AbstractTrackListener implements KernelListener {
 		runningTrackEntity.setExecutionTime(new Date());
 		runningTrackEntity.setEventName(kernelTokenImpl.getEventName());
 		runningTrackEntity.setTokenId(kernelTokenImpl.getId());
+		runningTrackEntity.setParentTokenId(kernelTokenImpl.getParent() == null ? "" : kernelTokenImpl.getParent().getId());
 		runningTrackEntity.setProcessInstanceId(kernelTokenImpl.getProcessInstanceId());
 		// 增加运行轨迹、保存数据
 		tractRecord = tractRecord + 1;
@@ -87,7 +88,7 @@ public abstract class AbstractTrackListener implements KernelListener {
 	private void saveRunningTrackEntity(RunningTrackEntity runningTrackEntity) {
 		Context.getCommandContext().getRunningTrackManager().insert(runningTrackEntity);
 	}
-
+	
 	/**
 	 * 
 	 * recordRunningTrack(记录操作人、节点信息等特定轨迹信息)
@@ -96,5 +97,5 @@ public abstract class AbstractTrackListener implements KernelListener {
 	 * @return RunningTrackEntity
 	 */
 	protected abstract RunningTrackEntity recordRunningTrack(
-			ListenerExecutionContext executionContext);
+	    ListenerExecutionContext executionContext);
 }

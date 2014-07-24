@@ -20,12 +20,14 @@ package org.foxbpm.engine.runningtrack;
 import java.util.Date;
 
 public interface RunningTrack {
-
-	public boolean isModified(); 
+	
+	public boolean isModified();
 	public String getId();
-
+	
 	public void setId(String id);
-
+	
+	public String getParentTokenId();
+	public void setParentTokenId(String parentTokenId);
 	public String getProcessInstanceId();
 	public void setProcessInstanceId(String processInstanceId);
 	public String getProcessDefinitionId();
@@ -48,5 +50,5 @@ public interface RunningTrack {
 	public void setArchiveTime(Date archiveTime);
 	public long getTrackRecord();
 	public void setTrackRecord(long trackRecord);
-
+	
 }
