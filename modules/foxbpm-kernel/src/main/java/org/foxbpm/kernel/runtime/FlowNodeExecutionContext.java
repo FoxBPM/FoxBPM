@@ -24,6 +24,7 @@ import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.process.KernelSequenceFlow;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
+import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
 
 /**
@@ -43,6 +44,8 @@ public interface FlowNodeExecutionContext extends DelegateExecutionContext {
 	void execute();
 
 	void signal();
+	
+	void signal(KernelFlowNodeImpl flowNode);
 
 	void fireEvent(KernelEvent kernelEvent);
 
@@ -61,5 +64,9 @@ public interface FlowNodeExecutionContext extends DelegateExecutionContext {
 	FlowNodeExecutionContext getParent();
 
 	List<? extends FlowNodeExecutionContext> getChildren();
+
+	KernelProcessDefinitionImpl getProcessDefinition();
+
+	void terminationChildToken();
 
 }

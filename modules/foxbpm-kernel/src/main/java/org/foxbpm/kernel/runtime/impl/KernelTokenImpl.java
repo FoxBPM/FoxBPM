@@ -18,6 +18,7 @@
 package org.foxbpm.kernel.runtime.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,12 +40,8 @@ import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class KernelTokenImpl extends KernelVariableScopeImpl
-		implements
-			FlowNodeExecutionContext,
-			ListenerExecutionContext,
-			KernelToken,
-			InterpretableExecutionContext {
+public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNodeExecutionContext, ListenerExecutionContext, KernelToken,
+		InterpretableExecutionContext {
 	private static Logger LOG = LoggerFactory.getLogger(KernelTokenImpl.class);
 
 	/**
@@ -93,6 +90,8 @@ public class KernelTokenImpl extends KernelVariableScopeImpl
 	protected KernelEvent nextEvent;
 	protected boolean isOperating = false;
 
+	protected Map<String, Object> properties;
+
 	public KernelFlowNodeImpl getFlowNode() {
 		ensureFlowNodeInitialized();
 		return currentFlowNode;
@@ -134,8 +133,7 @@ public class KernelTokenImpl extends KernelVariableScopeImpl
 
 	public void enter(KernelFlowNodeImpl flowNode) {
 
-		LOG.debug("进入节点: {}({}),令牌号: {}({}).", flowNode.getName(), flowNode.getId(), getName(),
-				getId());
+		LOG.debug("进入节点: {}({}),令牌号: {}({}).", flowNode.getName(), flowNode.getId(), getName(), getId());
 
 		/** 移除临时执行内容对象 */
 		clearExecutionContextData();
@@ -156,6 +154,15 @@ public class KernelTokenImpl extends KernelVariableScopeImpl
 
 	public void signal() {
 		getFlowNode().getKernelFlowNodeBehavior().leave(this);
+	}
+	
+	public void signal(KernelFlowNodeImpl flowNode) {
+		if(flowNode!=null){
+			flowNode.getKernelFlowNodeBehavior().leave(this);
+		}else{
+			throw new KernelException("signal flownode is null");
+		}
+		
 	}
 
 	public void fireEvent(KernelEvent kernelEvent) {
@@ -218,9 +225,8 @@ public class KernelTokenImpl extends KernelVariableScopeImpl
 		// 用来处理非线条流转令牌,如退回、跳转
 		if (this.toFlowNode != null) {
 			// 发现上下文中有直接跳转节点,则流程引擎不走正常处理直接跳转到指定借点。
-			LOG.debug("＝＝执行跳转机制,跳转目标: {}({}),离开节点: {}({}),令牌号: {}({}).", toFlowNode.getName(),
-					toFlowNode.getId(), flowNode.getName(), flowNode.getId(), this.getName(),
-					this.getId());
+			LOG.debug("＝＝执行跳转机制,跳转目标: {}({}),离开节点: {}({}),令牌号: {}({}).", toFlowNode.getName(), toFlowNode.getId(), flowNode.getName(),
+					flowNode.getId(), this.getName(), this.getId());
 			setToFlowNode(null);
 			enter(toFlowNode);
 			return;
@@ -230,13 +236,10 @@ public class KernelTokenImpl extends KernelVariableScopeImpl
 		if (sequenceFlowList == null || sequenceFlowList.size() == 0) {
 			if (flowNode.getOutgoingSequenceFlows().size() == 0) {
 				LOG.error("节点: {}({}) 后面没有配置处理线条！", flowNode.getName(), flowNode.getId());
-				throw new KernelException("节点: " + flowNode.getName() + "(" + flowNode.getId()
-						+ ") 后面没有配置处理线条！");
+				throw new KernelException("节点: " + flowNode.getName() + "(" + flowNode.getId() + ") 后面没有配置处理线条！");
 			} else {
-				LOG.error("节点: {}({}) 后面的条件都不满足导致节点后面没有处理线条,请检查后续线条条件！", flowNode.getName(),
-						this.getId());
-				throw new KernelException("节点: " + flowNode.getName() + "(" + flowNode.getId()
-						+ ") 后面的条件都不满足导致节点后面没有处理线条,请检查后续线条条件！");
+				LOG.error("节点: {}({}) 后面的条件都不满足导致节点后面没有处理线条,请检查后续线条条件！", flowNode.getName(), this.getId());
+				throw new KernelException("节点: " + flowNode.getName() + "(" + flowNode.getId() + ") 后面的条件都不满足导致节点后面没有处理线条,请检查后续线条条件！");
 			}
 		}
 
@@ -338,9 +341,9 @@ public class KernelTokenImpl extends KernelVariableScopeImpl
 		if (!isEnded) {
 
 			// 结束令牌.使他不能再启动父令牌
-			isActive = false;
+			setActive(false);
 			// 结束日期的标志，表明此令牌已经结束。
-			isEnded = true;
+			setEnded(true);
 			// 结束所有子令牌
 			if (getChildren() != null) {
 
@@ -415,6 +418,10 @@ public class KernelTokenImpl extends KernelVariableScopeImpl
 
 	public boolean isEnded() {
 		return isEnded;
+	}
+
+	public void setEnded(boolean isEnded) {
+		this.isEnded = isEnded;
 	}
 
 	public void setActive(boolean isActive) {
@@ -492,6 +499,21 @@ public class KernelTokenImpl extends KernelVariableScopeImpl
 		}
 
 	}
+	
+
+	/** 终止所有子令牌 */
+	public void terminationChildToken() {
+		// 如果令牌已经有结束时间则不执行令牌结束方法
+		if (isEnded()) {
+			// 结束所有子令牌
+			if (getChildren() != null) {
+
+				for (KernelTokenImpl child : getChildren()) {
+					child.end(false);
+				}
+			}
+		}
+	}
 
 	public KernelSequenceFlowImpl getSequenceFlow() {
 		return sequenceFlow;
@@ -501,14 +523,30 @@ public class KernelTokenImpl extends KernelVariableScopeImpl
 		this.sequenceFlow = sequenceFlow;
 	}
 
-	public Object getProperty(String name) {
-		// TODO Auto-generated method stub
-		return null;
+	public void setProperty(String name, Object value) {
+		if (properties == null) {
+			properties = new HashMap<String, Object>();
+		}
+		properties.put(name, value);
 	}
 
+	public Object getProperty(String name) {
+		if (properties == null) {
+			return null;
+		}
+		return properties.get(name);
+	}
+
+	@SuppressWarnings("unchecked")
 	public Map<String, Object> getProperties() {
-		// TODO Auto-generated method stub
-		return null;
+		if (properties == null) {
+			return Collections.EMPTY_MAP;
+		}
+		return properties;
+	}
+
+	public void setProperties(Map<String, Object> properties) {
+		this.properties = properties;
 	}
 
 	public KernelFlowNodeImpl getToFlowNode() {
@@ -532,8 +570,7 @@ public class KernelTokenImpl extends KernelVariableScopeImpl
 	}
 
 	public String getProcessInstanceId() {
-		// TODO Auto-generated method stub
-		return null;
+		return getProcessInstance().getId();
 	}
 
 	public Object getVariableLocal(Object variableName) {
@@ -601,5 +638,6 @@ public class KernelTokenImpl extends KernelVariableScopeImpl
 	public void setSuspended(boolean isSuspended) {
 		this.isSuspended = isSuspended;
 	}
+
 
 }

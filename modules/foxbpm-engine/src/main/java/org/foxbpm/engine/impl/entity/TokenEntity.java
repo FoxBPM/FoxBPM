@@ -56,6 +56,8 @@ public class TokenEntity extends KernelTokenImpl
 	protected String parentId;
 	protected Date startTime;
 	protected Date endTime;
+	
+
 	protected Date nodeEnterTime;
 	protected Date archiveTime;
 
@@ -196,9 +198,15 @@ public class TokenEntity extends KernelTokenImpl
 	public Date getEndTime() {
 		return endTime;
 	}
+	
+	
 
-	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
+	@Override
+	public boolean isEnded() {
+		if(endTime==null){
+			return false;
+		}
+		return super.isEnded();
 	}
 
 	public Date getNodeEnterTime() {
@@ -331,6 +339,29 @@ public class TokenEntity extends KernelTokenImpl
 			}
 		}
 		return super.isSignalParentToken();
+	}
+	
+	
+	
+
+	@Override
+	public void setEnded(boolean isEnded) {
+		if(isEnded){
+			this.endTime=ClockUtil.getCurrentTime();
+		}else{
+			this.endTime=null;
+		}
+		super.setEnded(isEnded);
+		
+	}
+	
+	public void setEndTime(Date endTime) {
+		if(endTime!=null){
+			super.setEnded(true);
+		}else{
+			super.setEnded(false);
+		}
+		this.endTime = endTime;
 	}
 
 	public String getProcessDefinitionId() {
