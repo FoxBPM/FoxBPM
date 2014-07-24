@@ -27,163 +27,260 @@ import org.foxbpm.engine.runtime.ProcessInstanceQuery;
 import org.foxbpm.engine.runtime.TokenQuery;
 
 public interface RuntimeService {
-
+	
 	/**
 	 * 根据流程定义key启动流程，启动对应key的最新版本
+	 * 
 	 * @param processDefinitionKey
 	 * @return
 	 */
 	ProcessInstance startProcessInstanceByKey(String processDefinitionKey);
-
+	
 	/**
 	 * 根据流程定义key启动流程，启动对应key的最新版本
+	 * 
 	 * @param processDefinitionKey
-	 * @param bizKey 流程关联键
+	 * @param bizKey
+	 *            流程关联键
 	 * @return
 	 */
 	ProcessInstance startProcessInstanceByKey(String processDefinitionKey, String bizKey);
-
+	
 	/**
 	 * 根据流程定义Key启动流程，启动对应key的最新版本
+	 * 
 	 * @param processDefinitionKey
-	 * @param transientVariables 瞬态变量
-	 * @param persistenceVariables 持久化变量
+	 * @param transientVariables
+	 *            瞬态变量
+	 * @param persistenceVariables
+	 *            持久化变量
 	 * @return
 	 */
-	ProcessInstance startProcessInstanceByKey(String processDefinitionKey, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
-
+	ProcessInstance startProcessInstanceByKey(String processDefinitionKey,
+	    Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
+	
 	/**
 	 * 根据流程定义Key启动流程，启动对应key的最新版本
+	 * 
 	 * @param processDefinitionKey
-	 * @param bizKey 流程关联键
-	 * @param transientVariables 瞬态变量
-	 * @param persistenceVariables 持久化变量
+	 * @param bizKey
+	 *            流程关联键
+	 * @param transientVariables
+	 *            瞬态变量
+	 * @param persistenceVariables
+	 *            持久化变量
 	 * @return
 	 */
-	ProcessInstance startProcessInstanceByKey(String processDefinitionKey, String bizKey, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
-
+	ProcessInstance startProcessInstanceByKey(String processDefinitionKey, String bizKey,
+	    Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
+	
 	/**
 	 * 根据流程定义id(唯一编号)启动流程
+	 * 
 	 * @param processDefinitionId
 	 * @return
 	 */
 	ProcessInstance startProcessInstanceById(String processDefinitionId);
-
+	
 	/**
 	 * 根据流程定义id(唯一编号)启动流程
+	 * 
 	 * @param processDefinitionId
-	 * @param bizKey 流程关联键
+	 * @param bizKey
+	 *            流程关联键
 	 * @return
 	 */
 	ProcessInstance startProcessInstanceById(String processDefinitionId, String bizKey);
-
+	
 	/**
 	 * 根据流程定义id(唯一编号)启动流程
+	 * 
 	 * @param processDefinitionId
-	 * @param transientVariables 瞬态变量
-	 * @param persistenceVariables 持久化变量
+	 * @param transientVariables
+	 *            瞬态变量
+	 * @param persistenceVariables
+	 *            持久化变量
 	 * @return
 	 */
-	ProcessInstance startProcessInstanceById(String processDefinitionId, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
-
+	ProcessInstance startProcessInstanceById(String processDefinitionId,
+	    Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
+	
 	/**
 	 * 根据流程定义id(唯一编号)启动流程
+	 * 
 	 * @param processDefinitionId
-	 * @param bizKey 流程关联键
-	 * @param transientVariables 瞬态变量
-	 * @param persistenceVariables 持久化变量
+	 * @param bizKey
+	 *            流程关联键
+	 * @param transientVariables
+	 *            瞬态变量
+	 * @param persistenceVariables
+	 *            持久化变量
 	 * @return
 	 */
-	ProcessInstance startProcessInstanceById(String processDefinitionId, String bizKey, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
-
+	ProcessInstance startProcessInstanceById(String processDefinitionId, String bizKey,
+	    Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
+	
 	/**
 	 * 根据消息启动流程(尚未实现)
+	 * 
 	 * @param messageName
 	 * @return
 	 */
 	ProcessInstance startProcessInstanceByMessage(String messageName);
-
+	
 	/**
 	 * 根据消息启动流程(尚未实现)
+	 * 
 	 * @param messageName
-	 * @param bizKey 流程关联键
+	 * @param bizKey
+	 *            流程关联键
 	 * @return
 	 */
 	ProcessInstance startProcessInstanceByMessage(String messageName, String bizKey);
-
+	
 	/**
 	 * 根据消息启动流程(尚未实现)
+	 * 
 	 * @param messageName
-	 * @param processVariables 持久化变量
+	 * @param processVariables
+	 *            持久化变量
 	 * @return
 	 */
-	ProcessInstance startProcessInstanceByMessage(String messageName, Map<String, Object> processVariables);
-
+	ProcessInstance startProcessInstanceByMessage(String messageName,
+	    Map<String, Object> processVariables);
+	
 	/**
 	 * 根据消息启动流程(尚未实现)
+	 * 
 	 * @param messageName
-	 * @param bizKey 流程关联键
-	 * @param processVariables 持久化变量
+	 * @param bizKey
+	 *            流程关联键
+	 * @param processVariables
+	 *            持久化变量
 	 * @return
 	 */
-	ProcessInstance startProcessInstanceByMessage(String messageName, String bizKey, Map<String, Object> processVariables);
-
+	ProcessInstance startProcessInstanceByMessage(String messageName, String bizKey,
+	    Map<String, Object> processVariables);
+	
 	/**
 	 * 驱动流程实例向下走一步，流转到下一个等待节点(如：人工任务等)
-	 * @param tokenId 令牌编号，可以从流程实例上获得，也可以通过tokenQuery获得
+	 * 
+	 * @param tokenId
+	 *            令牌编号，可以从流程实例上获得，也可以通过tokenQuery获得
 	 */
 	void signal(String tokenId);
-
+	
 	/**
 	 * 驱动流程实例向下走一步，流转到下一个等待节点(如：人工任务等)
-	 * @param tokenId 令牌编号，可以从流程实例上获得，也可以通过tokenQuery获得
-	 * @param transientVariables 瞬态变量
-	 * @param persistenceVariables 持久化变量
+	 * 
+	 * @param tokenId
+	 *            令牌编号，可以从流程实例上获得，也可以通过tokenQuery获得
+	 * @param transientVariables
+	 *            瞬态变量
+	 * @param persistenceVariables
+	 *            持久化变量
 	 */
-	void signal(String tokenId, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
-	
-	
-	/**
-	 * 边界事件定时器启动推动令牌
-	 * @param tokenId 令牌编号
-	 * @param nodeId 触发的边界事件节点号
-	 * @param isCancelActivity 是否中断
-	 * @param transientVariables 瞬态变量
-	 */
-	void boundaryTimeSignal(String tokenId,String nodeId,boolean isCancelActivity,Map<String, Object> transientVariables);
+	void signal(String tokenId, Map<String, Object> transientVariables,
+	    Map<String, Object> persistenceVariables);
 	
 	/**
 	 * 边界事件定时器启动推动令牌
-	 * @param tokenId 令牌编号
-	 * @param nodeId 触发的边界事件节点号
-	 * @param isCancelActivity 是否中断
-	 * @param transientVariables 瞬态变量
-	 * @param persistenceVariables 持久化变量
+	 * 
+	 * @param tokenId
+	 *            令牌编号
+	 * @param nodeId
+	 *            触发的边界事件节点号
+	 * @param isCancelActivity
+	 *            是否中断
+	 * @param transientVariables
+	 *            瞬态变量
 	 */
-	void boundaryTimeSignal(String tokenId,String nodeId,boolean isCancelActivity,Map<String, Object> transientVariables,Map<String, Object> persistenceVariables);
-
+	void boundaryTimeSignal(String tokenId, String nodeId, boolean isCancelActivity,
+	    Map<String, Object> transientVariables);
+	
+	/**
+	 * 边界事件定时器启动推动令牌
+	 * 
+	 * @param tokenId
+	 *            令牌编号
+	 * @param nodeId
+	 *            触发的边界事件节点号
+	 * @param isCancelActivity
+	 *            是否中断
+	 * @param transientVariables
+	 *            瞬态变量
+	 * @param persistenceVariables
+	 *            持久化变量
+	 */
+	void boundaryTimeSignal(String tokenId, String nodeId, boolean isCancelActivity,
+	    Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
+	
 	/**
 	 * 创建令牌查询对象
+	 * 
 	 * @return
 	 */
 	TokenQuery createTokenQuery();
-
+	
 	/**
 	 * 创建流程实例查询对象
+	 * 
 	 * @return
 	 */
 	ProcessInstanceQuery createProcessInstanceQuery();
-
+	
 	/**
 	 * 创建变量查询对象
+	 * 
 	 * @return
 	 */
 	VariableQuery createVariableQuery();
 	
 	/**
 	 * 创建运行轨迹查询对象
+	 * 
 	 * @return
 	 */
 	RunningTrackQuery createRunningTrackQuery();
-
+	
+	/**
+	 * 
+	 * autoExecuteConnector(调度器执行 Connector方法)
+	 * 
+	 * @param processInstanceID
+	 *            流程实例ID
+	 * @param connectorID
+	 *            连接器ID
+	 * @param eventName
+	 *            事件名称
+	 * @param tokenID
+	 *            令牌ID
+	 * @param nodeID
+	 *            节点ID void
+	 * @exception
+	 * @since 1.0.0
+	 */
+	void autoExecuteConnector(String processInstanceID, String connectorID, String eventName,
+	    String tokenID, String nodeID);
+	
+	/**
+	 * 
+	 * autoStartProcessInstance(调度器启动流程实例)
+	 * 
+	 * @param processDefinitionKey
+	 *            流程定义KEY
+	 * @param processDefinitionId
+	 *            流程定义ID
+	 * @param bizKey
+	 *            业务关联键
+	 * @param transientVariables
+	 *            瞬时变量
+	 * @param persistenceVariables
+	 *            持久变量 void
+	 * @exception
+	 * @since 1.0.0
+	 */
+	void autoStartProcessInstance(String processDefinitionKey, String processDefinitionId,
+	    String bizKey, Map<String, Object> transientVariables,
+	    Map<String, Object> persistenceVariables);
 }

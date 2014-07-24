@@ -17,7 +17,8 @@
  */
 package org.foxbpm.engine.impl.schedule.quartz;
 
-import org.foxbpm.engine.impl.cmd.TimeExecuteConnectorCmd;
+import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -31,13 +32,13 @@ import org.quartz.JobExecutionException;
  * 
  */
 public class ConnectorAutoExecuteJob extends AbstractQuartzScheduleJob {
-
+	
 	/**
 	 * quartz系统创建
 	 */
 	public ConnectorAutoExecuteJob() {
 	}
-
+	
 	/**
 	 * 本地自动调度创建
 	 * 
@@ -48,26 +49,17 @@ public class ConnectorAutoExecuteJob extends AbstractQuartzScheduleJob {
 	public ConnectorAutoExecuteJob(String name, String groupName) {
 		super(name, groupName);
 	}
-
+	
 	@Override
 	public void executeJob(FoxbpmJobExecutionContext foxpmJobExecutionContext)
-			throws JobExecutionException {
-		String processInstanceID = foxpmJobExecutionContext
-				.getProcessInstanceId();
+	    throws JobExecutionException {
+		String processInstanceID = foxpmJobExecutionContext.getProcessInstanceId();
 		String connectorID = foxpmJobExecutionContext.getConnectorId();
 		String tokenID = foxpmJobExecutionContext.getTokenId();
 		String eventName = foxpmJobExecutionContext.getEventName();
 		String nodeID = foxpmJobExecutionContext.getNodeId();
-		String taskID = foxpmJobExecutionContext.getTaskId();
-
-		TimeExecuteConnectorCmd timeExecuteConnectorCmd = new TimeExecuteConnectorCmd();
-		timeExecuteConnectorCmd.setConnectorID(connectorID);
-		timeExecuteConnectorCmd.setProcessInstanceID(processInstanceID);
-		timeExecuteConnectorCmd.setTokenID(tokenID);
-		timeExecuteConnectorCmd.setEventName(eventName);
-		timeExecuteConnectorCmd.setNodeID(nodeID);
-		timeExecuteConnectorCmd.setTaskID(taskID);
-		this.commandExecutor.execute(timeExecuteConnectorCmd);
+		RuntimeService runtimeService = ProcessEngineManagement.getDefaultProcessEngine().getRuntimeService();
+		runtimeService.autoExecuteConnector(processInstanceID, connectorID, eventName, tokenID, nodeID);
 	}
-
+	
 }

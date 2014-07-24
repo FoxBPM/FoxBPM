@@ -18,17 +18,14 @@
 package org.foxbpm.engine.impl.schedule.quartz;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.RuntimeService;
-import org.foxbpm.engine.impl.Context;
-import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.bpmn.behavior.BoundaryEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.IntermediateCatchEventBehavior;
-import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
-import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
@@ -67,20 +64,14 @@ public class TimeDefinitionExecuteJob extends AbstractQuartzScheduleJob {
 	@Override
 	public void executeJob(FoxbpmJobExecutionContext foxpmJobExecutionContext)
 	    throws JobExecutionException {
-		String processInstanceId = foxpmJobExecutionContext.getProcessInstanceId();
+		String processId = foxpmJobExecutionContext.getProcessId();
 		String tokenId = foxpmJobExecutionContext.getTokenId();
 		String nodeId = foxpmJobExecutionContext.getNodeId();
-		
-		ProcessEngineConfigurationImpl processEngineConfiguration = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration();
-		RuntimeService runtimeService = ProcessEngineManagement.getDefaultProcessEngine().getRuntimeService();
-		CommandContext commandContext = new CommandContext(null, processEngineConfiguration);
-		Context.setCommandContext(commandContext);
-		Context.setProcessEngineConfiguration(processEngineConfiguration);
-		ProcessInstanceEntity processInstanceEntity = commandContext.getProcessInstanceManager().findProcessInstanceById(processInstanceId);
-		List<KernelFlowNodeImpl> flowNodes = processInstanceEntity.getProcessDefinition().getFlowNodes();
+		ModelService modelService = ProcessEngineManagement.getDefaultProcessEngine().getModelService();
+		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) modelService.getProcessDefinition(processId);
 		// 获取BoundaryEventBehavior
 		KernelFlowNodeBehavior kernelFlowNodeBehavior = null;
-		for (KernelFlowNodeImpl kernelFlowNodeImpl : flowNodes) {
+		for (KernelFlowNodeImpl kernelFlowNodeImpl : processDefinitionEntity.getFlowNodes()) {
 			kernelFlowNodeBehavior = kernelFlowNodeImpl.getKernelFlowNodeBehavior();
 			if (kernelFlowNodeBehavior instanceof BoundaryEventBehavior
 			        && StringUtil.equals(kernelFlowNodeImpl.getId(), nodeId)) {
@@ -92,6 +83,7 @@ public class TimeDefinitionExecuteJob extends AbstractQuartzScheduleJob {
 		Map<String, Object> persistenceVariables = new HashMap<String, Object>();
 		
 		// 驱动令牌
+		RuntimeService runtimeService = ProcessEngineManagement.getDefaultProcessEngine().getRuntimeService();
 		if (kernelFlowNodeBehavior != null) {
 			if (kernelFlowNodeBehavior instanceof IntermediateCatchEventBehavior) {
 				runtimeService.signal(tokenId, transientVariables, persistenceVariables);

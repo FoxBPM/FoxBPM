@@ -21,7 +21,6 @@ package org.foxbpm.engine.impl.cmd;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
@@ -46,8 +45,7 @@ import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
  * @version 1.0.0
  * 
  */
-public class TimeExecuteConnectorCmd implements Command<KernelListener>,
-		Serializable {
+public class TimeExecuteConnectorCmd implements Command<KernelListener>, Serializable {
 	/**
 	 * 序列化ID
 	 */
@@ -72,30 +70,41 @@ public class TimeExecuteConnectorCmd implements Command<KernelListener>,
 	 * 连接器所属节点的,节点ID
 	 */
 	protected String nodeID;
-
+	
 	/**
 	 * 当前分派任务的ID
 	 */
 	protected String taskID;
-
+	/**
+	 * 
+	 * 创建一个新的实例 TimeExecuteConnectorCmd.
+	 * 
+	 * @param processInstanceID
+	 * @param connectorID
+	 * @param eventName
+	 * @param tokenID
+	 * @param nodeID
+	 */
+	public TimeExecuteConnectorCmd(String processInstanceID, String connectorID, String eventName, String tokenID, String nodeID) {
+		this.processInstanceID = processInstanceID;
+		this.connectorID = connectorID;
+		this.eventName = eventName;
+		this.tokenID = tokenID;
+		this.nodeID = nodeID;
+	}
+	
 	@Override
 	public KernelListener execute(CommandContext commandContext) {
-		ProcessInstanceEntity processInstance = commandContext
-				.getProcessInstanceManager().findProcessInstanceById(
-						processInstanceID);
-		KernelProcessDefinitionImpl processDefinition = processInstance
-				.getProcessDefinition();
-
-		TokenEntity tokenEntity = (TokenEntity) this
-				.getExecutionContextFromInstance(processInstance);
+		ProcessInstanceEntity processInstance = commandContext.getProcessInstanceManager().findProcessInstanceById(processInstanceID);
+		KernelProcessDefinitionImpl processDefinition = processInstance.getProcessDefinition();
+		
+		TokenEntity tokenEntity = (TokenEntity) this.getExecutionContextFromInstance(processInstance);
 		tokenEntity.setAssignTask(this.getTaskEntity(tokenEntity));
-
+		
 		// 获取当前任务记录的CONNECTOR
-		Connector connector = this
-				.getListenersFromDefinition(processDefinition);
+		Connector connector = this.getListenersFromDefinition(processDefinition);
 		if (connector == null) {
-			throw new FoxBPMException(
-					"TimeExecuteConnectorCmd自动执行连接器时候,连接器无法获取");
+			throw new FoxBPMException("TimeExecuteConnectorCmd自动执行连接器时候,连接器无法获取");
 		}
 		try {
 			connector.execute(tokenEntity);
@@ -104,7 +113,7 @@ public class TimeExecuteConnectorCmd implements Command<KernelListener>,
 		}
 		return null;
 	}
-
+	
 	private TaskEntity getTaskEntity(TokenEntity tokenEntity) {
 		List<TaskEntity> tasks = tokenEntity.getTasks();
 		Iterator<TaskEntity> iterator = tasks.iterator();
@@ -116,7 +125,7 @@ public class TimeExecuteConnectorCmd implements Command<KernelListener>,
 		}
 		return null;
 	}
-
+	
 	/**
 	 * 
 	 * getListenersFromDefinition(从特定节点获取) (这里描述这个方法适用条件 – 可选)
@@ -125,53 +134,45 @@ public class TimeExecuteConnectorCmd implements Command<KernelListener>,
 	 * @return Connector
 	 * @since 1.0.0
 	 */
-	private Connector getListenersFromDefinition(
-			KernelProcessDefinitionImpl processDefinition) {
+	private Connector getListenersFromDefinition(KernelProcessDefinitionImpl processDefinition) {
 		List<KernelFlowNodeImpl> flowNodes = processDefinition.getFlowNodes();
-		Iterator<KernelFlowNodeImpl> iterator = flowNodes.iterator();
-		while (iterator.hasNext()) {
-			KernelFlowNodeImpl next = iterator.next();
-			if (StringUtils.equalsIgnoreCase(next.getId(), this.nodeID)) {
-
-				Map<String, List<KernelListener>> kernelListeners = next
-						.getKernelListeners();
-				List<KernelListener> list = kernelListeners.get(this.eventName);
+		List<KernelListener> list = null;
+		Connector tempConnector = null;
+		for (KernelFlowNodeImpl kernelFlowNodeImpl : flowNodes) {
+			if (StringUtils.equalsIgnoreCase(kernelFlowNodeImpl.getId(), this.nodeID)) {
+				list = kernelFlowNodeImpl.getKernelListeners().get(this.eventName);
 				if (list != null && list.size() > 0) {
-					Iterator<KernelListener> connectorIter = list.iterator();
-					while (connectorIter.hasNext()) {
-						KernelListener listener = connectorIter.next();
+					for (KernelListener listener : list) {
 						if (listener instanceof Connector) {
-							Connector tempConnector = (Connector) listener;
-							if (StringUtils.equalsIgnoreCase(
-									tempConnector.getConnectorId(),
-									this.connectorID)) {
+							tempConnector = (Connector) listener;
+							if (StringUtils.equalsIgnoreCase(tempConnector.getConnectorId(), this.connectorID)) {
 								return tempConnector;
 							}
 						}
-
+						
 					}
 				}
 			}
 		}
 		return null;
 	}
-
+	
 	public void setConnectorID(String connectorID) {
 		this.connectorID = connectorID;
 	}
-
+	
 	public void setProcessInstanceID(String processInstanceID) {
 		this.processInstanceID = processInstanceID;
 	}
-
+	
 	public void setEventName(String eventName) {
 		this.eventName = eventName;
 	}
-
+	
 	public void setTokenID(String tokenID) {
 		this.tokenID = tokenID;
 	}
-
+	
 	/**
 	 * 
 	 * getExecutionContextFromInstance(根据记录的tokenID获取ListenerExecutionContext)
@@ -181,8 +182,7 @@ public class TimeExecuteConnectorCmd implements Command<KernelListener>,
 	 * 
 	 * @since 1.0.0
 	 */
-	private KernelTokenImpl getExecutionContextFromInstance(
-			ProcessInstanceEntity processInstance) {
+	private KernelTokenImpl getExecutionContextFromInstance(ProcessInstanceEntity processInstance) {
 		List<KernelTokenImpl> tokens = processInstance.getTokens();
 		Iterator<KernelTokenImpl> iterator = tokens.iterator();
 		while (iterator.hasNext()) {
@@ -193,11 +193,11 @@ public class TimeExecuteConnectorCmd implements Command<KernelListener>,
 		}
 		return null;
 	}
-
+	
 	public void setNodeID(String nodeID) {
 		this.nodeID = nodeID;
 	}
-
+	
 	public void setTaskID(String taskID) {
 		this.taskID = taskID;
 	}
