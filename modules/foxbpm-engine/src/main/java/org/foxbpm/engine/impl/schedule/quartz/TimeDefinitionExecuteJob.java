@@ -24,6 +24,7 @@ import java.util.Map;
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.bpmn.behavior.BoundaryEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.IntermediateCatchEventBehavior;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
@@ -45,13 +46,13 @@ import org.quartz.JobExecutionException;
  * 
  */
 public class TimeDefinitionExecuteJob extends AbstractQuartzScheduleJob {
-
+	
 	/**
 	 * quartz系统创建
 	 */
 	public TimeDefinitionExecuteJob() {
 	}
-
+	
 	/**
 	 * 本地自动调度创建
 	 * 
@@ -62,45 +63,43 @@ public class TimeDefinitionExecuteJob extends AbstractQuartzScheduleJob {
 	public TimeDefinitionExecuteJob(String name, String groupName) {
 		super(name, groupName);
 	}
-
+	
 	@Override
 	public void executeJob(FoxbpmJobExecutionContext foxpmJobExecutionContext)
-			throws JobExecutionException {
+	    throws JobExecutionException {
 		String processInstanceId = foxpmJobExecutionContext.getProcessInstanceId();
 		String tokenId = foxpmJobExecutionContext.getTokenId();
 		String nodeId = foxpmJobExecutionContext.getNodeId();
-
-		RuntimeService runtimeService = ProcessEngineManagement.getDefaultProcessEngine()
-				.getRuntimeService();
-		CommandContext commandContext = Context.getCommandContext();
-		ProcessInstanceEntity processInstanceEntity = commandContext.getProcessInstanceManager()
-				.findProcessInstanceById(processInstanceId);
-		List<KernelFlowNodeImpl> flowNodes = processInstanceEntity.getProcessDefinition()
-				.getFlowNodes();
+		
+		ProcessEngineConfigurationImpl processEngineConfiguration = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration();
+		RuntimeService runtimeService = ProcessEngineManagement.getDefaultProcessEngine().getRuntimeService();
+		CommandContext commandContext = new CommandContext(null, processEngineConfiguration);
+		Context.setCommandContext(commandContext);
+		Context.setProcessEngineConfiguration(processEngineConfiguration);
+		ProcessInstanceEntity processInstanceEntity = commandContext.getProcessInstanceManager().findProcessInstanceById(processInstanceId);
+		List<KernelFlowNodeImpl> flowNodes = processInstanceEntity.getProcessDefinition().getFlowNodes();
 		// 获取BoundaryEventBehavior
 		KernelFlowNodeBehavior kernelFlowNodeBehavior = null;
 		for (KernelFlowNodeImpl kernelFlowNodeImpl : flowNodes) {
 			kernelFlowNodeBehavior = kernelFlowNodeImpl.getKernelFlowNodeBehavior();
 			if (kernelFlowNodeBehavior instanceof BoundaryEventBehavior
-					&& StringUtil.equals(kernelFlowNodeImpl.getId(), nodeId)) {
+			        && StringUtil.equals(kernelFlowNodeImpl.getId(), nodeId)) {
 				break;
 			}
 		}
-
+		
 		Map<String, Object> transientVariables = new HashMap<String, Object>();
 		Map<String, Object> persistenceVariables = new HashMap<String, Object>();
-
+		
 		// 驱动令牌
 		if (kernelFlowNodeBehavior != null) {
 			if (kernelFlowNodeBehavior instanceof IntermediateCatchEventBehavior) {
 				runtimeService.signal(tokenId, transientVariables, persistenceVariables);
 			} else if (kernelFlowNodeBehavior instanceof BoundaryEventBehavior) {
 				// 边界时间定义
-				runtimeService.boundaryTimeSignal(tokenId, nodeId,
-						((BoundaryEventBehavior) kernelFlowNodeBehavior).isCancelActivity(),
-						transientVariables, persistenceVariables);
+				runtimeService.boundaryTimeSignal(tokenId, nodeId, ((BoundaryEventBehavior) kernelFlowNodeBehavior).isCancelActivity(), transientVariables, persistenceVariables);
 			}
 		}
-
+		
 	}
 }

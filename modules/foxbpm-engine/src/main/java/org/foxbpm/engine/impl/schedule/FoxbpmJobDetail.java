@@ -55,20 +55,17 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 	protected JobDetail jobDetail;
 	protected T foxbpmJob;
 	protected List<Trigger> triggerList = new ArrayList<Trigger>();
-
+	
 	public FoxbpmJobDetail(T foxbpmJob) {
 		this.foxbpmJob = foxbpmJob;
 		if (foxbpmJob instanceof FoxbpmScheduleJob) {
-			this.jobDetail = JobBuilder
-					.newJob(foxbpmJob.getClass())
-					.withIdentity(((FoxbpmScheduleJob) foxbpmJob).getName(),
-							((FoxbpmScheduleJob) foxbpmJob).getGroupName()).build();
+			this.jobDetail = JobBuilder.newJob(foxbpmJob.getClass()).withIdentity(((FoxbpmScheduleJob) foxbpmJob).getName(), ((FoxbpmScheduleJob) foxbpmJob).getGroupName()).build();
 		} else {
 			throw new FoxBPMException("非 FoxbpmScheduleJob ，无法创建FoxbpmJobDetail！");
 		}
-
+		
 	}
-
+	
 	/**
 	 * 创建两种类型TRIGGER
 	 * 
@@ -79,7 +76,7 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 	 * @return trigger
 	 */
 	public void createTrigger(Object startDate, String cronExpression, String durationExpression,
-			String triggerName, String groupName) {
+	    String triggerName, String groupName) {
 		Trigger trigger = null;
 		TriggerBuilder<Trigger> withIdentity = newTrigger().withIdentity(triggerName, groupName);
 		if (startDate == null && isBlank(cronExpression) && isBlank(durationExpression)) {
@@ -101,20 +98,19 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 		} else if (isNotBlank(durationExpression)) {
 			// TODO DURATION Expression暂时未实现
 		}
-
+		
 		triggerList.add(trigger);
-
+		
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public void createTriggerList(Expression timeExpression,
-			ListenerExecutionContext executionContext) {
+	    ListenerExecutionContext executionContext, String groupName) {
 		if (timeExpression == null || StringUtil.isBlank(timeExpression.getExpressionText())) {
 			return;
 		}
 		List<Trigger> triggersList = new ArrayList<Trigger>();
-		Object triggerObj = ExpressionMgmt.execute(timeExpression.getExpressionText(),
-				executionContext);
+		Object triggerObj = ExpressionMgmt.execute(timeExpression.getExpressionText(), executionContext);
 		if (triggerObj == null) {
 			throw new FoxBPMException("FoxbpmJobDetail创建TRIGGER LIST时候，TIMER 表达式执行结果为NULL");
 		}
@@ -133,44 +129,42 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 			}
 			triggersList.add(tempTrigger);
 		} else if (triggerObj instanceof Date) {
-			triggersList.add(QuartzUtil.createTriggerByDateTime(triggerObj,
-					executionContext.getProcessInstanceId()));
+			triggersList.add(QuartzUtil.createTriggerByDateTime(triggerObj, groupName));
 		} else if (triggerObj instanceof String) {
-			triggersList.add(QuartzUtil.createTriggerByDateTimeStr(triggerObj,
-					executionContext.getProcessInstanceId()));
+			triggersList.add(QuartzUtil.createTriggerByDateTimeStr(triggerObj, groupName));
 		} else {
 			throw new FoxBPMException("创建TRIGGER  LIST时候，TIMER 表达式执行错误");
 		}
-
+		
 		this.triggerList = triggersList;
 	}
-
+	
 	public void putContextAttribute(String attributeName, Object attribute) {
 		this.jobDetail.getJobDataMap().put(attributeName, attribute);
 	}
-
+	
 	public JobDetail getJobDetail() {
 		return jobDetail;
 	}
-
+	
 	public void setJobDetail(JobDetail jobDetail) {
 		this.jobDetail = jobDetail;
 	}
-
+	
 	public T getFoxbpmJob() {
 		return foxbpmJob;
 	}
-
+	
 	public void setFoxbpmJob(T foxbpmJob) {
 		this.foxbpmJob = foxbpmJob;
 	}
-
+	
 	public List<Trigger> getTriggerList() {
 		return triggerList;
 	}
-
+	
 	public void setTriggerList(List<Trigger> triggerList) {
 		this.triggerList = triggerList;
 	}
-
+	
 }
