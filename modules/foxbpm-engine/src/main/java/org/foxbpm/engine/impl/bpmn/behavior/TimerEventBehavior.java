@@ -111,7 +111,7 @@ public class TimerEventBehavior extends EventDefinition {
 			
 			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.PROCESS_INSTANCE_ID, kernelTokenImpl.getProcessInstanceId());
 			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.TOKEN_ID, kernelTokenImpl.getId());
-			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.NODE_ID, tempNodeID);
+			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.NODE_ID, params[0]);
 			
 		} else if (StringUtil.equals(eventType, EVENT_TYPE_CONNECTOR)) {
 			/** 连接器定时执行、流程结束时，需要删除该JOB DETAIL */
