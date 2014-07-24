@@ -20,9 +20,9 @@ package org.foxbpm.engine.impl.schedule.quartz;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.foxbpm.engine.impl.cmd.TimeStartProcessInstanceCmd;
+import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
-import org.foxbpm.engine.runtime.ProcessInstance;
 import org.quartz.JobExecutionException;
 
 /**
@@ -37,9 +37,9 @@ public class ProcessIntanceAutoStartJob extends AbstractQuartzScheduleJob {
 	 * quartz系统创建
 	 */
 	public ProcessIntanceAutoStartJob() {
-
+		
 	}
-
+	
 	/**
 	 * 本地自动调度创建
 	 * 
@@ -50,26 +50,18 @@ public class ProcessIntanceAutoStartJob extends AbstractQuartzScheduleJob {
 	public ProcessIntanceAutoStartJob(String name, String groupName) {
 		super(name, groupName);
 	}
-
+	
 	@Override
 	public void executeJob(FoxbpmJobExecutionContext foxpmJobExecutionContext)
-			throws JobExecutionException {
+	    throws JobExecutionException {
 		String processDefinitionId = foxpmJobExecutionContext.getProcessId();
-		String nodeId = foxpmJobExecutionContext.getNodeId();
 		String processDefinitionKey = foxpmJobExecutionContext.getProcessKey();
 		String businessKey = foxpmJobExecutionContext.getBizKey();
-		Map<String, Object> transientVariableMap = new HashMap<String, Object>();
-
-		TimeStartProcessInstanceCmd<ProcessInstance> timeStartProcessInstanceCmd = new TimeStartProcessInstanceCmd<ProcessInstance>();
-		timeStartProcessInstanceCmd.setNodeId(nodeId);
-		timeStartProcessInstanceCmd.setProcessDefinitionId(processDefinitionId);
-		timeStartProcessInstanceCmd.setTransientVariables(transientVariableMap);
-		timeStartProcessInstanceCmd
-				.setProcessDefinitionKey(processDefinitionKey);
-		timeStartProcessInstanceCmd.setBusinessKey(businessKey);
-
-		// 执行流程启动命令
-		this.commandExecutor.execute(timeStartProcessInstanceCmd);
+		Map<String, Object> transientVariables = new HashMap<String, Object>();
+		Map<String, Object> persistenceVariables = new HashMap<String, Object>();
+		
+		RuntimeService runtimeService = ProcessEngineManagement.getDefaultProcessEngine().getRuntimeService();
+		runtimeService.autoStartProcessInstance(processDefinitionKey, processDefinitionId, businessKey, transientVariables, persistenceVariables);
 	}
-
+	
 }

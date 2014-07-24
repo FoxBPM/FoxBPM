@@ -17,7 +17,6 @@
  */
 package org.foxbpm.engine.impl.schedule.quartz;
 
-import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduleJob;
 import org.quartz.JobExecutionContext;
@@ -31,14 +30,14 @@ import org.quartz.JobExecutionException;
  * 
  */
 public abstract class AbstractQuartzScheduleJob extends FoxbpmScheduleJob {
-
+	
 	/**
 	 * QUARTZ系统自动调度、 创建一个新的实例 AbstractQuartzScheduleJob.
 	 * 
 	 */
 	public AbstractQuartzScheduleJob() {
 	}
-
+	
 	/**
 	 * 
 	 * 创建一个新的实例 AbstractQuartzScheduleJob.
@@ -50,17 +49,14 @@ public abstract class AbstractQuartzScheduleJob extends FoxbpmScheduleJob {
 	public AbstractQuartzScheduleJob(String name, String groupName) {
 		super(name, groupName);
 	}
-
+	
 	@Override
-	public void execute(JobExecutionContext context)
-			throws JobExecutionException {
+	public void execute(JobExecutionContext context) throws JobExecutionException {
 		// 统一封装数据,统一设置执行命令
-		FoxbpmJobExecutionContext foxpmJobExecutionContext = new FoxbpmJobExecutionContext(
-				context);
-		commandExecutor = ProcessEngineManagement.getDefaultProcessEngine()
-				.getProcessEngineConfiguration().getCommandExecutor();
+		FoxbpmJobExecutionContext foxpmJobExecutionContext = new FoxbpmJobExecutionContext(context);
+		/** 扩展其他相关功能 */
 		// 执行任务
 		this.executeJob(foxpmJobExecutionContext);
 	}
-
+	
 }
