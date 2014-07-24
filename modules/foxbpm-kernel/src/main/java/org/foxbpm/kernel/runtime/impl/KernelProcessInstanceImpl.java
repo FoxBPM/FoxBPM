@@ -127,7 +127,7 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 
 	/** 创建子令牌 */
 	public KernelTokenImpl createChildrenToken(KernelTokenImpl parent) {
-		
+
 		KernelTokenImpl childrenToken = createToken();
 		// 设置令牌的流程实例对象
 		childrenToken.setProcessInstance(this);
@@ -141,7 +141,7 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 
 		parent.getChildren().add(childrenToken);
 		// 将生成的新节点放入流程实例令牌列表中
-		//addToken(childrenToken);
+		// addToken(childrenToken);
 
 		return childrenToken;
 
@@ -189,10 +189,13 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 	}
 
 	public KernelProcessInstance createSubProcessInstance(KernelProcessDefinitionImpl processDefinition, KernelTokenImpl token) {
-		KernelProcessInstanceImpl subProcessInstance = newProcessInstance();
+
+		KernelProcessInstanceImpl subProcessInstance = (KernelProcessInstanceImpl) processDefinition
+				.createProcessInstanceForInitial(processDefinition.getInitial());
+
 		subProcessInstance.setParentProcessInstance(this);
-		subProcessInstance.setProcessDefinition(processDefinition);
 		subProcessInstance.setParentProcessInstanceToken(token);
+
 		return subProcessInstance;
 	}
 
