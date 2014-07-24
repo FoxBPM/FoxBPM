@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.engine.impl.datavariable.DataObject;
 import org.foxbpm.engine.impl.model.DeploymentBuilderImpl;
 import org.foxbpm.engine.repository.Deployment;
 import org.foxbpm.engine.repository.DeploymentBuilder;
@@ -146,4 +147,7 @@ public interface ModelService {
 	 * @return 返回流程定义实例
 	 */
 	ProcessDefinition getLatestProcessDefinition(String processDefinitionKey);
+	
+	/** 获取业务系统的抽象关联数据对象 */
+	List<DataObject> getBizSystemDataObject();
 }

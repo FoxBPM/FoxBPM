@@ -25,6 +25,7 @@ import java.util.Map;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.impl.cmd.DeleteDeploymentCmd;
 import org.foxbpm.engine.impl.cmd.DeployCmd;
+import org.foxbpm.engine.impl.cmd.GetBizSystemDataObjectCmd;
 import org.foxbpm.engine.impl.cmd.GetFlowGraphicsElementPositionCmd;
 import org.foxbpm.engine.impl.cmd.GetFlowGraphicsImgStreamCmd;
 import org.foxbpm.engine.impl.cmd.GetLatestProcessDefinitionByKey;
@@ -34,6 +35,7 @@ import org.foxbpm.engine.impl.cmd.GetProcessDefinitionSVGCmd;
 import org.foxbpm.engine.impl.cmd.GetResouceByDeployIdAndNameCmd;
 import org.foxbpm.engine.impl.cmd.GetStartProcessByUserIdCmd;
 import org.foxbpm.engine.impl.cmd.VerificationStartUserCmd;
+import org.foxbpm.engine.impl.datavariable.DataObject;
 import org.foxbpm.engine.impl.model.DeploymentBuilderImpl;
 import org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl;
 import org.foxbpm.engine.repository.Deployment;
@@ -112,6 +114,11 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	@Override
 	public ProcessDefinition getLatestProcessDefinition(String processDefinitionKey) {
 		return commandExecutor.execute(new GetLatestProcessDefinitionByKey(processDefinitionKey));
+	}
+
+	@Override
+	public List<DataObject> getBizSystemDataObject() {
+		return commandExecutor.execute(new GetBizSystemDataObjectCmd());
 	}
 
 }

@@ -17,6 +17,7 @@
  */
 package org.foxbpm.engine.impl.datavariable;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +25,9 @@ import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
 
 
-public class DataVariableDefinition {
+public class DataVariableDefinition implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	protected String id;
 

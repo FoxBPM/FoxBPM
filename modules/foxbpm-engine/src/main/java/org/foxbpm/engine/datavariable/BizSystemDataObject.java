@@ -13,31 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author kesnhin
+ * @author kenshin
  */
 package org.foxbpm.engine.datavariable;
 
-/**
- * @author kenshin
- * 
- */
-public interface VariableInstance {
+import java.util.List;
 
-	String getId();
+import org.foxbpm.engine.impl.datavariable.DataObject;
 
-	String getProcessInstanceId();
+public interface BizSystemDataObject {
+	/** 获取业务系统数据对象 */
+	List<DataObject> getDataObjects();
 
-	String getProcessDefinitionId();
-
-	String getProcessDefinitionKey();
-
-	String getKey();
-
-	String getTaskId();
-
-	String getTokenId();
-
-	String getNodeId();
-
-	Object getValueObject();
 }
