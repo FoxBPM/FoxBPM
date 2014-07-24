@@ -19,10 +19,10 @@ package org.foxbpm.engine.datavariable;
 
 import java.util.List;
 
-import org.foxbpm.engine.impl.datavariable.DataObject;
+import org.foxbpm.engine.impl.datavariable.BizDataObject;
 
-public interface BizSystemDataObject {
+public interface BizDataObjectSystem {
 	/** 获取业务系统数据对象 */
-	List<DataObject> getDataObjects();
+	List<BizDataObject> getDataObjects();
 
 }
