@@ -20,14 +20,11 @@ package org.foxbpm.kernel.runtime;
 import java.io.Serializable;
 import java.util.Map;
 
-import org.foxbpm.kernel.process.KernelFlowNode;
 
 
 public interface KernelToken extends Serializable,KernelVariableScope{
 
 	void signal();
-	
-	KernelFlowNode getFlowNode();
 	
 	Object getProperty(String name);
 	
