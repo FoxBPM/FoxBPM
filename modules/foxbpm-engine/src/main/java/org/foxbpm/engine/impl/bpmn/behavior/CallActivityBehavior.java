@@ -61,17 +61,16 @@ public class CallActivityBehavior extends ActivityBehavior {
 	}
 
 	private ProcessInstanceEntity createSubProcess(FlowNodeExecutionContext executionContext) {
-		String flowId = StringUtil.getString(getCallableElementId() != null ? getCallableElementId().getValue(executionContext) : null);
+		String flowId = StringUtil.getString(getCallableElementId() != null ? getCallableElementId().getExpressionText() : null);
 
-		String flowVersion = StringUtil.getString(getCallableElementVersion() != null ? getCallableElementVersion().getValue(
-				executionContext) : null);
+		String flowVersion = StringUtil.getString(getCallableElementVersion() != null ? getCallableElementVersion().getExpressionText(): null);
 		int version = StringUtil.getInt(flowVersion);
 
 		String bizKey = StringUtil.getString(getCallableElementBizKey() != null ? getCallableElementBizKey().getValue(executionContext)
 				: null);
 
-		ProcessDefinitionEntity processDefinition = Context.getCommandContext().getProcessDefinitionManager()
-				.findProcessDefinitionByKeyAndVersion(flowId, version);
+		ProcessDefinitionEntity processDefinition = Context.getProcessEngineConfiguration().getDeploymentManager()
+				.findDeployedProcessDefinitionByKeyAndVersion(flowId, version);
 
 		ProcessInstanceEntity createSubProcessInstance = (ProcessInstanceEntity) executionContext
 				.createSubProcessInstance(processDefinition);

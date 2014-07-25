@@ -34,13 +34,14 @@ public final class PointUtils {
 	 * X、Y允许的最大偏移量，超过最大偏移量需要设置文本相对线条的中心位置，如果小于这个值则不需要设置
 	 */
 	private static final float X_Y_LOCATION_MAXSHIFT = 100F;
+	// TODO后续改善成动态规划算法
 	/**
 	 * 默认圆角的大小,暂时分三个梯度
 	 */
 	private final static float SEQUENCE_ROUNDCONTROL_FLAG = 15.0f;
 	private final static float SEQUENCE_ROUNDCONTROL_MIN_FLAG = 3.0f;
 	private final static float NONE_SCALE = 1.0f;
-
+	
 	/**
 	 * 计算三次贝塞尔曲线的起始点，控制点以及终点
 	 * 
@@ -56,40 +57,36 @@ public final class PointUtils {
 		float lengthEndHerizon = 0.0f;
 		float lengthEndVertical = 0.0f;
 		float lengthEndCenter = 0.0f;
-
+		
 		lengthStartHerizon = Math.abs(start.getX() - center.getX());
 		lengthStartVertical = Math.abs(start.getY() - center.getY());
 		lengthStartCenter = (float) Math.sqrt(lengthStartHerizon * lengthStartHerizon
-				+ lengthStartVertical * lengthStartVertical);
+		        + lengthStartVertical * lengthStartVertical);
 		lengthEndHerizon = Math.abs(end.getX() - center.getX());
 		lengthEndVertical = Math.abs(end.getY() - center.getY());
 		lengthEndCenter = (float) Math.sqrt(lengthEndHerizon * lengthEndHerizon + lengthEndVertical
-				* lengthEndVertical);
-
+		        * lengthEndVertical);
+		
 		float scale = SEQUENCE_ROUNDCONTROL_FLAG;
 		if (lengthEndCenter <= SEQUENCE_ROUNDCONTROL_FLAG
-				|| lengthStartCenter <= SEQUENCE_ROUNDCONTROL_FLAG) {
+		        || lengthStartCenter <= SEQUENCE_ROUNDCONTROL_FLAG) {
 			if (lengthEndCenter <= SEQUENCE_ROUNDCONTROL_MIN_FLAG
-					|| lengthStartCenter <= SEQUENCE_ROUNDCONTROL_MIN_FLAG) {
+			        || lengthStartCenter <= SEQUENCE_ROUNDCONTROL_MIN_FLAG) {
 				scale = NONE_SCALE;
 			} else {
 				scale = SEQUENCE_ROUNDCONTROL_MIN_FLAG;
 			}
-
+			
 		}
 		float controlScale = scale / 3;
 		Point[] points = new Point[4];
-		points[0] = caclBeralControlPoint(start, center, scale, lengthStartHerizon,
-				lengthStartVertical, lengthStartCenter);
-		points[1] = caclBeralControlPoint(start, center, controlScale, lengthStartHerizon,
-				lengthStartVertical, lengthStartCenter);
-		points[2] = caclBeralControlPoint(end, center, controlScale, lengthEndHerizon,
-				lengthEndVertical, lengthEndCenter);
-		points[3] = caclBeralControlPoint(end, center, scale, lengthEndHerizon, lengthEndVertical,
-				lengthEndCenter);
+		points[0] = caclBeralControlPoint(start, center, scale, lengthStartHerizon, lengthStartVertical, lengthStartCenter);
+		points[1] = caclBeralControlPoint(start, center, controlScale, lengthStartHerizon, lengthStartVertical, lengthStartCenter);
+		points[2] = caclBeralControlPoint(end, center, controlScale, lengthEndHerizon, lengthEndVertical, lengthEndCenter);
+		points[3] = caclBeralControlPoint(end, center, scale, lengthEndHerizon, lengthEndVertical, lengthEndCenter);
 		return points;
 	}
-
+	
 	/**
 	 * 计算三次贝塞尔曲线控制点
 	 * 
@@ -98,28 +95,28 @@ public final class PointUtils {
 	 * @return
 	 */
 	private final static Point caclBeralControlPoint(Point startEndPoint, Point center,
-			float scale, float lengthHerizon, float lengthVertical, float lengthCenter) {
+	    float scale, float lengthHerizon, float lengthVertical, float lengthCenter) {
 		float startX = 0.0f;
 		float startY = 0.0f;
-
+		
 		if (startEndPoint.getX() > center.getX()) {
 			startX = ((scale * lengthHerizon) / lengthCenter) + center.getX();
 		} else {
 			startX = (((lengthCenter - scale) * lengthHerizon) / lengthCenter)
-					+ startEndPoint.getX();
+			        + startEndPoint.getX();
 		}
 		if (startEndPoint.getY() > center.getY()) {
 			startY = ((scale * lengthVertical) / lengthCenter) + center.getY();
 		} else {
 			startY = (((lengthCenter - scale) * lengthVertical) / lengthCenter)
-					+ startEndPoint.getY();
+			        + startEndPoint.getY();
 		}
-
+		
 		Point resultPoint = new Point(Math.round(startX), Math.round(startY));
 		return resultPoint;
-
+		
 	}
-
+	
 	/**
 	 * 计算二次贝塞尔曲线
 	 * 
@@ -130,16 +127,16 @@ public final class PointUtils {
 	 * @return
 	 */
 	public final static Point caclControlPoint(Point startPoint, Point center, Point end,
-			float scale) {
+	    float scale) {
 		float x = 0.0f;
 		float y = 0.0f;
 		x = ((1 - scale) * (1 - scale) * startPoint.getX())
-				+ (2 * scale * (1 - scale) * center.getX()) + (scale * scale * end.getX());
+		        + (2 * scale * (1 - scale) * center.getX()) + (scale * scale * end.getX());
 		y = ((1 - scale) * (1 - scale) * startPoint.getY())
-				+ (2 * scale * (1 - scale) * center.getY()) + (scale * scale * end.getY());
+		        + (2 * scale * (1 - scale) * center.getY()) + (scale * scale * end.getY());
 		return new Point(x, y);
 	}
-
+	
 	/**
 	 * 计算中心点位置，包括复杂情况，和简单情况
 	 * 
@@ -156,21 +153,21 @@ public final class PointUtils {
 		if (xShift > X_Y_LOCATION_MAXSHIFT && yShift < X_Y_LOCATION_MAXSHIFT) {
 			// X坐标拐点幅度大，Y不大,计算线条X中心位置，Y取平均值
 			return caclXCenter(xArrays, yArrays);
-
+			
 		} else if (yShift > X_Y_LOCATION_MAXSHIFT && xShift < X_Y_LOCATION_MAXSHIFT) {
 			// Y坐标拐点幅度大，X不大,计算线条Y中心位置，X取平均值
 			return caclYCenter(xArrays, yArrays);
-
+			
 		} else if (yShift > X_Y_LOCATION_MAXSHIFT && xShift > X_Y_LOCATION_MAXSHIFT) {
 			// XY拐点幅度都比较大
 			return caclCenterPoint(pointList);
 		}
-
+		
 		// 如果没有计算中心点
 		return null;
-
+		
 	}
-
+	
 	/**
 	 * 勾股定理, 取线段长度
 	 * 
@@ -184,11 +181,11 @@ public final class PointUtils {
 		float height = pointA.getY() - pointB.getY();
 		double dWidth = (double) width;
 		double dHeight = (double) height;
-
+		
 		length = Math.sqrt(Math.pow(dWidth, 2) + Math.pow(dHeight, 2));
 		return (float) length;
 	}
-
+	
 	/**
 	 * 统计所有线段的长度
 	 * 
@@ -197,7 +194,7 @@ public final class PointUtils {
 	 */
 	private final static List<Float> getSegmentsLength(List<Point> pointList) {
 		List<Float> segList = new ArrayList<Float>();
-
+		
 		float segLen = 0f;
 		int size = pointList.size();
 		size = size - 1;
@@ -206,14 +203,14 @@ public final class PointUtils {
 		for (int i = 0; i < size; i++) {
 			pointA = pointList.get(i);
 			pointB = pointList.get(i + 1);
-
+			
 			segLen = segmentLength(pointA, pointB);
 			segList.add(segLen);
 		}
-
+		
 		return segList;
 	}
-
+	
 	/**
 	 * 计算所有x坐标值或者y坐标值的方差，判断是否需要重新设置所有拐点的中心点
 	 * 
@@ -234,7 +231,7 @@ public final class PointUtils {
 		sum = sum / arrayLength;
 		return sum;
 	}
-
+	
 	/**
 	 * 获取所有点的XY坐标
 	 * 
@@ -252,7 +249,7 @@ public final class PointUtils {
 		}
 		return xyLocationArray;
 	}
-
+	
 	/**
 	 * 计算线条在X方向上的中心位置
 	 * 
@@ -271,7 +268,7 @@ public final class PointUtils {
 		Float y = tempV / length;
 		return new Point(xCenter, y);
 	}
-
+	
 	/**
 	 * 计算线条在y方向上的中心位置
 	 * 
@@ -290,7 +287,7 @@ public final class PointUtils {
 		Float x = tempV / length;
 		return new Point(yCenter, x);
 	}
-
+	
 	/**
 	 * 计算中心点
 	 * 
@@ -303,11 +300,11 @@ public final class PointUtils {
 		for (float seg : segList) {
 			totalLength += seg;
 		}
-
+		
 		float centerLen = totalLength / 2;
-
+		
 		int keySegIndex = 0;
-
+		
 		float keySeg = 0f;
 		float tempLen = 0f;
 		for (float seg : segList) {
@@ -318,16 +315,16 @@ public final class PointUtils {
 			} else {
 				tempLen += keySeg;
 			}
-
+			
 		}
-
+		
 		float lastLen = centerLen - tempLen;
-
+		
 		Point startPoint = pointList.get(keySegIndex - 1);
 		Point endPoint = pointList.get(keySegIndex);
-
+		
 		float scale = lastLen / keySeg;
-
+		
 		float x = startPoint.getX() + (endPoint.getX() - startPoint.getX()) * scale;
 		float y = startPoint.getY() + (endPoint.getY() - startPoint.getY()) * scale;
 		Point point = new Point(x, y);

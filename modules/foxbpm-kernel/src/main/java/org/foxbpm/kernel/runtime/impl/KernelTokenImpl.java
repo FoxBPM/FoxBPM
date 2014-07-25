@@ -158,6 +158,7 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 	
 	public void signal(KernelFlowNodeImpl flowNode) {
 		if(flowNode!=null){
+			setFlowNode(flowNode);
 			flowNode.getKernelFlowNodeBehavior().leave(this);
 		}else{
 			throw new KernelException("signal flownode is null");

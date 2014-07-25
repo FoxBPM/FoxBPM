@@ -13,6 +13,8 @@
 		<result column="PROCESSDEFINITION_KEY" property="processDefinitionKey"
 			jdbcType="VARCHAR" />
 		<result column="TOKEN_ID" property="tokenId" jdbcType="VARCHAR" />
+		<result column="PARENT_TOKEN_ID" property="parentTokenId" jdbcType="VARCHAR" />
+		
 		<result column="EXECUTION_TIME" property="executionTime"
 			jdbcType="TIMESTAMP" />
 		<result column="OPERATOR" property="operator" jdbcType="VARCHAR" />
@@ -28,11 +30,11 @@
 	INSERT INTO
 	foxbpm_run_runningtrack
 	(ID,PROCESSINSTANCE_ID,PROCESSDEFINITION_ID,PROCESSDEFINITION_KEY,
-	TOKEN_ID,EXECUTION_TIME,OPERATOR,NODE_ID,NODE_NAME,EVENT_NAME,ARCHIVE_TIME,TRACK_RECORD)
+	TOKEN_ID,PARENT_TOKEN_ID,EXECUTION_TIME,OPERATOR,NODE_ID,NODE_NAME,EVENT_NAME,ARCHIVE_TIME,TRACK_RECORD)
 	VALUES
 	( #{id,jdbcType=VARCHAR}, #{processInstanceId,jdbcType=VARCHAR},
 	#{processDefinitionId,jdbcType=VARCHAR},
-	#{processDefinitionKey,jdbcType=VARCHAR}, #{tokenId,jdbcType=VARCHAR},
+	#{processDefinitionKey,jdbcType=VARCHAR}, #{tokenId,jdbcType=VARCHAR}, #{parentTokenId,jdbcType=VARCHAR},
 	#{executionTime,jdbcType=TIMESTAMP}, #{operator,jdbcType=VARCHAR},
 	#{nodeId,jdbcType=VARCHAR},
 	#{nodeName,jdbcType=VARCHAR},

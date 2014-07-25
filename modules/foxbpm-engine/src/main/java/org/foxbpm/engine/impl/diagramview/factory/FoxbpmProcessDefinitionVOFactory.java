@@ -27,13 +27,13 @@ import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
  */
 public interface FoxbpmProcessDefinitionVOFactory {
 	/**
-	 * 创建流程图，不包括标记信息
+	 * 根据流程定义创建SVG字符串，返回的字符串可以直接在界面展示
 	 * 
 	 * @param deployedProcessDefinition
-	 * @return
+	 *            流程定义
+	 * @return 流程定义对应的SVG字符串
 	 */
-
 	public abstract String createProcessDefinitionVOString(
-			ProcessDefinitionEntity deployedProcessDefinition);
-
+	    ProcessDefinitionEntity deployedProcessDefinition);
+	
 }

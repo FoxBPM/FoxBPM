@@ -81,8 +81,8 @@
 			classImpl="com.founder.fix.fixflow.expand.database.GeneralConnectionManagement" />
 	</connectionManagementConfig>
 	<eventListenerConfig>
-		<eventListener eventType="process-start"
-			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.StartEventTrackListener" />
+	 	<!-- <eventListener eventType="process-start"
+			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.StartEventTrackListener" />-->
 		<eventListener eventType="node-enter"
 			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" />
 		<!-- <eventListener eventType="node-execute" listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" 
@@ -95,4 +95,9 @@
 		<eventListener eventType="process-end"
 			listenerClass="org.foxbpm.engine.impl.listener.task.EndEventTaskListener" />
 	</eventListenerConfig>
+	
+	<bizDataObjectConfig>
+		<dataObjectBehavior id="dataBaseMode" name="数据库表模式" behavior=""/>
+		<dataObjectBehavior id="eMapDataObject" name="eMap数据对象模式" behavior=""/>
+	</bizDataObjectConfig>
 </foxbpmconfig:FoxBPMConfig>

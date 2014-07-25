@@ -41,8 +41,8 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.TextSpanVO;
 public class TaskSVGBuilder extends AbstractSVGBuilder {
 	protected static final String FILL_DEFAULT = "ffffcc";
 
-	private static final int TEXT_HEIGHT = 10;
-	private static final int TEXT_LINESPACE = 5;
+	protected static final int TEXT_HEIGHT = 10;
+	protected static final int TEXT_LINESPACE = 5;
 	/**
 	 * 矩形对象
 	 */

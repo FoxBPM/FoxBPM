@@ -26,6 +26,7 @@ import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobDetail;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduleJob;
+import org.foxbpm.engine.impl.schedule.FoxbpmSchedulerGroupnameGernerater;
 import org.foxbpm.engine.impl.schedule.quartz.ConnectorAutoExecuteJob;
 import org.foxbpm.engine.impl.schedule.quartz.ProcessIntanceAutoStartJob;
 import org.foxbpm.engine.impl.schedule.quartz.TimeDefinitionExecuteJob;
@@ -105,18 +106,18 @@ public class TimerEventBehavior extends EventDefinition {
 		} else if (StringUtil.equals(eventType, EVENT_TYPE_BOUNDARY)) {
 			/** 边界事件时间定义执行、令牌离开时，需要删除该JOB DETAIL */
 			/** GroupName 命名采用拼接的形式 事件节点ID+流程实例ID */
-			String tempNodeID = kernelTokenImpl.getFlowNode().getId();
-			groupName = tempNodeID + kernelTokenImpl.getProcessInstanceId();
+			groupName = new FoxbpmSchedulerGroupnameGernerater(kernelTokenImpl).gernerateNodeGroupName();
 			jobDetail = new FoxbpmJobDetail<FoxbpmScheduleJob>(new TimeDefinitionExecuteJob(GuidUtil.CreateGuid(), groupName));
 			
 			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.PROCESS_INSTANCE_ID, kernelTokenImpl.getProcessInstanceId());
 			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.TOKEN_ID, kernelTokenImpl.getId());
 			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.NODE_ID, params[0]);
+			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.PROCESS_DEFINITION_ID, params[1]);
 			
 		} else if (StringUtil.equals(eventType, EVENT_TYPE_CONNECTOR)) {
 			/** 连接器定时执行、流程结束时，需要删除该JOB DETAIL */
-			/** GroupName 命名采用流程实例ID */
-			groupName = executionContext.getProcessInstanceId();
+			/** GroupName 命名采用节点ID+流程实例ID */
+			groupName = new FoxbpmSchedulerGroupnameGernerater(kernelTokenImpl).gernerateNodeGroupName();
 			jobDetail = new FoxbpmJobDetail<FoxbpmScheduleJob>(new ConnectorAutoExecuteJob(GuidUtil.CreateGuid(), groupName));
 			
 			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.CONNECTOR_ID, params[0]);

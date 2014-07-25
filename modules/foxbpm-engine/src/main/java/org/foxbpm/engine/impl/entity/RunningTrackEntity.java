@@ -30,6 +30,7 @@ public class RunningTrackEntity implements RunningTrack, PersistentObject {
 	protected String processDefinitionId;
 	protected String processDefinitionKey;
 	protected String tokenId;
+	protected String parentTokenId;
 	protected Date executionTime;
 	protected String operator;
 	protected String nodeId;
@@ -37,7 +38,7 @@ public class RunningTrackEntity implements RunningTrack, PersistentObject {
 	protected String eventName;
 	protected Date archiveTime;
 	protected long trackRecord;
-
+	
 	@Override
 	public Map<String, Object> getPersistentState() {
 		Map<String, Object> objectParam = new HashMap<String, Object>();
@@ -48,32 +49,41 @@ public class RunningTrackEntity implements RunningTrack, PersistentObject {
 		objectParam.put("operator", this.operator);
 		objectParam.put("eventName", this.eventName);
 		objectParam.put("tokenId", this.tokenId);
+		objectParam.put("parentTokenId", this.parentTokenId);
 		objectParam.put("executionTime", this.executionTime);
 		objectParam.put("archiveTime", this.archiveTime);
 		objectParam.put("nodeId", this.nodeId);
 		objectParam.put("nodeName", this.nodeName);
 		objectParam.put("trackRecord", this.trackRecord);
-
+		
 		return objectParam;
 	}
-
+	
+	public String getParentTokenId() {
+		return parentTokenId;
+	}
+	
+	public void setParentTokenId(String parentTokenId) {
+		this.parentTokenId = parentTokenId;
+	}
+	
 	@Override
 	public boolean isModified() {
 		return false;
 	}
-
+	
 	public RunningTrackEntity() {
 	}
 	@Override
 	public String getId() {
 		return this.id;
 	}
-
+	
 	@Override
 	public void setId(String id) {
 		this.id = id;
 	}
-
+	
 	public String getProcessInstanceId() {
 		return processInstanceId;
 	}
@@ -137,9 +147,9 @@ public class RunningTrackEntity implements RunningTrack, PersistentObject {
 	public long getTrackRecord() {
 		return trackRecord;
 	}
-
+	
 	public void setTrackRecord(long trackRecord) {
 		this.trackRecord = trackRecord;
 	}
-
+	
 }

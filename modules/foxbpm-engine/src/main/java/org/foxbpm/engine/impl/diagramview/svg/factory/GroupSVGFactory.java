@@ -26,7 +26,7 @@ import org.foxbpm.kernel.process.KernelBaseElement;
 /**
  * 
  * 
- * GroupSVGFactory
+ * GroupSVGFactory 组创建工厂
  * 
  * MAENLIANG 2014年7月15日 下午8:10:55
  * 
@@ -34,34 +34,24 @@ import org.foxbpm.kernel.process.KernelBaseElement;
  * 
  */
 public class GroupSVGFactory extends AbstractFlowElementSVGFactory {
-
+	
+	/**
+	 * 
+	 * 创建一个新的实例 GroupSVGFactory.
+	 * 
+	 * @param kernelBaseElement
+	 * @param svgTemplateFileName
+	 */
 	public GroupSVGFactory(KernelBaseElement kernelBaseElement, String svgTemplateFileName) {
 		super(kernelBaseElement, svgTemplateFileName);
 	}
 	@Override
 	public VONode createSVGVO(String svgType) {
-		SvgVO groupVO = (SvgVO) super.loadSVGVO(voTemplateFileName);
-		return groupVO;
+		return (SvgVO) super.loadSVGVO(voTemplateFileName);
 	}
-
-	@Override
-	public VONode createSVGVO() {
-		SvgVO groupVO = (SvgVO) super.loadSVGVO(voTemplateFileName);
-		return groupVO;
-	}
-
-	@Override
-	public void filterParentVO(VONode voNode, String[] filterCondition) {
-
-	}
-
-	@Override
-	public void filterConnectorVO(VONode voNode, String[] filterCondition) {
-
-	}
-
+	
 	@Override
 	public void filterChildVO(VONode voNode, List<String> filterCondition) {
-
+		
 	}
 }

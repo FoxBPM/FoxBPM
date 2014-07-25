@@ -35,16 +35,36 @@ import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.runtime.ProcessInstance;
 
+/**
+ * 
+ * 
+ * StartProcessInstanceCmd
+ * 
+ * MAENLIANG 2014年7月24日 下午6:17:35
+ * 
+ * @version 1.0.0
+ * 
+ */
 public class StartProcessInstanceCmd<T> implements Command<ProcessInstance>, Serializable {
-
+	
 	private static final long serialVersionUID = 1L;
-
+	
 	protected String processDefinitionKey;
 	protected String processDefinitionId;
 	protected Map<String, Object> transientVariables;
 	protected Map<String, Object> persistenceVariables;
 	protected String bizKey;
-
+	
+	/**
+	 * 
+	 * 创建一个新的实例 StartProcessInstanceCmd.
+	 * 
+	 * @param processDefinitionKey
+	 * @param processDefinitionId
+	 * @param bizKey
+	 * @param transientVariables
+	 * @param persistenceVariables
+	 */
 	public StartProcessInstanceCmd(String processDefinitionKey, String processDefinitionId, String bizKey, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables) {
 		this.processDefinitionKey = processDefinitionKey;
 		this.processDefinitionId = processDefinitionId;
@@ -52,48 +72,45 @@ public class StartProcessInstanceCmd<T> implements Command<ProcessInstance>, Ser
 		this.transientVariables = transientVariables;
 		this.persistenceVariables = persistenceVariables;
 	}
-
+	
 	public ProcessInstance execute(CommandContext commandContext) {
 		DeploymentManager deploymentCache = Context.getProcessEngineConfiguration().getDeploymentManager();
-
+		
 		// 查找流程定义
 		ProcessDefinitionEntity processDefinition = null;
 		if (processDefinitionId != null) {
 			processDefinition = deploymentCache.findDeployedProcessDefinitionById(processDefinitionId);
 			if (processDefinition == null) {
-				throw new FoxBPMObjectNotFoundException(ExceptionCode.OBJECTNOTFOUNDEXCEPTION_FINDDEFINITIONBYID, processDefinitionId,
-						ProcessDefinition.class);
+				throw new FoxBPMObjectNotFoundException(ExceptionCode.OBJECTNOTFOUNDEXCEPTION_FINDDEFINITIONBYID, processDefinitionId, ProcessDefinition.class);
 			}
 		} else if (processDefinitionKey != null) {
 			processDefinition = deploymentCache.findDeployedLatestProcessDefinitionByKey(processDefinitionKey);
 			if (processDefinition == null) {
-				throw new FoxBPMObjectNotFoundException(ExceptionCode.OBJECTNOTFOUNDEXCEPTION_FINDDEFINITIONBYKEY, processDefinitionId,
-						ProcessDefinition.class);
+				throw new FoxBPMObjectNotFoundException(ExceptionCode.OBJECTNOTFOUNDEXCEPTION_FINDDEFINITIONBYKEY, processDefinitionId, ProcessDefinition.class);
 			}
 		} else {
-			throw new FoxBPMIllegalArgumentException(ExceptionCode.ILLEGALARGUMENTEXCEPTION_ISNULL,
-					"processDefinitionKey、processDefinitionId");
+			throw new FoxBPMIllegalArgumentException(ExceptionCode.ILLEGALARGUMENTEXCEPTION_ISNULL, "processDefinitionKey、processDefinitionId");
 		}
-
+		
 		// 如果流程定义是暂停状态则不允许启动流程实例
 		if (processDefinition.isSuspended()) {
 			throw new FoxBPMException("启动失败：流程定义 " + processDefinition.getName() + " (id = "
-					+ processDefinition.getId() + ") 为暂停状态");
+			        + processDefinition.getId() + ") 为暂停状态");
 		}
-
+		
 		// 启动流程实例
 		ProcessInstanceEntity processInstance = processDefinition.createProcessInstance(bizKey);
 		if (transientVariables != null) {
 			processInstance.setTransVariables(transientVariables);
 		}
-		if(persistenceVariables != null){
+		if (persistenceVariables != null) {
 			processInstance.setVariables(persistenceVariables);
 		}
 		String initiator = Authentication.getAuthenticatedUserId();
 		processInstance.setInitiator(initiator);
 		processInstance.setStartAuthor(initiator);
 		processInstance.start();
-
+		
 		return processInstance;
 	}
 }

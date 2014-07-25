@@ -17,7 +17,13 @@
  */
 package org.foxbpm.engine.impl.diagramview.svg.builder;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
+import org.foxbpm.engine.impl.diagramview.svg.vo.TextSpanVO;
 
 /**
  * 
@@ -30,9 +36,75 @@ import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
  * 
  */
 public class CallActivitySVGBuilder extends TaskSVGBuilder {
-
+	private final static float DEFAULT_TEXT_HEIGHT = 15;
 	public CallActivitySVGBuilder(SvgVO svgVo) {
 		super(svgVo);
 	}
-
+	
+	@Override
+	public void setXAndY(float x, float y) {
+		// 设置整体坐标，包括子类型
+		this.svgVo.getgVo().setTransform(new StringBuffer(TRANSLANT_PREFIX).append(x).append(COMMA).append(y).append(BRACKET_SUFFIX).toString());
+		// 设置相对位置
+		this.rectVO.setX(0.0F);
+		this.rectVO.setY(0.0F);
+		float rectWidth = this.rectVO.getWidth();
+		// 设置字体的相对偏移量,X相对是矩形宽度的一半减去文本本身屏宽的一半
+		// TODO 目前支持全英文或者全中文、全日文、全韩文。
+		String elementValue = textVO.getElementValue();
+		if (StringUtils.isNotBlank(elementValue)) {
+			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(), elementValue);
+			if (SVGUtils.isChinese(elementValue.charAt(0))) {
+				textWidth = textWidth + (textWidth / 20) * 5;
+			}
+			// 文本折行处理
+			if (textWidth >= rectWidth) {
+				// 计算行数
+				int splitNum = (int) (textWidth / rectWidth);
+				if (textWidth % rectWidth != 0) {
+					splitNum = splitNum + 1;
+				}
+				int valueLength = elementValue.length();
+				List<TextSpanVO> textSpanList = new ArrayList<TextSpanVO>();
+				// 处理第一行
+				String tempValue = elementValue.substring(0, valueLength / splitNum);
+				textVO.setElementValue(tempValue);
+				int tempTextWidth = SVGUtils.getTextWidth(this.textVO.getFont(), tempValue);
+				if (SVGUtils.isChinese(elementValue.charAt(0))) {
+					tempTextWidth = tempTextWidth + (tempTextWidth / 20) * 5;
+				}
+				
+				super.setTextX((rectWidth / 2) - tempTextWidth / 2);
+				super.setTextY(DEFAULT_TEXT_HEIGHT);
+				
+				// 从第二行开始依次处理
+				for (int i = 1; i < splitNum; i++) {
+					// 获取文本
+					if (i == splitNum - 1) {
+						tempValue = elementValue.substring(i * (valueLength / splitNum), valueLength - 1);
+					} else {
+						tempValue = elementValue.substring(i * (valueLength / splitNum), (i + 1)
+						        * (valueLength / splitNum));
+					}
+					
+					tempTextWidth = SVGUtils.getTextWidth(this.textVO.getFont(), tempValue);
+					TextSpanVO tspanVo = new TextSpanVO();
+					tspanVo.setElementValue(tempValue);
+					if (SVGUtils.isChinese(elementValue.charAt(0))) {
+						tempTextWidth = tempTextWidth + (tempTextWidth / 20) * 5;
+					}
+					tspanVo.setX((rectWidth / 2) - tempTextWidth / 2);
+					tspanVo.setY(DEFAULT_TEXT_HEIGHT + (float) i * TEXT_HEIGHT);
+					textSpanList.add(tspanVo);
+				}
+				
+				textVO.setTextSpanList(textSpanList);
+			} else {
+				super.setTextX((rectWidth / 2) - textWidth / 2);
+				super.setTextY(DEFAULT_TEXT_HEIGHT);
+			}
+			
+		}
+	}
+	
 }

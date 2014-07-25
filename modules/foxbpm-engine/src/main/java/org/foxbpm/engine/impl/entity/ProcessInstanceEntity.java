@@ -276,8 +276,9 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 
 	@Override
 	public void setRootToken(KernelTokenImpl rootToken) {
-		this.rootToken = rootToken;
 		this.rootTokenId = rootToken.getId();
+		super.setRootToken(rootToken);
+		
 	}
 
 	public String getSubject() {
@@ -541,6 +542,11 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 			return processDefinition.getName();
 		}
 		return null;
+	}
+	
+	@Override
+	protected KernelProcessInstanceImpl newProcessInstance() {
+		return new ProcessInstanceEntity();
 	}
 
 }

@@ -23,6 +23,6 @@ import org.foxbpm.engine.impl.datavariable.BizDataObject;
 
 public interface BizDataObjectBehavior {
 	/** 获取业务系统数据对象 */
-	List<BizDataObject> getDataObjects();
+	List<BizDataObject> getDataObjects(String dataSource);
 
 }

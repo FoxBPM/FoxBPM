@@ -89,6 +89,7 @@ import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 import org.foxbpm.engine.transaction.TransactionContextFactory;
+import org.foxbpm.model.config.foxbpmconfig.BizDataObjectConfig;
 import org.foxbpm.model.config.foxbpmconfig.FoxBPMConfig;
 import org.foxbpm.model.config.foxbpmconfig.FoxBPMConfigPackage;
 import org.foxbpm.model.config.foxbpmconfig.MailInfo;
@@ -123,6 +124,9 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected ISqlSessionFactory sqlSessionFactory;
 	protected Map<Class<?>, SessionFactory> sessionFactories;
 	protected DataSourceManage dataSourceManager;
+	protected BizDataObjectConfig bizDataObjectConfig;
+	
+
 	// 定义及发布
 	protected int processDefinitionCacheLimit = -1; // By default, no limit
 	protected Cache<ProcessDefinition> processDefinitionCache;
@@ -207,6 +211,12 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initSVG();
 		// 加载任务命令过滤器
 		initAbstractCommandFilter();
+		
+		initBizDataObjectConfig();
+	}
+
+	private void initBizDataObjectConfig() {
+		this.bizDataObjectConfig=this.foxBpmConfig.getBizDataObjectConfig();
 	}
 
 	protected void initSysMailConfig() {
@@ -743,6 +753,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	public TaskCommandConfig getTaskCommandConfig() {
 		return taskCommandConfig;
+	}
+	
+	public BizDataObjectConfig getBizDataObjectConfig() {
+		return bizDataObjectConfig;
 	}
 
 }

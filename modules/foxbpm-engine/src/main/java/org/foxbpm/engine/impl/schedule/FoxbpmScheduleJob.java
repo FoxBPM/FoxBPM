@@ -17,7 +17,6 @@
  */
 package org.foxbpm.engine.impl.schedule;
 
-import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 import org.quartz.Job;
 import org.quartz.JobExecutionException;
 
@@ -37,18 +36,14 @@ public abstract class FoxbpmScheduleJob implements Job {
 	 * 组的名称
 	 */
 	protected String groupName;
-	/**
-	 * 执行任务的命令
-	 */
-	protected CommandExecutor commandExecutor;
-
+	
 	/**
 	 * 系统自动调度 创建一个新的实例 FoxbpmScheduleJob.
 	 * 
 	 */
 	public FoxbpmScheduleJob() {
 	}
-
+	
 	/**
 	 * 设置调度器，保存调度状态，单触发器 创建一个新的实例 FoxbpmScheduleJob.
 	 * 
@@ -60,37 +55,28 @@ public abstract class FoxbpmScheduleJob implements Job {
 		this.name = name;
 		this.groupName = groupName;
 	}
-
+	
 	/**
 	 * 执行任务的方法
 	 * 
 	 * @param foxpmJobExecutionContext
 	 * @throws JobExecutionException
 	 */
-	public abstract void executeJob(
-			FoxbpmJobExecutionContext foxpmJobExecutionContext)
-			throws JobExecutionException;
-
-	public CommandExecutor getCommandExecutor() {
-		return commandExecutor;
-	}
-
-	public void setCommandExecutor(CommandExecutor commandExecutor) {
-		this.commandExecutor = commandExecutor;
-	}
-
+	public abstract void executeJob(FoxbpmJobExecutionContext foxpmJobExecutionContext)
+	    throws JobExecutionException;
+	
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public String getGroupName() {
 		return groupName;
 	}
-
+	
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
 	}
