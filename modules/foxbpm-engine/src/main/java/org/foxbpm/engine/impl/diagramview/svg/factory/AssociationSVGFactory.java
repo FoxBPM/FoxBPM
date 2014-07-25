@@ -34,34 +34,18 @@ import org.foxbpm.kernel.process.KernelBaseElement;
  * 
  */
 public class AssociationSVGFactory extends AbstractFlowElementSVGFactory {
-
+	
 	public AssociationSVGFactory(KernelBaseElement kernelBaseElement, String svgTemplateFileName) {
 		super(kernelBaseElement, svgTemplateFileName);
 	}
 	@Override
 	public VONode createSVGVO(String svgType) {
-		SvgVO associationVO = (SvgVO) super.loadSVGVO(voTemplateFileName);
-		return associationVO;
+		return (SvgVO) super.loadSVGVO(voTemplateFileName);
 	}
-
-	@Override
-	public VONode createSVGVO() {
-		SvgVO associationVO = (SvgVO) super.loadSVGVO(voTemplateFileName);
-		return associationVO;
-	}
-
-	@Override
-	public void filterParentVO(VONode voNode, String[] filterCondition) {
-	}
-
-	@Override
-	public void filterConnectorVO(VONode voNode, String[] filterCondition) {
-
-	}
-
+	
 	@Override
 	public void filterChildVO(VONode voNode, List<String> filterCondition) {
-
+		
 	}
-
+	
 }

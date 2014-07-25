@@ -25,12 +25,12 @@ import org.foxbpm.engine.impl.diagramview.builder.FoxBpmnViewBuilder;
 import org.foxbpm.engine.impl.diagramview.svg.Point;
 import org.foxbpm.engine.impl.diagramview.svg.PointUtils;
 import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
-import org.foxbpm.kernel.process.impl.KernelBaseElementImpl;
+import org.foxbpm.kernel.process.KernelBaseElement;
 
 /**
  * 
  * 
- * SvgElementBuildDistincter
+ * SvgElementBuildDistincter 根据不同类型的流程定义元素进行创建
  * 
  * MAENLIANG 2014年7月16日 上午10:10:57
  * 
@@ -38,17 +38,37 @@ import org.foxbpm.kernel.process.impl.KernelBaseElementImpl;
  * 
  */
 public class SvgElementBuildDistincter {
+	/**
+	 * FOBBPM构造接口
+	 */
 	private FoxBpmnViewBuilder svgBuilder;
-	private KernelBaseElementImpl kernelBaseElementImpl;
+	
+	/**
+	 * 流程节点定义元素
+	 */
+	private KernelBaseElement kernelBaseElement;
+	
+	/**
+	 * 
+	 * 创建一个新的实例 SvgElementBuildDistincter.
+	 * 
+	 */
 	public SvgElementBuildDistincter() {
-
 	}
-	public SvgElementBuildDistincter(FoxBpmnViewBuilder svgBuilder,
-			KernelBaseElementImpl kernelBaseElementImpl) {
+	
+	/**
+	 * 创建一个新的实例 SvgElementBuildDistincter.
+	 * 
+	 * @param svgBuilder
+	 *            构造器
+	 * @param kernelBaseElement
+	 *            元素
+	 */
+	public SvgElementBuildDistincter(FoxBpmnViewBuilder svgBuilder, KernelBaseElement kernelBaseElement) {
 		this.svgBuilder = svgBuilder;
-		this.kernelBaseElementImpl = kernelBaseElementImpl;
+		this.kernelBaseElement = kernelBaseElement;
 	}
-
+	
 	/**
 	 * 
 	 * createCommoneElement(构造通用元素，活动，事件，泳道，组)
@@ -57,32 +77,28 @@ public class SvgElementBuildDistincter {
 	 * @since 1.0.0
 	 */
 	public void createCommoneElement() {
-		if (svgBuilder != null && kernelBaseElementImpl != null) {
+		if (svgBuilder != null && kernelBaseElement != null) {
 			// ID
-			svgBuilder.setID(kernelBaseElementImpl.getId());
+			svgBuilder.setID(kernelBaseElement.getId());
 			// 文本
-			if (StringUtils.isNotBlank(kernelBaseElementImpl.getName())) {
-				svgBuilder.setText(kernelBaseElementImpl.getName());
-				svgBuilder.setTextStroke((String) kernelBaseElementImpl
-						.getProperty(StyleOption.TextColor));
-				svgBuilder.setTextFill((String) kernelBaseElementImpl
-						.getProperty(StyleOption.TextColor));
+			if (StringUtils.isNotBlank(kernelBaseElement.getName())) {
+				svgBuilder.setText(kernelBaseElement.getName());
+				svgBuilder.setTextStroke((String) kernelBaseElement.getProperty(StyleOption.TextColor));
+				svgBuilder.setTextFill((String) kernelBaseElement.getProperty(StyleOption.TextColor));
 				svgBuilder.setTextStrokeWidth(0);
-				svgBuilder
-						.setTextFont((String) kernelBaseElementImpl.getProperty(StyleOption.Font));
+				svgBuilder.setTextFont((String) kernelBaseElement.getProperty(StyleOption.Font));
 			}
 			// 宽度，高度
-			svgBuilder.setWidth(kernelBaseElementImpl.getWidth());
-			svgBuilder.setHeight(kernelBaseElementImpl.getHeight());
+			svgBuilder.setWidth(kernelBaseElement.getWidth());
+			svgBuilder.setHeight(kernelBaseElement.getHeight());
 			// 边框式样
-			svgBuilder
-					.setStroke((String) kernelBaseElementImpl.getProperty(StyleOption.Foreground));
+			svgBuilder.setStroke((String) kernelBaseElement.getProperty(StyleOption.Foreground));
 			// 坐标
-			svgBuilder.setXAndY(kernelBaseElementImpl.getX(), kernelBaseElementImpl.getY());
+			svgBuilder.setXAndY(kernelBaseElement.getX(), kernelBaseElement.getY());
 			// 背景色
-			svgBuilder.setFill((String) kernelBaseElementImpl.getProperty(StyleOption.Background));
+			svgBuilder.setFill((String) kernelBaseElement.getProperty(StyleOption.Background));
 		}
-
+		
 	}
 	/**
 	 * 
@@ -92,32 +108,28 @@ public class SvgElementBuildDistincter {
 	 * @since 1.0.0
 	 */
 	public void createTextAnnotation(String text, String textFormat) {
-		if (svgBuilder != null && kernelBaseElementImpl != null) {
+		if (svgBuilder != null && kernelBaseElement != null) {
 			// ID
-			svgBuilder.setID(kernelBaseElementImpl.getId());
+			svgBuilder.setID(kernelBaseElement.getId());
 			// 文本
 			if (StringUtils.isNotBlank(text)) {
 				svgBuilder.setText(text);
-				svgBuilder.setTextStroke((String) kernelBaseElementImpl
-						.getProperty(StyleOption.TextColor));
-				svgBuilder.setTextFill((String) kernelBaseElementImpl
-						.getProperty(StyleOption.TextColor));
+				svgBuilder.setTextStroke((String) kernelBaseElement.getProperty(StyleOption.TextColor));
+				svgBuilder.setTextFill((String) kernelBaseElement.getProperty(StyleOption.TextColor));
 				svgBuilder.setTextStrokeWidth(0);
-				svgBuilder
-						.setTextFont((String) kernelBaseElementImpl.getProperty(StyleOption.Font));
+				svgBuilder.setTextFont((String) kernelBaseElement.getProperty(StyleOption.Font));
 			}
 			// 宽度，高度
-			svgBuilder.setWidth(kernelBaseElementImpl.getWidth());
-			svgBuilder.setHeight(kernelBaseElementImpl.getHeight());
+			svgBuilder.setWidth(kernelBaseElement.getWidth());
+			svgBuilder.setHeight(kernelBaseElement.getHeight());
 			// 边框式样
-			svgBuilder
-					.setStroke((String) kernelBaseElementImpl.getProperty(StyleOption.Foreground));
+			svgBuilder.setStroke((String) kernelBaseElement.getProperty(StyleOption.Foreground));
 			// 坐标
-			svgBuilder.setXAndY(kernelBaseElementImpl.getX(), kernelBaseElementImpl.getY());
+			svgBuilder.setXAndY(kernelBaseElement.getX(), kernelBaseElement.getY());
 			// 背景色
-			svgBuilder.setFill((String) kernelBaseElementImpl.getProperty(StyleOption.Background));
+			svgBuilder.setFill((String) kernelBaseElement.getProperty(StyleOption.Background));
 		}
-
+		
 	}
 	/**
 	 * 
@@ -143,16 +155,16 @@ public class SvgElementBuildDistincter {
 			svgBuilder.setTextX(textPoint.getX());
 			svgBuilder.setTextY(textPoint.getY());
 		}
-
+		
 		svgBuilder.setStroke(stroke);
-
+		
 	}
-
+	
 	public void setSvgBuilder(FoxBpmnViewBuilder svgBuilder) {
 		this.svgBuilder = svgBuilder;
 	}
-	public void setKernelBaseElementImpl(KernelBaseElementImpl kernelBaseElementImpl) {
-		this.kernelBaseElementImpl = kernelBaseElementImpl;
+	public void setKernelBaseElement(KernelBaseElement kernelBaseElement) {
+		this.kernelBaseElement = kernelBaseElement;
 	}
-
+	
 }

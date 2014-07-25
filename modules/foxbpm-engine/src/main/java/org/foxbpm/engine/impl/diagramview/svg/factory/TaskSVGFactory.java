@@ -43,19 +43,28 @@ public class TaskSVGFactory extends AbstractFlowElementSVGFactory {
 	public TaskSVGFactory(KernelBaseElement kernelBaseElement, String voTemplateFileName) {
 		super(kernelBaseElement, voTemplateFileName);
 	}
-
-	@Override
-	public VONode createSVGVO() {
-		SvgVO taskVO = (SvgVO) super.loadSVGVO(this.voTemplateFileName);
-		return taskVO;
-	}
-
+	
 	@Override
 	public VONode createSVGVO(String svgType) {
-		SvgVO taskVO = (SvgVO) super.loadSVGVO(this.voTemplateFileName);
-		return taskVO;
+		return (SvgVO) super.loadSVGVO(this.voTemplateFileName);
 	}
-
+	
+	@Override
+	public void filterChildVO(VONode voNode, List<String> gIDList) {
+		GVO gvo = ((SvgVO) voNode).getgVo();
+		List<GVO> gvoList = gvo.getgVoList();
+		Iterator<GVO> gvoIter = gvoList.iterator();
+		GVO subGVo = null;
+		while (gvoIter.hasNext()) {
+			subGVo = gvoIter.next();
+			if (!this.confirmGVOExistsByID(gIDList, subGVo.getId())) {
+				gvoIter.remove();
+				continue;
+			}
+		}
+		
+	}
+	
 	/**
 	 * 判断当前配置的ID是否存在
 	 * 
@@ -73,33 +82,5 @@ public class TaskSVGFactory extends AbstractFlowElementSVGFactory {
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public void filterChildVO(VONode voNode, List<String> gIDList) {
-		GVO gvo = ((SvgVO) voNode).getgVo();
-		List<GVO> gvoList = gvo.getgVoList();
-		Iterator<GVO> gvoIter = gvoList.iterator();
-		GVO subGVo = null;
-		while (gvoIter.hasNext()) {
-			subGVo = gvoIter.next();
-			if (!this.confirmGVOExistsByID(gIDList, subGVo.getId())) {
-				gvoIter.remove();
-				continue;
-			}
-		}
-
-	}
-
-	@Override
-	public void filterConnectorVO(VONode voNode, String[] filterCondition) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void filterParentVO(VONode voNode, String[] filterCondition) {
-		// TODO Auto-generated method stub
-
 	}
 }

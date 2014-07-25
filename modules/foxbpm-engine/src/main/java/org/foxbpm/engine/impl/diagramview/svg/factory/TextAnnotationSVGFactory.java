@@ -26,7 +26,7 @@ import org.foxbpm.kernel.process.KernelBaseElement;
 /**
  * 
  * 
- * TextAnnotationSVGFactory
+ * TextAnnotationSVGFactory 文本注释创建工厂
  * 
  * MAENLIANG 2014年7月15日 下午8:10:37
  * 
@@ -34,32 +34,23 @@ import org.foxbpm.kernel.process.KernelBaseElement;
  * 
  */
 public class TextAnnotationSVGFactory extends AbstractFlowElementSVGFactory {
-
+	
+	/**
+	 * 
+	 * 创建一个新的实例 TextAnnotationSVGFactory.
+	 * 
+	 * @param kernelBaseElement
+	 * @param svgTemplateFileName
+	 */
 	public TextAnnotationSVGFactory(KernelBaseElement kernelBaseElement, String svgTemplateFileName) {
 		super(kernelBaseElement, svgTemplateFileName);
 	}
-
+	
 	@Override
 	public VONode createSVGVO(String svgType) {
-		SvgVO textAnnotationVO = (SvgVO) super.loadSVGVO(voTemplateFileName);
-		return textAnnotationVO;
+		return (SvgVO) super.loadSVGVO(voTemplateFileName);
 	}
-
-	@Override
-	public VONode createSVGVO() {
-		SvgVO textAnnotationVO = (SvgVO) super.loadSVGVO(voTemplateFileName);
-		return textAnnotationVO;
-	}
-
-	@Override
-	public void filterParentVO(VONode voNode, String[] filterCondition) {
-	}
-
-	@Override
-	public void filterConnectorVO(VONode voNode, String[] filterCondition) {
-
-	}
-
+	
 	@Override
 	public void filterChildVO(VONode voNode, List<String> filterCondition) {
 	}

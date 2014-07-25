@@ -31,7 +31,7 @@ import org.foxbpm.kernel.process.KernelBaseElement;
  * 
  */
 public class EventSVGFactory extends AbstractFlowElementSVGFactory {
-
+	
 	/**
 	 * 
 	 * @param kernelFlowElement
@@ -42,36 +42,14 @@ public class EventSVGFactory extends AbstractFlowElementSVGFactory {
 	public EventSVGFactory(KernelBaseElement kernelBaseElement, String voTemplateFileName) {
 		super(kernelBaseElement, voTemplateFileName);
 	}
-
-	@Override
-	public VONode createSVGVO() {
-		SvgVO startEventNone = (SvgVO) super.loadSVGVO(voTemplateFileName);
-		return startEventNone;
-	}
-
 	@Override
 	public VONode createSVGVO(String svgType) {
-		SvgVO startEventNone = (SvgVO) super.loadSVGVO(voTemplateFileName);
-		// 过滤之类的操作
-		return startEventNone;
+		return (SvgVO) super.loadSVGVO(voTemplateFileName);
 	}
-
-	@Override
-	public void filterParentVO(VONode voNode, String[] filterCondition) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void filterConnectorVO(VONode voNode, String[] filterCondition) {
-		// TODO Auto-generated method stub
-
-	}
-
 	@Override
 	public void filterChildVO(VONode voNode, List<String> filterCondition) {
 		// TODO Auto-generated method stub
-
+		
 	}
-
+	
 }

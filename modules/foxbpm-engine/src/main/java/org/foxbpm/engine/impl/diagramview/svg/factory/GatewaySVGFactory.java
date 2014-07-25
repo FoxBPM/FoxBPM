@@ -24,7 +24,7 @@ import org.foxbpm.kernel.process.KernelBaseElement;
 
 /**
  * 
- * 网关元素构建类 GatewaySVGFactory
+ * GatewaySVGFactory 网关元素构造工厂
  * 
  * MAENLIANG 2014年7月1日 下午8:15:15
  * 
@@ -32,36 +32,25 @@ import org.foxbpm.kernel.process.KernelBaseElement;
  * 
  */
 public class GatewaySVGFactory extends AbstractFlowElementSVGFactory {
-
+	
+	/**
+	 * 
+	 * 创建一个新的实例 GatewaySVGFactory.
+	 * 
+	 * @param kernelBaseElement
+	 * @param svgTemplateFileName
+	 */
 	public GatewaySVGFactory(KernelBaseElement kernelBaseElement, String svgTemplateFileName) {
 		super(kernelBaseElement, svgTemplateFileName);
 	}
-
+	
 	@Override
 	public VONode createSVGVO(String svgType) {
 		return this.loadSVGVO(this.voTemplateFileName);
 	}
-
-	@Override
-	public VONode createSVGVO() {
-		return this.loadSVGVO(voTemplateFileName);
-	}
-
-	@Override
-	public void filterParentVO(VONode voNode, String[] filterCondition) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void filterConnectorVO(VONode voNode, String[] filterCondition) {
-		// TODO Auto-generated method stub
-
-	}
-
 	@Override
 	public void filterChildVO(VONode voNode, List<String> filterCondition) {
 		// TODO Auto-generated method stub
-
+		
 	}
 }

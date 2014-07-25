@@ -24,7 +24,7 @@ import org.foxbpm.kernel.process.KernelBaseElement;
 
 /**
  * 
- * 泳道元素构建类 LaneSetSVGFactory
+ * LaneSetSVGFactory 泳道创建工厂
  * 
  * MAENLIANG 2014年7月1日 下午8:14:46
  * 
@@ -32,36 +32,26 @@ import org.foxbpm.kernel.process.KernelBaseElement;
  * 
  */
 public class LanesetSVGFactory extends AbstractFlowElementSVGFactory {
-
+	
+	/**
+	 * 
+	 * 创建一个新的实例 LanesetSVGFactory.
+	 * 
+	 * @param kernelBaseElement
+	 * @param svgTemplateFileName
+	 */
 	public LanesetSVGFactory(KernelBaseElement kernelBaseElement, String svgTemplateFileName) {
 		super(kernelBaseElement, svgTemplateFileName);
 	}
-
+	
 	@Override
 	public VONode createSVGVO(String svgType) {
 		return this.loadSVGVO(this.voTemplateFileName);
 	}
-
-	@Override
-	public VONode createSVGVO() {
-		return super.loadSVGVO(voTemplateFileName);
-	}
-
-	@Override
-	public void filterParentVO(VONode voNode, String[] filterCondition) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void filterConnectorVO(VONode voNode, String[] filterCondition) {
-		// TODO Auto-generated method stub
-
-	}
-
+	
 	@Override
 	public void filterChildVO(VONode voNode, List<String> filterCondition) {
 		// TODO Auto-generated method stub
-
+		
 	}
 }

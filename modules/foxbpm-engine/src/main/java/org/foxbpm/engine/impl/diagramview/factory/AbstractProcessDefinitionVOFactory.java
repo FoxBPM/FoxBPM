@@ -20,23 +20,22 @@ package org.foxbpm.engine.impl.diagramview.factory;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 
 /**
- * 创建流程图形对象的抽象工厂
+ * 创建流程图形对象的工厂类
  * 
  * @author MAENLIANG
  * @date 2014-06-10
  * 
  */
-public abstract class AbstractProcessDefinitionVOFactory
-		implements
-			FoxbpmProcessDefinitionVOFactory {
+public abstract class AbstractProcessDefinitionVOFactory implements
+    FoxbpmProcessDefinitionVOFactory {
 	/**
-	 * 创建流程图，不包括标记信息
+	 * 根据流程定义创建SVG字符串，返回的字符串可以直接在界面展示
 	 * 
 	 * @param deployedProcessDefinition
-	 * @return
+	 *            流程定义
+	 * @return 流程定义对应的SVG字符串
 	 */
-
 	public abstract String createProcessDefinitionVOString(
-			ProcessDefinitionEntity deployedProcessDefinition);
-
+	    ProcessDefinitionEntity deployedProcessDefinition);
+	
 }
