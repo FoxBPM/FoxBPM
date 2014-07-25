@@ -42,18 +42,18 @@ import org.slf4j.LoggerFactory;
 public class PngDeployer extends AbstractDeployer {
 	/** 日志处理 */
 	private final static Logger LOG = LoggerFactory.getLogger(PngDeployer.class);
-
+	
 	@Override
 	public String deploy(DeploymentEntity deployment) {
 		LOG.debug("start deploy");
 		// 获取流程定义Id
 		String processDefineId = StringUtil.getString(deployment.getProperty(Constant.PROCESS_DEFINE_ID));
-
+		
 		// 处理流程定义Id不存在情况
 		if (StringUtil.isEmpty(processDefineId)) {
 			return null;
 		}
-
+		
 		// 处理更新和新增
 		if (deployment.isNew()) {
 			ResourceEntity resourcePngNew = null;
@@ -63,7 +63,7 @@ public class PngDeployer extends AbstractDeployer {
 					break;
 				}
 			}
-
+			
 			// 获取命令上下文
 			CommandContext context = Context.getCommandContext();
 			// 获取流程定义管理器
@@ -76,7 +76,7 @@ public class PngDeployer extends AbstractDeployer {
 			String updateDeploymentId = deployment.getUpdateDeploymentId();
 			// 从缓存中获取流程定义实例
 			ProcessDefinitionEntity processDefinieCacheEntity = (ProcessDefinitionEntity) deploymentManager.getProcessDefinitionCache().get(processDefineId);
-
+			
 			// 处理不存在png资源情况,需要生成一个png资源
 			if (null == resourcePngNew) {
 				// 获取svg内容
@@ -92,7 +92,7 @@ public class PngDeployer extends AbstractDeployer {
 				// svg转成png
 				resourcePngNew.setBytes(SVGConverterUtil.getInstance().convertToPng(svgCode));
 			}
-
+			
 			// 处理更新发布
 			if (StringUtil.isNotEmpty(updateDeploymentId)) {
 				// 从sql缓存获取已存在的发布实例
@@ -115,17 +115,17 @@ public class PngDeployer extends AbstractDeployer {
 					// 需要显示调用更新,主要更新png资源
 					deploymentEntityManager.update(resourcePngOld);
 				}
-
+				
 			} else {
-				// 新增时，需要更新缓存中的流程定义实例的图资源名称
-				processDefinieCacheEntity.setDiagramResourceName(resourcePngNew.getName());
 				/********************* 数据库操作 *****************************/
 				// 将png资源插入数据库
 				deploymentEntityManager.insertResource(resourcePngNew);
-				// 这里需要将图资源名称更新至流程定义表
-				ProcessDefinitionEntity processDefinieEntity = processDefinitionManager.findProcessDefinitionById(processDefineId);
-				processDefinieEntity.setDiagramResourceName(resourcePngNew.getName());
 			}
+			// 需要更新资源信息
+			processDefinieCacheEntity.setDiagramResourceName(resourcePngNew.getName());
+			// 这里需要将图资源名称更新至流程定义表
+			ProcessDefinitionEntity processDefinieEntity = processDefinitionManager.findProcessDefinitionById(processDefineId);
+			processDefinieEntity.setDiagramResourceName(resourcePngNew.getName());
 		}
 		LOG.debug("end deploy");
 		return processDefineId;
