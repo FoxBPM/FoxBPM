@@ -756,9 +756,59 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 		assertEquals("获取最新流程定义失败", 2, pd.getVersion());
 	}
 	
+	/**
+	 * 测试数据库变量获取
+	 * <p>
+	 * 1.使用场景：设计器数据变量导入
+	 * </p>
+	 * <p>
+	 * 2.预置条件：存在可用的数据源,有bizDataObjectConfig配置
+	 * <p>
+	 * <p>
+	 * 3.处理过程：通过查询所有表封装字段
+	 * </p>
+	 * <p>
+	 * 4.测试用例：调用modelService获取业务数据
+	 * </p>
+	 */
 	@Test
 	public void testGetBizDataObject() {
-		List<BizDataObject> bizDatObjects = modelService.getBizDataObject("eMapDataObject","foxbpmDataSource");
+		List<BizDataObject> bizDatObjects = modelService.getBizDataObject("eMapDataObject", "foxbpmDataSource");
 		System.out.println(bizDatObjects);
+	}
+	/**
+	 * 测试数据库变量表达式可用性
+	 * <p>
+	 * 1.使用场景：解析表达式
+	 * </p>
+	 * <p>
+	 * 2.预置条件：存在已发布流程定义,并导入数据库变量
+	 * <p>
+	 * <p>
+	 * 3.处理过程：通过流程定义key，启动流程，并在线条上打印变量
+	 * </p>
+	 * <p>
+	 * 4.测试用例：启动流程并驱动流程，查看控制台输出信息
+	 * </p>
+	 */
+	@Test
+	@Deployment(resources = {"org/foxbpm/test/api/TestDataVar_1.bpmn"})
+	public void testBizDataObject() {
+		// 启动一个流程
+		Authentication.setAuthenticatedUserId("admin");
+		// 启动流程
+		runtimeService.startProcessInstanceByKey("TestDataVar_1");
+		
+		Task task = taskService.createTaskQuery().processDefinitionKey("TestDataVar_1").taskNotEnd().singleResult();
+		
+		// 驱动流程
+		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
+		expandTaskCommand.setInitiator("admin");
+		expandTaskCommand.setProcessDefinitionKey("TestDataVar_1");
+		expandTaskCommand.setBusinessKey("admin");
+		expandTaskCommand.setCommandType("submit");
+		expandTaskCommand.setTaskCommandId("HandleCommand_2");
+		expandTaskCommand.setTaskId(task.getId());
+		taskService.expandTaskComplete(expandTaskCommand, null);
 	}
 }
