@@ -19,16 +19,16 @@
 package org.foxbpm.engine;
 
 public class Constant {
-
+	
 	/** foxbpm引擎中所有用户的标识 */
 	public final static String FOXBPM_ALL_USER = "foxbpm_all_user";
-
+	
 	/** foxbpm引擎中所有流程标识 */
 	public final static String FOXBPM_ALL_FLOW = "foxbpm_all_flow";
-
+	
 	/** 角色类型 */
 	public final static String ROLE_TYPE = "role";
-
+	
 	/** 部门类型 */
 	public final static String DEPT_TYPE = "dept";
 	/** 流程定义Id */
@@ -39,4 +39,6 @@ public class Constant {
 	public final static String PROCESS_DEFINE_NAME = "processDefineName";
 	/** svg属性key标示 */
 	public static final String SVG_PROPERTIES_NAME = "svgDocument";
+	/** 数据库变量类型 */
+	public static final String DB_BIZTYPE = "dataBaseVariable";
 }

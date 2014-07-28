@@ -29,7 +29,7 @@ import org.restlet.resource.ClientResource;
  */
 public class TestBizDataObjectResouce {
 	public static void main(String[] args) {
-		ClientResource client = new ClientResource("http://localhost:8889/foxbpm-webapps-base/service/bizDataObjects/eMapDataObject/foxbpmDataSource");
+		ClientResource client = new ClientResource("http://localhost:8889/foxbpm-webapps-base/service/bizDataObjects/dataBaseMode/foxbpmDataSource");
 		client.setChallengeResponse(ChallengeScheme.HTTP_BASIC, "111", "111");
 		Representation result = client.get();
 		try {

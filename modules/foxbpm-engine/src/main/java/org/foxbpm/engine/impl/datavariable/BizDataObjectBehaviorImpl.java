@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.datavariable.BizDataObjectBehavior;
 import org.foxbpm.engine.exception.FoxBPMDbException;
 import org.foxbpm.engine.impl.util.DBUtils;
@@ -39,6 +40,16 @@ public class BizDataObjectBehaviorImpl implements BizDataObjectBehavior {
 	
 	/** 日志处理 */
 	private final static Logger LOG = LoggerFactory.getLogger(BizDataObjectBehaviorImpl.class);
+	/** 表名称 */
+	private final static String TABLE_NAME = "TABLE_NAME";
+	/** 表字段类型 */
+	private final static String DATA_TYPE = "DATA_TYPE";
+	/** 列名称 */
+	private final static String COLUMN_NAME = "COLUMN_NAME";
+	/** 列描述 */
+	private final static String COLUMN_COMMENT = "COLUMN_COMMENT";
+	/** sql */
+	private final static String TABLE_INFOR = "select * from information_schema.columns where TABLE_SCHEMA = ?";
 	
 	@Override
 	public List<BizDataObject> getDataObjects(String dataSource) {
@@ -47,35 +58,41 @@ public class BizDataObjectBehaviorImpl implements BizDataObjectBehavior {
 			JdbcTemplate jdbcTemplate = new JdbcTemplate(DBUtils.getDataSource(dataSource));
 			// 获取此 当前数据源连接 对象的当前目录名称。
 			String catalog = jdbcTemplate.getDataSource().getConnection().getCatalog();
-			StringBuffer sql = new StringBuffer("select * from information_schema.columns");
-			sql.append(" where TABLE_SCHEMA = '").append(catalog).append("'");
+			LOG.info("the sql is " + TABLE_INFOR);
 			
-			LOG.info("the sql is " + sql);
-			
-			SqlRowSet rs = jdbcTemplate.queryForRowSet(sql.toString());
+			SqlRowSet rs = jdbcTemplate.queryForRowSet(TABLE_INFOR, new Object[]{catalog});
 			List<BizDataObject> bizDataObjects = new ArrayList<BizDataObject>();
 			BizDataObject bizDataObject = null;
 			DataVariableDefinition dataVariableDefine = null;
 			String tableName = null;
+			StringBuffer sbExpression = new StringBuffer();
+			// 获取表信息
 			while (rs.next()) {
 				// 处理首次和区分不同表
-				if (!rs.getString("TABLE_NAME").equals(tableName)) {
+				if (!rs.getString(TABLE_NAME).equals(tableName)) {
 					bizDataObject = new BizDataObject();
-					bizDataObject.setId(rs.getString("TABLE_NAME"));
+					bizDataObject.setId(rs.getString(TABLE_NAME));
 					bizDataObject.setDataSource(dataSource);
-					bizDataObject.setDocumentation(rs.getString("COLUMN_COMMENT"));
+					bizDataObject.setDocumentation(rs.getString(COLUMN_NAME));
 					// 添加业务数据对象
 					bizDataObjects.add(bizDataObject);
 				}
 				dataVariableDefine = new DataVariableDefinition();
-				dataVariableDefine.setId(rs.getString("COLUMN_NAME"));
-				dataVariableDefine.setDataType(rs.getString("DATA_TYPE"));
-				dataVariableDefine.setExpression("bizData.getDataValue();");
-				dataVariableDefine.setDocumentation(rs.getString("COLUMN_COMMENT"));
-				dataVariableDefine.setBizType("biztype");
+				dataVariableDefine.setId(rs.getString(COLUMN_NAME));
+				dataVariableDefine.setDataType(rs.getString(DATA_TYPE));
+				// 生成表达式
+				sbExpression.append("DataVarUtil.getInstance().getDataValue(");
+				sbExpression.append(dataSource).append(',').append("processInfo.getProcessInstance().getBizKey(),").append(dataVariableDefine.getId());
+				sbExpression.append(");");
+				dataVariableDefine.setExpression(sbExpression.toString());
+				
+				dataVariableDefine.setDocumentation(rs.getString(COLUMN_COMMENT));
+				dataVariableDefine.setBizType(Constant.DB_BIZTYPE);
 				// 添加数据变量定义
 				bizDataObject.getDataVariableDefinitions().add(dataVariableDefine);
-				tableName = rs.getString("TABLE_NAME");
+				tableName = rs.getString(TABLE_NAME);
+				// 清空sbExpression缓存
+				sbExpression.delete(0, sbExpression.length());
 			}
 			LOG.debug("end getDataObjects(String dataSource)");
 			return bizDataObjects;
