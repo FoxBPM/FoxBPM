@@ -45,7 +45,7 @@ public class SubProcessSVGFactory extends AbstractFlowElementSVGFactory {
 	}
 	
 	@Override
-	public VONode createSVGVO(String svgType) {
+	public VONode createSVGVO() {
 		return (SvgVO) super.loadSVGVO(this.voTemplateFileName);
 	}
 	

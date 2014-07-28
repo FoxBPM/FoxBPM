@@ -46,7 +46,7 @@ public class ConnectorSVGFactory extends AbstractFlowElementSVGFactory {
 	}
 	
 	@Override
-	public VONode createSVGVO(String svgType) {
+	public VONode createSVGVO() {
 		SvgVO connectorVO = (SvgVO) super.loadSVGVO(voTemplateFileName);
 		GVO newGVO = new GVO();
 		List<GVO> gVoList = new ArrayList<GVO>();

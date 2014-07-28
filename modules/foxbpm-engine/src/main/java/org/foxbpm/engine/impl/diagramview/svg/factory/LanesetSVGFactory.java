@@ -45,7 +45,7 @@ public class LanesetSVGFactory extends AbstractFlowElementSVGFactory {
 	}
 	
 	@Override
-	public VONode createSVGVO(String svgType) {
+	public VONode createSVGVO() {
 		return this.loadSVGVO(this.voTemplateFileName);
 	}
 	

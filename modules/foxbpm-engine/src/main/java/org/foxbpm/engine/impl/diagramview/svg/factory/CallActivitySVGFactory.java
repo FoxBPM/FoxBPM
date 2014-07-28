@@ -17,8 +17,6 @@
  */
 package org.foxbpm.engine.impl.diagramview.svg.factory;
 
-import java.util.List;
-
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.diagramview.vo.VONode;
 import org.foxbpm.kernel.process.KernelBaseElement;
@@ -33,7 +31,7 @@ import org.foxbpm.kernel.process.KernelBaseElement;
  * @version 1.0.0
  * 
  */
-public class CallActivitySVGFactory extends AbstractFlowElementSVGFactory {
+public class CallActivitySVGFactory extends TaskSVGFactory {
 	
 	/**
 	 * 
@@ -47,13 +45,7 @@ public class CallActivitySVGFactory extends AbstractFlowElementSVGFactory {
 	}
 	
 	@Override
-	public VONode createSVGVO(String svgType) {
+	public VONode createSVGVO() {
 		return (SvgVO) super.loadSVGVO(this.voTemplateFileName);
-	}
-	
-	@Override
-	public void filterChildVO(VONode voNode, List<String> filterCondition) {
-		// TODO Auto-generated method stub
-		
 	}
 }

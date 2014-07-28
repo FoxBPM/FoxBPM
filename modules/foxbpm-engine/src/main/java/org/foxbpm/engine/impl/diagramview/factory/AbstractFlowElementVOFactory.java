@@ -87,7 +87,7 @@ public abstract class AbstractFlowElementVOFactory {
 	 * @return
 	 */
 	public VONode createFlowElementSVGVO(String svgType) {
-		VONode voNode = this.createSVGVO(svgType);
+		VONode voNode = this.createSVGVO();
 		FoxBpmnViewBuilder svgBuilder = AbstractSVGBuilder.createSVGBuilder(voNode, svgType);
 		
 		SvgElementBuildDistincter svgElementBuildDistincter = new SvgElementBuildDistincter();
@@ -180,5 +180,5 @@ public abstract class AbstractFlowElementVOFactory {
 	 * @param svgType
 	 * @return
 	 */
-	public abstract VONode createSVGVO(String svgType);
+	public abstract VONode createSVGVO();
 }

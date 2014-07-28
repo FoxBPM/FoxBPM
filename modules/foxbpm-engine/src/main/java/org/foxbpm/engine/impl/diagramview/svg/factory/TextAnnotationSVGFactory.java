@@ -47,7 +47,7 @@ public class TextAnnotationSVGFactory extends AbstractFlowElementSVGFactory {
 	}
 	
 	@Override
-	public VONode createSVGVO(String svgType) {
+	public VONode createSVGVO() {
 		return (SvgVO) super.loadSVGVO(voTemplateFileName);
 	}
 	

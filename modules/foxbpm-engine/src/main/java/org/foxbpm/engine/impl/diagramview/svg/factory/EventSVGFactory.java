@@ -43,7 +43,7 @@ public class EventSVGFactory extends AbstractFlowElementSVGFactory {
 		super(kernelBaseElement, voTemplateFileName);
 	}
 	@Override
-	public VONode createSVGVO(String svgType) {
+	public VONode createSVGVO() {
 		return (SvgVO) super.loadSVGVO(voTemplateFileName);
 	}
 	@Override

@@ -18,6 +18,7 @@
 package org.foxbpm.engine.impl.diagramview.factory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,14 +27,12 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.impl.bpmn.behavior.ActivityBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.AssociationBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.BoundaryEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.BusinessRuleTaskBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.CallActivityBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.CatchEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.EndEventBehavior;
-import org.foxbpm.engine.impl.bpmn.behavior.EventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.EventDefinition;
 import org.foxbpm.engine.impl.bpmn.behavior.ExclusiveGatewayBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.GatewayBehavior;
@@ -51,7 +50,6 @@ import org.foxbpm.engine.impl.bpmn.behavior.SubProcessBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.TaskBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.TerminateEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.TextAnnotationBehavior;
-import org.foxbpm.engine.impl.bpmn.behavior.ThrowEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.TimerEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
 import org.foxbpm.engine.impl.bpmn.parser.StyleOption;
@@ -79,6 +77,7 @@ import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
  */
 public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitionVOFactory {
 	private static final String EMPTY_STRING = "";
+	private final static Map<Class<?>, String[]> svgTypeMap = initSvgTypeMap();
 	/**
 	 * SVG类型索引
 	 */
@@ -92,6 +91,33 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 	 * 创建节点工厂
 	 */
 	private AbstractFlowElementVOFactory flowNodeVOFactory;
+	
+	/**
+	 * 
+	 * initSvgTypeMap()
+	 * 
+	 * @return Map<Class<?>,String[]>
+	 * @exception
+	 * @since 1.0.0
+	 */
+	private static Map<Class<?>, String[]> initSvgTypeMap() {
+		Map<Class<?>, String[]> svgTypeMap = new HashMap<Class<?>, String[]>();
+		svgTypeMap.put(UserTaskBehavior.class, new String[]{SVGTypeNameConstant.ACTIVITY_USERTASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
+		svgTypeMap.put(SendTaskBehavior.class, new String[]{SVGTypeNameConstant.ACTIVITY_SENDTASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
+		svgTypeMap.put(ServiceTaskBehavior.class, new String[]{SVGTypeNameConstant.ACTIVITY_SERVICETASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
+		svgTypeMap.put(ManualTaskBehavior.class, new String[]{SVGTypeNameConstant.ACTIVITY_MANUALTASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
+		svgTypeMap.put(BusinessRuleTaskBehavior.class, new String[]{SVGTypeNameConstant.ACTIVITY_BUSINESSRULETASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
+		svgTypeMap.put(ReceiveTaskBehavior.class, new String[]{SVGTypeNameConstant.ACTIVITY_RECEIVETASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
+		svgTypeMap.put(ScriptTaskBehavior.class, new String[]{SVGTypeNameConstant.ACTIVITY_SCRIPTTASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
+		svgTypeMap.put(CallActivityBehavior.class, new String[]{SVGTypeNameConstant.SVG_TYPE_CALLACTIVITY, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_CALLACTIVITY});
+		svgTypeMap.put(ExclusiveGatewayBehavior.class, new String[]{SVGTypeNameConstant.SVT_TYPE_GATEWAY, SVGTemplateNameConstant.TEMPLATE_GATEWAY_EXCLUSIVE});
+		svgTypeMap.put(InclusiveGatewayBehavior.class, new String[]{SVGTypeNameConstant.SVT_TYPE_GATEWAY, SVGTemplateNameConstant.TEMPLATE_GATEWAY_INCLUSIVE});
+		svgTypeMap.put(ParallelGatewayBehavior.class, new String[]{SVGTypeNameConstant.SVT_TYPE_GATEWAY, SVGTemplateNameConstant.TEMPLATE_GATEWAY_PARALLEL});
+		svgTypeMap.put(GroupBehavior.class, new String[]{SVGTypeNameConstant.SVG_TYPE_GROUP, SVGTemplateNameConstant.TEMPLATE_GROUP});
+		svgTypeMap.put(TextAnnotationBehavior.class, new String[]{SVGTypeNameConstant.SVG_TYPE_TEXTANNOTATION, SVGTemplateNameConstant.TEMPLATE_TEXTANNOTATION});
+		svgTypeMap.put(AssociationBehavior.class, new String[]{SVGTypeNameConstant.SVG_TYPE_CONNECTOR_ASSOCIATION_UNDIRECTED, SVGTemplateNameConstant.TEMPLATE_CONNECTOR_ASSOCIATION});
+		return svgTypeMap;
+	}
 	
 	/**
 	 * 根据所有流程节点，和流程连接创建流程SVG文档字符串
@@ -212,21 +238,14 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 			VONode voNode = null;
 			KernelArtifactImpl kernelArtifactImpl = null;
 			KernelArtifactBehavior artifactBehavior = null;
+			String[] temp = null;
 			while (iterator.hasNext()) {
 				kernelArtifactImpl = (KernelArtifactImpl) iterator.next();
 				artifactBehavior = kernelArtifactImpl.getArtifactBehavior();
 				// 小部件分类处理，分别是组、注释、连接线
-				if (artifactBehavior instanceof GroupBehavior) {
-					taskType = SVGTypeNameConstant.SVG_TYPE_GROUP;
-					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_GROUP;
-				} else if (artifactBehavior instanceof TextAnnotationBehavior) {
-					taskType = SVGTypeNameConstant.SVG_TYPE_TEXTANNOTATION;
-					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_TEXTANNOTATION;
-				} else if (artifactBehavior instanceof AssociationBehavior) {
-					taskType = SVGTypeNameConstant.SVG_TYPE_CONNECTOR_ASSOCIATION_UNDIRECTED;
-					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_CONNECTOR_ASSOCIATION;
-				}
-				
+				temp = svgTypeMap.get(artifactBehavior.getClass());
+				taskType = temp[0];
+				svgTemplateFileName = temp[1];
 				voNode = this.getNodeSVGFromFactory(kernelArtifactImpl, taskType, svgTemplateFileName);
 				voNodeList.add(voNode);
 			}
@@ -288,99 +307,53 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 		String taskType = EMPTY_STRING;
 		String svgTemplateFileName = EMPTY_STRING;
 		// 活动任务，先判断父类以减少判断次数，提高效率
-		if (kernelFlowNodeBehavior instanceof ActivityBehavior) {
-			if (kernelFlowNodeBehavior instanceof TaskBehavior) {
-				// 人工任务
-				if (kernelFlowNodeBehavior instanceof UserTaskBehavior) {
-					taskType = SVGTypeNameConstant.ACTIVITY_USERTASK;
-					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK;
-				} else if (kernelFlowNodeBehavior instanceof SendTaskBehavior) {
-					taskType = SVGTypeNameConstant.ACTIVITY_SENDTASK;
-					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK;
-				} else if (kernelFlowNodeBehavior instanceof ServiceTaskBehavior) {
-					taskType = SVGTypeNameConstant.ACTIVITY_SERVICETASK;
-					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK;
-				} else if (kernelFlowNodeBehavior instanceof ManualTaskBehavior) {
-					taskType = SVGTypeNameConstant.ACTIVITY_MANUALTASK;
-					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK;
-				} else if (kernelFlowNodeBehavior instanceof BusinessRuleTaskBehavior) {
-					taskType = SVGTypeNameConstant.ACTIVITY_BUSINESSRULETASK;
-					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK;
-				} else if (kernelFlowNodeBehavior instanceof ReceiveTaskBehavior) {
-					taskType = SVGTypeNameConstant.ACTIVITY_RECEIVETASK;
-					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK;
-				} else if (kernelFlowNodeBehavior instanceof ScriptTaskBehavior) {
-					taskType = SVGTypeNameConstant.ACTIVITY_SCRIPTTASK;
-					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK;
-				} else {
-					taskType = SVGTypeNameConstant.SVG_TYPE_TASK;
-					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK;
-				}
-			} else if (kernelFlowNodeBehavior instanceof CallActivityBehavior) {
-				// 外部子流程
-				taskType = SVGTypeNameConstant.SVG_TYPE_CALLACTIVITY;
-				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_CALLACTIVITY;
-			} else if (kernelFlowNodeBehavior instanceof SubProcessBehavior) {
-				// 子流程
-				taskType = SVGTypeNameConstant.SVG_TYPE_SUBPROCESS;
-				if ((Boolean) kernelFlowNodeImpl.getProperty(StyleOption.IsExpanded)) {
-					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_SUBPROCESS;
-				} else {
-					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_SUBPROCESS_COLLAPSED;
-				}
+		if (kernelFlowNodeBehavior instanceof TaskBehavior
+		        || kernelFlowNodeBehavior instanceof GatewayBehavior
+		        || kernelFlowNodeBehavior instanceof CallActivityBehavior) {
+			String[] temp = svgTypeMap.get(kernelFlowNodeBehavior.getClass());
+			taskType = temp[0];
+			svgTemplateFileName = temp[1];
+		} else if (kernelFlowNodeBehavior instanceof SubProcessBehavior) {
+			// 子流程
+			taskType = SVGTypeNameConstant.SVG_TYPE_SUBPROCESS;
+			if ((Boolean) kernelFlowNodeImpl.getProperty(StyleOption.IsExpanded)) {
+				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_SUBPROCESS;
+			} else {
+				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ACTIVITY_SUBPROCESS_COLLAPSED;
 			}
-			// 网关
-		} else if (kernelFlowNodeBehavior instanceof GatewayBehavior) {
-			if (kernelFlowNodeBehavior instanceof ExclusiveGatewayBehavior) {
-				// 排他网关
-				taskType = SVGTypeNameConstant.SVT_TYPE_GATEWAY;
-				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_GATEWAY_EXCLUSIVE;
-			} else if (kernelFlowNodeBehavior instanceof InclusiveGatewayBehavior) {
-				// 包容网关
-				taskType = SVGTypeNameConstant.SVT_TYPE_GATEWAY;
-				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_GATEWAY_INCLUSIVE;
-			} else if (kernelFlowNodeBehavior instanceof ParallelGatewayBehavior) {
-				// 并行网关
-				taskType = SVGTypeNameConstant.SVT_TYPE_GATEWAY;
-				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_GATEWAY_PARALLEL;
-			}
-		} else if (kernelFlowNodeBehavior instanceof EventBehavior) {
+		} else if (kernelFlowNodeBehavior instanceof CatchEventBehavior) {
 			// 捕获事件
-			if (kernelFlowNodeBehavior instanceof CatchEventBehavior) {
-				boolean hasTimerDefinition = this.hasTimerDefinition((CatchEventBehavior) kernelFlowNodeBehavior);
+			boolean hasTimerDefinition = this.hasTimerDefinition((CatchEventBehavior) kernelFlowNodeBehavior);
+			if (hasTimerDefinition) {
+				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_CATCHEVENT_TIMER;
+			}
+			if (kernelFlowNodeBehavior instanceof StartEventBehavior) {
+				// 开始事件
+				taskType = SVGTypeNameConstant.SVG_TYPE_EVENT;
+				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_STARTEVENT_NONE;
 				if (hasTimerDefinition) {
-					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_CATCHEVENT_TIMER;
+					taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_START_TIMER;
+					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_STARTEVENT_TIMER;
 				}
-				if (kernelFlowNodeBehavior instanceof StartEventBehavior) {
-					// 开始事件
-					taskType = SVGTypeNameConstant.SVG_TYPE_EVENT;
-					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_STARTEVENT_NONE;
-					if (hasTimerDefinition) {
-						taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_START_TIMER;
-						svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_STARTEVENT_TIMER;
-					}
-				} else if (kernelFlowNodeBehavior instanceof BoundaryEventBehavior) {
-					// 边界事件
-					taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_BOUNDARY_NONEINTERRUPTING_TIME;
-					if (((BoundaryEventBehavior) kernelFlowNodeBehavior).isCancelActivity()) {
-						taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_BOUNDARY_INTERRUPTING_TIME;
-					}
-				} else if (kernelFlowNodeBehavior instanceof IntermediateCatchEventBehavior) {
-					// 中间件事件
+			} else if (kernelFlowNodeBehavior instanceof BoundaryEventBehavior) {
+				// 边界事件
+				taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_BOUNDARY_NONEINTERRUPTING_TIME;
+				if (((BoundaryEventBehavior) kernelFlowNodeBehavior).isCancelActivity()) {
 					taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_BOUNDARY_INTERRUPTING_TIME;
 				}
-			} else if (kernelFlowNodeBehavior instanceof EndEventBehavior) {
-				// 结束事件
-				taskType = SVGTypeNameConstant.SVG_TYPE_EVENT;
-				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ENDEVENT_NONE;
-				if (this.hasTerminateDefinition((EndEventBehavior) kernelFlowNodeBehavior)) {
-					taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_END_TERMINATE;
-					svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ENDEVENT_TERMINATE;
-				}
-				
-			} else if (kernelFlowNodeBehavior instanceof ThrowEventBehavior) {
-				// 抛出事件
+			} else if (kernelFlowNodeBehavior instanceof IntermediateCatchEventBehavior) {
+				// 中间件事件
+				taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_BOUNDARY_INTERRUPTING_TIME;
 			}
+		} else if (kernelFlowNodeBehavior instanceof EndEventBehavior) {
+			// 结束事件
+			taskType = SVGTypeNameConstant.SVG_TYPE_EVENT;
+			svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ENDEVENT_NONE;
+			if (this.hasTerminateDefinition((EndEventBehavior) kernelFlowNodeBehavior)) {
+				taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_END_TERMINATE;
+				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ENDEVENT_TERMINATE;
+			}
+			
 		}
 		
 		return new String[]{taskType, svgTemplateFileName};

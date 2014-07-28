@@ -18,11 +18,11 @@
 package org.foxbpm.engine.impl.diagramview.svg.factory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.diagramview.factory.AbstractFlowElementVOFactory;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateContainer;
@@ -42,15 +42,51 @@ import org.foxbpm.kernel.process.KernelBaseElement;
  */
 public abstract class AbstractFlowElementSVGFactory extends AbstractFlowElementVOFactory {
 	/**
+	 * static relation
+	 */
+	private final static Map<String, Class<?>> svgFactoryMap = initSvgFactoryMap();
+	/**
 	 * 
 	 * @param kernelFlowElement
 	 * @param svgTemplateFileName
 	 */
-	public AbstractFlowElementSVGFactory(KernelBaseElement kernelBaseElement,
-			String svgTemplateFileName) {
+	public AbstractFlowElementSVGFactory(KernelBaseElement kernelBaseElement, String svgTemplateFileName) {
 		super(kernelBaseElement, svgTemplateFileName);
 	}
-
+	
+	/**
+	 * 
+	 * initSvgBuildMap(static relation)
+	 * 
+	 * @return Map<String,Class<?>>
+	 * @exception
+	 * @since 1.0.0
+	 */
+	private static Map<String, Class<?>> initSvgFactoryMap() {
+		Map<String, Class<?>> tempSvgFactoryMap = new HashMap<String, Class<?>>();
+		tempSvgFactoryMap.put(SVGTemplateNameConstant.TEMPLATE_STARTEVENT_TIMER, EventSVGFactory.class);
+		tempSvgFactoryMap.put(SVGTemplateNameConstant.TEMPLATE_STARTEVENT_NONE, EventSVGFactory.class);
+		tempSvgFactoryMap.put(SVGTemplateNameConstant.TEMPLATE_CATCHEVENT_TIMER, EventSVGFactory.class);
+		
+		tempSvgFactoryMap.put(SVGTemplateNameConstant.TEMPLATE_ENDEVENT_NONE, EventSVGFactory.class);
+		tempSvgFactoryMap.put(SVGTemplateNameConstant.TEMPLATE_ENDEVENT_TERMINATE, EventSVGFactory.class);
+		tempSvgFactoryMap.put(SVGTemplateNameConstant.TEMPLATE_ACTIVITY_SUBPROCESS, SubProcessSVGFactory.class);
+		
+		tempSvgFactoryMap.put(SVGTemplateNameConstant.TEMPLATE_ACTIVITY_SUBPROCESS_COLLAPSED, SubProcessSVGFactory.class);
+		
+		tempSvgFactoryMap.put(SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK, TaskSVGFactory.class);
+		tempSvgFactoryMap.put(SVGTemplateNameConstant.TEMPLATE_CONNECTOR_ASSOCIATION, AssociationSVGFactory.class);
+		tempSvgFactoryMap.put(SVGTemplateNameConstant.TEMPLATE_CONNECTOR_SEQUENCEFLOW, ConnectorSVGFactory.class);
+		tempSvgFactoryMap.put(SVGTemplateNameConstant.TEMPLATE_ACTIVITY_CALLACTIVITY, CallActivitySVGFactory.class);
+		tempSvgFactoryMap.put(SVGTemplateNameConstant.TEMPLATE_GATEWAY_EXCLUSIVE, GatewaySVGFactory.class);
+		tempSvgFactoryMap.put(SVGTemplateNameConstant.TEMPLATE_GATEWAY_INCLUSIVE, GatewaySVGFactory.class);
+		tempSvgFactoryMap.put(SVGTemplateNameConstant.TEMPLATE_GATEWAY_PARALLEL, GatewaySVGFactory.class);
+		tempSvgFactoryMap.put(SVGTemplateNameConstant.TEMPLATE_GROUP, GroupSVGFactory.class);
+		tempSvgFactoryMap.put(SVGTemplateNameConstant.TEMPLATE_TEXTANNOTATION, TextAnnotationSVGFactory.class);
+		tempSvgFactoryMap.put(SVGTemplateNameConstant.TEMPLATE_LANESET, LanesetSVGFactory.class);
+		
+		return tempSvgFactoryMap;
+	}
 	/**
 	 * 创建具体的工厂类,目前支持三种实现
 	 * 
@@ -59,36 +95,15 @@ public abstract class AbstractFlowElementSVGFactory extends AbstractFlowElementV
 	 * @return
 	 */
 	public static AbstractFlowElementSVGFactory createSVGFactory(
-			KernelBaseElement kernelBaseElement, String svgTemplateFileName) {
-		if (StringUtils.contains(svgTemplateFileName, ELEMENT_TYPE_EVENT)) {
-			return new EventSVGFactory(kernelBaseElement, svgTemplateFileName);
-		} else if (StringUtils.contains(svgTemplateFileName, ELEMENT_TYPE_ACTIVITY)) {
-			return new TaskSVGFactory(kernelBaseElement, svgTemplateFileName);
-		} else if (StringUtils.contains(svgTemplateFileName, ELEMENT_TYPE_CONNECTOR)) {
-			return new ConnectorSVGFactory(kernelBaseElement, svgTemplateFileName);
-		} else if (StringUtils.contains(svgTemplateFileName, ELEMENT_TYPE_GATEWAY)) {
-			return new GatewaySVGFactory(kernelBaseElement, svgTemplateFileName);
-		} else if (StringUtils.contains(svgTemplateFileName, ELEMENT_TYPE_LANE)) {
-			return new LanesetSVGFactory(kernelBaseElement, svgTemplateFileName);
-		} else if (StringUtils
-				.contains(svgTemplateFileName, SVGTemplateNameConstant.TEMPLATE_GROUP)) {
-			return new GroupSVGFactory(kernelBaseElement, svgTemplateFileName);
-		} else if (StringUtils.contains(svgTemplateFileName,
-				SVGTemplateNameConstant.TEMPLATE_TEXTANNOTATION)) {
-			return new TextAnnotationSVGFactory(kernelBaseElement, svgTemplateFileName);
-		} else if (StringUtils.contains(svgTemplateFileName,
-				SVGTemplateNameConstant.TEMPLATE_CONNECTOR_ASSOCIATION)) {
-			return new AssociationSVGFactory(kernelBaseElement, svgTemplateFileName);
-		} else if (StringUtils.contains(svgTemplateFileName,
-				SVGTemplateNameConstant.TEMPLATE_ACTIVITY_SUBPROCESS)) {
-			return new SubProcessSVGFactory(kernelBaseElement, svgTemplateFileName);
-		} else if (StringUtils.contains(svgTemplateFileName,
-				SVGTemplateNameConstant.TEMPLATE_ACTIVITY_CALLACTIVITY)) {
-			return new CallActivitySVGFactory(kernelBaseElement, svgTemplateFileName);
+	    KernelBaseElement kernelBaseElement, String svgTemplateFileName) {
+		try {
+			return (AbstractFlowElementSVGFactory) svgFactoryMap.get(svgTemplateFileName).getConstructor(KernelBaseElement.class, String.class).newInstance(kernelBaseElement, svgTemplateFileName);
+		} catch (Exception e) {
+			throw new FoxBPMException("createSVGFactory exception ", e);
 		}
-		return null;
+		
 	}
-
+	
 	/**
 	 * 将所有的元素对象转化成String字符串
 	 * 
@@ -98,7 +113,7 @@ public abstract class AbstractFlowElementSVGFactory extends AbstractFlowElementV
 	 */
 	@Override
 	public String convertNodeListToString(Map<String, Object> processDefinitionPorperties,
-			List<VONode> voNodeList) {
+	    List<VONode> voNodeList) {
 		VONode svgContainer = this.getDefaultSVGContainerFromFactory(processDefinitionPorperties);
 		Iterator<VONode> voIter = voNodeList.iterator();
 		SvgVO svgVo = null;
@@ -112,19 +127,18 @@ public abstract class AbstractFlowElementSVGFactory extends AbstractFlowElementV
 		}
 		return SVGUtils.createSVGString(svgContainer);
 	}
-
+	
 	/**
 	 * 创建SVG模板容器对象
 	 * 
 	 * @return
 	 */
 	public static VONode createSVGTemplateContainerVO(
-			Map<String, Object> processDefinitionProperties) {
-		VONode svgTemplateContainer = SVGTemplateContainer.getContainerInstance()
-				.getCloneTemplateByName(SVGTemplateNameConstant.SVG_TEMPLATE);
+	    Map<String, Object> processDefinitionProperties) {
+		VONode svgTemplateContainer = SVGTemplateContainer.getContainerInstance().getCloneTemplateByName(SVGTemplateNameConstant.SVG_TEMPLATE);
 		return svgTemplateContainer;
 	}
-
+	
 	/**
 	 * 加载SVG模版
 	 * 
@@ -139,13 +153,12 @@ public abstract class AbstractFlowElementSVGFactory extends AbstractFlowElementV
 			throw new FoxBPMException("template svg file load exception", e);
 		}
 	}
-
+	
 	/**
 	 * 获取模版容器对象
 	 */
 	private VONode getDefaultSVGContainerFromFactory(Map<String, Object> processDefinitionPorperties) {
-		SvgVO svgTemplateContainer = (SvgVO) AbstractFlowElementSVGFactory
-				.createSVGTemplateContainerVO(processDefinitionPorperties);
+		SvgVO svgTemplateContainer = (SvgVO) AbstractFlowElementSVGFactory.createSVGTemplateContainerVO(processDefinitionPorperties);
 		Float svgMinX = (Float) processDefinitionPorperties.get(CANVAS_MINX);
 		Float svgMinY = (Float) processDefinitionPorperties.get(CANVAS_MINY);
 		Float svgMaxX = (Float) processDefinitionPorperties.get(CANVAS_MAXX);
