@@ -98,6 +98,6 @@
 	
 	<bizDataObjectConfig>
 		<dataObjectBehavior id="dataBaseMode" name="数据库表模式" behavior=""/>
-		<dataObjectBehavior id="eMapDataObject" name="eMap数据对象模式" behavior=""/>
+		<dataObjectBehavior id="eMapDataObject" name="eMap数据对象模式" behavior="org.foxbpm.engine.impl.datavariable.BizDataObjectBehaviorImpl"/>
 	</bizDataObjectConfig>
 </foxbpmconfig:FoxBPMConfig>

@@ -20,51 +20,54 @@ package org.foxbpm.engine.impl.datavariable;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-public class BizDataObject implements Serializable{
-
+/**
+ * 业务数据对象模型
+ * 
+ * @author yangguangftlp
+ * @date 2014年7月28日
+ */
+public class BizDataObject implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
-	
+	/** 表名称 */
 	protected String id;
-	
-	protected String name;
-	
+	/** 描述 */
+	protected String documentation;
+	/** 数据源id */
 	protected String dataSource;
 	
-	protected List<DataVariableDefinition> dataVariableDefinitions=new ArrayList<DataVariableDefinition>();
-
+	protected List<DataVariableDefinition> dataVariableDefinitions = new ArrayList<DataVariableDefinition>();
 	
 	public String getId() {
 		return id;
 	}
-
+	
 	public void setId(String id) {
 		this.id = id;
 	}
-
-	public String getName() {
-		return name;
+	
+	public String getDocumentation() {
+		return documentation;
 	}
-
-	public void setName(String name) {
-		this.name = name;
+	
+	public void setDocumentation(String documentation) {
+		this.documentation = documentation;
 	}
-
+	
 	public String getDataSource() {
 		return dataSource;
 	}
-
+	
 	public void setDataSource(String dataSource) {
 		this.dataSource = dataSource;
 	}
-
+	
 	public List<DataVariableDefinition> getDataVariableDefinitions() {
 		return dataVariableDefinitions;
 	}
-
+	
 	public void setDataVariableDefinitions(List<DataVariableDefinition> dataVariableDefinitions) {
 		this.dataVariableDefinitions = dataVariableDefinitions;
 	}
-
-
+	
 }
