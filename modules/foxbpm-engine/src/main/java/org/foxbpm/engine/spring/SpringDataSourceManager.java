@@ -25,28 +25,29 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 
 /**
  * spring数据源管理器，通过spring配置注入数据源
+ * 
  * @author ych
- *
+ * 
  */
 public class SpringDataSourceManager implements DataSourceManage {
-
-	private DataSource dataSource; 
+	
+	private DataSource dataSource;
 	@Override
 	public void init() {
 		
 	}
-
+	
 	@Override
 	public DataSource getDataSource() {
 		return dataSource;
 	}
-
+	
 	@Override
 	public DataSource getDataSource(String key) {
 		// TODO Auto-generated method stub
-		return null;
+		return dataSource;
 	}
-
+	
 	public void setDataSource(DataSource dataSource) {
 		if (dataSource instanceof TransactionAwareDataSourceProxy) {
 			this.dataSource = dataSource;
@@ -56,6 +57,4 @@ public class SpringDataSourceManager implements DataSourceManage {
 		}
 	}
 	
-	
-
 }
