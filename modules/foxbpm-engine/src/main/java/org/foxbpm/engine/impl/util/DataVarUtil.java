@@ -21,6 +21,7 @@ import java.text.MessageFormat;
 
 import org.foxbpm.engine.exception.FoxBPMDbException;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
@@ -34,7 +35,7 @@ public class DataVarUtil {
 	/** 实例 */
 	private static DataVarUtil instance;
 	/** 查询sql */
-	private final static String QUERY_DATASQL = "select {0} from ${1} where ${2} = ?";
+	private final static String QUERY_DATASQL = "select {0} from {1} where {2} = ?";
 	
 	public static DataVarUtil getInstance() {
 		if (null == instance) {
@@ -58,12 +59,12 @@ public class DataVarUtil {
 	 *            字段名称
 	 * @return 返回字段值
 	 */
-	public Object getDataValue(String dataSource, String bizkey, String field) {
+	public Object getDataValue(String dataSource, String bizkey, String field,FlowNodeExecutionContext executionContext) {
 		try {
 			JdbcTemplate jdbcTemplate = new JdbcTemplate(DBUtils.getDataSource(dataSource));
 			
-			String bizObjName = StringUtil.getString(ExpressionMgmt.execute("_BizName"));
-			String bizField = StringUtil.getString(ExpressionMgmt.execute("_BizKeyFiled"));
+			String bizObjName = StringUtil.getString(ExpressionMgmt.execute("${_BizName}",executionContext));
+			String bizField = StringUtil.getString(ExpressionMgmt.execute("${_BizKeyFiled}",executionContext));
 			
 			String sql = MessageFormat.format(QUERY_DATASQL, new Object[]{field, bizObjName, bizField});
 			SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, new Object[]{bizkey});
