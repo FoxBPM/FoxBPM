@@ -125,25 +125,81 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 		return new RunningTrackQueryImpl(commandExecutor);
 	}
 	
-	@Override
+	/**
+	 * 边界事件定时器启动推动令牌
+	 * 
+	 * @param tokenId
+	 *            令牌编号
+	 * @param nodeId
+	 *            触发的边界事件节点号
+	 * @param isCancelActivity
+	 *            是否中断
+	 * @param transientVariables
+	 *            瞬态变量
+	 */
 	public void boundaryTimeSignal(String tokenId, String nodeId, boolean isCancelActivity,
 	    Map<String, Object> transientVariables) {
 		commandExecutor.execute(new BoundaryTimeSignalCmd(tokenId, nodeId, isCancelActivity, transientVariables, null));
 	}
 	
-	@Override
+	/**
+	 * 边界事件定时器启动推动令牌
+	 * 
+	 * @param tokenId
+	 *            令牌编号
+	 * @param nodeId
+	 *            触发的边界事件节点号
+	 * @param isCancelActivity
+	 *            是否中断
+	 * @param transientVariables
+	 *            瞬态变量
+	 * @param persistenceVariables
+	 *            持久化变量
+	 */
 	public void boundaryTimeSignal(String tokenId, String nodeId, boolean isCancelActivity,
 	    Map<String, Object> transientVariables, Map<String, Object> persistenceVariables) {
 		commandExecutor.execute(new BoundaryTimeSignalCmd(tokenId, nodeId, isCancelActivity, transientVariables, persistenceVariables));
 	}
 	
-	@Override
+	/**
+	 * 
+	 * autoExecuteConnector(调度器执行 Connector方法)
+	 * 
+	 * @param processInstanceID
+	 *            流程实例ID
+	 * @param connectorID
+	 *            连接器ID
+	 * @param eventName
+	 *            事件名称
+	 * @param tokenID
+	 *            令牌ID
+	 * @param nodeID
+	 *            节点ID void
+	 * @exception
+	 * @since 1.0.0
+	 */
 	public void autoExecuteConnector(String processInstanceID, String connectorID,
 	    String eventName, String tokenID, String nodeID) {
 		commandExecutor.execute(new TimeExecuteConnectorCmd(processInstanceID, connectorID, eventName, tokenID, nodeID));
 	}
 	
-	@Override
+	/**
+	 * 
+	 * autoStartProcessInstance(调度器启动流程实例)
+	 * 
+	 * @param processDefinitionKey
+	 *            流程定义KEY
+	 * @param processDefinitionId
+	 *            流程定义ID
+	 * @param bizKey
+	 *            业务关联键
+	 * @param transientVariables
+	 *            瞬时变量
+	 * @param persistenceVariables
+	 *            持久变量 void
+	 * @exception
+	 * @since 1.0.0
+	 */
 	public void autoStartProcessInstance(String processDefinitionKey, String processDefinitionId,
 	    String bizKey, Map<String, Object> transientVariables,
 	    Map<String, Object> persistenceVariables) {

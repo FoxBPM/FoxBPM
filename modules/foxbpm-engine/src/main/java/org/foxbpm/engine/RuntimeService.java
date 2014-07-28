@@ -184,38 +184,6 @@ public interface RuntimeService {
 	    Map<String, Object> persistenceVariables);
 	
 	/**
-	 * 边界事件定时器启动推动令牌
-	 * 
-	 * @param tokenId
-	 *            令牌编号
-	 * @param nodeId
-	 *            触发的边界事件节点号
-	 * @param isCancelActivity
-	 *            是否中断
-	 * @param transientVariables
-	 *            瞬态变量
-	 */
-	void boundaryTimeSignal(String tokenId, String nodeId, boolean isCancelActivity,
-	    Map<String, Object> transientVariables);
-	
-	/**
-	 * 边界事件定时器启动推动令牌
-	 * 
-	 * @param tokenId
-	 *            令牌编号
-	 * @param nodeId
-	 *            触发的边界事件节点号
-	 * @param isCancelActivity
-	 *            是否中断
-	 * @param transientVariables
-	 *            瞬态变量
-	 * @param persistenceVariables
-	 *            持久化变量
-	 */
-	void boundaryTimeSignal(String tokenId, String nodeId, boolean isCancelActivity,
-	    Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
-	
-	/**
 	 * 创建令牌查询对象
 	 * 
 	 * @return
@@ -242,45 +210,4 @@ public interface RuntimeService {
 	 * @return
 	 */
 	RunningTrackQuery createRunningTrackQuery();
-	
-	/**
-	 * 
-	 * autoExecuteConnector(调度器执行 Connector方法)
-	 * 
-	 * @param processInstanceID
-	 *            流程实例ID
-	 * @param connectorID
-	 *            连接器ID
-	 * @param eventName
-	 *            事件名称
-	 * @param tokenID
-	 *            令牌ID
-	 * @param nodeID
-	 *            节点ID void
-	 * @exception
-	 * @since 1.0.0
-	 */
-	void autoExecuteConnector(String processInstanceID, String connectorID, String eventName,
-	    String tokenID, String nodeID);
-	
-	/**
-	 * 
-	 * autoStartProcessInstance(调度器启动流程实例)
-	 * 
-	 * @param processDefinitionKey
-	 *            流程定义KEY
-	 * @param processDefinitionId
-	 *            流程定义ID
-	 * @param bizKey
-	 *            业务关联键
-	 * @param transientVariables
-	 *            瞬时变量
-	 * @param persistenceVariables
-	 *            持久变量 void
-	 * @exception
-	 * @since 1.0.0
-	 */
-	void autoStartProcessInstance(String processDefinitionKey, String processDefinitionId,
-	    String bizKey, Map<String, Object> transientVariables,
-	    Map<String, Object> persistenceVariables);
 }
