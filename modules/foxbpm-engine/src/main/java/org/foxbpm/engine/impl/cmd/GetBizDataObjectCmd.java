@@ -55,6 +55,9 @@ public class GetBizDataObjectCmd implements Command<List<BizDataObject>> {
 		if (StringUtil.isEmpty(behaviorId)) {
 			throw new FoxBPMBizException("type is null!");
 		}
+		if (StringUtil.isEmpty(dataSource)) {
+			throw new FoxBPMBizException("dataSource is null!");
+		}
 		ProcessEngineConfigurationImpl processEngine = commandContext.getProcessEngineConfigurationImpl();
 		BizDataObjectConfig bizDataObjectConfig = processEngine.getBizDataObjectConfig();
 		if (null == bizDataObjectConfig) {
