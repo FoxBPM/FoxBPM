@@ -22,7 +22,7 @@ import java.util.Map;
 
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngineManagement;
-import org.foxbpm.engine.RuntimeService;
+import org.foxbpm.engine.impl.RuntimeServiceImpl;
 import org.foxbpm.engine.impl.bpmn.behavior.BoundaryEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.IntermediateCatchEventBehavior;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
@@ -83,7 +83,7 @@ public class TimeDefinitionExecuteJob extends AbstractQuartzScheduleJob {
 		Map<String, Object> persistenceVariables = new HashMap<String, Object>();
 		
 		// 驱动令牌
-		RuntimeService runtimeService = ProcessEngineManagement.getDefaultProcessEngine().getRuntimeService();
+		RuntimeServiceImpl runtimeService = (RuntimeServiceImpl) ProcessEngineManagement.getDefaultProcessEngine().getRuntimeService();
 		if (kernelFlowNodeBehavior != null) {
 			if (kernelFlowNodeBehavior instanceof IntermediateCatchEventBehavior) {
 				runtimeService.signal(tokenId, transientVariables, persistenceVariables);

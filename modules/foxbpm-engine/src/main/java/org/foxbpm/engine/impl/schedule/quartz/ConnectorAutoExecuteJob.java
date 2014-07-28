@@ -19,6 +19,7 @@ package org.foxbpm.engine.impl.schedule.quartz;
 
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.RuntimeService;
+import org.foxbpm.engine.impl.RuntimeServiceImpl;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -58,7 +59,7 @@ public class ConnectorAutoExecuteJob extends AbstractQuartzScheduleJob {
 		String tokenID = foxpmJobExecutionContext.getTokenId();
 		String eventName = foxpmJobExecutionContext.getEventName();
 		String nodeID = foxpmJobExecutionContext.getNodeId();
-		RuntimeService runtimeService = ProcessEngineManagement.getDefaultProcessEngine().getRuntimeService();
+		RuntimeServiceImpl runtimeService = (RuntimeServiceImpl) ProcessEngineManagement.getDefaultProcessEngine().getRuntimeService();
 		runtimeService.autoExecuteConnector(processInstanceID, connectorID, eventName, tokenID, nodeID);
 	}
 	

@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.RuntimeService;
+import org.foxbpm.engine.impl.RuntimeServiceImpl;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -60,7 +61,7 @@ public class ProcessIntanceAutoStartJob extends AbstractQuartzScheduleJob {
 		Map<String, Object> transientVariables = new HashMap<String, Object>();
 		Map<String, Object> persistenceVariables = new HashMap<String, Object>();
 		
-		RuntimeService runtimeService = ProcessEngineManagement.getDefaultProcessEngine().getRuntimeService();
+		RuntimeServiceImpl runtimeService = (RuntimeServiceImpl) ProcessEngineManagement.getDefaultProcessEngine().getRuntimeService();
 		runtimeService.autoStartProcessInstance(processDefinitionKey, processDefinitionId, businessKey, transientVariables, persistenceVariables);
 	}
 	
