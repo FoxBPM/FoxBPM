@@ -57,9 +57,47 @@ public class BoundaryEventTimeDefinitionTest extends AbstractFoxBpmTestCase {
 	 */
 	@Test
 	@Deployment(resources = {"org/foxbpm/engine/test/impl/scheduler/testCancelActivity_0.bpmn"})
-	public void testBA() {
+	public void testAA() {
 		this.cleanRunData();
 		processKey = "testCancelActivity_0";
+	}
+	
+	@Test
+	public void testAB() {
+		try {
+			scheduler.start();
+			this.waitQuartzScheduled(QUART_SCHEDULED_TIME);
+			// 校验
+			List<Map<String, Object>> processResultList = jdbcTemplate.queryForList("SELECT PROCESS_ID FROM FOXBPM_DEF_PROCESSDEFINITION WHERE PROCESS_KEY='"
+			        + processKey + "' ");
+			processDefinitionID = (String) processResultList.get(0).get(PROCESS_ID);
+			List<Map<String, Object>> taskList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TASK WHERE PROCESSDEFINITION_ID ='"
+			        + processDefinitionID + "' AND END_TIME IS NULL ORDER BY CREATE_TIME");
+			assertNotNull(taskList);
+			assertEquals(taskList.size(), 1);
+			processInstanceID = (String) taskList.get(0).get("PROCESSINSTANCE_ID");
+			String nodeId = (String) taskList.get(0).get("NODE_ID");
+			assertEquals(nodeId, "UserTask_2");
+			
+			List<Map<String, Object>> tokenList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TOKEN where PROCESSINSTANCE_ID ='"
+			        + processInstanceID + "' AND END_TIME IS NULL ORDER BY START_TIME");
+			assertNotNull(tokenList);
+			assertEquals(tokenList.size(), 1);
+			nodeId = (String) tokenList.get(0).get(NODE_ID);
+			assertEquals(nodeId, "UserTask_2");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 测试场景：单个任务节点 单个非终止边界事件
+	 */
+	@Test
+	@Deployment(resources = {"org/foxbpm/engine/test/impl/scheduler/testNotCancelActivity_0.bpmn"})
+	public void testBA() {
+		this.cleanRunData();
+		processKey = "testNotCancelActivity_0";
 	}
 	
 	@Test
@@ -72,26 +110,25 @@ public class BoundaryEventTimeDefinitionTest extends AbstractFoxBpmTestCase {
 			        + processKey + "' ");
 			processDefinitionID = (String) processResultList.get(0).get(PROCESS_ID);
 			List<Map<String, Object>> taskList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TASK WHERE PROCESSDEFINITION_ID ='"
-			        + processDefinitionID + "' ORDER BY CREATE_TIME");
+			        + processDefinitionID + "' AND END_TIME IS NULL ORDER BY CREATE_TIME");
 			assertNotNull(taskList);
-			assertEquals(taskList.size(), 3);
+			assertEquals(taskList.size(), 2);
 			processInstanceID = (String) taskList.get(0).get("PROCESSINSTANCE_ID");
 			String nodeId = (String) taskList.get(0).get("NODE_ID");
-			assertEquals(nodeId, "StartEvent_2");
-			nodeId = (String) taskList.get(1).get(NODE_ID);
 			assertEquals(nodeId, "UserTask_1");
-			nodeId = (String) taskList.get(2).get(NODE_ID);
+			nodeId = (String) taskList.get(1).get(NODE_ID);
 			assertEquals(nodeId, "UserTask_2");
 			
 			List<Map<String, Object>> tokenList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TOKEN where PROCESSINSTANCE_ID ='"
-			        + processInstanceID + "' ORDER BY START_TIME");
+			        + processInstanceID + "' AND END_TIME IS NULL ORDER BY START_TIME");
 			assertNotNull(tokenList);
-			assertEquals(tokenList.size(), 2);
-			nodeId = (String) taskList.get(0).get(NODE_ID);
+			assertEquals(tokenList.size(), 3);
+			nodeId = (String) tokenList.get(0).get(NODE_ID);
 			assertEquals(nodeId, "UserTask_1");
-			nodeId = (String) taskList.get(1).get(NODE_ID);
+			nodeId = (String) tokenList.get(1).get(NODE_ID);
+			assertEquals(nodeId, "UserTask_1");
+			nodeId = (String) tokenList.get(2).get(NODE_ID);
 			assertEquals(nodeId, "UserTask_2");
-			scheduler.shutdown();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
