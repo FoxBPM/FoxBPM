@@ -18,12 +18,16 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl;
+import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
 import org.foxbpm.engine.repository.ProcessDefinition;
 /**
  * 流程定义管理器
@@ -69,7 +73,18 @@ public class ProcessDefinitionManager extends AbstractManager {
 	
 	@SuppressWarnings("unchecked")
 	public List<ProcessDefinition> findProcessDefinitionsByQueryCriteria(ProcessDefinitionQueryImpl processDefinitionQuery){
-		return getSqlSession().selectList("selectProcessDefinitionsByQueryCriteria", processDefinitionQuery);
+		List<ProcessDefinitionEntity> processDefinitions = (List<ProcessDefinitionEntity>)getSqlSession().selectList("selectProcessDefinitionsByQueryCriteria", processDefinitionQuery);
+		List<ProcessDefinition> result = new ArrayList<ProcessDefinition>();
+		DeploymentManager deploymentManager = Context.getProcessEngineConfiguration().getDeploymentManager();
+		if(processDefinitions != null){
+			Iterator<ProcessDefinitionEntity> iterator = processDefinitions.iterator();
+			if(iterator.hasNext()){
+				ProcessDefinitionEntity processDefinitionEntity = iterator.next();
+				ProcessDefinitionEntity newProcessDefinitionEntity = deploymentManager.resolveProcessDefinition(processDefinitionEntity);
+				result.add(newProcessDefinitionEntity);
+			}
+		}
+		return result;
 	}
 	
 	public long findProcessDefinitionCountByQueryCriteria(ProcessDefinitionQueryImpl processDefinitionQuery){

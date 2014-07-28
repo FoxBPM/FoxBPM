@@ -29,24 +29,49 @@ public class DataVariableDefinition implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 编号
+	 */
 	protected String id;
 
+	/**
+	 * 数据类型
+	 */
 	protected String dataType;
 
+	/**
+	 * 是否列表，暂时没用
+	 */
 	protected boolean isList;
 
+	/**
+	 * 是否持久化
+	 */
 	protected boolean isPersistence;
 
+	/**
+	 * 表达式
+	 */
 	protected Expression expression;
 
+	/**
+	 * 中文描述
+	 */
 	protected String documentation;
 	
+	/**
+	 * 节点编号
+	 */
 	protected String nodeId;
 	
+	/**
+	 * 业务类型
+	 */
 	protected String bizType;
 
-	
-
+	/**
+	 * 是否公有（暂时没用）
+	 */
 	protected boolean isPubilc;
 
 	public DataVariableDefinition() {

@@ -18,6 +18,7 @@
 package org.foxbpm.rest.service.application;
 
 import org.foxbpm.rest.service.api.config.FlowConfigResouce;
+import org.foxbpm.rest.service.api.model.BizDataObjectResouce;
 import org.foxbpm.rest.service.api.model.DeploymentCollectionResource;
 import org.foxbpm.rest.service.api.model.DeploymentResource;
 import org.foxbpm.rest.service.api.model.ModelsResouce;
@@ -29,19 +30,21 @@ import org.restlet.routing.Router;
 
 /**
  * foxbpm 的资源初始化服务
+ * 
  * @author ych
  */
 public class RestServicesInit {
-
-	public static void attachResources(Router router){
+	
+	public static void attachResources(Router router) {
 		router.attach("/models", ModelsResouce.class);
 		router.attach("/model/deployments", DeploymentCollectionResource.class);
-	    router.attach("/model/deployment/{deploymentId}", DeploymentResource.class);
-	    router.attach("/model/resource/{deploymentId}/{resourceName}", ResourceResource.class);
-	    
-	    router.attach("/process-definitions", ProcessDefinitionCollectionResouce.class);
-	    router.attach("/process-definition/{processDefinitionId}", ProcessDefinitionResouce.class);
-	    router.attach("/variable-definition/{key}/{version}/variables", VariableDefinitonResouces.class);
-	    router.attach("/flowconfig", FlowConfigResouce.class);
+		router.attach("/model/deployment/{deploymentId}", DeploymentResource.class);
+		router.attach("/model/resource/{deploymentId}/{resourceName}", ResourceResource.class);
+		
+		router.attach("/process-definitions", ProcessDefinitionCollectionResouce.class);
+		router.attach("/process-definition/{processDefinitionId}", ProcessDefinitionResouce.class);
+		router.attach("/variable-definition/{key}/{version}/variables", VariableDefinitonResouces.class);
+		router.attach("/flowconfig", FlowConfigResouce.class);
+		router.attach("/bizDataObjects/{behaviorId}/{dataSource}", BizDataObjectResouce.class);
 	}
 }
