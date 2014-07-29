@@ -78,10 +78,6 @@ public class BizDataObject implements Serializable {
 		return name;
 	}
 	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
 	@SuppressWarnings("rawtypes")
 	public Map<String, Object> getPersistentState() {
 		Map<String, Object> result = new HashMap<String, Object>();
