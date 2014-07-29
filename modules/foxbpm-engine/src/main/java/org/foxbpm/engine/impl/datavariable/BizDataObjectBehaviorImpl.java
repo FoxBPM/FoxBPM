@@ -79,6 +79,7 @@ public class BizDataObjectBehaviorImpl implements BizDataObjectBehavior {
 				}
 				dataVariableDefine = new DataVariableDefinition();
 				dataVariableDefine.setId(rs.getString(COLUMN_NAME));
+				dataVariableDefine.setFieldName(rs.getString(COLUMN_NAME));
 				dataVariableDefine.setDataType(rs.getString(DATA_TYPE));
 				// 生成表达式
 				sbExpression.append("import org.foxbpm.engine.impl.util.DataVarUtil;\n");
