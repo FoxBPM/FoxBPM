@@ -23,6 +23,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +45,7 @@ import org.foxbpm.engine.ProcessEngineConfiguration;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.cache.Cache;
+import org.foxbpm.engine.config.ProcessEngineConfigurator;
 import org.foxbpm.engine.db.DataSourceManage;
 import org.foxbpm.engine.exception.ExceptionCode;
 import org.foxbpm.engine.exception.ExceptionI18NCore;
@@ -125,7 +128,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected Map<Class<?>, SessionFactory> sessionFactories;
 	protected DataSourceManage dataSourceManager;
 	protected BizDataObjectConfig bizDataObjectConfig;
-	
 
 	// 定义及发布
 	protected int processDefinitionCacheLimit = -1; // By default, no limit
@@ -145,6 +147,9 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected DeploymentManager deploymentManager;
 
 	protected TransactionContextFactory transactionContextFactory;
+
+	protected List<ProcessEngineConfigurator> configurators;
+
 	protected List<GroupDefinition> groupDefinitions;
 	protected FoxBPMStyleConfig foxBPMStyleConfig;
 
@@ -152,7 +157,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	protected TaskCommandConfig taskCommandConfig;
 
-	
 	protected Map<String, TaskCommandDefinition> taskCommandDefinitionMap;
 
 	protected Map<String, AbstractCommandFilter> abstractCommandFilterMap;
@@ -170,6 +174,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 
 	protected void init() {
+		initConfigurators();
+		configuratorsBeforeInit();
 		initExceptionResource();
 		initEmfFile();
 		initCache();
@@ -189,7 +195,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		//
 		// initImportDataVariableConfig();
 		//
-		initQuartz();
+//		initQuartz();
 		// initUserDefinition();
 		initSysMailConfig();
 		// initExpandClassConfig();
@@ -211,12 +217,51 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initSVG();
 		// 加载任务命令过滤器
 		initAbstractCommandFilter();
-		
+
 		initBizDataObjectConfig();
+		
+		configuratorsAfterInit();
+	}
+
+	protected void initConfigurators() {
+		if (configurators.size() > 0) {
+			Collections.sort(configurators, new Comparator<ProcessEngineConfigurator>() {
+				@Override
+				public int compare(ProcessEngineConfigurator configurator1, ProcessEngineConfigurator configurator2) {
+					int priority1 = configurator1.getPriority();
+					int priority2 = configurator2.getPriority();
+
+					if (priority1 < priority2) {
+						return -1;
+					} else if (priority1 > priority2) {
+						return 1;
+					}
+					return 0;
+				}
+			});
+			log.info("Found {} Process Engine Configurators in total:", configurators.size());
+			for (ProcessEngineConfigurator configurator : configurators) {
+				log.info("{} (priority:{})", configurator.getClass(), configurator.getPriority());
+			}
+		}
+	}
+	
+	protected void configuratorsBeforeInit() {
+		for (ProcessEngineConfigurator configurator : configurators) {
+			log.info("Executing configure() of {} (priority:{})", configurator.getClass(), configurator.getPriority());
+			configurator.beforeInit(this);
+		}
+	}
+
+	protected void configuratorsAfterInit() {
+		for (ProcessEngineConfigurator configurator : configurators) {
+			log.info("Executing configure() of {} (priority:{})", configurator.getClass(), configurator.getPriority());
+			configurator.configure(this);
+		}
 	}
 
 	private void initBizDataObjectConfig() {
-		this.bizDataObjectConfig=this.foxBpmConfig.getBizDataObjectConfig();
+		this.bizDataObjectConfig = this.foxBpmConfig.getBizDataObjectConfig();
 	}
 
 	protected void initSysMailConfig() {
@@ -750,11 +795,11 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		}
 		return null;
 	}
-	
+
 	public TaskCommandConfig getTaskCommandConfig() {
 		return taskCommandConfig;
 	}
-	
+
 	public BizDataObjectConfig getBizDataObjectConfig() {
 		return bizDataObjectConfig;
 	}

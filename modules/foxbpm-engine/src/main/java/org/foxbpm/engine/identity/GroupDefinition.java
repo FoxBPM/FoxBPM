@@ -18,6 +18,7 @@
 package org.foxbpm.engine.identity;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户组定义
@@ -32,6 +33,18 @@ public interface GroupDefinition {
 	 * @return
 	 */
 	List<Group> selectGroupByUserId(String userId);
+	
+	/**
+	 * 获取所有的组信息（如:所有角色信息）
+	 * @return
+	 */
+	List<Group> selectAllGroup();
+	
+	/**
+	 * 获取所有的组和人员的关系映射（如所有的角色对照）
+	 * @return
+	 */
+	List<Map<String,String>> selectAllRelation();
 	
 	/**
 	 * 获取组类型

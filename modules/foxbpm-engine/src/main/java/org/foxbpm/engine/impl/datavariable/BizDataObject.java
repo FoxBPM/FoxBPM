@@ -66,20 +66,20 @@ public class BizDataObject implements Serializable {
 		this.dataSource = dataSource;
 	}
 	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
 	public List<DataVariableDefinition> getDataVariableDefinitions() {
 		return dataVariableDefinitions;
 	}
 	
 	public void setDataVariableDefinitions(List<DataVariableDefinition> dataVariableDefinitions) {
 		this.dataVariableDefinitions = dataVariableDefinitions;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -89,6 +89,7 @@ public class BizDataObject implements Serializable {
 		result.put("name", name);
 		result.put("documentation", documentation);
 		result.put("dataSource", dataSource);
+		result.put("name", name);
 		List<Map> columnDataList = new ArrayList<Map>();
 		for (DataVariableDefinition dataEntity : dataVariableDefinitions) {
 			columnDataList.add(dataEntity.getPersistentState());
