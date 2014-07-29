@@ -17,6 +17,9 @@
  */
 package org.foxbpm.engine.test.api.scheduler.quartz;
 
+import java.util.List;
+import java.util.Map;
+
 import org.foxbpm.engine.test.Deployment;
 import org.foxbpm.engine.test.api.scheduler.BaseSchedulerTest;
 import org.junit.Test;
@@ -84,6 +87,40 @@ public class TimerStartProcessInstanceTest extends BaseSchedulerTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * 
+	 * 测试场景 ：当删除一个存在自动启动流程实例调度器的流程定义时，同时也将持久化的调度器从数据库中删除
+	 * 
+	 * @exception
+	 * @since 1.0.0
+	 */
+	@Test
+	@Deployment(resources = {"org/foxbpm/engine/test/impl/scheduler/testDeleteSchedulerSameTime_0.bpmn"})
+	public void testCA() {
+		processKey = "testDeleteSchedulerSameTime_0";
+	}
+	
+	@Test
+	public void testCB() {
+		// 删除流程定义之前校验
+		validateQuartsInitialized();
+		
+		// 执行流程定义删除操作
+		this.deleteProcessDefinition();
+		
+		// 校验quartz数据是否清空
+		validateQuartsDeleted();
+	}
+	
+	// 删除流程定义
+	private void deleteProcessDefinition() {
+		// 执行流程定义删除操作
+		List<Map<String, Object>> deployMentIdResultList = jdbcTemplate.queryForList("SELECT DEPLOYMENT_ID FROM FOXBPM_DEF_PROCESSDEFINITION WHERE PROCESS_KEY ='"
+		        + processKey + "' ");
+		String deploymentId = deployMentIdResultList.get(0).get("DEPLOYMENT_ID").toString();
+		this.modelService.deleteDeployment(deploymentId);
 	}
 	
 }

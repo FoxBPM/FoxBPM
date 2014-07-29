@@ -285,6 +285,24 @@ public final class QuartzUtil {
 	}
 	
 	/**
+	 * 
+	 * 根据组名称删除组下面的所有JOB
+	 * 
+	 * @param groupName
+	 *            void
+	 * @exception
+	 * @since 1.0.0
+	 */
+	public final static void deleteJob(String groupName) {
+		try {
+			FoxbpmScheduler foxbpmScheduler = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getFoxbpmScheduler();
+			foxbpmScheduler.deleteJobsByGroupName(groupName);
+		} catch (SchedulerException e) {
+			throw new FoxBPMException("QuartzUtil删除Job报错", e);
+		}
+	}
+	
+	/**
 	 * 调度，先清空后调度
 	 * 
 	 * @param jobKey
