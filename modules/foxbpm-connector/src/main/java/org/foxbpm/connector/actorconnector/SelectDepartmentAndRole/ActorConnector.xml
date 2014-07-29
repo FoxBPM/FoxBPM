@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<connector:ConnectorDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:connector="http://www.foxbpm.org/connector" id="SelectDepartmentAndRole" name="选择部门和角色" note="选择部门和角色" categoryId="71e8d50f-5d55-4b03-88b0-dbe37bc8fedf" icon="SelectDepartmentAndRole.png">
+<connector:ConnectorDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:connector="http://www.foxbpm.org/connector" id="SelectDepartmentAndRole" name="选择某部门和某角色" note="选择某部门和某角色" categoryId="71e8d50f-5d55-4b03-88b0-dbe37bc8fedf" icon="SelectDepartmentAndRole.png">
   <input id="departmentId" type="java.lang.String" mandatory="Mandatory" defaultValue="" isExecute="true"/>
   <input id="roleId" type="java.lang.String" mandatory="Mandatory" defaultValue="" isExecute="true"/>
   <page id="deptAndRole" name="选择部门和角色编号" note="可以输入部门或角色的编号">
