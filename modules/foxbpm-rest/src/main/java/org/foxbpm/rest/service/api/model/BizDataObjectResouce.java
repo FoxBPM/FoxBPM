@@ -17,7 +17,9 @@
  */
 package org.foxbpm.rest.service.api.model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.foxbpm.engine.impl.datavariable.BizDataObject;
 import org.foxbpm.rest.common.api.AbstractRestResource;
@@ -37,8 +39,14 @@ public class BizDataObjectResouce extends AbstractRestResource {
 		String behaviorId = getAttribute("behaviorId");
 		String dataSource = getAttribute("dataSource");
 		List<BizDataObject> bizDataObjects = FoxBpmUtil.getProcessEngine().getModelService().getBizDataObject(behaviorId, dataSource);
+		// 数据转换
+		List<Map<String, Object>> resultDatas = new ArrayList<Map<String, Object>>();
+		for (BizDataObject bizDataObject : bizDataObjects) {
+			resultDatas.add(bizDataObject.getPersistentState());
+		}
+		//数据响应体构造
 		DataResult result = new DataResult();
-		result.setData(bizDataObjects);
+		result.setData(resultDatas);
 		result.setStart(0);
 		result.setTotal(bizDataObjects.size());
 		return result;
