@@ -53,6 +53,7 @@ import org.foxbpm.model.bpmn.foxbpm.FormParamContainer;
 import org.foxbpm.model.bpmn.foxbpm.FormUri;
 import org.foxbpm.model.bpmn.foxbpm.FormUriView;
 import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
+import org.foxbpm.model.bpmn.foxbpm.PotentialStarter;
 import org.foxbpm.model.bpmn.foxbpm.TaskDescription;
 import org.foxbpm.model.bpmn.foxbpm.TaskPriority;
 import org.foxbpm.model.bpmn.foxbpm.TaskSubject;
@@ -78,6 +79,14 @@ public class BpmnModelUtil {
 	/** 获取流程的分类*/
 	public static String getProcessCategory(Process process){
 		return StringUtil.getString(getExtensionAttribute(process,FoxBPMPackage.Literals.DOCUMENT_ROOT__CATEGORY));
+	}
+	
+	/** 获取流程的发起人*/
+	public static List<PotentialStarter> getPotentialStarters(Process process){
+		
+		List<PotentialStarter> extensionElementList = getExtensionElementList(PotentialStarter.class, process, FoxBPMPackage.Literals.DOCUMENT_ROOT__POTENTIAL_STARTER);
+		
+		return extensionElementList;
 	}
 	
 	public List<Connector> getcConnectors(BaseElement baseElement){

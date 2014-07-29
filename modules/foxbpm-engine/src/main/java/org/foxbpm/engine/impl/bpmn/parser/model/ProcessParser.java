@@ -18,11 +18,14 @@
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
 
+import java.util.List;
+
 import org.eclipse.bpmn2.BaseElement;
 import org.eclipse.bpmn2.Process;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ProcessBehavior;
 import org.foxbpm.engine.impl.util.BpmnModelUtil;
+import org.foxbpm.model.bpmn.foxbpm.PotentialStarter;
 
 
 public class ProcessParser extends BaseElementParser {
@@ -39,6 +42,21 @@ public class ProcessParser extends BaseElementParser {
 		processBehavior.setKey(process.getId());
 		processBehavior.setName(process.getName());
 		processBehavior.setSubject(BpmnModelUtil.getUserTaskSubject(baseElement));
+		processBehavior.getPotentialStarters().clear();
+		List<PotentialStarter> potentialStarters = BpmnModelUtil.getPotentialStarters(process);
+		if(potentialStarters!=null){
+			
+			for (PotentialStarter potentialStarterModel : potentialStarters) {
+				org.foxbpm.engine.impl.identity.PotentialStarter potentialStarterEngine=new org.foxbpm.engine.impl.identity.PotentialStarter();
+				potentialStarterEngine.setResourceType(potentialStarterModel.getResourceType());
+				potentialStarterEngine.setExpression(potentialStarterModel.getExpression()!=null?potentialStarterModel.getExpression().getValue():null);
+				potentialStarterEngine.setDocumentation(potentialStarterModel.getDocumentation()!=null?potentialStarterModel.getDocumentation().getValue():null);
+				processBehavior.addPotentialStarter(potentialStarterEngine);
+			}
+			
+		}
+		
+		
 		return super.parser(baseElement);
 	}
 

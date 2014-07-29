@@ -15,11 +15,12 @@
  * 
  * @author MAENLIANG
  */
-package org.foxbpm.engine.test.api.scheduler;
+package org.foxbpm.engine.test.api.scheduler.quartz;
 
 import static org.junit.Assert.assertEquals;
 
 import org.foxbpm.engine.test.Deployment;
+import org.foxbpm.engine.test.api.scheduler.BaseSchedulerTest;
 import org.junit.Test;
 
 /**
@@ -32,7 +33,6 @@ import org.junit.Test;
  * @version 1.0.0
  * 
  */
-
 public class ConnectorTimeExecuteTest extends BaseSchedulerTest {
 	public static String validateValue = "";
 	

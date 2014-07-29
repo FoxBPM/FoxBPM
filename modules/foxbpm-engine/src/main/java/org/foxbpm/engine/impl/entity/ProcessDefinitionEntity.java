@@ -17,6 +17,7 @@
  */
 package org.foxbpm.engine.impl.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,7 @@ import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
+import org.foxbpm.engine.impl.identity.PotentialStarter;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtDefinition;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.repository.ProcessDefinition;
@@ -68,6 +70,10 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl
 	protected DataVariableMgmtDefinition dataVariableMgmtDefinition;
 
 	protected Map<String, TaskDefinition> taskDefinitions = new HashMap<String, TaskDefinition>();
+	
+	protected List<PotentialStarter> potentialStarters=new ArrayList<PotentialStarter>();
+
+	
 
 	public TaskDefinition getSubTaskDefinition() {
 		if (getInitial() != null) {
@@ -318,6 +324,14 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl
 	public boolean isModified() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	public List<PotentialStarter> getPotentialStarters() {
+		return potentialStarters;
+	}
+
+	public void setPotentialStarters(List<PotentialStarter> potentialStarters) {
+		this.potentialStarters = potentialStarters;
 	}
 
 }

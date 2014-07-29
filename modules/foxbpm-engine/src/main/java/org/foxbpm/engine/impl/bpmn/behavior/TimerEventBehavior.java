@@ -103,8 +103,9 @@ public class TimerEventBehavior extends EventDefinition {
 			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.PROCESS_DEFINITION_NAME, params[2]);
 			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.NODE_ID, params[3]);
 			
-		} else if (StringUtil.equals(eventType, EVENT_TYPE_BOUNDARY)) {
-			/** 边界事件时间定义执行、令牌离开时，需要删除该JOB DETAIL */
+		} else if (StringUtil.equals(eventType, EVENT_TYPE_BOUNDARY)
+		        || StringUtil.equals(eventType, EVENT_TYPE_INTERMIDATE)) {
+			/** 边界中间事件时间定义执行、令牌离开时，需要删除该JOB DETAIL */
 			/** GroupName 命名采用拼接的形式 事件节点ID+流程实例ID */
 			groupName = new FoxbpmSchedulerGroupnameGernerater(kernelTokenImpl).gernerateNodeGroupName();
 			jobDetail = new FoxbpmJobDetail<FoxbpmScheduleJob>(new TimeDefinitionExecuteJob(GuidUtil.CreateGuid(), groupName));

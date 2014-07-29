@@ -205,4 +205,10 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 	    Map<String, Object> persistenceVariables) {
 		this.commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(processDefinitionKey, processDefinitionId, bizKey, transientVariables, persistenceVariables));
 	}
+
+	@Override
+	public void deleteProcessInstance(String processInstanceId, String deleteReason) {
+		// TODO Auto-generated method stub
+		
+	}
 }

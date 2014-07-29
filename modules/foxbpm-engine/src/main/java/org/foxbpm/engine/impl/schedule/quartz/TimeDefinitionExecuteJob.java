@@ -69,12 +69,12 @@ public class TimeDefinitionExecuteJob extends AbstractQuartzScheduleJob {
 		String nodeId = foxpmJobExecutionContext.getNodeId();
 		ModelService modelService = ProcessEngineManagement.getDefaultProcessEngine().getModelService();
 		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) modelService.getProcessDefinition(processId);
-		// 获取BoundaryEventBehavior
+		// 获取BoundaryEventBehavior 和 IntermediateCatchEventBehavior
 		KernelFlowNodeBehavior kernelFlowNodeBehavior = null;
 		for (KernelFlowNodeImpl kernelFlowNodeImpl : processDefinitionEntity.getFlowNodes()) {
 			kernelFlowNodeBehavior = kernelFlowNodeImpl.getKernelFlowNodeBehavior();
-			if (kernelFlowNodeBehavior instanceof BoundaryEventBehavior
-			        && StringUtil.equals(kernelFlowNodeImpl.getId(), nodeId)) {
+			if (StringUtil.equals(kernelFlowNodeImpl.getId(), nodeId)
+			        && (kernelFlowNodeBehavior instanceof BoundaryEventBehavior || kernelFlowNodeBehavior instanceof IntermediateCatchEventBehavior)) {
 				break;
 			}
 		}
@@ -86,6 +86,7 @@ public class TimeDefinitionExecuteJob extends AbstractQuartzScheduleJob {
 		RuntimeServiceImpl runtimeService = (RuntimeServiceImpl) ProcessEngineManagement.getDefaultProcessEngine().getRuntimeService();
 		if (kernelFlowNodeBehavior != null) {
 			if (kernelFlowNodeBehavior instanceof IntermediateCatchEventBehavior) {
+				// 中间事件时间定义
 				runtimeService.signal(tokenId, transientVariables, persistenceVariables);
 			} else if (kernelFlowNodeBehavior instanceof BoundaryEventBehavior) {
 				// 边界时间定义

@@ -17,7 +17,9 @@
  */
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -39,8 +41,8 @@ import org.foxbpm.engine.impl.bpmn.behavior.EventBehavior;
 public class BehaviorRelationMemo {
 	/** 临时存储MAP */
 	private Map<String, ActivityBehavior> attachActivityMap = new HashMap<String, ActivityBehavior>();
-	private Map<String, EventBehavior> beAttachedActivityMap = new HashMap<String, EventBehavior>();
-
+	private Map<String, List<EventBehavior>> beAttachedActivityMap = new HashMap<String, List<EventBehavior>>();
+	
 	/**
 	 * 
 	 * attachActivityAndBoundaryEventBehaviorRelation(创建Activity
@@ -53,14 +55,17 @@ public class BehaviorRelationMemo {
 		Set<String> keySet = beAttachedActivityMap.keySet();
 		for (String activityID : keySet) {
 			if (attachActivityMap.containsKey(activityID)) {
-				attachActivityMap.get(activityID).getBoundaryEvents()
-						.add((BoundaryEventBehavior) beAttachedActivityMap.get(activityID));
+				List<EventBehavior> list = beAttachedActivityMap.get(activityID);
+				for (EventBehavior behavior : list) {
+					attachActivityMap.get(activityID).getBoundaryEvents().add((BoundaryEventBehavior) behavior);
+				}
+				
 			}
 		}
 		this.attachActivityMap.clear();
 		this.beAttachedActivityMap.clear();
 	}
-
+	
 	/**
 	 * 
 	 * addActivity(保存解释得到的活动节点)
@@ -85,7 +90,13 @@ public class BehaviorRelationMemo {
 	 * @since 1.0.0
 	 */
 	public void addBeAttachedActivity(Activity activity, EventBehavior eventBehavior) {
-		this.beAttachedActivityMap.put(activity.getId(), eventBehavior);
+		List<EventBehavior> list = beAttachedActivityMap.get(activity.getId());
+		if (list == null) {
+			list = new ArrayList<EventBehavior>();
+			this.beAttachedActivityMap.put(activity.getId(), list);
+		}
+		list.add(eventBehavior);
+		
 	}
-
+	
 }
