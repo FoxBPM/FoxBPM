@@ -33,6 +33,8 @@ public class BizDataObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 	/** 表名称 */
 	protected String id;
+	/** 中文 */
+	protected String name;
 	/** 描述 */
 	protected String documentation;
 	/** 数据源id */
@@ -72,10 +74,19 @@ public class BizDataObject implements Serializable {
 		this.dataVariableDefinitions = dataVariableDefinitions;
 	}
 	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	@SuppressWarnings("rawtypes")
 	public Map<String, Object> getPersistentState() {
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("id", id);
+		result.put("name", name);
 		result.put("documentation", documentation);
 		result.put("dataSource", dataSource);
 		List<Map> columnDataList = new ArrayList<Map>();

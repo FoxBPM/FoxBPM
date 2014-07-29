@@ -64,7 +64,7 @@ public class DataVarUtil {
 			JdbcTemplate jdbcTemplate = new JdbcTemplate(DBUtils.getDataSource(dataSource));
 			
 			String bizObjName = StringUtil.getString(ExpressionMgmt.execute("${_BizName}",executionContext));
-			String bizField = StringUtil.getString(ExpressionMgmt.execute("${_BizKeyFiled}",executionContext));
+			String bizField = StringUtil.getString(ExpressionMgmt.execute("${_BizKeyField}",executionContext));
 			
 			String sql = MessageFormat.format(QUERY_DATASQL, new Object[]{field, bizObjName, bizField});
 			SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, new Object[]{bizkey});

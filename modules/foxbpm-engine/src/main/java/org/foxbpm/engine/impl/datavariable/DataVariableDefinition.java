@@ -24,7 +24,6 @@ import java.util.Map;
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
 
-
 public class DataVariableDefinition implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -38,6 +37,11 @@ public class DataVariableDefinition implements Serializable {
 	 * 数据类型
 	 */
 	protected String dataType;
+
+	/**
+	 * 字段名称
+	 */
+	protected String fieldName;
 
 	/**
 	 * 是否列表，暂时没用
@@ -58,12 +62,12 @@ public class DataVariableDefinition implements Serializable {
 	 * 中文描述
 	 */
 	protected String documentation;
-	
+
 	/**
 	 * 节点编号
 	 */
 	protected String nodeId;
-	
+
 	/**
 	 * 业务类型
 	 */
@@ -76,17 +80,17 @@ public class DataVariableDefinition implements Serializable {
 
 	public DataVariableDefinition() {
 
-
 	}
-	
-	public Map<String,Object> getPersistentState(){
-		Map<String,Object> result = new HashMap<String,Object>();
+
+	public Map<String, Object> getPersistentState() {
+		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("id", id);
 		result.put("dataType", dataType);
 		result.put("isList", isList);
 		result.put("isPersistence", isPersistence);
 		result.put("expressionText", expression.getExpressionText());
 		result.put("documentation", documentation);
+		result.put("fieldName", fieldName);
 		result.put("nodeId", nodeId);
 		result.put("bizType", bizType);
 		result.put("isPubilc", isPubilc);
@@ -124,6 +128,14 @@ public class DataVariableDefinition implements Serializable {
 	public void setPersistence(boolean isPersistence) {
 		this.isPersistence = isPersistence;
 	}
+	
+	public String getFieldName() {
+		return fieldName;
+	}
+
+	public void setFieldName(String fieldName) {
+		this.fieldName = fieldName;
+	}
 
 	public Expression getExpression() {
 		return expression;
@@ -140,7 +152,7 @@ public class DataVariableDefinition implements Serializable {
 	public void setDocumentation(String documentation) {
 		this.documentation = documentation;
 	}
-	
+
 	public String getNodeId() {
 		return nodeId;
 	}
@@ -164,5 +176,5 @@ public class DataVariableDefinition implements Serializable {
 	public void setBizType(String bizType) {
 		this.bizType = bizType;
 	}
-	
+
 }
