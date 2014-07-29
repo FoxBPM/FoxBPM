@@ -157,7 +157,7 @@ public class TimerEventBehavior extends EventDefinition {
 	private void createTriggerList(FoxbpmJobDetail<FoxbpmScheduleJob> jobDetail,
 	    KernelTokenImpl kernelTokenImpl, String groupName) {
 		jobDetail.createTriggerList(this.timeDate, kernelTokenImpl, groupName);
-		jobDetail.createTriggerList(this.timeDuration, kernelTokenImpl, groupName);
+		jobDetail.createTriggerListByDuration(this.timeDuration, kernelTokenImpl, groupName);
 		jobDetail.createTriggerList(this.timeCycle, kernelTokenImpl, groupName);
 	}
 	public Expression getTimeDate() {

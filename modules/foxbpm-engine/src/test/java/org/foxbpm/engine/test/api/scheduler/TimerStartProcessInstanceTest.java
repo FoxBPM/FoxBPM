@@ -17,7 +17,17 @@
  */
 package org.foxbpm.engine.test.api.scheduler;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import java.util.List;
+import java.util.Map;
+
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
+import org.foxbpm.engine.test.Deployment;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 /**
  * 
@@ -29,26 +39,131 @@ import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
  * @version 1.0.0
  * 
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TimerStartProcessInstanceTest extends AbstractFoxBpmTestCase {
+	
+	private static String processDefinitionID;
+	private static String processInstanceID;
+	private static String processKey;
+	/** 每个测试用例 quartz完成调度所需要的基本时间：2分钟 */
+	private final static int QUART_SCHEDULED_TIME = 2;
+	
+	/** 列名称 */
+	private final static String NODE_ID = "NODE_ID";
+	private final static String PROCESS_ID = "PROCESS_ID";
+	
+	/**
+	 * 测试场景：日期时间定时启动流程实例
+	 */
+	@Test
+	@Deployment(resources = {"org/foxbpm/engine/test/impl/scheduler/testTimeStart_0.bpmn"})
+	public void testAA() {
+		this.cleanRunData();
+		processKey = "testTimeStart_0";
+	}
+	
+	@Test
+	public void testAB() {
+		try {
+			scheduler.start();
+			this.waitQuartzScheduled(QUART_SCHEDULED_TIME);
+			// 校验
+			List<Map<String, Object>> processResultList = jdbcTemplate.queryForList("SELECT PROCESS_ID FROM FOXBPM_DEF_PROCESSDEFINITION WHERE PROCESS_KEY='"
+			        + processKey + "' ");
+			processDefinitionID = (String) processResultList.get(0).get(PROCESS_ID);
+			List<Map<String, Object>> taskList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TASK WHERE PROCESSDEFINITION_ID ='"
+			        + processDefinitionID + "' AND END_TIME IS NULL ORDER BY CREATE_TIME");
+			assertNotNull(taskList);
+			assertEquals(taskList.size(), 1);
+			processInstanceID = (String) taskList.get(0).get("PROCESSINSTANCE_ID");
+			String nodeId = (String) taskList.get(0).get("NODE_ID");
+			assertEquals(nodeId, "UserTask_1");
+			
+			List<Map<String, Object>> tokenList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TOKEN where PROCESSINSTANCE_ID ='"
+			        + processInstanceID + "' AND END_TIME IS NULL ORDER BY START_TIME");
+			assertNotNull(tokenList);
+			assertEquals(tokenList.size(), 1);
+			nodeId = (String) tokenList.get(0).get(NODE_ID);
+			assertEquals(nodeId, "UserTask_1");
+			
+			List<Map<String, Object>> processInstanceResultList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_PROCESSINSTANCE where ID ='"
+			        + processInstanceID + "' ");
+			assertNotNull(processInstanceResultList);
+			assertEquals(processInstanceResultList.size(), 1);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 测试场景：间隔性启动流程实例
+	 */
+	@Test
+	@Deployment(resources = {"org/foxbpm/engine/test/impl/scheduler/testDurationStart_0.bpmn"})
+	public void testBA() {
+		this.cleanRunData();
+		processKey = "testDurationStart_0";
+	}
+	
+	@Test
+	public void testBB() {
+		try {
+			scheduler.start();
+			this.waitQuartzScheduled(QUART_SCHEDULED_TIME);
+			// 校验
+			List<Map<String, Object>> processResultList = jdbcTemplate.queryForList("SELECT PROCESS_ID FROM FOXBPM_DEF_PROCESSDEFINITION WHERE PROCESS_KEY='"
+			        + processKey + "' ");
+			processDefinitionID = (String) processResultList.get(0).get(PROCESS_ID);
+			List<Map<String, Object>> taskList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TASK WHERE PROCESSDEFINITION_ID ='"
+			        + processDefinitionID + "' AND END_TIME IS NULL ORDER BY CREATE_TIME");
+			assertNotNull(taskList);
+			assertEquals(taskList.size(), 13);
+			
+			processInstanceID = (String) taskList.get(0).get("PROCESSINSTANCE_ID");
+			
+			List<Map<String, Object>> tokenList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TOKEN where PROCESSINSTANCE_ID ='"
+			        + processInstanceID + "' AND END_TIME IS NULL ORDER BY START_TIME");
+			assertNotNull(tokenList);
+			assertEquals(tokenList.size(), 13);
+			
+			List<Map<String, Object>> processInstanceResultList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_PROCESSINSTANCE where ID ='"
+			        + processInstanceID + "' ");
+			assertNotNull(processInstanceResultList);
+			assertEquals(processInstanceResultList.size(), 13);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * 
-	 * 测试场景：日期定时启动
+	 * cleanRunData(清空流程运行过程中的数据) void
 	 * 
 	 * @exception
 	 * @since 1.0.0
 	 */
-	public void testTimeDateStartProcess() {
-		
+	protected void cleanRunData() {
+		jdbcTemplate.execute("delete from foxbpm_run_processinstance");
+		jdbcTemplate.execute("delete from foxbpm_run_task");
+		jdbcTemplate.execute("delete from foxbpm_run_taskidentitylink");
+		jdbcTemplate.execute("delete from foxbpm_run_token");
+		jdbcTemplate.execute("delete from foxbpm_run_variable");
 	}
 	
 	/**
 	 * 
-	 * 测试场景： 间隔性启动
+	 * waitQuartzScheduled(设置调度等待的时间)
 	 * 
+	 * @param minitues
+	 *            void
 	 * @exception
 	 * @since 1.0.0
 	 */
-	public void testTimeDurationStartProcess() {
-		
+	private void waitQuartzScheduled(int minitues) {
+		try {
+			Thread.sleep(1000 * 60 * minitues);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
