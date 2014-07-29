@@ -35,11 +35,15 @@ public interface GroupDefinition {
 	List<Group> selectGroupByUserId(String userId);
 	
 	/**
-	 * 获取所有的组信息
+	 * 获取所有的组信息（如:所有角色信息）
 	 * @return
 	 */
 	List<Group> selectAllGroup();
 	
+	/**
+	 * 获取所有的组和人员的关系映射（如所有的角色对照）
+	 * @return
+	 */
 	List<Map<String,String>> selectAllRelation();
 	
 	/**
