@@ -210,4 +210,7 @@ public interface RuntimeService {
 	 * @return
 	 */
 	RunningTrackQuery createRunningTrackQuery();
+	
+
+	void deleteProcessInstance(String processInstanceId, String deleteReason);
 }
