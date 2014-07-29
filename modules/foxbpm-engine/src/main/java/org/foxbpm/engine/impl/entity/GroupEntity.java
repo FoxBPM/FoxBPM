@@ -26,6 +26,7 @@ public class GroupEntity implements Group{
 	private String groupId;
 	private String groupName;
 	private String groupType;
+	private String supGroupId;
 	private Map<String,Object> propertyMap;
 	
 	public GroupEntity(){
@@ -67,6 +68,14 @@ public class GroupEntity implements Group{
 
 	public Map<String, Object> getPropertyMap() {
 		return this.propertyMap;
+	}
+	
+	public void setSupGroupId(String supGroupId) {
+		this.supGroupId = supGroupId;
+	}
+	
+	public String getSupGroupId() {
+		return supGroupId;
 	}
 
 	public Object getPropertyValue(String propertyName) {

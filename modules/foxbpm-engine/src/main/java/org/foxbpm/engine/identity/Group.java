@@ -26,12 +26,14 @@ import java.util.Map;
  */
 public interface Group {
 	
-	public String getGroupId();
+	String getGroupId();
 
-	public String getGroupType();
+	String getGroupType();
 	
-	public String getGroupName();
+	String getGroupName();
+	
+	String getSupGroupId();
 
-	public Map<String, Object> getPropertyMap();
+	Map<String, Object> getPropertyMap();
 	
 }

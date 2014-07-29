@@ -148,7 +148,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	protected TransactionContextFactory transactionContextFactory;
 
-	protected List<ProcessEngineConfigurator> configurators;
+	protected List<ProcessEngineConfigurator> configurators = new ArrayList<ProcessEngineConfigurator>();
 
 	protected List<GroupDefinition> groupDefinitions;
 	protected FoxBPMStyleConfig foxBPMStyleConfig;
@@ -802,6 +802,14 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	public BizDataObjectConfig getBizDataObjectConfig() {
 		return bizDataObjectConfig;
+	}
+	
+	public List<ProcessEngineConfigurator> getConfigurators() {
+		return configurators;
+	}
+	
+	public void setConfigurators(List<ProcessEngineConfigurator> configurators) {
+		this.configurators = configurators;
 	}
 
 }
