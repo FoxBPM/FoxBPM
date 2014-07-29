@@ -4,3 +4,4 @@
 .project
 /bin
 .DS_Store
+/target
