@@ -19,6 +19,7 @@ package org.foxbpm.engine.impl.identity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.identity.Group;
@@ -104,6 +105,18 @@ public class GroupDeptImpl implements GroupDefinition {
 		group = (Group) sqlSession.selectOne("selectDeptById", groupId);
 		CacheUtil.getIdentityCache().add("deptCache_" + groupId, group);
 		return group;
+	}
+	
+	@Override
+	public List<Group> selectAllGroup() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public List<Map<String, String>> selectAllRelation() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
