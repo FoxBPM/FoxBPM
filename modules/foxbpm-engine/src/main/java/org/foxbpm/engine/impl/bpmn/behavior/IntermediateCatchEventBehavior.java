@@ -32,20 +32,20 @@ import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
  * 
  */
 public class IntermediateCatchEventBehavior extends CatchEventBehavior {
-
+	
 	/**
 	 * 序列号
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	@Override
 	public void execute(FlowNodeExecutionContext executionContext) {
 		// 执行中间事件定义,例如 时间定义
 		List<EventDefinition> eventDefinitions = this.getEventDefinitions();
 		for (EventDefinition eventDefinition : eventDefinitions) {
-			eventDefinition.execute(executionContext, TimerEventBehavior.EVENT_TYPE_INTERMIDATE,
-					null);
+			Object[] params = new String[]{this.getId(), executionContext.getProcessDefinition().getId()};
+			eventDefinition.execute(executionContext, TimerEventBehavior.EVENT_TYPE_INTERMIDATE, params);
 		}
 	}
-
+	
 }

@@ -17,12 +17,6 @@
  */
 package org.foxbpm.engine.test.api.scheduler;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.List;
-import java.util.Map;
-
 import org.foxbpm.engine.test.Deployment;
 import org.junit.Test;
 
@@ -37,15 +31,6 @@ import org.junit.Test;
  * 
  */
 public class TimerStartProcessInstanceTest extends BaseSchedulerTest {
-	
-	private static String processDefinitionID;
-	private static String processInstanceID;
-	private static String processKey; 
-	
-	/** 列名称 */
-	private final static String NODE_ID = "NODE_ID";
-	private final static String PROCESS_ID = "PROCESS_ID";
-	
 	/**
 	 * 测试场景：日期时间定时启动流程实例
 	 */
@@ -62,28 +47,11 @@ public class TimerStartProcessInstanceTest extends BaseSchedulerTest {
 			scheduler.start();
 			this.waitQuartzScheduled(QUART_SCHEDULED_TIME);
 			// 校验
-			List<Map<String, Object>> processResultList = jdbcTemplate.queryForList("SELECT PROCESS_ID FROM FOXBPM_DEF_PROCESSDEFINITION WHERE PROCESS_KEY='"
-			        + processKey + "' ");
-			processDefinitionID = (String) processResultList.get(0).get(PROCESS_ID);
-			List<Map<String, Object>> taskList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TASK WHERE PROCESSDEFINITION_ID ='"
-			        + processDefinitionID + "' AND END_TIME IS NULL ORDER BY CREATE_TIME");
-			assertNotNull(taskList);
-			assertEquals(taskList.size(), 1);
-			processInstanceID = (String) taskList.get(0).get("PROCESSINSTANCE_ID");
-			String nodeId = (String) taskList.get(0).get("NODE_ID");
-			assertEquals(nodeId, "UserTask_1");
+			this.validateActiveTask("UserTask_1");
 			
-			List<Map<String, Object>> tokenList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TOKEN where PROCESSINSTANCE_ID ='"
-			        + processInstanceID + "' AND END_TIME IS NULL ORDER BY START_TIME");
-			assertNotNull(tokenList);
-			assertEquals(tokenList.size(), 1);
-			nodeId = (String) tokenList.get(0).get(NODE_ID);
-			assertEquals(nodeId, "UserTask_1");
+			this.validateToken("UserTask_1");
 			
-			List<Map<String, Object>> processInstanceResultList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_PROCESSINSTANCE where ID ='"
-			        + processInstanceID + "' ");
-			assertNotNull(processInstanceResultList);
-			assertEquals(processInstanceResultList.size(), 1);
+			this.validateProcessInstanceCount(1);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -105,29 +73,16 @@ public class TimerStartProcessInstanceTest extends BaseSchedulerTest {
 		try {
 			scheduler.start();
 			this.waitQuartzScheduled(QUART_SCHEDULED_TIME);
-			// 校验
-			List<Map<String, Object>> processResultList = jdbcTemplate.queryForList("SELECT PROCESS_ID FROM FOXBPM_DEF_PROCESSDEFINITION WHERE PROCESS_KEY='"
-			        + processKey + "' ");
-			processDefinitionID = (String) processResultList.get(0).get(PROCESS_ID);
-			List<Map<String, Object>> taskList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TASK WHERE PROCESSDEFINITION_ID ='"
-			        + processDefinitionID + "' AND END_TIME IS NULL ORDER BY CREATE_TIME");
-			assertNotNull(taskList);
-			assertEquals(taskList.size(), 13);
 			
-			processInstanceID = (String) taskList.get(0).get("PROCESSINSTANCE_ID");
-			
-			List<Map<String, Object>> tokenList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TOKEN where PROCESSINSTANCE_ID ='"
-			        + processInstanceID + "' AND END_TIME IS NULL ORDER BY START_TIME");
-			assertNotNull(tokenList);
-			assertEquals(tokenList.size(), 13);
-			
-			List<Map<String, Object>> processInstanceResultList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_PROCESSINSTANCE where ID ='"
-			        + processInstanceID + "' ");
-			assertNotNull(processInstanceResultList);
-			assertEquals(processInstanceResultList.size(), 13);
+			// 校验间隔性启动产生的活动节点、活动令牌、流程实例
+			// 可以只需要校验间隔性产生的个数，不用校验具体内容
+			int resultCount = (QUART_SCHEDULED_TIME * 60 / 10) + 1;
+			this.validateActiveTaskCount(resultCount);
+			this.validateActiveTokenCount(resultCount);
+			this.validateProcessInstanceCount(resultCount);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
+	
 }

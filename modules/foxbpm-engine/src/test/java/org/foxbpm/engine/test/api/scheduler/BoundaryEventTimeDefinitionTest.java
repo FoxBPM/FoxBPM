@@ -17,12 +17,6 @@
  */
 package org.foxbpm.engine.test.api.scheduler;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.List;
-import java.util.Map;
-
 import org.foxbpm.engine.test.Deployment;
 import org.junit.Test;
 
@@ -37,14 +31,6 @@ import org.junit.Test;
  * 
  */
 public class BoundaryEventTimeDefinitionTest extends BaseSchedulerTest {
-	
-	private static String processDefinitionID;
-	private static String processInstanceID;
-	private static String processKey; 
-	
-	/** 列名称 */
-	private final static String NODE_ID = "NODE_ID";
-	private final static String PROCESS_ID = "PROCESS_ID";
 	
 	/**
 	 * 测试场景：单个任务节点存在单个终止边界事件
@@ -61,24 +47,11 @@ public class BoundaryEventTimeDefinitionTest extends BaseSchedulerTest {
 		try {
 			scheduler.start();
 			this.waitQuartzScheduled(QUART_SCHEDULED_TIME);
-			// 校验
-			List<Map<String, Object>> processResultList = jdbcTemplate.queryForList("SELECT PROCESS_ID FROM FOXBPM_DEF_PROCESSDEFINITION WHERE PROCESS_KEY='"
-			        + processKey + "' ");
-			processDefinitionID = (String) processResultList.get(0).get(PROCESS_ID);
-			List<Map<String, Object>> taskList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TASK WHERE PROCESSDEFINITION_ID ='"
-			        + processDefinitionID + "' AND END_TIME IS NULL ORDER BY CREATE_TIME");
-			assertNotNull(taskList);
-			assertEquals(taskList.size(), 1);
-			processInstanceID = (String) taskList.get(0).get("PROCESSINSTANCE_ID");
-			String nodeId = (String) taskList.get(0).get("NODE_ID");
-			assertEquals(nodeId, "UserTask_2");
+			// 校验活动节点
+			validateActiveTask("UserTask_2");
 			
-			List<Map<String, Object>> tokenList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TOKEN where PROCESSINSTANCE_ID ='"
-			        + processInstanceID + "' AND END_TIME IS NULL ORDER BY START_TIME");
-			assertNotNull(tokenList);
-			assertEquals(tokenList.size(), 1);
-			nodeId = (String) tokenList.get(0).get(NODE_ID);
-			assertEquals(nodeId, "UserTask_2");
+			// 校验令牌
+			this.validateToken("UserTask_2");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -99,30 +72,11 @@ public class BoundaryEventTimeDefinitionTest extends BaseSchedulerTest {
 		try {
 			scheduler.start();
 			this.waitQuartzScheduled(QUART_SCHEDULED_TIME);
-			// 校验
-			List<Map<String, Object>> processResultList = jdbcTemplate.queryForList("SELECT PROCESS_ID FROM FOXBPM_DEF_PROCESSDEFINITION WHERE PROCESS_KEY='"
-			        + processKey + "' ");
-			processDefinitionID = (String) processResultList.get(0).get(PROCESS_ID);
-			List<Map<String, Object>> taskList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TASK WHERE PROCESSDEFINITION_ID ='"
-			        + processDefinitionID + "' AND END_TIME IS NULL ORDER BY CREATE_TIME");
-			assertNotNull(taskList);
-			assertEquals(taskList.size(), 2);
-			processInstanceID = (String) taskList.get(0).get("PROCESSINSTANCE_ID");
-			String nodeId = (String) taskList.get(0).get("NODE_ID");
-			assertEquals(nodeId, "UserTask_1");
-			nodeId = (String) taskList.get(1).get(NODE_ID);
-			assertEquals(nodeId, "UserTask_2");
+			// 校验活动节点，由于是非终止事件所以为产生两个同时活动的节点
+			this.validateActiveTask("UserTask_1", "UserTask_2");
+			// 非终止边界事件会产生一个主令牌多个子令牌的情况
+			this.validateToken("UserTask_1", "UserTask_1", "UserTask_2");
 			
-			List<Map<String, Object>> tokenList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TOKEN where PROCESSINSTANCE_ID ='"
-			        + processInstanceID + "' AND END_TIME IS NULL ORDER BY START_TIME");
-			assertNotNull(tokenList);
-			assertEquals(tokenList.size(), 3);
-			nodeId = (String) tokenList.get(0).get(NODE_ID);
-			assertEquals(nodeId, "UserTask_1");
-			nodeId = (String) tokenList.get(1).get(NODE_ID);
-			assertEquals(nodeId, "UserTask_1");
-			nodeId = (String) tokenList.get(2).get(NODE_ID);
-			assertEquals(nodeId, "UserTask_2");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
