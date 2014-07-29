@@ -33,7 +33,6 @@ import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.kernel.event.KernelListener;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
-import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
 /**
  * 
@@ -98,7 +97,7 @@ public class TimeExecuteConnectorCmd implements Command<KernelListener>, Seriali
 		ProcessInstanceEntity processInstance = commandContext.getProcessInstanceManager().findProcessInstanceById(processInstanceID);
 		KernelProcessDefinitionImpl processDefinition = processInstance.getProcessDefinition();
 		
-		TokenEntity tokenEntity = (TokenEntity) this.getExecutionContextFromInstance(processInstance);
+		TokenEntity tokenEntity = (TokenEntity) commandContext.getTokenManager().findTokenById(this.tokenID);
 		tokenEntity.setAssignTask(this.getTaskEntity(tokenEntity));
 		
 		// 获取当前任务记录的CONNECTOR
@@ -114,6 +113,15 @@ public class TimeExecuteConnectorCmd implements Command<KernelListener>, Seriali
 		return null;
 	}
 	
+	/**
+	 * 
+	 * getTaskEntity(获取任务实体)
+	 * 
+	 * @param tokenEntity
+	 * @return TaskEntity
+	 * @exception
+	 * @since 1.0.0
+	 */
 	private TaskEntity getTaskEntity(TokenEntity tokenEntity) {
 		List<TaskEntity> tasks = tokenEntity.getTasks();
 		Iterator<TaskEntity> iterator = tasks.iterator();
@@ -171,27 +179,6 @@ public class TimeExecuteConnectorCmd implements Command<KernelListener>, Seriali
 	
 	public void setTokenID(String tokenID) {
 		this.tokenID = tokenID;
-	}
-	
-	/**
-	 * 
-	 * getExecutionContextFromInstance(根据记录的tokenID获取ListenerExecutionContext)
-	 * 
-	 * @param processInstance
-	 * @return ListenerExecutionContext
-	 * 
-	 * @since 1.0.0
-	 */
-	private KernelTokenImpl getExecutionContextFromInstance(ProcessInstanceEntity processInstance) {
-		List<KernelTokenImpl> tokens = processInstance.getTokens();
-		Iterator<KernelTokenImpl> iterator = tokens.iterator();
-		while (iterator.hasNext()) {
-			KernelTokenImpl next = iterator.next();
-			if (StringUtils.equalsIgnoreCase(next.getId(), this.tokenID)) {
-				return next;
-			}
-		}
-		return null;
 	}
 	
 	public void setNodeID(String nodeID) {

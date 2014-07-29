@@ -19,7 +19,9 @@ package org.foxbpm.engine.impl.datavariable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 /**
  * 业务数据对象模型
  * 
@@ -70,4 +72,17 @@ public class BizDataObject implements Serializable {
 		this.dataVariableDefinitions = dataVariableDefinitions;
 	}
 	
+	@SuppressWarnings("rawtypes")
+	public Map<String, Object> getPersistentState() {
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("id", id);
+		result.put("documentation", documentation);
+		result.put("dataSource", dataSource);
+		List<Map> columnDataList = new ArrayList<Map>();
+		for (DataVariableDefinition dataEntity : dataVariableDefinitions) {
+			columnDataList.add(dataEntity.getPersistentState());
+		}
+		result.put("dataVariableDefinitions", columnDataList);
+		return result;
+	}
 }

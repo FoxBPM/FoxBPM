@@ -73,7 +73,6 @@ public class BizDataObjectBehaviorImpl implements BizDataObjectBehavior {
 					bizDataObject = new BizDataObject();
 					bizDataObject.setId(rs.getString(TABLE_NAME));
 					bizDataObject.setDataSource(dataSource);
-					bizDataObject.setDocumentation(rs.getString(COLUMN_NAME));
 					// 添加业务数据对象
 					bizDataObjects.add(bizDataObject);
 				}

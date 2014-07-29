@@ -23,11 +23,8 @@ import static org.junit.Assert.assertNotNull;
 import java.util.List;
 import java.util.Map;
 
-import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
 import org.foxbpm.engine.test.Deployment;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
 
 /**
  * 
@@ -39,14 +36,11 @@ import org.junit.runners.MethodSorters;
  * @version 1.0.0
  * 
  */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class BoundaryEventTimeDefinitionTest extends AbstractFoxBpmTestCase {
+public class BoundaryEventTimeDefinitionTest extends BaseSchedulerTest {
 	
 	private static String processDefinitionID;
 	private static String processInstanceID;
-	private static String processKey;
-	/** 每个测试用例 quartz完成调度所需要的基本时间：2分钟 */
-	private final static int QUART_SCHEDULED_TIME = 2;
+	private static String processKey; 
 	
 	/** 列名称 */
 	private final static String NODE_ID = "NODE_ID";
@@ -129,37 +123,6 @@ public class BoundaryEventTimeDefinitionTest extends AbstractFoxBpmTestCase {
 			assertEquals(nodeId, "UserTask_1");
 			nodeId = (String) tokenList.get(2).get(NODE_ID);
 			assertEquals(nodeId, "UserTask_2");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	/**
-	 * 
-	 * cleanRunData(清空流程运行过程中的数据) void
-	 * 
-	 * @exception
-	 * @since 1.0.0
-	 */
-	protected void cleanRunData() {
-		jdbcTemplate.execute("delete from foxbpm_run_processinstance");
-		jdbcTemplate.execute("delete from foxbpm_run_task");
-		jdbcTemplate.execute("delete from foxbpm_run_taskidentitylink");
-		jdbcTemplate.execute("delete from foxbpm_run_token");
-		jdbcTemplate.execute("delete from foxbpm_run_variable");
-	}
-	
-	/**
-	 * 
-	 * waitQuartzScheduled(设置调度等待的时间)
-	 * 
-	 * @param minitues
-	 *            void
-	 * @exception
-	 * @since 1.0.0
-	 */
-	private void waitQuartzScheduled(int minitues) {
-		try {
-			Thread.sleep(1000 * 60 * minitues);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
