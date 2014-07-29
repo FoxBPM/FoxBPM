@@ -194,6 +194,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			processDefinition.setFormUri(processBehavior.getFormUri());
 			processDefinition.setFormUriView(processBehavior.getFormUriView());
 			processDefinition.setSubject(processBehavior.getSubject());
+			processDefinition.setPotentialStarters(processBehavior.getPotentialStarters());
 		}
 		
 		DataVariableMgmtDefinition dataVariableMgmtDefinition = new DataVariableMgmtDefinition(processDefinition);

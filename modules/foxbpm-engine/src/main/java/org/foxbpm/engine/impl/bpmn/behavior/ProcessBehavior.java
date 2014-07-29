@@ -17,6 +17,11 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.foxbpm.engine.impl.identity.PotentialStarter;
+
 public class ProcessBehavior extends BaseElementBehavior {
 
 	private static final long serialVersionUID = 1L;
@@ -42,6 +47,21 @@ public class ProcessBehavior extends BaseElementBehavior {
 	protected String key;
 	
 	protected String name;
+	
+	protected List<PotentialStarter> potentialStarters=new ArrayList<PotentialStarter>();
+
+	public List<PotentialStarter> getPotentialStarters() {
+		return potentialStarters;
+	}
+
+	public void setPotentialStarters(List<PotentialStarter> potentialStarters) {
+		this.potentialStarters = potentialStarters;
+	}
+	
+	public void addPotentialStarter(PotentialStarter potentialStarter) {
+		potentialStarters.add(potentialStarter);
+	}
+
 
 	public String getName() {
 		return name;
