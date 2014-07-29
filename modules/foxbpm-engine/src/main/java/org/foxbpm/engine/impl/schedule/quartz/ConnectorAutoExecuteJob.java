@@ -18,7 +18,6 @@
 package org.foxbpm.engine.impl.schedule.quartz;
 
 import org.foxbpm.engine.ProcessEngineManagement;
-import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.impl.RuntimeServiceImpl;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.quartz.JobExecutionException;

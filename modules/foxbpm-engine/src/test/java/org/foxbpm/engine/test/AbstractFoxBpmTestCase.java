@@ -17,7 +17,6 @@
  */
 package org.foxbpm.engine.test;
 
-
 import java.lang.reflect.Method;
 
 import org.foxbpm.engine.IdentityService;
@@ -33,8 +32,10 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
+import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -42,21 +43,24 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * foxbpm基础测试类
- * 集成此类的子类，可使用@Deployment 和@Clear注解
- * 解释@Deployment会在方法执行前将deployment中的resource资源发布到数据库
+ * foxbpm基础测试类 集成此类的子类，可使用@Deployment 和@Clear注解 解释@Deployment会在方法执行前将deployment中的resource资源发布到数据库
  * 而clear注解可以在方法执行前，清空run_和def_开头的数据库表
+ * 
  * @author Administrator
- *
+ * 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext-test.xml")
-@Transactional  
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
-public abstract class AbstractFoxBpmTestCase extends AbstractTransactionalJUnit4SpringContextTests  {
-
+@Transactional
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
+public abstract class AbstractFoxBpmTestCase extends AbstractTransactionalJUnit4SpringContextTests {
+	
 	@Autowired
 	public ProcessEngine processEngine;
+	@Autowired
+	public DataSourceTransactionManager dataSourceTransactionManager;
+	@Autowired
+	public Scheduler scheduler;
 	@Autowired
 	protected ModelService modelService;
 	@Autowired
@@ -66,10 +70,10 @@ public abstract class AbstractFoxBpmTestCase extends AbstractTransactionalJUnit4
 	@Autowired
 	protected IdentityService identityService;
 	@Autowired
-	protected JdbcTemplate jdbcTemplate; 
+	protected JdbcTemplate jdbcTemplate;
 	
-	@Rule  
-    public TestName name = new TestName(); 
+	@Rule
+	public TestName name = new TestName();
 	
 	@Before
 	public void annotationDeploymentSetUp() throws Exception {
@@ -80,8 +84,8 @@ public abstract class AbstractFoxBpmTestCase extends AbstractTransactionalJUnit4
 		} catch (Exception e) {
 			throw new FoxBPMException("获取方法失败!", e);
 		}
-		if(method.isAnnotationPresent(Clear.class)){
-//			cleanData();
+		if (method.isAnnotationPresent(Clear.class)) {
+			// cleanData();
 		}
 		Deployment deploymentAnnotation = method.getAnnotation(Deployment.class);
 		if (deploymentAnnotation != null) {
@@ -89,8 +93,8 @@ public abstract class AbstractFoxBpmTestCase extends AbstractTransactionalJUnit4
 			if (resources.length == 0) {
 				return;
 			}
-			DeploymentBuilder deploymentBuilder = null;//processEngine.getModelService().createDeployment().name("测试名称");
-			//由于当前不支持一次发布多个流程定义
+			DeploymentBuilder deploymentBuilder = null;// processEngine.getModelService().createDeployment().name("测试名称");
+			// 由于当前不支持一次发布多个流程定义
 			for (String resource : resources) {
 				deploymentBuilder = processEngine.getModelService().createDeployment().name("测试名称");
 				deploymentBuilder.addClasspathResource(resource);
@@ -100,11 +104,11 @@ public abstract class AbstractFoxBpmTestCase extends AbstractTransactionalJUnit4
 	}
 	
 	@After
-	public void clearCache(){
+	public void clearCache() {
 		CacheUtil.clearCache();
 	}
 	
-	protected void cleanData(){
+	protected void cleanData() {
 		jdbcTemplate.execute("delete from foxbpm_def_bytearray");
 		jdbcTemplate.execute("delete from foxbpm_def_deployment");
 		jdbcTemplate.execute("delete from foxbpm_def_processdefinition");
