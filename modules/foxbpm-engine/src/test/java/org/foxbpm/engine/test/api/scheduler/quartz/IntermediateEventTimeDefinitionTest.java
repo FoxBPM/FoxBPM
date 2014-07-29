@@ -15,12 +15,13 @@
  * 
  * @author MAENLIANG
  */
-package org.foxbpm.engine.test.api.scheduler;
+package org.foxbpm.engine.test.api.scheduler.quartz;
 
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.test.Deployment;
+import org.foxbpm.engine.test.api.scheduler.BaseSchedulerTest;
 import org.junit.Test;
 
 /**

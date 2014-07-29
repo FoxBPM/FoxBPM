@@ -15,9 +15,10 @@
  * 
  * @author MAENLIANG
  */
-package org.foxbpm.engine.test.api.scheduler;
+package org.foxbpm.engine.test.api.scheduler.quartz;
 
 import org.foxbpm.engine.test.Deployment;
+import org.foxbpm.engine.test.api.scheduler.BaseSchedulerTest;
 import org.junit.Test;
 
 /**
@@ -76,6 +77,64 @@ public class BoundaryEventTimeDefinitionTest extends BaseSchedulerTest {
 			this.validateActiveTask("UserTask_1", "UserTask_2");
 			// 非终止边界事件会产生一个主令牌多个子令牌的情况
 			this.validateToken("UserTask_1", "UserTask_1", "UserTask_2");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 
+	 * 测试场景：同一个活动节点存在多个非终止边界事件定义
+	 * 
+	 * @exception
+	 * @since 1.0.0
+	 */
+	@Test
+	@Deployment(resources = {"org/foxbpm/engine/test/impl/scheduler/testManyNoneCancelActivity_0.bpmn"})
+	public void testCA() {
+		this.cleanRunData();
+		processKey = "testManyNoneCancelActivity_0";
+	}
+	@Test
+	public void testCB() {
+		try {
+			scheduler.start();
+			this.waitQuartzScheduled(QUART_SCHEDULED_TIME * 2);
+			// 校验活动节点，由于是非终止事件所以为产生两个同时活动的节点
+			this.validateActiveTask(new String[]{"UserTask_1", "UserTask_2", "UserTask_3"});
+			
+			// 非终止边界事件会产生一个主令牌多个子令牌的情况
+			this.validateToken(new String[]{"UserTask_1", "UserTask_1", "UserTask_2", "UserTask_3"});
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 
+	 * 测试场景：1、同时存在终止边界事件定义和非终止边界事件定义；2、先执行非终止时间定义
+	 * 
+	 * @exception
+	 * @since 1.0.0
+	 */
+	@Test
+	@Deployment(resources = {"org/foxbpm/engine/test/impl/scheduler/testCancelNoneCancelActivity_0.bpmn"})
+	public void testDA() {
+		this.cleanRunData();
+		processKey = "testCancelNoneCancelActivity_0";
+	}
+	@Test
+	public void testDB() {
+		try {
+			scheduler.start();
+			this.waitQuartzScheduled(QUART_SCHEDULED_TIME * 2);
+			// 校验活动节点，由于是非终止事件所以为产生两个同时活动的节点
+			this.validateActiveTask(new String[]{"UserTask_5"});
+			
+			// 非终止边界事件会产生一个主令牌多个子令牌的情况
+			this.validateToken(new String[]{"UserTask_5"});
 			
 		} catch (Exception e) {
 			e.printStackTrace();

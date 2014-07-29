@@ -15,9 +15,10 @@
  * 
  * @author MAENLIANG
  */
-package org.foxbpm.engine.test.api.scheduler;
+package org.foxbpm.engine.test.api.scheduler.quartz;
 
 import org.foxbpm.engine.test.Deployment;
+import org.foxbpm.engine.test.api.scheduler.BaseSchedulerTest;
 import org.junit.Test;
 
 /**
