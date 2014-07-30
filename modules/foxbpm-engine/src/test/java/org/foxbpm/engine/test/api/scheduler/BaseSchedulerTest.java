@@ -33,8 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  * 
  * BaseSchedulerTest quartz框架测试的父类，负责一些共通性工作。 quartz測試說明 1、导入
- * foxbpm_connector项目jar包 2、每一个测试用例包括两个方法
- * testXA，testXB，A方法用于清空数据，部署流程定义文件，B方法用户启动quartz引擎，校验结果
+ * foxbpm_connector项目jar包 2、每一个测试用例包括两个方法 testXA，testXB.....
+ * A方法用于清空数据，部署流程定义文件，B方法用户启动quartz引擎，校验结果......
  * 
  * MAENLIANG 2014年7月29日 上午10:20:39
  * 

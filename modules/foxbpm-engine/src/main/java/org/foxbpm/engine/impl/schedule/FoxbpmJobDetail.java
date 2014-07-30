@@ -30,7 +30,6 @@ import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.util.ClockUtil;
-import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.QuartzUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
@@ -167,7 +166,7 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 		} else if (triggerObj instanceof Date) {
 			triggersList.add(QuartzUtil.createTriggerByDateTime(triggerObj, groupName));
 		} else if (triggerObj instanceof String) {
-			triggersList.add(QuartzUtil.createCronTrigger(GuidUtil.CreateGuid(), groupName, triggerObj.toString()));
+			triggersList.add(QuartzUtil.createCronTrigger(groupName, triggerObj.toString()));
 		} else {
 			throw new FoxBPMException("创建TRIGGER  LIST时候，TIMER 表达式执行错误");
 		}
