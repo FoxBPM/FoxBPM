@@ -16,6 +16,10 @@
 			projectName="connector2" virtualPath="src/main/java/connector/actorconnector/"
 			src="connector/actorconnector/" />
 
+		<resourcePath id="foxbpmflow-template" name="foxbpmflow-template"
+			projectName="foxbpm-engine" src="template/flowtemplate/"
+			virtualPath="src/main/resources/template/flowtemplate/" />
+
 	</resourcePathConfig>
 	<scriptLanguageConfig selected="Groovy">
 		<scriptLanguage id="BeanShell"
@@ -57,10 +61,10 @@
 			isEnabled="true" type="system" />
 		<taskCommandDefinition id="autoEnd" name="自动结束"
 			isEnabled="true" type="system" />
-		<taskCommandDefinition id="asyncSubProcessEnd" name="异步子流程结束"
-			isEnabled="true" type="system" />
-			<taskCommandDefinition id="syncSubProcessEnd" name="同步子流程结束"
-			isEnabled="true" type="system" />
+		<taskCommandDefinition id="asyncSubProcessEnd"
+			name="异步子流程结束" isEnabled="true" type="system" />
+		<taskCommandDefinition id="syncSubProcessEnd"
+			name="同步子流程结束" isEnabled="true" type="system" />
 		<taskCommandDefinition id="startEvent" name="流程开始"
 			isEnabled="true" type="system" />
 		<taskCommandDefinition id="endEvent" name="流程结束"
@@ -81,8 +85,8 @@
 			classImpl="com.founder.fix.fixflow.expand.database.GeneralConnectionManagement" />
 	</connectionManagementConfig>
 	<eventListenerConfig>
-	 	<!-- <eventListener eventType="process-start"
-			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.StartEventTrackListener" />-->
+		<!-- <eventListener eventType="process-start" listenerClass="org.foxbpm.engine.impl.listener.runningtrack.StartEventTrackListener" 
+			/> -->
 		<eventListener eventType="node-enter"
 			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" />
 		<!-- <eventListener eventType="node-execute" listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" 
@@ -95,10 +99,13 @@
 		<eventListener eventType="process-end"
 			listenerClass="org.foxbpm.engine.impl.listener.task.EndEventTaskListener" />
 	</eventListenerConfig>
-	
+
 	<bizDataObjectConfig>
-		<dataObjectBehavior id="dataBaseMode" name="数据库表模式" behavior="org.foxbpm.engine.impl.datavariable.BizDataObjectBehaviorImpl"/>
-		<dataObjectBehavior id="eMapDataObject" name="eMap数据对象模式" behavior="com.wisedu.bpm.engine.impl.datavariable.EmapBizDataObjectBehaviorImpl"/>
-		<dataObjectBehavior id="eMapDataObjectRemark" name="eMap数据对象模式" behavior="com.wisedu.bpm.engine.impl.datavariable.EmapBizDataObjectRemarkBehaviorImpl"/>
+		<dataObjectBehavior id="dataBaseMode" name="数据库表模式"
+			behavior="org.foxbpm.engine.impl.datavariable.BizDataObjectBehaviorImpl" />
+		<dataObjectBehavior id="eMapDataObject" name="eMap数据对象模式"
+			behavior="com.wisedu.bpm.engine.impl.datavariable.EmapBizDataObjectBehaviorImpl" />
+		<dataObjectBehavior id="eMapDataObjectRemark" name="eMap数据对象模式"
+			behavior="com.wisedu.bpm.engine.impl.datavariable.EmapBizDataObjectRemarkBehaviorImpl" />
 	</bizDataObjectConfig>
 </foxbpmconfig:FoxBPMConfig>
