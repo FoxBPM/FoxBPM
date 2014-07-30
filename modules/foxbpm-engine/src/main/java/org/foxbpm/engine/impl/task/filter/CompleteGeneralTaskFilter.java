@@ -23,39 +23,35 @@ public class CompleteGeneralTaskFilter extends AbstractCommandFilter {
 
 	@Override
 	public boolean accept(Task task) {
-		
 
-		if(task==null){
-			return false;
-		}
-		
-		if(task.isSuspended()){
-			return false;
-		}
-		
-		if(task.hasEnded()){
-			return false;
-		}
-		
-		if(isProcessTracking()){
-			return false;
-		}
-		
-		if(task.getDelegationState()!=null){
+		if (task == null) {
 			return false;
 		}
 
-		if(task.getAssignee()!=null){
-			
+		if (task.isSuspended()) {
+			return false;
+		}
+
+		if (task.hasEnded()) {
+			return false;
+		}
+
+		if (isProcessTracking()) {
+			return false;
+		}
+
+		if (task.getDelegationState() != null) {
+			return false;
+		}
+
+		if (task.getAssignee() != null) {
 			return true;
-			
 		}
-		else{
-			if(isAutoClaim(task)){
-				return true;
-			}else{
-				return false;
-			}
+
+		if (isAutoClaim(task)) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
