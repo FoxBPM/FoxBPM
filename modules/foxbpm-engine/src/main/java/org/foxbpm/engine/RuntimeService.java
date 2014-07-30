@@ -27,7 +27,7 @@ import org.foxbpm.engine.runtime.ProcessInstanceQuery;
 import org.foxbpm.engine.runtime.TokenQuery;
 
 public interface RuntimeService {
-	
+
 	/**
 	 * 根据流程定义key启动流程，启动对应key的最新版本
 	 * 
@@ -35,7 +35,7 @@ public interface RuntimeService {
 	 * @return
 	 */
 	ProcessInstance startProcessInstanceByKey(String processDefinitionKey);
-	
+
 	/**
 	 * 根据流程定义key启动流程，启动对应key的最新版本
 	 * 
@@ -45,7 +45,7 @@ public interface RuntimeService {
 	 * @return
 	 */
 	ProcessInstance startProcessInstanceByKey(String processDefinitionKey, String bizKey);
-	
+
 	/**
 	 * 根据流程定义Key启动流程，启动对应key的最新版本
 	 * 
@@ -56,9 +56,8 @@ public interface RuntimeService {
 	 *            持久化变量
 	 * @return
 	 */
-	ProcessInstance startProcessInstanceByKey(String processDefinitionKey,
-	    Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
-	
+	ProcessInstance startProcessInstanceByKey(String processDefinitionKey, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
+
 	/**
 	 * 根据流程定义Key启动流程，启动对应key的最新版本
 	 * 
@@ -71,9 +70,8 @@ public interface RuntimeService {
 	 *            持久化变量
 	 * @return
 	 */
-	ProcessInstance startProcessInstanceByKey(String processDefinitionKey, String bizKey,
-	    Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
-	
+	ProcessInstance startProcessInstanceByKey(String processDefinitionKey, String bizKey, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
+
 	/**
 	 * 根据流程定义id(唯一编号)启动流程
 	 * 
@@ -81,7 +79,7 @@ public interface RuntimeService {
 	 * @return
 	 */
 	ProcessInstance startProcessInstanceById(String processDefinitionId);
-	
+
 	/**
 	 * 根据流程定义id(唯一编号)启动流程
 	 * 
@@ -91,7 +89,7 @@ public interface RuntimeService {
 	 * @return
 	 */
 	ProcessInstance startProcessInstanceById(String processDefinitionId, String bizKey);
-	
+
 	/**
 	 * 根据流程定义id(唯一编号)启动流程
 	 * 
@@ -102,9 +100,8 @@ public interface RuntimeService {
 	 *            持久化变量
 	 * @return
 	 */
-	ProcessInstance startProcessInstanceById(String processDefinitionId,
-	    Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
-	
+	ProcessInstance startProcessInstanceById(String processDefinitionId, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
+
 	/**
 	 * 根据流程定义id(唯一编号)启动流程
 	 * 
@@ -117,9 +114,8 @@ public interface RuntimeService {
 	 *            持久化变量
 	 * @return
 	 */
-	ProcessInstance startProcessInstanceById(String processDefinitionId, String bizKey,
-	    Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
-	
+	ProcessInstance startProcessInstanceById(String processDefinitionId, String bizKey, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
+
 	/**
 	 * 根据消息启动流程(尚未实现)
 	 * 
@@ -127,7 +123,7 @@ public interface RuntimeService {
 	 * @return
 	 */
 	ProcessInstance startProcessInstanceByMessage(String messageName);
-	
+
 	/**
 	 * 根据消息启动流程(尚未实现)
 	 * 
@@ -137,7 +133,7 @@ public interface RuntimeService {
 	 * @return
 	 */
 	ProcessInstance startProcessInstanceByMessage(String messageName, String bizKey);
-	
+
 	/**
 	 * 根据消息启动流程(尚未实现)
 	 * 
@@ -146,9 +142,8 @@ public interface RuntimeService {
 	 *            持久化变量
 	 * @return
 	 */
-	ProcessInstance startProcessInstanceByMessage(String messageName,
-	    Map<String, Object> processVariables);
-	
+	ProcessInstance startProcessInstanceByMessage(String messageName, Map<String, Object> processVariables);
+
 	/**
 	 * 根据消息启动流程(尚未实现)
 	 * 
@@ -159,9 +154,8 @@ public interface RuntimeService {
 	 *            持久化变量
 	 * @return
 	 */
-	ProcessInstance startProcessInstanceByMessage(String messageName, String bizKey,
-	    Map<String, Object> processVariables);
-	
+	ProcessInstance startProcessInstanceByMessage(String messageName, String bizKey, Map<String, Object> processVariables);
+
 	/**
 	 * 驱动流程实例向下走一步，流转到下一个等待节点(如：人工任务等)
 	 * 
@@ -169,7 +163,7 @@ public interface RuntimeService {
 	 *            令牌编号，可以从流程实例上获得，也可以通过tokenQuery获得
 	 */
 	void signal(String tokenId);
-	
+
 	/**
 	 * 驱动流程实例向下走一步，流转到下一个等待节点(如：人工任务等)
 	 * 
@@ -180,37 +174,40 @@ public interface RuntimeService {
 	 * @param persistenceVariables
 	 *            持久化变量
 	 */
-	void signal(String tokenId, Map<String, Object> transientVariables,
-	    Map<String, Object> persistenceVariables);
-	
+	void signal(String tokenId, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables);
+
 	/**
 	 * 创建令牌查询对象
 	 * 
 	 * @return
 	 */
 	TokenQuery createTokenQuery();
-	
+
 	/**
 	 * 创建流程实例查询对象
 	 * 
 	 * @return
 	 */
 	ProcessInstanceQuery createProcessInstanceQuery();
-	
+
 	/**
 	 * 创建变量查询对象
 	 * 
 	 * @return
 	 */
 	VariableQuery createVariableQuery();
-	
+
 	/**
 	 * 创建运行轨迹查询对象
 	 * 
 	 * @return
 	 */
 	RunningTrackQuery createRunningTrackQuery();
-	
 
-	void deleteProcessInstance(String processInstanceId, String deleteReason);
+	/**
+	 * 根据流程实例号删除流程实例（级联删除所有相关数据）
+	 * 
+	 * @param processInstanceId
+	 */
+	void deleteProcessInstance(String processInstanceId);
 }

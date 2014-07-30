@@ -223,5 +223,31 @@ public class RuntimeServiceTest extends AbstractFoxBpmTestCase {
 		//验证当前节点是否在UserTask_1
 		assertEquals("UserTask_2", task.getNodeId());
 	}
+	
+	/**
+	 *<p>测试根据流程实例号删除流程实例</p>
+	 * <p>启动流程->删除流程实例</p>
+	 * <p>验证流程实例表，任务表，变量表，token表是否删除</p>
+	*/
+	@Test
+	@Deployment(resources = { "org/foxbpm/test/api/Test_RuntimeService_1.bpmn"})
+	public void testDeleteProcessInstanceById(){
+		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("Test_RuntimeService_1");
+		String processInstanceId = processInstance.getId();
+		
+		runtimeService.deleteProcessInstance(processInstanceId);
+		
+		long processCount = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).count();
+		assertEquals(0, processCount);
+		
+		long tokenCount = runtimeService.createTokenQuery().processInstanceId(processInstanceId).count();
+		assertEquals(0, tokenCount);
+		
+		long taskCount = taskService.createTaskQuery().processInstanceId(processInstanceId).count();
+		assertEquals(0, taskCount);
+		
+		long variableCount = runtimeService.createVariableQuery().processInstanceId(processInstanceId).count();
+		assertEquals(0, variableCount);
+	}
 
 }
