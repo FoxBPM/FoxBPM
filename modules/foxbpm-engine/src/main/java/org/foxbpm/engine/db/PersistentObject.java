@@ -19,7 +19,7 @@ package org.foxbpm.engine.db;
 
 import java.util.Map;
 
-public interface PersistentObject {
+public interface PersistentObject extends Cloneable {
 	
 
 	
