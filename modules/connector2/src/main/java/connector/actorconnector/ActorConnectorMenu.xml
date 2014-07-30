@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<connectormenu:Menu xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:connectormenu="http://www.foxbpm.org/connectormenu">
-  <node id="082094ea-516c-4873-9d07-fcb6c400a614" name="Test" ico="connector.png">
-    <menuConnector id="TestActor" name="选择人" note="选择人" ico="TestActor.png"/>
-  </node>
-</connectormenu:Menu>
