@@ -24,15 +24,18 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.foxbpm.engine.Constant;
+import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentDetailsEntity;
 import org.foxbpm.engine.impl.agent.AgentEntity;
 import org.foxbpm.engine.impl.agent.AgentTo;
 import org.foxbpm.engine.impl.cache.CacheUtil;
 import org.foxbpm.engine.impl.db.Page;
+import org.foxbpm.engine.impl.identity.GroupRelationEntity;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
+import org.foxbpm.engine.test.Clear;
 import org.junit.Test;
 
 public class IdentityServiceTest extends AbstractFoxBpmTestCase {
@@ -114,7 +117,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 	public void testAgent(){
 		
 		//初始化数据
-		String sqlInsertUser = "insert into au_userInfo(userId,USERNAME) VALUES ('admin2','管理员2')";
+		String sqlInsertUser = "insert into au_userInfo(userId,USERNAME) VALUES ('test_admin2','管理员2')";
 		jdbcTemplate.execute(sqlInsertUser);
 		String agentId = GuidUtil.CreateGuid();
 		
@@ -137,7 +140,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		AgentDetailsEntity agentDetailsEntity = new AgentDetailsEntity();
 		agentDetailsEntity.setId(agentDetailsId);
 		agentDetailsEntity.setAgentId(agentId);
-		agentDetailsEntity.setAgentTo("admin2");
+		agentDetailsEntity.setAgentTo("test_admin2");
 		agentDetailsEntity.setProcessKey(Constant.FOXBPM_ALL_FLOW);
 		
 		agentEntity.getAgentDetails().add(agentDetailsEntity);
@@ -146,7 +149,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		identityService.addAgent(agentEntity);
 		
 		//查询出对应用户的代理信息
-		User user = identityService.getUser("admin2");
+		User user = identityService.getUser("test_admin2");
 		List<AgentTo> agentInfos = user.getAgentInfo();
 		
 		//验证是否正确
@@ -160,14 +163,14 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		agentDetailsEntity = new AgentDetailsEntity();
 		agentDetailsEntity.setId(agentDetailsId);
 		agentDetailsEntity.setAgentId(agentId);
-		agentDetailsEntity.setAgentTo("admin2");
+		agentDetailsEntity.setAgentTo("test_admin2");
 		agentDetailsEntity.setProcessKey(Constant.FOXBPM_ALL_FLOW);
 		
 		//更新代理明细
 		identityService.updateAgentDetailsEntity(agentDetailsEntity);
 		
 		//重新查询用户代理信息
-	    user = identityService.getUser("admin2");
+	    user = identityService.getUser("test_admin2");
 		agentInfos = user.getAgentInfo();
 		assertEquals(1, agentInfos.size());
 		
@@ -193,7 +196,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		identityService.updateAgentEntity(agentEntity);
 		
 		//重新查询用户代理信息
-	    user = identityService.getUser("admin2");
+	    user = identityService.getUser("test_admin2");
 		agentInfos = user.getAgentInfo();
 		assertEquals(1, agentInfos.size());
 		
@@ -206,7 +209,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		identityService.deleteAgentDetails(agentDetailsId);
 		
 		CacheUtil.clearIdentityCache();
-		user = identityService.getUser("admin2");
+		user = identityService.getUser("test_admin2");
 		agentInfos = user.getAgentInfo();
 		assertEquals(0, agentInfos.size());
 		
@@ -214,12 +217,12 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		agentDetailsEntity = new AgentDetailsEntity();
 		agentDetailsEntity.setId(agentDetailsId);
 		agentDetailsEntity.setAgentId(agentId);
-		agentDetailsEntity.setAgentTo("admin2");
+		agentDetailsEntity.setAgentTo("test_admin2");
 		agentDetailsEntity.setProcessKey(Constant.FOXBPM_ALL_FLOW);
 		identityService.addAgentDetails(agentDetailsEntity);
 		
 		CacheUtil.clearIdentityCache();
-		user = identityService.getUser("admin2");
+		user = identityService.getUser("test_admin2");
 		agentInfos = user.getAgentInfo();
 		assertEquals(1, agentInfos.size());
 		
@@ -227,9 +230,63 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		identityService.deleteAgent(agentId);
 		
 		CacheUtil.clearIdentityCache();
-		user = identityService.getUser("admin2");
+		user = identityService.getUser("test_admin2");
 		agentInfos = user.getAgentInfo();
 		assertEquals(0, agentInfos.size());
+	}
+	
+	/**
+	 * 测试获取所有组实体
+	 */
+	@Test
+	@Clear(tables={"au_roleinfo","au_orginfo"})
+	public void testGetAllGroup(){
+		String insertRole = "insert into au_roleinfo(roleid,rolename) values('role1001','角色名称')";
+		String insertDept = "insert into au_orginfo(orgid,suporgid,orgname) values('dept1002','1000','部门名称')";
+		jdbcTemplate.execute(insertDept);
+		jdbcTemplate.execute(insertRole);
+		
+		List<Group> groups = identityService.getAllGroup("role");
+		assertEquals(1,groups.size());
+		Group role = groups.get(0);
+		assertEquals("role1001", role.getGroupId());
+		assertEquals("角色名称", role.getGroupName());
+		assertEquals("role", role.getGroupType());
+		assertEquals("", role.getSupGroupId());
+		
+		groups = identityService.getAllGroup("dept");
+		assertEquals(1,groups.size());
+		Group dept = groups.get(0);
+		assertEquals("dept1002", dept.getGroupId());
+		assertEquals("部门名称", dept.getGroupName());
+		assertEquals("dept", dept.getGroupType());
+		assertEquals("1000", dept.getSupGroupId());
+	}
+	
+	/**
+	 * 测试获取所有组实体
+	 */
+	@Test
+	@Clear(tables={"au_group_relation"})
+	public void testGetAllGroupRelation(){
+		String insertRelationRole = "insert into au_group_Relation(guid,userid,groupid,groupType) values('roleRelation','admin','groupRoleid','role') ";
+		String insertRelationDept = "insert into au_group_Relation(guid,userid,groupid,groupType) values('deptRelation','admin','groupDeptid','dept') ";
+		jdbcTemplate.execute(insertRelationRole);
+		jdbcTemplate.execute(insertRelationDept);
+		
+		List<GroupRelationEntity> roleRelations = identityService.getAllGroupRelation("role");
+		assertEquals(1,roleRelations.size());
+		GroupRelationEntity roleRelationEntity = roleRelations.get(0);
+		assertEquals("groupRoleid", roleRelationEntity.getGroupId());
+		assertEquals("admin", roleRelationEntity.getUserId());
+		assertEquals("role", roleRelationEntity.getGroupType());
+		
+		roleRelations = identityService.getAllGroupRelation("dept");
+		assertEquals(1,roleRelations.size());
+		GroupRelationEntity deptRelationEntity = roleRelations.get(0);
+		assertEquals("groupDeptid", deptRelationEntity.getGroupId());
+		assertEquals("admin", deptRelationEntity.getUserId());
+		assertEquals("dept", deptRelationEntity.getGroupType());
 	}
 	
 	

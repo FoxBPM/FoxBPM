@@ -23,4 +23,5 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Clear {
 
+	public String[] tables() default {};
 }
