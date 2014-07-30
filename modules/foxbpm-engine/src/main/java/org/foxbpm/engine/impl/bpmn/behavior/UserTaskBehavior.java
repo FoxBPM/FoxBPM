@@ -164,7 +164,7 @@ public class UserTaskBehavior extends TaskBehavior {
 			for (TaskEntity taskInstance : tasks) {
 				if (!taskInstance.hasEnded()) {
 					//强制结束任务.
-					taskInstance.complete(null, null);
+					taskInstance.end(null, null);
 				}
 			}
 		}

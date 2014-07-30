@@ -16,25 +16,41 @@
  * @author kenshin
  */
 package org.foxbpm.engine.impl.task.cmd;
-
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
-import org.foxbpm.engine.impl.task.command.GeneralTaskCommand;
+import org.foxbpm.engine.impl.task.command.TransferTaskCommand;
+import org.foxbpm.engine.impl.util.ClockUtil;
+import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
-public class CompleteGeneralTaskCmd extends AbstractExpandTaskCmd<GeneralTaskCommand, Void> {
+/**
+ * @author kenshin
+ *
+ */
+public class TransferTaskCmd extends AbstractExpandTaskCmd<TransferTaskCommand, Void> {
 
 	private static final long serialVersionUID = 1L;
 
-	public CompleteGeneralTaskCmd(GeneralTaskCommand abstractCustomExpandTaskCommand) {
-		super(abstractCustomExpandTaskCommand);
+	/**
+	 * 转发的用户编号
+	 */
+	protected String transferUserId;
+
+	public TransferTaskCmd(TransferTaskCommand transferTaskCommand) {
+
+		super(transferTaskCommand);
+		this.transferUserId = transferTaskCommand.getTransferUserId();
+
 	}
 
 	@Override
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
+		
 
+		
 		/** 放置流程实例级别的瞬态变量 */
 		task.setProcessInstanceTransientVariables(this.transientVariables);
 		/** 获取任务命令 */
@@ -49,9 +65,31 @@ public class CompleteGeneralTaskCmd extends AbstractExpandTaskCmd<GeneralTaskCom
 		task.setTaskCommand(taskCommand);		
 		/** 处理意见 */
 		task.setTaskComment(taskComment);
-
-		task.complete();
-
+		/** 结束任务,但是并不驱动流程向下。 */
+		task.end(taskCommand, taskComment);
+		
+		/** 创建新任务 */
+		
+		/** 克隆一个任务 */
+		TaskEntity newTask=(TaskEntity) task.clone();
+		/** 重置任务字段 */
+		newTask.setId(GuidUtil.CreateGuid());
+		newTask.setAssignee(transferUserId);
+		newTask.setCreateTime(ClockUtil.getCurrentTime());
+		newTask.setEndTime(null);
+		newTask.setCommandId(null);
+		newTask.setCommandType(null);
+		newTask.setCommandMessage(null);
+		newTask.setTaskComment(null);
+		newTask.setAgent(null);
+		newTask.setAdmin(null);
+		newTask.setDraft(false);
+		newTask.setOpen(false);
+		newTask.setSuspended(false);
+		/** 插入任务 */
+		Context.getCommandContext().getTaskManager().insert(newTask);
+		
+		
 		return null;
 	}
 

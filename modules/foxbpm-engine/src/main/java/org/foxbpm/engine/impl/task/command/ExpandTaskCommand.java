@@ -18,6 +18,9 @@
  */
 package org.foxbpm.engine.impl.task.command;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 
 /**
@@ -62,4 +65,34 @@ public class ExpandTaskCommand extends BaseTaskCommand {
 	public void setProcessDefinitionKey(String processDefinitionKey) {
 		this.processDefinitionKey = processDefinitionKey;
 	}
+	
+	/**
+	 * 动态参数Map
+	 */
+	protected Map<String, Object> paramMap=new HashMap<String, Object>();
+
+	/**
+	 * 获取动态参数Map
+	 * @return
+	 */
+	public Map<String, Object> getParamMap() {
+		return paramMap;
+	}
+	
+	/**
+	 * 获取动态参数
+	 * @return
+	 */
+	public Object getParam(String paramKey) {
+		return paramMap.get(paramKey);
+	}
+
+	/**
+	 * 设置动态参数Map
+	 * @param paramMap 动态参数Map
+	 */
+	public void setParamMap(Map<String, Object> paramMap) {
+		this.paramMap = paramMap;
+	}
+
 }

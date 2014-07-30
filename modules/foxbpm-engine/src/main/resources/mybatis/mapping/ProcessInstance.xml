@@ -163,4 +163,8 @@
   <delete id="deleteProcessInstanceByProcessDefinitionId" parameterType="java.lang.String">
   		DELETE FROM FOXBPM_RUN_PROCESSINSTANCE WHERE PROCESSDEFINITION_ID = #{processDefinitionId,jdbcType=VARCHAR}
   </delete>
+  <delete id="deleteProcessInstanceById" parameterType="java.lang.String">
+  		DELETE FROM FOXBPM_RUN_PROCESSINSTANCE WHERE ID = #{processInstanceId,jdbcType=VARCHAR}
+  </delete>
+  
 </mapper>

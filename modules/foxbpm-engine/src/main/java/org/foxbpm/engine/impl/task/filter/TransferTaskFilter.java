@@ -15,19 +15,49 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.engine.db;
+package org.foxbpm.engine.impl.task.filter;
 
-import java.util.Map;
+import org.foxbpm.engine.task.Task;
 
-public interface PersistentObject extends Cloneable {
-	
+/**
+ * @author kenshin
+ * 
+ */
+public class TransferTaskFilter extends AbstractCommandFilter {
 
-	
-	  String getId();
-	  void setId(String id);
+	@Override
+	public boolean accept(Task task) {
 
-	  Map<String, Object> getPersistentState();
-	  
-	  boolean isModified();
+		if (task == null) {
+			return false;
+		}
+
+		if (task.isSuspended()) {
+			return false;
+		}
+
+		if (task.hasEnded()) {
+			return false;
+		}
+
+		if (isProcessTracking()) {
+			return false;
+		}
+
+		if (task.getDelegationState() != null) {
+			return false;
+		}
+
+		if (task.getAssignee() != null) {
+			return true;
+		}
+
+		if (isAutoClaim(task)) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
 
 }

@@ -55,25 +55,42 @@ public class ProcessInstanceManager extends AbstractManager {
 		// 删除流程实例
 		deleteProcessInstanceByProcessDefinitionId(processDefinitionId);
 		if (cascade) {
-			// 循环删除其他信息
-			TokenManager tokenManager = getTokenManager();
-			TaskManager taskManager = getTaskManager();
-			VariableManager variableManager = getVariableManager();
 			List<String> processInstanceIds = getSqlSession().selectListWithRawParameter(
 					"selectProcessInstanceIdsByProcessDefinitionId", processDefinitionId);
 			for (String processInstanceId : processInstanceIds) {
-				// 删除令牌
-				tokenManager.deleteTokenByProcessInstanceId(processInstanceId);
-				// 删除任务
-				taskManager.deleteTaskByProcessInstanceId(processInstanceId);
-				// 删除变量
-				variableManager.deleteVariableByProcessInstanceId(processInstanceId);
+				cascadeDelete(processInstanceId);
 			}
 		}
 	}
+	
+	private void cascadeDelete(String processInstanceId){
+		TokenManager tokenManager = getTokenManager();
+		TaskManager taskManager = getTaskManager();
+		VariableManager variableManager = getVariableManager();
+		// 删除令牌
+		tokenManager.deleteTokenByProcessInstanceId(processInstanceId);
+		// 删除任务
+		taskManager.deleteTaskByProcessInstanceId(processInstanceId);
+		// 删除变量
+		variableManager.deleteVariableByProcessInstanceId(processInstanceId);
+	}
 
-	private void deleteProcessInstanceByProcessDefinitionId(String processInstanceId) {
-		getSqlSession().delete("deleteProcessInstanceByProcessDefinitionId", processInstanceId);
+	/**
+	 * 根据processDefinitionId删除流程实例
+	 * 只删除流程实例，不级联其他数据
+	 * @param processInstanceId
+	 */
+	private void deleteProcessInstanceByProcessDefinitionId(String processDefinitionId) {
+		getSqlSession().delete("deleteProcessInstanceByProcessDefinitionId", processDefinitionId);
+	}
+	
+	/**
+	 * 根据流程实例号删除流程实例
+	 * @param processInstanceId
+	 */
+	public void deleteProcessInstanceById(String processInstanceId){
+		getSqlSession().delete("deleteProcessInstanceById", processInstanceId);
+		cascadeDelete(processInstanceId);
 	}
 
 }

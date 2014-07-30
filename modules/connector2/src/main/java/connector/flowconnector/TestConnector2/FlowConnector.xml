@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<connector:ConnectorDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:connector="http://www.foxbpm.org/connector" id="TestConnector2" name="测试" note="测试" categoryId="65e6338a-5d32-4fae-8442-e17549227339" icon="TestConnector2.png">
-  <definitionImpl className="TestConnector2" packageName="connector.flowconnector.TestConnector2"/>
-</connector:ConnectorDefinition>
