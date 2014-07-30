@@ -88,7 +88,7 @@ public class TimerStartProcessInstanceTest extends BaseSchedulerTest {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * 
 	 * 测试场景 ：当删除一个存在自动启动流程实例调度器的流程定义时，同时也将持久化的调度器从数据库中删除
@@ -105,13 +105,13 @@ public class TimerStartProcessInstanceTest extends BaseSchedulerTest {
 	@Test
 	public void testCB() {
 		// 删除流程定义之前校验
-		validateQuartsInitialized();
+		validateQuartsCount(processKey, 1);
 		
 		// 执行流程定义删除操作
 		this.deleteProcessDefinition();
 		
 		// 校验quartz数据是否清空
-		validateQuartsDeleted();
+		validateQuartsCount(processKey, 0);
 	}
 	
 	// 删除流程定义
