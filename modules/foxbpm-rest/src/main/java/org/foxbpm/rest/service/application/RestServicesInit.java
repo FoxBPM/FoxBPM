@@ -18,6 +18,8 @@
 package org.foxbpm.rest.service.application;
 
 import org.foxbpm.rest.service.api.config.FlowConfigResouce;
+import org.foxbpm.rest.service.api.identity.GroupCollectionResouce;
+import org.foxbpm.rest.service.api.identity.GroupRelationCollectionResouce;
 import org.foxbpm.rest.service.api.model.BizDataObjectResouce;
 import org.foxbpm.rest.service.api.model.DeploymentCollectionResource;
 import org.foxbpm.rest.service.api.model.DeploymentResource;
@@ -46,5 +48,8 @@ public class RestServicesInit {
 		router.attach("/variable-definition/{key}/{version}/variables", VariableDefinitonResouces.class);
 		router.attach("/flowconfig", FlowConfigResouce.class);
 		router.attach("/bizDataObjects/{behaviorId}/{dataSource}", BizDataObjectResouce.class);
+		
+		router.attach("/identity/allGroups", GroupCollectionResouce.class);
+		router.attach("/identity/allRelations", GroupRelationCollectionResouce.class);
 	}
 }

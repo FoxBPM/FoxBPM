@@ -6,6 +6,14 @@
  <resultMap id="groupResultMap" type="org.foxbpm.engine.impl.entity.GroupEntity" >
  	<id column="GROUPID" property="groupId" jdbcType="VARCHAR" />
     <result column="GROUPNAME" property="groupName" jdbcType="VARCHAR" />
+    <result column="SUPGROUPID" property="supGroupId" jdbcType="VARCHAR" />
+    <result column="GROUPTYPE" property="groupType" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <resultMap id="groupRelationMap" type="org.foxbpm.engine.impl.identity.GroupRelationEntity" >
+ 	<id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="GROUPID" property="groupId" jdbcType="VARCHAR" />
+    <result column="USERID" property="userId" jdbcType="VARCHAR" />
     <result column="GROUPTYPE" property="groupType" jdbcType="VARCHAR" />
   </resultMap>
 
@@ -23,12 +31,18 @@
   
   
   <select id="selectDeptById" parameterType="java.lang.String" resultMap="groupResultMap">
-	 SELECT ORGID AS GROUPID,ORGNAME AS GROUPNAME ,'dept' AS GROUPTYPE  FROM AU_ORGINFO WHERE ORGID = #{orgId,jdbcType=VARCHAR} 
+	 SELECT ORGID AS GROUPID,ORGNAME AS GROUPNAME ,SUPORGID AS SUPGROUPID,'dept' AS GROUPTYPE  FROM AU_ORGINFO WHERE ORGID = #{orgId,jdbcType=VARCHAR} 
   </select>
   
    <select id="selectDeptBySupId" parameterType="java.lang.String" resultMap="groupResultMap">
-	 SELECT ORGID AS GROUPID,ORGNAME AS GROUPNAME ,'dept' AS GROUPTYPE  FROM AU_ORGINFO WHERE  SUPORGID != ORGID  and SUPORGID = #{orgId,jdbcType=VARCHAR} 
+	 SELECT ORGID AS GROUPID,ORGNAME AS GROUPNAME ,SUPORGID AS SUPGROUPID,'dept' AS GROUPTYPE  FROM AU_ORGINFO WHERE  SUPORGID != ORGID  and SUPORGID = #{orgId,jdbcType=VARCHAR} 
   </select>
   
+  <select id="selectAllDept" parameterType="java.lang.String" resultMap="groupResultMap">
+	 SELECT ORGID AS GROUPID,ORGNAME AS GROUPNAME,SUPORGID AS SUPGROUPID,'dept' AS GROUPTYPE  FROM AU_ORGINFO 
+  </select>
+  <select id="selectAllDeptRelation" parameterType="java.lang.String" resultMap="groupRelationMap">
+	 SELECT GUID AS ID,GROUPID,USERID,'dept' AS GROUPTYPE FROM AU_GROUP_RELATION WHERE GROUPTYPE='dept'
+  </select>
   
 </mapper>

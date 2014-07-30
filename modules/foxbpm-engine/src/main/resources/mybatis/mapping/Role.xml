@@ -16,6 +16,11 @@
    <select id="selectRoleById" parameterType="java.lang.String" resultMap="groupResultMap">
 		SELECT ROLEID AS GROUPID,ROLENAME AS GROUPNAME ,'role' AS GROUPTYPE FROM AU_ROLEINFO WHERE ROLEID=#{roleId,jdbcType=VARCHAR}
   </select>
-  
+    <select id="selectAllRole" parameterType="java.lang.String" resultMap="groupResultMap">
+	 SELECT ROLEID AS GROUPID,ROLENAME AS GROUPNAME,'' AS SUPGROUPID,'role' AS GROUPTYPE  FROM AU_ROLEINFO 
+  </select>
+  <select id="selectAllRoleRelation" parameterType="java.lang.String" resultMap="groupRelationMap">
+	 SELECT GUID AS ID,GROUPID,USERID,'role' AS GROUPTYPE FROM AU_GROUP_RELATION WHERE GROUPTYPE='role'
+  </select>
   
 </mapper>

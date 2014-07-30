@@ -19,13 +19,13 @@ package org.foxbpm.engine.impl.identity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.cache.CacheUtil;
+import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 
 public class GroupDeptImpl implements GroupDefinition {
@@ -107,16 +107,20 @@ public class GroupDeptImpl implements GroupDefinition {
 		return group;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<Group> selectAllGroup() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<GroupEntity> selectAllGroup() {
+		ISqlSession sqlSession = Context.getCommandContext().getSqlSession();
+		List<GroupEntity> groups = (List<GroupEntity>) sqlSession.selectList("selectAllDept");
+		return groups;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<Map<String, String>> selectAllRelation() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<GroupRelationEntity> selectAllRelation() {
+		ISqlSession sqlSession = Context.getCommandContext().getSqlSession();
+		List<GroupRelationEntity> groupRelations = (List<GroupRelationEntity>) sqlSession.selectList("selectAllDeptRelation");
+		return groupRelations;
 	}
 
 }

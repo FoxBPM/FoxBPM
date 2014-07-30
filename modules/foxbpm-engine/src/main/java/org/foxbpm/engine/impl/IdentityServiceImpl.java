@@ -20,6 +20,7 @@ package org.foxbpm.engine.impl;
 import java.util.List;
 
 import org.foxbpm.engine.IdentityService;
+import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentDetailsEntity;
 import org.foxbpm.engine.impl.agent.AgentEntity;
@@ -29,10 +30,13 @@ import org.foxbpm.engine.impl.cmd.FindAgentEntityCmd;
 import org.foxbpm.engine.impl.cmd.FindUserByIdCmd;
 import org.foxbpm.engine.impl.cmd.FindUsersCmd;
 import org.foxbpm.engine.impl.cmd.FindUsersCountCmd;
+import org.foxbpm.engine.impl.cmd.GetAllGroupByTypeCmd;
+import org.foxbpm.engine.impl.cmd.GetAllGroupRelationByTypeCmd;
 import org.foxbpm.engine.impl.cmd.SaveAgentDetailsEntityCmd;
 import org.foxbpm.engine.impl.cmd.SaveAgentEntityCmd;
 import org.foxbpm.engine.impl.cmd.UpdatePersistentObjectCmd;
 import org.foxbpm.engine.impl.db.Page;
+import org.foxbpm.engine.impl.identity.GroupRelationEntity;
 
 public class IdentityServiceImpl extends ServiceImpl implements IdentityService {
 
@@ -87,5 +91,15 @@ public class IdentityServiceImpl extends ServiceImpl implements IdentityService 
 	@Override
 	public Long getUsersCount(String idLike, String nameLike) {
 		return commandExecutor.execute(new FindUsersCountCmd(idLike, nameLike));
+	}
+	
+	@Override
+	public List<Group> getAllGroup(String groupType) {
+		return commandExecutor.execute(new GetAllGroupByTypeCmd(groupType));
+	}
+	
+	@Override
+	public List<GroupRelationEntity> getAllGroupRelation(String groupType) {
+		return commandExecutor.execute(new GetAllGroupRelationByTypeCmd(groupType));
 	}
 }
