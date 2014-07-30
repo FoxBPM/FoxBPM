@@ -19,6 +19,7 @@ package org.foxbpm.rest.service.application;
 
 import org.foxbpm.rest.service.api.config.FlowConfigResouce;
 import org.foxbpm.rest.service.api.identity.GroupCollectionResouce;
+import org.foxbpm.rest.service.api.identity.GroupDefinitionCollection;
 import org.foxbpm.rest.service.api.identity.GroupRelationCollectionResouce;
 import org.foxbpm.rest.service.api.identity.UserCollectionResouce;
 import org.foxbpm.rest.service.api.model.BizDataObjectResouce;
@@ -53,5 +54,6 @@ public class RestServicesInit {
 		router.attach("/identity/allGroups", GroupCollectionResouce.class);
 		router.attach("/identity/allRelations", GroupRelationCollectionResouce.class);
 		router.attach("/identity/allUsers", UserCollectionResouce.class);
+		router.attach("/identity/allGroupDefinitions", GroupDefinitionCollection.class);
 	}
 }

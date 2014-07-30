@@ -55,6 +55,12 @@ public interface GroupDefinition {
 	String getType();
 	
 	/**
+	 * 获取组名称（如：“部门”，“角色”）
+	 * @return
+	 */
+	String getName();
+	
+	/**
 	 * 获取组下的所有人员ID
 	 * @param groupId
 	 * @return
