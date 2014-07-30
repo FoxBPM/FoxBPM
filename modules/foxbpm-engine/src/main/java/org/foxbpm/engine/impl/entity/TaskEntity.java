@@ -31,12 +31,7 @@ import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelVariableScopeImpl;
 import org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition;
 
-public class TaskEntity extends KernelVariableScopeImpl
-		implements
-			Task,
-			DelegateTask,
-			PersistentObject,
-			HasRevision {
+public class TaskEntity extends KernelVariableScopeImpl implements Task, DelegateTask, PersistentObject, HasRevision {
 
 	/**
 	 * 
@@ -115,7 +110,7 @@ public class TaskEntity extends KernelVariableScopeImpl
 
 	protected boolean isSuspended = false;
 
-	protected boolean isOpen = true;
+	protected boolean isOpen = false;
 
 	protected boolean isDraft = false;
 
@@ -152,6 +147,9 @@ public class TaskEntity extends KernelVariableScopeImpl
 	protected TaskEntity parentTask;
 
 	protected boolean isAutoClaim = false;
+
+	/** 任务完成率 */
+	protected double completionRate = 0;
 
 	protected Map<String, Object> paramMap = new HashMap<String, Object>();
 
@@ -207,8 +205,7 @@ public class TaskEntity extends KernelVariableScopeImpl
 
 	protected void ensureProcessInstanceInitialized() {
 		if ((processInstance == null) && (processInstanceId != null)) {
-			processInstance = Context.getCommandContext().getProcessInstanceManager()
-					.findProcessInstanceById(processInstanceId);
+			processInstance = Context.getCommandContext().getProcessInstanceManager().findProcessInstanceById(processInstanceId);
 			if (processInstance != null) {
 				processInstanceId = processInstance.getId();
 			}
@@ -223,8 +220,7 @@ public class TaskEntity extends KernelVariableScopeImpl
 
 	public List<IdentityLinkEntity> getIdentityLinks() {
 		if (!isIdentityLinksInitialized) {
-			taskIdentityLinks = Context.getCommandContext().getIdentityLinkManager()
-					.findIdentityLinksByTaskId(id);
+			taskIdentityLinks = Context.getCommandContext().getIdentityLinkManager().findIdentityLinksByTaskId(id);
 			isIdentityLinksInitialized = true;
 		}
 
@@ -249,8 +245,8 @@ public class TaskEntity extends KernelVariableScopeImpl
 	protected void ensureProcessDefinitionInitialized() {
 
 		if (processDefinition == null && processDefinitionId != null) {
-			ProcessDefinitionEntity processDefinition = Context.getProcessEngineConfiguration()
-					.getDeploymentManager().findDeployedProcessDefinitionById(processDefinitionId);
+			ProcessDefinitionEntity processDefinition = Context.getProcessEngineConfiguration().getDeploymentManager()
+					.findDeployedProcessDefinitionById(processDefinitionId);
 			setProcessDefinition(processDefinition);
 		}
 
@@ -333,8 +329,8 @@ public class TaskEntity extends KernelVariableScopeImpl
 	}
 
 	public void setDelegationStateString(String delegationStateString) {
-		this.delegationState = (delegationStateString != null ? DelegationState.valueOf(
-				DelegationState.class, delegationStateString) : null);
+		this.delegationState = (delegationStateString != null ? DelegationState.valueOf(DelegationState.class, delegationStateString)
+				: null);
 	}
 
 	public void setRevision(int revision) {
@@ -665,6 +661,17 @@ public class TaskEntity extends KernelVariableScopeImpl
 		this.commandType = commandType;
 	}
 
+	public void setTaskCommand(TaskCommand taskCommand) {
+		if(taskCommand!=null){
+			// 设置任务上点击的处理命令
+			setCommandId(taskCommand.getId());
+			// 设置任务上点击的处理命令类型
+			setCommandType(taskCommand.getTaskCommandType());
+			// 设置任务上点击的处理命令文本
+			setCommandMessage(taskCommand.getName());
+		}
+	}
+
 	public String getCommandMessage() {
 		return commandMessage;
 	}
@@ -769,8 +776,7 @@ public class TaskEntity extends KernelVariableScopeImpl
 		throw new FoxBPMException("未实现");
 	}
 
-	public IdentityLinkEntity addIdentityLink(String userId, String groupId, String groupType,
-			String type) {
+	public IdentityLinkEntity addIdentityLink(String userId, String groupId, String groupType, String type) {
 		IdentityLinkEntity identityLinkEntity = new IdentityLinkEntity();
 		identityLinkEntity.setId(GuidUtil.CreateGuid());
 		getIdentityLinks().add(identityLinkEntity);
@@ -802,51 +808,65 @@ public class TaskEntity extends KernelVariableScopeImpl
 		return getTaskDefinition().isAutoClaim();
 	}
 
+	/** 结束任务,并驱动流程向下运转。 */
 	public void complete() {
-		// 设置是否为草稿
-		this.isDraft = false;
-		if (this.endTime != null) {
-			throw new FoxBPMException("任务已经结束,不能再进行处理.");
-		}
+		
+		/** 设置任务结束状态 */
+		end();
+		/** 正常处理任务不能处理已经暂停的任务 */
 		if (this.isSuspended) {
 			throw new FoxBPMException("任务已经暂停不能再处理");
 		}
-		this.endTime = new Date();
-		this.isOpen = false;
-		// 触发事件
+		/** 获取令牌 */
 		if (tokenId != null) {
 			TokenEntity token = getToken();
+			/** 移除令牌上注册任务 */
 			token.removeTask(this);
+			/** 驱动令牌向下 */
 			token.signal();
 		}
+		
+	}
+	
+	/**
+	 * 这个结束并不会去推动令牌向下。例如用在退回的时候。
+	 */
+	public void end() {
+		if (this.endTime != null) {
+			throw new FoxBPMException("任务已经结束,不能再进行处理.");
+		}
+		
+		/** 这里判断暂停的逻辑有点问题,有些强制结束需要结束暂停的任务		
+		if (this.isSuspended) {
+			throw new FoxBPMException("任务已经暂停不能再处理");
+		}
+		**/
+		
+		/** 设置结束时间 */
+		this.endTime = new Date();
+		/** 结束草稿状态 */
+		this.isDraft = false;
+		/** 是否已经查阅 */
+		this.isOpen = true;
+		/** 更新完成率 */
+		setCompletionRate(1.0);
 	}
 
 	/**
 	 * 这个结束并不会去推动令牌向下。例如用在退回的时候。
 	 */
-	public void complete(TaskCommand taskCommand, String taskComment) {
+	public void end(TaskCommand taskCommand, String taskComment) {
 
-		if (this.endTime != null) {
-			throw new FoxBPMException("任务已经结束,不能再进行处理.");
-		}
-		if (this.isSuspended) {
-			throw new FoxBPMException("任务已经暂停不能再处理");
-		}
-
-		this.endTime = new Date();
-		this.isDraft = false;
-		this.isOpen = false;
-		this.taskComment = taskComment;
-		if (taskCommand != null && taskCommand.getTaskCommandType() != null
-				&& !taskCommand.getTaskCommandType().equals("")) {
+		end();
+		
+		if (taskCommand != null && taskCommand.getTaskCommandType() != null && !taskCommand.getTaskCommandType().equals("")) {
 			String taskCommandType = taskCommand.getTaskCommandType();
 			String taskCommandName = taskCommand.getName();
 			// 设置流程自动结束信息 autoEnd
 			this.setCommandId(taskCommand.getId());
 			this.setCommandType(taskCommandType);
 			if (taskCommandName == null) {
-				TaskCommandDefinition taskCommandDef = Context.getProcessEngineConfiguration()
-						.getTaskCommandDefinition(taskCommandType);
+				TaskCommandDefinition taskCommandDef = Context.getProcessEngineConfiguration().getTaskCommandDefinition(taskCommandType);
 				if (taskCommandDef != null) {
 					this.setCommandMessage(taskCommandDef.getName());
 				}
@@ -856,8 +876,8 @@ public class TaskEntity extends KernelVariableScopeImpl
 		} else {
 			this.setCommandId(TaskCommandSystemType.AUTOEND);
 			this.setCommandType(TaskCommandSystemType.AUTOEND);
-			TaskCommandDefinition taskCommandDef = Context.getProcessEngineConfiguration()
-					.getTaskCommandDefinition(TaskCommandSystemType.AUTOEND);
+			TaskCommandDefinition taskCommandDef = Context.getProcessEngineConfiguration().getTaskCommandDefinition(
+					TaskCommandSystemType.AUTOEND);
 			if (taskCommandDef != null) {
 				this.setCommandMessage(taskCommandDef.getName());
 			}
@@ -915,6 +935,7 @@ public class TaskEntity extends KernelVariableScopeImpl
 		persistentState.put("processStartTime", getProcessStartTime());
 		persistentState.put("processInitiator", getProcessInitiator());
 		persistentState.put("completeDescription", getCompleteDescription());
+		persistentState.put("completionRate", getCompletionRate());
 
 		return persistentState;
 	}
@@ -952,4 +973,23 @@ public class TaskEntity extends KernelVariableScopeImpl
 		return this.isIdentityLinksInitialized;
 	}
 
+	public double getCompletionRate() {
+		return completionRate;
+	}
+
+	public void setCompletionRate(double completionRate) {
+		this.completionRate = completionRate;
+	}
+
+	@Override
+	public Object clone(){
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new FoxBPMException("task clone 异常",e);
+		}
+	}
+	
+	
+	
 }
