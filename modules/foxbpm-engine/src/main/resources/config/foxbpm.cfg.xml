@@ -50,6 +50,58 @@
 			command="org.foxbpm.engine.impl.task.command.SaveTaskDraftCommand"
 			cmd="org.foxbpm.engine.impl.task.cmd.SaveTaskDraftCmd" isEnabled="true"
 			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.SaveTaskDraftFilter" />
+
+
+		<taskCommandDefinition id="transfer" name="转发"
+			command="org.foxbpm.engine.impl.task.command.TransferTaskCommand"
+			cmd="org.foxbpm.engine.impl.task.cmd.TransferTaskCmd" isEnabled="true"
+			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.TransferTaskFilter" />
+
+
+		<!-- <taskCommandDefinition id="rollBack_reset" name="退回-重新分配"
+			command="org.foxbpm.engine.impl.task.command.RollBackTaskResetCommand"
+			cmd="org.foxbpm.engine.impl.task.cmd.RollBackTaskResetCmd" isEnabled="true"
+			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.RollBackTaskResetFilter"
+			description="退回到前台用户选择的一个节点,任务重新分配处理者。" />
+		<taskCommandDefinition id="rollBack_previousStep"
+			name="退回-上一步"
+			command="org.foxbpm.engine.impl.task.command.RollBackTaskPreviousStepCommand"
+			cmd="org.foxbpm.engine.impl.task.cmd.RollBackTaskPreviousStepCmd"
+			isEnabled="true" type="toDoTasks"
+			filter="org.foxbpm.engine.impl.task.filter.RollBackTaskPreviousStepFilter"
+			description="自动计算并退回到流程的上一步骤,任务处理者为上一步骤的处理者。" />
+		<taskCommandDefinition id="rollBack_assignee"
+			name="退回-处理者"
+			command="org.foxbpm.engine.impl.task.command.RollBackTaskAssigneeCommand"
+			cmd="org.foxbpm.engine.impl.task.cmd.RollBackTaskAssigneeCmd"
+			isEnabled="true" type="toDoTasks"
+			filter="org.foxbpm.engine.impl.task.filter.RollBackTaskAssigneeFilter"
+			description="退回到前台用户指定的节点和处理者。" />
+		<taskCommandDefinition id="rollBack_designation_reset"
+			name="退回-后台指定步骤-重新分配"
+			command="org.foxbpm.engine.impl.task.command.RollBackTaskDesignationResetCommand"
+			cmd="org.foxbpm.engine.impl.task.cmd.RollBackTaskDesignationResetCmd"
+			isEnabled="true" type="toDoTasks"
+			filter="org.foxbpm.engine.impl.task.filter.RollBackTaskDesignationResetFilter"
+			description="在后台设计器端指定一个节点,用户点击了之后退回这个事先设置好的节点,任务会重新进行分配。" />
+
+		<taskCommandDefinition id="rollBack_designation_assignee"
+			name="退回-后台指定步骤-自动最近处理者"
+			command="org.foxbpm.engine.impl.task.command.RollBackTaskDesignationAssigneeCommand" "
+			cmd="org.foxbpm.engine.impl.task.cmd.RollBackTaskDesignationAssigneeCmd"
+			isEnabled="true" type="toDoTasks"
+			filter="org.foxbpm.engine.impl.task.filter.RollBackTaskDesignationAssigneeFilter"
+			description="在后台设计器端指定一个节点,用户点击了之后退回这个事先设置好的节点,会自动计算这个节点最近一步处理者分配给他。" />
+
+		<taskCommandDefinition id="updateCompletionRate"
+			name="更新完成率"
+			command="org.foxbpm.engine.impl.task.command.UpdateCompletionRateCommand"
+			cmd="org.foxbpm.engine.impl.task.cmd.UpdateCompletionRateCmd"
+			isEnabled="true" type="toDoTasks"
+			filter="org.foxbpm.engine.impl.task.filter.UpdateCompletionRateFilter"
+			description="更新任务的完成率。" /> -->
+
+
 		<taskCommandDefinition id="processStatus" name="流程状态"
 			isEnabled="true" type="all" />
 
@@ -57,10 +109,10 @@
 			isEnabled="true" type="system" />
 		<taskCommandDefinition id="autoEnd" name="自动结束"
 			isEnabled="true" type="system" />
-		<taskCommandDefinition id="asyncSubProcessEnd" name="异步子流程结束"
-			isEnabled="true" type="system" />
-			<taskCommandDefinition id="syncSubProcessEnd" name="同步子流程结束"
-			isEnabled="true" type="system" />
+		<taskCommandDefinition id="asyncSubProcessEnd"
+			name="异步子流程结束" isEnabled="true" type="system" />
+		<taskCommandDefinition id="syncSubProcessEnd"
+			name="同步子流程结束" isEnabled="true" type="system" />
 		<taskCommandDefinition id="startEvent" name="流程开始"
 			isEnabled="true" type="system" />
 		<taskCommandDefinition id="endEvent" name="流程结束"
@@ -81,8 +133,8 @@
 			classImpl="com.founder.fix.fixflow.expand.database.GeneralConnectionManagement" />
 	</connectionManagementConfig>
 	<eventListenerConfig>
-	 	<!-- <eventListener eventType="process-start"
-			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.StartEventTrackListener" />-->
+		<!-- <eventListener eventType="process-start" listenerClass="org.foxbpm.engine.impl.listener.runningtrack.StartEventTrackListener" 
+			/> -->
 		<eventListener eventType="node-enter"
 			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" />
 		<!-- <eventListener eventType="node-execute" listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" 
@@ -95,10 +147,13 @@
 		<eventListener eventType="process-end"
 			listenerClass="org.foxbpm.engine.impl.listener.task.EndEventTaskListener" />
 	</eventListenerConfig>
-	
+
 	<bizDataObjectConfig>
-		<dataObjectBehavior id="dataBaseMode" name="数据库表模式" behavior="org.foxbpm.engine.impl.datavariable.BizDataObjectBehaviorImpl"/>
-		<dataObjectBehavior id="eMapDataObject" name="eMap数据对象模式" behavior="com.wisedu.bpm.engine.impl.datavariable.EmapBizDataObjectBehaviorImpl"/>
-		<dataObjectBehavior id="eMapDataObjectRemark" name="eMap数据对象模式" behavior="com.wisedu.bpm.engine.impl.datavariable.EmapBizDataObjectRemarkBehaviorImpl"/>
+		<dataObjectBehavior id="dataBaseMode" name="数据库表模式"
+			behavior="org.foxbpm.engine.impl.datavariable.BizDataObjectBehaviorImpl" />
+		<dataObjectBehavior id="eMapDataObject" name="eMap数据对象模式"
+			behavior="com.wisedu.bpm.engine.impl.datavariable.EmapBizDataObjectBehaviorImpl" />
+		<dataObjectBehavior id="eMapDataObjectRemark" name="eMap数据对象模式"
+			behavior="com.wisedu.bpm.engine.impl.datavariable.EmapBizDataObjectRemarkBehaviorImpl" />
 	</bizDataObjectConfig>
 </foxbpmconfig:FoxBPMConfig>
