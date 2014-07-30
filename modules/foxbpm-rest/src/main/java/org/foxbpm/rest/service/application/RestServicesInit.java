@@ -18,6 +18,10 @@
 package org.foxbpm.rest.service.application;
 
 import org.foxbpm.rest.service.api.config.FlowConfigResouce;
+import org.foxbpm.rest.service.api.identity.GroupCollectionResouce;
+import org.foxbpm.rest.service.api.identity.GroupDefinitionCollection;
+import org.foxbpm.rest.service.api.identity.GroupRelationCollectionResouce;
+import org.foxbpm.rest.service.api.identity.UserCollectionResouce;
 import org.foxbpm.rest.service.api.model.BizDataObjectResouce;
 import org.foxbpm.rest.service.api.model.DeploymentCollectionResource;
 import org.foxbpm.rest.service.api.model.DeploymentResource;
@@ -26,6 +30,7 @@ import org.foxbpm.rest.service.api.model.ProcessDefinitionCollectionResouce;
 import org.foxbpm.rest.service.api.model.ProcessDefinitionResouce;
 import org.foxbpm.rest.service.api.model.ResourceResource;
 import org.foxbpm.rest.service.api.model.VariableDefinitonResouces;
+import org.foxbpm.rest.service.designer.TestConnectionResource;
 import org.restlet.routing.Router;
 
 /**
@@ -36,6 +41,10 @@ import org.restlet.routing.Router;
 public class RestServicesInit {
 	
 	public static void attachResources(Router router) {
+		
+		//设计器测试是否网络连通
+		router.attach("/testConnection", TestConnectionResource.class);
+		
 		router.attach("/models", ModelsResouce.class);
 		router.attach("/model/deployments", DeploymentCollectionResource.class);
 		router.attach("/model/deployment/{deploymentId}", DeploymentResource.class);
@@ -46,5 +55,10 @@ public class RestServicesInit {
 		router.attach("/variable-definition/{key}/{version}/variables", VariableDefinitonResouces.class);
 		router.attach("/flowconfig", FlowConfigResouce.class);
 		router.attach("/bizDataObjects/{behaviorId}/{dataSource}", BizDataObjectResouce.class);
+		
+		router.attach("/identity/allGroups", GroupCollectionResouce.class);
+		router.attach("/identity/allRelations", GroupRelationCollectionResouce.class);
+		router.attach("/identity/allUsers", UserCollectionResouce.class);
+		router.attach("/identity/allGroupDefinitions", GroupDefinitionCollection.class);
 	}
 }

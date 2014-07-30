@@ -52,7 +52,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:applicationContext-test.xml")
 @Transactional
-@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 public abstract class AbstractFoxBpmTestCase extends AbstractTransactionalJUnit4SpringContextTests {
 	
 	@Autowired
@@ -85,7 +85,11 @@ public abstract class AbstractFoxBpmTestCase extends AbstractTransactionalJUnit4
 			throw new FoxBPMException("获取方法失败!", e);
 		}
 		if (method.isAnnotationPresent(Clear.class)) {
-			// cleanData();
+			Clear clearAnnotation = method.getAnnotation(Clear.class);
+			String[] tableNames = clearAnnotation.tables();
+			for(String tableName : tableNames){
+				jdbcTemplate.execute("delete from "+tableName);
+			}
 		}
 		Deployment deploymentAnnotation = method.getAnnotation(Deployment.class);
 		if (deploymentAnnotation != null) {
@@ -106,16 +110,5 @@ public abstract class AbstractFoxBpmTestCase extends AbstractTransactionalJUnit4
 	@After
 	public void clearCache() {
 		CacheUtil.clearCache();
-	}
-	
-	protected void cleanData() {
-		jdbcTemplate.execute("delete from foxbpm_def_bytearray");
-		jdbcTemplate.execute("delete from foxbpm_def_deployment");
-		jdbcTemplate.execute("delete from foxbpm_def_processdefinition");
-		jdbcTemplate.execute("delete from foxbpm_run_processinstance");
-		jdbcTemplate.execute("delete from foxbpm_run_task");
-		jdbcTemplate.execute("delete from foxbpm_run_taskidentitylink");
-		jdbcTemplate.execute("delete from foxbpm_run_token");
-		jdbcTemplate.execute("delete from foxbpm_run_variable");
 	}
 }

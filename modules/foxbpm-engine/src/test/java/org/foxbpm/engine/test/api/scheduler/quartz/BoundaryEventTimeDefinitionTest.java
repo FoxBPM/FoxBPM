@@ -17,6 +17,11 @@
  */
 package org.foxbpm.engine.test.api.scheduler.quartz;
 
+import java.util.List;
+import java.util.Map;
+
+import org.foxbpm.engine.impl.identity.Authentication;
+import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.test.Deployment;
 import org.foxbpm.engine.test.api.scheduler.BaseSchedulerTest;
 import org.junit.Test;
@@ -140,4 +145,93 @@ public class BoundaryEventTimeDefinitionTest extends BaseSchedulerTest {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * 
+	 * 测试场景：当活动节点离开时候，如果还有未触发的边界事件时间调度器，那么就清空该调度器
+	 * 
+	 * @exception
+	 * @since 1.0.0
+	 */
+	@Test
+	@Deployment(resources = {"org/foxbpm/engine/test/impl/scheduler/testDeleteSchedulerAfterLeave_0.bpmn"})
+	public void testEA() {
+		this.cleanRunData();
+		processKey = "testDeleteSchedulerAfterLeave_0";
+	}
+	@Test
+	public void testEB() {
+		// 启动流程实例
+		processInstanceID = runtimeService.startProcessInstanceByKey(processKey).getId();
+	}
+	
+	@Test
+	public void testEC() {
+		List<Map<String, Object>> tokenList = jdbcTemplate.queryForList("SELECT ID FROM FOXBPM_RUN_TOKEN where PROCESSINSTANCE_ID ='"
+		        + processInstanceID + "' AND END_TIME IS NULL ORDER BY START_TIME");
+		String groupName = tokenList.get(0).get("ID").toString() + "_UserTask_1";
+		// 校验 quartz初始化
+		this.validateQuartsCount(groupName, 1);
+		
+		List<Map<String, Object>> taskList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TASK WHERE PROCESSINSTANCE_ID ='"
+		        + processInstanceID + "' AND END_TIME IS NULL ORDER BY CREATE_TIME");
+		// 执行任务
+		Authentication.setAuthenticatedUserId("admin");
+		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
+		expandTaskCommand.setCommandType("submit");
+		expandTaskCommand.setInitiator("admin");
+		expandTaskCommand.setTaskCommandId("HandleCommand_2");
+		expandTaskCommand.setTaskComment("asfd");
+		expandTaskCommand.setBusinessKey("bbb");
+		expandTaskCommand.setTaskId(taskList.get(0).get("ID").toString());
+		taskService.expandTaskComplete(expandTaskCommand, null);
+		
+		// 校验 quartz清空
+		this.validateQuartsCount(groupName, 0);
+	}
+
+	/**
+	 * 
+	 * 测试场景：当活动节点离开时候，如果还有未触发的调度器，那么就清空该调度器,所有附属在该活动节点的调度器都清空
+	 * 
+	 * @exception
+	 * @since 1.0.0
+	 */
+	@Test
+	@Deployment(resources = {"org/foxbpm/engine/test/impl/scheduler/deleteManySchedulerAfterNodeLeave_0.bpmn"})
+	public void testFA() {
+		this.cleanRunData();
+		processKey = "deleteManySchedulerAfterNodeLeave_0";
+	}
+	@Test
+	public void testFB() {
+		// 启动流程实例
+		processInstanceID = runtimeService.startProcessInstanceByKey(processKey).getId();
+	}
+	
+	@Test
+	public void testFC() {
+		List<Map<String, Object>> tokenList = jdbcTemplate.queryForList("SELECT ID FROM FOXBPM_RUN_TOKEN where PROCESSINSTANCE_ID ='"
+		        + processInstanceID + "' AND END_TIME IS NULL ORDER BY START_TIME");
+		String groupName = tokenList.get(0).get("ID").toString() + "_UserTask_1";
+		// 校验 quartz初始化
+		this.validateQuartsCount(groupName, 2);
+		
+		List<Map<String, Object>> taskList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TASK WHERE PROCESSINSTANCE_ID ='"
+		        + processInstanceID + "' AND END_TIME IS NULL ORDER BY CREATE_TIME");
+		// 执行任务
+		Authentication.setAuthenticatedUserId("admin");
+		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
+		expandTaskCommand.setCommandType("submit");
+		expandTaskCommand.setInitiator("admin");
+		expandTaskCommand.setTaskCommandId("HandleCommand_2");
+		expandTaskCommand.setTaskComment("asfd");
+		expandTaskCommand.setBusinessKey("bbb");
+		expandTaskCommand.setTaskId(taskList.get(0).get("ID").toString());
+		taskService.expandTaskComplete(expandTaskCommand, null);
+		
+		// 校验 quartz清空
+		this.validateQuartsCount(groupName, 0);
+	}
+	
 }

@@ -15,13 +15,20 @@
  * 
  * @author ych
  */
-package org.foxbpm.engine.test;
+package org.foxbpm.rest.service.designer;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import org.foxbpm.rest.common.api.AbstractRestResource;
+import org.restlet.resource.Get;
 
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Clear {
+/**
+ * 设计器测试网络通讯是否正常
+ * @author ych
+ *
+ */
+public class TestConnectionResource extends AbstractRestResource {
 
-	public String[] tables() default {};
+	@Get
+	public String getMessage(){
+		return "SUCCESS";
+	}
 }

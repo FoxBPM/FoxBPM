@@ -20,10 +20,13 @@ package org.foxbpm.engine;
 
 import java.util.List;
 
+import org.foxbpm.engine.identity.Group;
+import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentDetailsEntity;
 import org.foxbpm.engine.impl.agent.AgentEntity;
 import org.foxbpm.engine.impl.db.Page;
+import org.foxbpm.engine.impl.identity.GroupRelationEntity;
 
 /**
  * foxbpm中与用户相关的操作均放在此service里
@@ -131,5 +134,27 @@ public interface IdentityService {
 	 * @return 返回代理对象
 	 */
 	AgentEntity queryAgent(String agentUser);
+	
+	/**
+	 * 查询某组类型下所有的组实体
+	 * <p>如： identityService.getAllGroup("dept");查询所有的部门</p>
+	 * @param groupType
+	 * @return
+	 */
+	List<Group> getAllGroup(String groupType);
+	
+	/**
+	 * 查询某组类型下所有的组与人员的关系映射
+	 * <p>如： identityService.getAllGroupRelation("dept");查询所有的部门与人员的关系映射</p>
+	 * @param groupType
+	 * @return
+	 */
+	List<GroupRelationEntity> getAllGroupRelation(String groupType);
+	
+	/**
+	 * 获取所有的组定义 如["角色"，"部门"]
+	 * @return
+	 */
+	List<GroupDefinition> getAllGroupDefinitions();
 
 }

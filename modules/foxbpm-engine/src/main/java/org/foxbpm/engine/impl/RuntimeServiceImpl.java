@@ -24,6 +24,7 @@ import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.datavariable.VariableQuery;
 import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.impl.cmd.BoundaryTimeSignalCmd;
+import org.foxbpm.engine.impl.cmd.DeleteProcessInstanceByIdCmd;
 import org.foxbpm.engine.impl.cmd.SignalCmd;
 import org.foxbpm.engine.impl.cmd.StartProcessInstanceCmd;
 import org.foxbpm.engine.impl.cmd.TimeExecuteConnectorCmd;
@@ -43,88 +44,81 @@ import org.foxbpm.engine.runtime.TokenQuery;
  * 
  */
 public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
-	
+
 	public ProcessInstance startProcessInstanceByKey(String processDefinitionKey) {
 		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(processDefinitionKey, null, null, null, null));
 	}
-	
+
 	public ProcessInstance startProcessInstanceByKey(String processDefinitionKey, String bizKey) {
 		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(processDefinitionKey, null, bizKey, null, null));
 	}
-	
-	public ProcessInstance startProcessInstanceByKey(String processDefinitionKey,
-	    Map<String, Object> transientVariables, Map<String, Object> persistenceVariables) {
+
+	public ProcessInstance startProcessInstanceByKey(String processDefinitionKey, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables) {
 		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(processDefinitionKey, null, null, transientVariables, persistenceVariables));
 	}
-	
-	public ProcessInstance startProcessInstanceByKey(String processDefinitionKey, String bizKey,
-	    Map<String, Object> transientVariables, Map<String, Object> persistenceVariables) {
+
+	public ProcessInstance startProcessInstanceByKey(String processDefinitionKey, String bizKey, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables) {
 		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(processDefinitionKey, null, bizKey, transientVariables, persistenceVariables));
 	}
-	
+
 	public ProcessInstance startProcessInstanceById(String processDefinitionId) {
 		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(null, processDefinitionId, null, null, null));
 	}
-	
+
 	public ProcessInstance startProcessInstanceById(String processDefinitionId, String bizKey) {
 		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(null, processDefinitionId, bizKey, null, null));
 	}
-	
-	public ProcessInstance startProcessInstanceById(String processDefinitionId,
-	    Map<String, Object> transientVariables, Map<String, Object> persistenceVariables) {
+
+	public ProcessInstance startProcessInstanceById(String processDefinitionId, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables) {
 		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(null, processDefinitionId, null, transientVariables, persistenceVariables));
 	}
-	
-	public ProcessInstance startProcessInstanceById(String processDefinitionId, String bizKey,
-	    Map<String, Object> transientVariables, Map<String, Object> persistenceVariables) {
+
+	public ProcessInstance startProcessInstanceById(String processDefinitionId, String bizKey, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables) {
 		return commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(null, processDefinitionId, bizKey, transientVariables, persistenceVariables));
 	}
-	
+
 	public ProcessInstance startProcessInstanceByMessage(String messageName) {
 		throw new FoxBPMBizException("功能尚未完成");
 	}
-	
+
 	public ProcessInstance startProcessInstanceByMessage(String messageName, String bizKey) {
 		throw new FoxBPMBizException("功能尚未完成");
 	}
-	
-	public ProcessInstance startProcessInstanceByMessage(String messageName,
-	    Map<String, Object> processVariables) {
+
+	public ProcessInstance startProcessInstanceByMessage(String messageName, Map<String, Object> processVariables) {
 		throw new FoxBPMBizException("功能尚未完成");
 	}
-	
-	public ProcessInstance startProcessInstanceByMessage(String messageName, String bizKey,
-	    Map<String, Object> processVariables) {
+
+	public ProcessInstance startProcessInstanceByMessage(String messageName, String bizKey, Map<String, Object> processVariables) {
 		throw new FoxBPMBizException("功能尚未完成");
 	}
-	
+
 	public void signal(String executionId) {
 		commandExecutor.execute(new SignalCmd(executionId, null, null, null, null));
 	}
-	
-	public void signal(String executionId, Map<String, Object> transientVariables,
-	    Map<String, Object> persistenceVariables) {
+
+	public void signal(String executionId, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables) {
 		commandExecutor.execute(new SignalCmd(executionId, null, null, transientVariables, persistenceVariables));
 	}
-	
+
 	public TokenQuery createTokenQuery() {
 		return new TokenQueryImpl(commandExecutor);
 	}
-	
+
 	public ProcessInstanceQuery createProcessInstanceQuery() {
 		return new ProcessInstanceQueryImpl(commandExecutor);
 	}
-	
+
 	@Override
 	public VariableQuery createVariableQuery() {
 		return new VariableQueryImpl(commandExecutor);
 	}
-	
+
 	@Override
 	public RunningTrackQuery createRunningTrackQuery() {
 		return new RunningTrackQueryImpl(commandExecutor);
 	}
-	
+
 	/**
 	 * 边界事件定时器启动推动令牌
 	 * 
@@ -137,11 +131,10 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 	 * @param transientVariables
 	 *            瞬态变量
 	 */
-	public void boundaryTimeSignal(String tokenId, String nodeId, boolean isCancelActivity,
-	    Map<String, Object> transientVariables) {
+	public void boundaryTimeSignal(String tokenId, String nodeId, boolean isCancelActivity, Map<String, Object> transientVariables) {
 		commandExecutor.execute(new BoundaryTimeSignalCmd(tokenId, nodeId, isCancelActivity, transientVariables, null));
 	}
-	
+
 	/**
 	 * 边界事件定时器启动推动令牌
 	 * 
@@ -156,11 +149,10 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 	 * @param persistenceVariables
 	 *            持久化变量
 	 */
-	public void boundaryTimeSignal(String tokenId, String nodeId, boolean isCancelActivity,
-	    Map<String, Object> transientVariables, Map<String, Object> persistenceVariables) {
+	public void boundaryTimeSignal(String tokenId, String nodeId, boolean isCancelActivity, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables) {
 		commandExecutor.execute(new BoundaryTimeSignalCmd(tokenId, nodeId, isCancelActivity, transientVariables, persistenceVariables));
 	}
-	
+
 	/**
 	 * 
 	 * autoExecuteConnector(调度器执行 Connector方法)
@@ -178,11 +170,10 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 	 * @exception
 	 * @since 1.0.0
 	 */
-	public void autoExecuteConnector(String processInstanceID, String connectorID,
-	    String eventName, String tokenID, String nodeID) {
+	public void autoExecuteConnector(String processInstanceID, String connectorID, String eventName, String tokenID, String nodeID) {
 		commandExecutor.execute(new TimeExecuteConnectorCmd(processInstanceID, connectorID, eventName, tokenID, nodeID));
 	}
-	
+
 	/**
 	 * 
 	 * autoStartProcessInstance(调度器启动流程实例)
@@ -200,15 +191,12 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 	 * @exception
 	 * @since 1.0.0
 	 */
-	public void autoStartProcessInstance(String processDefinitionKey, String processDefinitionId,
-	    String bizKey, Map<String, Object> transientVariables,
-	    Map<String, Object> persistenceVariables) {
+	public void autoStartProcessInstance(String processDefinitionKey, String processDefinitionId, String bizKey, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables) {
 		this.commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(processDefinitionKey, processDefinitionId, bizKey, transientVariables, persistenceVariables));
 	}
 
 	@Override
-	public void deleteProcessInstance(String processInstanceId, String deleteReason) {
-		// TODO Auto-generated method stub
-		
+	public void deleteProcessInstance(String processInstanceId) {
+		this.commandExecutor.execute(new DeleteProcessInstanceByIdCmd(processInstanceId));
 	}
 }

@@ -32,12 +32,12 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
+import org.foxbpm.engine.impl.util.DBUtils;
 import org.foxbpm.engine.impl.util.FileUtil;
 import org.foxbpm.engine.repository.DeploymentBuilder;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
-import org.foxbpm.rest.common.api.SpringLoadHelper;
 import org.restlet.data.Status;
 import org.restlet.ext.fileupload.RestletFileUpload;
 import org.restlet.representation.Representation;
@@ -45,6 +45,7 @@ import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -59,9 +60,9 @@ public class ModelsResouce extends AbstractRestResource{
 
 //	private static final String targetPath = "D:\\TMP";
 	private static final String SEP = "-";
-	private static final String PREFIX_ADD = "insert";
-	private static final String PREFIX_UPDATE = "update";
-	private static final String PREFIX_DELETE = "delete";
+	private static final String PREFIX_ADD = "New";
+	private static final String PREFIX_UPDATE = "Update";
+	private static final String PREFIX_DELETE = "Delete";
 	private static Logger log = LoggerFactory.getLogger(ModelsResouce.class);
 	@Post
 	public String deploy(Representation entity){
@@ -70,6 +71,7 @@ public class ModelsResouce extends AbstractRestResource{
 		InputStream is = null;
 		try {
 			File file = File.createTempFile(System.currentTimeMillis() + "flowres", ".zip");
+			
 			fileOutputStream = new FileOutputStream(file);
 		    DiskFileItemFactory factory = new DiskFileItemFactory();  
 	        RestletFileUpload upload = new RestletFileUpload(factory); 
@@ -77,24 +79,24 @@ public class ModelsResouce extends AbstractRestResource{
 	        try {  
 	            items = upload.parseRepresentation(entity);  
 	        } catch (FileUploadException e) {  
-	            e.printStackTrace();  
+	           throw new FoxBPMException("上传文件格式不正确");
 	        }
 	        FileItem fileItem = items.get(0);
 	        fileItem.write(file);
-			String targetPath = this.getClass().getClassLoader().getResource("/").getPath();
-			targetPath=targetPath.substring(1, targetPath.indexOf("WEB-INF/classes"));
-			targetPath = targetPath+File.separator+"ModelsTempFile";
-			FileUtil.unZip(file.getPath(),targetPath);
-			final File modelsPath = new File(targetPath);
+	        
+	        String sysTemp = System.getProperty("java.io.tmpdir");  
+	        final File targetDir = new File(sysTemp + File.separator + "ModelsTempFile");  
+	        targetDir.mkdirs();  
+			FileUtil.unZip(file.getPath(),targetDir.getPath());
 			
-			PlatformTransactionManager transactionManager = (PlatformTransactionManager)SpringLoadHelper.getBean("foxbpmTransactionManager");
+			PlatformTransactionManager transactionManager = new DataSourceTransactionManager(DBUtils.getDataSource());
 			TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
 					try{
 						ModelService modelService = FoxBpmUtil.getProcessEngine().getModelService();
-						for(File tmpFile : modelsPath.listFiles()){
+						for(File tmpFile : targetDir.listFiles()){
 							if(tmpFile.isDirectory()){
 								DeploymentBuilder deploymentBuilder = modelService.createDeployment();
 								String fileName = tmpFile.getName();
