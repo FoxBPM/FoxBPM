@@ -117,8 +117,7 @@ public class BaseSchedulerTest extends AbstractFoxBpmTestCase {
 	 * @since 1.0.0
 	 */
 	protected void validateActiveTokenCount(int count) {
-		List<Map<String, Object>> tokenList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TOKEN where PROCESSINSTANCE_ID ='"
-		        + processInstanceID + "' AND END_TIME IS NULL ORDER BY START_TIME");
+		List<Map<String, Object>> tokenList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TOKEN where  END_TIME IS NULL ORDER BY START_TIME");
 		assertNotNull(tokenList);
 		assertEquals(tokenList.size(), count);
 	}
