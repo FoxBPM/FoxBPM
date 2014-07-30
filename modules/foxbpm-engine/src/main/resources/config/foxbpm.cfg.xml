@@ -122,9 +122,9 @@
 
 	</taskCommandConfig>
 
-	<sysMailConfig selected="方正国际邮箱">
-		<mailInfo mailAddress="jiang_nan@founder.com" mailName="方正国际邮箱"
-			smtpHost="mail.founder.com.cn" smtpPort="25" userName="kenshin"
+	<sysMailConfig selected="金智教育邮箱">
+		<mailInfo mailAddress="kenshin@wisedu.com" mailName="金智教育邮箱"
+			smtpHost="mail.widedu.com.cn" smtpPort="25" userName="kenshin"
 			password="kenshin" />
 	</sysMailConfig>
 
