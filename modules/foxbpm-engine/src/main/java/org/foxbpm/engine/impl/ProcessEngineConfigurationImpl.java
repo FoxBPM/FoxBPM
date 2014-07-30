@@ -38,6 +38,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.IdentityService;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngine;
@@ -376,8 +377,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected void initGroupDefinitions() {
 		if (groupDefinitions == null) {
 			groupDefinitions = new ArrayList<GroupDefinition>();
-			groupDefinitions.add(new GroupDeptImpl());
-			groupDefinitions.add(new GroupRoleImpl());
+			groupDefinitions.add(new GroupDeptImpl(Constant.DEPT_TYPE,"部门"));
+			groupDefinitions.add(new GroupRoleImpl(Constant.ROLE_TYPE,"角色"));
 		}
 	}
 

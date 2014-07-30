@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.foxbpm.engine.IdentityService;
 import org.foxbpm.engine.identity.Group;
+import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentDetailsEntity;
 import org.foxbpm.engine.impl.agent.AgentEntity;
@@ -31,6 +32,7 @@ import org.foxbpm.engine.impl.cmd.FindUserByIdCmd;
 import org.foxbpm.engine.impl.cmd.FindUsersCmd;
 import org.foxbpm.engine.impl.cmd.FindUsersCountCmd;
 import org.foxbpm.engine.impl.cmd.GetAllGroupByTypeCmd;
+import org.foxbpm.engine.impl.cmd.GetAllGroupDefinitionsCmd;
 import org.foxbpm.engine.impl.cmd.GetAllGroupRelationByTypeCmd;
 import org.foxbpm.engine.impl.cmd.SaveAgentDetailsEntityCmd;
 import org.foxbpm.engine.impl.cmd.SaveAgentEntityCmd;
@@ -101,5 +103,10 @@ public class IdentityServiceImpl extends ServiceImpl implements IdentityService 
 	@Override
 	public List<GroupRelationEntity> getAllGroupRelation(String groupType) {
 		return commandExecutor.execute(new GetAllGroupRelationByTypeCmd(groupType));
+	}
+	
+	@Override
+	public List<GroupDefinition> getAllGroupDefinitions() {
+		return commandExecutor.execute(new GetAllGroupDefinitionsCmd());
 	}
 }

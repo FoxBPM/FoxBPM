@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.identity.Group;
+import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentDetailsEntity;
 import org.foxbpm.engine.impl.agent.AgentEntity;
@@ -289,5 +290,10 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		assertEquals("dept", deptRelationEntity.getGroupType());
 	}
 	
+	@Test
+	public void testGetAllGroupDefinition(){
+		List<GroupDefinition> groupDefinitions = identityService.getAllGroupDefinitions();
+		assertEquals(2, groupDefinitions.size());
+	}
 	
 }

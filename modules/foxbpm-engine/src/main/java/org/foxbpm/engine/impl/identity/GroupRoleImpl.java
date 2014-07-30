@@ -20,7 +20,6 @@ package org.foxbpm.engine.impl.identity;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.impl.Context;
@@ -30,6 +29,14 @@ import org.foxbpm.engine.sqlsession.ISqlSession;
 
 public class GroupRoleImpl implements GroupDefinition {
 
+	private String type;
+	private String name;
+	
+	public GroupRoleImpl(String type,String definitionName) {
+		this.type = type;
+		this.name = definitionName;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Group> selectGroupByUserId(String userId) {
 		List<Group> groups = (List<Group>) CacheUtil.getIdentityCache().get("userRoleCache_" + userId);
@@ -44,7 +51,13 @@ public class GroupRoleImpl implements GroupDefinition {
 	
 	@Override
 	public String getType() {
-		return Constant.ROLE_TYPE;
+		return type;
+	}
+	
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
 	}
 	
 	@SuppressWarnings("unchecked")

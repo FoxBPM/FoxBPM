@@ -21,6 +21,7 @@ package org.foxbpm.engine;
 import java.util.List;
 
 import org.foxbpm.engine.identity.Group;
+import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentDetailsEntity;
 import org.foxbpm.engine.impl.agent.AgentEntity;
@@ -149,5 +150,11 @@ public interface IdentityService {
 	 * @return
 	 */
 	List<GroupRelationEntity> getAllGroupRelation(String groupType);
+	
+	/**
+	 * 获取所有的组定义 如["角色"，"部门"]
+	 * @return
+	 */
+	List<GroupDefinition> getAllGroupDefinitions();
 
 }
