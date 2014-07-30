@@ -30,6 +30,7 @@ import org.foxbpm.rest.service.api.model.ProcessDefinitionCollectionResouce;
 import org.foxbpm.rest.service.api.model.ProcessDefinitionResouce;
 import org.foxbpm.rest.service.api.model.ResourceResource;
 import org.foxbpm.rest.service.api.model.VariableDefinitonResouces;
+import org.foxbpm.rest.service.designer.TestConnectionResource;
 import org.restlet.routing.Router;
 
 /**
@@ -40,6 +41,10 @@ import org.restlet.routing.Router;
 public class RestServicesInit {
 	
 	public static void attachResources(Router router) {
+		
+		//设计器测试是否网络连通
+		router.attach("/testConnection", TestConnectionResource.class);
+		
 		router.attach("/models", ModelsResouce.class);
 		router.attach("/model/deployments", DeploymentCollectionResource.class);
 		router.attach("/model/deployment/{deploymentId}", DeploymentResource.class);
