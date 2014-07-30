@@ -18,7 +18,6 @@
 package org.foxbpm.engine.test.api.scheduler;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
@@ -27,6 +26,8 @@ import java.util.Map;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
 import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 
@@ -40,6 +41,8 @@ import org.junit.runners.MethodSorters;
  * @version 1.0.0
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@Transactional
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = false)
 public class BaseSchedulerTest extends AbstractFoxBpmTestCase {
 	protected static String processDefinitionID;
 	protected static String processInstanceID;
@@ -52,15 +55,20 @@ public class BaseSchedulerTest extends AbstractFoxBpmTestCase {
 	/** 每个测试用例 quartz完成调度所需要的基本时间：2分钟 */
 	public final static int QUART_SCHEDULED_TIME = 2;
 	
-	protected void validateQuartsDeleted() {
+	/**
+	 * 
+	 * 校验调度器的数量
+	 * 
+	 * @param groupName
+	 * @param count
+	 *            void
+	 * @exception
+	 * @since 1.0.0
+	 */
+	protected void validateQuartsCount(String groupName, int count) {
 		List<Map<String, Object>> beforeResult = jdbcTemplate.queryForList("SELECT * FROM qrtz_job_details where job_group='"
-		        + processKey + "'");
-		assertEquals(beforeResult.size(), 0);
-	}
-	protected void validateQuartsInitialized() {
-		List<Map<String, Object>> beforeResult = jdbcTemplate.queryForList("SELECT * FROM qrtz_job_details where job_group='"
-		        + processKey + "'");
-		assertNotEquals(beforeResult.size(), 0);
+		        + groupName + "'");
+		assertEquals(beforeResult.size(), count);
 	}
 	/**
 	 * 
