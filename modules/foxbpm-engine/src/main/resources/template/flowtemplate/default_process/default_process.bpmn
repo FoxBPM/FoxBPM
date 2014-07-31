@@ -5,7 +5,7 @@
       <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
     </bpmn2:startEvent>
     <bpmn2:sequenceFlow id="SequenceFlow_5" sourceRef="StartEvent_1" targetRef="UserTask_1"/>
-    <bpmn2:userTask id="UserTask_1" name="UserTask_1">
+    <bpmn2:userTask id="UserTask_1" foxbpm:claimType="defaultClaim" name="UserTask_1">
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="提交" commandType="startandsubmit"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="提交" commandType="submit"/>
