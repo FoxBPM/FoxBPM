@@ -22,6 +22,7 @@ import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.test.Deployment;
 import org.foxbpm.engine.test.api.scheduler.BaseSchedulerTest;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -42,25 +43,28 @@ public class IntermediateEventTimeDefinitionTest extends BaseSchedulerTest {
 	@Test
 	@Deployment(resources = {"org/foxbpm/engine/test/impl/scheduler/testIntermediateTimeDefinition_0.bpmn"})
 	public void testAA() {
-		cleanRunData();
 		processKey = "testIntermediateTimeDefinition_0";
 	}
 	@Test
 	public void testAB() {
-		Authentication.setAuthenticatedUserId("admin");
-		// 完成任务，启动流程实例并且提交第一个人工任务
-		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
-		expandTaskCommand.setCommandType("startandsubmit");
-		expandTaskCommand.setInitiator("admin");
-		expandTaskCommand.setTaskCommandId("HandleCommand_3");
-		expandTaskCommand.setTaskComment("asfd");
-		expandTaskCommand.setBusinessKey("bbb");
-		expandTaskCommand.setProcessDefinitionKey(processKey);
-		ProcessInstance processInstance = taskService.expandTaskComplete(expandTaskCommand, null);
-		processInstanceID = processInstance.getId();
-		
-		// 校验令牌停在 IntermediateCatchEvent_2节点
-		this.validateToken("IntermediateCatchEvent_2");
+		try {
+			Authentication.setAuthenticatedUserId("admin");
+			// 完成任务，启动流程实例并且提交第一个人工任务
+			ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
+			expandTaskCommand.setCommandType("startandsubmit");
+			expandTaskCommand.setInitiator("admin");
+			expandTaskCommand.setTaskCommandId("HandleCommand_3");
+			expandTaskCommand.setTaskComment("asfd");
+			expandTaskCommand.setBusinessKey("bbb");
+			expandTaskCommand.setProcessDefinitionKey(processKey);
+			ProcessInstance processInstance = taskService.expandTaskComplete(expandTaskCommand, null);
+			processInstanceID = processInstance.getId();
+			
+			// 校验令牌停在 IntermediateCatchEvent_2节点
+			this.validateToken("IntermediateCatchEvent_2");
+		} finally {
+			deleteProcessDefinition();
+		}
 	}
 	@Test
 	public void testAC() {
@@ -74,7 +78,9 @@ public class IntermediateEventTimeDefinitionTest extends BaseSchedulerTest {
 			// 校验令牌
 			this.validateToken("UserTask_5");
 		} catch (Exception e) {
-			e.printStackTrace();
+			Assert.fail();
+		} finally {
+			deleteProcessDefinition();
 		}
 	}
 }

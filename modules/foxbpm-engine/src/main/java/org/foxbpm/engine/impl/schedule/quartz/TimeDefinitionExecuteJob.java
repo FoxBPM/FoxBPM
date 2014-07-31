@@ -35,7 +35,7 @@ import org.quartz.JobExecutionException;
 /**
  * 
  * 
- * TokenTimeoutAutoExecuteJob 超时任务自动执行JOB
+ * 事件时间定义的自动执行JOB、包括边界事件时间定义和中间事件时间定义
  * 
  * MAENLIANG 2014年7月8日 下午1:59:37
  * 

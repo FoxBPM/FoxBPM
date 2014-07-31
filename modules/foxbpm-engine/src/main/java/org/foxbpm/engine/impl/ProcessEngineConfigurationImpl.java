@@ -78,6 +78,7 @@ import org.foxbpm.engine.impl.persistence.ProcessDefinitionManager;
 import org.foxbpm.engine.impl.persistence.ProcessInstanceManager;
 import org.foxbpm.engine.impl.persistence.ResourceManager;
 import org.foxbpm.engine.impl.persistence.RunningTrackManager;
+import org.foxbpm.engine.impl.persistence.SchedulerManager;
 import org.foxbpm.engine.impl.persistence.TaskManager;
 import org.foxbpm.engine.impl.persistence.TokenManager;
 import org.foxbpm.engine.impl.persistence.UserEntityManagerFactory;
@@ -413,6 +414,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			sessionFactories = new HashMap<Class<?>, SessionFactory>();
 			addSessionFactory(sqlSessionFactory);
 			addSessionFactory(new GenericManagerFactory(TaskManager.class));
+			addSessionFactory(new GenericManagerFactory(SchedulerManager.class));
 			addSessionFactory(new GenericManagerFactory(ProcessInstanceManager.class));
 			addSessionFactory(new GenericManagerFactory(TokenManager.class));
 			addSessionFactory(new GenericManagerFactory(DeploymentEntityManager.class));

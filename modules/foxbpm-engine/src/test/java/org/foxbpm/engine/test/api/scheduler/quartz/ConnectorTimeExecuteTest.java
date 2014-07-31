@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.foxbpm.engine.test.Deployment;
 import org.foxbpm.engine.test.api.scheduler.BaseSchedulerTest;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -52,7 +53,9 @@ public class ConnectorTimeExecuteTest extends BaseSchedulerTest {
 			// 校验连接器是否执行成功
 			assertEquals(validateValue, "true");
 		} catch (Exception e) {
-			e.printStackTrace();
+			Assert.fail();
+		} finally {
+			deleteProcessDefinition();
 		}
 	}
 	
