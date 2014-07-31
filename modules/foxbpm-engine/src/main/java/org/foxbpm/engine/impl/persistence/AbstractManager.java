@@ -24,14 +24,15 @@ import org.foxbpm.engine.impl.interceptor.Session;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 /**
  * 持久化管理器抽象类
+ * 
  * @author kenshin
  */
-public abstract class AbstractManager implements Session{
+public abstract class AbstractManager implements Session {
 	
-	public ISqlSession getSqlSession(){
+	public ISqlSession getSqlSession() {
 		return getSession(ISqlSession.class);
 	}
-
+	
 	protected <T> T getSession(Class<T> sessionClass) {
 		return Context.getCommandContext().getSession(sessionClass);
 	}
@@ -40,26 +41,26 @@ public abstract class AbstractManager implements Session{
 		getSqlSession().insert(persistentObject);
 	}
 	
-	public void update(PersistentObject persistentObject){
+	public void update(PersistentObject persistentObject) {
 		getSqlSession().update(persistentObject);
 	}
 	
 	protected DeploymentEntityManager getDeploymentManager() {
 		return getSession(DeploymentEntityManager.class);
 	}
-
+	
 	protected ResourceManager getResourceManager() {
 		return getSession(ResourceManager.class);
 	}
-
+	
 	protected ProcessDefinitionManager getProcessDefinitionManager() {
 		return getSession(ProcessDefinitionManager.class);
 	}
-
+	
 	protected TaskManager getTaskManager() {
 		return getSession(TaskManager.class);
 	}
-
+	
 	protected IdentityLinkManager getIdentityLinkManager() {
 		return getSession(IdentityLinkManager.class);
 	}
@@ -72,12 +73,36 @@ public abstract class AbstractManager implements Session{
 		return getSession(TokenManager.class);
 	}
 	
+	/**
+	 * 
+	 * 获取运行轨迹MANAGER
+	 * 
+	 * @return RunningTrackManager
+	 * @exception
+	 * @since 1.0.0
+	 */
+	protected RunningTrackManager getRunningTrackManager() {
+		return getSession(RunningTrackManager.class);
+	}
+	
+	/**
+	 * 
+	 * 获取调度器MANAGER
+	 * 
+	 * @return SchedulerManager
+	 * @exception
+	 * @since 1.0.0
+	 */
+	protected SchedulerManager getSchedulerManager() {
+		return getSession(SchedulerManager.class);
+	}
+	
 	protected ProcessInstanceManager getProcessInstanceManager() {
 		return getSession(ProcessInstanceManager.class);
 	}
 	
-	public <T extends PersistentObject> T selectById(Class<T> entityClass,String id){
-		return (T) getSqlSession().selectById(entityClass,id);
+	public <T extends PersistentObject> T selectById(Class<T> entityClass, String id) {
+		return (T) getSqlSession().selectById(entityClass, id);
 	}
 	
 	public void flush() {
