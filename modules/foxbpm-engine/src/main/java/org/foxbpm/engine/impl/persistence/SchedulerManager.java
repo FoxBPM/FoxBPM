@@ -17,44 +17,40 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
-import java.util.List;
-
-import org.foxbpm.engine.runningtrack.RunningTrack;
+import org.foxbpm.engine.impl.util.QuartzUtil;
 
 /**
+ * SchedulerManager 调度器管理类 目前是采用 quartz框架提供的接口直接操作
  * 
- * 
- * RunningTrackManager 运行轨迹管理
- * 
- * MAENLIANG 2014年7月9日 上午9:56:12
+ * MAENLIANG 2014年7月31日 上午11:23:58
  * 
  * @version 1.0.0
  * 
  */
-public class RunningTrackManager extends AbstractManager {
+public class SchedulerManager extends AbstractManager {
 	/**
 	 * 
-	 * 根据流程实例ID查询，该流程实例所关联的所有流程运行轨迹
-	 * 
-	 * @param processInstanceId
-	 * @return List<RunningTrack>
-	 * @exception
-	 * @since 1.0.0
-	 */
-	@SuppressWarnings({"unchecked"})
-	public List<RunningTrack> findRunningTrackByProcessInstanceId(String processInstanceId) {
-		return (List<RunningTrack>) getSqlSession().selectListWithRawParameter("selectRunningTrackByProcessInstanceId", processInstanceId);
-	}
-	/**
-	 * 
-	 * 根据流程实例ID删除该流程实例所关联的所有运行轨迹
+	 * 删除流程实例下所有的调度器
 	 * 
 	 * @param processInstanceId
 	 *            void
 	 * @exception
 	 * @since 1.0.0
 	 */
-	public void deleteRunningTrackByProcessInstanceId(String processInstanceId) {
-		getSqlSession().delete("deleteRunningTrackByProcessInstanceId", processInstanceId);
+	public void deleteJobByInstanceId(String processInstanceId) {
+		QuartzUtil.deleteJob(processInstanceId);
+	}
+	
+	/**
+	 * 
+	 * 删除流程实例下所有的调度器
+	 * 
+	 * @param processInstanceId
+	 *            void
+	 * @exception
+	 * @since 1.0.0
+	 */
+	public void deleteJobByProcessKey(String processKey) {
+		QuartzUtil.deleteJob(processKey);
 	}
 }

@@ -31,39 +31,36 @@ import org.foxbpm.engine.runtime.ProcessInstance;
  * 
  */
 public class ProcessInstanceManager extends AbstractManager {
-
+	
 	public ProcessInstanceEntity findProcessInstanceById(String id) {
 		return selectById(ProcessInstanceEntity.class, id);
 	}
-
+	
 	public long findProcessInstanceCountByQueryCriteria(
-			ProcessInstanceQueryImpl processsInstanceQuery) {
-		return (Long) getSqlSession().selectOne("selectProcessInstanceCountByQueryCriteria",
-				processsInstanceQuery);
+	    ProcessInstanceQueryImpl processsInstanceQuery) {
+		return (Long) getSqlSession().selectOne("selectProcessInstanceCountByQueryCriteria", processsInstanceQuery);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public List<ProcessInstance> findProcessInstanceByQueryCriteria(
-			ProcessInstanceQueryImpl processInstaceQuery) {
-		return getSqlSession().selectList("selectProcessInstanceByQueryCriteria",
-				processInstaceQuery);
+	    ProcessInstanceQueryImpl processInstaceQuery) {
+		return getSqlSession().selectList("selectProcessInstanceByQueryCriteria", processInstaceQuery);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public void deleteProcessInstancesByProcessDefinition(String processDefinitionId,
-			boolean cascade) {
+	    boolean cascade) {
 		// 删除流程实例
 		deleteProcessInstanceByProcessDefinitionId(processDefinitionId);
 		if (cascade) {
-			List<String> processInstanceIds = getSqlSession().selectListWithRawParameter(
-					"selectProcessInstanceIdsByProcessDefinitionId", processDefinitionId);
+			List<String> processInstanceIds = getSqlSession().selectListWithRawParameter("selectProcessInstanceIdsByProcessDefinitionId", processDefinitionId);
 			for (String processInstanceId : processInstanceIds) {
 				cascadeDelete(processInstanceId);
 			}
 		}
 	}
 	
-	private void cascadeDelete(String processInstanceId){
+	private void cascadeDelete(String processInstanceId) {
 		TokenManager tokenManager = getTokenManager();
 		TaskManager taskManager = getTaskManager();
 		VariableManager variableManager = getVariableManager();
@@ -73,11 +70,17 @@ public class ProcessInstanceManager extends AbstractManager {
 		taskManager.deleteTaskByProcessInstanceId(processInstanceId);
 		// 删除变量
 		variableManager.deleteVariableByProcessInstanceId(processInstanceId);
+		// 删除流程实例所关联的运行轨迹
+		getRunningTrackManager().deleteRunningTrackByProcessInstanceId(processInstanceId);
+		
+		// 删除流程实例所关联的调度器
+		getSchedulerManager().deleteJobByInstanceId(processInstanceId);
+		
 	}
-
+	
 	/**
-	 * 根据processDefinitionId删除流程实例
-	 * 只删除流程实例，不级联其他数据
+	 * 根据processDefinitionId删除流程实例 只删除流程实例，不级联其他数据
+	 * 
 	 * @param processInstanceId
 	 */
 	private void deleteProcessInstanceByProcessDefinitionId(String processDefinitionId) {
@@ -86,11 +89,12 @@ public class ProcessInstanceManager extends AbstractManager {
 	
 	/**
 	 * 根据流程实例号删除流程实例
+	 * 
 	 * @param processInstanceId
 	 */
-	public void deleteProcessInstanceById(String processInstanceId){
+	public void deleteProcessInstanceById(String processInstanceId) {
 		getSqlSession().delete("deleteProcessInstanceById", processInstanceId);
 		cascadeDelete(processInstanceId);
 	}
-
+	
 }

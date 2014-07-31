@@ -55,6 +55,15 @@ public class BaseSchedulerTest extends AbstractFoxBpmTestCase {
 	/** 每个测试用例 quartz完成调度所需要的基本时间：2分钟 */
 	public final static int QUART_SCHEDULED_TIME = 2;
 	
+	// 删除流程定义
+	protected void deleteProcessDefinition() {
+		// 执行流程定义删除操作
+		List<Map<String, Object>> deployMentIdResultList = jdbcTemplate.queryForList("SELECT DEPLOYMENT_ID FROM FOXBPM_DEF_PROCESSDEFINITION WHERE PROCESS_KEY ='"
+		        + processKey + "' ");
+		String deploymentId = deployMentIdResultList.get(0).get("DEPLOYMENT_ID").toString();
+		this.modelService.deleteDeployment(deploymentId);
+	}
+	
 	/**
 	 * 
 	 * 校验调度器的数量
@@ -66,8 +75,8 @@ public class BaseSchedulerTest extends AbstractFoxBpmTestCase {
 	 * @since 1.0.0
 	 */
 	protected void validateQuartsCount(String groupName, int count) {
-		List<Map<String, Object>> beforeResult = jdbcTemplate.queryForList("SELECT * FROM qrtz_job_details where job_group='"
-		        + groupName + "'");
+		List<Map<String, Object>> beforeResult = jdbcTemplate.queryForList("SELECT * FROM qrtz_job_details where job_group like '"
+		        + groupName + "%'");
 		assertEquals(beforeResult.size(), count);
 	}
 	/**
@@ -141,27 +150,6 @@ public class BaseSchedulerTest extends AbstractFoxBpmTestCase {
 	
 	/**
 	 * 
-	 * validateToken(边界事件存在主令牌、子令牌的情况)
-	 * 
-	 * @param nodeIdA
-	 * @param nodeIdB
-	 * @param nodeIdC
-	 *            void
-	 * @exception
-	 * @since 1.0.0
-	 */
-	protected void validateToken(String nodeIdA, String nodeIdB, String nodeIdC) {
-		List<Map<String, Object>> tokenList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TOKEN where PROCESSINSTANCE_ID ='"
-		        + processInstanceID + "' AND END_TIME IS NULL ORDER BY START_TIME");
-		assertNotNull(tokenList);
-		assertEquals(tokenList.size(), 3);
-		assertEquals((String) tokenList.get(0).get(NODE_ID), nodeIdA);
-		assertEquals((String) tokenList.get(1).get(NODE_ID), nodeIdB);
-		assertEquals((String) tokenList.get(2).get(NODE_ID), nodeIdC);
-	}
-	
-	/**
-	 * 
 	 * 当多个非终止事件定时执行的时候，需要校验多个令牌
 	 * 
 	 * @param nodeIds
@@ -203,31 +191,6 @@ public class BaseSchedulerTest extends AbstractFoxBpmTestCase {
 	
 	/**
 	 * 
-	 * validateActiveTask(校验两个同时活动的节点)
-	 * 
-	 * @param nodeIdA
-	 * @param nodeIdB
-	 *            void
-	 * @exception
-	 * @since 1.0.0
-	 */
-	protected void validateActiveTask(String nodeIdA, String nodeIdB) {
-		List<Map<String, Object>> processResultList = jdbcTemplate.queryForList("SELECT PROCESS_ID FROM FOXBPM_DEF_PROCESSDEFINITION WHERE PROCESS_KEY='"
-		        + processKey + "' ");
-		processDefinitionID = (String) processResultList.get(0).get(PROCESS_ID);
-		List<Map<String, Object>> taskList = jdbcTemplate.queryForList("SELECT * FROM FOXBPM_RUN_TASK WHERE PROCESSDEFINITION_ID ='"
-		        + processDefinitionID + "' AND END_TIME IS NULL ORDER BY CREATE_TIME");
-		assertNotNull(taskList);
-		assertEquals(taskList.size(), 2);
-		processInstanceID = (String) taskList.get(0).get("PROCESSINSTANCE_ID");
-		String nodeId = (String) taskList.get(0).get("NODE_ID");
-		assertEquals(nodeId, nodeIdA);
-		nodeId = (String) taskList.get(1).get(NODE_ID);
-		assertEquals(nodeId, nodeIdB);
-	}
-	
-	/**
-	 * 
 	 * validateActiveTask(校验多个活动任务的情况)
 	 * 
 	 * @param nodeIds
@@ -247,21 +210,6 @@ public class BaseSchedulerTest extends AbstractFoxBpmTestCase {
 		for (int i = 0; i < nodeIds.length; i++) {
 			assertEquals((String) taskList.get(i).get("NODE_ID"), nodeIds[i]);
 		}
-	}
-	
-	/**
-	 * 
-	 * cleanRunData(清空流程运行过程中的数据) void
-	 * 
-	 * @exception
-	 * @since 1.0.0
-	 */
-	protected void cleanRunData() {
-		jdbcTemplate.execute("delete from foxbpm_run_processinstance");
-		jdbcTemplate.execute("delete from foxbpm_run_task");
-		jdbcTemplate.execute("delete from foxbpm_run_taskidentitylink");
-		jdbcTemplate.execute("delete from foxbpm_run_token");
-		jdbcTemplate.execute("delete from foxbpm_run_variable");
 	}
 	
 	/**

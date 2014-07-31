@@ -107,7 +107,7 @@ public class TimerEventBehavior extends EventDefinition {
 		        || StringUtil.equals(eventType, EVENT_TYPE_INTERMIDATE)) {
 			/** 边界中间事件时间定义执行、令牌离开时，需要删除该JOB DETAIL */
 			/** GroupName 命名采用拼接的形式 事件节点ID+流程实例ID */
-			groupName = new FoxbpmSchedulerGroupnameGernerater(kernelTokenImpl).gernerateNodeGroupName();
+			groupName = new FoxbpmSchedulerGroupnameGernerater(kernelTokenImpl).gernerateDefinitionGroupName();
 			jobDetail = new FoxbpmJobDetail<FoxbpmScheduleJob>(new TimeDefinitionExecuteJob(GuidUtil.CreateGuid(), groupName));
 			
 			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.PROCESS_INSTANCE_ID, kernelTokenImpl.getProcessInstanceId());
@@ -118,7 +118,7 @@ public class TimerEventBehavior extends EventDefinition {
 		} else if (StringUtil.equals(eventType, EVENT_TYPE_CONNECTOR)) {
 			/** 连接器定时执行、流程结束时，需要删除该JOB DETAIL */
 			/** GroupName 命名采用节点ID+流程实例ID */
-			groupName = new FoxbpmSchedulerGroupnameGernerater(kernelTokenImpl).gernerateNodeGroupName();
+			groupName = new FoxbpmSchedulerGroupnameGernerater(kernelTokenImpl).gernerateDefinitionGroupName();
 			jobDetail = new FoxbpmJobDetail<FoxbpmScheduleJob>(new ConnectorAutoExecuteJob(GuidUtil.CreateGuid(), groupName));
 			
 			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.CONNECTOR_ID, params[0]);

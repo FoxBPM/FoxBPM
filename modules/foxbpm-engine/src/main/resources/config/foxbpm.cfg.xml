@@ -16,6 +16,10 @@
 			projectName="connector2" virtualPath="src/main/java/connector/actorconnector/"
 			src="connector/actorconnector/" />
 
+		<resourcePath id="foxbpmflow-template" name="foxbpmflow-template"
+			projectName="foxbpm-engine" src="template/flowtemplate/"
+			virtualPath="src/main/resources/template/flowtemplate/" />
+
 	</resourcePathConfig>
 	<scriptLanguageConfig selected="Groovy">
 		<scriptLanguage id="BeanShell"

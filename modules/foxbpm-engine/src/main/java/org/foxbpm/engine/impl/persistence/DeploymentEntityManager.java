@@ -33,7 +33,7 @@ import org.foxbpm.engine.repository.ProcessDefinition;
  * @author yangguangftlp
  */
 public class DeploymentEntityManager extends AbstractManager {
-
+	
 	/**
 	 * 查询发布实例
 	 * 
@@ -45,7 +45,7 @@ public class DeploymentEntityManager extends AbstractManager {
 		DeploymentEntity deployment = (DeploymentEntity) getSqlSession().selectOne("selectDeploymentById", deploymentId);
 		return deployment;
 	}
-
+	
 	/**
 	 * 插入发布实例
 	 * 
@@ -55,7 +55,7 @@ public class DeploymentEntityManager extends AbstractManager {
 	public void insertDeployment(DeploymentEntity deployment) {
 		getSqlSession().insert(deployment);
 	}
-
+	
 	/**
 	 * 插入发布资源
 	 * 
@@ -65,7 +65,7 @@ public class DeploymentEntityManager extends AbstractManager {
 	public void insertResource(ResourceEntity resource) {
 		getSqlSession().insert(resource);
 	}
-
+	
 	/**
 	 * 删除发布实例以及关联资源
 	 * 
@@ -78,10 +78,12 @@ public class DeploymentEntityManager extends AbstractManager {
 		getResourceManager().deleteResourceByDeploymentId(deploymentId);
 		// 删除所有的流程定义
 		if (cascade) {
+			SchedulerManager schedulerManager = this.getSchedulerManager();
 			List<ProcessDefinition> processDefinitions = new ProcessDefinitionQueryImpl().deploymentId(deploymentId).list();
 			ProcessDefinitionManager processDefinitionManager = Context.getCommandContext().getProcessDefinitionManager();
 			for (ProcessDefinition processDefinition : processDefinitions) {
 				processDefinitionManager.deleteProcessDefinition(processDefinition.getId(), cascade);
+				schedulerManager.deleteJobByProcessKey(processDefinition.getKey());
 			}
 		}
 		// 删除deployment发布记录

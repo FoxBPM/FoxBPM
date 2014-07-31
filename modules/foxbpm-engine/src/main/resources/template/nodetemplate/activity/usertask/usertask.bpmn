@@ -3,8 +3,8 @@
   <bpmn2:process id="process_id" name="process_name">
     <bpmn2:userTask id="UserTask_1" name="UserTask_1">
       <bpmn2:extensionElements>
-        <foxbpm:taskCommand id="HandleCommand_1" name="同意" commandType="general" isVerification="false" isSaveData="false" isSimulationRun="false"/>
-        <foxbpm:taskCommand id="HandleCommand_2" name="流程状态" commandType="processStatus" isVerification="false" isSaveData="false" isSimulationRun="false"/>
+        <foxbpm:taskCommand id="HandleCommand_1" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_2" name="流程状态" commandType="processStatus"/>
       </bpmn2:extensionElements>
       <bpmn2:potentialOwner>
         <bpmn2:extensionElements>

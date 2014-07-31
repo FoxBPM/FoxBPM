@@ -55,6 +55,23 @@ public class FoxbpmSchedulerGroupnameGernerater {
 	 * @exception
 	 * @since 1.0.0
 	 */
+	public String gernerateDefinitionGroupName() {
+		StringBuffer buffer = new StringBuffer(DEFAULT_GROUPNAME_LENGTH);
+		String tokenId = executionContext.getId();
+		String nodeId = executionContext.getFlowNode().getId();
+		String processInstanceId = executionContext.getProcessInstanceId();
+		String processKey = executionContext.getProcessDefinition().getKey();
+		return buffer.append(tokenId).append(APPEND_FLAG).append(nodeId).append(APPEND_FLAG).append(processInstanceId).append(APPEND_FLAG).append(processKey).toString();
+	}
+	
+	/**
+	 * 
+	 * gernerateInstanceGroupName(针对流程实例创建GroupName)
+	 * 
+	 * @return String
+	 * @exception
+	 * @since 1.0.0
+	 */
 	public String gernerateInstanceGroupName() {
 		StringBuffer buffer = new StringBuffer(DEFAULT_GROUPNAME_LENGTH);
 		String tokenId = executionContext.getId();

@@ -17,11 +17,9 @@
  */
 package org.foxbpm.engine.test.api.scheduler.quartz;
 
-import java.util.List;
-import java.util.Map;
-
 import org.foxbpm.engine.test.Deployment;
 import org.foxbpm.engine.test.api.scheduler.BaseSchedulerTest;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -41,7 +39,6 @@ public class TimerStartProcessInstanceTest extends BaseSchedulerTest {
 	@Test
 	@Deployment(resources = {"org/foxbpm/engine/test/impl/scheduler/testTimeStart_0.bpmn"})
 	public void testAA() {
-		this.cleanRunData();
 		processKey = "testTimeStart_0";
 	}
 	
@@ -58,7 +55,9 @@ public class TimerStartProcessInstanceTest extends BaseSchedulerTest {
 			this.validateProcessInstanceCount(1);
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			Assert.fail();
+		} finally {
+			deleteProcessDefinition();
 		}
 	}
 	
@@ -68,7 +67,6 @@ public class TimerStartProcessInstanceTest extends BaseSchedulerTest {
 	@Test
 	@Deployment(resources = {"org/foxbpm/engine/test/impl/scheduler/testDurationStart_0.bpmn"})
 	public void testBA() {
-		this.cleanRunData();
 		processKey = "testDurationStart_0";
 	}
 	
@@ -85,7 +83,9 @@ public class TimerStartProcessInstanceTest extends BaseSchedulerTest {
 			this.validateActiveTokenCount(resultCount);
 			this.validateProcessInstanceCount(resultCount);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Assert.fail();
+		} finally {
+			deleteProcessDefinition();
 		}
 	}
 	
@@ -113,14 +113,4 @@ public class TimerStartProcessInstanceTest extends BaseSchedulerTest {
 		// 校验quartz数据是否清空
 		validateQuartsCount(processKey, 0);
 	}
-	
-	// 删除流程定义
-	private void deleteProcessDefinition() {
-		// 执行流程定义删除操作
-		List<Map<String, Object>> deployMentIdResultList = jdbcTemplate.queryForList("SELECT DEPLOYMENT_ID FROM FOXBPM_DEF_PROCESSDEFINITION WHERE PROCESS_KEY ='"
-		        + processKey + "' ");
-		String deploymentId = deployMentIdResultList.get(0).get("DEPLOYMENT_ID").toString();
-		this.modelService.deleteDeployment(deploymentId);
-	}
-	
 }
