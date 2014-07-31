@@ -40,21 +40,21 @@ public class TaskQueryTest extends AbstractFoxBpmTestCase {
 	
 	/**
 	 * 测试代理查询相关接口
-	 * 将用户admin的test_agentQuery_1流程代理给admin2
-	 * 启动test_agentQuery_1流程，查询admin代理给admin2的任务
+	 * 将用户admin的test_agentQuery_1流程代理给test_admin2
+	 * 启动test_agentQuery_1流程，查询admin代理给test_admin2的任务
 	 * 验证结果是否正确
 	 */
 	@Test
 	@Deployment(resources = { "org/foxbpm/test/query/test_agentQuery_1.bpmn" })
 	public void testAgentQuery(){
 		
-		String sqlInsertUser = "insert into au_userInfo(userId,USERNAME) VALUES ('admin2','管理员2')";
+		String sqlInsertUser = "insert into au_userInfo(userId,USERNAME) VALUES ('test_admin2','管理员2')";
 		String sqlInsertAgent = "insert into foxbpm_agent(id,agent_user,startTime,endTime,status) values('_test_agent','admin',?,?,'1')";
 		Calendar c = Calendar.getInstance();
 		c.add(Calendar.YEAR, -1);
 		Calendar c2 = Calendar.getInstance();
 		c2.add(Calendar.YEAR, 1);
-		String sqlInsertDetails = "insert into foxbpm_agent_details(id,agent_id,processDefinition_key,agent_touser) values('_test_agent_details','_test_agent','test_agentQuery_1','admin2')";
+		String sqlInsertDetails = "insert into foxbpm_agent_details(id,agent_id,processDefinition_key,agent_touser) values('_test_agent_details','_test_agent','test_agentQuery_1','test_admin2')";
 		
 		jdbcTemplate.update(sqlInsertAgent, c.getTime(),c2.getTime());
 		jdbcTemplate.execute(sqlInsertUser);
@@ -76,8 +76,8 @@ public class TaskQueryTest extends AbstractFoxBpmTestCase {
 		//查询admin2代理任务 查询admin代理给admin2的代理任务
 		
 		TaskQuery taskQuery = taskService.createTaskQuery();
-		taskQuery.taskAssignee("admin2");
-		taskQuery.taskCandidateUser("admin2");
+		taskQuery.taskAssignee("test_admin2");
+		taskQuery.taskCandidateUser("test_admin2");
 		taskQuery.isAgent(true);
 		taskQuery.agentId("admin");
 		taskQuery.taskNotEnd();

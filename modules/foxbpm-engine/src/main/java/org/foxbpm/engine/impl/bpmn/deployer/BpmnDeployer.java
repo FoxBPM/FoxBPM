@@ -33,6 +33,7 @@ import org.foxbpm.engine.impl.entity.ResourceEntity;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.persistence.DeploymentEntityManager;
 import org.foxbpm.engine.impl.persistence.ProcessDefinitionManager;
+import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
@@ -88,6 +89,9 @@ public class BpmnDeployer extends AbstractDeployer {
 			// 设置资源信息
 			processDefinitionEntity.setResourceName(resourceBpmnNew.getName());
 			processDefinitionEntity.setResourceId(resourceBpmnNew.getId());
+			
+			//启动表单
+			String formUri = getStartFormUri(processDefinitionEntity);
 			// 处理更新发布
 			if (StringUtil.isNotEmpty(updateDeploymentId)) {
 				// 从sql缓存获取已存在的发布实例
@@ -120,6 +124,7 @@ public class BpmnDeployer extends AbstractDeployer {
 				processEntityNew.setCategory(processDefinitionEntity.getCategory());
 				processEntityNew.setName(processDefinitionEntity.getName());
 				processEntityNew.setResourceName(processDefinitionEntity.getResourceName());
+				processEntityNew.setStartFormUri(formUri);
 				// 获取流程定义Id
 				processDefinitionEntity.setId(processEntityNew.getId());
 				processDefinitionEntity.setDeploymentId(deploymentId);
@@ -139,12 +144,11 @@ public class BpmnDeployer extends AbstractDeployer {
 				String processDefinitionId = new StringBuffer(processDefineKey)
 						.append(VERSION_FLAG).append(version).append(VERSION_FLAG)
 						.append(GuidUtil.CreateGuid()).toString();
-				// 新的定义ID
 				processDefinitionEntity.setId(processDefinitionId);
-				// 新的发布号
+				processDefinitionEntity.setStartFormUri(formUri);
 				processDefinitionEntity.setDeploymentId(deploymentId);
-				// 新的版本号
 				processDefinitionEntity.setVersion(version);
+				
 				/********************* 数据库操作 *****************************/
 				// 将bpmn资源实例入库
 				deploymentEntityManager.insertResource(resourceBpmnNew);
@@ -203,6 +207,25 @@ public class BpmnDeployer extends AbstractDeployer {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * 获取发起节点表单
+	 * <p>顺序逻辑：startEvent后面人工节点的节点操作表单->流程定义默认表单</p>
+	 * @param processDefinitionEntity
+	 * @return
+	 */
+	private String getStartFormUri(ProcessDefinitionEntity processDefinitionEntity){
+		String formUri = null;
+		TaskDefinition taskDefinition = processDefinitionEntity.getSubTaskDefinition();
+		if(taskDefinition != null){
+			formUri = StringUtil.getString(taskDefinition.getFormUri().getValue(null));
+		}
+		if(StringUtil.isNotEmpty(formUri)){
+			return formUri;
+		}
+		formUri = StringUtil.getString(processDefinitionEntity.getFormUri().getValue(null));
+		return formUri;
 	}
 
 }

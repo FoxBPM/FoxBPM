@@ -66,14 +66,15 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl
 	protected String category;
 
 	private boolean isPersistence = true;
+	
+	/** 启动表单  */
+	private String startFormUri;
 
 	protected DataVariableMgmtDefinition dataVariableMgmtDefinition;
 
 	protected Map<String, TaskDefinition> taskDefinitions = new HashMap<String, TaskDefinition>();
 	
 	protected List<PotentialStarter> potentialStarters=new ArrayList<PotentialStarter>();
-
-	
 
 	public TaskDefinition getSubTaskDefinition() {
 		if (getInitial() != null) {
@@ -126,6 +127,14 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl
 
 	public void setFormUriView(String formUriView) {
 		this.formUriView = new ExpressionImpl(formUriView);
+	}
+	
+	public void setStartFormUri(String startFormUri) {
+		this.startFormUri = startFormUri;
+	}
+	
+	public String getStartFormUri() {
+		return startFormUri;
 	}
 
 	/**

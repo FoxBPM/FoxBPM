@@ -8,15 +8,7 @@
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
-      <bpmn2:potentialOwner id="PotentialOwner_1">
-        <bpmn2:extensionElements>
-          <foxbpm:connectorInstanceElements connrctorType="actorConnector">
-            <foxbpm:connectorInstance connectorId="UserIdActorConnector" packageName="org.foxbpm.connector.actorconnector.UserIdActorConnector" className="UserIdActorConnector" connectorInstanceId="82ff66b9-cdff-4e60-887e-a81f438bee87" connectorInstanceName="系统登录者" errorHandling="" type="actorconnector">
-              <documentation xsi:type="foxbpm:Documentation"></documentation>
-            </foxbpm:connectorInstance>
-          </foxbpm:connectorInstanceElements>
-        </bpmn2:extensionElements>
-      </bpmn2:potentialOwner>
+    
     </bpmn2:userTask>
     <bpmn2:sequenceFlow id="SequenceFlow_1" sourceRef="UserTask_1" targetRef="EndEvent_1"/>
     <bpmn2:startEvent id="StartEvent_1" name="开始">

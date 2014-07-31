@@ -133,8 +133,10 @@ public class ModelsResouce extends AbstractRestResource{
 										//此异常代表数据库中不存在此流程定义,则不进行删除操作
 										log.warn("数据库中不存在key:"+processKey+"，version:"+version+"的流程定义，忽略此删除操作");
 									}
+								}else if("NotModify".equals(operation)){
+									log.debug(processKey + "未修改，不做处理！");
 								}else{
-									throw new FoxBPMException("发布文件中不包含操作码");
+									throw new FoxBPMException("未识别的操作码："+operation);
 								}
 							}
 						}

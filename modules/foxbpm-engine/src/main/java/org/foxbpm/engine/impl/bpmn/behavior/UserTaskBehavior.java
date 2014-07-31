@@ -55,31 +55,18 @@ public class UserTaskBehavior extends TaskBehavior {
 	public void execute(FlowNodeExecutionContext executionContext) {
 
 		TaskEntity task = TaskEntity.createAndInsert(executionContext);
-		
 		TokenEntity tokenEntity=(TokenEntity)executionContext;
-		
 		if(StringUtil.isNotEmpty(tokenEntity.getGroupID())){
 			task.setTaskGroup(tokenEntity.getGroupID());
 		}
-
 		task.setTaskDefinition(taskDefinition);
-
 		task.setNodeId(getId());
-		
-		
-
 		task.setNodeName(getName());
-
 		((TokenEntity) executionContext).setAssignTask(task);
-
 		ProcessInstanceEntity processInstance = (ProcessInstanceEntity) executionContext.getProcessInstance();
-		
 		task.setBizKey(processInstance.getBizKey());
-		
 		ProcessDefinitionEntity processDefinition=(ProcessDefinitionEntity)processInstance.getProcessDefinition();
-		
 		if(taskDefinition.getTaskSubject()==null||StringUtil.isEmpty(taskDefinition.getTaskSubject().getExpressionText())){
-			
 			task.setSubject(StringUtil.getString(processDefinition.getSubject().getValue(executionContext)));
 		}else{
 			task.setSubject(StringUtil.getString(taskDefinition.getTaskSubject().getValue(executionContext)));
@@ -88,19 +75,17 @@ public class UserTaskBehavior extends TaskBehavior {
 		if(StringUtil.isEmpty(task.getSubject())){
 			task.setSubject(getName());
 		}
-		
-		
 		task.setProcessInitiator(processInstance.getInitiator());
-		
 		task.setProcessStartTime(processInstance.getStartTime());
-		
 		task.setDescription(StringUtil.getString(taskDefinition.getTaskDescription().getValue(executionContext)));
 		task.setCompleteDescription(StringUtil.getString(taskDefinition.getCompleteTaskDescription().getValue(executionContext)));
 		task.setToken((TokenEntity) executionContext);
 		task.setTaskType(taskDefinition.getTaskType());
 		
-		task.setFormUri(StringUtil.getString(taskDefinition.getFormUri().getValue(executionContext)));
-		task.setFormUriView(StringUtil.getString(taskDefinition.getFormUriView().getValue(executionContext)));
+		String formUri = getFormUri(executionContext);
+		task.setFormUri(formUri);
+		String formUriView = getFormUriView(executionContext);
+		task.setFormUriView(formUriView);
 		
 		if(taskDefinition.getTaskPriority() !=null){
 			task.setPriority(StringUtil.getInt(taskDefinition.getTaskPriority().getValue(executionContext)));
@@ -115,8 +100,6 @@ public class UserTaskBehavior extends TaskBehavior {
 			task.setParamMap(paramMap);
 		}
 		
-		
-
 		for (Connector connector : taskDefinition.getActorConnectors()) {
 			try {
 				connector.notify((ListenerExecutionContext) executionContext);
@@ -129,15 +112,11 @@ public class UserTaskBehavior extends TaskBehavior {
 			}
 		}
 		
-		
 		tokenEntity.setAssignTask(task);
 		/** 触发分配事件(后事件) */
 		executionContext.fireEvent(AbstractTaskEvent.TASK_ASSIGN);
 		tokenEntity.setAssignTask(null);
-
 	}
-
-	
 
 	public TaskDefinition getTaskDefinition() {
 		return taskDefinition;
@@ -147,16 +126,19 @@ public class UserTaskBehavior extends TaskBehavior {
 		this.taskDefinition = taskDefinition;
 	}
 
-
-
+	/**
+	 * 节点离开时清理事件
+	 */
 	@Override
 	public void cleanData(FlowNodeExecutionContext executionContext) {
-		
 		removeTaskInstanceSynchronization(executionContext);
 		super.cleanData(executionContext);
 	}
 
-	
+	/**
+	 * 令牌离开节点时，强制结束所有未完成任务
+	 * @param executionContext
+	 */
 	private void removeTaskInstanceSynchronization(FlowNodeExecutionContext executionContext) {
 		if(executionContext!=null){
 			List<TaskEntity> tasks = Context.getCommandContext().getTaskManager().findTasksByTokenId(executionContext.getId());
@@ -171,6 +153,41 @@ public class UserTaskBehavior extends TaskBehavior {
 		
 	}
 	
-
+	/**
+	 * 获取浏览表单
+	 * 顺序逻辑：节点操作表单->全局操作表单
+	 * @param executionContext
+	 * @return
+	 */
+	private String getFormUri(FlowNodeExecutionContext executionContext){
+		String formUri = StringUtil.getString(taskDefinition.getFormUri().getValue(executionContext));
+		if(StringUtil.isNotEmpty(formUri)){
+			return formUri;
+		}
+		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity)executionContext.getProcessDefinition();
+		formUri = StringUtil.getString(processDefinitionEntity.getFormUri().getValue(executionContext));
+		return formUri;
+	}
+	
+	/**
+	 * 获取浏览表单
+	 * 顺序逻辑：节点浏览表单->全局浏览表单->节点操作表单->全局操作表单
+	 * @param executionContext
+	 * @return
+	 */
+	private String getFormUriView(FlowNodeExecutionContext executionContext){
+		String formUriView = StringUtil.getString(taskDefinition.getFormUriView().getValue(executionContext));
+		if(StringUtil.isNotEmpty(formUriView)){
+			return formUriView;
+		}
+		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity)executionContext.getProcessDefinition();
+		formUriView = StringUtil.getString(processDefinitionEntity.getFormUriView().getValue(executionContext));
+		
+		if(StringUtil.isNotEmpty(formUriView)){
+			return formUriView;
+		}
+		formUriView = getFormUri(executionContext);
+		return formUriView;
+	}
 
 }

@@ -12,18 +12,19 @@
     <result column="DEPLOYMENT_ID" jdbcType="VARCHAR" property="deploymentId" />
     <result column="DIAGRAM_RESOURCE_NAME" jdbcType="VARCHAR" property="diagramResourceName" />
     <result column="RESOURCE_ID" jdbcType="VARCHAR" property="resourceId" />
+     <result column="START_FORM_KEY" jdbcType="VARCHAR" property="startFormUri" />
   </resultMap>
   
    <insert id="insertProcessDefinition" parameterType="org.foxbpm.engine.impl.entity.ProcessDefinitionEntity">
     insert into foxbpm_def_processdefinition (PROCESS_ID, 
       PROCESS_KEY, CATEGORY, PROCESS_NAME, 
       VERSION, RESOURCE_NAME, DEPLOYMENT_ID, 
-      DIAGRAM_RESOURCE_NAME, RESOURCE_ID
+      DIAGRAM_RESOURCE_NAME, RESOURCE_ID,START_FORM_KEY
       )
     values (#{id,jdbcType=VARCHAR}, 
       #{key,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{version,jdbcType=INTEGER}, #{resourceName,jdbcType=VARCHAR}, #{deploymentId,jdbcType=VARCHAR}, 
-      #{diagramResourceName,jdbcType=VARCHAR}, #{resourceId,jdbcType=VARCHAR}
+      #{diagramResourceName,jdbcType=VARCHAR}, #{resourceId,jdbcType=VARCHAR}, #{startFormUri,jdbcType=VARCHAR}
      )
   </insert>
   

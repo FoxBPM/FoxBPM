@@ -3,20 +3,20 @@
   <bpmn2:process id="Test_MultiInstance_1" name="多实例测试">
     <bpmn2:extensionElements>
       <foxbpm:DataVariable id="单个处理人" dataType="java.lang.String" bizType="customVariable">
-        <foxbpm:expression xsi:type="foxbpm:Expression" name=""><![CDATA[]]></foxbpm:expression>
-        <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+        <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_1" name=""><![CDATA[]]></foxbpm:expression>
+        <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_1"></foxbpm:documentation>
       </foxbpm:DataVariable>
       <foxbpm:DataVariable id="处理结果" dataType="java.lang.String" bizType="customVariable">
-        <foxbpm:expression xsi:type="foxbpm:Expression" name=""><![CDATA[]]></foxbpm:expression>
-        <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+        <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_2" name=""><![CDATA[]]></foxbpm:expression>
+        <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_2"></foxbpm:documentation>
       </foxbpm:DataVariable>
       <foxbpm:DataVariable id="flag" dataType="java.lang.String" bizType="customVariable">
-        <foxbpm:expression xsi:type="foxbpm:Expression" name=""><![CDATA[]]></foxbpm:expression>
-        <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+        <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_3" name=""><![CDATA[]]></foxbpm:expression>
+        <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_3"></foxbpm:documentation>
       </foxbpm:DataVariable>
       <foxbpm:DataVariable id="结果集合" dataType="java.lang.String" isPersistence="true" bizType="customVariable">
-        <foxbpm:expression xsi:type="foxbpm:Expression" name=""><![CDATA[return new ArrayList<String>();]]></foxbpm:expression>
-        <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+        <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_4" name=""><![CDATA[return new ArrayList<String>();]]></foxbpm:expression>
+        <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_4"></foxbpm:documentation>
       </foxbpm:DataVariable>
     </bpmn2:extensionElements>
     <bpmn2:endEvent id="EndEvent_1" name="结束">
@@ -46,15 +46,21 @@
       <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
     <bpmn2:sequenceFlow id="SequenceFlow_6" sourceRef="ExclusiveGateway_1" targetRef="EndEvent_1">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_19" foxbpm:name="if(${flag}.equals(&quot;0&quot;)){"><![CDATA[if(${flag}.equals("1")){
-	return true;
-}
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_19" foxbpm:name="if(${flag}.equals(&quot;0&quot;)){"><![CDATA[if(${flag}.equals("1")){
+
+	return true;
+
+}
+
 return false;]]></bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:sequenceFlow id="SequenceFlow_7" sourceRef="ExclusiveGateway_1" targetRef="UserTask_1">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_18" foxbpm:name=""><![CDATA[if(${flag}.equals("0")){
-	return true;
-}
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_18" foxbpm:name=""><![CDATA[if(${flag}.equals("0")){
+
+	return true;
+
+}
+
 return false;]]></bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:startEvent id="StartEvent_1" name="开始">
@@ -63,17 +69,17 @@ return false;]]></bpmn2:conditionExpression>
     <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="StartEvent_1" targetRef="UserTask_1"/>
     <bpmn2:userTask id="UserTask_2" foxbpm:taskType="foxbpmtask" name="会签审批">
       <bpmn2:extensionElements>
-        <foxbpm:taskCommand id="HandleCommand_2" name="流程状态" commandType="processStatus" isVerification="false" isSaveData="false" isSimulationRun="false"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="拒绝" commandType="general" isVerification="false" isSaveData="false" isSimulationRun="false">
-          <foxbpm:expression xsi:type="foxbpm:Expression" name=""><![CDATA[${处理结果}="不同意";]]></foxbpm:expression>
-          <foxbpm:parameterExpression xsi:type="foxbpm:Expression" name=""><![CDATA[]]></foxbpm:parameterExpression>
+        <foxbpm:taskCommand id="HandleCommand_2" name="流程状态" commandType="processStatus"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="拒绝" commandType="general">
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_5" name=""><![CDATA[${处理结果}="不同意";]]></foxbpm:expression>
+          <foxbpm:parameterExpression xsi:type="foxbpm:Expression" id="Expression_6" name=""><![CDATA[]]></foxbpm:parameterExpression>
         </foxbpm:taskCommand>
-        <foxbpm:taskCommand id="HandleCommand_1" name="同意" commandType="general" isVerification="false" isSaveData="false" isSimulationRun="false">
-          <foxbpm:expression xsi:type="foxbpm:Expression" name=""><![CDATA[${处理结果}="同意";]]></foxbpm:expression>
-          <foxbpm:parameterExpression xsi:type="foxbpm:Expression" name=""><![CDATA[]]></foxbpm:parameterExpression>
+        <foxbpm:taskCommand id="HandleCommand_1" name="同意" commandType="general">
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_7" name=""><![CDATA[${处理结果}="同意";]]></foxbpm:expression>
+          <foxbpm:parameterExpression xsi:type="foxbpm:Expression" id="Expression_8" name=""><![CDATA[]]></foxbpm:parameterExpression>
         </foxbpm:taskCommand>
         <foxbpm:taskPriority>
-          <foxbpm:expression xsi:type="foxbpm:Expression" name="一般"><![CDATA[40]]></foxbpm:expression>
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_9" name="一般"><![CDATA[40]]></foxbpm:expression>
         </foxbpm:taskPriority>
         <foxbpm:expectedExecutionTime/>
       </bpmn2:extensionElements>
@@ -82,11 +88,11 @@ return false;]]></bpmn2:conditionExpression>
       <bpmn2:potentialOwner id="PotentialOwner_2">
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
-            <foxbpm:connectorInstance connectorId="SelectUserActorConnector" packageName="org.foxbpm.connector.actorconnector.SelectUserActorConnector" className="SelectUserActorConnector" connectorInstanceId="cfc6b841-cc6f-4efc-934c-568b3b59a100" connectorInstanceName="选择用户" errorHandling="" type="actorconnector">
-              <documentation xsi:type="foxbpm:Documentation"></documentation>
+            <foxbpm:connectorInstance connectorId="SelectUserActorConnector" packageName="org.foxbpm.connector.actorconnector.SelectUserActorConnector" className="SelectUserActorConnector" connectorInstanceId="d218d275-35a2-4fe3-9d5f-478abce033d3" connectorInstanceName="${单个处理人}" errorHandling="" type="actorconnector">
               <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="userId" name="用户编号" dataType="java.lang.String" isExecute="true">
                 <foxbpm:expression xsi:type="foxbpm:Expression" name="${单个处理人}"><![CDATA[${单个处理人}]]></foxbpm:expression>
               </foxbpm:connectorParameterInputs>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
             </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
@@ -94,33 +100,44 @@ return false;]]></bpmn2:conditionExpression>
       <bpmn2:multiInstanceLoopCharacteristics id="MultiInstanceLoopCharacteristics_1">
         <bpmn2:extensionElements>
           <foxbpm:loopDataInputCollection>
-            <foxbpm:expression xsi:type="foxbpm:Expression" name="&quot;admin,admin2,admin3&quot;"><![CDATA[Arrays.asList("admin,admin2,admin3".split(","));]]></foxbpm:expression>
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_11" name="&quot;admin,admin2,admin3&quot;"><![CDATA[Arrays.asList("admin,admin2,admin3".split(","));]]></foxbpm:expression>
           </foxbpm:loopDataInputCollection>
           <foxbpm:loopDataOutputCollection>
-            <foxbpm:expression xsi:type="foxbpm:Expression" name="${结果集合}"><![CDATA[${结果集合}]]></foxbpm:expression>
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_12" name="${结果集合}"><![CDATA[${结果集合}]]></foxbpm:expression>
           </foxbpm:loopDataOutputCollection>
         </bpmn2:extensionElements>
         <bpmn2:inputDataItem xsi:type="bpmn2:tDataInput" id="DataInput_2">
           <bpmn2:extensionElements>
-            <foxbpm:expression xsi:type="foxbpm:Expression" name="${单个处理人}"><![CDATA[${单个处理人}]]></foxbpm:expression>
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_13" name="${单个处理人}"><![CDATA[${单个处理人}]]></foxbpm:expression>
           </bpmn2:extensionElements>
         </bpmn2:inputDataItem>
         <bpmn2:outputDataItem xsi:type="bpmn2:tDataOutput" id="DataOutput_2">
           <bpmn2:extensionElements>
-            <foxbpm:expression xsi:type="foxbpm:Expression" name="${处理结果}"><![CDATA[${处理结果}]]></foxbpm:expression>
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_14" name="${处理结果}"><![CDATA[${处理结果}]]></foxbpm:expression>
           </bpmn2:extensionElements>
         </bpmn2:outputDataItem>
-        <bpmn2:completionCondition xsi:type="bpmn2:tFormalExpression" id="FormalExpression_15" foxbpm:name="会签判断"><![CDATA[y=Collections.frequency(${结果集合}, "同意");
-if(y>1){
-	${flag} = "1";
-	return true;
-}else if(${结果集合}.size() == 3){
-	${flag} = "0";
-	return true;
-}
-else{
-	return false;
-}
+        <bpmn2:completionCondition xsi:type="bpmn2:tFormalExpression" id="FormalExpression_15" foxbpm:name="会签判断"><![CDATA[y=Collections.frequency(${结果集合}, "同意");
+
+if(y>1){
+
+	${flag} = "1";
+
+	return true;
+
+}else if(${结果集合}.size() == 3){
+
+	${flag} = "0";
+
+	return true;
+
+}
+
+else{
+
+	return false;
+
+}
+
 ]]></bpmn2:completionCondition>
       </bpmn2:multiInstanceLoopCharacteristics>
     </bpmn2:userTask>

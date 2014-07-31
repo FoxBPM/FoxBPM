@@ -8,9 +8,16 @@
     <bpmn2:endEvent id="EndEvent_1" name="结束">
       <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
     </bpmn2:endEvent>
-    <bpmn2:userTask id="UserTask_1" name="提交">
+    <bpmn2:userTask id="UserTask_1" foxbpm:taskType="foxbpmtask" foxbpm:claimType="defaultClaim" name="提交">
       <bpmn2:extensionElements>
-        <foxbpm:taskCommand id="HandleCommand_1" name="提交" commandType="general" isVerification="false" isSaveData="false" isSimulationRun="false"/>
+        <foxbpm:taskPriority>
+          <foxbpm:expression xsi:type="foxbpm:Expression" name="一般"><![CDATA[40]]></foxbpm:expression>
+        </foxbpm:taskPriority>
+        <foxbpm:expectedExecutionTime/>
+        <foxbpm:taskCommand id="HandleCommand_1" name="提交" commandType="submit">
+          <foxbpm:expression xsi:type="foxbpm:Expression" name=""><![CDATA[]]></foxbpm:expression>
+          <foxbpm:parameterExpression xsi:type="foxbpm:Expression" name=""><![CDATA[]]></foxbpm:parameterExpression>
+        </foxbpm:taskCommand>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
@@ -18,7 +25,7 @@
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="d13fa99a-db54-4231-b6f5-87d77f6fc248" connectorInstanceName="所有人" errorHandling="" type="actorconnector">
-              <documentation xsi:type="foxbpm:Documentation" id="Documentation_1"></documentation>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_1"></foxbpm:documentation>
             </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
@@ -26,15 +33,15 @@
     </bpmn2:userTask>
     <bpmn2:userTask id="UserTask_2" name="审批">
       <bpmn2:extensionElements>
-        <foxbpm:taskCommand id="HandleCommand_1" name="同意" commandType="general" isVerification="false" isSaveData="false" isSimulationRun="false"/>
+        <foxbpm:taskCommand id="HandleCommand_1" name="同意" commandType="general"/>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
       <bpmn2:potentialOwner id="PotentialOwner_2">
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
-            <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="77b3bbaa-bce0-4257-a707-b56920e11324" connectorInstanceName="Test" errorHandling="" type="actorconnector">
-              <documentation xsi:type="foxbpm:Documentation"></documentation>
+            <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="fd22696e-420b-4ebb-be23-f0a634cc9aed" connectorInstanceName="所有人" errorHandling="" type="actorconnector">
+              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
             </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
