@@ -668,8 +668,8 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 		String processDefinitionId = modelService.createProcessDefinitionQuery().processDefinitionKey("VerifyStartProcessByUserId_1").singleResult().getId();
 		boolean flag = modelService.verifyStartProcessByUserId("admin", processDefinitionId);
 		assertEquals("流程权限判断出现错误", true, flag);
-		jdbcTemplate.execute("insert into au_userInfo(userId,USERNAME) VALUES ('admin0','管理员4')");
-		flag = modelService.verifyStartProcessByUserId("admin0", processDefinitionId);
+		jdbcTemplate.execute("insert into au_userInfo(userId,USERNAME) VALUES ('test0','管理员4')");
+		flag = modelService.verifyStartProcessByUserId("test0", processDefinitionId);
 		assertEquals("流程权限判断出现错误", false, flag);
 	}
 	
@@ -773,7 +773,7 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	 */
 	@Test
 	public void testGetBizDataObject() {
-		List<BizDataObject> bizDatObjects = modelService.getBizDataObject("eMapDataObject", "foxbpmDataSource");
+		List<BizDataObject> bizDatObjects = modelService.getBizDataObject("dataBaseMode", "foxbpmDataSource");
 		System.out.println(bizDatObjects);
 	}
 	/**
@@ -792,19 +792,19 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	 * </p>
 	 */
 	@Test
-	@Deployment(resources = {"org/foxbpm/test/api/TestDataVar_1.bpmn"})
+	@Deployment(resources = {"org/foxbpm/test/api/TestDataImport_1.bpmn"})
 	public void testBizDataObject() {
 		// 启动一个流程
 		Authentication.setAuthenticatedUserId("admin");
 		// 启动流程
-		runtimeService.startProcessInstanceByKey("TestDataVar_1");
+		runtimeService.startProcessInstanceByKey("TestDataImport_1");
 		
-		Task task = taskService.createTaskQuery().processDefinitionKey("TestDataVar_1").taskNotEnd().singleResult();
+		Task task = taskService.createTaskQuery().processDefinitionKey("TestDataImport_1").taskNotEnd().singleResult();
 		
 		// 驱动流程
 		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
 		expandTaskCommand.setInitiator("admin");
-		expandTaskCommand.setProcessDefinitionKey("TestDataVar_1");
+		expandTaskCommand.setProcessDefinitionKey("TestDataImport_1");
 		expandTaskCommand.setBusinessKey("admin");
 		expandTaskCommand.setCommandType("submit");
 		expandTaskCommand.setTaskCommandId("HandleCommand_2");

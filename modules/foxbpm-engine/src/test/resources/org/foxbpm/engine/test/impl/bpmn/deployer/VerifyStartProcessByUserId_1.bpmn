@@ -8,7 +8,18 @@
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
-    
+      <bpmn2:potentialOwner id="PotentialOwner_1">
+        <bpmn2:extensionElements>
+          <foxbpm:connectorInstanceElements connrctorType="actorConnector">
+            <foxbpm:connectorInstance connectorId="SelectUserActorConnector" packageName="org.foxbpm.connector.actorconnector.SelectUserActorConnector" className="SelectUserActorConnector" connectorInstanceId="5921f4cf-ed5c-4be1-a611-384aec677614" connectorInstanceName="用户ID" errorHandling="" type="actorconnector">
+              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="userId" name="用户编号" dataType="java.lang.String" isExecute="true">
+                <foxbpm:expression xsi:type="foxbpm:Expression" name="USERID"><![CDATA["admin"]]></foxbpm:expression>
+              </foxbpm:connectorParameterInputs>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+            </foxbpm:connectorInstance>
+          </foxbpm:connectorInstanceElements>
+        </bpmn2:extensionElements>
+      </bpmn2:potentialOwner>
     </bpmn2:userTask>
     <bpmn2:sequenceFlow id="SequenceFlow_1" sourceRef="UserTask_1" targetRef="EndEvent_1"/>
     <bpmn2:startEvent id="StartEvent_1" name="开始">
