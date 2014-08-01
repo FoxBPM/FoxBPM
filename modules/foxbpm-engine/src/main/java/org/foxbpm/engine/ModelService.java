@@ -168,4 +168,11 @@ public interface ModelService {
 	 *            数据源名称(spring配置)
 	 */
 	List<BizDataObject> getBizDataObject(String behaviorId, String dataSource);
+	
+	/**
+	 * 获取配置的所有的业务对象
+	 * @return 
+	 * <p>格式：[{id:"dataBase",name:"数据库变量",data:[]},{id:"formData",name:"表单变量",data:[]}]</p>
+	 */
+	List<Map<String,Object>> getAllBizObjects();
 }

@@ -25,6 +25,7 @@ import java.util.Map;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.impl.cmd.DeleteDeploymentCmd;
 import org.foxbpm.engine.impl.cmd.DeployCmd;
+import org.foxbpm.engine.impl.cmd.GetAllBizObjectsCmd;
 import org.foxbpm.engine.impl.cmd.GetBizDataObjectCmd;
 import org.foxbpm.engine.impl.cmd.GetFlowGraphicsElementPositionCmd;
 import org.foxbpm.engine.impl.cmd.GetFlowGraphicsImgStreamCmd;
@@ -121,6 +122,11 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	@Override
 	public List<BizDataObject> getBizDataObject(String behaviorId, String dataSource) {
 		return commandExecutor.execute(new GetBizDataObjectCmd(behaviorId, dataSource));
+	}
+	
+	@Override
+	public List<Map<String,Object>> getAllBizObjects() {
+		return commandExecutor.execute(new GetAllBizObjectsCmd());
 	}
 	
 }

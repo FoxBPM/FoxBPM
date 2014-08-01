@@ -31,12 +31,14 @@ import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
 import org.foxbpm.engine.repository.ProcessDefinition;
 /**
  * 流程定义管理器
+ * 
  * @author Kenshin
  */
 public class ProcessDefinitionManager extends AbstractManager {
-
+	
 	/**
 	 * 根据流程定义编号返回流程定时实体
+	 * 
 	 * @param processDefinitionId
 	 * @return
 	 */
@@ -44,41 +46,44 @@ public class ProcessDefinitionManager extends AbstractManager {
 		ProcessDefinitionEntity processEntityNew = getSqlSession().selectById(ProcessDefinitionEntity.class, processDefinitionId);
 		return processEntityNew;
 	}
-
+	
 	public ProcessDefinitionEntity findLatestProcessDefinitionByKey(String processDefinitionKey) {
-		ProcessDefinitionEntity processEntity = (ProcessDefinitionEntity)getSqlSession().selectOne("selectLatestProcessDefinitionByKey", processDefinitionKey);
+		ProcessDefinitionEntity processEntity = (ProcessDefinitionEntity) getSqlSession().selectOne("selectLatestProcessDefinitionByKey", processDefinitionKey);
 		return processEntity;
 	}
-
-	public ProcessDefinitionEntity findProcessDefinitionByKeyAndVersion(String processDefinitionKey, Integer processDefinitionVersion) {
-		Map<String,Object> paramMap = new HashMap<String,Object>();
+	
+	public ProcessDefinitionEntity findProcessDefinitionByKeyAndVersion(
+	    String processDefinitionKey, Integer processDefinitionVersion) {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("key", processDefinitionKey);
 		paramMap.put("version", processDefinitionVersion);
-		ProcessDefinitionEntity processEntity = (ProcessDefinitionEntity)getSqlSession().selectOne("selectProcessDefinitionByKeyAndVersion", paramMap);
+		ProcessDefinitionEntity processEntity = (ProcessDefinitionEntity) getSqlSession().selectOne("selectProcessDefinitionByKeyAndVersion", paramMap);
 		return processEntity;
 	}
-
-	public ProcessDefinitionEntity findProcessDefinitionByDeploymentAndKey(String deploymentId, String key) {
-		Map<String,Object> paramMap = new HashMap<String,Object>();
+	
+	public ProcessDefinitionEntity findProcessDefinitionByDeploymentAndKey(String deploymentId,
+	    String key) {
+		Map<String, Object> paramMap = new HashMap<String, Object>();
 		paramMap.put("deploymentId", deploymentId);
 		paramMap.put("key", key);
-		ProcessDefinitionEntity processEntity = (ProcessDefinitionEntity)getSqlSession().selectOne("selectProcessDefinitionByDeployIdAndKey", paramMap);
+		ProcessDefinitionEntity processEntity = (ProcessDefinitionEntity) getSqlSession().selectOne("selectProcessDefinitionByDeployIdAndKey", paramMap);
 		return processEntity;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<ProcessDefinitionEntity> findProcessDefinitionGroupByKey(){
+	public List<ProcessDefinitionEntity> findProcessDefinitionGroupByKey() {
 		return (List<ProcessDefinitionEntity>) getSqlSession().selectList("selectProcessDefinitionGroupByKey");
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<ProcessDefinition> findProcessDefinitionsByQueryCriteria(ProcessDefinitionQueryImpl processDefinitionQuery){
-		List<ProcessDefinitionEntity> processDefinitions = (List<ProcessDefinitionEntity>)getSqlSession().selectList("selectProcessDefinitionsByQueryCriteria", processDefinitionQuery);
+	public List<ProcessDefinition> findProcessDefinitionsByQueryCriteria(
+	    ProcessDefinitionQueryImpl processDefinitionQuery) {
+		List<ProcessDefinitionEntity> processDefinitions = (List<ProcessDefinitionEntity>) getSqlSession().selectList("selectProcessDefinitionsByQueryCriteria", processDefinitionQuery);
 		List<ProcessDefinition> result = new ArrayList<ProcessDefinition>();
 		DeploymentManager deploymentManager = Context.getProcessEngineConfiguration().getDeploymentManager();
-		if(processDefinitions != null){
+		if (processDefinitions != null) {
 			Iterator<ProcessDefinitionEntity> iterator = processDefinitions.iterator();
-			if(iterator.hasNext()){
+			while (iterator.hasNext()) {
 				ProcessDefinitionEntity processDefinitionEntity = iterator.next();
 				ProcessDefinitionEntity newProcessDefinitionEntity = deploymentManager.resolveProcessDefinition(processDefinitionEntity);
 				result.add(newProcessDefinitionEntity);
@@ -87,19 +92,18 @@ public class ProcessDefinitionManager extends AbstractManager {
 		return result;
 	}
 	
-	public long findProcessDefinitionCountByQueryCriteria(ProcessDefinitionQueryImpl processDefinitionQuery){
-		return (Long)getSqlSession().selectOne("selectProcessDefinitionCountByQueryCriteria", processDefinitionQuery);
+	public long findProcessDefinitionCountByQueryCriteria(
+	    ProcessDefinitionQueryImpl processDefinitionQuery) {
+		return (Long) getSqlSession().selectOne("selectProcessDefinitionCountByQueryCriteria", processDefinitionQuery);
 	}
 	
-	public void deleteProcessDefinition(String processDefinitionId,boolean cascade){
-		//删除流程实例
-		if(cascade){
-			getProcessInstanceManager().deleteProcessInstancesByProcessDefinition(processDefinitionId,cascade);
+	public void deleteProcessDefinition(String processDefinitionId, boolean cascade) {
+		// 删除流程实例
+		if (cascade) {
+			getProcessInstanceManager().deleteProcessInstancesByProcessDefinition(processDefinitionId, cascade);
 		}
-		//删除流程定义
+		// 删除流程定义
 		getSqlSession().delete("deleteProcessDefinitionById", processDefinitionId);
 	}
-	
-	
 	
 }
