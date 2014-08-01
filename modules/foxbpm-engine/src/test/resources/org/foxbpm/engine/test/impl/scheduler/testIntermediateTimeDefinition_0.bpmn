@@ -3,8 +3,8 @@
   <bpmn2:process id="testIntermediateTimeDefinition_0" name="testIntermediateTimeDefinition">
     <bpmn2:userTask id="UserTask_6" name="UserTask_1">
       <bpmn2:extensionElements>
-        <foxbpm:taskCommand id="HandleCommand_1" name="同意" commandType="general" isVerification="false" isSaveData="false" isSimulationRun="false"/>
-        <foxbpm:taskCommand id="HandleCommand_2" name="流程状态" commandType="processStatus" isVerification="false" isSaveData="false" isSimulationRun="false"/>
+        <foxbpm:taskCommand id="HandleCommand_1" name="同意" commandType="general" />
+        <foxbpm:taskCommand id="HandleCommand_2" name="流程状态" commandType="processStatus" />
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_19</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_11</bpmn2:outgoing>
@@ -21,8 +21,8 @@
     </bpmn2:endEvent>
     <bpmn2:userTask id="UserTask_5" name="UserTask_1">
       <bpmn2:extensionElements>
-        <foxbpm:taskCommand id="HandleCommand_1" name="同意" commandType="general" isVerification="false" isSaveData="false" isSimulationRun="false"/>
-        <foxbpm:taskCommand id="HandleCommand_2" name="流程状态" commandType="processStatus" isVerification="false" isSaveData="false" isSimulationRun="false"/>
+        <foxbpm:taskCommand id="HandleCommand_1" name="同意" commandType="general" />
+        <foxbpm:taskCommand id="HandleCommand_2" name="流程状态" commandType="processStatus" />
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_19</bpmn2:outgoing>
@@ -38,12 +38,12 @@
     <bpmn2:sequenceFlow id="SequenceFlow_19" sourceRef="UserTask_5" targetRef="UserTask_6"/>
     <bpmn2:userTask id="UserTask_1" foxbpm:claimType="autoClaim" name="UserTask_1">
       <bpmn2:extensionElements>
-        <foxbpm:taskCommand id="HandleCommand_2" name="流程状态" commandType="processStatus" isVerification="false" isSaveData="false" isSimulationRun="false"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="启动并提交" commandType="startandsubmit" isVerification="false" isSaveData="false" isSimulationRun="false">
+        <foxbpm:taskCommand id="HandleCommand_2" name="流程状态" commandType="processStatus" />
+        <foxbpm:taskCommand id="HandleCommand_3" name="启动并提交" commandType="startandsubmit" >
           <foxbpm:expression xsi:type="foxbpm:Expression" name=""><![CDATA[]]></foxbpm:expression>
           <foxbpm:parameterExpression xsi:type="foxbpm:Expression" name=""><![CDATA[]]></foxbpm:parameterExpression>
         </foxbpm:taskCommand>
-        <foxbpm:taskCommand id="HandleCommand_4" name="提交" commandType="submit" isVerification="false" isSaveData="false" isSimulationRun="false">
+        <foxbpm:taskCommand id="HandleCommand_4" name="提交" commandType="submit" >
           <foxbpm:expression xsi:type="foxbpm:Expression" name=""><![CDATA[]]></foxbpm:expression>
           <foxbpm:parameterExpression xsi:type="foxbpm:Expression" name=""><![CDATA[]]></foxbpm:parameterExpression>
         </foxbpm:taskCommand>
@@ -63,7 +63,7 @@
       <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
       <bpmn2:timerEventDefinition id="TimerEventDefinition_5">
-        <bpmn2:timeDate xsi:type="bpmn2:tFormalExpression" id="FormalExpression_18" foxbpm:name="import java.util.Calendar; Calendar calendar = Calendar.getInstance(); calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) + 1); calendar.getTime();"><![CDATA[import java.util.Calendar; Calendar calendar = Calendar.getInstance(); calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) + 1); calendar.getTime();]]></bpmn2:timeDate>
+        <bpmn2:timeDate xsi:type="bpmn2:tFormalExpression" id="FormalExpression_18" foxbpm:name="import java.util.Calendar; Calendar calendar = Calendar.getInstance(); calendar.set(Calendar.SECOND, calendar.get(Calendar.SECOND) + 5); calendar.getTime();"><![CDATA[import java.util.Calendar; Calendar calendar = Calendar.getInstance(); calendar.set(Calendar.SECOND, calendar.get(Calendar.SECOND) + 5); calendar.getTime();]]></bpmn2:timeDate>
       </bpmn2:timerEventDefinition>
     </bpmn2:intermediateCatchEvent>
     <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="IntermediateCatchEvent_2" targetRef="UserTask_5"/>

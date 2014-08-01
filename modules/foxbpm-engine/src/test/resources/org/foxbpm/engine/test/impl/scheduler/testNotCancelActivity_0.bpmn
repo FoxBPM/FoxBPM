@@ -27,15 +27,15 @@
     <bpmn2:boundaryEvent id="BoundaryEvent_1" name="" attachedToRef="UserTask_1" cancelActivity="false">
       <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
       <bpmn2:timerEventDefinition id="TimerEventDefinition_2">
-        <bpmn2:timeDate xsi:type="bpmn2:tFormalExpression" id="FormalExpression_20" foxbpm:name="import java.util.Calendar; Calendar calendar = Calendar.getInstance(); calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) + 1); calendar.getTime();"><![CDATA[import java.util.Calendar; Calendar calendar = Calendar.getInstance(); calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) + 1); calendar.getTime();]]></bpmn2:timeDate>
+        <bpmn2:timeDate xsi:type="bpmn2:tFormalExpression" id="FormalExpression_20" foxbpm:name="import java.util.Calendar; Calendar calendar = Calendar.getInstance(); calendar.set(Calendar.SECOND, calendar.get(Calendar.SECOND) + 5); calendar.getTime();"><![CDATA[import java.util.Calendar; Calendar calendar = Calendar.getInstance(); calendar.set(Calendar.SECOND, calendar.get(Calendar.SECOND) + 5); calendar.getTime();]]></bpmn2:timeDate>
       </bpmn2:timerEventDefinition>
     </bpmn2:boundaryEvent>
     <bpmn2:sequenceFlow id="SequenceFlow_4" sourceRef="BoundaryEvent_1" targetRef="UserTask_2"/>
     <bpmn2:sequenceFlow id="SequenceFlow_8" sourceRef="UserTask_1" targetRef="ParallelGateway_1"/>
     <bpmn2:userTask id="UserTask_2" name="UserTask_1">
       <bpmn2:extensionElements>
-        <foxbpm:taskCommand id="HandleCommand_1" name="同意" commandType="general" isVerification="false" isSaveData="false" isSimulationRun="false"/>
-        <foxbpm:taskCommand id="HandleCommand_2" name="流程状态" commandType="processStatus" isVerification="false" isSaveData="false" isSimulationRun="false"/>
+        <foxbpm:taskCommand id="HandleCommand_1" name="同意" commandType="general" />
+        <foxbpm:taskCommand id="HandleCommand_2" name="流程状态" commandType="processStatus" />
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
@@ -56,8 +56,8 @@
     <bpmn2:sequenceFlow id="SequenceFlow_7" sourceRef="ParallelGateway_1" targetRef="EndEvent_1"/>
     <bpmn2:userTask id="UserTask_3" name="UserTask_1">
       <bpmn2:extensionElements>
-        <foxbpm:taskCommand id="HandleCommand_1" name="同意" commandType="general" isVerification="false" isSaveData="false" isSimulationRun="false"/>
-        <foxbpm:taskCommand id="HandleCommand_2" name="流程状态" commandType="processStatus" isVerification="false" isSaveData="false" isSimulationRun="false"/>
+        <foxbpm:taskCommand id="HandleCommand_1" name="同意" commandType="general" />
+        <foxbpm:taskCommand id="HandleCommand_2" name="流程状态" commandType="processStatus" />
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_6</bpmn2:outgoing>

@@ -46,13 +46,13 @@ public class TimerStartProcessInstanceTest extends BaseSchedulerTest {
 	public void testAB() {
 		try {
 			scheduler.start();
-			this.waitQuartzScheduled(1);
+			this.waitQuartzScheduled(QUART_SCHEDULED_TIME);
 			// 校验
 			this.validateActiveTask("UserTask_1");
 			
 			this.validateToken("UserTask_1");
 			
-			this.validateProcessInstanceCount(1);
+			this.validateProcessInstanceCount(0);
 			
 		} catch (Exception e) {
 			Assert.fail();
@@ -74,11 +74,11 @@ public class TimerStartProcessInstanceTest extends BaseSchedulerTest {
 	public void testBB() {
 		try {
 			scheduler.start();
-			this.waitQuartzScheduled(1);
+			this.waitQuartzScheduled(QUART_SCHEDULED_TIME);
 			this.scheduler.standby();
 			// 校验间隔性启动产生的活动节点、活动令牌、流程实例
 			// 可以只需要校验间隔性产生的个数，不用校验具体内容
-			int resultCount = (60 / 10);
+			int resultCount = 1;
 			this.validateActiveTaskCount(resultCount);
 			this.validateActiveTokenCount(resultCount);
 			this.validateProcessInstanceCount(resultCount);
