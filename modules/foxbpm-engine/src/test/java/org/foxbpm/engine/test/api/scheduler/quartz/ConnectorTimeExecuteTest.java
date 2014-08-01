@@ -43,6 +43,7 @@ public class ConnectorTimeExecuteTest extends BaseSchedulerTest {
 	@Test
 	@Deployment(resources = {"org/foxbpm/engine/test/impl/scheduler/testTimeConnector_0.bpmn"})
 	public void testAA() {
+		processKey = "testTimeConnector_0";
 	}
 	
 	@Test

@@ -47,24 +47,21 @@ public class IntermediateEventTimeDefinitionTest extends BaseSchedulerTest {
 	}
 	@Test
 	public void testAB() {
-		try {
-			Authentication.setAuthenticatedUserId("admin");
-			// 完成任务，启动流程实例并且提交第一个人工任务
-			ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
-			expandTaskCommand.setCommandType("startandsubmit");
-			expandTaskCommand.setInitiator("admin");
-			expandTaskCommand.setTaskCommandId("HandleCommand_3");
-			expandTaskCommand.setTaskComment("asfd");
-			expandTaskCommand.setBusinessKey("bbb");
-			expandTaskCommand.setProcessDefinitionKey(processKey);
-			ProcessInstance processInstance = taskService.expandTaskComplete(expandTaskCommand, null);
-			processInstanceID = processInstance.getId();
-			
-			// 校验令牌停在 IntermediateCatchEvent_2节点
-			this.validateToken("IntermediateCatchEvent_2");
-		} finally {
-			deleteProcessDefinition();
-		}
+		Authentication.setAuthenticatedUserId("admin");
+		// 完成任务，启动流程实例并且提交第一个人工任务
+		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
+		expandTaskCommand.setCommandType("startandsubmit");
+		expandTaskCommand.setInitiator("admin");
+		expandTaskCommand.setTaskCommandId("HandleCommand_3");
+		expandTaskCommand.setTaskComment("asfd");
+		expandTaskCommand.setBusinessKey("bbb");
+		expandTaskCommand.setProcessDefinitionKey(processKey);
+		ProcessInstance processInstance = taskService.expandTaskComplete(expandTaskCommand, null);
+		processInstanceID = processInstance.getId();
+		
+		// 校验令牌停在 IntermediateCatchEvent_2节点
+		this.validateToken("IntermediateCatchEvent_2");
+		
 	}
 	@Test
 	public void testAC() {

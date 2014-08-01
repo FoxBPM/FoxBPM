@@ -24,7 +24,7 @@
     <bpmn2:startEvent id="StartEvent_2" name="Start Event 2">
       <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
       <bpmn2:timerEventDefinition id="TimerEventDefinition_1">
-        <bpmn2:timeDate xsi:type="bpmn2:tFormalExpression" id="FormalExpression_1" foxbpm:name="import java.util.Calendar; Calendar calendar = Calendar.getInstance(); calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) + 1); calendar.getTime();"><![CDATA[import java.util.Calendar; Calendar calendar = Calendar.getInstance(); calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) + 1); calendar.getTime();]]></bpmn2:timeDate>
+        <bpmn2:timeDate xsi:type="bpmn2:tFormalExpression" id="FormalExpression_1" foxbpm:name="import java.util.Calendar; Calendar calendar = Calendar.getInstance(); calendar.set(Calendar.SECOND, calendar.get(Calendar.SECOND) + 5); calendar.getTime();"><![CDATA[import java.util.Calendar; Calendar calendar = Calendar.getInstance(); calendar.set(Calendar.SECOND, calendar.get(Calendar.SECOND) + 5); calendar.getTime();]]></bpmn2:timeDate>
       </bpmn2:timerEventDefinition>
     </bpmn2:startEvent>
     <bpmn2:sequenceFlow id="SequenceFlow_3" sourceRef="StartEvent_2" targetRef="UserTask_1"/>

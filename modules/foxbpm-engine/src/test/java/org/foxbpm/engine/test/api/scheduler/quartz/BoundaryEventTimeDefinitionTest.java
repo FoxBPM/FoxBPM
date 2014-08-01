@@ -111,7 +111,7 @@ public class BoundaryEventTimeDefinitionTest extends BaseSchedulerTest {
 	public void testCB() {
 		try {
 			scheduler.start();
-			this.waitQuartzScheduled(QUART_SCHEDULED_TIME * 2);
+			this.waitQuartzScheduled(QUART_SCHEDULED_TIME * 3);
 			// 校验活动节点，由于是非终止事件所以为产生两个同时活动的节点
 			this.validateActiveTask(new String[]{"UserTask_1", "UserTask_2", "UserTask_3"});
 			
@@ -141,7 +141,7 @@ public class BoundaryEventTimeDefinitionTest extends BaseSchedulerTest {
 	public void testDB() {
 		try {
 			scheduler.start();
-			this.waitQuartzScheduled(QUART_SCHEDULED_TIME * 2);
+			this.waitQuartzScheduled(QUART_SCHEDULED_TIME * 3);
 			// 校验活动节点，由于是非终止事件所以为产生两个同时活动的节点
 			this.validateActiveTask(new String[]{"UserTask_5"});
 			
