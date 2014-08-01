@@ -38,7 +38,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.IdentityService;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngine;
@@ -53,13 +52,16 @@ import org.foxbpm.engine.exception.ExceptionI18NCore;
 import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.identity.GroupDefinition;
+import org.foxbpm.engine.identity.IGroupDefinitionFactory;
+import org.foxbpm.engine.identity.IUserDefinitionFactory;
+import org.foxbpm.engine.identity.UserDefinition;
 import org.foxbpm.engine.impl.bpmn.deployer.AbstractDeployer;
 import org.foxbpm.engine.impl.bpmn.deployer.BpmnDeployer;
 import org.foxbpm.engine.impl.cache.DefaultCache;
 import org.foxbpm.engine.impl.db.DefaultDataSourceManage;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateContainer;
-import org.foxbpm.engine.impl.identity.GroupDeptImpl;
-import org.foxbpm.engine.impl.identity.GroupRoleImpl;
+import org.foxbpm.engine.impl.identity.GroupDefinitionFactoryImpl;
+import org.foxbpm.engine.impl.identity.UserDefinitionFactoryImpl;
 import org.foxbpm.engine.impl.interceptor.CommandConfig;
 import org.foxbpm.engine.impl.interceptor.CommandContextFactory;
 import org.foxbpm.engine.impl.interceptor.CommandContextInterceptor;
@@ -81,7 +83,6 @@ import org.foxbpm.engine.impl.persistence.RunningTrackManager;
 import org.foxbpm.engine.impl.persistence.SchedulerManager;
 import org.foxbpm.engine.impl.persistence.TaskManager;
 import org.foxbpm.engine.impl.persistence.TokenManager;
-import org.foxbpm.engine.impl.persistence.UserEntityManagerFactory;
 import org.foxbpm.engine.impl.persistence.VariableManager;
 import org.foxbpm.engine.impl.persistence.deploy.Deployer;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
@@ -137,7 +138,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	protected int userProcessDefinitionCacheLimit = -1;
 	protected Cache<Object> userProcessDefinitionCache;
-
+	
 	protected int identityCacheLimit = -1;
 	protected Cache<Object> identityCache;
 
@@ -151,8 +152,12 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected TransactionContextFactory transactionContextFactory;
 
 	protected List<ProcessEngineConfigurator> configurators = new ArrayList<ProcessEngineConfigurator>();
-
+	protected IGroupDefinitionFactory groupDefinitionFactory;
 	protected List<GroupDefinition> groupDefinitions;
+	protected IUserDefinitionFactory userDefinitionFactory;
+	protected UserDefinition userDefinition;
+	
+
 	protected FoxBPMStyleConfig foxBPMStyleConfig;
 
 	protected Map<String, Style> styleMap = new HashMap<String, Style>();
@@ -190,6 +195,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initSessionFactories();
 		initDeployers();
 		initGroupDefinitions();
+		initUserDefinition();
 		initTransactionContextFactory();
 		// initDbConfig();// dbType
 		// // 任务命令配置加载
@@ -224,6 +230,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		
 		configuratorsAfterInit();
 	}
+	
+	
 
 	protected void initConfigurators() {
 		if (configurators.size() > 0) {
@@ -375,12 +383,18 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		}
 	}
 
-	protected void initGroupDefinitions() {
-		if (groupDefinitions == null) {
-			groupDefinitions = new ArrayList<GroupDefinition>();
-			groupDefinitions.add(new GroupDeptImpl(Constant.DEPT_TYPE,"部门"));
-			groupDefinitions.add(new GroupRoleImpl(Constant.ROLE_TYPE,"角色"));
+	protected void initUserDefinition(){
+		if(userDefinitionFactory == null){
+			userDefinitionFactory= new UserDefinitionFactoryImpl();
 		}
+		userDefinition = userDefinitionFactory.getUserDefinition();
+	}
+
+	protected void initGroupDefinitions() {
+		if(groupDefinitionFactory == null){
+			groupDefinitionFactory = new GroupDefinitionFactoryImpl();
+		}
+		groupDefinitions = groupDefinitionFactory.getGroupDefinition();
 	}
 
 	protected void initCache() {
@@ -424,7 +438,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			addSessionFactory(new GenericManagerFactory(VariableManager.class));
 			addSessionFactory(new GenericManagerFactory(AgentManager.class));
 			addSessionFactory(new GenericManagerFactory(RunningTrackManager.class));
-			addSessionFactory(new UserEntityManagerFactory());
 		}
 	}
 
@@ -813,6 +826,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	public void setConfigurators(List<ProcessEngineConfigurator> configurators) {
 		this.configurators = configurators;
+	}
+	
+	public UserDefinition getUserDefinition() {
+		return userDefinition;
 	}
 
 }

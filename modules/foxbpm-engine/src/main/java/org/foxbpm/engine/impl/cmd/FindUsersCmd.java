@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.foxbpm.engine.identity.User;
-import org.foxbpm.engine.identity.UserEntityManager;
+import org.foxbpm.engine.identity.UserDefinition;
 import org.foxbpm.engine.impl.db.Page;
 import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
@@ -54,12 +54,12 @@ public class FindUsersCmd implements Command<List<User>> {
 
 	@Override
 	public List<User> execute(CommandContext commandContext) {
-		UserEntityManager userEntityManager = commandContext.getUserEntityManager();
+		UserDefinition userDefinition = commandContext.getUserEntityManager();
 		List<UserEntity> userEntityList = null;
 		if (null != page) {
-			userEntityList = userEntityManager.findUsers(idLike, nameLike, page.getFirstResult(), page.getMaxResults());
+			userEntityList = userDefinition.findUsers(idLike, nameLike, page.getFirstResult(), page.getMaxResults());
 		} else {
-			userEntityList = userEntityManager.findUsers(idLike, nameLike);
+			userEntityList = userDefinition.findUsers(idLike, nameLike);
 		}
 		List<User> userList = null;
 		if (null != userEntityList && !userEntityList.isEmpty()) {

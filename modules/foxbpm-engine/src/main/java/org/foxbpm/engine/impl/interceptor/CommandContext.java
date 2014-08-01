@@ -22,7 +22,7 @@ import java.util.Map;
 
 import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
 import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.identity.UserEntityManager;
+import org.foxbpm.engine.identity.UserDefinition;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.persistence.AgentManager;
 import org.foxbpm.engine.impl.persistence.DeploymentEntityManager;
@@ -126,8 +126,8 @@ public class CommandContext {
 		return getSession(HistoryManager.class);
 	}
 
-	public UserEntityManager getUserEntityManager() {
-		return getSession(UserEntityManager.class);
+	public UserDefinition getUserEntityManager() {
+		return getProcessEngineConfigurationImpl().getUserDefinition();
 	}
 
 	public Command<?> getCommand() {
