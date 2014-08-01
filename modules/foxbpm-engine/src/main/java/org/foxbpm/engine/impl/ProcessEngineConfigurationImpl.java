@@ -831,5 +831,13 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	public UserDefinition getUserDefinition() {
 		return userDefinition;
 	}
+	
+	public void setGroupDefinitionFactory(IGroupDefinitionFactory groupDefinitionFactory) {
+		this.groupDefinitionFactory = groupDefinitionFactory;
+	}
+	
+	public void setUserDefinitionFactory(IUserDefinitionFactory userDefinitionFactory) {
+		this.userDefinitionFactory = userDefinitionFactory;
+	}
 
 }
