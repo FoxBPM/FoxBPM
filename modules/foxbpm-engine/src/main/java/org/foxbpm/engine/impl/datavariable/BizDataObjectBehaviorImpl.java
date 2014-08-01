@@ -17,6 +17,7 @@
  */
 package org.foxbpm.engine.impl.datavariable;
 
+import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,8 @@ public class BizDataObjectBehaviorImpl implements BizDataObjectBehavior {
 	private final static Logger LOG = LoggerFactory.getLogger(BizDataObjectBehaviorImpl.class);
 	/** 表名称 */
 	private final static String TABLE_NAME = "TABLE_NAME";
+	/** 表描述 */
+	private final static String TABLE_COMMENT = "TABLE_COMMENT";
 	/** 表字段类型 */
 	private final static String DATA_TYPE = "DATA_TYPE";
 	/** 列名称 */
@@ -49,18 +52,34 @@ public class BizDataObjectBehaviorImpl implements BizDataObjectBehavior {
 	/** 列描述 */
 	private final static String COLUMN_COMMENT = "COLUMN_COMMENT";
 	/** sql */
-	private final static String TABLE_INFOR = "select * from information_schema.columns where TABLE_SCHEMA = ?";
-	
+	private final static String TABLE_INFOR = "select t.*,'TABLE_COMMENT' from information_schema.columns t where TABLE_SCHEMA = ?";
+	/** MYSQL类型 */
+	private final static String MySQL_TYPE = "MySQL";
+	/** ORACLE类型 */
+	private final static String ORACLE_TYPE = "Oracle";
 	@Override
 	public List<BizDataObject> getDataObjects(String dataSource) {
 		LOG.debug("getDataObjects(String dataSource),dataSource=" + dataSource);
 		try {
-			JdbcTemplate jdbcTemplate = new JdbcTemplate(DBUtils.getDataSource(dataSource));
-			// 获取此 当前数据源连接 对象的当前目录名称。
-			String catalog = jdbcTemplate.getDataSource().getConnection().getCatalog();
-			LOG.info("the sql is " + TABLE_INFOR);
+			JdbcTemplate jdbcTemplate = new JdbcTemplate(DBUtils.getDataSource());
+			DatabaseMetaData dm = DBUtils.getDataSource().getConnection().getMetaData();
+			String databaseType = dm.getDatabaseProductName();
+			String databaseVersion = dm.getDatabaseProductVersion();
+			LOG.info("the database type is " + databaseType + ",version is " + databaseVersion);
+			// 定义sql返回结果集
+			SqlRowSet rs = null;
+			boolean isOracle = false;
+			if (MySQL_TYPE.equalsIgnoreCase(databaseType)) {
+				// 获取此 当前数据源连接 对象的当前目录名称。
+				String catalog = jdbcTemplate.getDataSource().getConnection().getCatalog();
+				LOG.info("the sql is " + TABLE_INFOR);
+				rs = jdbcTemplate.queryForRowSet(TABLE_INFOR, new Object[]{catalog});
+			} else if (ORACLE_TYPE.equalsIgnoreCase(databaseType)) {
+				isOracle = true;
+				StringBuffer sql = new StringBuffer("select t_col.*,t_des.comments as TABLE_COMMENT,c_des.comments as COLUMN_COMMENT from user_tab_columns t_col,user_col_comments c_des,user_tab_comments t_des ").append("where t_col.table_name = c_des.table_name and t_col.table_name = t_des.table_name order by t_col.table_name");
+				rs = jdbcTemplate.queryForRowSet(sql.toString());
+			}
 			
-			SqlRowSet rs = jdbcTemplate.queryForRowSet(TABLE_INFOR, new Object[]{catalog});
 			List<BizDataObject> bizDataObjects = new ArrayList<BizDataObject>();
 			BizDataObject bizDataObject = null;
 			DataVariableDefinition dataVariableDefine = null;
@@ -72,6 +91,9 @@ public class BizDataObjectBehaviorImpl implements BizDataObjectBehavior {
 				if (!rs.getString(TABLE_NAME).equals(tableName)) {
 					bizDataObject = new BizDataObject();
 					bizDataObject.setId(rs.getString(TABLE_NAME));
+					if (isOracle) {
+						bizDataObject.setName(rs.getString(TABLE_COMMENT));
+					}
 					bizDataObject.setDataSource(dataSource);
 					// 添加业务数据对象
 					bizDataObjects.add(bizDataObject);
