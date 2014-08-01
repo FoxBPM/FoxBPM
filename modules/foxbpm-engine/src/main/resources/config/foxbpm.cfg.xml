@@ -9,13 +9,7 @@
 			type="actorConnector" projectName="foxbpm-connector"
 			virtualPath="src/main/java/org/foxbpm/connector/actorconnector/" src="org/foxbpm/connector/actorconnector/" />
 
-		<!-- <resourcePath id="flowconnector2" name="流程连接器路径" type="flowConnector"
-			projectName="connector2" virtualPath="src/main/java/connector/flowconnector/"
-			src="connector/flowconnector/" />
-		<resourcePath id="actorconnector2" name="处理者选择器路径" type="actorConnector"
-			projectName="connector2" virtualPath="src/main/java/connector/actorconnector/"
-			src="connector/actorconnector/" />
-
+		<!-- 
 		<resourcePath id="foxbpmflow-template" name="foxbpmflow-template"
 			projectName="foxbpm-engine" src="template/flowtemplate/"
 			virtualPath="src/main/resources/template/flowtemplate/" /> -->
@@ -97,15 +91,15 @@
 			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.TransferTaskFilter">
 
 			<commandParam key="transferUserId" name="转发给谁" value="true"
-				description="" dataType="String" bizType="InterfaceParam">
+				description="" dataType="String" bizType="InterfaceParam" />
 				<commandParam key="isSaveData" name="是否保存数据" value="true"
 					description="" dataType="String" bizType="InterfaceControlParam" />
 				<commandParam key="isVerification" name="是否触发验证" value="true"
-					description="" dataType="String" bizType="InterfaceControlParam">
+					description="" dataType="String" bizType="InterfaceControlParam" />
 
 		</taskCommandDefinition>
 
-
+	<!-- 
 		<taskCommandDefinition id="rollBack_reset" name="退回-重新分配"
 			command="org.foxbpm.engine.impl.task.command.RollBackTaskResetCommand"
 			cmd="org.foxbpm.engine.impl.task.cmd.RollBackTaskResetCmd" isEnabled="true"
@@ -116,7 +110,7 @@
 			<commandParam key="isVerification" name="是否触发验证" value="true"
 				description="" dataType="String" bizType="InterfaceParam" />
 		</taskCommandDefinition>
-
+ -->
 
 
 
