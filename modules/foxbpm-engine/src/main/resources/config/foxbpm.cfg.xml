@@ -101,9 +101,9 @@
 
 
 		<taskCommandDefinition id="rollBack_reset" name="退回-重新分配"
-			command="org.foxbpm.engine.impl.task.command.RollBackTaskResetCommand"
-			cmd="org.foxbpm.engine.impl.task.cmd.RollBackTaskResetCmd" isEnabled="true"
-			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.RollBackTaskResetFilter"
+			command="org.foxbpm.engine.impl.task.command.RollBackResetCommand"
+			cmd="org.foxbpm.engine.impl.task.cmd.RollBackResetCmd" isEnabled="true"
+			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.RollBackResetFilter"
 			description="退回到前台用户选择的一个节点,任务重新分配处理者。">
 			<commandParam key="rollBackNodeId" name="退回的节点号" value="true"
 				description="" dataType="String" bizType="InputParam" />
