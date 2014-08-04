@@ -67,14 +67,24 @@ public class TransferTaskCmd extends AbstractExpandTaskCmd<TransferTaskCommand, 
 		task.setTaskComment(taskComment);
 		/** 结束任务,但是并不驱动流程向下。 */
 		task.end(taskCommand, taskComment);
+		/** 创建新任务 */	
+		cloneAndInsertTask(task);
 		
-		/** 创建新任务 */
+		return null;
+	}
+	
+	
+	private void cloneAndInsertTask(TaskEntity task){
+		
+		/** 这里可以采用浅克隆的方式克隆出一个单简单字段的任务,也可以自己重新创建任务,但是需要赋值令牌、流程实例、定义等信息 */
 		
 		/** 克隆一个任务 */
 		TaskEntity newTask=(TaskEntity) task.clone();
 		/** 重置任务字段 */
 		newTask.setId(GuidUtil.CreateGuid());
+		/** 设置新的处理者为被转发人 */
 		newTask.setAssignee(transferUserId);
+		/** 重置创建时间 */
 		newTask.setCreateTime(ClockUtil.getCurrentTime());
 		newTask.setEndTime(null);
 		newTask.setCommandId(null);
@@ -88,9 +98,6 @@ public class TransferTaskCmd extends AbstractExpandTaskCmd<TransferTaskCommand, 
 		newTask.setSuspended(false);
 		/** 插入任务 */
 		Context.getCommandContext().getTaskManager().insert(newTask);
-		
-		
-		return null;
 	}
 
 }
