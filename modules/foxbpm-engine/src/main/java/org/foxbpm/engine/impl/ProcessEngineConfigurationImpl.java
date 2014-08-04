@@ -60,6 +60,7 @@ import org.foxbpm.engine.impl.cache.DefaultCache;
 import org.foxbpm.engine.impl.db.DefaultDataSourceManage;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateContainer;
 import org.foxbpm.engine.impl.identity.GroupDeptImpl;
+import org.foxbpm.engine.impl.identity.GroupRoleImpl;
 import org.foxbpm.engine.impl.identity.UserDefinitionImpl;
 import org.foxbpm.engine.impl.interceptor.CommandConfig;
 import org.foxbpm.engine.impl.interceptor.CommandContextFactory;
@@ -389,7 +390,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected void initGroupDefinitions() {
 		if(groupDefinitions == null || groupDefinitions.isEmpty()){
 			groupDefinitions.add(new GroupDeptImpl(Constant.DEPT_TYPE, "部门"));
-			groupDefinitions.add(new GroupDeptImpl(Constant.ROLE_TYPE, "角色"));
+			groupDefinitions.add(new GroupRoleImpl(Constant.ROLE_TYPE, "角色"));
 		}
 	}
 
