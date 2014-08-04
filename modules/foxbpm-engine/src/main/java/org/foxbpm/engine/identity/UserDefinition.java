@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author kenshin
  * @author ych
  */
 package org.foxbpm.engine.identity;
@@ -22,35 +21,30 @@ import java.util.List;
 
 import org.foxbpm.engine.impl.entity.UserEntity;
 
-public interface UserEntityManager {
+public interface UserDefinition {
 
+	/**
+	 * 根据用户编号获取用户信息
+	 * @param userId
+	 * @return
+	 */
 	public UserEntity findUserById(String userId);
 
+	/**
+	 * 根据查询条件获取用户列表
+	 * 选择转发人，查询等选人界面时使用，不用系统提供界面时可不实现
+	 */
 	public List<UserEntity> findUsers(String idLike, String nameLike);
 
 	/**
-	 * 查询用户
-	 * 
-	 * @param idLike
-	 *            id
-	 * @param nameLike
-	 *            名称
-	 * @param firstResult
-	 *            记录起始位置
-	 * @param maxResults
-	 *            最大记录数
-	 * @return 返回用户列表
+	 * 根据查询条件获取用户列表（分页）
+	 * 选择转发人，查询等选人界面时使用，不用系统提供界面时可不实现
 	 */
 	List<UserEntity> findUsers(String idLike, String nameLike, int firstResult, int maxResults);
 
 	/**
-	 * 查询用户数
-	 * 
-	 * @param idLike
-	 *            id
-	 * @param nameLike
-	 *            名称
-	 * @return 用户数
+	 * 根据查询条件获取用户数量
+	 * 选择转发人，查询等选人界面时使用，不用系统提供界面时可不实现
 	 */
 	Long findUserCount(String idLike, String nameLike);
 }

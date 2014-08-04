@@ -16,22 +16,22 @@
  * @author kenshin
  * @author ych
  */
-package org.foxbpm.engine.impl.persistence;
+package org.foxbpm.engine.impl.identity;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.foxbpm.engine.identity.UserEntityManager;
+import org.foxbpm.engine.identity.UserDefinition;
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.UserEntity;
 
-@SuppressWarnings("unchecked")
-public class DefaultUserEntityManager extends AbstractManager implements UserEntityManager {
-
+public class UserDefinitionImpl implements UserDefinition{
 	public UserEntity findUserById(String userId) {
-		return (UserEntity) getSqlSession().selectOne("selectUserById", userId);
+		return (UserEntity)  Context.getCommandContext().getSqlSession().selectOne("selectUserById", userId);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<UserEntity> findUsers(String idLike, String nameLike) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -41,9 +41,10 @@ public class DefaultUserEntityManager extends AbstractManager implements UserEnt
 		if (nameLike != null) {
 			map.put("userName", nameLike);
 		}
-		return (List<UserEntity>) getSqlSession().selectListWithRawParameter("selectUsers", map);
+		return (List<UserEntity>)Context.getCommandContext().getSqlSession().selectListWithRawParameter("selectUsers", map);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<UserEntity> findUsers(String idLike, String nameLike, int firstResult, int maxResults) {
 		Map<String, Object> queryMap = new HashMap<String, Object>();
@@ -53,7 +54,7 @@ public class DefaultUserEntityManager extends AbstractManager implements UserEnt
 		if (nameLike != null) {
 			queryMap.put("userName", nameLike);
 		}
-		return (List<UserEntity>) getSqlSession().selectList("selectUsersByPage", queryMap, firstResult, maxResults);
+		return (List<UserEntity>)  Context.getCommandContext().getSqlSession().selectList("selectUsersByPage", queryMap, firstResult, maxResults);
 	}
 
 	@Override
@@ -65,6 +66,6 @@ public class DefaultUserEntityManager extends AbstractManager implements UserEnt
 		if (nameLike != null) {
 			queryMap.put("userName", nameLike);
 		}
-		return (Long)getSqlSession().selectOne("selectUsersCount", queryMap);
+		return (Long) Context.getCommandContext().getSqlSession().selectOne("selectUsersCount", queryMap);
 	}
 }

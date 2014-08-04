@@ -28,123 +28,105 @@ import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 
+ * 
+ * ParallelGatewayBehavior
+ * 
+ * MAENLIANG 2014年8月1日 下午3:56:56 重构
+ * 
+ * @version 1.0.0
+ * 
+ */
 public class ParallelGatewayBehavior extends GatewayBehavior {
-
 	private static final long serialVersionUID = 1L;
-
 	private static Logger LOG = LoggerFactory.getLogger(ParallelGatewayBehavior.class);
-
+	/**
+	 * 令牌数量 合并方式
+	 */
+	private static final String CONVERGTYPE_TOKENNUM = "tokenNum";
+	/**
+	 * 线条数量 合并方式
+	 */
 	protected String convergType = "flowNum";// tokenNum
-
-	public String getConvergType() {
-		return convergType;
-	}
-
-	public void setConvergType(String convergType) {
-		this.convergType = convergType;
-	}
-
 	public void execute(FlowNodeExecutionContext executionContext) {
-
 		/** 获取当前的pvm节点 */
 		KernelFlowNode flowNode = executionContext.getFlowNode();
 		/** 获取pvm节点的进入线条 */
 		List<KernelSequenceFlow> incomingSequenceFlows = flowNode.getIncomingSequenceFlows();
 		/** 获取pvm节点的输出线条 */
-
-		/** 按照令牌数量合并方式 */
-		if (this.convergType.equals("tokenNum")) {
-
-			KernelTokenImpl token = (KernelTokenImpl) executionContext;
-
-			KernelTokenImpl parentToken = token.getParent();
-			// 判断是否有父令牌
-			if (parentToken != null) {
-
-				// 判断令牌是否需要重新激活
-				if (token.isActive()) {
-
-					token.setActive(false);
-
+		
+		KernelTokenImpl token = (KernelTokenImpl) executionContext;
+		KernelTokenImpl parentToken = token.getParent();
+		// 判断是否有父令牌
+		if (parentToken != null) {
+			// 判断令牌是否需要重新激活
+			if (token.isActive()) {
+				token.setActive(false);
+				if (this.convergType.equals(CONVERGTYPE_TOKENNUM)) {
+					/** 按照令牌数量合并方式 */
 					// 当子令牌都处于非激活状态才会驱动父令牌向下 ！！这里可能会出现一种情况有问题,
 					boolean reactivateParent = !parentToken.hasActiveChildren();
-
 					// 判断是否需要把父令牌移动到下一个节点
 					if (reactivateParent) {
-
-						List<KernelTokenImpl> cTokens = parentToken.getChildren();
-						for (KernelTokenImpl cToken : cTokens) {
-							cToken.end(false);
-						}
-
-						parentToken
-								.setFlowNode((KernelFlowNodeImpl) executionContext.getFlowNode());
-						parentToken.leave();
+						this.driveToken(token, parentToken);
 					}
-
-				}
-
-			} else {
-				// 没有父令牌则直接离开
-				executionContext.signal();
-			}
-
-		} else {
-			/** 按照进入线的数量合并方式 */
-			KernelTokenImpl token = (KernelTokenImpl) executionContext;
-
-			KernelTokenImpl parentToken = token.getParent();
-			// 判断是否有父令牌
-			if (parentToken != null) {
-
-				// 判断令牌是否需要重新激活
-				if (token.isActive()) {
-
-					token.setActive(false);
-
-					List<KernelToken> joinedExecutions = executionContext
-							.findInactiveToken(flowNode);
+				} else {
+					/** 按照进入线的数量合并方式 */
+					List<KernelToken> joinedExecutions = executionContext.findInactiveToken(flowNode);
 					int nbrOfExecutionsToJoin = incomingSequenceFlows.size();
 					int nbrOfExecutionsJoined = joinedExecutions.size();
-
 					if (nbrOfExecutionsJoined == nbrOfExecutionsToJoin) {
-
 						// Fork
 						if (LOG.isDebugEnabled()) {
-							LOG.debug("并行网关 '{}' activates: {} of {} joined", flowNode.getId(),
-									nbrOfExecutionsJoined, nbrOfExecutionsToJoin);
+							LOG.debug("并行网关 '{}' activates: {} of {} joined", flowNode.getId(), nbrOfExecutionsJoined, nbrOfExecutionsToJoin);
 						}
-
-						for (KernelToken cToken : parentToken.getChildren()) {
-							((KernelTokenImpl) cToken).end(false);
-						}
-
-						parentToken
-								.setFlowNode((KernelFlowNodeImpl) executionContext.getFlowNode());
-
-						parentToken.signal();
-
+						
+						this.driveToken(token, parentToken);
 					} else if (LOG.isDebugEnabled()) {
-						LOG.debug("并行网关 '{}' does not activate: {} of {} joined", flowNode.getId(),
-								nbrOfExecutionsJoined, nbrOfExecutionsToJoin);
+						LOG.debug("并行网关 '{}' does not activate: {} of {} joined", flowNode.getId(), nbrOfExecutionsJoined, nbrOfExecutionsToJoin);
 					}
-
 				}
-
-			} else {
-				// 没有父令牌则直接离开
-				executionContext.signal();
+				
 			}
+			
+		} else {
+			// 没有父令牌则直接离开
+			executionContext.signal();
 		}
+		
 	}
-
+	
 	public void leave(FlowNodeExecutionContext executionContext) {
-
-		List<KernelSequenceFlow> outgoingSequenceFlows = executionContext.getFlowNode()
-				.getOutgoingSequenceFlows();
+		List<KernelSequenceFlow> outgoingSequenceFlows = executionContext.getFlowNode().getOutgoingSequenceFlows();
 		// 并行网关 直接忽略所有线条条件产生并发
 		((KernelTokenImpl) executionContext).leave(outgoingSequenceFlows);
-
 	}
-
+	
+	/**
+	 * 
+	 * 驱动令牌
+	 * 
+	 * @param token
+	 * @param parentToken
+	 *            void
+	 * @exception
+	 * @since 1.0.0
+	 */
+	private void driveToken(KernelTokenImpl token, KernelTokenImpl parentToken) {
+		for (KernelToken cToken : token.getChildren()) {
+			((KernelTokenImpl) cToken).end(false);
+		}
+		parentToken.setFlowNode((KernelFlowNodeImpl) token.getFlowNode());
+		parentToken.signal();
+	}
+	
+	public String getConvergType() {
+		return convergType;
+	}
+	
+	public void setConvergType(String convergType) {
+		this.convergType = convergType;
+	}
+	
 }

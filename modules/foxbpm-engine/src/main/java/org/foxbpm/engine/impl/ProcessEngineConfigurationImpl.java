@@ -53,13 +53,14 @@ import org.foxbpm.engine.exception.ExceptionI18NCore;
 import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.identity.GroupDefinition;
+import org.foxbpm.engine.identity.UserDefinition;
 import org.foxbpm.engine.impl.bpmn.deployer.AbstractDeployer;
 import org.foxbpm.engine.impl.bpmn.deployer.BpmnDeployer;
 import org.foxbpm.engine.impl.cache.DefaultCache;
 import org.foxbpm.engine.impl.db.DefaultDataSourceManage;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateContainer;
 import org.foxbpm.engine.impl.identity.GroupDeptImpl;
-import org.foxbpm.engine.impl.identity.GroupRoleImpl;
+import org.foxbpm.engine.impl.identity.UserDefinitionImpl;
 import org.foxbpm.engine.impl.interceptor.CommandConfig;
 import org.foxbpm.engine.impl.interceptor.CommandContextFactory;
 import org.foxbpm.engine.impl.interceptor.CommandContextInterceptor;
@@ -81,7 +82,6 @@ import org.foxbpm.engine.impl.persistence.RunningTrackManager;
 import org.foxbpm.engine.impl.persistence.SchedulerManager;
 import org.foxbpm.engine.impl.persistence.TaskManager;
 import org.foxbpm.engine.impl.persistence.TokenManager;
-import org.foxbpm.engine.impl.persistence.UserEntityManagerFactory;
 import org.foxbpm.engine.impl.persistence.VariableManager;
 import org.foxbpm.engine.impl.persistence.deploy.Deployer;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
@@ -137,7 +137,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 
 	protected int userProcessDefinitionCacheLimit = -1;
 	protected Cache<Object> userProcessDefinitionCache;
-
+	
 	protected int identityCacheLimit = -1;
 	protected Cache<Object> identityCache;
 
@@ -151,8 +151,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected TransactionContextFactory transactionContextFactory;
 
 	protected List<ProcessEngineConfigurator> configurators = new ArrayList<ProcessEngineConfigurator>();
+	protected List<GroupDefinition> groupDefinitions = new ArrayList<GroupDefinition>();
+	protected UserDefinition userDefinition;
+	
 
-	protected List<GroupDefinition> groupDefinitions;
 	protected FoxBPMStyleConfig foxBPMStyleConfig;
 
 	protected Map<String, Style> styleMap = new HashMap<String, Style>();
@@ -190,6 +192,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initSessionFactories();
 		initDeployers();
 		initGroupDefinitions();
+		initUserDefinition();
 		initTransactionContextFactory();
 		// initDbConfig();// dbType
 		// // 任务命令配置加载
@@ -224,6 +227,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		
 		configuratorsAfterInit();
 	}
+	
+	
 
 	protected void initConfigurators() {
 		if (configurators.size() > 0) {
@@ -375,11 +380,16 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		}
 	}
 
+	protected void initUserDefinition(){
+		if(userDefinition == null){
+			userDefinition= new UserDefinitionImpl();
+		}
+	}
+
 	protected void initGroupDefinitions() {
-		if (groupDefinitions == null) {
-			groupDefinitions = new ArrayList<GroupDefinition>();
-			groupDefinitions.add(new GroupDeptImpl(Constant.DEPT_TYPE,"部门"));
-			groupDefinitions.add(new GroupRoleImpl(Constant.ROLE_TYPE,"角色"));
+		if(groupDefinitions == null || groupDefinitions.isEmpty()){
+			groupDefinitions.add(new GroupDeptImpl(Constant.DEPT_TYPE, "部门"));
+			groupDefinitions.add(new GroupDeptImpl(Constant.ROLE_TYPE, "角色"));
 		}
 	}
 
@@ -424,7 +434,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			addSessionFactory(new GenericManagerFactory(VariableManager.class));
 			addSessionFactory(new GenericManagerFactory(AgentManager.class));
 			addSessionFactory(new GenericManagerFactory(RunningTrackManager.class));
-			addSessionFactory(new UserEntityManagerFactory());
 		}
 	}
 
@@ -814,5 +823,12 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	public void setConfigurators(List<ProcessEngineConfigurator> configurators) {
 		this.configurators = configurators;
 	}
-
+	
+	public UserDefinition getUserDefinition() {
+		return userDefinition;
+	}
+	
+	public void setUserDefinition(UserDefinition userDefinition) {
+		this.userDefinition = userDefinition;
+	}
 }
