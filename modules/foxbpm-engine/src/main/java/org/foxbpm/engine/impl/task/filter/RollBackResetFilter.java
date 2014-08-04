@@ -15,13 +15,49 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.engine.impl.task.command;
+package org.foxbpm.engine.impl.task.filter;
 
-public class SaveTaskDraftCommand extends AbstractCustomExpandTaskCommand {
+import org.foxbpm.engine.task.Task;
 
+/**
+ * @author kenshin
+ * 
+ */
+public class RollBackResetFilter extends AbstractCommandFilter {
 
-	public SaveTaskDraftCommand(ExpandTaskCommand expandTaskCommand) {
-		super(expandTaskCommand);
+	@Override
+	public boolean accept(Task task) {
+
+		if (task == null) {
+			return false;
+		}
+
+		if (task.isSuspended()) {
+			return false;
+		}
+
+		if (task.hasEnded()) {
+			return false;
+		}
+
+		if (isProcessTracking()) {
+			return false;
+		}
+
+		if (task.getDelegationState() != null) {
+			return false;
+		}
+
+		if (task.getAssignee() != null) {
+			return true;
+		}
+
+		if (isAutoClaim(task)) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 }

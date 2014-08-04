@@ -16,40 +16,36 @@
  * @author kenshin
  */
 package org.foxbpm.engine.impl.task.cmd;
-import org.foxbpm.engine.impl.Context;
+
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
-import org.foxbpm.engine.impl.task.command.TransferTaskCommand;
-import org.foxbpm.engine.impl.util.ClockUtil;
-import org.foxbpm.engine.impl.util.GuidUtil;
+import org.foxbpm.engine.impl.task.command.RollBackResetCommand;
 import org.foxbpm.engine.task.TaskCommand;
+import org.foxbpm.kernel.process.KernelProcessDefinition;
+import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 /**
+ * 退回到指定节点,任务重新分配。
  * @author kenshin
- *
  */
-public class TransferTaskCmd extends AbstractExpandTaskCmd<TransferTaskCommand, Void> {
+public class RollBackResetCmd extends AbstractExpandTaskCmd<RollBackResetCommand, Void> {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 转发的用户编号
 	 */
-	protected String transferUserId;
+	protected String rollBackNodeId;
 
-	public TransferTaskCmd(TransferTaskCommand transferTaskCommand) {
-
-		super(transferTaskCommand);
-		this.transferUserId = transferTaskCommand.getTransferUserId();
-
+	public RollBackResetCmd(RollBackResetCommand rollBackResetCommand) {
+		super(rollBackResetCommand);
+		this.rollBackNodeId = rollBackResetCommand.getRollBackNodeId();
 	}
 
 	@Override
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
-		
-
 		
 		/** 放置流程实例级别的瞬态变量 */
 		task.setProcessInstanceTransientVariables(this.transientVariables);
@@ -65,39 +61,14 @@ public class TransferTaskCmd extends AbstractExpandTaskCmd<TransferTaskCommand, 
 		task.setTaskCommand(taskCommand);		
 		/** 处理意见 */
 		task.setTaskComment(taskComment);
-		/** 结束任务,但是并不驱动流程向下。 */
-		task.end(taskCommand, taskComment);
-		/** 创建新任务 */	
-		cloneAndInsertTask(task);
+		/** 获取流程定义 */
+		KernelProcessDefinition processDefinition=getProcessDefinition(task);
+		/** 查找需要退回的节点 */
+		KernelFlowNodeImpl flowNode=processDefinition.findFlowNode(rollBackNodeId);
+		/** 完成任务,并将流程推向指定的节点 */
+		task.complete(flowNode);
 		
 		return null;
-	}
-	
-	
-	private void cloneAndInsertTask(TaskEntity task){
-		
-		/** 这里可以采用浅克隆的方式克隆出一个单简单字段的任务,也可以自己重新创建任务,但是需要赋值令牌、流程实例、定义等信息 */
-		
-		/** 克隆一个任务 */
-		TaskEntity newTask=(TaskEntity) task.clone();
-		/** 重置任务字段 */
-		newTask.setId(GuidUtil.CreateGuid());
-		/** 设置新的处理者为被转发人 */
-		newTask.setAssignee(transferUserId);
-		/** 重置创建时间 */
-		newTask.setCreateTime(ClockUtil.getCurrentTime());
-		newTask.setEndTime(null);
-		newTask.setCommandId(null);
-		newTask.setCommandType(null);
-		newTask.setCommandMessage(null);
-		newTask.setTaskComment(null);
-		newTask.setAgent(null);
-		newTask.setAdmin(null);
-		newTask.setDraft(false);
-		newTask.setOpen(false);
-		newTask.setSuspended(false);
-		/** 插入任务 */
-		Context.getCommandContext().getTaskManager().insert(newTask);
 	}
 
 }

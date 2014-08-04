@@ -27,6 +27,7 @@ import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.engine.task.TaskType;
 import org.foxbpm.kernel.process.KernelFlowNode;
+import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelVariableScopeImpl;
 import org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition;
@@ -811,6 +812,13 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	/** 结束任务,并驱动流程向下运转。 */
 	public void complete() {
 		
+		complete(null);
+		
+	}
+	
+	/** 结束任务,并驱动流程向下运转。 指定需要去的节点。 */
+	public void complete(KernelFlowNodeImpl toFlowNode) {
+		
 		/** 设置任务结束状态 */
 		end();
 		/** 正常处理任务不能处理已经暂停的任务 */
@@ -822,6 +830,10 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 			TokenEntity token = getToken();
 			/** 移除令牌上注册任务 */
 			token.removeTask(this);
+			/** 设置去向节点 */
+			if(toFlowNode!=null){
+				token.setToFlowNode(toFlowNode);
+			}
 			/** 驱动令牌向下 */
 			token.signal();
 		}
