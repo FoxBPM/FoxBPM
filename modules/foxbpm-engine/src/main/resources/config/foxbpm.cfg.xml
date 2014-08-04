@@ -28,9 +28,9 @@
 			command="org.foxbpm.engine.impl.task.command.GeneralTaskCommand" cmd="org.foxbpm.engine.impl.task.cmd.CompleteGeneralTaskCmd"
 			filter="org.foxbpm.engine.impl.task.filter.CompleteGeneralTaskFilter">
 			<commandParam key="isSaveData" name="是否保存数据" value="true"
-				description="" dataType="String" bizType="InterfaceControlParam" />
+				description="" dataType="String" bizType="ControlParam" />
 			<commandParam key="isVerification" name="是否触发验证" value="true"
-				description="" dataType="String" bizType="InterfaceControlParam" />
+				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
 
 		<taskCommandDefinition id="startandsubmit" name="启动并提交"
@@ -39,9 +39,9 @@
 			isEnabled="true" type="toDoTasks"
 			filter="org.foxbpm.engine.impl.task.filter.StartAndSubmitTaskFilter">
 			<commandParam key="isSaveData" name="是否保存数据" value="true"
-				description="" dataType="String" bizType="InterfaceControlParam" />
+				description="" dataType="String" bizType="ControlParam" />
 			<commandParam key="isVerification" name="是否触发验证" value="true"
-				description="" dataType="String" bizType="InterfaceControlParam" />
+				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
 
 		<taskCommandDefinition id="submit" name="提交"
@@ -49,9 +49,9 @@
 			isEnabled="true" type="toDoTasks"
 			filter="org.foxbpm.engine.impl.task.filter.SubmitTaskFilter">
 			<commandParam key="isSaveData" name="是否保存数据" value="true"
-				description="" dataType="String" bizType="InterfaceControlParam" />
+				description="" dataType="String" bizType="ControlParam" />
 			<commandParam key="isVerification" name="是否触发验证" value="true"
-				description="" dataType="String" bizType="InterfaceControlParam" />
+				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
 
 		<taskCommandDefinition id="claim" name="接收任务"
@@ -59,9 +59,9 @@
 			isEnabled="true" type="sharedTasks"
 			filter="org.foxbpm.engine.impl.task.filter.ClaimTaskFilter">
 			<commandParam key="isSaveData" name="是否保存数据" value="false"
-				description="" dataType="String" bizType="InterfaceControlParam" />
+				description="" dataType="String" bizType="ControlParam" />
 			<commandParam key="isVerification" name="是否触发验证" value="false"
-				description="" dataType="String" bizType="InterfaceControlParam" />
+				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
 
 		<taskCommandDefinition id="releaseTask" name="释放任务"
@@ -69,9 +69,9 @@
 			isEnabled="true" type="toDoTasks"
 			filter="org.foxbpm.engine.impl.task.filter.ReleaseTaskFilter">
 			<commandParam key="isSaveData" name="是否保存数据" value="false"
-				description="" dataType="String" bizType="InterfaceControlParam" />
+				description="" dataType="String" bizType="ControlParam" />
 			<commandParam key="isVerification" name="是否触发验证" value="false"
-				description="" dataType="String" bizType="InterfaceControlParam" />
+				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
 
 		<taskCommandDefinition id="saveTaskDraft" name="保存草稿"
@@ -79,9 +79,9 @@
 			cmd="org.foxbpm.engine.impl.task.cmd.SaveTaskDraftCmd" isEnabled="true"
 			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.SaveTaskDraftFilter">
 			<commandParam key="isSaveData" name="是否保存数据" value="true"
-				description="" dataType="String" bizType="InterfaceControlParam" />
+				description="" dataType="String" bizType="ControlParam" />
 			<commandParam key="isVerification" name="是否触发验证" value="true"
-				description="" dataType="String" bizType="InterfaceControlParam" />
+				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
 
 
@@ -91,26 +91,28 @@
 			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.TransferTaskFilter">
 
 			<commandParam key="transferUserId" name="转发给谁" value="true"
-				description="" dataType="String" bizType="InterfaceParam" />
+				description="" dataType="String" bizType="InputParam" />
 				<commandParam key="isSaveData" name="是否保存数据" value="true"
-					description="" dataType="String" bizType="InterfaceControlParam" />
+					description="" dataType="String" bizType="ControlParam" />
 				<commandParam key="isVerification" name="是否触发验证" value="true"
-					description="" dataType="String" bizType="InterfaceControlParam" />
+					description="" dataType="String" bizType="ControlParam" />
 
 		</taskCommandDefinition>
 
-	<!-- 
+
 		<taskCommandDefinition id="rollBack_reset" name="退回-重新分配"
 			command="org.foxbpm.engine.impl.task.command.RollBackTaskResetCommand"
 			cmd="org.foxbpm.engine.impl.task.cmd.RollBackTaskResetCmd" isEnabled="true"
 			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.RollBackTaskResetFilter"
 			description="退回到前台用户选择的一个节点,任务重新分配处理者。">
+			<commandParam key="rollBackNodeId" name="退回的节点号" value="true"
+				description="" dataType="String" bizType="InputParam" />
 			<commandParam key="isSaveData" name="是否保存数据" value="true"
-				description="" dataType="String" bizType="InterfaceParam" />
+				description="" dataType="String" bizType="ControlParam" />
 			<commandParam key="isVerification" name="是否触发验证" value="true"
-				description="" dataType="String" bizType="InterfaceParam" />
+				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
- -->
+
 
 
 

@@ -35,6 +35,7 @@ import org.foxbpm.engine.impl.task.command.AbstractCustomExpandTaskCommand;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.TaskCommand;
+import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 
@@ -145,6 +146,10 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 	
 	protected FlowNodeExecutionContext getExecutionContext(TaskEntity task){
 		return (FlowNodeExecutionContext)task.getToken();
+	}
+	
+	protected KernelProcessDefinition getProcessDefinition(TaskEntity task){
+		return task.getProcessDefinition();
 	}
 	
 	protected CommandExecutor getCommandExecutor(){
