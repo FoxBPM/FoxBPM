@@ -58,10 +58,8 @@
 				<table class="table-form">
 					<tr>
 						<td class="title-r">操作人:</td>
-						<td colspan="3"><input value="${result.agentInfo.id}"
-							name="agentId" id="agentId" type="hidden" /> <input
-							name="agentUser" id="agentUser"
-							value="${result.agentInfo.agentFrom}" /></td>
+						<td colspan="3"><input name="agentUser" id="agentUser"
+							value="${result.agentInfo.agentFrom}" readonly="readonly" /></td>
 					</tr>
 					<tr>
 						<td class="title-r">开始时间:</td>
