@@ -27,6 +27,7 @@ import java.util.Map;
 import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentEntity;
 import org.foxbpm.engine.impl.db.Page;
+import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.repository.ProcessDefinition;
@@ -53,9 +54,10 @@ import org.springframework.stereotype.Service;
  */
 @Service("workFlowServiceImpl")
 public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlowService {
-
+	
 	@Override
-	public List<Map<String, Object>> queryStartProcess(Map<String, Object> params) throws FoxbpmWebException {
+	public List<Map<String, Object>> queryStartProcess(Map<String, Object> params)
+	    throws FoxbpmWebException {
 		// 创建流程定义查询
 		String userId = StringUtil.getString(params.get(WebContextAttributeName.USERID));
 		// 参数校验
@@ -68,13 +70,14 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		}
 		return result;
 	}
-
+	
 	public List<RunningTrack> queryRunningTrack(String processInstanceID) {
 		return runtimeService.createRunningTrackQuery().processInstanceID(processInstanceID).list();
 	}
-
+	
 	@Override
-	public List<Map<String, Object>> queryProcessInst(Pagination<String> pageInfor, Map<String, Object> params) {
+	public List<Map<String, Object>> queryProcessInst(Pagination<String> pageInfor,
+	    Map<String, Object> params) {
 		// 返回结果
 		List<Map<String, Object>> resultData = new ArrayList<Map<String, Object>>();
 		ProcessInstanceQuery piq = runtimeService.createProcessInstanceQuery();
@@ -88,7 +91,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		String initor = StringUtil.getString(params.get("initor"));
 		String status = StringUtil.getString(params.get("status"));
 		String processType = StringUtil.getString(params.get("processType"));
-
+		
 		String dss = StringUtil.getString(params.get("startTimeS"));
 		String dse = StringUtil.getString(params.get("startTimeE"));
 		if (StringUtil.isNotEmpty(processDefinitionKey)) {
@@ -106,25 +109,25 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		if (StringUtil.isNotEmpty(status)) {
 			piq.processInstanceStatus(status);
 		}
-
+		
 		if (StringUtil.isNotEmpty(initor)) {
 			piq.initiator(initor);
 		}
-
+		
 		if (StringUtil.isNotEmpty(processType)) {
 			if (processType.equals("initor")) {
 				piq.initiator(userId);
 			} else {
 				piq.taskParticipants(userId);
 			}
-
+			
 		}
 		if (StringUtil.isNotEmpty(processDefinitionName)) {
 			piq.processDefinitionNameLike(assembleLikeParam(processDefinitionName));
 		}
 		Date dates = null;
 		Date datee = null;
-
+		
 		if (StringUtil.isNotEmpty(dss)) {
 			dates = DateUtil.stringToDate(dss, "yyyy-MM-dd");
 		}
@@ -139,7 +142,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		if (null != datee) {
 			piq.startTimeAfter(datee);
 		}
-
+		
 		List<ProcessInstance> piList = null;
 		piq.orderByUpdateTime().desc();
 		if (null == pageInfor) {
@@ -160,10 +163,10 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			attrMap.put("initiatorName", getUserName(StringUtil.getString(attrMap.get("initiator"))));
 			resultData.add(attrMap);
 		}
-
+		
 		return resultData;
 	}
-
+	
 	@Override
 	public Map<String, Object> queryTaskDetailInfor(Map<String, Object> params) {
 		// 返回结果
@@ -173,11 +176,12 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			ProcessInstanceQuery piq = runtimeService.createProcessInstanceQuery();
 			List<ProcessInstance> pinstanceList = piq.processInstanceId(processInstanceId).list();
 			if (null == pinstanceList || pinstanceList.isEmpty()) {
-				throw new IllegalArgumentException("processInstanceId=" + processInstanceId + " is Invalid parameter value!");
+				throw new IllegalArgumentException("processInstanceId=" + processInstanceId
+				        + " is Invalid parameter value!");
 			}
 			ProcessInstance processInstance = pinstanceList.get(0);
 			String processName = modelService.getProcessDefinition(processInstance.getProcessDefinitionId()).getName();
-
+			
 			TaskQuery tq = taskService.createTaskQuery();
 			tq.processInstanceId(processInstanceId);
 			tq.taskIsEnd().orderByEndTime().asc();
@@ -190,7 +194,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 				instanceMap.put("assgneeUserName", getUserName(assigneeUserId));
 				instanceMaps.add(instanceMap);
 			}
-
+			
 			// 获取任务结束信息
 			tq.taskNotEnd().orderByTaskCreateTime().asc();
 			List<Task> instancesNotEnd = tq.list();
@@ -202,14 +206,14 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 				notEndInstanceMaps.add(instanceMap);
 			}
 			Map<String, Map<String, Object>> postionMap = modelService.getFlowGraphicsElementPositionById(processInstance.getProcessDefinitionId());
-
+			
 			// 获取运行轨迹信息
 			List<RunningTrack> runningTrackInfo = this.queryRunningTrack(processInstanceId);
 			if (runningTrackInfo != null) {
 				resultData.put("runningTrackInfo", JSONUtil.parseObject2JSON(runningTrackInfo));
 				resultData.put("runningTrackInfoList", runningTrackInfo);
 			}
-
+			
 			resultData.put("dataList", instanceMaps);
 			resultData.put("notEnddataList", notEndInstanceMaps);
 			resultData.put("positionInfo", JSONUtil.parseObject2JSON(postionMap));
@@ -221,10 +225,11 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		}
 		return resultData;
 	}
-
+	
 	@Override
-	public List<Map<String, Object>> queryToDoTask(Pagination<String> pageInfor, Map<String, Object> params) {
-
+	public List<Map<String, Object>> queryToDoTask(Pagination<String> pageInfor,
+	    Map<String, Object> params) {
+		
 		// 返回结果
 		List<Map<String, Object>> resultData = new ArrayList<Map<String, Object>>();
 		TaskQuery taskQuery = taskService.createTaskQuery();
@@ -236,7 +241,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		String title = (String) params.get(WebContextAttributeName.ATTRIBUTE_NAME_TITLE);
 		String dss = (String) params.get(WebContextAttributeName.ATTRIBUTE_NAME_ARRIVALTIMES);
 		String dse = (String) params.get(WebContextAttributeName.ATTRIBUTE_NAME_ARRIVALTIMEE);
-
+		
 		// 处理查询参数
 		if (StringUtil.isNotEmpty(userId)) {
 			taskQuery.taskAssignee(userId);
@@ -257,7 +262,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		// 时间处理
 		Date dates = null;
 		Date datee = null;
-
+		
 		if (StringUtil.isNotEmpty(dss)) {
 			dates = DateUtil.stringToDate(dss, "yyyy-MM-dd");
 		}
@@ -292,7 +297,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		}
 		return resultData;
 	}
-
+	
 	@Override
 	public Map<String, Object> startTask(Map<String, Object> params) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -300,7 +305,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		String taskId = StringUtil.getString(params.get("taskId"));
 		String processDefinitionKey = StringUtil.getString(params.get("processDefinitionKey"));
 		List<TaskCommand> list = null;
-
+		
 		if (StringUtil.isEmpty(processDefinitionKey)) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_PROCESSDEFKEY, "processDefinitionKey is null !");
 		}
@@ -313,13 +318,13 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			tmpres.add(tmp.getPersistentState());
 		}
 		resultMap.put("commandList", tmpres);
-
+		
 		return resultMap;
 	}
-
+	
 	@Override
 	public ProcessInstance completeTask(Map<String, Object> params) {
-
+		
 		String taskId = StringUtil.getString(params.get("taskId"));
 		String commandType = StringUtil.getString(params.get("commandType"));
 		String commandId = StringUtil.getString(params.get("commandId"));
@@ -351,7 +356,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		if (StringUtil.isEmpty(taskComment)) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_TASKCOMMENT, "taskComment is null !");
 		}
-
+		
 		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
 		// 命令类型，可以从流程引擎配置中查询 启动并提交为startandsubmit
 		expandTaskCommand.setCommandType(commandType);
@@ -369,7 +374,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		processInstance = taskService.expandTaskComplete(expandTaskCommand, null);
 		return processInstance;
 	}
-
+	
 	@Override
 	public String getFlowSvgGraph(Map<String, Object> params) {
 		String processDefinitionId = StringUtil.getString(params.get("processDefinitionId"));
@@ -382,13 +387,14 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			}
 			ProcessDefinition processDefinition = modelService.getLatestProcessDefinition(processDefinitionKey);
 			if (null == processDefinition) {
-				throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_ERROR, "无效的流程定义key:" + processDefinitionKey);
+				throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_ERROR, "无效的流程定义key:"
+				        + processDefinitionKey);
 			}
 			processDefinitionId = processDefinition.getId();
 		}
 		return modelService.getProcessDefinitionSVG(processDefinitionId);
 	}
-
+	
 	@Override
 	public InputStream getFlowImagGraph(Map<String, Object> params) {
 		String processDefinitionId = StringUtil.getString(params.get("processDefinitionId"));
@@ -401,30 +407,33 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			}
 			ProcessDefinition processDefinition = modelService.getLatestProcessDefinition(processDefinitionKey);
 			if (null == processDefinition) {
-				throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_ERROR, "无效的流程定义key:" + processDefinitionKey);
+				throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_ERROR, "无效的流程定义key:"
+				        + processDefinitionKey);
 			}
 			processDefinitionId = processDefinition.getId();
 		}
 		return modelService.GetFlowGraphicsImgStreamByDefId(processDefinitionId);
 	}
-
+	
 	@Override
 	public Map<String, Object> queryUserDelegationInfo(Map<String, Object> params) {
-		String agentUser = StringUtil.getString(params.get("agentUser"));
+		String agentUser = Authentication.getAuthenticatedUserId();
 		Map<String, Object> resultData = new HashMap<String, Object>();
 		if (StringUtil.isNotEmpty(agentUser)) {
 			AgentEntity agentEntity = identityService.queryAgent(agentUser);
 			if (null != agentEntity) {
 				resultData.putAll(agentEntity.getPersistentState());
 				resultData.put("detailInfoList", agentEntity.getAgentDetails());
+			} else {
+				resultData.put("agentFrom", agentUser);
 			}
 		}
 		return resultData;
 	}
-
+	
 	@Override
 	public List<User> queryUsers(Pagination<String> pageInfor, Map<String, Object> params) {
-
+		
 		String id = StringUtil.getString(params.get("id"));
 		String name = StringUtil.getString(params.get("name"));
 		String idLike = null;
@@ -437,11 +446,11 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		}
 		int pageNum = pageInfor.getPageIndex();
 		int rowNum = pageInfor.getPageSize();
-
+		
 		Page page = new Page(pageNum * rowNum - rowNum, rowNum);
 		return identityService.getUsers(idLike, nameLike, page);
 	}
-
+	
 	@Override
 	public Long queryUsersCount(Map<String, Object> params) {
 		String idLike = StringUtil.getString(params.get("idLike"));
