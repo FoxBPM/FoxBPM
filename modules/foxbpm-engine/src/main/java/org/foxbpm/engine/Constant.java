@@ -31,6 +31,8 @@ public class Constant {
 	
 	/** 部门类型 */
 	public final static String DEPT_TYPE = "dept";
+	
+	public final static String USER_TYPE = "user";
 	/** 流程定义Id */
 	public final static String PROCESS_DEFINE_ID = "processDefineId";
 	/** 流程定义Key */

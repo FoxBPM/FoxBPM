@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.eclipse.bpmn2.Activity;
 import org.eclipse.bpmn2.Artifact;
 import org.eclipse.bpmn2.Association;
 import org.eclipse.bpmn2.BaseElement;
@@ -86,10 +87,12 @@ import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.ProcessDefinitionEntityBuilder;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
+import org.foxbpm.engine.impl.bpmn.behavior.ActivityBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.BoundaryEventBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.EventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ProcessBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.SubProcessBehavior;
-import org.foxbpm.engine.impl.bpmn.parser.model.BehaviorRelationMemo;
 import org.foxbpm.engine.impl.connector.Connector;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtDefinition;
@@ -120,8 +123,9 @@ import org.foxbpm.model.config.foxbpmconfig.EventListenerConfig;
 import org.foxbpm.model.config.style.Style;
 
 public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
-	private static Map<Class<?>, Style>	styleContainer			= new HashMap<Class<?>, Style>();
-	public static BehaviorRelationMemo	behaviorRelationMemo	= new BehaviorRelationMemo();
+	
+	private static Map<Class<?>, Style> styleContainer = new HashMap<Class<?>, Style>();
+	public static BehaviorRelationMemo behaviorRelationMemo = new BehaviorRelationMemo();
 	public KernelProcessDefinition createProcessDefinition(String processId, Object processFile) {
 		Process process = null;
 		if (processFile != null) {
@@ -216,7 +220,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	 *            是否子流程
 	 */
 	private void generateBuilder(ProcessDefinitionBuilder processDefinitionBuilder,
-		FlowElement flowElement, boolean isSub) {
+	    FlowElement flowElement, boolean isSub) {
 		KernelFlowNodeBehavior flowNodeBehavior = BpmnBehaviorEMFConverter.getFlowNodeBehavior(flowElement, processDefinitionBuilder.getProcessDefinition());
 		if (flowElement instanceof FlowNode) {
 			processDefinitionBuilder.createFlowNode(flowElement.getId(), flowElement.getName()).behavior(flowNodeBehavior);
@@ -273,7 +277,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 				for (EventListener eventListener : eventListenerList) {
 					foxbpmEventListener = (KernelListener) Class.forName(eventListener.getListenerClass()).newInstance();
 					if (StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_START)
-							|| StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_END)) {
+					        || StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_END)) {
 						// 注册启动监听
 						processEntity.addKernelListener(eventListener.getEventType(), foxbpmEventListener);
 					} else {
@@ -308,7 +312,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	}
 	
 	private void loadLane(KernelLaneSet kernelLaneSet, LaneSet laneSet,
-		ProcessDefinitionEntity processDefinition) {
+	    ProcessDefinitionEntity processDefinition) {
 		kernelLaneSet.setName(laneSet.getName());
 		for (Lane lane : laneSet.getLanes()) {
 			if (lane != null) {
@@ -415,7 +419,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	 * @since 1.0.0
 	 */
 	private void loadBPMNShape(float width, float height, float x, float y, BPMNShape bpmnShape,
-		ProcessDefinitionEntity processDefinition) {
+	    ProcessDefinitionEntity processDefinition) {
 		ProcessEngineConfigurationImpl processEngineConfiguration = Context.getProcessEngineConfiguration();
 		BaseElement bpmnElement = getBaseElement(bpmnShape.getBpmnElement());
 		Style style = this.getStyle(bpmnElement, processEngineConfiguration);
@@ -432,7 +436,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			}
 			// 内部子流程展开收起属性
 			if (kernelDIBounds instanceof KernelFlowNodeImpl
-					&& ((KernelFlowNodeImpl) kernelDIBounds).getKernelFlowNodeBehavior() instanceof SubProcessBehavior) {
+			        && ((KernelFlowNodeImpl) kernelDIBounds).getKernelFlowNodeBehavior() instanceof SubProcessBehavior) {
 				kernelDIBounds.setProperty(StyleOption.IsExpanded, bpmnShape.isIsExpanded());
 			}
 			
@@ -452,7 +456,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	 * @since 1.0.0
 	 */
 	private void loadBPMNEdge(List<Point> pointList, BPMNEdge bpmnEdge,
-		ProcessDefinitionEntity processDefinition) {
+	    ProcessDefinitionEntity processDefinition) {
 		ProcessEngineConfigurationImpl processEngineConfiguration = Context.getProcessEngineConfiguration();
 		BaseElement bpmnElement = getBaseElement(bpmnEdge.getBpmnElement());
 		Style style = null;
@@ -500,7 +504,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	 * @since 1.0.0
 	 */
 	private KernelDIBounds getDIElementFromProcessDefinition(
-		ProcessDefinitionEntity processDefinition, String diElementId) {
+	    ProcessDefinitionEntity processDefinition, String diElementId) {
 		KernelFlowNodeImpl localFlowNode = processDefinition.getNamedFlowNodes().get(diElementId);
 		if (localFlowNode != null) {
 			return localFlowNode;
@@ -549,7 +553,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	 * @since 1.0.0
 	 */
 	private Style getStyle(BaseElement bpmnElement,
-		ProcessEngineConfigurationImpl processEngineConfiguration) {
+	    ProcessEngineConfigurationImpl processEngineConfiguration) {
 		Style style = null;
 		if (styleContainer.size() == 0) {
 			styleContainer.put(StartEventImpl.class, processEngineConfiguration.getStyle("StartEvent"));
@@ -670,6 +674,78 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		resourceSet.getPackageRegistry().put(xxxPackage.getNsURI(), xxxPackage);
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("bpmn", ddd);
 		return resourceSet;
+	}
+	
+	/**
+	 * 
+	 * 
+	 * BehaviorRelationMemo
+	 * 
+	 * MAENLIANG 2014年8月4日 下午1:51:31
+	 * 
+	 * @version 1.0.0
+	 * 
+	 */
+	public static class BehaviorRelationMemo {
+		/** 临时存储MAP */
+		private Map<String, ActivityBehavior> attachActivityMap = new HashMap<String, ActivityBehavior>();
+		private Map<String, List<EventBehavior>> beAttachedActivityMap = new HashMap<String, List<EventBehavior>>();
+		
+		/**
+		 * 
+		 * attachActivityAndBoundaryEventBehaviorRelation(创建Activity
+		 * 和BoundaryEventBehavior之间的关联关系) void
+		 * 
+		 * @exception
+		 * @since 1.0.0
+		 */
+		public void attachActivityAndBoundaryEventBehaviorRelation() {
+			Set<String> keySet = beAttachedActivityMap.keySet();
+			for (String activityID : keySet) {
+				if (attachActivityMap.containsKey(activityID)) {
+					List<EventBehavior> list = beAttachedActivityMap.get(activityID);
+					for (EventBehavior behavior : list) {
+						attachActivityMap.get(activityID).getBoundaryEvents().add((BoundaryEventBehavior) behavior);
+					}
+					
+				}
+			}
+			this.attachActivityMap.clear();
+			this.beAttachedActivityMap.clear();
+		}
+		
+		/**
+		 * 
+		 * addActivity(保存解释得到的活动节点)
+		 * 
+		 * @param activity
+		 * @param activityBehavior
+		 *            void
+		 * @exception
+		 * @since 1.0.0
+		 */
+		public void addActivity(Activity activity, ActivityBehavior activityBehavior) {
+			this.attachActivityMap.put(activity.getId(), activityBehavior);
+		}
+		/**
+		 * 
+		 * addActivity(保存解释得到的事件行为)
+		 * 
+		 * @param activity
+		 * @param eventBehavior
+		 *            void
+		 * @exception
+		 * @since 1.0.0
+		 */
+		public void addBeAttachedActivity(Activity activity, EventBehavior eventBehavior) {
+			List<EventBehavior> list = beAttachedActivityMap.get(activity.getId());
+			if (list == null) {
+				list = new ArrayList<EventBehavior>();
+				this.beAttachedActivityMap.put(activity.getId(), list);
+			}
+			list.add(eventBehavior);
+			
+		}
 	}
 	
 }

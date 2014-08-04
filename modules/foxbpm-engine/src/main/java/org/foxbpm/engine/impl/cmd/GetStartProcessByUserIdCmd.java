@@ -21,14 +21,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.foxbpm.engine.cache.Cache;
+import org.foxbpm.engine.config.TransactionPropagation;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
+import org.foxbpm.engine.impl.interceptor.CommandConfig;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 import org.foxbpm.engine.repository.ProcessDefinition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GetStartProcessByUserIdCmd implements Command<List<ProcessDefinition>>{
 
+	private static final Logger log = LoggerFactory.getLogger(GetStartProcessByUserIdCmd.class);
 	protected String userId;
 	
 	public GetStartProcessByUserIdCmd(String userId){
@@ -45,8 +50,18 @@ public class GetStartProcessByUserIdCmd implements Command<List<ProcessDefinitio
 		result = new ArrayList<ProcessDefinition>();
 		CommandExecutor commandExecutor = commandContext.getProcessEngineConfigurationImpl().getCommandExecutor();
 		List<ProcessDefinitionEntity> processDefinitions = commandExecutor.execute(new GetProcessDefinitionGroupKeyCmd());
+		
+		CommandConfig commandConfig = new CommandConfig();
+		commandConfig.setContextReuse(false);
+		commandConfig.setPropagation(TransactionPropagation.REQUIRES_NEW);
 		for(ProcessDefinitionEntity process : processDefinitions){
-			boolean isVerify = commandExecutor.execute(new VerificationStartUserCmd(userId, null, process.getId()));
+			boolean isVerify = false;
+			try{
+				isVerify= commandExecutor.execute(commandConfig,new VerificationStartUserCmd(userId, null, process.getId()));
+			}catch(Exception ex){
+				log.error("验证流程发起失败,流程编号:"+process.getId(),ex);
+			}
+			
 			if(isVerify){
 				result.add(process);
 			}
