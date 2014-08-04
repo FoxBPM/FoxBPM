@@ -20,34 +20,27 @@ package org.foxbpm.engine.impl.cmd;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.Constant;
-import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.identity.Group;
-import org.foxbpm.engine.impl.connector.Connector;
-import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
-import org.foxbpm.engine.impl.entity.TaskEntity;
-import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
+import org.foxbpm.engine.impl.identity.PotentialStarter;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
-import org.foxbpm.engine.impl.task.TaskDefinition;
-import org.foxbpm.kernel.runtime.ListenerExecutionContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.foxbpm.engine.impl.util.StringUtil;
 
 /**
- * 验证用户是否由于权限发起对应流程 根据流程定义开始节点后面第一个人工节点的任务分配判断
- * 
+ * 验证用户是否由于权限发起对应流程 
+ * 1.未配置启动人，则返回true
+ * 2。启动人符合条件，则返回true
  * @author ych
  * 
  */
 public class VerificationStartUserCmd implements Command<Boolean> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(VerificationStartUserCmd.class);
 	private String userId;
 	private String processDefinitionKey;
 	private String processDefinitionId;
@@ -64,51 +57,50 @@ public class VerificationStartUserCmd implements Command<Boolean> {
 		DeploymentManager deployCache = commandContext.getProcessEngineConfigurationImpl()
 				.getDeploymentManager();
 		ProcessDefinitionEntity processDefinition = null;
-		if (StringUtils.isNotBlank(processDefinitionId)) {
+		if (StringUtil.isNotEmpty(processDefinitionId)) {
 			processDefinition = deployCache.findDeployedProcessDefinitionById(processDefinitionId);
-		} else if (StringUtils.isNotBlank(processDefinitionKey)) {
+		} else if (StringUtil.isNotEmpty(processDefinitionKey)) {
 			processDefinition = deployCache
 					.findDeployedLatestProcessDefinitionByKey(processDefinitionKey);
-			return true;
 		} else {
 			throw new FoxBPMIllegalArgumentException("验证发起权限时，流程编号和流程唯一键不能同时为空");
 		}
-
-		TaskDefinition taskDefinition = processDefinition.getSubTaskDefinition();
-		TaskEntity taskEntity = new TaskEntity();
-		TokenEntity tokenEntity = new TokenEntity();
-		tokenEntity.setAssignTask(taskEntity);
-		if (null == taskDefinition) {
-			LOGGER.debug("流程定义不存在提交节点 ,流程id:" + processDefinition.getId());
-			return false;
-		}
-		for (Connector connector : taskDefinition.getActorConnectors()) {
-			try {
-				connector.notify((ListenerExecutionContext) tokenEntity);
-			} catch (Exception e) {
-				if (e instanceof FoxBPMException)
-					throw (FoxBPMException) e;
-				else {
-					throw new FoxBPMException("开始节点选择人处理器执行失败，处理器：" + connector.getConnectorId(), e);
-				}
-			}
-		}
-
-		if (userId.equals(taskEntity.getAssignee())) {
+		
+		List<PotentialStarter> processStarters = processDefinition.getPotentialStarters();
+		//如果未配置，则默认所有人
+		if(processStarters == null || processStarters.isEmpty()){
 			return true;
 		}
 		List<Group> groups = Authentication.selectGroupByUserId(userId);
-		for (IdentityLinkEntity identity : taskEntity.getIdentityLinks()) {
-			if (StringUtils.equals(Constant.FOXBPM_ALL_USER, identity.getUserId())) {
-				return true;
+		for(PotentialStarter starter : processStarters){
+			String tmpValue = null;
+			try{
+				tmpValue = (String)starter.getExpression().getValue(null);
+			}catch(Exception ex){
+				throw new FoxBPMBizException("流程启动人表达式配置错误：" + starter.getExpression().getExpressionText(),ex);
 			}
-			for (Group group : groups) {
-				if (StringUtils.equals(group.getGroupType(), identity.getGroupType())
-						&& StringUtils.equals(group.getGroupId(), identity.getGroupId())) {
+			//表达式值为空，则不进行判断
+			if(StringUtil.isEmpty(tmpValue)){
+				break;
+			}
+			
+			String tmpType = starter.getResourceType();
+			if(Constant.USER_TYPE.equals(tmpType)){
+				if(userId.equals(tmpValue)){
 					return true;
+				}
+			}else{
+				//循环当前userId所在的所有组,groupType和GroupId均相同时，返回true
+				for(Group tmpGroup: groups){
+					if(tmpType.equals(tmpGroup.getGroupType())){
+						if(tmpGroup.getGroupId().equals(tmpValue)){
+							return true;
+						}
+					}
 				}
 			}
 		}
+
 		return false;
 	}
 }
