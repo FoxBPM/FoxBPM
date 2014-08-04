@@ -155,15 +155,15 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 	public void signal() {
 		getFlowNode().getKernelFlowNodeBehavior().leave(this);
 	}
-	
+
 	public void signal(KernelFlowNodeImpl flowNode) {
-		if(flowNode!=null){
+		if (flowNode != null) {
 			setFlowNode(flowNode);
 			flowNode.getKernelFlowNodeBehavior().leave(this);
-		}else{
+		} else {
 			throw new KernelException("signal flownode is null");
 		}
-		
+
 	}
 
 	public void fireEvent(KernelEvent kernelEvent) {
@@ -389,6 +389,22 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 		}
 	}
 
+	/** 获取所有的父令牌 */
+	protected List<KernelTokenImpl> getAllParent() {
+		List<KernelTokenImpl> tokenList = new ArrayList<KernelTokenImpl>();
+		recursionTokenParent(this, tokenList);
+		return tokenList;
+
+	}
+
+	/** 递归流程父亲令牌 */
+	private static void recursionTokenParent(KernelTokenImpl token, List<KernelTokenImpl> tokenList) {
+		tokenList.add(token);
+		if (token.getParent() != null) {
+			recursionTokenParent(token.getParent(), tokenList);
+		}
+	}
+
 	/** 子类需要重写这个方法 */
 	protected boolean isSignalParentToken() {
 
@@ -500,7 +516,6 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 		}
 
 	}
-	
 
 	/** 终止所有子令牌 */
 	public void terminationChildToken() {
@@ -639,6 +654,5 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 	public void setSuspended(boolean isSuspended) {
 		this.isSuspended = isSuspended;
 	}
-
 
 }
