@@ -38,6 +38,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.IdentityService;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngine;
@@ -52,16 +53,14 @@ import org.foxbpm.engine.exception.ExceptionI18NCore;
 import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.identity.GroupDefinition;
-import org.foxbpm.engine.identity.IGroupDefinitionFactory;
-import org.foxbpm.engine.identity.IUserDefinitionFactory;
 import org.foxbpm.engine.identity.UserDefinition;
 import org.foxbpm.engine.impl.bpmn.deployer.AbstractDeployer;
 import org.foxbpm.engine.impl.bpmn.deployer.BpmnDeployer;
 import org.foxbpm.engine.impl.cache.DefaultCache;
 import org.foxbpm.engine.impl.db.DefaultDataSourceManage;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateContainer;
-import org.foxbpm.engine.impl.identity.GroupDefinitionFactoryImpl;
-import org.foxbpm.engine.impl.identity.UserDefinitionFactoryImpl;
+import org.foxbpm.engine.impl.identity.GroupDeptImpl;
+import org.foxbpm.engine.impl.identity.UserDefinitionImpl;
 import org.foxbpm.engine.impl.interceptor.CommandConfig;
 import org.foxbpm.engine.impl.interceptor.CommandContextFactory;
 import org.foxbpm.engine.impl.interceptor.CommandContextInterceptor;
@@ -152,9 +151,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected TransactionContextFactory transactionContextFactory;
 
 	protected List<ProcessEngineConfigurator> configurators = new ArrayList<ProcessEngineConfigurator>();
-	protected IGroupDefinitionFactory groupDefinitionFactory;
-	protected List<GroupDefinition> groupDefinitions;
-	protected IUserDefinitionFactory userDefinitionFactory;
+	protected List<GroupDefinition> groupDefinitions = new ArrayList<GroupDefinition>();
 	protected UserDefinition userDefinition;
 	
 
@@ -384,17 +381,16 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 
 	protected void initUserDefinition(){
-		if(userDefinitionFactory == null){
-			userDefinitionFactory= new UserDefinitionFactoryImpl();
+		if(userDefinition == null){
+			userDefinition= new UserDefinitionImpl();
 		}
-		userDefinition = userDefinitionFactory.getUserDefinition();
 	}
 
 	protected void initGroupDefinitions() {
-		if(groupDefinitionFactory == null){
-			groupDefinitionFactory = new GroupDefinitionFactoryImpl();
+		if(groupDefinitions == null || groupDefinitions.isEmpty()){
+			groupDefinitions.add(new GroupDeptImpl(Constant.DEPT_TYPE, "部门"));
+			groupDefinitions.add(new GroupDeptImpl(Constant.ROLE_TYPE, "角色"));
 		}
-		groupDefinitions = groupDefinitionFactory.getGroupDefinition();
 	}
 
 	protected void initCache() {
@@ -832,12 +828,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return userDefinition;
 	}
 	
-	public void setGroupDefinitionFactory(IGroupDefinitionFactory groupDefinitionFactory) {
-		this.groupDefinitionFactory = groupDefinitionFactory;
+	public void setUserDefinition(UserDefinition userDefinition) {
+		this.userDefinition = userDefinition;
 	}
-	
-	public void setUserDefinitionFactory(IUserDefinitionFactory userDefinitionFactory) {
-		this.userDefinitionFactory = userDefinitionFactory;
-	}
-
 }
