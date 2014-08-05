@@ -52,7 +52,7 @@ public class BpmnDeployer extends AbstractDeployer {
 	private final static Logger LOG = LoggerFactory.getLogger(BpmnDeployer.class);
 	/** 版本号标记 */
 	private final static String VERSION_FLAG = ":";
-
+	
 	public String deploy(DeploymentEntity deployment) {
 		LOG.debug("start deploy");
 		ResourceEntity resourceBpmnNew = null;
@@ -67,19 +67,17 @@ public class BpmnDeployer extends AbstractDeployer {
 		if (null == resourceBpmnNew) {
 			throw new FoxBPMBizException("发布包中必须存在bpmn文件");
 		}
-
+		
 		// 获取命令上下文
 		CommandContext context = Context.getCommandContext();
 		// 获取流程定义管理
 		ProcessDefinitionManager processDefinitionManager = context.getProcessDefinitionManager();
 		// 根据bpmn文件生成流程定义实例
-		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) processModelParseHandler
-				.createProcessDefinition("dddd",
-						new ByteArrayInputStream(resourceBpmnNew.getBytes()));
+		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) processModelParseHandler.createProcessDefinition("dddd", new ByteArrayInputStream(resourceBpmnNew.getBytes()));
 		String processDefineKey = processDefinitionEntity.getKey();
 		// 获取发布Id
 		String deploymentId = deployment.getId();
-
+		
 		// 处理新发布或者更新 isNew控制更新和添加
 		if (deployment.isNew()) {
 			// 获取发布实例管理器
@@ -90,20 +88,19 @@ public class BpmnDeployer extends AbstractDeployer {
 			processDefinitionEntity.setResourceName(resourceBpmnNew.getName());
 			processDefinitionEntity.setResourceId(resourceBpmnNew.getId());
 			
-			//启动表单
+			// 启动表单
 			String formUri = getStartFormUri(processDefinitionEntity);
 			// 处理更新发布
 			if (StringUtil.isNotEmpty(updateDeploymentId)) {
 				// 从sql缓存获取已存在的发布实例
-				DeploymentEntity deploymentOld = deploymentEntityManager
-						.findDeploymentById(updateDeploymentId);
-
+				DeploymentEntity deploymentOld = deploymentEntityManager.findDeploymentById(updateDeploymentId);
+				
 				if (null == deploymentOld) {
 					throw new FoxBPMBizException("无效的更新发布号updateDeploymentId：" + updateDeploymentId);
 				}
-
+				
 				ResourceEntity resourceBpmnOld = null;
-
+				
 				for (ResourceEntity resourceEntity : deploymentOld.getResources().values()) {
 					if (resourceEntity.getName().toLowerCase().endsWith(BPMN_RESOURCE_SUFFIX)) {
 						resourceBpmnOld = resourceEntity;
@@ -119,8 +116,11 @@ public class BpmnDeployer extends AbstractDeployer {
 					deploymentEntityManager.update(resourceBpmnOld);
 				}
 				// 从sql缓存中获取流程定义实例,该操作会自动更新数据库
-				ProcessDefinitionEntity processEntityNew = processDefinitionManager
-						.findProcessDefinitionByDeploymentAndKey(deploymentId, processDefineKey);
+				ProcessDefinitionEntity processEntityNew = processDefinitionManager.findProcessDefinitionByDeploymentAndKey(updateDeploymentId, processDefineKey);
+				if (null == processEntityNew) {
+					LOG.error("无效的更新发布号updateDeploymentId：" + updateDeploymentId);
+					throw new FoxBPMBizException("无效的更新发布号updateDeploymentId：" + updateDeploymentId);
+				}
 				processEntityNew.setCategory(processDefinitionEntity.getCategory());
 				processEntityNew.setName(processDefinitionEntity.getName());
 				processEntityNew.setResourceName(processDefinitionEntity.getResourceName());
@@ -134,16 +134,13 @@ public class BpmnDeployer extends AbstractDeployer {
 				if (resourceBpmnNew.getVersion() != -1) {
 					version = resourceBpmnNew.getVersion();
 				} else { // 没有version,则取数据库中的最大version+1,数据库中也不存在时，则version=1
-					ProcessDefinitionEntity latestProcessDefinition = processDefinitionManager
-							.findLatestProcessDefinitionByKey(processDefineKey);
+					ProcessDefinitionEntity latestProcessDefinition = processDefinitionManager.findLatestProcessDefinitionByKey(processDefineKey);
 					if (null != latestProcessDefinition) {
 						version = latestProcessDefinition.getVersion() + 1;
 					}
 				}
 				// 生成流程定义Id
-				String processDefinitionId = new StringBuffer(processDefineKey)
-						.append(VERSION_FLAG).append(version).append(VERSION_FLAG)
-						.append(GuidUtil.CreateGuid()).toString();
+				String processDefinitionId = new StringBuffer(processDefineKey).append(VERSION_FLAG).append(version).append(VERSION_FLAG).append(GuidUtil.CreateGuid()).toString();
 				processDefinitionEntity.setId(processDefinitionId);
 				processDefinitionEntity.setStartFormUri(formUri);
 				processDefinitionEntity.setDeploymentId(deploymentId);
@@ -159,49 +156,43 @@ public class BpmnDeployer extends AbstractDeployer {
 			addAutoStartProcessInstanceJob(processDefinitionEntity);
 		} else {
 			// 不需要处理数据库,这里主要将重新封装流程定义实例包括两部分(bpmn模型,资源信息)
-			ProcessDefinitionEntity processEntityNew = processDefinitionManager
-					.findProcessDefinitionByDeploymentAndKey(deploymentId, processDefineKey);
+			ProcessDefinitionEntity processEntityNew = processDefinitionManager.findProcessDefinitionByDeploymentAndKey(deploymentId, processDefineKey);
 			processDefinitionEntity.setDeploymentId(deploymentId);
 			processDefinitionEntity.setId(processEntityNew.getId());
 			processDefinitionEntity.setVersion(processEntityNew.getVersion());
 			processDefinitionEntity.setResourceId(processEntityNew.getResourceId());
 			processDefinitionEntity.setResourceName(processEntityNew.getResourceName());
-			processDefinitionEntity.setDiagramResourceName(processEntityNew
-					.getDiagramResourceName());
+			processDefinitionEntity.setDiagramResourceName(processEntityNew.getDiagramResourceName());
 		}
-
+		
 		// 提供给其他发布器使用
 		deployment.addProperty(Constant.PROCESS_DEFINE_ID, processDefinitionEntity.getId());
 		// 将封装的流程定义实例添加到缓存
-		Context.getProcessEngineConfiguration().getDeploymentManager().getProcessDefinitionCache()
-				.add(processDefinitionEntity.getId(), processDefinitionEntity);
+		Context.getProcessEngineConfiguration().getDeploymentManager().getProcessDefinitionCache().add(processDefinitionEntity.getId(), processDefinitionEntity);
 		LOG.debug("end deploy");
 		return processDefinitionEntity.getId();
 	}
-
+	
 	/**
 	 * 部署时候自动调度流程实例启动任务
 	 * 
 	 * @param processDefinition
 	 */
 	private void addAutoStartProcessInstanceJob(ProcessDefinitionEntity processDefinition) {
-
+		
 		List<KernelFlowNodeImpl> flowNodes = processDefinition.getFlowNodes();
 		KernelFlowNodeBehavior kernelFlowNodeBehavior = null;
 		List<EventDefinition> eventDefinitions = null;
-
+		
 		for (KernelFlowNodeImpl kernelFlowNodeImpl : flowNodes) {
 			kernelFlowNodeBehavior = kernelFlowNodeImpl.getKernelFlowNodeBehavior();
 			// 获取START EVENT节点
 			if (kernelFlowNodeBehavior instanceof StartEventBehavior) {
-				eventDefinitions = ((StartEventBehavior) kernelFlowNodeBehavior)
-						.getEventDefinitions();
+				eventDefinitions = ((StartEventBehavior) kernelFlowNodeBehavior).getEventDefinitions();
 				for (EventDefinition eventDefinition : eventDefinitions) {
 					// 如果开始节点存在自动启动属性，那么就调度或者刷新 工作任务
 					if (eventDefinition instanceof TimerEventBehavior) {
-						Object[] params = new String[]{processDefinition.getId(),
-								processDefinition.getKey(), processDefinition.getName(),
-								kernelFlowNodeImpl.getId()};
+						Object[] params = new String[]{processDefinition.getId(), processDefinition.getKey(), processDefinition.getName(), kernelFlowNodeImpl.getId()};
 						eventDefinition.execute(null, TimerEventBehavior.EVENT_TYPE_START, params);
 					}
 				}
@@ -211,21 +202,24 @@ public class BpmnDeployer extends AbstractDeployer {
 	
 	/**
 	 * 获取发起节点表单
-	 * <p>顺序逻辑：startEvent后面人工节点的节点操作表单->流程定义默认表单</p>
+	 * <p>
+	 * 顺序逻辑：startEvent后面人工节点的节点操作表单->流程定义默认表单
+	 * </p>
+	 * 
 	 * @param processDefinitionEntity
 	 * @return
 	 */
-	private String getStartFormUri(ProcessDefinitionEntity processDefinitionEntity){
+	private String getStartFormUri(ProcessDefinitionEntity processDefinitionEntity) {
 		String formUri = null;
 		TaskDefinition taskDefinition = processDefinitionEntity.getSubTaskDefinition();
-		if(taskDefinition != null){
+		if (taskDefinition != null) {
 			formUri = StringUtil.getString(taskDefinition.getFormUri().getValue(null));
 		}
-		if(StringUtil.isNotEmpty(formUri)){
+		if (StringUtil.isNotEmpty(formUri)) {
 			return formUri;
 		}
 		formUri = StringUtil.getString(processDefinitionEntity.getFormUri().getValue(null));
 		return formUri;
 	}
-
+	
 }

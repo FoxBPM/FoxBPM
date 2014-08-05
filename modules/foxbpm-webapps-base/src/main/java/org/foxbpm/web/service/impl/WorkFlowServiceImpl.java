@@ -27,6 +27,7 @@ import java.util.Map;
 import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentEntity;
 import org.foxbpm.engine.impl.db.Page;
+import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.StringUtil;
@@ -65,8 +66,11 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_USERID, "userId is null !");
 		}
 		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+		Map<String, Object> temp = null;
 		for (ProcessDefinition pd : modelService.getStartProcessByUserId(userId)) {
-			result.add(pd.getPersistentState());
+			temp = pd.getPersistentState();
+			result.add(temp);
+			temp.put("formUrl", ((ProcessDefinitionEntity) pd).getStartFormUri());
 		}
 		return result;
 	}
