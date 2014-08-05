@@ -23,7 +23,6 @@ import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.impl.db.ListQueryParameterObject;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 
-@SuppressWarnings("rawtypes")
 public class JdbcSqlSession implements ISqlSession {
 	public void closeSession() {
 		// TODO Auto-generated method stub
@@ -36,7 +35,7 @@ public class JdbcSqlSession implements ISqlSession {
 	}
 
 	@Override
-	public List selectList(String statement, Object parameter, int firstResult, int maxResults) {
+	public List<?> selectList(String statement, Object parameter, int firstResult, int maxResults) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -76,12 +75,12 @@ public class JdbcSqlSession implements ISqlSession {
 		return null;
 	}
 
-	public List selectList(String statement, ListQueryParameterObject parameter) {
+	public List<?> selectList(String statement, ListQueryParameterObject parameter) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List selectListWithRawParameter(String statement, Object parameter) {
+	public List<?> selectListWithRawParameter(String statement, Object parameter) {
 		// TODO Auto-generated method stub
 		return null;
 	}

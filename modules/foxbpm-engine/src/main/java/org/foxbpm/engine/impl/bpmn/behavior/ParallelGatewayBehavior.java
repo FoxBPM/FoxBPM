@@ -73,7 +73,7 @@ public class ParallelGatewayBehavior extends GatewayBehavior {
 					}
 				} else {
 					/** 按照进入线的数量合并方式 */
-					List<KernelToken> joinedExecutions = executionContext.findInactiveToken(flowNode);
+					List<KernelTokenImpl> joinedExecutions = executionContext.findInactiveToken(flowNode);
 					int nbrOfExecutionsToJoin = incomingSequenceFlows.size();
 					int nbrOfExecutionsJoined = joinedExecutions.size();
 					if (nbrOfExecutionsJoined == nbrOfExecutionsToJoin) {

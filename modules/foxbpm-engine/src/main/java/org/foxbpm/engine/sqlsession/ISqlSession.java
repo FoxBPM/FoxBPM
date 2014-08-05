@@ -33,14 +33,11 @@ public interface ISqlSession {
 
 	public List<?> selectList(String statement);
 
-	@SuppressWarnings("rawtypes")
-	public List selectList(String statement, ListQueryParameterObject parameter);
+	public List<?> selectList(String statement, ListQueryParameterObject parameter);
 
-	@SuppressWarnings("rawtypes")
-	public List selectList(String statement, Object parameter, int firstResult, int maxResults);
+	public List<?> selectList(String statement, Object parameter, int firstResult, int maxResults);
 
-	@SuppressWarnings("rawtypes")
-	public List selectListWithRawParameter(String statement, Object parameter);
+	public List<?> selectListWithRawParameter(String statement, Object parameter);
 
 	public Object selectOne(String statement, Object parameter);
 

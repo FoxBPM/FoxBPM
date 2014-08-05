@@ -187,13 +187,11 @@ public class MybatisSqlSession implements ISqlSession,Session {
 		return sqlSession.selectList(statement);
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public List selectList(String statement, Object parameter, int firstResult, int maxResults) {   
+	public List<?> selectList(String statement, Object parameter, int firstResult, int maxResults) {   
 	    return selectList(statement, new ListQueryParameterObject(parameter, firstResult, maxResults));
 	}
 	
-	@SuppressWarnings({ "rawtypes"})
-	public List selectList(String statement,ListQueryParameterObject parameter) {
+	public List<?> selectList(String statement,ListQueryParameterObject parameter) {
 		return selectListWithRawParameter(statement,parameter);
 	}
 	
@@ -203,8 +201,7 @@ public class MybatisSqlSession implements ISqlSession,Session {
 		return filterLoadedObjects(loadedObject);
 	}
 	
-	@SuppressWarnings("rawtypes")
-	protected List filterLoadedObjects(List<Object> loadedObjects) {
+	protected List<?> filterLoadedObjects(List<Object> loadedObjects) {
 		if (loadedObjects.isEmpty()) {
 			return loadedObjects;
 		}

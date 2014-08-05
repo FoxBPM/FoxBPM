@@ -48,10 +48,13 @@ public class TokenManager extends AbstractManager {
 
 	@SuppressWarnings("unchecked")
 	public List<Token> findTokenByQueryCriteria(TokenQueryImpl tokenQuery) {
-		return getSqlSession().selectList("selectTokensByQueryCriteria", tokenQuery);
+		return (List<Token>) getSqlSession().selectList("selectTokensByQueryCriteria", tokenQuery);
 	}
 
 	public void deleteTokenByProcessInstanceId(String processInstanceId) {
 		getSqlSession().delete("deleteTokenByProcessInstanceId", processInstanceId);
 	}
+	
+	
+	
 }

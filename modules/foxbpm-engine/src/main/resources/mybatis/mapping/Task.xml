@@ -178,6 +178,23 @@
     where TOKEN_ID = #{id,jdbcType=VARCHAR}
   </select>
   
+   <select id="selectEndTasksByTokenIds" parameterType="java.lang.List" resultMap="TaskResultMap">
+    select 
+    *
+    from foxbpm_run_task
+    where END_TIME IS NULL AND TOKEN_ID IN
+    
+      <if test="tokenIds != null &amp;&amp; tokenIds.size() &gt; 0">
+            <foreach item="group" index="index" collection="candidateGroups" 
+                     open="(" separator="," close=")">
+              #{group}
+            </foreach>
+      </if>
+      ORDER BY END_TIME DESC    
+  </select>
+  
+  
+  
   <select id="findTasksByQueryCriteria" parameterType="org.foxbpm.engine.impl.task.TaskQueryImpl" resultMap="TaskResultMap">
   	${limitBefore}
     select DISTINCT RES.* ${limitBetween}

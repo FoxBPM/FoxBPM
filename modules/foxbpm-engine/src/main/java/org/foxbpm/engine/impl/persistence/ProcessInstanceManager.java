@@ -44,7 +44,7 @@ public class ProcessInstanceManager extends AbstractManager {
 	@SuppressWarnings("unchecked")
 	public List<ProcessInstance> findProcessInstanceByQueryCriteria(
 	    ProcessInstanceQueryImpl processInstaceQuery) {
-		return getSqlSession().selectList("selectProcessInstanceByQueryCriteria", processInstaceQuery);
+		return (List<ProcessInstance>) getSqlSession().selectList("selectProcessInstanceByQueryCriteria", processInstaceQuery);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -53,7 +53,7 @@ public class ProcessInstanceManager extends AbstractManager {
 		// 删除流程实例
 		deleteProcessInstanceByProcessDefinitionId(processDefinitionId);
 		if (cascade) {
-			List<String> processInstanceIds = getSqlSession().selectListWithRawParameter("selectProcessInstanceIdsByProcessDefinitionId", processDefinitionId);
+			List<String> processInstanceIds = (List<String>) getSqlSession().selectListWithRawParameter("selectProcessInstanceIdsByProcessDefinitionId", processDefinitionId);
 			for (String processInstanceId : processInstanceIds) {
 				cascadeDelete(processInstanceId);
 			}

@@ -9,10 +9,9 @@
 			type="actorConnector" projectName="foxbpm-connector"
 			virtualPath="src/main/java/org/foxbpm/connector/actorconnector/" src="org/foxbpm/connector/actorconnector/" />
 
-		<!-- 
-		<resourcePath id="foxbpmflow-template" name="foxbpmflow-template"
-			projectName="foxbpm-engine" src="template/flowtemplate/"
-			virtualPath="src/main/resources/template/flowtemplate/" /> -->
+		<!-- <resourcePath id="foxbpmflow-template" name="foxbpmflow-template" 
+			projectName="foxbpm-engine" src="template/flowtemplate/" virtualPath="src/main/resources/template/flowtemplate/" 
+			/> -->
 
 	</resourcePathConfig>
 	<scriptLanguageConfig selected="Groovy">
@@ -92,10 +91,10 @@
 
 			<commandParam key="transferUserId" name="转发给谁" value="true"
 				description="" dataType="String" bizType="InputParam" />
-				<commandParam key="isSaveData" name="是否保存数据" value="true"
-					description="" dataType="String" bizType="ControlParam" />
-				<commandParam key="isVerification" name="是否触发验证" value="true"
-					description="" dataType="String" bizType="ControlParam" />
+			<commandParam key="isSaveData" name="是否保存数据" value="true"
+				description="" dataType="String" bizType="ControlParam" />
+			<commandParam key="isVerification" name="是否触发验证" value="true"
+				description="" dataType="String" bizType="ControlParam" />
 
 		</taskCommandDefinition>
 
@@ -118,11 +117,14 @@
 
 
 
-		<!-- <taskCommandDefinition id="rollBack_previousStep" name="退回-上一步" command="org.foxbpm.engine.impl.task.command.RollBackTaskPreviousStepCommand" 
-			cmd="org.foxbpm.engine.impl.task.cmd.RollBackTaskPreviousStepCmd" isEnabled="true" 
-			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.RollBackTaskPreviousStepFilter" 
-			description="自动计算并退回到流程的上一步骤,任务处理者为上一步骤的处理者。" /> <taskCommandDefinition id="rollBack_assignee" 
-			name="退回-处理者" command="org.foxbpm.engine.impl.task.command.RollBackTaskAssigneeCommand" 
+		<taskCommandDefinition id="rollBack_previousStep"
+			name="退回-上一步"
+			command="org.foxbpm.engine.impl.task.command.RollBackPreviousStepCommand"
+			cmd="org.foxbpm.engine.impl.task.cmd.RollBackPreviousStepCmd"
+			isEnabled="true" type="toDoTasks"
+			filter="org.foxbpm.engine.impl.task.filter.RollBackPreviousStepFilter"
+			description="自动计算并退回到流程的上一步骤,任务处理者为上一步骤的处理者。" />
+		<!-- <taskCommandDefinition id="rollBack_assignee" name="退回-处理者" command="org.foxbpm.engine.impl.task.command.RollBackTaskAssigneeCommand" 
 			cmd="org.foxbpm.engine.impl.task.cmd.RollBackTaskAssigneeCmd" isEnabled="true" 
 			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.RollBackTaskAssigneeFilter" 
 			description="退回到前台用户指定的节点和处理者。" /> <taskCommandDefinition id="rollBack_designation_reset" 
@@ -189,6 +191,6 @@
 	<bizDataObjectConfig>
 		<dataObjectBehavior id="dataBaseMode" name="数据库表模式"
 			behavior="org.foxbpm.engine.impl.datavariable.BizDataObjectBehaviorImpl" />
-	
+
 	</bizDataObjectConfig>
 </foxbpmconfig:FoxBPMConfig>

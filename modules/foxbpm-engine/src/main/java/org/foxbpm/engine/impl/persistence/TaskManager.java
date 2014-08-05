@@ -80,7 +80,7 @@ public class TaskManager extends AbstractManager {
 
 	@SuppressWarnings("unchecked")
 	public List<Task> findTasksByQueryCriteria(TaskQueryImpl taskQuery) {
-		return getSqlSession().selectList("findTasksByQueryCriteria", taskQuery);
+		return (List<Task>) getSqlSession().selectList("findTasksByQueryCriteria", taskQuery);
 	}
 
 	public long findTaskCountByQueryCriteria(TaskQueryImpl taskQuery) {
@@ -96,6 +96,17 @@ public class TaskManager extends AbstractManager {
 	public List<TaskEntity> findTasksByTokenId(String tokenId) {
 		return (List<TaskEntity>) getSqlSession().selectListWithRawParameter(
 				"selectTasksByTokenId", tokenId);
+	}
+	
+	/**
+	 * 根据令牌号集合编号查询结束的任务
+	 * @param tokenId 令牌编号
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<TaskEntity> findEndTasksByTokenIds(List<String> tokenIds) {
+		return (List<TaskEntity>) getSqlSession().selectListWithRawParameter(
+				"selectEndTasksByTokenIds", tokenIds);
 	}
 	
 	/**
