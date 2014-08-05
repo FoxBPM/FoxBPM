@@ -119,8 +119,7 @@
       VERSION = #{version,jdbcType=INTEGER},
       RESOURCE_NAME = #{resourceName,jdbcType=VARCHAR},
       DEPLOYMENT_ID = #{deploymentId,jdbcType=VARCHAR},
-      DIAGRAM_RESOURCE_NAME = #{diagramResourceName,jdbcType=VARCHAR},
-      RESOURCE_ID = #{record.resourceId,jdbcType=VARCHAR}
+      DIAGRAM_RESOURCE_NAME = #{diagramResourceName,jdbcType=VARCHAR}
     where 
       PROCESS_ID = #{id,jdbcType=VARCHAR}
   </update>
