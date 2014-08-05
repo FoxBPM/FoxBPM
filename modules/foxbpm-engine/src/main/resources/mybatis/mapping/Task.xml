@@ -178,7 +178,7 @@
     where TOKEN_ID = #{id,jdbcType=VARCHAR}
   </select>
   
-   <select id="selectEndTasksByTokenIds" parameterType="java.lang.List" resultMap="TaskResultMap">
+   <select id="selectEndTasksByTokenIds" resultMap="TaskResultMap">
     select 
     *
     from foxbpm_run_task
