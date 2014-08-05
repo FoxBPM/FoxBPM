@@ -159,6 +159,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		
 		// 判断事都是并行多实例
 		if (loopCharacteristics instanceof MultiInstanceLoopCharacteristics) {
+
 			
 			MultiInstanceLoopCharacteristics milc = (MultiInstanceLoopCharacteristics) loopCharacteristics;
 			

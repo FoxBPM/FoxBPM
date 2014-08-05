@@ -58,6 +58,8 @@ public class UserTaskBehavior extends TaskBehavior {
 		TokenEntity tokenEntity=(TokenEntity)executionContext;
 		if(StringUtil.isNotEmpty(tokenEntity.getGroupID())){
 			task.setTaskGroup(tokenEntity.getGroupID());
+			/** 如果为会签任务,则清空强制任务处理者 */
+			tokenEntity.setTaskAssignee(null);
 		}
 		task.setTaskDefinition(taskDefinition);
 		task.setNodeId(getId());
@@ -100,22 +102,32 @@ public class UserTaskBehavior extends TaskBehavior {
 			task.setParamMap(paramMap);
 		}
 		
-		for (Connector connector : taskDefinition.getActorConnectors()) {
-			try {
-				connector.notify((ListenerExecutionContext) executionContext);
-			} catch (Exception e) {
-				if(e instanceof FoxBPMException)
-					throw (FoxBPMException)e;
-				else{
-					throw new FoxBPMException("执行选择人处理器失败！节点"+this.getId()+",处理器："+connector.getConnectorId() , e);
+		/** 判断是否有强制任务处理者指定 */
+		if(StringUtil.isNotEmpty(tokenEntity.getTaskAssignee())){
+			/** 根据强制任务处理者设置任务 */
+			task.setAssignee(tokenEntity.getTaskAssignee());
+		}else{
+			/** 重新分配任务 */
+			for (Connector connector : taskDefinition.getActorConnectors()) {
+				try {
+					connector.notify((ListenerExecutionContext) executionContext);
+				} catch (Exception e) {
+					if(e instanceof FoxBPMException)
+						throw (FoxBPMException)e;
+					else{
+						throw new FoxBPMException("执行选择人处理器失败！节点"+this.getId()+",处理器："+connector.getConnectorId() , e);
+					}
 				}
 			}
 		}
+		
+		
 		
 		tokenEntity.setAssignTask(task);
 		/** 触发分配事件(后事件) */
 		executionContext.fireEvent(AbstractTaskEvent.TASK_ASSIGN);
 		tokenEntity.setAssignTask(null);
+		tokenEntity.setTaskAssignee(null);
 	}
 
 	public TaskDefinition getTaskDefinition() {

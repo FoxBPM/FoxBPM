@@ -812,12 +812,17 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	/** 结束任务,并驱动流程向下运转。 */
 	public void complete() {
 		
-		complete(null);
+		complete(null,null);
 		
 	}
 	
 	/** 结束任务,并驱动流程向下运转。 指定需要去的节点。 */
 	public void complete(KernelFlowNodeImpl toFlowNode) {
+		complete(toFlowNode,null);
+	}
+	
+	/** 结束任务,并驱动流程向下运转。 指定需要去的节点和指定节点的任务处理者 */
+	public void complete(KernelFlowNodeImpl toFlowNode,String assignee) {
 		
 		/** 设置任务结束状态 */
 		end();
@@ -833,6 +838,9 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 			/** 设置去向节点 */
 			if(toFlowNode!=null){
 				token.setToFlowNode(toFlowNode);
+			}
+			if(StringUtil.isNotEmpty(assignee)){
+				token.setTaskAssignee(assignee);
 			}
 			/** 驱动令牌向下 */
 			token.signal();

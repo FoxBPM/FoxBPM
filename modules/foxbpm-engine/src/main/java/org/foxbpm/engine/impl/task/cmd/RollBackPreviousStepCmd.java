@@ -20,10 +20,12 @@ package org.foxbpm.engine.impl.task.cmd;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.task.command.RollBackPreviousStepCommand;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
@@ -59,32 +61,43 @@ public class RollBackPreviousStepCmd extends AbstractExpandTaskCmd<RollBackPrevi
 		task.setTaskCommand(taskCommand);
 		/** 处理意见 */
 		task.setTaskComment(taskComment);
-		
+
+		/** 获取流程定义 */
+		KernelProcessDefinition processDefinition = getProcessDefinition(task);
+
 		/** 获取当前令牌所有父亲令牌 */
 		List<KernelTokenImpl> allParent = executionContext.getAllParent();
-		List<String> tokenIds=new ArrayList<String>();
+		List<String> tokenIds = new ArrayList<String>();
 		/** 创建出父令牌ID集合 */
 		for (KernelTokenImpl tokenParent : allParent) {
 			tokenIds.add(tokenParent.getId());
 		}
 		/** 将自己本身也添加进去 */
 		tokenIds.add(executionContext.getId());
-		
+
 		/** 查询相关联的完成的任务 */
-		List<TaskEntity> tasks=commandContext.getTaskManager().findEndTasksByTokenIds(tokenIds);
-		
-		
-		if(tasks!=null&&tasks.size()>0){
-			//未完成
+		List<TaskEntity> tasks = commandContext.getTaskManager().findEndTasksByTokenIds(tokenIds);
+
+		if (tasks != null && tasks.size() > 0) {
+			/** 取出最后一条完成的任务 */
+			TaskEntity endTask = tasks.get(0);
+
+			/** 查找需要退回的节点 */
+			KernelFlowNodeImpl flowNode = processDefinition.findFlowNode(endTask.getNodeId());
+
+			if (StringUtil.isNotEmpty(endTask.getTaskGroup())) {
+				/** 如果是会签任务,任务重新分配 */
+
+				/** 完成任务,并将流程推向指定的节点 */
+				task.complete(flowNode);
+			} else {
+				/** 非会签任务,分配给指定的处理者 */
+				task.complete(flowNode, endTask.getAssignee());
+			}
+
+		} else {
+			throw new FoxBPMException("未找到上一步骤任务.");
 		}
-		
-		/** 获取流程定义 */
-		KernelProcessDefinition processDefinition=getProcessDefinition(task);
-		/** 查找需要退回的节点 */
-		KernelFlowNodeImpl flowNode=processDefinition.findFlowNode(null);
-		/** 完成任务,并将流程推向指定的节点 */
-		task.complete(flowNode);
-		
 
 		return null;
 	}
