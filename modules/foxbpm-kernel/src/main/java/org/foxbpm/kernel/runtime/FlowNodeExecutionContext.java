@@ -26,6 +26,7 @@ import org.foxbpm.kernel.process.KernelSequenceFlow;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
+import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
 /**
  * @author kenshin
@@ -55,7 +56,7 @@ public interface FlowNodeExecutionContext extends DelegateExecutionContext {
 
 	void end();
 
-	List<KernelToken> findInactiveToken(KernelFlowNode flowNode);
+	List<KernelTokenImpl> findInactiveToken(KernelFlowNode flowNode);
 
 	FlowNodeExecutionContext createChildrenToken();
 
@@ -68,5 +69,7 @@ public interface FlowNodeExecutionContext extends DelegateExecutionContext {
 	KernelProcessDefinitionImpl getProcessDefinition();
 
 	void terminationChildToken();
+	
+	List<KernelTokenImpl> getAllParent();
 
 }

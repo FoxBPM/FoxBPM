@@ -390,9 +390,12 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 	}
 
 	/** 获取所有的父令牌 */
-	protected List<KernelTokenImpl> getAllParent() {
+	public List<KernelTokenImpl> getAllParent() {
 		List<KernelTokenImpl> tokenList = new ArrayList<KernelTokenImpl>();
-		recursionTokenParent(this, tokenList);
+		if(this.getParent()!=null){
+			recursionTokenParent(this.getParent(), tokenList);
+		}
+		
 		return tokenList;
 
 	}
@@ -595,9 +598,9 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 	}
 
 	@Override
-	public List<KernelToken> findInactiveToken(KernelFlowNode flowNode) {
-		List<KernelToken> inactiveTokenInActivity = new ArrayList<KernelToken>();
-		List<KernelToken> otherToken = new ArrayList<KernelToken>();
+	public List<KernelTokenImpl> findInactiveToken(KernelFlowNode flowNode) {
+		List<KernelTokenImpl> inactiveTokenInActivity = new ArrayList<KernelTokenImpl>();
+		List<KernelTokenImpl> otherToken = new ArrayList<KernelTokenImpl>();
 
 		List<? extends KernelTokenImpl> tokenChildren = getParent().getChildren();
 		for (KernelTokenImpl token : tokenChildren) {
