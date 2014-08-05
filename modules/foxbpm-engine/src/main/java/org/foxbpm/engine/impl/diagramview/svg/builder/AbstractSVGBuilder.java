@@ -93,6 +93,8 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 		tempSvgBuildMap.put(SVGTypeNameConstant.SVG_TYPE_EVENT_END_TERMINATE, EndTerminateEventSVGBuilder.class);
 		tempSvgBuildMap.put(SVGTypeNameConstant.SVG_TYPE_EVENT_START_TIMER, TimerStartEventSVGBuilder.class);
 		
+		tempSvgBuildMap.put(SVGTypeNameConstant.SVG_TYPE_TASK, TaskSVGBuilder.class);
+		
 		tempSvgBuildMap.put(SVGTypeNameConstant.ACTIVITY_SERVICETASK, ServiceTaskSVGBuilder.class);
 		tempSvgBuildMap.put(SVGTypeNameConstant.ACTIVITY_USERTASK, TaskSVGBuilder.class);
 		tempSvgBuildMap.put(SVGTypeNameConstant.ACTIVITY_SENDTASK, TaskSVGBuilder.class);
