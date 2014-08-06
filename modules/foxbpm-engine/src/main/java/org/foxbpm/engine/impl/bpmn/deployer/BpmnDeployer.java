@@ -163,6 +163,7 @@ public class BpmnDeployer extends AbstractDeployer {
 			processDefinitionEntity.setResourceId(processEntityNew.getResourceId());
 			processDefinitionEntity.setResourceName(processEntityNew.getResourceName());
 			processDefinitionEntity.setDiagramResourceName(processEntityNew.getDiagramResourceName());
+			processDefinitionEntity.setStartFormUri(processEntityNew.getStartFormUri());
 		}
 		
 		// 提供给其他发布器使用
