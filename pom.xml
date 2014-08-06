@@ -17,7 +17,6 @@
 		<module>modules/foxbpm-rest</module>
 		<module>modules/foxbpm-webapps-rest</module>
 		<module>modules/foxbpm-webapps-base</module>
-		<module>modules/connector2</module>
 	</modules>
 
 	<build>

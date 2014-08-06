@@ -102,6 +102,8 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 	 */
 	private static Map<Class<?>, String[]> initSvgTypeMap() {
 		Map<Class<?>, String[]> svgTypeMap = new HashMap<Class<?>, String[]>();
+		svgTypeMap.put(TaskBehavior.class, new String[]{SVGTypeNameConstant.SVG_TYPE_TASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
+
 		svgTypeMap.put(UserTaskBehavior.class, new String[]{SVGTypeNameConstant.ACTIVITY_USERTASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
 		svgTypeMap.put(SendTaskBehavior.class, new String[]{SVGTypeNameConstant.ACTIVITY_SENDTASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
 		svgTypeMap.put(ServiceTaskBehavior.class, new String[]{SVGTypeNameConstant.ACTIVITY_SERVICETASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});

@@ -64,6 +64,11 @@ public class TokenEntity extends KernelTokenImpl
 	protected List<TaskEntity> tasks;
 
 	protected TaskEntity assignTask;
+	
+	/** 临时指定分配任务的处理者 */
+	protected String taskAssignee;
+
+	
 
 	protected String groupID;
 
@@ -386,4 +391,11 @@ public class TokenEntity extends KernelTokenImpl
 		return super.createSubProcessInstance(processDefinition);
 	}
 
+	public String getTaskAssignee() {
+		return taskAssignee;
+	}
+
+	public void setTaskAssignee(String taskAssignee) {
+		this.taskAssignee = taskAssignee;
+	}
 }
