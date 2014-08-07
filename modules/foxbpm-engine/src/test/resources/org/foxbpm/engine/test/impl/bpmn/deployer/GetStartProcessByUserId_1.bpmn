@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:foxbpm="http://www.foxbpm.org/foxbpm" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="Definitions_1" targetNamespace="http://www.foxbpm.org">
   <bpmn2:process id="GetStartProcessByUserId_1" name="GetStartProcessByUserId">
+    <bpmn2:extensionElements>
+      <foxbpm:potentialStarter resourceType="user" description="">
+        <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_3" name="admin3"><![CDATA["test_admin3"]]></foxbpm:expression>
+      </foxbpm:potentialStarter>
+    </bpmn2:extensionElements>
     <bpmn2:userTask id="UserTask_1" name="UserTask_1">
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="提交" commandType="startandsubmit"/>
@@ -14,7 +19,7 @@
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="SelectUserActorConnector" packageName="org.foxbpm.connector.actorconnector.SelectUserActorConnector" className="SelectUserActorConnector" connectorInstanceId="0aa80f8f-b53f-45fb-b246-1c2f0df4fa24" connectorInstanceName="admin3" errorHandling="" type="actorconnector">
               <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="userId" name="用户编号" dataType="java.lang.String" isExecute="true">
-                <foxbpm:expression xsi:type="foxbpm:Expression" name="admin3"><![CDATA["admin3"]]></foxbpm:expression>
+                <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_1" name="admin3"><![CDATA["admin3"]]></foxbpm:expression>
               </foxbpm:connectorParameterInputs>
               <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_1"></foxbpm:documentation>
             </foxbpm:connectorInstance>

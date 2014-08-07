@@ -251,6 +251,7 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl
 		persistentState.put("resourceId", this.resourceId);
 		persistentState.put("deploymentId", this.deploymentId);
 		persistentState.put("diagramResourceName", this.diagramResourceName);
+		persistentState.put("startFormUri", this.getStartFormUri());
 		persistentState.putAll(this.extensionFields);
 		return persistentState;
 	}
