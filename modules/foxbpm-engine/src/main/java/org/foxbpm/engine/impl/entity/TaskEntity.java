@@ -32,152 +32,153 @@ import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelVariableScopeImpl;
 import org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition;
 
-public class TaskEntity extends KernelVariableScopeImpl implements Task, DelegateTask, PersistentObject, HasRevision {
-
+public class TaskEntity extends KernelVariableScopeImpl implements Task, DelegateTask,
+    PersistentObject, HasRevision {
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	protected String name;
-
+	
 	protected String subject;
-
+	
 	protected String description;
-
+	
 	protected String completeDescription;
-
+	
 	protected String processInstanceId;
-
+	
 	protected String processDefinitionId;
-
+	
 	protected String processDefinitionKey;
-
+	
 	protected ProcessDefinitionEntity processDefinition;
-
+	
 	protected String processDefinitionName;
-
+	
 	protected int version;
-
+	
 	protected String tokenId;
-
+	
 	protected String nodeId;
-
+	
 	protected String nodeName;
-
+	
 	protected String parentId;
-
+	
 	protected String assignee;
-
+	
 	protected Date claimTime;
-
+	
 	protected Date createTime;
-
+	
 	protected Date startTime;
-
+	
 	protected Date endTime;
-
+	
 	protected Date dueDate;
-
+	
 	/** 流程实例启动时间 */
 	protected Date processStartTime;
-
+	
 	/** 流程任务的发起人 */
 	protected String processInitiator;
-
+	
 	protected boolean isBlocking = false;
-
+	
 	protected int priority = Task.PRIORITY_NORMAL;
-
+	
 	protected String category;
-
+	
 	protected String owner;
-
+	
 	protected DelegationState delegationState;
-
+	
 	protected String bizKey;
-
+	
 	protected String taskComment;
-
+	
 	protected String formUri;
-
+	
 	protected String formUriView;
-
+	
 	protected String taskGroup;
-
+	
 	protected String taskType = TaskType.FOXBPMTASK;
-
+	
 	protected boolean isCancelled = false;
-
+	
 	protected boolean isSuspended = false;
-
+	
 	protected boolean isOpen = false;
-
+	
 	protected boolean isDraft = false;
-
+	
 	protected int expectedExecutionTime = 0;
-
+	
 	protected String agent;
-
+	
 	protected String admin;
-
+	
 	protected String callActivityInstanceId;
-
+	
 	protected String pendingTaskId;
-
+	
 	protected Date archiveTime;
-
+	
 	protected String commandId;
-
+	
 	protected String commandType;
-
+	
 	protected String commandMessage;
-
+	
 	protected boolean isIdentityLinksInitialized = false;
-
+	
 	protected TokenEntity token;
-
+	
 	protected ProcessInstanceEntity processInstance;
-
+	
 	protected KernelFlowNode node;
-
+	
 	protected TaskDefinition taskDefinition;
-
+	
 	protected List<IdentityLinkEntity> taskIdentityLinks = new ArrayList<IdentityLinkEntity>();
-
+	
 	protected TaskEntity parentTask;
-
+	
 	protected boolean isAutoClaim = false;
-
+	
 	/** 任务完成率 */
 	protected double completionRate = 0;
-
+	
 	protected Map<String, Object> paramMap = new HashMap<String, Object>();
-
+	
 	public TaskEntity() {
-
+		
 	}
-
+	
 	public TaskEntity(String taskId) {
 		this.id = taskId;
 	}
-
+	
 	/** 创建并持久化一个任务 */
 	public static TaskEntity createAndInsert(FlowNodeExecutionContext executionContext) {
 		TaskEntity task = create();
 		task.insert(((TokenEntity) executionContext).getProcessInstance());
 		return task;
 	}
-
+	
 	public void insert(ProcessInstanceEntity processInstance) {
 		CommandContext commandContext = Context.getCommandContext();
 		commandContext.getTaskManager().insert(this);
 		if (processInstance != null) {
 			processInstance.addTask(this);
 		}
-
+		
 	}
-
+	
 	public void update() {
 		// task
 		setOwner(this.getOwner());
@@ -189,7 +190,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		setCreateTime(this.getCreateTime());
 		setDueDate(this.getDueDate());
 	}
-
+	
 	/** 创建任务 */
 	public static TaskEntity create() {
 		TaskEntity task = new TaskEntity();
@@ -198,12 +199,12 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		task.createTime = ClockUtil.getCurrentTime();
 		return task;
 	}
-
+	
 	public ProcessInstanceEntity getProcessInstance() {
 		ensureProcessInstanceInitialized();
 		return processInstance;
 	}
-
+	
 	protected void ensureProcessInstanceInitialized() {
 		if ((processInstance == null) && (processInstanceId != null)) {
 			processInstance = Context.getCommandContext().getProcessInstanceManager().findProcessInstanceById(processInstanceId);
@@ -212,52 +213,51 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 			}
 		}
 	}
-
+	
 	public void setProcessInstance(ProcessInstanceEntity processInstance) {
 		setProcessInstanceId(processInstance.getId());
 		setProcessDefinition((ProcessDefinitionEntity) processInstance.getProcessDefinition());
 		this.processInstance = processInstance;
 	}
-
+	
 	public List<IdentityLinkEntity> getIdentityLinks() {
 		if (!isIdentityLinksInitialized) {
 			taskIdentityLinks = Context.getCommandContext().getIdentityLinkManager().findIdentityLinksByTaskId(id);
 			isIdentityLinksInitialized = true;
 		}
-
+		
 		return taskIdentityLinks;
 	}
-
+	
 	public TokenEntity getToken() {
-
+		
 		if ((token == null) && (tokenId != null)) {
 			this.token = Context.getCommandContext().getTokenManager().findTokenById(tokenId);
 		}
 		return token;
-
+		
 	}
-
+	
 	public void setToken(TokenEntity token) {
 		setTokenId(token.getId());
 		setProcessInstance(token.getProcessInstance());
 		this.token = token;
 	}
-
+	
 	protected void ensureProcessDefinitionInitialized() {
-
+		
 		if (processDefinition == null && processDefinitionId != null) {
-			ProcessDefinitionEntity processDefinition = Context.getProcessEngineConfiguration().getDeploymentManager()
-					.findDeployedProcessDefinitionById(processDefinitionId);
+			ProcessDefinitionEntity processDefinition = Context.getProcessEngineConfiguration().getDeploymentManager().findDeployedProcessDefinitionById(processDefinitionId);
 			setProcessDefinition(processDefinition);
 		}
-
+		
 	}
-
+	
 	public ProcessDefinitionEntity getProcessDefinition() {
 		ensureProcessDefinitionInitialized();
 		return processDefinition;
 	}
-
+	
 	public void setProcessDefinition(ProcessDefinitionEntity processDefinition) {
 		if (processDefinition != null) {
 			processDefinitionId = processDefinition.getId();
@@ -266,11 +266,11 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		}
 		this.processDefinition = processDefinition;
 	}
-
+	
 	protected void ensureNodeInitialized() {
-
+		
 		ensureProcessDefinitionInitialized();
-
+		
 		if (node == null && nodeId != null && processDefinition != null) {
 			KernelFlowNode flowNode = processDefinition.findFlowNode(nodeId);
 			if (flowNode != null) {
@@ -278,16 +278,16 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 			}
 		}
 	}
-
+	
 	public KernelFlowNode getNode() {
 		return node;
 	}
-
+	
 	public void setNode(KernelFlowNode node) {
 		setNodeId(node.getId());
 		this.node = node;
 	}
-
+	
 	public TaskDefinition getTaskDefinition() {
 		ensureProcessDefinitionInitialized();
 		if (processDefinition != null && taskDefinition == null && nodeId != null) {
@@ -296,374 +296,373 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		}
 		return taskDefinition;
 	}
-
+	
 	public void setTaskDefinition(TaskDefinition taskDefinition) {
 		this.taskDefinition = taskDefinition;
 	}
-
+	
 	public List<IdentityLinkEntity> getTaskIdentityLinks() {
 		return taskIdentityLinks;
 	}
-
+	
 	public void setTaskIdentityLinks(List<IdentityLinkEntity> taskIdentityLinks) {
 		this.taskIdentityLinks = taskIdentityLinks;
 	}
-
+	
 	public TaskEntity getParentTask() {
 		return parentTask;
 	}
-
+	
 	public void setParentTask(TaskEntity parentTask) {
 		this.parentTask = parentTask;
 	}
-
+	
 	public DelegationState getDelegationState() {
 		return delegationState;
 	}
-
+	
 	public void setDelegationState(DelegationState delegationState) {
 		this.delegationState = delegationState;
 	}
-
+	
 	public String getDelegationStateString() {
 		return (delegationState != null ? delegationState.toString() : null);
 	}
-
+	
 	public void setDelegationStateString(String delegationStateString) {
-		this.delegationState = (delegationStateString != null ? DelegationState.valueOf(DelegationState.class, delegationStateString)
-				: null);
+		this.delegationState = (delegationStateString != null ? DelegationState.valueOf(DelegationState.class, delegationStateString) : null);
 	}
-
+	
 	public void setRevision(int revision) {
 		throw new FoxBPMException("未实现");
 	}
-
+	
 	public int getRevision() {
 		return 0;
 	}
-
+	
 	public int getRevisionNext() {
 		return 0;
 	}
-
+	
 	public boolean isModified() {
 		return false;
 	}
-
+	
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public String getDescription() {
 		return description;
 	}
-
+	
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	
 	public String getProcessInstanceId() {
 		return processInstanceId;
 	}
-
+	
 	public void setProcessInstanceId(String processInstanceId) {
 		this.processInstanceId = processInstanceId;
 	}
-
+	
 	public String getProcessDefinitionId() {
 		return processDefinitionId;
 	}
-
+	
 	public void setProcessDefinitionId(String processDefinitionId) {
 		this.processDefinitionId = processDefinitionId;
 	}
-
+	
 	public String getProcessDefinitionKey() {
 		return processDefinitionKey;
 	}
-
+	
 	public void setProcessDefinitionKey(String processDefinitionKey) {
 		this.processDefinitionKey = processDefinitionKey;
 	}
-
+	
 	public String getProcessDefinitionName() {
 		return processDefinitionName;
 	}
-
+	
 	public void setProcessDefinitionName(String processDefinitionName) {
 		this.processDefinitionName = processDefinitionName;
 	}
-
+	
 	public int getVersion() {
 		return version;
 	}
-
+	
 	public void setVersion(int version) {
 		this.version = version;
 	}
-
+	
 	public String getTokenId() {
 		return tokenId;
 	}
-
+	
 	public void setTokenId(String tokenId) {
 		this.tokenId = tokenId;
 	}
-
+	
 	public String getNodeId() {
 		return nodeId;
 	}
-
+	
 	public void setNodeId(String nodeId) {
 		this.nodeId = nodeId;
 	}
-
+	
 	public String getNodeName() {
 		return nodeName;
 	}
-
+	
 	public void setNodeName(String nodeName) {
 		this.nodeName = nodeName;
 	}
-
+	
 	public String getParentId() {
 		return parentId;
 	}
-
+	
 	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
-
+	
 	public String getAssignee() {
 		return assignee;
 	}
-
+	
 	public void setAssignee(String assignee) {
 		this.assignee = assignee;
 	}
-
+	
 	public Date getClaimTime() {
 		return claimTime;
 	}
-
+	
 	public void setClaimTime(Date claimTime) {
 		this.claimTime = claimTime;
 	}
-
+	
 	public Date getCreateTime() {
 		return createTime;
 	}
-
+	
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-
+	
 	public Date getStartTime() {
 		return startTime;
 	}
-
+	
 	public void setStartTime(Date startTime) {
 		this.startTime = startTime;
 	}
-
+	
 	public Date getEndTime() {
 		return endTime;
 	}
-
+	
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
-
+	
 	public Date getDueDate() {
 		return dueDate;
 	}
-
+	
 	public void setDueDate(Date dueDate) {
 		this.dueDate = dueDate;
 	}
-
+	
 	public boolean isBlocking() {
 		return isBlocking;
 	}
-
+	
 	public void setBlocking(boolean isBlocking) {
 		this.isBlocking = isBlocking;
 	}
-
+	
 	public int getPriority() {
 		return priority;
 	}
-
+	
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
-
+	
 	public String getCategory() {
 		return category;
 	}
-
+	
 	public void setCategory(String category) {
 		this.category = category;
 	}
-
+	
 	public String getOwner() {
 		return owner;
 	}
-
+	
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
-
+	
 	public String getBizKey() {
 		return bizKey;
 	}
-
+	
 	public void setBizKey(String bizKey) {
 		this.bizKey = bizKey;
 	}
-
+	
 	public String getTaskComment() {
 		return taskComment;
 	}
-
+	
 	public void setTaskComment(String taskComment) {
 		this.taskComment = taskComment;
 	}
-
+	
 	public String getFormUri() {
 		return formUri;
 	}
-
+	
 	public void setFormUri(String formUri) {
 		this.formUri = formUri;
 	}
-
+	
 	public String getFormUriView() {
 		return formUriView;
 	}
-
+	
 	public void setFormUriView(String formUriView) {
 		this.formUriView = formUriView;
 	}
-
+	
 	public String getTaskGroup() {
 		return taskGroup;
 	}
-
+	
 	public void setTaskGroup(String taskGroup) {
 		this.taskGroup = taskGroup;
 	}
-
+	
 	public String getTaskType() {
 		return taskType;
 	}
-
+	
 	public void setTaskType(String taskType) {
 		this.taskType = taskType;
 	}
-
+	
 	public boolean isCancelled() {
 		return isCancelled;
 	}
-
+	
 	public void setCancelled(boolean isCancelled) {
 		this.isCancelled = isCancelled;
 	}
-
+	
 	public boolean isSuspended() {
 		return isSuspended;
 	}
-
+	
 	public void setSuspended(boolean isSuspended) {
 		this.isSuspended = isSuspended;
 	}
-
+	
 	public boolean isOpen() {
 		return isOpen;
 	}
-
+	
 	public void setOpen(boolean isOpen) {
 		this.isOpen = isOpen;
 	}
-
+	
 	public boolean isDraft() {
 		return isDraft;
 	}
-
+	
 	public void setDraft(boolean isDraft) {
 		this.isDraft = isDraft;
 	}
-
+	
 	public int getExpectedExecutionTime() {
 		return expectedExecutionTime;
 	}
-
+	
 	public void setExpectedExecutionTime(int expectedExecutionTime) {
 		this.expectedExecutionTime = expectedExecutionTime;
 	}
-
+	
 	public String getAgent() {
 		return agent;
 	}
-
+	
 	public void setAgent(String agent) {
 		this.agent = agent;
 	}
-
+	
 	public String getAdmin() {
 		return admin;
 	}
-
+	
 	public void setAdmin(String admin) {
 		this.admin = admin;
 	}
-
+	
 	public String getCallActivityInstanceId() {
 		return callActivityInstanceId;
 	}
-
+	
 	public void setCallActivityInstanceId(String callActivityInstanceId) {
 		this.callActivityInstanceId = callActivityInstanceId;
 	}
-
+	
 	public String getPendingTaskId() {
 		return pendingTaskId;
 	}
-
+	
 	public void setPendingTaskId(String pendingTaskId) {
 		this.pendingTaskId = pendingTaskId;
 	}
-
+	
 	public Date getArchiveTime() {
 		return archiveTime;
 	}
-
+	
 	public void setArchiveTime(Date archiveTime) {
 		this.archiveTime = archiveTime;
 	}
-
+	
 	public String getCommandId() {
 		return commandId;
 	}
-
+	
 	public void setCommandId(String commandId) {
 		this.commandId = commandId;
 	}
-
+	
 	public String getCommandType() {
 		return commandType;
 	}
-
+	
 	public void setCommandType(String commandType) {
 		this.commandType = commandType;
 	}
-
+	
 	public void setTaskCommand(TaskCommand taskCommand) {
-		if(taskCommand!=null){
+		if (taskCommand != null) {
 			// 设置任务上点击的处理命令
 			setCommandId(taskCommand.getId());
 			// 设置任务上点击的处理命令类型
@@ -672,55 +671,55 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 			setCommandMessage(taskCommand.getName());
 		}
 	}
-
+	
 	public String getCommandMessage() {
 		return commandMessage;
 	}
-
+	
 	public void setCommandMessage(String commandMessage) {
 		this.commandMessage = commandMessage;
 	}
-
+	
 	public Object getVariableLocal(Object variableName) {
 		throw new FoxBPMException("未实现");
 	}
-
+	
 	public String getTaskDefinitionKey() {
 		throw new FoxBPMException("未实现");
 	}
-
+	
 	public ConnectorExecutionContext getExecutionContext() {
-		throw new FoxBPMException("未实现");
+		return getToken();
 	}
-
+	
 	public String getSubject() {
 		return subject;
 	}
-
+	
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
-
+	
 	public String getCompleteDescription() {
 		return completeDescription;
 	}
-
+	
 	public void setCompleteDescription(String completeDescription) {
 		this.completeDescription = completeDescription;
 	}
-
+	
 	public String getEventName() {
 		throw new FoxBPMException("未实现");
 	}
-
+	
 	public void addCandidateUser(String userId) {
 		addIdentityLink(userId, null, null, IdentityLinkType.CANDIDATE);
 	}
-
+	
 	public void addCandidateUserEntity(UserEntity user) {
 		addIdentityLink(user.getUserId(), null, null, IdentityLinkType.CANDIDATE);
 	}
-
+	
 	public void addCandidateUsers(Collection<String> candidateUsers) {
 		if (candidateUsers != null) {
 			for (String userId : candidateUsers) {
@@ -728,7 +727,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 			}
 		}
 	}
-
+	
 	public void addCandidateUserEntitys(Collection<UserEntity> candidateUsers) {
 		if (candidateUsers != null) {
 			for (UserEntity user : candidateUsers) {
@@ -736,15 +735,15 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 			}
 		}
 	}
-
+	
 	public void addCandidateGroup(String groupId, String groupType) {
 		addGroupIdentityLink(groupId, groupType, IdentityLinkType.CANDIDATE);
 	}
-
+	
 	public void addCandidateGroupEntity(GroupEntity group) {
 		addCandidateGroup(group.getGroupId(), group.getGroupType());
 	}
-
+	
 	public void addCandidateGroupEntitys(Collection<GroupEntity> candidateGroups) {
 		if (candidateGroups != null) {
 			for (GroupEntity group : candidateGroups) {
@@ -752,32 +751,33 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 			}
 		}
 	}
-
+	
 	public void addUserIdentityLink(String userId, String identityLinkType) {
 		addIdentityLink(userId, null, null, identityLinkType);
 	}
-
+	
 	public void addGroupIdentityLink(String groupId, String groupType, String identityLinkType) {
 		addIdentityLink(null, groupId, groupType, identityLinkType);
 	}
-
+	
 	public void deleteCandidateUser(String userId) {
 		throw new FoxBPMException("未实现");
 	}
-
+	
 	public void deleteCandidateGroup(String groupId) {
 		throw new FoxBPMException("未实现");
 	}
-
+	
 	public void deleteUserIdentityLink(String userId, String identityLinkType) {
 		throw new FoxBPMException("未实现");
 	}
-
+	
 	public void deleteGroupIdentityLink(String groupId, String groupType, String identityLinkType) {
 		throw new FoxBPMException("未实现");
 	}
-
-	public IdentityLinkEntity addIdentityLink(String userId, String groupId, String groupType, String type) {
+	
+	public IdentityLinkEntity addIdentityLink(String userId, String groupId, String groupType,
+	    String type) {
 		IdentityLinkEntity identityLinkEntity = new IdentityLinkEntity();
 		identityLinkEntity.setId(GuidUtil.CreateGuid());
 		getIdentityLinks().add(identityLinkEntity);
@@ -792,37 +792,37 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		}
 		return identityLinkEntity;
 	}
-
+	
 	public Set<IdentityLink> getCandidates() {
 		throw new FoxBPMException("未实现");
 	}
-
+	
 	public void setProcessInstanceTransientVariables(Map<String, Object> parameters) {
 		getProcessInstance().setTransVariables(parameters);
 	}
-
+	
 	public void setProcessInstanceVariables(Map<String, Object> parameters) {
 		getProcessInstance().setVariables(parameters);
 	}
-
+	
 	public boolean isAutoClaim() {
 		return getTaskDefinition().isAutoClaim();
 	}
-
+	
 	/** 结束任务,并驱动流程向下运转。 */
 	public void complete() {
 		
-		complete(null,null);
+		complete(null, null);
 		
 	}
 	
 	/** 结束任务,并驱动流程向下运转。 指定需要去的节点。 */
 	public void complete(KernelFlowNodeImpl toFlowNode) {
-		complete(toFlowNode,null);
+		complete(toFlowNode, null);
 	}
 	
 	/** 结束任务,并驱动流程向下运转。 指定需要去的节点和指定节点的任务处理者 */
-	public void complete(KernelFlowNodeImpl toFlowNode,String assignee) {
+	public void complete(KernelFlowNodeImpl toFlowNode, String assignee) {
 		
 		/** 设置任务结束状态 */
 		end();
@@ -836,10 +836,10 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 			/** 移除令牌上注册任务 */
 			token.removeTask(this);
 			/** 设置去向节点 */
-			if(toFlowNode!=null){
+			if (toFlowNode != null) {
 				token.setToFlowNode(toFlowNode);
 			}
-			if(StringUtil.isNotEmpty(assignee)){
+			if (StringUtil.isNotEmpty(assignee)) {
 				token.setTaskAssignee(assignee);
 			}
 			/** 驱动令牌向下 */
@@ -856,11 +856,10 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 			throw new FoxBPMException("任务已经结束,不能再进行处理.");
 		}
 		
-		/** 这里判断暂停的逻辑有点问题,有些强制结束需要结束暂停的任务		
-		if (this.isSuspended) {
-			throw new FoxBPMException("任务已经暂停不能再处理");
-		}
-		**/
+		/**
+		 * 这里判断暂停的逻辑有点问题,有些强制结束需要结束暂停的任务 if (this.isSuspended) { throw new
+		 * FoxBPMException("任务已经暂停不能再处理"); }
+		 **/
 		
 		/** 设置结束时间 */
 		this.endTime = new Date();
@@ -871,15 +870,16 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		/** 更新完成率 */
 		setCompletionRate(1.0);
 	}
-
+	
 	/**
 	 * 这个结束并不会去推动令牌向下。例如用在退回的时候。
 	 */
 	public void end(TaskCommand taskCommand, String taskComment) {
-
+		
 		end();
 		
-		if (taskCommand != null && taskCommand.getTaskCommandType() != null && !taskCommand.getTaskCommandType().equals("")) {
+		if (taskCommand != null && taskCommand.getTaskCommandType() != null
+		        && !taskCommand.getTaskCommandType().equals("")) {
 			String taskCommandType = taskCommand.getTaskCommandType();
 			String taskCommandName = taskCommand.getName();
 			// 设置流程自动结束信息 autoEnd
@@ -896,14 +896,13 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		} else {
 			this.setCommandId(TaskCommandSystemType.AUTOEND);
 			this.setCommandType(TaskCommandSystemType.AUTOEND);
-			TaskCommandDefinition taskCommandDef = Context.getProcessEngineConfiguration().getTaskCommandDefinition(
-					TaskCommandSystemType.AUTOEND);
+			TaskCommandDefinition taskCommandDef = Context.getProcessEngineConfiguration().getTaskCommandDefinition(TaskCommandSystemType.AUTOEND);
 			if (taskCommandDef != null) {
 				this.setCommandMessage(taskCommandDef.getName());
 			}
 		}
 	}
-
+	
 	public Map<String, Object> getPersistentState() {
 		Map<String, Object> persistentState = new HashMap<String, Object>();
 		persistentState.put("id", getId());
@@ -956,60 +955,58 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		persistentState.put("processInitiator", getProcessInitiator());
 		persistentState.put("completeDescription", getCompleteDescription());
 		persistentState.put("completionRate", getCompletionRate());
-
+		
 		return persistentState;
 	}
-
+	
 	@Override
 	public boolean hasEnded() {
 		return endTime != null;
 	}
-
+	
 	public Map<String, Object> getParamMap() {
 		return paramMap;
 	}
-
+	
 	public void setParamMap(Map<String, Object> paramMap) {
 		this.paramMap = paramMap;
 	}
-
+	
 	public Date getProcessStartTime() {
 		return processStartTime;
 	}
-
+	
 	public void setProcessStartTime(Date processStartTime) {
 		this.processStartTime = processStartTime;
 	}
-
+	
 	public String getProcessInitiator() {
 		return processInitiator;
 	}
-
+	
 	public void setProcessInitiator(String processInitiator) {
 		this.processInitiator = processInitiator;
 	}
-
+	
 	public boolean isIdentityLinksInitialized() {
 		return this.isIdentityLinksInitialized;
 	}
-
+	
 	public double getCompletionRate() {
 		return completionRate;
 	}
-
+	
 	public void setCompletionRate(double completionRate) {
 		this.completionRate = completionRate;
 	}
-
+	
 	@Override
-	public Object clone(){
+	public Object clone() {
 		try {
 			return super.clone();
 		} catch (CloneNotSupportedException e) {
-			throw new FoxBPMException("task clone 异常",e);
+			throw new FoxBPMException("task clone 异常", e);
 		}
 	}
-	
-	
 	
 }
