@@ -62,8 +62,8 @@ public class DeploymentManager {
 	
 	public List<ProcessDefinitionEntity> findProcessDefinitionGroupByKey() {
 		List<ProcessDefinitionEntity> processDefinitions = Context.getCommandContext().getProcessDefinitionManager().findProcessDefinitionGroupByKey();
-		for (ProcessDefinitionEntity process : processDefinitions) {
-			resolveProcessDefinition(process);
+		for (int i = 0, size = processDefinitions.size(); i < size; i++) {
+			processDefinitions.set(i, resolveProcessDefinition(processDefinitions.get(i)));
 		}
 		return processDefinitions;
 	}
