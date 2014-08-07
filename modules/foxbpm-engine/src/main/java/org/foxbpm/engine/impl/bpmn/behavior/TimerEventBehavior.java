@@ -139,7 +139,13 @@ public class TimerEventBehavior extends EventDefinition {
 			throw new FoxBPMException("TimerEventBehavior 执行的时候 jobDetail未创建成功!");
 		} else {
 			// 创建Trigger List
-			this.createTriggerList(jobDetail, kernelTokenImpl, groupName);
+			if (StringUtil.equals(eventType, EVENT_TYPE_CONNECTOR)) {
+				//连接器以兼容模式创建TRIGGER
+				jobDetail.createCompatibleTriggerList(this.timeDate, kernelTokenImpl, groupName);
+			}else{
+				this.createTriggerList(jobDetail, kernelTokenImpl, groupName);
+			}
+			
 			// 保存更新调度信息
 			QuartzUtil.scheduleFoxbpmJob(jobDetail);
 		}
@@ -157,9 +163,9 @@ public class TimerEventBehavior extends EventDefinition {
 	 */
 	private void createTriggerList(FoxbpmJobDetail<FoxbpmScheduleJob> jobDetail,
 	    KernelTokenImpl kernelTokenImpl, String groupName) {
-		jobDetail.createTriggerList(this.timeDate, kernelTokenImpl, groupName);
+		jobDetail.createDateTimeTriggerList(this.timeDate, kernelTokenImpl, groupName);
 		jobDetail.createTriggerListByDuration(this.timeDuration, kernelTokenImpl, groupName);
-		jobDetail.createTriggerList(this.timeCycle, kernelTokenImpl, groupName);
+		jobDetail.createDateTimeTriggerList(this.timeCycle, kernelTokenImpl, groupName);
 	}
 	public Expression getTimeDate() {
 		return timeDate;

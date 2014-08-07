@@ -17,6 +17,7 @@
  */
 package org.foxbpm.engine.impl.diagramview.svg.builder;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -24,8 +25,10 @@ import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.diagramview.svg.Point;
 import org.foxbpm.engine.impl.diagramview.svg.PointUtils;
 import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
+import org.foxbpm.engine.impl.diagramview.svg.vo.MarkerVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.PathVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
+import org.foxbpm.engine.impl.util.StringUtil;
 
 /**
  * 默认线条式样构造
@@ -42,11 +45,27 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 	private static final String D_SPACE = " ";
 	private PathVO pathVo;
 	private PathVO markerPathVo;
+	private PathVO startMarkPathVo;
 	public ConnectorSVGBuilder(SvgVO svgVo) {
 		super(svgVo);
 		this.textVO = svgVo.getgVo().getgVoList().get(0).getTextVo();
 		this.pathVo = SVGUtils.getSequenceVOFromSvgVO(svgVo);
 		this.markerPathVo = SVGUtils.getSequenceMarkerVOFromSvgVO(svgVo);
+		
+		List<MarkerVO> markerVOList = svgVo.getgVo().getgVoList().get(0).getDefsVo().getMarkerVOList();
+		for (MarkerVO markerVo : markerVOList) {
+			if (StringUtil.equals(markerVo.getId(), "start")) {
+				List<PathVO> pathVOList = markerVo.getPathVOList();
+				Iterator<PathVO> iterator = pathVOList.iterator();
+				while (iterator.hasNext()) {
+					startMarkPathVo = iterator.next();
+					if (StringUtil.equals(startMarkPathVo.getId(), "conditional")) {
+						break;
+					}
+				}
+				break;
+			}
+		}
 		if (pathVo == null) {
 			throw new FoxBPMException("线条元素初始化工厂时候报错，pathVo对象为空");
 		}
@@ -111,6 +130,7 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 		this.pathVo.setStroke(COLOR_FLAG + stroke);
 		this.markerPathVo.setStroke(COLOR_FLAG + stroke);
 		this.markerPathVo.setFill(COLOR_FLAG + stroke);
+		startMarkPathVo.setStroke(COLOR_FLAG + stroke);
 	}
 	
 	@Override

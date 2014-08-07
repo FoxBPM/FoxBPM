@@ -103,8 +103,44 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 		
 	}
 	
+	
 	@SuppressWarnings("unchecked")
-	public void createTriggerList(Expression timeExpression,
+	public void createCompatibleTriggerList(Expression timeExpression,
+	    ListenerExecutionContext executionContext, String groupName) {
+		if (timeExpression == null || StringUtil.isBlank(timeExpression.getExpressionText())) {
+			return;
+		}
+		List<Trigger> triggersList = new ArrayList<Trigger>();
+		Object triggerObj = ExpressionMgmt.execute(timeExpression.getExpressionText(), executionContext);
+		if (triggerObj == null) {
+			throw new FoxBPMException("FoxbpmJobDetail创建TRIGGER LIST时候，TIMER 表达式执行结果为NULL");
+		}
+		if (triggerObj instanceof List) {
+			try {
+				triggersList = (List<Trigger>) triggerObj;
+			} catch (Exception e) {
+				throw new FoxBPMException("FoxbpmJobDetail创建的触发器集合必须为List<Trigger>");
+			}
+		} else if (triggerObj instanceof Trigger) {
+			Trigger tempTrigger = null;
+			try {
+				tempTrigger = (Trigger) triggerObj;
+			} catch (Exception e) {
+				throw new FoxBPMException("FoxbpmJobDetail创建的触发器集合必须为Trigger", e);
+			}
+			triggersList.add(tempTrigger);
+		} else if (triggerObj instanceof Date) {
+			triggersList.add(QuartzUtil.createTriggerByDateTime(triggerObj, groupName));
+		} else if (triggerObj instanceof String) {
+			triggersList.add(QuartzUtil.createCronTrigger(groupName, triggerObj.toString()));
+		} else {
+			throw new FoxBPMException("创建TRIGGER  LIST时候，TIMER 表达式执行错误");
+		}
+		
+		this.triggerList = triggersList;
+	}
+	@SuppressWarnings("unchecked")
+	public void createDateTimeTriggerList(Expression timeExpression,
 	    ListenerExecutionContext executionContext, String groupName) {
 		if (timeExpression == null || StringUtil.isBlank(timeExpression.getExpressionText())) {
 			return;
