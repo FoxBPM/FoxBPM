@@ -26,7 +26,6 @@ import org.foxbpm.engine.impl.bpmn.behavior.ParallelGatewayBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.SequenceFlowBehavior;
 import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
 import org.foxbpm.engine.impl.diagramview.svg.vo.GVO;
-import org.foxbpm.engine.impl.diagramview.svg.vo.MarkerVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.PathVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.diagramview.vo.VONode;
@@ -81,21 +80,16 @@ public class ConnectorSVGFactory extends AbstractFlowElementSVGFactory {
 		        || sourceRefBehavior instanceof ParallelGatewayBehavior) {
 			SvgVO connectorVO = (SvgVO) voNode;
 			PathVO pathVo = null;
-			List<PathVO> pathVOList = null;
-			List<MarkerVO> markerVOList = connectorVO.getgVo().getgVoList().get(0).getDefsVo().getMarkerVOList();
-			for (MarkerVO markerVo : markerVOList) {
-				if (StringUtil.equals(markerVo.getId(), "start")) {
-					pathVOList = markerVo.getPathVOList();
-					Iterator<PathVO> iterator = pathVOList.iterator();
-					while (iterator.hasNext()) {
-						pathVo = iterator.next();
-						if (StringUtil.equals(pathVo.getId(), "conditional")) {
-							iterator.remove();
-						}
-					}
-					
+			List<PathVO> pathVOList = connectorVO.getgVo().getgVoList().get(0).getPathVoList();
+			Iterator<PathVO> iterator = pathVOList.iterator();
+			while (iterator.hasNext()) {
+				pathVo = iterator.next();
+				if (StringUtil.equals(pathVo.getId(), "start")) {
+					iterator.remove();
+					break;
 				}
 			}
+			
 		}
 	}
 }

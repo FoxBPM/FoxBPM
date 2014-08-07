@@ -5,12 +5,12 @@
 	<g id="edge">
 		<defs>
 		  	<marker id="start" refX="1" refY="5" markerUnits="userSpaceOnUse" markerWidth="17" markerHeight="11" orient="auto"> 
-		  		<path id="conditional"   d="M 0 6 L 8 1 L 15 5 L 8 9 L 1 5" fill="white" stroke="black" stroke-width="1" />
-		  	</marker>
+		    </marker>
 		  	<marker id="end" refX="15" refY="6" markerUnits="userSpaceOnUse" markerWidth="15" markerHeight="12" orient="auto">
 		  		<path id="arrowhead" d="M 0 1 L 15 6 L 0 11z" fill="black" stroke="black" stroke-linejoin="round" stroke-width="2" />
 		  	</marker>
 		</defs>
+		<path id="start" d="M 0 6 L 8 1 L 15 5 L 8 9 L 1 5"  fill="white" stroke="#808080" stroke-width="1.0"></path>
 		<path id="bg_frame" d="M10 50 L210 50" stroke="black" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#start)" marker-end="url(#end)" />
 		<text id="text_name" x="0" y="0" oryx:edgePosition="startTop"/>
 	</g>
