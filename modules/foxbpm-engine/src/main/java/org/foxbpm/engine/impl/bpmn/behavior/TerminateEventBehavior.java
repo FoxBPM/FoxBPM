@@ -20,17 +20,16 @@ package org.foxbpm.engine.impl.bpmn.behavior;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 public class TerminateEventBehavior extends EventDefinition {
-
+	
 	/**
 	 * serialVersionUID:TODO（用一句话描述这个变量表示什么）
 	 * 
 	 * @since 1.0.0
 	 */
 	private static final long serialVersionUID = 622240217012994908L;
-
+	
 	@Override
 	public void execute(FlowNodeExecutionContext executionContext, String eventType, Object[] params) {
-		// TODO 事件执行
-		executionContext.end();
+		executionContext.getProcessInstance().end();
 	}
 }
