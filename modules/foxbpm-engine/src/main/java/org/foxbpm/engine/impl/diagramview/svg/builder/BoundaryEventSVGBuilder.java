@@ -205,16 +205,6 @@ public class BoundaryEventSVGBuilder extends AbstractSVGBuilder {
 	public void setXAndY(float x, float y) {
 		// 流程图定义的是圆对应矩形左上角的坐标，所以对应的SVG坐标需要将坐标值加半径
 		// 如果是事件节点，字体横坐标和圆心的横坐标一直，纵坐标等圆心坐标值加圆的半径值
-		String elementValue = textVO.getElementValue();
-		if (StringUtils.isNotBlank(elementValue)) {
-			int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(), elementValue);
-			if (SVGUtils.isChinese(elementValue.charAt(0))) {
-				textWidth = textWidth + (textWidth / 20) * 5;
-			}
-			this.setTextX(x - textWidth / 2);
-			this.setTextY(y + this.circleVO1.getR() + 15);
-		}
-
 		// 如果存在子类型，例如ERROR
 		if (this.pathVo != null) {
 			// 整体 SHIFT
@@ -222,9 +212,28 @@ public class BoundaryEventSVGBuilder extends AbstractSVGBuilder {
 					new StringBuffer(TRANSLANT_PREFIX).append(x).append(COMMA).append(y)
 							.append(BRACKET_SUFFIX).toString());
 			// TODO 同时需要设置文本的相对偏移量
+			String elementValue = textVO.getElementValue();
+			if (StringUtils.isNotBlank(elementValue)) {
+				int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(), elementValue);
+				if (SVGUtils.isChinese(elementValue.charAt(0))) {
+					textWidth = textWidth + (textWidth / 20) * 5;
+				}
+				this.setTextX(-textWidth/2);
+				this.setTextY(this.circleVO1.getR() + 35);
+			}
+			
 		} else {
 			this.circleVO1.setCx(x);
 			this.circleVO1.setCy(y);
+			String elementValue = textVO.getElementValue();
+			if (StringUtils.isNotBlank(elementValue)) {
+				int textWidth = SVGUtils.getTextWidth(this.textVO.getFont(), elementValue);
+				if (SVGUtils.isChinese(elementValue.charAt(0))) {
+					textWidth = textWidth + (textWidth / 20) * 5;
+				}
+				this.setTextX(x - textWidth / 2);
+				this.setTextY(y + this.circleVO1.getR() + 15);
+			}
 		}
 	}
 
