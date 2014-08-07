@@ -20,30 +20,35 @@ package org.foxbpm.engine.impl.task.cmd;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
-import org.foxbpm.engine.impl.task.command.RollBackResetCommand;
+import org.foxbpm.engine.impl.task.command.RollBackAssigneeCommand;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
 /**
- * 退回到指定节点,任务重新分配。
+ * 
  * @author kenshin
  */
-public class RollBackResetCmd extends AbstractExpandTaskCmd<RollBackResetCommand, Void> {
+public class RollBackAssigneeCmd extends AbstractExpandTaskCmd<RollBackAssigneeCommand, Void> {
 
 	private static final long serialVersionUID = 1L;
 
 	/** 退回的节点号 */
 	protected String rollBackNodeId;
+	
+	/** 退回节点的指定处理者 */
+	protected String rollBackAssignee;
 
-	public RollBackResetCmd(RollBackResetCommand rollBackResetCommand) {
-		super(rollBackResetCommand);
-		this.rollBackNodeId = rollBackResetCommand.getRollBackNodeId();
+	public RollBackAssigneeCmd(RollBackAssigneeCommand rollBackAssigneeCommand) {
+		super(rollBackAssigneeCommand);
+		this.rollBackNodeId = rollBackAssigneeCommand.getRollBackNodeId();
+		this.rollBackAssignee=rollBackAssigneeCommand.getRollBackAssignee();
 	}
 
 	@Override
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
+		
 		
 		/** 放置流程实例级别的瞬态变量 */
 		task.setProcessInstanceTransientVariables(this.transientVariables);
@@ -63,10 +68,12 @@ public class RollBackResetCmd extends AbstractExpandTaskCmd<RollBackResetCommand
 		KernelProcessDefinition processDefinition=getProcessDefinition(task);
 		/** 查找需要退回的节点 */
 		KernelFlowNodeImpl flowNode=processDefinition.findFlowNode(rollBackNodeId);
-		/** 完成任务,并将流程推向指定的节点 */
-		task.complete(flowNode);
+		/** 完成任务,并将流程推向指定的节点,并指定处理者 */
+		task.complete(flowNode,rollBackAssignee);
 		
 		return null;
+
+		
 	}
 
 }
