@@ -20,7 +20,7 @@ a {
 				<div class="type">
 					<h1>流程定义</h1>
 					<c:forEach items="${result}" var="row" varStatus="status">
-						<a href="javascript:void(0)" formUrl="${row.formUrl}"
+						<a href="javascript:void(0)" formUrl="${row.startFormUri}"
 							processDefinitionKey="${row.key}" processDefinitionId="${row.id}"><div>${row.name}</div></a>
 					</c:forEach>
 				</div>
@@ -32,20 +32,26 @@ a {
 	//这里启动表单操作
 	$(function() {
 		$("a[processDefinitionKey]").click(
-				function() {
-					var pdk = $(this).attr("processDefinitionKey");
-					var userId =<%=request.getAttribute("userId")%>;
 
-					var formUrl = $(this).attr("formUrl");
-					var url = "startTask.action";
-					if (formUrl.indexOf("?") != -1) {
-						url += "&";
-					} else {
-						url += "?";
-					}
-					url += "userId=" + userId + "&processDefinitionKey=" + pdk;
-					window.open(url);
-				});
+		function() {
+			var pdk = $(this).attr("processDefinitionKey");
+			var userId =<%=request.getAttribute("userId")%>;
+
+			var formUrl = $(this).attr("formUrl");
+			var url = '';
+			if (formUrl && formUrl != '') {
+				url = formUrl;
+			} else {
+				url = "startTask.action";
+			}
+			if (formUrl.indexOf("?") != -1) {
+				url += "&";
+			} else {
+				url += "?";
+			}
+			url += "userId=" + userId + "&processDefinitionKey=" + pdk;
+			window.open(url);
+		});
 	});
 </script>
 </html>

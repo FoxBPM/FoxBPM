@@ -37,10 +37,12 @@ import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.diagramview.svg.vo.CircleVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.DefsVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.GVO;
+import org.foxbpm.engine.impl.diagramview.svg.vo.MarkerVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.PathVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.RectVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.diagramview.vo.VONode;
+import org.foxbpm.engine.impl.util.StringUtil;
 
 /**
  * SVG工具类
@@ -49,7 +51,7 @@ import org.foxbpm.engine.impl.diagramview.vo.VONode;
  * @date 2014-06-10
  */
 public final class SVGUtils {
-
+	
 	/**
 	 * BPMN节点类型(例如：矩形，圆形)在SVG文档中的ID
 	 */
@@ -74,7 +76,7 @@ public final class SVGUtils {
 		}
 		return null;
 	}
-
+	
 	/**
 	 * 获取事件圆形
 	 * 
@@ -112,7 +114,7 @@ public final class SVGUtils {
 		}
 		return null;
 	}
-
+	
 	/**
 	 * 获取事件圆形
 	 * 
@@ -134,10 +136,10 @@ public final class SVGUtils {
 				}
 			}
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * 获取线条路径
 	 * 
@@ -159,7 +161,25 @@ public final class SVGUtils {
 		}
 		return null;
 	}
-
+	
+	/**
+	 * 获取线条路径
+	 * 
+	 * @param svgVo
+	 * @return
+	 */
+	public final static PathVO getSequenceMarkerVOFromSvgVO(SvgVO svgVo) {
+		List<MarkerVO> markerVOList = svgVo.getgVo().getgVoList().get(0).getDefsVo().getMarkerVOList();
+		for (MarkerVO markerVo : markerVOList) {
+			if (StringUtil.equals(markerVo.getId(), "end")) {
+				List<PathVO> pathVOList = markerVo.getPathVOList();
+				return pathVOList.get(0);
+			}
+			
+		}
+		return null;
+	}
+	
 	/**
 	 * 获取线条路径
 	 * 
@@ -185,13 +205,13 @@ public final class SVGUtils {
 							return tempPathVo;
 						}
 					}
-
+					
 				}
 			}
 		}
 		return null;
 	}
-
+	
 	/**
 	 * 获取网关路径
 	 * 
@@ -208,10 +228,10 @@ public final class SVGUtils {
 				return tempPathVo;
 			}
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * 中文两字节，英文是一字节所以要区分中英文
 	 * 
@@ -221,17 +241,17 @@ public final class SVGUtils {
 	public final static boolean isChinese(char c) {
 		Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);
 		if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
-				|| ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
-				|| ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A
-				|| ub == Character.UnicodeBlock.GENERAL_PUNCTUATION
-				|| ub == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION
-				|| ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS) {
-
+		        || ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
+		        || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A
+		        || ub == Character.UnicodeBlock.GENERAL_PUNCTUATION
+		        || ub == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION
+		        || ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS) {
+			
 			return true;
 		}
 		return false;
 	}
-
+	
 	/**
 	 * 根据文本的式样，以及文本内容，获取文本在屏幕上展示的像素宽
 	 * 
@@ -247,7 +267,7 @@ public final class SVGUtils {
 		FontMetrics metrics = label.getFontMetrics(label.getFont());
 		return metrics.stringWidth(label.getText());
 	}
-
+	
 	/**
 	 * 将所有的线条的所有点信息，转化成点的坐标
 	 * 
@@ -259,7 +279,7 @@ public final class SVGUtils {
 		if (waypoints != null && (size = waypoints.size()) > 0 && size % 2 == 0) {
 			List<Point> pointList = new ArrayList<Point>();
 			Point point = null;
-
+			
 			for (int i = 0; i < size; i++) {
 				if (i % 2 != 0) {
 					point = new Point(waypoints.get(i - 1), waypoints.get(i));
@@ -271,7 +291,7 @@ public final class SVGUtils {
 			throw new FoxBPMException("线条节点有问题 waypoints不符合规则！");
 		}
 	}
-
+	
 	/**
 	 * 创建waypoint节点数组
 	 * 
@@ -283,11 +303,11 @@ public final class SVGUtils {
 		if (waypoints != null && (wayPointSize = waypoints.size()) > 0 && wayPointSize % 2 == 0) {
 			String[] wayPointArray = new String[wayPointSize / 2];
 			int arrayIndex = 0;
-
+			
 			for (int i = 0; i < wayPointSize; i++) {
 				if (i % 2 != 0) {
 					wayPointArray[arrayIndex] = String.valueOf(waypoints.get(i - 1)) + SPACE
-							+ String.valueOf(waypoints.get(i)) + SPACE;
+					        + String.valueOf(waypoints.get(i)) + SPACE;
 					arrayIndex++;
 				}
 			}
@@ -296,7 +316,7 @@ public final class SVGUtils {
 			throw new FoxBPMException("线条节点有问题 waypoints不符合规则！");
 		}
 	}
-
+	
 	/**
 	 * 操作之后的SVG转化成String字符串
 	 * 
@@ -309,14 +329,14 @@ public final class SVGUtils {
 			Marshaller marshal = context.createMarshaller();
 			marshal.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			StringWriter writer = new StringWriter();
-
+			
 			marshal.marshal(svgVo, writer);
 			return writer.toString();
 		} catch (Exception e) {
 			throw new FoxBPMException("svg object convert to String exception", e);
 		}
 	}
-
+	
 	/**
 	 * DefsVO克隆
 	 * 
@@ -327,11 +347,14 @@ public final class SVGUtils {
 	public final static GVO cloneGVO(GVO gVo) {
 		return (GVO) clone(gVo);
 	}
-
+	public final static DefsVO cloneDefVO(DefsVO defsVO) {
+		return (DefsVO) clone(defsVO);
+	}
+	
 	public final static DefsVO cloneDefsVO(DefsVO defsVo) {
 		return (DefsVO) clone(defsVo);
 	}
-
+	
 	/**
 	 * SvgVO模板对象需要多次引用，所以要克隆，避免产生问题
 	 * 
@@ -342,7 +365,7 @@ public final class SVGUtils {
 	public final static SvgVO cloneSVGVo(SvgVO svgVo) {
 		return (SvgVO) clone(svgVo);
 	}
-
+	
 	/**
 	 * 克隆对象
 	 * 
@@ -378,7 +401,7 @@ public final class SVGUtils {
 				throw new FoxBPMException("克隆之后关闭对象流时出现问题", e);
 			}
 		}
-
+		
 		return cloneObject;
 	}
 }
