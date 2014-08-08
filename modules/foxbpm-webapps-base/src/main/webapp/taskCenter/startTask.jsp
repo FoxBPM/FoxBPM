@@ -16,28 +16,30 @@
 <link rel="stylesheet" type="text/css" href="common/css/form.css">
 <link rel="stylesheet" type="text/css" href="common/css/reset.css">
 <script type="text/javascript" src="common/js/jquery.js"></script>
-<script type="text/javascript" src="common/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript"
+	src="common/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="common/js/flowCommandBase.js"></script>
-<script type="text/javascript" src="common/js/compenents/flowCommandHandler.js"></script>
+<script type="text/javascript"
+	src="common/js/compenents/flowCommandHandler.js"></script>
 
 <script type="text/javascript">
 	var message = '${errorMsg}';
 	if (message != '') {
 		alert(message);
 	}
-	
-	function flowCommit(){
+
+	function flowCommit() {
 		alert($("#flowInfo").val());
 		var form = $("#form1");
 		form.submit();
 	}
-	
-	function getBizKey(){
+
+	function getBizKey() {
 		var bizKey = $("#businessKey").val();
 		return bizKey;
 	}
-	
-	function getTaskComment(){
+
+	function getTaskComment() {
 		return $("#_taskComment").val();
 	}
 </script>
@@ -49,6 +51,7 @@
 <body>
 	<div class="tpl-form-border">
 		<form id="form1" action="completeTask.action" method="post">
+			<input type="hidden" name="taskStauts" id="taskStauts" value="0" />
 			<table class="table-form">
 				<tr>
 					<td class="title-r">流程关联键：</td>
@@ -62,10 +65,11 @@
 				</tr>
 				<tr>
 					<td class="title-r">审批意见：</td>
-					<td><textarea rows="3" cols="20" name="_taskComment" id="_taskComment"></textarea></td>
+					<td><textarea rows="3" cols="20" name="_taskComment"
+							id="_taskComment"></textarea></td>
 				</tr>
 			</table>
-			<div class="toolbar" id="toolbar"> </div>
+			<div class="toolbar" id="toolbar"></div>
 		</form>
 	</div>
 </body>

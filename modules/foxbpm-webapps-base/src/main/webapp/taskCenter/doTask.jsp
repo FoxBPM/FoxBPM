@@ -49,6 +49,7 @@
 <body>
 	<div class="tpl-form-border">
 		<form id="form1" action="completeTask.action" method="post">
+		<input id="businessKey" name="businessKey" type="hidden" value="${result.demoObject.bKey}" />
 			<table class="table-form">
 				<tr>
 					<td class="title-r">流程关联键：</td>
