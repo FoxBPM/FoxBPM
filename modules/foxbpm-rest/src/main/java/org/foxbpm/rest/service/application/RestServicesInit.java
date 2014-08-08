@@ -18,6 +18,7 @@
 package org.foxbpm.rest.service.application;
 
 import org.foxbpm.rest.service.api.config.FlowConfigResouce;
+import org.foxbpm.rest.service.api.engine.TaskCommandCollectionResource;
 import org.foxbpm.rest.service.api.identity.GroupCollectionResouce;
 import org.foxbpm.rest.service.api.identity.GroupDefinitionCollection;
 import org.foxbpm.rest.service.api.identity.GroupRelationCollectionResouce;
@@ -60,5 +61,7 @@ public class RestServicesInit {
 		router.attach("/identity/allRelations", GroupRelationCollectionResouce.class);
 		router.attach("/identity/allUsers", UserCollectionResouce.class);
 		router.attach("/identity/allGroupDefinitions", GroupDefinitionCollection.class);
+		
+		router.attach("/task/taskCommands", TaskCommandCollectionResource.class);
 	}
 }
