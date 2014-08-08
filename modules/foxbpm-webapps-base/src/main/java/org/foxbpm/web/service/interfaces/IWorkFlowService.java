@@ -106,7 +106,7 @@ public interface IWorkFlowService {
 	 *            任务执行命令
 	 * @return 返回任务执行结果
 	 */
-	ProcessInstance completeTask(Map<String, Object> params);
+	ProcessInstance completeTask(String params);
 
 	/**
 	 * 获取流程图

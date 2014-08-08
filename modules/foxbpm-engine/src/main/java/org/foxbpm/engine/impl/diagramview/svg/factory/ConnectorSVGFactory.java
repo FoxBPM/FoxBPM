@@ -18,13 +18,22 @@
 package org.foxbpm.engine.impl.diagramview.svg.factory;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.foxbpm.engine.expression.Expression;
+import org.foxbpm.engine.impl.bpmn.behavior.ParallelGatewayBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.SequenceFlowBehavior;
 import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
 import org.foxbpm.engine.impl.diagramview.svg.vo.GVO;
+import org.foxbpm.engine.impl.diagramview.svg.vo.PathVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.diagramview.vo.VONode;
+import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
 import org.foxbpm.kernel.process.KernelBaseElement;
+import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
+import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 
 /**
  * BPMN2.0事件元素之线条定义
@@ -60,6 +69,27 @@ public class ConnectorSVGFactory extends AbstractFlowElementSVGFactory {
 	
 	@Override
 	public void filterChildVO(VONode voNode, List<String> filterCondition) {
+		KernelSequenceFlowImpl kernelSequenceFlowImpl = (KernelSequenceFlowImpl) this.kernelBaseElement;
+		KernelFlowNodeImpl sourceRef = kernelSequenceFlowImpl.getSourceRef();
+		KernelFlowNodeBehavior sourceRefBehavior = sourceRef.getKernelFlowNodeBehavior();
 		
+		SequenceFlowBehavior sequenceFlowBehavior = (SequenceFlowBehavior) kernelSequenceFlowImpl.getSequenceFlowBehavior();
+		Expression conditionExpression = sequenceFlowBehavior.getConditionExpression();
+		if (conditionExpression == null
+		        || StringUtil.isBlank(conditionExpression.getExpressionText())
+		        || sourceRefBehavior instanceof ParallelGatewayBehavior) {
+			SvgVO connectorVO = (SvgVO) voNode;
+			PathVO pathVo = null;
+			List<PathVO> pathVOList = connectorVO.getgVo().getgVoList().get(0).getPathVoList();
+			Iterator<PathVO> iterator = pathVOList.iterator();
+			while (iterator.hasNext()) {
+				pathVo = iterator.next();
+				if (StringUtil.equals(pathVo.getId(), "start")) {
+					iterator.remove();
+					break;
+				}
+			}
+			
+		}
 	}
 }

@@ -29,7 +29,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentEntity;
 import org.foxbpm.engine.impl.db.Page;
-import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.StringUtil;
@@ -68,11 +67,8 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_USERID, "userId is null !");
 		}
 		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-		Map<String, Object> temp = null;
 		for (ProcessDefinition pd : modelService.getStartProcessByUserId(userId)) {
-			temp = pd.getPersistentState();
-			result.add(temp);
-			temp.put("formUrl", ((ProcessDefinitionEntity) pd).getStartFormUri());
+			result.add(pd.getPersistentState());
 		}
 		return result;
 	}
@@ -298,7 +294,9 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		for (int i = 0, size = (null == taskList) ? 0 : taskList.size(); i < size; i++) {
 			task = taskList.get(i);
 			attrMap = task.getPersistentState();
-			attrMap.put("formUri", "startTask.action");
+			if (StringUtil.isEmpty(StringUtil.getString(attrMap.get("formUri")))) {
+				attrMap.put("formUri", "startTask.action");
+			}
 			resultData.add(attrMap);
 		}
 		return resultData;

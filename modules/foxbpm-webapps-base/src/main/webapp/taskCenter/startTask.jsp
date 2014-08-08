@@ -17,12 +17,28 @@
 <link rel="stylesheet" type="text/css" href="common/css/reset.css">
 <script type="text/javascript" src="common/js/jquery.js"></script>
 <script type="text/javascript" src="common/js/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="common/js/flowcommand.js"></script>
-<script type="text/javascript" src="common/js/flowautoassemble.js"></script>
+<script type="text/javascript" src="common/js/flowCommandBase.js"></script>
+<script type="text/javascript" src="common/js/compenents/flowCommandHandler.js"></script>
+
 <script type="text/javascript">
 	var message = '${errorMsg}';
 	if (message != '') {
 		alert(message);
+	}
+	
+	function flowCommit(){
+		alert($("#flowInfo").val());
+		var form = $("#form1");
+		form.submit();
+	}
+	
+	function getBizKey(){
+		var bizKey = $("#businessKey").val();
+		return bizKey;
+	}
+	
+	function getTaskComment(){
+		return $("#_taskComment").val();
 	}
 </script>
 
@@ -36,7 +52,7 @@
 			<table class="table-form">
 				<tr>
 					<td class="title-r">流程关联键：</td>
-					<td><input type="text" name="businessKey"
+					<td><input type="text" name="businessKey" id="businessKey"
 						value="${result.demoObject.bKey}" /></td>
 				</tr>
 				<tr>
@@ -46,25 +62,10 @@
 				</tr>
 				<tr>
 					<td class="title-r">审批意见：</td>
-					<td><textarea rows="3" cols="20" name="_taskComment"></textarea></td>
+					<td><textarea rows="3" cols="20" name="_taskComment" id="_taskComment"></textarea></td>
 				</tr>
 			</table>
-			<div class="toolbar">
-				<c:forEach items="${result.commandList}" var="row"
-					varStatus="status">
-					<div class="btn-normal" id="btn_${status.index+1}"
-						commandId="${row.id}" commandName="${row.name}"
-						commandType="${row.type}" isAdmin="${row.isAdmin}"
-						isVerification="${row.isVerification}"
-						isSaveData="${row.isSaveData}"
-						isSimulationRun="${row.isSimulationRun}" nodeId="${row.nodeId}"
-						nodeName="${row.nodeName}">
-						<a>${row.name}</a>
-					</div>
-				</c:forEach>
-			</div>
-			<!-- 首次启动 -->
-			<input type="hidden" name="taskStauts" id="taskStauts" value="0" />
+			<div class="toolbar" id="toolbar"> </div>
 		</form>
 	</div>
 </body>

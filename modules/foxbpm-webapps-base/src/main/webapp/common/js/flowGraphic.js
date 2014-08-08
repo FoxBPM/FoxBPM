@@ -122,7 +122,7 @@ function FlowGraphic(param) {
 		for ( var nodeInfo in nodeInfoArr) {
 			var nodeInfoObj = nodeInfoArr[nodeInfo];
 			divcontent = divcontent
-					+ getDiv(nodeInfo, nodeInfoObj.x - 4 + 21, nodeInfoObj.y - 4,
+					+ getDiv(nodeInfo, nodeInfoObj.x - 4, nodeInfoObj.y - 4,
 							nodeInfoObj.width + 4, nodeInfoObj.height + 4);
 		}
 		$('#' + this.parentId).append(divcontent);

@@ -112,23 +112,42 @@
 				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
 
-
-
-
-
-
 		<taskCommandDefinition id="rollBack_previousStep"
 			name="退回-上一步"
 			command="org.foxbpm.engine.impl.task.command.RollBackPreviousStepCommand"
 			cmd="org.foxbpm.engine.impl.task.cmd.RollBackPreviousStepCmd"
 			isEnabled="true" type="toDoTasks"
 			filter="org.foxbpm.engine.impl.task.filter.RollBackPreviousStepFilter"
-			description="自动计算并退回到流程的上一步骤,任务处理者为上一步骤的处理者。" />
-		<!-- <taskCommandDefinition id="rollBack_assignee" name="退回-处理者" command="org.foxbpm.engine.impl.task.command.RollBackTaskAssigneeCommand" 
-			cmd="org.foxbpm.engine.impl.task.cmd.RollBackTaskAssigneeCmd" isEnabled="true" 
-			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.RollBackTaskAssigneeFilter" 
-			description="退回到前台用户指定的节点和处理者。" /> <taskCommandDefinition id="rollBack_designation_reset" 
-			name="退回-后台指定步骤-重新分配" command="org.foxbpm.engine.impl.task.command.RollBackTaskDesignationResetCommand" 
+			description="自动计算并退回到流程的上一步骤,任务处理者为上一步骤的处理者。">
+			<commandParam key="rollBackNodeId" name="退回的节点号" value="true"
+				description="" dataType="String" bizType="InputParam" />
+			<commandParam key="rollBackNodeId" name="退回的节点号" value="true"
+				description="" dataType="String" bizType="InputParam" />
+			<commandParam key="isSaveData" name="是否保存数据" value="true"
+				description="" dataType="String" bizType="ControlParam" />
+			<commandParam key="isVerification" name="是否触发验证" value="true"
+				description="" dataType="String" bizType="ControlParam" />
+		</taskCommandDefinition>
+
+		<taskCommandDefinition id="rollBack_assignee"
+			name="退回-指定处理者"
+			command="org.foxbpm.engine.impl.task.command.RollBackAssigneeCommand"
+			cmd="org.foxbpm.engine.impl.task.cmd.RollBackAssigneeCmd"
+			isEnabled="true" type="toDoTasks"
+			filter="org.foxbpm.engine.impl.task.filter.RollBackAssigneeFilter"
+			description="退回到前台用户指定的节点和处理者。">
+			<commandParam key="rollBackNodeId" name="退回的节点号" value="true"
+				description="" dataType="String" bizType="InputParam" />
+			<commandParam key="rollBackAssignee" name="退回的指定处理者"
+				value="true" description="" dataType="String" bizType="InputParam" />
+			<commandParam key="isSaveData" name="是否保存数据" value="true"
+				description="" dataType="String" bizType="ControlParam" />
+			<commandParam key="isVerification" name="是否触发验证" value="true"
+				description="" dataType="String" bizType="ControlParam" />
+		</taskCommandDefinition>
+
+		<!-- <taskCommandDefinition id="rollBack_designation_reset" name="退回-后台指定步骤-重新分配" 
+			command="org.foxbpm.engine.impl.task.command.RollBackTaskDesignationResetCommand" 
 			cmd="org.foxbpm.engine.impl.task.cmd.RollBackTaskDesignationResetCmd" isEnabled="true" 
 			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.RollBackTaskDesignationResetFilter" 
 			description="在后台设计器端指定一个节点,用户点击了之后退回这个事先设置好的节点,任务会重新进行分配。" /> <taskCommandDefinition 

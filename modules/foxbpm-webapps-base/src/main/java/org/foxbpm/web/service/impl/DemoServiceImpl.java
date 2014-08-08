@@ -86,7 +86,12 @@ public class DemoServiceImpl implements IDemoService {
 			tDemo.setInfor(infor);
 			idemoDao.saveDemoData(tDemo);
 		}
-		return workFlowService.completeTask(params);
+		
+		String flowInfo = StringUtil.getString(params.get("flowInfo"));
+		if(StringUtil.isNotEmpty(flowInfo)){
+			 workFlowService.completeTask(flowInfo);
+		}
+		return null;
 
 	}
 }

@@ -159,7 +159,6 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		
 		// 判断事都是并行多实例
 		if (loopCharacteristics instanceof MultiInstanceLoopCharacteristics) {
-
 			
 			MultiInstanceLoopCharacteristics milc = (MultiInstanceLoopCharacteristics) loopCharacteristics;
 			
@@ -518,11 +517,9 @@ public class ActivityBehavior extends FlowNodeBehavior {
 	public void cleanData(FlowNodeExecutionContext executionContext) {
 		try {
 			/** 如果存在边界事件时间定义，那么当前令牌肯定存在父令牌 */
-			if (executionContext.getParent() != null) {
-				FoxbpmScheduler foxbpmScheduler = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getFoxbpmScheduler();
-				String groupName = new FoxbpmSchedulerGroupnameGernerater(executionContext).gernerateBoundaryNodeGroupName();
-				foxbpmScheduler.deleteJobsByGroupName(groupName);
-			}
+			FoxbpmScheduler foxbpmScheduler = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getFoxbpmScheduler();
+			String groupName = new FoxbpmSchedulerGroupnameGernerater(executionContext).gernerateDefinitionGroupName();
+			foxbpmScheduler.deleteJobsByGroupName(groupName);
 		} catch (SchedulerException e) {
 			throw new FoxBPMException("Activity 离开时清空 节点调度器报错", e);
 		}

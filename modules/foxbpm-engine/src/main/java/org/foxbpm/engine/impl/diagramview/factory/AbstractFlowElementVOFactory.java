@@ -88,6 +88,10 @@ public abstract class AbstractFlowElementVOFactory {
 	 */
 	public VONode createFlowElementSVGVO(String svgType) {
 		VONode voNode = this.createSVGVO();
+		if (kernelBaseElement instanceof KernelSequenceFlowImpl) {
+			// 连接线
+			this.filterChildVO(voNode, null);
+		}
 		FoxBpmnViewBuilder svgBuilder = AbstractSVGBuilder.createSVGBuilder(voNode, svgType);
 		
 		SvgElementBuildDistincter svgElementBuildDistincter = new SvgElementBuildDistincter();
