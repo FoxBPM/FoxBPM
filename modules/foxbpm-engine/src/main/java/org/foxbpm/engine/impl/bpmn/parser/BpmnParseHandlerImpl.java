@@ -296,9 +296,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 						} else {
 							// 注册节点监听
 							List<KernelFlowNodeImpl> flowNodes = processEntity.getFlowNodes();
-							for (KernelFlowNodeImpl kernelFlowNodeImpl : flowNodes) {
-								kernelFlowNodeImpl.addKernelListener(eventListener.getEventType(), foxbpmEventListener);
-							}
+							this.registerFlowNodeListener(flowNodes, eventListener, foxbpmEventListener);
 						}
 						
 					}
@@ -309,6 +307,29 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			}
 		}
 		
+	}
+	
+	/**
+	 * 
+	 * 子流程节点加载轨迹监听器
+	 * 
+	 * @param flowNodes
+	 * @param eventListener
+	 * @param foxbpmEventListener
+	 *            void
+	 * @exception
+	 * @since 1.0.0
+	 */
+	private void registerFlowNodeListener(List<KernelFlowNodeImpl> flowNodes,
+	    EventListener eventListener, KernelListener foxbpmEventListener) {
+		for (KernelFlowNodeImpl kernelFlowNodeImpl : flowNodes) {
+			kernelFlowNodeImpl.addKernelListener(eventListener.getEventType(), foxbpmEventListener);
+			
+			List<KernelFlowNodeImpl> subFlowNodes = kernelFlowNodeImpl.getFlowNodes();
+			if (subFlowNodes != null && subFlowNodes.size() > 0) {
+				registerFlowNodeListener(subFlowNodes, eventListener, foxbpmEventListener);
+			}
+		}
 	}
 	
 	private void loadLane(KernelLaneSet kernelLaneSet, LaneSet laneSet,
