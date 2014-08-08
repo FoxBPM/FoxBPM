@@ -40,6 +40,22 @@ public class PathVO extends NamespaceAttributesVO {
 	private String d;
 	@XmlAttribute(name = "marker-start")
 	private String markerStart;
+	public String getMarkerStart() {
+		return markerStart;
+	}
+
+	public void setMarkerStart(String markerStart) {
+		this.markerStart = markerStart;
+	}
+
+	public String getMarkerEnd() {
+		return markerEnd;
+	}
+
+	public void setMarkerEnd(String markerEnd) {
+		this.markerEnd = markerEnd;
+	}
+
 	@XmlAttribute(name = "marker-end")
 	private String markerEnd;
 	@XmlAttribute(name = "stroke-dasharray")

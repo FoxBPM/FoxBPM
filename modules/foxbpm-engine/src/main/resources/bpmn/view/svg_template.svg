@@ -4,6 +4,13 @@
    version="1.0"
    id="SVG_CONTAINER">
   <g id="parent_g">
-  	
+  		<defs>
+		  	<marker id="start" refX="1" refY="5" markerUnits="userSpaceOnUse" markerWidth="17" markerHeight="11" orient="auto"> 
+		  		<path id="conditional"   d="M 0 6 L 8 1 L 15 5 L 8 9 L 1 5" fill="white" stroke="#808080" stroke-width="1" />
+		    </marker>
+		  	<marker id="end" refX="15" refY="6" markerUnits="userSpaceOnUse" markerWidth="15" markerHeight="12" orient="auto">
+		  		<path id="arrowhead" d="M 0 1 L 15 6 L 0 11z" fill="#808080" stroke="#808080" stroke-linejoin="round" stroke-width="2" />
+		  	</marker>
+		</defs>
   </g>
 </svg>
