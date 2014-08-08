@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentEntity;
 import org.foxbpm.engine.impl.db.Page;
@@ -327,53 +329,54 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 	}
 	
 	@Override
-	public ProcessInstance completeTask(Map<String, Object> params) {
+	public ProcessInstance completeTask(String flowInfo) {
 		
-		String taskId = StringUtil.getString(params.get("taskId"));
-		String commandType = StringUtil.getString(params.get("commandType"));
-		String commandId = StringUtil.getString(params.get("commandId"));
-		String processDefinitionKey = StringUtil.getString(params.get("processDefinitionKey"));
-		String businessKey = StringUtil.getString(params.get("businessKey"));
-		String taskComment = StringUtil.getString(params.get("_taskComment"));
-		String userId = StringUtil.getString(params.get("userId"));
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode params = null;
+		try {
+			params = objectMapper.readTree(flowInfo);
+		} catch (Exception e) {
+			throw new FoxbpmWebException("任务命令参数格式不正确","",e);
+		}
+		JsonNode taskIdNode = params.get("taskId");
+		JsonNode commandIdNode = params.get("commandId");
+		JsonNode processDefinitionKeyNode = params.get("processDefinitionKey");
+		JsonNode businessKeyNode = params.get("bizKey");
+		JsonNode taskCommentNode = params.get("taskComment");
 		// 参数校验
+		
 		// 命令类型
-		if (StringUtil.isEmpty(commandType)) {
+		JsonNode commandTypeNode = params.get("commandType");
+		if (commandTypeNode == null) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_COMMANDTYPE, "commandType is null !");
 		}
 		// 命令Id
-		if (StringUtil.isEmpty(commandId)) {
+		if (commandIdNode == null) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_COMMANDID, "commandId is null !");
-		}
-		// 流程实例Key
-		if (StringUtil.isEmpty(processDefinitionKey)) {
-			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_PROCESSDEFKEY, "processDefinitionKey is null !");
-		}
-		// 业务key
-		if (StringUtil.isEmpty(businessKey)) {
-			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_BUSINESSKEY, "businessKey is null !");
-		}
-		// 用户Id
-		if (StringUtil.isEmpty(userId)) {
-			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_USERID, "userId is null !");
-		}
-		if (StringUtil.isEmpty(taskComment)) {
-			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_TASKCOMMENT, "taskComment is null !");
 		}
 		
 		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
-		// 命令类型，可以从流程引擎配置中查询 启动并提交为startandsubmit
-		expandTaskCommand.setCommandType(commandType);
-		expandTaskCommand.setInitiator(userId);
+		expandTaskCommand.setCommandType(commandTypeNode.getTextValue());
 		// 设置命令的id,需和节点上配置的按钮编号对应，会执行按钮中的脚本。
-		expandTaskCommand.setTaskCommandId(commandId);
-		expandTaskCommand.setTaskComment(taskComment);
+		expandTaskCommand.setTaskCommandId(commandIdNode.getTextValue());
+		if(taskCommentNode != null){
+			expandTaskCommand.setTaskComment(taskCommentNode.getTextValue());
+		}
+		
 		ProcessInstance processInstance = null;
-		if (StringUtil.isNotEmpty(taskId)) {
-			expandTaskCommand.setTaskId(taskId);
+		if (taskIdNode != null && StringUtil.isNotEmpty(taskIdNode.getTextValue())) {
+			expandTaskCommand.setTaskId(taskIdNode.getTextValue());
 		} else {
-			expandTaskCommand.setBusinessKey(businessKey);
-			expandTaskCommand.setProcessDefinitionKey(processDefinitionKey);
+			String userId = Authentication.getAuthenticatedUserId();
+			expandTaskCommand.setInitiator(userId);
+			if(businessKeyNode == null){
+				throw new FoxbpmWebException("启动流程时关联键不能为null","");
+			}
+			if(processDefinitionKeyNode == null){
+				throw new FoxbpmWebException("启动流程时流程Key不能为null","");
+			}
+			expandTaskCommand.setBusinessKey(businessKeyNode.getTextValue());
+			expandTaskCommand.setProcessDefinitionKey(processDefinitionKeyNode.getTextValue());
 		}
 		processInstance = taskService.expandTaskComplete(expandTaskCommand, null);
 		return processInstance;
