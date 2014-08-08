@@ -102,8 +102,7 @@ public interface IWorkFlowService {
 	/**
 	 * 完成任务
 	 * 
-	 * @param params
-	 *            任务执行命令
+	 * @param params 任务执行命令,前端传过来的json字符串
 	 * @return 返回任务执行结果
 	 */
 	ProcessInstance completeTask(String params);

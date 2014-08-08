@@ -44,6 +44,9 @@ public class FindUserByIdNoCacheCmd implements Command<User>{
 	@Override
 	public UserEntity execute(CommandContext commandContext) {
 		UserEntity user = commandContext.getUserEntityManager().findUserById(userId);
+		if(user == null){
+			return null;
+		}
 		//处理组织机构
 		List<GroupDefinition> groupDefinitions = commandContext.getProcessEngineConfigurationImpl().getGroupDefinitions();
 		List<Group> tmpGroups = null;
