@@ -17,7 +17,6 @@
  */
 package org.foxbpm.engine.impl.diagramview.svg.builder;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -27,7 +26,6 @@ import org.foxbpm.engine.impl.diagramview.svg.PointUtils;
 import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
 import org.foxbpm.engine.impl.diagramview.svg.vo.PathVO;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
-import org.foxbpm.engine.impl.util.StringUtil;
 
 /**
  * 默认线条式样构造
@@ -43,23 +41,11 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 	
 	private static final String D_SPACE = " ";
 	private PathVO pathVo;
-	private PathVO markerPathVo;
-	private PathVO startPathVo;
 	public ConnectorSVGBuilder(SvgVO svgVo) {
 		super(svgVo);
 		this.textVO = svgVo.getgVo().getgVoList().get(0).getTextVo();
 		this.pathVo = SVGUtils.getSequenceVOFromSvgVO(svgVo);
-		this.markerPathVo = SVGUtils.getSequenceMarkerVOFromSvgVO(svgVo);
 		
-		List<PathVO> pathVOList = svgVo.getgVo().getgVoList().get(0).getPathVoList();
-		Iterator<PathVO> iterator = pathVOList.iterator();
-		while (iterator.hasNext()) {
-			PathVO tempPathVo = iterator.next();
-			if (StringUtil.equals(tempPathVo.getId(), "start")) {
-				startPathVo = tempPathVo;
-				break;
-			}
-		}
 		if (pathVo == null) {
 			throw new FoxBPMException("线条元素初始化工厂时候报错，pathVo对象为空");
 		}
@@ -75,17 +61,10 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 		}
 		StringBuffer pathBuffer = new StringBuffer();
 		pathBuffer.append(MOVETO_FLAG);
-		// 添加有条件的线条
-		if (this.startPathVo != null) {
-			StringBuffer startPathBuffer = new StringBuffer();
-			startPathBuffer.append(MOVETO_FLAG).append(String.valueOf(pointList.get(0).getX())).append(D_SPACE).append(String.valueOf(pointList.get(0).getY() + 1)).append(LINETO_FLAG).append(String.valueOf(pointList.get(0).getX() + 8)).append(D_SPACE).append(String.valueOf(pointList.get(0).getY() - 4)).append(LINETO_FLAG).append(String.valueOf(pointList.get(0).getX() + 15)).append(D_SPACE).append(String.valueOf(pointList.get(0).getY())).append(LINETO_FLAG).append(String.valueOf(pointList.get(0).getX() + 8)).append(D_SPACE).append(String.valueOf(pointList.get(0).getY() + 4)).append(LINETO_FLAG).append(String.valueOf(pointList.get(0).getX() + 1)).append(D_SPACE).append(String.valueOf(pointList.get(0).getY()));
-			startPathVo.setD(startPathBuffer.toString());
-			pathBuffer.append(String.valueOf(pointList.get(0).getX() + 15));
-		} else {
-			pathBuffer.append(String.valueOf(pointList.get(0).getX()));
-		}
-		
-		pathBuffer.append(D_SPACE).append(String.valueOf(pointList.get(0).getY()));
+		float firstPointX = pointList.get(0).getX();
+		float firstPointY = pointList.get(0).getY();
+		pathBuffer.append(String.valueOf(firstPointX));
+		pathBuffer.append(D_SPACE).append(String.valueOf(firstPointY));
 		int size = pointList.size();
 		Point point = null;
 		Point startPoint = null;
@@ -127,17 +106,9 @@ public class ConnectorSVGBuilder extends AbstractSVGBuilder {
 	public void setStroke(String stroke) {
 		if (StringUtils.isBlank(stroke)) {
 			this.pathVo.setStroke(STROKE_DEFAULT);
-			this.markerPathVo.setStroke(STROKE_DEFAULT);
-			this.markerPathVo.setFill(STROKE_DEFAULT);
 			return;
 		}
 		this.pathVo.setStroke(COLOR_FLAG + stroke);
-		this.markerPathVo.setStroke(COLOR_FLAG + stroke);
-		this.markerPathVo.setFill(COLOR_FLAG + stroke);
-		if (startPathVo != null) {
-			startPathVo.setStroke(COLOR_FLAG + stroke);
-		}
-		
 	}
 	
 	@Override

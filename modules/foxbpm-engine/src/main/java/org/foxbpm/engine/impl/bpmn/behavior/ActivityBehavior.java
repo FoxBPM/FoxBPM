@@ -516,9 +516,16 @@ public class ActivityBehavior extends FlowNodeBehavior {
 	@Override
 	public void cleanData(FlowNodeExecutionContext executionContext) {
 		try {
-			/** 如果存在边界事件时间定义，那么当前令牌肯定存在父令牌 */
 			FoxbpmScheduler foxbpmScheduler = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getFoxbpmScheduler();
-			String groupName = new FoxbpmSchedulerGroupnameGernerater(executionContext).gernerateDefinitionGroupName();
+			String groupName = null;
+			/** 如果存在边界事件时间定义，那么当前令牌肯定存在父令牌 */
+			if (executionContext.getParent() != null) {
+				groupName = new FoxbpmSchedulerGroupnameGernerater(executionContext.getParent()).gernerateDefinitionGroupName();
+				
+			} else {
+				groupName = new FoxbpmSchedulerGroupnameGernerater(executionContext).gernerateDefinitionGroupName();
+				
+			}
 			foxbpmScheduler.deleteJobsByGroupName(groupName);
 		} catch (SchedulerException e) {
 			throw new FoxBPMException("Activity 离开时清空 节点调度器报错", e);

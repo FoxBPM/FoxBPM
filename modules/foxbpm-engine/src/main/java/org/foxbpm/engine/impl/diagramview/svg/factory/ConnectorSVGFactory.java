@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.foxbpm.engine.expression.Expression;
-import org.foxbpm.engine.impl.bpmn.behavior.ParallelGatewayBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.GatewayBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.SequenceFlowBehavior;
 import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
 import org.foxbpm.engine.impl.diagramview.svg.vo.GVO;
@@ -75,18 +75,17 @@ public class ConnectorSVGFactory extends AbstractFlowElementSVGFactory {
 		
 		SequenceFlowBehavior sequenceFlowBehavior = (SequenceFlowBehavior) kernelSequenceFlowImpl.getSequenceFlowBehavior();
 		Expression conditionExpression = sequenceFlowBehavior.getConditionExpression();
-		if (conditionExpression == null
-		        || StringUtil.isBlank(conditionExpression.getExpressionText())
-		        || sourceRefBehavior instanceof ParallelGatewayBehavior) {
+		if (conditionExpression != null
+		        & StringUtil.isNotBlank(conditionExpression.getExpressionText())
+		        && !(sourceRefBehavior instanceof GatewayBehavior)) {
 			SvgVO connectorVO = (SvgVO) voNode;
 			PathVO pathVo = null;
 			List<PathVO> pathVOList = connectorVO.getgVo().getgVoList().get(0).getPathVoList();
 			Iterator<PathVO> iterator = pathVOList.iterator();
 			while (iterator.hasNext()) {
 				pathVo = iterator.next();
-				if (StringUtil.equals(pathVo.getId(), "start")) {
-					iterator.remove();
-					break;
+				if (StringUtil.equals(pathVo.getId(), "bg_frame")) {
+					pathVo.setMarkerStart("url(#start)");
 				}
 			}
 			
