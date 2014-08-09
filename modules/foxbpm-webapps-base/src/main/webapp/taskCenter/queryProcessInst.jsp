@@ -169,7 +169,7 @@
 								</c:if>
 
 								<th width="130">${applicationScope.appInfo["task.startTime"]}</th>
-								<th width="130">${applicationScope.appInfo["task.updateTime"]}</th>
+								<th width="130">${applicationScope.appInfo["task.endTime"]}</th>
 								<th>${applicationScope.appInfo["task.nodeName"]}</th>
 								<th>${applicationScope.appInfo["task.status"]}</th>
 								<th>${applicationScope.appInfo["common.operation"]}</th>
@@ -187,7 +187,7 @@
 										</c:if>
 										<td><fmt:formatDate value="${dataList.startTime}"
 												type="both" /></td>
-										<td><fmt:formatDate value="${dataList.updateTime}"
+										<td><fmt:formatDate value="${dataList.endTime}"
 												type="both" /></td>
 										<td>${dataList.nowNodeInfo}</td>
 										<td><c:if test="${dataList.instanceStatus == 'suspend'}"
