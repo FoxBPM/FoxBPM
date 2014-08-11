@@ -23,14 +23,14 @@
 <script type="text/javascript" >
 $(document).ready(function() {
 	var _getBizKey = function() {
-        alert(222);
+        return $("#businessKey").val();
     };
     var _getTaskComment = function() {
-        alert(333);
+       	return $("#_taskComment").val();
     };
     
     var _flowCommit = function(){
-    	$("form1").submit();
+    	$("#form1").submit();
     };
 	var flowconfig ={ getBizKey: _getBizKey, getTaskComment: _getTaskComment,flowCommit:_flowCommit };
 	
@@ -64,6 +64,7 @@ $(document).ready(function() {
 							id="_taskComment"></textarea></td>
 				</tr>
 			</table>
+			<input type="hidden" name="taskStauts" id="taskStauts" value="0" />
 			<div class="toolbar" id="toolbar"></div>
 		</form>
 	</div>
