@@ -9,6 +9,7 @@ import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.ClockUtil;
 
 public abstract class NeedsActiveTaskCmd<T> implements Command<T>, Serializable {
 
@@ -36,7 +37,8 @@ public abstract class NeedsActiveTaskCmd<T> implements Command<T>, Serializable 
 		if (task.isSuspended()) {
 			throw new FoxBPMBizException("task is suspended");
 		}
-
+		//增加流程修改时间
+		task.getProcessInstance().setUpdateTime(ClockUtil.getCurrentTime());
 		return execute(commandContext, task);
 	}
 

@@ -33,6 +33,7 @@ import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.task.command.AbstractCustomExpandTaskCommand;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
+import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
@@ -126,7 +127,8 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 		if (task.hasEnded()) {
 			throw new FoxBPMException("task is end");
 		}
-
+		//增加流程更新时间功能，by ych 
+		task.getProcessInstance().setUpdateTime(ClockUtil.getCurrentTime());
 		return execute(commandContext, task);
 	}
 
