@@ -259,7 +259,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			taskQuery.businessKeyLike(assembleLikeParam(businessKey));
 		}
 		if (StringUtil.isNotEmpty(title)) {
-			taskQuery.taskDescriptionLike(assembleLikeParam(title));
+			taskQuery.taskSubjectLike(assembleLikeParam(title));
 		}
 		// 时间处理
 		Date dates = null;

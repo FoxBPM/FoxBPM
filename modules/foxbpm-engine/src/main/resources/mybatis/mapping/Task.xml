@@ -239,6 +239,13 @@
         and DESCRIPTION like #{descriptionLike}
       </if>
      
+     <if test="subject != null" >xx
+        and SUBJECT = #{subject}
+      </if>
+      <if test="subjectLike != null" >
+        and SUBJECT like #{subjectLike}
+      </if>
+     
       <if test="initiator != null" >
         and P.INITIATOR = #{initiator}
       </if>
