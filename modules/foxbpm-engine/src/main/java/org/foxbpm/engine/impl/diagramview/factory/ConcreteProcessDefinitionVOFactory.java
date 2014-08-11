@@ -27,6 +27,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.bpmn.behavior.ActivityBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.AssociationBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.BoundaryEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.BusinessRuleTaskBehavior;
@@ -39,7 +40,9 @@ import org.foxbpm.engine.impl.bpmn.behavior.GatewayBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.GroupBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.InclusiveGatewayBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.IntermediateCatchEventBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.LoopCharacteristics;
 import org.foxbpm.engine.impl.bpmn.behavior.ManualTaskBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.MultiInstanceLoopCharacteristics;
 import org.foxbpm.engine.impl.bpmn.behavior.ParallelGatewayBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ReceiveTaskBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ScriptTaskBehavior;
@@ -103,7 +106,7 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 	private static Map<Class<?>, String[]> initSvgTypeMap() {
 		Map<Class<?>, String[]> svgTypeMap = new HashMap<Class<?>, String[]>();
 		svgTypeMap.put(TaskBehavior.class, new String[]{SVGTypeNameConstant.SVG_TYPE_TASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
-
+		
 		svgTypeMap.put(UserTaskBehavior.class, new String[]{SVGTypeNameConstant.ACTIVITY_USERTASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
 		svgTypeMap.put(SendTaskBehavior.class, new String[]{SVGTypeNameConstant.ACTIVITY_SENDTASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
 		svgTypeMap.put(ServiceTaskBehavior.class, new String[]{SVGTypeNameConstant.ACTIVITY_SERVICETASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
@@ -309,12 +312,24 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 		String taskType = EMPTY_STRING;
 		String svgTemplateFileName = EMPTY_STRING;
 		// 活动任务，先判断父类以减少判断次数，提高效率
+		
 		if (kernelFlowNodeBehavior instanceof TaskBehavior
 		        || kernelFlowNodeBehavior instanceof GatewayBehavior
 		        || kernelFlowNodeBehavior instanceof CallActivityBehavior) {
 			String[] temp = svgTypeMap.get(kernelFlowNodeBehavior.getClass());
 			taskType = temp[0];
 			svgTemplateFileName = temp[1];
+			// 判断多实例，暂时只添加活动节点
+			if (kernelFlowNodeBehavior instanceof ActivityBehavior) {
+				ActivityBehavior activityBehavior = (ActivityBehavior) kernelFlowNodeBehavior;
+				LoopCharacteristics loopCharacteristics = activityBehavior.getLoopCharacteristics();
+				if (loopCharacteristics != null
+				        && loopCharacteristics instanceof MultiInstanceLoopCharacteristics) {
+					temp = svgTypeMap.get(kernelFlowNodeBehavior.getClass());
+					taskType = temp[0] + "/sequential";
+					svgTemplateFileName = temp[1];
+				}
+			}
 		} else if (kernelFlowNodeBehavior instanceof SubProcessBehavior) {
 			// 子流程
 			taskType = SVGTypeNameConstant.SVG_TYPE_SUBPROCESS;
@@ -360,7 +375,6 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 		
 		return new String[]{taskType, svgTemplateFileName};
 	}
-	
 	/**
 	 * 
 	 * hasTerminateDefinition(判断是否有终止定义)

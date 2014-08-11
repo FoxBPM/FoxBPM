@@ -45,6 +45,7 @@ public class SVGTypeNameConstant {
 
 	// 活动
 	public static final String SVG_TYPE_TASK = "Task";
+	public static final String SVG_TYPE_TASK_SEQUENTIAL = "Task/sequential";
 	public static final String ACTIVITY_MANUALTASK = "manualTask";
 	public static final String ACTIVITY_MANUALTASK_LOOP = "manualTask/loop";
 	public static final String ACTIVITY_MANUALTASK_PARALLEL = "manualTask/parallel";

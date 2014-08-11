@@ -78,6 +78,22 @@ public final class SVGUtils {
 	}
 	
 	/**
+	 * 获取任务矩形
+	 * 
+	 * @param svgVo
+	 * @return
+	 */
+	public final static PathVO getSequentialVOFromSvgVO(SvgVO svgVo) {
+		List<GVO> gVoList = svgVo.getgVo().getgVoList();
+		for (GVO gvo : gVoList) {
+			if (StringUtil.equals(gvo.getId(), "sequential")) {
+				return gvo.getPathVoList().get(0);
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * 获取事件圆形
 	 * 
 	 * @param svgVo
