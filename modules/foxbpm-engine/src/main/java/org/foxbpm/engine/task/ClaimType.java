@@ -25,9 +25,9 @@ package org.foxbpm.engine.task;
 public class ClaimType {
 	
 	/** 默认领取方式读取系统配置 */
-	public static String DEFAULT_CLAIM="defaultClaim";
+	public static String DEFAULT_CLAIM="defaultclaim";
 	/** 自动领取 */
-	public static String AUTO_CLAIM="autoClaim";
+	public static String AUTO_CLAIM="autoclaim";
 	/** 手动领取 */
-	public static String MANUAL_CLAIM="manualClaim";
+	public static String MANUAL_CLAIM="manualclaim";
 }
