@@ -103,6 +103,16 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 		tempSvgBuildMap.put(SVGTypeNameConstant.ACTIVITY_RECEIVETASK, TaskSVGBuilder.class);
 		tempSvgBuildMap.put(SVGTypeNameConstant.ACTIVITY_SCRIPTTASK, TaskSVGBuilder.class);
 		
+		tempSvgBuildMap.put(SVGTypeNameConstant.SVG_TYPE_TASK_SEQUENTIAL, TaskSVGBuilder.class);
+		
+		tempSvgBuildMap.put(SVGTypeNameConstant.ACTIVITY_SERVICETASK_SEQUENTIAL, ServiceTaskSVGBuilder.class);
+		tempSvgBuildMap.put(SVGTypeNameConstant.ACTIVITY_USERTASK_SEQUENTIAL, TaskSVGBuilder.class);
+		tempSvgBuildMap.put(SVGTypeNameConstant.ACTIVITY_SENDTASK_SEQUENTIAL, TaskSVGBuilder.class);
+		tempSvgBuildMap.put(SVGTypeNameConstant.ACTIVITY_MANUALTASK_SEQUENTIAL, TaskSVGBuilder.class);
+		tempSvgBuildMap.put(SVGTypeNameConstant.ACTIVITY_BUSINESSRULETASK_SEQUENTIAL, TaskSVGBuilder.class);
+		tempSvgBuildMap.put(SVGTypeNameConstant.ACTIVITY_RECEIVETASK_SEQUENTIAL, TaskSVGBuilder.class);
+		tempSvgBuildMap.put(SVGTypeNameConstant.ACTIVITY_SCRIPTTASK_SEQUENTIAL, TaskSVGBuilder.class);
+		
 		tempSvgBuildMap.put(SVGTypeNameConstant.SVG_TYPE_CONNECTOR, ConnectorSVGBuilder.class);
 		tempSvgBuildMap.put(SVGTypeNameConstant.SVT_TYPE_GATEWAY, GatewaySVGBuilder.class);
 		tempSvgBuildMap.put(SVGTypeNameConstant.SVG_TYPE_LANE, LanesetSVGBuilder.class);
