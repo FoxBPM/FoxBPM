@@ -114,8 +114,8 @@ public class ParallelGatewayBehavior extends GatewayBehavior {
 	 * @since 1.0.0
 	 */
 	private void driveToken(KernelTokenImpl token, KernelTokenImpl parentToken) {
-		for (KernelToken cToken : token.getChildren()) {
-			((KernelTokenImpl) cToken).end(false);
+		for (KernelToken cToken : parentToken.getChildren()) {
+			((KernelTokenImpl) cToken).end();
 		}
 		parentToken.setFlowNode((KernelFlowNodeImpl) token.getFlowNode());
 		parentToken.signal();
