@@ -1,170 +1,231 @@
 <?xml version="1.0" encoding="UTF-8" ?> 
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">
 
-	<resultMap id="processResultMap" type="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">
-	    <id column="ID" jdbcType="VARCHAR" property="id" />
-	    <result column="PROCESSDEFINITION_ID" jdbcType="VARCHAR" property="processDefinitionId" />
-	    <result column="PROCESSDEFINITION_KEY" jdbcType="VARCHAR" property="processDefinitionKey" />
-	    <result column="SUBJECT" jdbcType="VARCHAR" property="subject" />
-	    <result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
-	    <result column="END_TIME" jdbcType="TIMESTAMP" property="endTime" />
-	    <result column="DEFINITION_ID" jdbcType="VARCHAR" property="definitionId" />
-	    <result column="ROOTTOKEN_ID" jdbcType="VARCHAR" property="rootTokenId" />
-	    <result column="BIZ_KEY" jdbcType="VARCHAR" property="bizKey" />
-	    <result column="INITIATOR" jdbcType="VARCHAR" property="initiator" />
-	    <result column="START_AUTHOR" jdbcType="VARCHAR" property="startAuthor" />
-	    <result column="ISSUSPENDED" jdbcType="VARCHAR" property="isSuspended" />
-	    <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
-	    <result column="PARENT_TOKEN_ID" jdbcType="VARCHAR" property="parentTokenId" />
-	    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
-	    <result column="PROCESSLOCATION" jdbcType="VARCHAR" property="processLocation" />
-	    <result column="INSTANCE_STATUS" jdbcType="VARCHAR" property="instanceStatus" />
-	    <result column="ARCHIVE_TIME" jdbcType="TIMESTAMP" property="archiveTime" />
-	  </resultMap>
-	  
-   	<insert id="insertProcessInstance" parameterType="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">
-	    insert into foxbpm_run_processinstance (ID, PROCESSDEFINITION_ID, PROCESSDEFINITION_KEY, 
-	      SUBJECT, START_TIME, END_TIME, 
-	      DEFINITION_ID, ROOTTOKEN_ID, BIZ_KEY, 
-	      INITIATOR, START_AUTHOR, ISSUSPENDED, 
-	      PARENT_ID, PARENT_TOKEN_ID, UPDATE_TIME, 
-	      PROCESSLOCATION, INSTANCE_STATUS, ARCHIVE_TIME
-	      )
-	    values (#{id,jdbcType=VARCHAR}, #{processDefinitionId,jdbcType=VARCHAR}, #{processDefinitionKey,jdbcType=VARCHAR}, 
-	      #{subject,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
-	      #{definitionId,jdbcType=VARCHAR}, #{rootTokenId,jdbcType=VARCHAR}, #{bizKey,jdbcType=VARCHAR}, 
-	      #{initiator,jdbcType=VARCHAR}, #{startAuthor,jdbcType=VARCHAR}, #{isSuspended,jdbcType=VARCHAR}, 
-	      #{parentId,jdbcType=VARCHAR}, #{parentTokenId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
-	      #{processLocation,jdbcType=VARCHAR}, #{instanceStatus,jdbcType=VARCHAR}, #{archiveTime,jdbcType=TIMESTAMP}
-	      )
-  	</insert>
-  	
-  	 <select id="selectProcessInstanceById" parameterType="java.lang.String" resultMap="processResultMap">
-	    select 
-	    <include refid="processColumnList" />
-	    from foxbpm_run_processinstance
-	    where ID = #{id,jdbcType=VARCHAR}
-  	</select>
-  	
-  	
-  	 <select id="selectProcessInstanceIdsByProcessDefinitionId" parameterType="java.lang.String" resultType="string">
-	    select 
-	    ID
-	    from foxbpm_run_processinstance
-	    where PROCESSDEFINITION_ID = #{id,jdbcType=VARCHAR}
-  	</select>
-  	
-  	
-  	
-  	
-  	<select id="selectProcessInstanceByQueryCriteria" parameterType="org.foxbpm.engine.impl.runtime.ProcessInstanceQueryImpl" resultMap="processResultMap">
-  	${limitBefore}
-    select RES.* ${limitBetween}
-    <include refid="selectProcessInstancesByQueryCriteriaSql"/>
-    <if test="orderBy != null">
-       ${orderBy}
-    </if>
-    ${limitAfter}
-  </select>
-  
-  <select id="selectProcessInstanceCountByQueryCriteria" parameterType="org.foxbpm.engine.impl.runtime.ProcessInstanceQueryImpl" resultType="long">
-    select count(RES.ID)
-    <include refid="selectProcessInstancesByQueryCriteriaSql"/>
-  </select>
-  
-  <sql id="selectProcessInstancesByQueryCriteriaSql">  
-    from FOXBPM_RUN_PROCESSINSTANCE RES
-    
-    <if test="processDefinitionName != null or processDefinitionNameLike != null">
-        inner join FOXBPM_DEF_PROCESSDEFINITION P on p.PROCESS_ID = RES.PROCESSDEFINITION_ID
-      </if>
-    <where>
-      <if test="processInstanceId != null">
-        RES.ID = #{processInstanceId}
-      </if>
-      <if test="processDefinitionId != null">
-        AND RES.PROCESSDEFINITION_ID = #{processDefinitionId}
-      </if>
-      <if test="businessKey != null">
-        and RES.BIZ_KEY = #{businessKey}
-      </if>
-      <if test="businessKeyLike != null">
-        and RES.BIZ_KEY like #{businessKeyLike}
-      </if>
-       <if test="processDefinitionId != null">
-        and RES.PROCESSDEFINITION_ID = #{processDefinitionId}
-      </if>
-       <if test="processDefinitionKey != null">
-        and RES.PROCESSDEFINITION_KEY = #{processDefinitionKey}
-      </if>
-       <if test="initiator != null">
-        and RES.INITIATOR = #{initiator}
-      </if>
-       <if test="initiatorLike != null">
-        and RES.INITIATOR like #{initiatorLike}
-      </if>
-       <if test="subject != null">
-        and RES.SUBJECT = #{subject}
-      </if>
-       <if test="subjectLike != null">
-        and RES.SUBJECT like #{subjectLike}
-      </if>
-       <if test="processDefinitionName != null">
-        and P.PROCESS_NAME = #{processDefinitionName}
-      </if>
-       <if test="processDefinitionNameLike != null">
-        and P.PROCESS_NAME like #{processDefinitionNameLike}
-      </if>
-      <if test="taskParticipants != null">
-        and RES.ID in (SELECT distinct(PROCESSINSTANCE_ID) FROM FOXBPM_RUN_TASK WHERE ASSIGNEE=#{taskParticipants} and END_TIME is not null)
-      </if>
-      <if test="status != null">
-      	and RES.INSTANCE_STATUS = #{status}
-      </if>
-      <if test="isEnd != null">
-      	and RES.END_TIME is ${isEnd}
-      </if>
-    </where>
-  </sql> 	
-  	
-  	
-  	 <sql id="processColumnList">
-	    ID, PROCESSDEFINITION_ID, PROCESSDEFINITION_KEY, SUBJECT, START_TIME, END_TIME, DEFINITION_ID, 
-	    ROOTTOKEN_ID, BIZ_KEY, INITIATOR, START_AUTHOR, ISSUSPENDED, PARENT_ID, PARENT_TOKEN_ID, 
-	    UPDATE_TIME, PROCESSLOCATION, INSTANCE_STATUS, ARCHIVE_TIME
-  	</sql>
-  	
-  	 <update id="updateProcessInstance" parameterType="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">
-    update 
-      foxbpm_run_processinstance
-    set 
-      PROCESSDEFINITION_ID = #{processDefinitionId,jdbcType=VARCHAR},
-      PROCESSDEFINITION_KEY = #{processDefinitionKey,jdbcType=VARCHAR},
-      SUBJECT = #{subject,jdbcType=VARCHAR},
-      START_TIME = #{startTime,jdbcType=TIMESTAMP},
-      END_TIME = #{endTime,jdbcType=TIMESTAMP},
-      DEFINITION_ID = #{definitionId,jdbcType=VARCHAR},
-      ROOTTOKEN_ID = #{rootTokenId,jdbcType=VARCHAR},
-      BIZ_KEY = #{bizKey,jdbcType=VARCHAR},
-      INITIATOR = #{initiator,jdbcType=VARCHAR},
-      START_AUTHOR = #{startAuthor,jdbcType=VARCHAR},
-      ISSUSPENDED = #{isSuspended,jdbcType=VARCHAR},
-      PARENT_ID = #{parentId,jdbcType=VARCHAR},
-      PARENT_TOKEN_ID = #{parentTokenId,jdbcType=VARCHAR},
-      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
-      PROCESSLOCATION = #{processLocation,jdbcType=VARCHAR},
-      INSTANCE_STATUS = #{instanceStatus,jdbcType=VARCHAR},
-      ARCHIVE_TIME = #{archiveTime,jdbcType=TIMESTAMP}
-    where
-      ID = #{id,jdbcType=VARCHAR}
-  </update>
-  
-  <delete id="deleteProcessInstanceByProcessDefinitionId" parameterType="java.lang.String">
-  		DELETE FROM FOXBPM_RUN_PROCESSINSTANCE WHERE PROCESSDEFINITION_ID = #{processDefinitionId,jdbcType=VARCHAR}
-  </delete>
-  <delete id="deleteProcessInstanceById" parameterType="java.lang.String">
-  		DELETE FROM FOXBPM_RUN_PROCESSINSTANCE WHERE ID = #{processInstanceId,jdbcType=VARCHAR}
-  </delete>
-  
+	<resultMap id="processResultMap"
+		type="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">
+		<id column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="PROCESSDEFINITION_ID" jdbcType="VARCHAR"
+			property="processDefinitionId" />
+		<result column="PROCESSDEFINITION_KEY" jdbcType="VARCHAR"
+			property="processDefinitionKey" />
+		<result column="SUBJECT" jdbcType="VARCHAR" property="subject" />
+		<result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
+		<result column="END_TIME" jdbcType="TIMESTAMP" property="endTime" />
+		<result column="DEFINITION_ID" jdbcType="VARCHAR" property="definitionId" />
+		<result column="ROOTTOKEN_ID" jdbcType="VARCHAR" property="rootTokenId" />
+		<result column="BIZ_KEY" jdbcType="VARCHAR" property="bizKey" />
+		<result column="INITIATOR" jdbcType="VARCHAR" property="initiator" />
+		<result column="START_AUTHOR" jdbcType="VARCHAR" property="startAuthor" />
+		<result column="ISSUSPENDED" jdbcType="VARCHAR" property="isSuspended" />
+		<result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
+		<result column="PARENT_TOKEN_ID" jdbcType="VARCHAR" property="parentTokenId" />
+		<result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="PROCESSLOCATION" jdbcType="VARCHAR" property="processLocation" />
+		<result column="INSTANCE_STATUS" jdbcType="VARCHAR" property="instanceStatus" />
+		<result column="ARCHIVE_TIME" jdbcType="TIMESTAMP" property="archiveTime" />
+	</resultMap>
+
+	<insert id="insertProcessInstance" parameterType="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">
+		insert into
+		foxbpm_run_processinstance (ID, PROCESSDEFINITION_ID,
+		PROCESSDEFINITION_KEY,
+		SUBJECT, START_TIME, END_TIME,
+		DEFINITION_ID,
+		ROOTTOKEN_ID, BIZ_KEY,
+		INITIATOR, START_AUTHOR, ISSUSPENDED,
+		PARENT_ID,
+		PARENT_TOKEN_ID, UPDATE_TIME,
+		PROCESSLOCATION, INSTANCE_STATUS,
+		ARCHIVE_TIME
+		)
+		values (#{id,jdbcType=VARCHAR},
+		#{processDefinitionId,jdbcType=VARCHAR},
+		#{processDefinitionKey,jdbcType=VARCHAR},
+		#{subject,jdbcType=VARCHAR},
+		#{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP},
+		#{definitionId,jdbcType=VARCHAR}, #{rootTokenId,jdbcType=VARCHAR},
+		#{bizKey,jdbcType=VARCHAR},
+		#{initiator,jdbcType=VARCHAR},
+		#{startAuthor,jdbcType=VARCHAR}, #{isSuspended,jdbcType=VARCHAR},
+		#{parentId,jdbcType=VARCHAR}, #{parentTokenId,jdbcType=VARCHAR},
+		#{updateTime,jdbcType=TIMESTAMP},
+		#{processLocation,jdbcType=VARCHAR},
+		#{instanceStatus,jdbcType=VARCHAR}, #{archiveTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<select id="selectProcessInstanceById" parameterType="java.lang.String"
+		resultMap="processResultMap">
+		select
+		<include refid="processColumnList" />
+		from foxbpm_run_processinstance
+		where ID = #{id,jdbcType=VARCHAR}
+	</select>
+
+
+	<select id="selectProcessInstanceIdsByProcessDefinitionId"
+		parameterType="java.lang.String" resultType="string">
+		select
+		ID
+		from
+		foxbpm_run_processinstance
+		where PROCESSDEFINITION_ID =
+		#{id,jdbcType=VARCHAR}
+	</select>
+
+
+
+
+	<select id="selectProcessInstanceByQueryCriteria"
+		parameterType="org.foxbpm.engine.impl.runtime.ProcessInstanceQueryImpl"
+		resultMap="processResultMap">
+		${limitBefore}
+		select RES.* ${limitBetween}
+		<include refid="selectProcessInstancesByQueryCriteriaSql" />
+		<if test="orderBy != null">
+			${orderBy}
+		</if>
+		${limitAfter}
+	</select>
+
+	<select id="selectProcessInstanceCountByQueryCriteria"
+		parameterType="org.foxbpm.engine.impl.runtime.ProcessInstanceQueryImpl"
+		resultType="long">
+		select count(RES.ID)
+		<include refid="selectProcessInstancesByQueryCriteriaSql" />
+	</select>
+
+	<sql id="selectProcessInstancesByQueryCriteriaSql">
+		from FOXBPM_RUN_PROCESSINSTANCE RES
+
+		<if
+			test="processDefinitionName != null or processDefinitionNameLike != null">
+			inner join FOXBPM_DEF_PROCESSDEFINITION P on p.PROCESS_ID =
+			RES.PROCESSDEFINITION_ID
+		</if>
+		<where>
+			<if test="processInstanceId != null">
+				RES.ID = #{processInstanceId}
+			</if>
+			<if test="processDefinitionId != null">
+				AND RES.PROCESSDEFINITION_ID = #{processDefinitionId}
+			</if>
+			<if test="businessKey != null">
+				and RES.BIZ_KEY = #{businessKey}
+			</if>
+			<if test="businessKeyLike != null">
+				and RES.BIZ_KEY like #{businessKeyLike}
+			</if>
+			<if test="processDefinitionId != null">
+				and RES.PROCESSDEFINITION_ID = #{processDefinitionId}
+			</if>
+			<if test="processDefinitionKey != null">
+				and RES.PROCESSDEFINITION_KEY = #{processDefinitionKey}
+			</if>
+			<if test="initiator != null">
+				and RES.INITIATOR = #{initiator}
+			</if>
+			<if test="initiatorLike != null">
+				and RES.INITIATOR like #{initiatorLike}
+			</if>
+			<if test="subject != null">
+				and RES.SUBJECT = #{subject}
+			</if>
+			<if test="subjectLike != null">
+				and RES.SUBJECT like #{subjectLike}
+			</if>
+			<if test="processDefinitionName != null">
+				and P.PROCESS_NAME = #{processDefinitionName}
+			</if>
+			<if test="processDefinitionNameLike != null">
+				and P.PROCESS_NAME like #{processDefinitionNameLike}
+			</if>
+			<if test="taskParticipants != null">
+				and RES.ID in (SELECT distinct(PROCESSINSTANCE_ID) FROM
+				FOXBPM_RUN_TASK
+				WHERE ASSIGNEE=#{taskParticipants} and END_TIME is
+				not null)
+			</if>
+			<if test="status != null">
+				and RES.INSTANCE_STATUS = #{status}
+			</if>
+			<if test="isEnd != null">
+				and RES.END_TIME is ${isEnd}
+			</if>
+			<if test="startTimeBefore != null">
+				and RES.START_TIME
+				&gt;=#{startTimeBefore,jdbcType=TIMESTAMP}
+			</if>
+			<if test="startTimeAfter != null">
+				and RES.END_TIME &lt;=
+				#{startTimeAfter,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+	</sql>
+
+
+	<sql id="processColumnList">
+		ID, PROCESSDEFINITION_ID, PROCESSDEFINITION_KEY, SUBJECT,
+		START_TIME,
+		END_TIME, DEFINITION_ID,
+		ROOTTOKEN_ID, BIZ_KEY, INITIATOR,
+		START_AUTHOR, ISSUSPENDED, PARENT_ID,
+		PARENT_TOKEN_ID,
+		UPDATE_TIME,
+		PROCESSLOCATION, INSTANCE_STATUS, ARCHIVE_TIME
+	</sql>
+
+	<update id="updateProcessInstance" parameterType="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">
+		update
+		foxbpm_run_processinstance
+		set
+		PROCESSDEFINITION_ID =
+		#{processDefinitionId,jdbcType=VARCHAR},
+		PROCESSDEFINITION_KEY =
+		#{processDefinitionKey,jdbcType=VARCHAR},
+		SUBJECT =
+		#{subject,jdbcType=VARCHAR},
+		START_TIME =
+		#{startTime,jdbcType=TIMESTAMP},
+		END_TIME =
+		#{endTime,jdbcType=TIMESTAMP},
+		DEFINITION_ID =
+		#{definitionId,jdbcType=VARCHAR},
+		ROOTTOKEN_ID =
+		#{rootTokenId,jdbcType=VARCHAR},
+		BIZ_KEY = #{bizKey,jdbcType=VARCHAR},
+		INITIATOR = #{initiator,jdbcType=VARCHAR},
+		START_AUTHOR =
+		#{startAuthor,jdbcType=VARCHAR},
+		ISSUSPENDED =
+		#{isSuspended,jdbcType=VARCHAR},
+		PARENT_ID =
+		#{parentId,jdbcType=VARCHAR},
+		PARENT_TOKEN_ID =
+		#{parentTokenId,jdbcType=VARCHAR},
+		UPDATE_TIME =
+		#{updateTime,jdbcType=TIMESTAMP},
+		PROCESSLOCATION =
+		#{processLocation,jdbcType=VARCHAR},
+		INSTANCE_STATUS =
+		#{instanceStatus,jdbcType=VARCHAR},
+		ARCHIVE_TIME =
+		#{archiveTime,jdbcType=TIMESTAMP}
+		where
+		ID = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<delete id="deleteProcessInstanceByProcessDefinitionId"
+		parameterType="java.lang.String">
+		DELETE FROM FOXBPM_RUN_PROCESSINSTANCE WHERE
+		PROCESSDEFINITION_ID =
+		#{processDefinitionId,jdbcType=VARCHAR}
+	</delete>
+	<delete id="deleteProcessInstanceById" parameterType="java.lang.String">
+		DELETE FROM
+		FOXBPM_RUN_PROCESSINSTANCE WHERE ID =
+		#{processInstanceId,jdbcType=VARCHAR}
+	</delete>
+
 </mapper>
