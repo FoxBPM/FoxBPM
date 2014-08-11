@@ -115,25 +115,29 @@ public class ActivityBehavior extends FlowNodeBehavior {
 			
 			LOG.debug("节点: {}({}) 含有 {} 个边界事件,令牌号: {}({}).", this.getName(), this.getId(), boundaryEvents.size(), tokenEntity.getName(), tokenEntity.getId());
 			
-			String nodeTokenId = this.getId();
+			//String nodeTokenId = this.getId();
 			// 创建分支令牌并添加到集合中
-			TokenEntity nodeToken = (TokenEntity) tokenEntity.createForkedToken(tokenEntity, nodeTokenId).token;
+			//TokenEntity nodeToken = (TokenEntity) tokenEntity.createForkedToken(tokenEntity, nodeTokenId).token;
 			
-			LOG.debug("主令牌创建子令牌,子令牌: {}({}).", tokenEntity.getName(), tokenEntity.getId());
+			//LOG.debug("主令牌创建子令牌,子令牌: {}({}).", tokenEntity.getName(), tokenEntity.getId());
 			
-			LOG.debug("子令牌: {}({}),进入节点.", tokenEntity.getName(), tokenEntity.getId());
+			LOG.debug("主令牌: {}({}),进入节点.", tokenEntity.getName(), tokenEntity.getId());
 			// 将子令牌放入节点
 			
-			forkedTokenEnter(nodeToken);
+			forkedTokenEnter(tokenEntity);
 			
-			// 遍历边界事件
-			for (BoundaryEventBehavior boundaryEvent : getBoundaryEvents()) {
-				
-				LOG.debug("主令牌: {}({}),触发边界事件: {} 执行.", tokenEntity.getName(), tokenEntity.getId(), boundaryEvent.getId());
-				// 主令牌执行边界事件里的事件定义
-				boundaryEvent.execute(executionContext);
-				
+			if(tokenEntity.getFlowNode().getId().equals(this.getId())){
+				// 遍历边界事件
+				for (BoundaryEventBehavior boundaryEvent : getBoundaryEvents()) {
+					
+					LOG.debug("主令牌: {}({}),触发边界事件: {} 执行.", tokenEntity.getName(), tokenEntity.getId(), boundaryEvent.getId());
+					// 主令牌执行边界事件里的事件定义
+					boundaryEvent.execute(executionContext);
+					
+				}
 			}
+			
+			
 			
 		} else {
 			// 没有边界事件,则执行多实例执行
@@ -519,13 +523,16 @@ public class ActivityBehavior extends FlowNodeBehavior {
 			FoxbpmScheduler foxbpmScheduler = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getFoxbpmScheduler();
 			String groupName = null;
 			/** 如果存在边界事件时间定义，那么当前令牌肯定存在父令牌 */
+			
+			groupName = new FoxbpmSchedulerGroupnameGernerater(executionContext).gernerateDefinitionGroupName();
+			/*
 			if (executionContext.getParent() != null) {
-				groupName = new FoxbpmSchedulerGroupnameGernerater(executionContext.getParent()).gernerateDefinitionGroupName();
+			
 				
 			} else {
 				groupName = new FoxbpmSchedulerGroupnameGernerater(executionContext).gernerateDefinitionGroupName();
 				
-			}
+			}*/
 			foxbpmScheduler.deleteJobsByGroupName(groupName);
 		} catch (SchedulerException e) {
 			throw new FoxBPMException("Activity 离开时清空 节点调度器报错", e);
