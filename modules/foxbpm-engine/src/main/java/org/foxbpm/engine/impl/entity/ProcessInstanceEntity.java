@@ -140,7 +140,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 
 	@Override
 	public void start() {
-		this.setInstanceStatus(ProcessInstanceStatus.RUNNING);
+		this.instanceStatus = ProcessInstanceStatus.RUNNING;
 		this.setStartTime(ClockUtil.getCurrentTime());
 
 		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) getProcessDefinition();
@@ -532,6 +532,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 
 	@Override
 	public void end() {
+		this.instanceStatus = ProcessInstanceStatus.COMPLETE;
 		endTime = ClockUtil.getCurrentTime();
 		super.end();
 	}
