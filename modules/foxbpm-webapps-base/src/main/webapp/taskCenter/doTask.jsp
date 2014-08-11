@@ -19,31 +19,27 @@
 <link rel="stylesheet" type="text/css" href="common/css/form.css">
 <script type="text/javascript" src="common/js/jquery.js"></script>
 <script type="text/javascript" src="common/js/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="common/js/flowCommandBase.js"></script>
-<script type="text/javascript" src="common/js/compenents/flowCommandHandler.js"></script>
-
-<script type="text/javascript">
-	var message = '${errorMsg}';
-	if (message != '') {
-		alert(message);
-	}
+<script type="text/javascript" src="common/js/foxbpmframework.js"></script>
+<script type="text/javascript" src="common/js/flowCommandCompenent.js"></script>
+<script type="text/javascript" src="common/js/flowCommandHandler.js"></script>
+<script type="text/javascript" >
+$(document).ready(function() {
+	var _getBizKey = function() {
+        return $("#businessKey").val();
+    };
+    var _getTaskComment = function() {
+       	return $("#_taskComment").val();
+    };
+    
+    var _flowCommit = function(){
+    	$("#form1").submit();
+    };
+	var flowconfig ={ getBizKey: _getBizKey, getTaskComment: _getTaskComment,flowCommit:_flowCommit };
 	
-	function flowCommit(){
-		alert($("#flowInfo").val());
-		var form = $("#form1");
-		form.submit();
-	}
-	
-	function getBizKey(){
-		var bizKey = $("#businessKey").val();
-		return bizKey;
-	}
-	
-	function getTaskComment(){
-		return $("#_taskComment").val();
-	}
+	var flowCommandCompenent = new Foxbpm.FlowCommandCompenent(flowconfig);
+	flowCommandCompenent.init();
+});
 </script>
-
 </head>
 
 <body>
@@ -65,6 +61,7 @@
 				</tr>
 			</table>
 			<div class="toolbar" id="toolbar"></div>
+			<input type="hidden" name="taskStauts" id="taskStauts" value="0" />
 		</form>
 	</div>
 </body>

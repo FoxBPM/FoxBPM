@@ -10,6 +10,7 @@
     <type name="会签常用" id="2135aa29-d504-4d29-8e02-b90f8cd6869f"/>
     <type name="数据库操作" id="828e5d0b-7dd3-48b4-a5b2-94f2d6666c65"/>
     <type name="时间操作" id="72b21427-97fe-44ad-a00d-6b2a301a7655"/>
+    <type name="常用变量" id="类型ID5"/>
   </dataVariableType>
   <foxBPMDataVariable type="类型ID0"/>
   <foxBPMDataVariable type="类型ID1">
@@ -68,6 +69,9 @@
     <dataVariableDef name="获取用户最大组" dataType="com.founder.fix.fixflow.core.impl.identity.GroupTo" value="import com.founder.fix.fixflow.core.impl.identity.Authentication;&#xD;&#xA;group=Authentication.findMaxLevelGroupByUserId(&quot;用户编号&quot;,&quot;组类型dept、role&quot;);&#xD;&#xA;group.getId();&#xD;&#xA;group.getName();&#xD;&#xA;group.getLevelNum();" doc="返回用户组信息&#xD;&#xA;组编号&#xD;&#xA;group.getId();&#xD;&#xA;组名称&#xD;&#xA;group.getName();&#xD;&#xA;组级别&#xD;&#xA;group.getLevelNum();"/>
     <dataVariableDef name="比较角色大小" dataType="boolean" value="import com.founder.fix.fixflow.core.impl.identity.Authentication;&#xD;&#xA;nowGroup=Authentication.findMaxLevelGroupByUserId(processInfo.getInitiator(),&quot;role&quot;);&#xD;&#xA;nowLevelNum=nowGroup.getLevelNum();&#xD;&#xA;oldGroup=Authentication.findGroupByGroupIdAndType(&quot;bumenjingli&quot;,&quot;role&quot;)&#xD;&#xA;oldLevelNum=oldGroup.getLevelNum();&#xD;&#xA;if(nowLevelNum&lt;oldLevelNum){&#xD;&#xA;&#x9;return &#x9;true;&#xD;&#xA;}&#xD;&#xA;else{&#xD;&#xA;&#x9;return &#x9;false;&#xD;&#xA;}" doc="比较两个角色的大小"/>
     <dataVariableDef name="获取部门领导" dataType="java.lang.String" value="import com.founder.fix.fixflow.core.impl.Context;&#xA;import com.founder.fix.fixflow.core.impl.identity.GroupTo;&#xA;&#xA;groupTos=Context.getProcessEngineConfiguration().getUserDefinition().getUserInGroups(&quot;用户编号&quot;);&#xA;for (GroupTo groupTo : groupTos) {&#xA;&#x9;//默认取出用户的第一个所在部门&#xA;&#x9;if(groupTo.getGroupType().equals(&quot;org&quot;)){&#xA;&#x9;&#x9;return processInfo.findUserDeptAndRole(groupTo.getGroupId(),&quot;角色编号&quot;);;&#xA;&#x9;}&#xA;}&#xA;return null;" doc="默认会返回用户所在第一个部门的指定角色1"/>
+  </foxBPMDataVariable>
+  <foxBPMDataVariable type="类型ID5">
+	<dataVariableDef name="所有人" dataType="java.lang.String" value="&quot;foxbpm_all_user&quot;" doc="系统中的所有用户"/>
   </foxBPMDataVariable>
   <dataVariableDataType>
     <dataTypeDef name="文本" typeValue="java.lang.String" id="String"/>
