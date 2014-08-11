@@ -17,7 +17,6 @@
  */
 package org.foxbpm.engine.impl.task;
 
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,8 +38,9 @@ import org.foxbpm.engine.task.TaskQuery;
 /**
  * @author kenshin
  */
-public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements TaskQuery {
-	
+public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
+		TaskQuery {
+
 	/**
 	 * 
 	 */
@@ -57,7 +57,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	protected String end;
 	protected String businessKey;
 	protected String businessKeyLike;
-	protected boolean isAgent=false;
+	protected boolean isAgent = false;
 	protected String agentId;
 	protected String nodeId;
 	protected String processInstanceId;
@@ -67,15 +67,16 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	protected String processDefinitionKey;
 	protected String processDefinitionId;
 	protected String processDefinitionName;
-	protected String processDefinitionNameLike ;
+	protected String processDefinitionNameLike;
+	protected String subject;
+	protected String subjectLike;
 	protected String initiator;
 	protected String isSuspended;
 	protected String tokenId;
-	//查询代理任务时，用来存放原始任务处理人
+	// 查询代理任务时，用来存放原始任务处理人
 	protected String oldAssigneeId;
-	protected List<String> taskTypeList=new ArrayList<String>();
+	protected List<String> taskTypeList = new ArrayList<String>();
 
-	
 	public TaskQueryImpl() {
 	}
 
@@ -94,7 +95,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 		this.taskId = taskId;
 		return this;
 	}
-	
+
 	public TaskQuery nodeId(String nodeId) {
 		this.nodeId = nodeId;
 		return this;
@@ -112,29 +113,30 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 		this.nameLike = nameLike;
 		return this;
 	}
-	
-	//isAgent
+
+	// isAgent
 	/**
-	 * 查询agentId代理给当前用户的所有流程，
-	 * 如果存在"foxbpm_all_flow" 或者不是代理状态,则返回空的list；
+	 * 查询agentId代理给当前用户的所有流程， 如果存在"foxbpm_all_flow" 或者不是代理状态,则返回空的list；
+	 * 
 	 * @return
 	 */
-	public List<String> getAgentProcessKey(){
+	public List<String> getAgentProcessKey() {
 		List<String> processKeys = new ArrayList<String>();
-		if(!this.isAgent){
+		if (!this.isAgent) {
 			return processKeys;
 		}
 		User user = Authentication.selectUserByUserId(this.oldAssigneeId);
-		if(user == null){
-			throw new FoxBPMException("未找到userid为{}的代理人信息！",oldAssigneeId);
+		if (user == null) {
+			throw new FoxBPMException("未找到userid为{}的代理人信息！", oldAssigneeId);
 		}
 		List<AgentTo> agentInfo = user.getAgentInfo();
 		Date nowDate = new Date();
-		if(agentInfo != null){
-			for(AgentTo agent : agentInfo){
-				if(agent.getAgentFrom().equals(this.agentId) && (agent.getEndTime().after(nowDate))){
-					//如果存在foxbpm_all_flow，则直接清空所有key，并中断循环,返回空List
-					if(agent.getProcessKey().equals(Constant.FOXBPM_ALL_FLOW)){
+		if (agentInfo != null) {
+			for (AgentTo agent : agentInfo) {
+				if (agent.getAgentFrom().equals(this.agentId)
+						&& (agent.getEndTime().after(nowDate))) {
+					// 如果存在foxbpm_all_flow，则直接清空所有key，并中断循环,返回空List
+					if (agent.getProcessKey().equals(Constant.FOXBPM_ALL_FLOW)) {
 						processKeys.clear();
 						break;
 					}
@@ -144,28 +146,29 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 		}
 		return processKeys;
 	}
-	
-	public TaskQueryImpl isAgent(boolean isAgent){
-		this.isAgent=isAgent;
+
+	public TaskQueryImpl isAgent(boolean isAgent) {
+		this.isAgent = isAgent;
 		return this;
 	}
 
 	/**
-	 * 逻辑：
-	 * 使用方法 
+	 * 逻辑： 使用方法
+	 * 
 	 * @param agentId
 	 * @return
 	 */
 	public TaskQuery agentId(String agentId) {
-		if(this.assignee == null && this.candidateUser == null){
-			throw new FoxBPMBizException("agentId()方法必须要在assignee()方法或candidateUser()方法之后调用");
+		if (this.assignee == null && this.candidateUser == null) {
+			throw new FoxBPMBizException(
+					"agentId()方法必须要在assignee()方法或candidateUser()方法之后调用");
 		}
-		if(this.assignee != null){
+		if (this.assignee != null) {
 			this.oldAssigneeId = this.assignee;
 			this.assignee = agentId;
 		}
-		if(this.candidateUser != null){
-			if(this.oldAssigneeId == null){
+		if (this.candidateUser != null) {
+			if (this.oldAssigneeId == null) {
 				this.oldAssigneeId = this.candidateUser;
 			}
 			this.candidateUser = agentId;
@@ -173,17 +176,17 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 		this.agentId = agentId;
 		return this;
 	}
-	
+
 	public TaskQuery isSuspended(boolean isSuspended) {
-		this.isSuspended=String.valueOf(isSuspended);
+		this.isSuspended = String.valueOf(isSuspended);
 		return this;
 	}
-	
+
 	public TaskQuery tokenId(String tokenId) {
-		this.tokenId=tokenId;
+		this.tokenId = tokenId;
 		return this;
 	}
-	
+
 	public TaskQueryImpl businessKey(String businessKey) {
 		if (businessKey == null) {
 			throw new FoxBPMIllegalArgumentException("businessKey is null!");
@@ -191,7 +194,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 		this.businessKey = businessKey;
 		return this;
 	}
-	
+
 	public TaskQueryImpl businessKeyLike(String businessKey) {
 		if (businessKey == null) {
 			throw new FoxBPMIllegalArgumentException("businessKeyLike is null!");
@@ -199,16 +202,15 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 		this.businessKeyLike = businessKey;
 		return this;
 	}
-	
-	
+
 	public TaskQueryImpl addTaskType(String taskInstanceType) {
-		
+
 		if (taskInstanceType == null) {
 			throw new FoxBPMIllegalArgumentException("TaskType is null");
 		}
 		for (String taskInstanceTypeObj : taskTypeList) {
-			if(taskInstanceType.equals(taskInstanceTypeObj)){
-				//如果已存在，则直接返回
+			if (taskInstanceType.equals(taskInstanceTypeObj)) {
+				// 如果已存在，则直接返回
 				return this;
 			}
 		}
@@ -232,17 +234,35 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 		return this;
 	}
 
+	@Override
+	public TaskQuery taskSubject(String subject) {
+		if (subject == null) {
+			throw new FoxBPMIllegalArgumentException("subject is null");
+		}
+		this.subject = subject;
+		return this;
+	}
+
+	@Override
+	public TaskQuery taskSubjectLike(String subjectLike) {
+		if (subjectLike == null) {
+			throw new FoxBPMIllegalArgumentException("subjectLike is null");
+		}
+		this.subjectLike = subjectLike;
+		return this;
+	}
+
 	public TaskQueryImpl taskAssignee(String assignee) {
 		if (assignee == null) {
 			throw new FoxBPMIllegalArgumentException("Assignee is null");
 		}
-		if(this.agentId != null){
+		if (this.agentId != null) {
 			throw new FoxBPMBizException("请在agentId()方法之前调用此方法！");
 		}
 		this.assignee = assignee;
 		return this;
 	}
-	
+
 	public TaskQueryImpl taskOwner(String owner) {
 		if (owner == null) {
 			throw new FoxBPMIllegalArgumentException("Owner is null");
@@ -260,7 +280,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 		if (candidateUser == null) {
 			throw new FoxBPMIllegalArgumentException("candidateUser  is null!");
 		}
-		if(this.agentId != null){
+		if (this.agentId != null) {
 			throw new FoxBPMBizException("请在agentId()方法之前调用此方法！");
 		}
 		this.candidateUser = candidateUser;
@@ -271,8 +291,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 		this.processInstanceId = processInstanceId;
 		return this;
 	}
-	
-	
+
 	public TaskQueryImpl taskCreatedOn(Date createTime) {
 		this.createTime = createTime;
 		return this;
@@ -302,7 +321,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 		this.processDefinitionName = processDefinitionName;
 		return this;
 	}
-	
+
 	public TaskQuery processDefinitionNameLike(String processDefinitionLike) {
 		this.processDefinitionNameLike = processDefinitionLike;
 		return this;
@@ -363,13 +382,15 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	public List<Task> executeList(CommandContext commandContext) {
 		// ensureVariablesInitialized();
 		checkQueryOk();
-		return (List)commandContext.getTaskManager().findTasksByQueryCriteria(this);
+		return (List) commandContext.getTaskManager().findTasksByQueryCriteria(
+				this);
 	}
 
 	public long executeCount(CommandContext commandContext) {
 		// ensureVariablesInitialized();
 		checkQueryOk();
-		return commandContext.getTaskManager().findTaskCountByQueryCriteria(this);
+		return commandContext.getTaskManager().findTaskCountByQueryCriteria(
+				this);
 	}
 
 	// getters ////////////////////////////////////////////////////////////////
@@ -385,11 +406,11 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	public String getAssignee() {
 		return assignee;
 	}
-	
+
 	public String getBusinessKey() {
 		return businessKey;
 	}
-	
+
 	public String getBusinessKeyLike() {
 		return businessKeyLike;
 	}
@@ -445,7 +466,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	public String getProcessDefinitionName() {
 		return processDefinitionName;
 	}
-	
+
 	public String getProcessDefinitionNameLike() {
 		return processDefinitionNameLike;
 	}
@@ -469,10 +490,10 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	}
 
 	public TaskQuery initiator(String initiator) {
-		this.initiator=initiator;
+		this.initiator = initiator;
 		return this;
 	}
-	
+
 	public String getInitiator() {
 		return initiator;
 	}
@@ -492,6 +513,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	public String getNodeId() {
 		return nodeId;
 	}
+
 	public String getIsSuspended() {
 		return isSuspended;
 	}
@@ -500,38 +522,41 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	protected String taskVariableKey;
 	protected String taskVariableValue;
 	protected boolean taskVariableValueIsLike;
-	
+
 	protected String processInstanceVariableKey;
 	protected String processInstanceVariableValue;
 	protected boolean processInstanceVariableValueIsLike;
 
 	public TaskQuery variableData(String variableValue, boolean isLike) {
-		this.taskVariableValue=variableValue;
-		this.taskVariableValueIsLike=isLike;
+		this.taskVariableValue = variableValue;
+		this.taskVariableValueIsLike = isLike;
 		return this;
 	}
 
-	public TaskQuery variableData(String variableKey, String variableValue, boolean isLike) {
-		this.taskVariableValue=variableValue;
-		this.taskVariableValueIsLike=isLike;
-		this.taskVariableKey=variableKey;
-		
+	public TaskQuery variableData(String variableKey, String variableValue,
+			boolean isLike) {
+		this.taskVariableValue = variableValue;
+		this.taskVariableValueIsLike = isLike;
+		this.taskVariableKey = variableKey;
+
 		return this;
 	}
 
-	public TaskQuery processInstanceVariableData(String variableValue, boolean isLike) {
-		this.processInstanceVariableValue=variableValue;
-		this.processInstanceVariableValueIsLike=isLike;
+	public TaskQuery processInstanceVariableData(String variableValue,
+			boolean isLike) {
+		this.processInstanceVariableValue = variableValue;
+		this.processInstanceVariableValueIsLike = isLike;
 		return this;
 	}
 
-	public TaskQuery processInstanceVariableData(String variableKey, String variableValue, boolean isLike) {
-		this.processInstanceVariableValue=variableValue;
-		this.processInstanceVariableValueIsLike=isLike;
-		this.processInstanceVariableKey=variableKey;
+	public TaskQuery processInstanceVariableData(String variableKey,
+			String variableValue, boolean isLike) {
+		this.processInstanceVariableValue = variableValue;
+		this.processInstanceVariableValueIsLike = isLike;
+		this.processInstanceVariableKey = variableKey;
 		return this;
 	}
-	
+
 	public String getTaskVariableKey() {
 		return taskVariableKey;
 	}
@@ -555,5 +580,4 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	public boolean isProcessInstanceVariableValueIsLike() {
 		return processInstanceVariableValueIsLike;
 	}
-
 }
