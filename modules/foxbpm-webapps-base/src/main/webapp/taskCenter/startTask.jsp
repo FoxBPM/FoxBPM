@@ -16,32 +16,27 @@
 <link rel="stylesheet" type="text/css" href="common/css/form.css">
 <link rel="stylesheet" type="text/css" href="common/css/reset.css">
 <script type="text/javascript" src="common/js/jquery.js"></script>
-<script type="text/javascript"
-	src="common/js/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="common/js/flowCommandBase.js"></script>
-<script type="text/javascript"
-	src="common/js/compenents/flowCommandHandler.js"></script>
-
-<script type="text/javascript">
-	var message = '${errorMsg}';
-	if (message != '') {
-		alert(message);
-	}
-
-	function flowCommit() {
-		alert($("#flowInfo").val());
-		var form = $("#form1");
-		form.submit();
-	}
-
-	function getBizKey() {
-		var bizKey = $("#businessKey").val();
-		return bizKey;
-	}
-
-	function getTaskComment() {
-		return $("#_taskComment").val();
-	}
+<script type="text/javascript" src="common/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="common/js/foxbpmframework.js"></script>
+<script type="text/javascript" src="common/js/flowCommandCompenent.js"></script>
+<script type="text/javascript" src="common/js/flowCommandHandler.js"></script>
+<script type="text/javascript" >
+$(document).ready(function() {
+	var _getBizKey = function() {
+        alert(222);
+    };
+    var _getTaskComment = function() {
+        alert(333);
+    };
+    
+    var _flowCommit = function(){
+    	$("form1").submit();
+    };
+	var flowconfig ={ getBizKey: _getBizKey, getTaskComment: _getTaskComment,flowCommit:_flowCommit };
+	
+	var flowCommandCompenent = new Foxbpm.FlowCommandCompenent(flowconfig);
+	flowCommandCompenent.init();
+});
 </script>
 
 <style>
