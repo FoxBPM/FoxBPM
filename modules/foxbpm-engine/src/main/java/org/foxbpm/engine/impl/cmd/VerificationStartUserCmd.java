@@ -68,9 +68,10 @@ public class VerificationStartUserCmd implements Command<Boolean> {
 		
 		List<PotentialStarter> processStarters = processDefinition.getPotentialStarters();
 		//如果未配置，则默认所有人
-		if(processStarters == null || processStarters.isEmpty()){
+		if(processStarters == null || processStarters.isEmpty()||processStarters.size()==0){
 			return true;
 		}
+		
 		List<Group> groups = Authentication.selectGroupByUserId(userId);
 		for(PotentialStarter starter : processStarters){
 			String tmpValue = null;
@@ -82,6 +83,10 @@ public class VerificationStartUserCmd implements Command<Boolean> {
 			//表达式值为空，则不进行判断
 			if(StringUtil.isEmpty(tmpValue)){
 				break;
+			}
+			
+			if(tmpValue.equals("foxbpm_all_user")){
+				return true;
 			}
 			
 			String tmpType = starter.getResourceType();
