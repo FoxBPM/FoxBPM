@@ -12,7 +12,8 @@
     <result column="DEPLOYMENT_ID" jdbcType="VARCHAR" property="deploymentId" />
     <result column="DIAGRAM_RESOURCE_NAME" jdbcType="VARCHAR" property="diagramResourceName" />
     <result column="RESOURCE_ID" jdbcType="VARCHAR" property="resourceId" />
-     <result column="START_FORM_KEY" jdbcType="VARCHAR" property="startFormUri" />
+    <result column="START_FORM_KEY" jdbcType="VARCHAR" property="startFormUri" />
+    <result column="DEPLOY_TIME" jdbcType="TIMESTAMP" property="deploymentTime" />
   </resultMap>
   
    <insert id="insertProcessDefinition" parameterType="org.foxbpm.engine.impl.entity.ProcessDefinitionEntity">
@@ -61,7 +62,7 @@
   
   <select id="selectProcessDefinitionsByQueryCriteria" parameterType="org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl" resultMap="ProcessDefinitionMap">
   	${limitBefore}
-    select PD.* ${limitBetween}
+    select PD.*,DP.DEPLOY_TIME ${limitBetween}
     <include refid="selectProcessDefinitionsByQueryCriteriaSql"/>
     <if test="orderBy != null">
        ${orderBy}
@@ -75,7 +76,7 @@
   </select>
   
   <sql id="selectProcessDefinitionsByQueryCriteriaSql">  
-    from FOXBPM_DEF_PROCESSDEFINITION PD
+    from FOXBPM_DEF_PROCESSDEFINITION PD LEFT JOIN FOXBPM_DEF_DEPLOYMENT DP ON PD.DEPLOYMENT_ID = DP.ID
     <where>
       <if test="id != null">
         PD.PROCESS_ID = #{id}

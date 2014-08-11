@@ -18,6 +18,7 @@
 package org.foxbpm.engine.impl.entity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +67,9 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl
 	protected String category;
 
 	private boolean isPersistence = true;
+	
+	/**发布时间 */
+	private Date deploymentTime;
 	
 	/** 启动表单  */
 	private String startFormUri;
@@ -215,6 +219,14 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl
 	public String getDeploymentId() {
 		return this.deploymentId;
 	}
+	
+	public void setDeploymentTime(Date deploymentTime) {
+		this.deploymentTime = deploymentTime;
+	}
+	
+	public Date getDeploymentTime() {
+		return deploymentTime;
+	}
 
 	protected Map<String, Object> extensionFields = new HashMap<String, Object>();
 
@@ -251,6 +263,7 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl
 		persistentState.put("resourceId", this.resourceId);
 		persistentState.put("deploymentId", this.deploymentId);
 		persistentState.put("diagramResourceName", this.diagramResourceName);
+		persistentState.put("deployTime", this.deploymentTime);
 		persistentState.put("startFormUri", this.getStartFormUri());
 		persistentState.putAll(this.extensionFields);
 		return persistentState;

@@ -87,6 +87,7 @@ public class BpmnDeployer extends AbstractDeployer {
 			// 设置资源信息
 			processDefinitionEntity.setResourceName(resourceBpmnNew.getName());
 			processDefinitionEntity.setResourceId(resourceBpmnNew.getId());
+			processDefinitionEntity.setDeploymentTime(deployment.getDeploymentTime());
 			
 			// 启动表单
 			String formUri = getStartFormUri(processDefinitionEntity);
@@ -164,6 +165,7 @@ public class BpmnDeployer extends AbstractDeployer {
 			processDefinitionEntity.setResourceName(processEntityNew.getResourceName());
 			processDefinitionEntity.setDiagramResourceName(processEntityNew.getDiagramResourceName());
 			processDefinitionEntity.setStartFormUri(processEntityNew.getStartFormUri());
+			processDefinitionEntity.setDeploymentTime(processEntityNew.getDeploymentTime());
 		}
 		
 		// 提供给其他发布器使用

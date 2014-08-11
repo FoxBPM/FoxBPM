@@ -175,19 +175,19 @@ a {
 									<th width="12%">${applicationScope.appInfo["task.deplayTime"]}</th>
 								</thead>
 								<tbody>
-									<c:forEach items="${result.dataList}" var="dataList"
+									<c:forEach items="${result.dataList}" var="dataItem"
 										varStatus="index">
 										<tr>
 											<td><input type="radio" name="chk"
-												deploymentId="${dataList.deploymentId}"
-												processDefinitionId="${dataList.processDefinitionId}" /></td>
+												deploymentId="${dataItem.deploymentId}"
+												processDefinitionId="${dataItem.processDefinitionId}" /></td>
 											<td style="text-align: center;">${(index.index+1)+pageInfo.pageSize*(pageInfo.pageIndex-1)}</td>
-											<td>${dataList.processDefinitionName}</td>
-											<td>${dataList.processDefinitionKey}</td>
-											<td>${dataList.version}</td>
-											<td>${dataList.category}</td>
-											<td>${dataList.processDefinitionId}</td>
-											<td><fmt:formatDate value="${dataList.DEPLOY_TIME}"
+											<td>${dataItem.processDefinitionName}</td>
+											<td>${dataItem.processDefinitionKey}</td>
+											<td>${dataItem.version}</td>
+											<td>${dataItem.category}</td>
+											<td>${dataItem.processDefinitionId}</td>
+											<td>${dataItem.deployTime}<fmt:formatDate value="${dataItem.deployTime}"
 													type="both" /></td>
 										</tr>
 									</c:forEach>

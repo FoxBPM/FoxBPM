@@ -131,7 +131,6 @@ public class FlowManageServiceImpl extends AbstWorkFlowService implements IFlowM
 		Map<String, Object> attrMap = null;
 		for (int i = 0, size = (null == pdList) ? 0 : pdList.size(); i < size; i++) {
 			attrMap = pdList.get(i).getPersistentState();
-			attrMap.put("formUrl", "startTask.action");
 			resultData.add(attrMap);
 		}
 		return resultData;
