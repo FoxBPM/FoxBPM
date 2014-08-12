@@ -184,7 +184,7 @@ a {
 											<td>${dataList.version}</td>
 											<td>${dataList.category}</td>
 											<td>${dataList.id}</td>
-											<td><fmt:formatDate value="${dataList.DEPLOY_TIME}"
+											<td><fmt:formatDate value="${dataList.deployTime}"
 													type="both" /></td>
 										</tr>
 									</c:forEach>
