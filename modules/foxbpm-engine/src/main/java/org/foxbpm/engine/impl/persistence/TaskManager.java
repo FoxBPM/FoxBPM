@@ -22,10 +22,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.exception.FoxBPMBizException;
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.task.TaskQueryImpl;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.Task;
+import org.foxbpm.engine.task.TaskQuery;
 
 /**
  * 任务数据管理器
@@ -75,7 +77,15 @@ public class TaskManager extends AbstractManager {
 				processInstanceId);
 	}
 	
-
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public TaskEntity findLastEndTaskByProcessInstanceIdAndNodeId(String processInstanceId,String nodeId) {		
+		TaskQuery taskQuery=new TaskQueryImpl(Context.getCommandContext());
+		List<TaskEntity> taskEntities=(List)taskQuery.processInstanceId(processInstanceId).nodeId(nodeId).orderByEndTime().desc().listPage(0, 1);
+		if(taskEntities.size()>0){
+			return taskEntities.get(0);
+		}
+		return null;
+	}
 
 
 	@SuppressWarnings("unchecked")

@@ -201,6 +201,7 @@
 		from foxbpm_run_task
 		where PROCESSINSTANCE_ID = #{id,jdbcType=VARCHAR}
 	</select>
+	
 
 	<select id="selectTasksByTokenId" parameterType="java.lang.String"
 		resultMap="TaskResultMap">

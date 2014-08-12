@@ -158,12 +158,23 @@
 			<commandParam key="isVerification" name="是否触发验证" value="true"
 				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
-		<!-- <taskCommandDefinition id="rollBack_designation_assignee" name="退回-后台指定步骤-自动最近处理者" 
+		
+		
+		 <taskCommandDefinition id="rollBack_designation_assignee" name="退回-后台指定步骤-自动最近处理者" 
 			command="org.foxbpm.engine.impl.task.command.RollBackTaskDesignationAssigneeCommand" 
 			" cmd="org.foxbpm.engine.impl.task.cmd.RollBackTaskDesignationAssigneeCmd" 
 			isEnabled="true" type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.RollBackTaskDesignationAssigneeFilter" 
-			description="在后台设计器端指定一个节点,用户点击了之后退回这个事先设置好的节点,会自动计算这个节点最近一步处理者分配给他。" /> 
-			<taskCommandDefinition id="updateCompletionRate" name="更新完成率" command="org.foxbpm.engine.impl.task.command.UpdateCompletionRateCommand" 
+			description="在后台设计器端指定一个节点,用户点击了之后退回这个事先设置好的节点,会自动计算这个节点最近一步处理者分配给他。" >
+			<commandParam key="rollBackNodeId" name="是否保存数据"
+				description="" dataType="String" bizType="ExecuteParam" />
+			<commandParam key="isSaveData" name="是否保存数据" value="true"
+				description="" dataType="String" bizType="ControlParam" />
+			<commandParam key="isVerification" name="是否触发验证" value="true"
+				description="" dataType="String" bizType="ControlParam" />
+			</taskCommandDefinition> 
+			
+			
+			<!--<taskCommandDefinition id="updateCompletionRate" name="更新完成率" command="org.foxbpm.engine.impl.task.command.UpdateCompletionRateCommand" 
 			cmd="org.foxbpm.engine.impl.task.cmd.UpdateCompletionRateCmd" isEnabled="true" 
 			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.UpdateCompletionRateFilter" 
 			description="更新任务的完成率。" /> -->
