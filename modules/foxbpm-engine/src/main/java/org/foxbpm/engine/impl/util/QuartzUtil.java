@@ -30,11 +30,12 @@ import org.foxbpm.engine.impl.schedule.FoxbpmScheduler;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.quartz.CronTrigger;
 import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -47,7 +48,7 @@ import org.quartz.impl.StdSchedulerFactory;
  * 
  */
 public final class QuartzUtil {
-	
+	private static Logger LOG = LoggerFactory.getLogger(QuartzUtil.class);
 	/**
 	 * 创建简单触发器
 	 * 
@@ -181,8 +182,12 @@ public final class QuartzUtil {
 	public final static void deleteJob(String groupName) {
 		try {
 			FoxbpmScheduler foxbpmScheduler = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getFoxbpmScheduler();
+			if (foxbpmScheduler == null) {
+				LOG.debug("调度器未启动，无法清空调度任务");
+				return;
+			}
 			foxbpmScheduler.deleteJobsByGroupName(groupName);
-		} catch (SchedulerException e) {
+		} catch (Exception e) {
 			throw new FoxBPMException("QuartzUtil删除Job报错", e);
 		}
 	}
@@ -197,13 +202,14 @@ public final class QuartzUtil {
 		try {
 			FoxbpmScheduler foxbpmScheduler = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getFoxbpmScheduler();
 			if (foxbpmScheduler == null) {
-				throw new FoxBPMException("FOXBPM 自动启动类型的部署时候，调度器没有初始化！");
+				LOG.debug("调度器未启动，无法调度任务！");
+				return;
 			}
 			
 			// 先清空，后调度
 			foxbpmScheduler.deleteJob(jobDetail);
 			foxbpmScheduler.scheduleFoxbpmJob(jobDetail);
-		} catch (SchedulerException e) {
+		} catch (Exception e) {
 			throw new FoxBPMException("调度  《流程自动启动JOB》时候出现问题！");
 		}
 	}
@@ -227,7 +233,7 @@ public final class QuartzUtil {
 		SchedulerFactory sf = null;
 		try {
 			sf = new StdSchedulerFactory(props);
-		} catch (SchedulerException e) {
+		} catch (Exception e) {
 			throw new FoxBPMException("QuartzUtil 创建 SchedulerFactory出问题", e);
 		}
 		return sf;
@@ -244,7 +250,7 @@ public final class QuartzUtil {
 		Scheduler scheduler = null;
 		try {
 			scheduler = schedulerFactory.getScheduler();
-		} catch (SchedulerException e) {
+		} catch (Exception e) {
 			throw new FoxBPMException("QuartzUtil 创建 Scheduler出问题", e);
 		}
 		return scheduler;
