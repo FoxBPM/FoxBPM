@@ -21,16 +21,16 @@
       <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
     </bpmn2:parallelGateway>
     <bpmn2:sequenceFlow id="SequenceFlow_8" sourceRef="ParallelGateway_3" targetRef="EndEvent_1"/>
-    <bpmn2:userTask id="UserTask_3" foxbpm:claimType="defaultClaim" name="UserTask_3">
+    <bpmn2:userTask id="UserTask_3" foxbpm:claimType="defaultClaim" name="人工任务_3">
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_4" name="接收任务" commandType="claim">
           <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
-            <foxbpm:expression xsi:type="foxbpm:Expression" name="false"><![CDATA[false]]></foxbpm:expression>
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_1" name="false"><![CDATA[false]]></foxbpm:expression>
           </foxbpm:params>
           <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
-            <foxbpm:expression xsi:type="foxbpm:Expression" name="false"><![CDATA[false]]></foxbpm:expression>
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_2" name="false"><![CDATA[false]]></foxbpm:expression>
           </foxbpm:params>
-          <foxbpm:expression xsi:type="foxbpm:Expression" name=""><![CDATA[]]></foxbpm:expression>
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_3" name=""><![CDATA[]]></foxbpm:expression>
         </foxbpm:taskCommand>
         <foxbpm:taskCommand id="HandleCommand_2" name="同意" commandType="general">
           <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
@@ -56,16 +56,16 @@
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
     <bpmn2:sequenceFlow id="SequenceFlow_6" sourceRef="UserTask_3" targetRef="ParallelGateway_3"/>
-    <bpmn2:userTask id="UserTask_4" foxbpm:claimType="defaultClaim" name="UserTask_4">
+    <bpmn2:userTask id="UserTask_4" foxbpm:claimType="defaultClaim" name="人工任务_4">
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_4" name="接收任务" commandType="claim">
           <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
-            <foxbpm:expression xsi:type="foxbpm:Expression" name="false"><![CDATA[false]]></foxbpm:expression>
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_8" name="false"><![CDATA[false]]></foxbpm:expression>
           </foxbpm:params>
           <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
-            <foxbpm:expression xsi:type="foxbpm:Expression" name="false"><![CDATA[false]]></foxbpm:expression>
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_9" name="false"><![CDATA[false]]></foxbpm:expression>
           </foxbpm:params>
-          <foxbpm:expression xsi:type="foxbpm:Expression" name=""><![CDATA[]]></foxbpm:expression>
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_10" name=""><![CDATA[]]></foxbpm:expression>
         </foxbpm:taskCommand>
         <foxbpm:taskCommand id="HandleCommand_2" name="同意" commandType="general">
           <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
@@ -91,7 +91,7 @@
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
     <bpmn2:sequenceFlow id="SequenceFlow_7" sourceRef="UserTask_4" targetRef="ParallelGateway_3"/>
-    <bpmn2:userTask id="UserTask_1" foxbpm:claimType="autoClaim" name="UserTask_1">
+    <bpmn2:userTask id="UserTask_1" foxbpm:claimType="autoClaim" name="人工任务_1">
       <bpmn2:extensionElements>
         <foxbpm:connectorInstanceElements connrctorType="flowConnector"/>
         <foxbpm:taskCommand id="HandleCommand_1" name="提交" commandType="submit">
@@ -121,7 +121,9 @@
       <bpmn2:potentialOwner id="PotentialOwner_1">
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
-            <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="d13fa99a-db54-4231-b6f5-87d77f6fc248" connectorInstanceName="所有人" errorHandling="" type="actorconnector"/>
+            <foxbpm:connectorInstance connectorId="InitiatorActorConnector" packageName="org.foxbpm.connector.actorconnector.InitiatorActorConnector" className="InitiatorActorConnector" connectorInstanceId="a86efc0e-2879-4443-86a5-cc8397618e70" connectorInstanceName="发起人" errorHandling="" type="actorconnector">
+              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+            </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
       </bpmn2:potentialOwner>
