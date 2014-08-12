@@ -274,10 +274,10 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			datee = DateUtil.stringToDate(dse, "yyyy-MM-ddHHmmssSSS");
 		}
 		if (dates != null) {
-			taskQuery.taskCreatedAfter(datee);
+			taskQuery.taskCreatedBefore(dates);
 		}
 		if (datee != null) {
-			taskQuery.taskCreatedBefore(dates);
+			taskQuery.taskCreatedAfter(datee);
 		}
 		taskQuery.orderByTaskCreateTime().desc();
 		taskQuery.taskNotEnd();

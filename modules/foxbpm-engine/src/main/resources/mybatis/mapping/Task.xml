@@ -1,353 +1,400 @@
 <?xml version="1.0" encoding="UTF-8" ?> 
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.foxbpm.engine.impl.entity.TaskEntity">
 
-  <resultMap id="TaskResultMap" type="org.foxbpm.engine.impl.entity.TaskEntity" >
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="PROCESSINSTANCE_ID" property="processInstanceId" jdbcType="VARCHAR" />
-    <result column="PROCESSDEFINITION_ID" property="processDefinitionId" jdbcType="VARCHAR" />
-    <result column="VERSION" property="version" jdbcType="INTEGER" />
-    <result column="TOKEN_ID" property="tokenId" jdbcType="VARCHAR" />
-    <result column="NODE_ID" property="nodeId" jdbcType="VARCHAR" />
-    <result column="NODE_NAME" property="nodeName" jdbcType="VARCHAR" />
-    <result column="SUBJECT" property="subject" jdbcType="VARCHAR" />
-    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
-    <result column="COMPLETEDESCRIPTION" property="completeDescription" jdbcType="VARCHAR" />
-    <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
-    <result column="ASSIGNEE" property="assignee" jdbcType="VARCHAR" />
-    <result column="CLAIM_TIME" property="claimTime" jdbcType="TIMESTAMP" />
-    <result column="NAME" property="name" jdbcType="VARCHAR" />
-    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
-    <result column="PROCESSSTART_TIME" property="processStartTime" jdbcType="TIMESTAMP" />
-     <result column="PROCESS_INITIATOR" property="processInitiator" jdbcType="VARCHAR" />
-    <result column="ISBLOCKING" property="isBlocking" jdbcType="VARCHAR" />
-    <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP" />
-    <result column="DUEDATE" property="dueDate" jdbcType="TIMESTAMP" />
-    <result column="PRIORITY" property="priority" jdbcType="DECIMAL" />
-    <result column="CATEGORY" property="category" jdbcType="VARCHAR" />
-    <result column="OWNER" property="owner" jdbcType="VARCHAR" />
-    <result column="DELEGATIONSTATE" property="delegationState" jdbcType="VARCHAR" />
-    <result column="BIZKEY" property="bizKey" jdbcType="VARCHAR" />
-    <result column="COMMAND_TYPE" property="commandType" jdbcType="VARCHAR" />
-    <result column="COMMAND_MESSAGE" property="commandMessage" jdbcType="VARCHAR" />
-    <result column="TASK_COMMENT" property="taskComment" jdbcType="VARCHAR" />
-    <result column="NODE_NAME" property="name" jdbcType="VARCHAR" />
-    <result column="PROCESSDEFINITION_KEY" property="processDefinitionKey" jdbcType="VARCHAR" />
-    <result column="FORMURI" property="formUri" jdbcType="VARCHAR" />
-    <result column="TASKGROUP" property="taskGroup" jdbcType="VARCHAR" />
-    <result column="TASKTYPE" property="taskType" jdbcType="VARCHAR" />
-    <result column="PROCESSDEFINITION_NAME" property="processDefinitionName" jdbcType="VARCHAR" />
-    <result column="ISCANCELLED" property="isCancelled" jdbcType="VARCHAR" />
-    <result column="ISSUSPENDED" property="isSuspended" jdbcType="VARCHAR" />
-    <result column="ISOPEN" property="isOpen" jdbcType="VARCHAR" />
-    <result column="ISDRAFT" property="isDraft" jdbcType="VARCHAR" />
-    <result column="EXPECTED_EXECUTIONTIME" property="expectedExecutionTime" jdbcType="DECIMAL" />
-    <result column="AGENT" property="agent" jdbcType="VARCHAR" />
-    <result column="ADMIN" property="admin" jdbcType="VARCHAR" />
-    <result column="FORMURIVIEW" property="formUriView" jdbcType="VARCHAR" />
-    <result column="CALLACTIVITY_INSTANCE_ID" property="callActivityInstanceId" jdbcType="VARCHAR" />
-    <result column="COMMAND_ID" property="commandId" jdbcType="VARCHAR" />
-    <result column="PENDINGTASKID" property="pendingTaskId" jdbcType="VARCHAR" />
-    <result column="ARCHIVE_TIME" property="archiveTime" jdbcType="TIMESTAMP" />
-  </resultMap>
-  
-  
-  <insert id="insertTask" parameterType="org.foxbpm.engine.impl.entity.TaskEntity" >
-    insert into foxbpm_run_task (ID, PROCESSINSTANCE_ID, PROCESSDEFINITION_ID, 
-      VERSION, TOKEN_ID, NODE_ID,
-      SUBJECT,COMPLETEDESCRIPTION, 
-      DESCRIPTION, PARENT_ID, ASSIGNEE, 
-      CLAIM_TIME, NAME, CREATE_TIME, 
-      START_TIME, ISBLOCKING, END_TIME,
-      PROCESSSTART_TIME,PROCESS_INITIATOR,
-      DUEDATE, PRIORITY, CATEGORY, 
-      OWNER, DELEGATIONSTATE, BIZKEY, 
-      COMMAND_TYPE, COMMAND_MESSAGE, TASK_COMMENT, 
-      NODE_NAME, PROCESSDEFINITION_KEY, FORMURI, 
-      TASKGROUP, TASKTYPE, PROCESSDEFINITION_NAME, 
-      ISCANCELLED, ISSUSPENDED, ISOPEN, 
-      ISDRAFT, EXPECTED_EXECUTIONTIME, AGENT, 
-      ADMIN, FORMURIVIEW, CALLACTIVITY_INSTANCE_ID, 
-      COMMAND_ID, PENDINGTASKID, ARCHIVE_TIME
-      )
-    values (#{id,jdbcType=VARCHAR}, #{processInstanceId,jdbcType=VARCHAR}, #{processDefinitionId,jdbcType=VARCHAR}, 
-      #{version,jdbcType=INTEGER}, #{tokenId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, 
-      #{subject,jdbcType=VARCHAR}, #{completeDescription,jdbcType=VARCHAR}, 
-      #{description,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{assignee,jdbcType=VARCHAR}, 
-      #{claimTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{startTime,jdbcType=TIMESTAMP}, #{isBlocking,jdbcType=VARCHAR}, #{endTime,jdbcType=TIMESTAMP}, 
-      #{processStartTime,jdbcType=TIMESTAMP},#{processInitiator,jdbcType=VARCHAR},
-      #{dueDate,jdbcType=TIMESTAMP}, #{priority,jdbcType=DECIMAL}, #{category,jdbcType=VARCHAR}, 
-      #{owner,jdbcType=VARCHAR}, #{delegationState,jdbcType=VARCHAR}, #{bizKey,jdbcType=VARCHAR}, 
-      #{commandType,jdbcType=VARCHAR}, #{commandMessage,jdbcType=VARCHAR}, #{taskComment,jdbcType=VARCHAR}, 
-      #{nodeName,jdbcType=VARCHAR}, #{processDefinitionKey,jdbcType=VARCHAR}, #{formUri,jdbcType=VARCHAR}, 
-      #{taskGroup,jdbcType=VARCHAR}, #{taskType,jdbcType=VARCHAR}, #{processDefinitionName,jdbcType=VARCHAR}, 
-      #{isCancelled,jdbcType=VARCHAR}, #{isSuspended,jdbcType=VARCHAR}, #{isOpen,jdbcType=VARCHAR}, 
-      #{isDraft,jdbcType=VARCHAR}, #{expectedExecutionTime,jdbcType=DECIMAL}, #{agent,jdbcType=VARCHAR}, 
-      #{admin,jdbcType=VARCHAR}, #{formUriView,jdbcType=VARCHAR}, #{callActivityInstanceId,jdbcType=VARCHAR}, 
-      #{commandId,jdbcType=VARCHAR}, #{pendingTaskId,jdbcType=VARCHAR}, #{archiveTime,jdbcType=TIMESTAMP}
-      )
-  </insert>
-  
-  
-   <update id="updateTask" parameterType="org.foxbpm.engine.impl.entity.TaskEntity" >
-    update foxbpm_run_task
-    set 
-      PROCESSINSTANCE_ID = #{processInstanceId,jdbcType=VARCHAR},
-      PROCESSDEFINITION_ID = #{processDefinitionId,jdbcType=VARCHAR},
-      VERSION = #{version,jdbcType=INTEGER},
-      TOKEN_ID = #{tokenId,jdbcType=VARCHAR},
-      NODE_ID = #{nodeId,jdbcType=VARCHAR},
-      SUBJECT = #{subject,jdbcType=VARCHAR},
-      COMPLETEDESCRIPTION = #{completeDescription,jdbcType=VARCHAR},
-      DESCRIPTION = #{description,jdbcType=VARCHAR},
-      PARENT_ID = #{parentId,jdbcType=VARCHAR},
-      ASSIGNEE = #{assignee,jdbcType=VARCHAR},
-      CLAIM_TIME = #{claimTime,jdbcType=TIMESTAMP},
-      NAME = #{name,jdbcType=VARCHAR},
-      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
-      START_TIME = #{startTime,jdbcType=TIMESTAMP},
-      ISBLOCKING = #{isBlocking,jdbcType=VARCHAR},
-      END_TIME = #{endTime,jdbcType=TIMESTAMP},
-      PROCESSSTART_TIME = #{processStartTime,jdbcType=TIMESTAMP},
-      PROCESS_INITIATOR = #{processInitiator,jdbcType=TIMESTAMP},
-      DUEDATE = #{dueDate,jdbcType=TIMESTAMP},
-      PRIORITY = #{priority,jdbcType=DECIMAL},
-      CATEGORY = #{category,jdbcType=VARCHAR},
-      OWNER = #{owner,jdbcType=VARCHAR},
-      DELEGATIONSTATE = #{delegationStateString,jdbcType=VARCHAR},
-      BIZKEY = #{bizKey,jdbcType=VARCHAR},
-      COMMAND_TYPE = #{commandType,jdbcType=VARCHAR},
-      COMMAND_MESSAGE = #{commandMessage,jdbcType=VARCHAR},
-      TASK_COMMENT = #{taskComment,jdbcType=VARCHAR},
-      NODE_NAME = #{name,jdbcType=VARCHAR},
-      PROCESSDEFINITION_KEY = #{processDefinitionKey,jdbcType=VARCHAR},
-      FORMURI = #{formUri,jdbcType=VARCHAR},
-      TASKGROUP = #{taskGroup,jdbcType=VARCHAR},
-      TASKTYPE = #{taskType,jdbcType=VARCHAR},
-      PROCESSDEFINITION_NAME = #{processDefinitionName,jdbcType=VARCHAR},
-      ISCANCELLED = #{isCancelled,jdbcType=VARCHAR},
-      ISSUSPENDED = #{isSuspended,jdbcType=VARCHAR},
-      ISOPEN = #{isOpen,jdbcType=VARCHAR},
-      ISDRAFT = #{isDraft,jdbcType=VARCHAR},
-      EXPECTED_EXECUTIONTIME = #{expectedExecutionTime,jdbcType=DECIMAL},
-      AGENT = #{agent,jdbcType=VARCHAR},
-      ADMIN = #{admin,jdbcType=VARCHAR},
-      FORMURIVIEW = #{formUriView,jdbcType=VARCHAR},
-      CALLACTIVITY_INSTANCE_ID = #{callActivityInstanceId,jdbcType=VARCHAR},
-      COMMAND_ID = #{commandId,jdbcType=VARCHAR},
-      PENDINGTASKID = #{pendingTaskId,jdbcType=VARCHAR},
-      ARCHIVE_TIME = #{archiveTime,jdbcType=TIMESTAMP}
-    where
-     ID=#{id,jdbcType=VARCHAR}
-  </update>
-  
-  <sql id="Task_Column_List" >
-    ID, PROCESSINSTANCE_ID, PROCESSDEFINITION_ID, VERSION, TOKEN_ID, NODE_ID,SUBJECT,COMPLETEDESCRIPTION, DESCRIPTION, 
-    PARENT_ID, ASSIGNEE, CLAIM_TIME, NAME, CREATE_TIME, START_TIME, ISBLOCKING, END_TIME, 
-    DUEDATE, PRIORITY, CATEGORY, OWNER, DELEGATIONSTATE, BIZKEY, COMMAND_TYPE, 
-    COMMAND_MESSAGE, TASK_COMMENT, NODE_NAME, PROCESSDEFINITION_KEY, FORMURI, TASKGROUP, 
-    TASKTYPE, PROCESSDEFINITION_NAME, ISCANCELLED, ISSUSPENDED, ISOPEN, ISDRAFT, EXPECTED_EXECUTIONTIME, 
-    AGENT, ADMIN, FORMURIVIEW, CALLACTIVITY_INSTANCE_ID, COMMAND_ID, PENDINGTASKID, ARCHIVE_TIME
-  </sql>
+	<resultMap id="TaskResultMap" type="org.foxbpm.engine.impl.entity.TaskEntity">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="PROCESSINSTANCE_ID" property="processInstanceId"
+			jdbcType="VARCHAR" />
+		<result column="PROCESSDEFINITION_ID" property="processDefinitionId"
+			jdbcType="VARCHAR" />
+		<result column="VERSION" property="version" jdbcType="INTEGER" />
+		<result column="TOKEN_ID" property="tokenId" jdbcType="VARCHAR" />
+		<result column="NODE_ID" property="nodeId" jdbcType="VARCHAR" />
+		<result column="NODE_NAME" property="nodeName" jdbcType="VARCHAR" />
+		<result column="SUBJECT" property="subject" jdbcType="VARCHAR" />
+		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+		<result column="COMPLETEDESCRIPTION" property="completeDescription"
+			jdbcType="VARCHAR" />
+		<result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+		<result column="ASSIGNEE" property="assignee" jdbcType="VARCHAR" />
+		<result column="CLAIM_TIME" property="claimTime" jdbcType="TIMESTAMP" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
+		<result column="PROCESSSTART_TIME" property="processStartTime"
+			jdbcType="TIMESTAMP" />
+		<result column="PROCESS_INITIATOR" property="processInitiator"
+			jdbcType="VARCHAR" />
+		<result column="ISBLOCKING" property="isBlocking" jdbcType="VARCHAR" />
+		<result column="END_TIME" property="endTime" jdbcType="TIMESTAMP" />
+		<result column="DUEDATE" property="dueDate" jdbcType="TIMESTAMP" />
+		<result column="PRIORITY" property="priority" jdbcType="DECIMAL" />
+		<result column="CATEGORY" property="category" jdbcType="VARCHAR" />
+		<result column="OWNER" property="owner" jdbcType="VARCHAR" />
+		<result column="DELEGATIONSTATE" property="delegationState"
+			jdbcType="VARCHAR" />
+		<result column="BIZKEY" property="bizKey" jdbcType="VARCHAR" />
+		<result column="COMMAND_TYPE" property="commandType" jdbcType="VARCHAR" />
+		<result column="COMMAND_MESSAGE" property="commandMessage"
+			jdbcType="VARCHAR" />
+		<result column="TASK_COMMENT" property="taskComment" jdbcType="VARCHAR" />
+		<result column="NODE_NAME" property="name" jdbcType="VARCHAR" />
+		<result column="PROCESSDEFINITION_KEY" property="processDefinitionKey"
+			jdbcType="VARCHAR" />
+		<result column="FORMURI" property="formUri" jdbcType="VARCHAR" />
+		<result column="TASKGROUP" property="taskGroup" jdbcType="VARCHAR" />
+		<result column="TASKTYPE" property="taskType" jdbcType="VARCHAR" />
+		<result column="PROCESSDEFINITION_NAME" property="processDefinitionName"
+			jdbcType="VARCHAR" />
+		<result column="ISCANCELLED" property="isCancelled" jdbcType="VARCHAR" />
+		<result column="ISSUSPENDED" property="isSuspended" jdbcType="VARCHAR" />
+		<result column="ISOPEN" property="isOpen" jdbcType="VARCHAR" />
+		<result column="ISDRAFT" property="isDraft" jdbcType="VARCHAR" />
+		<result column="EXPECTED_EXECUTIONTIME" property="expectedExecutionTime"
+			jdbcType="DECIMAL" />
+		<result column="AGENT" property="agent" jdbcType="VARCHAR" />
+		<result column="ADMIN" property="admin" jdbcType="VARCHAR" />
+		<result column="FORMURIVIEW" property="formUriView" jdbcType="VARCHAR" />
+		<result column="CALLACTIVITY_INSTANCE_ID" property="callActivityInstanceId"
+			jdbcType="VARCHAR" />
+		<result column="COMMAND_ID" property="commandId" jdbcType="VARCHAR" />
+		<result column="PENDINGTASKID" property="pendingTaskId"
+			jdbcType="VARCHAR" />
+		<result column="ARCHIVE_TIME" property="archiveTime" jdbcType="TIMESTAMP" />
+	</resultMap>
 
-  <select id="selectTaskById" parameterType="java.lang.String" resultMap="TaskResultMap">
-	    select 
-	    <include refid="Task_Column_List" />
-	    from foxbpm_run_task
-	    where ID = #{id,jdbcType=VARCHAR}
-  </select>
-  
-  <select id="selectTaskByNativeQuery" parameterType="java.util.Map" resultMap="TaskResultMap">
-    ${sql}
-  </select>
-  
-   <select id="selectTasksByProcessInstanceId" parameterType="java.lang.String" resultMap="TaskResultMap">
-    select 
-    *
-    from foxbpm_run_task
-    where PROCESSINSTANCE_ID = #{id,jdbcType=VARCHAR}
-  </select>
-  
-   <select id="selectTasksByTokenId" parameterType="java.lang.String" resultMap="TaskResultMap">
-    select 
-    *
-    from foxbpm_run_task
-    where TOKEN_ID = #{id,jdbcType=VARCHAR}
-  </select>
-  
-   <select id="selectEndTasksByTokenIds" resultMap="TaskResultMap">
-    select 
-    *
-    from foxbpm_run_task
-    where END_TIME IS NULL AND TOKEN_ID IN
-    
-      <if test="tokenIds != null &amp;&amp; tokenIds.size() &gt; 0">
-            <foreach item="group" index="index" collection="candidateGroups" 
-                     open="(" separator="," close=")">
-              #{group}
-            </foreach>
-      </if>
-      ORDER BY END_TIME DESC    
-  </select>
-  
-  
-  
-  <select id="findTasksByQueryCriteria" parameterType="org.foxbpm.engine.impl.task.TaskQueryImpl" resultMap="TaskResultMap">
-  	${limitBefore}
-    select DISTINCT RES.* ${limitBetween}
-    <include refid="selectTasksByQueryCriteriaSql"/>
-    <if test="orderBy != null">
-       ${orderBy}
-    </if>
-    ${limitAfter}
-  </select>
-  
-  <select id="findTaskCountByQueryCriteria" parameterType="org.foxbpm.engine.impl.task.TaskQueryImpl" resultType="long">
-    select count(RES.ID)
-    <include refid="selectTasksByQueryCriteriaSql"/>
-  </select>
-  
-  <sql id="selectTasksByQueryCriteriaSql">  
-    from FOXBPM_RUN_TASK RES
-    
-    <if test="candidateUser != null">
-        left join FOXBPM_RUN_TASKIDENTITYLINK I on I.TASK_ID = RES.ID
-    </if>
-     <if test="initiator != null" >
-        inner join FOXBPM_RUN_PROCESSINSTANCE P ON P.ID = RES.PROCESSINSTANCE_ID
-     </if>
-    <where>
-       <if test="taskId != null" >
-        ID = #{taskId}
-      </if>
-      <if test="processInstanceId != null" >
-        and PROCESSINSTANCE_ID = #{processInstanceId}
-      </if>
-      <if test="tokenId != null" >
-        and TOKEN_ID = #{tokenId}
-      </if>
-      <if test="nodeId != null" >
-       and NODE_ID = #{nodeId}
-      </if>
-      <if test="description != null" >
-        and DESCRIPTION = #{description}
-      </if>
-      <if test="descriptionLike != null" >
-        and DESCRIPTION like #{descriptionLike}
-      </if>
-     
-     <if test="subject != null" >xx
-        and SUBJECT = #{subject}
-      </if>
-      <if test="subjectLike != null" >
-        and SUBJECT like #{subjectLike}
-      </if>
-     
-      <if test="initiator != null" >
-        and P.INITIATOR = #{initiator}
-      </if>
-      <if test="name != null" >
-       and NAME = #{name}
-      </if>
-      <if test="nameLike != null" >
-        and NAME like #{nameLike}
-      </if>
-      <if test="owner != null" >
-        and OWNER = #{owner}
-      </if>
-      <if test="businessKey != null" >
-        and BIZKEY = #{businessKey}
-      </if>
-       <if test="businessKeyLike != null" >
-        and BIZKEY like #{businessKeyLike}
-      </if>
-      
-      <if test="unassigned" >
-        and ASSIGNEE is null 
-      </if>
-      <if test="processDefinitionId != null" >
-        and PROCESSDEFINITION_ID = #{processDefinitionId}
-      </if>
-      <if test="processDefinitionKey != null" >
-        and PROCESSDEFINITION_KEY = #{processDefinitionKey}
-      </if>
-      <if test="processDefinitionName != null" >
-        and PROCESSDEFINITION_NAME = #{processDefinitionName}
-      </if>
-      <if test="processDefinitionNameLike != null" >
-        and PROCESSDEFINITION_NAME like #{processDefinitionNameLike}
-      </if>
-      
-      <!-- TaskType -->
-      <if test="taskTypeList != null  &amp;&amp; taskTypeList.size() &gt; 0" >
-        and TASKTYPE in 
-        <foreach item="group" index="index" collection="taskTypeList" 
-                     open="(" separator="," close=")">
-              #{group}
-        </foreach>
-      </if>
-      
-      <!-- 共享任务 -->
-      <if test="candidateUser != null  || (candidateGroups != null &amp;&amp; candidateGroups.size() &gt; 0)" >
-      and (
-        (RES.ASSIGNEE is null
-        and I.TYPE = 'candidate'
-        and 
-        ( 
-          <if test="candidateUser != null">
-            I.USER_ID = #{candidateUser}  or I.USER_ID='foxbpm_all_user'         
-          </if>
-          <if test="candidateUser != null &amp;&amp; candidateGroups != null &amp;&amp; candidateGroups.size() &gt; 0">
-            or
-          </if>
-          <if test="candidateGroups != null &amp;&amp; candidateGroups.size() &gt; 0">
-            <foreach item="group" index="index" collection="candidateGroups" 
-                     open="(" separator="or" close=")">
-              (I.GROUP_ID = #{group.groupId} AND group_type =#{group.groupType})
-            </foreach>
-          </if>
-        ))
-         <!-- 共享任务和独占任务同时存在 -->
-         <if test="assignee != null" >
-       		or RES.ASSIGNEE = #{assignee}
-      	</if>
-        )
-      </if>
-      <!-- 只有独占任务 -->
-       <if test="candidateUser == null &amp;&amp; candidateGroups == null">
-     		<if test="assignee != null" >
-       		and RES.ASSIGNEE = #{assignee}
-      	</if>
-      </if>
-      
-      <if test="agentProcessKey.size() &gt; 0">
-      	  and PROCESSDEFINITION_KEY in 
-        <foreach item="processKey" index="index" collection="agentProcessKey" 
-                     open="(" separator="," close=")">
-              #{processKey}
-        </foreach>
-      </if>
-      
-      <if test="end != null">
-      	and RES.END_TIME IS ${end}
-      </if>
-      
-      <if test="isSuspended != null" >
-        and ISSUSPENDED = #{isSuspended}
-      </if>
-      
-    </where>
-  </sql> 	
-  
-  <delete id="deleteTaskByProcessInstanceId" parameterType="java.lang.String">
-  	DELETE FROM FOXBPM_RUN_TASK WHERE PROCESSINSTANCE_ID = #{processInstanceId,jdbcType=VARCHAR}
-  </delete>
-  
-  <delete id="deleteTaskById" parameterType="java.lang.String">
-  	DELETE FROM FOXBPM_RUN_TASK WHERE ID = #{id,jdbcType=VARCHAR}
-  </delete>
-  
+
+	<insert id="insertTask" parameterType="org.foxbpm.engine.impl.entity.TaskEntity">
+		insert into foxbpm_run_task (ID, PROCESSINSTANCE_ID,
+		PROCESSDEFINITION_ID,
+		VERSION, TOKEN_ID, NODE_ID,
+		SUBJECT,COMPLETEDESCRIPTION,
+		DESCRIPTION, PARENT_ID, ASSIGNEE,
+		CLAIM_TIME, NAME, CREATE_TIME,
+		START_TIME, ISBLOCKING, END_TIME,
+		PROCESSSTART_TIME,PROCESS_INITIATOR,
+		DUEDATE, PRIORITY, CATEGORY,
+		OWNER, DELEGATIONSTATE, BIZKEY,
+		COMMAND_TYPE, COMMAND_MESSAGE, TASK_COMMENT,
+		NODE_NAME, PROCESSDEFINITION_KEY, FORMURI,
+		TASKGROUP, TASKTYPE, PROCESSDEFINITION_NAME,
+		ISCANCELLED, ISSUSPENDED, ISOPEN,
+		ISDRAFT, EXPECTED_EXECUTIONTIME, AGENT,
+		ADMIN, FORMURIVIEW, CALLACTIVITY_INSTANCE_ID,
+		COMMAND_ID, PENDINGTASKID, ARCHIVE_TIME
+		)
+		values (#{id,jdbcType=VARCHAR}, #{processInstanceId,jdbcType=VARCHAR},
+		#{processDefinitionId,jdbcType=VARCHAR},
+		#{version,jdbcType=INTEGER}, #{tokenId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR},
+		#{subject,jdbcType=VARCHAR}, #{completeDescription,jdbcType=VARCHAR},
+		#{description,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR},
+		#{assignee,jdbcType=VARCHAR},
+		#{claimTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+		#{startTime,jdbcType=TIMESTAMP}, #{isBlocking,jdbcType=VARCHAR},
+		#{endTime,jdbcType=TIMESTAMP},
+		#{processStartTime,jdbcType=TIMESTAMP},#{processInitiator,jdbcType=VARCHAR},
+		#{dueDate,jdbcType=TIMESTAMP}, #{priority,jdbcType=DECIMAL},
+		#{category,jdbcType=VARCHAR},
+		#{owner,jdbcType=VARCHAR}, #{delegationState,jdbcType=VARCHAR}, #{bizKey,jdbcType=VARCHAR},
+		#{commandType,jdbcType=VARCHAR}, #{commandMessage,jdbcType=VARCHAR},
+		#{taskComment,jdbcType=VARCHAR},
+		#{nodeName,jdbcType=VARCHAR}, #{processDefinitionKey,jdbcType=VARCHAR},
+		#{formUri,jdbcType=VARCHAR},
+		#{taskGroup,jdbcType=VARCHAR}, #{taskType,jdbcType=VARCHAR},
+		#{processDefinitionName,jdbcType=VARCHAR},
+		#{isCancelled,jdbcType=VARCHAR}, #{isSuspended,jdbcType=VARCHAR},
+		#{isOpen,jdbcType=VARCHAR},
+		#{isDraft,jdbcType=VARCHAR}, #{expectedExecutionTime,jdbcType=DECIMAL}, #{agent,jdbcType=VARCHAR},
+		#{admin,jdbcType=VARCHAR}, #{formUriView,jdbcType=VARCHAR},
+		#{callActivityInstanceId,jdbcType=VARCHAR},
+		#{commandId,jdbcType=VARCHAR}, #{pendingTaskId,jdbcType=VARCHAR},
+		#{archiveTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+
+	<update id="updateTask" parameterType="org.foxbpm.engine.impl.entity.TaskEntity">
+		update foxbpm_run_task
+		set
+		PROCESSINSTANCE_ID = #{processInstanceId,jdbcType=VARCHAR},
+		PROCESSDEFINITION_ID = #{processDefinitionId,jdbcType=VARCHAR},
+		VERSION = #{version,jdbcType=INTEGER},
+		TOKEN_ID = #{tokenId,jdbcType=VARCHAR},
+		NODE_ID = #{nodeId,jdbcType=VARCHAR},
+		SUBJECT = #{subject,jdbcType=VARCHAR},
+		COMPLETEDESCRIPTION = #{completeDescription,jdbcType=VARCHAR},
+		DESCRIPTION = #{description,jdbcType=VARCHAR},
+		PARENT_ID = #{parentId,jdbcType=VARCHAR},
+		ASSIGNEE = #{assignee,jdbcType=VARCHAR},
+		CLAIM_TIME = #{claimTime,jdbcType=TIMESTAMP},
+		NAME = #{name,jdbcType=VARCHAR},
+		CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+		START_TIME = #{startTime,jdbcType=TIMESTAMP},
+		ISBLOCKING = #{isBlocking,jdbcType=VARCHAR},
+		END_TIME = #{endTime,jdbcType=TIMESTAMP},
+		PROCESSSTART_TIME = #{processStartTime,jdbcType=TIMESTAMP},
+		PROCESS_INITIATOR = #{processInitiator,jdbcType=TIMESTAMP},
+		DUEDATE = #{dueDate,jdbcType=TIMESTAMP},
+		PRIORITY = #{priority,jdbcType=DECIMAL},
+		CATEGORY = #{category,jdbcType=VARCHAR},
+		OWNER = #{owner,jdbcType=VARCHAR},
+		DELEGATIONSTATE = #{delegationStateString,jdbcType=VARCHAR},
+		BIZKEY = #{bizKey,jdbcType=VARCHAR},
+		COMMAND_TYPE = #{commandType,jdbcType=VARCHAR},
+		COMMAND_MESSAGE = #{commandMessage,jdbcType=VARCHAR},
+		TASK_COMMENT = #{taskComment,jdbcType=VARCHAR},
+		NODE_NAME = #{name,jdbcType=VARCHAR},
+		PROCESSDEFINITION_KEY = #{processDefinitionKey,jdbcType=VARCHAR},
+		FORMURI = #{formUri,jdbcType=VARCHAR},
+		TASKGROUP = #{taskGroup,jdbcType=VARCHAR},
+		TASKTYPE = #{taskType,jdbcType=VARCHAR},
+		PROCESSDEFINITION_NAME = #{processDefinitionName,jdbcType=VARCHAR},
+		ISCANCELLED = #{isCancelled,jdbcType=VARCHAR},
+		ISSUSPENDED = #{isSuspended,jdbcType=VARCHAR},
+		ISOPEN = #{isOpen,jdbcType=VARCHAR},
+		ISDRAFT = #{isDraft,jdbcType=VARCHAR},
+		EXPECTED_EXECUTIONTIME = #{expectedExecutionTime,jdbcType=DECIMAL},
+		AGENT = #{agent,jdbcType=VARCHAR},
+		ADMIN = #{admin,jdbcType=VARCHAR},
+		FORMURIVIEW = #{formUriView,jdbcType=VARCHAR},
+		CALLACTIVITY_INSTANCE_ID = #{callActivityInstanceId,jdbcType=VARCHAR},
+		COMMAND_ID = #{commandId,jdbcType=VARCHAR},
+		PENDINGTASKID = #{pendingTaskId,jdbcType=VARCHAR},
+		ARCHIVE_TIME = #{archiveTime,jdbcType=TIMESTAMP}
+		where
+		ID=#{id,jdbcType=VARCHAR}
+	</update>
+
+	<sql id="Task_Column_List">
+		ID, PROCESSINSTANCE_ID, PROCESSDEFINITION_ID, VERSION, TOKEN_ID,
+		NODE_ID,SUBJECT,COMPLETEDESCRIPTION, DESCRIPTION,
+		PARENT_ID, ASSIGNEE, CLAIM_TIME, NAME, CREATE_TIME, START_TIME, ISBLOCKING,
+		END_TIME,
+		DUEDATE, PRIORITY, CATEGORY, OWNER, DELEGATIONSTATE, BIZKEY, COMMAND_TYPE,
+		COMMAND_MESSAGE, TASK_COMMENT, NODE_NAME, PROCESSDEFINITION_KEY,
+		FORMURI, TASKGROUP,
+		TASKTYPE, PROCESSDEFINITION_NAME, ISCANCELLED, ISSUSPENDED, ISOPEN, ISDRAFT,
+		EXPECTED_EXECUTIONTIME,
+		AGENT, ADMIN, FORMURIVIEW, CALLACTIVITY_INSTANCE_ID, COMMAND_ID,
+		PENDINGTASKID, ARCHIVE_TIME
+	</sql>
+
+	<select id="selectTaskById" parameterType="java.lang.String"
+		resultMap="TaskResultMap">
+		select
+		<include refid="Task_Column_List" />
+		from foxbpm_run_task
+		where ID = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectTaskByNativeQuery" parameterType="java.util.Map"
+		resultMap="TaskResultMap">
+		${sql}
+	</select>
+
+	<select id="selectTasksByProcessInstanceId" parameterType="java.lang.String"
+		resultMap="TaskResultMap">
+		select
+		*
+		from foxbpm_run_task
+		where PROCESSINSTANCE_ID = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectTasksByTokenId" parameterType="java.lang.String"
+		resultMap="TaskResultMap">
+		select
+		*
+		from foxbpm_run_task
+		where TOKEN_ID = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectEndTasksByTokenIds" resultMap="TaskResultMap">
+		select
+		*
+		from foxbpm_run_task
+		where END_TIME IS NULL AND TOKEN_ID IN
+
+		<if test="tokenIds != null &amp;&amp; tokenIds.size() &gt; 0">
+			<foreach item="group" index="index" collection="candidateGroups"
+				open="(" separator="," close=")">
+				#{group}
+			</foreach>
+		</if>
+		ORDER BY END_TIME DESC
+	</select>
+
+
+
+	<select id="findTasksByQueryCriteria" parameterType="org.foxbpm.engine.impl.task.TaskQueryImpl"
+		resultMap="TaskResultMap">
+		${limitBefore}
+		select DISTINCT RES.* ${limitBetween}
+		<include refid="selectTasksByQueryCriteriaSql" />
+		<if test="orderBy != null">
+			${orderBy}
+		</if>
+		${limitAfter}
+	</select>
+
+	<select id="findTaskCountByQueryCriteria" parameterType="org.foxbpm.engine.impl.task.TaskQueryImpl"
+		resultType="long">
+		select count(RES.ID)
+		<include refid="selectTasksByQueryCriteriaSql" />
+	</select>
+
+	<sql id="selectTasksByQueryCriteriaSql">
+		from FOXBPM_RUN_TASK RES
+
+		<if test="candidateUser != null">
+			left join FOXBPM_RUN_TASKIDENTITYLINK I on I.TASK_ID = RES.ID
+		</if>
+		<if test="initiator != null">
+			inner join FOXBPM_RUN_PROCESSINSTANCE P ON P.ID = RES.PROCESSINSTANCE_ID
+		</if>
+		<where>
+			<if test="taskId != null">
+				ID = #{taskId}
+			</if>
+			<if test="processInstanceId != null">
+				and PROCESSINSTANCE_ID = #{processInstanceId}
+			</if>
+			<if test="tokenId != null">
+				and TOKEN_ID = #{tokenId}
+			</if>
+			<if test="nodeId != null">
+				and NODE_ID = #{nodeId}
+			</if>
+			<if test="description != null">
+				and DESCRIPTION = #{description}
+			</if>
+			<if test="descriptionLike != null">
+				and DESCRIPTION like #{descriptionLike}
+			</if>
+
+			<if test="subject != null">
+				and SUBJECT = #{subject}
+			</if>
+			<if test="subjectLike != null">
+				and SUBJECT like #{subjectLike}
+			</if>
+
+			<if test="createTimeBefore != null">
+				and CREATE_TIME
+				&gt;=#{createTimeBefore,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createTimeAfter != null">
+				and CREATE_TIME &lt;=
+				#{createTimeAfter,jdbcType=TIMESTAMP}
+			</if>
+
+			<if test="initiator != null">
+				and P.INITIATOR = #{initiator}
+			</if>
+			<if test="name != null">
+				and NAME = #{name}
+			</if>
+			<if test="nameLike != null">
+				and NAME like #{nameLike}
+			</if>
+			<if test="owner != null">
+				and OWNER = #{owner}
+			</if>
+			<if test="businessKey != null">
+				and BIZKEY = #{businessKey}
+			</if>
+			<if test="businessKeyLike != null">
+				and BIZKEY like #{businessKeyLike}
+			</if>
+
+			<if test="unassigned">
+				and ASSIGNEE is null
+			</if>
+			<if test="processDefinitionId != null">
+				and PROCESSDEFINITION_ID = #{processDefinitionId}
+			</if>
+			<if test="processDefinitionKey != null">
+				and PROCESSDEFINITION_KEY = #{processDefinitionKey}
+			</if>
+			<if test="processDefinitionName != null">
+				and PROCESSDEFINITION_NAME = #{processDefinitionName}
+			</if>
+			<if test="processDefinitionNameLike != null">
+				and PROCESSDEFINITION_NAME like #{processDefinitionNameLike}
+			</if>
+
+			<!-- TaskType -->
+			<if test="taskTypeList != null  &amp;&amp; taskTypeList.size() &gt; 0">
+				and TASKTYPE in
+				<foreach item="group" index="index" collection="taskTypeList"
+					open="(" separator="," close=")">
+					#{group}
+				</foreach>
+			</if>
+
+			<!-- 共享任务 -->
+			<if
+				test="candidateUser != null  || (candidateGroups != null &amp;&amp; candidateGroups.size() &gt; 0)">
+				and (
+				(RES.ASSIGNEE is null
+				and I.TYPE = 'candidate'
+				and
+				(
+				<if test="candidateUser != null">
+					I.USER_ID = #{candidateUser} or I.USER_ID='foxbpm_all_user'
+				</if>
+				<if
+					test="candidateUser != null &amp;&amp; candidateGroups != null &amp;&amp; candidateGroups.size() &gt; 0">
+					or
+				</if>
+				<if
+					test="candidateGroups != null &amp;&amp; candidateGroups.size() &gt; 0">
+					<foreach item="group" index="index" collection="candidateGroups"
+						open="(" separator="or" close=")">
+						(I.GROUP_ID = #{group.groupId} AND group_type =#{group.groupType})
+					</foreach>
+				</if>
+				))
+				<!-- 共享任务和独占任务同时存在 -->
+				<if test="assignee != null">
+					or RES.ASSIGNEE = #{assignee}
+				</if>
+				)
+			</if>
+			<!-- 只有独占任务 -->
+			<if test="candidateUser == null &amp;&amp; candidateGroups == null">
+				<if test="assignee != null">
+					and RES.ASSIGNEE = #{assignee}
+				</if>
+			</if>
+
+			<if test="agentProcessKey.size() &gt; 0">
+				and PROCESSDEFINITION_KEY in
+				<foreach item="processKey" index="index" collection="agentProcessKey"
+					open="(" separator="," close=")">
+					#{processKey}
+				</foreach>
+			</if>
+
+			<if test="end != null">
+				and RES.END_TIME IS ${end}
+			</if>
+
+			<if test="isSuspended != null">
+				and ISSUSPENDED = #{isSuspended}
+			</if>
+
+		</where>
+	</sql>
+
+	<delete id="deleteTaskByProcessInstanceId" parameterType="java.lang.String">
+		DELETE FROM FOXBPM_RUN_TASK WHERE PROCESSINSTANCE_ID =
+		#{processInstanceId,jdbcType=VARCHAR}
+	</delete>
+
+	<delete id="deleteTaskById" parameterType="java.lang.String">
+		DELETE FROM FOXBPM_RUN_TASK WHERE ID = #{id,jdbcType=VARCHAR}
+	</delete>
+
 </mapper>
