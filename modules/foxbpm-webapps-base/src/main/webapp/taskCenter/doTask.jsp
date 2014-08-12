@@ -32,7 +32,11 @@ $(document).ready(function() {
     };
     
     var _flowCommit = function(){
-    	$("#form1").submit();
+    	if(confirm("确定要提交吗?")){
+    		$("#form1").submit();
+    	}
+    	return false;
+    	
     };
 	var flowconfig ={ getBizKey: _getBizKey, getTaskComment: _getTaskComment,flowCommit:_flowCommit };
 	

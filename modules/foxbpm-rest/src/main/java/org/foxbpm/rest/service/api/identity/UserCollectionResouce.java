@@ -20,11 +20,14 @@ package org.foxbpm.rest.service.api.identity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.foxbpm.engine.impl.entity.UserEntity;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.DataResult;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
+import org.restlet.data.Form;
 import org.restlet.resource.Get;
 
 /**
@@ -36,7 +39,21 @@ import org.restlet.resource.Get;
 public class UserCollectionResouce extends AbstractRestResource {
 	@Get
 	public DataResult getAllUsers() {
-		List<UserEntity> users = FoxBpmUtil.getProcessEngine().getIdentityService().getUsers(null, null);
+		Form query = getQuery();
+		Set<String> names = query.getNames();
+		String userName = null;
+		String userId = null;
+		if (names.contains("userName")) {
+			String tmpUserName = getQueryParameter("userName", query);
+			if(StringUtil.isNotEmpty(tmpUserName))
+				userName = "%"+tmpUserName+"%";
+		}
+		if (names.contains("userId")) {
+			String tmpUserId = getQueryParameter("userId", query);
+			if(StringUtil.isNotEmpty(tmpUserId))
+				userId = "%"+tmpUserId+"%";
+		}
+		List<UserEntity> users = FoxBpmUtil.getProcessEngine().getIdentityService().getUsers(userId, userName);
 		// 数据转换
 		List<Map<String, Object>> resultDatas = new ArrayList<Map<String, Object>>();
 		for (UserEntity user : users) {

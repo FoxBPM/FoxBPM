@@ -21,25 +21,35 @@ Foxbpm.commandHandler.processStatus = function(data){
 };
 		
 		
-Foxbpm.commandHandler.rollbackNode = function(){
-	return {nodeId:"userTask_1"};
+Foxbpm.commandHandler.transfer = function(){
+	var userId = showDialog("common/selectUser.html");
+	if(userId == null || userId === undefined){
+		return null;
+	}
+	return {transferUserId:userId};
 };
 
-Foxbpm.commandHandler.rollbacktask = function(){
+Foxbpm.commandHandler.rollBack_reset = function(data){
+	var resultId = showDialog("common/selectRollbackNode.html?taskId="+data.taskId);
+	if(resultId == null || resultId === undefined){
+		return null;
+	}
+	return {rollBackNodeId:resultId};
+};
 
+
+
+function showDialog(url){
 	window.rv = null;
 	var rv = null;
 	var passObj = {
-			fn : function(params, d) {
-				params['rollBackNodeId'] = d.rollBackNodeId;
-			},
-			opener : window
+		opener : window
 	};
-	rv = window.showModalDialog("common/test.html", passObj,
+	rv = window.showModalDialog(url, passObj,
 			"dialogWidth=600;dialogHeight=400");
 	if(rv){
 		return rv;
 	}else{
 		return window.rv;
 	}
-};
+}

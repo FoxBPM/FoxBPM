@@ -123,7 +123,8 @@ public class UserTaskParser extends TaskParser {
 		String taskDescription = BpmnModelUtil.getUserTaskDescription(baseElement);
 		String taskCompleteDescription = BpmnModelUtil
 				.getUserTaskCompleteTaskDescription(baseElement);
-
+		String taskType = BpmnModelUtil.getUserTaskType(baseElement);
+		taskDefinition.setTaskType(taskType);
 		taskDefinition.setTaskSubject(subject);
 		taskDefinition.setFormUri(formUri);
 		taskDefinition.setFormUriView(formUriView);

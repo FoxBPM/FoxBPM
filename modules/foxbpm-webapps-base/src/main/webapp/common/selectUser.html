@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<link rel="stylesheet" type="text/css" href="css/reset.css">
+<link rel="stylesheet" type="text/css" href="css/color_red.css">
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+function applyData(params){
+	$.ajax({
+        type: "get",//使用get方法访问后台
+        dataType: "json",//返回json格式的数据
+        url: "../service/identity/allUsers",//要访问的后台地址
+        data:params,
+        success: function(msg){//msg为返回的数据，在这里做数据绑定
+            var data = msg.data;
+            var dataTable = $("<table id='dataList' width='100%' class='fix-table'></table>");
+            var dataThead = $("<thead><th style='width: 50%;'>用户编号</th><th>用户姓名</th></thead>");
+            dataThead.appendTo(dataTable);
+            var dataTbody = $("<tbody></tbody>");
+            //画任务命令
+            $.each(data, function(i, n){
+                var dataTr = $("<tr></tr>");
+               	dataTr.attr("data-rowData",n.userId);
+                dataTr.append($("<td></td>").append(n.userId)).append($("<td></td>").append(n.userName));
+                dataTbody.append(dataTr);
+            });
+            
+            dataTable.append(dataTbody);
+            $("#userList").html(dataTable);
+            $("table#dataList tr").click(function() {
+        		$("table#dataList tr.selected").removeClass("selected");
+        		$(this).addClass("selected");
+        	});
+        },
+        error:function(mes){
+       	 	alert(mes.responseText);
+        }
+	 });
+}
+$(document).ready(function() {
+	applyData();
+	$("#ok").click(function() {
+		var rv = null;
+		$("table#dataList tr.selected").each(function(index) {
+			rv = $(this).attr("data-rowData");
+		});
+		if (window.opener) {
+			window.opener.rv = rv;
+		} else if (obj.opener) {
+			obj.opener.rv = rv;
+		} else {
+			obj.fn(obj.params, rv);
+		}
+		window.close();
+	});
+	
+	$("#searchBtn").click(function(){
+		var params = {};
+		params["userId"] = $("#userId").val();
+		params["userName"] = $("#userName").val();
+		applyData(params);
+	});
+});
+
+
+
+</script>
+</head>
+<body>
+<div id="search" class="search">
+	<input type="hidden" name="action" value="selectUserList" />
+	<table width="100%">
+		<tr>
+			<td class="title-r">用户编号：</td>
+			<td style="width: 120px">
+				<input type="text" id="userId" class="fix-input" style="width: 100px;" value="" />
+			</td>
+			<td class="title-r">用户姓名：</td>
+			<td style="width: 120px">
+				<input type="text" id="userName" class="fix-input" style="width: 100px;" value="" />
+			</td>
+			<td style="width: 70px">
+				<div class="btn-normal">
+					<a href="javascript:void(0)" id="searchBtn">查找</a>
+				</div>
+			</td>
+			<td>
+				<div class="btn-normal">
+					<a href="javascript:void(0)" id="ok">确定</a>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+<div id="userList" class="content"></div>
+</body>
+</html>

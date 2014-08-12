@@ -218,6 +218,16 @@ public class BpmnModelUtil {
 	}
 	
 	/**
+	 * 获取任务分配策略
+	 * @param baseElement
+	 * @return
+	 */
+	public static String getUserTaskType(BaseElement baseElement){
+		String taskType = (String)BpmnModelUtil.getExtensionAttribute(baseElement, FoxBPMPackage.Literals.DOCUMENT_ROOT__TASK_TYPE);
+		return taskType;
+	}
+	
+	/**
 	 * 获取任务分配表达式
 	 * @param baseElement
 	 * @return

@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -329,6 +330,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		return resultMap;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public ProcessInstance completeTask(String flowInfo) {
 		
@@ -348,6 +350,9 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		
 		// 命令类型
 		JsonNode commandTypeNode = params.get("commandType");
+		JsonNode commandParamsNode = params.get("commandParams");
+		
+		
 		if (commandTypeNode == null) {
 			throw new FoxbpmWebException(FoxbpmExceptionCode.FOXBPMEX_COMMANDTYPE, "commandType is null !");
 		}
@@ -363,7 +368,16 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		if(taskCommentNode != null){
 			expandTaskCommand.setTaskComment(taskCommentNode.getTextValue());
 		}
-		
+		//设置任务命令参数
+		Map<String,Object> taskParams = new HashMap<String, Object>();
+		if(commandParamsNode != null){
+			Iterator<String> it = commandParamsNode.getFieldNames();
+			while(it.hasNext()){
+				String tmp = it.next();
+				taskParams.put(tmp, commandParamsNode.get(tmp).getValueAsText());
+			}
+		}
+		expandTaskCommand.setParamMap(taskParams);
 		ProcessInstance processInstance = null;
 		if (taskIdNode != null && StringUtil.isNotEmpty(taskIdNode.getTextValue())) {
 			expandTaskCommand.setTaskId(taskIdNode.getTextValue());

@@ -119,10 +119,6 @@
 			isEnabled="true" type="toDoTasks"
 			filter="org.foxbpm.engine.impl.task.filter.RollBackPreviousStepFilter"
 			description="自动计算并退回到流程的上一步骤,任务处理者为上一步骤的处理者。">
-			<commandParam key="rollBackNodeId" name="退回的节点号"
-				description="" dataType="String" bizType="InputParam" />
-			<commandParam key="rollBackNodeId" name="退回的节点号"
-				description="" dataType="String" bizType="InputParam" />
 			<commandParam key="isSaveData" name="是否保存数据" value="true"
 				description="" dataType="String" bizType="ControlParam" />
 			<commandParam key="isVerification" name="是否触发验证" value="true"

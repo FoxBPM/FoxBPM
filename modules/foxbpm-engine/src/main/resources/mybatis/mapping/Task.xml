@@ -67,7 +67,7 @@
 
 
 	<insert id="insertTask" parameterType="org.foxbpm.engine.impl.entity.TaskEntity">
-		insert into foxbpm_run_task (ID, PROCESSINSTANCE_ID,
+		INSERT INTO FOXBPM_RUN_TASK (ID, PROCESSINSTANCE_ID,
 		PROCESSDEFINITION_ID,
 		VERSION, TOKEN_ID, NODE_ID,
 		SUBJECT,COMPLETEDESCRIPTION,
@@ -116,8 +116,8 @@
 
 
 	<update id="updateTask" parameterType="org.foxbpm.engine.impl.entity.TaskEntity">
-		update foxbpm_run_task
-		set
+		UPDATE FOXBPM_RUN_TASK
+		SET
 		PROCESSINSTANCE_ID = #{processInstanceId,jdbcType=VARCHAR},
 		PROCESSDEFINITION_ID = #{processDefinitionId,jdbcType=VARCHAR},
 		VERSION = #{version,jdbcType=INTEGER},
@@ -183,10 +183,10 @@
 
 	<select id="selectTaskById" parameterType="java.lang.String"
 		resultMap="TaskResultMap">
-		select
+		SELECT
 		<include refid="Task_Column_List" />
-		from foxbpm_run_task
-		where ID = #{id,jdbcType=VARCHAR}
+		FROM FOXBPM_RUN_TASK
+		WHERE ID = #{id,jdbcType=VARCHAR}
 	</select>
 
 	<select id="selectTaskByNativeQuery" parameterType="java.util.Map"
@@ -196,31 +196,31 @@
 
 	<select id="selectTasksByProcessInstanceId" parameterType="java.lang.String"
 		resultMap="TaskResultMap">
-		select
+		SELECT
 		*
-		from foxbpm_run_task
+		FROM FOXBPM_RUN_TASK
 		where PROCESSINSTANCE_ID = #{id,jdbcType=VARCHAR}
 	</select>
 	
 
 	<select id="selectTasksByTokenId" parameterType="java.lang.String"
 		resultMap="TaskResultMap">
-		select
+		SELECT
 		*
-		from foxbpm_run_task
+		FROM FOXBPM_RUN_TASK
 		where TOKEN_ID = #{id,jdbcType=VARCHAR}
 	</select>
 
-	<select id="selectEndTasksByTokenIds" resultMap="TaskResultMap">
-		select
+	<select id="selectEndTasksByTokenIds" parameterType="java.util.List" resultMap="TaskResultMap">
+		SELECT
 		*
-		from foxbpm_run_task
-		where END_TIME IS NULL AND TOKEN_ID IN
-
-		<if test="tokenIds != null &amp;&amp; tokenIds.size() &gt; 0">
-			<foreach item="group" index="index" collection="candidateGroups"
+		FROM FOXBPM_RUN_TASK
+		where END_TIME IS NOT NULL AND TASKTYPE = 'foxbpmtask'
+		<if test="list != null &amp;&amp; list.size() &gt; 0">
+		 	AND TOKEN_ID IN
+			<foreach item="item" index="index" collection="list"
 				open="(" separator="," close=")">
-				#{group}
+				#{item}
 			</foreach>
 		</if>
 		ORDER BY END_TIME DESC
