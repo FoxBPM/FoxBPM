@@ -162,7 +162,7 @@
 
 		<taskCommandDefinition id="rollBack_designation_assignee"
 			name="退回-后台指定步骤-自动最近处理者"
-			command="org.foxbpm.engine.impl.task.command.RollBackTaskDesignationAssigneeCommand" "
+			command="org.foxbpm.engine.impl.task.command.RollBackTaskDesignationAssigneeCommand"
 			cmd="org.foxbpm.engine.impl.task.cmd.RollBackTaskDesignationAssigneeCmd"
 			isEnabled="true" type="toDoTasks"
 			filter="org.foxbpm.engine.impl.task.filter.RollBackTaskDesignationAssigneeFilter"
