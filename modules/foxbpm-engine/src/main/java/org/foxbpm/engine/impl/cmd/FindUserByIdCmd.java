@@ -17,12 +17,12 @@
  */
 package org.foxbpm.engine.impl.cmd;
 
-import org.foxbpm.engine.identity.User;
+import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
-public class FindUserByIdCmd implements Command<User> {
+public class FindUserByIdCmd implements Command<UserEntity> {
 
 	
 	private String userId;
@@ -31,7 +31,7 @@ public class FindUserByIdCmd implements Command<User> {
 	}
 	
 	@Override
-	public User execute(CommandContext commandContext) {
+	public UserEntity execute(CommandContext commandContext) {
 		return Authentication.selectUserByUserId(userId);
 	}
 }

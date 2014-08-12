@@ -21,6 +21,9 @@
 		<property name="username" value="${idbase.username}" />
 		<property name="password" value="${idbase.password}" />
 	</bean>
+	<bean id="springConfigLoadUtil"
+		class="org.foxbpm.web.common.util.SpringConfigLoadUtils" />
+	
 	<!-- 使用jdbcTemplate -->
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource">
@@ -67,7 +70,7 @@
 		<!-- 可选的发布处理行为,可卸载 -->
 		<property name="customPostDeployers">
 			<list>
-				<bean class="org.foxbpm.engine.impl.bpmn.deployer.PngDeployer"/>
+				<bean class="org.foxbpm.engine.impl.bpmn.deployer.PngDeployer" />
 			</list>
 		</property>
 	</bean>

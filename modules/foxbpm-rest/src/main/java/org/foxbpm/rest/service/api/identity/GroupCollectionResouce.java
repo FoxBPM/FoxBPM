@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.foxbpm.engine.IdentityService;
-import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.GroupDefinition;
+import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.DataResult;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
@@ -37,12 +37,12 @@ public class GroupCollectionResouce extends AbstractRestResource{
 	
 	@Get
 	public DataResult getAllGroups(){
-		List<Group> groupEntitys = new ArrayList<Group>();
+		List<GroupEntity> groupEntitys = new ArrayList<GroupEntity>();
 		List<GroupDefinition> groupDefinitions = FoxBpmUtil.getProcessEngine().getProcessEngineConfiguration().getGroupDefinitions();
 		IdentityService identityService = FoxBpmUtil.getProcessEngine().getIdentityService();
 		if(groupDefinitions != null && ! groupDefinitions.isEmpty()){
 			for(GroupDefinition tmpDefintion : groupDefinitions){
-				List<Group> groups = identityService.getAllGroup(tmpDefintion.getType());
+				List<GroupEntity> groups = identityService.getAllGroup(tmpDefintion.getType());
 				groupEntitys.addAll(groups);
 			}
 		}

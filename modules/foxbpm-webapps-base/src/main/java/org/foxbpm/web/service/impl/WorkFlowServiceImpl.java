@@ -26,9 +26,9 @@ import java.util.Map;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentEntity;
 import org.foxbpm.engine.impl.db.Page;
+import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.StringUtil;
@@ -43,6 +43,7 @@ import org.foxbpm.web.common.constant.FoxbpmExceptionCode;
 import org.foxbpm.web.common.constant.WebContextAttributeName;
 import org.foxbpm.web.common.exception.FoxbpmWebException;
 import org.foxbpm.web.common.util.DateUtil;
+import org.foxbpm.web.common.util.FlowUtil;
 import org.foxbpm.web.common.util.JSONUtil;
 import org.foxbpm.web.common.util.Pagination;
 import org.foxbpm.web.service.interfaces.IWorkFlowService;
@@ -163,6 +164,8 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			attrMap = pi.getPersistentState();
 			attrMap.put("processDefinitionName", modelService.getProcessDefinition(pi.getProcessDefinitionId()).getName());
 			attrMap.put("initiatorName", getUserName(StringUtil.getString(attrMap.get("initiator"))));
+			String nowNodeInfo = FlowUtil.getShareTaskNowNodeInfo(pi.getId());
+			attrMap.put("nowNodeInfo",nowNodeInfo);
 			resultData.add(attrMap);
 		}
 		
@@ -437,7 +440,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 	}
 	
 	@Override
-	public List<User> queryUsers(Pagination<String> pageInfor, Map<String, Object> params) {
+	public List<UserEntity> queryUsers(Pagination<String> pageInfor, Map<String, Object> params) {
 		
 		String id = StringUtil.getString(params.get("id"));
 		String name = StringUtil.getString(params.get("name"));

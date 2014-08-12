@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.foxbpm.engine.identity.User;
+import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.DataResult;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
@@ -36,10 +36,10 @@ import org.restlet.resource.Get;
 public class UserCollectionResouce extends AbstractRestResource {
 	@Get
 	public DataResult getAllUsers() {
-		List<User> users = FoxBpmUtil.getProcessEngine().getIdentityService().getUsers(null, null);
+		List<UserEntity> users = FoxBpmUtil.getProcessEngine().getIdentityService().getUsers(null, null);
 		// 数据转换
 		List<Map<String, Object>> resultDatas = new ArrayList<Map<String, Object>>();
-		for (User user : users) {
+		for (UserEntity user : users) {
 			resultDatas.add(user.getPersistentState());
 		}
 		// 数据响应体构造

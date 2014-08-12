@@ -27,7 +27,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.foxbpm.engine.identity.User;
+import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.web.common.constant.WebActionName;
 import org.foxbpm.web.common.constant.WebContextAttributeName;
@@ -222,13 +222,13 @@ public class WorkFlowController extends AbstWebController {
 		// 分页信息
 		Pagination<String> pageInfor = new Pagination<String>(pageIndex, pageSize);
 		// 查询结果
-		List<User> users = workFlowService.queryUsers(pageInfor, requestParams);
+		List<UserEntity> users = workFlowService.queryUsers(pageInfor, requestParams);
 		// 查询用户数
 		long count = workFlowService.queryUsersCount(requestParams);
 		pageInfor.setTotal(StringUtil.getInt(count));
 		List<Map<String, Object>> userList = new ArrayList<Map<String, Object>>();
 		if (null != users && !users.isEmpty()) {
-			for (User user : users) {
+			for (UserEntity user : users) {
 				userList.add(user.getPersistentState());
 			}
 		}

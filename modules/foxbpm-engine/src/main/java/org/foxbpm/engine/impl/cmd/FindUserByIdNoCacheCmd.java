@@ -19,10 +19,9 @@ package org.foxbpm.engine.impl.cmd;
 
 import java.util.List;
 
-import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.GroupDefinition;
-import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentTo;
+import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
@@ -34,7 +33,7 @@ import org.foxbpm.engine.impl.interceptor.CommandContext;
  * @author ych
  *
  */
-public class FindUserByIdNoCacheCmd implements Command<User>{
+public class FindUserByIdNoCacheCmd implements Command<UserEntity>{
 	
 	private String userId;
 	public FindUserByIdNoCacheCmd(String userId) {
@@ -49,7 +48,7 @@ public class FindUserByIdNoCacheCmd implements Command<User>{
 		}
 		//处理组织机构
 		List<GroupDefinition> groupDefinitions = commandContext.getProcessEngineConfigurationImpl().getGroupDefinitions();
-		List<Group> tmpGroups = null;
+		List<GroupEntity> tmpGroups = null;
 		for(GroupDefinition groupDefinition : groupDefinitions){
 			tmpGroups = groupDefinition.selectGroupByUserId(userId);
 			if(tmpGroups != null && tmpGroups.size() >0){

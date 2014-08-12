@@ -21,7 +21,6 @@ package org.foxbpm.engine.impl.cmd;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.identity.UserDefinition;
 import org.foxbpm.engine.impl.db.Page;
 import org.foxbpm.engine.impl.entity.UserEntity;
@@ -34,7 +33,7 @@ import org.foxbpm.engine.impl.interceptor.CommandContext;
  * @author Administrator
  * 
  */
-public class FindUsersCmd implements Command<List<User>> {
+public class FindUsersCmd implements Command<List<UserEntity>> {
 
 	/**
 	 * 示例：%20080101%
@@ -53,7 +52,7 @@ public class FindUsersCmd implements Command<List<User>> {
 	}
 
 	@Override
-	public List<User> execute(CommandContext commandContext) {
+	public List<UserEntity> execute(CommandContext commandContext) {
 		UserDefinition userDefinition = commandContext.getUserEntityManager();
 		List<UserEntity> userEntityList = null;
 		if (null != page) {
@@ -61,9 +60,9 @@ public class FindUsersCmd implements Command<List<User>> {
 		} else {
 			userEntityList = userDefinition.findUsers(idLike, nameLike);
 		}
-		List<User> userList = null;
+		List<UserEntity> userList = null;
 		if (null != userEntityList && !userEntityList.isEmpty()) {
-			userList = new ArrayList<User>();
+			userList = new ArrayList<UserEntity>();
 			for (UserEntity userEntity : userEntityList) {
 				userList.add(userEntity);
 			}

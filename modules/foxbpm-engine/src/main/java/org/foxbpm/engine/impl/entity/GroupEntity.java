@@ -19,9 +19,7 @@ package org.foxbpm.engine.impl.entity;
 
 import java.util.Map;
 
-import org.foxbpm.engine.identity.Group;
-
-public class GroupEntity implements Group{
+public class GroupEntity{
 
 	private String groupId;
 	private String groupName;

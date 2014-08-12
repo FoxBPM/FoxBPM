@@ -20,7 +20,6 @@ package org.foxbpm.engine.impl.identity;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.cache.CacheUtil;
@@ -37,13 +36,13 @@ public class GroupDeptImpl implements GroupDefinition {
 		this.type = groupType;
 	}
 	@SuppressWarnings("unchecked")
-	public List<Group> selectGroupByUserId(String userId) {
-		List<Group> groups = (List<Group>) CacheUtil.getIdentityCache().get("userDeptCache_" + userId);
+	public List<GroupEntity> selectGroupByUserId(String userId) {
+		List<GroupEntity> groups = (List<GroupEntity>) CacheUtil.getIdentityCache().get("userDeptCache_" + userId);
 		if(groups != null){
 			return groups;
 		}
 		ISqlSession sqlsession = Context.getCommandContext().getSqlSession();
-		groups = (List<Group>)sqlsession.selectListWithRawParameter("selectDeptByUserId", userId);
+		groups = (List<GroupEntity>)sqlsession.selectListWithRawParameter("selectDeptByUserId", userId);
 		CacheUtil.getIdentityCache().add("userDeptCache_" + userId, groups);
 		return groups;
 	}
@@ -74,14 +73,14 @@ public class GroupDeptImpl implements GroupDefinition {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Group> selectChildrenByGroupId(String groupId) {
-		List<Group> groups = (List<Group>)CacheUtil.getIdentityCache().get("selectChildrenByGroupId_" + groupId);
+	public List<GroupEntity> selectChildrenByGroupId(String groupId) {
+		List<GroupEntity> groups = (List<GroupEntity>)CacheUtil.getIdentityCache().get("selectChildrenByGroupId_" + groupId);
 		if(groups != null){
 			return groups;
 		}
-		groups = new ArrayList<Group>();
+		groups = new ArrayList<GroupEntity>();
 		//获取本身
-		Group group = selectGroupByGroupId(groupId);
+		GroupEntity group = selectGroupByGroupId(groupId);
 		if(group != null){
 			groups.add(group);
 			//递归子组
@@ -96,25 +95,25 @@ public class GroupDeptImpl implements GroupDefinition {
 	 * @param groups
 	 */
 	@SuppressWarnings("unchecked")
-	public void selectSubDept(String groupId,List<Group> groups){
+	public void selectSubDept(String groupId,List<GroupEntity> groups){
 		ISqlSession sqlSession = Context.getCommandContext().getSqlSession();
-		List<Group> tmpGroups = (List<Group>)sqlSession.selectListWithRawParameter("selectDeptBySupId", groupId);
+		List<GroupEntity> tmpGroups = (List<GroupEntity>)sqlSession.selectListWithRawParameter("selectDeptBySupId", groupId);
 		if(tmpGroups != null){
 			groups.addAll(tmpGroups);
-			for(Group tmp : tmpGroups){
+			for(GroupEntity tmp : tmpGroups){
 				selectSubDept(tmp.getGroupId(),groups);
 			}
 		}
 	}
 	
 	@Override
-	public Group selectGroupByGroupId(String groupId) {
-		Group group = (Group)CacheUtil.getIdentityCache().get("deptCache_" + groupId);
+	public GroupEntity selectGroupByGroupId(String groupId) {
+		GroupEntity group = (GroupEntity)CacheUtil.getIdentityCache().get("deptCache_" + groupId);
 		if(group != null){
 			return group;
 		}
 		ISqlSession sqlSession = Context.getCommandContext().getSqlSession();
-		group = (Group) sqlSession.selectOne("selectDeptById", groupId);
+		group = (GroupEntity) sqlSession.selectOne("selectDeptById", groupId);
 		CacheUtil.getIdentityCache().add("deptCache_" + groupId, group);
 		return group;
 	}

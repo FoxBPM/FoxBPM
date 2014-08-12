@@ -35,7 +35,7 @@ public interface GroupDefinition {
 	 * @param userId
 	 * @return
 	 */
-	List<Group> selectGroupByUserId(String userId);
+	List<GroupEntity> selectGroupByUserId(String userId);
 	
 	/**
 	 * 获取所有的组信息（如:所有角色信息）
@@ -79,7 +79,7 @@ public interface GroupDefinition {
 	 * @param groupId
 	 * @return
 	 */
-	List<Group> selectChildrenByGroupId(String groupId);
+	List<GroupEntity> selectChildrenByGroupId(String groupId);
 	
 	/**
 	 * 根据组编号获取组对象
@@ -87,6 +87,6 @@ public interface GroupDefinition {
 	 * @param groupId
 	 * @return
 	 */
-	Group selectGroupByGroupId(String groupId);
+	GroupEntity selectGroupByGroupId(String groupId);
 	
 }
