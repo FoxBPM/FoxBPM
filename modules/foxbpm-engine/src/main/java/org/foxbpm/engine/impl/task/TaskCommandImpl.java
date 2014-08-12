@@ -18,16 +18,19 @@
 package org.foxbpm.engine.impl.task;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
+import org.foxbpm.engine.task.CommandParam;
+import org.foxbpm.engine.task.CommandParamType;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
-
-public class TaskCommandImpl implements Serializable,TaskCommand {
+public class TaskCommandImpl implements Serializable, TaskCommand {
 
 	/**
 	 * 
@@ -35,7 +38,6 @@ public class TaskCommandImpl implements Serializable,TaskCommand {
 	private static final long serialVersionUID = -3240434310337515303L;
 
 	protected String id;
-
 
 	protected String name;
 
@@ -48,11 +50,37 @@ public class TaskCommandImpl implements Serializable,TaskCommand {
 	protected UserTaskBehavior userTask;
 
 	protected String taskCommandDefType;
-	
 
+	protected List<CommandParam> commandParams = new ArrayList<CommandParam>();
+
+	public List<CommandParam> getCommandParamsByType(CommandParamType commandParamType) {
+		List<CommandParam> commandParamsType = new ArrayList<CommandParam>();
+		for (CommandParam commandParam : commandParams) {
+			if (commandParam.getBizType() == commandParamType) {
+				commandParamsType.add(commandParam);
+			}
+		}
+		return commandParamsType;
+	}
 	
-	
-	
+	public CommandParam getCommandParam(String paramKey) {
+		for (CommandParam commandParam : commandParams) {
+			if (commandParam.getKey().equals(paramKey)) {
+				return commandParam;
+			}
+		}
+		return null;
+	}
+
+
+	public List<CommandParam> getCommandParams() {
+		return commandParams;
+	}
+
+	public void setCommandParams(List<CommandParam> commandParams) {
+		this.commandParams = commandParams;
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -64,10 +92,10 @@ public class TaskCommandImpl implements Serializable,TaskCommand {
 	public Expression getExpression() {
 		return expression;
 	}
-	
+
 	public Object getExpressionValue(FlowNodeExecutionContext executionContext) {
-		
-		if(expression!=null){
+
+		if (expression != null) {
 			return expression.getValue(executionContext);
 		}
 		return null;
@@ -88,7 +116,6 @@ public class TaskCommandImpl implements Serializable,TaskCommand {
 	public String getTaskCommandDefType() {
 		return taskCommandDefType;
 	}
-	
 
 	public void setId(String id) {
 		this.id = id;

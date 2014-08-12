@@ -27,13 +27,16 @@ import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
+import org.foxbpm.engine.impl.task.CommandParamImpl;
 import org.foxbpm.engine.impl.task.FormParam;
 import org.foxbpm.engine.impl.task.TaskCommandImpl;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.util.BpmnModelUtil;
+import org.foxbpm.engine.task.CommandParamType;
 import org.foxbpm.model.bpmn.foxbpm.Expression;
 import org.foxbpm.model.bpmn.foxbpm.FormParamContainer;
 import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
+import org.foxbpm.model.bpmn.foxbpm.Param;
 
 /**
  * 人工任务节点转换 属性列表： 任务分配类型 任务分配表达式 任务处理者 任务命令 任务优先级 任务主题 任务类型 操作表单 浏览表单
@@ -64,6 +67,17 @@ public class UserTaskParser extends TaskParser {
 				taskCommandNew.setTaskCommandDefType(null);
 				taskCommandNew.setTaskCommandType(taskCommand.getCommandType());
 				taskCommandNew.setUserTask(userTaskBehavior);
+				for (Param param : taskCommand.getParams()) {
+					org.foxbpm.model.bpmn.foxbpm.CommandParam commandParamBpmn=(org.foxbpm.model.bpmn.foxbpm.CommandParam)param;
+					CommandParamImpl commandParamEngine=new CommandParamImpl();
+					commandParamEngine.setKey(commandParamBpmn.getKey());
+					commandParamEngine.setName(commandParamBpmn.getName());
+					commandParamEngine.setDescription(commandParamEngine.getDescription());
+					commandParamEngine.setBizType(CommandParamType.valueOf(commandParamBpmn.getBizType()));
+					commandParamEngine.setDataType(commandParamBpmn.getDataType());
+					commandParamEngine.setExpression(commandParamBpmn.getExpression()!=null?commandParamBpmn.getExpression().getValue():null);
+					taskCommandNew.getCommandParams().add(commandParamEngine);
+				}
 				Expression commandExpression = taskCommand.getExpression();
 				if (commandExpression != null) {
 					taskCommandNew.setExpression(new ExpressionImpl(commandExpression.getValue()));

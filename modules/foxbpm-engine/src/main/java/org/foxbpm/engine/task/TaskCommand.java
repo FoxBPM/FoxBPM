@@ -17,6 +17,7 @@
  */
 package org.foxbpm.engine.task;
 
+import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.expression.Expression;
@@ -47,5 +48,11 @@ public interface TaskCommand {
 	public String getTaskCommandDefType();
 
 	public Map<String, Object> getPersistentState();
+	
+	public List<CommandParam> getCommandParamsByType(CommandParamType commandParamType);
+	
+	public CommandParam getCommandParam(String paramKey);
+
+	public List<CommandParam> getCommandParams();
 
 }

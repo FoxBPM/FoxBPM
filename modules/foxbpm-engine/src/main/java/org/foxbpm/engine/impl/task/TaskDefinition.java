@@ -57,6 +57,13 @@ public class TaskDefinition implements Serializable {
 	private Expression formUriView;
 
 	private List<FormParam> formParams;
+	
+	/**
+	 * 处理命令集合
+	 */
+	private List<TaskCommand> taskCommands = new ArrayList<TaskCommand>();
+
+	protected List<Connector> actorConnectors = new ArrayList<Connector>();
 
 	public Expression getTaskSubject() {
 		return taskSubject;
@@ -98,12 +105,7 @@ public class TaskDefinition implements Serializable {
 		this.formParams = formParams;
 	}
 
-	/**
-	 * 处理命令集合
-	 */
-	private List<TaskCommand> taskCommands = new ArrayList<TaskCommand>();
 
-	protected List<Connector> actorConnectors = new ArrayList<Connector>();
 
 	public List<Connector> getActorConnectors() {
 		return actorConnectors;
