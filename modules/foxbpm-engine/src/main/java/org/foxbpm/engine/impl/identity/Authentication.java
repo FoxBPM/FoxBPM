@@ -23,13 +23,13 @@ import java.util.List;
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
-import org.foxbpm.engine.identity.Group;
-import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.cache.CacheUtil;
 import org.foxbpm.engine.impl.cmd.FindGroupByIdCmd;
 import org.foxbpm.engine.impl.cmd.FindGroupChildrenIncludeByGroupIdCmd;
 import org.foxbpm.engine.impl.cmd.FindUserByGroupIdAndTypeCmd;
 import org.foxbpm.engine.impl.cmd.FindUserByIdNoCacheCmd;
+import org.foxbpm.engine.impl.entity.GroupEntity;
+import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 
 public abstract class Authentication {
@@ -61,8 +61,8 @@ public abstract class Authentication {
 	 * @param userId
 	 * @return
 	 */
-	public static List<Group> selectGroupByUserId(String userId) {
-		User user = selectUserByUserId(userId);
+	public static List<GroupEntity> selectGroupByUserId(String userId) {
+		UserEntity user = selectUserByUserId(userId);
 		if(user == null){
 			throw new FoxBPMObjectNotFoundException("为找到ID:"+userId+"的用户！");
 		}
@@ -74,15 +74,15 @@ public abstract class Authentication {
 	 * @param userId
 	 * @return
 	 */
-	public static User selectUserByUserId(String userId){
+	public static UserEntity selectUserByUserId(String userId){
 		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
 		
-		User result = (User)CacheUtil.getIdentityCache().get("user_" + userId);
+		UserEntity result = (UserEntity)CacheUtil.getIdentityCache().get("user_" + userId);
 		if(result != null){
 			return result;
 		}
 		CommandExecutor commandExecutor = processEngine.getProcessEngineConfiguration().getCommandExecutor();
-		User user = commandExecutor.execute(new FindUserByIdNoCacheCmd(userId));
+		UserEntity user = commandExecutor.execute(new FindUserByIdNoCacheCmd(userId));
 		CacheUtil.getIdentityCache().add("user_" + userId, user);
 		return user;
 	}
@@ -93,13 +93,13 @@ public abstract class Authentication {
 	 * @param groupType
 	 * @return
 	 */
-	public static List<User> selectUserByGroupIdAndType(String groupId,String groupType){
-		List<User> users = new ArrayList<User>();
+	public static List<UserEntity> selectUserByGroupIdAndType(String groupId,String groupType){
+		List<UserEntity> users = new ArrayList<UserEntity>();
 		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
 		CommandExecutor commandExecutor = processEngine.getProcessEngineConfiguration().getCommandExecutor();
 		List<String> userIds = commandExecutor.execute(new FindUserByGroupIdAndTypeCmd(groupId,groupType));
 		for(String userId :userIds){
-			User user = selectUserByUserId(userId);
+			UserEntity user = selectUserByUserId(userId);
 			if(user != null){
 				users.add(user);
 			}
@@ -125,17 +125,17 @@ public abstract class Authentication {
 	 * @param groupId 组编号
 	 * @return 子组的集合(包含父组)
 	 */
-	public static List<Group> findGroupChildMembersIncludeByGroupId(String groupId, String groupType) {
+	public static List<GroupEntity> findGroupChildMembersIncludeByGroupId(String groupId, String groupType) {
 		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
 		CommandExecutor commandExecutor = processEngine.getProcessEngineConfiguration().getCommandExecutor();
-		List<Group> groups = commandExecutor.execute(new FindGroupChildrenIncludeByGroupIdCmd(groupId,groupType));
+		List<GroupEntity> groups = commandExecutor.execute(new FindGroupChildrenIncludeByGroupIdCmd(groupId,groupType));
 		return groups;
 	}
 	
-	public static Group findGroupById(String groupId,String groupType){
+	public static GroupEntity findGroupById(String groupId,String groupType){
 		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
 		CommandExecutor commandExecutor = processEngine.getProcessEngineConfiguration().getCommandExecutor();
-		Group group = commandExecutor.execute(new FindGroupByIdCmd(groupId,groupType));
+		GroupEntity group = commandExecutor.execute(new FindGroupByIdCmd(groupId,groupType));
 		return group;
 	}
 

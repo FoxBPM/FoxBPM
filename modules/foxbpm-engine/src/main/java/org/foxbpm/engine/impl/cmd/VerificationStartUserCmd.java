@@ -23,7 +23,7 @@ import java.util.List;
 import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
-import org.foxbpm.engine.identity.Group;
+import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.identity.PotentialStarter;
@@ -72,7 +72,7 @@ public class VerificationStartUserCmd implements Command<Boolean> {
 			return true;
 		}
 		
-		List<Group> groups = Authentication.selectGroupByUserId(userId);
+		List<GroupEntity> groups = Authentication.selectGroupByUserId(userId);
 		for(PotentialStarter starter : processStarters){
 			String tmpValue = null;
 			try{
@@ -96,7 +96,7 @@ public class VerificationStartUserCmd implements Command<Boolean> {
 				}
 			}else{
 				//循环当前userId所在的所有组,groupType和GroupId均相同时，返回true
-				for(Group tmpGroup: groups){
+				for(GroupEntity tmpGroup: groups){
 					if(tmpType.equals(tmpGroup.getGroupType())){
 						if(tmpGroup.getGroupId().equals(tmpValue)){
 							return true;

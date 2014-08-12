@@ -17,11 +17,9 @@
  */
 package org.foxbpm.engine.impl.cmd;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
-import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
@@ -32,7 +30,7 @@ import org.foxbpm.engine.impl.interceptor.CommandContext;
  * @author ych
  *
  */
-public class GetAllGroupByTypeCmd implements Command<List<Group>> {
+public class GetAllGroupByTypeCmd implements Command<List<GroupEntity>> {
 
 	
 	private String groupType;
@@ -41,7 +39,7 @@ public class GetAllGroupByTypeCmd implements Command<List<Group>> {
 	}
 	
 	@Override
-	public List<Group> execute(CommandContext commandContext) {
+	public List<GroupEntity> execute(CommandContext commandContext) {
 		if(this.groupType == null || this.groupType.equals("")){
 			throw new FoxBPMIllegalArgumentException("groupType不能为null");
 		}
@@ -59,9 +57,7 @@ public class GetAllGroupByTypeCmd implements Command<List<Group>> {
 			throw new FoxBPMIllegalArgumentException("未知的组类型："+this.groupType);
 		}
 		List<GroupEntity> groupEntitys = groupDefinition.selectAllGroup();
-		List<Group> results = new ArrayList<Group>();
-		results.addAll(groupEntitys);
-		return results;
+		return groupEntitys;
 	}
 	
 }

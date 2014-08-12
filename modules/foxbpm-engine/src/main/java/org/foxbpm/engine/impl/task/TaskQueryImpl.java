@@ -25,9 +25,9 @@ import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
-import org.foxbpm.engine.identity.Group;
-import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentTo;
+import org.foxbpm.engine.impl.entity.GroupEntity;
+import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
@@ -125,7 +125,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 		if (!this.isAgent) {
 			return processKeys;
 		}
-		User user = Authentication.selectUserByUserId(this.oldAssigneeId);
+		UserEntity user = Authentication.selectUserByUserId(this.oldAssigneeId);
 		if (user == null) {
 			throw new FoxBPMException("未找到userid为{}的代理人信息！", oldAssigneeId);
 		}
@@ -327,14 +327,14 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 		return this;
 	}
 
-	public List<Group> getCandidateGroups() {
+	public List<GroupEntity> getCandidateGroups() {
 		if (candidateUser != null) {
 			return getGroupsForCandidateUser(candidateUser);
 		}
 		return null;
 	}
 
-	protected List<Group> getGroupsForCandidateUser(String candidateUser) {
+	protected List<GroupEntity> getGroupsForCandidateUser(String candidateUser) {
 		return Authentication.selectGroupByUserId(candidateUser);
 	}
 

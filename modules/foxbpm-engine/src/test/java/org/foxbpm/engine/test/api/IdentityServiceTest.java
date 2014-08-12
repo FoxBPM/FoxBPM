@@ -24,14 +24,14 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.foxbpm.engine.Constant;
-import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.GroupDefinition;
-import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentDetailsEntity;
 import org.foxbpm.engine.impl.agent.AgentEntity;
 import org.foxbpm.engine.impl.agent.AgentTo;
 import org.foxbpm.engine.impl.cache.CacheUtil;
 import org.foxbpm.engine.impl.db.Page;
+import org.foxbpm.engine.impl.entity.GroupEntity;
+import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.identity.GroupRelationEntity;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
@@ -49,7 +49,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		String sqlInsertUser = "insert into au_userInfo(userId,USERNAME,EMAIL) VALUES ('test_admin2','管理员2','222@qq.com')";
 		jdbcTemplate.execute(sqlInsertUser);
 		
-		User user = identityService.getUser("test_admin2");
+		UserEntity user = identityService.getUser("test_admin2");
 		assertEquals("test_admin2",user.getUserId());
 		assertEquals("管理员2",user.getUserName());
 		assertEquals("222@qq.com",user.getEmail());
@@ -68,7 +68,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		jdbcTemplate.execute(sqlInsertUser3);
 		
 		
-		List<User> users = identityService.getUsers("%est_admin2%", "%测试%理员2%");
+		List<UserEntity> users = identityService.getUsers("%est_admin2%", "%测试%理员2%");
 		assertEquals(1,users.size());
 		
 		users = identityService.getUsers("%est_admin2%", null);
@@ -91,7 +91,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		jdbcTemplate.execute(sqlInsertUser3);
 		
 		Page page = new Page(0, 1);
-		List<User> users = identityService.getUsers("%est_admin%", "%测试%理员%",page);
+		List<UserEntity> users = identityService.getUsers("%est_admin%", "%测试%理员%",page);
 		assertEquals(1,users.size());
 	}
 	
@@ -150,7 +150,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		identityService.addAgent(agentEntity);
 		
 		//查询出对应用户的代理信息
-		User user = identityService.getUser("test_admin2");
+		UserEntity user = identityService.getUser("test_admin2");
 		List<AgentTo> agentInfos = user.getAgentInfo();
 		
 		//验证是否正确
@@ -247,9 +247,9 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		jdbcTemplate.execute(insertDept);
 		jdbcTemplate.execute(insertRole);
 		
-		List<Group> groups = identityService.getAllGroup("role");
+		List<GroupEntity> groups = identityService.getAllGroup("role");
 		assertEquals(1,groups.size());
-		Group role = groups.get(0);
+		GroupEntity role = groups.get(0);
 		assertEquals("role1001", role.getGroupId());
 		assertEquals("角色名称", role.getGroupName());
 		assertEquals("role", role.getGroupType());
@@ -257,7 +257,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		
 		groups = identityService.getAllGroup("dept");
 		assertEquals(1,groups.size());
-		Group dept = groups.get(0);
+		GroupEntity dept = groups.get(0);
 		assertEquals("dept1002", dept.getGroupId());
 		assertEquals("部门名称", dept.getGroupName());
 		assertEquals("dept", dept.getGroupType());

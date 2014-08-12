@@ -27,12 +27,12 @@ import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.IdentityService;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
-import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.connector.FlowConnectorHandler;
 import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
+import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.model.config.foxbpmconfig.MailInfo;
@@ -87,7 +87,7 @@ public class AutoSendMail implements FlowConnectorHandler {
 			// 获取用户
 			IdentityService identityService = peconfig.getIdentityService();
 			// 判断是否独占任务
-			User user = null;
+			UserEntity user = null;
 			if (StringUtil.isNotEmpty(taskEntity.getAssignee())) {
 				user = identityService.getUser(taskEntity.getAssignee());
 				// 判断用户是否为空
@@ -114,9 +114,9 @@ public class AutoSendMail implements FlowConnectorHandler {
 							}
 						} else {
 							// 处理所有者
-							List<User> users = identityService.getUsers(null, null);
+							List<UserEntity> users = identityService.getUsers(null, null);
 							if (null != users) {
-								for (User u : users) {
+								for (UserEntity u : users) {
 									if (StringUtil.isNotEmpty(u.getEmail())) {
 										to.append(u.getEmail()).append(Constants.COMMA);
 									}
@@ -125,9 +125,9 @@ public class AutoSendMail implements FlowConnectorHandler {
 						}
 					} else {
 						// 获取组下面所有用户
-						List<User> users = Authentication.selectUserByGroupIdAndType(identityLink.getGroupId(), identityLink.getGroupType());
+						List<UserEntity> users = Authentication.selectUserByGroupIdAndType(identityLink.getGroupId(), identityLink.getGroupType());
 						if (null != users) {
-							for (User u : users) {
+							for (UserEntity u : users) {
 								if (StringUtil.isNotEmpty(u.getEmail())) {
 									to.append(u.getEmail()).append(Constants.COMMA);
 								}

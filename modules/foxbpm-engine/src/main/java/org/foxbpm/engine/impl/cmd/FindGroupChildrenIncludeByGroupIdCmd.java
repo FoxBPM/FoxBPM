@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
-import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.GroupDefinition;
+import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
@@ -31,7 +31,7 @@ import org.foxbpm.engine.impl.interceptor.CommandContext;
  * @author ych
  *
  */
-public class FindGroupChildrenIncludeByGroupIdCmd  implements Command<List<Group>>{
+public class FindGroupChildrenIncludeByGroupIdCmd  implements Command<List<GroupEntity>>{
 
 	private String groupType;
 	private String groupId;
@@ -42,11 +42,11 @@ public class FindGroupChildrenIncludeByGroupIdCmd  implements Command<List<Group
 	}
 	
 	@Override
-	public List<Group> execute(CommandContext commandContext) {
+	public List<GroupEntity> execute(CommandContext commandContext) {
 		if(groupId == null || groupType == null){
 			throw new FoxBPMIllegalArgumentException("参数不能为空:groupId="+groupId+",groupType="+groupType);
 		}
-		List<Group> groups = new ArrayList<Group>();
+		List<GroupEntity> groups = new ArrayList<GroupEntity>();
 		List<GroupDefinition> groupDefinitions = commandContext.getProcessEngineConfigurationImpl().getGroupDefinitions();
 		for(GroupDefinition groupDefinition : groupDefinitions){
 			if(groupDefinition.getType().equals(groupType)){

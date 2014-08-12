@@ -25,8 +25,8 @@ import java.util.StringTokenizer;
 import org.foxbpm.connector.common.constant.Constants;
 import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.exception.FoxBPMConnectorException;
-import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
+import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
@@ -57,13 +57,13 @@ public class SelectDepartment extends ActorConnectorHandler {
 			depIdSet.add(StringUtil.trim(st.nextToken()));
 		}
 		// 存放查询组
-		List<Group> groupList = null;
+		List<GroupEntity> groupList = null;
 		// 存在不包含组本身的子组
 		Set<String> groupIdList = null;
 		for (String depId : depIdSet) {
 			groupList = Authentication.findGroupChildMembersIncludeByGroupId(depId, Constant.DEPT_TYPE);
 			if (null != groupList) {
-				for (Group group : groupList) {
+				for (GroupEntity group : groupList) {
 					if (!depIdSet.contains(group.getGroupId())) {
 						if (null == groupIdList) {
 							groupIdList = new HashSet<String>();

@@ -20,9 +20,7 @@ package org.foxbpm.engine.impl;
 import java.util.List;
 
 import org.foxbpm.engine.IdentityService;
-import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.GroupDefinition;
-import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentDetailsEntity;
 import org.foxbpm.engine.impl.agent.AgentEntity;
 import org.foxbpm.engine.impl.cmd.DeleteAgentCmd;
@@ -38,17 +36,19 @@ import org.foxbpm.engine.impl.cmd.SaveAgentDetailsEntityCmd;
 import org.foxbpm.engine.impl.cmd.SaveAgentEntityCmd;
 import org.foxbpm.engine.impl.cmd.UpdatePersistentObjectCmd;
 import org.foxbpm.engine.impl.db.Page;
+import org.foxbpm.engine.impl.entity.GroupEntity;
+import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.identity.GroupRelationEntity;
 
 public class IdentityServiceImpl extends ServiceImpl implements IdentityService {
 
 	@Override
-	public User getUser(String userId) {
+	public UserEntity getUser(String userId) {
 		return commandExecutor.execute(new FindUserByIdCmd(userId));
 	}
 
 	@Override
-	public List<User> getUsers(String idLike, String nameLike) {
+	public List<UserEntity> getUsers(String idLike, String nameLike) {
 		return commandExecutor.execute(new FindUsersCmd(idLike, nameLike, null));
 	}
 
@@ -86,7 +86,7 @@ public class IdentityServiceImpl extends ServiceImpl implements IdentityService 
 	}
 
 	@Override
-	public List<User> getUsers(String idLike, String nameLike, Page page) {
+	public List<UserEntity> getUsers(String idLike, String nameLike, Page page) {
 		return commandExecutor.execute(new FindUsersCmd(idLike, nameLike, page));
 	}
 
@@ -96,7 +96,7 @@ public class IdentityServiceImpl extends ServiceImpl implements IdentityService 
 	}
 	
 	@Override
-	public List<Group> getAllGroup(String groupType) {
+	public List<GroupEntity> getAllGroup(String groupType) {
 		return commandExecutor.execute(new GetAllGroupByTypeCmd(groupType));
 	}
 	
@@ -108,5 +108,19 @@ public class IdentityServiceImpl extends ServiceImpl implements IdentityService 
 	@Override
 	public List<GroupDefinition> getAllGroupDefinitions() {
 		return commandExecutor.execute(new GetAllGroupDefinitionsCmd());
+	}
+	
+	@Override
+	public GroupDefinition getGroupDefinition(String groupType) {
+		if(groupType == null){
+			return null;
+		}
+		List<GroupDefinition> groupDefinitions = getAllGroupDefinitions();
+		for(GroupDefinition group : groupDefinitions){
+			if(group.getType().equals(groupType)){
+				return group;
+			}
+		}
+		return null;
 	}
 }

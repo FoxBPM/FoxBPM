@@ -20,12 +20,12 @@ package org.foxbpm.engine;
 
 import java.util.List;
 
-import org.foxbpm.engine.identity.Group;
 import org.foxbpm.engine.identity.GroupDefinition;
-import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentDetailsEntity;
 import org.foxbpm.engine.impl.agent.AgentEntity;
 import org.foxbpm.engine.impl.db.Page;
+import org.foxbpm.engine.impl.entity.GroupEntity;
+import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.identity.GroupRelationEntity;
 
 /**
@@ -43,7 +43,7 @@ public interface IdentityService {
 	 *            用户编号 主键
 	 * @return
 	 */
-	User getUser(String userId);
+	UserEntity getUser(String userId);
 
 	/**
 	 * 根据编号或名称模糊匹配
@@ -56,7 +56,7 @@ public interface IdentityService {
 	 * @return 参数可为null,参数之间为and关系，如果都为null代表查询所有,
 	 * 此结果集中的user对象只包含数据库中的基础属性，没有其他扩展属性，如代理信息等
 	 */
-	List<User> getUsers(String idLike, String nameLike);
+	List<UserEntity> getUsers(String idLike, String nameLike);
 
 	/**
 	 * 查询用户
@@ -69,7 +69,7 @@ public interface IdentityService {
 	 * @return <p>返回查询结果</p>
 	 * <p>此结果集中的user对象只包含数据库中的基础属性，没有其他扩展属性，如代理信息等</p>
 	 */
-	List<User> getUsers(String idLike, String nameLike, Page page);
+	List<UserEntity> getUsers(String idLike, String nameLike, Page page);
 
 	/**
 	 * 查询用户数
@@ -141,7 +141,7 @@ public interface IdentityService {
 	 * @param groupType
 	 * @return
 	 */
-	List<Group> getAllGroup(String groupType);
+	List<GroupEntity> getAllGroup(String groupType);
 	
 	/**
 	 * 查询某组类型下所有的组与人员的关系映射
@@ -156,5 +156,11 @@ public interface IdentityService {
 	 * @return
 	 */
 	List<GroupDefinition> getAllGroupDefinitions();
+	
+	/**
+	 * 获取指定的组定义
+	 * 
+	 */
+	GroupDefinition getGroupDefinition(String groupType);
 
 }

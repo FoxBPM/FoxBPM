@@ -23,22 +23,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.foxbpm.engine.identity.Group;
-import org.foxbpm.engine.identity.User;
 import org.foxbpm.engine.impl.agent.AgentTo;
 
-public class UserEntity implements User {
+public class UserEntity{
 
 	private String userId;
 	private String userName;
 	private String password;
 	private String email;
 	private Map<String, Object> propertyMap;
-	private List<Group> groups = new ArrayList<Group>();
+	private List<GroupEntity> groups = new ArrayList<GroupEntity>();
 	private List<AgentTo> agentInfo;
 
 	public UserEntity() {
 
+	}
+	
+	public UserEntity(String userId,String userName) {
+		this.userId = userId;
+		this.userName = userName;
 	}
 
 	public UserEntity(String userId) {
@@ -85,8 +88,7 @@ public class UserEntity implements User {
 		return this.email;
 	}
 
-	@Override
-	public List<Group> getGroups() {
+	public List<GroupEntity> getGroups() {
 		return groups;
 	}
 
@@ -97,7 +99,6 @@ public class UserEntity implements User {
 		return null;
 	}
 
-	@Override
 	public List<AgentTo> getAgentInfo() {
 		return agentInfo;
 	}
@@ -106,7 +107,6 @@ public class UserEntity implements User {
 		this.agentInfo = agentInfo;
 	}
 
-	@Override
 	public Map<String, Object> getPersistentState() {
 		Map<String, Object> persistentState = new HashMap<String, Object>();
 		persistentState.put("userId", userId);
