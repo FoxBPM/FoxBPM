@@ -121,7 +121,9 @@
       <bpmn2:potentialOwner id="PotentialOwner_1">
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
-            <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="d13fa99a-db54-4231-b6f5-87d77f6fc248" connectorInstanceName="所有人" errorHandling="" type="actorconnector"/>
+            <foxbpm:connectorInstance connectorId="InitiatorActorConnector" packageName="org.foxbpm.connector.actorconnector.InitiatorActorConnector" className="InitiatorActorConnector" connectorInstanceId="a86efc0e-2879-4443-86a5-cc8397618e70" connectorInstanceName="发起人" errorHandling="" type="actorconnector">
+              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+            </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
       </bpmn2:potentialOwner>
