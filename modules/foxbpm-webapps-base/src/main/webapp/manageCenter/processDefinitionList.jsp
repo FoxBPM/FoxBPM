@@ -187,8 +187,7 @@ a {
 											<td>${dataItem.version}</td>
 											<td>${dataItem.category}</td>
 											<td>${dataItem.processDefinitionId}</td>
-											<td>${dataItem.deployTime}<fmt:formatDate value="${dataItem.deployTime}"
-													type="both" /></td>
+											<td>${dataItem.processDefinitionId}</td>
 										</tr>
 									</c:forEach>
 								</tbody>

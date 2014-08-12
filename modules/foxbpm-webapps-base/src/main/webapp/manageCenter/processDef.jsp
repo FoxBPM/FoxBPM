@@ -169,7 +169,7 @@ a {
 									<th width="5%">${applicationScope.appInfo["task.version"]}</th>
 									<th width="12%">${applicationScope.appInfo["task.category"]}</th>
 									<th width="31%">${applicationScope.appInfo["task.processDefinitionId"]}</th>
-									<th width="12%">${applicationScope.appInfo["task.deplayTime"]}</th>
+									<th width="12%">${applicationScope.appInfo["task.deployTime"]}</th>
 								</thead>
 								<tbody>
 									<c:forEach items="${result.dataList}" var="dataList"
@@ -184,7 +184,7 @@ a {
 											<td>${dataList.version}</td>
 											<td>${dataList.category}</td>
 											<td>${dataList.id}</td>
-											<td><fmt:formatDate value="${dataList.DEPLOY_TIME}"
+											<td><fmt:formatDate value="${dataList.deployTime}"
 													type="both" /></td>
 										</tr>
 									</c:forEach>
