@@ -33,7 +33,6 @@ import org.foxbpm.engine.impl.schedule.FoxbpmSchedulerGroupnameGernerater;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
-import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -521,20 +520,14 @@ public class ActivityBehavior extends FlowNodeBehavior {
 	public void cleanData(FlowNodeExecutionContext executionContext) {
 		try {
 			FoxbpmScheduler foxbpmScheduler = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getFoxbpmScheduler();
+			if(foxbpmScheduler == null){
+				LOG.debug("自动调度器未启动，导致任务节点离开时清空相关数据失败！");
+				return ;
+			}
 			String groupName = null;
-			/** 如果存在边界事件时间定义，那么当前令牌肯定存在父令牌 */
-			
 			groupName = new FoxbpmSchedulerGroupnameGernerater(executionContext).gernerateDefinitionGroupName();
-			/*
-			if (executionContext.getParent() != null) {
-			
-				
-			} else {
-				groupName = new FoxbpmSchedulerGroupnameGernerater(executionContext).gernerateDefinitionGroupName();
-				
-			}*/
 			foxbpmScheduler.deleteJobsByGroupName(groupName);
-		} catch (SchedulerException e) {
+		} catch (Exception e) {
 			throw new FoxBPMException("Activity 离开时清空 节点调度器报错", e);
 		}
 		super.cleanData(executionContext);
