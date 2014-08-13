@@ -60,9 +60,7 @@ public class TransferTaskCmd extends AbstractExpandTaskCmd<TransferTaskCommand, 
 		/** 设置任务处理者 */
 		task.setAssignee(Authentication.getAuthenticatedUserId());
 		/** 设置任务的处理命令 commandId commandName commandType */
-		task.setTaskCommand(taskCommand);		
 		/** 处理意见 */
-		task.setTaskComment(taskComment);
 		/** 结束任务,但是并不驱动流程向下。 */
 		task.end(taskCommand, taskComment);
 		/** 创建新任务 */	
