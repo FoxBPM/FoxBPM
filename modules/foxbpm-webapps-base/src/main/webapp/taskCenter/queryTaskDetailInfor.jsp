@@ -108,8 +108,10 @@
 						<li class="img01">已完成</li>
 						<li class="img02">进行中</li>
 						<li><input id="yczt" type="checkbox" name="cczt" />&nbsp;&nbsp;隐藏状态</li>
+						<li><input id="runningTrackTable" type="checkbox"
+							name="runningTrackTable" />&nbsp;&nbsp;轨迹信息</li>
 						<li><input id="runningTrack" type="checkbox"
-							name="runningTrack" />&nbsp;&nbsp;运行轨迹</li>
+							name="runningTrack" />&nbsp;&nbsp;轨迹动态运行</li>
 					</ul>
 				</h3>
 				<!---流程图 START--->
@@ -169,6 +171,15 @@
 							flowGraphic.hideFlowImgStatus(($(this).attr(
 									"checked") == 'checked'));
 						});
+		$("#runningTrackTable").bind(
+				"click",
+				function() {
+					if ($(this).attr("checked") == 'checked') {
+						$("#runningTrackDIV").show();
+					}else{
+						$("#runningTrackDIV").hide();
+					}
+				});
 		$("#runningTrack").bind(
 				"click",
 				function() {
@@ -182,7 +193,7 @@
 									"flowGraphic.moveRunningTrack()",
 									RUNNING_MILLESIMAL_SPEED);
 							$(this).attr("disabled", "disabled");
-							$("#runningTrackDIV").show();
+							
 						} else {
 							alert("无流程运行轨迹 数据");
 							$(this).attr("disabled", "disabled");
@@ -190,7 +201,7 @@
 					}
 					//暂停
 					if ($(this).attr("checked") != 'checked') {
-						$("#runningTrackDIV").hide();
+						
 					}
 					//如果轨迹是正在运行的则不让它运行
 					if ($(this).attr("checked") != 'checked'

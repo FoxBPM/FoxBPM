@@ -7,12 +7,13 @@
 <link rel="stylesheet" type="text/css" href="css/reset.css">
 <link rel="stylesheet" type="text/css" href="css/color_red.css">
 <script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/foxbpmframework.js"></script>
 <script type="text/javascript">
 function applyData(params){
 	$.ajax({
         type: "get",//使用get方法访问后台
         dataType: "json",//返回json格式的数据
-        url: "../service/identity/allUsers",//要访问的后台地址
+        url: _bpmServiceUrl + "/identity/allUsers",//要访问的后台地址
         data:params,
         success: function(msg){//msg为返回的数据，在这里做数据绑定
             var data = msg.data;
