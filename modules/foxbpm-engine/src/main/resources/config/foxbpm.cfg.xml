@@ -201,7 +201,7 @@
 				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
 
-		<!-- <taskCommandDefinition id="resolved" name="还回"
+		<taskCommandDefinition id="resolved" name="还回"
 			command="org.foxbpm.engine.impl.task.command.ResolvedTaskCommand"
 			cmd="org.foxbpm.engine.impl.task.cmd.ResolvedTaskCmd" isEnabled="true"
 			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.ResolvedTaskFilter">
@@ -209,7 +209,7 @@
 				description="" dataType="String" bizType="ControlParam" />
 			<commandParam key="isVerification" name="是否触发验证" value="true"
 				description="" dataType="String" bizType="ControlParam" />
-		</taskCommandDefinition> -->
+		</taskCommandDefinition>
 
 
 
