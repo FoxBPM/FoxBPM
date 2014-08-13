@@ -49,8 +49,6 @@ public class TransferTaskCmd extends AbstractExpandTaskCmd<TransferTaskCommand, 
 	@Override
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
 		
-
-		
 		/** 放置流程实例级别的瞬态变量 */
 		task.setProcessInstanceTransientVariables(this.transientVariables);
 		/** 获取任务命令 */
@@ -80,22 +78,15 @@ public class TransferTaskCmd extends AbstractExpandTaskCmd<TransferTaskCommand, 
 		
 		/** 克隆一个任务 */
 		TaskEntity newTask=(TaskEntity) task.clone();
+		/** 重置任务非实例属性 */
+		newTask.resetProperties();
 		/** 重置任务字段 */
 		newTask.setId(GuidUtil.CreateGuid());
 		/** 设置新的处理者为被转发人 */
-		newTask.setAssignee(transferUserId);
-		/** 重置创建时间 */
+		newTask.setAssignee(transferUserId);	
+		/** 重置任务创建时间 */
 		newTask.setCreateTime(ClockUtil.getCurrentTime());
-		newTask.setEndTime(null);
-		newTask.setCommandId(null);
-		newTask.setCommandType(null);
-		newTask.setCommandMessage(null);
-		newTask.setTaskComment(null);
-		newTask.setAgent(null);
-		newTask.setAdmin(null);
-		newTask.setDraft(false);
-		newTask.setOpen(false);
-		newTask.setSuspended(false);
+		
 		/** 插入任务 */
 		Context.getCommandContext().getTaskManager().insert(newTask);
 	}
