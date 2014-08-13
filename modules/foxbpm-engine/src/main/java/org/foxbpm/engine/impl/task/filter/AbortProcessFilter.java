@@ -23,7 +23,7 @@ import org.foxbpm.engine.task.Task;
  * @author kenshin
  *
  */
-public class TerminationProcessFilter extends AbstractCommandFilter {
+public class AbortProcessFilter extends AbstractCommandFilter {
 
 	@Override
 	public boolean accept(Task task) {

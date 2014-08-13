@@ -21,9 +21,9 @@ package org.foxbpm.engine.impl.task.command;
  * @author kenshin
  *
  */
-public class TerminationProcessCommand extends AbstractCustomExpandTaskCommand {
+public class AbortProcessCommand extends AbstractCustomExpandTaskCommand {
 
-	public TerminationProcessCommand(ExpandTaskCommand expandTaskCommand) {
+	public AbortProcessCommand(ExpandTaskCommand expandTaskCommand) {
 		super(expandTaskCommand);
 	}
 

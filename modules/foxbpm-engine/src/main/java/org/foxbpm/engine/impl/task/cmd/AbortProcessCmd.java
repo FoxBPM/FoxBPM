@@ -6,7 +6,7 @@ package org.foxbpm.engine.impl.task.cmd;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
-import org.foxbpm.engine.impl.task.command.TerminationProcessCommand;
+import org.foxbpm.engine.impl.task.command.AbortProcessCommand;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
@@ -14,11 +14,11 @@ import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
  * @author kenshin
  *
  */
-public class TerminationProcessCmd extends AbstractExpandTaskCmd<TerminationProcessCommand, Void> {
+public class AbortProcessCmd extends AbstractExpandTaskCmd<AbortProcessCommand, Void> {
 	
 	private static final long serialVersionUID = 1L;
 
-	public TerminationProcessCmd(TerminationProcessCommand abstractCustomExpandTaskCommand) {
+	public AbortProcessCmd(AbortProcessCommand abstractCustomExpandTaskCommand) {
 		super(abstractCustomExpandTaskCommand);
 	}
 
@@ -42,7 +42,7 @@ public class TerminationProcessCmd extends AbstractExpandTaskCmd<TerminationProc
 		
 		
 		/** 终止流程实例 */
-		task.getProcessInstance().termination();
+		task.getProcessInstance().abort();
 		
 		return null;
 	}

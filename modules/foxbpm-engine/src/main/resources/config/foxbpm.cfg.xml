@@ -225,11 +225,11 @@
 		</taskCommandDefinition>
 
 
-		<taskCommandDefinition id="terminationProcess"
-			name="终止" command="org.foxbpm.engine.impl.task.command.TerminationProcessCommand"
-			cmd="org.foxbpm.engine.impl.task.cmd.TerminationProcessCmd"
+		<taskCommandDefinition id="abortProcess"
+			name="终止" command="org.foxbpm.engine.impl.task.command.abortProcessCommand"
+			cmd="org.foxbpm.engine.impl.task.cmd.abortProcessCmd"
 			isEnabled="true" type="toDoTasks"
-			filter="org.foxbpm.engine.impl.task.filter.TerminationProcessFilter">
+			filter="org.foxbpm.engine.impl.task.filter.abortProcessFilter">
 			<commandParam key="isSaveData" name="是否保存数据" value="true"
 				description="" dataType="String" bizType="ControlParam" />
 			<commandParam key="isVerification" name="是否触发验证" value="true"

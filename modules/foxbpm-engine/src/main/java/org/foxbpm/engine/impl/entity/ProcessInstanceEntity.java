@@ -537,8 +537,8 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		super.end();
 	}
 	
-	public void termination() {
-		this.instanceStatus = ProcessInstanceStatus.TERMINATION;
+	public void abort() {
+		this.instanceStatus = ProcessInstanceStatus.ABORT;
 		endTime = ClockUtil.getCurrentTime();
 		super.end();
 	}
