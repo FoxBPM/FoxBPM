@@ -17,7 +17,9 @@
  */
 package org.foxbpm.rest.service.api.engine;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -57,6 +59,9 @@ public class RollbackTaskCollectionResource extends AbstractRestResource{
 				Map<String,Object> map = task.getPersistentState();
 				String userId = task.getAssignee();
 				map.put("assgneeUserName", getUserName(userId));
+				Date endDate = task.getEndTime();
+				String endTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(endDate);
+				map.put("endTime", endTime);
 				resultList.add(map);
 			}
 		}

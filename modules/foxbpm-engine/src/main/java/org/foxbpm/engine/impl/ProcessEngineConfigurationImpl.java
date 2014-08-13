@@ -131,6 +131,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected Map<Class<?>, SessionFactory> sessionFactories;
 	protected DataSourceManage dataSourceManager;
 	protected BizDataObjectConfig bizDataObjectConfig;
+	
+	protected boolean quartzEnabled = false;
 
 	// 定义及发布
 	protected int processDefinitionCacheLimit = -1; // By default, no limit
@@ -201,7 +203,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		//
 		// initImportDataVariableConfig();
 		//
-//		initQuartz();
+		initQuartz();
 		// initUserDefinition();
 		initSysMailConfig();
 		// initExpandClassConfig();
@@ -277,6 +279,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 
 	protected void initQuartz() {
+		
+		if(!this.quartzEnabled){
+			return ;
+		}
 		if (this.foxbpmScheduler == null) {
 			InputStream inputStream = null;
 			try {
@@ -831,5 +837,13 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	public void setUserDefinition(UserDefinition userDefinition) {
 		this.userDefinition = userDefinition;
+	}
+	
+	public void setQuartzEnabled(boolean quartzEnabled) {
+		this.quartzEnabled = quartzEnabled;
+	}
+	
+	public boolean getQuartzEnabled(){
+		return this.quartzEnabled;
 	}
 }
