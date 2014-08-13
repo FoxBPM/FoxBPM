@@ -536,6 +536,12 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		endTime = ClockUtil.getCurrentTime();
 		super.end();
 	}
+	
+	public void termination() {
+		this.instanceStatus = ProcessInstanceStatus.TERMINATION;
+		endTime = ClockUtil.getCurrentTime();
+		super.end();
+	}
 
 	public String getProcessDefinitionName() {
 		ensureProcessDefinitionInitialized();
