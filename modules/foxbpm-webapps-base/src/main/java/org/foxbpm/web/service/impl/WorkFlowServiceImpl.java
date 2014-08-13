@@ -330,7 +330,6 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		return resultMap;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public ProcessInstance completeTask(String flowInfo) {
 		

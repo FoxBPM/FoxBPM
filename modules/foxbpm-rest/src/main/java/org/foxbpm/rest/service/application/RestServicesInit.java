@@ -19,6 +19,7 @@ package org.foxbpm.rest.service.application;
 
 import org.foxbpm.rest.service.api.config.FlowConfigResouce;
 import org.foxbpm.rest.service.api.engine.RollbackNodeCollectionResource;
+import org.foxbpm.rest.service.api.engine.RollbackTaskCollectionResource;
 import org.foxbpm.rest.service.api.engine.TaskCommandCollectionResource;
 import org.foxbpm.rest.service.api.identity.GroupCollectionResouce;
 import org.foxbpm.rest.service.api.identity.GroupDefinitionCollection;
@@ -64,6 +65,7 @@ public class RestServicesInit {
 		router.attach("/identity/allGroupDefinitions", GroupDefinitionCollection.class);
 		
 		router.attach("/task/taskCommands", TaskCommandCollectionResource.class);
+		router.attach("/task/rollbackTasks", RollbackTaskCollectionResource.class);
 		
 		router.attach("/flowNode/rollbackNodes", RollbackNodeCollectionResource.class);
 	}
