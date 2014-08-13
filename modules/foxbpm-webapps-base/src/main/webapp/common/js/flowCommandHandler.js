@@ -37,6 +37,14 @@ Foxbpm.commandHandler.rollBack_reset = function(data){
 	return {rollBackNodeId:resultId};
 };
 
+Foxbpm.commandHandler.rollBack_assignee = function(data){
+	var result = showDialog("common/selectRollbackTask.html?taskId="+data.taskId);
+	if(result == null || result === undefined){
+		return null;
+	}
+	return result;
+};
+
 
 
 function showDialog(url){

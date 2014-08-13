@@ -28,6 +28,7 @@ import org.foxbpm.engine.impl.cmd.CompleteTaskCmd;
 import org.foxbpm.engine.impl.cmd.DeleteTasksCmd;
 import org.foxbpm.engine.impl.cmd.FindTaskCmd;
 import org.foxbpm.engine.impl.cmd.GetRollbackNodeCmd;
+import org.foxbpm.engine.impl.cmd.GetRollbackTasksCmd;
 import org.foxbpm.engine.impl.cmd.GetTaskCommandByKeyCmd;
 import org.foxbpm.engine.impl.cmd.GetTaskCommandByTaskIdCmd;
 import org.foxbpm.engine.impl.cmd.NewTaskCmd;
@@ -124,6 +125,11 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 	@Override
 	public List<KernelFlowNode> getRollbackFlowNode(String taskId) {
 		return commandExecutor.execute(new GetRollbackNodeCmd(taskId));
+	}
+	
+	@Override
+	public List<Task> getRollbackTasks(String taskId) {
+		return commandExecutor.execute(new GetRollbackTasksCmd(taskId));
 	}
 
 
