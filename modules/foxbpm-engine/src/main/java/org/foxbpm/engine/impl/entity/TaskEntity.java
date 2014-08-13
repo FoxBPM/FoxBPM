@@ -903,6 +903,22 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		}
 	}
 	
+	/** 重置任务处理者人属性 */
+	public void resetProperties(){
+		setCreateTime(null);
+		setEndTime(null);
+		setCommandId(null);
+		setCommandType(null);
+		setCommandMessage(null);
+		setTaskComment(null);
+		setAgent(null);
+		setAdmin(null);
+		setDraft(false);
+		setOpen(false);
+		setSuspended(false);
+		setAssignee(null);
+	}
+	
 	public Map<String, Object> getPersistentState() {
 		Map<String, Object> persistentState = new HashMap<String, Object>();
 		persistentState.put("id", getId());
