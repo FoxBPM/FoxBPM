@@ -16,8 +16,8 @@ import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.runtime.ProcessInstance;
-import org.foxbpm.engine.runtime.ProcessInstanceStatus;
 import org.foxbpm.engine.task.Task;
+import org.foxbpm.kernel.runtime.ProcessInstanceStatus;
 
 public class FlowUtil {
 

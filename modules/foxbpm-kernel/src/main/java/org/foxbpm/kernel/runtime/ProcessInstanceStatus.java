@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.engine.runtime;
+package org.foxbpm.kernel.runtime;
 
 /**
  * 流程实例状态

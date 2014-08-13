@@ -25,9 +25,9 @@ import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.runtime.ProcessInstanceQuery;
-import org.foxbpm.engine.runtime.ProcessInstanceStatus;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
 import org.foxbpm.engine.test.Deployment;
+import org.foxbpm.kernel.runtime.ProcessInstanceStatus;
 import org.junit.Test;
 
 public class ProcessInstanceQueryTest extends AbstractFoxBpmTestCase {
