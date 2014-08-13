@@ -8,7 +8,7 @@
         <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
       </bpmn2:extensionElements>
-      <bpmn2:potentialOwner id="PotentialOwner_1">
+      <bpmn2:potentialOwner>
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="d13fa99a-db54-4231-b6f5-87d77f6fc248" connectorInstanceName="所有人" errorHandling="" type="actorconnector"/>
