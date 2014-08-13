@@ -29,29 +29,53 @@ Foxbpm.commandHandler.transfer = function(){
 	return {transferUserId:userId};
 };
 
-Foxbpm.commandHandler.rollBack_reset = function(data){
-	var resultId = showDialog("common/selectRollbackNode.html?taskId="+data.taskId);
-	if(resultId == null || resultId === undefined){
+
+Foxbpm.commandHandler.pending = function(){
+	var userId = showDialog("common/selectUser.html");
+	if(userId == null || userId === undefined){
 		return null;
 	}
-	return {rollBackNodeId:resultId};
+	return {pendingUserId:userId};
+};
+
+Foxbpm.commandHandler.rollBack_reset = function(data){
+	var params = {};
+	var url = "common/selectData.html";
+	var queryUrl = "../service/flowNode/rollbackNodes";
+	var queryData = {taskId:data.taskId};
+	var returnData = {rollBackNodeId:"nodeId"};
+	var columnInfo = {nodeId:"节点编号",nodeName:"节点名称"};
+	params.queryData = queryData;
+	params.returnData = returnData;
+	params.columnInfo = columnInfo;
+	params.url = queryUrl;
+	var result = showDialog(url,params);
+	return result;
 };
 
 Foxbpm.commandHandler.rollBack_assignee = function(data){
-	var result = showDialog("common/selectRollbackTask.html?taskId="+data.taskId);
-	if(result == null || result === undefined){
-		return null;
-	}
+	var params = {};
+	var url = "common/selectData.html";
+	var queryUrl = "../service/task/rollbackTasks";
+	var queryData = {taskId:data.taskId};
+	var returnData = {rollBackNodeId:"nodeId",rollBackAssignee:"assignee"};
+	var columnInfo = {nodeName:"步骤名称",assgneeUserName:"处理者",commandMessage:"处理结果",taskComment:"处理意见"};
+	params.queryData = queryData;
+	params.returnData = returnData;
+	params.columnInfo = columnInfo;
+	params.url = queryUrl;
+	var result = showDialog(url,params);
 	return result;
 };
 
 
 
-function showDialog(url){
+function showDialog(url,params){
 	window.rv = null;
 	var rv = null;
 	var passObj = {
-		opener : window
+		opener : window,
+		params : params
 	};
 	rv = window.showModalDialog(url, passObj,
 			"dialogWidth=600;dialogHeight=400");
