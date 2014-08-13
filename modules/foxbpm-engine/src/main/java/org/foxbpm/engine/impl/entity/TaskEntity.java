@@ -878,6 +878,8 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		
 		end();
 		
+		setTaskComment(taskComment);
+		
 		if (taskCommand != null && taskCommand.getTaskCommandType() != null
 		        && !taskCommand.getTaskCommandType().equals("")) {
 			String taskCommandType = taskCommand.getTaskCommandType();
