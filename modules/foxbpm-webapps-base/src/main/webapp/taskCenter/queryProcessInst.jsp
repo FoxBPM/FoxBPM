@@ -16,7 +16,7 @@
 							var pdk = $(this).attr("pdk");
 							var pii = $(this).attr("pii");
 							window
-									.open("taskCenter/showTaskDetailInfor.html?processDefinitionKey="
+									.open("foxbpm/showTaskDetailInfor.html?processDefinitionKey="
 											+ pdk + "&processInstanceId=" + pii);
 						});
 		var status = '${result.status}';

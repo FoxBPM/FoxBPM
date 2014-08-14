@@ -69,16 +69,17 @@ Foxbpm.TaskDeatailInfor.prototype = {
 						}
 						var data = msg.data;
 						var taksDetailDiv = $("#"+TaskDeatailInfor._config.taksDetailDiv);
+						//添加流程主题信息
 						taksDetailDiv.before($("<h1 id='processDefinitionName'>"+ data.processName + "</h1>"));
-						// 流程信息
-						taksDetailDiv.append("<div class='proc_bg'><h3><span id='clz'>流程信息</span></h3>");
 						// 任务信息
-						var taskInforDiv = $("<div id='taskNotDoneTb'>");
-						var table = $("<table width='100' class='table-list'>");
+						var table;
 						var table_thead;
 						var table_tr;
 						// 任务结束信息
 						if (data.endTasks) {
+							taksDetailDiv.append("<div class='proc_bg'><h3><span id='clz'>已完成</span></h3>");
+							var taskEndDoneTb = $("<div id='taskEndDoneTb'>");
+							table = $("<table width='100' class='table-list'>");
 							table_thead = $("<thead>");
 							table_thead
 									.append("<th style='width: 160px'>步骤名称</th>");
@@ -125,9 +126,31 @@ Foxbpm.TaskDeatailInfor.prototype = {
 										table_tr.append("</tr>");
 										table.append(table_tr);
 									});
+							//添加完成信息
+							taskEndDoneTb.append(table);
+							taksDetailDiv.append(taskEndDoneTb);
 						}
 						// 未结束任务
 						if (data.openTasks) {
+							taksDetailDiv.append("<div class='proc_bg'><h3><span id='clz'>未完成</span></h3>");
+							var taskNotEndDoneTb = $("<div id='taskNotEndDoneTb'>");
+							table = $("<table width='100' class='table-list'>");
+							table_thead = $("<thead>");
+							table_thead
+									.append("<th style='width: 160px'>步骤名称</th>");
+							table_thead
+									.append("<th style='width: 160px'>到达时间</th>");
+							table_thead
+									.append("<th style='width: 160px'>完成时间</th>");
+							table_thead
+									.append("<th style='width: 160px'>处理者</th>");
+							table_thead
+									.append("<th style='width: 80px'>处理结果</th>");
+							table_thead
+									.append("<th style='width: 80px'>处理意见</th>");
+							table_thead.append("</thead>");
+							table.append(table_thead);
+							//未完成信息
 							$.each(data.openTasks,
 									function(j, row) {
 										table_tr = $("<tr "
@@ -158,9 +181,10 @@ Foxbpm.TaskDeatailInfor.prototype = {
 										table_tr.append("</tr>");
 										table.append(table_tr);
 									});
+							//添加未完成信息
+							taskNotEndDoneTb.append(table);
+							taksDetailDiv.append(taskNotEndDoneTb);
 						}
-						taskInforDiv.append(table);
-						taksDetailDiv.append(taskInforDiv);
 						// 初始化全局变量
 						_GlobalFlowVar.init({
 							taskListEnd : data.endTasks,
@@ -426,7 +450,7 @@ function FlowGraphic(param) {
 				type : "GET",
 				url : this.action,
 				dataType : "html",// 返回json格式的数据
-				data : "flag=svg&processDefinitionId=" + this.processInstanceId
+				data : "flag=svg&processInstanceId=" + this.processInstanceId
 						+ "&processDefinitionKey=" + this.processDefinitionKey,
 				success : function(src) {
 					$('#' + _self.parentId).html(src);

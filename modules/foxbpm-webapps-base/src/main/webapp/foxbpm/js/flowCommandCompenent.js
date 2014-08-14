@@ -11,11 +11,10 @@ Foxbpm.FlowCommandCompenent.prototype={
 	init:function(){
 		var self = this;
 		var toolbarsDiv = $("#toolbar");
-		toolbarsDiv.append("<input type='hidden' name='flowInfo' id='flowInfo' />");
 		 $.ajax({
 	         type: "get",//使用get方法访问后台
 	         dataType: "json",//返回json格式的数据
-	         url: "service/task/taskCommands",//要访问的后台地址
+	         url: _bpmServiceUrl+"/task/taskCommands",//要访问的后台地址
 	         data:{key:_processDefinitionKey,taskId:_taskId},
 	         success: function(msg){//msg为返回的数据，在这里做数据绑定
 	             var data = msg.data;
@@ -66,10 +65,7 @@ Foxbpm.FlowCommandCompenent.prototype={
 	            	 
 	            	 commandObj.bizKey = self._config.getBizKey();
 	            	 commandObj.taskComment = self._config.getTaskComment();
-
-	            	 $("#flowInfo").val(JSON.stringify(commandObj));
-	            	 
-	            	 self._config.flowCommit();
+	            	 self._config.flowCommit(commandObj);
 	        	 });
 	         }
 		 });

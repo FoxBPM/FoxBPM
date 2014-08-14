@@ -57,7 +57,7 @@
 							var pii = $(this).attr("pii");
 							var pdi = $(this).attr("pdi");
 							window
-									.open("taskCenter/showTaskDetailInfor.html?processDefinitionKey="
+									.open("foxbpm/showTaskDetailInfor.html?processDefinitionKey="
 											+ pdk + "&processInstanceId=" + pii);
 						});
 		$("a[name=doTask]").click(
