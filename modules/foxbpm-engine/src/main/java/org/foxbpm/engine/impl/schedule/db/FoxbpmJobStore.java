@@ -25,8 +25,8 @@ import org.quartz.impl.jdbcjobstore.JobStoreTX;
 
 /**
  * 
- * FoxbpmJobStore 集成流程引擎内部的数据库连接
- * MAENLIANG 2014年7月8日 上午11:17:02
+ * FoxbpmJobStore 集成流程引擎内部的数据库连接 MAENLIANG 2014年7月8日 上午11:17:02
+ * 
  * @version 1.0.0
  * 
  */
@@ -35,19 +35,19 @@ public class FoxbpmJobStore extends JobStoreTX {
 	protected Connection getConnection() throws JobPersistenceException {
 		return DBUtils.getConnection();
 	}
-
+	
 	@Override
 	protected void closeConnection(Connection connection) {
-		// super.closeConnection(connection);
+		super.closeConnection(connection);
 	}
-
+	
 	@Override
 	protected void commitConnection(Connection connection) throws JobPersistenceException {
-		// super.commitConnection(connection);
+		super.commitConnection(connection);
 	}
-
+	
 	@Override
 	protected void rollbackConnection(Connection connection) {
-		// super.rollbackConnection(connection);
+		super.rollbackConnection(connection);
 	}
 }
