@@ -10,6 +10,23 @@ var RUNNING_TRACK_WIDTH = 5;
 var RUNNING_MILLESIMAL_SPEED = 1000;
 
 /**
+ * 全局变量
+ */
+var _GlobalFlowVar = {
+		taskListEnd : [],
+		taskListIng : [],
+		nodeInforArr : [],
+		init : function(config) {
+			taskListEnd = config.taskListEnd || [];
+			taskListIng = config.taskListIng || [];
+			nodeInforArr = config.nodeInforArr || [];
+		}
+};
+var backUpColorDictionary = {};
+var backUpWidthDictionary = {};
+
+
+/**
  * 流程图处理类 taskListEnd 任务结束节点 taskListIng 任务进入节点 nodeInfoArr 节点信息 isIE 是否IE
  * parentId 流程图添加到该元素中 <div id='xxx'><img /></div> action 图形加载后台action
  * processDefinitionId 流程定义id
@@ -17,112 +34,24 @@ var RUNNING_MILLESIMAL_SPEED = 1000;
 function FlowGraphic(param) {
 	this.taskListEnd = param.taskListEnd || [];
 	this.taskListIng = param.taskListIng || [];
-	this.nodeInfoArr = param.nodeInfoArr || [];
+	this.nodeInforArr = param.nodeInforArr || [];
 	this.parentId = param.parentId;
 	this.isIE = param.isIE;
 	this.action = param.action;
-	this.processDefinitionId = param.processDefinitionId;
+	this.processInstanceId = param.processInstanceId;
 	this.processDefinitionKey = param.processDefinitionKey;
-
-	this.removePreviousRunningTrack = function(index) {
-		if (index != 0) {
-			var rectAttributes = $("#" + runningTrackInfo[index - 1].nodeId)[0].attributes;
-			for (var j = 0; j < rectAttributes.length; j++) {
-				var rectAttribute = rectAttributes[j];
-				if (rectAttribute.name == "stroke") {
-					rectAttribute.nodeValue = backUpRunningTrackColorDictionary[runningTrackInfo[runningTrackIndex - 1].nodeId];
-
-				}
-				if (rectAttribute.name == "stroke-width") {
-					rectAttribute.nodeValue = backUpRunningTrackWidthDictionary[runningTrackInfo[runningTrackIndex - 1].nodeId];
-				}
-
-			}
-		}
-	};
-	this.clearRunningTracks = function() {
-		runningTrackIndex = 0;
-		if (runningTrackLength != 0 && runningTrackIndex < runningTrackLength) {
-			currentRunningTrack = runningTrackInfo[runningTrackIndex];
-			var rectAttributes = $("#" + currentRunningTrack.nodeId)[0].attributes;
-			for (var j = 0; j < rectAttributes.length; j++) {
-				var rectAttribute = rectAttributes[j];
-				if (rectAttribute.name == "stroke") {
-					rectAttribute.nodeValue = backUpRunningTrackColorDictionary[currentRunningTrack.nodeId];
-				}
-				if (rectAttribute.name == "stroke-width") {
-					rectAttribute.nodeValue = backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId];
-				}
-
-			}
-			runningTrackIndex = runningTrackIndex + 1;
-		}
-	};
-
-	// 去掉重复的节点ID
-	this.distinctProcessNodeID = function() {
-		var tempRunningTrackInfo = new Array();
-		var index = 0;
-		for (var i = 0; i < runningTrackInfo.length; i++) {
-			if (!this.confirmExists(tempRunningTrackInfo, runningTrackInfo[i])) {
-				tempRunningTrackInfo[index] = runningTrackInfo[i];
-				index = index + 1;
-			}
-		}
-		runningTrackInfo = tempRunningTrackInfo;
-		runningTrackLength = tempRunningTrackInfo.length;
-	};
-	this.confirmExists = function(tempArray, tempNode) {
-		for (var i = 0; i < tempArray.length; i++) {
-			if (tempArray[i].nodeId == tempNode.nodeId && tempArray[i].eventName != tempNode.eventName) {
-				return true;
-			}
-		}
-	};
-
-	// 移动节点光标
-	this.moveRunningTrack = function() {
-		if (runningTrackLength != 0 && runningTrackIndex < runningTrackLength) {
-			currentRunningTrack = runningTrackInfo[runningTrackIndex];
-			var rectAttributes = $("#" + currentRunningTrack.nodeId)[0].attributes;
-			for (var j = 0; j < rectAttributes.length; j++) {
-				var rectAttribute = rectAttributes[j];
-				if (rectAttribute.name == "stroke") {
-					if (tempNodeID != currentRunningTrack.nodeId) {
-						backUpRunningTrackColorDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue;
-						rectAttribute.nodeValue = RUNNING_TRACK_COLOR;
-					}
-				}
-				if (rectAttribute.name == "stroke-width") {
-					if (tempNodeID != currentRunningTrack.nodeId) {
-						backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue;
-						rectAttribute.nodeValue = RUNNING_TRACK_WIDTH;
-					}
-
-				}
-
-			}
-			tempNodeID = currentRunningTrack.nodeId;
-		} else {
-			$("#runningTrack").removeAttr("disabled");
-			if (runningTrackIndex == runningTrackLength) {
-				clearInterval(runningTrackThreadId);
-			}
-		}
-		this.removePreviousRunningTrack(runningTrackIndex);
-		runningTrackIndex = runningTrackIndex + 1;
-
-	};
+    var _self = this;
+	
 	/** img图形处理方式* */
 	/**
 	 * 添加图信息
 	 */
 	this.addGraphicInfo = function() {
 		var divcontent = "";
-		for ( var nodeInfo in nodeInfoArr) {
-			var nodeInfoObj = nodeInfoArr[nodeInfo];
+		for ( var nodeInfor in nodeInforArr) {
+			var nodeInfoObj = nodeInforArr[nodeInfor];
 			divcontent = divcontent
-					+ getDiv(nodeInfo, nodeInfoObj.x - 4, nodeInfoObj.y - 4,
+					+ getDiv(nodeInfor, nodeInfoObj.x - 4, nodeInfoObj.y - 4,
 							nodeInfoObj.width + 4, nodeInfoObj.height + 4);
 		}
 		$('#' + this.parentId).append(divcontent);
@@ -201,7 +130,6 @@ function FlowGraphic(param) {
 			}
 		}
 	}
-	;
 	/**
 	 * 清除任务进入状态
 	 */
@@ -266,52 +194,241 @@ function FlowGraphic(param) {
 		}
 	}
 
+	this.showFlowImgStatus = function() {
+		this.taskListEnd = _GlobalFlowVar.taskListEnd || [];
+		this.taskListIng = _GlobalFlowVar.taskListIng || [];
+		this.nodeInforArr = _GlobalFlowVar.nodeInforArr || [];
+		if (this.isIE) {
+			// 标记流程图
+			this.addGraphicInfo();
+			this.markImags();
+		} else {
+			// 标记流程图
+			this.signProcessState();
+		}
+	};
 	/**
 	 * 初始化
 	 */
 	this.loadFlowImg = function() {
 		if (this.isIE) {
 			$('#' + this.parentId).append(
-					"<img src= " + this.action + "?processDefinitionId="
-							+ this.processDefinitionId
-							+ "&processDefinitionKey="
+					"<img src= " + this.action + "?processInstanceId="
+							+ this.processInstanceId + "&processDefinitionKey="
 							+ this.processDefinitionKey + " />");
-			// 标记流程图
-			this.addGraphicInfo();
-			this.markImags();
 		} else {
 			// 加载svg图片
 			$.ajax({
-				type : "POST",
-				url : action,
-				data : "flag=svg&processDefinitionId=" + processDefinitionId
-						+ "&processDefinitionKey=" + processDefinitionKey,
+				type : "GET",
+				url : this.action,
+				dataType : "html",// 返回json格式的数据
+				data : "flag=svg&processDefinitionId=" + this.processInstanceId
+						+ "&processDefinitionKey=" + this.processDefinitionKey,
 				success : function(src) {
-					$('#' + parentId).html(src);
-					// 标记流程图
-					signProcessState();
+					$('#' + _self.parentId).html(src);
 				}
 			});
 		}
 	};
-
 	/**
 	 * 隐藏状态操作
 	 */
 	this.hideFlowImgStatus = function(flag) {
 		if (flag) {
 			if (isIE) {
-				flowGraphic.hideMark();
+				this.hideMark();
 			} else {
-				flowGraphic.clearTaskState();
+				this.clearTaskState();
 			}
 		} else {
 			if (isIE) {
-				flowGraphic.markImags();
+				this.markImags();
 			} else {
-				flowGraphic.signProcessState();
+				this.signProcessState();
 			}
 		}
 	};
-	return this;
 }
+
+/**
+ * 定义运行轨迹类
+ */
+function RunTrack(config) {
+	// 运行轨迹
+	var runningTrackInfor=[];
+	var runningTrackIndex = 0;
+	var tempNodeID = '';
+	var runningTrackLength = 0;
+	var currentRunningTrack = [];
+	var runningTrackThreadId = 0;
+	//保存流程节点本身式样
+	var backUpRunningTrackColorDictionary = {};
+	var backUpRunningTrackWidthDictionary = {};
+	/********************************************函数**********************************************************/
+	this.clearRunningTracks = function() {
+		runningTrackIndex = 0;
+		if (runningTrackLength != 0 && runningTrackIndex < runningTrackLength) {
+			currentRunningTrack = runningTrackInfor[runningTrackIndex];
+			var rectAttributes = $("#" + currentRunningTrack.nodeId)[0].attributes;
+			for (var j = 0; j < rectAttributes.length; j++) {
+				var rectAttribute = rectAttributes[j];
+				if (rectAttribute.name == "stroke") {
+					rectAttribute.nodeValue = backUpRunningTrackColorDictionary[currentRunningTrack.nodeId];
+				}
+				if (rectAttribute.name == "stroke-width") {
+					rectAttribute.nodeValue = backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId];
+				}
+			}
+			runningTrackIndex = runningTrackIndex + 1;
+		}
+	};
+	// 去掉重复的节点ID
+	this.distinctProcessNodeID = function() {
+		var temprunningTrackInfor = new Array();
+		var index = 0;
+		for (var i = 0; i < runningTrackInfor.length; i++) {
+			if (!this.confirmExists(temprunningTrackInfor, runningTrackInfor[i])) {
+				temprunningTrackInfor[index] = runningTrackInfor[i];
+				index = index + 1;
+			}
+		}
+		runningTrackInfor = temprunningTrackInfor;
+		runningTrackLength = temprunningTrackInfor.length;
+	};
+	//判断是否存在
+	this.confirmExists = function(tempArray, tempNode) {
+		for (var i = 0; i < tempArray.length; i++) {
+			if (tempArray[i].nodeId == tempNode.nodeId
+					&& tempArray[i].eventName != tempNode.eventName) {
+				return true;
+			}
+		}
+	};
+	/**
+	 * 加载轨迹洗数据
+	 */
+	this.loadRunTrackData = function() {
+		$.ajax({
+			type : "get",// 使用get方法访问后台
+			dataType : "json",// 返回json格式的数据
+			url : "service/task/runTrack",// 要访问的后台地址
+			data : {
+				processInstanceId : _processInstanceId
+			},
+			success : function(msg) {// msg为返回的数据，在这里做数据绑定
+				if (!msg && !msg.data) {
+					alert("返回数据为null");
+					return;
+				}
+				var data = msg.data;
+				runningTrackInfor = data.runningTrackInfor;
+				//生成页面元素
+				var runningTrackDIV = $("#runningTrackDIV");
+				runningTrackDIV.append("<h3><span id='clz'>流程运行信息</span></h3>");
+				var taskNotDoneTb = $("<div id='taskNotDoneTb'>");
+				var table = $("<table width='100' class='table-list'>");
+				var table_thead;
+				var table_tr;
+
+				if (runningTrackInfor) {
+					table_thead = $("<thead>");
+					table_thead.append("<th style='width: 100px'>轨迹编号</th>");
+					table_thead.append("<th style='width: 270px'>轨迹令牌编号</th>");
+					table_thead.append("<th style='width: 270px'>轨迹父令牌编号</th>");
+					table_thead.append("<th style='width: 130px'>执行时间</th>");
+					table_thead.append("<th style='width: 130px'>事件名称</th>");
+					table_thead.append("<th style='width: 60px'>处理者</th>");
+					table_thead.append("<th style='width: 270px'>流程实例编号</th>");
+					table_thead.append("</thead>");
+					table.append(table_thead);
+					
+					$.each(runningTrackInfor, function(i, row) {
+						table_tr = $("<tr " + (i % 2 == 0 ? "class='gray'" : "") + ">");
+						table_tr.append("<td>" + row.nodeId + "</td>");
+						table_tr.append("<td>" + row.tokenId + "</td>");
+						table_tr.append("<td>" + row.parentTokenId + "</td>");
+						table_tr.append("<td>"+ (!row.executionTime ? '' : row.executionTime) + "</td>");
+						table_tr.append("<td class='left'>"+ (!row.eventName ? '' : row.eventName) + "</td>");
+						table_tr.append("<td class='left'>"+ (!row.operator ? '' : row.operator) + "</td>");
+						table_tr.append("<td class='left'>"+ row.processInstanceId + "</td>");
+						table_tr.append("</tr>");
+						table.append(table_tr);
+
+					});
+				}
+				if (runningTrackInfor) {
+					runningTrackLength = runningTrackInfor.length;
+				}
+				taskNotDoneTb.append(table);
+				runningTrackDIV.append(taskNotDoneTb);
+				
+			}
+		});
+	};
+	this.runningTrack = function(flag)
+	{
+		if(flag){
+			if (runningTrackInfor && runningTrackInfor.length != 0) {
+				runningTrackIndex = 0;
+				//去掉重复的节点ID
+				this.distinctProcessNodeID();
+				runningTrackThreadId = window.setInterval('moveRunningTrack()',RUNNING_MILLESIMAL_SPEED);
+				$("#runningTrack").attr("disabled", "disabled");
+				$("#runningTrackDIV").show();
+			} else {
+				alert("无流程运行轨迹 数据");
+				$("#runningTrack").attr("disabled", "disabled");
+			}
+		}else {
+			$("#runningTrackDIV").hide();
+		}
+	};
+	/******************************************私有函数********************************************************/
+	//移除前一个轨迹
+	removePreviousRunningTrack = function(index) {
+		if (index != 0) {
+			var rectAttributes = $("#" + runningTrackInfor[index - 1].nodeId)[0].attributes;
+			for (var j = 0; j < rectAttributes.length; j++) {
+				var rectAttribute = rectAttributes[j];
+				if (rectAttribute.name == "stroke") {
+					rectAttribute.nodeValue = backUpRunningTrackColorDictionary[runningTrackInfor[runningTrackIndex - 1].nodeId];
+				}
+				if (rectAttribute.name == "stroke-width") {
+					rectAttribute.nodeValue = backUpRunningTrackWidthDictionary[runningTrackInfor[runningTrackIndex - 1].nodeId];
+				}
+
+			}
+		}
+	};
+	// 移动节点光标
+	moveRunningTrack = function() {
+		if (runningTrackLength != 0 && runningTrackIndex < runningTrackLength) {
+			currentRunningTrack = runningTrackInfor[runningTrackIndex];
+			var rectAttributes = $("#" + currentRunningTrack.nodeId)[0].attributes;
+			for (var j = 0; j < rectAttributes.length; j++) {
+				var rectAttribute = rectAttributes[j];
+				if (rectAttribute.name == "stroke") {
+					if (tempNodeID != currentRunningTrack.nodeId) {
+						backUpRunningTrackColorDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue;
+						rectAttribute.nodeValue = RUNNING_TRACK_COLOR;
+					}
+				}
+				if (rectAttribute.name == "stroke-width") {
+					if (tempNodeID != currentRunningTrack.nodeId) {
+						backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue;
+						rectAttribute.nodeValue = RUNNING_TRACK_WIDTH;
+					}
+				}
+			}
+			this.tempNodeID = currentRunningTrack.nodeId;
+		} else {
+			$("#runningTrack").removeAttr("disabled");
+			if (runningTrackIndex == runningTrackLength) {
+				clearInterval(runningTrackThreadId);
+			}
+		}
+		//移除轨迹
+		removePreviousRunningTrack(runningTrackIndex);
+		runningTrackIndex = runningTrackIndex + 1;
+	};
+};
