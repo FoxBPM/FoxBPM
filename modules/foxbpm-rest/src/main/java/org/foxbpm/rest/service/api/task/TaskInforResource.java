@@ -38,7 +38,6 @@ import org.foxbpm.engine.task.TaskQuery;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.DataResult;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
-import org.foxbpm.rest.common.util.FlowUtil;
 import org.restlet.data.Form;
 import org.restlet.resource.Get;
 
@@ -54,12 +53,7 @@ public class TaskInforResource extends AbstractRestResource {
 	@Get
 	public DataResult getTaskInfor() {
 		Form query = getQuery();
-		String type = getQueryParameter("type", query);
 		String processInstanceId = getQueryParameter("processInstanceId", query);
-		if (StringUtil.isEmpty(type)) {
-			type = "all";
-		}
-		
 		if (StringUtil.isEmpty(processInstanceId)) {
 			throw new FoxBPMBizException("processInstanceId is null!");
 		}
@@ -112,9 +106,9 @@ public class TaskInforResource extends AbstractRestResource {
 		for (Task task : openTaskInstances) {
 			taskInstanceMap = task.getPersistentState();
 			String userId = task.getAssignee();
-			if(StringUtil.isEmpty(userId)){
+			if (StringUtil.isEmpty(userId)) {
 				taskInstanceMap.put("userName", "未领取");
-			}else{
+			} else {
 				taskInstanceMap.put("userName", getUserName(userId));
 			}
 			
@@ -129,7 +123,6 @@ public class TaskInforResource extends AbstractRestResource {
 			openTasks.add(taskInstanceMap);
 		}
 		Map<String, Map<String, Object>> positionInfor = modelService.getFlowGraphicsElementPositionById(processInstance.getProcessDefinitionId());
-		
 		
 		resultData.put("endTasks", endTasks);
 		resultData.put("openTasks", openTasks);

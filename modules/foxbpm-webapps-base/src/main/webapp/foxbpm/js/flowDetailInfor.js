@@ -54,8 +54,9 @@ Foxbpm.TaskDeatailInfor = function(flowConfig) {
 Foxbpm.TaskDeatailInfor.prototype = {
 	init : function() {
 		var _self = this;
+		if(_processInstanceId && "" != _processInstanceId){
 		// 设置定义名称
-		$.ajax({
+			$.ajax({
 					type : "get",// 使用get方法访问后台
 					dataType : "json",// 返回json格式的数据
 					url : _bpmServiceUrl+"/task/taskInfor",// 要访问的后台地址
@@ -193,13 +194,14 @@ Foxbpm.TaskDeatailInfor.prototype = {
 						});
 						// 加载流程图上展现任务完成情况
 						_self.getFlowGraphic().showFlowImgStatus();
+						_self.getRunTrack().loadRunTrackData();
 					}
 				});
+		}
 		_self.createFlowchartOper();
 		// 加载流程图
 		_self.getFlowGraphic().loadFlowGraphicData();
 		// 加载运行轨迹数据
-		_self.getRunTrack().loadRunTrackData();
 	},
 	flowImgStatusClick:function()
 	{
@@ -542,8 +544,7 @@ function RunTrack(config) {
 	 * 加载轨迹洗数据
 	 */
 	this.loadRunTrackData = function() {
-		$
-				.ajax({
+		   $.ajax({
 					type : "get",// 使用get方法访问后台
 					dataType : "json",// 返回json格式的数据
 					url : this.action,// 要访问的后台地址
@@ -626,6 +627,11 @@ function RunTrack(config) {
 				});
 	};
 	this.runningTrack = function(flag) {
+		if(_GlobalFlowVar.isIE){
+			alert("IE浏览器不支持该功能!");
+			$("#runningTrack").attr("checked",null);
+			return;
+		}
 		if (flag) {
 			if (runningTrackInfor && runningTrackInfor.length != 0) {
 				runningTrackIndex = 0;
@@ -687,6 +693,7 @@ function RunTrack(config) {
 			}
 		} else {
 			$("#runningTrack").removeAttr("disabled");
+			$("#runningTrack").attr("checked",null);
 			if (runningTrackIndex == runningTrackLength) {
 				clearInterval(runningTrackThreadId);
 			}
