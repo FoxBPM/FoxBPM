@@ -17,10 +17,13 @@
  */
 package org.foxbpm.engine.impl.schedule.quartz;
 
+import java.util.Date;
+
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduleJob;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 初始化FoxbpmJobExecution上下文，初始化commandExecutor
@@ -30,6 +33,7 @@ import org.quartz.JobExecutionException;
  * 
  */
 public abstract class AbstractQuartzScheduleJob extends FoxbpmScheduleJob {
+	private static Logger LOG = LoggerFactory.getLogger(AbstractQuartzScheduleJob.class);
 	
 	/**
 	 * QUARTZ系统自动调度、 创建一个新的实例 AbstractQuartzScheduleJob.
@@ -51,12 +55,17 @@ public abstract class AbstractQuartzScheduleJob extends FoxbpmScheduleJob {
 	}
 	
 	@Override
-	public void execute(JobExecutionContext context) throws JobExecutionException {
+	public void execute(JobExecutionContext context) {
 		// 统一封装数据,统一设置执行命令
 		FoxbpmJobExecutionContext foxpmJobExecutionContext = new FoxbpmJobExecutionContext(context);
 		/** 扩展其他相关功能 */
 		// 执行任务
-		this.executeJob(foxpmJobExecutionContext);
+		try {
+	        this.executeJob(foxpmJobExecutionContext);
+	        LOG.debug("FoxbpmJob执行成功，执行时间 :" + new Date());
+        } catch (Exception e) {
+        	LOG.debug("FoxbpmJob执行失败，执行时间 :" + new Date());
+        }
 	}
 	
 }

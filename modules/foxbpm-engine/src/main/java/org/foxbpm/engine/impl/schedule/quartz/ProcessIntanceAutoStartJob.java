@@ -24,6 +24,8 @@ import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.impl.RuntimeServiceImpl;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 流程实例自动启动JOB
@@ -33,6 +35,7 @@ import org.quartz.JobExecutionException;
  * 
  */
 public class ProcessIntanceAutoStartJob extends AbstractQuartzScheduleJob {
+	private static Logger LOG = LoggerFactory.getLogger(ProcessIntanceAutoStartJob.class);
 	/**
 	 * quartz系统创建
 	 */
@@ -59,6 +62,8 @@ public class ProcessIntanceAutoStartJob extends AbstractQuartzScheduleJob {
 		String businessKey = foxpmJobExecutionContext.getBizKey();
 		Map<String, Object> transientVariables = new HashMap<String, Object>();
 		Map<String, Object> persistenceVariables = new HashMap<String, Object>();
+		
+		LOG.debug("ProcessIntanceAutoStartJob执行,执行参数为 =流程定义ID:{} 流程定义Key:{} 业务关联键:{} ", processDefinitionId, processDefinitionKey, businessKey);
 		
 		RuntimeServiceImpl runtimeService = (RuntimeServiceImpl) ProcessEngineManagement.getDefaultProcessEngine().getRuntimeService();
 		runtimeService.autoStartProcessInstance(processDefinitionKey, processDefinitionId, businessKey, transientVariables, persistenceVariables);
