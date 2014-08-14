@@ -426,7 +426,7 @@ function FlowGraphic(param) {
 				type : "GET",
 				url : this.action,
 				dataType : "html",// 返回json格式的数据
-				data : "flag=svg&processDefinitionId=" + this.processInstanceId
+				data : "flag=svg&processInstanceId=" + this.processInstanceId
 						+ "&processDefinitionKey=" + this.processDefinitionKey,
 				success : function(src) {
 					$('#' + _self.parentId).html(src);

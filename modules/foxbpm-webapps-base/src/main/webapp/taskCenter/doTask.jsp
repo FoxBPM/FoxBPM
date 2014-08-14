@@ -17,11 +17,11 @@
 <title>审批</title>
 <link rel="stylesheet" type="text/css" href="common/css/reset.css">
 <link rel="stylesheet" type="text/css" href="common/css/form.css">
-<script type="text/javascript" src="common/js/jquery.js"></script>
+<script type="text/javascript" src="foxbpm/js/jquery.js"></script>
 <script type="text/javascript" src="common/js/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="common/js/foxbpmframework.js"></script>
-<script type="text/javascript" src="common/js/flowCommandCompenent.js"></script>
-<script type="text/javascript" src="common/js/flowCommandHandler.js"></script>
+<script type="text/javascript" src="foxbpm/js/foxbpmframework.js"></script>
+<script type="text/javascript" src="foxbpm/js/flowCommandCompenent.js"></script>
+<script type="text/javascript" src="foxbpm/js/flowCommandHandler.js"></script>
 <script type="text/javascript" >
 $(document).ready(function() {
 	var _getBizKey = function() {
@@ -31,12 +31,12 @@ $(document).ready(function() {
        	return $("#_taskComment").val();
     };
     
-    var _flowCommit = function(){
+    var _flowCommit = function(flowInfo){
     	if(confirm("确定要提交吗?")){
+    		$("#flowInfo").val(JSON.stringify(flowInfo));
     		$("#form1").submit();
     	}
     	return false;
-    	
     };
 	var flowconfig ={ getBizKey: _getBizKey, getTaskComment: _getTaskComment,flowCommit:_flowCommit };
 	
@@ -66,6 +66,7 @@ $(document).ready(function() {
 			</table>
 			<div class="toolbar" id="toolbar"></div>
 			<input type="hidden" name="taskStauts" id="taskStauts" value="0" />
+			<input type='hidden' name='flowInfo' id='flowInfo' />
 		</form>
 	</div>
 </body>

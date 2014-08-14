@@ -6,7 +6,7 @@ Foxbpm.commandHandler = {};
 
 //流程状态
 Foxbpm.commandHandler.processStatus = function(data){
-	var url = "queryTaskDetailInfor.action?";
+	var url = _bpmFilePath+"/showTaskDetailInfor.html?";
 	if(data.processInstanceId){
 		url += "processInstanceId=" + data.processInstanceId;
 	}else if(data.processDefinitionKey){
@@ -22,7 +22,7 @@ Foxbpm.commandHandler.processStatus = function(data){
 		
 		
 Foxbpm.commandHandler.transfer = function(){
-	var userId = showDialog("common/selectUser.html");
+	var userId = showDialog(_bpmFilePath+"/selectUser.html");
 	if(userId == null || userId === undefined){
 		return null;
 	}
@@ -31,7 +31,7 @@ Foxbpm.commandHandler.transfer = function(){
 
 
 Foxbpm.commandHandler.pending = function(){
-	var userId = showDialog("common/selectUser.html");
+	var userId = showDialog(_bpmFilePath+"/selectUser.html");
 	if(userId == null || userId === undefined){
 		return null;
 	}
@@ -40,7 +40,7 @@ Foxbpm.commandHandler.pending = function(){
 
 Foxbpm.commandHandler.rollBack_reset = function(data){
 	var params = {};
-	var url = "common/selectData.html";
+	var url = _bpmFilePath+"/selectData.html";
 	var queryUrl = _bpmServiceUrl + "/flowNode/rollbackNodes";
 	var queryData = {taskId:data.taskId};
 	var returnData = {rollBackNodeId:"nodeId"};
@@ -55,7 +55,7 @@ Foxbpm.commandHandler.rollBack_reset = function(data){
 
 Foxbpm.commandHandler.rollBack_assignee = function(data){
 	var params = {};
-	var url = "common/selectData.html";
+	var url = _bpmFilePath+"/selectData.html";
 	var queryUrl = _bpmServiceUrl + "/task/rollbackTasks";
 	var queryData = {taskId:data.taskId};
 	var returnData = {rollBackNodeId:"nodeId",rollBackAssignee:"assignee"};

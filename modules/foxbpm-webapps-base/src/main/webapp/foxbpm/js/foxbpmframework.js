@@ -6,7 +6,8 @@ var Foxbpm = {};
 
 
 //初始化流程参数，从url获取对应参数
-var _bpmServiceUrl= "../service";
+var _bpmServiceUrl= "/foxbpm-webapps-base/service";
+var _bpmFilePath = "/foxbpm-webapps-base/foxbpm";
 var _processDefinitionKey = requestUrlParam("processDefinitionKey");
 var _processInstanceId = requestUrlParam("processInstanceId");
 var _taskId = requestUrlParam("taskId");
