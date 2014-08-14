@@ -40,12 +40,12 @@ Foxbpm.TaskDeatailInfor = function(flowConfig) {
 	this._flowGraphic = new FlowGraphic({
 		'isIE' : _GlobalFlowVar.isIE,
 		'parentId' : 'flowImg',
-		'action' : 'service/flowGraphic/flowImg',
+		'action' : _bpmServiceUrl+'/flowGraphic/flowImg',
 		'processInstanceId' : _processInstanceId,
 		'processDefinitionKey' : _processDefinitionKey
 	});
 	this._runTrack = new RunTrack({
-		action : 'service/task/runTrack',
+		action : _bpmServiceUrl+'/task/runTrack',
 		processInstanceId : _processInstanceId
 	});
 	TaskDeatailInfor = this;
@@ -54,10 +54,11 @@ Foxbpm.TaskDeatailInfor = function(flowConfig) {
 Foxbpm.TaskDeatailInfor.prototype = {
 	init : function() {
 		var _self = this;
+		// 设置定义名称
 		$.ajax({
 					type : "get",// 使用get方法访问后台
 					dataType : "json",// 返回json格式的数据
-					url : "service/task/taskInfor",// 要访问的后台地址
+					url : _bpmServiceUrl+"/task/taskInfor",// 要访问的后台地址
 					data : {
 						processInstanceId : _processInstanceId
 					},
@@ -68,13 +69,9 @@ Foxbpm.TaskDeatailInfor.prototype = {
 						}
 						var data = msg.data;
 						var taksDetailDiv = $("#"+TaskDeatailInfor._config.taksDetailDiv);
-						// 设置定义名称
-						taksDetailDiv
-								.before($("<h1 id='processDefinitionName'>"
-										+ data.processName + "</h1>"));
+						taksDetailDiv.before($("<h1 id='processDefinitionName'>"+ data.processName + "</h1>"));
 						// 流程信息
-						taksDetailDiv
-								.append("<div class='proc_bg'><h3><span id='clz'>流程信息</span></h3>");
+						taksDetailDiv.append("<div class='proc_bg'><h3><span id='clz'>流程信息</span></h3>");
 						// 任务信息
 						var taskInforDiv = $("<div id='taskNotDoneTb'>");
 						var table = $("<table width='100' class='table-list'>");
