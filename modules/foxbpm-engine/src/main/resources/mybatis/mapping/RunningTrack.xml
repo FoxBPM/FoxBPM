@@ -15,7 +15,6 @@
 		<result column="TOKEN_ID" property="tokenId" jdbcType="VARCHAR" />
 		<result column="PARENT_TOKEN_ID" property="parentTokenId"
 			jdbcType="VARCHAR" />
-
 		<result column="EXECUTION_TIME" property="executionTime"
 			jdbcType="TIMESTAMP" />
 		<result column="OPERATOR" property="operator" jdbcType="VARCHAR" />
@@ -23,7 +22,7 @@
 		<result column="NODE_NAME" property="nodeName" jdbcType="VARCHAR" />
 		<result column="EVENT_NAME" property="eventName" jdbcType="VARCHAR" />
 		<result column="ARCHIVE_TIME" property="archiveTime" jdbcType="TIMESTAMP" />
-		<result column="TRACK_RECORD" property="trackRecord" jdbcType="BIGINT" />
+		<result column="TRACK_RECORD" property="trackRecord" jdbcType="VARCHAR" />
 
 	</resultMap>
 

@@ -48,7 +48,7 @@ public interface RunningTrack {
 	public void setEventName(String eventName);
 	public Date getArchiveTime();
 	public void setArchiveTime(Date archiveTime);
-	public long getTrackRecord();
-	public void setTrackRecord(long trackRecord);
+	public String getTrackRecord();
+	public void setTrackRecord(String trackRecord);
 	
 }

@@ -55,6 +55,17 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 	protected KernelTokenImpl parentProcessInstanceToken;
 
 	protected boolean isEnded = false;
+	
+	/** 是否暂停 */
+	protected boolean isSuspended = false;
+	
+	public boolean isSuspended() {
+		return isSuspended;
+	}
+
+	public void setSuspended(boolean isSuspended) {
+		this.isSuspended = isSuspended;
+	}
 
 	/**
 	 * 获取父流程实例
@@ -313,6 +324,24 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 		if (getParentProcessInstance() != null) {
 			signalParentProcessInstance();
 		}
+	}
+	
+	public void suspendInstance(){
+		this.instanceStatus=ProcessInstanceStatus.SUSPEND;
+		setSuspended(true);
+		for (KernelTokenImpl token : getTokens()) {
+			token.suspendToken();
+		}
+		
+	}
+	
+	public void continueInstance(){
+		this.instanceStatus=ProcessInstanceStatus.RUNNING;
+		setSuspended(false);
+		for (KernelTokenImpl token : getTokens()) {
+			token.continueToken();
+		}
+		
 	}
 
 	/** 子类可以重写这个方法实现自己的启动子流程方法 */

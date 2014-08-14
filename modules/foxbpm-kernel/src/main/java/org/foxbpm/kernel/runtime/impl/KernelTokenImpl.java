@@ -663,5 +663,13 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 	public void setSuspended(boolean isSuspended) {
 		this.isSuspended = isSuspended;
 	}
+	
+	public void suspendToken(){
+		setSuspended(true);
+	}
+	public void continueToken(){
+		setSuspended(false);
+	}
+	
 
 }
