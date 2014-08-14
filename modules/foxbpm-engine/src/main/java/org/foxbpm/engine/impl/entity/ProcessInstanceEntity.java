@@ -101,8 +101,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	/** 流程实例位置 */
 	protected String processLocation;
 
-	/** 是否暂停 */
-	protected boolean isSuspended = false;
+
 
 	// 对象字段 /////////////////////
 
@@ -393,14 +392,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	public void setProcessLocation(String processLocation) {
 		this.processLocation = processLocation;
 	}
-
-	public boolean isSuspended() {
-		return isSuspended;
-	}
-
-	public void setSuspended(boolean isSuspended) {
-		this.isSuspended = isSuspended;
-	}
+	
 
 	public DataVariableMgmtInstance getDataVariableMgmtInstance() {
 		return dataVariableMgmtInstance;
