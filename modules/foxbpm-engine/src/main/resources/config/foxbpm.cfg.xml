@@ -225,11 +225,10 @@
 		</taskCommandDefinition>
 
 
-		<taskCommandDefinition id="abortProcess"
-			name="终止" command="org.foxbpm.engine.impl.task.command.AbortProcessCommand"
-			cmd="org.foxbpm.engine.impl.task.cmd.AbortProcessCmd"
-			isEnabled="true" type="toDoTasks"
-			filter="org.foxbpm.engine.impl.task.filter.AbortProcessFilter">
+		<taskCommandDefinition id="abortProcess" name="终止"
+			command="org.foxbpm.engine.impl.task.command.AbortProcessCommand"
+			cmd="org.foxbpm.engine.impl.task.cmd.AbortProcessCmd" isEnabled="true"
+			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.AbortProcessFilter">
 			<commandParam key="isSaveData" name="是否保存数据" value="true"
 				description="" dataType="String" bizType="ControlParam" />
 			<commandParam key="isVerification" name="是否触发验证" value="true"
@@ -237,18 +236,36 @@
 		</taskCommandDefinition>
 
 
+		<taskCommandDefinition id="suspendProcessInstance"
+			name="暂停实例"
+			command="org.foxbpm.engine.impl.task.command.SuspendProcessInstanceCommand"
+			cmd="org.foxbpm.engine.impl.task.cmd.SuspendProcessInstanceCmd"
+			isEnabled="true" type="toDoTasks"
+			filter="org.foxbpm.engine.impl.task.filter.SuspendProcessInstanceFilter">
+			<commandParam key="isSaveData" name="是否保存数据" value="true"
+				description="" dataType="String" bizType="ControlParam" />
+			<commandParam key="isVerification" name="是否触发验证" value="true"
+				description="" dataType="String" bizType="ControlParam" />
+		</taskCommandDefinition>
+		
+		<taskCommandDefinition id="continueProcessInstance"
+			name="恢复实例"
+			command="org.foxbpm.engine.impl.task.command.ContinueProcessInstanceCommand"
+			cmd="org.foxbpm.engine.impl.task.cmd.ContinueProcessInstanceCmd"
+			isEnabled="true" type="toDoTasks"
+			filter="org.foxbpm.engine.impl.task.filter.ContinueProcessInstanceFilter">
+			<commandParam key="isSaveData" name="是否保存数据" value="true"
+				description="" dataType="String" bizType="ControlParam" />
+			<commandParam key="isVerification" name="是否触发验证" value="true"
+				description="" dataType="String" bizType="ControlParam" />
+		</taskCommandDefinition>
+
 		<!-- <taskCommandDefinition id="reminders" name="催办" command="com.founder.fix.fixflow.expand.command.RemindersTaskCommand" 
 			cmd="com.founder.fix.fixflow.expand.cmd.RemindersTaskCmd" isEnabled="true" 
 			type="processInstanceInfo" filter="com.founder.fix.fixflow.expand.filter.RemindersTaskFilter"></taskCommandDefinition> 
 			<taskCommandDefinition id="recover" name="追回" command="com.founder.fix.fixflow.expand.command.RecoverTaskCommand" 
 			cmd="com.founder.fix.fixflow.expand.cmd.RecoverTaskCmd" isEnabled="true" 
-			type="processInstanceInfo" filter="com.founder.fix.fixflow.expand.filter.RecoverTaskFilter"></taskCommandDefinition> 
-			<taskCommandDefinition id="suspendProcessInstance" name="暂停实例" command="com.founder.fix.fixflow.expand.command.SuspendProcessInstanceCommand" 
-			cmd="com.founder.fix.fixflow.expand.cmd.SuspendProcessInstanceCmd" isEnabled="true" 
-			type="toDoTasks" filter="com.founder.fix.fixflow.expand.filter.SuspendProcessInstanceFilter"></taskCommandDefinition> 
-			<taskCommandDefinition id="continueProcessInstance" name="恢复实例" command="com.founder.fix.fixflow.expand.command.ContinueProcessInstanceCommand" 
-			cmd="com.founder.fix.fixflow.expand.cmd.ContinueProcessInstanceCmd" isEnabled="true" 
-			type="toDoTasks" filter="com.founder.fix.fixflow.expand.filter.ContinueProcessInstanceFilter"></taskCommandDefinition> -->
+			type="processInstanceInfo" filter="com.founder.fix.fixflow.expand.filter.RecoverTaskFilter"></taskCommandDefinition> -->
 
 
 		<taskCommandDefinition id="processStatus" name="流程状态"
