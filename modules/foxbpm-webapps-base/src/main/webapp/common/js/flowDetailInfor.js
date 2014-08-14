@@ -205,13 +205,22 @@ Foxbpm.TaskDeatailInfor.prototype = {
         ul.append("<li class='img01'>已完成</li>");
         ul.append("<li class='img01'>进行中</li>");
 		ul.append("<li><input id='yczt' type='checkbox' name='cczt' />&nbsp;&nbsp;隐藏状态</li>");
-		ul.append("<li><input id='runningTrack' type='checkbox' name='runningTrack' />&nbsp;&nbsp;运行轨迹</li>");
+		ul.append("<li><input id='runningTrackTable' type='checkbox' name='runningTrackTable' />&nbsp;&nbsp;轨迹信息</li>");
+		ul.append("<li><input id='runningTrack' type='checkbox' name='runningTrack' />&nbsp;&nbsp;轨迹动态运行</li>");
+		
 		h3.append(ul);
 		flowGraphicDiv.append(h3);
 		flowGraphicDiv.append($("<div id='flowImg' class='pos_abs' style='position: relative; overflow-x: auto; width: 100%;'></div> "));
 	    //事件注册
 		$("#yczt").bind("click", this.flowImgStatusClick);
 		$("#runningTrack").bind("click", this.runningTrackClick);
+		$("#runningTrackTable").bind("click", function(){
+			if ($(this).attr("checked") == 'checked') {
+				$("#"+TaskDeatailInfor._config.runningTrackDIV).show();
+			}else{
+				$("#"+TaskDeatailInfor._config.runningTrackDIV).hide();
+			}
+		});
 	}
 };
 
@@ -601,17 +610,13 @@ function RunTrack(config) {
 				runningTrackIndex = 0;
 				// 去掉重复的节点ID
 				this.distinctProcessNodeID();
-				runningTrackThreadId = window.setInterval('moveRunningTrack()',
-						RUNNING_MILLESIMAL_SPEED);
+				runningTrackThreadId = window.setInterval('moveRunningTrack()',RUNNING_MILLESIMAL_SPEED);
 				$("#runningTrack").attr("disabled", "disabled");
-				$("#"+TaskDeatailInfor._config.runningTrackDIV).show();
 			} else {
 				alert("无流程运行轨迹 数据");
 				$("#runningTrack").attr("disabled", "disabled");
 			}
-		} else {
-			$("#"+TaskDeatailInfor._config.runningTrackDIV).hide();
-		}
+		} 
 	};
 	/** ****************************************私有函数******************************************************* */
 	// 移除前一个轨迹
