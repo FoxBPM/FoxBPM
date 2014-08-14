@@ -37,7 +37,7 @@ public class RunningTrackEntity implements RunningTrack, PersistentObject {
 	protected String nodeName;
 	protected String eventName;
 	protected Date archiveTime;
-	protected long trackRecord;
+	protected String trackRecord;
 	
 	@Override
 	public Map<String, Object> getPersistentState() {
@@ -144,11 +144,11 @@ public class RunningTrackEntity implements RunningTrack, PersistentObject {
 	public void setArchiveTime(Date archiveTime) {
 		this.archiveTime = archiveTime;
 	}
-	public long getTrackRecord() {
+	public String getTrackRecord() {
 		return trackRecord;
 	}
 	
-	public void setTrackRecord(long trackRecord) {
+	public void setTrackRecord(String trackRecord) {
 		this.trackRecord = trackRecord;
 	}
 	

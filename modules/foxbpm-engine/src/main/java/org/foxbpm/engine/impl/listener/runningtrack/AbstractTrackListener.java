@@ -68,7 +68,7 @@ public abstract class AbstractTrackListener implements KernelListener {
 		runningTrackEntity.setId(GuidUtil.CreateGuid());
 		runningTrackEntity.setProcessDefinitionId(processDefinition.getId());
 		runningTrackEntity.setProcessDefinitionKey(processDefinition.getKey());
-		runningTrackEntity.setTrackRecord(tractRecord);
+		runningTrackEntity.setTrackRecord(String.valueOf(tractRecord));
 		runningTrackEntity.setExecutionTime(new Date());
 		runningTrackEntity.setEventName(kernelTokenImpl.getEventName());
 		runningTrackEntity.setTokenId(kernelTokenImpl.getId());
