@@ -25,7 +25,7 @@
      	</linearGradient>
 	</defs>
 	
-    <path d="M 0,24 L 24,0 L 48,24 L 24,48 ZM0 24" id="bg_frame" fill="url(#background) white" stroke="black" style="stroke-width:1" /> 
+    <path d="M 0,24 L 24,0 L 48,24 L 24,48 ZM0 24" id="bg_frame" fill="url(#background) white" stroke="black" stroke-width="1" /> 
 	<path fill="none" d="M15 15 L34 34" fill-rule="evenodd" stroke="rgb(100,100,100)" stroke-width="3" />
   	<path fill="none" d="M34 15 L15 34" fill-rule="evenodd" stroke="rgb(100,100,100)" stroke-width="3" />
  

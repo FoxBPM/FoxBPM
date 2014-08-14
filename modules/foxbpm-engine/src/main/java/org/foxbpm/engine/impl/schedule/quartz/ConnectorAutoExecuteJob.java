@@ -21,6 +21,8 @@ import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.impl.RuntimeServiceImpl;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -32,7 +34,7 @@ import org.quartz.JobExecutionException;
  * 
  */
 public class ConnectorAutoExecuteJob extends AbstractQuartzScheduleJob {
-	
+	private static Logger LOG = LoggerFactory.getLogger(ConnectorAutoExecuteJob.class);
 	/**
 	 * quartz系统创建
 	 */
@@ -58,6 +60,9 @@ public class ConnectorAutoExecuteJob extends AbstractQuartzScheduleJob {
 		String tokenID = foxpmJobExecutionContext.getTokenId();
 		String eventName = foxpmJobExecutionContext.getEventName();
 		String nodeID = foxpmJobExecutionContext.getNodeId();
+		
+		LOG.debug("ConnectorAutoExecuteJob执行,执行参数为= 流程实例ID:{} 连接器ID:{} 令牌ID:{} 事件名称:{} 节点ID:{}", processInstanceID, connectorID, tokenID, eventName, nodeID);
+		
 		RuntimeServiceImpl runtimeService = (RuntimeServiceImpl) ProcessEngineManagement.getDefaultProcessEngine().getRuntimeService();
 		runtimeService.autoExecuteConnector(processInstanceID, connectorID, eventName, tokenID, nodeID);
 	}
