@@ -38,6 +38,7 @@ import org.foxbpm.engine.task.TaskQuery;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.DataResult;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
+import org.foxbpm.rest.common.util.FlowUtil;
 import org.restlet.data.Form;
 import org.restlet.resource.Get;
 
@@ -110,7 +111,13 @@ public class TaskInforResource extends AbstractRestResource {
 		List<Map<String, Object>> openTasks = new ArrayList<Map<String, Object>>();
 		for (Task task : openTaskInstances) {
 			taskInstanceMap = task.getPersistentState();
-			taskInstanceMap.put("userName", getUserName(task.getAssignee()));
+			String userId = task.getAssignee();
+			if(StringUtil.isEmpty(userId)){
+				taskInstanceMap.put("userName", "未领取");
+			}else{
+				taskInstanceMap.put("userName", getUserName(userId));
+			}
+			
 			date = (Date) taskInstanceMap.get("createTime");
 			if (null != date) {
 				taskInstanceMap.put("createTime", formatter.format(date));

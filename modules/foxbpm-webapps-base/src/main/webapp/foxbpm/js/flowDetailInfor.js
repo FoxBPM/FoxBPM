@@ -77,7 +77,7 @@ Foxbpm.TaskDeatailInfor.prototype = {
 						var table_tr;
 						// 任务结束信息
 						if (data.endTasks) {
-							taksDetailDiv.append("<div class='proc_bg'><h3><span id='clz'>流程已完成信息</span></h3>");
+							taksDetailDiv.append("<div class='proc_bg'><h3><span id='clz'>已完成</span></h3>");
 							var taskEndDoneTb = $("<div id='taskEndDoneTb'>");
 							table = $("<table width='100' class='table-list'>");
 							table_thead = $("<thead>");
@@ -132,7 +132,7 @@ Foxbpm.TaskDeatailInfor.prototype = {
 						}
 						// 未结束任务
 						if (data.openTasks) {
-							taksDetailDiv.append("<div class='proc_bg'><h3><span id='clz'>流程未完成信息</span></h3>");
+							taksDetailDiv.append("<div class='proc_bg'><h3><span id='clz'>未完成</span></h3>");
 							var taskNotEndDoneTb = $("<div id='taskNotEndDoneTb'>");
 							table = $("<table width='100' class='table-list'>");
 							table_thead = $("<thead>");
