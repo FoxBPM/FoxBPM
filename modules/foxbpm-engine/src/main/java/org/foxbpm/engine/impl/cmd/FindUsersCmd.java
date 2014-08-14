@@ -60,9 +60,8 @@ public class FindUsersCmd implements Command<List<UserEntity>> {
 		} else {
 			userEntityList = userDefinition.findUsers(idLike, nameLike);
 		}
-		List<UserEntity> userList = null;
+		List<UserEntity> userList =new ArrayList<UserEntity>();
 		if (null != userEntityList && !userEntityList.isEmpty()) {
-			userList = new ArrayList<UserEntity>();
 			for (UserEntity userEntity : userEntityList) {
 				userList.add(userEntity);
 			}

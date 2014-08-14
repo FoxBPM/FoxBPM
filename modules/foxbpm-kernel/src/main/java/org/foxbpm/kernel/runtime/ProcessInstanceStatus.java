@@ -15,7 +15,7 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.engine.runtime;
+package org.foxbpm.kernel.runtime;
 
 /**
  * 流程实例状态
@@ -38,7 +38,7 @@ public class ProcessInstanceStatus {
 	/**
 	 * 终止
 	 */
-	public static final String TERMINATION = "termination";
+	public static final String ABORT = "abort";
 
 	/**
 	 * 正常结束

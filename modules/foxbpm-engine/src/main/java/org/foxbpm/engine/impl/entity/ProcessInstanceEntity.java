@@ -37,10 +37,10 @@ import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.runtime.ContextInstance;
 import org.foxbpm.engine.runtime.ProcessInstance;
-import org.foxbpm.engine.runtime.ProcessInstanceStatus;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 import org.foxbpm.kernel.runtime.KernelProcessInstance;
+import org.foxbpm.kernel.runtime.ProcessInstanceStatus;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
@@ -96,8 +96,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	/** 流程实例归档时间 */
 	protected Date archiveTime;
 
-	/** 流程实例状态 */
-	protected String instanceStatus;
+
 
 	/** 流程实例位置 */
 	protected String processLocation;
@@ -385,13 +384,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		this.archiveTime = archiveTime;
 	}
 
-	public String getInstanceStatus() {
-		return instanceStatus;
-	}
-
-	public void setInstanceStatus(String instanceStatus) {
-		this.instanceStatus = instanceStatus;
-	}
+	
 
 	public String getProcessLocation() {
 		return processLocation;
@@ -531,10 +524,14 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	}
 
 	@Override
-	public void end() {
-		this.instanceStatus = ProcessInstanceStatus.COMPLETE;
+	public void end() {		
 		endTime = ClockUtil.getCurrentTime();
 		super.end();
+	}
+	
+	public void abort() {
+		endTime = ClockUtil.getCurrentTime();
+		super.abort();
 	}
 
 	public String getProcessDefinitionName() {

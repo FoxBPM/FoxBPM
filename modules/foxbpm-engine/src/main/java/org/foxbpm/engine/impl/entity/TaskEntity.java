@@ -878,6 +878,8 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		
 		end();
 		
+		setTaskComment(taskComment);
+		
 		if (taskCommand != null && taskCommand.getTaskCommandType() != null
 		        && !taskCommand.getTaskCommandType().equals("")) {
 			String taskCommandType = taskCommand.getTaskCommandType();
@@ -901,6 +903,22 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 				this.setCommandMessage(taskCommandDef.getName());
 			}
 		}
+	}
+	
+	/** 重置任务处理者人属性 */
+	public void resetProperties(){
+		setCreateTime(null);
+		setEndTime(null);
+		setCommandId(null);
+		setCommandType(null);
+		setCommandMessage(null);
+		setTaskComment(null);
+		setAgent(null);
+		setAdmin(null);
+		setDraft(false);
+		setOpen(false);
+		setSuspended(false);
+		setAssignee(null);
 	}
 	
 	public Map<String, Object> getPersistentState() {

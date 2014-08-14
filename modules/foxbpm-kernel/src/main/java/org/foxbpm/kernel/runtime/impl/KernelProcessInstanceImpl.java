@@ -22,13 +22,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.kernel.event.KernelEvent;
 import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 import org.foxbpm.kernel.runtime.InterpretableProcessInstance;
 import org.foxbpm.kernel.runtime.KernelProcessInstance;
+import org.foxbpm.kernel.runtime.ProcessInstanceStatus;
 
 public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implements InterpretableProcessInstance {
 	/**
@@ -44,6 +44,9 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 
 	/** 流程令牌集合 */
 	protected List<KernelTokenImpl> tokens;
+	
+	/** 流程实例状态 */
+	protected String instanceStatus;
 
 	// 父流程
 	protected KernelProcessInstanceImpl parentProcessInstance;
@@ -153,9 +156,12 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 
 	public void signal(String tokenId) {
 		// getTokens 没有子类重写所以直接调用属性
+		if(tokenId==null||tokenId.equals("")){
+			throw new KernelException("signal 的 tokenId is null");
+		}
 		if (tokens != null && tokens.size() > 0) {
 			for (KernelTokenImpl kernelTokenImpl : tokens) {
-				if (StringUtils.equals(kernelTokenImpl.getId(), tokenId)) {
+				if (kernelTokenImpl.getId().equals(tokenId)) {
 					kernelTokenImpl.signal();
 					return;
 				}
@@ -288,10 +294,22 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 	}
 
 	public void end() {
+		this.instanceStatus = ProcessInstanceStatus.COMPLETE;
 		isEnded = true;
 		KernelTokenImpl tempToken = getRootToken();
 		tempToken.end();
 		tempToken.fireEvent(KernelEvent.PROCESS_END);
+		if (getParentProcessInstance() != null) {
+			signalParentProcessInstance();
+		}
+	}
+	
+	public void abort() {
+		this.instanceStatus = ProcessInstanceStatus.ABORT;
+		isEnded = true;
+		KernelTokenImpl tempToken = getRootToken();
+		tempToken.end();
+		tempToken.fireEvent(KernelEvent.PROCESS_ABORT);
 		if (getParentProcessInstance() != null) {
 			signalParentProcessInstance();
 		}
@@ -308,5 +326,13 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 
 	public KernelFlowNodeImpl getStartFlowNode() {
 		return startFlowNode;
+	}
+	
+	public String getInstanceStatus() {
+		return instanceStatus;
+	}
+
+	public void setInstanceStatus(String instanceStatus) {
+		this.instanceStatus = instanceStatus;
 	}
 }

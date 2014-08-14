@@ -234,8 +234,8 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 			// 发现上下文中有直接跳转节点,则流程引擎不走正常处理直接跳转到指定借点。
 			LOG.debug("＝＝执行跳转机制,跳转目标: {}({}),离开节点: {}({}),令牌号: {}({}).", toFlowNode.getName(), toFlowNode.getId(), flowNode.getName(),
 					flowNode.getId(), this.getName(), this.getId());
-			setToFlowNode(null);
 			enter(toFlowNode);
+			setToFlowNode(null);
 			return;
 		}
 

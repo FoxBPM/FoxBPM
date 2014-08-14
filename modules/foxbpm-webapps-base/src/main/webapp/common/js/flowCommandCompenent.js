@@ -44,6 +44,9 @@ Foxbpm.FlowCommandCompenent.prototype={
 	            	 
 	            	 if(Foxbpm.commandHandler[commandType] !== undefined){
 	            		 result = Foxbpm.commandHandler[commandType](data);
+	            		 if(result === undefined || result == null){
+	            			 return;
+	            		 }
 	                	 if(result.status == "error"){
 	                		 alert(result.message);
 	                		 return;

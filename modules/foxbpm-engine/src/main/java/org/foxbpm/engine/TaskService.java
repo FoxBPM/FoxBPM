@@ -27,6 +27,7 @@ import org.foxbpm.engine.query.NativeTaskQuery;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.engine.task.TaskQuery;
+import org.foxbpm.kernel.process.KernelFlowNode;
 
 public interface TaskService {
 
@@ -170,5 +171,21 @@ public interface TaskService {
 	 * @return
 	 */
 	NativeTaskQuery createNativeTaskQuery();
+	
+	/**
+	 * 获取可退回的节点
+	 * <p>任务已经走过的节点,不重复</p>
+	 * @param taskId 任务编号
+	 * @return
+	 */
+	List<KernelFlowNode> getRollbackFlowNode(String taskId);
+	
+	/**
+	 * 获取可退回的任务
+	 * <p>如果有分支，则退回自己走的分支，不管兄弟分支</p>
+	 * @param taskId
+	 * @return
+	 */
+	List<Task> getRollbackTasks(String taskId);
 
 }
