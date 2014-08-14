@@ -19,6 +19,7 @@ package org.foxbpm.engine.impl.schedule.db;
 
 import java.sql.Connection;
 
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.util.DBUtils;
 import org.quartz.JobPersistenceException;
 import org.quartz.impl.jdbcjobstore.JobStoreTX;
@@ -33,11 +34,25 @@ import org.quartz.impl.jdbcjobstore.JobStoreTX;
 public class FoxbpmJobStore extends JobStoreTX {
 	@Override
 	protected Connection getConnection() throws JobPersistenceException {
-		return DBUtils.getConnection();
+		Connection connection = DBUtils.getConnection();
+		try {
+			connection.setAutoCommit(false);
+		} catch (Exception e) {
+			new FoxBPMException("quartz 设置数据库连接非自动提交时异常", e);
+		}
+		return connection;
 	}
 	
 	@Override
 	protected void closeConnection(Connection connection) {
+		try {
+			if (!connection.getAutoCommit()) {
+				connection.setAutoCommit(true);
+			}
+		} catch (Exception e) {
+			new FoxBPMException("quartz 设置数据库连接自动提交时异常", e);
+		}
+		
 		super.closeConnection(connection);
 	}
 	
