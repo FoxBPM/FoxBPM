@@ -35,30 +35,29 @@ import org.foxbpm.kernel.runtime.impl.KernelVariableInstanceImpl;
 public class VariableManager extends AbstractManager {
 
 	public List<KernelVariableInstanceImpl> findVariableInstancesByProcessInstanceId(String id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	
 	public VariableInstanceEntity findVariableById(String variableId){
-		return getSqlSession().selectById(VariableInstanceEntity.class, variableId);
+		return selectById(variableId);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<VariableInstanceEntity> findVariableByProcessInstanceId(String processInstanceId){
-		return (List<VariableInstanceEntity>)getSqlSession().selectListWithRawParameter("selectVariableByProcessInstanceId", processInstanceId);
+		return (List<VariableInstanceEntity>)selectList("selectVariableByProcessInstanceId", processInstanceId);
 	}
 	
 	public VariableInstanceEntity findVariableByProcessInstanceIdAndKey(String processInstanceId,String key){
 		Map<String,Object> paraMap = new HashMap<String,Object>();
 		paraMap.put("processInstanceId", processInstanceId);
 		paraMap.put("key", key);
-		return (VariableInstanceEntity)getSqlSession().selectOne("selectVariableByProcessInstanceIdAndKey",paraMap);
+		return (VariableInstanceEntity)selectOne("selectVariableByProcessInstanceIdAndKey",paraMap);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public Map<String,Object> queryVariable(QueryVariablesCommand queryVariableCommand){
-		List<VariableInstanceEntity> variables =  (List<VariableInstanceEntity>)getSqlSession().selectListWithRawParameter("selectVariableByQueryCommand", queryVariableCommand);
+		List<VariableInstanceEntity> variables =  (List<VariableInstanceEntity>)selectList("selectVariableByQueryCommand", queryVariableCommand);
 		Map<String,Object> result = new HashMap<String,Object>();
 		if(variables != null){
 			for(VariableInstanceEntity variable : variables){
@@ -69,15 +68,15 @@ public class VariableManager extends AbstractManager {
 	}
 	
 	public void deleteVariableByProcessInstanceId(String processInstanceId){
-		getSqlSession().delete("deleteVariableByProcessInstanceId", processInstanceId);
+		delete("deleteVariableByProcessInstanceId", processInstanceId);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<VariableInstanceEntity> findVariablesByQueryCriteria(VariableQueryImpl variableQueryImpl) {
-		return (List<VariableInstanceEntity>) getSqlSession().selectList("findVariablesByQueryCriteria", variableQueryImpl);
+		return (List<VariableInstanceEntity>) selectList("findVariablesByQueryCriteria", variableQueryImpl);
 	}
 
 	public long findVariablesCountByQueryCriteria(VariableQueryImpl variableQueryImpl) {
-		return (Long) getSqlSession().selectOne("findVariableCountByQueryCriteria", variableQueryImpl);
+		return (Long) selectOne("findVariableCountByQueryCriteria", variableQueryImpl);
 	}
 }

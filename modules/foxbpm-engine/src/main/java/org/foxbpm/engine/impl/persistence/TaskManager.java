@@ -45,8 +45,7 @@ public class TaskManager extends AbstractManager {
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	public List<Task> findTasksByNativeQuery(Map<String, Object> parameterMap, int firstResult,
 			int maxResults) {
-		return (List) getSqlSession().selectListWithRawParameter("selectTaskByNativeQuery",
-				parameterMap);
+		return (List) selectList("selectTaskByNativeQuery", parameterMap);
 	}
 
 	public long findTaskCountByNativeQuery(Map<String, Object> parameterMap) {
@@ -63,7 +62,7 @@ public class TaskManager extends AbstractManager {
 		if (StringUtil.isEmpty(taskId)) {
 			return null;
 		}
-		return selectById(TaskEntity.class, taskId);
+		return selectById(taskId);
 	}
 
 	/**
@@ -73,8 +72,7 @@ public class TaskManager extends AbstractManager {
 	 */
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	public List<TaskEntity> findTasksByProcessInstanceId(String processInstanceId) {
-		return (List) getSqlSession().selectListWithRawParameter("selectTasksByProcessInstanceId",
-				processInstanceId);
+		return (List) selectList("selectTasksByProcessInstanceId",processInstanceId);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -90,11 +88,11 @@ public class TaskManager extends AbstractManager {
 
 	@SuppressWarnings("unchecked")
 	public List<Task> findTasksByQueryCriteria(TaskQueryImpl taskQuery) {
-		return (List<Task>) getSqlSession().selectList("findTasksByQueryCriteria", taskQuery);
+		return (List<Task>) selectList("findTasksByQueryCriteria", taskQuery);
 	}
 
 	public long findTaskCountByQueryCriteria(TaskQueryImpl taskQuery) {
-		return (Long) getSqlSession().selectOne("findTaskCountByQueryCriteria", taskQuery);
+		return (Long) selectOne("findTaskCountByQueryCriteria", taskQuery);
 	}
 
 	/**
@@ -104,7 +102,7 @@ public class TaskManager extends AbstractManager {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<TaskEntity> findTasksByTokenId(String tokenId) {
-		return (List<TaskEntity>) getSqlSession().selectListWithRawParameter(
+		return (List<TaskEntity>) selectList(
 				"selectTasksByTokenId", tokenId);
 	}
 	
@@ -115,8 +113,7 @@ public class TaskManager extends AbstractManager {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<TaskEntity> findEndTasksByTokenIds(List<String> tokenIds) {
-		return (List<TaskEntity>) getSqlSession().selectListWithRawParameter(
-				"selectEndTasksByTokenIds", tokenIds);
+		return (List<TaskEntity>) selectList("selectEndTasksByTokenIds", tokenIds);
 	}
 	
 	/**
@@ -124,7 +121,7 @@ public class TaskManager extends AbstractManager {
 	 * @param taskId
 	 */
 	public void deleteTaskById(String taskId){
-		getSqlSession().delete("deleteTaskById", taskId);
+		delete("deleteTaskById", taskId);
 	}
 
 	/**
@@ -135,7 +132,7 @@ public class TaskManager extends AbstractManager {
 		// 查询出相关任务
 		List<TaskEntity> taskList = findTasksByProcessInstanceId(processInstanceId);
 		// 根据流程实例号删除任务实例
-		getSqlSession().delete("deleteTaskByProcessInstanceId", processInstanceId);
+		delete("deleteTaskByProcessInstanceId", processInstanceId);
 		// 删除任务候选人信息
 		if (taskList != null) {
 			IdentityLinkManager identityLinkManager = getIdentityLinkManager();

@@ -42,7 +42,7 @@ public class DeploymentEntityManager extends AbstractManager {
 	 * @return 返回查询实例
 	 */
 	public DeploymentEntity findDeploymentById(String deploymentId) {
-		DeploymentEntity deployment = (DeploymentEntity) getSqlSession().selectOne("selectDeploymentById", deploymentId);
+		DeploymentEntity deployment = (DeploymentEntity) selectOne("selectDeploymentById", deploymentId);
 		return deployment;
 	}
 	
@@ -53,7 +53,7 @@ public class DeploymentEntityManager extends AbstractManager {
 	 *            发布实例
 	 */
 	public void insertDeployment(DeploymentEntity deployment) {
-		getSqlSession().insert(deployment);
+		insert(deployment);
 	}
 	
 	/**
@@ -63,7 +63,7 @@ public class DeploymentEntityManager extends AbstractManager {
 	 *            资源
 	 */
 	public void insertResource(ResourceEntity resource) {
-		getSqlSession().insert(resource);
+		insert(resource);
 	}
 	
 	/**
@@ -87,6 +87,6 @@ public class DeploymentEntityManager extends AbstractManager {
 			}
 		}
 		// 删除deployment发布记录
-		getSqlSession().delete("deleteDeploymentById", deploymentId);
+		delete("deleteDeploymentById", deploymentId);
 	}
 }

@@ -8,8 +8,8 @@
       <foxbpm:DataVariable id="持久变量" dataType="java.lang.String" isPersistence="true" bizType="customVariable">
         <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_2"></foxbpm:documentation>
       </foxbpm:DataVariable>
-      <foxbpm:taskSubject>
-        <foxbpm:expression xsi:type="foxbpm:Expression" name=""><![CDATA["runtimeService测试流程的主题"]]></foxbpm:expression>
+      <foxbpm:taskSubject id="TaskSubject_1">
+        <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_1" name=""><![CDATA["runtimeService测试流程的主题"]]></foxbpm:expression>
       </foxbpm:taskSubject>
     </bpmn2:extensionElements>
     <bpmn2:endEvent id="EndEvent_1" name="结束">
@@ -17,8 +17,15 @@
     </bpmn2:endEvent>
     <bpmn2:userTask id="UserTask_2" name="UserTask_1">
       <bpmn2:extensionElements>
-        <foxbpm:taskCommand id="HandleCommand_1" name="同意" commandType="general" isVerification="false" isSaveData="false" isSimulationRun="false"/>
-        <foxbpm:taskCommand id="HandleCommand_2" name="流程状态" commandType="processStatus" isVerification="false" isSaveData="false" isSimulationRun="false"/>
+        <foxbpm:taskCommand id="HandleCommand_2" name="流程状态" commandType="processStatus"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general">
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" name="true"><![CDATA[true]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" name="true"><![CDATA[true]]></foxbpm:expression>
+          </foxbpm:params>
+        </foxbpm:taskCommand>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
@@ -33,15 +40,27 @@
     <bpmn2:sequenceFlow id="SequenceFlow_4" sourceRef="UserTask_2" targetRef="EndEvent_1"/>
     <bpmn2:userTask id="UserTask_1" foxbpm:taskType="foxbpmtask" name="UserTask_1">
       <bpmn2:extensionElements>
-        <foxbpm:taskCommand id="HandleCommand_1" name="提交" commandType="startandsubmit"/>
         <foxbpm:taskCommand id="HandleCommand_3" name="流程状态" commandType="processStatus"/>
-        <foxbpm:taskCommand id="HandleCommand_2" name="提交" commandType="submit" isVerification="true" isSaveData="true" isSimulationRun="false">
-          <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_2" name="${持久变量}"><![CDATA[${持久变量} = ${瞬态变量} + "变化";]]></foxbpm:expression>
-        </foxbpm:taskCommand>
         <foxbpm:taskPriority>
           <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_1" name="一般"><![CDATA[40]]></foxbpm:expression>
         </foxbpm:taskPriority>
         <foxbpm:expectedExecutionTime/>
+        <foxbpm:taskCommand id="HandleCommand_2" name="启动并提交" commandType="startandsubmit">
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" name="true"><![CDATA[true]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" name="true"><![CDATA[true]]></foxbpm:expression>
+          </foxbpm:params>
+        </foxbpm:taskCommand>
+        <foxbpm:taskCommand id="HandleCommand_4" name="提交" commandType="submit">
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" name="true"><![CDATA[true]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" name="true"><![CDATA[true]]></foxbpm:expression>
+          </foxbpm:params>
+        </foxbpm:taskCommand>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>

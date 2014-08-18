@@ -41,7 +41,7 @@ public class UserDefinitionImpl implements UserDefinition{
 		if (nameLike != null) {
 			map.put("userName", nameLike);
 		}
-		return (List<UserEntity>)Context.getCommandContext().getSqlSession().selectListWithRawParameter("selectUsers", map);
+		return (List<UserEntity>)Context.getCommandContext().getSqlSession().selectList("selectUsers", map);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -54,7 +54,7 @@ public class UserDefinitionImpl implements UserDefinition{
 		if (nameLike != null) {
 			queryMap.put("userName", nameLike);
 		}
-		return (List<UserEntity>)  Context.getCommandContext().getSqlSession().selectList("selectUsersByPage", queryMap, firstResult, maxResults);
+		return (List<UserEntity>)  Context.getCommandContext().getSqlSession().selectList("selectUsersByPage", queryMap);
 	}
 
 	@Override

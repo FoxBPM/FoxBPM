@@ -19,33 +19,18 @@ package org.foxbpm.engine.sqlsession;
 
 import java.util.List;
 
-import org.foxbpm.engine.db.PersistentObject;
-import org.foxbpm.engine.impl.db.ListQueryParameterObject;
-
 public interface ISqlSession {
-	public void insert(PersistentObject persistentObject);
+	public void insert(String insertStatement,Object persistentObject);
 
 	public void delete(String deleteStatement, Object parameter);
 
-	public void delete(PersistentObject persistentObject);
-
-	public void update(PersistentObject persistentObject);
+	public void update(String updateStatement,Object persistentObject);
 
 	public List<?> selectList(String statement);
 
-	public List<?> selectList(String statement, ListQueryParameterObject parameter);
-
-	public List<?> selectList(String statement, Object parameter, int firstResult, int maxResults);
-
-	public List<?> selectListWithRawParameter(String statement, Object parameter);
+	public List<?> selectList(String statement, Object parameter);
 
 	public Object selectOne(String statement, Object parameter);
-
-	public <T extends PersistentObject> T selectById(Class<T> entityClass, String id);
-
-	public void flush();
-
-	public void closeSession();
 
 	public void commit();
 
