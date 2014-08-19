@@ -35,7 +35,7 @@ public class IdentityLinkManager extends AbstractManager {
 	}
 	
 	public IdentityLinkEntity findIdentityLinkById(String identityLinkId){
-		return selectById(identityLinkId);
+		return selectById(IdentityLinkEntity.class,identityLinkId);
 	}
 	
 	public void deleteIdentityLinkByTaskId(String taskId){

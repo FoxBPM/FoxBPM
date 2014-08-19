@@ -80,12 +80,12 @@ public abstract class AbstractManager implements Session {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T extends PersistentObject> T selectById(String id) {
+	public <T extends PersistentObject> T selectById(Class<T> entityClass , String id) {
 		T persistentObject = cacheGet(id);
 	    if (persistentObject!=null) {
 	    	return persistentObject;
 	    }
-	    String selectStatement = StatementMap.getSelectStatement(this.getClass());
+	    String selectStatement = StatementMap.getSelectStatement(entityClass);
 	    persistentObject = (T) getSqlSession().selectOne(selectStatement, id);
 	    if (persistentObject==null) {
 	    	return null;

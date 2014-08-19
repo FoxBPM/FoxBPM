@@ -40,7 +40,7 @@ public class VariableManager extends AbstractManager {
 	
 	
 	public VariableInstanceEntity findVariableById(String variableId){
-		return selectById(variableId);
+		return selectById(VariableInstanceEntity.class,variableId);
 	}
 	
 	@SuppressWarnings("unchecked")

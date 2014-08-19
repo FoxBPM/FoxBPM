@@ -43,7 +43,7 @@ public class ProcessDefinitionManager extends AbstractManager {
 	 * @return
 	 */
 	public ProcessDefinitionEntity findProcessDefinitionById(String processDefinitionId) {
-		ProcessDefinitionEntity processEntityNew = selectById(processDefinitionId);
+		ProcessDefinitionEntity processEntityNew = selectById(ProcessDefinitionEntity.class,processDefinitionId);
 		return processEntityNew;
 	}
 	

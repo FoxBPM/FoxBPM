@@ -62,7 +62,7 @@ public class TaskManager extends AbstractManager {
 		if (StringUtil.isEmpty(taskId)) {
 			return null;
 		}
-		return selectById(taskId);
+		return selectById(TaskEntity.class,taskId);
 	}
 
 	/**

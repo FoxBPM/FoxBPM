@@ -38,7 +38,7 @@ public class TokenManager extends AbstractManager {
 	}
 
 	public TokenEntity findTokenById(String rootTokenId) {
-		return selectById(rootTokenId);
+		return selectById(TokenEntity.class,rootTokenId);
 	}
 
 	public long findTokenCountByQueryCriteria(TokenQueryImpl tokenQuery) {

@@ -33,7 +33,7 @@ import org.foxbpm.engine.runtime.ProcessInstance;
 public class ProcessInstanceManager extends AbstractManager {
 	
 	public ProcessInstanceEntity findProcessInstanceById(String id) {
-		return selectById(id);
+		return selectById(ProcessInstanceEntity.class , id);
 	}
 	
 	public long findProcessInstanceCountByQueryCriteria(
