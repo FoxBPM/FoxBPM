@@ -130,7 +130,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected IdentityService identityService = new IdentityServiceImpl();
 	protected ISqlSessionFactory sqlSessionFactory;
 	protected Map<Class<?>, SessionFactory> sessionFactories;
-	protected DataSourceManage dataSourceManager;
+	protected DataSource dataSource;
 	protected BizDataObjectConfig bizDataObjectConfig;
 	
 	protected boolean quartzEnabled = false;
@@ -187,7 +187,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initEmfFile();
 		initCache();
 		initResourcePathConfig();
-		initDataSourceManage();
+		initDataSource();
 		initSqlSessionFactory();
 		initCommandContextFactory();
 		initCommandExecutors();
@@ -338,9 +338,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		inputStream = ReflectUtil.getResourceAsStream("style.xml");
 		if (inputStream != null) {
 			classPath = "foxbpm.cfg.xml";
-			log.info("开始从classes根目录加载style.xml文件");
-		} else {
-			log.info("开始从classes/config/目录加载style.xml文件");
 		}
 		URL url = this.getClass().getClassLoader().getResource(classPath);
 		if (url == null) {
@@ -482,11 +479,13 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return defaultDeployers;
 	}
 	
-	public void initDataSourceManage() {
-		if (dataSourceManager == null) {
-			dataSourceManager = new DefaultDataSourceManage();
+	public void initDataSource() {
+		if (dataSource == null) {
+			DataSourceManage dataSourceManager = new DefaultDataSourceManage();
+			dataSourceManager.init();
+			dataSource = dataSourceManager.getDataSource();
 		}
-		dataSourceManager.init();
+		
 	}
 	
 	public void initExceptionResource() {
@@ -531,9 +530,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 	
 	public void initSqlSessionFactory() {
-		DataSource dataSource = dataSourceManager.getDataSource();
-		sqlSessionFactory = new MyBatisSqlSessionFactory();
-		sqlSessionFactory.init(dataSource);
+		if(sqlSessionFactory == null){
+			sqlSessionFactory = new MyBatisSqlSessionFactory();
+			sqlSessionFactory.init(dataSource);
+		}
 	}
 	
 	public ISqlSessionFactory getSqlSessionFactory() {
@@ -609,8 +609,9 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	// Setter
 	
-	public void setDataSourceManager(DataSourceManage dataSourceManager) {
-		this.dataSourceManager = dataSourceManager;
+	public ProcessEngineConfiguration setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+		return this;
 	}
 	
 	// Getter方法
@@ -627,16 +628,18 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return transactionContextFactory;
 	}
 	
-	public void setTransactionContextFactory(TransactionContextFactory transactionFactory) {
+	public ProcessEngineConfiguration setTransactionContextFactory(TransactionContextFactory transactionFactory) {
 		this.transactionContextFactory = transactionFactory;
+		return this;
 	}
 	
 	public List<GroupDefinition> getGroupDefinitions() {
 		return groupDefinitions;
 	}
 	
-	public void setGroupDefinitions(List<GroupDefinition> groupDefinitions) {
+	public ProcessEngineConfiguration setGroupDefinitions(List<GroupDefinition> groupDefinitions) {
 		this.groupDefinitions = groupDefinitions;
+		return this;
 	}
 	
 	public RuntimeService getRuntimeService() {
@@ -651,8 +654,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return identityService;
 	}
 	
-	public DataSourceManage getDataSourceManager() {
-		return dataSourceManager;
+	public DataSource getDataSource() {
+		return dataSource;
 	}
 	
 	public FoxBPMConfig getFoxBpmConfig() {
@@ -711,8 +714,9 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return customPostDeployers;
 	}
 	
-	public void setCustomPostDeployers(List<Deployer> customPostDeployers) {
+	public ProcessEngineConfiguration setCustomPostDeployers(List<Deployer> customPostDeployers) {
 		this.customPostDeployers = customPostDeployers;
+		return this;
 	}
 	
 	public String getInternationPath() {
@@ -784,8 +788,9 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return foxbpmScheduler;
 	}
 	
-	public void setFoxbpmScheduler(FoxbpmScheduler foxbpmScheduler) {
+	public ProcessEngineConfiguration setFoxbpmScheduler(FoxbpmScheduler foxbpmScheduler) {
 		this.foxbpmScheduler = foxbpmScheduler;
+		return this;
 	}
 	
 	public Map<String, AbstractCommandFilter> getAbstractCommandFilterMap() {
@@ -827,20 +832,23 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return configurators;
 	}
 	
-	public void setConfigurators(List<ProcessEngineConfigurator> configurators) {
+	public ProcessEngineConfiguration setConfigurators(List<ProcessEngineConfigurator> configurators) {
 		this.configurators = configurators;
+		return this;
 	}
 	
 	public UserDefinition getUserDefinition() {
 		return userDefinition;
 	}
 	
-	public void setUserDefinition(UserDefinition userDefinition) {
+	public ProcessEngineConfiguration setUserDefinition(UserDefinition userDefinition) {
 		this.userDefinition = userDefinition;
+		return this;
 	}
 	
-	public void setQuartzEnabled(boolean quartzEnabled) {
+	public ProcessEngineConfiguration setQuartzEnabled(boolean quartzEnabled) {
 		this.quartzEnabled = quartzEnabled;
+		return this;
 	}
 	
 	public boolean getQuartzEnabled() {

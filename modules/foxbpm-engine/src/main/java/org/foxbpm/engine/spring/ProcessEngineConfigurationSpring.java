@@ -18,8 +18,12 @@
  */
 package org.foxbpm.engine.spring;
 
+import javax.sql.DataSource;
+
+import org.foxbpm.engine.ProcessEngineConfiguration;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.interceptor.CommandInterceptor;
+import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.transaction.PlatformTransactionManager;
 
 /**
@@ -38,6 +42,16 @@ public class ProcessEngineConfigurationSpring extends ProcessEngineConfiguration
 			transactionContextFactory = new SpringTransactionContextFactory(transactionManager);
 		}
 	}
+	
+	@Override
+	  public ProcessEngineConfiguration setDataSource(DataSource dataSource) {
+	    if (dataSource instanceof TransactionAwareDataSourceProxy) {
+	      return super.setDataSource(dataSource);
+	    } else {
+	      DataSource proxiedDataSource = new TransactionAwareDataSourceProxy(dataSource);
+	      return super.setDataSource(proxiedDataSource);
+	    }
+	  }
 
 	public PlatformTransactionManager getTransactionManager() {
 		return transactionManager;
@@ -51,5 +65,7 @@ public class ProcessEngineConfigurationSpring extends ProcessEngineConfiguration
 	protected CommandInterceptor createTransactionInterceptor() {
 		return new SpringTransactionInterceptor(transactionManager);
 	}
+	
+	
 
 }

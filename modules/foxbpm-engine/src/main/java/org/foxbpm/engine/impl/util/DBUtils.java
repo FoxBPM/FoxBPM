@@ -25,6 +25,8 @@ import javax.sql.DataSource;
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.db.DataSourceManage;
 import org.foxbpm.engine.exception.FoxBPMDbException;
+import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 
 /**
  * 数据源工具类
@@ -37,16 +39,22 @@ public class DBUtils {
 		return getDataSource(DataSourceManage.DAFAULT_DATABASE_ID);
 	}
 	public static DataSource getDataSource(String key){
-		DataSourceManage dataSourceManage = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getDataSourceManager();
-		return dataSourceManage.getDataSource(key);
+		ProcessEngineConfigurationImpl processEngineConfig = Context.getProcessEngineConfiguration();
+		if(processEngineConfig == null){
+			processEngineConfig = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration();
+		}
+		return processEngineConfig.getDataSource();
 	}
 	public static Connection getConnection(){
 		return getConnection(DataSourceManage.DAFAULT_DATABASE_ID);
 	}
 	public static Connection getConnection(String key){
-		DataSourceManage dataSourceManage = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration().getDataSourceManager();
+		DataSource dataSource = getDataSource(key);
+		if(dataSource == null){
+			throw new FoxBPMDbException("没有可用的数据源配置！");
+		}
 		try {
-			return dataSourceManage.getDataSource().getConnection();
+			return dataSource.getConnection();
 		} catch (SQLException e) {
 			throw new FoxBPMDbException("获取数据库连接："+key+" 出错",e);
 		}

@@ -30,10 +30,6 @@
 			<ref local="foxbpmDataSource" />
 		</property>
 	</bean>
-	<!-- foxbpm数据源管理 -->
-	<bean id="foxbpmDataSourceManager" class="org.foxbpm.engine.spring.SpringDataSourceManager">
-		<property name="dataSource" ref="foxbpmDataSource" />
-	</bean>
 	<!-- foxbpm事物管理 -->
 	<bean id="foxbpmTransactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -64,7 +60,7 @@
 	<!-- 流程引擎配置 -->
 	<bean id="processEngineConfigurationSpring"
 		class="org.foxbpm.engine.spring.ProcessEngineConfigurationSpring">
-		<property name="dataSourceManager" ref="foxbpmDataSourceManager" />
+		<property name="dataSource" ref="foxbpmDataSource" />
 		<property name="transactionManager" ref="foxbpmTransactionManager" />
 		<property name="foxbpmScheduler" ref="foxbpmScheduler"></property>
 		<!-- 可选的发布处理行为,可卸载 -->
