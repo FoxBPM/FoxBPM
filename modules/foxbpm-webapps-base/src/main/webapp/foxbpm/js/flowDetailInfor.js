@@ -596,7 +596,8 @@ function RunTrack(config) {
 										table_tr.append("<td>" + row.tokenId
 												+ "</td>");
 										table_tr.append("<td>"
-												+ row.parentTokenId + "</td>");
+												+(!row.parentTokenId ? ''
+														: row.parentTokenId) + "</td>");
 										table_tr.append("<td>"
 												+ (!row.executionTime ? ''
 														: row.executionTime)
