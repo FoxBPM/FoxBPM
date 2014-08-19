@@ -259,6 +259,15 @@
 			<commandParam key="isVerification" name="是否触发验证" value="true"
 				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
+		
+		<taskCommandDefinition id="recover" name="追回" command="com.founder.fix.fixflow.expand.command.RecoverTaskCommand" 
+			cmd="com.founder.fix.fixflow.expand.cmd.RecoverTaskCmd" isEnabled="true" 
+			type="processInstanceInfo" filter="com.founder.fix.fixflow.expand.filter.RecoverTaskFilter">
+			<commandParam key="isSaveData" name="是否保存数据" value="false"
+				description="" dataType="String" bizType="ControlParam" />
+			<commandParam key="isVerification" name="是否触发验证" value="false"
+				description="" dataType="String" bizType="ControlParam" />
+		</taskCommandDefinition>
 
 		<!-- <taskCommandDefinition id="reminders" name="催办" command="com.founder.fix.fixflow.expand.command.RemindersTaskCommand" 
 			cmd="com.founder.fix.fixflow.expand.cmd.RemindersTaskCmd" isEnabled="true" 
