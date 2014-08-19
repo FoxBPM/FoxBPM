@@ -39,7 +39,7 @@ public class TokenManager extends AbstractManager {
 	
 	@SuppressWarnings("unchecked")
 	public List<TokenEntity> findChildTokensByTokenId(String tokenId) {
-		return (List<TokenEntity>) getSqlSession().selectListWithRawParameter(
+		return (List<TokenEntity>) selectList(
 				"findChildTokensByTokenId", tokenId);
 	}
 	
