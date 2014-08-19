@@ -24,7 +24,7 @@ public interface ISqlSession {
 
 	public void delete(String deleteStatement, Object parameter);
 
-	public void update(String updateStatement,Object persistentObject);
+	public int update(String updateStatement,Object persistentObject);
 
 	public List<?> selectList(String statement);
 

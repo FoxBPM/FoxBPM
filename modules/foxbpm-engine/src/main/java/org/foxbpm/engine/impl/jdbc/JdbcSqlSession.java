@@ -36,9 +36,9 @@ public class JdbcSqlSession implements ISqlSession {
 	}
 
 	@Override
-	public void update(String updateStatement, Object persistentObject) {
+	public int update(String updateStatement, Object persistentObject) {
 		// TODO Auto-generated method stub
-		
+		return 0;
 	}
 
 	@Override

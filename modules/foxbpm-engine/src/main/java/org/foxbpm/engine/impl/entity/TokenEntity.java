@@ -38,159 +38,163 @@ import org.foxbpm.kernel.runtime.KernelProcessInstance;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
-public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExecutionContext, PersistentObject, HasRevision {
-
+public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExecutionContext, PersistentObject,
+    HasRevision {
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	protected String processInstanceId;
 	protected String nodeId;
 	protected String parentId;
 	protected Date startTime;
 	protected Date endTime;
-
+	
 	protected Date nodeEnterTime;
 	protected Date archiveTime;
-
+	
 	protected List<TaskEntity> tasks;
-
+	
 	protected TaskEntity assignTask;
-
+	
 	/** 临时指定分配任务的处理者 */
 	protected String taskAssignee;
-
+	
 	protected String groupID;
-
+	
 	/** 流程定义唯一版本编号 */
 	protected String processDefinitionId;
-
+	
 	/** 流程定义编号 */
 	protected String processDefinitionKey;
-
+	
+	/** 控制并发修改标示 */
+	protected int revision;
+	
 	@Override
 	public void setFlowNode(KernelFlowNodeImpl flowNode) {
 		if (flowNode != null) {
 			setNodeId(flowNode.getId());
 		}
-
+		
 		super.setFlowNode(flowNode);
 	}
-
+	
 	@Override
 	protected void ensureFlowNodeInitialized() {
 		if ((currentFlowNode == null) && (nodeId != null)) {
 			currentFlowNode = getProcessDefinition().findFlowNode(nodeId);
 		}
 	}
-
+	
 	@Override
 	protected void ensureParentInitialized() {
 		if (this.parent == null && StringUtil.isNotBlank(this.parentId)) {
 			this.parent = Context.getCommandContext().getTokenManager().findTokenById(this.parentId);
 		}
 	}
-
+	
 	protected void ensureChildrenInitialized() {
 		if (this.children == null) {
 			List<TokenEntity> listResult = Context.getCommandContext().getTokenManager().findChildTokensByTokenId(this.id);
-
+			
 			for (TokenEntity tokenEntity : listResult) {
 				children.add(tokenEntity);
 			}
-
+			
 		}
 	}
-
+	
 	@Override
 	protected void ensureProcessInstanceInitialized() {
 		if ((processInstance == null) && (processInstanceId != null)) {
 			processInstance = Context.getCommandContext().getProcessInstanceManager().findProcessInstanceById(processInstanceId);
 		}
 	}
-
+	
 	@Override
 	public void setProcessInstance(KernelProcessInstanceImpl processInstance) {
 		setProcessInstanceId(processInstance.getId());
 		super.setProcessInstance(processInstance);
 	}
-
+	
 	@Override
 	public void setParent(KernelTokenImpl parent) {
 		setParentId(parent.getId());
 		super.setParent(parent);
 	}
-
+	
 	@Override
 	public void ensureEnterInitialized(KernelFlowNodeImpl flowNode) {
 		/** 设置令牌进入节点的时间 */
 		setNodeEnterTime(ClockUtil.getCurrentTime());
 		super.ensureEnterInitialized(flowNode);
 	}
-
+	
 	@Override
 	public void clearExecutionContextData() {
 		super.clearExecutionContextData();
 	}
-
+	
 	@Override
 	public String getId() {
 		return this.id;
 	}
-
+	
 	public void setRevision(int revision) {
-
+		this.revision = revision;
 	}
-
+	
 	public int getRevision() {
-		return 0;
+		return revision;
 	}
-
+	
 	public int getRevisionNext() {
-		return 0;
+		return revision + 1;
 	}
-
+	
 	public void setId(String id) {
 		this.id = id;
 	}
-
+	
 	public String getProcessInstanceId() {
 		return processInstanceId;
 	}
-
+	
 	public void setProcessInstanceId(String processInstanceId) {
 		this.processInstanceId = processInstanceId;
 	}
-
+	
 	public String getNodeId() {
 		return nodeId;
 	}
-
+	
 	public void setNodeId(String nodeId) {
 		this.nodeId = nodeId;
 	}
-
+	
 	public String getParentId() {
 		return parentId;
 	}
-
+	
 	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
-
+	
 	public Date getStartTime() {
 		return startTime;
 	}
-
+	
 	public void setStartTime(Date startTime) {
 		this.startTime = startTime;
 	}
-
+	
 	public Date getEndTime() {
 		return endTime;
 	}
-
+	
 	@Override
 	public boolean isEnded() {
 		if (endTime == null) {
@@ -198,25 +202,25 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		}
 		return super.isEnded();
 	}
-
+	
 	public Date getNodeEnterTime() {
 		return nodeEnterTime;
 	}
-
+	
 	public void setNodeEnterTime(Date nodeEnterTime) {
 		this.nodeEnterTime = nodeEnterTime;
 	}
-
+	
 	public Date getArchiveTime() {
 		return archiveTime;
 	}
-
+	
 	public void setArchiveTime(Date archiveTime) {
 		this.archiveTime = archiveTime;
 	}
-
+	
 	public Map<String, Object> getPersistentState() {
-
+		
 		Map<String, Object> objectParam = new HashMap<String, Object>();
 		objectParam.put("tokenId", getId());
 		objectParam.put("name", getName());
@@ -228,99 +232,99 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		objectParam.put("nodeId", getNodeId());
 		objectParam.put("processInstanceId", getProcessInstanceId());
 		objectParam.put("parentId", getParentId());
-
+		
 		objectParam.put("processDefinitionId", getProcessDefinitionId());
-
+		
 		objectParam.put("processDefinitionKey", getProcessDefinitionKey());
-
+		
 		return objectParam;
 	}
-
+	
 	public boolean isModified() {
 		return true;
 	}
-
+	
 	@Override
 	public ProcessInstanceEntity getProcessInstance() {
 		return (ProcessInstanceEntity) super.getProcessInstance();
 	}
-
+	
 	public Object getVariableLocal(Object variableName) {
 		return null;
 	}
-
+	
 	public String getInitiator() {
 		return getProcessInstance().getInitiator();
 	}
-
+	
 	public String getAuthenticatedUserId() {
 		return Authentication.getAuthenticatedUserId();
 	}
-
+	
 	public String getStartAuthor() {
 		return getProcessInstance().getStartAuthor();
 	}
-
+	
 	public TaskEntity getAssignTask() {
 		return assignTask;
 	}
-
+	
 	public void setAssignTask(TaskEntity assignTask) {
 		this.assignTask = assignTask;
 	}
-
+	
 	// 任务对象
 	// ///////////////////////////////////////////////////
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	protected void ensureTasksInitialized() {
 		if (tasks == null) {
 			tasks = (List) Context.getCommandContext().getTaskManager().findTasksByTokenId(id);
 		}
 	}
-
+	
 	protected List<TaskEntity> getTasksInternal() {
 		ensureTasksInitialized();
 		return tasks;
 	}
-
+	
 	public List<TaskEntity> getTasks() {
 		return new ArrayList<TaskEntity>(getTasksInternal());
 	}
-
+	
 	public void addTask(TaskEntity taskEntity) {
 		getTasksInternal().add(taskEntity);
 	}
-
+	
 	public void removeTask(TaskEntity task) {
 		getTasksInternal().remove(task);
 	}
-
+	
 	public void setProcessInstanceVariables(Map<String, Object> transientVariables) {
 		if (transientVariables == null) {
 			return;
 		}
-
+		
 		for (String mapKey : transientVariables.keySet()) {
 			ExpressionMgmt.setVariable(mapKey, transientVariables.get(mapKey));
 		}
 	}
-
+	
 	@Override
 	public void end(boolean verifyParentTermination) {
-
+		
 		endTime = ClockUtil.getCurrentTime();
 		super.end(verifyParentTermination);
 	}
-
+	
 	public String getGroupID() {
 		return groupID;
 	}
-
+	
 	public void setGroupID(String groupID) {
 		this.groupID = groupID;
 	}
-
+	
 	@Override
 	protected boolean isSignalParentToken() {
 		if (isSubProcessRootToken) {
@@ -330,7 +334,7 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		}
 		return super.isSignalParentToken();
 	}
-
+	
 	@Override
 	public void setEnded(boolean isEnded) {
 		if (isEnded) {
@@ -339,9 +343,9 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 			this.endTime = null;
 		}
 		super.setEnded(isEnded);
-
+		
 	}
-
+	
 	public void setEndTime(Date endTime) {
 		if (endTime != null) {
 			super.setEnded(true);
@@ -350,33 +354,33 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		}
 		this.endTime = endTime;
 	}
-
+	
 	public String getProcessDefinitionId() {
 		return processDefinitionId;
 	}
-
+	
 	public void setProcessDefinitionId(String processDefinitionId) {
 		this.processDefinitionId = processDefinitionId;
 	}
-
+	
 	public String getProcessDefinitionKey() {
 		return processDefinitionKey;
 	}
-
+	
 	public void setProcessDefinitionKey(String processDefinitionKey) {
 		this.processDefinitionKey = processDefinitionKey;
 	}
-
+	
 	@Override
 	public KernelProcessInstance createSubProcessInstance(KernelProcessDefinition processDefinition) {
-
+		
 		return super.createSubProcessInstance(processDefinition);
 	}
-
+	
 	public String getTaskAssignee() {
 		return taskAssignee;
 	}
-
+	
 	public void setTaskAssignee(String taskAssignee) {
 		this.taskAssignee = taskAssignee;
 	}

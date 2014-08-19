@@ -50,82 +50,82 @@ import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
  * @author kenshin
  * 
  */
-public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements ProcessInstance, PersistentObject, HasRevision {
-
+public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements ProcessInstance, PersistentObject,
+    HasRevision {
+	
 	private static final long serialVersionUID = 1L;
-
+	
 	/** 流程定义唯一版本编号 */
 	protected String processDefinitionId;
-
+	
 	/** 流程定义编号 */
 	protected String processDefinitionKey;
-
+	
 	/** 交互式流程文件定义号 */
 	protected String definitionId;
-
+	
 	/** 根令牌编号 */
 	protected String rootTokenId;
-
+	
 	/** 父流程实例用来启动子流程实例的令牌编号 */
 	protected String parentTokenId;
-
+	
 	/** 父流程实例编号 */
 	protected String parentId;
-
+	
 	/** 实例主题 */
 	protected String subject;
-
+	
 	/** 流程实例的启动人 */
 	protected String startAuthor;
-
+	
 	/** 流程任务的发起人 */
 	protected String initiator;
-
+	
 	/** 业务关联键 */
 	protected String bizKey;
-
+	
 	/** 流程实例启动时间 */
 	protected Date startTime;
-
+	
 	/** 流程实例结束时间 */
 	protected Date endTime;
-
+	
 	/** 流程实例最近一次操作时间 */
 	protected Date updateTime;
-
+	
 	/** 流程实例归档时间 */
 	protected Date archiveTime;
-
-
-
+	
 	/** 流程实例位置 */
 	protected String processLocation;
-
-
-
+	
 	// 对象字段 /////////////////////
-
+	
 	/** 任务集合 */
 	protected List<TaskEntity> tasks;
-
+	
 	/** 任务身份集合 */
 	protected List<IdentityLinkEntity> identityLinks;
-
+	
 	/** 变量管理器 */
 	protected DataVariableMgmtInstance dataVariableMgmtInstance;
-
+	
 	/** 实例内容管理器 */
 	protected ContextInstance contextInstance;
-
+	
+	/** 控制并发修改标示 */
+	protected int revision;
+	
 	public boolean isModified() {
 		return true;
 	}
-
+	
 	/** 构造函数 */
 	public ProcessInstanceEntity() {
 		this(null);
 	}
-
+	
 	// Constructor 构造函数
 	// /////////////////////////////////////////////////////
 	public ProcessInstanceEntity(KernelFlowNodeImpl startFlowNode) {
@@ -135,27 +135,27 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		this.dataVariableMgmtInstance = new DataVariableMgmtInstance(this);
 		this.contextInstance = new ContextInstanceImpl();
 	}
-
+	
 	@Override
 	public void start() {
 		this.instanceStatus = ProcessInstanceStatus.RUNNING;
 		this.setStartTime(ClockUtil.getCurrentTime());
-
+		
 		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) getProcessDefinition();
 		if (processDefinitionEntity.getSubject() != null) {
 			this.setSubject(StringUtil.getString(processDefinitionEntity.getSubject().getValue(getRootToken())));
 		}
-
+		
 		super.start();
 	}
-
+	
 	@Override
 	public KernelTokenImpl createRootToken() {
 		super.createRootToken();
 		this.rootTokenId = this.rootToken.getId();
 		return this.rootToken;
 	}
-
+	
 	@Override
 	public KernelTokenImpl createToken() {
 		TokenEntity tokenObj = new TokenEntity();
@@ -165,68 +165,64 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		tokenObj.setProcessInstance(this);
 		addToken(tokenObj);
 		Context.getCommandContext().getTokenManager().insert(tokenObj);
-
+		
 		return tokenObj;
 	}
-
-	
-	
 	
 	@Override
 	public void initialize() {
 		super.initialize();
 		this.tasks = new ArrayList<TaskEntity>();
-
+		
 	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	protected void ensureTasksInitialized() {
 		if (tasks == null) {
 			tasks = (List) Context.getCommandContext().getTaskManager().findTasksByProcessInstanceId(id);
 		}
 	}
-
+	
 	protected List<TaskEntity> getTasksInternal() {
 		ensureTasksInitialized();
 		return tasks;
 	}
-
+	
 	public List<TaskEntity> getTasks() {
 		return new ArrayList<TaskEntity>(getTasksInternal());
 	}
-
+	
 	public void addTask(TaskEntity taskEntity) {
 		getTasksInternal().add(taskEntity);
 	}
-
+	
 	public void removeTask(TaskEntity task) {
 		getTasksInternal().remove(task);
 	}
-
+	
 	@Override
 	public void ensureParentProcessInstanceTokenInitialized() {
-
+		
 		if (parentProcessInstanceToken == null && parentTokenId != null) {
 			TokenEntity token = Context.getCommandContext().getTokenManager().findTokenById(parentTokenId);
 			setParentProcessInstanceToken(token);
 		}
-
+		
 	}
 	
-	
-
 	@Override
-	public KernelProcessInstance createSubProcessInstance(KernelProcessDefinitionImpl processDefinition, KernelTokenImpl token) {
+	public KernelProcessInstance createSubProcessInstance(KernelProcessDefinitionImpl processDefinition,
+	    KernelTokenImpl token) {
 		
 		ProcessInstanceEntity createSubProcessInstance = (ProcessInstanceEntity) super.createSubProcessInstance(processDefinition, token);
 		
-		//创建流程实例，并持久化。
+		// 创建流程实例，并持久化。
 		
 		Context.getCommandContext().getProcessInstanceManager().insert(createSubProcessInstance);
-
+		
 		return createSubProcessInstance;
 	}
-
+	
 	@Override
 	protected void ensureParentProcessInstanceInitialized() {
 		if (parentProcessInstance == null && parentId != null) {
@@ -234,7 +230,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 			setParentProcessInstance(parentProcessInstance);
 		}
 	}
-
+	
 	@Override
 	public void ensureRootTokenInitialized() {
 		if (rootToken == null && rootTokenId != null) {
@@ -242,7 +238,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 			setRootToken(token);
 		}
 	}
-
+	
 	@Override
 	public void ensureProcessDefinitionInitialized() {
 		if ((processDefinition == null) && (processDefinitionId != null)) {
@@ -250,194 +246,191 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 			setProcessDefinition(deployedProcessDefinition);
 		}
 	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Override
 	protected void ensureTokensInitialized() {
 		if (tokens == null) {
 			this.tokens = (List) Context.getCommandContext().getTokenManager().findTokensByProcessInstanceId(id);
 		}
 	}
-
+	
 	@Override
 	public void setParentProcessInstance(KernelProcessInstanceImpl parentProcessInstance) {
 		ProcessInstanceEntity processInstanceEntity = ((ProcessInstanceEntity) parentProcessInstance);
 		this.parentProcessInstance = processInstanceEntity;
 		this.parentId = processInstanceEntity.getParentId();
 	}
-
+	
 	@Override
 	public void setParentProcessInstanceToken(KernelTokenImpl parentProcessInstanceToken) {
 		this.parentProcessInstanceToken = parentProcessInstanceToken;
 		this.parentTokenId = parentProcessInstanceToken.getId();
 	}
-
+	
 	@Override
 	public void setRootToken(KernelTokenImpl rootToken) {
 		this.rootTokenId = rootToken.getId();
 		super.setRootToken(rootToken);
 		
 	}
-
+	
 	public String getSubject() {
 		return subject;
 	}
-
+	
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
-
+	
 	public String getProcessDefinitionId() {
 		return processDefinitionId;
 	}
-
+	
 	public void setProcessDefinitionId(String processDefinitionId) {
 		this.processDefinitionId = processDefinitionId;
 	}
-
+	
 	public String getProcessDefinitionKey() {
 		return processDefinitionKey;
 	}
-
+	
 	public void setProcessDefinitionKey(String processDefinitionKey) {
 		this.processDefinitionKey = processDefinitionKey;
 	}
-
+	
 	public String getDefinitionId() {
 		return definitionId;
 	}
-
+	
 	public void setDefinitionId(String definitionId) {
 		this.definitionId = definitionId;
 	}
-
+	
 	public String getRootTokenId() {
 		return rootTokenId;
 	}
-
+	
 	public void setRootTokenId(String rootTokenId) {
 		this.rootTokenId = rootTokenId;
 	}
-
+	
 	public String getParentTokenId() {
 		return parentTokenId;
 	}
-
+	
 	public void setParentTokenId(String parentTokenId) {
 		this.parentTokenId = parentTokenId;
 	}
-
+	
 	public String getParentId() {
 		return parentId;
 	}
-
+	
 	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
-
+	
 	public String getStartAuthor() {
 		return startAuthor;
 	}
-
+	
 	public void setStartAuthor(String startAuthor) {
 		this.startAuthor = startAuthor;
 	}
-
+	
 	public String getInitiator() {
 		return initiator;
 	}
-
+	
 	public void setInitiator(String initiator) {
 		this.initiator = initiator;
 	}
-
+	
 	public Date getStartTime() {
 		return startTime;
 	}
-
+	
 	public void setStartTime(Date startTime) {
 		this.startTime = startTime;
 	}
-
+	
 	public Date getEndTime() {
 		return endTime;
 	}
-
+	
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
-
+	
 	public Date getUpdateTime() {
 		return updateTime;
 	}
-
+	
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
-
+	
 	public Date getArchiveTime() {
 		return archiveTime;
 	}
-
+	
 	public void setArchiveTime(Date archiveTime) {
 		this.archiveTime = archiveTime;
 	}
-
 	
-
 	public String getProcessLocation() {
 		return processLocation;
 	}
-
+	
 	public void setProcessLocation(String processLocation) {
 		this.processLocation = processLocation;
 	}
 	
-
 	public DataVariableMgmtInstance getDataVariableMgmtInstance() {
 		return dataVariableMgmtInstance;
 	}
-
+	
 	public void setDataVariableMgmtInstance(DataVariableMgmtInstance dataVariableMgmtInstance) {
 		this.dataVariableMgmtInstance = dataVariableMgmtInstance;
 	}
-
+	
 	@Override
 	public void setProcessDefinition(KernelProcessDefinitionImpl processDefinition) {
 		this.processDefinition = processDefinition;
 		this.processDefinitionId = processDefinition.getId();
 		this.processDefinitionKey = processDefinition.getKey();
 	}
-
+	
 	public String getBizKey() {
 		return bizKey;
 	}
-
+	
 	public void setBizKey(String bizKey) {
 		this.bizKey = bizKey;
 	}
-
+	
 	@Override
 	public String getId() {
 		return id;
 	}
-
+	
 	public void setId(String id) {
 		this.id = id;
 	}
-
+	
 	public void setRevision(int revision) {
-
+		this.revision = revision;
 	}
-
+	
 	public int getRevision() {
-		return 0;
+		return revision;
 	}
-
+	
 	public int getRevisionNext() {
-		return 0;
+		return revision + 1;
 	}
-
+	
 	public Map<String, Object> getPersistentState() {
 		Map<String, Object> mapPersistentState = new HashMap<String, Object>();
 		mapPersistentState.put("id", id);
@@ -460,7 +453,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		mapPersistentState.put("instanceStatus", instanceStatus);
 		return mapPersistentState;
 	}
-
+	
 	public void setVariables(Map<String, Object> variables) {
 		if (variables == null) {
 			return;
@@ -469,7 +462,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 			VariableQuery variableQuery = new VariableQueryImpl(Context.getProcessEngineConfiguration().getCommandExecutor());
 			variableQuery.addVariableKey(mapKey);
 			variableQuery.processInstanceId(this.id);
-			@SuppressWarnings({ "unchecked", "rawtypes" })
+			@SuppressWarnings({"unchecked", "rawtypes"})
 			List<VariableInstanceEntity> variableInstances = (List) variableQuery.list();
 			if (variableInstances != null && variableInstances.size() == 1) {
 				// 更新
@@ -477,10 +470,9 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 				dataVariableMgmtInstance.getDataVariableEntities().add(variableInstances.get(0));
 			} else {
 				if (variableInstances != null && variableInstances.size() > 1) {
-					throw new FoxBPMException("一个流程实例中含有两个相同的key,key(" + mapKey + ") instanceId(" + this.id
-							+ ")");
+					throw new FoxBPMException("一个流程实例中含有两个相同的key,key(" + mapKey + ") instanceId(" + this.id + ")");
 				} else {
-					VariableInstanceEntity variableInstanceEntity = addVariableToMgmt(mapKey,variables.get(mapKey));
+					VariableInstanceEntity variableInstanceEntity = addVariableToMgmt(mapKey, variables.get(mapKey));
 					Context.getCommandContext().getVariableManager().insert(variableInstanceEntity);
 				}
 			}
@@ -493,12 +485,12 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 			return;
 		}
 		for (String mapKey : transientVariables.keySet()) {
-			addVariableToMgmt(mapKey,transientVariables.get(mapKey));
+			addVariableToMgmt(mapKey, transientVariables.get(mapKey));
 			ExpressionMgmt.setVariable(mapKey, transientVariables.get(mapKey));
 		}
 	}
 	
-	private VariableInstanceEntity addVariableToMgmt(String key,Object value){
+	private VariableInstanceEntity addVariableToMgmt(String key, Object value) {
 		VariableInstanceEntity variableInstanceEntity = new VariableInstanceEntity();
 		variableInstanceEntity.setKey(key);
 		variableInstanceEntity.setValue(value);
@@ -509,14 +501,14 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		dataVariableMgmtInstance.getDataVariableEntities().add(variableInstanceEntity);
 		return variableInstanceEntity;
 	}
-
+	
 	public boolean isEnd() {
-
+		
 		return endTime != null;
 	}
-
+	
 	@Override
-	public void end() {		
+	public void end() {
 		endTime = ClockUtil.getCurrentTime();
 		super.end();
 	}
@@ -525,7 +517,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		endTime = ClockUtil.getCurrentTime();
 		super.abort();
 	}
-
+	
 	public String getProcessDefinitionName() {
 		ensureProcessDefinitionInitialized();
 		if (processDefinition != null) {
@@ -538,5 +530,5 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	protected KernelProcessInstanceImpl newProcessInstance() {
 		return new ProcessInstanceEntity();
 	}
-
+	
 }

@@ -73,6 +73,9 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl
 	
 	/** 启动表单  */
 	private String startFormUri;
+	
+	/** 控制并发修改标示 */
+	protected int revision;
 
 	protected DataVariableMgmtDefinition dataVariableMgmtDefinition;
 
@@ -330,18 +333,15 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl
 	}
 
 	public void setRevision(int revision) {
-		// TODO Auto-generated method stub
-
+			this.revision = revision;
 	}
 
 	public int getRevision() {
-		// TODO Auto-generated method stub
-		return 0;
+		return revision;
 	}
 
 	public int getRevisionNext() {
-		// TODO Auto-generated method stub
-		return 0;
+		return revision + 1;
 	}
 
 	public boolean isModified() {
@@ -356,5 +356,4 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl
 	public void setPotentialStarters(List<PotentialStarter> potentialStarters) {
 		this.potentialStarters = potentialStarters;
 	}
-
 }

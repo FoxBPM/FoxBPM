@@ -38,8 +38,8 @@ public class MybatisSqlSession implements ISqlSession,Session {
 		sqlSession.insert(insertStatement, persistentObject);
 	}
 	
-	public void update(String updateStatement ,Object persistentObject) {
-		sqlSession.update(updateStatement, persistentObject);
+	public int update(String updateStatement ,Object persistentObject) {
+		return sqlSession.update(updateStatement, persistentObject);
 	}
 
 	public void delete(String statement, Object parameter) {

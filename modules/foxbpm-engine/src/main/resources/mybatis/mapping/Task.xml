@@ -63,6 +63,7 @@
 		<result column="PENDINGTASKID" property="pendingTaskId"
 			jdbcType="VARCHAR" />
 		<result column="ARCHIVE_TIME" property="archiveTime" jdbcType="TIMESTAMP" />
+		<result column="REV_" property="revision" jdbcType="INTEGER" />
 	</resultMap>
 
 
@@ -83,7 +84,7 @@
 		ISCANCELLED, ISSUSPENDED, ISOPEN,
 		ISDRAFT, EXPECTED_EXECUTIONTIME, AGENT,
 		ADMIN, FORMURIVIEW, CALLACTIVITY_INSTANCE_ID,
-		COMMAND_ID, PENDINGTASKID, ARCHIVE_TIME
+		COMMAND_ID, PENDINGTASKID, ARCHIVE_TIME,REV_
 		)
 		values (#{id,jdbcType=VARCHAR}, #{processInstanceId,jdbcType=VARCHAR},
 		#{processDefinitionId,jdbcType=VARCHAR},
@@ -110,7 +111,7 @@
 		#{admin,jdbcType=VARCHAR}, #{formUriView,jdbcType=VARCHAR},
 		#{callActivityInstanceId,jdbcType=VARCHAR},
 		#{commandId,jdbcType=VARCHAR}, #{pendingTaskId,jdbcType=VARCHAR},
-		#{archiveTime,jdbcType=TIMESTAMP}
+		#{archiveTime,jdbcType=TIMESTAMP},1
 		)
 	</insert>
 
@@ -162,9 +163,10 @@
 		CALLACTIVITY_INSTANCE_ID = #{callActivityInstanceId,jdbcType=VARCHAR},
 		COMMAND_ID = #{commandId,jdbcType=VARCHAR},
 		PENDINGTASKID = #{pendingTaskId,jdbcType=VARCHAR},
-		ARCHIVE_TIME = #{archiveTime,jdbcType=TIMESTAMP}
+		ARCHIVE_TIME = #{archiveTime,jdbcType=TIMESTAMP},
+		REV_ = #{revisionNext,jdbcType=INTEGER}
 		where
-		ID=#{id,jdbcType=VARCHAR}
+		ID=#{id,jdbcType=VARCHAR} AND  REV_ = #{revision,jdbcType=INTEGER}
 	</update>
 
 	<sql id="Task_Column_List">

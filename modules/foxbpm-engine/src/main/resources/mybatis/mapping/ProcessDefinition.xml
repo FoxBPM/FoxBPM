@@ -14,18 +14,20 @@
     <result column="RESOURCE_ID" jdbcType="VARCHAR" property="resourceId" />
     <result column="START_FORM_KEY" jdbcType="VARCHAR" property="startFormUri" />
     <result column="DEPLOY_TIME" jdbcType="TIMESTAMP" property="deploymentTime" />
+    <result column="REV_" property="revision" jdbcType="INTEGER" />
   </resultMap>
   
    <insert id="insertProcessDefinition" parameterType="org.foxbpm.engine.impl.entity.ProcessDefinitionEntity">
     insert into foxbpm_def_processdefinition (PROCESS_ID, 
       PROCESS_KEY, CATEGORY, PROCESS_NAME, 
       VERSION, RESOURCE_NAME, DEPLOYMENT_ID, 
-      DIAGRAM_RESOURCE_NAME, RESOURCE_ID,START_FORM_KEY
+      DIAGRAM_RESOURCE_NAME, RESOURCE_ID,START_FORM_KEY,
+      REV_
       )
     values (#{id,jdbcType=VARCHAR}, 
       #{key,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{version,jdbcType=INTEGER}, #{resourceName,jdbcType=VARCHAR}, #{deploymentId,jdbcType=VARCHAR}, 
-      #{diagramResourceName,jdbcType=VARCHAR}, #{resourceId,jdbcType=VARCHAR}, #{startFormUri,jdbcType=VARCHAR}
+      #{diagramResourceName,jdbcType=VARCHAR}, #{resourceId,jdbcType=VARCHAR}, #{startFormUri,jdbcType=VARCHAR},1
      )
   </insert>
   
@@ -120,9 +122,10 @@
       VERSION = #{version,jdbcType=INTEGER},
       RESOURCE_NAME = #{resourceName,jdbcType=VARCHAR},
       DEPLOYMENT_ID = #{deploymentId,jdbcType=VARCHAR},
-      DIAGRAM_RESOURCE_NAME = #{diagramResourceName,jdbcType=VARCHAR}
+      DIAGRAM_RESOURCE_NAME = #{diagramResourceName,jdbcType=VARCHAR},
+      REV_ = #{revisionNext,jdbcType=INTEGER}
     where 
-      PROCESS_ID = #{id,jdbcType=VARCHAR}
+      PROCESS_ID = #{id,jdbcType=VARCHAR} AND  REV_ = #{revision,jdbcType=INTEGER}
   </update>
   
   <delete id="deleteProcessDefinitionById" parameterType="java.lang.String">

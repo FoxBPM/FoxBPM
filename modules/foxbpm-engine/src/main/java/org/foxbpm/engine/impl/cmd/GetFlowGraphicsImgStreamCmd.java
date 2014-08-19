@@ -31,39 +31,41 @@ import org.foxbpm.engine.repository.ProcessDefinition;
 
 /**
  * 
- * 获取流程图流文件
- * 参数不可同时为null，如果同时存在，优先处理processDefinitionId
+ * 获取流程图流文件 参数不可同时为null，如果同时存在，优先处理processDefinitionId
+ * 
  * @author kenshin
- *
+ * 
  */
-public class GetFlowGraphicsImgStreamCmd  implements Command<InputStream> {
-
+public class GetFlowGraphicsImgStreamCmd implements Command<InputStream> {
+	
 	protected String processDefinitionId;
 	protected String processDefinitionKey;
 	
-	public GetFlowGraphicsImgStreamCmd(String processDefinitionId,String processDefinitionKey){
-		this.processDefinitionId=processDefinitionId;
-		this.processDefinitionKey=processDefinitionKey;
+	public GetFlowGraphicsImgStreamCmd(String processDefinitionId, String processDefinitionKey) {
+		this.processDefinitionId = processDefinitionId;
+		this.processDefinitionKey = processDefinitionKey;
 	}
 	
 	public InputStream execute(CommandContext commandContext) {
-		ProcessDefinition processDefinition=null;
+		ProcessDefinition processDefinition = null;
 		DeploymentManager deploymentCache = Context.getProcessEngineConfiguration().getDeploymentManager();
-		if(this.processDefinitionId!=null&&!this.processDefinitionId.equals("")){
-			processDefinition=deploymentCache.findDeployedProcessDefinitionById(processDefinitionId);
-		}else{
-			if(this.processDefinitionKey!=null&&!this.processDefinitionKey.equals("")){
-				processDefinition=deploymentCache.findDeployedLatestProcessDefinitionByKey(processDefinitionKey);
-			}
-			else{
+		if (this.processDefinitionId != null && !this.processDefinitionId.equals("")) {
+			processDefinition = deploymentCache.findDeployedProcessDefinitionById(processDefinitionId);
+		} else {
+			if (this.processDefinitionKey != null && !this.processDefinitionKey.equals("")) {
+				processDefinition = deploymentCache.findDeployedLatestProcessDefinitionByKey(processDefinitionKey);
+			} else {
 				throw new FoxBPMIllegalArgumentException("查询流程图的processDefinitionId、processDefinitionKey不能都为空!");
 			}
 		}
-		String deploymentId=processDefinition.getDeploymentId();
-		String diagramResourceName=processDefinition.getDiagramResourceName();
-		ResourceEntity resourceEntity=commandContext.getResourceManager().selectResourceByDeployIdAndName(deploymentId, diagramResourceName);
-		InputStream inputStream = new ByteArrayInputStream(resourceEntity.getBytes()); 
+		String deploymentId = processDefinition.getDeploymentId();
+		String diagramResourceName = processDefinition.getDiagramResourceName();
+		ResourceEntity resourceEntity = commandContext.getResourceManager().selectResourceByDeployIdAndName(deploymentId, diagramResourceName);
+		if (null == resourceEntity) {
+			throw new FoxBPMIllegalArgumentException("查询流程图为空,对应processDefinitionId=" + processDefinition.getId());
+		}
+		InputStream inputStream = new ByteArrayInputStream(resourceEntity.getBytes());
 		return inputStream;
 	}
-
+	
 }

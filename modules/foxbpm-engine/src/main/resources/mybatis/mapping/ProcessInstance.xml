@@ -24,6 +24,7 @@
 		<result column="PROCESSLOCATION" jdbcType="VARCHAR" property="processLocation" />
 		<result column="INSTANCE_STATUS" jdbcType="VARCHAR" property="instanceStatus" />
 		<result column="ARCHIVE_TIME" jdbcType="TIMESTAMP" property="archiveTime" />
+		<result column="REV_" property="revision" jdbcType="INTEGER" />
 	</resultMap>
 
 	<insert id="insertProcessInstance" parameterType="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">
@@ -37,7 +38,7 @@
 		PARENT_ID,
 		PARENT_TOKEN_ID, UPDATE_TIME,
 		PROCESSLOCATION, INSTANCE_STATUS,
-		ARCHIVE_TIME
+		ARCHIVE_TIME,REV_
 		)
 		values (#{id,jdbcType=VARCHAR},
 		#{processDefinitionId,jdbcType=VARCHAR},
@@ -51,7 +52,7 @@
 		#{parentId,jdbcType=VARCHAR}, #{parentTokenId,jdbcType=VARCHAR},
 		#{updateTime,jdbcType=TIMESTAMP},
 		#{processLocation,jdbcType=VARCHAR},
-		#{instanceStatus,jdbcType=VARCHAR}, #{archiveTime,jdbcType=TIMESTAMP}
+		#{instanceStatus,jdbcType=VARCHAR}, #{archiveTime,jdbcType=TIMESTAMP},1
 		)
 	</insert>
 
@@ -211,9 +212,10 @@
 		INSTANCE_STATUS =
 		#{instanceStatus,jdbcType=VARCHAR},
 		ARCHIVE_TIME =
-		#{archiveTime,jdbcType=TIMESTAMP}
+		#{archiveTime,jdbcType=TIMESTAMP},
+		REV_ = #{revisionNext,jdbcType=INTEGER}
 		where
-		ID = #{id,jdbcType=VARCHAR}
+		ID = #{id,jdbcType=VARCHAR} AND  REV_ = #{revision,jdbcType=INTEGER}
 	</update>
 
 	<delete id="deleteProcessInstanceByProcessDefinitionId"

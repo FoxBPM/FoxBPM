@@ -153,6 +153,9 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	/** 任务完成率 */
 	protected double completionRate = 0;
 	
+	/** 控制并发修改标示 */
+	protected int revision;
+	
 	protected Map<String, Object> paramMap = new HashMap<String, Object>();
 	
 	public TaskEntity() {
@@ -335,15 +338,15 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	}
 	
 	public void setRevision(int revision) {
-		throw new FoxBPMException("未实现");
+		this.revision = revision;
 	}
 	
 	public int getRevision() {
-		return 0;
+		return revision;
 	}
 	
 	public int getRevisionNext() {
-		return 0;
+		return revision + 1;
 	}
 	
 	public boolean isModified() {
