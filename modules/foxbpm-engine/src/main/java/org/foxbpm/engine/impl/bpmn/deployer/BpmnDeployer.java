@@ -54,7 +54,7 @@ public class BpmnDeployer extends AbstractDeployer {
 	private final static String VERSION_FLAG = ":";
 	
 	public String deploy(DeploymentEntity deployment) {
-		LOG.debug("start deploy");
+		LOG.debug("start deploy BPMN");
 		ResourceEntity resourceBpmnNew = null;
 		// 获取资源实例
 		for (ResourceEntity resourceEntity : deployment.getResources().values()) {
@@ -172,7 +172,7 @@ public class BpmnDeployer extends AbstractDeployer {
 		deployment.addProperty(Constant.PROCESS_DEFINE_ID, processDefinitionEntity.getId());
 		// 将封装的流程定义实例添加到缓存
 		Context.getProcessEngineConfiguration().getDeploymentManager().getProcessDefinitionCache().add(processDefinitionEntity.getId(), processDefinitionEntity);
-		LOG.debug("end deploy");
+		LOG.debug("end deploy BPMN");
 		return processDefinitionEntity.getId();
 	}
 	

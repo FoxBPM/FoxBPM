@@ -42,7 +42,7 @@ public class GroupDeptImpl implements GroupDefinition {
 			return groups;
 		}
 		ISqlSession sqlsession = Context.getCommandContext().getSqlSession();
-		groups = (List<GroupEntity>)sqlsession.selectListWithRawParameter("selectDeptByUserId", userId);
+		groups = (List<GroupEntity>)sqlsession.selectList("selectDeptByUserId", userId);
 		CacheUtil.getIdentityCache().add("userDeptCache_" + userId, groups);
 		return groups;
 	}
@@ -66,7 +66,7 @@ public class GroupDeptImpl implements GroupDefinition {
 			return userIds;
 		}
 		ISqlSession sqlsession = Context.getCommandContext().getSqlSession();
-		userIds = (List<String>)sqlsession.selectListWithRawParameter("selectUserIdsByDeptId", groupId);
+		userIds = (List<String>)sqlsession.selectList("selectUserIdsByDeptId", groupId);
 		CacheUtil.getIdentityCache().add("deptUserCache_" + groupId, userIds);
 		return userIds;
 	}
@@ -97,7 +97,7 @@ public class GroupDeptImpl implements GroupDefinition {
 	@SuppressWarnings("unchecked")
 	public void selectSubDept(String groupId,List<GroupEntity> groups){
 		ISqlSession sqlSession = Context.getCommandContext().getSqlSession();
-		List<GroupEntity> tmpGroups = (List<GroupEntity>)sqlSession.selectListWithRawParameter("selectDeptBySupId", groupId);
+		List<GroupEntity> tmpGroups = (List<GroupEntity>)sqlSession.selectList("selectDeptBySupId", groupId);
 		if(tmpGroups != null){
 			groups.addAll(tmpGroups);
 			for(GroupEntity tmp : tmpGroups){

@@ -45,7 +45,7 @@ public class PngDeployer extends AbstractDeployer {
 	
 	@Override
 	public String deploy(DeploymentEntity deployment) {
-		LOG.debug("start deploy");
+		LOG.debug("start deploy PNG");
 		// 获取流程定义Id
 		String processDefineId = StringUtil.getString(deployment.getProperty(Constant.PROCESS_DEFINE_ID));
 		
@@ -127,7 +127,7 @@ public class PngDeployer extends AbstractDeployer {
 			ProcessDefinitionEntity processDefinieEntity = processDefinitionManager.findProcessDefinitionById(processDefineId);
 			processDefinieEntity.setDiagramResourceName(resourcePngNew.getName());
 		}
-		LOG.debug("end deploy");
+		LOG.debug("end deploy PNG");
 		return processDefineId;
 	}
 }

@@ -19,90 +19,56 @@ package org.foxbpm.engine.impl.jdbc;
 
 import java.util.List;
 
-import org.foxbpm.engine.db.PersistentObject;
-import org.foxbpm.engine.impl.db.ListQueryParameterObject;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 
 public class JdbcSqlSession implements ISqlSession {
-	public void closeSession() {
+
+	@Override
+	public void insert(String insertStatement, Object persistentObject) {
 		// TODO Auto-generated method stub
-
-	}
-
-	public void delete(String deleteStatement, Object parameter) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
-	public List<?> selectList(String statement, Object parameter, int firstResult, int maxResults) {
+	public void delete(String deleteStatement, Object parameter) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
-	public void insert(PersistentObject persistentObject) {
+	@Override
+	public void update(String updateStatement, Object persistentObject) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
-	public void delete(String deleteStatement, PersistentObject persistentObject) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void update(PersistentObject persistentObject) {
-		// TODO Auto-generated method stub
-
-	}
-
+	@Override
 	public List<?> selectList(String statement) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
 	public List<?> selectList(String statement, Object parameter) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
 	public Object selectOne(String statement, Object parameter) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public <T extends PersistentObject> T selectById(Class<T> entityClass, String id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<?> selectList(String statement, ListQueryParameterObject parameter) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<?> selectListWithRawParameter(String statement, Object parameter) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void flush() {
-		// TODO Auto-generated method stub
-
-	}
-
+	@Override
 	public void commit() {
 		// TODO Auto-generated method stub
-
-	}
-
-	public void rollback() {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
-	public void delete(PersistentObject persistentObject) {
+	public void rollback() {
 		// TODO Auto-generated method stub
-
+		
 	}
+	
 }

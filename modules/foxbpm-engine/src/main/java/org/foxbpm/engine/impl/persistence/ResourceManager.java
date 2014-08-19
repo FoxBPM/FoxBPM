@@ -33,7 +33,7 @@ public class ResourceManager extends AbstractManager {
 	
 	@SuppressWarnings("unchecked")
 	public List<ResourceEntity> findResourcesByDeploymentId(String id) {
-		List<ResourceEntity> resources = (List<ResourceEntity>) getSqlSession().selectListWithRawParameter("selectResourceByDeploymentId", id);
+		List<ResourceEntity> resources = (List<ResourceEntity>) selectList("selectResourceByDeploymentId", id);
 		return resources;
 	}
 	
@@ -41,11 +41,11 @@ public class ResourceManager extends AbstractManager {
 		Map<String,Object> paramsMap = new HashMap<String,Object>();
 		paramsMap.put("deployId", deploymentId);
 		paramsMap.put("name", resourceName);
-		return (ResourceEntity)getSqlSession().selectOne("selectResourceByDeployIdAndName", paramsMap);
+		return (ResourceEntity)selectOne("selectResourceByDeployIdAndName", paramsMap);
 	}
 	
 	public void deleteResourceByDeploymentId(String deploymentId){
-		getSqlSession().delete("deleteResourceByDeploymentId", deploymentId);
+		delete("deleteResourceByDeploymentId", deploymentId);
 	}
 	
 }

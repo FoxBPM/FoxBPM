@@ -31,15 +31,15 @@ public class IdentityLinkManager extends AbstractManager {
 
 	@SuppressWarnings("unchecked")
 	public List<IdentityLinkEntity> findIdentityLinksByTaskId(String id) {
-		return (List<IdentityLinkEntity>)getSqlSession().selectListWithRawParameter("selectIdentityLinkByTaskId", id);
+		return (List<IdentityLinkEntity>)selectList("selectIdentityLinkByTaskId", id);
 	}
 	
 	public IdentityLinkEntity findIdentityLinkById(String identityLinkId){
-		return getSqlSession().selectById(IdentityLinkEntity.class, identityLinkId);
+		return selectById(identityLinkId);
 	}
 	
 	public void deleteIdentityLinkByTaskId(String taskId){
-		getSqlSession().delete("deleteIdentityLinkByTaskId", taskId);
+		delete("deleteIdentityLinkByTaskId", taskId);
 	}
 	
 }

@@ -33,18 +33,18 @@ import org.foxbpm.engine.runtime.ProcessInstance;
 public class ProcessInstanceManager extends AbstractManager {
 	
 	public ProcessInstanceEntity findProcessInstanceById(String id) {
-		return selectById(ProcessInstanceEntity.class, id);
+		return selectById(id);
 	}
 	
 	public long findProcessInstanceCountByQueryCriteria(
 	    ProcessInstanceQueryImpl processsInstanceQuery) {
-		return (Long) getSqlSession().selectOne("selectProcessInstanceCountByQueryCriteria", processsInstanceQuery);
+		return (Long) selectOne("selectProcessInstanceCountByQueryCriteria", processsInstanceQuery);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<ProcessInstance> findProcessInstanceByQueryCriteria(
 	    ProcessInstanceQueryImpl processInstaceQuery) {
-		return (List<ProcessInstance>) getSqlSession().selectList("selectProcessInstanceByQueryCriteria", processInstaceQuery);
+		return (List<ProcessInstance>) selectList("selectProcessInstanceByQueryCriteria", processInstaceQuery);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -53,7 +53,7 @@ public class ProcessInstanceManager extends AbstractManager {
 		// 删除流程实例
 		deleteProcessInstanceByProcessDefinitionId(processDefinitionId);
 		if (cascade) {
-			List<String> processInstanceIds = (List<String>) getSqlSession().selectListWithRawParameter("selectProcessInstanceIdsByProcessDefinitionId", processDefinitionId);
+			List<String> processInstanceIds = (List<String>) selectList("selectProcessInstanceIdsByProcessDefinitionId", processDefinitionId);
 			for (String processInstanceId : processInstanceIds) {
 				cascadeDelete(processInstanceId);
 			}
@@ -84,7 +84,7 @@ public class ProcessInstanceManager extends AbstractManager {
 	 * @param processInstanceId
 	 */
 	private void deleteProcessInstanceByProcessDefinitionId(String processDefinitionId) {
-		getSqlSession().delete("deleteProcessInstanceByProcessDefinitionId", processDefinitionId);
+		delete("deleteProcessInstanceByProcessDefinitionId", processDefinitionId);
 	}
 	
 	/**
@@ -93,7 +93,7 @@ public class ProcessInstanceManager extends AbstractManager {
 	 * @param processInstanceId
 	 */
 	public void deleteProcessInstanceById(String processInstanceId) {
-		getSqlSession().delete("deleteProcessInstanceById", processInstanceId);
+		delete("deleteProcessInstanceById", processInstanceId);
 		cascadeDelete(processInstanceId);
 	}
 	

@@ -34,8 +34,7 @@ public class TokenManager extends AbstractManager {
 
 	@SuppressWarnings("unchecked")
 	public List<TokenEntity> findChildTokensByProcessInstanceId(String id) {
-		return (List<TokenEntity>) getSqlSession().selectListWithRawParameter(
-				"selectChildTokensByProcessInstanceId", id);
+		return (List<TokenEntity>) selectList("selectChildTokensByProcessInstanceId", id);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -47,20 +46,20 @@ public class TokenManager extends AbstractManager {
 	
 
 	public TokenEntity findTokenById(String rootTokenId) {
-		return selectById(TokenEntity.class, rootTokenId);
+		return selectById(rootTokenId);
 	}
 
 	public long findTokenCountByQueryCriteria(TokenQueryImpl tokenQuery) {
-		return (Long) getSqlSession().selectOne("selectTokenCountByQueryCriteria", tokenQuery);
+		return (Long) selectOne("selectTokenCountByQueryCriteria", tokenQuery);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Token> findTokenByQueryCriteria(TokenQueryImpl tokenQuery) {
-		return (List<Token>) getSqlSession().selectList("selectTokensByQueryCriteria", tokenQuery);
+		return (List<Token>) selectList("selectTokensByQueryCriteria", tokenQuery);
 	}
 
 	public void deleteTokenByProcessInstanceId(String processInstanceId) {
-		getSqlSession().delete("deleteTokenByProcessInstanceId", processInstanceId);
+		delete("deleteTokenByProcessInstanceId", processInstanceId);
 	}
 	
 	

@@ -43,7 +43,7 @@ public class RunningTrackManager extends AbstractManager {
 	 */
 	@SuppressWarnings({"unchecked"})
 	public List<RunningTrack> findRunningTrackByProcessInstanceId(String processInstanceId) {
-		return (List<RunningTrack>) getSqlSession().selectListWithRawParameter("selectRunningTrackByProcessInstanceId", processInstanceId);
+		return (List<RunningTrack>) selectList("selectRunningTrackByProcessInstanceId", processInstanceId);
 	}
 	/**
 	 * 
@@ -55,6 +55,6 @@ public class RunningTrackManager extends AbstractManager {
 	 * @since 1.0.0
 	 */
 	public void deleteRunningTrackByProcessInstanceId(String processInstanceId) {
-		getSqlSession().delete("deleteRunningTrackByProcessInstanceId", processInstanceId);
+		delete("deleteRunningTrackByProcessInstanceId", processInstanceId);
 	}
 }

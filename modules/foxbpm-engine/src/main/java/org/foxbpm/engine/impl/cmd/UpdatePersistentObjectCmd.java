@@ -30,14 +30,14 @@ import org.foxbpm.engine.impl.interceptor.CommandContext;
 public class UpdatePersistentObjectCmd implements Command<Void> {
 
 	
-	private PersistentObject persistentObject;
+//	private PersistentObject persistentObject;
 	public UpdatePersistentObjectCmd(PersistentObject persistentObject) {
-		this.persistentObject = persistentObject;
+//		this.persistentObject = persistentObject;
 	}
 	
 	@Override
 	public Void execute(CommandContext commandContext) {
-		commandContext.getSqlSession().update(persistentObject);
+//		commandContext.getSqlSession().update(persistentObject);
 		return null;
 	}
 

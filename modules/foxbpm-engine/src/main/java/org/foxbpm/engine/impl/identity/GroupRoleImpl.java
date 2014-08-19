@@ -43,7 +43,7 @@ public class GroupRoleImpl implements GroupDefinition {
 			return groups;
 		}
 		ISqlSession sqlsession = Context.getCommandContext().getSqlSession();
-		groups = (List<GroupEntity>)sqlsession.selectListWithRawParameter("selectRoleByUserId", userId);
+		groups = (List<GroupEntity>)sqlsession.selectList("selectRoleByUserId", userId);
 		CacheUtil.getIdentityCache().add("userRoleCache_" + userId, groups);
 		return groups;
 	}
@@ -67,7 +67,7 @@ public class GroupRoleImpl implements GroupDefinition {
 			return userIds;
 		}
 		ISqlSession sqlsession = Context.getCommandContext().getSqlSession();
-		userIds = (List<String>)sqlsession.selectListWithRawParameter("selectUserIdsByRoleId", groupId);
+		userIds = (List<String>)sqlsession.selectList("selectUserIdsByRoleId", groupId);
 		CacheUtil.getIdentityCache().add("roleUserCache_" + groupId, userIds);
 		return userIds;
 	}
