@@ -79,7 +79,7 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 	/**
 	 * 子令牌集合
 	 */
-	protected List<KernelTokenImpl> children = new ArrayList<KernelTokenImpl>();
+	protected List<KernelTokenImpl> children;
 
 	protected HashMap<String, KernelTokenImpl> namedChildren = new HashMap<String, KernelTokenImpl>();
 
@@ -505,6 +505,32 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 		ensureChildrenInitialized();
 		return children;
 	}
+	
+	
+	/** 获取所有的子令牌 */
+	public List<KernelTokenImpl> getAllChildren() {
+		
+		List<KernelTokenImpl> tokenList = new ArrayList<KernelTokenImpl>();
+		
+		for (KernelTokenImpl kernelTokenImpl : getChildren()) {
+			recursionTokenChildren(kernelTokenImpl, tokenList);
+		}
+
+		
+		return tokenList;
+	}
+	
+
+
+	/** 递归流程子令牌 */
+	private static void recursionTokenChildren(KernelTokenImpl token, List<KernelTokenImpl> tokenList) {
+		tokenList.add(token);
+		for (KernelTokenImpl kernelTokenImpl : token.getChildren()) {
+			recursionTokenChildren(kernelTokenImpl, tokenList);
+		}
+		
+	}
+	
 
 	public void setChildren(List<KernelTokenImpl> children) {
 		this.children = children;

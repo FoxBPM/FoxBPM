@@ -20,7 +20,6 @@ package org.foxbpm.engine.impl.entity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -39,12 +38,7 @@ import org.foxbpm.kernel.runtime.KernelProcessInstance;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
-public class TokenEntity extends KernelTokenImpl
-		implements
-			Token,
-			ConnectorExecutionContext,
-			PersistentObject,
-			HasRevision {
+public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExecutionContext, PersistentObject, HasRevision {
 
 	/**
 	 * 
@@ -56,7 +50,6 @@ public class TokenEntity extends KernelTokenImpl
 	protected String parentId;
 	protected Date startTime;
 	protected Date endTime;
-	
 
 	protected Date nodeEnterTime;
 	protected Date archiveTime;
@@ -64,11 +57,9 @@ public class TokenEntity extends KernelTokenImpl
 	protected List<TaskEntity> tasks;
 
 	protected TaskEntity assignTask;
-	
+
 	/** 临时指定分配任务的处理者 */
 	protected String taskAssignee;
-
-	
 
 	protected String groupID;
 
@@ -97,29 +88,25 @@ public class TokenEntity extends KernelTokenImpl
 	@Override
 	protected void ensureParentInitialized() {
 		if (this.parent == null && StringUtil.isNotBlank(this.parentId)) {
-			this.parent = Context.getCommandContext().getTokenManager()
-					.findTokenById(this.parentId);
+			this.parent = Context.getCommandContext().getTokenManager().findTokenById(this.parentId);
 		}
 	}
+
 	protected void ensureChildrenInitialized() {
-		if (this.children.size() == 0 && StringUtil.isNotBlank(this.processInstanceId)) {
-			List<TokenEntity> listResult = Context.getCommandContext().getTokenManager()
-					.findChildTokensByProcessInstanceId(this.processInstanceId);
-			Iterator<TokenEntity> iterator = listResult.iterator();
-			while (iterator.hasNext()) {
-				TokenEntity next = iterator.next();
-				if (StringUtil.equals(next.getParentId(), this.id)) {
-					children.add(next);
-				}
+		if (this.children == null) {
+			List<TokenEntity> listResult = Context.getCommandContext().getTokenManager().findChildTokensByTokenId(this.id);
+
+			for (TokenEntity tokenEntity : listResult) {
+				children.add(tokenEntity);
 			}
 
 		}
 	}
+
 	@Override
 	protected void ensureProcessInstanceInitialized() {
 		if ((processInstance == null) && (processInstanceId != null)) {
-			processInstance = Context.getCommandContext().getProcessInstanceManager()
-					.findProcessInstanceById(processInstanceId);
+			processInstance = Context.getCommandContext().getProcessInstanceManager().findProcessInstanceById(processInstanceId);
 		}
 	}
 
@@ -203,12 +190,10 @@ public class TokenEntity extends KernelTokenImpl
 	public Date getEndTime() {
 		return endTime;
 	}
-	
-	
 
 	@Override
 	public boolean isEnded() {
-		if(endTime==null){
+		if (endTime == null) {
 			return false;
 		}
 		return super.isEnded();
@@ -287,7 +272,7 @@ public class TokenEntity extends KernelTokenImpl
 	// 任务对象
 	// ///////////////////////////////////////////////////
 
-	@SuppressWarnings({"unchecked", "rawtypes"})
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void ensureTasksInitialized() {
 		if (tasks == null) {
 			tasks = (List) Context.getCommandContext().getTaskManager().findTasksByTokenId(id);
@@ -345,25 +330,22 @@ public class TokenEntity extends KernelTokenImpl
 		}
 		return super.isSignalParentToken();
 	}
-	
-	
-	
 
 	@Override
 	public void setEnded(boolean isEnded) {
-		if(isEnded){
-			this.endTime=ClockUtil.getCurrentTime();
-		}else{
-			this.endTime=null;
+		if (isEnded) {
+			this.endTime = ClockUtil.getCurrentTime();
+		} else {
+			this.endTime = null;
 		}
 		super.setEnded(isEnded);
-		
+
 	}
-	
+
 	public void setEndTime(Date endTime) {
-		if(endTime!=null){
+		if (endTime != null) {
 			super.setEnded(true);
-		}else{
+		} else {
 			super.setEnded(false);
 		}
 		this.endTime = endTime;

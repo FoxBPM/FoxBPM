@@ -37,6 +37,14 @@ public class TokenManager extends AbstractManager {
 		return (List<TokenEntity>) getSqlSession().selectListWithRawParameter(
 				"selectChildTokensByProcessInstanceId", id);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<TokenEntity> findChildTokensByTokenId(String tokenId) {
+		return (List<TokenEntity>) getSqlSession().selectListWithRawParameter(
+				"findChildTokensByTokenId", tokenId);
+	}
+	
+	
 
 	public TokenEntity findTokenById(String rootTokenId) {
 		return selectById(TokenEntity.class, rootTokenId);
