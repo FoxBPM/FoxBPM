@@ -15,49 +15,16 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.engine.impl.task.filter;
-
-import org.foxbpm.engine.task.Task;
+package org.foxbpm.engine.impl.task.command;
 
 /**
  * @author kenshin
  *
  */
-public class PendingTaskFilter extends AbstractCommandFilter {
+public class RecoverTaskCommand extends AbstractCustomExpandTaskCommand {
 
-	@Override
-	public boolean accept(Task task) {
-
-		if (task == null) {
-			return false;
-		}
-
-		if (task.isSuspended()) {
-			return false;
-		}
-
-		if (task.hasEnded()) {
-			return false;
-		}
-
-		if (isProcessTracking()) {
-			return false;
-		}
-
-		if (task.getDelegationState() != null) {
-			return false;
-		}
-
-		if (task.getAssignee() != null) {
-			return true;
-		}
-
-		if (isAutoClaim(task)) {
-			return true;
-		} else {
-			return false;
-		}
-
+	public RecoverTaskCommand(ExpandTaskCommand expandTaskCommand) {
+		super(expandTaskCommand);	
 	}
 
 }

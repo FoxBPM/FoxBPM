@@ -23,11 +23,11 @@ import org.foxbpm.engine.task.Task;
  * @author kenshin
  *
  */
-public class PendingTaskFilter extends AbstractCommandFilter {
+public class RecoverTaskFilter extends AbstractCommandFilter {
 
 	@Override
 	public boolean accept(Task task) {
-
+		
 		if (task == null) {
 			return false;
 		}
@@ -35,29 +35,13 @@ public class PendingTaskFilter extends AbstractCommandFilter {
 		if (task.isSuspended()) {
 			return false;
 		}
-
-		if (task.hasEnded()) {
-			return false;
-		}
-
-		if (isProcessTracking()) {
-			return false;
-		}
-
-		if (task.getDelegationState() != null) {
-			return false;
-		}
-
-		if (task.getAssignee() != null) {
+		
+		if(isProcessTracking()){
 			return true;
 		}
-
-		if (isAutoClaim(task)) {
-			return true;
-		} else {
-			return false;
-		}
-
+		
+		
+		return false;
 	}
 
 }

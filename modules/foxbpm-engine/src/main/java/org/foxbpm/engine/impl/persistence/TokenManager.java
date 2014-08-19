@@ -36,6 +36,14 @@ public class TokenManager extends AbstractManager {
 	public List<TokenEntity> findChildTokensByProcessInstanceId(String id) {
 		return (List<TokenEntity>) selectList("selectChildTokensByProcessInstanceId", id);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<TokenEntity> findChildTokensByTokenId(String tokenId) {
+		return (List<TokenEntity>) selectList(
+				"findChildTokensByTokenId", tokenId);
+	}
+	
+	
 
 	public TokenEntity findTokenById(String rootTokenId) {
 		return selectById(TokenEntity.class,rootTokenId);
