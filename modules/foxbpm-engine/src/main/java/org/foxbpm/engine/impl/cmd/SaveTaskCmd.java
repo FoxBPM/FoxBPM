@@ -45,7 +45,6 @@ public class SaveTaskCmd implements Command<Void>{
 		}else{
 			taskEntity.update();
 		}
-		commandContext.getTaskManager().insert(taskEntity);
 		return null;
 	}
 	
