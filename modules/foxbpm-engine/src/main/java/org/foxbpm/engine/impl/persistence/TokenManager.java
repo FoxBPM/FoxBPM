@@ -33,8 +33,8 @@ import org.foxbpm.engine.runtime.Token;
 public class TokenManager extends AbstractManager {
 
 	@SuppressWarnings("unchecked")
-	public List<TokenEntity> findChildTokensByProcessInstanceId(String id) {
-		return (List<TokenEntity>) selectList("selectChildTokensByProcessInstanceId", id);
+	public List<TokenEntity> findTokensByProcessInstanceId(String id) {
+		return (List<TokenEntity>) selectList("selectTokensByProcessInstanceId", id);
 	}
 	
 	@SuppressWarnings("unchecked")

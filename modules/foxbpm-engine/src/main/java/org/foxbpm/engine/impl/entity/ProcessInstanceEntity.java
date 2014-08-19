@@ -255,7 +255,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	@Override
 	protected void ensureTokensInitialized() {
 		if (tokens == null) {
-			this.tokens = (List) Context.getCommandContext().getTokenManager().findChildTokensByProcessInstanceId(id);
+			this.tokens = (List) Context.getCommandContext().getTokenManager().findTokensByProcessInstanceId(id);
 		}
 	}
 
