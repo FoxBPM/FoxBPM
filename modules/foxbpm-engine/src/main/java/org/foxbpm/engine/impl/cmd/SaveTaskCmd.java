@@ -40,6 +40,11 @@ public class SaveTaskCmd implements Command<Void>{
 		if(taskEntity == null){
 			throw new FoxBPMIllegalArgumentException("需要保存的task为null");
 		}
+		if (taskEntity.getRevision()==0){
+			taskEntity.insert(null);
+		}else{
+			taskEntity.update();
+		}
 		commandContext.getTaskManager().insert(taskEntity);
 		return null;
 	}

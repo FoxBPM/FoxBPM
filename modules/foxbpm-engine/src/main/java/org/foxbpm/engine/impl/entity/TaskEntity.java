@@ -189,6 +189,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		setPriority(this.getPriority());
 		setCreateTime(this.getCreateTime());
 		setDueDate(this.getDueDate());
+		Context.getCommandContext().getTaskManager().update(this);
 	}
 	
 	/** 创建任务 */
