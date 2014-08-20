@@ -18,8 +18,10 @@
 package org.foxbpm.engine.impl.cmd;
 
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.exception.FoxBPMDbException;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.sqlsession.StatementMap;
 
 /**
  * 手工更新实体方法
@@ -30,14 +32,36 @@ import org.foxbpm.engine.impl.interceptor.CommandContext;
 public class UpdatePersistentObjectCmd implements Command<Void> {
 
 	
-//	private PersistentObject persistentObject;
+	private PersistentObject persistentObject;
+	private String updateStatement;
+	
+	/**
+	 * 没有传updateStatement参数时，必须在statementMap中配置对应的update语句编号
+	 * @param persistentObject
+	 */
 	public UpdatePersistentObjectCmd(PersistentObject persistentObject) {
-//		this.persistentObject = persistentObject;
+		this.persistentObject = persistentObject;
+	}
+	
+	/**
+	 * 根据对应的updateStatementId更新对应的实体
+	 * @param updateStatement
+	 * @param persistentObject
+	 */
+	public UpdatePersistentObjectCmd(String updateStatement , PersistentObject persistentObject) {
+		this.persistentObject = persistentObject;
+		this.updateStatement = updateStatement;
 	}
 	
 	@Override
 	public Void execute(CommandContext commandContext) {
-//		commandContext.getSqlSession().update(persistentObject);
+		if(updateStatement == null){
+			updateStatement = StatementMap.getUpdateStatement(persistentObject);
+			if(updateStatement == null){
+				throw new FoxBPMDbException("没有为类配置update语句:"+persistentObject.getClass());
+			}
+		}
+		commandContext.getSqlSession().update(updateStatement,persistentObject);
 		return null;
 	}
 
