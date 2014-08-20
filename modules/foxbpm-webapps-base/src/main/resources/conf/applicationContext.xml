@@ -64,6 +64,11 @@
 		<property name="transactionManager" ref="foxbpmTransactionManager" />
 		<property name="foxbpmScheduler" ref="foxbpmScheduler"></property>
 		<!-- 可选的发布处理行为,可卸载 -->
+		<property name="customPostDeployers">
+			<list>
+				<bean class="org.foxbpm.engine.impl.bpmn.deployer.PngDeployer" />
+			</list>
+		</property>
 	
 	</bean>
 
