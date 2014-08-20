@@ -31,7 +31,6 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
 import org.foxbpm.engine.impl.util.DBUtils;
 import org.foxbpm.engine.impl.util.FileUtil;
 import org.foxbpm.engine.repository.DeploymentBuilder;
@@ -125,12 +124,11 @@ public class ModelsResouce extends AbstractRestResource{
 									}
 									deploymentBuilder.deploy();
 								}else if(PREFIX_DELETE.equals(operation)){
-									try{//查询是否已经存在，已存在，则更新，否则新增
-										ProcessDefinition processDefinitionNew = modelService.getProcessDefinition(processKey, version);
+									ProcessDefinition processDefinitionNew = modelService.getProcessDefinition(processKey, version);
+									if(processDefinitionNew != null){
 										String deploymentId = processDefinitionNew.getDeploymentId();
 										modelService.deleteDeployment(deploymentId);
-									}catch(FoxBPMObjectNotFoundException ex){
-										//此异常代表数据库中不存在此流程定义,则不进行删除操作
+									}else{
 										log.warn("数据库中不存在key:"+processKey+"，version:"+version+"的流程定义，忽略此删除操作");
 									}
 								}else if("NotModify".equals(operation)){
