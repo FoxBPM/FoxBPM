@@ -18,7 +18,7 @@
   </resultMap>
   
    <insert id="insertProcessDefinition" parameterType="org.foxbpm.engine.impl.entity.ProcessDefinitionEntity">
-    insert into foxbpm_def_processdefinition (PROCESS_ID, 
+    insert into ${prefix}_def_processdefinition (PROCESS_ID, 
       PROCESS_KEY, CATEGORY, PROCESS_NAME, 
       VERSION, RESOURCE_NAME, DEPLOYMENT_ID, 
       DIAGRAM_RESOURCE_NAME, RESOURCE_ID,START_FORM_KEY,
@@ -34,29 +34,29 @@
    <select id="selectProcessDefinitionById" parameterType="java.lang.String" resultMap="ProcessDefinitionMap">
     select 
     *
-    from foxbpm_def_processdefinition
+    from ${prefix}_def_processdefinition
     where PROCESS_ID = #{processId,jdbcType=VARCHAR}
   </select>
   
    <select id="selectLatestProcessDefinitionByKey" parameterType="java.lang.String" resultMap="ProcessDefinitionMap">
-   select * from FOXBPM_DEF_PROCESSDEFINITION 
-   where PROCESS_KEY = #{processKey,jdbcType=VARCHAR} and VERSION = (select max(VERSION) from FOXBPM_DEF_PROCESSDEFINITION where PROCESS_KEY = #{processKey,jdbcType=VARCHAR})
+   select * from ${prefix}_DEF_PROCESSDEFINITION 
+   where PROCESS_KEY = #{processKey,jdbcType=VARCHAR} and VERSION = (select max(VERSION) from ${prefix}_DEF_PROCESSDEFINITION where PROCESS_KEY = #{processKey,jdbcType=VARCHAR})
   </select>
   
    <select id="selectProcessDefinitionByDeployIdAndKey" parameterType="map" resultMap="ProcessDefinitionMap">
-	   select * from FOXBPM_DEF_PROCESSDEFINITION 
+	   select * from ${prefix}_DEF_PROCESSDEFINITION 
 	   where DEPLOYMENT_ID = #{deploymentId,jdbcType=VARCHAR} AND PROCESS_KEY = #{key,jdbcType=VARCHAR}
   </select>
   
   
    <select id="selectProcessDefinitionByKeyAndVersion" parameterType="map" resultMap="ProcessDefinitionMap">
-	   select * from FOXBPM_DEF_PROCESSDEFINITION 
+	   select * from ${prefix}_DEF_PROCESSDEFINITION 
 	   where PROCESS_KEY = #{key,jdbcType=VARCHAR} AND VERSION = #{version,jdbcType=INTEGER}
   </select>
   
    <select id="selectProcessDefinitionGroupByKey" parameterType="map" resultMap="ProcessDefinitionMap">
-	   select * from (select max(VERSION) as VERSION,PROCESS_KEY from FOXBPM_DEF_PROCESSDEFINITION GROUP BY PROCESS_KEY  ) t1 
-	   left join FOXBPM_DEF_PROCESSDEFINITION t2 on 
+	   select * from (select max(VERSION) as VERSION,PROCESS_KEY from ${prefix}_DEF_PROCESSDEFINITION GROUP BY PROCESS_KEY  ) t1 
+	   left join ${prefix}_DEF_PROCESSDEFINITION t2 on 
 	   t1.VERSION=t2.VERSION and t1.PROCESS_KEY=t2.PROCESS_KEY
   </select>
   
@@ -78,7 +78,7 @@
   </select>
   
   <sql id="selectProcessDefinitionsByQueryCriteriaSql">  
-    from FOXBPM_DEF_PROCESSDEFINITION PD LEFT JOIN FOXBPM_DEF_DEPLOYMENT DP ON PD.DEPLOYMENT_ID = DP.ID
+    from ${prefix}_DEF_PROCESSDEFINITION PD LEFT JOIN ${prefix}_DEF_DEPLOYMENT DP ON PD.DEPLOYMENT_ID = DP.ID
     <where>
       <if test="id != null">
         PD.PROCESS_ID = #{id}
@@ -108,13 +108,13 @@
         and PD.DEPLOYMENT_ID = #{deploymentId}
       </if>
       <if test="latest">
-        and PD.VERSION = (select max(VERSION) from FOXBPM_DEF_PROCESSDEFINITION where KEY = RES.KEY)
+        and PD.VERSION = (select max(VERSION) from ${prefix}_DEF_PROCESSDEFINITION where KEY = RES.KEY)
       </if>
     </where>
   </sql>
   
   <update id="updateProcessDefinition" parameterType="org.foxbpm.engine.impl.entity.ProcessDefinitionEntity">
-    update foxbpm_def_processdefinition
+    update ${prefix}_def_processdefinition
     set 
       PROCESS_KEY = #{key,jdbcType=VARCHAR},
       CATEGORY = #{category,jdbcType=VARCHAR},
@@ -129,7 +129,7 @@
   </update>
   
   <delete id="deleteProcessDefinitionById" parameterType="java.lang.String">
-  	DELETE FROM FOXBPM_DEF_PROCESSDEFINITION WHERE PROCESS_ID = #{id,jdbcType=VARCHAR}
+  	DELETE FROM ${prefix}_DEF_PROCESSDEFINITION WHERE PROCESS_ID = #{id,jdbcType=VARCHAR}
   </delete>
   	
 </mapper>

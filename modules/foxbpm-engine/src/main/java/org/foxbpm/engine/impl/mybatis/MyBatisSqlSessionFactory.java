@@ -85,7 +85,7 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 		databaseTypeMappings.setProperty("Microsoft SQL Server", "mssql");
 	}
 	
-	public void init(DataSource dataSource) {
+	public void init(DataSource dataSource,String prefix) {
 		Connection connection = null;
 		String databaseType = null;
 		try {
@@ -123,6 +123,7 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 					properties.put("limitBetween", databaseSpecificLimitBetweenStatements.get(databaseType));
 					properties.put("limitOuterJoinBetween", databaseOuterJoinLimitBetweenStatements.get(databaseType));
 					properties.put("orderBy" , databaseSpecificOrderByStatements.get(databaseType));
+					properties.put("prefix" , prefix);
 		        }
 		        XMLConfigBuilder parser = new XMLConfigBuilder(reader,"", properties);
 		        Configuration configuration = parser.getConfiguration();

@@ -48,4 +48,10 @@ public class JdbcSqlSessionFactory implements ISqlSessionFactory {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public void init(DataSource datasource, String prefix) {
+		// TODO Auto-generated method stub
+		
+	}
 }

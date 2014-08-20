@@ -151,17 +151,12 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected List<Deployer> customPostDeployers;
 	protected List<Deployer> deployers;
 	protected DeploymentManager deploymentManager;
-	
 	protected TransactionContextFactory transactionContextFactory;
-	
 	protected List<ProcessEngineConfigurator> configurators = new ArrayList<ProcessEngineConfigurator>();
 	protected List<GroupDefinition> groupDefinitions = new ArrayList<GroupDefinition>();
 	protected UserDefinition userDefinition;
-	
 	protected FoxBPMStyleConfig foxBPMStyleConfig;
-	
 	protected Map<String, Style> styleMap = new HashMap<String, Style>();
-	
 	protected TaskCommandConfig taskCommandConfig;
 	
 	protected Map<String, TaskCommandDefinition> taskCommandDefinitionMap;
@@ -169,7 +164,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected Map<String, AbstractCommandFilter> abstractCommandFilterMap;
 	
 	protected SysMailConfig sysMailConfig;
-	
+	protected String prefix = "foxbpm";
 	/**
 	 * FOXBPM任务调度器
 	 */
@@ -532,7 +527,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	public void initSqlSessionFactory() {
 		if(sqlSessionFactory == null){
 			sqlSessionFactory = new MyBatisSqlSessionFactory();
-			sqlSessionFactory.init(dataSource);
+			sqlSessionFactory.init(dataSource,prefix);
 		}
 	}
 	
@@ -853,5 +848,14 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	public boolean getQuartzEnabled() {
 		return this.quartzEnabled;
+	}
+	
+	public ProcessEngineConfiguration setPrefix(String prefix) {
+		this.prefix = prefix;
+		return this;
+	}
+	
+	public String getPrefix() {
+		return prefix;
 	}
 }

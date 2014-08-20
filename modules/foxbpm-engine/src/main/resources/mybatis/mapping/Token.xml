@@ -21,7 +21,7 @@
   </resultMap>
   
   <insert id="insertToken" parameterType="org.foxbpm.engine.impl.entity.TokenEntity" >
-    insert into foxbpm_run_token (ID, NAME, PROCESSINSTANCE_ID, 
+    insert into ${prefix}_run_token (ID, NAME, PROCESSINSTANCE_ID, 
       NODE_ID, PARENT_ID, START_TIME, 
       END_TIME, NODEENTER_TIME, ARCHIVE_TIME, 
       ISSUSPENDED, ISLOCK, ISACTIVE, 
@@ -34,7 +34,7 @@
   </insert>
   
    <update id="updateToken" parameterType="org.foxbpm.engine.impl.entity.TokenEntity" >
-    update foxbpm_run_token
+    update ${prefix}_run_token
       set NAME = #{name,jdbcType=VARCHAR},
       PROCESSINSTANCE_ID = #{processInstanceId,jdbcType=VARCHAR},
       NODE_ID = #{nodeId,jdbcType=VARCHAR},
@@ -60,20 +60,20 @@
   <select id="selectTokenById" parameterType="java.lang.String" resultMap="TokenResultMap">
 	    select 
 	    <include refid="Token_Column_List" />
-	    from foxbpm_run_token
+	    from ${prefix}_run_token
 	    where ID = #{id,jdbcType=VARCHAR}
   </select>
 
   <select id="selectTokensByProcessInstanceId" parameterType="java.lang.String" resultMap="TokenResultMap">
 	    select 
 	    *
-	    from foxbpm_run_token
+	    from ${prefix}_run_token
 	    where PROCESSINSTANCE_ID = #{id,jdbcType=VARCHAR}
   </select>
    <select id="findChildTokensByTokenId" parameterType="java.lang.String" resultMap="TokenResultMap">
 	    select 
 	    *
-	    from foxbpm_run_token
+	    from ${prefix}_run_token
 	    where PARENT_ID= #{id,jdbcType=VARCHAR}
   </select>
   
@@ -93,7 +93,7 @@
   </select>
   
   <sql id="selectTokensByQueryCriteriaSql">  
-    from FOXBPM_RUN_TOKEN RES
+    from ${prefix}_RUN_TOKEN RES
     <where>
       <if test="tokenId != null">
         RES.ID = #{tokenId}
@@ -112,7 +112,7 @@
   </sql>
   
   <delete id="deleteTokenByProcessInstanceId" parameterType="java.lang.String">
-  	DELETE FROM FOXBPM_RUN_TOKEN WHERE PROCESSINSTANCE_ID = #{processInstanceId,jdbcType=VARCHAR}
+  	DELETE FROM ${prefix}_RUN_TOKEN WHERE PROCESSINSTANCE_ID = #{processInstanceId,jdbcType=VARCHAR}
   </delete>
   
 </mapper>

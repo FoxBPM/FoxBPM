@@ -68,7 +68,7 @@
 
 
 	<insert id="insertTask" parameterType="org.foxbpm.engine.impl.entity.TaskEntity">
-		INSERT INTO FOXBPM_RUN_TASK (ID, PROCESSINSTANCE_ID,
+		INSERT INTO ${prefix}_RUN_TASK (ID, PROCESSINSTANCE_ID,
 		PROCESSDEFINITION_ID,
 		VERSION, TOKEN_ID, NODE_ID,
 		SUBJECT,COMPLETEDESCRIPTION,
@@ -117,7 +117,7 @@
 
 
 	<update id="updateTask" parameterType="org.foxbpm.engine.impl.entity.TaskEntity">
-		UPDATE FOXBPM_RUN_TASK
+		UPDATE ${prefix}_RUN_TASK
 		SET
 		PROCESSINSTANCE_ID = #{processInstanceId,jdbcType=VARCHAR},
 		PROCESSDEFINITION_ID = #{processDefinitionId,jdbcType=VARCHAR},
@@ -187,7 +187,7 @@
 		resultMap="TaskResultMap">
 		SELECT
 		<include refid="Task_Column_List" />
-		FROM FOXBPM_RUN_TASK
+		FROM ${prefix}_RUN_TASK
 		WHERE ID = #{id,jdbcType=VARCHAR}
 	</select>
 
@@ -200,7 +200,7 @@
 		resultMap="TaskResultMap">
 		SELECT
 		*
-		FROM FOXBPM_RUN_TASK
+		FROM ${prefix}_RUN_TASK
 		where PROCESSINSTANCE_ID = #{id,jdbcType=VARCHAR}
 	</select>
 	
@@ -209,14 +209,14 @@
 		resultMap="TaskResultMap">
 		SELECT
 		*
-		FROM FOXBPM_RUN_TASK
+		FROM ${prefix}_RUN_TASK
 		where TOKEN_ID = #{id,jdbcType=VARCHAR}
 	</select>
 
 	<select id="selectEndTasksByTokenIds" parameterType="java.util.List" resultMap="TaskResultMap">
 		SELECT
 		*
-		FROM FOXBPM_RUN_TASK
+		FROM ${prefix}_RUN_TASK
 		where END_TIME IS NOT NULL AND TASKTYPE = 'foxbpmtask'
 		<if test="list != null &amp;&amp; list.size() &gt; 0">
 		 	AND TOKEN_ID IN
@@ -248,13 +248,13 @@
 	</select>
 
 	<sql id="selectTasksByQueryCriteriaSql">
-		from FOXBPM_RUN_TASK RES
+		from ${prefix}_RUN_TASK RES
 
 		<if test="candidateUser != null">
-			left join FOXBPM_RUN_TASKIDENTITYLINK I on I.TASK_ID = RES.ID
+			left join ${prefix}_RUN_TASKIDENTITYLINK I on I.TASK_ID = RES.ID
 		</if>
 		<if test="initiator != null">
-			inner join FOXBPM_RUN_PROCESSINSTANCE P ON P.ID = RES.PROCESSINSTANCE_ID
+			inner join ${prefix}_RUN_PROCESSINSTANCE P ON P.ID = RES.PROCESSINSTANCE_ID
 		</if>
 		<where>
 			<if test="taskId != null">
@@ -392,12 +392,12 @@
 	</sql>
 
 	<delete id="deleteTaskByProcessInstanceId" parameterType="java.lang.String">
-		DELETE FROM FOXBPM_RUN_TASK WHERE PROCESSINSTANCE_ID =
+		DELETE FROM ${prefix}_RUN_TASK WHERE PROCESSINSTANCE_ID =
 		#{processInstanceId,jdbcType=VARCHAR}
 	</delete>
 
 	<delete id="deleteTaskById" parameterType="java.lang.String">
-		DELETE FROM FOXBPM_RUN_TASK WHERE ID = #{id,jdbcType=VARCHAR}
+		DELETE FROM ${prefix}_RUN_TASK WHERE ID = #{id,jdbcType=VARCHAR}
 	</delete>
 
 </mapper>

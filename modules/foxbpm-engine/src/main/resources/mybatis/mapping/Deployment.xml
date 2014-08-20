@@ -10,12 +10,12 @@
   </resultMap>
 
 <insert id="insertDeployment" parameterType="org.foxbpm.engine.impl.entity.DeploymentEntity" >
-    insert into foxbpm_def_deployment (ID, NAME, DEPLOY_TIME)
+    insert into ${prefix}_def_deployment (ID, NAME, DEPLOY_TIME)
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{deploymentTime,jdbcType=TIMESTAMP})
   </insert>
   
   <update id="updateDeployment" parameterType="org.foxbpm.engine.impl.entity.DeploymentEntity" >
-    update foxbpm_def_deployment
+    update ${prefix}_def_deployment
     set NAME = #{name,jdbcType=VARCHAR},
       DEPLOY_TIME = #{deploymentTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=VARCHAR}
@@ -23,11 +23,11 @@
   
   
   <select id="selectDeploymentById" parameterType="java.lang.String" resultMap="deploymentResultMap">
-	   SELECT * FROM FOXBPM_DEF_DEPLOYMENT WHERE ID =  #{id,jdbcType=VARCHAR}
+	   SELECT * FROM ${prefix}_DEF_DEPLOYMENT WHERE ID =  #{id,jdbcType=VARCHAR}
   </select>
   
   <delete id="deleteDeploymentById" parameterType="java.lang.String">
-  		DELETE FROM FOXBPM_DEF_DEPLOYMENT WHERE ID =  #{id,jdbcType=VARCHAR}
+  		DELETE FROM ${prefix}_DEF_DEPLOYMENT WHERE ID =  #{id,jdbcType=VARCHAR}
   </delete>
   	
 </mapper>

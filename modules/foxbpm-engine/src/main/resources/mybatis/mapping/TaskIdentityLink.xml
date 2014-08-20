@@ -13,7 +13,7 @@
   </resultMap>
   
    <insert id="insertIdentityLink" parameterType="org.foxbpm.engine.impl.entity.IdentityLinkEntity" >
-    insert into foxbpm_run_taskidentitylink (ID, TYPE, USER_ID, 
+    insert into ${prefix}_run_taskidentitylink (ID, TYPE, USER_ID, 
       GROUP_ID, GROUP_TYPE, TASK_ID)
     values (#{id,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
       #{groupId,jdbcType=VARCHAR}, #{groupType,jdbcType=VARCHAR}, #{taskId,jdbcType=VARCHAR})
@@ -22,19 +22,19 @@
    <select id="selectIdentityLinkById" resultMap="IdentityLinkResultMap" parameterType="java.lang.String" >
     select 
     *
-    from foxbpm_run_taskidentitylink
+    from ${prefix}_run_taskidentitylink
     where ID = #{id,jdbcType=VARCHAR}
   </select>
   
    <select id="selectIdentityLinkByTaskId" resultMap="IdentityLinkResultMap" parameterType="java.lang.String" >
     select 
    *
-    from foxbpm_run_taskidentitylink
+    from ${prefix}_run_taskidentitylink
     where TASK_ID = #{id,jdbcType=VARCHAR}
   </select>
   
   <delete id="deleteIdentityLinkByTaskId" parameterType="java.lang.String">
-  	DELETE FROM FOXBPM_RUN_TASKIDENTITYLINK WHERE TASK_ID = #{taskId,jdbcType=VARCHAR}
+  	DELETE FROM ${prefix}_RUN_TASKIDENTITYLINK WHERE TASK_ID = #{taskId,jdbcType=VARCHAR}
   </delete>
 
 </mapper>

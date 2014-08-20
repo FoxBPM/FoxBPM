@@ -29,7 +29,7 @@
 
 	<insert id="insertProcessInstance" parameterType="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">
 		insert into
-		foxbpm_run_processinstance (ID, PROCESSDEFINITION_ID,
+		${prefix}_run_processinstance (ID, PROCESSDEFINITION_ID,
 		PROCESSDEFINITION_KEY,
 		SUBJECT, START_TIME, END_TIME,
 		DEFINITION_ID,
@@ -60,7 +60,7 @@
 		resultMap="processResultMap">
 		select
 		<include refid="processColumnList" />
-		from foxbpm_run_processinstance
+		from ${prefix}_run_processinstance
 		where ID = #{id,jdbcType=VARCHAR}
 	</select>
 
@@ -70,7 +70,7 @@
 		select
 		ID
 		from
-		foxbpm_run_processinstance
+		${prefix}_run_processinstance
 		where PROCESSDEFINITION_ID =
 		#{id,jdbcType=VARCHAR}
 	</select>
@@ -98,11 +98,11 @@
 	</select>
 
 	<sql id="selectProcessInstancesByQueryCriteriaSql">
-		from FOXBPM_RUN_PROCESSINSTANCE RES
+		from ${prefix}_RUN_PROCESSINSTANCE RES
 
 		<if
 			test="processDefinitionName != null or processDefinitionNameLike != null">
-			inner join FOXBPM_DEF_PROCESSDEFINITION P on p.PROCESS_ID =
+			inner join ${prefix}_DEF_PROCESSDEFINITION P on p.PROCESS_ID =
 			RES.PROCESSDEFINITION_ID
 		</if>
 		<where>
@@ -144,7 +144,7 @@
 			</if>
 			<if test="taskParticipants != null">
 				and RES.ID in (SELECT distinct(PROCESSINSTANCE_ID) FROM
-				FOXBPM_RUN_TASK
+				${prefix}_RUN_TASK
 				WHERE ASSIGNEE=#{taskParticipants} and END_TIME is
 				not null)
 			</if>
@@ -179,7 +179,7 @@
 
 	<update id="updateProcessInstance" parameterType="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">
 		update
-		foxbpm_run_processinstance
+		${prefix}_run_processinstance
 		set
 		PROCESSDEFINITION_ID =
 		#{processDefinitionId,jdbcType=VARCHAR},
@@ -220,13 +220,13 @@
 
 	<delete id="deleteProcessInstanceByProcessDefinitionId"
 		parameterType="java.lang.String">
-		DELETE FROM FOXBPM_RUN_PROCESSINSTANCE WHERE
+		DELETE FROM ${prefix}_RUN_PROCESSINSTANCE WHERE
 		PROCESSDEFINITION_ID =
 		#{processDefinitionId,jdbcType=VARCHAR}
 	</delete>
 	<delete id="deleteProcessInstanceById" parameterType="java.lang.String">
 		DELETE FROM
-		FOXBPM_RUN_PROCESSINSTANCE WHERE ID =
+		${prefix}_RUN_PROCESSINSTANCE WHERE ID =
 		#{processInstanceId,jdbcType=VARCHAR}
 	</delete>
 
