@@ -226,7 +226,7 @@ Foxbpm.TaskDeatailInfor.prototype = {
 		h3.append("<span id='lct'>流程图</span>");
         var ul = $("<ul>");
         ul.append("<li class='img01'>已完成</li>");
-        ul.append("<li class='img01'>进行中</li>");
+        ul.append("<li class='img02'>进行中</li>");
 		ul.append("<li><input id='yczt' type='checkbox' name='cczt' />&nbsp;&nbsp;隐藏状态</li>");
 		ul.append("<li><input id='runningTrackTable' type='checkbox' name='runningTrackTable' />&nbsp;&nbsp;轨迹信息</li>");
 		ul.append("<li><input id='runningTrack' type='checkbox' name='runningTrack' />&nbsp;&nbsp;轨迹动态运行</li>");
