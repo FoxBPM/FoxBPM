@@ -11,6 +11,7 @@ import java.util.Set;
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
@@ -822,6 +823,9 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	
 	/** 结束任务,并驱动流程向下运转。 指定需要去的节点。 */
 	public void complete(KernelFlowNodeImpl toFlowNode) {
+		if(toFlowNode == null){
+			throw new FoxBPMIllegalArgumentException("跳转的目的节点不能为null");
+		}
 		complete(toFlowNode, null);
 	}
 	
