@@ -26,9 +26,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.ServiceLoader;
 
 import javax.sql.DataSource;
 
@@ -366,6 +368,14 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 	
 	protected void initTaskCommandConfig() {
+		
+		
+		ServiceLoader<TaskCommandDefinition> s = ServiceLoader.load(TaskCommandDefinition.class); 
+		Iterator<TaskCommandDefinition> searchs = s.iterator();
+		while(searchs.hasNext()){
+			TaskCommandDefinition command = searchs.next();
+			System.out.println("我操，NB的java SPI"+command.getCmd());
+		}
 		this.taskCommandConfig = foxBpmConfig.getTaskCommandConfig();
 		taskCommandDefinitionMap = new HashMap<String, TaskCommandDefinition>();
 		for (TaskCommandDefinition taskCommandDef : taskCommandConfig.getTaskCommandDefinition()) {

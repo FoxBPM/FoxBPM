@@ -17,7 +17,7 @@
     <result column="ISLOCK" property="isLocked" jdbcType="VARCHAR" />
     <result column="ISACTIVE" property="isActive" jdbcType="VARCHAR" />
     <result column="ISSUBPROCESSROOTTOKEN" property="isSubProcessRootToken" jdbcType="VARCHAR" />
-    <result column="REV_" property="reversion" jdbcType="INTEGER" />
+    <result column="REV_" property="revision" jdbcType="INTEGER" />
   </resultMap>
   
   <insert id="insertToken" parameterType="org.foxbpm.engine.impl.entity.TokenEntity" >
@@ -47,14 +47,14 @@
       ISLOCK = #{isLocked,jdbcType=VARCHAR},
       ISACTIVE = #{isActive,jdbcType=VARCHAR},
       ISSUBPROCESSROOTTOKEN = #{isSubProcessRootToken,jdbcType=VARCHAR},
-      REV_ = #{reversionNext,jdbcType=INTEGER}
+      REV_ = #{revisionNext,jdbcType=INTEGER}
     where
-      ID = #{id,jdbcType=VARCHAR} AND  REV_ = #{reversion,jdbcType=INTEGER}
+      ID = #{id,jdbcType=VARCHAR} AND  REV_ = #{revision,jdbcType=INTEGER}
   </update>
   
   <sql id="Token_Column_List" >
     ID, NAME, PROCESSINSTANCE_ID, NODE_ID, PARENT_ID, START_TIME, END_TIME, NODEENTER_TIME, 
-    ARCHIVE_TIME, ISSUSPENDED, ISLOCK, ISACTIVE, ISSUBPROCESSROOTTOKEN
+    ARCHIVE_TIME, ISSUSPENDED, ISLOCK, ISACTIVE, ISSUBPROCESSROOTTOKEN,REV_
   </sql>
   
   <select id="selectTokenById" parameterType="java.lang.String" resultMap="TokenResultMap">

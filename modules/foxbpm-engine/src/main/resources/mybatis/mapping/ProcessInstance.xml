@@ -59,7 +59,7 @@
 	<select id="selectProcessInstanceById" parameterType="java.lang.String"
 		resultMap="processResultMap">
 		select
-		<include refid="processColumnList" />
+		*
 		from ${prefix}_run_processinstance
 		where ID = #{id,jdbcType=VARCHAR}
 	</select>
@@ -174,7 +174,7 @@
 		START_AUTHOR, ISSUSPENDED, PARENT_ID,
 		PARENT_TOKEN_ID,
 		UPDATE_TIME,
-		PROCESSLOCATION, INSTANCE_STATUS, ARCHIVE_TIME
+		PROCESSLOCATION, INSTANCE_STATUS, ARCHIVE_TIME,REV_
 	</sql>
 
 	<update id="updateProcessInstance" parameterType="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">

@@ -19,28 +19,21 @@ package org.foxbpm.engine.test.api.command;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
-
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
+import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskQuery;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
 import org.foxbpm.engine.test.Deployment;
 import org.junit.Test;
 
-/**
- * 任务命令测试类
- * @author ych
- *
- */
-public class TestTaskCommand extends AbstractFoxBpmTestCase {
+public class SubmitTaskCommandTest extends AbstractFoxBpmTestCase {
 
-	
 	/**
 	 * 启动并提交命令测试类
-	 * <p>1.使用场景：流程定义第一个人工任务节点使用，用来启动并提交流程，必须和submit命令同时存在，已经启动流程上使用时，会抛出FoxbpmBizException异常</p>
-	 * <p>2.处理过程：首先，根据processKey和bizKey启动流程，其次，执行第一个人工任务节点的submit类型的命令，将流程驱动到下个节点</p>
+	 * <p>1.使用场景：流程启动后，第一个节点使用，如：系统月底启动月底填报流程，需要各单位填写完，提交上报！</p>
+	 * <p>2.处理过程：首先，根据processKey启动流程，然后执行提交按钮，并且传bizKey参数</p>
 	 * <p>3.测试用例：</p>
 	 * <p>		1.执行完成后，判断流程是否存在2个task</p>
 	 * <p>		2.执行完成后，判断当前节点是否在userTask2节点</p>
@@ -49,14 +42,15 @@ public class TestTaskCommand extends AbstractFoxBpmTestCase {
 	 */
 	@Test
 	@Deployment(resources = { "org/foxbpm/test/command/simpleTaskCommandTest_1.bpmn" })
-	public void testStartAndSubmitCommand(){
-		
+	public void TestSubmitTaskCommand(){
 		Authentication.setAuthenticatedUserId("admin");
+		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("simpleTaskCommandTest_1");
+		Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).taskNotEnd().singleResult();
 		
 		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
-		expandTaskCommand.setProcessDefinitionKey("simpleTaskCommandTest_1");
-		expandTaskCommand.setTaskCommandId("HandleCommand_1");
-		expandTaskCommand.setCommandType("startandsubmit");
+		expandTaskCommand.setTaskId(task.getId());
+		expandTaskCommand.setTaskCommandId("HandleCommand_4");
+		expandTaskCommand.setCommandType("submit");
 		expandTaskCommand.setBusinessKey("bizKey");
 		expandTaskCommand.setInitiator("admin");
 		taskService.expandTaskComplete(expandTaskCommand, null);
@@ -66,13 +60,8 @@ public class TestTaskCommand extends AbstractFoxBpmTestCase {
 		long result = taskQuery.count();
 		assertEquals(3, result);
 		taskQuery.taskNotEnd();
-		List<Task> tasks = taskQuery.list();
-		Task task = tasks.get(0);
+		task = taskQuery.singleResult();
 		assertEquals("UserTask_2", task.getNodeId());
 		assertEquals("bizKey", task.getBizKey());
-	}
-	
-	public void testSubmitCommand(){
-		
 	}
 }
