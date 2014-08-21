@@ -41,9 +41,6 @@ public class RecoverTaskCmd extends AbstractExpandTaskCmd<RecoverTaskCommand, Vo
 	@Override
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
 		
-		
-		/** 放置流程实例级别的瞬态变量 */
-		task.setProcessInstanceTransientVariables(this.transientVariables);
 		/** 获取任务命令 */
 		TaskCommand taskCommand = getTaskCommand(task);
 		/** 获取流程内容执行器 */

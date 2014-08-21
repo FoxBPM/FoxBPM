@@ -127,6 +127,8 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 		if (task.hasEnded()) {
 			throw new FoxBPMException("task is end");
 		}
+		task.setProcessInstanceVariables(persistenceVariables);
+		task.setProcessInstanceTransientVariables(transientVariables);
 		//增加流程更新时间功能，by ych 
 		task.getProcessInstance().setUpdateTime(ClockUtil.getCurrentTime());
 		return execute(commandContext, task);

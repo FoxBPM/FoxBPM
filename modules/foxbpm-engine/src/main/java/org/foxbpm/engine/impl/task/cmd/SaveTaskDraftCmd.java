@@ -59,8 +59,6 @@ public class SaveTaskDraftCmd extends AbstractExpandTaskCmd<SaveTaskDraftCommand
 		if(task!=null){
 			/** 流程已经启动有任务的时候的处理 */
 
-			// 放置流程实例级别的瞬态变量
-			task.setProcessInstanceTransientVariables(transientVariables);
 			// 获取任务命令
 			TaskCommand taskCommand = getTaskCommand(task);
 			// 获取流程内容执行器

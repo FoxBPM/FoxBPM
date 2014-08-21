@@ -99,6 +99,7 @@ public class StartAndSubmitTaskCmd extends AbstractExpandTaskCmd<StartAndSubmitT
 				}
 
 				expandTaskCommand.setTransientVariables(transientVariables);
+				expandTaskCommand.setPersistenceVariables(persistenceVariables);
 				expandTaskCommand.setBusinessKey(businessKey);
 				expandTaskCommand.setInitiator(initiator);
 

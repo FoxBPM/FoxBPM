@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:foxbpm="http://www.foxbpm.org/foxbpm" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="Definitions_1" targetNamespace="http://www.foxbpm.org">
   <bpmn2:process id="simpleTaskCommandTest_1" name="简单命令测试">
+    <bpmn2:extensionElements>
+      <foxbpm:DataVariable id="变量" dataType="String" isPersistence="true" bizType="customVariable">
+        <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+      </foxbpm:DataVariable>
+    </bpmn2:extensionElements>
     <bpmn2:startEvent id="StartEvent_1" name="开始">
       <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
     </bpmn2:startEvent>
@@ -17,18 +22,18 @@
         <foxbpm:expectedExecutionTime/>
         <foxbpm:taskCommand id="HandleCommand_2" name="启动并提交" commandType="startandsubmit">
           <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
-            <foxbpm:expression xsi:type="foxbpm:Expression" name="true"><![CDATA[true]]></foxbpm:expression>
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_2" name="true"><![CDATA[true]]></foxbpm:expression>
           </foxbpm:params>
           <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
-            <foxbpm:expression xsi:type="foxbpm:Expression" name="true"><![CDATA[true]]></foxbpm:expression>
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_3" name="true"><![CDATA[true]]></foxbpm:expression>
           </foxbpm:params>
         </foxbpm:taskCommand>
         <foxbpm:taskCommand id="HandleCommand_4" name="提交" commandType="submit">
           <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
-            <foxbpm:expression xsi:type="foxbpm:Expression" name="true"><![CDATA[true]]></foxbpm:expression>
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_4" name="true"><![CDATA[true]]></foxbpm:expression>
           </foxbpm:params>
           <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
-            <foxbpm:expression xsi:type="foxbpm:Expression" name="true"><![CDATA[true]]></foxbpm:expression>
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_5" name="true"><![CDATA[true]]></foxbpm:expression>
           </foxbpm:params>
         </foxbpm:taskCommand>
       </bpmn2:extensionElements>
