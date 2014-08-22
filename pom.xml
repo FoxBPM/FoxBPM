@@ -17,6 +17,10 @@
 		<module>modules/foxbpm-rest</module>
 		<module>modules/foxbpm-webapps-rest</module>
 		<module>modules/foxbpm-webapps-base</module>
+		<module>modules/foxbpm-webapps-portal</module>
+		<module>modules/foxbpm-webapps-governance</module>
+		<module>modules/foxbpm-webapps-management</module>
+		<module>modules/foxbpm-webapps-common</module>
 	</modules>
 
 	<build>
