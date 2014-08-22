@@ -233,7 +233,7 @@ public abstract class ReflectUtil {
     try {
       return constructor.newInstance(args);
     } catch (Exception e) {
-      throw new FoxBPMException("couldn't find constructor for "+className+" with args "+Arrays.asList(args), e);
+      throw new FoxBPMException("初始化类失败： "+className+",参数： "+Arrays.asList(args)+"，失败原因："+e.getMessage(), e);
     }
   }
 

@@ -74,6 +74,15 @@
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
         <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
+        <foxbpm:taskCommand id="HandleCommand_5" name="转发" commandType="transfer">
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="transferUserId" name="转发给谁" description="" bizType="InputParam" dataType="String"/>
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" name="true"><![CDATA[true]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" name="true"><![CDATA[true]]></foxbpm:expression>
+          </foxbpm:params>
+        </foxbpm:taskCommand>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
