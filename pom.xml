@@ -20,6 +20,7 @@
 		<module>modules/foxbpm-webapps-portal</module>
 		<module>modules/foxbpm-webapps-governance</module>
 		<module>modules/foxbpm-webapps-management</module>
+		<module>modules/foxbpm-webapps-common</module>
 	</modules>
 
 	<build>
