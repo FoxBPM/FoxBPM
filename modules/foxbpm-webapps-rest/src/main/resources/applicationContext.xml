@@ -19,9 +19,6 @@
 		<property name="password" value="${idbase.password}" />
 	</bean>
 
-	<bean id="foxbpmDataSourceManager" class="org.foxbpm.engine.spring.SpringDataSourceManager">
-		<property name="dataSource" ref="foxbpmDataSource" />
-	</bean>
 	<bean id="foxbpmTransactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="foxbpmDataSource" />
@@ -29,7 +26,7 @@
 
 	<bean id="processEngineConfigurationSpring"
 		class="org.foxbpm.engine.spring.ProcessEngineConfigurationSpring">
-		<property name="dataSourceManager" ref="foxbpmDataSourceManager" />
+		<property name="dataSource" ref="foxbpmDataSource" />
 		<property name="transactionManager" ref="foxbpmTransactionManager" />
 	</bean>
 	<bean id="processEngine" class="org.foxbpm.engine.spring.ProcessEngineFactoryBean">
