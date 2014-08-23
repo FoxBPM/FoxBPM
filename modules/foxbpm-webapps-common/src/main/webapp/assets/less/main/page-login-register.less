@@ -1,0 +1,107 @@
+/* Login Box & Register Box
+=================================================================== */
+body.login {
+	background: @sidebar;
+}
+
+
+.login-box,
+.register-box {
+	padding: 20px;
+    margin-top: 200px;
+
+	.header {
+		color: white;
+		text-align: center;
+		margin: -20px -20px 20px -20px;
+		padding: 15px;
+		text-transform: uppercase;
+	}
+	
+	.input-group-addon {
+		background: white !important;
+		border-right: none;
+		position: relative;
+		
+		&:after {
+			position: absolute;
+			content: '';
+			border-right: 1px solid @border;
+			height: 60%;
+			width: 1px;
+			top: 20%;
+			right: 0;
+		}
+	}
+		
+	.form-control {
+		font-size: 14px;
+		.box-shadow !important;
+		border-left: none;
+	}
+	
+	.form-group {
+		margin-bottom: -1px;
+		
+		&.first {
+			.input-group-addon {
+				.border-radius(2px 0 0 0);
+			}
+			
+			.form-control {
+				.border-radius(0 2px 0 0);
+			}
+		}
+		
+		&.middle {
+			.input-group-addon {
+				.border-radius;
+			}
+			
+			.form-control {
+				.border-radius;
+			}
+		}
+		
+		&.last {
+			.input-group-addon {
+				.border-radius(0 0 0 2px);
+			}
+			.form-control {
+				.border-radius(0 0 2px 0);
+			}
+		}
+	}
+	
+	button {
+		margin: 20px 0 10px 0;
+	}
+	
+	p {
+		margin: -10px 0;
+		color: white;
+	}
+	
+	.social {
+		margin-left: -5px;
+		margin-right: -5px;
+		
+		.col-xs-4 {
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+		
+		.col-xs-6 {
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+	}
+	
+	
+	a {
+		color: @border;
+		font-size: 12px;
+	}
+	
+
+}

@@ -1,0 +1,648 @@
+<script>
+	loadCSS("assets/plugins/jquery-ui/css/jquery-ui-1.10.4.min.css");
+	loadCSS("assets/plugins/modal/css/component.css");
+	
+	var requireJS = [
+		"assets/plugins/jquery-ui/js/jquery-ui-1.10.4.min.js", 
+		"assets/plugins/modal/js/jquery.modalEffects.js"
+	]; 
+	
+	loadJS(requireJS, "assets/js/pages/ui-modals.js");
+	
+</script>
+			
+			<ol class="breadcrumb">
+			  	<li><a href="#">Origin</a></li>
+				<li><a href="#">UI Features</a></li>
+			  	<li class="active">Modals</li>
+			</ol>
+			
+			<div class="row">
+				<div class="col-md-6">
+					<div class="panel panel-default">
+					  	<div class="panel-heading">
+					    	<h3 class="panel-title">Nifty Modals Effects</h3>
+					  	</div>
+					  	<div class="panel-body">
+							<button style="margin-bottom:10px;" class="btn btn-default md-trigger" data-modal="modal-1">Fade in &amp; Scale</button>
+							<button style="margin-bottom:10px;" class="btn btn-default md-trigger" data-modal="modal-2">Slide in (right)</button>
+							<button style="margin-bottom:10px;" class="btn btn-default md-trigger" data-modal="modal-3">Slide in (bottom)</button>
+							<button style="margin-bottom:10px;" class="btn btn-default md-trigger" data-modal="modal-4">Newspaper</button>
+							<button style="margin-bottom:10px;" class="btn btn-default md-trigger" data-modal="modal-5">Fall</button>
+							<button style="margin-bottom:10px;" class="btn btn-default md-trigger" data-modal="modal-6">Side Fall</button>
+							<button style="margin-bottom:10px;" class="btn btn-default md-trigger" data-modal="modal-7">Sticky Up</button>
+							<button style="margin-bottom:10px;" class="btn btn-default md-trigger" data-modal="modal-8">3D Flip (horizontal)</button>
+							<button style="margin-bottom:10px;" class="btn btn-default md-trigger" data-modal="modal-9">3D Flip (vertical)</button>
+							<button style="margin-bottom:10px;" class="btn btn-default md-trigger" data-modal="modal-10">3D Sign</button>
+							<button style="margin-bottom:10px;" class="btn btn-default md-trigger" data-modal="modal-11">Super Scaled</button>
+							<button style="margin-bottom:10px;" class="btn btn-default md-trigger" data-modal="modal-12">Just Me</button>
+							<button style="margin-bottom:10px;" class="btn btn-default md-trigger" data-modal="modal-13">3D Slit</button>
+							<button style="margin-bottom:10px;" class="btn btn-default md-trigger" data-modal="modal-14">3D Rotate Bottom</button>
+							<button style="margin-bottom:10px;" class="btn btn-default md-trigger" data-modal="modal-15">3D Rotate In Left</button>
+							<button style="margin-bottom:10px;" class="btn btn-default md-trigger" data-modal="modal-16">Blur</button>
+							<!-- special modal that will add a perspective class to the html element -->
+							<button style="margin-bottom:10px;" class="btn btn-default md-trigger" data-modal="modal-17">Let me in</button>
+							<button style="margin-bottom:10px;" class="btn btn-default md-trigger" data-modal="modal-18">Make way!</button>
+							<button style="margin-bottom:10px;" class="btn btn-default md-trigger" data-modal="modal-19">Slip from top</button>
+					  	</div>
+					</div>
+				</div><!--/col-->
+				<div class="col-md-6">
+					<div class="panel panel-default">
+					  	<div class="panel-heading">
+					    	<h3 class="panel-title">Bootstrap Modals</h3>
+					  	</div>
+					  	<div class="panel-body">
+					    	<!-- Button trigger modal -->
+							<button class="btn btn-default" data-toggle="modal" data-target="#myModal-1">Default</button>
+							<!-- Button trigger modal -->
+							<button class="btn btn-primary" data-toggle="modal" data-target="#myModal-2">Primary</button>
+							<!-- Button trigger modal -->
+							<button class="btn btn-success" data-toggle="modal" data-target="#myModal-3">Success</button>
+							<!-- Button trigger modal -->
+							<button class="btn btn-info" data-toggle="modal" data-target="#myModal-4">Info</button>
+							<!-- Button trigger modal -->
+							<button class="btn btn-danger" data-toggle="modal" data-target="#myModal-5">Danger</button>
+							<!-- Button trigger modal -->
+							<button class="btn btn-warning" data-toggle="modal" data-target="#myModal-6">Warning</button>
+					  	</div>
+					</div>
+				</div><!--/col-->
+			</div><!--/row-->
+			
+			<!-- All modals added here for the demo. You would of course just have one, dynamically created -->
+			<div class="md-modal md-effect-1" id="modal-1">
+				<div class="modal-dialog md-content">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<p>This is a modal window. You can do the following things with it:</p>
+							<ul>
+								<li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+								<li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+								<li><strong>Close:</strong> click on the button below to close the modal.</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary btn-flat md-close" data-dismiss="modal">Proceed</button>
+						</div>
+					</div>	
+				</div>	
+			</div>
+			<!-- Nifty Modal -->
+			<div class="md-modal md-effect-2" id="modal-2">
+				<div class="modal-dialog md-content">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<p>This is a modal window. You can do the following things with it:</p>
+							<ul>
+								<li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+								<li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+								<li><strong>Close:</strong> click on the button below to close the modal.</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary btn-flat md-close" data-dismiss="modal">Proceed</button>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<!-- Nifty Modal -->
+			<div class="md-modal md-effect-3" id="modal-3">
+				<div class="modal-dialog md-content">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<p>This is a modal window. You can do the following things with it:</p>
+							<ul>
+								<li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+								<li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+								<li><strong>Close:</strong> click on the button below to close the modal.</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary btn-flat md-close" data-dismiss="modal">Proceed</button>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<!-- Nifty Modal -->
+			<div class="md-modal md-effect-4" id="modal-4">
+				<div class="modal-dialog md-content">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<p>This is a modal window. You can do the following things with it:</p>
+							<ul>
+								<li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+								<li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+								<li><strong>Close:</strong> click on the button below to close the modal.</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary btn-flat md-close" data-dismiss="modal">Proceed</button>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<!-- Nifty Modal -->
+			<div class="md-modal md-effect-5" id="modal-5">
+				<div class="modal-dialog md-content">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<p>This is a modal window. You can do the following things with it:</p>
+							<ul>
+								<li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+								<li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+								<li><strong>Close:</strong> click on the button below to close the modal.</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary btn-flat md-close" data-dismiss="modal">Proceed</button>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<!-- Nifty Modal -->
+			<div class="md-modal md-effect-6" id="modal-6">
+				<div class="modal-dialog md-content">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<p>This is a modal window. You can do the following things with it:</p>
+							<ul>
+								<li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+								<li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+								<li><strong>Close:</strong> click on the button below to close the modal.</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary btn-flat md-close" data-dismiss="modal">Proceed</button>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<!-- Nifty Modal -->
+			<div class="md-modal md-effect-7" id="modal-7">
+				<div class="modal-dialog md-content">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<p>This is a modal window. You can do the following things with it:</p>
+							<ul>
+								<li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+								<li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+								<li><strong>Close:</strong> click on the button below to close the modal.</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary btn-flat md-close" data-dismiss="modal">Proceed</button>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<!-- Nifty Modal -->
+			<div class="md-modal md-effect-8" id="modal-8">
+				<div class="modal-dialog md-content">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<p>This is a modal window. You can do the following things with it:</p>
+							<ul>
+								<li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+								<li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+								<li><strong>Close:</strong> click on the button below to close the modal.</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary btn-flat md-close" data-dismiss="modal">Proceed</button>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<!-- Nifty Modal -->
+			<div class="md-modal md-effect-9" id="modal-9">
+				<div class="modal-dialog md-content">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<p>This is a modal window. You can do the following things with it:</p>
+							<ul>
+								<li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+								<li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+								<li><strong>Close:</strong> click on the button below to close the modal.</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary btn-flat md-close" data-dismiss="modal">Proceed</button>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<!-- Nifty Modal -->
+			<div class="md-modal md-effect-10" id="modal-10">
+				<div class="modal-dialog md-content">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<p>This is a modal window. You can do the following things with it:</p>
+							<ul>
+								<li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+								<li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+								<li><strong>Close:</strong> click on the button below to close the modal.</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary btn-flat md-close" data-dismiss="modal">Proceed</button>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<!-- Nifty Modal -->
+			<div class="md-modal md-effect-11" id="modal-11">
+				<div class="modal-dialog md-content">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<p>This is a modal window. You can do the following things with it:</p>
+							<ul>
+								<li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+								<li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+								<li><strong>Close:</strong> click on the button below to close the modal.</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary btn-flat md-close" data-dismiss="modal">Proceed</button>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<!-- Nifty Modal -->
+			<div class="md-modal md-effect-12" id="modal-12">
+				<div class="modal-dialog md-content">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<p>This is a modal window. You can do the following things with it:</p>
+							<ul>
+								<li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+								<li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+								<li><strong>Close:</strong> click on the button below to close the modal.</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary btn-flat md-close" data-dismiss="modal">Proceed</button>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<!-- Nifty Modal -->
+			<div class="md-modal md-effect-13" id="modal-13">
+				<div class="modal-dialog md-content">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<p>This is a modal window. You can do the following things with it:</p>
+							<ul>
+								<li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+								<li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+								<li><strong>Close:</strong> click on the button below to close the modal.</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary btn-flat md-close" data-dismiss="modal">Proceed</button>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<!-- Nifty Modal -->
+			<div class="md-modal md-effect-14" id="modal-14">
+				<div class="modal-dialog md-content">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<p>This is a modal window. You can do the following things with it:</p>
+							<ul>
+								<li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+								<li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+								<li><strong>Close:</strong> click on the button below to close the modal.</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary btn-flat md-close" data-dismiss="modal">Proceed</button>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<!-- Nifty Modal -->
+			<div class="md-modal md-effect-15" id="modal-15">
+				<div class="modal-dialog md-content">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<p>This is a modal window. You can do the following things with it:</p>
+							<ul>
+								<li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+								<li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+								<li><strong>Close:</strong> click on the button below to close the modal.</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary btn-flat md-close" data-dismiss="modal">Proceed</button>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<!-- Nifty Modal -->
+			<div class="md-modal md-effect-16" id="modal-16">
+				<div class="modal-dialog md-content">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<p>This is a modal window. You can do the following things with it:</p>
+							<ul>
+								<li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+								<li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+								<li><strong>Close:</strong> click on the button below to close the modal.</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary btn-flat md-close" data-dismiss="modal">Proceed</button>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<!-- Nifty Modal -->
+			<div class="md-modal md-effect-17" id="modal-17">
+				<div class="modal-dialog md-content">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<p>This is a modal window. You can do the following things with it:</p>
+							<ul>
+								<li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+								<li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+								<li><strong>Close:</strong> click on the button below to close the modal.</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary btn-flat md-close" data-dismiss="modal">Proceed</button>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<!-- Nifty Modal -->
+			<div class="md-modal md-effect-18" id="modal-18">
+				<div class="modal-dialog md-content">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<p>This is a modal window. You can do the following things with it:</p>
+							<ul>
+								<li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+								<li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+								<li><strong>Close:</strong> click on the button below to close the modal.</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary btn-flat md-close" data-dismiss="modal">Proceed</button>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<!-- Nifty Modal -->
+			<div class="md-modal md-effect-19" id="modal-19">
+				<div class="modal-dialog md-content">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<p>This is a modal window. You can do the following things with it:</p>
+							<ul>
+								<li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+								<li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+								<li><strong>Close:</strong> click on the button below to close the modal.</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary btn-flat md-close" data-dismiss="modal">Proceed</button>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<!-- Nifty Modal -->
+			<div class="md-modal md-effect-20" id="modal-20">
+				<div class="modal-dialog md-content">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close md-close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Modal title</h4>
+						</div>
+						<div class="modal-body">
+							<p>This is a modal window. You can do the following things with it:</p>
+							<ul>
+								<li><strong>Read:</strong> modal windows will probably tell you something important so don't forget to read what they say.</li>
+								<li><strong>Look:</strong> a modal window enjoys a certain kind of attention; just look at it and appreciate its presence.</li>
+								<li><strong>Close:</strong> click on the button below to close the modal.</li>
+							</ul>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default btn-flat md-close" data-dismiss="modal">Cancel</button>
+							<button type="button" class="btn btn-primary btn-flat md-close" data-dismiss="modal">Proceed</button>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<!-- Nifty Modal -->
+			<div class="md-overlay"></div>
+			
+			<!-- Modal -->
+			<div class="modal fade" id="myModal-1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  	<div class="modal-dialog">
+			    	<div class="modal-content">
+			      		<div class="modal-header">
+			        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			        		<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+			      		</div>
+			      		<div class="modal-body">
+			        		Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+			      		</div>
+			      		<div class="modal-footer">
+			        		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        		<button type="button" class="btn btn-primary">Save changes</button>
+			      		</div>
+			    	</div>
+			  	</div>
+			</div>
+			
+			<!-- Modal -->
+			<div class="modal modal-primary fade" id="myModal-2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  	<div class="modal-dialog">
+			    	<div class="modal-content">
+			      		<div class="modal-header">
+			        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			        		<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+			      		</div>
+			      		<div class="modal-body">
+			        		Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+			      		</div>
+			      		<div class="modal-footer">
+			        		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        		<button type="button" class="btn btn-primary">Save changes</button>
+			      		</div>
+			    	</div>
+			  	</div>
+			</div>
+			
+			<!-- Modal -->
+			<div class="modal modal-success fade" id="myModal-3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  	<div class="modal-dialog">
+			    	<div class="modal-content">
+			      		<div class="modal-header">
+			        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			        		<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+			      		</div>
+			      		<div class="modal-body">
+			        		Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+			      		</div>
+			      		<div class="modal-footer">
+			        		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        		<button type="button" class="btn btn-primary">Save changes</button>
+			      		</div>
+			    	</div>
+			  	</div>
+			</div>
+			
+			<!-- Modal -->
+			<div class="modal modal-info fade" id="myModal-4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  	<div class="modal-dialog">
+			    	<div class="modal-content">
+			      		<div class="modal-header">
+			        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			        		<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+			      		</div>
+			      		<div class="modal-body">
+			        		Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+			      		</div>
+			      		<div class="modal-footer">
+			        		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        		<button type="button" class="btn btn-primary">Save changes</button>
+			      		</div>
+			    	</div>
+			  	</div>
+			</div>
+			
+			<!-- Modal -->
+			<div class="modal modal-danger fade" id="myModal-5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  	<div class="modal-dialog">
+			    	<div class="modal-content">
+			      		<div class="modal-header">
+			        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			        		<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+			      		</div>
+			      		<div class="modal-body">
+			        		Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+			      		</div>
+			      		<div class="modal-footer">
+			        		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        		<button type="button" class="btn btn-primary">Save changes</button>
+			      		</div>
+			    	</div>
+			  	</div>
+			</div>
+			
+			<!-- Modal -->
+			<div class="modal modal-warning fade" id="myModal-6" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  	<div class="modal-dialog">
+			    	<div class="modal-content">
+			      		<div class="modal-header">
+			        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			        		<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+			      		</div>
+			      		<div class="modal-body">
+			        		Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+			      		</div>
+			      		<div class="modal-footer">
+			        		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        		<button type="button" class="btn btn-primary">Save changes</button>
+			      		</div>
+			    	</div>
+			  	</div>
+			</div>

@@ -1,0 +1,797 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    	<meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <meta name="description" content="Origin Admin - Bootstrap Admin Template">
+		<meta name="author" content="Łukasz Holeczek">
+		<meta name="keyword" content="Origin, Admin, Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+	    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" sizes="57x57" href="assets/ico/apple-touch-icon-57-precomposed.png">
+		<link rel="shortcut icon" href="assets/ico/favicon.png">
+
+	    <title>Origin Admin - Bootstrap Admin Template</title>
+
+	    <!-- Bootstrap core CSS -->
+	    <link href="assets/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-style">
+	
+		<!-- Remove following comment to add Right to Left Support or add class rtl to body -->
+		<!-- <link href="assets/css/bootstrap-rtl.min.css" rel="stylesheet"> -->
+		
+		<link href="assets/css/jquery.mmenu.css" rel="stylesheet">
+		<link href="assets/css/font-awesome.min.css" rel="stylesheet">
+		
+		<!-- page css files -->
+		<link href="assets/plugins/jquery-ui/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+		<link href="assets/css/climacons-font.css" rel="stylesheet">		
+
+	    <!-- Custom styles for this template -->
+	    <link href="assets/css/style.min.css" rel="stylesheet" id="main-style">
+		<link href="assets/css/add-ons.min.css" rel="stylesheet">
+		
+		<!-- Themes -->
+	    <link href="assets/css/themes.min.css" rel="stylesheet">
+		
+		<!-- Remove following comment to add Right to Left Support or add class rtl to body -->
+		<!-- <link href="assets/css/style.rtl.min.css" rel="stylesheet"> -->
+
+	    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	    <![endif]-->
+	</head>
+	
+	
+	<!-- BODY options, add following classes to body to change options
+
+		1. 'sidebar-minified'     - Switch sidebar to minified version (width 50px)
+		2. 'sidebar-hidden'		  - Hide sidebar
+		3. 'rtl'				  - Switch to Right to Left Mode
+		4. 'container'			  - Boxed layout
+		5. 'static-sidebar'		  - Static Sidebar
+		6. 'static-header'		  - Static Header
+		7. 'hidden-usage'		  - Hidden Usage Bar
+			
+		Themes:
+			
+		1. 'elegant'			  - Elegant Theme
+		2. 'sky'				  - Sky Theme
+
+	-->
+	</head>
+</head>
+
+<body >
+	
+		<!-- start: Layout Settings -->
+	<div id="theme-settings" class="hidden-sm hidden-xs">
+		<div id="open-close">
+			<i class="fa fa-cog"></i>
+		</div>	
+		<h4>Options</h4>
+		<ul id="options">
+			<li>
+				<label class="custom-checkbox-item pull-left">
+					<input id="sm" class="custom-checkbox" type="checkbox"/>
+					<span class="custom-checkbox-mark"></span>
+				</label>
+				<span class="desc">Sidebar Minified</span> 
+			</li>
+			<li>
+				<label class="custom-checkbox-item pull-left">
+					<input id="sh" class="custom-checkbox" type="checkbox"/>
+					<span class="custom-checkbox-mark"></span>
+				</label>
+				<span class="desc">Sidebar Hidden</span> 
+			</li>
+			<li>
+				<label class="custom-checkbox-item pull-left">
+					<input id="rtl" class="custom-checkbox" type="checkbox"/>
+					<span class="custom-checkbox-mark"></span>
+				</label>
+				<span class="desc">Right to Left</span> 
+			</li>
+			<li>
+				<label class="custom-checkbox-item pull-left">
+					<input id="bl" class="custom-checkbox" type="checkbox"/>
+					<span class="custom-checkbox-mark"></span>
+				</label>
+				<span class="desc">Boxed Layout</span> 
+			</li>
+			<li>
+				<label class="custom-checkbox-item pull-left">
+					<input id="ss" class="custom-checkbox" type="checkbox"/>
+					<span class="custom-checkbox-mark"></span>
+				</label>
+				<span class="desc">Static Sidebar</span> 
+			</li>
+			<li>
+				<label class="custom-checkbox-item pull-left">
+					<input id="she" class="custom-checkbox" type="checkbox"/>
+					<span class="custom-checkbox-mark"></span>
+				</label>
+				<span class="desc">Static Header</span> 
+			</li>
+			<li>
+				<label class="custom-checkbox-item pull-left">
+					<input id="hu" class="custom-checkbox" type="checkbox"/>
+					<span class="custom-checkbox-mark"></span>
+				</label>
+				<span class="desc">Hidden Usage</span> 
+			</li>
+		</ul>
+		
+		<hr>
+		
+		<h4>Themes</h4>
+		<ul id="themes">
+			<li>
+				<label class="custom-checkbox-item pull-left">
+					<input id="default" class="custom-checkbox" type="checkbox"/>
+					<span class="custom-checkbox-mark"></span>
+				</label>
+				<span class="desc">Default</span> 
+			</li>
+			<li>
+				<label class="custom-checkbox-item pull-left">
+					<input id="elegant" class="custom-checkbox" type="checkbox"/>
+					<span class="custom-checkbox-mark"></span>
+				</label>
+				<span class="desc">Elegant</span> 
+			</li>
+			<li>
+				<label class="custom-checkbox-item pull-left">
+					<input id="sky" class="custom-checkbox" type="checkbox"/>
+					<span class="custom-checkbox-mark"></span>
+				</label>
+				<span class="desc">Sky</span> 
+			</li>
+		</ul>
+		
+		<hr>
+		
+		<button type="button" class="btn btn-success btn-block" id="restore">factory settings</button>
+			
+	</div>	
+	<!-- end: Layout Settings -->	
+	<!-- start: Header -->
+	<div class="navbar" role="navigation">
+		<div class="container-fluid">
+			<ul class="nav navbar-nav navbar-actions navbar-left">
+				<li class="visible-md visible-lg"><a href="icons-climacons.html#" id="main-menu-toggle"><i class="fa fa-bars"></i></a></li>
+				<li class="visible-xs visible-sm"><a href="icons-climacons.html#" id="sidebar-menu"><i class="fa fa-bars"></i></a></li>
+			</ul>
+			<form class="navbar-form navbar-left">
+				<i class="fa fa-search"></i>
+				<input type="text" class="form-control" placeholder="Search...">
+			</form>
+	        <ul class="nav navbar-nav navbar-right">
+				<li class="dropdown visible-md visible-lg">
+	        		<a href="icons-climacons.html#" class="dropdown-toggle" data-toggle="dropdown"><img src="assets/ico/flags/USA.png" style="height:18px; margin-top:-2px;padding:0 7px"></a>
+	        		<ul class="dropdown-menu">
+						<li><a href="icons-climacons.html#"><img src="assets/ico/flags/USA.png" style="height:18px; margin-top:-2px;"> US</a></li>
+						<li><a href="icons-climacons.html#"><img src="assets/ico/flags/Spain.png" style="height:18px; margin-top:-2px;"> Spanish</a></li>
+						<li><a href="icons-climacons.html#"><img src="assets/ico/flags/Germany.png" style="height:18px; margin-top:-2px;"> German</a></li>
+						<li><a href="icons-climacons.html#"><img src="assets/ico/flags/Poland.png" style="height:18px; margin-top:-2px;"> Polish</a></li>	
+	        		</ul>
+	      		</li>
+				<li class="dropdown visible-md visible-lg">
+	        		<a href="icons-climacons.html#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-comments-o"></i><span class="badge">4</span></a>
+	        		<ul class="dropdown-menu">
+						<li class="dropdown-menu-header">
+							<strong>Messages</strong>
+							<div class="progress thin">
+							  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+							    <span class="sr-only">40% Complete (success)</span>
+							  </div>
+							</div>
+						</li>
+						<li class="avatar">
+							<a href="icons-climacons.html#">
+								<img class="avatar" src="assets/img/avatar.jpg">
+								<div>New message</div>
+								<small>1 minute ago</small>
+								<span class="label label-info">NEW</span>
+							</a>
+						</li>
+						<li class="avatar">
+							<a href="icons-climacons.html#">
+								<img class="avatar" src="assets/img/avatar.jpg">
+								<div>New message</div>
+								<small>1 minute ago</small>
+								<span class="label label-info">NEW</span>
+							</a>
+						</li>
+						<li class="avatar">
+							<a href="icons-climacons.html#">
+								<img class="avatar" src="assets/img/avatar.jpg">
+								<div>New message</div>
+								<small>1 minute ago</small>
+							</a>
+						</li>
+						<li class="avatar">
+							<a href="icons-climacons.html#">
+								<img class="avatar" src="assets/img/avatar.jpg">
+								<div>New message</div>
+								<small>1 minute ago</small>
+							</a>
+						</li>
+						<li class="avatar">
+							<a href="icons-climacons.html#">
+								<img class="avatar" src="assets/img/avatar.jpg">
+								<div>New message</div>
+								<small>1 minute ago</small>
+							</a>
+						</li>
+						<li class="avatar">
+							<a href="icons-climacons.html#">
+								<img class="avatar" src="assets/img/avatar.jpg">
+								<div>New message</div>
+								<small>1 minute ago</small>
+							</a>
+						</li>
+						<li class="dropdown-menu-footer text-center">
+							<a href="icons-climacons.html#">View all messages</a>
+						</li>	
+	        		</ul>
+	      		</li>
+				<li><a href="icons-climacons.html#"><i class="fa fa-cog"></i></a></li>
+				<li class="dropdown visible-md visible-lg">
+	        		<a href="icons-climacons.html#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-wrench"></i><span class="badge">!</span></a>
+	        		<ul class="dropdown-menu">
+						<li class="dropdown-menu-header text-center">
+							<strong>Account</strong>
+						</li>
+						<li><a href="icons-climacons.html#"><i class="fa fa-bell-o"></i> Updates <span class="label label-info">42</span></a></li>
+						<li><a href="icons-climacons.html#"><i class="fa fa-envelope-o"></i> Messages <span class="label label-success">42</span></a></li>
+						<li><a href="icons-climacons.html#"><i class="fa fa-tasks"></i> Tasks <span class="label label-danger">42</span></a></li>
+						<li><a href="icons-climacons.html#"><i class="fa fa-comments"></i> Comments <span class="label label-warning">42</span></a></li>
+						<li class="dropdown-menu-header text-center">
+							<strong>Settings</strong>
+						</li>
+						<li><a href="icons-climacons.html#"><i class="fa fa-user"></i> Profile</a></li>
+						<li><a href="icons-climacons.html#"><i class="fa fa-wrench"></i> Settings</a></li>
+						<li><a href="icons-climacons.html#"><i class="fa fa-usd"></i> Payments <span class="label label-default">42</span></a></li>
+						<li><a href="icons-climacons.html#"><i class="fa fa-file"></i> Projects <span class="label label-primary">42</span></a></li>
+						<li class="divider"></li>
+						<li><a href="icons-climacons.html#"><i class="fa fa-shield"></i> Lock Profile</a></li>
+						<li><a href="icons-climacons.html#"><i class="fa fa-lock"></i> Logout</a></li>	
+	        		</ul>
+	      		</li>
+				<li><a href="icons-climacons.html#"><i class="fa fa-power-off"></i></a></li>
+			</ul>
+		</div>
+	</div>
+	<!-- end: Header -->
+	
+	
+		
+		<!-- start: Main Menu -->
+		<div class="sidebar ">
+							
+			<div class="sidebar-collapse">
+				
+				<div class="sidebar-header">
+					
+					<img src="assets/img/avatar.jpg">
+					
+					<h2>Lukasz Holeczek</h2>
+					<h3>user@email.com</h3>
+					
+					<div class="user-menu">
+						<a id="sidebar-minify" href="icons-climacons.html#"><i class="fa fa-ellipsis-v"></i></a>
+					</div>
+					
+				</div>
+				
+				<div class="sidebar-menu">	
+					<ul class="nav nav-sidebar">
+
+						<li><a href="index.html"><i class="fa fa-bar-chart-o"></i><span class="text"> Dashboard <span class="label label-info">NEW</span></span></a></li>	
+
+						<li>
+							<a href="icons-climacons.html#"><i class="fa fa-eye"></i><span class="text"> UI Features</span> <span class="indicator"></span></a>
+							<ul>
+								<li><a href="ui-sliders-progress.html"><i class="fa fa-eye"></i><span class="text"> Sliders</span></a></li>
+								<li><a href="ui-nestable-list.html"><i class="fa fa-eye"></i><span class="text"> Nestable Lists</span></a></li>
+								<li><a href="ui-elements.html"><i class="fa fa-eye"></i><span class="text"> Elements</span></a></li>
+								<li><a href="ui-panels.html"><i class="fa fa-eye"></i><span class="text"> Panels <span class="label label-info">NEW</span></span></a></li>
+								<li><a href="ui-buttons.html"><i class="fa fa-eye"></i><span class="text"> Buttons <span class="label label-warning">NEW</span></span></a></li>
+								<li><a href="ui-modals.html"><i class="fa fa-eye"></i><span class="text"> Modals <span class="label label-info">NEW</span></span></a></li>
+								<li><a href="ui-notifications.html"><i class="fa fa-eye"></i><span class="text"> Notifications <span class="label label-info">NEW</span></span></a></li>
+							</ul>
+							</li>
+						<li><a href="widgets.html"><i class="fa fa-dashboard"></i><span class="text"> Widgets</span></a></li>
+
+						<li>
+							<a href="icons-climacons.html#"><i class="fa fa-folder-o"></i><span class="text"> Example Pages</span> <span class="indicator"></span></a>
+							<ul>
+								<li><a href="page-activity.html"><i class="fa fa-dot-circle-o"></i><span class="text"> Activity</span></a></li>
+								<li>
+									<a href="icons-climacons.html#"><i class="fa fa-envelope"></i><span class="text"> Mail</span> <span class="indicator"></span></a>
+									<ul>
+										<li><a href="page-inbox.html"><i class="fa fa-envelope"></i><span class="text"> Inbox View</span></a></li>
+										<li><a href="page-inbox-message.html"><i class="fa fa-envelope"></i><span class="text"> Message View</span></a></li>
+										<li><a href="page-inbox-compose.html"><i class="fa fa-envelope"></i><span class="text"> Compose</span></a></li>
+
+									</ul>
+								</li>
+								<li><a href="page-invoice.html"><i class="fa fa-file-text"></i><span class="text"> Invoice</span></a></li>
+								<li><a href="page-todo.html"><i class="fa fa-tasks"></i><span class="text"> ToDo &amp; Timeline</span></a></li>
+								<li><a href="page-profile.html"><i class="fa fa-male"></i><span class="text"> Profile</span></a></li>
+								<li><a href="page-pricing-tables.html"><i class="fa fa-table"></i><span class="text"> Pricing Tables</span></a></li>
+								<li><a href="page-404.html"><i class="fa fa-unlink"></i><span class="text"> 404</span></a></li>
+								<li><a href="page-500.html"><i class="fa fa-unlink"></i><span class="text"> 500</span></a></li>
+								<li><a href="page-lockscreen.html"><i class="fa fa-lock"></i><span class="text"> LockScreen</span></a></li>
+								<li><a href="page-lockscreen2.html"><i class="fa fa-lock"></i><span class="text"> LockScreen2</span></a></li>
+								<li><a href="page-login.html"><i class="fa fa-key"></i><span class="text"> Login <span class="label label-danger">NEW</span></span></a></li>
+								<li><a href="page-register.html"><i class="fa fa-sign-in"></i><span class="text"> Register <span class="label label-success">NEW</span></span></a></li>
+								<li><a href="page-login2.html"><i class="fa fa-key"></i><span class="text"> Login Alt <span class="label label-danger">NEW</span></span></a></li>
+								<li><a href="page-register2.html"><i class="fa fa-sign-in"></i><span class="text"> Register Alt <span class="label label-success">NEW</span></span></a></li>
+							</ul>	
+						</li>
+						<li>
+							<a href="icons-climacons.html#"><i class="fa fa-edit"></i><span class="text"> Forms</span> <span class="indicator"></span></a>
+							<ul>
+								<li><a href="form-elements.html"><i class="fa fa-edit"></i><span class="text"> Form elements</span></a></li>
+								<li><a href="form-wizard.html"><i class="fa fa-edit"></i><span class="text"> Wizard</span></a></li>
+								<li><a href="form-dropzone.html"><i class="fa fa-edit"></i><span class="text"> Dropzone Upload</span></a></li>
+								<li><a href="form-x-editable.html"><i class="fa fa-edit"></i><span class="text"> X-editable</span></a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="icons-climacons.html#"><i class="fa fa-list-alt"></i><span class="text"> Charts</span> <span class="indicator"></span></a>
+							<ul>
+								<li><a href="charts-flot.html"><i class="fa fa-chevron-right"></i><span class="text"> Flot Charts</span></a></li>
+								<li><a href="charts-xcharts.html"><i class="fa fa-chevron-right"></i><span class="text"> xCharts</span></a></li>
+								<li><a href="charts-others.html"><i class="fa fa-chevron-right"></i><span class="text"> Other</span></a></li>
+							</ul>
+
+						</li>
+						<li><a href="typography.html"><i class="fa fa-font"></i><span class="text"> Typography</span></a></li>
+
+						<li><a href="gallery.html"><i class="fa fa-picture-o"></i><span class="text"> Gallery</span></a></li>
+						<li><a href="table.html"><i class="fa fa-align-justify"></i><span class="text"> Tables</span></a></li>
+						<li><a href="calendar.html"><i class="fa fa-calendar"></i><span class="text"> Calendar</span></a></li>
+						<li>
+							<a href="icons-climacons.html#"><i class="fa fa-star"></i><span class="text"> Icons</span> <span class="indicator"></span></a>
+							<ul>
+								<li><a href="icons-halflings.html"><i class="fa fa-star"></i><span class="text"> Halflings</span></a></li>
+								<li><a href="icons-glyphicons-pro.html"><i class="fa fa-star"></i><span class="text"> Glyphicons PRO</span></a></li>
+								<li><a href="icons-filetypes.html"><i class="fa fa-star"></i><span class="text"> Filetypes</span></a></li>
+								<li><a href="icons-social.html"><i class="fa fa-star"></i><span class="text"> Social</span></a></li>
+								<li><a href="icons-font-awesome.html"><i class="fa fa-star"></i><span class="text"> Font Awesome</span></a></li>
+								<li><a href="icons-climacons.html"><i class="fa fa-star"></i><span class="text"> Climacons</span></a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="icons-climacons.html#"><i class="fa fa-folder-open"></i><span class="text"> 4 Level Menu</span> <span class="indicator"></span></a>
+							<ul>
+								<li><a href="2nd-level.html"><i class="fa fa-folder"></i><span class="text"> 2nd Level</span></a></li>
+								<li>
+									<a href="icons-climacons.html#"><i class="fa fa-folder-open"></i><span class="text"> 2nd Level</span> <span class="indicator"></span></a>
+									<ul>
+										<li><a href="3rd-level.html"><i class="fa fa-folder"></i><span class="text"> 3rd Level</span></a></li>
+										<li>
+											<a href="icons-climacons.html#"><i class="fa fa-folder-open"></i><span class="text"> 3rd Level</span> <span class="indicator"></span></a>
+											<ul>
+												<li>
+													<a href="4th-level.html"><i class="fa fa-folder"></i><span class="text"> 4th Level</span></a>
+												</li>
+											</ul>
+										</li>
+										<li>
+											<a href="icons-climacons.html#"><i class="fa fa-folder-open"></i><span class="text"> 3rd Level</span> <span class="indicator"></span></a>
+											<ul>
+												<li>
+													<a href="4th-level2.html"><i class="fa fa-folder"></i><span class="text"> 4th Level</span></a>
+												</li>
+											</ul>
+										</li>
+									</ul>	
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>					
+			</div>
+			<div class="sidebar-footer">
+				
+				<ul class="sidebar-footer-menu">
+					<li><a href="icons-climacons.html#"><i class="fa fa-cog"></i> Settings</a></li>
+					<li><a href="icons-climacons.html#"><i class="fa fa-sign-out"></i> Logout</a></li>
+				</ul>
+				
+				<div class="sidebar-brand">
+					origin
+				</div>
+				
+				<ul class="sidebar-terms">
+					<li><a href="icons-climacons.html#">Terms</a></li>
+					<li><a href="icons-climacons.html#">Privacy</a></li>
+					<li><a href="icons-climacons.html#">Help</a></li>
+					<li><a href="icons-climacons.html#">About</a></li>
+				</ul>	
+				
+			</div>	
+		</div>
+		<!-- end: Main Menu -->
+					
+		<!-- start: Content -->
+		<div class="main ">
+		
+			
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h2><i class="fa fa-picture-o"></i> Climacons</h2>
+					<div class="panel-actions">
+						<a href="icons-climacons.html#" class="btn-setting"><i class="fa fa-wrench"></i></a>
+						<a href="icons-climacons.html#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+						<a href="icons-climacons.html#" class="btn-close"><i class="fa fa-times"></i></a>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon cloud"></i><p class="small">climacon cloud</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon cloud sun"></i><p class="small">climacon cloud sun</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon cloud moon"></i><p class="small">climacon cloud moon</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon rain"></i><p class="small">climacon rain</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon rain sun"></i><p class="small">climacon rain sun</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon rain moon"></i><p class="small">climacon rain moon</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon showers"></i><p class="small">climacon showers</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon showers sun"></i><p class="small">climacon showers sun</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon showers moon"></i><p class="small">climacon showers moon</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon downpour"></i><p class="small">climacon downpour</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon downpour sun"></i><p class="small">climacon downpour sun</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon downpour moon"></i><p class="small">climacon downpour moon</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon drizzle"></i><p class="small">climacon drizzle</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon drizzle sun"></i><p class="small">climacon drizzle sun</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon drizzle moon"></i><p class="small">climacon drizzle moon</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon sleet"></i><p class="small">climacon sleet</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon sleet sun"></i><p class="small">climacon sleet sun</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon sleet moon"></i><p class="small">climacon sleet moon</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon hail"></i><p class="small">climacon hail</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon hail sun"></i><p class="small">climacon hail sun</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon hail moon"></i><p class="small">climacon hail moon</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon flurries"></i><p class="small">climacon flurries</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon flurries sun"></i><p class="small">climacon flurries sun</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon flurries moon"></i><p class="small">climacon flurries moon</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon snow"></i><p class="small">climacon snow</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon snow sun"></i><p class="small">climacon snow sun</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon snow moon"></i><p class="small">climacon snow moon</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon fog"></i><p class="small">climacon fog</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon fog sun"></i><p class="small">climacon fog sun</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon fog moon"></i><p class="small">climacon fog moon</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon haze"></i><p class="small">climacon haze</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon haze sun"></i><p class="small">climacon haze sun</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon haze moon"></i><p class="small">climacon haze moon</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon wind"></i><p class="small">climacon wind</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon wind cloud"></i><p class="small">climacon wind cloud</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon wind cloud sun"></i><p class="small">climacon wind cloud sun</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon wind cloud moon"></i><p class="small">climacon wind cloud moon</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon lightning"></i><p class="small">climacon lightning</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon lightning sun"></i><p class="small">climacon lightning sun</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon lightning moon"></i><p class="small">climacon lightning moon</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon sun"></i><p class="small">climacon sun</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon sunset"></i><p class="small">climacon sunset</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon sunrise"></i><p class="small">climacon sunrise</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon sun low"></i><p class="small">climacon sun low</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon sun lower"></i><p class="small">climacon sun lower</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon moon"></i><p class="small">climacon moon</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon moon new"></i><p class="small">climacon moon new</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon moon waxing crescent"></i><p class="small">climacon moon waxing crescent</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon moon waxing quarter"></i><p class="small">climacon moon waxing quarter</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon moon waxing gibbous"></i><p class="small">climacon moon waxing gibbous</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon moon full"></i><p class="small">climacon moon full</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon moon waning gibbous"></i><p class="small">climacon moon waning gibbous</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon moon waning quarter"></i><p class="small">climacon moon waning quarter</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon moon waning crescent"></i><p class="small">climacon moon waning crescent</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon snowflake"></i><p class="small">climacon snowflake</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon tornado"></i><p class="small">climacon tornado</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon thermometer"></i><p class="small">climacon thermometer</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon thermometer low"></i><p class="small">climacon thermometer low</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon thermometer medium-low"></i><p class="small">climacon thermometer medium-low</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon thermometer medium-high"></i><p class="small">climacon thermometer medium-high</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon thermometer high"></i><p class="small">climacon thermometer high</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon thermometer full"></i><p class="small">climacon thermometer full</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon celcius"></i><p class="small">climacon celcius</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon farenheit"></i><p class="small">climacon farenheit</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon compass"></i><p class="small">climacon compass</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon compass north"></i><p class="small">climacon compass north</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon compass east"></i><p class="small">climacon compass east</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon compass south"></i><p class="small">climacon compass south</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon compass west"></i><p class="small">climacon compass west</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon umbrella"></i><p class="small">climacon umbrella</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon sunglasses"></i><p class="small">climacon sunglasses</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon cloud refresh"></i><p class="small">climacon cloud refresh</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon cloud up"></i><p class="small">climacon cloud up</p>
+						</div>
+						<div class="col-md-2 col-sm-3 text-center">
+							<i class="climacon cloud down"></i><p class="small">climacon cloud down</p>
+						</div>
+					</div><!--/.row-->	
+				</div>		
+			</div>	
+   
+				
+		</div>
+		<!-- end: Content -->
+				
+	
+		
+		<footer>
+
+			<div class="row">
+
+				<div class="col-sm-5">
+					&copy; 2014 creativeLabs. <a href="http://bootstrapmaster.com">Admin Templates</a> by BootstrapMaster
+				</div><!--/.col-->
+
+				<div class="col-sm-7 text-right">
+					Powered by: <a href="http://bootstrapmaster.com/demo/origin/" alt="Bootstrap Admin Templates">Origin Admin</a> | Based on Bootstrap 3.2.0 | Built with brix.io <a href="http://brix.io" alt="Brix.io - Bootstrap Builder">Bootstrap Builder</a>
+				</div><!--/.col-->	
+
+			</div><!--/.row-->	
+
+		</footer>
+		
+		<div id="usage">
+			<ul>
+				<li>
+					<div class="title">Memory</div>
+					<div class="bar">
+						<div class="progress">
+						  	<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%"></div>
+						</div>
+					</div>			
+					<div class="desc">2GB of 8GB</div>
+				</li>
+				<li>
+					<div class="title">HDD</div>
+					<div class="bar">
+						<div class="progress">
+						  	<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+						</div>
+					</div>			
+					<div class="desc">750GB of 1TB</div>
+				</li>
+				<li>
+					<div class="title">SSD</div>
+					<div class="bar">
+						<div class="progress">
+					  		<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%"></div>
+						</div>
+					</div>			
+					<div class="desc">300GB of 1TB</div>
+				</li>
+				<li>
+					<div class="title">Bandwidth</div>
+					<div class="bar">
+						<div class="progress">
+					  		<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+						</div>
+					</div>			
+					<div class="desc">50TB of 50TB</div>
+				</li>
+				<li>
+					<div class="text">Your Ip: <b>192.168.1.103</b> | Logged as: <b>team@brix.io</b></div>
+				</li>
+			</ul>	
+		</div>			
+				
+	
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Modal title</h4>
+				</div>
+				<div class="modal-body">
+					<p>Here settings can be configured...</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+	
+		
+	<!-- start: JavaScript-->
+	<!--[if !IE]>-->
+
+			<script src="assets/js/jquery-2.1.1.min.js"></script>
+
+	<!--<![endif]-->
+
+	<!--[if IE]>
+	
+		<script src="assets/js/jquery-1.11.1.min.js"></script>
+	
+	<![endif]-->
+
+	<!--[if !IE]>-->
+
+		<script type="text/javascript">
+			window.jQuery || document.write("<script src='assets/js/jquery-2.1.1.min.js'>"+"<"+"/script>");
+		</script>
+
+	<!--<![endif]-->
+
+	<!--[if IE]>
+	
+		<script type="text/javascript">
+	 	window.jQuery || document.write("<script src='assets/js/jquery-1.11.1.min.js'>"+"<"+"/script>");
+		</script>
+		
+	<![endif]-->
+	<script src="assets/js/jquery-migrate-1.2.1.min.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>	
+	
+	
+	<!-- page scripts -->
+	<script src="assets/plugins/jquery-ui/js/jquery-ui-1.10.4.min.js"></script>
+	
+	<!-- theme scripts -->
+	<script src="assets/js/jquery.mmenu.min.js"></script>
+	<script src="assets/js/core.min.js"></script>
+		<script src="assets/plugins/jquery-cookie/jquery.cookie.min.js"></script>
+	<script src="assets/js/demo.min.js"></script>
+	
+	<!-- end: JavaScript-->
+	
+</body>
+</html>

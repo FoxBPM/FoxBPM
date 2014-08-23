@@ -1,0 +1,43 @@
+<script>
+	loadCSS("assets/plugins/jquery-ui/css/jquery-ui-1.10.4.min.css");
+	loadCSS("assets/plugins/fullcalendar/css/fullcalendar.css");
+	
+	var requireJS = [
+		"assets/plugins/jquery-ui/js/jquery-ui-1.10.4.min.js",
+		"assets/plugins/moment/moment.min.js",
+		"assets/plugins/fullcalendar/js/fullcalendar.min.js"
+	]; 
+	
+	loadJS(requireJS, "assets/js/pages/calendar.js");	
+</script>
+
+			<div class="row">
+				<div class="col-lg-12">
+				  	<div class="panel panel-default">
+					  <div class="panel-heading">
+						  <h2><i class="fa fa-calendar"></i><span class="break"></span>Calendar</h2>
+					  </div>
+					  <div class="panel-body">
+							<div class="row">
+								<div class="col-lg-3 hidden-phone hidden-tablet">
+									<div id="external-events">
+										<h4>Draggable Events</h4>
+										<div class="external-event badge">Default</div>
+										<div class="external-event badge badge-success">Completed</div>
+										<div class="external-event badge badge-warning">Warning</div>
+										<div class="external-event badge badge-important">Important</div>
+										<div class="external-event badge badge-info">Info</div>
+										<div class="external-event badge badge-inverse">Other</div>
+										<p>
+											<label for="drop-remove"><input type="checkbox" id="drop-remove" /> remove after drop</label>
+										</p>
+									</div>
+								</div>
+								<div class="col-lg-9">
+									<div id="calendar" class="col-lg-12"></div>	
+								</div>	
+							</div>
+						</div>
+					</div>
+				</div>
+			</div><!--/row-->

@@ -1,0 +1,147 @@
+body.sidebar-minified {
+	
+	.navbar {
+		padding: 0 0 0 60px;
+		
+		.navbar-actions {
+			margin-left: -15px;
+		}
+	}
+	
+	.main {
+		width: 100%;
+		padding-left: 90px;
+	}
+	
+	footer {
+		padding: 0 20px 40px 80px;
+	}
+	
+	#usage {
+		padding: 0 0 0 60px;
+	}
+		
+	.sidebar {
+		width: 60px;
+		overflow: visible;
+		
+		.sidebar-header {
+
+			h2, h3 {
+				display: none;
+			}
+			
+			.user-menu {
+				#sidebar-minify {
+					position: fixed;
+					bottom: 0 !important;
+					left: 0;
+					display: visible;
+					width: 60px;
+					text-align: center;
+				}
+			}
+		}
+		
+		.sidebar-menu {
+			overflow: visible;
+			width: auto;
+		}
+		
+		ul.nav.nav-sidebar {
+			width: auto;
+			
+			span.fa-plus {
+				display: none;
+			}
+			
+			> li {
+				position: relative;
+				
+				> a {
+					width: 60px;
+					position: relative;
+					padding: 0;
+					line-height: 40px;
+					text-align: center;
+					
+					&.open {
+						cursor: default;
+					}
+										
+					.text {
+						position: absolute;
+						z-index: 1000;
+						background: darken(@sidebar, 5%);
+						min-height: 40px;
+						width: 200px;
+						padding-left: 15px;
+						top: 0px;
+						left: 60px;
+						display: none !important;
+						text-align: left;
+					}
+					 
+				}
+				
+				> ul {
+					display: none !important;					
+				}
+				
+				&:hover {
+					
+					> a {
+						position: relative;
+						cursor: pointer;
+
+						.text {
+							width: 200px;
+							display: block !important;
+							margin-top: -2px;
+							margin-left: -23px;
+							border: 1px solid #4a4a4a;
+							background: #232323;
+							border-left: 0;
+							height: 44px;
+						}
+
+					}
+					
+					> ul {
+						display: block !important;
+						position: absolute;
+						top: 42px;
+						left: 38px;
+						z-index: 1000;
+						width: 200px;
+						border: 1px solid #4a4a4a;
+						border-top: 0;
+						background: @sidebar;
+						padding: 0;
+						margin: 0;
+						.box-shadow(1px 2px 4px rgba(0,0,0,.25));
+						
+						> li {
+							padding: 0;
+							
+							&:hover {
+								//background: darken(@sidebar, 5%);
+							}
+							
+							> a {
+								display: block;
+								width: 100%;
+								line-height: 40px;
+							}							
+						}						
+					}					
+				}	
+			}		
+		}
+		
+		.sidebar-footer { 
+			display: none;
+		}
+	}
+	
+}

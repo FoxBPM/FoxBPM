@@ -1,0 +1,163 @@
+<script>
+	loadCSS("assets/plugins/jquery-ui/css/jquery-ui-1.10.4.min.css");
+	
+	var requireJS = [
+		"assets/plugins/jquery-ui/js/jquery-ui-1.10.4.min.js",
+		"assets/plugins/flot/jquery.flot.min.js",
+		"assets/plugins/flot/jquery.flot.pie.min.js",
+		"assets/plugins/flot/jquery.flot.stack.min.js",
+		"assets/plugins/flot/jquery.flot.resize.min.js",
+		"assets/plugins/flot/jquery.flot.time.min.js"
+	]; 
+	
+	loadJS(requireJS, "assets/js/pages/charts-flot.js");	
+</script>
+			
+			<div class="row">
+				
+				<div class="col-sm-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-facebook"></i> Facebook Fans</h2>
+						</div>
+						<div class="panel-body">
+							<div id="facebookChart" style="height:300px" ></div>
+						</div>
+					</div>
+				</div><!--/col-->
+				
+				<div class="col-sm-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-twitter"></i> Twitter Followers</h2>
+						</div>
+						<div class="panel-body">
+							<div id="twitterChart" style="height:300px" ></div>
+						</div>
+					</div>
+				</div><!--/col-->
+			
+			</div><!--/row-->
+
+			<div class="row">
+				
+				<div class="col-sm-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-list-alt"></i><span class="break"></span>Chart with points</h2>
+							<div class="panel-actions">
+								<a href="#" class="btn-setting"><i class="fa fa-wrench"></i></a>
+								<a href="#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+								<a href="#" class="btn-close"><i class="fa fa-times"></i></a>
+							</div>
+						</div>
+						<div class="panel-body">
+							<div id="sincos"  class="center" style="height:300px;" ></div>
+							<p id="hoverdata">Mouse position at (<span id="x">0</span>, <span id="y">0</span>). <span id="clickdata"></span></p>
+						</div>
+					</div><!--/col-->
+				
+				</div>
+				
+				<div class="col-sm-12">
+				
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-list-alt"></i><span class="break"></span>Flot</h2>
+							<div class="panel-actions">
+								<a href="#" class="btn-setting"><i class="fa fa-wrench"></i></a>
+								<a href="#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+								<a href="#" class="btn-close"><i class="fa fa-times"></i></a>
+							</div>
+						</div>
+						<div class="panel-body">
+							<div id="flotchart" class="center" style="height:300px"></div>
+						</div>
+					</div>
+					</div>
+					<div class="col-sm-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-list-alt"></i><span class="break"></span>Stack Example</h2>
+							<div class="panel-actions">
+								<a href="#" class="btn-setting"><i class="fa fa-wrench"></i></a>
+								<a href="#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+								<a href="#" class="btn-close"><i class="fa fa-times"></i></a>
+							</div>
+						</div>
+						<div class="panel-body">
+							 <div id="stackchart" class="center" style="height:300px;"></div>
+
+							<p class="stackControls center">
+								<input class="btn" type="button" value="With stacking">
+								<input class="btn" type="button" value="Without stacking">
+							</p>
+
+							<p class="graphControls center">
+								<input class="btn-primary" type="button" value="Bars">
+								<input class="btn-primary" type="button" value="Lines">
+								<input class="btn-primary" type="button" value="Lines with steps">
+							</p>
+						</div>
+					</div>
+					
+				</div><!--/col-->
+
+			</div><!--/row-->
+			
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-list-alt"></i><span class="break"></span>Pie</h2>
+							<div class="panel-actions">
+								<a href="#" class="btn-setting"><i class="fa fa-wrench"></i></a>
+								<a href="#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+								<a href="#" class="btn-close"><i class="fa fa-times"></i></a>
+							</div>
+						</div>
+						<div class="panel-body">
+								<div id="piechart" style="height:300px"></div>
+						</div>
+					</div>
+				</div><!--/col-->
+			
+				<div class="col-sm-6">
+					<div class="panel panel-default">
+						<div class="panel-heading" data-original-title>
+							<h2><i class="fa fa-list-alt"></i><span class="break"></span>Donut</h2>
+							<div class="panel-actions">
+								<a href="#" class="btn-setting"><i class="fa fa-wrench"></i></a>
+								<a href="#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+								<a href="#" class="btn-close"><i class="fa fa-times"></i></a>
+							</div>
+						</div>
+						<div class="panel-body">
+							 <div id="donutchart" style="height: 300px;"></div>
+						</div>
+					</div>
+				</div><!--/col-->
+			
+			</div><!--/row-->
+				
+			<div class="row">
+				
+				<div class="col-sm-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-list-alt"></i><span class="break"></span>Realtime</h2>
+							<div class="panel-actions">
+								<a href="#" class="btn-setting"><i class="fa fa-wrench"></i></a>
+								<a href="#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+								<a href="#" class="btn-close"><i class="fa fa-times"></i></a>
+							</div>
+						</div>
+						<div class="panel-body">
+							 <div id="realtimechart" style="height:190px;"></div>
+							 <p>You can update a chart periodically to get a real-time effect by using a timer to insert the new data in the plot and redraw it.</p>
+							 <p>Time between updates: <input id="updateInterval" type="text" value="" style="text-align: right; width:5em"> milliseconds</p>
+						</div>
+					</div>
+				</div><!--/col-->
+				
+			</div><!--/row-->	

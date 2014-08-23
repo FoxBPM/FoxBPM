@@ -1,0 +1,34 @@
+/* UI - Progress
+=================================================================== */
+.progress{
+	background: @main;
+	.border-radius(2px);
+	
+	.progress-bar {
+		background-color: @primary;
+		
+		&.progress-bar-success {
+			background-color: @success
+		}
+		
+		&.progress-bar-info {
+			background-color: @info
+		}
+		
+		&.progress-bar-warning {
+			background-color: @warning
+		}
+		
+		&.progress-bar-danger {
+			background-color: @danger
+		}
+	}
+	
+	&.thin {
+		height: 10px;
+		.progress-bar {
+			font-size: 6px;
+			line-height: 10px;
+		}	
+	}
+}

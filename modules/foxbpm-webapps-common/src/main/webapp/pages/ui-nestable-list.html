@@ -1,0 +1,157 @@
+<script>
+	loadCSS("assets/plugins/jquery-ui/css/jquery-ui-1.10.4.min.css");
+	
+	var requireJS = [
+		"assets/plugins/jquery-ui/js/jquery-ui-1.10.4.min.js", 
+		"assets/plugins/nestable/jquery.nestable.min.js"
+	]; 
+	
+	loadJS(requireJS, "assets/js/pages/ui-nestable-list.js");	
+</script>
+
+			<div class="row">
+				<ol class="breadcrumb">
+				  	<li><a href="#">Origin</a></li>
+					<li><a href="#">UI Features</a></li>
+				  	<li class="active">Nestable Lists</li>
+				</ol>	
+				
+				<div class="col-sm-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-check"></i>Nestable List</h2>
+							<div class="panel-actions">
+								<a href="#" class="btn-setting"><i class="fa fa-wrench"></i></a>
+								<a href="#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+								<a href="#" class="btn-close"><i class="fa fa-times"></i></a>
+							</div>
+						</div>
+						<div class="panel-body clearfix">
+
+							<div class="dd" id="nestable">
+					            <ol class="dd-list">
+					                <li class="dd-item" data-id="1">
+					                    <div class="dd-handle">Item 1<a href="#" class="icon icon-trash"></a></div>
+					                </li>
+					                <li class="dd-item" data-id="2">
+					                    <div class="dd-handle">Item 2<a href="#" class="icon icon-trash"></a><a href="#" class="icon icon-pencil"></a></div>
+					                    <ol class="dd-list">
+					                        <li class="dd-item" data-id="3"><div class="dd-handle">Item 3</div></li>
+					                        <li class="dd-item" data-id="4"><div class="dd-handle">Item 4</div></li>
+					                        <li class="dd-item" data-id="5">
+					                            <div class="dd-handle">Item 5</div>
+					                            <ol class="dd-list">
+					                                <li class="dd-item" data-id="6"><div class="dd-handle">Item 6</div></li>
+					                                <li class="dd-item" data-id="7"><div class="dd-handle">Item 7</div></li>
+					                                <li class="dd-item" data-id="8"><div class="dd-handle">Item 8</div></li>
+					                            </ol>
+					                        </li>
+					                        <li class="dd-item" data-id="9"><div class="dd-handle">Item 9</div></li>
+					                        <li class="dd-item" data-id="10"><div class="dd-handle">Item 10</div></li>
+					                    </ol>
+					                </li>
+					                <li class="dd-item" data-id="11">
+					                    <div class="dd-handle">Item 11</div>
+					                </li>
+					                <li class="dd-item" data-id="12">
+					                    <div class="dd-handle">Item 12</div>
+					                </li>
+					            </ol>
+					        </div>
+
+					        <div class="dd" id="nestable2">
+					            <ol class="dd-list">
+					                <li class="dd-item" data-id="13">
+					                    <div class="dd-handle">Item 13</div>
+					                </li>
+					                <li class="dd-item" data-id="14">
+					                    <div class="dd-handle">Item 14</div>
+					                </li>
+					                <li class="dd-item" data-id="15">
+					                    <div class="dd-handle">Item 15</div>
+					                    <ol class="dd-list">
+					                        <li class="dd-item" data-id="16"><div class="dd-handle">Item 16</div></li>
+					                        <li class="dd-item" data-id="17"><div class="dd-handle">Item 17</div></li>
+					                        <li class="dd-item" data-id="18"><div class="dd-handle">Item 18</div></li>
+					                    </ol>
+					                </li>
+					            </ol>
+					        </div>	
+						</div>
+						<div class="panel-footer">
+							<menu id="nestable-menu">
+								<button class="btn btn-info" type="button" data-action="expand-all">Expand All</button>
+								<button class="btn btn-danger" type="button" data-action="collapse-all">Collapse All</button>
+							</menu>
+						</div>
+					</div>		
+				</div><!--/col-->
+				<div class="col-sm-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-check"></i>Nestable List</h2>
+							<div class="panel-actions">
+								<a href="#" class="btn-setting"><i class="fa fa-wrench"></i></a>
+								<a href="#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+								<a href="#" class="btn-close"><i class="fa fa-times"></i></a>
+							</div>
+						</div>
+						<div class="panel-body clearfix">
+							
+							<div class="dd" id="nestable3">
+								<ol class="dd-list">
+									<li class="dd-item dd3-item" data-id="13">
+							           	<div class="dd-handle dd3-handle"><i class="fa fa-bars"></i></div><div class="dd3-content">Item 13</div>
+							   		</li>
+							       	<li class="dd-item dd3-item" data-id="14">
+							           	<div class="dd-handle dd3-handle"><i class="fa fa-bars"></i></div><div class="dd3-content">Item 14</div>
+							       	</li>
+							       	<li class="dd-item dd3-item" data-id="15">
+							           	<div class="dd-handle dd3-handle"><i class="fa fa-bars"></i></div><div class="dd3-content">Item 15</div>
+							            	<ol class="dd-list">
+							                	<li class="dd-item dd3-item" data-id="16">
+							                    	<div class="dd-handle dd3-handle"><i class="fa fa-bars"></i></div><div class="dd3-content">Item 16</div>
+							                 	</li>
+							                 	<li class="dd-item dd3-item" data-id="17">
+							                      	<div class="dd-handle dd3-handle"><i class="fa fa-bars"></i></div><div class="dd3-content">Item 17</div>
+							             		</li>
+							               		<li class="dd-item dd3-item" data-id="18">
+							                   		<div class="dd-handle dd3-handle"><i class="fa fa-bars"></i></div><div class="dd3-content">Item 18</div>
+							           			</li>
+							  				</ol>
+							 			</li>
+							  		</ol>
+								</div>
+								
+								<div class="dd" id="nestable4">
+									<ol class="dd-list">
+										<li class="dd-item dd3-item" data-id="19">
+								           	<div class="dd-handle dd3-handle"><i class="fa fa-bookmark-o"></i></div><div class="dd3-content">Item 19</div>
+								   		</li>
+								       	<li class="dd-item dd3-item" data-id="20">
+								           	<div class="dd-handle dd3-handle"><i class="fa fa-bullseye"></i></div><div class="dd3-content">Item 14</div>
+								       	</li>
+								       	<li class="dd-item dd3-item" data-id="21">
+								           	<div class="dd-handle dd3-handle"><i class="fa fa-reply-all"></i></div>
+											<div class="dd3-content">Item 20</div>
+								            <ol class="dd-list">
+							                	<li class="dd-item dd3-item" data-id="22">
+							                    	<div class="dd-handle dd3-handle"><i class="fa fa-star-o"></i></div><div class="dd3-content">Item 21</div>
+							                 	</li>
+							                 	<li class="dd-item dd3-item" data-id="23">
+							                      	<div class="dd-handle dd3-handle"><i class="fa fa-tint"></i></div><div class="dd3-content">Item 22</div>
+							             		</li>
+							               		<li class="dd-item dd3-item" data-id="24">
+							                   		<div class="dd-handle dd3-handle"><i class="fa fa-cut"></i></div><div class="dd3-content">Item 23</div>
+							           			</li>
+							  				</ol>	
+								 		</li>
+								  	</ol>
+								</div>
+							</div>	
+			
+						</div>
+					</div>		
+				</div><!--/col-->
+			
+			</div><!--/row-->

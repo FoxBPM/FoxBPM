@@ -1,0 +1,313 @@
+<script>
+	loadCSS("assets/plugins/jquery-ui/css/jquery-ui-1.10.4.min.css");
+	
+	var requireJS = [
+		"assets/plugins/jquery-ui/js/jquery-ui-1.10.4.min.js", 
+		"assets/plugins/raphael/raphael.min.js"
+	]; 
+	
+	loadJS(requireJS, "assets/js/pages/ui-elements.js");
+	
+</script>
+			
+			<ol class="breadcrumb">
+			  	<li><a href="#">Origin</a></li>
+				<li><a href="#">UI Features</a></li>
+			  	<li class="active">Elements</li>
+			</ol>
+			
+			<div class="row ">
+
+				<div class="col-lg-12 hideInIE8">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-edit"></i><span class="break"></span>Toggle Buttons</h2>
+							<div class="panel-actions">
+								<a href="#" class="btn-setting"><i class="fa fa-wrench"></i></a>
+								<a href="#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+								<a href="#" class="btn-close"><i class="fa fa-times"></i></a>
+							</div>
+						</div>
+						<div class="panel-body">
+							<form class="form-horizontal">
+								<div class="form-group">
+									<div class="controls row">
+										<div class="col-md-1 col-sm-2 col-xs-3">
+											<label class="switch">
+										      <input type="checkbox" class="switch-input">
+										      <span class="switch-label" data-on="On" data-off="Off"></span>
+										      <span class="switch-handle"></span>
+										    </label>
+										</div>
+										<div class="col-md-1 col-sm-2 col-xs-3">
+										    <label class="switch switch-default">
+										      <input type="checkbox" class="switch-input" checked>
+										      <span class="switch-label" data-on="On" data-off="Off"></span>
+										      <span class="switch-handle"></span>
+										    </label>
+										</div>
+										<div class="col-md-1 col-sm-2 col-xs-3">
+											<label class="switch switch-primary">
+										      <input type="checkbox" class="switch-input" checked>
+										      <span class="switch-label" data-on="On" data-off="Off"></span>
+										      <span class="switch-handle"></span>
+										    </label>
+										</div>
+										<div class="col-md-1 col-sm-2 col-xs-3">
+										    <label class="switch switch-success">
+										      <input type="checkbox" class="switch-input" checked>
+										      <span class="switch-label" data-on="On" data-off="Off"></span>
+										      <span class="switch-handle"></span>
+										    </label>
+										</div>
+										<div class="col-md-1 col-sm-2 col-xs-3">
+										    <label class="switch switch-warning">
+										      <input type="checkbox" class="switch-input" checked>
+										      <span class="switch-label" data-on="On" data-off="Off"></span>
+										      <span class="switch-handle"></span>
+										    </label>
+										</div>
+										<div class="col-md-1 col-sm-2 col-xs-3">
+										    <label class="switch switch-info">
+										      <input type="checkbox" class="switch-input" checked>
+										      <span class="switch-label" data-on="On" data-off="Off"></span>
+										      <span class="switch-handle"></span>
+										    </label>
+										</div>
+										<div class="col-md-1 col-sm-2 col-xs-3">
+										    <label class="switch switch-danger">
+										      <input type="checkbox" class="switch-input" checked>
+										      <span class="switch-label" data-on="On" data-off="Off"></span>
+										      <span class="switch-handle"></span>
+										    </label>
+										</div>
+									</div>
+							  	</div>
+							</form>
+						</div>
+					</div>
+				</div><!--/col-->
+
+			</div><!--/row-->
+			
+			<div class="row">	
+				<div class="col-lg-12">
+					<div class="panel panel-default">
+
+						<div class="panel-heading">
+							<h2><i class="fa fa-bullhorn"></i><span class="break"></span>Alerts</h2>
+							<div class="panel-actions">
+								<a href="#" class="btn-setting"><i class="fa fa-wrench"></i></a>
+								<a href="#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+								<a href="#" class="btn-close"><i class="fa fa-times"></i></a>
+							</div>
+						</div>
+						<div class="panel-body alerts">
+							<div class="alert alert-danger">
+								<button type="button" class="close" data-dismiss="alert">×</button>
+								<strong>Oh snap!</strong> Change a few things up and try submitting again.
+							</div>
+							<div class="alert alert-success">
+								<button type="button" class="close" data-dismiss="alert">×</button>
+								<strong>Well done!</strong> You successfully read this important alert message.
+							</div>
+							<div class="alert alert-info">
+								<button type="button" class="close" data-dismiss="alert">×</button>
+								<strong>Heads up!</strong> This alert needs your attention, but it's not super important.
+							</div>
+							<div class="alert alert-warning">
+								<button type="button" class="close" data-dismiss="alert">×</button>
+								<h4 class="alert-heading">Warning!</h4>
+								<p>Best check yo self, you're not looking too good. Nulla vitae elit libero, a pharetra augue. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
+							</div>
+						</div>
+
+					</div>
+				</div><!--/col-->
+			</div><!--/row-->
+	
+			<div class="row">	
+				<div class="col-md-4">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-plus"></i><span class="break"></span>Extended Elements</h2>
+							<div class="panel-actions">
+								<a href="#" class="btn-close"><i class="fa fa-times"></i></a>
+							</div>
+						</div>
+						<div class="panel-body">
+							<table class="table table-bordered table-striped">
+								<tr>
+									<td>Star Rating</td>
+									<td>
+										<span class="rating">
+					                        <span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span>
+					                    </span>
+									</td>
+								</tr>
+								<tr>
+									<td>Popover</td>
+									<td>
+										<a href="#" class="btn btn-danger" data-toggle="popover" title="A Title" data-content="And here's some amazing content. It's very engaging. right?">Click to toggle popover</a>
+									</td>
+								</tr>
+								<tr>
+									<td>Dialog</td>
+									<td>
+										<a href="#" class="btn btn-info btn-setting">Click for dialog</a>
+									</td>
+								</tr>
+								<tr>
+									<td>Tooltip</td>
+									<td>
+										<a href="#" title="Tooltip, you can change the position." data-rel="tooltip" class="btn btn-warning">Hover for tooltip</a>
+									</td>
+								</tr>
+							</table>
+						</div>	
+					</div>	
+				</div><!--/col-->
+				
+				<div class="col-md-2">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-eye"><span class="break"></span></i>Labels</h2>
+						</div>
+						<div class="panel-body">
+							<table class="table table-bordered table-striped">
+								<tbody>
+								  <tr>
+									<td>
+									  <span class="label label-default">Default</span>
+									</td>
+								  </tr>
+								  <tr>
+									<td>
+									  <span class="label label-primary">Primary</span>
+									</td>
+								  </tr>	
+								  <tr>
+									<td>
+									  <span class="label label-success">Success</span>
+									</td>
+								  </tr>
+								  <tr>
+									<td>
+									  <span class="label label-warning">Warning</span>
+									</td>
+								  </tr>
+								  <tr>
+									<td>
+									  <span class="label label-info">Info</span>
+									</td>
+								  </tr>
+								  <tr>
+									<td>
+									  <span class="label label-danger">Danger</span>
+									</td>
+								  </tr>
+								</tbody>
+							  </table>
+						</div>
+					</div>
+				</div><!--/col-->
+				
+				<div class="col-md-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-th"></i><span class="break"></span>Tabs</h2>
+							<ul class="nav tab-menu nav-tabs" id="myTab">
+								<li class="active"><a href="#info">Info</a></li>
+								<li><a href="#custom">Custom</a></li>
+								<li><a href="#messages">Messages</a></li>
+							</ul>
+						</div>
+						<div class="panel-body">
+							
+							<div id="myTabContent" class="tab-content">
+								<div class="tab-pane active" id="info">
+									<p>
+
+										Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.   
+									</p>
+
+								</div>
+								<div class="tab-pane" id="custom">
+									<p>
+										Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.   
+									</p>
+								</div>
+								<div class="tab-pane" id="messages">
+									<p>
+										Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.   
+									</p>
+									<p>
+										Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div><!--/col-->
+				
+			</div><!--/row-->
+			
+			<div class="row">
+				
+				<div class="col-md-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-th"></i><span class="break"></span>Tabs</h2>
+						</div>
+						<div class="panel-body">
+							
+							<div class="panel-group" id="accordion">
+							  <div class="panel panel-default">
+							    <div class="panel-heading">
+							      <h4 class="panel-title">
+							        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+							          Collapsible Group Item #1
+							        </a>
+							      </h4>
+							    </div>
+							    <div id="collapseOne" class="panel-collapse collapse in">
+							      <div class="panel-body">
+							        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+							      </div>
+							    </div>
+							  </div>
+							  <div class="panel panel-default">
+							    <div class="panel-heading">
+							      <h4 class="panel-title">
+							        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+							          Collapsible Group Item #2
+							        </a>
+							      </h4>
+							    </div>
+							    <div id="collapseTwo" class="panel-collapse collapse">
+							      <div class="panel-body">
+							        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+							      </div>
+							    </div>
+							  </div>
+							  <div class="panel panel-default">
+							    <div class="panel-heading">
+							      <h4 class="panel-title">
+							        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+							          Collapsible Group Item #3
+							        </a>
+							      </h4>
+							    </div>
+							    <div id="collapseThree" class="panel-collapse collapse">
+							      <div class="panel-body">
+							        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+							      </div>
+							    </div>
+							  </div>
+							</div>
+							
+						</div>
+					</div>
+				</div><!--/col-->
+			</div><!--/row-->
+	

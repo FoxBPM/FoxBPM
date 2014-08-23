@@ -1,0 +1,23 @@
+.easyPieChart {
+    position: relative;
+    text-align: center;
+}
+
+.easyPieChart canvas {
+    position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.chart {
+    float: left;
+}
+
+.percentage,
+.label {
+    text-align: center;
+    color: #333;
+    font-weight: 100;
+    font-size: 1.2em;
+    margin-bottom: 0.3em;
+}

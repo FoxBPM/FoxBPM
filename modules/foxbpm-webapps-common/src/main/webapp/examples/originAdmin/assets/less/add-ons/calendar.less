@@ -1,0 +1,171 @@
+/* Calendar Widget
+=================================================================== */
+.calendar {
+	background: white;
+	padding: 1px;
+	//overflow: hidden;
+	
+	.calendar-small {
+		margin: -21px;
+	}
+	
+	
+	.fc td,
+	.fc th {
+		border: 0;
+		vertical-align: middle !important;
+		font-weight: normal;
+	}
+	
+	.fc {
+		padding: 20px;
+		.box-sizing(content-box);
+	}
+	
+	.fc-header {
+		color: @mainText;
+		background: @heading;
+		border-bottom: 1px solid @border;
+		.box-shadow(inset 0 0 1px 1px rgba(255,255,255,1));
+		height: 40px;
+		padding: 0;
+	}
+	
+	.fc-header-title h2 {
+		color: #333333;
+		text-transform: uppercase;
+		font-weight: 500;
+		font-size: 12px;
+		line-height: 40px;
+		height: 40px;
+		margin: 5px 0 0 0;
+	}
+	
+	.fc-widget-header {
+		padding: 15px 0 20px 0;
+		color: #333333;
+		text-transform: uppercase;
+		font-size: 10px;
+		font-weight: 600 !important;
+	}
+	
+	.fc-widget-header,    
+	.fc-widget-content {
+		border-color: @border;
+	}
+	
+	.fc-state-default {
+		background: white;
+		border: none;
+		text-shadow: none;
+		.box-shadow;
+		margin: 10px;
+		color: @mainText;
+	}
+
+	
+	.fc-state-hover,
+	.fc-state-down,
+	.fc-state-active,
+	.fc-state-disabled {
+		color: @mainText;
+		background: white;
+	}
+	
+	.fc-day-number {
+		line-height: 35px;
+		width: 40px;
+		height: 40px;
+		font-size: 12px;
+		.border-radius(50em);
+		border: 2px solid transparent;
+	}
+	
+	.fc-state-highlight {
+		background: transparent;
+		
+		.fc-day-number {
+			color: @primary;
+			font-weight: 700;
+			border: 2px solid @info !important;
+			
+		}
+	}
+	
+	.event {
+		background: @primary;
+		.border-radius(4px);
+		color: white;	
+	}
+	
+	.fc-grid td {
+		padding-top: 10px;
+		vertical-align: top !important;
+	}
+	
+	.fc-grid .fc-day-number {
+		float: none;
+		text-align: center;
+		margin: 0 auto;
+	}
+	
+	.fc-grid .fc-other-month .fc-day-number {
+		opacity: 1;
+		filter: alpha(opacity=1);
+		color: @main;
+	}
+		
+	.fc-event {
+		//display: none;
+		font-size: 0px;
+		border-color: @heading;
+		
+		
+		.fc-event-inner {
+			//display: none;
+		}
+	}
+		
+	.fc-button {
+		background: transparent !important;
+	}
+	
+	.list {
+		margin: 0 15px 15px 15px;
+		padding-top: 15px;
+		border-top: 3px double @border;
+		
+		ul {
+			list-style: none;
+			
+			li {
+				position: relative;
+				padding-top: 15px;
+				border-bottom: 1px solid @border;
+				
+				.custom-checkbox-item {
+					margin-left: -40px;
+					margin-bottom: -1px;
+				}
+				
+				.custom-checkbox:checked ~ .custom-checkbox-desc {
+				  color: @border;
+				  text-decoration: line-through;
+				}
+				
+				.custom-checkbox:checked ~ i {
+				  color: @heading;
+				}
+				
+				i {
+					position: absolute;
+					right: 0;
+					top: 16px;
+					font-size: 18px;
+					color: @border;
+				}
+			}
+		}
+		
+	}
+}

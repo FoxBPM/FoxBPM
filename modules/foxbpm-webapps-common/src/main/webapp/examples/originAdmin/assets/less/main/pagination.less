@@ -1,0 +1,41 @@
+/* Pagination
+=================================================================== */
+.pagination {
+  	
+	li {
+		
+		a, span {
+			border: 1px solid @border;
+			color: @primary;
+			//@mainText
+			
+			&:hover, &:focus {
+				color: darken(@primary,15%);
+				background-color: lighten(@main,2%);
+				border-color: @border;
+			}
+		}
+		
+		&:fist-child {
+			a, span {
+				border-top-left-radius: 2px;
+				border-bottom-left-radius: 2px;
+			}
+		}
+		
+		&:last-child {
+			a, span {
+				border-top-right-radius: 2px;
+				border-bottom-right-radius: 2px;
+			}
+		}
+		
+		&.active {
+			
+			a, span, a:hover, span:hover, a:focus, span:focus {
+				background-color: @primary;
+				border-color: @primary;
+			}
+		}
+	}
+}

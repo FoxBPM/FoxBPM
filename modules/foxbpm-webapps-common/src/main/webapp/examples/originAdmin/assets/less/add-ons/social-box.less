@@ -1,0 +1,77 @@
+/* .social-box
+=================================================================== */
+
+.social-box {
+	min-height: 160px;
+	border: 1px solid @border;
+	background: white;
+	margin-bottom: 30px;
+	text-align: center;
+	.box-shadow(0 2px 1px -1px rgba(0,0,0,.1));
+	
+	i {
+		display: block;
+		font-size: 40px;
+		line-height: 90px;
+		background: @heading;
+	}
+	
+	ul {
+		list-style: none;
+		padding: 10px 0;
+		
+		li {
+			display: block;
+			width: 50%;
+			float: left;
+			
+			&:first-child {
+				border-right: 1px solid @heading;
+			}
+			
+			strong {
+				display: block;
+				font-size: 20px;
+			}
+			
+			span {
+				color: @border;
+				font-weight: 500;
+				text-transform: uppercase;
+				font-size: 10px;
+			}
+		}
+	}
+	
+	&.facebook {
+		i {
+			background: @facebook;
+			color: white;
+			margin: -1px -1px 1px -1px;
+		}
+	}
+	
+	&.twitter {
+		i {
+			background: @twitter;
+			color: white;
+			margin: -1px -1px 1px -1px;
+		}
+	}
+	
+	&.linkedin {
+		i {
+			background: @linkedin;
+			color: white;
+			margin: -1px -1px 1px -1px;
+		}
+	}
+	
+	&.google-plus {
+		i {
+			background: @google-plus;
+			color: white;
+			margin: -1px -1px 1px -1px;
+		}
+	}
+}

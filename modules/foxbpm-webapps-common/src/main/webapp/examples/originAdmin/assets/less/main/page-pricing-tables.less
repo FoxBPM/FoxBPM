@@ -1,0 +1,109 @@
+/* Price Tables
+=================================================================== */
+.price-table-overlay {
+	overflow: scroll;
+}
+
+
+.price-table  {
+	margin-top: 22px;
+	padding-left: 1px;
+	min-width: 1000px;
+	
+	
+	.plan {
+		padding: 0 10px;
+		float: left;
+	}
+	
+	ul {
+		position: relative;
+		z-index: 1;
+		list-style: none;
+		float: left;
+		padding: 20px 0;
+		text-align: center;
+		background: white;
+		border: 1px solid @border;
+		.box-shadow(0 2px 1px -1px rgba(0,0,0,.1));
+		width: 100%;
+		
+		li {
+			font-size: 12px;
+			line-height: 20px;
+			text-shadow: none;
+			padding: 10px 15px;
+			
+			span {
+				font-weight: bold;
+			}
+			
+			&.header {
+				font-size: 24px;
+				padding: 25px 0;
+			}
+
+			&.price {
+				font-size: 24px;
+				padding: 15px 0 40px 0;
+				height: 58px;
+				font-weight: 700;
+			}
+
+			&.strike {
+				text-decoration: line-through;
+			}
+		}
+		
+		&.popular {
+			overflow: hidden;
+
+			.label {
+				font-size: 12px;
+				line-height: 16px;
+				line-height: -50px;
+				width: 200px;
+				position: absolute;
+				top: 20px;
+				right: -70px;
+				color: white;
+				-webkit-transform:rotate(45deg);
+				-moz-transform:rotate(45deg);
+				-ms-transform:rotate(45deg);
+				-o-transform:rotate(45deg);
+				.box-shadow(0 2px 1px -1px rgba(0,0,0,.2));
+			}
+		}
+		
+		&:hover {
+			background: @info;
+			color: white;
+			
+			.btn {
+				background: transparent;
+				.box-shadow;
+				border: 2px solid white;
+			}
+		}					
+	}
+}
+
+.price-table.five .plan {
+	width: 20%;
+}	
+
+.price-table.four .plan {
+	width: 25%;
+}
+
+.price-table.three .plan {
+	width: 33.333%;
+}	
+
+.price-table.two .plan {
+	width: 50%;
+}
+
+.price-table.one .plan {
+	width: 100%;
+}

@@ -1,0 +1,538 @@
+<script>
+	loadCSS("assets/plugins/jquery-ui/css/jquery-ui-1.10.4.min.css");
+	
+	var requireJS = ["assets/plugins/jquery-ui/js/jquery-ui-1.10.4.min.js"]; 
+	
+	loadJS(requireJS, "assets/js/pages/ui-sliders-progress.js");	
+</script>	
+	
+			<div class="row">	
+				<div class="col-lg-12">
+					<ol class="breadcrumb">
+					  	<li><a href="#">Origin</a></li>
+						<li><a href="#">UI Features</a></li>
+					  	<li class="active">Sliders & Progress</li>
+					</ol>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-tasks"></i>Sliders</h2>
+						</div>
+						<div class="panel-body">
+							
+							<table class="table">
+								<tr>
+									<td>basic</td>
+									<td>
+										<div class="slider"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>Minimum</td>
+									<td>
+										<div class="slider sliderMin"></div>
+										<div class="field_notice">Min: <span>$180</span></div>
+									</td>
+								</tr>
+								<tr>
+									<td>Maximum</td>
+									<td>
+										<div class="slider sliderMax"></div>
+										<div class="field_notice">Max: <span class="must sliderMaxLabel">$280</span></div>
+									</td>
+								</tr>
+								<tr>
+									<td>Range</td>
+									<td>
+										<div class="slider sliderRange"></div>
+										<div class="field_notice">Price Range: <span class="must sliderRangeLabel">$192 - $470</span></div>
+									</td>
+								</tr>
+								<tr>
+									<td>Equalizer</td>
+									<td>
+										<div id="sv1" class="slider vertical"></div>
+										<div id="sv2" class="slider vertical"></div>
+										<div id="sv3" class="slider vertical"></div>
+										<div id="sv4" class="slider vertical"></div>
+										<div id="sv5" class="slider vertical"></div>
+										<div id="sv6" class="slider vertical slider-success"></div>
+										<div id="sv7" class="slider vertical slider-info"></div>
+										<div id="sv8" class="slider vertical slider-warning"></div>
+										<div id="sv9" class="slider vertical slider-danger"></div>
+										<div id="sv10" class="slider vertical"></div>
+										<div id="sv11" class="slider vertical"></div>
+										<div id="sv12" class="slider vertical"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>.slider-success</td>
+									<td>
+										<div class="slider sliderMin-1 slider-success"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>.slider-info</td>
+									<td>
+										<div class="slider sliderMin-2 slider-info"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>.slider-warning</td>
+									<td>
+										<div class="slider sliderMin-3 slider-warning"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>.slider-danger</td>
+									<td>
+										<div class="slider sliderMin-4 slider-danger"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>.slider-success</td>
+									<td>
+										<div class="slider sliderMin-5 slider-success"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>.slider-info</td>
+									<td>
+										<div class="slider sliderMin-6 slider-info"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>.slider-warning</td>
+									<td>
+										<div class="slider sliderMin-7 slider-warning"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>.slider-danger</td>
+									<td>
+										<div class="slider sliderMin-8 slider-danger"></div>
+									</td>
+								</tr>
+							</table>
+						</div>	
+					</div><!--/col-->
+				</div><!--/col-->
+				
+			</div><!--/row-->
+			
+			<div class="row">	
+				<div class="col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-tasks"></i>Sliders - slim</h2>
+						</div>
+						<div class="panel-body">
+							<table class="table">
+								<tr>
+									<td>basic</td>
+									<td>
+										<div class="slider slim sliderSimple"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>Minimum</td>
+									<td>
+										<div class="slider slim sliderMin"></div>
+										<div class="field_notice">Min: <span class="must sliderMinLabel">$180</span></div>
+									</td>
+								</tr>
+								<tr>
+									<td>Maximum</td>
+									<td>
+										<div class="slider slim sliderMax"></div>
+										<div class="field_notice">Max: <span class="must sliderMaxLabel">$280</span></div>
+									</td>
+								</tr>
+								<tr>
+									<td>Range</td>
+									<td>
+										<div class="slider slim sliderRange"></div>
+										<div class="field_notice">Price Range: <span class="must sliderRangeLabel">$192 - $470</span></div>
+									</td>
+								</tr>
+								<tr>
+									<td>Equalizer</td>
+									<td>
+										<div id="sv1s" class="slider vertical slim"></div>
+										<div id="sv2s" class="slider vertical slim"></div>
+										<div id="sv3s" class="slider vertical slim"></div>
+										<div id="sv4s" class="slider vertical slim"></div>
+										<div id="sv5s" class="slider vertical slim"></div>
+										<div id="sv6s" class="slider vertical slim"></div>
+										<div id="sv7s" class="slider vertical slim"></div>
+										<div id="sv8s" class="slider vertical slim"></div>
+										<div id="sv9s" class="slider vertical slim"></div>
+										<div id="sv10s" class="slider vertical slim"></div>
+										<div id="sv11s" class="slider vertical slim"></div>
+										<div id="sv12s" class="slider vertical slim"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>.slider-success</td>
+									<td>
+										<div class="slider slim sliderMin-1 slider-success"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>.slider-info</td>
+									<td>
+										<div class="slider slim sliderMin-2 slider-info"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>.slider-warning</td>
+									<td>
+										<div class="slider slim sliderMin-3 slider-warning"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>.slider-danger</td>
+									<td>
+										<div class="slider slim sliderMin-4 slider-danger"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>.slider-success</td>
+									<td>
+										<div class="slider slim sliderMin-5 slider-success"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>.slider-info</td>
+									<td>
+										<div class="slider slim sliderMin-6 slider-info"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>.slider-warning</td>
+									<td>
+										<div class="slider slim sliderMin-7 slider-warning"></div>
+									</td>
+								</tr>
+								<tr>
+									<td>.slider-danger</td>
+									<td>
+										<div class="slider slim sliderMin-8 slider-danger"></div>
+									</td>
+								</tr>
+							</table>
+						</div>	
+					</div><!--/col-->
+				</div><!--/col-->
+				
+			</div><!--/row-->
+			
+			<div class="row">
+				
+				<div class="col-md-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-tasks"></i>Progress Bars</h2>
+						</div>
+						<div class="panel-body">
+							<table class="table">
+								<tr>
+									<td>Basic</td>
+									<td>
+										<div class="progressbar simpleProgress">80</div>
+									</td>
+								</tr>
+								<tr>
+									<td>Progress</td>
+									<td>
+										<div class="progressbar progress-success progressAnimate"></div>
+										<div class="field_notice">Value: <span class="must progressAnimateValue">0%</span></div>
+									</td>
+								</tr>
+								<tr>
+									<td>Upload</td>
+									<td>
+										<div class="progressbar progress-info progressUploadAnimate"></div>
+										<div class="field_notice">Uploading: <span class="must progressUploadAnimateValue">0 Mb</span> / 4096 Gb</div>
+									</td>
+								</tr>
+								<tr>
+									<td>Upload</td>
+									<td>
+										<div class="progressbar progress-danger progressUploadAnimate"></div>
+										<div class="field_notice">Uploading: <span class="must progressUploadAnimateValue">0 Mb</span> / 4096 Gb</div>
+									</td>
+								</tr>
+								<tr>
+									<td>Upload</td>
+									<td>
+										<div class="progressbar progress-warning progressUploadAnimate"></div>
+										<div class="field_notice">Uploading: <span class="must progressUploadAnimateValue">0 Mb</span> / 4096 Gb</div>
+									</td>
+								</tr>
+								<tr>
+									<td>Upload</td>
+									<td>
+										<div class="progressbar progressUploadAnimate"></div>
+										<div class="field_notice">Uploading: <span class="must progressUploadAnimateValue">0 Mb</span> / 4096 Gb</div>
+									</td>
+								</tr>
+							</table>
+						</div>	
+					</div>	
+				</div><!--/col-->
+				
+				<div class="col-md-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-tasks"></i>Progress Bars Slim</h2>
+						</div>
+						<div class="panel-body">
+							<table class="table">
+								<tr>
+									<td>Basic</td>
+									<td>
+										<div class="progressbar slim simpleProgress progressGreen">80</div>
+									</td>
+								</tr>
+								<tr>
+									<td>Progress</td>
+									<td>
+										<div class="progressbar slim progress-success progressAnimate progressLightOrange"></div>
+										<div class="field_notice">Value: <span class="must progressAnimateValue">0%</span></div>
+									</td>
+								</tr>
+								<tr>
+									<td>Upload</td>
+									<td>
+										<div class="progressbar slim progress-info progressUploadAnimate"></div>
+										<div class="field_notice">Uploading: <span class="must progressUploadAnimateValue">0 Mb</span> / 4096 Gb</div>
+									</td>
+								</tr>
+								<tr>
+									<td>Upload</td>
+									<td>
+										<div class="progressbar slim progress-danger progressUploadAnimate"></div>
+										<div class="field_notice">Uploading: <span class="must progressUploadAnimateValue">0 Mb</span> / 4096 Gb</div>
+									</td>
+								</tr>
+								<tr>
+									<td>Upload</td>
+									<td>
+										<div class="progressbar slim progress-warning progressUploadAnimate"></div>
+										<div class="field_notice">Uploading: <span class="must progressUploadAnimateValue">0 Mb</span> / 4096 Gb</div>
+									</td>
+								</tr>
+								<tr>
+									<td>Upload</td>
+									<td>
+										<div class="progressbar slim progressUploadAnimate"></div>
+										<div class="field_notice">Uploading: <span class="must progressUploadAnimateValue">0 Mb</span> / 4096 Gb</div>
+									</td>
+								</tr>
+							</table>
+						</div>	
+					</div>	
+				</div><!--/col-->
+			
+			</div><!--/row-->
+							
+			<div class="row">	
+				<div class="col-md-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-tasks"></i>Standard Progress Bars</h2>
+							<div class="panel-actions">
+								<a href="#" class="btn-setting"><i class="fa fa-wrench"></i></a>
+								<a href="#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+								<a href="#" class="btn-close"><i class="fa fa-times"></i></a>
+							</div>
+						</div>
+						<div class="panel-body">
+							
+							<h3>Basic</h3>
+							
+							<div class="progress">
+								<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+									<span class="sr-only">60% Complete</span>
+								</div>
+							</div>
+							
+							<h3>With label</h3>
+							
+							<div class="progress">
+							  	<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+							    	60%
+							  	</div>
+							</div>
+							
+							<h3>Contextual alternatives</h3>
+							
+							<div class="progress">
+								<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+									<span class="sr-only">40% Complete (success)</span>
+								</div>
+							</div>
+							<div class="progress">
+								<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+									<span class="sr-only">20% Complete</span>
+								</div>
+							</div>
+							<div class="progress">
+								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+									<span class="sr-only">60% Complete (warning)</span>
+								</div>
+							</div>
+							<div class="progress">
+								<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+									<span class="sr-only">80% Complete</span>
+								</div>
+							</div>
+							
+							<h3>Striped</h3>
+							
+							<div class="progress progress-striped">
+								<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+									<span class="sr-only">40% Complete (success)</span>
+								</div>
+							</div>
+							<div class="progress progress-striped">
+								<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+									<span class="sr-only">20% Complete</span>
+								</div>
+							</div>
+							<div class="progress progress-striped">
+								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+									<span class="sr-only">60% Complete (warning)</span>
+							  </div>
+							</div>
+							<div class="progress progress-striped">
+								<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+									<span class="sr-only">80% Complete (danger)</span>
+								</div>
+							</div>
+							
+							<h3>Animated</h3>
+							
+							<div class="progress progress-striped active">
+								<div class="progress-bar"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+									<span class="sr-only">45% Complete</span>
+								</div>
+							</div>
+							
+							<h3>Stacked</h3>
+							
+							<div class="progress">
+								<div class="progress-bar progress-bar-success" style="width: 35%">
+									<span class="sr-only">35% Complete (success)</span>
+								</div>
+								<div class="progress-bar progress-bar-warning" style="width: 20%">
+									<span class="sr-only">20% Complete (warning)</span>
+								</div>
+								<div class="progress-bar progress-bar-danger" style="width: 10%">
+									<span class="sr-only">10% Complete (danger)</span>
+								</div>
+							</div>
+							
+						</div>	
+					</div>
+				</div><!--/col-->
+				<div class="col-md-6">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h2><i class="fa fa-tasks"></i>Thin Progress Bars</h2>
+							<div class="panel-actions">
+								<a href="#" class="btn-setting"><i class="fa fa-wrench"></i></a>
+								<a href="#" class="btn-minimize"><i class="fa fa-chevron-up"></i></a>
+								<a href="#" class="btn-close"><i class="fa fa-times"></i></a>
+							</div>
+						</div>
+						<div class="panel-body">
+							
+							<h3>Basic</h3>
+							
+							<div class="progress thin">
+								<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+									<span class="sr-only">60% Complete</span>
+								</div>
+							</div>
+							
+							<h3>With label</h3>
+							
+							<div class="progress thin">
+							  	<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+							    	60%
+							  	</div>
+							</div>
+							
+							<h3>Contextual alternatives</h3>
+							
+							<div class="progress thin">
+								<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+									<span class="sr-only">40% Complete (success)</span>
+								</div>
+							</div>
+							<div class="progress thin">
+								<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+									<span class="sr-only">20% Complete</span>
+								</div>
+							</div>
+							<div class="progress thin">
+								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+									<span class="sr-only">60% Complete (warning)</span>
+								</div>
+							</div>
+							<div class="progress thin">
+								<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+									<span class="sr-only">80% Complete</span>
+								</div>
+							</div>
+							
+							<h3>Striped</h3>
+							
+							<div class="progress thin progress-striped">
+								<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+									<span class="sr-only">40% Complete (success)</span>
+								</div>
+							</div>
+							<div class="progress thin progress-striped">
+								<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+									<span class="sr-only">20% Complete</span>
+								</div>
+							</div>
+							<div class="progress thin progress-striped">
+								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+									<span class="sr-only">60% Complete (warning)</span>
+							  </div>
+							</div>
+							<div class="progress thin progress-striped">
+								<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+									<span class="sr-only">80% Complete (danger)</span>
+								</div>
+							</div>
+							
+							<h3>Animated</h3>
+							
+							<div class="progress thin progress-striped active">
+								<div class="progress-bar"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+									<span class="sr-only">45% Complete</span>
+								</div>
+							</div>
+							
+							<h3>Stacked</h3>
+							
+							<div class="progress thin">
+								<div class="progress-bar progress-bar-success" style="width: 35%">
+									<span class="sr-only">35% Complete (success)</span>
+								</div>
+								<div class="progress-bar progress-bar-warning" style="width: 20%">
+									<span class="sr-only">20% Complete (warning)</span>
+								</div>
+								<div class="progress-bar progress-bar-danger" style="width: 10%">
+									<span class="sr-only">10% Complete (danger)</span>
+								</div>
+							</div>
+							
+						</div>	
+					</div>
+				</div><!--/col-->
+			</div><!--/row-->

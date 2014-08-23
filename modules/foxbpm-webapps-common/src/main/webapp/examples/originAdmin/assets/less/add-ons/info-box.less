@@ -1,0 +1,73 @@
+/* .info-box
+=================================================================== */
+.info-box {
+	min-height: 140px;
+	border: 1px solid black;
+	margin-bottom: 30px;
+	padding: 20px;
+	color: white;
+	.box-shadow-double(inset 0 0 1px 1px rgba(255,255,255,.35), 0 3px 1px -1px rgba(0,0,0,.1));
+	//.box-shadow(0 3px 1px -1px rgba(0,0,0,.1));
+	
+	i {
+		display: block;
+		height: 100px;
+		font-size: 60px;
+		line-height: 100px;
+		width: 100px;
+		float: left;
+		text-align: center;
+		border-right: 2px solid rgba(255,255,255,.5);
+		margin-right: 20px;
+		padding-right: 20px;
+		color: rgba(255,255,255,.75);
+	}
+	
+	.count {
+		margin-top: -10px;
+		font-size: 34px;
+		font-weight: 700;
+	}
+	
+	.title {
+		font-size: 12px;
+		text-transform: uppercase;
+		font-weight: 600;
+	}
+	
+	.desc {
+		margin-top: 10px;
+		font-size: 12px;
+	}
+	
+	&.danger {
+		@color: @danger;
+		background: @color;
+		border: 1px solid darken(@color, 10%);		
+	}
+	
+	&.warning {
+		@color: @warning;
+		background: @color;
+		border: 1px solid darken(@color, 10%);		
+	}
+	
+	&.primary {
+		@color: @primary;
+		background: @color;
+		border: 1px solid darken(@color, 10%);		
+	}
+	
+	&.info {
+		@color: @info;
+		background: @color;
+		border: 1px solid darken(@color, 10%);		
+	}
+	
+	&.success {
+		@color: @success;
+		background: @color;
+		border: 1px solid darken(@color, 10%);		
+	}
+	
+}

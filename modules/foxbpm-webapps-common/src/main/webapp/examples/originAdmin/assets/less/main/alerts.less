@@ -1,0 +1,46 @@
+/* Alerts
+=================================================================== */
+.alert {
+	.border-radius(2px);
+	border-color: transparent !important;
+}
+
+.alert-success {
+  	background: lighten(@success,35%);
+	border-color: @success;
+	color: darken(@success,20%);
+	
+	hr {
+		border-top-color: lighten(@success,10%);
+	}
+}
+
+.alert-info {
+  	background: lighten(@info,25%);
+	border-color: @info;
+	color: darken(@info,35%);
+	
+	hr {
+		border-top-color: lighten(@info,10%);
+	}
+}
+
+.alert-warning {
+  	background: lighten(@warning,30%);
+	border-color: @warning;
+	color: darken(@warning,25%);
+	
+	hr {
+		border-top-color: lighten(@warning,20%);
+	}
+}
+
+.alert-danger {
+  	background: lighten(@danger,25%);
+	border-color: @danger;
+	color: darken(@danger,30%);
+	
+	hr {
+		border-top-color: lighten(@danger,15%);
+	}
+}

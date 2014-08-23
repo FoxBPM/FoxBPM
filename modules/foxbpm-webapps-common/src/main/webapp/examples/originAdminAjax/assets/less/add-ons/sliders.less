@@ -1,0 +1,146 @@
+/* UI - Sliders
+=================================================================== */
+
+.slider {
+	background: @main;
+	border: none;
+	position: relative;
+	z-index: 10;
+	margin: 5px 0px !important;
+	.box-shadow(inset 0 1px 2px rgba(0, 0, 0, .1));
+	.border-radius(2px);
+	
+	.ui-slider-range {
+		.box-sizing(content-box);
+		background: @primary;
+		.box-shadow(inset 0 -1px 0 rgba(0, 0, 0, .15));
+		.border-radius(2px);
+	}
+	
+	.ui-slider-handle {
+		.border-radius(50em);
+		background: -webkit-linear-gradient(#f8f8f8, #eeeeee);
+		background: -o-linear-gradient(#f8f8f8, #eeeeee);
+		background: -moz-linear-gradient(#f8f8f8, #eeeeee);
+		background: linear-gradient(#f8f8f8, #eeeeee);
+		.box-shadow-double(inset 0 0 1px 1px rgba(255,255,255,1), 0 1px 1px rgba(0,0,0,.15));
+		border: 1px solid #d4d4d4;
+	}
+	
+	
+	&.slider-success {
+		
+		.ui-slider-range {
+			background: @success;
+		}
+
+	}
+	
+	&.slider-info {
+		
+		.ui-slider-range {
+			background: @info;
+		}
+		
+	}
+	
+	&.slider-warning {
+		
+		.ui-slider-range {
+			background: @warning;
+		}
+
+	}
+	
+	&.slider-danger {
+		
+		.ui-slider-range {
+			background: @danger;
+		}
+
+	}
+	
+	&.slim {
+		height: 6px;
+		
+		.ui-slider-handle {
+			margin-top: -1px;
+			height: 14px;
+			width: 14px;			
+		}
+	}
+		
+	&.vertical {
+		float: left;
+	    height: 100px;
+	    margin: 10px 20px !important;
+	
+		.ui-slider-handle {
+			margin-left: -3px;
+		}
+		
+		&.slim {
+			width: 6px;
+			
+			.ui-slider-handle {
+				margin-left: -4px;
+			}
+		}
+	}
+}
+
+/* UI - Progress Bars
+=================================================================== */
+
+.progressbar {
+	background: @main;
+	color: @border;
+	border: none;
+	height: 12px;
+	position: relative;
+	.box-shadow(inset 0 1px 2px rgba(0, 0, 0, .1));
+	.border-radius(2px);
+	
+	.ui-progressbar-value {
+		background: @primary;
+		border: none;
+		height: 100%;
+		top: 1px;
+		position: absolute;
+		left: 1px;
+		.border-radius(50em);
+		.box-shadow(inset 0 -1px 0 rgba(0, 0, 0, .15));
+	}
+	
+	&.progress-success {
+		
+		.ui-progressbar-value {
+			background: @success;
+		}
+	}
+	
+	&.progress-info {
+		
+		.ui-progressbar-value {
+			background: @info;
+		}
+	}
+	
+	&.progress-warning {
+		
+		.ui-progressbar-value {
+			background: @warning;
+		}
+	}
+	
+	&.progress-danger {
+		
+		.ui-progressbar-value {
+			background: @danger;
+		}
+	}
+	
+	&.slim {
+		height: 6px;
+	}	
+}

@@ -1,0 +1,92 @@
+<script>
+	loadCSS("assets/plugins/gritter/css/jquery.gritter.css");
+	
+	var requireJS = [
+		"assets/plugins/gritter/js/jquery.gritter.min.js"
+	]; 
+	
+	loadJS(requireJS, "assets/js/pages/ui-notifications.js");
+	
+</script>
+			
+			<ol class="breadcrumb">
+			  	<li><a href="#">Origin</a></li>
+				<li><a href="#">UI Features</a></li>
+			  	<li class="active">Notofications</li>
+			</ol>
+			
+			<div class="row">
+				<div class="col-md-6">
+					<div class="panel panel-default">
+					  	<div class="panel-heading">
+					    	<h3 class="panel-title">Growl Like Notifications</h3>
+					  	</div>
+					  	<div class="panel-body">
+							<!-- Button trigger gritter -->
+							<button class="btn btn-primary" id="add-regular"><i class="fa fa-bell"></i> Regular</button>
+							<!-- Button trigger gritter -->
+							<button class="btn btn-primary" id="add-sticky"><i class="fa fa-bell"></i> Sticky</button>
+							<!-- Button trigger gritter -->
+							<button class="btn btn-primary" id="add-without-image"><i class="fa fa-bell"></i> w/o image</button>
+							<!-- Button trigger gritter -->
+							<button class="btn btn-primary" id="add-gritter-light"><i class="fa fa-bell"></i> White</button>
+							<!-- Button trigger gritter -->
+							<button class="btn btn-primary" id="remove-all"><i class="fa fa-bell"></i> Remove All</button>
+					  	</div>
+					</div>
+				</div><!--/col-->
+				<div class="col-md-6">
+					<div class="panel panel-default">
+					  	<div class="panel-heading">
+					    	<h3 class="panel-title">Growl Like Notifications - Colors</h3>
+					  	</div>
+					  	<div class="panel-body">
+							<!-- Button trigger gritter -->
+							<button class="btn btn-default" id="add-gritter-default">Default</button>
+							<!-- Button trigger gritter -->
+							<button class="btn btn-primary" id="add-gritter-primary">Primary</button>
+							<!-- Button trigger gritter -->
+							<button class="btn btn-success" id="add-gritter-success">Success</button>
+							<!-- Button trigger gritter -->
+							<button class="btn btn-info" id="add-gritter-info">Info</button>
+							<!-- Button trigger gritter -->
+							<button class="btn btn-danger" id="add-gritter-danger">Danger</button>
+							<!-- Button trigger gritter -->
+							<button class="btn btn-warning" id="add-gritter-warning">Warning</button>
+					  	</div>
+					</div>
+				</div><!--/col-->
+				<div class="col-md-6">
+					<div class="panel panel-default">
+					  	<div class="panel-heading">
+					    	<h3 class="panel-title">Growl Like Notifications - Position</h3>
+					  	</div>
+					  	<div class="panel-body">
+							<!-- Button trigger gritter -->
+							<button class="btn btn-warning" id="add-gritter-top-right">Top Right (default)</button>
+							<!-- Button trigger gritter -->
+							<button class="btn btn-warning" id="add-gritter-bottom-right">Bottom Right</button>
+							<!-- Button trigger gritter -->
+							<button class="btn btn-warning" id="add-gritter-bottom-left">Bottom Left</button>
+							<!-- Button trigger gritter -->
+							<button class="btn btn-warning" id="add-gritter-top-left">Top Left</button>
+					  	</div>
+					</div>
+				</div><!--/col-->
+				<div class="col-md-6">
+					<div class="panel panel-default">
+					  	<div class="panel-heading">
+					    	<h3 class="panel-title">Growl Like Notifications - Social</h3>
+					  	</div>
+					  	<div class="panel-body">
+							<button style="margin-bottom: 4px" class="btn btn-facebook" id="add-gritter-facebook"><span>Facebook</span></button>
+							<button style="margin-bottom: 4px" class="btn btn-twitter" id="add-gritter-twitter"><span>Twitter</span></button>
+							<button style="margin-bottom: 4px" class="btn btn-linkedin" id="add-gritter-linkedin"><span>LinkedIn</span></button>	
+							<button style="margin-bottom: 4px" class="btn btn-google-plus" id="add-gritter-google-plus"><span>Google+</span></button>
+							<button style="margin-bottom: 4px" class="btn btn-instagram" id="add-gritter-instagram"><span>Instagram</span></button>
+							<button style="margin-bottom: 4px" class="btn btn-pinterest" id="add-gritter-pinterest"><span>Pinterest</span></button>			
+					  	</div>
+					</div>
+				</div><!--/col-->
+			</div><!--/row-->
+			

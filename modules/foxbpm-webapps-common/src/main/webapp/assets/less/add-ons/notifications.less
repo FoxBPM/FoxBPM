@@ -1,0 +1,270 @@
+/* the norm */
+#gritter-notice-wrapper {
+	position:fixed;
+	top:20px;
+	right:20px;
+	width:301px;
+	z-index:9999;	
+}
+
+.gritter-item-wrapper {
+	position:relative;
+	margin: 0 0 10px 0;
+	padding: 0;
+	background: none;
+}
+.gritter-top, .gritter-bottom {
+	display: none;
+}
+
+.gritter-item {
+	background: rgba(0,0,0,.8);
+	border: 1px solid rgba(0,0,0,.8);
+	color:white;
+	padding: 10px 15px;
+	font-size: 12px;
+	font-family:inherit;
+	.box-shadow(0 2px 1px -1px rgba(0,0,0,.1));
+}
+
+.gritter-item p {
+	padding:0 20px 0 0;
+}
+
+.gritter-close {
+	display: inline !important;
+	top:6px;
+	left: auto;
+	right:5px;
+	background:none;
+	filter: alpha(opacity=20);
+	opacity: .2;
+		
+	&:after {
+		width: 100%;
+		height: 100%;
+		color: white;
+		content: '×';
+		position:absolute;
+		top: 0;
+		left: 0;
+		text-indent:0;
+		line-height: 26px;
+		text-align: center;
+		font-size: 21px;
+		font-weight: 800;
+		text-shadow: 0 1px 0 black;
+	}
+	
+	&:hover {
+		filter: alpha(opacity=50);
+		opacity: .5;
+	}	
+}
+
+.gritter-title {
+	text-shadow: none;
+}
+
+.gritter-image {
+	margin-left: -5px;
+}
+
+.gritter-icon {
+	
+	.gritter-title {
+		padding:0 20px 0 40px;
+		
+		i {
+			position: absolute;
+			left: 10px;
+			top: 15px;
+			font-size: 40px;
+			width: 40px;
+			text-align: center;
+			display: block;
+		}
+	}
+	
+	.gritter-item p {
+		padding:0 20px 0 40px;
+		
+		
+	}
+	
+}
+
+.gritter-light .gritter-item {
+  	background: white;
+ 	color: @mainText;
+	border: 1px solid @border;
+}
+
+.gritter-light .gritter-close {
+	background: white;
+	
+	&:after {
+		color: #000;
+		text-shadow: 0 1px 0 #fff;
+	}
+}
+
+.gritter-default {
+	
+	.gritter-item {
+  		background: @heading;
+ 		color: @mainText;
+		border: 1px solid @border;
+		.box-shadow-double(inset 0 0 1px 1px rgba(255,255,255,1), 0 2px 1px -1px rgba(0,0,0,.1));
+	}
+	
+	.gritter-close {
+
+		&:after {
+			color: @mainText;
+			text-shadow: none;
+		}
+	}
+}
+
+.gritter-primary {
+	@color: @primary;
+	
+	.gritter-item {
+  		background: @color;
+ 		color: white;
+		border: 1px solid @color;
+	}
+}
+
+.gritter-success {
+	@color: @success;
+	
+	.gritter-item {
+  		background: @color;
+ 		color: white;
+		border: 1px solid @color;
+	}
+}
+
+.gritter-info {
+	@color: @info;
+	
+	.gritter-item {
+  		background: @color;
+ 		color: white;
+		border: 1px solid @color;
+	}
+}
+
+.gritter-danger {
+	@color: @danger;
+	
+	.gritter-item {
+  		background: @color;
+ 		color: white;
+		border: 1px solid @color;
+	}
+}
+
+.gritter-warning {
+	@color: @warning;
+	
+	.gritter-item {
+  		background: @color;
+ 		color: white;
+		border: 1px solid @color;
+	}
+} 
+
+.gritter-primary, .gritter-success, .gritter-info, .gritter-danger, .gritter-warning {
+	.gritter-close {
+		opacity: 1;
+
+		&:after {
+			color: white;
+			text-shadow: none;
+		}
+	}
+}
+
+.gritter-facebook {
+	@color: @facebook;
+	
+	.gritter-item {
+  		background: @color;
+ 		color: white;
+		border: 1px solid @color;
+	}
+}
+
+.gritter-twitter {
+	@color: @twitter;
+	
+	.gritter-item {
+  		background: @color;
+ 		color: white;
+		border: 1px solid @color;
+	}
+}
+
+.gritter-linkedin {
+	@color: @linkedin;
+	
+	.gritter-item {
+  		background: @color;
+ 		color: white;
+		border: 1px solid @color;
+	}
+}
+
+.gritter-tumblr {
+	@color: @tumblr;
+	
+	.gritter-item {
+  		background: @color;
+ 		color: white;
+		border: 1px solid @color;
+	}
+}
+
+.gritter-google-plus {
+	@color: @google-plus;
+	
+	.gritter-item {
+  		background: @color;
+ 		color: white;
+		border: 1px solid @color;
+	}
+}
+
+.gritter-instagram {
+	@color: @instagram;
+	
+	.gritter-item {
+  		background: @color;
+ 		color: white;
+		border: 1px solid @color;
+	}
+}
+
+.gritter-pinterest {
+	@color: @pinterest;
+	
+	.gritter-item {
+  		background: @color;
+ 		color: white;
+		border: 1px solid @color;
+	}
+}
+
+.gritter-facebook, .gritter-twitter, .gritter-linkedin, .gritter-tumblr, .gritter-google-plus, .gritter-instagram, .gritter-pinterest {
+	.gritter-close {
+		opacity: 1;
+
+		&:after {
+			color: white;
+			text-shadow: none;
+		}
+	}
+} 

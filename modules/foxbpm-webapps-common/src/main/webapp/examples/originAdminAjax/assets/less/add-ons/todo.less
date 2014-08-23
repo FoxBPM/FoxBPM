@@ -1,0 +1,89 @@
+/* ToDo List
+=================================================================== */
+.todo-list {
+	margin-top: -1px;
+	
+	.header {
+		background: @heading;
+		line-height: 30px;
+		padding: 0 15px;
+		border-top: 1px solid @border;
+		border-bottom: 1px solid @border;
+		.box-shadow(inset 0 0 1px 1px rgba(255,255,255,1));
+	}
+	
+	ul {
+		margin: 0;
+		padding: 5px 0 0 0;
+		list-style: none;
+		
+		li {
+			position: relative;
+			line-height: 40px;
+			border-bottom: 1px solid @border;
+			overflow: hidden;
+			padding: 0 15px 0 25px;
+			background: white;
+			
+			&:before, &:after {
+				position: absolute;
+				content: '';
+				height: 25px;
+				width: 3px;
+				border-left: 1px dotted @border;
+				border-right: 1px dotted @border;
+				top: 10px;
+			}
+			
+			&:before {
+				left: 8px;
+			}
+			
+			&:after {
+				left: 10px;
+			}
+			
+			&:first-child {
+				margin-top: -5px;
+			}
+			
+			&:last-child {
+				border-bottom: none;
+			}
+			
+			.desc {
+				display: inline-block;
+				margin-top: 3px;
+			}
+			
+			.custom-checkbox-item {
+				margin: 1px 0 4px 0;
+			}
+		}
+		
+		&.completed {
+			color: @border;
+			
+			&:empty {
+				padding: 0 !important;
+				text-align: center;
+				
+				height: 40px;
+				line-height: 40px;
+				
+				&:before {
+					content: 'No completed tasks';
+					
+				}
+			}
+			
+			li {
+				text-decoration: line-through;
+			}
+		}
+		
+		&:empty {
+			padding: 5px;
+		}
+	} 
+}

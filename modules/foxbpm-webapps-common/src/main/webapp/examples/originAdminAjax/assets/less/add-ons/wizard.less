@@ -1,0 +1,117 @@
+/* Wizard
+=================================================================== */
+.wizard-type1 {
+	margin-top: -55px;
+	
+	.progress {
+		height: 4px;
+		margin: 1px -15px 0 -15px;
+	}
+	
+	ul.steps {
+		margin: 0 -15px;
+		line-height: 39px;
+		height: 39px;
+		background: @main;
+		overflow: hidden;
+		
+		li {
+			margin: 0;
+			
+			a {
+				padding: 0 10px;
+				height: 39px;
+				.border-radius;
+				color: @mainText;
+				margin: 0;
+				font-size: 12px;
+				
+				.badge {
+					background-color: @border;
+					color: @mainText;
+					margin-right: 5px;
+				}
+				
+			}
+			&.active a {
+				background: white;
+				border-left: 1px solid @border;
+				border-right: 1px solid @border;
+				margin: 0 -1px;
+				
+				.badge {
+					background-color: @primary;
+					color: white;
+				}
+			}
+			
+			&.complete a {
+				background: white;
+				
+				.badge {
+					background-color: @success;
+					color: white;
+				}
+			}	
+		}		
+	}
+	
+	.tab-pane {
+		padding: 15px 0;
+	}
+	
+	.actions {
+		border-top: 1px solid @border;
+		background: @main;
+		margin: 0 -15px -15px -15px;
+		padding: 15px;
+	}
+
+}
+
+.wizard-type2 {
+	margin-top: -55px;
+	
+	.progress {
+		height: 4px;
+		margin: 10px -5px 0 -5px;
+	}
+	
+	ul.steps {
+		margin: 0 -15px;
+		line-height: 40px;
+		height: 40px;
+		overflow: hidden;
+		
+		li {
+			margin: 0;
+			
+			a {
+				padding: 0 20px;
+				height: 40px;
+				.border-radius;
+				color: @border;
+				margin: 0;
+				font-size: 12px;
+				font-weight: 300;				
+			}
+			
+			&.active a {
+				background: transparent;
+				color: darken(@main,40%);
+				border-bottom: 1px solid darken(@main,40%);
+			}
+			
+			&.complete a {
+				background: transparent;
+				color: @success;
+				border-bottom: 1px solid @success;
+			}	
+		}		
+	}
+	
+	.tab-pane {
+		padding: 15px 0;
+	}
+
+}

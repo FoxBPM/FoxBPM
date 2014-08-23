@@ -1,0 +1,406 @@
+<script>
+	loadCSS("assets/plugins/jquery-ui/css/jquery-ui-1.10.4.min.css");
+	loadCSS("assets/plugins/chosen/css/chosen.css");
+	
+	var requireJS = [
+		"assets/plugins/jquery-ui/js/jquery-ui-1.10.4.min.js",
+		"assets/plugins/chosen/js/chosen.jquery.min.js",
+		"assets/plugins/autosize/jquery.autosize.min.js",
+		"assets/plugins/placeholder/jquery.placeholder.min.js",
+		"assets/plugins/maskedinput/jquery.maskedinput.min.js",
+		"assets/plugins/wizard/jquery.bootstrap.wizard.min.js"
+	]; 
+	
+	loadJS(requireJS, "assets/js/pages/form-wizard.js");	
+</script>
+
+			<div class="row">
+				
+				<div class="col-md-6">
+					<div class="panel panel-default">
+						<div class="panel-heading"></div>
+						<div class="panel-body">
+							
+							<div id="wizard1" class="wizard-type1">
+								<ul class="steps">
+								  	<li><a href="#tab11" data-toggle="tab"><span class="badge badge-info">1</span> First</a></li>
+									<li><a href="#tab12" data-toggle="tab"><span class="badge badge-info">2</span> Second</a></li>
+									<li><a href="#tab13" data-toggle="tab"><span class="badge badge-info">3</span> Third</a></li>
+									<li><a href="#tab14" data-toggle="tab"><span class="badge badge-info">4</span> Forth</a></li>
+								</ul>
+								<div class="progress thin">
+									<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+									</div>
+								</div>
+								
+								<h3>Twitter Bootstrap Wizard Plugin <small>with validation</small></h3>
+								<p><small>This twitter bootstrap plugin builds a wizard out of a formatter tabbable structure. It allows to build a wizard functionality using buttons to go through the different wizard steps and using events allows to hook into each step individually.</small></p>
+								
+								<div class="tab-content">
+								    <div class="tab-pane" id="tab11">
+										<form class="form-horizontal" role="form">
+											<div class="form-group">
+							                    <label class="col-md-3 control-label" for="email-w1">Email</label>
+							                    <div class="col-md-9">
+							                        <input type="email" id="email-w1" name="email-w1" class="form-control" placeholder="Enter Email..">
+							                        <span class="help-block">Please enter your email</span>
+							                    </div>
+							                </div>
+							                <div class="form-group">
+							                    <label class="col-md-3 control-label" for="password-w1">Password</label>
+							                    <div class="col-md-9">
+							                        <input type="password" id="password-w1" name="password-w1" class="form-control" placeholder="Enter Password..">
+							                        <span class="help-block">Please enter your password</span>
+							                    </div>
+							                </div>
+								    	</form>	
+								    </div>
+								    <div class="tab-pane" id="tab12">
+								 		<div class="row">
+
+											<div class="col-sm-12">
+
+												<div class="form-group has-feedback">
+											    	<label for="name-w1">Name</label>
+											    	<input type="text" class="form-control" id="name-w1" placeholder="Enter your name">
+													<span class="fa fa-asterisk form-control-feedback"></span>
+											  	</div>
+
+											</div>
+
+										</div><!--/row-->
+
+										<div class="row">
+
+											<div class="col-sm-12">
+
+												<div class="form-group has-feedback">
+											    	<label for="ccnumber-w1">Credit Card Number</label>
+											    	<input type="text" class="form-control" id="ccnumber-w1" placeholder="0000 0000 0000 0000">
+													<span class="fa fa-asterisk form-control-feedback"></span>
+											  	</div>
+
+											</div>
+
+										</div><!--/row-->
+
+										<div class="row">
+
+									  		<div class="form-group col-sm-4">
+									    		<label for="ccmonth-w1">Month</label>
+									    		<select class="form-control" id="ccmonth-w1">
+												  	<option>1</option>
+												  	<option>2</option>
+												  	<option>3</option>
+												  	<option>4</option>
+												  	<option>5</option>
+													<option>6</option>
+												  	<option>7</option>
+												  	<option>8</option>
+												  	<option>9</option>
+												  	<option>10</option>
+													<option>11</option>
+													<option>12</option>
+												</select>
+									  		</div>
+
+											<div class="form-group col-sm-4">
+									    		<label for="ccyear-w1">Year</label>
+									    		<select class="form-control" id="ccyear-w1">
+												  	<option>2014</option>
+												  	<option>2015</option>
+												  	<option>2016</option>
+												  	<option>2017</option>
+												  	<option>2018</option>
+													<option>2019</option>
+												  	<option>2020</option>
+												  	<option>2021</option>
+												  	<option>2022</option>
+												  	<option>2023</option>
+													<option>2024</option>
+													<option>2025</option>
+												</select>
+									  		</div>
+
+											<div class="col-sm-4">
+
+												<div class="form-group has-feedback">
+										    		<label for="cvv-w1">CVV/CVC</label>
+										    		<input type="text" class="form-control" id="cvv-w1" placeholder="123">
+													<span class="fa fa-asterisk form-control-feedback"></span>
+										  		</div>
+
+											</div>
+
+										</div><!--/row-->
+								    </div>
+									<div class="tab-pane" id="tab13">
+										<div class="form-group">
+									    	<label for="company-w1">Company</label>
+									    	<input type="text" class="form-control" id="company-w1" placeholder="Enter your company name">
+									  	</div>
+
+										<div class="form-group">
+									    	<label for="vat-w1">VAT</label>
+									    	<input type="text" class="form-control" id="vat-w1" placeholder="PL1234567890">
+									  	</div>
+
+										<div class="form-group">
+									    	<label for="street-w1">Street</label>
+									    	<input type="text" class="form-control" id="street-w1" placeholder="Enter street name">
+									  	</div>
+
+										<div class="row">
+
+									  		<div class="form-group col-sm-8">
+										    	<label for="city-w1">City</label>
+										    	<input type="text" class="form-control" id="city-w1" placeholder="Enter your city">
+										  	</div>
+
+											<div class="form-group col-sm-4">
+										    	<label for="postal-code-w1">Postal Code</label>
+										    	<input type="text" class="form-control" id="postal-code-w1" placeholder="Postal Code">
+										  	</div>
+
+										</div><!--/row-->
+
+										<div class="form-group">
+									    	<label for="country-w1">Country</label>
+									    	<input type="text" class="form-control" id="country-w1" placeholder="Country name">
+									  	</div>
+								    </div>
+									<div class="tab-pane" id="tab14">
+										<h2>Title</h2>
+										<p>
+											Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+										</p>
+										<h2>Title</h2>
+										<p>
+											Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+										</p>
+										<h2>Title</h2>
+										<p>
+											Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+										</p>
+										<h2>Title</h2>
+										<p>
+											Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+										</p>
+										
+										<div class="form-group">
+											<div class="checkbox">
+					                            <label for="checkbox1-w1">
+					                            <input type="checkbox" id="checkbox1-w1" name="checkbox1-w1" value="option1"> I agree with <a href="#">Terms of Service</a>
+					                            </label>
+					                        </div>
+										</div>
+								    </div>
+						
+								</div>
+								
+								<div class="actions">
+								
+									<input type="button" class="btn btn-default button-previous" name="prev" value="Prev" />
+									<input type="button" class="btn btn-success button-next" name="next" value="Next" />
+									<input type="button" class="btn btn-primary button-finish" name="finish" value="Finish" style="display:none"/>
+								</div>
+									
+							</div>
+
+						</div>
+
+					</div>
+					
+				</div><!--/col-->
+				
+				<div class="col-md-6">
+					<div class="panel panel-default">
+						<div class="panel-heading"></div>
+						<div class="panel-body">
+							
+							<div id="wizard2" class="wizard-type2">
+								<ul class="steps">
+								  	<li><a href="#tab21" data-toggle="tab">First</a></li>
+									<li><a href="#tab22" data-toggle="tab">Second</a></li>
+									<li><a href="#tab23" data-toggle="tab">Third</a></li>
+									<li><a href="#tab24" data-toggle="tab">Forth</a></li>
+								</ul>
+								<div class="progress thin">
+									<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+									</div>
+								</div>
+								<h3>Twitter Bootstrap Wizard Plugin <small>without validation</small></h3>
+								<p><small>This twitter bootstrap plugin builds a wizard out of a formatter tabbable structure. It allows to build a wizard functionality using buttons to go through the different wizard steps and using events allows to hook into each step individually.</small></p>
+								<div class="tab-content">
+								    <div class="tab-pane" id="tab21">
+										<form class="form-horizontal" role="form">
+											<div class="form-group">
+							                    <label class="col-md-3 control-label" for="email-w2">Email</label>
+							                    <div class="col-md-9">
+							                        <input type="email" id="email-w2" name="email-w2" class="form-control" placeholder="Enter Email..">
+							                        <span class="help-block">Please enter your email</span>
+							                    </div>
+							                </div>
+							                <div class="form-group">
+							                    <label class="col-md-3 control-label" for="password-w2">Password</label>
+							                    <div class="col-md-9">
+							                        <input type="password" id="password-w2" name="password-w2" class="form-control" placeholder="Enter Password..">
+							                        <span class="help-block">Please enter your password</span>
+							                    </div>
+							                </div>
+								    	</form>	
+								    </div>
+								    <div class="tab-pane" id="tab22">
+								 		<div class="row">
+
+											<div class="col-sm-12">
+
+												<div class="form-group has-feedback">
+											    	<label for="name-w2">Name</label>
+											    	<input type="text" class="form-control" id="name-w2" placeholder="Enter your name">
+													<span class="fa fa-asterisk form-control-feedback"></span>
+											  	</div>
+
+											</div>
+
+										</div><!--/row-->
+
+										<div class="row">
+
+											<div class="col-sm-12">
+
+												<div class="form-group has-feedback">
+											    	<label for="ccnumber-w2">Credit Card Number</label>
+											    	<input type="text" class="form-control" id="ccnumber-w2" placeholder="0000 0000 0000 0000">
+													<span class="fa fa-asterisk form-control-feedback"></span>
+											  	</div>
+
+											</div>
+
+										</div><!--/row-->
+
+										<div class="row">
+
+									  		<div class="form-group col-sm-4">
+									    		<label for="ccmonth-w2">Month</label>
+									    		<select class="form-control" id="ccmonth-w2">
+												  	<option>1</option>
+												  	<option>2</option>
+												  	<option>3</option>
+												  	<option>4</option>
+												  	<option>5</option>
+													<option>6</option>
+												  	<option>7</option>
+												  	<option>8</option>
+												  	<option>9</option>
+												  	<option>10</option>
+													<option>11</option>
+													<option>12</option>
+												</select>
+									  		</div>
+
+											<div class="form-group col-sm-4">
+									    		<label for="ccyear-w2">Year</label>
+									    		<select class="form-control" id="ccyear-w2">
+												  	<option>2014</option>
+												  	<option>2015</option>
+												  	<option>2016</option>
+												  	<option>2017</option>
+												  	<option>2018</option>
+													<option>2019</option>
+												  	<option>2020</option>
+												  	<option>2021</option>
+												  	<option>2022</option>
+												  	<option>2023</option>
+													<option>2024</option>
+													<option>2025</option>
+												</select>
+									  		</div>
+
+											<div class="col-sm-4">
+
+												<div class="form-group has-feedback">
+										    		<label for="cvv-w2">CVV/CVC</label>
+										    		<input type="text" class="form-control" id="cvv-w2" placeholder="123">
+													<span class="fa fa-asterisk form-control-feedback"></span>
+										  		</div>
+
+											</div>
+
+										</div><!--/row-->
+								    </div>
+									<div class="tab-pane" id="tab23">
+										<div class="form-group">
+									    	<label for="company-w2">Company</label>
+									    	<input type="text" class="form-control" id="company-w2" placeholder="Enter your company name">
+									  	</div>
+
+										<div class="form-group">
+									    	<label for="vat-w2">VAT</label>
+									    	<input type="text" class="form-control" id="vat-w2" placeholder="PL1234567890">
+									  	</div>
+
+										<div class="form-group">
+									    	<label for="street-w2">Street</label>
+									    	<input type="text" class="form-control" id="street-w2" placeholder="Enter street name">
+									  	</div>
+
+										<div class="row">
+
+									  		<div class="form-group col-sm-8">
+										    	<label for="city-w2">City</label>
+										    	<input type="text" class="form-control" id="city-w2" placeholder="Enter your city">
+										  	</div>
+
+											<div class="form-group col-sm-4">
+										    	<label for="postal-code-w2">Postal Code</label>
+										    	<input type="text" class="form-control" id="postal-code-w2" placeholder="Postal Code">
+										  	</div>
+
+										</div><!--/row-->
+
+										<div class="form-group">
+									    	<label for="country-w2">Country</label>
+									    	<input type="text" class="form-control" id="country-w2" placeholder="Country name">
+									  	</div>
+								    </div>
+									<div class="tab-pane" id="tab24">
+										<h2>Title</h2>
+										<p>
+											Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+										</p>
+										<h2>Title</h2>
+										<p>
+											Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+										</p>
+										<h2>Title</h2>
+										<p>
+											Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+										</p>
+										<h2>Title</h2>
+										<p>
+											Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+										</p>
+										
+										<div class="form-group">
+											<div class="checkbox">
+					                            <label for="checkbox1-w2">
+					                            <input type="checkbox" id="checkbox1-w2" name="checkbox1-w2" value="option1"> I agree with <a href="#">Terms of Service</a>
+					                            </label>
+					                        </div>
+										</div>
+								    </div>
+									
+									<input type="button" class="btn btn-default button-previous" name="prev" value="Prev" />
+									<input type="button" class="btn btn-success button-next" name="next" value="Next" />
+									<input type="button" class="btn btn-primary button-finish" name="finish" value="Finish" style="display:none"/>
+								</div>	
+							</div>
+
+						</div>
+
+					</div>
+					
+				</div><!--/col-->
+
+			</div><!--/row-->
