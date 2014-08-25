@@ -25,10 +25,10 @@ public class DataResult {
 
 	Object data;
 	long total;
-	int start;
+	int pageIndex;
+	int pageSize;
 	String sort;
 	String order;
-	int size;
 
 	public Object getData() {
 		return data;
@@ -41,18 +41,6 @@ public class DataResult {
 
 	public long getTotal() {
 		return total;
-	}
-
-	public void setTotal(long total) {
-		this.total = total;
-	}
-
-	public int getStart() {
-		return start;
-	}
-
-	public void setStart(int start) {
-		this.start = start;
 	}
 
 	public String getSort() {
@@ -71,11 +59,25 @@ public class DataResult {
 		this.order = order;
 	}
 
-	public int getSize() {
-		return size;
+	public int getPageIndex() {
+		return pageIndex;
 	}
 
-	public void setSize(int size) {
-		this.size = size;
+	public void setPageIndex(int pageIndex) {
+		this.pageIndex = pageIndex;
 	}
+
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+
+	public void setTotal(long total) {
+		this.total = total;
+	}
+	
+	
 }

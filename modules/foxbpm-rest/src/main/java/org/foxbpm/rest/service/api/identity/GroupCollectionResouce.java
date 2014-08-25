@@ -49,7 +49,6 @@ public class GroupCollectionResouce extends AbstractRestResource{
 		//数据响应体构造
 		DataResult result = new DataResult();
 		result.setData(groupEntitys);
-		result.setStart(0);
 		result.setTotal(groupEntitys.size());
 		return result;
 	}

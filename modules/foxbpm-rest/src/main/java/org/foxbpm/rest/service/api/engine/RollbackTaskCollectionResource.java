@@ -67,7 +67,6 @@ public class RollbackTaskCollectionResource extends AbstractRestResource{
 		}
 		DataResult result = new DataResult();
 		result.setData(resultList);
-		result.setStart(0);
 		result.setTotal(resultList.size());
 		return result;
 	}

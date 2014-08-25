@@ -48,7 +48,6 @@ public class VariableDefinitonResouces extends AbstractRestResource {
 		}
 		DataResult result = new DataResult();
 		result.setData(results);
-		result.setStart(0);
 		result.setTotal(dataVariableDefinitions.size());
 		return result;
 	}

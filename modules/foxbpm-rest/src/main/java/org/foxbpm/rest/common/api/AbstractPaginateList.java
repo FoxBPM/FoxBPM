@@ -66,11 +66,8 @@ public abstract class AbstractPaginateList {
 
 		List list = processList(query.listPage(start, size));
 		DataResult response = new DataResult();
-		response.setStart(start);
-		response.setSize(list.size());
 		response.setSort(sort);
 		response.setOrder(order);
-		response.setTotal(query.count());
 		response.setData(list);
 		return response;
 	}

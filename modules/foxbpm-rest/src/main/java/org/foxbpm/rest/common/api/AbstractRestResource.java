@@ -19,7 +19,16 @@ package org.foxbpm.rest.common.api;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.query.Query;
+import org.foxbpm.rest.common.RestConstants;
 import org.restlet.data.Form;
 import org.restlet.resource.ServerResource;
 
@@ -30,6 +39,8 @@ import org.restlet.resource.ServerResource;
  */
 public abstract class AbstractRestResource extends ServerResource {
 
+	protected int pageIndex = 1;
+	protected int pageSize = 15;
 	protected String getQueryParameter(String name, Form query) {
 		return query.getFirstValue(name);
 	}
@@ -47,5 +58,34 @@ public abstract class AbstractRestResource extends ServerResource {
 			}
 		}
 		return null;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public DataResult paginateList(Query query) {
+
+		Form form = getQuery();
+		Set<String> names = form.getNames();
+		if (names.contains(RestConstants.PAGE_INDEX)) {
+			pageIndex = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_INDEX, form));
+		}
+		if(names.contains(RestConstants.PAGE_SIZE)){
+			pageSize = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_SIZE, form));
+		}
+		
+		List<PersistentObject> resultObjects = query.listPagination(pageIndex,pageSize);
+		List<Map<String, Object>> dataMap = new ArrayList<Map<String,Object>>();
+		if(resultObjects != null){
+			Iterator<PersistentObject> iterator = resultObjects.iterator();
+			while(iterator.hasNext()){
+				dataMap.add(iterator.next().getPersistentState());
+			}
+		}
+		
+		DataResult result = new DataResult();
+		result.setData(dataMap);
+		result.setPageIndex(pageIndex);
+		result.setPageSize(pageSize);
+		result.setTotal(query.count());
+		return result;
 	}
 }

@@ -66,7 +66,6 @@ public class ProcessDefinitionCollectionResouce extends AbstractRestResource {
 		}
 		DataResult result = new DataResult();
 		result.setData(results);
-		result.setStart(0);
 		result.setTotal(processDefinitions.size());
 		return result;
 	}

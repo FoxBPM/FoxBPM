@@ -35,4 +35,12 @@ public interface RestConstants {
 	final static String CATEGORY = "category";
 	final static String NAME = "name";
 	final static String NAME_LIKE = "nameLike";
+	
+	final static String PAGE_INDEX ="pageIndex";
+	final static String PAGE_SIZE = "pageSize";
+	
+	final static String IS_END = "ended";
+	
+	final static int DEFAULT_INDEX = 1;
+	final static int DEFAULT_SIZE = 15;
 }
