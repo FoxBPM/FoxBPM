@@ -384,11 +384,15 @@ function FlowGraphic(param) {
 					for (var j = 0; j < rectAttributes.length; j++) {
 						var rectAttribute = rectAttributes[j];
 						if (rectAttribute.name == "stroke") {
-							backUpColorDictionary[endTask.nodeId] = rectAttribute.nodeValue;
+							if(!backUpColorDictionary[endTask.nodeId]){
+								backUpColorDictionary[endTask.nodeId] = rectAttribute.nodeValue;
+							}
 							rectAttribute.nodeValue = TASK_END_COLOR;
 						}
 						if (rectAttribute.name == "stroke-width") {
-							backUpWidthDictionary[endTask.nodeId] = rectAttribute.nodeValue;
+							if(!backUpWidthDictionary[endTask.nodeId]){
+								backUpWidthDictionary[endTask.nodeId] = rectAttribute.nodeValue;
+							}
 							rectAttribute.nodeValue = TASK_END_WIDTH;
 						}
 						
@@ -410,11 +414,15 @@ function FlowGraphic(param) {
 					for (var j = 0; j < rectAttributes.length; j++) {
 						var rectAttribute = rectAttributes[j];
 						if (rectAttribute.name == "stroke") {
-							backUpColorDictionary[ingTask.nodeId] = rectAttribute.nodeValue;
+							if(!backUpColorDictionary[ingTask.nodeId]){
+								backUpColorDictionary[ingTask.nodeId] = rectAttribute.nodeValue;
+							}
 							rectAttribute.nodeValue = TASK_ING_COLOR;
 						}
 						if (rectAttribute.name == "stroke-width") {
-							backUpWidthDictionary[ingTask.nodeId] = rectAttribute.nodeValue;
+							if(!backUpWidthDictionary[ingTask.nodeId]){
+								backUpWidthDictionary[ingTask.nodeId] = rectAttribute.nodeValue;
+							}
 							rectAttribute.nodeValue = TASK_ING_WIDTH;
 						}
 
@@ -499,6 +507,7 @@ function RunTrack(config) {
 	// 保存流程节点本身式样
 	var backUpRunningTrackColorDictionary = {};
 	var backUpRunningTrackWidthDictionary = {};
+	
 	/** ******************************************函数********************************************************* */
 	this.clearRunningTracks = function() {
 		runningTrackIndex = 0;
