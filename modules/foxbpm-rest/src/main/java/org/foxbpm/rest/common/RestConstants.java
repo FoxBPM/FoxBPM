@@ -23,6 +23,8 @@ package org.foxbpm.rest.common;
  *
  */
 public interface RestConstants {
+	
+	final static String USERID = "userId";
 
 	final static String PROCESS_KEY = "key";
 	final static String PROCESS_ID = "processDefinitionId";
