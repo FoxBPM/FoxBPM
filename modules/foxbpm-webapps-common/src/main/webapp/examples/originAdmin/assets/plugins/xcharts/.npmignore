@@ -1,6 +1,0 @@
-scripts/**
-test/**
-examples/**
-views/**
-tmp_build/**
-*build.tar.gz
