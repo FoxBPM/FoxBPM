@@ -38,7 +38,6 @@ public class GroupDefinitionCollection extends AbstractRestResource {
 		//数据响应体构造
 		DataResult result = new DataResult();
 		result.setData(groupDefinitions);
-		result.setStart(0);
 		result.setTotal(groupDefinitions.size());
 		return result;
 	}

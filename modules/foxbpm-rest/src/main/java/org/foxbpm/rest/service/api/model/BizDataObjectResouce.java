@@ -47,7 +47,6 @@ public class BizDataObjectResouce extends AbstractRestResource {
 		//数据响应体构造
 		DataResult result = new DataResult();
 		result.setData(resultDatas);
-		result.setStart(0);
 		result.setTotal(bizDataObjects.size());
 		return result;
 	}
