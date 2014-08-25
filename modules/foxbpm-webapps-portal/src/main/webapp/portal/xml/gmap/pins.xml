@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<markers>
+	<marker>
+		<image>img/avatars/sunny-big.png</image>
+		<name>Joe Asr</name>
+		<address>7307 Lake Enderly Boulevard, Bartow, FL 33830, USA</address>
+		<content>A bit of content goes here.</content>
+		<icons>sa-default</icons>
+		<link>http://www.google.com</link>
+	</marker>
+	
+	<marker>
+		<image>img/avatars/sunny-big.png</image>
+		<name>Joe Asr</name>
+		<address>1149 Saint Anne Shrine Road, Lake Wales, FL 33898, USA</address>
+		<content>A bit of content goes here.</content>
+		<icons>sa-default</icons>
+		<link>http://www.google.com</link>
+	</marker>
+	
+	<marker>
+		<image>img/avatars/sunny-big.png</image>
+		<name>Sunny Home</name>
+		<address>Indian Hammock Trail, Okeechobee, FL 34972, USA</address>
+		<content>My Home.</content>
+		<icons>sa-default</icons>
+		<link>http://www.google.com</link>
+	</marker>	
+
+	<marker>
+		<image>img/avatars/sunny-big.png</image>
+		<name>John Doe</name>
+		<address>Unnamed Road, Indiantown, FL 34956, USA</address>
+		<content>content</content>
+		<icons>sa-default</icons>
+		<link>http://www.google.com</link>
+	</marker>	
+	
+	<marker>
+		<image>img/avatars/sunny-big.png</image>
+		<name>John Doe</name>
+		<address>6650 Southwest Secretariat Drive, Palm City, FL 34990, USA</address>
+		<content>content</content>
+		<icons>sa-default</icons>
+		<link>http://www.google.com</link>
+	</marker>
+	
+	<marker>
+		<image>img/avatars/sunny-big.png</image>
+		<name>John Doe</name>
+		<address>North Grade Road, Indiantown, FL 34956, USA</address>
+		<content>content</content>
+		<icons>sa-default</icons>
+		<link>http://www.google.com</link>
+	</marker>			
+
+	<marker>
+		<image>img/avatars/sunny-big.png</image>
+		<name>John Doe</name>
+		<address>13970 Citrus Grove Boulevard, West Palm Beach, FL 33412, USA</address>
+		<content>content</content>
+		<icons>sa-dark</icons>
+		<link>http://www.google.com</link>
+	</marker>
+	
+	<marker>
+		<image>img/avatars/sunny-big.png</image>
+		<name>John Doe</name>
+		<address>Aquarius Boulevard, Lake Worth, FL 33467, USA</address>
+		<content>content</content>
+		<icons>sa-default</icons>
+		<link>http://www.google.com</link>
+	</marker>	
+	
+	<marker>
+		<image>img/avatars/sunny-big.png</image>
+		<name>John Doe</name>
+		<address>4200-4298 Joy Drive, Millen, GA 30442, USA</address>
+		<content>content</content>
+		<icons>sa-dark</icons>
+		<link>http://www.google.com</link>
+	</marker>
+	
+	<marker>
+		<image>img/avatars/sunny-big.png</image>
+		<name>John Doe</name>
+		<address>Jasper Highway, Hardeeville, SC 29927, USA</address>
+		<content>content</content>
+		<icons>sa-default</icons>
+		<link>http://www.google.com</link>
+	</marker>	
+
+																								
+</markers>
