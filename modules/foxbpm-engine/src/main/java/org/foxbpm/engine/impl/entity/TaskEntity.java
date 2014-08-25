@@ -26,12 +26,12 @@ import org.foxbpm.engine.task.IdentityLink;
 import org.foxbpm.engine.task.IdentityLinkType;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskCommand;
+import org.foxbpm.engine.task.TaskCommandDefinition;
 import org.foxbpm.engine.task.TaskType;
 import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelVariableScopeImpl;
-import org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition;
 
 public class TaskEntity extends KernelVariableScopeImpl implements Task, DelegateTask,
     PersistentObject, HasRevision {
