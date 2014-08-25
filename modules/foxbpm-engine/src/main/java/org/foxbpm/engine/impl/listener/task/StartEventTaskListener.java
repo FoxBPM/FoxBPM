@@ -21,10 +21,10 @@ import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.task.TaskCommandSystemType;
+import org.foxbpm.engine.task.TaskCommandDefinition;
 import org.foxbpm.engine.task.TaskType;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
-import org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition;
 
 /**
  * 流程启动事件监听

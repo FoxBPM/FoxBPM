@@ -89,6 +89,8 @@ import org.foxbpm.engine.impl.persistence.VariableManager;
 import org.foxbpm.engine.impl.persistence.deploy.Deployer;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduler;
+import org.foxbpm.engine.impl.task.CommandParamImpl;
+import org.foxbpm.engine.impl.task.TaskCommandDefinitionImpl;
 import org.foxbpm.engine.impl.task.filter.AbstractCommandFilter;
 import org.foxbpm.engine.impl.transaction.DefaultTransactionContextFactory;
 import org.foxbpm.engine.impl.util.ReflectUtil;
@@ -96,6 +98,9 @@ import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
+import org.foxbpm.engine.task.CommandParam;
+import org.foxbpm.engine.task.CommandParamType;
+import org.foxbpm.engine.task.TaskCommandDefinition;
 import org.foxbpm.engine.transaction.TransactionContextFactory;
 import org.foxbpm.model.config.foxbpmconfig.BizDataObjectConfig;
 import org.foxbpm.model.config.foxbpmconfig.FoxBPMConfig;
@@ -105,7 +110,6 @@ import org.foxbpm.model.config.foxbpmconfig.ResourcePath;
 import org.foxbpm.model.config.foxbpmconfig.ResourcePathConfig;
 import org.foxbpm.model.config.foxbpmconfig.SysMailConfig;
 import org.foxbpm.model.config.foxbpmconfig.TaskCommandConfig;
-import org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition;
 import org.foxbpm.model.config.style.ElementStyle;
 import org.foxbpm.model.config.style.FoxBPMStyleConfig;
 import org.foxbpm.model.config.style.Style;
@@ -316,13 +320,13 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	protected void initAbstractCommandFilter() {
 		abstractCommandFilterMap = new HashMap<String, AbstractCommandFilter>();
-		List<TaskCommandDefinition> taskCommandDefs = foxBpmConfig.getTaskCommandConfig().getTaskCommandDefinition();
 		String filter = null;
-		for (TaskCommandDefinition taskCommandDef : taskCommandDefs) {
-			filter = taskCommandDef.getFilter();
-			if (StringUtil.getBoolean(taskCommandDef.getIsEnabled())
+		for (Map.Entry<String,TaskCommandDefinition> tmp : taskCommandDefinitionMap.entrySet()) {
+			TaskCommandDefinition taskDefintion = tmp.getValue();
+			filter = taskDefintion.getFilterClass();
+			if (StringUtil.getBoolean(taskDefintion.getIsEnabled())
 			        && StringUtil.isNotBlank(filter)) {
-				abstractCommandFilterMap.put(taskCommandDef.getId(), (AbstractCommandFilter) ReflectUtil.instantiate(filter));
+				abstractCommandFilterMap.put(taskDefintion.getId(), (AbstractCommandFilter) ReflectUtil.instantiate(filter));
 			}
 		}
 	}
@@ -368,19 +372,54 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 	
 	protected void initTaskCommandConfig() {
-		
+		this.taskCommandConfig = foxBpmConfig.getTaskCommandConfig();
+		taskCommandDefinitionMap = new HashMap<String, TaskCommandDefinition>();
+		for (TaskCommandDefinition taskCommandDef : getTaskCommandDefinition()) {
+			taskCommandDefinitionMap.put(taskCommandDef.getId(), taskCommandDef);
+		}
+	}
+	
+	protected List<TaskCommandDefinition> getTaskCommandDefinition(){
+		List<TaskCommandDefinition> taskCommands = new ArrayList<TaskCommandDefinition>();
+		List<org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition> commandDefintions = taskCommandConfig.getTaskCommandDefinition();
+		//加载foxbpm.cfg.xml中配置的任务命令
+		for(org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition tmpCommand :commandDefintions){
+			if("system".equals(tmpCommand.getType())){
+				break;
+			}
+			TaskCommandDefinitionImpl commandImpl = new TaskCommandDefinitionImpl();
+			commandImpl.setId(tmpCommand.getId());
+			commandImpl.setName(tmpCommand.getName());
+			commandImpl.setCommandClass(tmpCommand.getCommand());
+			commandImpl.setCmdClass(tmpCommand.getCmd());
+			commandImpl.setFilterClass(tmpCommand.getFilter());
+			commandImpl.setDescription(tmpCommand.getDescription());
+			commandImpl.setEnabled(StringUtil.getBoolean(tmpCommand.getIsEnabled()));
+			commandImpl.setType(tmpCommand.getType());
+			List<CommandParam> commandParams = new ArrayList<CommandParam>();
+			
+			for(org.foxbpm.model.config.foxbpmconfig.CommandParam param : tmpCommand.getCommandParam()){
+				CommandParamImpl commandParam = new CommandParamImpl();
+				commandParam.setKey(param.getKey());
+				commandParam.setDataType(param.getDataType());
+				commandParam.setName(param.getName());
+				commandParam.setExpression(param.getValue());
+				commandParam.setBizType(CommandParamType.valueOf(param.getBizType()));
+				commandParam.setDescription(param.getDescription());
+				commandParams.add(commandParam);
+			}
+			commandImpl.setCommandParam(commandParams);
+			taskCommands.add(commandImpl);
+		}
 		
 		ServiceLoader<TaskCommandDefinition> s = ServiceLoader.load(TaskCommandDefinition.class); 
 		Iterator<TaskCommandDefinition> searchs = s.iterator();
 		while(searchs.hasNext()){
 			TaskCommandDefinition command = searchs.next();
-			System.out.println("我操，NB的java SPI"+command.getCmd());
+			taskCommands.add(command);
+			log.debug("发现注册任务命令：id:{},name:{},class:{}", command.getId(),command.getName(),command.getClass());
 		}
-		this.taskCommandConfig = foxBpmConfig.getTaskCommandConfig();
-		taskCommandDefinitionMap = new HashMap<String, TaskCommandDefinition>();
-		for (TaskCommandDefinition taskCommandDef : taskCommandConfig.getTaskCommandDefinition()) {
-			taskCommandDefinitionMap.put(taskCommandDef.getId(), taskCommandDef);
-		}
+		return taskCommands;
 	}
 	
 	protected void initTransactionContextFactory() {

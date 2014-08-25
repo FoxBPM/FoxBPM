@@ -24,7 +24,7 @@ import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.task.command.AbstractCustomExpandTaskCommand;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.ReflectUtil;
-import org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition;
+import org.foxbpm.engine.task.TaskCommandDefinition;
 
 public class ExpandTaskCompleteCmd<T> implements Command<T>{
 
@@ -48,12 +48,12 @@ public class ExpandTaskCompleteCmd<T> implements Command<T>{
 		
 		TaskCommandDefinition taskCommandDef= commandContext.getProcessEngineConfigurationImpl().getTaskCommandDefinition(this.expandTaskCommand.getCommandType());
 		if(taskCommandDef!=null){
-			String classNameString=taskCommandDef.getCmd();
+			String classNameString=taskCommandDef.getCmdClass();
 			if(classNameString==null||classNameString.equals("")){
 				throw new FoxBPMException("配置文件中ID为 "+this.expandTaskCommand.getCommandType() + " 的扩展配置cmd属性不能为空!");
 			}
 			
-			String commandClassNameString=taskCommandDef.getCommand();
+			String commandClassNameString=taskCommandDef.getCommandClass();
 			if(commandClassNameString==null||commandClassNameString.equals("")){
 				throw new FoxBPMException("配置文件中ID为 "+this.expandTaskCommand.getCommandType() + " 的扩展配置command属性不能为空!");
 			}
