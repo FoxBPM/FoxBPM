@@ -7,7 +7,7 @@
 			<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-2" data-widget-editbutton="false">
 				<header>
 					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-					<h2>隐藏列</h2>
+					<h2>已办任务</h2>
 
 				</header>
 				<!-- widget div-->
@@ -19,10 +19,11 @@
 								<tr>
 									<th data-class="expand">任务</th>
 									<th>优先级</th>
+									<th>状态</th>
 									<th data-hide="phone">创建</th>
-									<th data-hide="phone,tablet">状态</th>
-									<th data-hide="phone,tablet">发起人</th>
 									<th data-hide="phone,tablet">期限</th>
+									<th data-hide="phone,tablet">完成</th>
+									<th data-hide="phone,tablet">发起人</th>
 									<th>操作</th>
 								</tr>
 							</thead>
@@ -64,7 +65,7 @@
 		this.initor = data.processInitiator;
 		this.duration = data.dueDate;
 		
-		this.operate = "<a href='javascript:void(0);' class='btn btn-danger'>删除</a> <a href='javascript:void(0);' class='btn btn-success'>处理</a>";
+		this.operate = "<a href='javascript:void(0);' class='btn btn-danger'>退回</a>";
 	}
 	var taskList=[];
 	var Foxbpm = {};
@@ -89,7 +90,7 @@
 			},
 			 
 	};
-	Foxbpm.Loader.loadTodoInfos(); 
+	//Foxbpm.Loader.loadTodoInfos(); 
 	
 	pageSetUp(); 
 	 
@@ -107,8 +108,10 @@
 		/* COLUMN SHOW - HIDE */
 		$('#datatable_col_reorder').dataTable({
 		    columns: [
+		              
 		        { data: 'name' },
 		        { data: 'priority' },
+		        { data: 'createTime' },
 		        { data: 'createTime' },
 		        { data: 'createTime' },
 		        { data: 'createTime' },
@@ -116,7 +119,7 @@
 		        {
 	                  "orderable":      false,
 	                  "data":           null,
-	                  "defaultContent": "<a href='javascript:void(0);' class='btn btn-danger'>删除</a> <a href='javascript:void(0);' class='btn btn-success'>处理</a>"
+	                  "defaultContent": "<a href='javascript:void(0);' class='btn btn-danger'>退回</a>"
 	            }
 		    ],
 		    columnDefs: [ {
@@ -128,9 +131,14 @@
 		            }
 		         }
 		      } ],
-		    "processing": true,
+		    "processing": false,
 	        "serverSide": true, 
-	        "ajax": "/foxbpm-webapps-base/service/tasks",
+	        "ajax": {
+	            "url": "/foxbpm-webapps-base/service/tasks",
+	            "data": function ( d ) {
+	                d.ended = true; 
+	            }
+	        },
 			"sDom": "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'l><'col-sm-6 col-xs-6 hidden-xs'C>r>"+
 					"t"+
 					"<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
