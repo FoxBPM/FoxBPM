@@ -112,7 +112,7 @@
 									<section>
 										<label class="label">用户名/Email</label>
 										<label class="input"> <i class="icon-append fa fa-user"></i>
-											<input type="email" name="userName">
+											<input type="input" name="userName">
 											<b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> 请输入用户名/Email</b></label>
 									</section>
 
@@ -201,23 +201,13 @@
 				$("#login-form").validate({
 					// Rules for form validation
 					rules : {
-						email : {
-							required : true,
-							email : true
-						},
 						password : {
-							required : true,
-							minlength : 3,
-							maxlength : 20
+							required : true
 						}
 					},
 
 					// Messages for form validation
 					messages : {
-						email : {
-							required : 'Please enter your email address',
-							email : 'Please enter a VALID email address'
-						},
 						password : {
 							required : 'Please enter your password'
 						}

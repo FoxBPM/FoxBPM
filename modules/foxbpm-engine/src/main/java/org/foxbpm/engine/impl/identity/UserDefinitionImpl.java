@@ -26,11 +26,11 @@ import org.foxbpm.engine.identity.UserDefinition;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.UserEntity;
 
-public class UserDefinitionImpl implements UserDefinition{
+public class UserDefinitionImpl implements UserDefinition {
 	public UserEntity findUserById(String userId) {
-		return (UserEntity)  Context.getCommandContext().getSqlSession().selectOne("selectUserById", userId);
+		return (UserEntity) Context.getCommandContext().getSqlSession().selectOne("selectUserById", userId);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<UserEntity> findUsers(String idLike, String nameLike) {
@@ -41,9 +41,9 @@ public class UserDefinitionImpl implements UserDefinition{
 		if (nameLike != null) {
 			map.put("userName", nameLike);
 		}
-		return (List<UserEntity>)Context.getCommandContext().getSqlSession().selectList("selectUsers", map);
+		return (List<UserEntity>) Context.getCommandContext().getSqlSession().selectList("selectUsers", map);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<UserEntity> findUsers(String idLike, String nameLike, int firstResult, int maxResults) {
@@ -54,9 +54,9 @@ public class UserDefinitionImpl implements UserDefinition{
 		if (nameLike != null) {
 			queryMap.put("userName", nameLike);
 		}
-		return (List<UserEntity>)  Context.getCommandContext().getSqlSession().selectList("selectUsersByPage", queryMap);
+		return (List<UserEntity>) Context.getCommandContext().getSqlSession().selectList("selectUsersByPage", queryMap);
 	}
-
+	
 	@Override
 	public Long findUserCount(String idLike, String nameLike) {
 		Map<String, Object> queryMap = new HashMap<String, Object>();
@@ -67,5 +67,20 @@ public class UserDefinitionImpl implements UserDefinition{
 			queryMap.put("userName", nameLike);
 		}
 		return (Long) Context.getCommandContext().getSqlSession().selectOne("selectUsersCount", queryMap);
+	}
+	
+	@Override
+	public void updateUser(UserEntity user) {
+		Context.getCommandContext().getSqlSession().update("updateUser", user);
+	}
+	
+	@Override
+	public void addUser(UserEntity user) {
+		Context.getCommandContext().getSqlSession().insert("insertUser", user);
+	}
+	
+	@Override
+	public void deleteUser(String userId) {
+		Context.getCommandContext().getSqlSession().delete("insertUser", userId);
 	}
 }

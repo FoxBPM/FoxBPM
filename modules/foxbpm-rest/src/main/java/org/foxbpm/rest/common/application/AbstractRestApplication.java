@@ -32,9 +32,14 @@ import org.restlet.security.Verifier;
 public abstract class AbstractRestApplication extends Application {
 
 	protected ChallengeAuthenticator authenticator;
+	protected FoxbpmStatusService foxbpmStatusService;
 	public AbstractRestApplication(){
-		
+		if(foxbpmStatusService == null){
+			foxbpmStatusService = new FoxbpmStatusService();
+			setStatusService(foxbpmStatusService);
+		}
 	}
+	
 	
 	public void initializeAuthentication() {
 		Verifier verifier = new DefaultSecretVerifier();
