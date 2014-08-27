@@ -64,7 +64,6 @@
 			<span id="extr-page-header-space"> <span class="hidden-mobile">需要一个账户?</span> <a href="register.html" class="btn btn-danger">创建账户</a> </span>
 
 		</header>
-		
 		<div id="main" role="main">
 
 			<!-- MAIN CONTENT -->
@@ -105,7 +104,7 @@
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
 						<div class="well no-padding">
-							<form action="index.html" id="login-form" class="smart-form client-form">
+							<form action="../login.action" method="post" id="login-form" class="smart-form client-form">
 								<header>
 									流程门户登录系统
 								</header>
@@ -113,7 +112,7 @@
 									<section>
 										<label class="label">用户名/Email</label>
 										<label class="input"> <i class="icon-append fa fa-user"></i>
-											<input type="email" name="email">
+											<input type="email" name="userName">
 											<b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> 请输入用户名/Email</b></label>
 									</section>
 
@@ -161,7 +160,6 @@
 			</div>
 
 		</div>
-
 		<!--================================================== -->	
 
 		<!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)-->

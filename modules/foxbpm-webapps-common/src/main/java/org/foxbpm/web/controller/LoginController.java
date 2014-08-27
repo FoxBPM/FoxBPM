@@ -26,9 +26,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+@Controller
 public class LoginController {
 	@RequestMapping(value = "login", method = { RequestMethod.GET, RequestMethod.POST })
 	public void doLogin(HttpServletRequest request, HttpServletResponse response) {
@@ -41,13 +43,13 @@ public class LoginController {
 			String contextPath = request.getContextPath();
 			if (StringUtil.isNotEmpty(logout)) {
 				request.getSession().invalidate();
-				response.sendRedirect(contextPath + "/login.html");
+				response.sendRedirect(contextPath + "/portal/login.html");
 			} else {
 				UserEntity userEntity = (UserEntity) Authentication.selectUserByUserId(userName);
 				if (null != userEntity && StringUtil.equals(password, userEntity.getPassword())) {
 					// 这里约定了一个参数，流程引擎在运行时会默认从session里按照这两个key来获取参数，如果替换了登录的方式，请保证这两个key依然可以获取到正确的数据
-					Cookie cookie = new Cookie("foxbpm", "2222");
-					cookie.setMaxAge(1000000);
+					Cookie cookie = new Cookie("foxSid", userEntity.getUserId());
+					cookie.setMaxAge(-1);
 					response.addCookie(cookie);
 					response.sendRedirect(contextPath + "/portal/index.html");
 				} else {

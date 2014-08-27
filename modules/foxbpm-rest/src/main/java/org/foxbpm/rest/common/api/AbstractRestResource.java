@@ -29,7 +29,10 @@ import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.query.Query;
 import org.foxbpm.rest.common.RestConstants;
+import org.restlet.Request;
+import org.restlet.data.Cookie;
 import org.restlet.data.Form;
+import org.restlet.data.Status;
 import org.restlet.resource.ServerResource;
 
 /**
@@ -41,6 +44,7 @@ public abstract class AbstractRestResource extends ServerResource {
 
 	protected int pageIndex = 1;
 	protected int pageSize = 15;
+	protected String userId;
 	protected String getQueryParameter(String name, Form query) {
 		return query.getFirstValue(name);
 	}
@@ -58,6 +62,26 @@ public abstract class AbstractRestResource extends ServerResource {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * 验证登陆，从cookie中获取用户编号
+	 * @return
+	 */
+	protected boolean validationUser(){
+		Request request = getRequest();
+		for (Cookie cookie : request.getCookies()) {
+			if("foxSid".equals(cookie.getName())){
+				userId = cookie.getValue();
+			}
+		}
+		
+		if(StringUtil.isEmpty(userId)){
+			setStatus(Status.CLIENT_ERROR_UNAUTHORIZED);
+			return false;
+		}
+		
+		return true;
 	}
 	
 	/**
