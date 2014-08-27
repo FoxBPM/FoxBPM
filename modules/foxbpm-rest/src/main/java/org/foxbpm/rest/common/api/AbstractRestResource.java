@@ -69,18 +69,18 @@ public abstract class AbstractRestResource extends ServerResource {
 	 * @return
 	 */
 	protected boolean validationUser(){
-		Request request = getRequest();
-		for (Cookie cookie : request.getCookies()) {
-			if("foxSid".equals(cookie.getName())){
-				userId = cookie.getValue();
-			}
-		}
-		
-		if(StringUtil.isEmpty(userId)){
-			setStatus(Status.CLIENT_ERROR_UNAUTHORIZED);
-			return false;
-		}
-		
+//		Request request = getRequest();
+//		for (Cookie cookie : request.getCookies()) {
+//			if("foxSid".equals(cookie.getName())){
+//				userId = cookie.getValue();
+//			}
+//		}
+//		
+//		if(StringUtil.isEmpty(userId)){
+//			setStatus(Status.CLIENT_ERROR_UNAUTHORIZED);
+//			return false;
+//		}
+		userId = "admin";
 		return true;
 	}
 	
