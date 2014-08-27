@@ -60,17 +60,37 @@ public abstract class AbstractRestResource extends ServerResource {
 		return null;
 	}
 	
+	/**
+	 * foxbpm rest接口的分页机制
+	 * 接收参数：
+	 * start:起始行数
+	 * lenth:每页条数
+	 * pageIndex:当前页
+	 * pageSize:每页条数
+	 * 冲突解决：优先处理pageIndex、pageSize
+	 * @param query
+	 * @return
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public DataResult paginateList(Query query) {
 
 		Form form = getQuery();
 		Set<String> names = form.getNames();
+		
 		if (names.contains(RestConstants.PAGE_START)) {
 			if(names.contains(RestConstants.PAGE_LENGTH)){
 				pageSize = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_LENGTH, form));
 			}
 			pageIndex = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_START, form))/pageSize + 1;
 		}
+		
+		if(names.contains(RestConstants.PAGE_INDEX)){
+			pageIndex = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_INDEX, form));
+		}
+		if(names.contains(RestConstants.PAGE_SIZE)){
+			pageSize = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_SIZE, form));
+		}
+		
 		List<PersistentObject> resultObjects = query.listPagination(pageIndex,pageSize);
 		List<Map<String, Object>> dataMap = new ArrayList<Map<String,Object>>();
 		if(resultObjects != null){
@@ -80,13 +100,13 @@ public abstract class AbstractRestResource extends ServerResource {
 			}
 		}
 		
+		long resultCount = query.count();
 		DataResult result = new DataResult();
 		result.setData(dataMap);
 		result.setPageIndex(pageIndex);
 		result.setPageSize(pageSize);
-		result.setTotal(query.count());
-		result.setRecordsTotal(query.count());
-		result.setRecordsFiltered(query.count());
+		result.setRecordsTotal(resultCount);
+		result.setRecordsFiltered(resultCount);
 		return result;
 	}
 }

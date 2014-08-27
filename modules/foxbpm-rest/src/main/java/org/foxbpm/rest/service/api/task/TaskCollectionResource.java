@@ -39,7 +39,7 @@ import org.restlet.resource.Get;
 
 /**
  * 任务查询接口
- * @author Administrator
+ * @author ych
  *
  */
 public class TaskCollectionResource extends AbstractRestResource {
@@ -80,14 +80,14 @@ public class TaskCollectionResource extends AbstractRestResource {
 		taskQuery.taskAssignee(userId);
 		taskQuery.taskCandidateUser(userId);
 		
-		boolean notEnd = true;
+		boolean ended = false;
 		if(names.contains(RestConstants.IS_END)){
-			notEnd = StringUtil.getBoolean(getQueryParameter(RestConstants.IS_END, query));
+			ended = StringUtil.getBoolean(getQueryParameter(RestConstants.IS_END, query));
 		}
-		if(notEnd){
-			taskQuery.taskNotEnd();
-		}else{
+		if(ended){
 			taskQuery.taskIsEnd();
+		}else{
+			taskQuery.taskNotEnd();
 		}
 		DataResult result = paginateList(taskQuery);
 		return result;
