@@ -25,94 +25,114 @@ import java.util.Map;
 
 import org.foxbpm.engine.impl.agent.AgentTo;
 
-public class UserEntity{
-
+public class UserEntity {
+	
 	private String userId;
 	private String userName;
 	private String password;
 	private String email;
+	private String tel;
+	private String image;
 	private Map<String, Object> propertyMap;
 	private List<GroupEntity> groups = new ArrayList<GroupEntity>();
 	private List<AgentTo> agentInfo;
-
+	
 	public UserEntity() {
-
+		
 	}
 	
-	public UserEntity(String userId,String userName) {
+	public UserEntity(String userId, String userName) {
 		this.userId = userId;
 		this.userName = userName;
 	}
-
+	
 	public UserEntity(String userId) {
-
+		this.userId = userId;
 	}
-
+	
 	public String getPassword() {
 		return password;
 	}
-
+	
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
+	
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
+	
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
+	
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
+	
 	public void setPropertyMap(Map<String, Object> propertyMap) {
 		this.propertyMap = propertyMap;
 	}
-
+	
 	public String getUserId() {
 		return this.userId;
 	}
-
+	
 	public String getUserName() {
 		return this.userName;
 	}
-
+	
 	public Map<String, Object> getPropertyMap() {
 		return this.propertyMap;
 	}
-
+	
 	public String getEmail() {
 		return this.email;
 	}
-
+	
 	public List<GroupEntity> getGroups() {
 		return groups;
 	}
-
+	
 	public Object getPropertyValue(String propertyName) {
 		if (this.propertyMap != null) {
 			return this.propertyMap.get(propertyName);
 		}
 		return null;
 	}
-
+	
 	public List<AgentTo> getAgentInfo() {
 		return agentInfo;
 	}
-
+	
 	public void setAgentInfo(List<AgentTo> agentInfo) {
 		this.agentInfo = agentInfo;
 	}
-
+	
+	public String getImage() {
+		return image;
+	}
+	
+	public void setImage(String image) {
+		this.image = image;
+	}
+	
+	public String getTel() {
+		return tel;
+	}
+	
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+	
 	public Map<String, Object> getPersistentState() {
 		Map<String, Object> persistentState = new HashMap<String, Object>();
 		persistentState.put("userId", userId);
 		persistentState.put("userName", userName);
 		persistentState.put("email", email);
+		persistentState.put("tel", tel);
+		persistentState.put("image", image);
 		return persistentState;
 	}
-
+	
 }

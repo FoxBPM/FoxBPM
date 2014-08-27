@@ -25,6 +25,9 @@ import org.foxbpm.rest.service.api.identity.GroupCollectionResouce;
 import org.foxbpm.rest.service.api.identity.GroupDefinitionCollection;
 import org.foxbpm.rest.service.api.identity.GroupRelationCollectionResouce;
 import org.foxbpm.rest.service.api.identity.UserCollectionResouce;
+import org.foxbpm.rest.service.api.identity.UserCollectionResource;
+import org.foxbpm.rest.service.api.identity.UserPictureResource;
+import org.foxbpm.rest.service.api.identity.UserResource;
 import org.foxbpm.rest.service.api.model.BizDataObjectResouce;
 import org.foxbpm.rest.service.api.model.DeploymentCollectionResource;
 import org.foxbpm.rest.service.api.model.DeploymentResource;
@@ -80,6 +83,9 @@ public class RestServicesInit {
 	    router.attach("/identity/groups/{groupType}", TaskCollectionResource.class);
 	    router.attach("/identity/groups/{groupType}/{groupId}", TaskCollectionResource.class);
 	    router.attach("/identity/groups/{groupType}/{groupId}/members", TaskCollectionResource.class);
+		router.attach("/identity/users", UserCollectionResource.class);
+	    router.attach("/identity/users/{userId}", UserResource.class);
+	    router.attach("/identity/users/{userId}/picture", UserPictureResource.class);
 	    
 	    router.attach("/attachments", TaskCollectionResource.class);
 	    router.attach("/attachments/{attachmentId}", TaskCollectionResource.class);
