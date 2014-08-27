@@ -7,7 +7,7 @@
 			<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-2" data-widget-editbutton="false">
 				<header>
 					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-					<h2>隐藏列</h2>
+					<h2>待办任务列表</h2>
 
 				</header>
 				<!-- widget div-->
@@ -130,7 +130,7 @@
 		      } ],
 		    "processing": true,
 	        "serverSide": true, 
-	        "ajax": "/foxbpm-webapps-base/service/tasks",
+	        "ajax": "/foxbpm-webapps-common/service/tasks",
 			"sDom": "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'l><'col-sm-6 col-xs-6 hidden-xs'C>r>"+
 					"t"+
 					"<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
@@ -152,7 +152,7 @@
 
 	// load related plugins
 	
-	loadScript("js/plugin/datatables/jquery.dataTables.js", function(){
+	loadScript("js/plugin/datatables/jquery.dataTables.min.js", function(){
 		loadScript("js/plugin/datatables/dataTables.colVis.min.js", function(){
 			loadScript("js/plugin/datatables/dataTables.tableTools.min.js", function(){
 				loadScript("js/plugin/datatables/dataTables.bootstrap.min.js", function(){
