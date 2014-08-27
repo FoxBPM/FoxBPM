@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation=" 
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd 
+             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd 
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+	<context:component-scan base-package="org.foxbpm.web.service.impl" />
+	<!-- 配置文件加载 -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:/conf/jdbc.properties" />
+	</bean>
+	<!-- foxbpm数据源 -->
+	<bean id="foxbpmDataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${idbase.driverClassName}" />
+		<property name="url" value="${idbase.url}" />
+		<property name="username" value="${idbase.username}" />
+		<property name="password" value="${idbase.password}" />
+	</bean>
+	<!-- 使用jdbcTemplate -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource">
+			<ref local="foxbpmDataSource" />
+		</property>
+	</bean>
+	<!-- foxbpm事物管理 -->
+	<bean id="foxbpmTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="foxbpmDataSource" />
+	</bean>
+	<bean id="scheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="autoStartup" value="false"></property>
+		<!-- 注入数据源 -->
+		<property name="dataSource">
+			<ref bean="foxbpmDataSource" />
+		</property>
+		<property name="transactionManager" ref="foxbpmTransactionManager">
+		</property>
+		<!-- 延迟30秒启动Scheduler -->
+		<property name="startupDelay" value="5"></property>
+		<!-- 通过applicationContextSchedulerContextKey属性配置spring上下文 -->
+		<property name="applicationContextSchedulerContextKey">
+			<value>applicationContext</value>
+		</property>
+	</bean>
+	<bean id="foxbpmScheduler" class="org.foxbpm.engine.impl.schedule.FoxbpmScheduler">
+		<constructor-arg>
+			<ref bean="scheduler" />
+		</constructor-arg>
+	</bean>
+
+	<!-- 流程引擎配置 -->
+	<bean id="processEngineConfigurationSpring"
+		class="org.foxbpm.engine.spring.ProcessEngineConfigurationSpring">
+		<property name="dataSource" ref="foxbpmDataSource" />
+		<property name="transactionManager" ref="foxbpmTransactionManager" />
+		<property name="foxbpmScheduler" ref="foxbpmScheduler"></property>
+		<!-- 可选的发布处理行为,可卸载 -->
+		<property name="customPostDeployers">
+			<list>
+				<bean class="org.foxbpm.engine.impl.bpmn.deployer.PngDeployer" />
+			</list>
+		</property>
+	
+	</bean>
+
+	<!-- 流程引擎 -->
+	<bean id="processEngine" class="org.foxbpm.engine.spring.ProcessEngineFactoryBean">
+		<property name="processEngineConfiguration" ref="processEngineConfigurationSpring" />
+	</bean>
+
+	<!-- 任务服务 -->
+	<bean id="taskService" factory-bean="processEngine"
+		factory-method="getTaskService" />
+	<!-- 模型服务 -->
+	<bean id="modelService" factory-bean="processEngine"
+		factory-method="getModelService" />
+	<!-- 运行时服务 -->
+	<bean id="runtimeService" factory-bean="processEngine"
+		factory-method="getRuntimeService" />
+	<!-- 运行时服务 -->
+	<bean id="identityService" factory-bean="processEngine"
+		factory-method="getIdentityService" />
+
+	<bean id="abstrJdbcTemplate" abstract="true">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
+	<!-- 事务通知 -->
+	<tx:advice id="foxbpmTransactionAdvice" transaction-manager="foxbpmTransactionManager">
+		<tx:attributes>
+			<tx:method name="query*" propagation="REQUIRED" />
+			<tx:method name="create*" propagation="REQUIRED" />
+			<tx:method name="del*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="execute*" propagation="REQUIRED" />
+			<tx:method name="complete*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+	<!-- aop配置 -->
+	<aop:config>
+		<!-- 事物切入点 -->
+		<aop:pointcut id="txPointcut"
+			expression="execution(* org.foxbpm.web.service.impl.*.*(..))" />
+		<!-- 日志切入点 -->
+		<aop:pointcut id="logPointcut"
+			expression="execution(* org.foxbpm.web.service.interfaces.*.*(..))" />
+		<aop:pointcut id="userPointcut"
+			expression="execution(* org.foxbpm.web.service.interfaces.*.*(..))" />
+		<aop:advisor advice-ref="foxbpmTransactionAdvice"
+			pointcut-ref="txPointcut" />
+	</aop:config>
+</beans> 

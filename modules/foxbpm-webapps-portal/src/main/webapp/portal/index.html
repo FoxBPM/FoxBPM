@@ -14,7 +14,7 @@
 		<link rel="stylesheet" type="text/css" media="screen" href="css/font-awesome.min.css">
 
 		<!-- SmartAdmin Styles : Please note (smartadmin-production.css) was created using LESS variables -->
-		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production.min.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production.css">
 		<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-skins.min.css">
 
 		<!-- SmartAdmin RTL Support is under construction
@@ -153,8 +153,8 @@
 			<!-- #PROJECTS: projects dropdown -->
 			<div class="project-context hidden-xs">
 
-				<span class="label">Projects:</span>
-				<span class="project-selector dropdown-toggle" data-toggle="dropdown">Recent projects <i class="fa fa-angle-down"></i></span>
+				<span class="label">快捷工具:</span>
+				<span class="project-selector dropdown-toggle" data-toggle="dropdown">开发者工具 <i class="fa fa-angle-down"></i></span>
 
 				<!-- Suggestion: populate this list with fetch and push technique -->
 				<ul class="dropdown-menu">
@@ -196,23 +196,27 @@
 						</a>
 						<ul class="dropdown-menu pull-right">
 							<li>
-								<a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-cog"></i> Setting</a>
+								<a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-cog"></i> <strong> 系统设置</strong></a>
 							</li>
 							<li class="divider"></li>
 							<li>
-								<a href="#ajax/profile.html" class="padding-10 padding-top-0 padding-bottom-0"> <i class="fa fa-user"></i> <u>P</u>rofile</a>
+								<a href="#ajax/profile.html" class="padding-10 padding-top-0 padding-bottom-0"> <i class="fa fa-user"></i> <strong> 个人信息</strong></a>
 							</li>
 							<li class="divider"></li>
 							<li>
-								<a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0" data-action="toggleShortcut"><i class="fa fa-arrow-down"></i> <u>S</u>hortcut</a>
+								<a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0" data-action="toggleShortcut"><i class="fa fa-arrow-down"></i> <strong> 快捷菜单</strong></a>
 							</li>
 							<li class="divider"></li>
 							<li>
-								<a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0" data-action="launchFullscreen"><i class="fa fa-arrows-alt"></i> Full <u>S</u>creen</a>
+								<a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0" data-action="launchFullscreen"><i class="fa fa-arrows-alt"></i> <strong> 全屏幕</strong></a>
 							</li>
 							<li class="divider"></li>
 							<li>
-								<a href="login.html" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout"><i class="fa fa-sign-out fa-lg"></i> <strong><u>L</u>ogout</strong></a>
+								<a href="lock.html" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-lock fa-lg"></i> <strong> 锁定系统</strong></a>
+							</li>
+								<li class="divider"></li>
+							<li>
+								<a href="login.html" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout"><i class="fa fa-sign-out fa-lg"></i> <strong> 登出系统</strong></a>
 							</li>
 						</ul>
 					</li>
@@ -220,7 +224,7 @@
 
 				<!-- logout button -->
 				<div id="logout" class="btn-header transparent pull-right">
-					<span> <a href="login.html" title="Sign Out" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-sign-out"></i></a> </span>
+					<span> <a href="login.html" title="Sign Out" data-action="userLogout" data-logout-msg="您确定要退出系统？"><i class="fa fa-sign-out"></i></a> </span>
 				</div>
 				<!-- end logout button -->
 
@@ -233,7 +237,7 @@
 				<!-- #SEARCH -->
 				<!-- input: search field -->
 				<form action="#ajax/search.html" class="header-search pull-right">
-					<input id="search-fld" type="text" name="param" placeholder="Find reports and more">
+					<input id="search-fld" type="text" name="param" placeholder="查找待办任务">
 					<button type="submit">
 						<i class="fa fa-search"></i>
 					</button>
@@ -665,12 +669,12 @@
 		<div class="page-footer">
 			<div class="row">
 				<div class="col-xs-12 col-sm-6">
-					<span class="txt-color-white">SmartAdmin WebApp © 2013-2014</span>
+					<span class="txt-color-white">FoxBPM © 2013-2014</span>
 				</div>
 
 				<div class="col-xs-6 col-sm-6 text-right hidden-xs">
 					<div class="txt-color-white inline-block">
-						<i class="txt-color-blueLight hidden-mobile">Last account activity <i class="fa fa-clock-o"></i> <strong>52 mins ago &nbsp;</strong> </i>
+						<i class="txt-color-blueLight hidden-mobile">账户最新活动时间 <i class="fa fa-clock-o"></i> <strong>52 mins ago &nbsp;</strong> </i>
 						<div class="btn-group dropup">
 							<button class="btn btn-xs dropdown-toggle bg-color-blue txt-color-white" data-toggle="dropdown">
 								<i class="fa fa-link"></i> <span class="caret"></span>

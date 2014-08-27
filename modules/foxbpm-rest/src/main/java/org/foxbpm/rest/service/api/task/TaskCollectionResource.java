@@ -17,6 +17,7 @@
  */
 package org.foxbpm.rest.service.api.task;
 
+import java.security.MessageDigest;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,7 @@ import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.DataResult;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
 import org.restlet.Request;
+import org.restlet.data.Cookie;
 import org.restlet.data.Form;
 import org.restlet.engine.http.HttpRequest;
 import org.restlet.ext.servlet.internal.ServletCall;
@@ -47,6 +49,12 @@ public class TaskCollectionResource extends AbstractRestResource {
 	public DataResult getTasks(){
 		
 		Request request = getRequest();
+
+		for (Cookie cookie : request.getCookies()) {
+			System.out.println("name:++++++++++++++"+cookie.getName());
+			System.out.println("value:++++++++++++++"+cookie.getValue());
+		}
+		
 		String userId = null;
 		
 		if(request instanceof HttpRequest){
@@ -84,4 +92,5 @@ public class TaskCollectionResource extends AbstractRestResource {
 		DataResult result = paginateList(taskQuery);
 		return result;
 	}
+	
 }

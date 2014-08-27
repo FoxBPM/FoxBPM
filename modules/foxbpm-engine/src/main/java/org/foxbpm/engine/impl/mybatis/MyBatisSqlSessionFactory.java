@@ -25,12 +25,16 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.ServiceLoader;
 
 import javax.sql.DataSource;
 
 import org.apache.ibatis.builder.xml.XMLConfigBuilder;
+import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
@@ -129,6 +133,23 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 		        Configuration configuration = parser.getConfiguration();
 		        configuration.setEnvironment(environment);
 		        configuration = parser.parse();
+		        
+		        ServiceLoader<FoxbpmMapperConfig> mapperConfig =  ServiceLoader.load(FoxbpmMapperConfig.class);
+		        Iterator<FoxbpmMapperConfig> mapperIterator = mapperConfig.iterator();
+		        while(mapperIterator.hasNext()){
+		        	FoxbpmMapperConfig tmpMapper = mapperIterator.next();
+		        	List<String> mapperPaths = tmpMapper.getMapperConfig();
+		        	if(mapperPaths != null){
+		        		for(String mapPath : mapperPaths){
+		        			InputStream input = Resources.getResourceAsStream(mapPath);
+		        			if(input != null){
+		        				XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(input, configuration, mapPath, configuration.getSqlFragments());
+			    		        xmlMapperBuilder.parse();
+			    		        log.debug("mybatis发现注册mapper文件：{};",mapPath);
+		        			}
+		        		}
+		        	}
+		        }
 		        sqlSessionFactory = new DefaultSqlSessionFactory(configuration);
 			} catch (Exception e) {
 				throw new RuntimeException(

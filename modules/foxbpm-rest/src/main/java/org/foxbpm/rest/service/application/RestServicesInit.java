@@ -52,6 +52,41 @@ public class RestServicesInit {
 		//设计器测试是否网络连通
 		router.attach("/testConnection", TestConnectionResource.class);
 		
+		router.attach("/model/deployments", DeploymentCollectionResource.class);
+		router.attach("/model/deployments/{deploymentId}", DeploymentResource.class);
+		router.attach("/model/deployments/{deploymentId}/resources/{resourceName}", ResourceResource.class);
+		
+		router.attach("/model/process-definitions", ProcessDefinitionCollectionResouce.class);
+		router.attach("/model/process-definitions/{processDefinitionId}", ProcessDefinitionResouce.class);
+		router.attach("/model/process-definitions/{processDefinitionKey}/{version}", ProcessDefinitionResouce.class);
+		router.attach("/model/process-definitions/{processDefinitionKey}/{version}/taskCommands", ProcessDefinitionResouce.class);
+		
+		router.attach("/runtime/tasks", TaskCollectionResource.class);
+		router.attach("/runtime/tasks/{taskId}", TaskCollectionResource.class);
+		router.attach("/runtime/tasks/{taskId}/identityLinks", TaskCollectionResource.class);
+		router.attach("/runtime/tasks/{taskId}/taskCommands", TaskCollectionResource.class);
+
+		router.attach("/runtime/process-instances", TaskCollectionResource.class);
+		router.attach("/runtime/process-instances/{processInstanceId}", TaskCollectionResource.class);
+	    router.attach("/runtime/process-instances/{processInstanceId}/variables", TaskCollectionResource.class);
+	    router.attach("/runtime/process-instances/{processInstanceId}/variables/{variableKey}", TaskCollectionResource.class);
+	    
+	    router.attach("/runtime/tokens", TaskCollectionResource.class);
+		
+	    router.attach("/identity/users", TaskCollectionResource.class);
+	    router.attach("/identity/users/{userId}", TaskCollectionResource.class);
+	    router.attach("/identity/users/{userId}/picture", TaskCollectionResource.class);
+	    
+	    router.attach("/identity/groups/{groupType}", TaskCollectionResource.class);
+	    router.attach("/identity/groups/{groupType}/{groupId}", TaskCollectionResource.class);
+	    router.attach("/identity/groups/{groupType}/{groupId}/members", TaskCollectionResource.class);
+	    
+	    router.attach("/attachments", TaskCollectionResource.class);
+	    router.attach("/attachments/{attachmentId}", TaskCollectionResource.class);
+	    
+	    
+	    /* old */
+	    
 		router.attach("/models", ModelsResouce.class);
 		router.attach("/model/deployments", DeploymentCollectionResource.class);
 		router.attach("/model/deployment/{deploymentId}", DeploymentResource.class);
