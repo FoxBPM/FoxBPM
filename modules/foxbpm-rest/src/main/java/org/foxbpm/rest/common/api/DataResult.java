@@ -29,6 +29,24 @@ public class DataResult {
 	int pageSize;
 	String sort;
 	String order;
+	long recordsTotal;
+	long recordsFiltered;
+
+	public long getRecordsTotal() {
+		return recordsTotal;
+	}
+
+	public void setRecordsTotal(long recordsTotal) {
+		this.recordsTotal = recordsTotal;
+	}
+
+	public long getRecordsFiltered() {
+		return recordsFiltered;
+	}
+
+	public void setRecordsFiltered(long recordsFiltered) {
+		this.recordsFiltered = recordsFiltered;
+	}
 
 	public Object getData() {
 		return data;

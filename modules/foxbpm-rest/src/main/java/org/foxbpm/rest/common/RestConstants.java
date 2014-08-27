@@ -45,4 +45,7 @@ public interface RestConstants {
 	
 	final static int DEFAULT_INDEX = 1;
 	final static int DEFAULT_SIZE = 15;
+	
+	final static String PAGE_START ="start";
+	final static String PAGE_LENGTH = "length";
 }
