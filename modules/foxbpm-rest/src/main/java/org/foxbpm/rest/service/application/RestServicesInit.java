@@ -17,6 +17,7 @@
  */
 package org.foxbpm.rest.service.application;
 
+import org.foxbpm.rest.service.api.LoginStateResource;
 import org.foxbpm.rest.service.api.config.FlowConfigResouce;
 import org.foxbpm.rest.service.api.engine.RollbackNodeCollectionResource;
 import org.foxbpm.rest.service.api.engine.RollbackTaskCollectionResource;
@@ -54,6 +55,7 @@ public class RestServicesInit {
 		
 		//设计器测试是否网络连通
 		router.attach("/testConnection", TestConnectionResource.class);
+		router.attach("/getLoginState", LoginStateResource.class);
 		
 		router.attach("/model/deployments", DeploymentCollectionResource.class);
 		router.attach("/model/deployments/{deploymentId}", DeploymentResource.class);
