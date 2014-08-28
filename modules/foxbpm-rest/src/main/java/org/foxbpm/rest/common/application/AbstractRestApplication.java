@@ -33,10 +33,13 @@ public abstract class AbstractRestApplication extends Application {
 
 	protected ChallengeAuthenticator authenticator;
 	protected FoxbpmStatusService foxbpmStatusService;
+	protected FoxbpmConverService foxbpmConverService;
 	public AbstractRestApplication(){
 		if(foxbpmStatusService == null){
 			foxbpmStatusService = new FoxbpmStatusService();
 			setStatusService(foxbpmStatusService);
+			foxbpmConverService = new FoxbpmConverService();
+			setConverterService(foxbpmConverService);
 		}
 	}
 	
