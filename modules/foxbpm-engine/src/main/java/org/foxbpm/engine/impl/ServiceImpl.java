@@ -21,7 +21,7 @@ package org.foxbpm.engine.impl;
 import org.foxbpm.engine.ProcessService;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 
-public class ServiceImpl implements ProcessService {
+public abstract class ServiceImpl implements ProcessService {
 	protected CommandExecutor commandExecutor;
 	  
 	public CommandExecutor getCommandExecutor() {
@@ -30,5 +30,10 @@ public class ServiceImpl implements ProcessService {
 
 	public void setCommandExecutor(CommandExecutor commandExecutor) {
 	    this.commandExecutor = commandExecutor;
+	}
+	
+	@Override
+	public Class<?> getInterfaceClass() {
+		return null;
 	}
 }

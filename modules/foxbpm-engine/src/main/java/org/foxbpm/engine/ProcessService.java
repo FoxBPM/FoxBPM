@@ -24,5 +24,11 @@ import org.foxbpm.engine.impl.interceptor.CommandExecutor;
  *
  */
 public interface ProcessService {
+	
 	CommandExecutor getCommandExecutor();
+	
+	void setCommandExecutor(CommandExecutor commandExecutor);
+	
+	Class<?> getInterfaceClass();
+	
 }

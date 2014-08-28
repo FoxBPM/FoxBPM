@@ -10,6 +10,6 @@ public class LoginStateResource extends AbstractRestResource {
 		if(!validationUser()){
 			return null;
 		}
-		return userId;
+		return "{\"userId\":\""+userId+"\"}";
 	}
 }

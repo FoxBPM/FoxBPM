@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?> 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.foxbpm.calendar.mybatis.entity.CalendarTypeEntity">
+<mapper namespace="org.foxbpm.calendar.mybatis.entity.CalendarRuleEntity">
 
-	<resultMap id="calendarTypeResultMap" type="org.foxbpm.calendar.mybatis.entity.CalendarTypeEntity">
+	<resultMap id="calendarRuleResultMap" type="org.foxbpm.calendar.mybatis.entity.CalendarRuleEntity">
 		<id column="ID" property="id" jdbcType="VARCHAR" />
 		<result column="NAME" property="name" jdbcType="VARCHAR" />
 	</resultMap>
 
-	<select id="selectCalendarTypeById" parameterType="java.lang.String"
-		resultMap="calendarTypeResultMap">
+	<select id="selectUserById" parameterType="java.lang.String"
+		resultMap="calendartypeResultMap">
 		select
 		*
-		from workcal_type
+		from workcal_rule
 		where id = #{id,jdbcType=VARCHAR}
 	</select>
 	
 	<select id="selectAllCalendarType"
-		resultMap="calendarTypeResultMap">
+		resultMap="calendartypeResultMap">
 		select
 		*
-		from workcal_type
+		from workcal_rule
 	</select>
 </mapper>

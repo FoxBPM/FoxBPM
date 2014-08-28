@@ -45,6 +45,7 @@ import org.foxbpm.engine.IdentityService;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineConfiguration;
+import org.foxbpm.engine.ProcessService;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.cache.Cache;
@@ -130,10 +131,9 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected FoxBPMConfig foxBpmConfig;
 	protected ResourcePathConfig resourcePathConfig;
 	// service
-	protected ModelService modelService = new ModelServiceImpl();
-	protected RuntimeService runtimeService = new RuntimeServiceImpl();
-	protected TaskService taskService = new TaskServiceImpl();
-	protected IdentityService identityService = new IdentityServiceImpl();
+	protected Map<Class<?>,ProcessService> serviceMap = new HashMap<Class<?>, ProcessService>();
+	
+	
 	protected ISqlSessionFactory sqlSessionFactory;
 	protected Map<Class<?>, SessionFactory> sessionFactories;
 	protected DataSource dataSource;
@@ -585,17 +585,41 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 	
 	protected void initServices() {
-		initService(modelService);
-		initService(runtimeService);
-		initService(taskService);
-		initService(identityService);
+		
+		
+		ModelServiceImpl modelService = new ModelServiceImpl();
+		modelService.setCommandExecutor(commandExecutor);
+		RuntimeServiceImpl runtimeService = new RuntimeServiceImpl();
+		runtimeService.setCommandExecutor(commandExecutor);
+		TaskServiceImpl taskService = new TaskServiceImpl();
+		taskService.setCommandExecutor(commandExecutor);
+		IdentityServiceImpl identityService = new IdentityServiceImpl();
+		identityService.setCommandExecutor(commandExecutor);
+		
+		serviceMap.put(ModelService.class, modelService);
+		serviceMap.put(RuntimeService.class, runtimeService);
+		serviceMap.put(TaskService.class, taskService);
+		serviceMap.put(IdentityService.class, identityService);
+		
+		//serviceLoader方式加载外部注册service
+		ServiceLoader<ProcessService> services = ServiceLoader.load(ProcessService.class);
+		Iterator<ProcessService> serviceIterator = services.iterator();
+		while(serviceIterator.hasNext()){
+			ProcessService tmpService = serviceIterator.next();
+			tmpService.setCommandExecutor(commandExecutor);
+			serviceMap.put(tmpService.getInterfaceClass(), tmpService);
+		}
 		
 	}
 	
-	protected void initService(Object service) {
-		if (service instanceof ServiceImpl) {
-			((ServiceImpl) service).setCommandExecutor(commandExecutor);
+	@SuppressWarnings("unchecked")
+	public  <T> T getService(Class<T> interfaceClass){
+		ProcessService service = serviceMap.get(interfaceClass);
+		
+		if(service == null){
+			throw new FoxBPMException("未找到service：{}的实现，请检查配置文件和启动日志！",interfaceClass);
 		}
+		return (T)service;
 	}
 	
 	protected void initCommandContextFactory() {
@@ -661,7 +685,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	// Getter方法
 	
 	public ModelService getModelService() {
-		return modelService;
+		return getService(ModelService.class);
 	}
 	
 	public ResourcePathConfig getResourcePathConfig() {
@@ -687,15 +711,15 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 	
 	public RuntimeService getRuntimeService() {
-		return runtimeService;
+		return getService(RuntimeService.class);
 	}
 	
 	public TaskService getTaskService() {
-		return taskService;
+		return getService(TaskService.class);
 	}
 	
 	public IdentityService getIdentityService() {
-		return identityService;
+		return getService(IdentityService.class);
 	}
 	
 	public DataSource getDataSource() {

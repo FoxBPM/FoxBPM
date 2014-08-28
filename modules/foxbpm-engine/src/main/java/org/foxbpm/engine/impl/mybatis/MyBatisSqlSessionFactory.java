@@ -43,6 +43,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
+import org.foxbpm.engine.exception.FoxBPMDbException;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.interceptor.Session;
 import org.foxbpm.engine.sqlsession.ISqlSession;
@@ -138,6 +139,7 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 		        Iterator<FoxbpmMapperConfig> mapperIterator = mapperConfig.iterator();
 		        while(mapperIterator.hasNext()){
 		        	FoxbpmMapperConfig tmpMapper = mapperIterator.next();
+		        	log.debug("发现注册mapperConifg：{};",tmpMapper.getClass());
 		        	List<String> mapperPaths = tmpMapper.getMapperConfig();
 		        	if(mapperPaths != null){
 		        		for(String mapPath : mapperPaths){
@@ -145,7 +147,9 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 		        			if(input != null){
 		        				XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(input, configuration, mapPath, configuration.getSqlFragments());
 			    		        xmlMapperBuilder.parse();
-			    		        log.debug("mybatis发现注册mapper文件：{};",mapPath);
+			    		        log.debug("发现注册mapper文件：{};",mapPath);
+		        			}else{
+		        				throw new FoxBPMDbException("mapper文件:"+mapPath+"不存在;");
 		        			}
 		        		}
 		        	}
