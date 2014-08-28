@@ -25,7 +25,6 @@ import java.io.InputStream;
 import java.util.List;
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.foxbpm.engine.IdentityService;
 import org.foxbpm.engine.ProcessEngine;
@@ -52,8 +51,7 @@ public class UserPictureResource extends AbstractRestResource {
 	private static final Logger LOG = LoggerFactory.getLogger(UserPictureResource.class);
 	@Put
 	@Post
-	public String update(Representation multipartForm) {
-		StringBuffer responseText = new StringBuffer("{");
+	public void update(Representation multipartForm) throws Exception {
 		String path = getPath();
 		LOG.debug("开始处理上传资源...");
 		// 获取参数
@@ -65,48 +63,36 @@ public class UserPictureResource extends AbstractRestResource {
 		DiskFileItemFactory fileItemFactory = new DiskFileItemFactory();
 		RestletFileUpload fileUpload = new RestletFileUpload(fileItemFactory);
 		if (null != multipartForm) {
-			try {
-				// 获取引擎
-				ProcessEngine processEngine = FoxBpmUtil.getProcessEngine();
-				// 获取身份服务
-				IdentityService identityService = processEngine.getIdentityService();
-				UserEntity userEntity = identityService.getUser(userId);
-				List<FileItem> fileItems = fileUpload.parseRepresentation(multipartForm);
-				String fileName = null;
-				String imgName = null;
-				for (FileItem fileItem : fileItems) {
-					fileName = fileItem.getName();
-					if (StringUtil.isEmpty(fileName)) {
-						continue;
-					}
-					LOG.debug("Save image ... " + fileName);
-					/* 新建一个图片文件 */
-					String extName = fileName.substring(fileName.lastIndexOf("."));
-					createDir(path);
-					imgName = userId + extName;
-					deleteFile(new File(path + userEntity.getImage()));
-					File file = new File(path + imgName);
-					createFile(file);
-					fileItem.write(file);
+			// 获取引擎
+			ProcessEngine processEngine = FoxBpmUtil.getProcessEngine();
+			// 获取身份服务
+			IdentityService identityService = processEngine.getIdentityService();
+			UserEntity userEntity = identityService.getUser(userId);
+			List<FileItem> fileItems = fileUpload.parseRepresentation(multipartForm);
+			String fileName = null;
+			String imgName = null;
+			for (FileItem fileItem : fileItems) {
+				fileName = fileItem.getName();
+				if (StringUtil.isEmpty(fileName)) {
+					continue;
 				}
-				userEntity = new UserEntity(userId);
-				userEntity.setImage(imgName);
-				identityService.updateUser(userEntity);
-				CacheUtil.getIdentityCache().remove("user_"+userEntity.getUserId());
-				responseText.append("success:上传成功");
-			} catch (FileUploadException e) {
-				e.printStackTrace();
-				responseText.append("error:" + e.getMessage());
-			} catch (Exception e) {
-				responseText.append("error:" + e.getMessage());
-				e.printStackTrace();
+				LOG.debug("Save image ... " + fileName);
+				/* 新建一个图片文件 */
+				String extName = fileName.substring(fileName.lastIndexOf("."));
+				createDir(path);
+				imgName = userId + extName;
+				deleteFile(new File(path + userEntity.getImage()));
+				File file = new File(path + imgName);
+				createFile(file);
+				fileItem.write(file);
 			}
+			userEntity = new UserEntity(userId);
+			userEntity.setImage(imgName);
+			identityService.updateUser(userEntity);
+			CacheUtil.getIdentityCache().remove("user_" + userEntity.getUserId());
 		}
-		responseText.append("}");
-		return responseText.toString();
 	}
 	private void createDir(String path) {
-		System.out.println(path);
 		File dir = new File(path);
 		if (!dir.exists()) {
 			dir.mkdirs();
@@ -114,31 +100,40 @@ public class UserPictureResource extends AbstractRestResource {
 	}
 	
 	@Get
-	public InputStream getResource() {
+	public InputStream getResource() throws FileNotFoundException {
 		String path = getPath();
 		String userId = getAttribute("userId");
-		try {
-			IdentityService identityService = FoxBpmUtil.getProcessEngine().getIdentityService();
-			UserEntity userEntity = identityService.getUser(userId);
-			// 获取图片
-			InputStream in = null;
-			File file = new File(path + userEntity.getImage());
-			if (file.exists()) {
-				in = new FileInputStream(file);
-			}
-			return in;
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		IdentityService identityService = FoxBpmUtil.getProcessEngine().getIdentityService();
+		UserEntity userEntity = identityService.getUser(userId);
+		// 获取图片
+		InputStream in = null;
+		File file = new File(path + userEntity.getImage());
+		if (file.exists()) {
+			in = new FileInputStream(file);
+		} else {
+			// 提供默认图像
+			file = new File(path + "sunny-big.png");
+			in = new FileInputStream(file);
 		}
-		return null;
+		return in;
 	}
 	
+	/**
+	 * 删除已经存在的资源
+	 * 
+	 * @param file
+	 */
 	private void deleteFile(File file) {
 		if (file.exists()) {
 			file.delete();
 		}
 	}
-	
+	/**
+	 * 创建文件
+	 * 
+	 * @param file
+	 * @throws IOException
+	 */
 	private void createFile(File file) throws IOException {
 		if (!file.exists()) {
 			File parentFile = file.getParentFile();
