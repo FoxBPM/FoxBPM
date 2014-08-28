@@ -78,10 +78,6 @@ public class RestServicesInit {
 	    
 	    router.attach("/runtime/tokens", TaskCollectionResource.class);
 		
-	    router.attach("/identity/users", TaskCollectionResource.class);
-	    router.attach("/identity/users/{userId}", TaskCollectionResource.class);
-	    router.attach("/identity/users/{userId}/picture", TaskCollectionResource.class);
-	    
 	    router.attach("/identity/groups/{groupType}", TaskCollectionResource.class);
 	    router.attach("/identity/groups/{groupType}/{groupId}", TaskCollectionResource.class);
 	    router.attach("/identity/groups/{groupType}/{groupId}/members", TaskCollectionResource.class);
