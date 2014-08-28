@@ -68,7 +68,21 @@ var pagefunction = function() {
 										}
 
 									}
-								} ],
+								},
+								{
+									"targets" : [ 4 ],
+									"orderable" : true,
+									"createdCell" : function(td, cellData,
+											rowData, row, col) {
+										
+										
+										$(td).html("<img width='20' height='20' class='online' src='/foxbpm-webapps-common/service/identity/users/"+cellData+"/picture'/> ("+cellData+")");
+										
+										
+
+									}
+								} 
+								],
 
 						"processing" : true,
 						"orderable" : true,
