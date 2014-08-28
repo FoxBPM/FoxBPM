@@ -45,6 +45,7 @@ public abstract class AbstractRestResource extends ServerResource {
 	protected int pageIndex = 1;
 	protected int pageSize = 15;
 	protected String userId;
+	
 	protected String getQueryParameter(String name, Form query) {
 		return query.getFirstValue(name);
 	}
@@ -97,21 +98,21 @@ public abstract class AbstractRestResource extends ServerResource {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public DataResult paginateList(Query query) {
 
-		Form form = getQuery();
-		Set<String> names = form.getNames();
+		Form queryForm = getQuery();
+		Set<String> queryNames = queryForm.getNames();
 		
-		if (names.contains(RestConstants.PAGE_START)) {
-			if(names.contains(RestConstants.PAGE_LENGTH)){
-				pageSize = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_LENGTH, form));
+		if (queryNames.contains(RestConstants.PAGE_START)) {
+			if(queryNames.contains(RestConstants.PAGE_LENGTH)){
+				pageSize = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_LENGTH, queryForm));
 			}
-			pageIndex = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_START, form))/pageSize + 1;
+			pageIndex = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_START, queryForm))/pageSize + 1;
 		}
 		
-		if(names.contains(RestConstants.PAGE_INDEX)){
-			pageIndex = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_INDEX, form));
+		if(queryNames.contains(RestConstants.PAGE_INDEX)){
+			pageIndex = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_INDEX, queryForm));
 		}
-		if(names.contains(RestConstants.PAGE_SIZE)){
-			pageSize = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_SIZE, form));
+		if(queryNames.contains(RestConstants.PAGE_SIZE)){
+			pageSize = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_SIZE, queryForm));
 		}
 		
 		List<PersistentObject> resultObjects = query.listPagination(pageIndex,pageSize);

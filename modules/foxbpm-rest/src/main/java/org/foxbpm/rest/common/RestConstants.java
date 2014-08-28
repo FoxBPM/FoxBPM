@@ -48,4 +48,8 @@ public interface RestConstants {
 	
 	final static String PAGE_START ="start";
 	final static String PAGE_LENGTH = "length";
+	
+	//是否我参与的
+	final static String PARTICIPATE = "participate";
+	final static String INITIATOR = "initiator";
 }
