@@ -77,7 +77,19 @@ var pagefunction = function() {
 						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'l><'col-sm-6 col-xs-6 hidden-xs'C>r>"
 								+ "t"
 								+ "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
-						"autoWidth" : true
+						"autoWidth" : true,
+						"colVis": {
+				            "buttonText": "选择展示的列",
+				            "restore": "恢复默认展示",
+				            "showAll": "展示所有列",
+				            "showNone": "不展示列",
+				            "groups": [
+				                     {
+				                         title: "领到查看",
+				                         columns: [ 0, 3, 4 ]
+				                     }
+				                 ]
+				        }
 
 					});
 };
