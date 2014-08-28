@@ -33,7 +33,7 @@ import org.restlet.service.ConverterService;
  */
 public class FoxbpmConverService extends ConverterService {
 
-	protected static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	protected static final DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 	
 	public FoxbpmConverService() {
 		super();
