@@ -178,4 +178,25 @@ public abstract class AbstractRestResource extends ServerResource {
 		}
 		return paramsMap;
 	}
+	
+	/**
+	 * 初始化分页处理
+	 */
+	protected void initPage() {
+		Form queryForm = getQuery();
+		Set<String> queryNames = queryForm.getNames();
+		if (queryNames.contains(RestConstants.PAGE_START)) {
+			if (queryNames.contains(RestConstants.PAGE_LENGTH)) {
+				pageSize = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_LENGTH, queryForm));
+			}
+			pageIndex = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_START, queryForm)) / pageSize + 1;
+		}
+		
+		if (queryNames.contains(RestConstants.PAGE_INDEX)) {
+			pageIndex = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_INDEX, queryForm));
+		}
+		if (queryNames.contains(RestConstants.PAGE_SIZE)) {
+			pageSize = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_SIZE, queryForm));
+		}
+	}
 }

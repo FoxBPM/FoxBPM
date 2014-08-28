@@ -105,15 +105,14 @@
 							</div>
 
 							<div class="col-sm-12">
-
 								<div class="row">
-
 									<div class="col-sm-3 profile-pic" id="preview">
 										<!-- <img width="100" height="100" src="img/avatars/sunny-big.png"
 											id="userPicture" /> -->
-										<img width="100" height="100" src="http://127.0.0.1:8889/foxbpm-webapps-base/service/identity/users/admin/picture"
+										<img width="100" height="100"
+											src="http://127.0.0.1:8889/foxbpm-webapps-base/service/identity/users/admin/picture"
 											id="userPicture" /><br> <a href="javascript:void(0);"
-											id="updatePicture" class="btn btn-xs"><small>更换图像</small>
+											id="updatePicture" class="btn btn-xs" style="display: none"><small>更换图像</small>
 										</a>
 										<div class="padding-10">
 											<h4 class="font-md">
@@ -134,28 +133,26 @@
 										<ul class="list-unstyled">
 											<li>
 												<p class="text-muted">
-													<i class="fa fa-phone"></i>&nbsp;&nbsp; <input id="tel"
-														name="tel" class="form-control input-xs" type="text"
-														placeholder="3134646473" value="3134646473"/>
-													<!-- (<span class="txt-color-darken">313</span>) <span
-														class="txt-color-darken">464</span> - <span
-														class="txt-color-darken">6473</span> -->
+													<i class="fa fa-phone"></i>&nbsp;&nbsp; <span
+														id="tel_label" class="txt-color-darken"></span><input
+														id="tel" name="tel" class="input-control input-xs"
+														type="text" style="display: none" />
 												</p>
 											</li>
 											<li>
 												<p class="text-muted">
-													<i class="fa fa-envelope"></i>&nbsp;&nbsp; <input
-														id="email" name="email" class="form-control input-xs"
-														type="text" placeholder="simmons@smartadmin"  value="simmons@smartadmin"/>
-													<!-- <a href="mailto:simmons@smartadmin">ceo@smartadmin.com</a> -->
+													<i class="fa fa-envelope"></i>&nbsp;&nbsp;<a
+														id="email_label" href="mailto:simmons@smartadmin"></a><input
+														id="email" name="email" class="input-control input-xs"
+														style="display: none" type="text" />
 												</p>
 											</li>
 											<li>
 												<p class="text-muted">
-													<i
-														class="icon-prepend fa fa-skype"></i> <input id="name"
-														name="name" class="form-control input-xs" type="text" value="mjohn12"
-														placeholder="mjohn12" /> <!-- <span class="txt-color-darken">john12</span> -->
+													<i class="icon-prepend fa fa-skype"></i>&nbsp;&nbsp; <span
+														id="name_label" class="txt-color-darken"></span><input
+														id="name" name="name" class="input-control input-xs"
+														type="text" style="display: none;" />
 												</p>
 											</li>
 											<li>
@@ -183,8 +180,11 @@
 											optio cumque nihil impedit quo minus id quod maxime placeat
 											facere</p>
 										<br> <a href="javascript:void(0);"
-											id="updatePersonalInfo" class="btn btn-default btn-xs"><i
-											class="fa fa-envelope-o"></i> Send Message</a> <br> <br>
+											id="updatePersonalInfo" class="btn btn-default btn-xs"
+											style="display: none;"><i class="fa fa-envelope-o"></i>
+											Send Message</a> <a href="javascript:void(0);"
+											id="editPersonalInfo" flag="0" class="btn btn-default btn-xs"
+											style="display: none;">Edit</a> <br> <br>
 
 									</div>
 									<div class="col-sm-3">
@@ -580,7 +580,6 @@
 
 
 	</div>
-
 </div>
 
 <!-- end row -->
@@ -622,14 +621,72 @@
 	var pagefunction = function() {
 
 	};
-
 	pagefunction();
+	//加载用户信息
 
-	
-	//加载用户图像
-	$("#userPicture").on("load",function(){
-		 //$(this).attr("src","http://127.0.0.1:8889/foxbpm-webapps-base/service/identity/users/admin/picture");
+	function loadPersonInfo() {
+		$
+				.ajax({
+					url : "http://127.0.0.1:8889/foxbpm-webapps-base/service/identity/users/"
+							+ _userId,
+					type : 'get',
+					dataType : "json",
+					cache : false,
+					error : function() {
+					},
+					success : function(response) {
+						if (!!response) {
+							$("#name_label").html(response.userName);
+							$("#name_label").attr("label", response.userName);
+							$("#tel_label").html(response.tel);
+							$("#tel_label").attr("label", response.tel);
+							$("#email_label").html(response.email);
+							$("#email_label").attr("label", response.email);
+							$("#email_label").attr("href",
+									"mailto:" + response.email);
+						}
+					}
+				});
+	}
+
+	$(function() {
+		if (_userId) {
+			$("#editPersonalInfo").show();
+			$("#updatePersonalInfo").show();
+			loadPersonInfo();
+		}
 	});
+
+	$("#editPersonalInfo").on("click", function() {
+		var flag = ($(this).attr("flag")) ? $(this).attr("flag") : 0;
+		if (0 == flag) {
+			$("#updatePicture").show();
+			$("#name").attr("placeholder", $("#name_label").attr("label"));
+			$("#name").show();
+			$("#tel").attr("placeholder", $("#tel_label").attr("label"));
+			$("#tel").show();
+			$("#email").attr("placeholder", $("#email_label").attr("label"));
+			//$("#email").css("width",none); 
+			//$("#email").css('display',none);
+			$("#email").show();
+			$(this).attr("flag", 1);
+			$(this).html("Cancel");
+			$("#name_label").hide();
+			$("#tel_label").hide();
+			$("#email_label").hide();
+		} else {
+			$("#updatePicture").hide();
+			$("#name").hide();
+			$("#tel").hide();
+			$("#email").hide();
+			$(this).attr("flag", 0);
+			$(this).html("Edit");
+			$("#name_label").show();
+			$("#tel_label").show();
+			$("#email_label").show();
+		}
+	});
+	//_div_userPersonalInfo
 	//更新用户信息
 	$("#updatePersonalInfo")
 			.on(
@@ -637,15 +694,20 @@
 					function() {
 						$
 								.ajax({
-									url:"http://127.0.0.1:8889/foxbpm-webapps-base/service/identity/users/admin",
-									type:'get',
-									dataType:"json",
-									cache: false,
-									data:{name:$("#name").val(),email:$("#email").val(),tel:$("#tel").val()},
-									error: function() {
+									url : "http://127.0.0.1:8889/foxbpm-webapps-base/service/identity/users/admin",
+									type : 'post',
+									dataType : "json",
+									cache : false,
+									data : {
+										name : $("#name").val(),
+										email : $("#email").val(),
+										tel : $("#tel").val()
 									},
-									success: function(data, status) {
-										//alert(data);
+									error : function() {
+									},
+									success : function(data, status) {
+										loadPersonInfo();
+										$("#editPersonalInfo").click();
 									}
 								});
 					});
@@ -654,28 +716,36 @@
 			.on(
 					"click",
 					function(file) {
-						//创建表单
-						var $form = document.createElement("form");
-						$form.action = "http://127.0.0.1:8889/foxbpm-webapps-base/service/identity/users/admin/picture";
-						$form.id = "uploadForm";
-						$form.method = "post";
-						$form.enctype = "multipart/form-data";
-						//$form.style.display = "none";
-						//创建文件输入框
-						var hiddenFileInput = document.createElement("input");
-						hiddenFileInput.setAttribute("type", "file");
-						hiddenFileInput.setAttribute("id", "file");
-						hiddenFileInput.setAttribute("name", "file");
-						hiddenFileInput.setAttribute("multiple", "multiple");
-						//hiddenFileInput.style.visibility = "hidden";
-						hiddenFileInput.onchange = function() {
-							previewImage(this);
-							ajaxFileUpload("uploadForm", "file");
-						};
-						$form.appendChild(hiddenFileInput);
-						//将表单加当document上，
-						document.body.appendChild($form);
-						hiddenFileInput.click();
+						var $form = document.getElementById("uploadForm");
+						if (!$form) {
+							//创建表单
+							$form = document.createElement("form");
+							$form.action = "/foxbpm-webapps-common/service/identity/users/"
+									+ _userId + "/picture";
+							$form.id = "uploadForm";
+							$form.method = "post";
+							$form.enctype = "multipart/form-data";
+							$form.style.display = "none";
+							//创建文件输入框
+							var hiddenFileInput = document
+									.createElement("input");
+							hiddenFileInput.setAttribute("type", "file");
+							hiddenFileInput.setAttribute("id", "uploadFile");
+							hiddenFileInput.setAttribute("name", "uploadFile");
+							hiddenFileInput
+									.setAttribute("multiple", "multiple");
+							hiddenFileInput.style.visibility = "hidden";
+							hiddenFileInput.onchange = function() {
+								previewImage(this);
+								ajaxFileUpload("uploadForm", "uploadFile");
+							};
+							$form.appendChild(hiddenFileInput);
+							//将表单加当document上，
+							document.body.appendChild($form);
+							hiddenFileInput.click();
+						} else {
+							document.getElementById("uploadFile").click();
+						}
 					});
 	function previewImage(file) {
 		var MAXWIDTH = 260;
@@ -742,15 +812,12 @@
 		try {
 			//开始ajax提交表单  
 			$form.ajaxSubmit({
+				cache : false,
 				type : "post",
 				dataType : "json",
 				error : function(data, status, e) {
-					//alert(data);
 				},
 				success : function(data, status) {
-					//alert(data + " " + $("#" + formId));
-					//$form.remove();
-					//alert(" " + $("#" + formId).attr("id"));
 				}
 			});
 		} catch (e) {

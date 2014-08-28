@@ -129,6 +129,7 @@ public class UserEntity {
 		Map<String, Object> persistentState = new HashMap<String, Object>();
 		persistentState.put("userId", userId);
 		persistentState.put("userName", userName);
+		persistentState.put("password", password);
 		persistentState.put("email", email);
 		persistentState.put("tel", tel);
 		persistentState.put("image", image);

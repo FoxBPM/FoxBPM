@@ -17,6 +17,8 @@
  */
 package org.foxbpm.rest.service.api.identity;
 
+import java.util.Map;
+
 import org.foxbpm.engine.IdentityService;
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.impl.cache.CacheUtil;
@@ -24,8 +26,9 @@ import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
-import org.restlet.data.Form;
+import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
+import org.restlet.resource.Post;
 
 /**
  * 常量类
@@ -36,33 +39,48 @@ import org.restlet.resource.Get;
 public class UserResource extends AbstractRestResource {
 	
 	@Get
-	public String update() {
-		StringBuffer responseText = new StringBuffer("{");
+	public Object getUserResource() {
 		// 获取参数
 		String userId = getAttribute("userId");
-		Form query = getQuery();
-		String userName = getQueryParameter("name", query);
-		String email = getQueryParameter("email", query);
-		String tel = getQueryParameter("tel", query);
-		
-		if (StringUtil.isNotEmpty(userName) || StringUtil.isNotEmpty(email) || StringUtil.isNotEmpty(tel)) {
-			try {
-				// 获取引擎
-				ProcessEngine processEngine = FoxBpmUtil.getProcessEngine();
-				// 获取身份服务
-				IdentityService identityService = processEngine.getIdentityService();
-				// 构造用户信息
-				UserEntity userEntity = new UserEntity(userId, userName);
-				userEntity.setEmail(email);
-				userEntity.setTel(tel);
-				identityService.updateUser(userEntity);
-				CacheUtil.getIdentityCache().remove("user_" + userEntity.getUserId());
-				responseText.append("success:更新成功");
-			} catch (Exception e) {
-				responseText.append("error:" + e.getMessage());
+		if (StringUtil.isNotEmpty(userId)) {
+			// 获取引擎
+			ProcessEngine processEngine = FoxBpmUtil.getProcessEngine();
+			// 获取身份服务
+			IdentityService identityService = processEngine.getIdentityService();
+			UserEntity userEntity = identityService.getUser(userId);
+			if (null != userEntity) {
+				return userEntity.getPersistentState();
 			}
 		}
-		responseText.append("}");
-		return responseText.toString();
+		return null;
+	}
+	@Post
+	public void updateUserResource(Representation entity) {
+		// 获取参数
+		String userId = getAttribute("userId");
+		Map<String, String> paramsMap = getRequestParams(entity);
+		String userName = paramsMap.get("name");
+		String email = paramsMap.get("email");
+		String tel = paramsMap.get("tel");
+		if (StringUtil.isNotEmpty(userId)) {
+			UserEntity userEntity = new UserEntity(userId);
+			if (StringUtil.isNotEmpty(userName)) {
+				userEntity.setUserName(userName);
+			}
+			if (StringUtil.isNotEmpty(email)) {
+				userEntity.setEmail(email);
+				
+			}
+			if (StringUtil.isNotEmpty(tel)) {
+				userEntity.setTel(tel);
+			}
+			// 获取引擎
+			ProcessEngine processEngine = FoxBpmUtil.getProcessEngine();
+			// 获取身份服务
+			IdentityService identityService = processEngine.getIdentityService();
+			// 构造用户信息
+			identityService.updateUser(userEntity);
+			CacheUtil.getIdentityCache().remove("user_" + userEntity.getUserId());
+		}
 	}
 }
