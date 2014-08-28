@@ -8,7 +8,7 @@ var _userId = "";
 $.ajax({
 	type : "get", 
 	dataType : "json", 
-	async:true, 
+	async:false, 
 	url : "/foxbpm-webapps-common/service/getLoginState", 
 	success:function(response){
 		_userId = response.userId;
