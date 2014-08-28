@@ -74,9 +74,9 @@ var pagefunction = function() {
 						"orderable" : true,
 						"serverSide" : true,
 						"ajax" : "/foxbpm-webapps-common/service/tasks",
-						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'l><'col-sm-6 col-xs-6 hidden-xs'C>r>"
-								+ "t"
-								+ "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'lC>>"+
+								 "t"+
+								 "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
 						"autoWidth" : true,
 						"colVis": {
 				            "buttonText": "选择展示的列",
