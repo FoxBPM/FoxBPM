@@ -41,7 +41,6 @@ import org.restlet.service.StatusService;
 public class FoxbpmStatusService extends StatusService {
 
 	protected static final String NEWLINE_REPLACE_REGEX = "\\r\\n|\\r|\\n";
-
 	@Override
 	public Representation getRepresentation(Status status, Request request, Response response) {
 		if (status != null && status.isError()) {
