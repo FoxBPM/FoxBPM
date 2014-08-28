@@ -11,7 +11,7 @@ public class FoxbpmCalendarMapper implements FoxbpmMapperConfig {
 	public List<String> getMapperConfig() {
 		List<String> xmlList = new ArrayList<String>();
 		xmlList.add("mybatis/mapping/CalendarType.xml");
-		return null;
+		return xmlList;
 	}
 
 }
