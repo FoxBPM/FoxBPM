@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.foxbpm.engine.identity.UserDefinition;
 import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.db.ListQueryParameterObject;
 import org.foxbpm.engine.impl.entity.UserEntity;
 
 public class UserDefinitionImpl implements UserDefinition {
@@ -46,7 +47,7 @@ public class UserDefinitionImpl implements UserDefinition {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<UserEntity> findUsers(String idLike, String nameLike, int firstResult, int maxResults) {
+	public List<UserEntity> findUsers(String idLike, String nameLike, int pageIndex, int pageSize) {
 		Map<String, Object> queryMap = new HashMap<String, Object>();
 		if (idLike != null) {
 			queryMap.put("userId", idLike);
@@ -54,7 +55,10 @@ public class UserDefinitionImpl implements UserDefinition {
 		if (nameLike != null) {
 			queryMap.put("userName", nameLike);
 		}
-		return (List<UserEntity>) Context.getCommandContext().getSqlSession().selectList("selectUsersByPage", queryMap);
+		int firstResult = pageIndex * pageSize - pageSize;
+		int maxResults = pageSize;
+		ListQueryParameterObject queryParams = new ListQueryParameterObject(queryMap, firstResult, maxResults);
+		return (List<UserEntity>) Context.getCommandContext().getSqlSession().selectList("selectUsersByPage", queryParams);
 	}
 	
 	@Override
