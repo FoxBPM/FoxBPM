@@ -7,7 +7,7 @@
 			<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-2" data-widget-editbutton="false">
 				<header>
 					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-					<h2>待办任务列表</h2>
+					<h2>待办任务</h2>
 
 				</header>
 				<!-- widget div-->
@@ -17,13 +17,13 @@
 						<table id="datatable_col_reorder" class="table table-striped table-bordered table-hover" width="100%">
 							<thead>
 								<tr> 
-									<th><i class="fa fa-pencil"></i>  任务</th>
-									<th><i class="fa fa-hand-o-up"></i> 优先级</th>
-									<th ><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> 创建</th>
-									<th><i class="fa fa-wrench"></i> 状态</th>
+									<th><i class="fa fa-fw fa-tasks text-muted hidden-md hidden-sm hidden-xs"></i>  任务</th>
+									<th><i class="fa fa-fw fa-rocket text-muted hidden-md hidden-sm hidden-xs"></i> 优先级</th>
+									<th><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> 创建</th>
+									<th><i class="fa fa-fw fa-flag text-muted hidden-md hidden-sm hidden-xs"></i> 状态</th>
 									<th><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> 发起人</th>
-									<th><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> 期限</th>
-									<th><i class="fa fa-fw fa-gear fa-spin fa-lg" ></i> 操作</th>
+									<th><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> 期限</th>
+									<th><i class="fa fa-fw fa-cogs text-muted hidden-md hidden-sm hidden-xs" ></i> 操作</th>
 								</tr>
 							</thead>
 						</table>
@@ -50,46 +50,6 @@
 <!-- end widget grid --> 
 
 <script type="text/javascript">
-	function TaskEntity(data){
-		this.taskName = data.name;
-		if(data.priority == "50"){
-			this.priority = "高";
-		}
-		
-		this.createTime = data.createTime;
-		if(!data.endTime){
-			this.status = "活动";
-		}
-		
-		this.initor = data.processInitiator;
-		this.duration = data.dueDate;
-		
-		this.operate = "<a href='javascript:void(0);' class='btn btn-danger'>删除</a> <a href='javascript:void(0);' class='btn btn-success'>处理</a>";
-	}
-	var taskList=[];
-	var Foxbpm = {};
-	Foxbpm.Loader={
-			loadTodoInfos:function(){
-				$.ajax({
-					type : "get", 
-					dataType : "json", 
-					async:true, 
-					url : "/foxbpm-webapps-base/service/tasks", 
-					data : {
-						"pageIndex" : 1,
-						"pageSize" : 15 
-					},
-					success : function(response) { 
-						$.each(response.data,
-								function(index, task) {
-							taskList[taskList.length] = new TaskEntity(task);
-						}); 
-					}
-				});
-			},
-			 
-	};
-	Foxbpm.Loader.loadTodoInfos(); 
 	
 	pageSetUp(); 
 	 
@@ -99,30 +59,45 @@
 		        { data: 'subject' },
 		        { data: 'priority' },
 		        { data: 'createTime' },
-		        { data: 'createTime' },
+		        { data: 'endTime' },
 		        { data: 'processInitiator' },
 		        { data: 'createTime' },
 		        {
 	                  "orderable":      false,
 	                  "data":           null,
-	                  "defaultContent": "<a href='javascript:void(0);' class='btn btn-danger'>删除</a> <a href='javascript:void(0);' class='btn btn-success'>处理</a>"
+	                  "defaultContent": ""//<a href='javascript:void(0);' class='btn btn-danger'>删除</a> <a href='javascript:void(0);' class='btn btn-success'>处理</a>
 	            }
 		    ],
 		    columnDefs: [ {
 		        "targets": [1],
 		        "orderable": true,
 		        "createdCell": function (td, cellData, rowData, row, col) {
-		            if ( cellData == "50" ) {
-		              $(td).html('高级');
-		            }
+		   
+		            if(cellData == "0"){  
+		            	 $(td).html("<span class='label label-default'>Low</span>");
+		    		}
+		    		if(cellData== "50"){
+		    			$(td).html("<span class='label label-success'>Medium</span>");
+		    		}
+		    		if(cellData == "100"){
+		    			$(td).html("<span class='label label-danger'>High</span>");
+		    		}
 		         }
 		      } ],
+		     /*  columnDefs: [ {
+			        "targets": [3],
+			        "orderable": true,
+			        "createdCell": function (td, cellData, rowData, row, col) {
+			        	var jiangnan="";
+			          
+			         }
+			      } ], */
 		    "processing": true,
 		    "orderable": true,
 	        "serverSide": true, 
 	        "ajax": "/foxbpm-webapps-common/service/tasks",
 			"sDom": "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'l><'col-sm-6 col-xs-6 hidden-xs'C>r>"+
-					"t"+
+					"t"+ 
 					"<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
 			"autoWidth" : true
 			 
