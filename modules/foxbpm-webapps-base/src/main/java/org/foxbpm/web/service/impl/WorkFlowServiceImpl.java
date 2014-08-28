@@ -468,7 +468,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		int pageNum = pageInfor.getPageIndex();
 		int rowNum = pageInfor.getPageSize();
 		
-		Page page = new Page(pageNum * rowNum - rowNum, rowNum);
+		Page page = new Page(pageNum, rowNum);
 		return identityService.getUsers(idLike, nameLike, page);
 	}
 	
