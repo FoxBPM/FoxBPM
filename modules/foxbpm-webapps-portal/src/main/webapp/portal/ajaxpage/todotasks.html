@@ -48,61 +48,13 @@
 
 </section>
 <!-- end widget grid --> 
+<script src="jsportal/todotasks.js"></script>
 
 <script type="text/javascript">
 	
-	pageSetUp(); 
-	 
-	var pagefunction = function() {
-		$('#datatable_col_reorder').dataTable({
-		    columns: [
-		        { data: 'subject' },
-		        { data: 'priority' },
-		        { data: 'createTime' },
-		        { data: 'endTime' },
-		        { data: 'processInitiator' },
-		        { data: 'createTime' },
-		        {
-	                  "orderable":      false,
-	                  "data":           null,
-	                  "defaultContent": ""//<a href='javascript:void(0);' class='btn btn-danger'>删除</a> <a href='javascript:void(0);' class='btn btn-success'>处理</a>
-	            }
-		    ],
-		    columnDefs: [ {
-		        "targets": [1],
-		        "orderable": true,
-		        "createdCell": function (td, cellData, rowData, row, col) {
-		   
-		            if(cellData == "0"){  
-		            	 $(td).html("<span class='label label-default'>Low</span>");
-		    		}
-		    		if(cellData== "50"){
-		    			$(td).html("<span class='label label-success'>Medium</span>");
-		    		}
-		    		if(cellData == "100"){
-		    			$(td).html("<span class='label label-danger'>High</span>");
-		    		}
-		         }
-		      } ],
-		     /*  columnDefs: [ {
-			        "targets": [3],
-			        "orderable": true,
-			        "createdCell": function (td, cellData, rowData, row, col) {
-			        	var jiangnan="";
-			          
-			         }
-			      } ], */
-		    "processing": true,
-		    "orderable": true,
-	        "serverSide": true, 
-	        "ajax": "/foxbpm-webapps-common/service/tasks",
-			"sDom": "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'l><'col-sm-6 col-xs-6 hidden-xs'C>r>"+
-					"t"+ 
-					"<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
-			"autoWidth" : true
-			 
-		});
-	};
+	//pageSetUp(); 
+	//alert(pagefunction);
+
 
 	// load related plugins
 	loadScript("js/plugin/datatables/jquery.dataTables.js", function(){
