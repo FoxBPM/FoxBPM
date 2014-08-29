@@ -3,6 +3,8 @@ var pagefunction = function() {
 			.dataTable(
 					{
 						columns : [ {
+							data : 'processInitiator'
+						},{
 							data : 'subject'
 						}, {
 							data : 'priority'
@@ -27,7 +29,17 @@ var pagefunction = function() {
 						} ],
 						columnDefs : [
 								{
-									"targets" : [ 1 ],
+									"targets" : [ 0 ],
+									"orderable" : true,
+									"createdCell" : function(td, cellData,
+											rowData, row, col) {
+								
+										$(td).html("<img width='20' height='20' class='online' src='/foxbpm-webapps-common/service/identity/users/"+cellData+"/picture'/>");
+										
+									}
+								},
+								{
+									"targets" : [ 2 ],
 									"orderable" : true,
 									"createdCell" : function(td, cellData,
 											rowData, row, col) {
@@ -50,7 +62,7 @@ var pagefunction = function() {
 									}
 								},
 								{
-									"targets" : [ 3 ],
+									"targets" : [ 4 ],
 									"orderable" : true,
 									"createdCell" : function(td, cellData,
 											rowData, row, col) {
@@ -70,13 +82,27 @@ var pagefunction = function() {
 									}
 								},
 								{
-									"targets" : [ 4 ],
+									"targets" : [ 5 ],
 									"orderable" : true,
 									"createdCell" : function(td, cellData,
 											rowData, row, col) {
 										
 										
-										$(td).html("<img width='20' height='20' class='online' src='/foxbpm-webapps-common/service/identity/users/"+cellData+"/picture'/> ("+cellData+")");
+										$(td).html(cellData);
+										
+										
+
+									}
+								},
+								{
+									"targets" : [ 7 ],
+									"orderable" : true,
+									"createdCell" : function(td, cellData,
+											rowData, row, col) {
+										
+										$(td).html("<a class='btn btn-default btn-xs' href='javascript:void(0);'><i class='fa fa-pencil-square-o'></i> 表单</a>"+
+												"    <a class='btn btn-default btn-xs' href='javascript:void(0);'><i class='fa fa-sitemap'></i> 流程图</a>");
+									
 										
 										
 
@@ -99,7 +125,7 @@ var pagefunction = function() {
 				            "showNone": "不展示列",
 				            "groups": [
 				                     {
-				                         title: "领到查看",
+				                         title: "领导查看",
 				                         columns: [ 0, 3, 4 ]
 				                     }
 				                 ]
