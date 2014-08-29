@@ -324,7 +324,9 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		for (Map.Entry<String,TaskCommandDefinition> tmp : taskCommandDefinitionMap.entrySet()) {
 			TaskCommandDefinition taskDefintion = tmp.getValue();
 			filter = taskDefintion.getFilterClass();
-			abstractCommandFilterMap.put(taskDefintion.getId(), (AbstractCommandFilter) ReflectUtil.instantiate(filter));
+			if (StringUtil.isNotBlank(filter)) {
+				abstractCommandFilterMap.put(taskDefintion.getId(), (AbstractCommandFilter) ReflectUtil.instantiate(filter));
+			}
 		}
 	}
 	
