@@ -324,10 +324,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		for (Map.Entry<String,TaskCommandDefinition> tmp : taskCommandDefinitionMap.entrySet()) {
 			TaskCommandDefinition taskDefintion = tmp.getValue();
 			filter = taskDefintion.getFilterClass();
-			if (StringUtil.getBoolean(taskDefintion.getIsEnabled())
-			        && StringUtil.isNotBlank(filter)) {
-				abstractCommandFilterMap.put(taskDefintion.getId(), (AbstractCommandFilter) ReflectUtil.instantiate(filter));
-			}
+			abstractCommandFilterMap.put(taskDefintion.getId(), (AbstractCommandFilter) ReflectUtil.instantiate(filter));
 		}
 	}
 	
@@ -387,6 +384,9 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			if("system".equals(tmpCommand.getType())){
 				break;
 			}
+			if(!StringUtil.getBoolean(tmpCommand.getIsEnabled())){
+				break;
+			}
 			TaskCommandDefinitionImpl commandImpl = new TaskCommandDefinitionImpl();
 			commandImpl.setId(tmpCommand.getId());
 			commandImpl.setName(tmpCommand.getName());
@@ -394,8 +394,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			commandImpl.setCmdClass(tmpCommand.getCmd());
 			commandImpl.setFilterClass(tmpCommand.getFilter());
 			commandImpl.setDescription(tmpCommand.getDescription());
-			commandImpl.setEnabled(StringUtil.getBoolean(tmpCommand.getIsEnabled()));
-			commandImpl.setType(tmpCommand.getType());
 			List<CommandParam> commandParams = new ArrayList<CommandParam>();
 			
 			for(org.foxbpm.model.config.foxbpmconfig.CommandParam param : tmpCommand.getCommandParam()){
