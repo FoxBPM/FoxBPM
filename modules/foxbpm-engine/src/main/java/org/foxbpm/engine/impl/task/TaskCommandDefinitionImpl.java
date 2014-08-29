@@ -30,8 +30,6 @@ public class TaskCommandDefinitionImpl implements TaskCommandDefinition {
 	private String cmdClass;
 	private String filterClass;
 	private String description;
-	private String type;
-	private boolean isEnabled;
 	private List<CommandParam> commandParams;
 
 	public String getId() {
@@ -81,30 +79,13 @@ public class TaskCommandDefinitionImpl implements TaskCommandDefinition {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public void setEnabled(boolean isEnabled) {
-		this.isEnabled = isEnabled;
-	}
-
+	
 	public List<CommandParam> getCommandParam() {
 		return commandParams;
 	}
 
 	public void setCommandParam(List<CommandParam> commandParams) {
 		this.commandParams = commandParams;
-	}
-
-	@Override
-	public boolean getIsEnabled() {
-		return isEnabled;
 	}
 
 }

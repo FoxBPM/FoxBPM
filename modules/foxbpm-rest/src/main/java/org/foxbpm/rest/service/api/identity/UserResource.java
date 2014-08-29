@@ -28,7 +28,7 @@ import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
-import org.restlet.resource.Post;
+import org.restlet.resource.Put;
 
 /**
  * 常量类
@@ -54,8 +54,8 @@ public class UserResource extends AbstractRestResource {
 		}
 		return null;
 	}
-	@Post
-	public void updateUserResource(Representation entity) {
+	@Put
+	public String updateUserResource(Representation entity) {
 		// 获取参数
 		String userId = getAttribute("userId");
 		Map<String, String> paramsMap = getRequestParams(entity);
@@ -82,5 +82,6 @@ public class UserResource extends AbstractRestResource {
 			identityService.updateUser(userEntity);
 			CacheUtil.getIdentityCache().remove("user_" + userEntity.getUserId());
 		}
+		return "{}";
 	}
 }

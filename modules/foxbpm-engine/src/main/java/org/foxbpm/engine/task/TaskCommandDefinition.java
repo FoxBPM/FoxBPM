@@ -21,21 +21,45 @@ import java.util.List;
 
 public interface TaskCommandDefinition {
 
+	/**
+	 * 按钮编号，如startandsubmit
+	 * @return
+	 */
 	String getId();
 
+	/**
+	 * 按钮名称
+	 * @return
+	 */
 	String getName();
 
+	/**
+	 * command类全名 org.foxbpm.task****
+	 * @return
+	 */
 	String getCommandClass();
 
+	/**
+	 * cmd类全名
+	 * @return
+	 */
 	String getCmdClass();
 
+	/**
+	 * filter类全名
+	 * @return
+	 */
 	String getFilterClass();
 
-	boolean getIsEnabled();
-
-	String getType();
-
+	/**
+	 * 按钮描述
+	 * @return
+	 */
 	String getDescription();
 
+	/**
+	 * 按钮参数
+	 * @return
+	 */
 	List<CommandParam> getCommandParam();
 }

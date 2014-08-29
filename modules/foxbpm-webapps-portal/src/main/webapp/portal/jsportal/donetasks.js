@@ -3,19 +3,17 @@ var pagefunction = function() {
 			.dataTable(
 					{
 						columns : [ {
-							data : 'processInitiator'
-						},{
 							data : 'subject'
 						}, {
 							data : 'priority'
 						}, {
 							data : 'createTime'
 						}, {
-							data : 'endTime'
-						}, {
-							data : 'processInitiator'
-						}, {
 							data : 'createTime'
+						},  { data: 'dueDate' },
+				        { data: 'endTime' },
+						{
+							data : 'processInitiator'
 						}, {
 							"orderable" : false,
 							"data" : null,
@@ -29,17 +27,7 @@ var pagefunction = function() {
 						} ],
 						columnDefs : [
 								{
-									"targets" : [ 0 ],
-									"orderable" : true,
-									"createdCell" : function(td, cellData,
-											rowData, row, col) {
-								
-										$(td).html("<img width='20' height='20' class='online' src='/foxbpm-webapps-common/service/identity/users/"+cellData+"/picture'/>");
-										
-									}
-								},
-								{
-									"targets" : [ 2 ],
+									"targets" : [ 1 ],
 									"orderable" : true,
 									"createdCell" : function(td, cellData,
 											rowData, row, col) {
@@ -62,7 +50,7 @@ var pagefunction = function() {
 									}
 								},
 								{
-									"targets" : [ 4 ],
+									"targets" : [ 2 ],
 									"orderable" : true,
 									"createdCell" : function(td, cellData,
 											rowData, row, col) {
@@ -82,30 +70,14 @@ var pagefunction = function() {
 									}
 								},
 								{
-									"targets" : [ 5 ],
+									"targets" : [ 4 ],
 									"orderable" : true,
 									"createdCell" : function(td, cellData,
 											rowData, row, col) {
-										
-										
-										$(td).html(cellData);
-										
-										
-
-									}
-								},
-								{
-									"targets" : [ 7 ],
-									"orderable" : true,
-									"createdCell" : function(td, cellData,
-											rowData, row, col) {
-										
-										$(td).html("<a class='btn btn-default btn-xs' href='javascript:void(0);'><i class='fa fa-pencil-square-o'></i> 表单</a>"+
-												"    <a class='btn btn-default btn-xs' href='javascript:void(0);'><i class='fa fa-sitemap'></i> 流程图</a>");
-									
-										
-										
-
+										if(cellData != ""){
+											$(td).html("<img width='20' height='20' class='online' src='/foxbpm-webapps-common/service/identity/users/"+cellData+"/picture'/> ("+cellData+")");
+											
+										}
 									}
 								} 
 								],
@@ -113,7 +85,12 @@ var pagefunction = function() {
 						"processing" : true,
 						"orderable" : true,
 						"serverSide" : true,
-						"ajax" : "/foxbpm-webapps-common/service/tasks",
+						"ajax": {
+				            "url": "/foxbpm-webapps-common/service/tasks",
+				            "data": function ( d ) {
+				                d.ended = true; 
+				            }
+				        },
 						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'lC>>"+
 								 "t"+
 								 "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
@@ -125,7 +102,7 @@ var pagefunction = function() {
 				            "showNone": "不展示列",
 				            "groups": [
 				                     {
-				                         title: "领导查看",
+				                         title: "领到查看",
 				                         columns: [ 0, 3, 4 ]
 				                     }
 				                 ]
