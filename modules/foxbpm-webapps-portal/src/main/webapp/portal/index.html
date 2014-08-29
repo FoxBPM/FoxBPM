@@ -86,8 +86,8 @@
 				document.write('<script src="js/libs/jquery-ui-1.10.3.min.js"><\/script>');
 			}
 		</script>
-		<script src="js/foxbpm/common.js"></script>
-		
+		<script src="js/foxbpm/common.js">
+		</script>
 	</head>
 
 	<!--
@@ -228,7 +228,8 @@
 				<ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
 					<li class="">
 						<a href="#" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown"> 
-							<img src="img/avatars/sunny.png" alt="John Doe" class="online" />  
+							<!-- <img src="img/avatars/sunny.png" alt="John Doe" class="online" /> -->  
+							<img alt="John Doe" src="" name="uImg" class="online" style="width:30px;height:30px"/> 
 						</a>
 						<ul class="dropdown-menu pull-right">
 							<li>
@@ -365,7 +366,8 @@
 				<span> <!-- User image size is adjusted inside CSS, it should stay as is --> 
 					
 					<a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
-						<img src="img/avatars/sunny.jpg" alt="me" class="online" /> 
+						<!-- <img src="img/avatars/sunny.jpg" alt="me" class="online" />  -->
+						<img  alt="me" name="uImg" class="online" style="style="width:30px;height:30px"/> 
 						<span>
 							kenshin
 						</span>
@@ -800,7 +802,13 @@
 
 		<!-- PACE LOADER - turn this on if you want ajax loading to show (caution: uses lots of memory on iDevices)
 		<script data-pace-options='{ "restartOnRequestAfter": true }' src="js/plugin/pace/pace.min.js"></script>-->
-
+		<script type="text/javascript">
+			$(document).ready(function(){
+			 $("img[name=uImg]").each(function(){
+			  $(this).attr("src","/foxbpm-webapps-common/service/identity/users/"+_userId+"/picture");
+			 });
+		});
+		</script>
 
 		<!-- #PLUGINS -->
 		<!-- IMPORTANT: APP CONFIG -->
