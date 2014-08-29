@@ -17,12 +17,12 @@
 						<table id="datatable_col_reorder" class="table table-striped table-bordered table-hover" width="100%">
 							<thead>
 								<tr> 
-									<th><i class="fa fa-pencil"></i>  主题</th>
-									<th ><i class="fa fa-fw fa-calendar txt-color-blue hidden-md hidden-sm hidden-xs"></i> 创建</th>
-									<th><i class="fa fa-wrench"></i> 状态</th>
+									<th><i class="fa fa-fw fa-tasks text-muted hidden-md hidden-sm hidden-xs"></i>  主题</th>
+									<th ><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> 创建</th>
+									<th><i class="fa fa-fw fa-flag text-muted hidden-md hidden-sm hidden-xs"></i> 状态</th>
 									<th><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> 发起人</th>
 									<th><i class="fa fa-location-arrow"></i> 位置</th>
-									<th><i class="fa fa-fw fa-gear fa-spin fa-lg" ></i> 操作</th>
+									<th><i class="fa fa-fw fa-cogs text-muted hidden-md hidden-sm hidden-xs" ></i> 操作</th>
 					
 								</tr>
 							</thead>
@@ -48,42 +48,9 @@
 
 </section>
 <!-- end widget grid --> 
-
+<script src="jsportal/runningtrackTasks.js"></script>
 <script type="text/javascript">
 	 
-	pageSetUp(); 
-	 
-	var pagefunction = function() {
-		$('#datatable_col_reorder').dataTable({
-		    columns: [
-		        { data: 'subject' },
-		        { data: 'startTime' },
-		        {
-	                  "orderable":      false,
-	                  "data":           'instanceStatus',
-	                  "defaultContent": "-"
-	            },
-		        { data: 'initiator' },
-		        {
-	                  "orderable":      false,
-	                  "data":           'processLocation',
-	                  "defaultContent": "-"
-	            },
-		        {
-	                  "orderable":      false,
-	                  "data":           null,
-	                  "defaultContent": "<a href='javascript:void(0);' class='btn btn-danger'>查看</a> "
-	            }
-		    ],
-		    "processing": false,
-		    "orderable": true,
-	        "serverSide": true, 
-	        "ajax": "/foxbpm-webapps-common/service/runtime/process-instances",
-			"autoWidth" : true
-			 
-		});
-	};
-
 	// load related plugins
 	loadScript("js/plugin/datatables/jquery.dataTables.js", function(){
 		loadScript("js/plugin/datatables/dataTables.colVis.min.js", function(){
