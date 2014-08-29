@@ -70,30 +70,41 @@ PersonInfo.prototype = {
 		});
 	},
 	editPersonalInfo : function() {
-		var flag = ($(this).attr("flag")) ? $(this).attr("flag") : 0;
+		var editPersonalInfo = $("#editPersonalInfo");
+		var updatePicture = $("#updatePicture");
+		var name = $("#name");
+		var tel = $("#tel");
+		var email = $("#email");
+		var name_label = $("#name_label");
+		var tel_label = $("#tel_label");
+		var email_label = $("#email_label");
+		var flag = editPersonalInfo.attr("flag");
 		if (0 == flag) {
-			$("#updatePicture").show();
-			$("#name").attr("placeholder", $("#name_label").attr("label"));
-			$("#name").show();
-			$("#tel").attr("placeholder", $("#tel_label").attr("label"));
-			$("#tel").show();
-			$("#email").attr("placeholder", $("#email_label").attr("label"));
-			$("#email").show();
-			$(this).attr("flag", 1);
-			$(this).html("Cancel");
-			$("#name_label").hide();
-			$("#tel_label").hide();
-			$("#email_label").hide();
+			updatePicture.show();
+			name.attr("placeholder", name_label.attr("label"));
+			name.attr("value", name_label.attr("label"));
+			name.show();
+			tel.attr("placeholder", tel_label.attr("label"));
+			tel.attr("value", tel_label.attr("label"));
+			tel.show();
+			email.attr("placeholder", email_label.attr("label"));
+			email.attr("value", email_label.attr("label"));
+			email.show();
+			editPersonalInfo.attr("flag", 1);
+			editPersonalInfo.html("Cancel");
+			name_label.hide();
+			tel_label.hide();
+			email_label.hide();
 		} else {
-			$("#updatePicture").hide();
-			$("#name").hide();
-			$("#tel").hide();
-			$("#email").hide();
-			$(this).attr("flag", 0);
-			$(this).html("Edit");
-			$("#name_label").show();
-			$("#tel_label").show();
-			$("#email_label").show();
+			updatePicture.hide();
+			name.hide();
+			tel.hide();
+			email.hide();
+			editPersonalInfo.attr("flag", 0);
+			editPersonalInfo.html("Edit");
+			name_label.show();
+			tel_label.show();
+			email_label.show();
 		}
 	},
 	updatePicture : function() {
@@ -159,13 +170,16 @@ PersonInfo.prototype = {
 			},
 			success : function(response) {
 				if (!!response) {
-					$("#name_label").html(response.userName);
-					$("#name_label").attr("label", response.userName);
-					$("#tel_label").html(response.tel);
-					$("#tel_label").attr("label", response.tel);
-					$("#email_label").html(response.email);
-					$("#email_label").attr("label", response.email);
-					$("#email_label").attr("href", "mailto:" + response.email);
+					var name_label = $("#name_label");
+					var tel_label = $("#tel_label");
+					var email_label = $("#email_label");
+					name_label.html(response.userName);
+					name_label.attr("label", response.userName);
+					tel_label.html(response.tel);
+					tel_label.attr("label", response.tel);
+					email_label.html(response.email);
+					email_label.attr("label", response.email);
+					email_label.attr("href", "mailto:" + response.email);
 				}
 			}
 		});
