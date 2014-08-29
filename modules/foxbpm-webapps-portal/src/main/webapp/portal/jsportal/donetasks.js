@@ -9,11 +9,11 @@ var pagefunction = function() {
 						}, {
 							data : 'createTime'
 						}, {
-							data : 'endTime'
-						}, {
-							data : 'processInitiator'
-						}, {
 							data : 'createTime'
+						},  { data: 'dueDate' },
+				        { data: 'endTime' },
+						{
+							data : 'processInitiator'
 						}, {
 							"orderable" : false,
 							"data" : null,
@@ -50,7 +50,7 @@ var pagefunction = function() {
 									}
 								},
 								{
-									"targets" : [ 3 ],
+									"targets" : [ 2 ],
 									"orderable" : true,
 									"createdCell" : function(td, cellData,
 											rowData, row, col) {
@@ -74,12 +74,10 @@ var pagefunction = function() {
 									"orderable" : true,
 									"createdCell" : function(td, cellData,
 											rowData, row, col) {
-										
-										
-										$(td).html("<img width='20' height='20' class='online' src='/foxbpm-webapps-common/service/identity/users/"+cellData+"/picture'/> ("+cellData+")");
-										
-										
-
+										if(cellData != ""){
+											$(td).html("<img width='20' height='20' class='online' src='/foxbpm-webapps-common/service/identity/users/"+cellData+"/picture'/> ("+cellData+")");
+											
+										}
 									}
 								} 
 								],
@@ -87,7 +85,12 @@ var pagefunction = function() {
 						"processing" : true,
 						"orderable" : true,
 						"serverSide" : true,
-						"ajax" : "/foxbpm-webapps-common/service/tasks",
+						"ajax": {
+				            "url": "/foxbpm-webapps-common/service/tasks",
+				            "data": function ( d ) {
+				                d.ended = true; 
+				            }
+				        },
 						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'lC>>"+
 								 "t"+
 								 "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
