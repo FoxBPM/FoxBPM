@@ -56,6 +56,43 @@ public class ProcessInstanceCollectionResource extends AbstractRestResource {
 			processIntanceQuery.initiator(userId);
 		}
 		
+		if(queryNames.contains(RestConstants.PROCESS_KEY)){
+			processIntanceQuery.processDefinitionKey(getQueryParameter(RestConstants.PROCESS_KEY, queryForm));
+		}
+		
+		if(queryNames.contains(RestConstants.NAME_LIKE)){
+			processIntanceQuery.processDefinitionNameLike(getQueryParameter(RestConstants.NAME_LIKE, queryForm));
+		}
+		
+		if(queryNames.contains(RestConstants.PROCESSINSTANCE_ID)){
+			processIntanceQuery.processInstanceId(getQueryParameter(RestConstants.PROCESSINSTANCE_ID, queryForm));
+		}
+		
+		if(queryNames.contains(RestConstants.PROCESS_ID)){
+			processIntanceQuery.processDefinitionId(getQueryParameter(RestConstants.PROCESS_ID, queryForm));
+		}
+		
+		if(queryNames.contains(RestConstants.BIZKEY_LIKE)){
+			processIntanceQuery.processInstanceBusinessKeyLike(getQueryParameter(RestConstants.BIZKEY_LIKE, queryForm));
+		}
+		
+		if(queryNames.contains("subjectLike")){
+			processIntanceQuery.subjectLike(getQueryParameter("subjectLike", queryForm));
+		}
+		
+		if(queryNames.contains("ended")){
+			boolean ended = StringUtil.getBoolean(getQueryParameter("ended", queryForm));
+			if(ended){
+				processIntanceQuery.isEnd();
+			}else{
+				processIntanceQuery.notEnd();
+			}
+		}
+		
+		if(queryNames.contains("status")){
+			processIntanceQuery.processInstanceStatus(getQueryParameter("status", queryForm));
+		}
+		
 		DataResult result = paginateList(processIntanceQuery);
 		return result;
 	}

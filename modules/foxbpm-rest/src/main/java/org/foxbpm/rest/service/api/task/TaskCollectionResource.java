@@ -47,9 +47,64 @@ public class TaskCollectionResource extends AbstractRestResource {
 		TaskService taskService = FoxBpmUtil.getProcessEngine().getTaskService();
 		TaskQuery taskQuery = taskService.createTaskQuery();
 		
-		
 		taskQuery.taskAssignee(userId);
 		taskQuery.taskCandidateUser(userId);
+		
+		if(queryNames.contains("nameLike")) {
+			taskQuery.taskNameLike(getQueryParameter("nameLike", queryForm));
+	    }
+		
+		if(queryNames.contains("bizKeyLike")) {
+			taskQuery.businessKeyLike(getQueryParameter("bizKeyLike", queryForm));
+	    }
+		
+		if(queryNames.contains("tokenId")) {
+			taskQuery.tokenId(getQueryParameter("tokenId", queryForm));
+	    }
+		
+		if(queryNames.contains("processInstanceId")) {
+			taskQuery.processInstanceId(getQueryParameter("processInstanceId", queryForm));
+	    }
+		
+		if(queryNames.contains("processDefinitionKey")) {
+			taskQuery.processDefinitionKey(getQueryParameter("processDefinitionKey", queryForm));
+	    }
+		
+		if(queryNames.contains("processDefinitionNameLike")) {
+			taskQuery.processDefinitionNameLike(getQueryParameter("processDefinitionNameLike", queryForm));
+	    }
+		
+		if(queryNames.contains("nodeId")) {
+			taskQuery.nodeId(getQueryParameter("nodeId", queryForm));
+	    }
+		
+		if(queryNames.contains("processDefinitionId")) {
+			taskQuery.processDefinitionId(getQueryParameter("processDefinitionId", queryForm));
+	    }
+		
+		if(queryNames.contains("unAssigneed")) {
+			taskQuery.taskUnnassigned();
+	    }
+		
+		if(queryNames.contains("subjectLike")) {
+			taskQuery.taskSubjectLike(getQueryParameter("subjectLike", queryForm));
+	    }
+		
+		if(queryNames.contains("initiator")) {
+			taskQuery.initiator(getQueryParameter("initiator", queryForm));
+	    }
+		
+		if(queryNames.contains("isSuspended")) {
+			taskQuery.isSuspended(StringUtil.getBoolean(getQueryParameter("isSuspended", queryForm)));
+	    }
+		
+		if(queryNames.contains("taskId")) {
+			taskQuery.taskId(getQueryParameter("taskId", queryForm));
+	    }
+		
+		if(queryNames.contains("descriptionLike")) {
+			taskQuery.taskId(getQueryParameter("descriptionLike", queryForm));
+	    }
 		
 		boolean ended = false;
 		if(queryNames.contains(RestConstants.IS_END)){
