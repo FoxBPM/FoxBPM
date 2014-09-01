@@ -130,6 +130,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected List<CommandInterceptor> commandInterceptors;
 	protected FoxBPMConfig foxBpmConfig;
 	protected ResourcePathConfig resourcePathConfig;
+	
+	protected List<ProcessService> processServices;
 	// service
 	protected Map<Class<?>,ProcessService> serviceMap = new HashMap<Class<?>, ProcessService>();
 	
@@ -584,38 +586,45 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return this.sqlSessionFactory;
 	}
 	
+	/**
+	 * <p>ProcessService加载机制</p>
+	 * <p>    1.先扫描外部是否注入，如spring注入</p>
+	 * <p>    2.加载默认的service,如taskService等</p>
+	 * <p>    3.加载serviceLoader中发现的service,见 java spi机制</p> 
+	 * <p> 注：冲突解决方案：优先级为  外部注入>默认service>serviceLoader中</p>      		
+	 */
 	protected void initServices() {
 		
+		if(processServices == null){
+			processServices = new ArrayList<ProcessService>();
+		}
 		
-		ModelServiceImpl modelService = new ModelServiceImpl();
-		modelService.setCommandExecutor(commandExecutor);
-		RuntimeServiceImpl runtimeService = new RuntimeServiceImpl();
-		runtimeService.setCommandExecutor(commandExecutor);
-		TaskServiceImpl taskService = new TaskServiceImpl();
-		taskService.setCommandExecutor(commandExecutor);
-		IdentityServiceImpl identityService = new IdentityServiceImpl();
-		identityService.setCommandExecutor(commandExecutor);
-		
-		serviceMap.put(ModelService.class, modelService);
-		serviceMap.put(RuntimeService.class, runtimeService);
-		serviceMap.put(TaskService.class, taskService);
-		serviceMap.put(IdentityService.class, identityService);
+		processServices.add(new ModelServiceImpl());
+		processServices.add(new RuntimeServiceImpl());
+		processServices.add(new TaskServiceImpl());
+		processServices.add(new IdentityServiceImpl());
 		
 		//serviceLoader方式加载外部注册service
 		ServiceLoader<ProcessService> services = ServiceLoader.load(ProcessService.class);
 		Iterator<ProcessService> serviceIterator = services.iterator();
 		while(serviceIterator.hasNext()){
 			ProcessService tmpService = serviceIterator.next();
-			tmpService.setCommandExecutor(commandExecutor);
-			serviceMap.put(tmpService.getInterfaceClass(), tmpService);
+			processServices.add(tmpService);
 		}
 		
+		Iterator<ProcessService> iterator = processServices.iterator();
+		while(iterator.hasNext()){
+			ProcessService tmpService = serviceIterator.next();
+			if(!serviceMap.containsKey(tmpService.getClass())){
+				tmpService.setCommandExecutor(commandExecutor);
+				serviceMap.put(tmpService.getInterfaceClass(), tmpService);
+			}
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	public  <T> T getService(Class<T> interfaceClass){
 		ProcessService service = serviceMap.get(interfaceClass);
-		
 		if(service == null){
 			throw new FoxBPMException("未找到service：{}的实现，请检查配置文件和启动日志！",interfaceClass);
 		}

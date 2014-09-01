@@ -199,4 +199,9 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 	public void deleteProcessInstance(String processInstanceId) {
 		this.commandExecutor.execute(new DeleteProcessInstanceByIdCmd(processInstanceId));
 	}
+	
+	@Override
+	public Class<?> getInterfaceClass() {
+		return RuntimeService.class;
+	}
 }

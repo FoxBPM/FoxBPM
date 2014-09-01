@@ -106,5 +106,12 @@ public interface ProcessEngine {
 	 * @return
 	 */
 	ProcessEngineConfigurationImpl getProcessEngineConfiguration();
+	
+	/**
+	 * 获取外部注册的service
+	 * @param interfaceClass
+	 * @return
+	 */
+	public  <T> T getService(Class<T> interfaceClass);
 
 }

@@ -129,4 +129,9 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 		return commandExecutor.execute(new GetAllBizObjectsCmd());
 	}
 	
+	@Override
+	public Class<?> getInterfaceClass() {
+		return ModelService.class;
+	}
+	
 }

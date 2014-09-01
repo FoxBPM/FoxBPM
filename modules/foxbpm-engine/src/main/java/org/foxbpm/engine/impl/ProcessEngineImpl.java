@@ -49,14 +49,8 @@ public class ProcessEngineImpl implements ProcessEngine {
 		this.name = processEngineConfiguration.getProcessEngineName();
 		this.modelService = processEngineConfiguration.getModelService();
 		this.runtimeService = processEngineConfiguration.getRuntimeService();
-		// this.historyService = processEngineConfiguration.getHistoryService();
 		this.identityService = processEngineConfiguration.getIdentityService();
 		this.taskService = processEngineConfiguration.getTaskService();
-		// this.formService = processEngineConfiguration.getFormService();
-		// this.scheduleService =
-		// processEngineConfiguration.getScheduleService();
-		// this.managementService =
-		// processEngineConfiguration.getManagementService();
 		ProcessEngineManagement.registerProcessEngine(this);
 	}
 
@@ -103,27 +97,11 @@ public class ProcessEngineImpl implements ProcessEngine {
 	public void setExternalContent(ExternalContent externalContent) {
 		String authenticatedUserId = externalContent.getAuthenticatedUserId();
 		Authentication.setAuthenticatedUserId(authenticatedUserId);
-		// String languageType = externalContent.getLanguageType();
-
-		// if (externalContent.getConnectionManagement() != null &&
-		// !externalContent.getConnectionManagement().equals("")) {
-		// Context.setConnectionManagementDefault(externalContent.getConnectionManagement());
-		// }
-
-		// 国际化语言
-		// if (languageType == null || languageType.equals("")) {
-		//
-		// } else {
-		// processEngineConfiguration.getFixFlowResources().setNowLanguage(languageType);
-		// }
-
 	}
 
 	public void contextClose() {
 		Context.removeCommandContext();
 		Context.removeProcessEngineConfiguration();
-		// Context.removeAbstractScriptLanguageMgmt();
-		// Context.removeLanguageType();
 	}
 
 	public void closeEngine() {
@@ -133,5 +111,9 @@ public class ProcessEngineImpl implements ProcessEngine {
 			// e.printStackTrace();
 		}
 		ProcessEngineManagement.unregister(this);
+	}
+	
+	public  <T> T getService(Class<T> interfaceClass){
+		return (T)processEngineConfiguration.getService(interfaceClass);
 	}
 }
