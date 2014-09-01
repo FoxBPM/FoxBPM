@@ -9,6 +9,6 @@ public class TestGetAllCalendarType extends AbstractFoxBpmTestCase{
 	@Test
 	public void testA(){
 		WorkCalendarService workCalendarService = processEngine.getProcessEngineConfiguration().getService(WorkCalendarService.class);
-		workCalendarService.testAA();
+		workCalendarService.getCalendarRule();
 	}
 }

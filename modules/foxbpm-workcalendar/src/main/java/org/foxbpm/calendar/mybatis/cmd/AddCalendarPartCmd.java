@@ -5,11 +5,11 @@ import java.util.List;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
-public class CalendarGRUDCmd implements Command<List<?>> {
+public class AddCalendarPartCmd implements Command<List<?>> {
 
 	@Override
 	public List<?> execute(CommandContext commandContext) {
-		return commandContext.getSqlSession().selectList("selectAllCalendarType");
+		return commandContext.getSqlSession().selectList("insertCalendarPart");
 	}
 
 }
