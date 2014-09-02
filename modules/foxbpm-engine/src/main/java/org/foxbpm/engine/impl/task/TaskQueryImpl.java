@@ -64,6 +64,9 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 	protected Date createTime;
 	protected Date createTimeBefore;
 	protected Date createTimeAfter;
+	protected Date dueDate;
+	protected Date dueDateBefore;
+	protected Date dueDateAfter;
 	protected String processDefinitionKey;
 	protected String processDefinitionId;
 	protected String processDefinitionName;
@@ -73,6 +76,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 	protected String initiator;
 	protected String isSuspended;
 	protected String tokenId;
+	
 	// 查询代理任务时，用来存放原始任务处理人
 	protected String oldAssigneeId;
 	protected List<String> taskTypeList = new ArrayList<String>();
@@ -304,6 +308,24 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 
 	public TaskQuery taskCreatedAfter(Date after) {
 		this.createTimeAfter = after;
+		return this;
+	}
+	
+	@Override
+	public TaskQuery taskDueDateOn(Date dueDate) {
+		this.dueDate = dueDate;
+		return this;
+	}
+	
+	@Override
+	public TaskQuery taskDueDateBefore(Date before) {
+		this.dueDateBefore = before;
+		return this;
+	}
+	
+	@Override
+	public TaskQuery taskDueDateAfter(Date after) {
+		this.dueDateAfter = after;
 		return this;
 	}
 

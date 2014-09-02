@@ -17,9 +17,13 @@
  */
 package org.foxbpm.rest.service.api.task;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
 
 import org.foxbpm.engine.TaskService;
+import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.TaskQuery;
 import org.foxbpm.rest.common.RestConstants;
@@ -36,8 +40,11 @@ import org.restlet.resource.Get;
  */
 public class TaskCollectionResource extends AbstractRestResource {
 
+	
 	@Get
 	public DataResult getTasks(){
+		
+		SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd HHmmssSSS" );
 		
 		Form queryForm = getQuery();
 		Set<String> queryNames = queryForm.getNames();
@@ -82,7 +89,7 @@ public class TaskCollectionResource extends AbstractRestResource {
 			taskQuery.processDefinitionId(getQueryParameter("processDefinitionId", queryForm));
 	    }
 		
-		if(queryNames.contains("unAssigneed")) {
+		if(queryNames.contains("assigneed")) {
 			taskQuery.taskUnnassigned();
 	    }
 		
@@ -104,6 +111,52 @@ public class TaskCollectionResource extends AbstractRestResource {
 		
 		if(queryNames.contains("descriptionLike")) {
 			taskQuery.taskId(getQueryParameter("descriptionLike", queryForm));
+	    }
+		
+		if(queryNames.contains("createTimeB")) {
+			String dateB = getQueryParameter("createTimeB", queryForm);
+			Date createTimeB;
+			try {
+				createTimeB = sdf.parse(dateB);
+			} catch (ParseException e) {
+				throw new FoxBPMIllegalArgumentException("创建时间格式转换错误，需要yyyy-MM-dd格式,实际格式："+dateB);
+			}
+			taskQuery.taskCreatedAfter(createTimeB);
+	    }
+		
+		if(queryNames.contains("createTimeE")) {
+			String dateE = getQueryParameter("createTimeE", queryForm);
+			dateE = "235959999";
+			Date createTimeE;
+			try {
+				createTimeE = sdf.parse(dateE);
+			} catch (ParseException e) {
+				throw new FoxBPMIllegalArgumentException("创建时间格式转换错误，需要yyyy-MM-dd格式,实际格式："+dateE);
+			}
+			taskQuery.taskCreatedBefore(createTimeE);
+	    }
+		
+		if(queryNames.contains("dueDateB")) {
+			String dateB = getQueryParameter("dueDateB", queryForm);
+			Date dueDateB;
+			try {
+				dueDateB = sdf.parse(dateB);
+			} catch (ParseException e) {
+				throw new FoxBPMIllegalArgumentException("期望时间格式转换错误，需要yyyy-MM-dd格式,实际格式："+dateB);
+			}
+			taskQuery.taskDueDateAfter(dueDateB);
+	    }
+		
+		if(queryNames.contains("dueDateE")) {
+			String dateE = getQueryParameter("dueDateE", queryForm);
+			dateE = "235959999";
+			Date dueDateE;
+			try {
+				dueDateE = sdf.parse(dateE);
+			} catch (ParseException e) {
+				throw new FoxBPMIllegalArgumentException("创建时间格式转换错误，需要yyyy-MM-dd格式,实际格式："+dateE);
+			}
+			taskQuery.taskCreatedBefore(dueDateE);
 	    }
 		
 		boolean ended = false;

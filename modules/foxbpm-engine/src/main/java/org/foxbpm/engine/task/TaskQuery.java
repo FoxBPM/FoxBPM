@@ -223,6 +223,29 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery taskCreatedAfter(Date after);
+	
+	/**
+	 * 期望完成时间等于dueDate
+	 * 
+	 * @param dueDate
+	 * @return
+	 */
+	TaskQuery taskDueDateOn(Date dueDate);
+
+	/**
+	 * 期望完成时间小于before
+	 * 
+	 * @param before
+	 * @return
+	 */
+	TaskQuery taskDueDateBefore(Date before);
+
+	/**
+	 * 期望完成时间大于after
+	 * @param after
+	 * @return
+	 */
+	TaskQuery taskDueDateAfter(Date after);
 
 	/**
 	 * 根据流程定义key查询
