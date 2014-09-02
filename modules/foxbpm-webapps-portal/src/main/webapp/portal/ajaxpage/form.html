@@ -1,0 +1,123 @@
+<!-- Widget ID (each widget will need unique ID)-->
+<div class="jarviswidget" id="wid-id-8" data-widget-editbutton="false"
+	data-widget-custombutton="false">
+	<!-- widget options:
+					usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+					
+					data-widget-colorbutton="false"	
+					data-widget-editbutton="false"
+					data-widget-togglebutton="false"
+					data-widget-deletebutton="false"
+					data-widget-fullscreenbutton="false"
+					data-widget-custombutton="false"
+					data-widget-collapsed="true" 
+					data-widget-sortable="false"
+					
+				-->
+	<header>
+		<span class="widget-icon"> <i class="fa fa-edit"></i>
+		</span>
+		<h2>Contacts form</h2>
+
+	</header>
+
+	<!-- widget div-->
+	<div>
+
+		<!-- widget edit box -->
+		<div class="jarviswidget-editbox">
+			<!-- This area used as dropdown edit box -->
+
+		</div>
+		<!-- end widget edit box -->
+
+		<!-- widget content -->
+		<div class="widget-body no-padding">
+
+			<form action="demo-contacts.php" method="post" id="contact-form"
+				class="smart-form">
+				<header>Contacts form</header>
+
+				<fieldset>
+					<div class="row">
+						<section class="col col-6">
+							<label class="label">Name</label> <label class="input"> <i
+								class="icon-append fa fa-user"></i> <input type="text"
+								name="name" id="name">
+							</label>
+						</section>
+						<section class="col col-6">
+							<label class="label">E-mail</label> <label class="input">
+								<i class="icon-append fa fa-envelope-o"></i> <input type="email"
+								name="email" id="email">
+							</label>
+						</section>
+					</div>
+
+					<section>
+						<label class="label">Subject</label> <label class="input">
+							<i class="icon-append fa fa-tag"></i> <input type="text"
+							name="subject" id="subject">
+						</label>
+					</section>
+
+					<section>
+						<label class="label">Message</label> <label class="textarea">
+							<i class="icon-append fa fa-comment"></i> <textarea rows="4"
+								name="message" id="message"></textarea>
+						</label>
+					</section>
+
+					<section>
+						<label class="checkbox"><input type="checkbox" name="copy"
+							id="copy"><i></i>Send a copy to my e-mail address</label>
+					</section>
+				</fieldset>
+
+				<footer id="toolbar">
+					<button type="submit" class="btn btn-primary">ValidateForm</button>
+				</footer>
+
+				<div class="message">
+					<i class="fa fa-thumbs-up"></i>
+					<p>Your message was successfully sent!</p>
+				</div>
+			</form>
+
+		</div>
+		<!-- end widget content -->
+
+	</div>
+	<!-- end widget div -->
+
+</div>
+<!-- end widget -->
+
+<script type="text/javascript" src="taskCommand/js/foxbpmframework.js"></script>
+<script type="text/javascript" src="taskCommand/js/flowCommandCompenent.js"></script>
+<script type="text/javascript" src="taskCommand/js/flowCommandHandler.js"></script>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+	var _getBizKey = function() {
+        return $("#businessKey").val();
+    };
+    var _getTaskComment = function() {
+       	return $("#_taskComment").val();
+    };
+    
+    var _flowCommit = function(flowInfo){
+    	if(confirm("确定要提交吗?")){
+    		$("#flowInfo").val(JSON.stringify(flowInfo));
+    		$("#form1").submit();
+    	}
+    	return false;
+    	
+    };
+	var flowconfig ={ getBizKey: _getBizKey, getTaskComment: _getTaskComment,flowCommit:_flowCommit };
+	
+	var flowCommandCompenent = new Foxbpm.FlowCommandCompenent(flowconfig);
+	flowCommandCompenent.init();
+});
+</script>
