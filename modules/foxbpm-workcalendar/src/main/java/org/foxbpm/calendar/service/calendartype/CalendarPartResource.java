@@ -26,7 +26,7 @@ import org.foxbpm.engine.ProcessEngineManagement;
 import org.restlet.data.Form;
 import org.restlet.resource.Get;
 
-public class CalendarTypeResource extends AbstractRestResource{
+public class CalendarPartResource extends AbstractRestResource{
 	@Get
 	public DataResult getTasks(){
 		
@@ -39,11 +39,11 @@ public class CalendarTypeResource extends AbstractRestResource{
 		WorkCalendarService workCalendarService = ProcessEngineManagement.getDefaultProcessEngine().getService(WorkCalendarService.class);
 		
 		DataResult result = new DataResult();
-		result.setData(workCalendarService.getCalendarType());
+		result.setData(workCalendarService.getCalendarPart());
 		result.setPageIndex(pageIndex);
 		result.setPageSize(pageSize);
-		result.setRecordsTotal(workCalendarService.getCalendarType().size());
-		result.setRecordsFiltered(workCalendarService.getCalendarType().size());
+		result.setRecordsTotal(workCalendarService.getCalendarPart().size());
+		result.setRecordsFiltered(workCalendarService.getCalendarPart().size());
 		return result;
 	}
 }

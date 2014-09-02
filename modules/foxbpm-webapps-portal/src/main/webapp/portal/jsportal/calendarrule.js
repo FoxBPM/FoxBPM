@@ -5,7 +5,17 @@ var pagefunction = function() {
 						columns : [ {
 							data : 'id'
 						}, {
+							data : 'year'
+						}, {
+							data : 'week'
+						}, {
 							data : 'name'
+						}, {
+							data : 'workdate'
+						}, {
+							data : 'status'
+						}, {
+							data : 'typeid'
 						}, {
 							"orderable" : false,
 							"data" : null,
@@ -19,7 +29,7 @@ var pagefunction = function() {
 						"processing" : true,
 						"orderable" : true,
 						"serverSide" : true,
-						"ajax" : "/foxbpm-webapps-common/service/workcal/calendartype",
+						"ajax" : "/foxbpm-webapps-common/service/workcal/calendarrule",
 						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'lC>>"+
 								 "t"+
 								 "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
