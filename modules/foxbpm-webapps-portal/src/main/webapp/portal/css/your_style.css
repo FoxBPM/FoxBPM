@@ -17,3 +17,11 @@
  * - BODY
  * - CUSTOM STYLES
  */
+.superbox-list div::first-letter {
+	font-size: 220%;
+	font-weight: bold;
+	top:10px;
+	margin-top:10px;
+	margin-right:5px;
+	margin-left:5px
+}

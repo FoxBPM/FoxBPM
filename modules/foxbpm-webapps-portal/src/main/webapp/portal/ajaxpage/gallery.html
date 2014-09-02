@@ -1,0 +1,106 @@
+<div class="row hidden-mobile">
+	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+		<h1 class="page-title txt-color-blueDark">
+			<i class="fa-fw fa fa-picture-o"></i> Gallery <span>> Smart
+				Responsive gallery </span>
+		</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12" style="margin-left: 5px">
+		<div class="input-group">
+			<input class="form-control" style="width: 150px; height: 30px"
+				type="text" id="input_search" placeholder="Search..."> 
+				<a
+				class="btn btn-primary disabled" style="height: 30px;disabled:true"
+				href="javascript:void(0);" id="btn_search">Search</a>
+		</div>
+	</div>
+</div>
+<br>
+<!-- row -->
+<div class="row">
+	<!-- SuperBox -->
+	<div class="superbox col-sm-12" id="superbox">
+	</div>
+	<!-- /SuperBox -->
+	<div class="superbox-show" style="height: 300px; display: none"></div>
+</div>
+
+<!-- end row -->
+
+<script type="text/javascript">
+	/* DO NOT REMOVE : GLOBAL FUNCTIONS!
+	 *
+	 * pageSetUp(); WILL CALL THE FOLLOWING FUNCTIONS
+	 *
+	 * // activate tooltips
+	 * $("[rel=tooltip]").tooltip();
+	 *
+	 * // activate popovers
+	 * $("[rel=popover]").popover();
+	 *
+	 * // activate popovers with hover states
+	 * $("[rel=popover-hover]").popover({ trigger: "hover" });
+	 *
+	 * // activate inline charts
+	 * runAllCharts();
+	 *
+	 * // setup widgets
+	 * setup_widgets_desktop();
+	 *
+	 * // run form elements
+	 * runAllForms();
+	 *
+	 ********************************
+	 *
+	 * pageSetUp() is needed whenever you load a page.
+	 * It initializes and checks for all basic elements of the page
+	 * and makes rendering easier.
+	 *
+	 */
+
+	pageSetUp();
+
+	/*
+	 * ALL PAGE RELATED SCRIPTS CAN GO BELOW HERE
+	 * eg alert("my home function");
+	 * 
+	 * var pagefunction = function() {
+	 *   ...
+	 * }
+	 * loadScript("js/plugin/_PLUGIN_NAME_.js", pagefunction);
+	 * 
+	 * TO LOAD A SCRIPT:
+	 * var pagefunction = function (){ 
+	 *  loadScript(".../plugin.js", run_after_loaded);	
+	 * }
+	 * 
+	 * OR
+	 * 
+	 * loadScript(".../plugin.js", run_after_loaded);
+	 */
+
+	// PAGE RELATED SCRIPTS
+	// pagefunction
+	var pagefunction = function() {
+		  new Gallery({
+			imgServiceUrl : '/foxbpm-webapps-common/service/',
+			searchId:"searchbtton",
+			doAfter : function() {
+				//资源异步加载成功后执行
+				$('.superbox').SuperBox();
+			}
+		});   
+		// $('.superbox').SuperBox();
+	};
+
+	// end pagefunction
+
+	// run pagefunction on load
+
+	// load bootstrap-progress bar script
+	loadScript("jsportal/gallery.js", function() {
+		loadScript("jsportal/plugin/superbox/superbox.min.js", pagefunction);
+	});
+</script>
