@@ -199,4 +199,8 @@ public abstract class AbstractRestResource extends ServerResource {
 			pageSize = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_SIZE, queryForm));
 		}
 	}
+	
+	protected String parseLikeValue(String value){
+		return "%"+value+"%";
+	}
 }

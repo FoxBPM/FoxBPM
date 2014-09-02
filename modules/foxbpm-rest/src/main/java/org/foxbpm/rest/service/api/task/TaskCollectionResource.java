@@ -58,11 +58,11 @@ public class TaskCollectionResource extends AbstractRestResource {
 		taskQuery.taskCandidateUser(userId);
 		
 		if(queryNames.contains("nameLike")) {
-			taskQuery.taskNameLike(getQueryParameter("nameLike", queryForm));
+			taskQuery.taskNameLike(parseLikeValue(getQueryParameter("nameLike", queryForm)));
 	    }
 		
 		if(queryNames.contains("bizKeyLike")) {
-			taskQuery.businessKeyLike(getQueryParameter("bizKeyLike", queryForm));
+			taskQuery.businessKeyLike(parseLikeValue(getQueryParameter("bizKeyLike", queryForm)));
 	    }
 		
 		if(queryNames.contains("tokenId")) {
@@ -78,7 +78,7 @@ public class TaskCollectionResource extends AbstractRestResource {
 	    }
 		
 		if(queryNames.contains("processDefinitionNameLike")) {
-			taskQuery.processDefinitionNameLike(getQueryParameter("processDefinitionNameLike", queryForm));
+			taskQuery.processDefinitionNameLike(parseLikeValue(getQueryParameter("processDefinitionNameLike", queryForm)));
 	    }
 		
 		if(queryNames.contains("nodeId")) {
@@ -90,7 +90,15 @@ public class TaskCollectionResource extends AbstractRestResource {
 	    }
 		
 		if(queryNames.contains("assigneed")) {
-			taskQuery.taskUnnassigned();
+			String unassigneed = getQueryParameter("processDefinitionId", queryForm);
+			if("0".equals(unassigneed)){
+				taskQuery.taskUnnassigned();
+			}else if("1".equals(unassigneed)){
+				//已领取
+			}else{
+				//全部
+			}
+			
 	    }
 		
 		if(queryNames.contains("subjectLike")) {
@@ -110,7 +118,7 @@ public class TaskCollectionResource extends AbstractRestResource {
 	    }
 		
 		if(queryNames.contains("descriptionLike")) {
-			taskQuery.taskId(getQueryParameter("descriptionLike", queryForm));
+			taskQuery.taskDescriptionLike(getQueryParameter("descriptionLike", queryForm));
 	    }
 		
 		if(queryNames.contains("createTimeB")) {

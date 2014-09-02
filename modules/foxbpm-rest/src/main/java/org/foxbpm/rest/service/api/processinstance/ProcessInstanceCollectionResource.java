@@ -61,7 +61,7 @@ public class ProcessInstanceCollectionResource extends AbstractRestResource {
 		}
 		
 		if(queryNames.contains(RestConstants.NAME_LIKE)){
-			processIntanceQuery.processDefinitionNameLike(getQueryParameter(RestConstants.NAME_LIKE, queryForm));
+			processIntanceQuery.processDefinitionNameLike(parseLikeValue(getQueryParameter(RestConstants.NAME_LIKE, queryForm)));
 		}
 		
 		if(queryNames.contains(RestConstants.PROCESSINSTANCE_ID)){
@@ -73,11 +73,11 @@ public class ProcessInstanceCollectionResource extends AbstractRestResource {
 		}
 		
 		if(queryNames.contains(RestConstants.BIZKEY_LIKE)){
-			processIntanceQuery.processInstanceBusinessKeyLike(getQueryParameter(RestConstants.BIZKEY_LIKE, queryForm));
+			processIntanceQuery.processInstanceBusinessKeyLike(parseLikeValue(getQueryParameter(RestConstants.BIZKEY_LIKE, queryForm)));
 		}
 		
 		if(queryNames.contains("subjectLike")){
-			processIntanceQuery.subjectLike(getQueryParameter("subjectLike", queryForm));
+			processIntanceQuery.subjectLike(parseLikeValue(getQueryParameter("subjectLike", queryForm)));
 		}
 		
 		if(queryNames.contains("ended")){
