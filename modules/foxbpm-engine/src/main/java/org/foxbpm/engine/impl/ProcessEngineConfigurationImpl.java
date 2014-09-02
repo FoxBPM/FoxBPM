@@ -130,19 +130,14 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected List<CommandInterceptor> commandInterceptors;
 	protected FoxBPMConfig foxBpmConfig;
 	protected ResourcePathConfig resourcePathConfig;
-	
 	protected List<ProcessService> processServices;
 	// service
 	protected Map<Class<?>,ProcessService> serviceMap = new HashMap<Class<?>, ProcessService>();
-	
-	
 	protected ISqlSessionFactory sqlSessionFactory;
 	protected Map<Class<?>, SessionFactory> sessionFactories;
 	protected DataSource dataSource;
 	protected BizDataObjectConfig bizDataObjectConfig;
-	
 	protected boolean quartzEnabled = false;
-	
 	// 定义及发布
 	protected int processDefinitionCacheLimit = -1; // By default, no limit
 	protected Cache<ProcessDefinition> processDefinitionCache;
@@ -614,7 +609,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		
 		Iterator<ProcessService> iterator = processServices.iterator();
 		while(iterator.hasNext()){
-			ProcessService tmpService = serviceIterator.next();
+			ProcessService tmpService = iterator.next();
 			if(!serviceMap.containsKey(tmpService.getClass())){
 				tmpService.setCommandExecutor(commandExecutor);
 				serviceMap.put(tmpService.getInterfaceClass(), tmpService);
@@ -930,6 +925,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	public boolean getQuartzEnabled() {
 		return this.quartzEnabled;
+	}
+	
+	public void setProcessServices(List<ProcessService> processServices) {
+		this.processServices = processServices;
 	}
 	
 	public ProcessEngineConfiguration setPrefix(String prefix) {
