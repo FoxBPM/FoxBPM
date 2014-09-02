@@ -117,7 +117,7 @@ public class TaskCollectionResource extends AbstractRestResource {
 			String dateB = getQueryParameter("createTimeB", queryForm);
 			Date createTimeB;
 			try {
-				createTimeB = sdf.parse(dateB);
+				createTimeB = sdf.parse(dateB+" 0000000");
 			} catch (ParseException e) {
 				throw new FoxBPMIllegalArgumentException("创建时间格式转换错误，需要yyyy-MM-dd格式,实际格式："+dateB);
 			}
@@ -126,10 +126,9 @@ public class TaskCollectionResource extends AbstractRestResource {
 		
 		if(queryNames.contains("createTimeE")) {
 			String dateE = getQueryParameter("createTimeE", queryForm);
-			dateE = "235959999";
 			Date createTimeE;
 			try {
-				createTimeE = sdf.parse(dateE);
+				createTimeE = sdf.parse(dateE + " 2359999");
 			} catch (ParseException e) {
 				throw new FoxBPMIllegalArgumentException("创建时间格式转换错误，需要yyyy-MM-dd格式,实际格式："+dateE);
 			}
@@ -140,7 +139,7 @@ public class TaskCollectionResource extends AbstractRestResource {
 			String dateB = getQueryParameter("dueDateB", queryForm);
 			Date dueDateB;
 			try {
-				dueDateB = sdf.parse(dateB);
+				dueDateB = sdf.parse(dateB+" 0000000");
 			} catch (ParseException e) {
 				throw new FoxBPMIllegalArgumentException("期望时间格式转换错误，需要yyyy-MM-dd格式,实际格式："+dateB);
 			}
@@ -149,10 +148,10 @@ public class TaskCollectionResource extends AbstractRestResource {
 		
 		if(queryNames.contains("dueDateE")) {
 			String dateE = getQueryParameter("dueDateE", queryForm);
-			dateE = "235959999";
+			dateE = " 235959999";
 			Date dueDateE;
 			try {
-				dueDateE = sdf.parse(dateE);
+				dueDateE = sdf.parse(dateE + " 2359999");
 			} catch (ParseException e) {
 				throw new FoxBPMIllegalArgumentException("创建时间格式转换错误，需要yyyy-MM-dd格式,实际格式："+dateE);
 			}
