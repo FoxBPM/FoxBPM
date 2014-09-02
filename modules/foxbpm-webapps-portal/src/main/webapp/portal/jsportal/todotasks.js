@@ -1,6 +1,12 @@
 var pagefunction = function() {
-	$('#datatable_col_reorder')
-			.dataTable(
+	var responsiveHelper_datatable_fixed_column = undefined;
+	var breakpointDefinition = {
+			tablet : 1024,
+			phone : 480
+		};
+
+	var todoTable = $('#datatable_fixed_column')
+			.DataTable(
 					{
 						columns : [ {
 							data : 'processInitiator'
@@ -9,11 +15,11 @@ var pagefunction = function() {
 						}, {
 							data : 'priority'
 						}, {
-							data : 'createTime'
+							data : 'processInitiator'
 						}, {
 							data : 'endTime'
 						}, {
-							data : 'processInitiator'
+							data : 'createTime'
 						}, {
 							data : 'createTime'
 						}, {
@@ -30,7 +36,8 @@ var pagefunction = function() {
 						columnDefs : [
 								{
 									"targets" : [ 0 ],
-									"orderable" : true,
+									"orderable" : false,
+									"width":20,
 									"createdCell" : function(td, cellData,
 											rowData, row, col) {
 								
@@ -86,12 +93,7 @@ var pagefunction = function() {
 									"orderable" : true,
 									"createdCell" : function(td, cellData,
 											rowData, row, col) {
-										
-										
 										$(td).html(cellData);
-										
-										
-
 									}
 								},
 								{
@@ -114,9 +116,9 @@ var pagefunction = function() {
 						"orderable" : true,
 						"serverSide" : true,
 						"ajax" : "/foxbpm-webapps-common/service/tasks",
-						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'lC>>"+
+						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'><'col-sm-6 col-xs-12 hidden-xs'C>>"+
 								 "t"+
-								 "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+								 "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p  l >>",
 						"autoWidth" : true,
 						"colVis": {
 				            "buttonText": "选择展示的列",
@@ -132,7 +134,6 @@ var pagefunction = function() {
 				        },
 				        "oLanguage": {
 		                    "sProcessing": "正在加载中......",
-		                    "sLengthMenu": "每页显示 _MENU_ 条记录",
 		                    "sZeroRecords": "对不起，查询不到相关数据！",
 		                    "sEmptyTable": "表中无数据存在！",
 		                    "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
@@ -147,7 +148,72 @@ var pagefunction = function() {
 				        },
 				        "bStateSave" : true,
 				        "bAutoWidth": true,
-				        "sPaginationType":'full_numbers'
+				        "sPaginationType":'full_numbers',
+				        "preDrawCallback" : function() {
+							if (!responsiveHelper_datatable_fixed_column) {
+								responsiveHelper_datatable_fixed_column = new ResponsiveDatatablesHelper($('#datatable_fixed_column'), breakpointDefinition);
+							}
+						},
+						"rowCallback" : function(nRow) {
+							responsiveHelper_datatable_fixed_column.createExpandIcon(nRow);
+						},
+						"drawCallback" : function(oSettings) {
+							responsiveHelper_datatable_fixed_column.respond();
+						},
+						"drawCallback":function(){
+							//调整页面布局
+							$("#datatable_fixed_column_length").css("padding-right","10px");
+							$(".dt-toolbar").css("padding-bottom","6px");
+
+							
+						}
 
 					});
+	 
+    $('input').on( 'change', function () {
+    	searchTodoTask();
+    });
+    $('#TASKSTATE_SEARCH').on( 'change', function () {
+    	searchTodoTask();
+    });
+    
+     searchTodoTask = function() {
+    	var baseUrl = "/foxbpm-webapps-common/service/tasks?";
+    	var assigneed = $("#TASKSTATE_SEARCH").val();
+    	var subjectLike =  $("#SUBJECT_SEARCH").val();
+    	
+    	baseUrl = baseUrl + "assigneed="+assigneed;
+    	if(subjectLike != ""){
+    		baseUrl = baseUrl + "&subjectLike="+ subjectLike;
+    	}
+     	var initiator = $("#INITIATOR_SEARCH").val();
+     	if(initiator != ""){
+     		baseUrl = baseUrl + "&initiator="+ initiator;
+     	}
+      	
+    	//期限
+	    var dueDateB = $("#duration_start_dateselect_filter").val(); 
+	    if(dueDateB !=""){
+	    	baseUrl = baseUrl + "&dueDateB="+ dueDateB;
+	    }
+	    var dueDateE =$("#duration_end_dateselect_filter").val(); 
+	    if(dueDateE !=""){
+	    	baseUrl = baseUrl + "&dueDateE="+ dueDateE;
+	    }
+	    //创建
+	    var  createTimeB =  $("#createtime_start_dateselect_filter").val();
+	    if(createTimeB != ""){
+	    	baseUrl = baseUrl + "&createTimeB="+ createTimeB;
+	    }
+	    var createTimeE = $("#createtime_end_dateselect_filter").val();
+	    if(createTimeE != "")
+	    {
+	    	baseUrl = baseUrl + "&createTimeE="+ createTimeE;
+	    }
+	   
+     	
+//     	var searchURL = +"&initiator="+initiator+"&assigneed="+assigneed
+//     					+"&createTimeB="+createTimeB+"&createTimeE="+createTimeE+"&dueDateB="+dueDateB+"&dueDateE="+dueDateE;
+     	todoTable.ajax.url(baseUrl).load();
+    };
 };

@@ -58,11 +58,11 @@ public class TaskCollectionResource extends AbstractRestResource {
 		taskQuery.taskCandidateUser(userId);
 		
 		if(queryNames.contains("nameLike")) {
-			taskQuery.taskNameLike(getQueryParameter("nameLike", queryForm));
+			taskQuery.taskNameLike(parseLikeValue(getQueryParameter("nameLike", queryForm)));
 	    }
 		
 		if(queryNames.contains("bizKeyLike")) {
-			taskQuery.businessKeyLike(getQueryParameter("bizKeyLike", queryForm));
+			taskQuery.businessKeyLike(parseLikeValue(getQueryParameter("bizKeyLike", queryForm)));
 	    }
 		
 		if(queryNames.contains("tokenId")) {
@@ -78,7 +78,7 @@ public class TaskCollectionResource extends AbstractRestResource {
 	    }
 		
 		if(queryNames.contains("processDefinitionNameLike")) {
-			taskQuery.processDefinitionNameLike(getQueryParameter("processDefinitionNameLike", queryForm));
+			taskQuery.processDefinitionNameLike(parseLikeValue(getQueryParameter("processDefinitionNameLike", queryForm)));
 	    }
 		
 		if(queryNames.contains("nodeId")) {
@@ -90,7 +90,15 @@ public class TaskCollectionResource extends AbstractRestResource {
 	    }
 		
 		if(queryNames.contains("assigneed")) {
-			taskQuery.taskUnnassigned();
+			String unassigneed = getQueryParameter("processDefinitionId", queryForm);
+			if("0".equals(unassigneed)){
+				taskQuery.taskUnnassigned();
+			}else if("1".equals(unassigneed)){
+				//已领取
+			}else{
+				//全部
+			}
+			
 	    }
 		
 		if(queryNames.contains("subjectLike")) {
@@ -110,14 +118,14 @@ public class TaskCollectionResource extends AbstractRestResource {
 	    }
 		
 		if(queryNames.contains("descriptionLike")) {
-			taskQuery.taskId(getQueryParameter("descriptionLike", queryForm));
+			taskQuery.taskDescriptionLike(getQueryParameter("descriptionLike", queryForm));
 	    }
 		
 		if(queryNames.contains("createTimeB")) {
 			String dateB = getQueryParameter("createTimeB", queryForm);
 			Date createTimeB;
 			try {
-				createTimeB = sdf.parse(dateB);
+				createTimeB = sdf.parse(dateB+" 0000000");
 			} catch (ParseException e) {
 				throw new FoxBPMIllegalArgumentException("创建时间格式转换错误，需要yyyy-MM-dd格式,实际格式："+dateB);
 			}
@@ -126,10 +134,9 @@ public class TaskCollectionResource extends AbstractRestResource {
 		
 		if(queryNames.contains("createTimeE")) {
 			String dateE = getQueryParameter("createTimeE", queryForm);
-			dateE = "235959999";
 			Date createTimeE;
 			try {
-				createTimeE = sdf.parse(dateE);
+				createTimeE = sdf.parse(dateE + " 2359999");
 			} catch (ParseException e) {
 				throw new FoxBPMIllegalArgumentException("创建时间格式转换错误，需要yyyy-MM-dd格式,实际格式："+dateE);
 			}
@@ -140,7 +147,7 @@ public class TaskCollectionResource extends AbstractRestResource {
 			String dateB = getQueryParameter("dueDateB", queryForm);
 			Date dueDateB;
 			try {
-				dueDateB = sdf.parse(dateB);
+				dueDateB = sdf.parse(dateB+" 0000000");
 			} catch (ParseException e) {
 				throw new FoxBPMIllegalArgumentException("期望时间格式转换错误，需要yyyy-MM-dd格式,实际格式："+dateB);
 			}
@@ -149,10 +156,10 @@ public class TaskCollectionResource extends AbstractRestResource {
 		
 		if(queryNames.contains("dueDateE")) {
 			String dateE = getQueryParameter("dueDateE", queryForm);
-			dateE = "235959999";
+			dateE = " 235959999";
 			Date dueDateE;
 			try {
-				dueDateE = sdf.parse(dateE);
+				dueDateE = sdf.parse(dateE + " 2359999");
 			} catch (ParseException e) {
 				throw new FoxBPMIllegalArgumentException("创建时间格式转换错误，需要yyyy-MM-dd格式,实际格式："+dateE);
 			}
