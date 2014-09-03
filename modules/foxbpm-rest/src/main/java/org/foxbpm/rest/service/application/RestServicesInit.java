@@ -17,6 +17,9 @@
  */
 package org.foxbpm.rest.service.application;
 
+import org.foxbpm.calendar.service.calendartype.CalendarPartResource;
+import org.foxbpm.calendar.service.calendartype.CalendarRuleResource;
+import org.foxbpm.calendar.service.calendartype.CalendarTypeResource;
 import org.foxbpm.rest.service.api.LoginStateResource;
 import org.foxbpm.rest.service.api.config.FlowConfigResouce;
 import org.foxbpm.rest.service.api.engine.RollbackNodeCollectionResource;
@@ -118,5 +121,10 @@ public class RestServicesInit {
 		router.attach("/flowNode/rollbackNodes", RollbackNodeCollectionResource.class);
 		
 		router.attach("/tasks", TaskCollectionResource.class);
+		
+		//工作日历
+		router.attach("/workcal/calendartype", CalendarTypeResource.class);
+		router.attach("/workcal/calendarrule", CalendarRuleResource.class);
+		router.attach("/workcal/calendarpart", CalendarPartResource.class);
 	}
 }

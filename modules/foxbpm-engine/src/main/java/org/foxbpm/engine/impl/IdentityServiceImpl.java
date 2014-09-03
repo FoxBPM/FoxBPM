@@ -141,4 +141,9 @@ public class IdentityServiceImpl extends ServiceImpl implements IdentityService 
 	public void deleteUser(String userId) {
 		commandExecutor.execute(new DeleteUserCmd(userId));
 	}
+	
+	@Override
+	public Class<?> getInterfaceClass() {
+		return IdentityService.class;
+	}
 }

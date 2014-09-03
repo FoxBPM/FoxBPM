@@ -30,6 +30,7 @@
 		</style>
 		
 		<!-- #CSS Links -->
+		<link rel="stylesheet" type="text/css" media="screen" href="css/your_style.css">
 		<!-- Basic Styles -->
 		<link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" media="screen" href="css/font-awesome.min.css">
@@ -241,10 +242,6 @@
 							</li>
 							<li class="divider"></li>
 							<li>
-								<a href="#ajaxpage/profile.html" class="padding-10 padding-top-0 padding-bottom-0"> <i class="fa fa-plane"></i> <strong> 委托授权</strong></a>
-							</li>
-							<li class="divider"></li>
-							<li>
 								<a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0" data-action="toggleShortcut"><i class="fa fa-arrow-down"></i> <strong> 快捷菜单</strong></a>
 							</li>
 							<li class="divider"></li>
@@ -400,13 +397,16 @@
 						<a href="ajaxpage/dashboard.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-tachometer"></i> <span class="menu-item-parent">个 人 面 板</span></a>
 					</li>
 					<li>
-						<a href="ajax/gallery.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-arrow-circle-right"></i> <span class="menu-item-parent">发 起 流 程</span></a>
+						<a href="ajaxpage/gallery.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-arrow-circle-right"></i> <span class="menu-item-parent">发 起 流 程</span></a>
 					</li>
 					<li>
 						<a href="ajaxpage/todotasks.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent">待 办 任 务</span><span class="badge pull-right inbox-badge">14</span></a>
 					</li>
 					<li>
 						<a href="ajaxpage/users.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent">用户列表</span><span class="badge pull-right inbox-badge">14</span></a>
+					</li>
+					<li>
+						<a href="ajaxpage/showTaskDetailInfor.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent">流程处理过程</span><span class="badge pull-right inbox-badge">14</span></a>
 					</li>
 					<li>
 						<a href="ajax/calendar.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-calendar"></i> <span class="menu-item-parent">日 历 面 板</span></a>
@@ -428,6 +428,20 @@
 					</li>
 					<li>
 						<a href="ajax/flot.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-bar-chart-o"></i> <span class="menu-item-parent">个 人 绩 效</span></a>
+					</li>
+					<li>
+						<a href="#"><i class="fa fa-lg fa-fw fa-calendar"></i> <span class="menu-item-parent">工 作 日 历</span></a>
+						<ul>
+							<li>
+								<a href="ajaxpage/calendartype.html"><i class="fa fa-lg fa-fw fa-calendartype"></i> <span class="menu-item-parent">日 历 类 型</span><span class="badge pull-right inbox-badge"></span></a>
+							</li>
+							<li>
+								<a href="ajaxpage/calendarrule.html"><i class="fa fa-lg fa-fw fa-calendarrule"></i> <span class="menu-item-parent">日 历 规 则</span><span class="badge pull-right inbox-badge"></span></a>
+							</li>
+							<li>
+								<a href="ajaxpage/calendarpart.html"><i class="fa fa-lg fa-fw fa-calendarpart"></i> <span class="menu-item-parent">日 历 时 间</span><span class="badge pull-right inbox-badge"></span></a>
+							</li>
+						</ul>
 					</li>
 					
 					<li>
@@ -592,7 +606,7 @@
 						<a href="ajax/widgets.html"><i class="fa fa-lg fa-fw fa-list-alt"></i> <span class="menu-item-parent">Widgets</span></a>
 					</li>
 					<li>
-						<a href="ajax/gallery.html"><i class="fa fa-lg fa-fw fa-picture-o"></i> <span class="menu-item-parent">Gallery</span></a>
+						<a href="ajaxpage/gallery.html"><i class="fa fa-lg fa-fw fa-picture-o"></i> <span class="menu-item-parent">Gallery</span></a>
 					</li>
 					<li>
 						<a href="ajax/gmap-xml.html"><i class="fa fa-lg fa-fw fa-map-marker"></i> <span class="menu-item-parent">GMap Skins</span><span class="badge bg-color-greenLight pull-right inbox-badge">9</span></a>
@@ -793,7 +807,7 @@
 					<a href="#ajax/invoice.html" class="jarvismetro-tile big-cubes bg-color-blueDark"> <span class="iconbox"> <i class="fa fa-book fa-4x"></i> <span>Invoice <span class="label pull-right bg-color-darken">99</span></span> </span> </a>
 				</li>
 				<li>
-					<a href="#ajax/gallery.html" class="jarvismetro-tile big-cubes bg-color-greenLight"> <span class="iconbox"> <i class="fa fa-picture-o fa-4x"></i> <span>Gallery </span> </span> </a>
+					<a href="#ajaxpage/gallery.html" class="jarvismetro-tile big-cubes bg-color-greenLight"> <span class="iconbox"> <i class="fa fa-picture-o fa-4x"></i> <span>Gallery </span> </span> </a>
 				</li>
 				<li>
 					<a href="#ajaxpage/profile.html" class="jarvismetro-tile big-cubes selected bg-color-pinkDark"> <span class="iconbox"> <i class="fa fa-user fa-4x"></i> <span>My Profile </span> </span> </a>

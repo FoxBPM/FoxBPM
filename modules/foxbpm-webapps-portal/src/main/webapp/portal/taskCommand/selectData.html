@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<link rel="stylesheet" type="text/css" href="css/reset.css">
+<link rel="stylesheet" type="text/css" href="css/color_red.css">
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+function applyData(params){
+	$.ajax({
+        type: "get",//使用get方法访问后台
+        dataType: "json",//返回json格式的数据
+        url: params.url,//要访问的后台地址
+        data:params.queryData,
+        success: function(msg){//msg为返回的数据，在这里做数据绑定
+        	var columnInfo = params.columnInfo;
+        	var returnData = params.returnData;
+            var data = msg.data;
+            var dataTable = $("<table id='dataList' width='100%' class='fix-table'></table>");
+            var dataThead = $("<thead></thead>");
+			for(var i in columnInfo){
+        		var dataTh = $(" <th></th>").append(columnInfo[i]);
+        		dataThead.append(dataTh);
+        	}
+            dataThead.appendTo(dataTable);
+            var dataTbody = $("<tbody></tbody>");
+            //画任务命令
+            $.each(data, function(i, n){
+                var dataTr = $("<tr></tr>");
+                for(var k in returnData){
+                	dataTr.attr(k,n[returnData[k]]);
+                }
+               
+               	dataTr.attr("rollBackAssignee",n.assignee);
+               	
+               	for(var j in columnInfo){
+            		var dataTd = $("<td></td>").append(n[j]);
+            		dataTr.append(dataTd);
+            	}
+                dataTbody.append(dataTr);
+            });
+            
+            dataTable.append(dataTbody);
+            $("#flowNodeList").html(dataTable);
+            $("table#dataList tr").click(function() {
+        		$("table#dataList tr.selected").removeClass("selected");
+        		$(this).addClass("selected");
+        	});
+        },
+        error:function(mes){
+        	alert(mes);
+        }
+	 });
+}
+$(document).ready(function() {
+	var obj = window.dialogArguments;
+	applyData(obj.params);
+	$("#ok").click(function() {
+		var rv = null;
+		$("table#dataList tr.selected").each(function(index) {
+			rv = {};
+			var returnData = obj.params.returnData;
+			for(var i in returnData){
+				rv[i] = $(this).attr(i);
+			}
+		});
+		if (window.opener) {
+			window.opener.rv = rv;
+		} else if (obj.opener) {
+			obj.opener.rv = rv;
+		} else {
+			obj.fn(obj.params, rv);
+		}
+		window.close();
+	});
+});
+
+
+
+</script>
+</head>
+<body>
+<div class="btn-normal">
+	<a href="javascript:void(0)" id="ok">确定</a>
+</div>
+<div id="flowNodeList" class="content"></div>
+</body>
+</html>

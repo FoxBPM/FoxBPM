@@ -5,19 +5,24 @@
 
 	<resultMap id="calendarRuleResultMap" type="org.foxbpm.calendar.mybatis.entity.CalendarRuleEntity">
 		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="YEAR" property="year" jdbcType="INTEGER" />
+		<result column="WEEK" property="week" jdbcType="INTEGER" />
 		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="WORK_DATE" property="workdate" jdbcType="TIMESTAMP" />
+		<result column="STATUS" property="status" jdbcType="INTEGER" />
+		<result column="TYPE_ID" property="typeid" jdbcType="VARCHAR" />
 	</resultMap>
 
-	<select id="selectUserById" parameterType="java.lang.String"
-		resultMap="calendartypeResultMap">
+	<select id="selectCalendarRuleById" parameterType="java.lang.String"
+		resultMap="calendarRuleResultMap">
 		select
 		*
 		from workcal_rule
 		where id = #{id,jdbcType=VARCHAR}
 	</select>
 	
-	<select id="selectAllCalendarType"
-		resultMap="calendartypeResultMap">
+	<select id="selectAllCalendarRule"
+		resultMap="calendarRuleResultMap">
 		select
 		*
 		from workcal_rule

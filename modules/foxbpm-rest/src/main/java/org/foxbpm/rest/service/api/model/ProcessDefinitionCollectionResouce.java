@@ -56,7 +56,7 @@ public class ProcessDefinitionCollectionResouce extends AbstractRestResource {
 			processDefinitionQuery.processDefinitionName(getQueryParameter(RestConstants.NAME, query));
 		}
 		if (names.contains(RestConstants.NAME_LIKE)) {
-			processDefinitionQuery.processDefinitionNameLike(getQueryParameter(RestConstants.NAME_LIKE, query));
+			processDefinitionQuery.processDefinitionNameLike(parseLikeValue(getQueryParameter(RestConstants.NAME_LIKE, query)));
 		}
 
 		List<ProcessDefinition> processDefinitions = processDefinitionQuery.list();

@@ -37,6 +37,7 @@ public interface RestConstants {
 	final static String CATEGORY = "category";
 	final static String NAME = "name";
 	final static String NAME_LIKE = "nameLike";
+	final static String BIZKEY_LIKE = "bizKeyLike";
 	
 	final static String PAGE_INDEX ="pageIndex";
 	final static String PAGE_SIZE = "pageSize";

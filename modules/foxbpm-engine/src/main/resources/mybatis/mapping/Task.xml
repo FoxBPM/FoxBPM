@@ -291,6 +291,20 @@
 				and CREATE_TIME &lt;=
 				#{createTimeAfter,jdbcType=TIMESTAMP}
 			</if>
+			
+			<if test="dueDate != null">
+				and DUEDATE = #{dueDateBefore,jdbcType=TIMESTAMP}
+			</if>
+			
+			<if test="dueDateBefore != null">
+				and DUEDATE
+				&gt;=#{dueDateBefore,jdbcType=TIMESTAMP}
+			</if>
+			
+			<if test="dueDateAfter != null">
+				and DUEDATE
+				&lt;=#{dueDateBefore,jdbcType=TIMESTAMP}
+			</if>
 
 			<if test="initiator != null">
 				and P.INITIATOR = #{initiator}

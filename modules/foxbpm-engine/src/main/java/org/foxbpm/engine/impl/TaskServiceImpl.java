@@ -131,6 +131,11 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 	public List<Task> getRollbackTasks(String taskId) {
 		return commandExecutor.execute(new GetRollbackTasksCmd(taskId));
 	}
+	
+	@Override
+	public Class<?> getInterfaceClass() {
+		return TaskService.class;
+	}
 
 
 }
