@@ -17,11 +17,52 @@
  * - BODY
  * - CUSTOM STYLES
  */
-.superbox-list div::first-letter {
-	font-size: 220%;
+
+/** 发起流程布局*/
+.type-box {
+	padding: 20px;
+	width: 140px;
+	height: 140px;
+	text-align: center;
+	margin: 0 auto 10px auto;
+	padding-bottom: 12px; //
+	overflow: hidden;
+	background: #bbb;
+}
+
+.type-box a {
+	float: left;
+	margin: 5px 5px 5px 5px;
+	padding: 15px 10px 15px 15px;
+	display: block;
+	width: 130px;
+	height: 130px;
+	overflow: hidden;
+	text-decoration: none;
+	background: #eee;
+	border: 3px solid #eee;
+	color: #dc562e;
+}
+
+.type-box a div {
+	font-size: 14px;
+	font-family: "微软雅黑";
+}
+
+.type-box a div:first-letter {
+	font-size: 200%;
 	font-weight: bold;
-	top:10px;
-	margin-top:10px;
-	margin-right:5px;
-	margin-left:5px
+	float: center;
+	margin: 0 5px;
+}
+
+.type-box a:hover {
+	color: #dc562e;
+	background: #eee;
+	border: 3px solid #dc562e;
+}
+
+.type-box a:hover {
+	border: 3px solid #dc562e;
+	text-decoration:none;
 }

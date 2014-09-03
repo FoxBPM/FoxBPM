@@ -16,6 +16,7 @@ function Gallery(config) {
 			dataType : "json",
 			cache : true,
 			error : function(response) {
+				$("#btn_search").removeClass("disabled");
 			},
 			success : function(response) {
 				$("#superbox").html("");
@@ -25,14 +26,11 @@ function Gallery(config) {
 					var superboxList = null;
 					var superboxDiv = null;
 					var img = null;
-					/*var childs = $("#superbox").children(); 
-					for(var i = childs.length - 1;i >= 0;i--){
-						$(childs[i]).remove();
-					}*/
+					
 					for (var i = 0; i < response.total; i++) {
 						superboxList = $("<div class='superbox-list'>");
-						superboxDiv = $("<div>");//style='padding-top:15px;padding-bottom:15px;padding-right:15px;width:160px;height:160px'
-						img = $("<img class='superbox-img'>");
+						superboxDiv = $("<div class='type-box'>");//style='padding-top:15px;padding-bottom:15px;padding-right:15px;width:160px;height:160px'
+						img = $("<a class='superbox-img' >");
 						img.attr("src", "img/superbox/superbox-thumb-21.jpg");
 						img.attr("data-img", imgServiceUrl + "flowGraphic/flowImg?processDefinitionKey=" + response.data[i].key);
 						img.attr("title", response.data[i].name);
@@ -40,8 +38,9 @@ function Gallery(config) {
 						img.attr("processDefinitionId", response.data[i].id);
 						img.attr("formUrl", response.data[i].startFormUri);
 						img.attr("alt", response.data[i].description);
+						img.append("<div >"+response.data[i].name+"</div>");
 						superboxDiv.append(img);
-						superboxDiv.append("<div style='position:absolute;margin-left:auto; margin-right:auto;top:30%; display: block; width: 85%;text-align:left;font-size:14;font-family:微软雅黑;line-height:1.5; overflow: hidden; white-space:nowrap; -o-text-overflow: ellipsis; text-overflow: clip;'>"+response.data[i].name+"</div>");
+						//superboxDiv.append("<div style='position:absolute;margin-left:auto; margin-right:auto;top:30%; display: block; width: 85%;text-align:left;font-size:14;font-family:微软雅黑;line-height:1.5; overflow: hidden; white-space:nowrap; -o-text-overflow: ellipsis; text-overflow: clip;'>"+response.data[i].name+"</div>");
 						superboxList.append(superboxDiv);
 						superbox.append(superboxList);
 					}
@@ -56,6 +55,7 @@ function Gallery(config) {
 	function addLisenter(){
 		$("#btn_search").on("click",function(){
 			if('' != $("#input_search").val()){
+				$("#btn_search").addClass("disabled");
 				loadResource({nameLike:$("#input_search").val()});
 			};
 		});
