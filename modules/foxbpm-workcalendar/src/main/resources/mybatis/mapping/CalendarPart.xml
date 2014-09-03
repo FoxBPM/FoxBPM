@@ -3,13 +3,16 @@
 
 <mapper namespace="org.foxbpm.engine.impl.entity.UserEntity">
 
-	<resultMap id="userResultMap" type="org.foxbpm.calendar.mybatis.entity.CalendarPartEntity">
+	<resultMap id="calendarpartResultMap" type="org.foxbpm.calendar.mybatis.entity.CalendarPartEntity">
 		<id column="ID" property="id" jdbcType="VARCHAR" />
-		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="SHIFT" property="amorpm" jdbcType="INTEGER" />
+		<result column="START_TIME" property="starttime" jdbcType="VARCHAR" />
+		<result column="END_TIME" property="endtime" jdbcType="VARCHAR" />
+		<result column="RULE_ID" property="ruleid" jdbcType="VARCHAR" />
 	</resultMap>
 
-	<select id="selectUserById" parameterType="java.lang.String"
-		resultMap="calendartypeResultMap">
+	<select id="selectCalendarPartById" parameterType="java.lang.String"
+		resultMap="calendarpartResultMap">
 		select
 		*
 		from workcal_part
@@ -17,7 +20,7 @@
 	</select>
 	
 	<select id="selectAllCalendarPart"
-		resultMap="calendartypeResultMap">
+		resultMap="calendarpartResultMap">
 		select
 		*
 		from workcal_part

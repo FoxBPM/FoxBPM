@@ -1,0 +1,71 @@
+<!-- widget grid -->
+<section id="widget-grid" class="">
+	<!-- row -->
+	<div class="row">
+		<!-- NEW WIDGET START -->
+		<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-2" data-widget-editbutton="false">
+				<header>
+					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
+					<h2>日历规则</h2>
+
+				</header>
+				<!-- widget div-->
+				<div>
+					<!-- widget content -->
+					<div class="widget-body no-padding" id="datatable_div">
+						<table id="datatable_col_reorder" class="table table-striped table-bordered table-hover" width="100%">
+							<thead>
+								<tr> 
+									<th><i class="fa fa-fw fa-id text-muted hidden-md hidden-sm hidden-xs"></i>  编号</th>
+									<th><i class="fa fa-fw fa-year text-muted hidden-md hidden-sm hidden-xs"></i> 年度</th>
+									<th><i class="fa fa-fw fa-week text-muted hidden-md hidden-sm hidden-xs"></i> 周</th>
+									<th><i class="fa fa-fw fa-name text-muted hidden-md hidden-sm hidden-xs"></i> 名称</th>
+									<th><i class="fa fa-fw fa-workdate text-muted hidden-md hidden-sm hidden-xs"></i> 工作日期</th>
+									<th><i class="fa fa-fw fa-status text-muted hidden-md hidden-sm hidden-xs"></i> 状态</th>
+									<th><i class="fa fa-fw fa-type text-muted hidden-md hidden-sm hidden-xs"></i> 类型</th>
+									<th><i></i></th>
+								</tr>
+							</thead>
+						</table>
+					
+					</div>
+					<!-- end widget content -->
+
+				</div>
+				<!-- end widget div -->
+
+			</div>
+			<!-- end widget -->
+
+		</article>
+		<!-- WIDGET END -->
+
+	</div>
+
+	<!-- end row -->
+
+	<!-- end row -->
+
+</section>
+<!-- end widget grid --> 
+<script src="jsportal/calendarrule.js"></script>
+
+<script type="text/javascript">
+	
+	//pageSetUp(); 
+	//alert(pagefunction);
+
+
+	// load related plugins
+	loadScript("js/plugin/datatables/jquery.dataTables.js", function(){
+		loadScript("js/plugin/datatables/dataTables.colVis.min.js", function(){
+			loadScript("js/plugin/datatables/dataTables.tableTools.min.js", function(){
+				loadScript("js/plugin/datatables/dataTables.bootstrap.min.js", function(){
+					loadScript("js/plugin/datatable-responsive/datatables.responsive.min.js", pagefunction)
+				});
+			});
+		});
+	});
+ 
+</script>
