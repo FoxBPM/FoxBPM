@@ -54,10 +54,8 @@ function Gallery(config) {
 	}
 	function addLisenter(){
 		$("#btn_search").on("click",function(){
-			if('' != $("#input_search").val()){
 				$("#btn_search").addClass("disabled");
 				loadResource({nameLike:$("#input_search").val()});
-			};
 		});
 	}
 	this.init = function() {
