@@ -1,13 +1,11 @@
 var pagefunction = function() {
-	$('#datatable_col_reorder')
-			.dataTable(
+	var doneTable = $('#datatable_col_reorder')
+			.DataTable(
 					{
 						columns : [ {
 							data : 'subject'
 						}, {
 							data : 'priority'
-						}, {
-							data : 'createTime'
 						}, {
 							data : 'createTime'
 						},  { data: 'dueDate' },
@@ -50,27 +48,7 @@ var pagefunction = function() {
 									}
 								},
 								{
-									"targets" : [ 2 ],
-									"orderable" : true,
-									"createdCell" : function(td, cellData,
-											rowData, row, col) {
-										if (rowData.endTime == null) {
-											$(td).html("<span class='label label-default'>激活</span>");
-											if (rowData.isSuspended == 'true') {
-												$(td).html("<span class='label label-default'>暂停</span>");
-											}
-											if (rowData.assignee == null) {
-												$(td).html("<span class='label label-default'>未领取</span>");
-											}
-
-										} else {
-											$(td).html("<span class='label label-default'>完成</span>");
-										}
-
-									}
-								},
-								{
-									"targets" : [ 4 ],
+									"targets" : [ 3 ],
 									"orderable" : true,
 									"createdCell" : function(td, cellData,
 											rowData, row, col) {
@@ -91,9 +69,9 @@ var pagefunction = function() {
 				                d.ended = true; 
 				            }
 				        },
-						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'lC>>"+
+						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'><'col-sm-6 col-xs-12 hidden-xs'C>>"+
 								 "t"+
-								 "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+								 "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p l>>",
 						"autoWidth" : true,
 						"colVis": {
 				            "buttonText": "选择展示的列",
@@ -109,7 +87,6 @@ var pagefunction = function() {
 				        },
 				        "oLanguage": {
 		                    "sProcessing": "正在加载中......",
-		                    "sLengthMenu": "每页显示 _MENU_ 条记录",
 		                    "sZeroRecords": "对不起，查询不到相关数据！",
 		                    "sEmptyTable": "表中无数据存在！",
 		                    "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
@@ -124,7 +101,56 @@ var pagefunction = function() {
 				        },
 				        "bStateSave" : true,
 				        "bAutoWidth": true,
-				        "sPaginationType":'full_numbers'
+				        "sPaginationType":'full_numbers',
+				        "drawCallback":function(){
+							//调整页面布局
+							$("#datatable_col_reorder_length").css("padding-right","10px");
+							$(".dt-toolbar").css("padding-bottom","6px");
+
+							
+						}
 
 					});
+		$('input').on( 'change', function () {
+	    	searchTodoTask();
+	    });
+	    $('#TASKSTATE_SEARCH').on( 'change', function () {
+	    	searchTodoTask();
+	    });
+	    
+	     searchTodoTask = function() {
+	    	var baseUrl = "/foxbpm-webapps-common/service/tasks?";
+	    	var subjectLike =  $("#SUBJECT_SEARCH").val();
+	    	
+	    	baseUrl = baseUrl + "ended=true";
+	    	if(subjectLike != ""){
+	    		baseUrl = baseUrl + "&subjectLike="+ subjectLike;
+	    	}
+	     	var initiator = $("#INITIATOR_SEARCH").val();
+	     	if(initiator != ""){
+	     		baseUrl = baseUrl + "&initiator="+ initiator;
+	     	}
+	      	
+	    	//期限
+		    var dueDateB = $("#duration_start_dateselect_filter").val(); 
+		    if(dueDateB !=""){
+		    	baseUrl = baseUrl + "&dueDateB="+ dueDateB;
+		    }
+		    var dueDateE =$("#duration_end_dateselect_filter").val(); 
+		    if(dueDateE !=""){
+		    	baseUrl = baseUrl + "&dueDateE="+ dueDateE;
+		    }
+		    //创建
+		    var  createTimeB =  $("#create_start_dateselect_filter").val();
+		    if(createTimeB != ""){
+		    	baseUrl = baseUrl + "&createTimeB="+ createTimeB;
+		    }
+		    var createTimeE = $("#create_end_dateselect_filter").val();
+		    if(createTimeE != "")
+		    {
+		    	baseUrl = baseUrl + "&createTimeE="+ createTimeE;
+		    }
+	     	
+		    doneTable.ajax.url(baseUrl).load();
+	     };
 };

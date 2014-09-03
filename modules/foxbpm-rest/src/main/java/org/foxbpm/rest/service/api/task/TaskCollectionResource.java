@@ -102,7 +102,7 @@ public class TaskCollectionResource extends AbstractRestResource {
 	    }
 		
 		if(queryNames.contains("subjectLike")) {
-			taskQuery.taskSubjectLike(getQueryParameter("subjectLike", queryForm));
+			taskQuery.taskSubjectLike(parseLikeValue(getQueryParameter("subjectLike", queryForm)));
 	    }
 		
 		if(queryNames.contains("initiator")) {
@@ -118,7 +118,7 @@ public class TaskCollectionResource extends AbstractRestResource {
 	    }
 		
 		if(queryNames.contains("descriptionLike")) {
-			taskQuery.taskDescriptionLike(getQueryParameter("descriptionLike", queryForm));
+			taskQuery.taskDescriptionLike(parseLikeValue(getQueryParameter("descriptionLike", queryForm)));
 	    }
 		
 		if(queryNames.contains("createTimeB")) {
@@ -156,7 +156,6 @@ public class TaskCollectionResource extends AbstractRestResource {
 		
 		if(queryNames.contains("dueDateE")) {
 			String dateE = getQueryParameter("dueDateE", queryForm);
-			dateE = " 235959999";
 			Date dueDateE;
 			try {
 				dueDateE = sdf.parse(dateE + " 2359999");
