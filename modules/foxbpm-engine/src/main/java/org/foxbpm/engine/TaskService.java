@@ -138,6 +138,12 @@ public interface TaskService {
 	<T> T expandTaskComplete(ExpandTaskCommand expandTaskCommand, T classReturn);
 	
 	/**
+	 * 接收指定结构和参数的json字符串
+	 * @param taskCommandJson
+	 */
+	void expandTaskComplete(String taskCommandJson);
+	
+	/**
 	 * 获取任务节点上的toolbar
 	 * @param taskId
 	 * @return 任务命令集合
