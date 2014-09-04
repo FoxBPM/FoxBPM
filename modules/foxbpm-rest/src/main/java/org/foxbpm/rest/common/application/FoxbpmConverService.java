@@ -20,6 +20,7 @@ package org.foxbpm.rest.common.application;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import org.codehaus.jackson.map.SerializationConfig;
 import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
@@ -45,7 +46,7 @@ public class FoxbpmConverService extends ConverterService {
 		
 		Representation representation = super.toRepresentation(source, target, resource);
 		if(representation instanceof JacksonRepresentation){
-			((JacksonRepresentation)representation).getObjectMapper().getSerializationConfig().withDateFormat(df);
+			((JacksonRepresentation)representation).getObjectMapper().setDateFormat(df);
 		}
 		return representation;
 	}

@@ -285,10 +285,10 @@
 
 			<if test="createTimeBefore != null">
 				and CREATE_TIME
-				&gt;=#{createTimeBefore,jdbcType=TIMESTAMP}
+				&lt;=#{createTimeBefore,jdbcType=TIMESTAMP}
 			</if>
 			<if test="createTimeAfter != null">
-				and CREATE_TIME &lt;=
+				and CREATE_TIME &gt;=
 				#{createTimeAfter,jdbcType=TIMESTAMP}
 			</if>
 			
@@ -298,12 +298,12 @@
 			
 			<if test="dueDateBefore != null">
 				and DUEDATE
-				&gt;=#{dueDateBefore,jdbcType=TIMESTAMP}
+				&lt;=#{dueDateBefore,jdbcType=TIMESTAMP}
 			</if>
 			
 			<if test="dueDateAfter != null">
 				and DUEDATE
-				&lt;=#{dueDateBefore,jdbcType=TIMESTAMP}
+				&gt;=#{dueDateBefore,jdbcType=TIMESTAMP}
 			</if>
 
 			<if test="initiator != null">
