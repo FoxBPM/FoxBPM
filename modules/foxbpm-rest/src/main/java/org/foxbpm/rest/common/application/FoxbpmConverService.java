@@ -20,7 +20,6 @@ package org.foxbpm.rest.common.application;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import org.codehaus.jackson.map.SerializationConfig;
 import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
