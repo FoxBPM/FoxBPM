@@ -19,45 +19,47 @@ package org.foxbpm.social.impl.entity;
 
 import java.io.Serializable;
 
+import org.foxbpm.engine.impl.entity.UserEntity;
+
 /**
- * 社交用户关系表
+ * 社交用户信息实体
  * 
  * @author kenshin
- * 
+ *
  */
-public class SocialUserRelationEntity implements Serializable {
+public class SocialUser extends UserEntity implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
+	
+	/** 消息数目 */
+	private int messageCount=0;
+	/** 粉丝数目 */
+	private int fansCount=0;
+	/** 关注对象数目 */
+	private int followCount=0;
 
-	/** 用户编号 */
-	private String userId;
-	/** 引用的用户编号 */
-	private String relUserId;
-	/** 引用类型 0粉丝 1关注 */
-	private int type = 0;
-
-	public String getUserId() {
-		return userId;
+	public int getMessageCount() {
+		return messageCount;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setMessageCount(int messageCount) {
+		this.messageCount = messageCount;
 	}
 
-	public String getRelUserId() {
-		return relUserId;
+	public int getFansCount() {
+		return fansCount;
 	}
 
-	public void setRelUserId(String relUserId) {
-		this.relUserId = relUserId;
+	public void setFansCount(int fansCount) {
+		this.fansCount = fansCount;
 	}
 
-	public int getType() {
-		return type;
+	public int getFollowCount() {
+		return followCount;
 	}
 
-	public void setType(int type) {
-		this.type = type;
+	public void setFollowCount(int followCount) {
+		this.followCount = followCount;
 	}
 
 }
