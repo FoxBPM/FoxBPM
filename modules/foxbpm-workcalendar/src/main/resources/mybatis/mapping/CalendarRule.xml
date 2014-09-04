@@ -21,10 +21,30 @@
 		where id = #{id,jdbcType=VARCHAR}
 	</select>
 	
-	<select id="selectAllCalendarRule"
+	<select id="selectAllCalendarRule" parameterType="org.foxbpm.engine.impl.db.ListQueryParameterObject"
 		resultMap="calendarRuleResultMap">
-		select
+		${limitBefore}
+		select ${limitBetween}
 		*
 		from workcal_rule
+		${limitAfter}
+	</select>
+	
+	<select id="selectCalendarRuleCount" parameterType="java.util.Map"
+		resultType="long">
+		select
+		count(a.id)
+		from workcal_rule a
+		<where>
+			<if test=" 1==1">
+				1=1
+			</if>
+			<if test="_parameter.containsKey('id')">
+				AND ID LIKE #{id,jdbcType=VARCHAR}
+			</if>
+			<if test="_parameter.containsKey('name')">
+				AND NAME LIKE #{name,jdbcType=VARCHAR}
+			</if>
+		</where>
 	</select>
 </mapper>

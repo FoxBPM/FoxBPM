@@ -26,8 +26,11 @@ import org.foxbpm.calendar.mybatis.cmd.DeleteCalendarPartCmd;
 import org.foxbpm.calendar.mybatis.cmd.DeleteCalendarRuleCmd;
 import org.foxbpm.calendar.mybatis.cmd.DeleteCalendarTypeCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarPartCmd;
+import org.foxbpm.calendar.mybatis.cmd.GetCalendarPartCountCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarRuleCmd;
+import org.foxbpm.calendar.mybatis.cmd.GetCalendarRuleCountCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarTypeCmd;
+import org.foxbpm.calendar.mybatis.cmd.GetCalendarTypeCountCmd;
 import org.foxbpm.calendar.mybatis.cmd.UpdateCalendarPartCmd;
 import org.foxbpm.calendar.mybatis.cmd.UpdateCalendarRuleCmd;
 import org.foxbpm.calendar.mybatis.cmd.UpdateCalendarTypeCmd;
@@ -59,8 +62,8 @@ public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalenda
 	}
 
 	@Override
-	public List<CalendarTypeEntity> getCalendarType() {
-		return (List<CalendarTypeEntity>) commandExecutor.execute(new GetCalendarTypeCmd());
+	public List<CalendarTypeEntity> getCalendarType(int pageIndex, int pageSize) {
+		return (List<CalendarTypeEntity>) commandExecutor.execute(new GetCalendarTypeCmd(pageIndex, pageSize));
 	}
 
 	@Override
@@ -79,8 +82,8 @@ public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalenda
 	}
 
 	@Override
-	public List<CalendarRuleEntity> getCalendarRule() {
-		return (List<CalendarRuleEntity>) commandExecutor.execute(new GetCalendarRuleCmd());
+	public List<CalendarRuleEntity> getCalendarRule(int pageIndex, int pageSize) {
+		return (List<CalendarRuleEntity>) commandExecutor.execute(new GetCalendarRuleCmd(pageIndex, pageSize));
 	}
 
 	@Override
@@ -99,7 +102,22 @@ public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalenda
 	}
 
 	@Override
-	public List<CalendarPartEntity> getCalendarPart() {
-		return (List<CalendarPartEntity>) commandExecutor.execute(new GetCalendarPartCmd());
+	public List<CalendarPartEntity> getCalendarPart(int pageIndex, int pageSize) {
+		return (List<CalendarPartEntity>) commandExecutor.execute(new GetCalendarPartCmd(pageIndex, pageSize));
+	}
+
+	@Override
+	public Long getCalendarTypeCount(String idLike, String nameLike) {
+		return commandExecutor.execute(new GetCalendarTypeCountCmd(idLike, nameLike));
+	}
+
+	@Override
+	public Long getCalendarRuleCount(String idLike, String nameLike) {
+		return commandExecutor.execute(new GetCalendarRuleCountCmd(idLike, nameLike));
+	}
+
+	@Override
+	public Long getCalendarPartCount(String idLike) {
+		return commandExecutor.execute(new GetCalendarPartCountCmd(idLike));
 	}
 }

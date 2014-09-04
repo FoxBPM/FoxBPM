@@ -10,16 +10,38 @@
 
 	<select id="selectCalendarTypeById" parameterType="java.lang.String"
 		resultMap="calendarTypeResultMap">
-		select
+		${limitBefore}
+		select ${limitBetween}
 		*
 		from workcal_type
 		where id = #{id,jdbcType=VARCHAR}
+		${limitAfter}
 	</select>
 	
-	<select id="selectAllCalendarType"
+	<select id="selectAllCalendarType" parameterType="org.foxbpm.engine.impl.db.ListQueryParameterObject"
 		resultMap="calendarTypeResultMap">
-		select
+		${limitBefore}
+		select ${limitBetween}
 		*
 		from workcal_type
+		${limitAfter}
+	</select>
+	
+	<select id="selectCalendarTypeCount" parameterType="java.util.Map"
+		resultType="long">
+		select
+		count(a.id)
+		from workcal_type a
+		<where>
+			<if test=" 1==1">
+				1=1
+			</if>
+			<if test="_parameter.containsKey('id')">
+				AND ID LIKE #{id,jdbcType=VARCHAR}
+			</if>
+			<if test="_parameter.containsKey('name')">
+				AND NAME LIKE #{name,jdbcType=VARCHAR}
+			</if>
+		</where>
 	</select>
 </mapper>

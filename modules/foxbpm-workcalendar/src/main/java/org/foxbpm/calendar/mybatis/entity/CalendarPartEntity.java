@@ -20,7 +20,6 @@ package org.foxbpm.calendar.mybatis.entity;
 
 public class CalendarPartEntity{
 	private String id;
-	private String name;
 	private int amorpm;
 	private String starttime;
 	private String endtime;
@@ -30,12 +29,6 @@ public class CalendarPartEntity{
 	}
 	public void setId(String id) {
 		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	public int getAmorpm() {
 		return amorpm;

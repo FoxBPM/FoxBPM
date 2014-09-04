@@ -9,7 +9,7 @@ var pagefunction = function() {
 						}, {
 							"orderable" : false,
 							"data" : null,
-							"defaultContent" : ""
+							"defaultContent" : "<a href='javascript:void(0);' class='btn btn-danger'>删除</a> <a href='javascript:void(0);' class='btn btn-success'>编辑</a>"
 						} ],
 						
 						columnDefs : [
@@ -44,7 +44,7 @@ var pagefunction = function() {
 		                    "sEmptyTable": "表中无数据存在！",
 		                    "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
 		                    "sInfoFiltered": "数据表中共为 _MAX_ 条记录",
-		                    "sSearch": "搜索",
+		                    "sSearch": "_INPUT_&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);'>新增</a>",
 		                    "oPaginate": {
 		                        "sFirst": "首页",
 		                        "sPrevious": "上一页",

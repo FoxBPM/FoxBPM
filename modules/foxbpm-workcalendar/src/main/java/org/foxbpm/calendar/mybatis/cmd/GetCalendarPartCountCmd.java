@@ -18,30 +18,25 @@
 package org.foxbpm.calendar.mybatis.cmd;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.foxbpm.calendar.mybatis.entity.CalendarTypeEntity;
-import org.foxbpm.engine.impl.db.ListQueryParameterObject;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
-public class GetCalendarTypeCmd implements Command<List<?>> {
-	private int pageIndex;
-	private int pageSize;
+public class GetCalendarPartCountCmd implements Command<Long> {
+	private String idLike;
 	
-	public GetCalendarTypeCmd(int pageIndex, int pageSize) {
-		this.pageIndex = pageIndex;
-		this.pageSize = pageSize;
+	public GetCalendarPartCountCmd(String idLike) {
+		this.idLike = idLike;
 	}
 
 	@Override
-	public List<CalendarTypeEntity> execute(CommandContext commandContext) {
+	public Long execute(CommandContext commandContext) {
 		Map<String, Object> queryMap = new HashMap<String, Object>();
-		int firstResult = pageIndex * pageSize - pageSize;
-		int maxResults = pageSize;
-		ListQueryParameterObject queryParams = new ListQueryParameterObject(queryMap, firstResult, maxResults);
-		return (List<CalendarTypeEntity>) commandContext.getSqlSession().selectList("selectAllCalendarType", queryParams);
+		if (idLike != null) {
+			queryMap.put("id", idLike);
+		}
+		return (Long) commandContext.getSqlSession().selectOne("selectCalendarPartCount", queryMap);
 	}
 
 }

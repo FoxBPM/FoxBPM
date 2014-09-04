@@ -15,14 +15,16 @@
  * 
  * @author demornain
  */
-package org.foxbpm.calendar.service.calendartype;
+package org.foxbpm.calendar.service.calendar;
 
 import java.util.Set;
 
 import org.foxbpm.calendar.rest.common.AbstractRestResource;
 import org.foxbpm.calendar.rest.common.DataResult;
+import org.foxbpm.calendar.rest.common.RestConstants;
 import org.foxbpm.calendar.service.WorkCalendarService;
 import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.restlet.data.Form;
 import org.restlet.resource.Get;
 
@@ -33,17 +35,43 @@ public class CalendarTypeResource extends AbstractRestResource{
 		Form queryForm = getQuery();
 		Set<String> queryNames = queryForm.getNames();
 		
+		String id = StringUtil.getString(getQueryParameter("id", queryForm));
+		String name = StringUtil.getString(getQueryParameter("name", queryForm));
+		
+		String idLike = null;
+		String nameLike = null;
+		if (StringUtil.isNotEmpty(id)) {
+			idLike = "%" + id + "%";
+		}
+		if (StringUtil.isNotEmpty(name)) {
+			nameLike = "%" + name + "%";
+		}
+		
+		if (queryNames.contains(RestConstants.PAGE_START)) {
+			if (queryNames.contains(RestConstants.PAGE_LENGTH)) {
+				pageSize = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_LENGTH, queryForm));
+			}
+			pageIndex = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_START, queryForm)) / pageSize + 1;
+		}
+		
+		if (queryNames.contains(RestConstants.PAGE_INDEX)) {
+			pageIndex = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_INDEX, queryForm));
+		}
+		if (queryNames.contains(RestConstants.PAGE_SIZE)) {
+			pageSize = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_SIZE, queryForm));
+		}
+		
 		if(!validationUser())
 			return null;
 		
 		WorkCalendarService workCalendarService = ProcessEngineManagement.getDefaultProcessEngine().getService(WorkCalendarService.class);
 		
 		DataResult result = new DataResult();
-		result.setData(workCalendarService.getCalendarType());
+		result.setData(workCalendarService.getCalendarType(pageIndex, pageSize));
 		result.setPageIndex(pageIndex);
 		result.setPageSize(pageSize);
-		result.setRecordsTotal(workCalendarService.getCalendarType().size());
-		result.setRecordsFiltered(workCalendarService.getCalendarType().size());
+		result.setRecordsTotal(workCalendarService.getCalendarTypeCount(idLike, nameLike));
+		result.setRecordsFiltered(workCalendarService.getCalendarTypeCount(idLike, nameLike));
 		return result;
 	}
 }
