@@ -18,6 +18,7 @@
  */
 package org.foxbpm.engine.impl.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +26,9 @@ import java.util.Map;
 
 import org.foxbpm.engine.impl.agent.AgentTo;
 
-public class UserEntity {
+public class UserEntity implements Serializable  {
+
+	private static final long serialVersionUID = 1L;
 	
 	private String userId;
 	private String userName;
