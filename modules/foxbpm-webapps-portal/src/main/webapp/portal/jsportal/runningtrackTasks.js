@@ -78,7 +78,7 @@ var pagefunction = function() {
 						"orderable" : true,
 						"serverSide" : true,
 						"ajax" : "/foxbpm-webapps-common/service/runtime/process-instances",
-						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'><'col-sm-6 col-xs-12 hidden-xs'C>>"
+						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'>C>"
 								+ "t"
 								+ "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p l>>",
 						"autoWidth" : true,
@@ -104,32 +104,34 @@ var pagefunction = function() {
 								"sPrevious" : "上一页",
 								"sNext" : "下一页",
 								"sLast" : "末页"
-							}
+							},
+							"sSearch": "<form>任务主题：_INPUT_ &nbsp;&nbsp;任务发起人：<input id='INITIATOR_SEARCH' type='text' class='form-control' value='' style='width:15%' />" +
+                    		"&nbsp;&nbsp;任务状态：<select id='TASKSTATE_SEARCH' class='form-control'><option value='0'>未领取</option><option value='1'>领取</option><option value='2' selected>所有</option></select> " +
+                    		"&nbsp;&nbsp; 创建：<input id='createtime_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:10%'>" +
+                    		"<label for='createtime_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-207px;top:-5px'></label>" +
+                    		" - " +
+                    		"<input id='createtime_end_dateselect_filter' type='text' value='' class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:10%'>"+
+                    		"<label for='createtime_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-80px;top:-5px'></label> " +
+                    		"<div style='padding-top:3px'>" +
+                    		"&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' onclick='searchTodoTask();' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);'>重置</a></div></form>"
 						},
-						"bStateSave" : true,
+						"bStateSave" : false,
 						"bAutoWidth" : true,
 						"sPaginationType" : 'full_numbers',
 						"drawCallback":function(){
 							//调整页面布局
 							$("#datatable_col_reorder_length").css("padding-right","10px");
 							$(".dt-toolbar").css("padding-bottom","6px");
-
-							
+							$("#datatable_col_reorder_filter").css("width","1000px");
+							 
+							pageSetUp();		
 						}
 
 					});
-	$('input').on( 'change', function () {
-    	searchTodoTask();
-    });
-    $('#TASKSTATE_SEARCH').on( 'change', function () {
-    	searchTodoTask();
-    });
-    
      searchTodoTask = function() {
     	var baseUrl = "/foxbpm-webapps-common/service/runtime/process-instances?";
-    	var subjectLike =  $("#SUBJECT_SEARCH").val();
     	var assigneed = $("#TASKSTATE_SEARCH").val();
-    	
+    	var subjectLike =  $("[type='search']").val();
     	baseUrl = baseUrl + "assigneed="+assigneed;
     	if(subjectLike != ""){
     		baseUrl = baseUrl + "&subjectLike="+ subjectLike;
@@ -140,11 +142,11 @@ var pagefunction = function() {
      	}
     	 
 	    //创建
-	    var  createTimeB =  $("#create_start_dateselect_filter").val();
+	    var  createTimeB =  $("#createtime_start_dateselect_filter").val();
 	    if(createTimeB != ""){
 	    	baseUrl = baseUrl + "&createTimeB="+ createTimeB;
 	    }
-	    var createTimeE = $("#create_end_dateselect_filter").val();
+	    var createTimeE = $("#createtime_end_dateselect_filter").val();
 	    if(createTimeE != "")
 	    {
 	    	baseUrl = baseUrl + "&createTimeE="+ createTimeE;

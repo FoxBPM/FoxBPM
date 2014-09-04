@@ -116,7 +116,7 @@ var pagefunction = function() {
 						"orderable" : true,
 						"serverSide" : true,
 						"ajax" : "/foxbpm-webapps-common/service/tasks",
-						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'><'col-sm-6 col-xs-12 hidden-xs'C>>"+
+						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'>C>"+
 								 "t"+
 								 "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p  l >>",
 						"autoWidth" : true,
@@ -131,6 +131,7 @@ var pagefunction = function() {
 				                         columns: [ 0, 3, 4 ]
 				                     }
 				                 ]
+				           
 				        },
 				        "oLanguage": {
 		                    "sProcessing": "正在加载中......",
@@ -138,15 +139,29 @@ var pagefunction = function() {
 		                    "sEmptyTable": "表中无数据存在！",
 		                    "sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
 		                    "sInfoFiltered": "数据表中共为 _MAX_ 条记录",
-		                    "sSearch": "搜索",
+
 		                    "oPaginate": {
 		                        "sFirst": "首页",
 		                        "sPrevious": "上一页",
 		                        "sNext": "下一页",
 		                        "sLast": "末页"
-		                    }
+		                    },
+		                    "sSearch": "<form>任务主题：_INPUT_ &nbsp;&nbsp;任务发起人：<input id='INITIATOR_SEARCH' type='text' class='form-control' value='' style='width:15%' />" +
+		                    		"&nbsp;&nbsp;任务状态：<select id='TASKSTATE_SEARCH' class='form-control'><option value='0'>未领取</option><option value='1'>领取</option><option value='2' selected>所有</option></select>" +
+		                    		"&nbsp;&nbsp;创建：<input id='createtime_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:10%'>" +
+		                    		"<label for='createtime_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-213px;top:-5px'></label>" +
+		                    		" - " +
+		                    		"<input id='createtime_end_dateselect_filter' type='text' value='' class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:10%'>"+
+		                    		"<label for='createtime_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-88px;top:-5px'></label> " +
+		                    		"<div style='padding-top:3px'>任务期限：<input id='duration_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:10%'>"+
+		                    		"<label for='duration_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-838px;top:-5px'></label>" +
+		                    		" - "+
+		                    		"<input id='duration_end_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:10%'>"+
+		                    		"<label for='duration_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-714px;top:-5px'></label>"+
+		                    		"&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' onclick='searchTodoTask();' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);'>重置</a></div></form>"
+								
 				        },
-				        "bStateSave" : true,
+				        "bStateSave" : false,
 				        "bAutoWidth": true,
 				        "sPaginationType":'full_numbers',
 				        "preDrawCallback" : function() {
@@ -164,23 +179,17 @@ var pagefunction = function() {
 							//调整页面布局
 							$("#datatable_fixed_column_length").css("padding-right","10px");
 							$(".dt-toolbar").css("padding-bottom","6px");
-
-							
-						}
-
+							$("#datatable_fixed_column_filter").css("width","1000px");
+							 
+							pageSetUp();						
+						},
+						
 					});
-	 
-    $('input').on( 'change', function () {
-    	searchTodoTask();
-    });
-    $('#TASKSTATE_SEARCH').on( 'change', function () {
-    	searchTodoTask();
-    });
     
      searchTodoTask = function() {
     	var baseUrl = "/foxbpm-webapps-common/service/tasks?";
     	var assigneed = $("#TASKSTATE_SEARCH").val();
-    	var subjectLike =  $("#SUBJECT_SEARCH").val();
+    	var subjectLike =  $("[type='search']").val();
     	
     	baseUrl = baseUrl + "assigneed="+assigneed;
     	if(subjectLike != ""){
