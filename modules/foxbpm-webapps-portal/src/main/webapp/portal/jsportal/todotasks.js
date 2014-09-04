@@ -121,7 +121,7 @@ var pagefunction = function() {
 								 "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p  l >>",
 						"autoWidth" : true,
 						"colVis": {
-				            "buttonText": "选择展示的列",
+				            "buttonText": "选择列",
 				            "restore": "恢复默认展示",
 				            "showAll": "展示所有列",
 				            "showNone": "不展示列",
@@ -146,19 +146,19 @@ var pagefunction = function() {
 		                        "sNext": "下一页",
 		                        "sLast": "末页"
 		                    },
-		                    "sSearch": "<form>任务主题：_INPUT_ &nbsp;&nbsp;任务发起人：<input id='INITIATOR_SEARCH' type='text' class='form-control' value='' style='width:15%' />" +
-		                    		"&nbsp;&nbsp;任务状态：<select id='TASKSTATE_SEARCH' class='form-control'><option value='0'>未领取</option><option value='1'>领取</option><option value='2' selected>所有</option></select>" +
-		                    		"&nbsp;&nbsp;创建：<input id='createtime_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:10%'>" +
-		                    		"<label for='createtime_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-213px;top:-5px'></label>" +
+		                    "sSearch": "<form>主题：_INPUT_ 发起人：<input id='INITIATOR_SEARCH' type='text' class='form-control' value='' style='width:8%' />" +
+		                    		"状态：<select id='TASKSTATE_SEARCH' class='form-control' style='width:8%'><option value='0'>未领取</option><option value='1'>领取</option><option value='2' selected>所有</option></select>" +
+		                    		"&nbsp;&nbsp;创建：<input id='createtime_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:7%'>" +
+		                    		"<label for='createtime_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-52%;top:-5px'></label>" +
 		                    		" - " +
-		                    		"<input id='createtime_end_dateselect_filter' type='text' value='' class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:10%'>"+
-		                    		"<label for='createtime_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-88px;top:-5px'></label> " +
-		                    		"<div style='padding-top:3px'>任务期限：<input id='duration_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:10%'>"+
-		                    		"<label for='duration_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-838px;top:-5px'></label>" +
+		                    		"<input id='createtime_end_dateselect_filter' type='text' value='' class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:7%'>"+
+		                    		"<label for='createtime_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-43%;top:-5px'></label> " +
+		                    		"期限：<input id='duration_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:7%'>"+
+		                    		"<label for='duration_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-31.3%;top:-5px'></label>" +
 		                    		" - "+
-		                    		"<input id='duration_end_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:10%'>"+
-		                    		"<label for='duration_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-714px;top:-5px'></label>"+
-		                    		"&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' onclick='searchTodoTask();' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);'>重置</a></div></form>"
+		                    		"<input id='duration_end_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:7%'>"+
+		                    		"<label for='duration_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-22.2%;top:-5px'></label>"+
+		                    		"&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' onclick='searchTodoTask();' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' onclick='clearCondition();' href='javascript:void(0);'>重置</a></form>"
 								
 				        },
 				        "bStateSave" : false,
@@ -179,13 +179,24 @@ var pagefunction = function() {
 							//调整页面布局
 							$("#datatable_fixed_column_length").css("padding-right","10px");
 							$(".dt-toolbar").css("padding-bottom","6px");
-							$("#datatable_fixed_column_filter").css("width","1000px");
+							$("#datatable_fixed_column_filter").css("width","1200px");
+							$("[type='search']").css("width","10%");
 							 
 							pageSetUp();						
 						},
 						
 					});
-    
+     
+	 todoTable.column(1).order( 'asc' );
+	 clearCondition = function (){
+		$("[type='search']").val("");
+		$("#INITIATOR_SEARCH").val("");
+		$("#TASKSTATE_SEARCH").val("2");
+		$("#duration_start_dateselect_filter").val("");
+		$("#createtime_end_dateselect_filter").val("");
+		$("#duration_end_dateselect_filter").val(""); 
+		$("#createtime_start_dateselect_filter").val("");
+	};
      searchTodoTask = function() {
     	var baseUrl = "/foxbpm-webapps-common/service/tasks?";
     	var assigneed = $("#TASKSTATE_SEARCH").val();
@@ -226,3 +237,4 @@ var pagefunction = function() {
      	todoTable.ajax.url(baseUrl).load();
     };
 };
+
