@@ -62,7 +62,11 @@
 	border: 3px solid #dc562e;
 }
 
-.type-box a:hover {
+.superbox-list img:hover {
 	border: 3px solid #dc562e;
+	text-decoration:none;
+}
+.superbox-list img{
+	border: 3px solid #bbb;
 	text-decoration:none;
 }
