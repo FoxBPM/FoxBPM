@@ -67,6 +67,10 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 	protected Date dueDate;
 	protected Date dueDateBefore;
 	protected Date dueDateAfter;
+	
+	protected Date endTime;
+	protected Date endTimeBefore;
+	protected Date endTimeAfter;
 	protected String processDefinitionKey;
 	protected String processDefinitionId;
 	protected String processDefinitionName;
@@ -328,7 +332,25 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 		this.dueDateAfter = after;
 		return this;
 	}
-
+	
+	@Override
+	public TaskQuery taskEndTimeOn(Date endTime) {
+		this.endTime = endTime;
+		return this;
+	}
+	
+	@Override
+	public TaskQuery taskEndTimeBefore(Date before) {
+		this.endTimeBefore = before;
+		return this;
+	}
+	
+	@Override
+	public TaskQuery taskEndTimeAfter(Date after) {
+		this.endTimeAfter = after;
+		return this;
+	}
+	
 	public TaskQuery processDefinitionKey(String processDefinitionKey) {
 		this.processDefinitionKey = processDefinitionKey;
 		return this;

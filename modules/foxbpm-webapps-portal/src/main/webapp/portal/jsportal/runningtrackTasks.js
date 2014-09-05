@@ -131,7 +131,7 @@ var pagefunction = function() {
 		$("#createtime_start_dateselect_filter").val("");
 	};
      searchTodoTask = function() {
-    	var baseUrl = "/foxbpm-webapps-common/service/runtime/process-instances?";
+    	var baseUrl = "/foxbpm-webapps-common/service/runtime/process-instances?participate=participate&";
     	var assigneed = $("#TASKSTATE_SEARCH").val();
     	var subjectLike =  $("[type='search']").val();
     	baseUrl = baseUrl + "assigneed="+assigneed;

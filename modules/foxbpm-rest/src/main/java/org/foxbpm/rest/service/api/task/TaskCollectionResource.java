@@ -162,8 +162,33 @@ public class TaskCollectionResource extends AbstractRestResource {
 			} catch (ParseException e) {
 				throw new FoxBPMIllegalArgumentException("创建时间格式转换错误，需要yyyy-MM-dd格式,实际格式："+dateE);
 			}
-			taskQuery.taskCreatedBefore(dueDateE);
+			taskQuery.taskDueDateBefore(dueDateE);
 	    }
+		
+		
+		if(queryNames.contains("endTimeB")) {
+			String dateB = getQueryParameter("endTimeB", queryForm);
+			Date endTimeB;
+			try {
+				endTimeB = sdf.parse(dateB+" 0000000");
+			} catch (ParseException e) {
+				throw new FoxBPMIllegalArgumentException("期望时间格式转换错误，需要yyyy-MM-dd格式,实际格式："+dateB);
+			}
+			taskQuery.taskEndTimeAfter(endTimeB);
+	    }
+		
+		if(queryNames.contains("endTimeE")) {
+			String dateE = getQueryParameter("endTimeE", queryForm);
+			Date endTimeE;
+			try {
+				endTimeE = sdf.parse(dateE + " 2359999");
+			} catch (ParseException e) {
+				throw new FoxBPMIllegalArgumentException("创建时间格式转换错误，需要yyyy-MM-dd格式,实际格式："+dateE);
+			}
+			taskQuery.taskEndTimeBefore(endTimeE);
+	    }
+		
+		
 		
 		boolean ended = false;
 		if(queryNames.contains(RestConstants.IS_END)){

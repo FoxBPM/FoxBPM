@@ -1,24 +1,10 @@
 <!-- Widget ID (each widget will need unique ID)-->
 <div class="jarviswidget" id="wid-id-8" data-widget-editbutton="false"
 	data-widget-custombutton="false">
-	<!-- widget options:
-					usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
-					
-					data-widget-colorbutton="false"	
-					data-widget-editbutton="false"
-					data-widget-togglebutton="false"
-					data-widget-deletebutton="false"
-					data-widget-fullscreenbutton="false"
-					data-widget-custombutton="false"
-					data-widget-collapsed="true" 
-					data-widget-sortable="false"
-					
-				-->
 	<header>
 		<span class="widget-icon"> <i class="fa fa-edit"></i>
 		</span>
-		<h2>Contacts form</h2>
-
+		<h2>报销单据</h2>
 	</header>
 
 	<!-- widget div-->
@@ -34,54 +20,77 @@
 		<!-- widget content -->
 		<div class="widget-body no-padding">
 
-			<form action="demo-contacts.php" method="post" id="contact-form"
-				class="smart-form">
-				<header>Contacts form</header>
-
+			<form action="/foxbpm-webapps-common/expenses.action" method="post" id="form1" class="smart-form">
 				<fieldset>
 					<div class="row">
 						<section class="col col-6">
-							<label class="label">Name</label> <label class="input"> <i
+							<label class="label">单据号</label> <label class="input"> <i
 								class="icon-append fa fa-user"></i> <input type="text"
-								name="name" id="name">
+								name="expenseId" id="expenseId">
 							</label>
 						</section>
 						<section class="col col-6">
-							<label class="label">E-mail</label> <label class="input">
+							<label class="label">申请日期</label> <label class="input">
+								<i class="icon-append fa fa-calendar"></i>
+								<input type="text" name="createTime" id="createTime" class="form-control" value="2014-09-04" disabled="disabled">
+							</label>
+						</section>
+					</div>
+					
+					<div class="row">
+						<section class="col col-6">
+							<label class="label">报销人</label> <label class="input"> <i
+								class="icon-append fa fa-user"></i> <input type="text" class="form-control"
+								name="owner" id="owner" value="admin" disabled="disabled">
+							</label>
+						</section>
+						<section class="col col-6">
+							<label class="label">报销人部门</label> <label class="input">
 								<i class="icon-append fa fa-envelope-o"></i> <input type="email"
-								name="email" id="email">
+								name="dept" id="dept">
+							</label>
+						</section>
+					</div>
+					
+					<div class="row">
+						<section class="col col-6">
+							<label class="label">报销金额</label> <label class="input"> <i
+								class="icon-append fa fa-user"></i> <input type="text"
+								name="account" id="account">
+							</label>
+						</section>
+						<section class="col col-6">
+							<label class="label">发票类型</label>
+							<label class="select">
+								<select name="invoiceType" id="invoiceType">
+									<option value="0" selected="">餐饮费</option>
+									<option value="1">住宿费</option>
+									<option value="2">车船票</option>
+									<option value="3">市内公交</option>
+									<option value="4">办公用品</option>
+									<option value="5">其他</option>
+								</select> <i></i>
 							</label>
 						</section>
 					</div>
 
 					<section>
-						<label class="label">Subject</label> <label class="input">
-							<i class="icon-append fa fa-tag"></i> <input type="text"
-							name="subject" id="subject">
-						</label>
-					</section>
-
-					<section>
-						<label class="label">Message</label> <label class="textarea">
+						<label class="label">事由</label> <label class="textarea">
 							<i class="icon-append fa fa-comment"></i> <textarea rows="4"
-								name="message" id="message"></textarea>
+								name="reason" id="reason"></textarea>
 						</label>
 					</section>
 
-					<section>
-						<label class="checkbox"><input type="checkbox" name="copy"
-							id="copy"><i></i>Send a copy to my e-mail address</label>
-					</section>
 				</fieldset>
 
 				<footer id="toolbar">
-					<button type="submit" class="btn btn-primary">ValidateForm</button>
 				</footer>
 
 				<div class="message">
 					<i class="fa fa-thumbs-up"></i>
 					<p>Your message was successfully sent!</p>
 				</div>
+				<input type="hidden" name="flowCommandInfo" id="flowCommandInfo">
 			</form>
 
 		</div>
@@ -101,15 +110,16 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	var _getBizKey = function() {
-        return $("#businessKey").val();
+        return $("#expenseId").val();
     };
     var _getTaskComment = function() {
-       	return $("#_taskComment").val();
+       	return "";
     };
     
     var _flowCommit = function(flowInfo){
     	if(confirm("确定要提交吗?")){
-    		$("#flowInfo").val(JSON.stringify(flowInfo));
+    		alert(JSON.stringify(flowInfo));
+    		$("#flowCommandInfo").val(JSON.stringify(flowInfo));
     		$("#form1").submit();
     	}
     	return false;
@@ -119,5 +129,34 @@ $(document).ready(function() {
 	
 	var flowCommandCompenent = new Foxbpm.FlowCommandCompenent(flowconfig);
 	flowCommandCompenent.init();
+	
+	
+	$('#startdate').datepicker({
+		dateFormat : 'dd.mm.yy',
+		prevText : '<i class="fa fa-chevron-left"></i>',
+		nextText : '<i class="fa fa-chevron-right"></i>',
+		onSelect : function(selectedDate) {
+			$('#finishdate').datepicker('option', 'minDate', selectedDate);
+		}
+	});
+
+	$('#finishdate').datepicker({
+		dateFormat : 'dd.mm.yy',
+		prevText : '<i class="fa fa-chevron-left"></i>',
+		nextText : '<i class="fa fa-chevron-right"></i>',
+		onSelect : function(selectedDate) {
+			$('#startdate').datepicker('option', 'maxDate', selectedDate);
+		}
+	});
+
+	
+	
 });
+
+
+
+// end pagefunction
+
+// Load form valisation dependency 
+loadScript("js/plugin/jquery-form/jquery-form.min.js", pagefunction);
 </script>

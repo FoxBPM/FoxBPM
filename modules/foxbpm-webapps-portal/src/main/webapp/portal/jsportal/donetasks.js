@@ -172,12 +172,12 @@ var pagefunction = function() {
 		    //完成
 		    var  completeTimeB =  $("#complete_start_dateselect_filter").val();
 		    if(completeTimeB != ""){
-		    	baseUrl = baseUrl + "&completeTimeB="+ completeTimeB;
+		    	baseUrl = baseUrl + "&endTimeB="+ completeTimeB;
 		    }
 		    var completeTimeE = $("#complete_end_dateselect_filter").val();
 		    if(completeTimeE != "")
 		    {
-		    	baseUrl = baseUrl + "&completeTimeE="+ completeTimeE;
+		    	baseUrl = baseUrl + "&endTimeE="+ completeTimeE;
 		    }
 		    
 		    doneTable.ajax.url(baseUrl).load();
