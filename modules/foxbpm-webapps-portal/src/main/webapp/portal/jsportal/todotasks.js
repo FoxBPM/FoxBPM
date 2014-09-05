@@ -21,7 +21,7 @@ var pagefunction = function() {
 						}, {
 							data : 'createTime'
 						}, {
-							data : 'createTime'
+							data : 'dueDate'
 						}, {
 							"orderable" : false,
 							"data" : null,
@@ -181,7 +181,10 @@ var pagefunction = function() {
 							$(".dt-toolbar").css("padding-bottom","6px");
 							$("#datatable_fixed_column_filter").css("width","1200px");
 							$("[type='search']").css("width","10%");
-							 
+							
+//							var itemnumberInfo = $("#datatable_fixed_column_info").html();
+//							var totalNumber = itemnumberInfo.substring(itemnumberInfo.indexOf("共")+1,itemnumberInfo.indexOf("条记录"));
+//							$("#todo_item_number").html(totalNumber);
 							pageSetUp();						
 						},
 						
