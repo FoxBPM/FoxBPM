@@ -303,7 +303,21 @@
 			
 			<if test="dueDateAfter != null">
 				and DUEDATE
-				&gt;=#{dueDateBefore,jdbcType=TIMESTAMP}
+				&gt;=#{dueDateAfter,jdbcType=TIMESTAMP}
+			</if>
+			
+			<if test="endTime != null">
+				and END_TIME = #{endTime,jdbcType=TIMESTAMP}
+			</if>
+			
+			<if test="endTimeBefore != null">
+				and END_TIME
+				&lt;=#{endTimeBefore,jdbcType=TIMESTAMP}
+			</if>
+			
+			<if test="endTimeAfter != null">
+				and END_TIME
+				&gt;=#{endTimeAfter,jdbcType=TIMESTAMP}
 			</if>
 
 			<if test="initiator != null">

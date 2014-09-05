@@ -48,6 +48,8 @@ public class LoginController {
 				UserEntity userEntity = (UserEntity) Authentication.selectUserByUserId(userName);
 				if (null != userEntity && StringUtil.equals(password, userEntity.getPassword())) {
 					// 这里约定了一个参数，流程引擎在运行时会默认从session里按照这两个key来获取参数，如果替换了登录的方式，请保证这两个key依然可以获取到正确的数据
+					request.getSession().setAttribute("userId", userEntity.getUserId());
+					
 					Cookie cookie = new Cookie("foxSid", userEntity.getUserId());
 					cookie.setMaxAge(-1);
 					response.addCookie(cookie);
