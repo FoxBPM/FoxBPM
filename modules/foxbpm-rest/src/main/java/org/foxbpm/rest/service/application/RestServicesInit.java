@@ -17,8 +17,11 @@
  */
 package org.foxbpm.rest.service.application;
 
+import org.foxbpm.calendar.service.calendar.CalendarPartCollectionResource;
 import org.foxbpm.calendar.service.calendar.CalendarPartResource;
+import org.foxbpm.calendar.service.calendar.CalendarRuleCollectionResource;
 import org.foxbpm.calendar.service.calendar.CalendarRuleResource;
+import org.foxbpm.calendar.service.calendar.CalendarTypeCollectionResource;
 import org.foxbpm.calendar.service.calendar.CalendarTypeResource;
 import org.foxbpm.rest.service.api.LoginStateResource;
 import org.foxbpm.rest.service.api.config.FlowConfigResouce;
@@ -123,8 +126,11 @@ public class RestServicesInit {
 		router.attach("/tasks", TaskCollectionResource.class);
 		
 		//工作日历
-		router.attach("/workcal/calendartype", CalendarTypeResource.class);
-		router.attach("/workcal/calendarrule", CalendarRuleResource.class);
-		router.attach("/workcal/calendarpart", CalendarPartResource.class);
+		router.attach("/workcal/calendartype/{calendartypeId}", CalendarTypeResource.class);
+		router.attach("/workcal/calendarrule/{calendarruleId}", CalendarRuleResource.class);
+		router.attach("/workcal/calendarpart/{calendarpartId}", CalendarPartResource.class);
+		router.attach("/workcal/calendartype", CalendarTypeCollectionResource.class);
+		router.attach("/workcal/calendarrule", CalendarRuleCollectionResource.class);
+		router.attach("/workcal/calendarpart", CalendarPartCollectionResource.class);
 	}
 }

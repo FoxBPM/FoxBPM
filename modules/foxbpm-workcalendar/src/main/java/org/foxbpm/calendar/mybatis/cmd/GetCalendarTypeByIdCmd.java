@@ -18,20 +18,20 @@
 package org.foxbpm.calendar.mybatis.cmd;
 
 import org.foxbpm.calendar.mybatis.entity.CalendarTypeEntity;
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
-public class UpdateCalendarTypeCmd implements Command<Void> {
-	private CalendarTypeEntity calendarTypeEntity;
+public class GetCalendarTypeByIdCmd implements Command<CalendarTypeEntity> {
+	private String id;
 	
-	public UpdateCalendarTypeCmd(CalendarTypeEntity calendarTypeEntity) {
-		this.calendarTypeEntity = calendarTypeEntity;
+	public GetCalendarTypeByIdCmd(String id) {
+		this.id = id;
 	}
 
 	@Override
-	public Void execute(CommandContext commandContext) {
-		commandContext.getSqlSession().update("updateCalendarType", calendarTypeEntity);
-		return null;
+	public CalendarTypeEntity execute(CommandContext commandContext) {
+		return (CalendarTypeEntity) Context.getCommandContext().getSqlSession().selectOne("selectCalendarTypeById", id);
 	}
 
 }
