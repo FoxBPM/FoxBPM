@@ -124,13 +124,7 @@ var pagefunction = function() {
 				            "buttonText": "选择列",
 				            "restore": "恢复默认展示",
 				            "showAll": "展示所有列",
-				            "showNone": "不展示列",
-				            "groups": [
-				                     {
-				                         title: "领导查看",
-				                         columns: [ 0, 3, 4 ]
-				                     }
-				                 ]
+				            "showNone": "不展示列"
 				           
 				        },
 				        "oLanguage": {
