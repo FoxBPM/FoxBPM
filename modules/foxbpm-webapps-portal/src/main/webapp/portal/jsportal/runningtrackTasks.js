@@ -4,6 +4,9 @@ var pagefunction = function() {
 					{
 						columns : [
 								{
+									data : 'initiator'
+								}, 
+								{
 									data : 'subject'
 								},
 								{
@@ -25,11 +28,23 @@ var pagefunction = function() {
 								{
 									"orderable" : false,
 									"data" : null,
+									"width":"15%",
 									"defaultContent" : ""//"<a href='javascript:void(0);' class='btn btn-danger'>查看</a> "
 								} ],
 						columnDefs : [ 
 								{
-									"targets" : [ 2 ],
+									"targets" : [ 0 ],
+									"orderable" : false,
+									"width":20,
+									"createdCell" : function(td, cellData,
+											rowData, row, col) {
+								
+										$(td).html("<img width='20' height='20' class='online' src='/foxbpm-webapps-common/service/identity/users/"+cellData+"/picture'/>");
+										
+									}
+								},
+								{
+									"targets" : [ 3 ],
 									"orderable" : true,
 									"createdCell" : function(td, cellData,
 											rowData, row, col) {
@@ -55,35 +70,18 @@ var pagefunction = function() {
 										}
 
 									}
-								},
-								{
-									"targets" : [ 3 ],
-									"orderable" : true,
-									"createdCell" : function(td, cellData,
-											rowData, row, col) {
-										if (cellData != "") {
-											$(td)
-													.html(
-															"<img width='20' height='20' class='online' src='/foxbpm-webapps-common/service/identity/users/"
-																	+ cellData
-																	+ "/picture'/> ("
-																	+ cellData
-																	+ ")");
-
-										}
-									}
 								} ],
 
 						"processing" : true,
 						"orderable" : true,
 						"serverSide" : true,
 						"ajax" : "/foxbpm-webapps-common/service/runtime/process-instances",
-						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'><'col-sm-6 col-xs-12 hidden-xs'C>>"
+						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'>C>"
 								+ "t"
 								+ "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p l>>",
 						"autoWidth" : true,
 						"colVis" : {
-							"buttonText" : "选择展示的列",
+							"buttonText" : "选择列",
 							"restore" : "恢复默认展示",
 							"showAll" : "展示所有列",
 							"showNone" : "不展示列",
@@ -104,32 +102,42 @@ var pagefunction = function() {
 								"sPrevious" : "上一页",
 								"sNext" : "下一页",
 								"sLast" : "末页"
-							}
+							},
+							"sSearch": "<form>主题：_INPUT_ 发起人：<input id='INITIATOR_SEARCH' type='text' class='form-control' value='' style='width:15%' />" +
+                    		"状态：<select id='TASKSTATE_SEARCH' class='form-control'><option value='0'>未领取</option><option value='1'>领取</option><option value='2' selected>所有</option></select> " +
+                    		"创建：<input id='createtime_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:10%'>" +
+                    		"<label for='createtime_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-33.5%;top:-5px'></label>" +
+                    		" - " +
+                    		"<input id='createtime_end_dateselect_filter' type='text' value='' class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:10%'>"+
+                    		"<label for='createtime_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-21%;top:-5px'></label> " +
+                    		"&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' onclick='searchTodoTask();' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);' onclick='clearCondition();'>重置</a></form>"
 						},
-						"bStateSave" : true,
+						"bStateSave" : false,
 						"bAutoWidth" : true,
 						"sPaginationType" : 'full_numbers',
 						"drawCallback":function(){
 							//调整页面布局
 							$("#datatable_col_reorder_length").css("padding-right","10px");
 							$(".dt-toolbar").css("padding-bottom","6px");
-
-							
+							$("#datatable_col_reorder_filter").css("width","1000px");
+							$("[type='search']").css("width","15%");
+							 
+							pageSetUp();		
 						}
 
 					});
-	$('input').on( 'change', function () {
-    	searchTodoTask();
-    });
-    $('#TASKSTATE_SEARCH').on( 'change', function () {
-    	searchTodoTask();
-    });
-    
+	runningTrackTable.column(1).order( 'asc' );
+	clearCondition = function (){
+		$("[type='search']").val("");
+		$("#INITIATOR_SEARCH").val("");
+		$("#TASKSTATE_SEARCH").val("2");
+		$("#createtime_end_dateselect_filter").val("");
+		$("#createtime_start_dateselect_filter").val("");
+	};
      searchTodoTask = function() {
-    	var baseUrl = "/foxbpm-webapps-common/service/runtime/process-instances?";
-    	var subjectLike =  $("#SUBJECT_SEARCH").val();
+    	var baseUrl = "/foxbpm-webapps-common/service/runtime/process-instances?participate=participate&";
     	var assigneed = $("#TASKSTATE_SEARCH").val();
-    	
+    	var subjectLike =  $("[type='search']").val();
     	baseUrl = baseUrl + "assigneed="+assigneed;
     	if(subjectLike != ""){
     		baseUrl = baseUrl + "&subjectLike="+ subjectLike;
@@ -140,11 +148,11 @@ var pagefunction = function() {
      	}
     	 
 	    //创建
-	    var  createTimeB =  $("#create_start_dateselect_filter").val();
+	    var  createTimeB =  $("#createtime_start_dateselect_filter").val();
 	    if(createTimeB != ""){
 	    	baseUrl = baseUrl + "&createTimeB="+ createTimeB;
 	    }
-	    var createTimeE = $("#create_end_dateselect_filter").val();
+	    var createTimeE = $("#createtime_end_dateselect_filter").val();
 	    if(createTimeE != "")
 	    {
 	    	baseUrl = baseUrl + "&createTimeE="+ createTimeE;

@@ -45,7 +45,7 @@ public class FoxbpmConverService extends ConverterService {
 		
 		Representation representation = super.toRepresentation(source, target, resource);
 		if(representation instanceof JacksonRepresentation){
-			((JacksonRepresentation)representation).getObjectMapper().getSerializationConfig().setDateFormat(df);
+			((JacksonRepresentation)representation).getObjectMapper().setDateFormat(df);
 		}
 		return representation;
 	}

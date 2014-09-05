@@ -373,7 +373,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 			Iterator<String> it = commandParamsNode.getFieldNames();
 			while(it.hasNext()){
 				String tmp = it.next();
-				taskParams.put(tmp, commandParamsNode.get(tmp).getValueAsText());
+				taskParams.put(tmp, commandParamsNode.get(tmp).getTextValue());
 			}
 		}
 		expandTaskCommand.setParamMap(taskParams);

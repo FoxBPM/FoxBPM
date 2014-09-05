@@ -23,7 +23,7 @@
 				-->
 				<header>
 					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-					<h2>Column Filters </h2>
+					<h2>待办任务列表 </h2>
 
 				</header>
 
@@ -35,67 +35,11 @@
 						<!-- This area used as dropdown edit box -->
 
 					</div>
-					<!-- end widget edit box -->
-
+					
 					<!-- widget content -->
 					<div class="widget-body no-padding">
-
 						<table id="datatable_fixed_column" class="table table-striped table-bordered" width="100%">
-	
 					        <thead>
-								<tr>
-									<th class="hasinput" style="width:4%">
-									</th>
-									<th class="hasinput" style="width:17%">
-										<input id="SUBJECT_SEARCH" type="text" class="form-control" placeholder="过滤任务主题" />
-									</th>
-									<th class="hasinput" style="width:8%">
-									</th>
-									<th class="hasinput" style="width:10%">
-										<input id="INITIATOR_SEARCH" type="text" class="form-control" placeholder="过滤发起人" />
-									</th>
-									<th class="hasinput" style="width:7%">
-										<select id="TASKSTATE_SEARCH" class="form-control">
-											<option value="0">未领取</option>
-											<option value="1">领取</option>
-											<option value="2" selected>所有</option>
-										</select>
-									</th>
-									<th class="hasinput" style="width:19%">
-										<table>
-											<tr>
-												<td class="hasinput icon-addon">
-													<input id="createtime_start_dateselect_filter" type="text" placeholder="开始时间" class="form-control datepicker" data-dateformat="yy-mm-dd" >
-													<label for="createtime_start_dateselect_filter" class="glyphicon glyphicon-calendar no-margin padding-top-15" rel="tooltip" title="" data-original-title="起始创建时间" style="left:5px;top:-5px"></label>
-												</td>
-												<td>-</td>
-												<td class="hasinput icon-addon">
-													<input id="createtime_end_dateselect_filter" type="text" placeholder="终止时间" class="form-control datepicker" data-dateformat="yy-mm-dd">
-													<label for="createtime_end_dateselect_filter" class="glyphicon glyphicon-calendar no-margin padding-top-15" rel="tooltip" title="" data-original-title="终止创建时间" style="left:5px;top:-5px"></label>
-												</td>
-											</tr>
-										</table> 								
-									</th>
-									<th class="hasinput" style="width:19%">
-										<table>
-											<tr>
-												<td class="hasinput icon-addon">
-													<input id="duration_start_dateselect_filter" type="text" placeholder="开始时间" class="form-control datepicker" data-dateformat="yy-mm-dd" >
-												    <label for="duration_start_dateselect_filter" class="glyphicon glyphicon-calendar no-margin padding-top-15" rel="tooltip" title="" data-original-title="起始期限" style="left:5px;top:-5px"></label>
-												
-												</td>
-												<td>-</td>
-												<td class="hasinput icon-addon">
-													<input id="duration_end_dateselect_filter" type="text" placeholder="终止时间" class="form-control datepicker" data-dateformat="yy-mm-dd" >
-													<label for="duration_end_dateselect_filter" class="glyphicon glyphicon-calendar no-margin padding-top-15" rel="tooltip" title="" data-original-title="终止期限" style="left:5px;top:-5px"></label>
-													
-												</td>
-											</tr>
-										</table>
-									</th>
-									<th class="hasinput" style="width:13%">
-									</th>
-								</tr>
 					            <tr>
 				                    <th><i></i></th>
 									<th><i class="fa fa-fw fa-tasks text-muted hidden-md hidden-sm hidden-xs"></i>  任务</th>

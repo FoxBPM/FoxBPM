@@ -17,9 +17,9 @@
  */
 package org.foxbpm.rest.service.application;
 
-import org.foxbpm.calendar.service.calendartype.CalendarPartResource;
-import org.foxbpm.calendar.service.calendartype.CalendarRuleResource;
-import org.foxbpm.calendar.service.calendartype.CalendarTypeResource;
+import org.foxbpm.calendar.service.calendar.CalendarPartResource;
+import org.foxbpm.calendar.service.calendar.CalendarRuleResource;
+import org.foxbpm.calendar.service.calendar.CalendarTypeResource;
 import org.foxbpm.rest.service.api.LoginStateResource;
 import org.foxbpm.rest.service.api.config.FlowConfigResouce;
 import org.foxbpm.rest.service.api.engine.RollbackNodeCollectionResource;

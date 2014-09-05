@@ -17,17 +17,31 @@
  */
 package org.foxbpm.calendar.mybatis.cmd;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.foxbpm.calendar.mybatis.entity.CalendarPartEntity;
+import org.foxbpm.engine.impl.db.ListQueryParameterObject;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
 public class GetCalendarPartCmd implements Command<List<?>> {
-
+	private int pageIndex;
+	private int pageSize;
+	
+	public GetCalendarPartCmd(int pageIndex, int pageSize) {
+		this.pageIndex = pageIndex;
+		this.pageSize = pageSize;
+	}
+	
 	@Override
 	public List<CalendarPartEntity> execute(CommandContext commandContext) {
-		return (List<CalendarPartEntity>) commandContext.getSqlSession().selectList("selectAllCalendarPart");
+		Map<String, Object> queryMap = new HashMap<String, Object>();
+		int firstResult = pageIndex * pageSize - pageSize;
+		int maxResults = pageSize;
+		ListQueryParameterObject queryParams = new ListQueryParameterObject(queryMap, firstResult, maxResults);
+		return (List<CalendarPartEntity>) commandContext.getSqlSession().selectList("selectAllCalendarPart", queryParams);
 	}
 
 }
