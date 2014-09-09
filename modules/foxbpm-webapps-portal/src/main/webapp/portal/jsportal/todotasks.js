@@ -141,17 +141,17 @@ var pagefunction = function() {
 		                        "sLast": "末页"
 		                    },
 		                    "sSearch": "<form>_INPUT_" +
-		                    		"&nbsp;&nbsp;状态：<select id='TASKSTATE_SEARCH' class='form-control' style='width:8%'><option value='0'>未领取</option><option value='1'>领取</option><option value='2' selected>所有</option></select>" +
-		                    		"&nbsp;&nbsp;创建：<input id='createtime_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:9%'>" +
-		                    		"<label for='createtime_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-59%;top:-5px'></label>" +
+		                    		"&nbsp;&nbsp;<select id='TASKSTATE_SEARCH' class='form-control' style='width:8%'><option value='0'>未领取</option><option value='1'>领取</option><option value='2' selected>所有</option></select>" +
+		                    		"&nbsp;&nbsp;<input placeholder='创建起始' id='createtime_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:11%'>" +
+		                    		"<label for='createtime_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-64%;top:-5px'></label>" +
 		                    		" - " +
-		                    		"<input id='createtime_end_dateselect_filter' type='text' value='' class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:9%'>"+
-		                    		"<label for='createtime_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-48%;top:-5px'></label> " +
-		                    		"&nbsp;&nbsp;期限：<input id='duration_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:9%'>"+
-		                    		"<label for='duration_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-33.8%;top:-5px'></label>" +
+		                    		"<input placeholder='创建终止' id='createtime_end_dateselect_filter' type='text' value='' class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:11%'>"+
+		                    		"<label for='createtime_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-51%;top:-5px'></label> " +
+		                    		"&nbsp;&nbsp;<input placeholder='期限起始' id='duration_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:11%'>"+
+		                    		"<label for='duration_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-38%;top:-5px'></label>" +
 		                    		" - "+
-		                    		"<input id='duration_end_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:9%'>"+
-		                    		"<label for='duration_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-22.8%;top:-5px'></label>"+
+		                    		"<input placeholder='期限终止'  id='duration_end_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:11%'>"+
+		                    		"<label for='duration_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-25%;top:-5px'></label>"+
 		                    		"&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' onclick='searchTodoTask();' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' onclick='clearCondition();' href='javascript:void(0);'>重置</a></form>"
 								
 				        },
@@ -174,9 +174,7 @@ var pagefunction = function() {
 							$("#datatable_fixed_column_length").css("padding-right","10px");
 							$(".dt-toolbar").css("padding-bottom","6px");
 							$("#datatable_fixed_column_filter").css("width","1200px");
-							$("[type='search']").css("width","10%");
-							$("[type='search']").css("placeholder","主题");
-							
+							$("[type='search']").attr("placeholder","主题/发起人");
 //							var itemnumberInfo = $("#datatable_fixed_column_info").html();
 //							var totalNumber = itemnumberInfo.substring(itemnumberInfo.indexOf("共")+1,itemnumberInfo.indexOf("条记录"));
 //							$("#todo_item_number").html(totalNumber);
