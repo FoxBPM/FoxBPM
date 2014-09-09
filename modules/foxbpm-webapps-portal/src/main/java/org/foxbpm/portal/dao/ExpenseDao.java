@@ -25,6 +25,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExpenseDao {
 
+	
 	public void saveExpenseEntity(ExpenseEntity expenseEntity){
 		System.out.println("保存");
 	}

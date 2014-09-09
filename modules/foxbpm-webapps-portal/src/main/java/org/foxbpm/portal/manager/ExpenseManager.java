@@ -20,10 +20,10 @@ package org.foxbpm.portal.manager;
 import java.util.List;
 import java.util.Map;
 
-import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.portal.dao.ExpenseDao;
 import org.foxbpm.portal.model.ExpenseEntity;
+import org.foxbpm.portal.service.WorkFlowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +33,7 @@ public class ExpenseManager {
 	@Autowired
 	private ExpenseDao expenseDao;
 	@Autowired
-	private TaskService taskService;
+	private WorkFlowService workFlowService;
 	
 	public void applyNewExpense(ExpenseEntity expenseEntity,String flowCommandInfo){
 		expenseDao.saveExpenseEntity(expenseEntity);
@@ -42,7 +42,7 @@ public class ExpenseManager {
 			throw new RuntimeException("流程命令参数确实，请检查请求参数");
 		}
 		//调用api执行任务命令
-		taskService.expandTaskComplete(flowCommandInfo);
+		workFlowService.executeTaskCommandJson(flowCommandInfo);
 	}
 	
 	public List<Map<String,Object>> selectByPage(int pageIndex,int pageSize){

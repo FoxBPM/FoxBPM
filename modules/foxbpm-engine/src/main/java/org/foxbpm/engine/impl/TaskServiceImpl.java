@@ -19,15 +19,10 @@
 package org.foxbpm.engine.impl;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.foxbpm.engine.TaskService;
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.cmd.ClaimCmd;
 import org.foxbpm.engine.impl.cmd.CompleteTaskCmd;
 import org.foxbpm.engine.impl.cmd.DeleteTasksCmd;
@@ -39,12 +34,10 @@ import org.foxbpm.engine.impl.cmd.GetTaskCommandByTaskIdCmd;
 import org.foxbpm.engine.impl.cmd.NewTaskCmd;
 import org.foxbpm.engine.impl.cmd.SaveTaskCmd;
 import org.foxbpm.engine.impl.cmd.UnClaimCmd;
-import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.query.NativeTaskQueryImpl;
 import org.foxbpm.engine.impl.task.TaskQueryImpl;
 import org.foxbpm.engine.impl.task.cmd.ExpandTaskCompleteCmd;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
-import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.query.NativeTaskQuery;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskCommand;
@@ -106,68 +99,6 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 		return (T) commandExecutor.execute(new ExpandTaskCompleteCmd<T>(expandTaskCommand));
 	}
 	
-	@Override
-	public void expandTaskComplete(String taskCommandJson) {
-		ObjectMapper objectMapper = new ObjectMapper();
-		JsonNode params = null;
-		try {
-			params = objectMapper.readTree(taskCommandJson);
-		} catch (Exception e) {
-			throw new FoxBPMException("任务命令参数格式不正确",e);
-		}
-		JsonNode taskIdNode = params.get("taskId");
-		JsonNode commandIdNode = params.get("commandId");
-		JsonNode processDefinitionKeyNode = params.get("processDefinitionKey");
-		JsonNode businessKeyNode = params.get("bizKey");
-		JsonNode taskCommentNode = params.get("taskComment");
-		// 参数校验
-		
-		// 命令类型
-		JsonNode commandTypeNode = params.get("commandType");
-		JsonNode commandParamsNode = params.get("commandParams");
-		
-		if (commandTypeNode == null) {
-			throw new FoxBPMException("commandType is null !");
-		}
-		// 命令Id
-		if (commandIdNode == null) {
-			throw new FoxBPMException("commandId is null !");
-		}
-		
-		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
-		expandTaskCommand.setCommandType(commandTypeNode.getTextValue());
-		// 设置命令的id,需和节点上配置的按钮编号对应，会执行按钮中的脚本。
-		expandTaskCommand.setTaskCommandId(commandIdNode.getTextValue());
-		if(taskCommentNode != null){
-			expandTaskCommand.setTaskComment(taskCommentNode.getTextValue());
-		}
-		//设置任务命令参数
-		Map<String,Object> taskParams = new HashMap<String, Object>();
-		if(commandParamsNode != null){
-			Iterator<String> it = commandParamsNode.getFieldNames();
-			while(it.hasNext()){
-				String tmp = it.next();
-				taskParams.put(tmp, commandParamsNode.get(tmp).getTextValue());
-			}
-		}
-		expandTaskCommand.setParamMap(taskParams);
-		if (taskIdNode != null && StringUtil.isNotEmpty(taskIdNode.getTextValue())) {
-			expandTaskCommand.setTaskId(taskIdNode.getTextValue());
-		} else {
-			String userId = Authentication.getAuthenticatedUserId();
-			expandTaskCommand.setInitiator(userId);
-			if(businessKeyNode == null){
-				throw new FoxBPMException("启动流程时关联键不能为null","");
-			}
-			if(processDefinitionKeyNode == null){
-				throw new FoxBPMException("启动流程时流程Key不能为null","");
-			}
-			expandTaskCommand.setBusinessKey(businessKeyNode.getTextValue());
-			expandTaskCommand.setProcessDefinitionKey(processDefinitionKeyNode.getTextValue());
-		}
-		expandTaskComplete(expandTaskCommand, null);
-	}
-
 	public NativeTaskQuery createNativeTaskQuery() {
 		return new NativeTaskQueryImpl(commandExecutor);
 	}
