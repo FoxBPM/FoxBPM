@@ -17,6 +17,10 @@
  */
 package org.foxbpm.portal.controller;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.foxbpm.portal.manager.ExpenseManager;
 import org.foxbpm.portal.model.ExpenseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +35,27 @@ public class ExpenseController {
 
 	@Autowired
 	private ExpenseManager expenseManager;
-	
-	@RequestMapping(value={"/","/expenses"},method=RequestMethod.POST)
-	public String applyExpense(@ModelAttribute ExpenseEntity expenseEntity,@RequestParam String flowCommandInfo){
-		expenseManager.applyNewExpense(expenseEntity,flowCommandInfo);
-		return "redirect:portal/index.html#ajaxpage/dashboard.html";
+
+	@RequestMapping(value = { "/", "/expenses" }, method = RequestMethod.POST)
+	public void applyExpense(HttpServletResponse response, @ModelAttribute ExpenseEntity expenseEntity, @RequestParam String flowCommandInfo) throws IOException {
+		//expenseManager.applyNewExpense(expenseEntity, flowCommandInfo);
+		response.setContentType("text/html;charset=utf-8");
+		response.getWriter().print(
+				"<script>"
+				+ "if(self.frameElement.tagName=='IFRAME'){"
+				+ "		window.parent.$.smallBox({" 
+				+ "				title : '提示!',"
+				+ "				content : '保存成功！',"
+				+ "				color : '#296191'," 
+				+ "				icon : 'fa fa-bell swing animated',"
+				+"				timeout : 2000"
+				+ "		});"
+				+ "		window.parent.$('#remoteModal').modal('hide');"
+				+ "}"
+				+ "else{"
+				+"		alert('保存成功！');"
+				+ "		window.close();"
+				+ "}"
+				+ "</script>");
 	}
 }

@@ -1,23 +1,63 @@
-<!-- Widget ID (each widget will need unique ID)-->
-<div class="jarviswidget" id="wid-id-8" data-widget-editbutton="false"
-	data-widget-custombutton="false">
+<!DOCTYPE html>
+<html lang="en-us">	
+	<head>
+		<meta charset="utf-8">
+		<title>FoxBPM流程门户</title>
+		<meta name="description" content="">
+		<meta name="author" content="">
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<link rel="stylesheet" type="text/css" media="screen" href="../css/your_style.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="../css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="../css/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="../css/smartadmin-production.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="../css/smartadmin-skins.min.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="css/demo.min.css">
+
+		<link rel="shortcut icon" href="img/favicon/favicon.ico" type="image/x-icon">
+		<link rel="icon" href="img/favicon/favicon.ico" type="image/x-icon">
+
+		<link rel="apple-touch-icon" href="img/splash/sptouch-icon-iphone.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="img/splash/touch-icon-ipad.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="img/splash/touch-icon-iphone-retina.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="img/splash/touch-icon-ipad-retina.png">
+		
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		
+		<!-- Startup image for web apps -->
+		<link rel="apple-touch-startup-image" href="img/splash/ipad-landscape.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
+		<link rel="apple-touch-startup-image" href="img/splash/ipad-portrait.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
+		<link rel="apple-touch-startup-image" href="img/splash/iphone.png" media="screen and (max-device-width: 320px)">
+		<script src="../js/libs/jquery-2.0.2.min.js"></script>
+		<script src="../js/plugin/jquery-form/jquery-form.min.js"></script>
+		<script>
+			if (!window.jQuery) {
+				document.write('<script src="../js/libs/jquery-2.0.2.min.js"><\/script>');
+			}
+		</script>
+
+		<script src="../js/libs/jquery-ui-1.10.3.min.js"></script>
+		<script>
+			if (!window.jQuery.ui) {
+				document.write('<script src="js/libs/jquery-ui-1.10.3.min.js"><\/script>');
+			}
+		</script>
+		<script src="../js/foxbpm/common.js"></script>
+	</head>
+	
+	<body class="">
+
+<div class="jarviswidget" id="wid-id-8" data-widget-editbutton="false" data-widget-custombutton="false">
 	<header>
 		<span class="widget-icon"> <i class="fa fa-edit"></i>
 		</span>
 		<h2>报销单据</h2>
 	</header>
-
 	<!-- widget div-->
 	<div>
-
-		<!-- widget edit box -->
 		<div class="jarviswidget-editbox">
-			<!-- This area used as dropdown edit box -->
-
 		</div>
-		<!-- end widget edit box -->
-
-		<!-- widget content -->
 		<div class="widget-body no-padding">
 
 			<form action="/foxbpm-webapps-common/expenses.action" method="post" id="form1" class="smart-form">
@@ -87,7 +127,6 @@
 				</footer>
 				<input type="hidden" name="flowCommandInfo" id="flowCommandInfo">
 
-
 				<div class="message">
 					<i class="fa fa-thumbs-up"></i>
 					<p>Your message was successfully sent!</p>
@@ -95,17 +134,12 @@
 			</form>
 
 		</div>
-		<!-- end widget content -->
-
 	</div>
-	<!-- end widget div -->
-
 </div>
-<!-- end widget -->
 
-<script type="text/javascript" src="taskCommand/js/foxbpmframework.js"></script>
-<script type="text/javascript" src="taskCommand/js/flowCommandCompenent.js"></script>
-<script type="text/javascript" src="taskCommand/js/flowCommandHandler.js"></script>
+<script type="text/javascript" src="/foxbpm-webapps-common/portal/taskCommand/js/foxbpmframework.js"></script>
+<script type="text/javascript" src="/foxbpm-webapps-common/portal/taskCommand/js/flowCommandCompenent.js"></script>
+<script type="text/javascript" src="/foxbpm-webapps-common/portal/taskCommand/js/flowCommandHandler.js"></script>
 
 
 <script type="text/javascript">
@@ -130,34 +164,8 @@ $(document).ready(function() {
 	
 	var flowCommandCompenent = new Foxbpm.FlowCommandCompenent(flowconfig);
 	flowCommandCompenent.init();
-	
-	
-	$('#startdate').datepicker({
-		dateFormat : 'dd.mm.yy',
-		prevText : '<i class="fa fa-chevron-left"></i>',
-		nextText : '<i class="fa fa-chevron-right"></i>',
-		onSelect : function(selectedDate) {
-			$('#finishdate').datepicker('option', 'minDate', selectedDate);
-		}
-	});
-
-	$('#finishdate').datepicker({
-		dateFormat : 'dd.mm.yy',
-		prevText : '<i class="fa fa-chevron-left"></i>',
-		nextText : '<i class="fa fa-chevron-right"></i>',
-		onSelect : function(selectedDate) {
-			$('#startdate').datepicker('option', 'maxDate', selectedDate);
-		}
-	});
-
-	
-	
 });
-
-
-
-// end pagefunction
-
-// Load form valisation dependency 
-loadScript("js/plugin/jquery-form/jquery-form.min.js", pagefunction);
+loadScript("../js/plugin/jquery-form/jquery-form.min.js", pagefunction);
 </script>
+
+</body>
