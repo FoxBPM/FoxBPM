@@ -17,16 +17,22 @@
  */
 package org.foxbpm.calendar.mybatis.cmd;
 
-import java.util.List;
-
+import org.foxbpm.calendar.mybatis.entity.CalendarTypeEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
-public class AddCalendarTypeCmd implements Command<List<?>> {
+public class AddCalendarTypeCmd implements Command<Void> {
+	private CalendarTypeEntity calendarTypeEntity;
+	
+
+	public AddCalendarTypeCmd(CalendarTypeEntity calendarTypeEntity) {
+		this.calendarTypeEntity = calendarTypeEntity;
+	}
 
 	@Override
-	public List<?> execute(CommandContext commandContext) {
-		return commandContext.getSqlSession().selectList("insertCalendarType");
+	public Void execute(CommandContext commandContext) {
+		commandContext.getSqlSession().insert("insertCalendarType", calendarTypeEntity);
+		return null;
 	}
 
 }

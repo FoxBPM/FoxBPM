@@ -29,6 +29,7 @@ import org.foxbpm.calendar.mybatis.cmd.GetCalendarPartCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarPartCountCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarRuleCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarRuleCountCmd;
+import org.foxbpm.calendar.mybatis.cmd.GetCalendarTypeByIdCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarTypeCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarTypeCountCmd;
 import org.foxbpm.calendar.mybatis.cmd.UpdateCalendarPartCmd;
@@ -47,23 +48,18 @@ public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalenda
 	}
 
 	@Override
-	public void addCalendarType() {
-		commandExecutor.execute(new AddCalendarTypeCmd());
+	public void addCalendarType(CalendarTypeEntity calendarTypeEntity) {
+		commandExecutor.execute(new AddCalendarTypeCmd(calendarTypeEntity));
 	}
 
 	@Override
-	public void updateCalendarType() {
-		commandExecutor.execute(new UpdateCalendarTypeCmd());
+	public void updateCalendarType(CalendarTypeEntity calendarTypeEntity) {
+		commandExecutor.execute(new UpdateCalendarTypeCmd(calendarTypeEntity));
 	}
 
 	@Override
-	public void deleteCalendarType() {
+	public void deleteCalendarType(String id) {
 		commandExecutor.execute(new DeleteCalendarTypeCmd());
-	}
-
-	@Override
-	public List<CalendarTypeEntity> getCalendarType(int pageIndex, int pageSize) {
-		return (List<CalendarTypeEntity>) commandExecutor.execute(new GetCalendarTypeCmd(pageIndex, pageSize));
 	}
 
 	@Override
@@ -119,5 +115,15 @@ public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalenda
 	@Override
 	public Long getCalendarPartCount(String idLike) {
 		return commandExecutor.execute(new GetCalendarPartCountCmd(idLike));
+	}
+
+	@Override
+	public CalendarTypeEntity getCalendarTypeById(String id) {
+		return commandExecutor.execute(new GetCalendarTypeByIdCmd(id));
+	}
+
+	@Override
+	public List<CalendarTypeEntity> getCalendarType(int pageIndex, int pageSize, String idLike, String nameLike) {
+		return (List<CalendarTypeEntity>) commandExecutor.execute(new GetCalendarTypeCmd(pageIndex, pageSize, idLike, nameLike));
 	}
 }
