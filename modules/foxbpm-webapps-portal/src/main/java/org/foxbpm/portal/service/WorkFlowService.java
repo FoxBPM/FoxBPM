@@ -29,7 +29,8 @@ import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.stereotype.Component;
+@Component
 public class WorkFlowService {
 
 	@Autowired
