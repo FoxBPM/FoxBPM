@@ -10,7 +10,7 @@ var pagefunction = function() {
 							data : 'priority'
 						}, {
 							data : 'createTime'
-						},  { data: 'createTime' },
+						},  { data: 'dueDate' },
 				        { data: 'endTime' },
 						{
 							data : 'processInitiator'
@@ -60,7 +60,18 @@ var pagefunction = function() {
 															"<span class='badge bg-color-red'>高</span>");
 										}
 									}
-								}
+								},
+								{
+									"targets" : [ 4 ],
+									"orderable" : true,
+									"createdCell" : function(td, cellData,
+											rowData, row, col) {
+										if(cellData != ""){
+											$(td).html("<img width='20' height='20' class='online' src='/foxbpm-webapps-common/service/identity/users/"+cellData+"/picture'/> ("+cellData+")");
+											
+										}
+									}
+								} 
 								],
 
 						"processing" : true,
@@ -95,17 +106,17 @@ var pagefunction = function() {
 		                        "sNext": "下一页",
 		                        "sLast": "末页"
 		                    },
-		                    "sSearch": "_INPUT_ <input placeholder='发起人' id='TASK_INITIATOR' type='text' class='form-control' style='width:6%'>"+
+		                    "sSearch": "_INPUT_ "+
                     		"&nbsp;&nbsp;<input placeholder='创建起始'id='createtime_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:11%'>" +
-                    		"<label for='createtime_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-73.5%;top:-5px'></label>" +
+                    		"<label for='createtime_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-72.2%;top:-5px'></label>" +
                     		" - " +
                     		"<input placeholder='创建终止' id='createtime_end_dateselect_filter' type='text' value='' class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:11%'>"+
-                    		"<label for='createtime_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-60.5%;top:-5px'></label> " +
+                    		"<label for='createtime_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-59%;top:-5px'></label> " +
                     		"&nbsp;&nbsp;<input placeholder='完成起始' id='complete_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:11%'>"+
-                    		"<label for='complete_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-47.5%;top:-5px'></label>" +
+                    		"<label for='complete_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-46%;top:-5px'></label>" +
                     		" - "+
                     		"<input placeholder='完成终止' id='complete_end_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:11%'>"+
-                    		"<label for='complete_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-34.5%;top:-5px'></label>"+
+                    		"<label for='complete_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-33%;top:-5px'></label>"+
                     		"&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' onclick='searchTodoTask();' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);' onclick='clearCondition();'>重置</a></div></form>"
 
 				        },
@@ -116,9 +127,9 @@ var pagefunction = function() {
 							//调整页面布局
 							$("#datatable_col_reorder_length").css("padding-right","10px");
 							$(".dt-toolbar").css("padding-bottom","6px");
+							$(".dt-toolbar").css("padding-right","32px");
 							$("#datatable_col_reorder_filter").css("width","1200px");
-							$("[type='search']").attr("placeholder","主题");
-							$("[type='search']").css("width","9%");
+							$("[type='search']").attr("placeholder","主题/发起人");
 							pageSetUp();	
 							
 						}
@@ -143,7 +154,7 @@ var pagefunction = function() {
 	    	if(subjectLike != ""){
 	    		baseUrl = baseUrl + "&subjectLike="+ subjectLike;
 	    	}
-	     	var initiator = $("#TASK_INITIATOR").val();
+	     	var initiator = "";//$("#INITIATOR_SEARCH").val();
 	     	if(initiator != ""){
 	     		baseUrl = baseUrl + "&initiator="+ initiator;
 	     	}
