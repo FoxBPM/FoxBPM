@@ -81,7 +81,7 @@ var pagefunction = function() {
 								+ "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p l>>",
 						"autoWidth" : true,
 						"colVis" : {
-							"buttonText" : "选择列",
+							"buttonText" : "选择展示的列",
 							"restore" : "恢复默认展示",
 							"showAll" : "展示所有列",
 							"showNone" : "不展示列"
@@ -99,13 +99,13 @@ var pagefunction = function() {
 								"sNext" : "下一页",
 								"sLast" : "末页"
 							},
-							"sSearch": "<form>主题：_INPUT_ 发起人：<input id='INITIATOR_SEARCH' type='text' class='form-control' value='' style='width:15%' />" +
-                    		"状态：<select id='TASKSTATE_SEARCH' class='form-control'><option value='0'>未领取</option><option value='1'>领取</option><option value='2' selected>所有</option></select> " +
-                    		"创建：<input id='createtime_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:10%'>" +
-                    		"<label for='createtime_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-33.5%;top:-5px'></label>" +
+							"sSearch": "_INPUT_ <input placeholder='发起人' id='TASK_INITIATOR' type='text' class='form-control' style='width:7%'>"+
+                    		"&nbsp;&nbsp;<select id='TASKSTATE_SEARCH' class='form-control'><option value='0'>未领取</option><option value='1'>领取</option><option value='2' selected>所有</option></select> " +
+                    		"&nbsp;&nbsp;<input placeholder='创建起始' id='createtime_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:12%'>" +
+                    		"<label for='createtime_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-61%;top:-5px'></label>" +
                     		" - " +
-                    		"<input id='createtime_end_dateselect_filter' type='text' value='' class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:10%'>"+
-                    		"<label for='createtime_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-21%;top:-5px'></label> " +
+                    		"<input placeholder='创建终止' id='createtime_end_dateselect_filter' type='text' value='' class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:12%'>"+
+                    		"<label for='createtime_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-46.5%;top:-5px'></label> " +
                     		"&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' onclick='searchTodoTask();' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);' onclick='clearCondition();'>重置</a></form>"
 						},
 						"bStateSave" : false,
@@ -115,9 +115,9 @@ var pagefunction = function() {
 							//调整页面布局
 							$("#datatable_col_reorder_length").css("padding-right","10px");
 							$(".dt-toolbar").css("padding-bottom","6px");
-							$("#datatable_col_reorder_filter").css("width","1000px");
-							$("[type='search']").css("width","15%");
-							 
+							$("#datatable_col_reorder_filter").css("width","1200px");
+							$("[type='search']").attr("placeholder","主题");
+							$("[type='search']").css("width","10%");
 							pageSetUp();		
 						}
 
@@ -129,6 +129,8 @@ var pagefunction = function() {
 		$("#TASKSTATE_SEARCH").val("2");
 		$("#createtime_end_dateselect_filter").val("");
 		$("#createtime_start_dateselect_filter").val("");
+		var baseUrl = "/foxbpm-webapps-common/service/runtime/process-instances?participate=participate&";
+		runningTrackTable.ajax.url(baseUrl).load();
 	};
      searchTodoTask = function() {
     	var baseUrl = "/foxbpm-webapps-common/service/runtime/process-instances?participate=participate&";
@@ -138,7 +140,7 @@ var pagefunction = function() {
     	if(subjectLike != ""){
     		baseUrl = baseUrl + "&subjectLike="+ subjectLike;
     	}
-     	var initiator = $("#INITIATOR_SEARCH").val();
+     	var initiator = $("#TASK_INITIATOR").val();
      	if(initiator != ""){
      		baseUrl = baseUrl + "&initiator="+ initiator;
      	}

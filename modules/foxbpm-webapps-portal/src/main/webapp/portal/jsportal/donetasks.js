@@ -10,7 +10,7 @@ var pagefunction = function() {
 							data : 'priority'
 						}, {
 							data : 'createTime'
-						},  { data: 'dueDate' },
+						},  { data: 'createTime' },
 				        { data: 'endTime' },
 						{
 							data : 'processInitiator'
@@ -60,18 +60,7 @@ var pagefunction = function() {
 															"<span class='badge bg-color-red'>高</span>");
 										}
 									}
-								},
-								{
-									"targets" : [ 4 ],
-									"orderable" : true,
-									"createdCell" : function(td, cellData,
-											rowData, row, col) {
-										if(cellData != ""){
-											$(td).html("<img width='20' height='20' class='online' src='/foxbpm-webapps-common/service/identity/users/"+cellData+"/picture'/> ("+cellData+")");
-											
-										}
-									}
-								} 
+								}
 								],
 
 						"processing" : true,
@@ -88,7 +77,7 @@ var pagefunction = function() {
 								 "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p l>>",
 						"autoWidth" : true,
 						"colVis": {
-				            "buttonText": "选择列",
+				            "buttonText": "选择展示的列",
 				            "restore": "恢复默认展示",
 				            "showAll": "展示所有列",
 				            "showNone": "不展示列"
@@ -106,17 +95,17 @@ var pagefunction = function() {
 		                        "sNext": "下一页",
 		                        "sLast": "末页"
 		                    },
-		                    "sSearch": "<form>主题：_INPUT_ 发起人：<input id='INITIATOR_SEARCH' type='text' class='form-control' value=''  style='width:8%' />" +
-                    		"创建：<input id='createtime_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:8%'>" +
-                    		"<label for='createtime_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-63%;top:-5px'></label>" +
+		                    "sSearch": "_INPUT_ <input placeholder='发起人' id='TASK_INITIATOR' type='text' class='form-control' style='width:6%'>"+
+                    		"&nbsp;&nbsp;<input placeholder='创建起始'id='createtime_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:11%'>" +
+                    		"<label for='createtime_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-73.5%;top:-5px'></label>" +
                     		" - " +
-                    		"<input id='createtime_end_dateselect_filter' type='text' value='' class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:8%'>"+
-                    		"<label for='createtime_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-53%;top:-5px'></label> " +
-                    		"完成：<input id='complete_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:8%'>"+
-                    		"<label for='complete_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-40.3%;top:-5px'></label>" +
+                    		"<input placeholder='创建终止' id='createtime_end_dateselect_filter' type='text' value='' class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:11%'>"+
+                    		"<label for='createtime_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-60.5%;top:-5px'></label> " +
+                    		"&nbsp;&nbsp;<input placeholder='完成起始' id='complete_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:11%'>"+
+                    		"<label for='complete_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-47.5%;top:-5px'></label>" +
                     		" - "+
-                    		"<input id='complete_end_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:8%'>"+
-                    		"<label for='complete_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-30.2%;top:-5px'></label>"+
+                    		"<input placeholder='完成终止' id='complete_end_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:11%'>"+
+                    		"<label for='complete_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-34.5%;top:-5px'></label>"+
                     		"&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' onclick='searchTodoTask();' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);' onclick='clearCondition();'>重置</a></div></form>"
 
 				        },
@@ -127,9 +116,9 @@ var pagefunction = function() {
 							//调整页面布局
 							$("#datatable_col_reorder_length").css("padding-right","10px");
 							$(".dt-toolbar").css("padding-bottom","6px");
-
 							$("#datatable_col_reorder_filter").css("width","1200px");
-							$("[type='search']").css("width","10%");
+							$("[type='search']").attr("placeholder","主题");
+							$("[type='search']").css("width","9%");
 							pageSetUp();	
 							
 						}
@@ -144,6 +133,8 @@ var pagefunction = function() {
 			$("#createtime_start_dateselect_filter").val("");
 			$("#complete_start_dateselect_filter").val("");
 			$("#complete_end_dateselect_filter").val("");
+			var baseUrl = "/foxbpm-webapps-common/service/tasks?";
+			 doneTable.ajax.url(baseUrl).load();
 		};
 	     searchTodoTask = function() {
 	    	var baseUrl = "/foxbpm-webapps-common/service/tasks?";
@@ -152,7 +143,7 @@ var pagefunction = function() {
 	    	if(subjectLike != ""){
 	    		baseUrl = baseUrl + "&subjectLike="+ subjectLike;
 	    	}
-	     	var initiator = $("#INITIATOR_SEARCH").val();
+	     	var initiator = $("#TASK_INITIATOR").val();
 	     	if(initiator != ""){
 	     		baseUrl = baseUrl + "&initiator="+ initiator;
 	     	}
