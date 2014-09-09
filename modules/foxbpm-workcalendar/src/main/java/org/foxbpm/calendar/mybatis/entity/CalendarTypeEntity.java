@@ -19,9 +19,15 @@ package org.foxbpm.calendar.mybatis.entity;
 
 
 public class CalendarTypeEntity{
-
 	private String id;
 	private String name;
+	
+	public CalendarTypeEntity() {
+	}
+	
+	public CalendarTypeEntity(String id) {
+		this.id = id;
+	}
 	
 	public String getId() {
 		return id;

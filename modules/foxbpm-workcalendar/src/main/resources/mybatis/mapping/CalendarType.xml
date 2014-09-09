@@ -44,4 +44,23 @@
 			</if>
 		</where>
 	</select>
+	
+	<insert id="insertCalendarType" parameterType="org.foxbpm.calendar.mybatis.entity.CalendarTypeEntity">
+	   INSERT INTO WORKCAL_TYPE (ID, NAME
+		)
+		values (#{id,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="updateCalendarType" parameterType="org.foxbpm.calendar.mybatis.entity.CalendarTypeEntity">
+	  UPDATE WORKCAL_TYPE
+		SET 
+		 ID=#{id,jdbcType=VARCHAR}
+		 <if test="name != null">
+		 	,NAME = #{userName,jdbcType=VARCHAR} 
+		 </if>
+		 where
+		 ID=#{id,jdbcType=VARCHAR}
+	</update>
 </mapper>

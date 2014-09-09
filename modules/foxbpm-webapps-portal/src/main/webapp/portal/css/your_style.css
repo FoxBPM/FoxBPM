@@ -63,10 +63,10 @@
 }
 
 .superbox-list img:hover {
-	border: 3px solid #dc562e;
+	border: 2px solid #dc562e;
 	text-decoration:none;
 }
 .superbox-list img{
-	border: 3px solid #bbb;
+	border: 2px solid #eee;
 	text-decoration:none;
 }

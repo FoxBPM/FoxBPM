@@ -25,13 +25,15 @@ import org.foxbpm.calendar.mybatis.entity.CalendarTypeEntity;
 
 public interface WorkCalendarService {
 
-	void addCalendarType();
+	void addCalendarType(CalendarTypeEntity calendarTypeEntity);
 	
-	void updateCalendarType();
+	void updateCalendarType(CalendarTypeEntity calendarTypeEntity);
 	
-	void deleteCalendarType();
+	void deleteCalendarType(String id);
 	
-	List<CalendarTypeEntity> getCalendarType(int pageIndex, int pageSize);
+	List<CalendarTypeEntity> getCalendarType(int pageIndex, int pageSize, String idLike, String nameLike);
+	
+	CalendarTypeEntity getCalendarTypeById(String id);
 	
 	Long getCalendarTypeCount(String idLike, String nameLike);
 	
