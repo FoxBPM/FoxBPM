@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.foxbpm.calendar.mybatis.entity.CalendarPartEntity">
+
+	<resultMap id="calendarpartResultMap" type="org.foxbpm.calendar.mybatis.entity.CalendarPartEntity">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="SHIFT" property="amorpm" jdbcType="INTEGER" />
+		<result column="START_TIME" property="starttime" jdbcType="VARCHAR" />
+		<result column="END_TIME" property="endtime" jdbcType="VARCHAR" />
+		<result column="RULE_ID" property="ruleid" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="selectCalendarPartById" parameterType="java.lang.String"
+		resultMap="calendarpartResultMap">
+		select
+		*
+		from workcal_part
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectAllCalendarPart" parameterType="org.foxbpm.engine.impl.db.ListQueryParameterObject"
+		resultMap="calendarpartResultMap">
+		${limitBefore}
+		select ${limitBetween}
+		*
+		from workcal_part
+		${limitAfter}
+	</select>
+	
+	<select id="selectCalendarPartCount" parameterType="java.util.Map"
+		resultType="long">
+		select
+		count(a.id)
+		from workcal_part a
+		<where>
+			<if test=" 1==1">
+				1=1
+			</if>
+			<if test="_parameter.containsKey('id')">
+				AND ID LIKE #{id,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+</mapper>
