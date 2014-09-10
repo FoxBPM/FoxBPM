@@ -43,7 +43,7 @@ public class ExpenseController {
 		response.setContentType("text/html;charset=utf-8");
 		response.getWriter().print(
 				"<script>"
-				+ "if(self.frameElement.tagName=='IFRAME'){"
+				+ "if(self.frameElement != null && self.frameElement.tagName=='IFRAME'){"
 				+ "		window.parent.$.smallBox({" 
 				+ "				title : '提示!',"
 				+ "				content : '保存成功！',"
