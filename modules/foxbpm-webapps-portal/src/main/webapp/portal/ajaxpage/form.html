@@ -1,171 +1,197 @@
 <!DOCTYPE html>
-<html lang="en-us">	
-	<head>
-		<meta charset="utf-8">
-		<title>FoxBPM流程门户</title>
-		<meta name="description" content="">
-		<meta name="author" content="">
-		
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-		<link rel="stylesheet" type="text/css" media="screen" href="../css/your_style.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="../css/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="../css/font-awesome.min.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="../css/smartadmin-production.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="../css/smartadmin-skins.min.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="css/demo.min.css">
+<html lang="en-us">
+<head>
+<meta charset="utf-8">
+<title>FoxBPM流程门户</title>
+<meta name="description" content="">
+<meta name="author" content="">
 
-		<link rel="shortcut icon" href="img/favicon/favicon.ico" type="image/x-icon">
-		<link rel="icon" href="img/favicon/favicon.ico" type="image/x-icon">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="stylesheet" type="text/css" media="screen"
+	href="../css/your_style.css">
+<link rel="stylesheet" type="text/css" media="screen"
+	href="../css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" media="screen"
+	href="../css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" media="screen"
+	href="../css/smartadmin-production.css">
+<link rel="stylesheet" type="text/css" media="screen"
+	href="../css/smartadmin-skins.min.css">
+<link rel="stylesheet" type="text/css" media="screen"
+	href="css/demo.min.css">
 
-		<link rel="apple-touch-icon" href="img/splash/sptouch-icon-iphone.png">
-		<link rel="apple-touch-icon" sizes="76x76" href="img/splash/touch-icon-ipad.png">
-		<link rel="apple-touch-icon" sizes="120x120" href="img/splash/touch-icon-iphone-retina.png">
-		<link rel="apple-touch-icon" sizes="152x152" href="img/splash/touch-icon-ipad-retina.png">
-		
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		
-		<!-- Startup image for web apps -->
-		<link rel="apple-touch-startup-image" href="img/splash/ipad-landscape.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
-		<link rel="apple-touch-startup-image" href="img/splash/ipad-portrait.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
-		<link rel="apple-touch-startup-image" href="img/splash/iphone.png" media="screen and (max-device-width: 320px)">
-		<script src="../js/libs/jquery-2.0.2.min.js"></script>
-		<script src="../js/plugin/jquery-form/jquery-form.min.js"></script>
-		<script>
-			if (!window.jQuery) {
-				document.write('<script src="../js/libs/jquery-2.0.2.min.js"><\/script>');
-			}
-		</script>
+<link rel="shortcut icon" href="img/favicon/favicon.ico"
+	type="image/x-icon">
+<link rel="icon" href="img/favicon/favicon.ico" type="image/x-icon">
 
-		<script src="../js/libs/jquery-ui-1.10.3.min.js"></script>
-		<script>
-			if (!window.jQuery.ui) {
-				document.write('<script src="js/libs/jquery-ui-1.10.3.min.js"><\/script>');
-			}
-		</script>
-		<script src="../js/foxbpm/common.js"></script>
-	</head>
-	
-	<body class="">
+<link rel="apple-touch-icon" href="img/splash/sptouch-icon-iphone.png">
+<link rel="apple-touch-icon" sizes="76x76"
+	href="img/splash/touch-icon-ipad.png">
+<link rel="apple-touch-icon" sizes="120x120"
+	href="img/splash/touch-icon-iphone-retina.png">
+<link rel="apple-touch-icon" sizes="152x152"
+	href="img/splash/touch-icon-ipad-retina.png">
 
-<div class="jarviswidget" id="wid-id-8" data-widget-editbutton="false" data-widget-custombutton="false">
-	<header>
-		<span class="widget-icon"> <i class="fa fa-edit"></i>
-		</span>
-		<h2>报销单据</h2>
-	</header>
-	<!-- widget div-->
-	<div>
-		<div class="jarviswidget-editbox">
-		</div>
-		<div class="widget-body no-padding">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-			<form action="/foxbpm-webapps-common/expenses.action" method="post" id="form1" class="smart-form">
-				<fieldset>
-					<div class="row">
-						<section class="col col-6">
-							<label class="label">单据号</label> <label class="input"> <i
-								class="icon-append fa fa-user"></i> <input type="text"
-								name="expenseId" id="expenseId">
-							</label>
-						</section>
-						<section class="col col-6">
-							<label class="label">申请日期</label> <label class="input">
-								<i class="icon-append fa fa-calendar"></i>
-								<input type="text" name="createTime" id="createTime" class="form-control">
-							</label>
-						</section>
-					</div>
-					
-					<div class="row">
-						<section class="col col-6">
-							<label class="label">报销人</label> <label class="input"> <i
-								class="icon-append fa fa-user"></i> <input type="text" class="form-control"
-								name="owner" id="owner">
-							</label>
-						</section>
-						<section class="col col-6">
-							<label class="label">报销人部门</label> <label class="input">
-								<i class="icon-append fa fa-envelope-o"></i> <input type="email"
-								name="dept" id="dept">
-							</label>
-						</section>
-					</div>
-					
-					<div class="row">
-						<section class="col col-6">
-							<label class="label">报销金额</label> <label class="input"> <i
-								class="icon-append fa fa-user"></i> <input type="text"
-								name="account" id="account">
-							</label>
-						</section>
-						<section class="col col-6">
-							<label class="label">发票类型</label>
-							<label class="select">
-								<select name="invoiceType" id="invoiceType">
-									<option value="0" selected="">餐饮费</option>
-									<option value="1">住宿费</option>
-									<option value="2">车船票</option>
-									<option value="3">市内公交</option>
-									<option value="4">办公用品</option>
-									<option value="5">其他</option>
-								</select> <i></i>
-							</label>
-						</section>
-					</div>
-
-					<section>
-						<label class="label">事由</label> <label class="textarea">
-							<i class="icon-append fa fa-comment"></i> <textarea rows="4"
-								name="reason" id="reason"></textarea>
-						</label>
-					</section>
-
-				</fieldset>
-
-				<footer id="toolbar">
-				</footer>
-				<input type="hidden" name="flowCommandInfo" id="flowCommandInfo">
-
-				<div class="message">
-					<i class="fa fa-thumbs-up"></i>
-					<p>Your message was successfully sent!</p>
-				</div>
-			</form>
-
-		</div>
-	</div>
-</div>
-
-<script type="text/javascript" src="/foxbpm-webapps-common/portal/taskCommand/js/foxbpmframework.js"></script>
-<script type="text/javascript" src="/foxbpm-webapps-common/portal/taskCommand/js/flowCommandCompenent.js"></script>
-<script type="text/javascript" src="/foxbpm-webapps-common/portal/taskCommand/js/flowCommandHandler.js"></script>
-
-
-<script type="text/javascript">
-$(document).ready(function() {
-	var _getBizKey = function() {
-        return $("#expenseId").val();
-    };
-    var _getTaskComment = function() {
-       	return "";
-    };
-    
-    var _flowCommit = function(flowInfo){
-    	if(confirm("确定要提交吗?")){
-    		alert(JSON.stringify(flowInfo));
-    		$("#flowCommandInfo").val(JSON.stringify(flowInfo));
-    		$("#form1").submit();
-    	}
-    	return false;
-    	
-    };
-	var flowconfig ={ getBizKey: _getBizKey, getTaskComment: _getTaskComment,flowCommit:_flowCommit };
-	
-	var flowCommandCompenent = new Foxbpm.FlowCommandCompenent(flowconfig);
-	flowCommandCompenent.init();
-});
-loadScript("../js/plugin/jquery-form/jquery-form.min.js", pagefunction);
+<!-- Startup image for web apps -->
+<link rel="apple-touch-startup-image"
+	href="img/splash/ipad-landscape.png"
+	media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
+<link rel="apple-touch-startup-image"
+	href="img/splash/ipad-portrait.png"
+	media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
+<link rel="apple-touch-startup-image" href="img/splash/iphone.png"
+	media="screen and (max-device-width: 320px)">
+<script src="../js/libs/jquery-2.0.2.min.js"></script>
+<script src="../js/plugin/jquery-form/jquery-form.min.js"></script>
+<script>
+	if (!window.jQuery) {
+		document
+				.write('<script src="../js/libs/jquery-2.0.2.min.js"><\/script>');
+	}
 </script>
 
+<script src="../js/libs/jquery-ui-1.10.3.min.js"></script>
+<script>
+	if (!window.jQuery.ui) {
+		document
+				.write('<script src="js/libs/jquery-ui-1.10.3.min.js"><\/script>');
+	}
+</script>
+<script src="../js/foxbpm/common.js"></script>
+</head>
+
+<body class="">
+
+	<div class="jarviswidget" id="wid-id-8" data-widget-editbutton="false"
+		data-widget-custombutton="false">
+		<header>
+			<span class="widget-icon"> <i class="fa fa-edit"></i>
+			</span>
+			<h2>报销单据</h2>
+		</header>
+		<!-- widget div-->
+		<div>
+			<div class="jarviswidget-editbox"></div>
+			<div class="widget-body no-padding">
+
+				<form action="/foxbpm-webapps-common/expenses.action" method="post"
+					id="form1" class="smart-form">
+					<fieldset>
+						<div class="row">
+							<section class="col col-6">
+								<label class="label">单据号</label> <label class="input"> <i
+									class="icon-append fa fa-user"></i> <input type="text"
+									name="expenseId" id="expenseId">
+								</label>
+							</section>
+							<section class="col col-6">
+								<label class="label">申请日期</label> <label class="input">
+									<i class="icon-append fa fa-calendar"></i> <input type="text"
+									name="createTime" id="createTime" class="form-control">
+								</label>
+							</section>
+						</div>
+
+						<div class="row">
+							<section class="col col-6">
+								<label class="label">报销人</label> <label class="input"> <i
+									class="icon-append fa fa-user"></i> <input type="text"
+									class="form-control" name="owner" id="owner">
+								</label>
+							</section>
+							<section class="col col-6">
+								<label class="label">报销人部门</label> <label class="input">
+									<i class="icon-append fa fa-envelope-o"></i> <input
+									type="email" name="dept" id="dept">
+								</label>
+							</section>
+						</div>
+
+						<div class="row">
+							<section class="col col-6">
+								<label class="label">报销金额</label> <label class="input">
+									<i class="icon-append fa fa-user"></i> <input type="text"
+									name="account" id="account">
+								</label>
+							</section>
+							<section class="col col-6">
+								<label class="label">发票类型</label> <label class="select">
+									<select name="invoiceType" id="invoiceType">
+										<option value="0" selected="">餐饮费</option>
+										<option value="1">住宿费</option>
+										<option value="2">车船票</option>
+										<option value="3">市内公交</option>
+										<option value="4">办公用品</option>
+										<option value="5">其他</option>
+								</select> <i></i>
+								</label>
+							</section>
+						</div>
+
+						<section>
+							<label class="label">事由</label> <label class="textarea">
+								<i class="icon-append fa fa-comment"></i> <textarea rows="4"
+									name="reason" id="reason"></textarea>
+							</label>
+						</section>
+
+					</fieldset>
+
+					<footer id="toolbar"> </footer>
+					<input type="hidden" name="flowCommandInfo" id="flowCommandInfo">
+
+					<div class="message">
+						<i class="fa fa-thumbs-up"></i>
+						<p>Your message was successfully sent!</p>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript"
+		src="/foxbpm-webapps-common/portal/taskCommand/js/foxbpmframework.js"></script>
+	<script type="text/javascript"
+		src="/foxbpm-webapps-common/portal/taskCommand/js/flowCommandCompenent.js"></script>
+	<script type="text/javascript"
+		src="/foxbpm-webapps-common/portal/taskCommand/js/flowCommandHandler.js"></script>
+
+
+	<script type="text/javascript">
+		$(document)
+				.ready(
+						function() {
+							var _getBizKey = function() {
+								return $("#expenseId").val();
+							};
+							var _getTaskComment = function() {
+								return "";
+							};
+
+							var _flowCommit = function(flowInfo) {
+								if (confirm("确定要提交吗?")) {
+									alert(JSON.stringify(flowInfo));
+									$("#flowCommandInfo").val(
+											JSON.stringify(flowInfo));
+									$("#form1").submit();
+								}
+								return false;
+
+							};
+							var flowconfig = {
+								getBizKey : _getBizKey,
+								getTaskComment : _getTaskComment,
+								flowCommit : _flowCommit
+							};
+
+							var flowCommandCompenent = new Foxbpm.FlowCommandCompenent(
+									flowconfig);
+							flowCommandCompenent.init();
+						});
+	</script>
 </body>
