@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class ExpenseController {
@@ -38,7 +39,7 @@ public class ExpenseController {
 
 	@RequestMapping(value = { "/", "/expenses" }, method = RequestMethod.POST)
 	public void applyExpense(HttpServletResponse response, @ModelAttribute ExpenseEntity expenseEntity, @RequestParam String flowCommandInfo) throws IOException {
-		//expenseManager.applyNewExpense(expenseEntity, flowCommandInfo);
+		expenseManager.applyNewExpense(expenseEntity, flowCommandInfo);
 		response.setContentType("text/html;charset=utf-8");
 		response.getWriter().print(
 				"<script>"
@@ -57,5 +58,11 @@ public class ExpenseController {
 				+ "		window.close();"
 				+ "}"
 				+ "</script>");
+	}
+	
+	@RequestMapping(value = { "/", "/findExpense" }, method = RequestMethod.GET)
+	@ResponseBody
+	public ExpenseEntity getExpenseById(@RequestParam String expenseId){
+		return expenseManager.selectExpenseById(expenseId);
 	}
 }

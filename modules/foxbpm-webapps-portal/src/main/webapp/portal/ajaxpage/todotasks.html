@@ -23,7 +23,7 @@
 				-->
 				<header>
 					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-					<h2>待办任务列表 </h2>
+					<h2><a id="showModial">待办任务列表 </a></h2>
 
 				</header>
 
@@ -70,6 +70,12 @@
 
 	</div>
 
+	<div class="modal fade " id="remoteModal" tabindex="-1" role="dialog" aria-labelledby="remoteModalLabel" aria-hidden="true">  
+	    <div class="modal-dialog" style="width:800px">  
+	      	<iframe id="contentFrame" class="col-sm-10 col-md-12 col-lg-12" style="border:0px; height:500px;"></iframe>
+	    </div>  
+	</div>  
+
 	<!-- end row -->
 
 	<!-- end row -->
@@ -80,7 +86,6 @@
 <script type="text/javascript">
  
 	pageSetUp();
-	  
 
 	// load related plugins
 	

@@ -144,6 +144,42 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
+	
+	var expenseId = requestUrlParam("dataId");
+	if(expenseId == null || expenseId == undefined || expenseId == ""){
+		$.smallBox({ 
+			title : '提示!',
+			content : '保存成功！',
+			color : '#296191',
+			icon : 'fa fa-bell swing animated',
+			timeout : 2000
+		});
+	}
+	$.ajax({
+        type: "get",//使用get方法访问后台
+        dataType: "json",//返回json格式的数据
+        url: "../../findExpense.action",//要访问的后台地址
+        data:{expenseId:expenseId},
+        success: function(msg){//msg为返回的数据，在这里做数据绑定
+        	$("#expenseId").val(msg.expenseId);
+        	$("#owner").val(msg.owner);
+        	$("#account").val(msg.account);
+        	$("#dept").val(msg.dept);
+        	$("#reason").val(msg.reason);
+        	$("#invoiceType").val(msg.invoiceType);
+        	$("#createTime").val(msg.createTime);
+        },
+        error:function(msg){
+        	$.smallBox({
+				title : '提示!',
+				content : '保存成功！',
+				color : '#296191',
+				icon : 'fa fa-bell swing animated',
+				timeout : 2000
+			});
+        }
+	});
+	
 	var _getBizKey = function() {
         return $("#expenseId").val();
     };
@@ -165,7 +201,6 @@ $(document).ready(function() {
 	var flowCommandCompenent = new Foxbpm.FlowCommandCompenent(flowconfig);
 	flowCommandCompenent.init();
 });
-loadScript("../js/plugin/jquery-form/jquery-form.min.js", pagefunction);
 </script>
 
 </body>

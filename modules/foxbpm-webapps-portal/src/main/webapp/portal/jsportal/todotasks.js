@@ -4,7 +4,10 @@ var pagefunction = function() {
 			tablet : 1024,
 			phone : 480
 		};
-
+	$("#showModial").click(function(){
+		$("#contentFrame").attr("src","ajaxpage/editform.html?dataId=22sds23&taskId=71c1edf8-da41-4eb6-8888-a7e7da4ff8c4&processInstanceId=76b5fc75-1448-46c1-b919-4ee23ee7006b");
+		$('#remoteModal').modal('show');
+	});
 	var todoTable = $('#datatable_fixed_column')
 			.DataTable(
 					{

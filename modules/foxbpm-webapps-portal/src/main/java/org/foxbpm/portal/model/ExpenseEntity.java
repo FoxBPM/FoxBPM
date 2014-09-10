@@ -17,7 +17,6 @@
  */
 package org.foxbpm.portal.model;
 
-import java.util.Date;
 
 /**
  * 报销单 业务实体
@@ -59,7 +58,7 @@ public class ExpenseEntity {
 	/**
 	 * 创建时间
 	 */
-	private Date createTime;
+	private String createTime;
 
 	public String getExpenseId() {
 		return expenseId;
@@ -109,11 +108,11 @@ public class ExpenseEntity {
 		this.reason = reason;
 	}
 
-	public Date getCreateTime() {
+	public String getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(Date createTime) {
+	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
 	}
 

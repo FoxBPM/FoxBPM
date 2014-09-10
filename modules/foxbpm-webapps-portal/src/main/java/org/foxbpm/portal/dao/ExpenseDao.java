@@ -17,22 +17,46 @@
  */
 package org.foxbpm.portal.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.foxbpm.portal.model.ExpenseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ExpenseDao {
 
-	
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 	public void saveExpenseEntity(ExpenseEntity expenseEntity){
-		System.out.println("保存");
+		String sqlInsert = "insert into tb_expense(id,owner,dept,account,invoiceType,reason,create_Time) values(?,?,?,?,?,?,?)";
+		jdbcTemplate.update(sqlInsert,expenseEntity.getExpenseId(),expenseEntity.getOwner(),expenseEntity.getDept(),expenseEntity.getAccount(),expenseEntity.getInvoiceType(),expenseEntity.getReason(),expenseEntity.getCreateTime());
 	}
 	
 	
 	public ExpenseEntity selectExpenseById(String entityId){
-		
+		String sqlSel = "select * from tb_expense where id=?";
+		List<ExpenseEntity> resultList = jdbcTemplate.query(sqlSel, new Object[]{entityId}, new RowMapper<ExpenseEntity>(){
+			@Override
+			public ExpenseEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
+				ExpenseEntity expenseEntity = new ExpenseEntity();
+				expenseEntity.setExpenseId(rs.getString("id"));
+				expenseEntity.setOwner(rs.getString("owner"));
+				expenseEntity.setAccount(rs.getDouble("account"));
+				expenseEntity.setCreateTime(rs.getString("create_time"));
+				expenseEntity.setReason(rs.getString("reason"));
+				expenseEntity.setDept(rs.getString("dept"));
+				expenseEntity.setInvoiceType(rs.getString("invoiceType"));
+				return expenseEntity;
+			}
+		});
+		if(resultList != null && resultList.size() >0){
+			return resultList.get(0);
+		}
 		return null;
 	}
 	

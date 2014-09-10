@@ -49,7 +49,7 @@ public class ExpenseManager {
 		return null;
 	}
 	
-	public Map<String,Object> selectExpenseById(String expenseId){
-		return null;
+	public ExpenseEntity selectExpenseById(String expenseId){
+		return expenseDao.selectExpenseById(expenseId);
 	}
 }
