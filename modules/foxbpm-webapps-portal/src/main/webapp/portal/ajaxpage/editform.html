@@ -147,15 +147,25 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	
+	$("#closeModal").click(function(){
+		if(self.frameElement != null && self.frameElement.tagName=='IFRAME'){
+			window.parent.$('#remoteModal').modal('hide');
+		}else{
+			window.close();
+		}
+	});
+	
+	
 	var expenseId = requestUrlParam("dataId");
 	if(expenseId == null || expenseId == undefined || expenseId == ""){
 		$.smallBox({ 
 			title : '错误!',
 			content : '单据号为空！',
-			color : '#296191',
-			icon : 'fa fa-bell swing animated',
+			color : "#C46A69",
+			icon : "fa fa-warning shake animated",
 			timeout : 2000
 		});
+		return;
 	}
 	$.ajax({
         type: "get",//使用get方法访问后台
@@ -175,19 +185,11 @@ $(document).ready(function() {
         	$.smallBox({
 				title : '提示!',
 				content : '系统错误，请联系管理员！',
-				color : '#296191',
-				icon : 'fa fa-bell swing animated',
+				color : "#C46A69",
+				icon : "fa fa-warning shake animated",
 				timeout : 2000
 			});
         }
-	});
-	
-	$("#closeModal").click(function(){
-		if(self.frameElement.tagName=='IFRAME'){
-			window.parent.$('#remoteModal').modal('hide');
-		}else{
-			window.close();
-		}
 	});
 	
 	var _getBizKey = function() {
