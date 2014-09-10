@@ -29,7 +29,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.ServiceLoader;
 
 import javax.sql.DataSource;
 
@@ -46,6 +45,7 @@ import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
 import org.foxbpm.engine.exception.FoxBPMDbException;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.interceptor.Session;
+import org.foxbpm.engine.impl.util.ServiceLoader;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 import org.slf4j.Logger;

@@ -546,7 +546,7 @@ public class BpmnModelUtil {
 	
 	
 	public static BaseElement findElement(String id,EObject eObject) {
-		if (id == null || id.isEmpty())
+		if (id == null || StringUtil.isEmpty(id))
 			return null;
 
 		List<BaseElement> baseElements = getAll(BaseElement.class,eObject);
@@ -563,7 +563,7 @@ public class BpmnModelUtil {
 
 	@SuppressWarnings("unchecked")
 	public static <T> T findElement(String id,EObject eObject,Class<T> class1) {
-		if (id == null || id.isEmpty())
+		if (id == null || StringUtil.isEmpty(id))
 			return null;
 
 		List<BaseElement> baseElements = getAll(BaseElement.class,eObject);
