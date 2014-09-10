@@ -62,7 +62,9 @@ public class ProcessDefinitionCollectionResouce extends AbstractRestResource {
 		List<ProcessDefinition> processDefinitions = processDefinitionQuery.list();
 		List<Map<String,Object>> results = new ArrayList<Map<String,Object>>();
 		for (ProcessDefinition process : processDefinitions) {
-			results.add(process.getPersistentState());
+			Map<String,Object> processAttrMap = process.getPersistentState();
+			processAttrMap.put("description", process.getDescription());
+			results.add(processAttrMap);
 		}
 		DataResult result = new DataResult();
 		result.setData(results);
