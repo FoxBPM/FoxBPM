@@ -12,7 +12,7 @@
 		<link rel="stylesheet" type="text/css" media="screen" href="../css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" media="screen" href="../css/smartadmin-production.css">
 		<link rel="stylesheet" type="text/css" media="screen" href="../css/smartadmin-skins.min.css">
-		<link rel="stylesheet" type="text/css" media="screen" href="css/demo.min.css">
+		<link rel="stylesheet" type="text/css" media="screen" href="../css/demo.min.css">
 
 		<link rel="shortcut icon" href="img/favicon/favicon.ico" type="image/x-icon">
 		<link rel="icon" href="img/favicon/favicon.ico" type="image/x-icon">
@@ -31,6 +31,7 @@
 		<link rel="apple-touch-startup-image" href="img/splash/iphone.png" media="screen and (max-device-width: 320px)">
 		<script src="../js/libs/jquery-2.0.2.min.js"></script>
 		<script src="../js/plugin/jquery-form/jquery-form.min.js"></script>
+		<script src="../js/notification/SmartNotification.min.js"></script>
 		<script>
 			if (!window.jQuery) {
 				document.write('<script src="../js/libs/jquery-2.0.2.min.js"><\/script>');
@@ -124,6 +125,7 @@
 				</fieldset>
 
 				<footer id="toolbar">
+				<button type='button' id="closeModal" class='btn btn-primary'>关闭</button>
 				</footer>
 				<input type="hidden" name="flowCommandInfo" id="flowCommandInfo">
 
@@ -148,8 +150,8 @@ $(document).ready(function() {
 	var expenseId = requestUrlParam("dataId");
 	if(expenseId == null || expenseId == undefined || expenseId == ""){
 		$.smallBox({ 
-			title : '提示!',
-			content : '保存成功！',
+			title : '错误!',
+			content : '单据号为空！',
 			color : '#296191',
 			icon : 'fa fa-bell swing animated',
 			timeout : 2000
@@ -172,12 +174,20 @@ $(document).ready(function() {
         error:function(msg){
         	$.smallBox({
 				title : '提示!',
-				content : '保存成功！',
+				content : '系统错误，请联系管理员！',
 				color : '#296191',
 				icon : 'fa fa-bell swing animated',
 				timeout : 2000
 			});
         }
+	});
+	
+	$("#closeModal").click(function(){
+		if(self.frameElement.tagName=='IFRAME'){
+			window.parent.$('#remoteModal').modal('hide');
+		}else{
+			window.close();
+		}
 	});
 	
 	var _getBizKey = function() {
