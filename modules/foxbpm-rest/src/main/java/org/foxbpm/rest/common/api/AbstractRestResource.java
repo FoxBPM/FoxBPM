@@ -48,8 +48,8 @@ import org.restlet.resource.ServerResource;
  */
 public abstract class AbstractRestResource extends ServerResource {
 	
-	protected int pageIndex = 1;
-	protected int pageSize = 15;
+	protected int pageIndex = -1;
+	protected int pageSize = -1;
 	protected String userId;
 	
 	protected String getQueryParameter(String name, Form query) {
@@ -118,7 +118,12 @@ public abstract class AbstractRestResource extends ServerResource {
 			pageSize = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_SIZE, queryForm));
 		}
 		
-		List<PersistentObject> resultObjects = query.listPagination(pageIndex, pageSize);
+		List<PersistentObject> resultObjects = null;
+		if(pageIndex == -1){
+			resultObjects = query.list();
+		}else{
+			resultObjects = query.listPagination(pageIndex, pageSize);
+		}
 		List<Map<String, Object>> dataMap = new ArrayList<Map<String, Object>>();
 		if (resultObjects != null) {
 			Iterator<PersistentObject> iterator = resultObjects.iterator();

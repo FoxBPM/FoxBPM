@@ -1,13 +1,18 @@
+function showForm(dataId,taskId,processInstanceId){
+	var formUrl = "ajaxpage/editform.html?dataId="+dataId+"&taskId="+taskId+"&processInstanceId="+processInstanceId;
+	$("#contentFrame").attr("src",formUrl);
+	$('#remoteModal').modal({backdrop:"static"});
+}
+function showDiagram(processDefinitionKey,processInstanceId){ 
+	window.open("taskCommand/showTaskDetailInfor.html?processDefinitionKey="+processDefinitionKey+"&processInstanceId="+processInstanceId);
+}
 var pagefunction = function() {
 	var responsiveHelper_datatable_fixed_column = undefined;
 	var breakpointDefinition = {
 			tablet : 1024,
 			phone : 480
 		};
-	$("#showModial").click(function(){
-		$("#contentFrame").attr("src","ajaxpage/editform.html?dataId=22sds23&taskId=71c1edf8-da41-4eb6-8888-a7e7da4ff8c4&processInstanceId=76b5fc75-1448-46c1-b919-4ee23ee7006b");
-		$('#remoteModal').modal('show');
-	});
+	
 	var todoTable = $('#datatable_fixed_column')
 			.DataTable(
 					{
@@ -27,15 +32,9 @@ var pagefunction = function() {
 							data : 'createTime'
 						}, {
 							"orderable" : false,
-							"data" : null,
-							"defaultContent" : ""// <a
-													// href='javascript:void(0);'
-													// class='btn
-													// btn-danger'>删除</a> <a
-													// href='javascript:void(0);'
-													// class='btn
-													// btn-success'>处理</a>
-						} ],
+							"data" : 'bizKey',
+							"defaultContent" : ""
+						}],
 						columnDefs : [
 								{
 									"targets" : [ 0 ],
@@ -103,16 +102,16 @@ var pagefunction = function() {
 									"targets" : [ 7 ],
 									"orderable" : true,
 									"createdCell" : function(td, cellData,
-											rowData, row, col) {
-										
-										$(td).html("<a class='btn btn-default btn-xs' href='javascript:void(0);'><i class='fa fa-pencil-square-o'></i> 表单</a>"+
-												"    <a class='btn btn-default btn-xs' href='javascript:void(0);'><i class='fa fa-sitemap'></i> 流程图</a>");
+											rowData, row, col) { 
+										var tdHtml = "<a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=showForm('"+cellData+"','"+rowData.id+"','"+rowData.processInstanceId+"');><i class='fa fa-pencil-square-o'></i> 表单</a>"+
+										"    <a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=showDiagram('"+rowData.processDefinitionKey+"','"+rowData.processInstanceId+"');><i class='fa fa-sitemap'></i> 流程图</a>";
+										$(td).html(tdHtml);
 									
 										
 										
 
 									}
-								} 
+								}
 								],
 
 						"processing" : true,
@@ -122,7 +121,6 @@ var pagefunction = function() {
 						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'>C>"+
 								 "t"+
 								 "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p  l >>",
-						"autoWidth" : true,
 						"colVis": {
 				            "buttonText": "选择展示的列",
 				            "restore": "恢复默认展示",
@@ -163,11 +161,11 @@ var pagefunction = function() {
 				        "sPaginationType":'full_numbers',
 				        "preDrawCallback" : function() {
 							if (!responsiveHelper_datatable_fixed_column) {
-								responsiveHelper_datatable_fixed_column = new ResponsiveDatatablesHelper($('#datatable_fixed_column'), breakpointDefinition);
+								//responsiveHelper_datatable_fixed_column = new ResponsiveDatatablesHelper($('#datatable_fixed_column'), breakpointDefinition);
 							}
 						},
 						"rowCallback" : function(nRow) {
-							responsiveHelper_datatable_fixed_column.createExpandIcon(nRow);
+							//responsiveHelper_datatable_fixed_column.createExpandIcon(nRow);
 						},
 						"drawCallback" : function(oSettings) {
 							responsiveHelper_datatable_fixed_column.respond();

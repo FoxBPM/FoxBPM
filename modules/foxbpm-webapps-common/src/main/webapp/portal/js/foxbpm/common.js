@@ -3,12 +3,13 @@
  */
 
 var _appName = "/foxbpm-webapps-common/";
+var _serviceUrl = "/foxbpm-webapps-common/service/";
 var _userId = "";
 $.ajax({
 	type : "get", 
 	dataType : "json", 
 	async:false, 
-	url : "/foxbpm-webapps-common/service/getLoginState", 
+	url : _serviceUrl + "getLoginState", 
 	success:function(response){
 		_userId = response.userId;
 	},

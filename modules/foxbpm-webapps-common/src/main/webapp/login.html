@@ -71,7 +71,7 @@
 
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-7 col-lg-8 hidden-xs hidden-sm">
-						<h1 class="txt-color-red login-header-big">Fox BPM 流程门户</h1>
+						<h1 class="txt-color-red login-header-big" id="targetHeader">Fox BPM 流程门户</h1>
 						<div class="hero">
 
 							<div class="pull-left login-desc-box-l">
@@ -136,6 +136,8 @@
 									<button type="submit" class="btn btn-primary">
 										登录
 									</button>
+									
+									<input type="hidden" id="target" name="target" value="0" />
 								</footer>
 							</form>
 
@@ -145,13 +147,13 @@
 															
 							<ul class="list-inline text-center">
 								<li>
-									<a href="javascript:void(0);" class="btn btn-primary btn-circle"><i class="fa fa-facebook"></i></a>
+									<a href="javascript:void(0);" onclick="selectTarget(0);" class="btn btn-primary btn-circle"><i class="fa fa-facebook"></i></a>
 								</li>
 								<li>
-									<a href="javascript:void(0);" class="btn btn-info btn-circle"><i class="fa fa-twitter"></i></a>
+									<a href="javascript:void(0);" onclick="selectTarget(1);" class="btn btn-info btn-circle"><i class="fa fa-twitter"></i></a>
 								</li>
 								<li>
-									<a href="javascript:void(0);" class="btn btn-warning btn-circle"><i class="fa fa-linkedin"></i></a>
+									<a href="javascript:void(0);" onclick="selectTarget(2);" class="btn btn-warning btn-circle"><i class="fa fa-linkedin"></i></a>
 								</li>
 							</ul>
 						
@@ -199,26 +201,34 @@
 			$(function() {
 				// Validation
 				$("#login-form").validate({
-					// Rules for form validation
 					rules : {
 						password : {
 							required : true
 						}
 					},
 
-					// Messages for form validation
 					messages : {
 						password : {
 							required : 'Please enter your password'
 						}
 					},
 
-					// Do not change code below
 					errorPlacement : function(error, element) {
 						error.insertAfter(element.parent());
 					}
 				});
 			});
+			
+			function selectTarget(target){
+				if(target == "0"){
+					$("#targetHeader").html("Fox BPM 流程门户");
+				}else if(target == "1"){
+					$("#targetHeader").html("Fox BPM 流程管理中心");
+				}else if(target == "2"){
+					$("#targetHeader").html("Fox BPM 流程治理中心");
+				}
+				$("#target").val(target);
+			}
 		</script>
 
 	</body>

@@ -10,6 +10,7 @@ import org.foxbpm.engine.impl.entity.DeploymentEntity;
 import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
+import org.foxbpm.engine.impl.entity.ProcessOperatingEntity;
 import org.foxbpm.engine.impl.entity.ResourceEntity;
 import org.foxbpm.engine.impl.entity.RunningTrackEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
@@ -35,6 +36,10 @@ public class StatementMap {
 		insertStatements.put(AgentEntity.class, "insertAgent");
 		insertStatements.put(AgentDetailsEntity.class, "insertAgentDetails");
 		insertStatements.put(RunningTrackEntity.class, "insertRunningTrack");
+		insertStatements.put(ProcessOperatingEntity.class, "insertProcessOperating");
+		
+		
+		
 		
 		updateStatements.put(ProcessInstanceEntity.class, "updateProcessInstance");
 		updateStatements.put(TaskEntity.class, "updateTask");
@@ -45,6 +50,7 @@ public class StatementMap {
 		updateStatements.put(VariableInstanceEntity.class, "updateVariable");
 		updateStatements.put(AgentEntity.class, "updateAgentEntity");
 		updateStatements.put(AgentDetailsEntity.class, "updateAgentDetailsEntity");
+		updateStatements.put(ProcessOperatingEntity.class, "updateProcessOperatingById");
 		
 		selectStatements.put(ProcessInstanceEntity.class, "selectProcessInstanceById");
 		selectStatements.put(TaskEntity.class, "selectTaskById");
@@ -55,6 +61,7 @@ public class StatementMap {
 		selectStatements.put(IdentityLinkEntity.class, "selectIdentityLinkById");
 		selectStatements.put(VariableInstanceEntity.class, "selectVariableById");
 		selectStatements.put(RunningTrackEntity.class, "selectRunningTrackByInstanceId");
+		selectStatements.put(ProcessOperatingEntity.class, "selectProcessOperatingById");
 		
 	}
 	public static String getInsertStatement(PersistentObject object) {

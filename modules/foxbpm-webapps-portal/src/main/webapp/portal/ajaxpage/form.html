@@ -141,7 +141,9 @@
 
 					</fieldset>
 
-					<footer id="toolbar"> </footer>
+					<footer id="toolbar">
+						<button type='button' id="closeModal" class='btn btn-primary'>关闭</button>
+					 </footer>
 					<input type="hidden" name="flowCommandInfo" id="flowCommandInfo">
 
 					<div class="message">
@@ -163,35 +165,40 @@
 
 
 	<script type="text/javascript">
-		$(document)
-				.ready(
-						function() {
-							var _getBizKey = function() {
-								return $("#expenseId").val();
-							};
-							var _getTaskComment = function() {
-								return "";
-							};
+		$(document).ready(function() {
+			$("#closeModal").click(function(){
+				if(self.frameElement != null && self.frameElement.tagName=='IFRAME'){
+					window.parent.$('#remoteModal').modal('hide');
+				}else{
+					window.close();
+				}
+			});
+			var _getBizKey = function() {
+				return $("#expenseId").val();
+			};
+			var _getTaskComment = function() {
+				return "";
+			};
 
-							var _flowCommit = function(flowInfo) {
-								if (confirm("确定要提交吗?")) {
-									alert(JSON.stringify(flowInfo));
-									$("#flowCommandInfo").val(
-											JSON.stringify(flowInfo));
-									$("#form1").submit();
-								}
-								return false;
+			var _flowCommit = function(flowInfo) {
+				if (confirm("确定要提交吗?")) {
+					alert(JSON.stringify(flowInfo));
+					$("#flowCommandInfo").val(
+							JSON.stringify(flowInfo));
+					$("#form1").submit();
+				}
+				return false;
 
-							};
-							var flowconfig = {
-								getBizKey : _getBizKey,
-								getTaskComment : _getTaskComment,
-								flowCommit : _flowCommit
-							};
+			};
+			var flowconfig = {
+				getBizKey : _getBizKey,
+				getTaskComment : _getTaskComment,
+				flowCommit : _flowCommit
+			};
 
-							var flowCommandCompenent = new Foxbpm.FlowCommandCompenent(
-									flowconfig);
-							flowCommandCompenent.init();
-						});
+			var flowCommandCompenent = new Foxbpm.FlowCommandCompenent(
+					flowconfig);
+			flowCommandCompenent.init();
+		});
 	</script>
 </body>

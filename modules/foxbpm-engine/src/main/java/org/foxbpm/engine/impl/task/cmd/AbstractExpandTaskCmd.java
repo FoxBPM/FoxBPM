@@ -25,6 +25,7 @@ import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
 import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.entity.ProcessOperatingEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.Command;
@@ -34,6 +35,7 @@ import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.task.command.AbstractCustomExpandTaskCommand;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.ClockUtil;
+import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
@@ -131,7 +133,24 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 		task.setProcessInstanceTransientVariables(transientVariables);
 		//增加流程更新时间功能，by ych 
 		task.getProcessInstance().setUpdateTime(ClockUtil.getCurrentTime());
+		//对所有操作插入操作
+		createProcessOperating(task,getTaskCommand(task),taskComment);
+		
 		return execute(commandContext, task);
+	}
+	
+	protected void createProcessOperating(TaskEntity task,TaskCommand taskCommand,String taskComment){
+		
+		ProcessOperatingEntity processOperating=new ProcessOperatingEntity();
+		processOperating.setId(GuidUtil.CreateGuid());
+		processOperating.setOperatingTime(ClockUtil.getCurrentTime());
+		processOperating.setTask(task);
+		processOperating.setTaskCommand(taskCommand);
+		processOperating.setOperatingComment(taskComment);
+		
+		
+		/** 插入流程操作 */
+		Context.getCommandContext().getProcessOperatingManager().insert(processOperating);
 	}
 
 	/** 子类需要实现这个方法 */
