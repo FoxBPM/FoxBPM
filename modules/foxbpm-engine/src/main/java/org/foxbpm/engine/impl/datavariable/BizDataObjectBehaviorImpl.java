@@ -76,7 +76,7 @@ public class BizDataObjectBehaviorImpl implements BizDataObjectBehavior {
 				rs = jdbcTemplate.queryForRowSet(TABLE_INFOR, new Object[]{catalog});
 			} else if (ORACLE_TYPE.equalsIgnoreCase(databaseType)) {
 				isOracle = true;
-				StringBuffer sql = new StringBuffer("select t_col.DATA_TYPE,t_col.TABLE_NAME,t_col.COLUMN_NAME,t_des.comments as TABLE_COMMENT,c_des.comments as COLUMN_COMMENT from user_tab_columns t_col,user_col_comments c_des,user_tab_comments t_des ").append("where t_col.table_name = c_des.table_name and t_col.table_name = t_des.table_name order by t_col.table_name");
+				StringBuffer sql = new StringBuffer("select distinct t_col.DATA_TYPE,t_col.TABLE_NAME,t_col.COLUMN_NAME,t_des.comments as TABLE_COMMENT,c_des.comments as COLUMN_COMMENT from user_tab_columns t_col,user_col_comments c_des,user_tab_comments t_des ").append("where t_col.table_name = c_des.table_name and t_col.table_name = t_des.table_name order by t_col.table_name");
 				rs = jdbcTemplate.queryForRowSet(sql.toString());
 			}
 			
