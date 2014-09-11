@@ -78,6 +78,13 @@
 
 </div>
 
+<div class="modal fade " id="remoteModal" tabindex="-1" role="dialog" aria-labelledby="remoteModalLabel" aria-hidden="true">  
+    <div class="modal-dialog" style="width:800px">  
+      	<iframe id="contentFrame" class="col-sm-10 col-md-12 col-lg-12" style="border:0px; height:500px;"></iframe>
+    </div>  
+</div>   
+
+	
 <link href='../css/fullcalendar.min.css' rel='stylesheet' /> 
 <link href='../css/fullcalendar.print.css' rel='stylesheet' media='print' />
 
@@ -121,7 +128,12 @@
 	        	$(".fc-toolbar").css("margin-bottom","0px");
 	        	 
 			},
-			 
+			eventMouseover:function( event, jsEvent, view ) { 
+				//alert(event.title);
+			},
+			eventClick:function( event, jsEvent, view ) {
+				showFormByUrl(event.id);
+			},
 	        drop: function (date, allDay) { // this function is called when something is dropped
 	
 	            // retrieve the dropped element's stored Event Object
@@ -184,6 +196,7 @@
 		                        title: doc.data[i].subject,
 		                        start: doc.data[i].createTime, 
 		                        className: taskColor,
+		                        id:_formUrl+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId,
 		                    });
 		                }
 		                callback(events);
