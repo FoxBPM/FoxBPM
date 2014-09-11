@@ -194,12 +194,11 @@ var pagefunction = function() {
 		$("#duration_start_dateselect_filter").val("");
 		$("#createtime_end_dateselect_filter").val("");
 		$("#duration_end_dateselect_filter").val(""); 
-		$("#createtime_start_dateselect_filter").val("");
-		var baseUrl = "/foxbpm-webapps-common/service/tasks";
-		todoTable.ajax.url(baseUrl).load();
+		$("#createtime_start_dateselect_filter").val(""); 
+		todoTable.ajax.url(_serviceTaskUrl).load();
 	};
      searchTodoTask = function() {
-    	var baseUrl = "/foxbpm-webapps-common/service/tasks?";
+    	var baseUrl = _serviceTaskUrl+"?";
     	var assigneed = $("#TASKSTATE_SEARCH").val();
     	var subjectLike =  $("[type='search']").val();
     	

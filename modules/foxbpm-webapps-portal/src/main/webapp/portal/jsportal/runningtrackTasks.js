@@ -75,7 +75,7 @@ var pagefunction = function() {
 						"processing" : true,
 						"orderable" : true,
 						"serverSide" : true,
-						"ajax" : "/foxbpm-webapps-common/service/runtime/process-instances",
+						"ajax" : _serviceProcessInstanceUrl,
 						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'>C>"
 								+ "t"
 								+ "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p l>>",
@@ -130,11 +130,11 @@ var pagefunction = function() {
 		$("#TASKSTATE_SEARCH").val("2");
 		$("#createtime_end_dateselect_filter").val("");
 		$("#createtime_start_dateselect_filter").val("");
-		var baseUrl = "/foxbpm-webapps-common/service/runtime/process-instances?participate=participate&";
+		var baseUrl = _serviceProcessInstanceUrl+"?participate=participate&";
 		runningTrackTable.ajax.url(baseUrl).load();
 	};
      searchTodoTask = function() {
-    	var baseUrl = "/foxbpm-webapps-common/service/runtime/process-instances?participate=participate&";
+    	var baseUrl = _serviceProcessInstanceUrl+"?participate=participate&";
     	var assigneed = $("#TASKSTATE_SEARCH").val();
     	var subjectLike =  $("[type='search']").val();
     	baseUrl = baseUrl + "assigneed="+assigneed;

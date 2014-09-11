@@ -78,7 +78,7 @@ var pagefunction = function() {
 						"orderable" : true,
 						"serverSide" : true,
 						"ajax": {
-				            "url": "/foxbpm-webapps-common/service/tasks",
+				            "url": _serviceTaskUrl,
 				            "data": function ( d ) {
 				                d.ended = true; 
 				            }
@@ -143,12 +143,11 @@ var pagefunction = function() {
 			$("#createtime_end_dateselect_filter").val("");
 			$("#createtime_start_dateselect_filter").val("");
 			$("#complete_start_dateselect_filter").val("");
-			$("#complete_end_dateselect_filter").val("");
-			var baseUrl = "/foxbpm-webapps-common/service/tasks?";
-			 doneTable.ajax.url(baseUrl).load();
+			$("#complete_end_dateselect_filter").val(""); 
+			 doneTable.ajax.url(_serviceTaskUrl).load();
 		};
 	     searchTodoTask = function() {
-	    	var baseUrl = "/foxbpm-webapps-common/service/tasks?";
+	    	var baseUrl = _serviceTaskUrl+"?";
 	    	var subjectLike =  $("[type='search']").val();
 	    	baseUrl = baseUrl + "ended=true";
 	    	if(subjectLike != ""){
