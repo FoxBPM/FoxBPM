@@ -22,3 +22,12 @@ $.ajax({
 		}
 	}
 });
+
+function showForm(dataId,taskId,processInstanceId){
+	var formUrl = "ajaxpage/editform.html?dataId="+dataId+"&taskId="+taskId+"&processInstanceId="+processInstanceId;
+	$("#contentFrame").attr("src",formUrl);
+	$('#remoteModal').modal({backdrop:"static"});
+}
+function showDiagram(processDefinitionKey,processInstanceId){ 
+	window.open("taskCommand/showTaskDetailInfor.html?processDefinitionKey="+processDefinitionKey+"&processInstanceId="+processInstanceId);
+}
