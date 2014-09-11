@@ -17,6 +17,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 			
 	<!-- 启用spring mvc 注解 --> 
     <context:annotation-config /> 
+    <aop:aspectj-autoproxy/>
     <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" />   
 	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">   
 	    <property name="favorPathExtension" value="false" />  
@@ -34,7 +35,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 			
 	<!-- 使Spring支持自动检测组件，如注解的Controller -->
 	<context:component-scan base-package="org.foxbpm.portal" />
-	<context:component-scan base-package="org.foxbpm.web.controller" />
 	<!-- 完成请求和注解POJO的映射 -->
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
