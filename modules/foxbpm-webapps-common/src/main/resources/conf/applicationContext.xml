@@ -105,6 +105,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 		<tx:attributes>
 			<tx:method name="apply*" propagation="REQUIRED" />
 			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
 		</tx:attributes>
 	</tx:advice>
 	

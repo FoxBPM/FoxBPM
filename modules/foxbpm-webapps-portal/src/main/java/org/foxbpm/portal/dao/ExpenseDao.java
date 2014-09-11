@@ -37,6 +37,11 @@ public class ExpenseDao {
 		jdbcTemplate.update(sqlInsert,expenseEntity.getExpenseId(),expenseEntity.getOwner(),expenseEntity.getDept(),expenseEntity.getAccount(),expenseEntity.getInvoiceType(),expenseEntity.getReason(),expenseEntity.getCreateTime());
 	}
 	
+	public void updateExpenseEntity(ExpenseEntity expenseEntity){
+		String sqlUpdate = "update tb_expense set owner=?,dept=?,account=?,invoiceType=?,reason=?,createTime=? where id=?";
+		jdbcTemplate.update(sqlUpdate,expenseEntity.getOwner(),expenseEntity.getDept(),expenseEntity.getAccount(),expenseEntity.getInvoiceType(),expenseEntity.getReason(),expenseEntity.getCreateTime(),expenseEntity.getExpenseId());
+	}
+	
 	
 	public ExpenseEntity selectExpenseById(String entityId){
 		String sqlSel = "select * from tb_expense where id=?";

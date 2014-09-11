@@ -59,6 +59,30 @@ public class ExpenseController {
 				+ "}"
 				+ "</script>");
 	}
+
+	@RequestMapping(value = { "/", "/updateExpense" }, method = RequestMethod.POST)
+	public void updateExpense(HttpServletResponse response, @ModelAttribute ExpenseEntity expenseEntity, @RequestParam String flowCommandInfo) throws IOException {
+		expenseManager.updateExpense(expenseEntity, flowCommandInfo);
+		response.setContentType("text/html;charset=utf-8");
+		response.getWriter().print(
+				"<script>"
+				+ "if(self.frameElement != null && self.frameElement.tagName=='IFRAME'){"
+				+ "		window.parent.$.smallBox({" 
+				+ "				title : '提示!',"
+				+ "				content : '保存成功！',"
+				+ "				color : '#296191'," 
+				+ "				icon : 'fa fa-bell swing animated',"
+				+"				timeout : 2000"
+				+ "		});"
+				+ "		window.parent.$('#remoteModal').modal('hide');"
+				+ "}"
+				+ "else{"
+				+"		alert('保存成功！');"
+				+ "		window.close();"
+				+ "}"
+				+ "</script>");
+	}
+	
 	
 	@RequestMapping(value = { "/", "/findExpense" }, method = RequestMethod.GET)
 	@ResponseBody
