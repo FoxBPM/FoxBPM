@@ -21,7 +21,7 @@
 		<mapper resource="mybatis/mapping/User.xml" />
 		<mapper resource="mybatis/mapping/Agent.xml" />
 		<mapper resource="mybatis/mapping/RunningTrack.xml" />
-		<!-- <mapper resource="mybatis/mapping/OperationMapper.xml" /> -->
+		<mapper resource="mybatis/mapping/OperationMapper.xml" />
 		
 	</mappers>
 </configuration>
