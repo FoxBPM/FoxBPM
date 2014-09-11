@@ -35,8 +35,8 @@ var TaskDeatailInfor;
  */
 Foxbpm.TaskDeatailInfor = function(flowConfig) {
 	this._config = flowConfig || {
-		taskDetailDiv : 'taksDetailInfo',
-		runningTrackDIV : 'runningTrackDIV',
+		taskDetailDiv : 'taksDetailInfoDiv',
+		runningTrackDiv : 'runningTrackDiv',
 		flowGraphicDiv : 'flowGraphicDiv'
 	};
 	this._flowGraphic = new FlowGraphic({
@@ -198,9 +198,9 @@ Foxbpm.TaskDeatailInfor.prototype = {
 		$("#runningTrack").bind("click", this.runningTrackClick);
 		$("#runningTrackTable").bind("click", function(){
 			if ($(this).attr("checked") == 'checked') {
-				$("#"+TaskDeatailInfor._config.runningTrackDIV).show();
+				$("#"+TaskDeatailInfor._config.runningTrackDiv).show();
 			}else{
-				$("#"+TaskDeatailInfor._config.runningTrackDIV).hide();
+				$("#"+TaskDeatailInfor._config.runningTrackDiv).hide();
 			}
 		});
 	}
@@ -527,8 +527,8 @@ function RunTrack(config) {
 						var data = msg.data;
 						runningTrackInfor = data.runningTrackInfor;
 						// 生成页面元素
-						var runningTrackDIV = $("#"+TaskDeatailInfor._config.runningTrackDIV);
-						runningTrackDIV
+						var runningTrackDiv = $("#"+TaskDeatailInfor._config.runningTrackDiv);
+						runningTrackDiv
 								.append("<h3><span id='clz'>流程运行信息</span></h3>");
 						var taskNotDoneTb = $("<div id='taskNotDoneTb'>");
 						var table = $("<table width='100' class='table-list'>");
@@ -590,7 +590,7 @@ function RunTrack(config) {
 							runningTrackLength = runningTrackInfor.length;
 						}
 						taskNotDoneTb.append(table);
-						runningTrackDIV.append(taskNotDoneTb);
+						runningTrackDiv.append(taskNotDoneTb);
 
 					}
 				});
