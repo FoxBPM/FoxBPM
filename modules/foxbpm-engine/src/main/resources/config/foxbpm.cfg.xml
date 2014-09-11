@@ -84,18 +84,28 @@
 		</taskCommandDefinition>
 
 
-		<taskCommandDefinition id="transfer" name="转发"
+		<taskCommandDefinition id="transferAndCreateTask" name="转发-创建新任务"
 			command="org.foxbpm.engine.impl.task.command.TransferTaskCommand"
-			cmd="org.foxbpm.engine.impl.task.cmd.TransferTaskCmd" isEnabled="true"
+			cmd="org.foxbpm.engine.impl.task.cmd.TransferAndCreateTaskCmd" isEnabled="true"
 			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.TransferTaskFilter">
-
 			<commandParam key="transferUserId" name="转发给谁"
 				description="" dataType="String" bizType="InputParam" />
 			<commandParam key="isSaveData" name="是否保存数据" value="true"
 				description="" dataType="String" bizType="ControlParam" />
 			<commandParam key="isVerification" name="是否触发验证" value="true"
 				description="" dataType="String" bizType="ControlParam" />
-
+		</taskCommandDefinition>
+		
+		<taskCommandDefinition id="transfer" name="转发"
+			command="org.foxbpm.engine.impl.task.command.TransferTaskCommand"
+			cmd="org.foxbpm.engine.impl.task.cmd.TransferTaskCmd" isEnabled="true"
+			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.TransferTaskFilter">
+			<commandParam key="transferUserId" name="转发给谁"
+				description="" dataType="String" bizType="InputParam" />
+			<commandParam key="isSaveData" name="是否保存数据" value="true"
+				description="" dataType="String" bizType="ControlParam" />
+			<commandParam key="isVerification" name="是否触发验证" value="true"
+				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
 
 

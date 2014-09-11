@@ -30,6 +30,7 @@ import org.foxbpm.engine.impl.persistence.HistoryManager;
 import org.foxbpm.engine.impl.persistence.IdentityLinkManager;
 import org.foxbpm.engine.impl.persistence.ProcessDefinitionManager;
 import org.foxbpm.engine.impl.persistence.ProcessInstanceManager;
+import org.foxbpm.engine.impl.persistence.ProcessOperatingManager;
 import org.foxbpm.engine.impl.persistence.ResourceManager;
 import org.foxbpm.engine.impl.persistence.RunningTrackManager;
 import org.foxbpm.engine.impl.persistence.TaskManager;
@@ -120,6 +121,10 @@ public class CommandContext {
 
 	public RunningTrackManager getRunningTrackManager() {
 		return getSession(RunningTrackManager.class);
+	}
+	
+	public ProcessOperatingManager getProcessOperatingManager() {
+		return getSession(ProcessOperatingManager.class);
 	}
 
 	public HistoryManager getHistoryManager() {
