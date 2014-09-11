@@ -2,8 +2,7 @@
  * 
  */
 
-var _bpmServiceUrl= "/foxbpm-webapps-base/service";
-var _bpmFilePath = "/foxbpm-webapps-base/foxbpm";
+var _appName = "/foxbpm-webapps-common/";
 var _userId = "";
 $.ajax({
 	type : "get", 
@@ -15,7 +14,7 @@ $.ajax({
 	},
 	error:function(response){
 		if(response.status == 401){
-			window.location.href="/foxbpm-webapps-common/portal/login.html";
+			window.location.href=_appName+"login.html";
 		}
 	}
 });
