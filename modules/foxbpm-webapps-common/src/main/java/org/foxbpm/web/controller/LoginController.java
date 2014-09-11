@@ -43,17 +43,24 @@ public class LoginController {
 			String contextPath = request.getContextPath();
 			if (StringUtil.isNotEmpty(logout)) {
 				request.getSession().invalidate();
-				response.sendRedirect(contextPath + "/portal/login.html");
+				response.sendRedirect(contextPath + "/login.html");
 			} else {
 				UserEntity userEntity = (UserEntity) Authentication.selectUserByUserId(userName);
 				if (null != userEntity && StringUtil.equals(password, userEntity.getPassword())) {
 					// 这里约定了一个参数，流程引擎在运行时会默认从session里按照这两个key来获取参数，如果替换了登录的方式，请保证这两个key依然可以获取到正确的数据
 					request.getSession().setAttribute("userId", userEntity.getUserId());
 					
+					String target = request.getParameter("target");
+					String targetUrl = "/portal/index.html";
+					if("1".equals(target)){
+						targetUrl = "/manage/index.html";
+					}else if("2".equals(target)){
+						targetUrl = "/governance/index.html";
+					}
 					Cookie cookie = new Cookie("foxSid", userEntity.getUserId());
 					cookie.setMaxAge(-1);
 					response.addCookie(cookie);
-					response.sendRedirect(contextPath + "/portal/index.html");
+					response.sendRedirect(contextPath + targetUrl);
 				} else {
 					response.setContentType("text/html;charset=utf-8");
 					response.getWriter().print("<script>alert('用户名或密码错误！');window.location.href='" + contextPath + "/portal/login.html';</script>");
