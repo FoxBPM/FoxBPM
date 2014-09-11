@@ -21,12 +21,25 @@
 			-->
 			<header>
 				<span class="widget-icon"> <i class="fa fa-calendar"></i> </span>
-				<h2> 日历面板 </h2>
+				<h2>日历面板 </h2>
 				<div class="widget-toolbar">
 					<!-- add: non-hidden - to disable auto hide -->
 					<div class="btn-group">
 						<button class="btn dropdown-toggle btn-xs btn-default" data-toggle="dropdown">
-							选择展示时间 <i class="fa fa-caret-down"></i>
+							选择时间<i class="fa fa-caret-down"></i>
+						</button>
+						<ul class="dropdown-menu js-status-update pull-right">
+							<li>
+								<a href="javascript:void(0);" id="task_createtime">任务创建</a>
+							</li>
+							<li>
+								<a href="javascript:void(0);" id="task_duration">任务期限</a>
+							</li> 
+						</ul>
+					</div> &nbsp;&nbsp;&nbsp;
+					<div class="btn-group">
+						<button class="btn dropdown-toggle btn-xs btn-default" data-toggle="dropdown">
+							选择视图<i class="fa fa-caret-down"></i>
 						</button>
 						<ul class="dropdown-menu js-status-update pull-right">
 							<li>
@@ -68,9 +81,12 @@
 <link href='../css/fullcalendar.min.css' rel='stylesheet' /> 
 <link href='../css/fullcalendar.print.css' rel='stylesheet' media='print' />
 
+<script src="../portal/js/foxbpm/common.js"></script>
 <!-- end row --> 
 <script type="text/javascript">
-	 
+	$('#my-button').click(function() {
+	    
+	});
 	pageSetUp();
 	 
 	var pagefunction = function() {
@@ -97,13 +113,10 @@
 	
 	    $('#calendar').fullCalendar({
 	    	lang:'zh-cn',
+	    	defaultView: 'agendaDay',
 	        header: hdr,
-	        buttonText: {
-	            prev: '<<',
-	            next: '>>', 
-	        }, 
-	        editable: false,
-	        droppable: false, // this allows things to be dropped onto the calendar !!!
+	        editable: true,
+	        droppable: true, // this allows things to be dropped onto the calendar !!!
 	        viewRender:function(a,b){
 	        	$(".fc-toolbar").css("margin-bottom","0px");
 	        	 
@@ -147,61 +160,37 @@
 	            calendar.fullCalendar('unselect');
 	        },
 	
-	        events: [{
-	            title: 'All Day Event',
-	            start: myDate,
-	            description: 'long description',
-	            className: ["event", "bg-color-greenLight"],
-	            allDay:true,
-	            icon: 'fa-check'
-	        }, {
-	            title: 'Long Event',
-	            start: new Date(y, m, d - 5),
-	            end: new Date(y, m, d - 2),
-	            className: ["event", "bg-color-red"],
-	            icon: 'fa-lock'
-	        }, {
-	            id: 999,
-	            title: 'Repeating Event',
-	            start: new Date(y, m, d - 3, 16, 0),
-	            allDay: false,
-	            className: ["event", "bg-color-blue"],
-	            icon: 'fa-clock-o'
-	        }, {
-	            id: 999,
-	            title: 'Repeating Event',
-	            start: new Date(y, m, d + 4, 16, 0),
-	            allDay: false,
-	            className: ["event", "bg-color-blue"],
-	            icon: 'fa-clock-o'
-	        }, {
-	            title: 'Meeting',
-	            start: new Date(y, m, d, 10, 30),
-	            allDay: false,
-	            className: ["event", "bg-color-darken"]
-	        }, {
-	            title: 'a',
-	            start: myDate,
-	            allDay: false,
-	            className: ["event", "bg-color-darken"]
-	        }, {
-	            title: 'Lunch',
-	            start: new Date(y, m, d, 12, 0),
-	            end: new Date(y, m, d, 14, 0),
-	            allDay: false,
-	            className: ["event", "bg-color-darken"]
-	        }, {
-	            title: 'Birthday Party',
-	            start: new Date(y, m, d + 1, 19, 0),
-	            end: new Date(y, m, d + 1, 22, 30),
-	            allDay: false,
-	            className: ["event", "bg-color-darken"]
-	        }, {
-	            title: 'Smartadmin Open Day',
-	            start: new Date(y, m, 28),
-	            end: new Date(y, m, 29),
-	            className: ["event", "bg-color-darken"]
-	        }],
+	        events: function(start, end, timezone, callback) {
+		    	$.ajax({
+		            url: _serviceTaskUrl,
+		            dataType: 'json',
+		            data: {
+		            	createTimeB: start.format(),
+		            	createTimeE: end.format()
+		            },
+		            success: function(doc) {
+		                var events = []; 
+		                var taskColor;
+		                for(var i=0;i<doc.data.length;i++){ 
+		                	
+		                	if(doc.data[i].priority == "50"){
+		                		taskColor = ["event", "bg-color-greenLight"];
+		                	}else if(doc.data[i].priority == "0"){
+		                		taskColor = ["event", "bg-color-darken"];
+		                	}else if(doc.data[i].priority == "100"){
+		                		taskColor = ["event", "bg-color-red"];
+		                	}
+		                	events.push({
+		                        title: doc.data[i].subject,
+		                        start: doc.data[i].createTime, 
+		                        className: taskColor,
+		                    });
+		                }
+		                callback(events);
+		            }
+		        });
+		         
+		    },
 	
 	        eventRender: function (event, element, icon) {
 	            if (!event.description == "") {
@@ -222,12 +211,28 @@
 	    $('.fc-right, .fc-left').hide();
 	
 		$('#btn-prev').click(function () {
-		    $('.fc-prev-button').click();
+		    //$('.fc-prev-button').click();
+		    $('#calendar').fullCalendar('prev');
+		    var moment = $('#calendar').fullCalendar('getDate');
+		    //alert("The current date of the calendar is " + moment.format());
+		    
+		    var view = $('#calendar').fullCalendar('getView');
+		    //alert("The view's title is " + view.title);
+		    
+		    //alert("The view's name is " + view.name);
+		    
+		    //alert("The view's start is " + view.start.format());
+		    // alert("The view's end is " + view.end.format());
+		    //alert("The view's intervalStart is " + view.intervalStart.format());
+		    // alert("The view's intervalEnd is " + view.intervalEnd.format());
+		    
 		    return false;
 		});
 		
 		$('#btn-next').click(function () {
-		    $('.fc-next-button').click();
+		    //$('.fc-next-button').click();
+		    $('#calendar').fullCalendar('next');
+		    var moment = $('#calendar').fullCalendar('getDate'); 
 		    return false;
 		});
 		
@@ -247,7 +252,6 @@
 		$('#td').click(function () {
 		    $('#calendar').fullCalendar('changeView', 'agendaDay');
 		});
-		
 	};
 	
 	// end pagefunction
