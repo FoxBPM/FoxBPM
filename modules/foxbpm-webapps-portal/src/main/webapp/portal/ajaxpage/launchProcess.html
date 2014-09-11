@@ -1,8 +1,8 @@
 <div class="row hidden-mobile">
 	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 		<h1 class="page-title txt-color-blueDark">
-			<i class="fa-fw fa fa-picture-o"></i> Gallery <span>> Smart
-				<a id="dialogShow">Responsive gallery </a></span>
+			<i class="fa-fw fa fa-picture-o"></i> Launch Process <span>>
+				Smart Responsive Launch Process </span>
 		</h1>
 	</div>
 </div>
@@ -10,10 +10,10 @@
 	<div class="col-sm-12" style="margin-left: 5px">
 		<div class="input-group">
 			<input class="form-control" style="width: 150px; height: 30px"
-				type="text" id="input_search" placeholder="Search..."> 
-				<a
-				class="btn btn-primary disabled" style="height: 30px;disabled:true"
-				href="javascript:void(0);" id="btn_search">Search</a>
+				type="text" id="input_search" placeholder="Search..."> <a
+				class="btn btn-primary disabled"
+				style="height: 30px; disabled: true" href="javascript:void(0);"
+				id="btn_search">Search</a>
 		</div>
 	</div>
 </div>
@@ -21,17 +21,18 @@
 <!-- row -->
 <div class="row">
 	<!-- SuperBox -->
-	<div class="superbox col-sm-12" id="superbox">
-	</div>
+	<div class="superbox col-sm-12" id="superbox"></div>
 	<!-- /SuperBox -->
 	<div class="superbox-show" style="height: 300px; display: none"></div>
 </div>
 
-<div class="modal fade " id="remoteModal" tabindex="-1" role="dialog" aria-labelledby="remoteModalLabel" aria-hidden="true">  
-    <div class="modal-dialog" style="width:800px">  
-       	<iframe id="contentFrame" class="col-sm-10 col-md-12 col-lg-12" style="border:0px; height:500px;"></iframe>
-    </div>  
-</div>  
+<div class="modal fade " id="remoteModal" tabindex="-1" role="dialog"
+	aria-labelledby="remoteModalLabel" aria-hidden="true">
+	<div class="modal-dialog" style="width: 800px">
+		<iframe id="contentFrame" class="col-sm-10 col-md-12 col-lg-12"
+			style="border: 0px; height: 500px;"></iframe>
+	</div>
+</div>
 <!-- end row -->
 
 <script type="text/javascript">
@@ -97,18 +98,10 @@
 				$('.superbox').SuperBox();
 			}
 		});   
-	  	$("#dialogShow").click(function(e){
-			$("#contentFrame").attr("src","ajaxpage/form.html?processDefinitionKey=Process_document_1");
-			$('#remoteModal').modal('show');
-			//$('#remoteModal').modal({show:true});
-		});
-		// $('.superbox').SuperBox();
 	};
 
 	// end pagefunction
-
 	// run pagefunction on load
-
 	// load bootstrap-progress bar script
 	loadScript("jsportal/gallery.js", function() {
 		loadScript("jsportal/plugin/superbox/superbox.min.js", pagefunction);
