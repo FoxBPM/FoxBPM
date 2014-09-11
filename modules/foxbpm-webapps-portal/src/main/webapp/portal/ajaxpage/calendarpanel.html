@@ -115,8 +115,8 @@
 	    	lang:'zh-cn',
 	    	defaultView: 'agendaDay',
 	        header: hdr,
-	        editable: true,
-	        droppable: true, // this allows things to be dropped onto the calendar !!!
+	        editable: false,
+	        droppable: false, // this allows things to be dropped onto the calendar !!!
 	        viewRender:function(a,b){
 	        	$(".fc-toolbar").css("margin-bottom","0px");
 	        	 
@@ -259,10 +259,8 @@
 	// loadscript and run pagefunction 
 	 
 	loadScript("../js/plugin/fullcalendar/moment.min.js", function(){
-		loadScript("../js/plugin/fullcalendar/jquery.min.js",function(){
-			loadScript("../js/plugin/fullcalendar/fullcalendar.min.js",function(){
-				loadScript("../js/plugin/fullcalendar/lang-all.js",pagefunction)
-			} );
+		loadScript("../js/plugin/fullcalendar/fullcalendar.min.js",function(){
+			loadScript("../js/plugin/fullcalendar/lang-all.js",pagefunction)
 		});
 	});
 
