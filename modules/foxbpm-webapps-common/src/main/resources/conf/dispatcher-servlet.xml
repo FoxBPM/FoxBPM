@@ -35,6 +35,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 			
 	<!-- 使Spring支持自动检测组件，如注解的Controller -->
 	<context:component-scan base-package="org.foxbpm.portal" />
+	<context:component-scan base-package="org.foxbpm.web.controller" />
 	<!-- 完成请求和注解POJO的映射 -->
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
