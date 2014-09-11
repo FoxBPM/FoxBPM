@@ -17,6 +17,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 			
 	<!-- 启用spring mvc 注解 --> 
     <context:annotation-config /> 
+    <aop:aspectj-autoproxy/>
     <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" />   
 	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">   
 	    <property name="favorPathExtension" value="false" />  

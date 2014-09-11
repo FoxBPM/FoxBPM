@@ -45,6 +45,16 @@ public class ExpenseManager {
 		workFlowService.executeTaskCommandJson(flowCommandInfo);
 	}
 	
+	public void updateExpense(ExpenseEntity expenseEntity,String flowCommandInfo){
+		expenseDao.updateExpenseEntity(expenseEntity);
+		
+		if(StringUtil.isEmpty(flowCommandInfo)){
+			throw new RuntimeException("流程命令参数确实，请检查请求参数");
+		}
+		//调用api执行任务命令
+		workFlowService.executeTaskCommandJson(flowCommandInfo);
+	}
+	
 	public List<Map<String,Object>> selectByPage(int pageIndex,int pageSize){
 		return null;
 	}
