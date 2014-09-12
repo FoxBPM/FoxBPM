@@ -107,8 +107,11 @@ public class UserPictureResource extends AbstractRestResource {
 		UserEntity userEntity = identityService.getUser(userId);
 		// 获取图片
 		InputStream in = null;
-		File file = new File(path + userEntity.getImage());
-		if (file.exists()) {
+		File file = null;
+		if (null != userEntity) {
+			file = new File(path + userEntity.getImage());
+		}
+		if (null != file && file.exists()) {
 			in = new FileInputStream(file);
 		} else {
 			// 提供默认图像

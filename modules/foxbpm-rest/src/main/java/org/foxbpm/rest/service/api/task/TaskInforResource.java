@@ -130,6 +130,7 @@ public class TaskInforResource extends AbstractRestResource {
 		resultData.put("processName", processName);
 		resultData.put("processInstanceId", processInstance.getId());
 		resultData.put("processDefinitionId", processInstance.getProcessDefinitionId());
+		resultData.put("status", processInstance.getInstanceStatus());
 		DataResult result = new DataResult();
 		result.setData(resultData);
 		return result;
