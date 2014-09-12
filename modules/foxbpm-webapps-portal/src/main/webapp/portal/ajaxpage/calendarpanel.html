@@ -25,7 +25,7 @@
 				<div class="widget-toolbar">
 					<!-- add: non-hidden - to disable auto hide -->
 					<div class="btn-group">
-						<button class="btn dropdown-toggle btn-xs btn-default" data-toggle="dropdown">
+						<button id="select_time" class="btn dropdown-toggle btn-xs btn-default" data-toggle="dropdown">
 							选择时间<i class="fa fa-caret-down"></i>
 						</button>
 						<ul class="dropdown-menu js-status-update pull-right">
@@ -38,18 +38,28 @@
 						</ul>
 					</div> &nbsp;&nbsp;&nbsp;
 					<div class="btn-group">
-						<button class="btn dropdown-toggle btn-xs btn-default" data-toggle="dropdown">
+						<button id="select_view" class="btn dropdown-toggle btn-xs btn-default" data-toggle="dropdown">
 							选择视图<i class="fa fa-caret-down"></i>
 						</button>
 						<ul class="dropdown-menu js-status-update pull-right">
 							<li>
-								<a href="javascript:void(0);" id="mt">月</a>
+								<a href="javascript:void(0);" id="mt">月 视图</a>
 							</li>
 							<li>
-								<a href="javascript:void(0);" id="ag">周</a>
+								<a href="javascript:void(0);" id="basicWeek">周 视图</a>
 							</li>
 							<li>
-								<a href="javascript:void(0);" id="td">日</a>
+								<a href="javascript:void(0);" id="basicDay">日 视图</a>
+							</li>
+							<li>
+								<a href="javascript:void(0);" id="ag">周-日程表</a>
+							</li>
+							<li>
+								<a href="javascript:void(0);" id="td">日-日程表</a>
+							</li>
+							
+							<li>
+								<a href="javascript:void(0);" id="notshowweekend">不展示周末</a>
 							</li>
 						</ul>
 					</div>
@@ -99,30 +109,27 @@
 	}
 	pageSetUp();
 	 
+	$('#notshowweekend').click(function () {
+		pagefunction();
+	});
+	
 	var pagefunction = function() {
 		
 		// full calendar
-		
-		var date = new Date();
-	    var d = date.getDate();
-	    var m = date.getMonth();
-	    var y = date.getFullYear();
-	
+		 
 	    var hdr = {
 	        left:  'prev,next today',
 	        center: 'title',
 	        right:'month,agendaWeek,agendaDay'
-	    };
- 
-	    var myDate=new Date();
-	    myDate.setFullYear(2014,8,11);
-	    myDate.setHours(13);
-	    myDate.setMinutes(30);
+	    }; 
 	    /* initialize the calendar
 		 -----------------------------------------------------------------*/
-	
 	    $('#calendar').fullCalendar({
 	    	lazyFetching:true,
+	    	aspectRatio:2,
+	    	allDaySlot:false,
+	    	firstHour:8,
+	    	slotEventOverlap:false,
 	    	lang:'zh-cn',
 	    	defaultView: 'agendaDay',
 	        header: hdr,
@@ -138,43 +145,6 @@
 			eventClick:function( event, jsEvent, view ) {
 				showFormByUrl(event.id);
 			},
-	        drop: function (date, allDay) { // this function is called when something is dropped
-	
-	            // retrieve the dropped element's stored Event Object
-	            var originalEventObject = $(this).data('eventObject');
-	
-	            // we need to copy it, so that multiple events don't have a reference to the same object
-	            var copiedEventObject = $.extend({}, originalEventObject);
-	
-	            // assign it the date that was reported
-	            copiedEventObject.start = date;
-	            copiedEventObject.allDay = allDay;
-	
-	            // render the event on the calendar
-	            // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-	            $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-	
-	            // is the "remove after drop" checkbox checked?
-	            if ($('#drop-remove').is(':checked')) {
-	                // if so, remove the element from the "Draggable Events" list
-	                $(this).remove();
-	            }
-	
-	        },
-	
-	        select: function (start, end, allDay) {
-	            var title = prompt('Event Title:');
-	            if (title) {
-	                calendar.fullCalendar('renderEvent', {
-	                        title: title,
-	                        start: start,
-	                        end: end,
-	                        allDay: allDay
-	                    }, true // make the event "stick"
-	                );
-	            }
-	            calendar.fullCalendar('unselect');
-	        },
 	
 	        events: function(start, end, timezone, callback) {
 		    	$.ajax({
@@ -197,8 +167,9 @@
 		                		taskColor = ["event", "bg-color-red"];
 		                	}
 		                	events.push({
-		                        title: doc.data[i].subject,
+		                        title: doc.data[i].name,
 		                        start: doc.data[i].createTime, 
+		                        end: doc.data[i].dueDate, 
 		                        className: taskColor,
 		                        id:_formUrl+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId,
 		                    });
@@ -259,16 +230,37 @@
 		});
 		
 		$('#mt').click(function () {
+			$('#select_view').html($('#mt').html()+"<i class='fa fa-caret-down'></i>");
 		    $('#calendar').fullCalendar('changeView', 'month');
 		});
 		
 		$('#ag').click(function () {
+			$('#select_view').html($('#ag').html()+"<i class='fa fa-caret-down'></i>");
 		    $('#calendar').fullCalendar('changeView', 'agendaWeek');
 		});
 		
 		$('#td').click(function () {
+			$('#select_view').html($('#td').html()+"<i class='fa fa-caret-down'></i>");
 		    $('#calendar').fullCalendar('changeView', 'agendaDay');
 		});
+		
+		$('#basicWeek').click(function () {
+			$('#select_view').html($('#basicWeek').html()+"<i class='fa fa-caret-down'></i>");
+		    $('#calendar').fullCalendar('changeView', 'basicWeek');
+		});
+		
+		$('#basicDay').click(function () {
+			$('#select_view').html($('#basicDay').html()+"<i class='fa fa-caret-down'></i>");
+		    $('#calendar').fullCalendar('changeView', 'basicDay');
+		});
+		
+		$('#task_createtime').click(function () {
+			$('#select_time').html($('#task_createtime').html()+"<i class='fa fa-caret-down'></i>"); 
+		});
+		$('#task_duration').click(function () {
+			$('#select_time').html($('#task_duration').html()+"<i class='fa fa-caret-down'></i>"); 
+		});
+		
 	};
 	
 	// end pagefunction
