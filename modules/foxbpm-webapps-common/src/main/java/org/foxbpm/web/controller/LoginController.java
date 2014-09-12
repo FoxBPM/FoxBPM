@@ -63,7 +63,7 @@ public class LoginController {
 					response.sendRedirect(contextPath + targetUrl);
 				} else {
 					response.setContentType("text/html;charset=utf-8");
-					response.getWriter().print("<script>alert('用户名或密码错误！');window.location.href='" + contextPath + "/portal/login.html';</script>");
+					response.getWriter().print("<script>alert('用户名或密码错误！');window.location.href='" + contextPath + "/login.html';</script>");
 				}
 			}
 		} catch (IOException e) {

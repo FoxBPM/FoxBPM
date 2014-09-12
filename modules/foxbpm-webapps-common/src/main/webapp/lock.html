@@ -61,20 +61,20 @@
 
 			<!-- MAIN CONTENT -->
 
-			<form class="lockscreen animated flipInY" action="index.html">
+			<form class="lockscreen animated flipInY" action="login.action">
 				<div class="logo">
 					<h1 class="semi-bold"><img src="img/logo-o.png" alt="" /> FoxBPM</h1>
 				</div>
 				<div>
 					<img src="img/avatars/sunny-big.png" alt="" width="120" height="120" />
 					<div>
-						<h1><i class="fa fa-user fa-3x text-muted air air-top-right hidden-mobile"></i>Ken Shin <small><i class="fa fa-lock text-muted"></i> &nbsp;锁定</small></h1>
+						<h1><i class="fa fa-user fa-3x text-muted air air-top-right hidden-mobile"></i><span id="user">Ken Shin </span><small><i class="fa fa-lock text-muted"></i> &nbsp;锁定</small></h1>
 						<p class="text-muted">
 							<a href="mailto:simmons@smartadmin">56714080@qq.com</a>
 						</p>
-
+						<input type="hidden" name="userName" id="userName" />
 						<div class="input-group">
-							<input class="form-control" type="password" placeholder="Password">
+							<input class="form-control" type="password" name="password" placeholder="Password">
 							<div class="input-group-btn">
 								<button class="btn btn-primary" type="submit">
 									<i class="fa fa-key"></i>
@@ -125,8 +125,24 @@
 			
 		<![endif]-->
 
-		<!-- MAIN APP JS FILE -->
-		<script src="js/app.min.js"></script>
+		
+		<script>
+		$(document).ready(function() {
+			var userName = getCookie("foxSid");
+			$("#userName").val(userName);
+			$("#user").html(userName);
+		});
+		
+		function getCookie(objName){//获取指定名称的cookie的值 
+			var arrStr = document.cookie.split("; "); 
+			for(var i = 0;i < arrStr.length;i ++){ 
+				var temp = arrStr[i].split("="); 
+				if(temp[0] == objName){
+					return unescape(temp[1]); 
+				}
+			} 
+		} 
+		</script>
 
 	</body>
 </html>
