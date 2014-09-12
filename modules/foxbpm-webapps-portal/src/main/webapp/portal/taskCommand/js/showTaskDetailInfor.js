@@ -25,16 +25,37 @@ var _GlobalFlowVar = {
 		if('false' == m.attr("flag")){
 			$("#msg_"+i).show();
 			$("#loading_"+i).show();
+			var taskId = $("#msg_"+i).attr("taskid");
 			$.ajax({
 				type : "get",// 使用get方法访问后台
+				cache:false,
 				dataType : "json",// 返回json格式的数据
-				url : _GlobalFlowVar._bpmServiceUrl + "task/taskInfora",// 要访问的后台地址
-				data : {
-					processInstanceId : _processInstanceId
-				},
+				url : _GlobalFlowVar._bpmServiceUrl + "runtime/tasks/"+taskId+"/operations",// 要访问的后台地址
 				success : function(msg) {
 					$("#loading_"+i).hide();
+					if (!msg && !msg.data) {
+						alert("返回数据为null");
+						return;
+					}
+					var data = msg.data;
+					if(data.length <= 0){
+						$("#tips_"+i).show();
+						return;
+					}
 					$("#tips_"+i).hide();
+					var html = "";
+					$.each(data,function(j, d) {
+						html+="<div class='discussion-item discussion-item-milestoned'>";
+						html+="<div class='discussion-item-header' id='event-130077772'>";
+						html+="<span class='octicon octicon-milestone discussion-item-icon'></span>";
+						html+="<img alt='kenshin' class='avatar' height='16' src='https://avatars3.githubusercontent.com/u/900179?v=2&amp;s=32' width='16'>";
+						html+="<a href='/kenshinnet' class='author'>"+d.operatorName+"</a>&nbsp"+d.commandMessage+"&nbsp<a href='javascript:void(0);' class='timestamp'><time class='timestamp' datetime='2014-06-10T19:38:56-07:00' is='relative-time' title='2014年6月11日 上午10:38 格林尼治标准时间+0800'>&nbsp"+d.operatingTime+"</time></a>";
+						html+="</div>";
+						html+="</div>";
+					});
+					//加载数据
+					$("#data_"+i).html("");
+					$("#data_"+i).append(html);
 				},
 				error:function(){
 					$("#loading_"+i).hide();
@@ -170,8 +191,9 @@ Foxbpm.TaskDeatailInfor.prototype = {
 											participants += data.userName+ "#";
 										}
 										/**********************处理信息*****************************/
-										var html = "<div id=msg_"+j+" style='display:none'>";
+										var html = "<div id=msg_"+j+" style='display:none' taskId="+data.id+" >";
 										html+="<div id='warning' style='text-align:center;'><span id=tips_"+j+" style='display:none'>数据为空!</span><img style='display:none' src='images/loading.gif' id=loading_"+j+" /></div>";
+										html+="<div id=data_"+j+" ></div>";
 										/*html+="<div class='discussion-item discussion-item-milestoned'>";
 										html+="<div class='discussion-item-header' id='event-130077772'>";
 										html+="<span class='octicon octicon-milestone discussion-item-icon'></span>";
