@@ -53,13 +53,26 @@ public class UserTaskBehavior extends TaskBehavior {
 
 	@Override
 	public void execute(FlowNodeExecutionContext executionContext) {
+		
+		TokenEntity token=(TokenEntity)executionContext;
+		
+		if(StringUtil.isNotEmpty(token.getGroupID())){
+			//会签任务创建
+			//串行多实例、并行多实例 考虑
+			//串行多实例 、 加签 、
+			
+		}else{
+			//非会签任务创建
+			
+		}
+		
 
 		TaskEntity task = TaskEntity.createAndInsert(executionContext);
-		TokenEntity tokenEntity=(TokenEntity)executionContext;
-		if(StringUtil.isNotEmpty(tokenEntity.getGroupID())){
-			task.setTaskGroup(tokenEntity.getGroupID());
+		
+		if(StringUtil.isNotEmpty(token.getGroupID())){
+			task.setTaskGroup(token.getGroupID());
 			/** 如果为会签任务,则清空强制任务处理者 */
-			tokenEntity.setTaskAssignee(null);
+			token.setTaskAssignee(null);
 		}
 		task.setTaskDefinition(taskDefinition);
 		task.setNodeId(getId());
@@ -103,9 +116,9 @@ public class UserTaskBehavior extends TaskBehavior {
 		}
 		
 		/** 判断是否有强制任务处理者指定 */
-		if(StringUtil.isNotEmpty(tokenEntity.getTaskAssignee())){
+		if(StringUtil.isNotEmpty(token.getTaskAssignee())){
 			/** 根据强制任务处理者设置任务 */
-			task.setAssignee(tokenEntity.getTaskAssignee());
+			task.setAssignee(token.getTaskAssignee());
 		}else{
 			/** 重新分配任务 */
 			for (Connector connector : taskDefinition.getActorConnectors()) {
@@ -123,11 +136,11 @@ public class UserTaskBehavior extends TaskBehavior {
 		
 		
 		
-		tokenEntity.setAssignTask(task);
+		token.setAssignTask(task);
 		/** 触发分配事件(后事件) */
 		executionContext.fireEvent(AbstractTaskEvent.TASK_ASSIGN);
-		tokenEntity.setAssignTask(null);
-		tokenEntity.setTaskAssignee(null);
+		token.setAssignTask(null);
+		token.setTaskAssignee(null);
 	}
 
 	public TaskDefinition getTaskDefinition() {

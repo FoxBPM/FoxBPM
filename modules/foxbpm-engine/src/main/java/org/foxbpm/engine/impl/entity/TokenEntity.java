@@ -72,7 +72,10 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 	
 	/** 控制并发修改标示 */
 	protected int revision;
+	/** 串行多实例循环标识 */
+	protected int loopCount=0;
 	
+
 	@Override
 	public void setFlowNode(KernelFlowNodeImpl flowNode) {
 		if (flowNode != null) {
@@ -383,5 +386,14 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 	
 	public void setTaskAssignee(String taskAssignee) {
 		this.taskAssignee = taskAssignee;
+	}
+	
+
+	public int getLoopCount() {
+		return loopCount;
+	}
+
+	public void setLoopCount(int loopCount) {
+		this.loopCount = loopCount;
 	}
 }
