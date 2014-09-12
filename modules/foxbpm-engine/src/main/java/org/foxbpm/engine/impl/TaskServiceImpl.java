@@ -31,9 +31,11 @@ import org.foxbpm.engine.impl.cmd.GetRollbackNodeCmd;
 import org.foxbpm.engine.impl.cmd.GetRollbackTasksCmd;
 import org.foxbpm.engine.impl.cmd.GetTaskCommandByKeyCmd;
 import org.foxbpm.engine.impl.cmd.GetTaskCommandByTaskIdCmd;
+import org.foxbpm.engine.impl.cmd.GetTaskOperationCmd;
 import org.foxbpm.engine.impl.cmd.NewTaskCmd;
 import org.foxbpm.engine.impl.cmd.SaveTaskCmd;
 import org.foxbpm.engine.impl.cmd.UnClaimCmd;
+import org.foxbpm.engine.impl.entity.ProcessOperatingEntity;
 import org.foxbpm.engine.impl.query.NativeTaskQueryImpl;
 import org.foxbpm.engine.impl.task.TaskQueryImpl;
 import org.foxbpm.engine.impl.task.cmd.ExpandTaskCompleteCmd;
@@ -133,9 +135,16 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 	}
 	
 	@Override
+	public List<ProcessOperatingEntity> getTaskOperations(String taskId) {
+		return commandExecutor.execute(new GetTaskOperationCmd(taskId));
+	}
+	
+	@Override
 	public Class<?> getInterfaceClass() {
 		return TaskService.class;
 	}
+	
+	
 
 
 }

@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.engine.impl.entity.ProcessOperatingEntity;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.query.NativeTaskQuery;
 import org.foxbpm.engine.task.Task;
@@ -187,5 +188,12 @@ public interface TaskService {
 	 * @return
 	 */
 	List<Task> getRollbackTasks(String taskId);
+	
+	/**
+	 * 获取任务的操作、评论等信息
+	 * @param taskId
+	 * @return
+	 */
+	List<ProcessOperatingEntity> getTaskOperations(String taskId);
 
 }
