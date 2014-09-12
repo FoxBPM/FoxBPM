@@ -187,7 +187,7 @@ Foxbpm.TaskDeatailInfor.prototype = {
 										completedRecord.append(comment);
 										completedRecord.append("<a onclick='_GlobalFlowVar.showMsg(this,"+j+")' style='text-decoration:none;cursor:pointer;float: right;' flag='false'>+</a>");
 										completedDetailInfoDiv.append(completedRecord);
-										if (participants.indexOf(data.userName.trim()) < 0) {
+										if (participants.indexOf(data.userName) < 0) {
 											participants += data.userName+ "#";
 										}
 										/**********************处理信息*****************************/
