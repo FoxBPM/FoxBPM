@@ -1,11 +1,4 @@
-function showForm(dataId,taskId,processInstanceId){
-	var formUrl = "ajaxpage/editform.html?dataId="+dataId+"&taskId="+taskId+"&processInstanceId="+processInstanceId;
-	$("#contentFrame").attr("src",formUrl);
-	$('#remoteModal').modal({backdrop:"static"});
-}
-function showDiagram(processDefinitionKey,processInstanceId){ 
-	window.open("taskCommand/showTaskDetailInfor.html?processDefinitionKey="+processDefinitionKey+"&processInstanceId="+processInstanceId);
-}
+
 var pagefunction = function() {
 	var responsiveHelper_datatable_fixed_column = undefined;
 	var breakpointDefinition = {
@@ -117,7 +110,7 @@ var pagefunction = function() {
 						"processing" : true,
 						"orderable" : true,
 						"serverSide" : true,
-						"ajax" : "/foxbpm-webapps-common/service/tasks",
+						"ajax" : _serviceTaskUrl,
 						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'>C>"+
 								 "t"+
 								 "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p  l >>",

@@ -70,7 +70,20 @@ var pagefunction = function() {
 										}
 
 									}
-								} ],
+								} ,
+								{
+									"targets" : [ 6 ],
+									"orderable" : true,
+									"createdCell" : function(td, cellData,
+											rowData, row, col) { 
+										var tdHtml = " <a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=showDiagram('"+rowData.processDefinitionKey+"','"+rowData.id+"');><i class='fa fa-sitemap'></i> 流程图</a>";
+										$(td).html(tdHtml);
+									
+										
+										
+
+									}
+								}],
 
 						"processing" : true,
 						"orderable" : true,
