@@ -23,11 +23,6 @@ $.ajax({
 	}
 });
 
-function showFormByUrl(formUrl){
-	$("#contentFrame").attr("src",formUrl);
-	$('#remoteModal').modal({backdrop:"static"});
-}
-
 function showForm(dataId,taskId,processInstanceId){
 	var formUrl = _formUrl+"?dataId="+dataId+"&taskId="+taskId+"&processInstanceId="+processInstanceId;
 	$("#contentFrame").attr("src",formUrl);

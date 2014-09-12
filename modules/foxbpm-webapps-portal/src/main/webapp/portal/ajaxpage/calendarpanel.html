@@ -91,9 +91,12 @@
 <script src="../portal/js/foxbpm/common.js"></script>
 <!-- end row --> 
 <script type="text/javascript">
-	$('#my-button').click(function() {
-	    
-	});
+	function showFormByUrl(formUrl){
+		$("#contentFrame").attr("src",formUrl);
+		$('#remoteModal').modal({backdrop:"static"});
+		
+		//$('#calendar').fullCalendar( 'removeEvents', [formUrl ] );
+	}
 	pageSetUp();
 	 
 	var pagefunction = function() {
@@ -119,6 +122,7 @@
 		 -----------------------------------------------------------------*/
 	
 	    $('#calendar').fullCalendar({
+	    	lazyFetching:true,
 	    	lang:'zh-cn',
 	    	defaultView: 'agendaDay',
 	        header: hdr,
