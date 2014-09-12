@@ -25,6 +25,8 @@ import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.entity.ProcessOperatingEntity;
+import org.foxbpm.engine.impl.entity.UserEntity;
+import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.DataResult;
@@ -51,7 +53,17 @@ public class TaskOperationCollectionResource extends AbstractRestResource {
 		List<Map<String,Object>> resultMap = new ArrayList<Map<String,Object>>();
 		if(operations != null && operations.size() >0){
 			for(ProcessOperatingEntity tmp : operations){
-				resultMap.add(tmp.getPersistentState());
+				Map<String,Object> tmpMap = tmp.getPersistentState();
+				String operator = StringUtil.getString(tmpMap.get("operator"));
+				String operatorName = "空用户名";
+				if(StringUtil.isNotEmpty(operator)){
+					UserEntity user = Authentication.selectUserByUserId(operator);
+					if(user != null){
+						operatorName = user.getUserName();
+					}
+				}
+				tmpMap.put("operatorName", operatorName);
+				resultMap.add(tmpMap);
 			}
 		}
 		DataResult dataResult = new DataResult();
