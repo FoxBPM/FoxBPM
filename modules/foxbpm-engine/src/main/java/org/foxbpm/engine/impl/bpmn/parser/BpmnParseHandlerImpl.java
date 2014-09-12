@@ -443,6 +443,9 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	    ProcessDefinitionEntity processDefinition) {
 		ProcessEngineConfigurationImpl processEngineConfiguration = Context.getProcessEngineConfiguration();
 		BaseElement bpmnElement = getBaseElement(bpmnShape.getBpmnElement());
+		if(bpmnElement == null){
+			return;
+		}
 		Style style = this.getStyle(bpmnElement, processEngineConfiguration);
 		KernelDIBounds kernelDIBounds = this.getDIElementFromProcessDefinition(processDefinition, bpmnElement.getId());
 		if (kernelDIBounds != null) {
