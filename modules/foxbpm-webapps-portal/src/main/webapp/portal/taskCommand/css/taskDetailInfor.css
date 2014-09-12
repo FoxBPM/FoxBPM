@@ -10331,12 +10331,12 @@ body.page-profile .profilecols .blankslate {
 }
 
 .prose-diff>.markdown-body :not (.changed ) >:not (.github-user-ins ):not
-	(.github-user-del ) >.removed {
+	 (.github-user-del ) >.removed {
 	text-decoration: none;
 }
 
 .prose-diff>.markdown-body :not (.changed ) >:not (.github-user-ins ):not
-	(.github-user-del ) >del {
+	 (.github-user-del ) >del {
 	text-decoration: none;
 }
 
@@ -10388,20 +10388,58 @@ body.page-profile .profilecols .blankslate {
 }
 
 .prose-diff>.markdown-body :not (.github-user-del ):not (.github-user-ins
-	).added {
+	 ).added {
 	text-decoration: none;
 }
 
 .prose-diff>.markdown-body ins+:not (.github-user-del ):not (.github-user-ins
-	).added {
+	 ).added {
 	text-decoration: none;
 }
 
-.prose-diff>.markdown-body ins:not (.github-user-del ):not (.github-user-ins
-	) {
-	text-decoration: none;
-}
+.prose-diff
+>
+.markdown-body
 
+ 
+
+ins
+
+
+:not
+
+ 
+
+(
+.github-user-del
+
+ 
+
+)
+:not
+
+ 
+
+(
+.github-user-ins
+
+
+	
+
+)
+{
+text-decoration
+
+
+:
+
+ 
+
+none
+
+
+;
+}
 .prose-diff>.markdown-body img.added {
 	border-width: 1px;
 	border-style: solid;
@@ -10412,21 +10450,145 @@ body.page-profile .profilecols .blankslate {
 	border-style: solid;
 }
 
-.prose-diff>.markdown-body ins pre:not (.github-user-del ):not (.github-user-ins
-	) {
-	text-decoration: none;
-}
+.prose-diff
+>
+.markdown-body
 
-.prose-diff>.markdown-body ins code:not (.github-user-del ):not (.github-user-ins
-	) {
-	text-decoration: none;
-}
+ 
 
-.prose-diff>.markdown-body ins>div:not (.github-user-del ):not (.github-user-ins
-	) {
-	text-decoration: none;
-}
+ins
 
+ 
+
+pre
+
+
+:not
+
+ 
+
+(
+.github-user-del
+
+ 
+
+)
+:not
+
+ 
+
+(
+.github-user-ins
+
+
+	
+
+)
+{
+text-decoration
+
+
+:
+
+ 
+
+none
+
+
+;
+}
+.prose-diff
+>
+.markdown-body
+
+ 
+
+ins
+
+ 
+
+code
+
+
+:not
+
+ 
+
+(
+.github-user-del
+
+ 
+
+)
+:not
+
+ 
+
+(
+.github-user-ins
+
+
+	
+
+)
+{
+text-decoration
+
+
+:
+
+ 
+
+none
+
+
+;
+}
+.prose-diff
+>
+.markdown-body
+
+ 
+
+ins
+>
+div
+
+
+:not
+
+ 
+
+(
+.github-user-del
+
+ 
+
+)
+:not
+
+ 
+
+(
+.github-user-ins
+
+
+	
+
+)
+{
+text-decoration
+
+
+:
+
+ 
+
+none
+
+
+;
+}
 .prose-diff>.markdown-body ul>ins {
 	padding: 0px;
 	display: block;
@@ -17229,11 +17391,46 @@ video {
 	display: inline-block;
 }
 
-audio:not ([controls] ) {
-	height: 0px;
-	display: none;
-}
+audio
 
+
+:not
+
+ 
+
+(
+[
+controls
+]
+
+ 
+
+)
+{
+height
+
+
+:
+
+ 
+
+0
+px
+
+
+;
+display
+
+
+:
+
+ 
+
+none
+
+
+;
+}
 [hidden] {
 	display: none;
 }
@@ -17312,10 +17509,32 @@ img {
 	border: 0px currentColor;
 }
 
-svg:not (:root ) {
-	overflow: hidden;
-}
+svg
 
+
+:not
+
+ 
+
+(
+:root
+
+ 
+
+)
+{
+overflow
+
+
+:
+
+ 
+
+hidden
+
+
+;
+}
 figure {
 	margin: 1em 40px;
 }
@@ -34628,3 +34847,27 @@ body .fn-hide {
 .fn-right {
 	float: right;
 }
+/*************************************************/
+button.discussion-sidebar-toggle {
+	display: block;
+	width: 150px;
+	font-weight: bold;
+	text-align: left;
+	background: none;
+	border: 0;
+}
+
+.discussion-sidebar-toggle {
+	padding: 5px;
+	margin: -5px -5px 5px;
+}
+
+.discussion-sidebar-heading {
+	margin-top: 0;
+	margin-bottom: 10px;
+	font-size: 12px;
+	line-height: 16px;
+	color: #777;
+}
+/***********************************************25**********************************/
+

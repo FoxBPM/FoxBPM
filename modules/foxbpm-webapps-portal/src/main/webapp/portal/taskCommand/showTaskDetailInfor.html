@@ -10,7 +10,7 @@
 </head>
 <body>
 	<br>
-	<div class="container process"
+	<div class="container process" id="processInfo"
 		style="background-color: #FFFFFF; padding: 10px; height: auto; background: #fff;">
 		<div
 			class="repository-with-sidebar repo-container new-discussion-timeline">
@@ -31,8 +31,7 @@
 													aria-haspopup="true" aria-label="Manage labels"
 													data-hotkey="l">流程状态</button>
 											</div>
-											<div class="labels css-truncate js-timeline-label-list"
-												id="processStatus"></div>
+											<div class="labels css-truncate js-timeline-label-list" id="processStatus"></div>
 										</div>
 										<!-- <div class="discussion-sidebar-item sidebar-milestone">
 											<div
@@ -99,29 +98,10 @@
 										</div>
 
 										<div
-											class="discussion-sidebar-item js-socket-channel js-updatable-content"
-											id="partial-users-participants"
-											data-url="/FoxBPM/FoxBPM/issues/1/show_partial?partial=participants"
-											data-channel="FoxBPM/FoxBPM:issue:35445625">
-											<div class="participation">
-
-												<h3 class="discussion-sidebar-heading">2 participants</h3>
-												<div class="participation-avatars">
-													<a class="participant-avatar tooltipped tooltipped-s"
-														aria-label="kenshinnet" href="/kenshinnet"><img
-														width="20" height="20" class="avatar" alt="kenshin"
-														src="https://avatars0.githubusercontent.com/u/900179?v=2&amp;s=40"
-														data-user="900179"></a> <a
-														class="participant-avatar tooltipped tooltipped-s"
-														aria-label="maenliang" href="/maenliang"><img
-														width="20" height="20" class="avatar" alt="maenliang"
-														src="https://avatars3.githubusercontent.com/u/7787703?v=2&amp;s=40"
-														data-user="7787703"></a>
-												</div>
+											class="discussion-sidebar-item js-socket-channel js-updatable-content">
+											<div class="participation" id="partial-users-participants">
 											</div>
 										</div>
-
-
 
 										<div class="discussion-sidebar-item lock-toggle">
 											<a class="lock-toggle-link" href="#lock-confirmation"
