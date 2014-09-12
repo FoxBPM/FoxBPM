@@ -17,7 +17,10 @@
     <result column="ISLOCK" property="isLocked" jdbcType="VARCHAR" />
     <result column="ISACTIVE" property="isActive" jdbcType="VARCHAR" />
     <result column="ISSUBPROCESSROOTTOKEN" property="isSubProcessRootToken" jdbcType="VARCHAR" />
+	<result column="LOOP_COUNT" property="loopCount" jdbcType="INTEGER" />
     <result column="REV_" property="revision" jdbcType="INTEGER" />
+	
+	
   </resultMap>
   
   <insert id="insertToken" parameterType="org.foxbpm.engine.impl.entity.TokenEntity" >
@@ -25,12 +28,12 @@
       NODE_ID, PARENT_ID, START_TIME, 
       END_TIME, NODEENTER_TIME, ARCHIVE_TIME, 
       ISSUSPENDED, ISLOCK, ISACTIVE, 
-      ISSUBPROCESSROOTTOKEN,REV_)
+      ISSUBPROCESSROOTTOKEN,LOOP_COUNT,REV_)
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{processInstanceId,jdbcType=VARCHAR}, 
       #{nodeId,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
       #{endTime,jdbcType=TIMESTAMP}, #{nodeEnterTime,jdbcType=TIMESTAMP}, #{archiveTime,jdbcType=TIMESTAMP}, 
-      #{isSuspended,jdbcType=VARCHAR}, #{isLocked,jdbcType=VARCHAR}, #{isActive,jdbcType=VARCHAR}, 
-      #{isSubProcessRootToken,jdbcType=VARCHAR},1)
+      #{isSuspended,jdbcType=VARCHAR}, #{isLocked,jdbcType=VARCHAR}, #{isActive,jdbcType=VARCHAR},  	
+      #{isSubProcessRootToken,jdbcType=VARCHAR},#{loopCount,jdbcType=INTEGER},1)
   </insert>
   
    <update id="updateToken" parameterType="org.foxbpm.engine.impl.entity.TokenEntity" >
@@ -47,6 +50,7 @@
       ISLOCK = #{isLocked,jdbcType=VARCHAR},
       ISACTIVE = #{isActive,jdbcType=VARCHAR},
       ISSUBPROCESSROOTTOKEN = #{isSubProcessRootToken,jdbcType=VARCHAR},
+	  LOOP_COUNT=#{loopCount,jdbcType=INTEGER}
       REV_ = #{revisionNext,jdbcType=INTEGER}
     where
       ID = #{id,jdbcType=VARCHAR} AND  REV_ = #{revision,jdbcType=INTEGER}
@@ -54,7 +58,7 @@
   
   <sql id="Token_Column_List" >
     ID, NAME, PROCESSINSTANCE_ID, NODE_ID, PARENT_ID, START_TIME, END_TIME, NODEENTER_TIME, 
-    ARCHIVE_TIME, ISSUSPENDED, ISLOCK, ISACTIVE, ISSUBPROCESSROOTTOKEN,REV_
+    ARCHIVE_TIME, ISSUSPENDED, ISLOCK, ISACTIVE, ISSUBPROCESSROOTTOKEN,LOOP_COUNT,REV_
   </sql>
   
   <select id="selectTokenById" parameterType="java.lang.String" resultMap="TokenResultMap">
