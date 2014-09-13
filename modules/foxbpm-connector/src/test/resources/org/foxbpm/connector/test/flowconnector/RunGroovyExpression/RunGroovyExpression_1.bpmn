@@ -9,9 +9,9 @@
         <foxbpm:connectorInstance connectorId="RunGroovyExpression" packageName="org.foxbpm.connector.flowconnector.RunGroovyExpression" className="RunGroovyExpression" connectorInstanceId="5b0a4760-69b3-4a96-8312-cbc062e9aefc" connectorInstanceName="执行脚本" eventType="process-start" errorHandling="抛出异常" errorCode="" type="flowconnector">
           <documentation xsi:type="foxbpm:Documentation"></documentation>
           <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="expressionText" name="脚本表达式" dataType="java.lang.String" isExecute="false">
-            <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_2" name="脚本"><![CDATA[int a = 1;
-int b = 1;
-
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_2" name="脚本"><![CDATA[int a = 1;
+int b = 1;
+
 return (a+b);]]></foxbpm:expression>
           </foxbpm:connectorParameterInputs>
           <foxbpm:connectorParameterOutputs xsi:type="foxbpm:ConnectorParameterOutput" variableTarget="${data}" output="outputObj"/>
