@@ -28,6 +28,14 @@ public class CalendarRuleEntity{
 	private Date workdate;
 	private int status;
 	private String typeid;
+	
+	public CalendarRuleEntity() {
+	}
+	
+	public CalendarRuleEntity(String id) {
+		this.id = id;
+	}
+	
 	public String getId() {
 		return id;
 	}

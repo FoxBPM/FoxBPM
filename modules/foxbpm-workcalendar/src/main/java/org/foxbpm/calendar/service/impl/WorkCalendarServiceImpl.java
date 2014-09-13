@@ -25,8 +25,10 @@ import org.foxbpm.calendar.mybatis.cmd.AddCalendarTypeCmd;
 import org.foxbpm.calendar.mybatis.cmd.DeleteCalendarPartCmd;
 import org.foxbpm.calendar.mybatis.cmd.DeleteCalendarRuleCmd;
 import org.foxbpm.calendar.mybatis.cmd.DeleteCalendarTypeCmd;
+import org.foxbpm.calendar.mybatis.cmd.GetCalendarPartByIdCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarPartCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarPartCountCmd;
+import org.foxbpm.calendar.mybatis.cmd.GetCalendarRuleByIdCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarRuleCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarRuleCountCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarTypeByIdCmd;
@@ -59,22 +61,22 @@ public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalenda
 
 	@Override
 	public void deleteCalendarType(String id) {
-		commandExecutor.execute(new DeleteCalendarTypeCmd());
+		commandExecutor.execute(new DeleteCalendarTypeCmd(id));
 	}
 
 	@Override
-	public void addCalendarRule() {
-		commandExecutor.execute(new AddCalendarRuleCmd());
+	public void addCalendarRule(CalendarRuleEntity calendarRuleEntity) {
+		commandExecutor.execute(new AddCalendarRuleCmd(calendarRuleEntity));
 	}
 
 	@Override
-	public void updateCalendarRule() {
-		commandExecutor.execute(new UpdateCalendarRuleCmd());
+	public void updateCalendarRule(CalendarRuleEntity calendarRuleEntity) {
+		commandExecutor.execute(new UpdateCalendarRuleCmd(calendarRuleEntity));
 	}
 
 	@Override
-	public void deleteCalendarRule() {
-		commandExecutor.execute(new DeleteCalendarRuleCmd());
+	public void deleteCalendarRule(String id) {
+		commandExecutor.execute(new DeleteCalendarRuleCmd(id));
 	}
 
 	@Override
@@ -83,18 +85,18 @@ public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalenda
 	}
 
 	@Override
-	public void addCalendarPart() {
-		commandExecutor.execute(new AddCalendarPartCmd());
+	public void addCalendarPart(CalendarPartEntity calendarPartEntity) {
+		commandExecutor.execute(new AddCalendarPartCmd(calendarPartEntity));
 	}
 
 	@Override
-	public void updateCalendarPart() {
-		commandExecutor.execute(new UpdateCalendarPartCmd());
+	public void updateCalendarPart(CalendarPartEntity calendarPartEntity) {
+		commandExecutor.execute(new UpdateCalendarPartCmd(calendarPartEntity));
 	}
 
 	@Override
-	public void deleteCalendarPart() {
-		commandExecutor.execute(new DeleteCalendarPartCmd());
+	public void deleteCalendarPart(String id) {
+		commandExecutor.execute(new DeleteCalendarPartCmd(id));
 	}
 
 	@Override
@@ -125,5 +127,15 @@ public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalenda
 	@Override
 	public List<CalendarTypeEntity> getCalendarType(int pageIndex, int pageSize, String idLike, String nameLike) {
 		return (List<CalendarTypeEntity>) commandExecutor.execute(new GetCalendarTypeCmd(pageIndex, pageSize, idLike, nameLike));
+	}
+
+	@Override
+	public CalendarRuleEntity getCalendarRuleById(String id) {
+		return commandExecutor.execute(new GetCalendarRuleByIdCmd(id));
+	}
+
+	@Override
+	public CalendarPartEntity getCalendarPartById(String id) {
+		return commandExecutor.execute(new GetCalendarPartByIdCmd(id));
 	}
 }

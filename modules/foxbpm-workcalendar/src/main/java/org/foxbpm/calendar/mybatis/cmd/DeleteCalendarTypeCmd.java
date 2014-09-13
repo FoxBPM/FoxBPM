@@ -17,16 +17,20 @@
  */
 package org.foxbpm.calendar.mybatis.cmd;
 
-import java.util.List;
-
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
-public class DeleteCalendarTypeCmd implements Command<List<?>> {
+public class DeleteCalendarTypeCmd implements Command<Void> {
+	private String id;
+	
+	public DeleteCalendarTypeCmd(String id) {
+		this.id = id;
+	}
 
 	@Override
-	public List<?> execute(CommandContext commandContext) {
-		return commandContext.getSqlSession().selectList("deleteCalendarTypeById");
+	public Void execute(CommandContext commandContext) {
+		commandContext.getSqlSession().delete("deleteCalendarTypeById", id);
+		return null;
 	}
 
 }

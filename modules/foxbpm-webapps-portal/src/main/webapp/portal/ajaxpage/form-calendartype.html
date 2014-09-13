@@ -6,15 +6,13 @@
 </div>
 <div class="modal-body no-padding">
 
-	<form action="" id="login-form" class="smart-form">
-
 		<fieldset>
 			<section>
 				<div class="row">
 					<label class="label col col-2">编号</label>
 					<div class="col col-10">
 						<label class="input">
-							<input type="text" name="id" placeholder="Name on card">
+							<input type="text" id="id" name="id" placeholder="Name on card">
 						</label>
 					</div>
 				</div>
@@ -25,7 +23,7 @@
 					<label class="label col col-2">名称</label>
 					<div class="col col-10">
 						<label class="input">
-							<input type="text" name="name" placeholder="Name on card">
+							<input type="text" id="name" name="name" placeholder="Name on card">
 						</label>
 					</div>
 				</div>
@@ -34,7 +32,7 @@
 		</fieldset>
 
 		<footer>
-			<button type="submit" class="btn btn-primary">
+			<button type="button" class="btn btn-primary" id="btn_submit">
 				提交
 			</button>
 			<button type="button" class="btn btn-default" data-dismiss="modal">
@@ -42,53 +40,25 @@
 			</button>
 		</footer>
 
-	</form>
-
 	<script>
 		// Load form valisation dependency
 		loadScript("js/plugin/jquery-form/jquery-form.min.js", $loginForm);
 
-		// Registration validation script
-		var $loginForm = $("#login-form").validate({
-			// Rules for form validation
-			rules : {
-				id : {
-					required : true,
-				},
-				name : {
-					required : true,
-					minlength : 3,
-					maxlength : 20
-				}
-			},
-
-			// Messages for form validation
-			messages : {
-				id : {
-					required : '编号不能为空',
-				},
-				name : {
-					required : '名称不能为空'
-				}
-			},
-
-			// Do not change code below
-			errorPlacement : function(error, element) {
-				error.insertAfter(element.parent());
-			}
-		});
-
-		var $loginForm = $("#login-form").submit(function(){  
-			 $(this).ajaxSubmit({  
-	                type:"post",  //提交方式  
-	                dataType:"json", //数据类型  
-	                url:"/foxbpm-webapps-common/service/workcal/calendartype", //请求url  
-	                success:function(data){ //提交成功的回调函数  
-	                    alert(data.result);
-	                }  
-	            });  
-	          return false; //不刷新页面
-    });  
+		var pagefunction=function(){
+			$("#btn_submit").click(function(){
+				var id = $("#id").val();
+				var name = $("#name").val();
+				 $.ajax({
+			         type: "post",//使用get方法访问后台
+			         dataType: "json",//返回json格式的数据
+			         url: _serviceUrl+"/workcal/calendartype",//要访问的后台地址
+			         data:{id:id,name:name},
+			         success: function(msg){//msg为返回的数据，在这里做数据绑定
+			        	 
+			         }
+				 });
+			});
+		}
 	</script>
 
 </div>

@@ -37,23 +37,27 @@ public interface WorkCalendarService {
 	
 	Long getCalendarTypeCount(String idLike, String nameLike);
 	
-	void addCalendarRule();
+	void addCalendarRule(CalendarRuleEntity calendarRuleEntity);
 	
-	void updateCalendarRule();
+	void updateCalendarRule(CalendarRuleEntity calendarRuleEntity);
 	
-	void deleteCalendarRule();
+	void deleteCalendarRule(String id);
 	
 	List<CalendarRuleEntity> getCalendarRule(int pageIndex, int pageSize);
 	
+	CalendarRuleEntity getCalendarRuleById(String id);
+	
 	Long getCalendarRuleCount(String idLike, String nameLike);
 	
-	void addCalendarPart();
+	void addCalendarPart(CalendarPartEntity calendarPartEntity);
 	
-	void updateCalendarPart();
+	void updateCalendarPart(CalendarPartEntity calendarPartEntity);
 
-	void deleteCalendarPart();
+	void deleteCalendarPart(String id);
 	
 	List<CalendarPartEntity> getCalendarPart(int pageIndex, int pageSize);
+	
+	CalendarPartEntity getCalendarPartById(String id);
 	
 	Long getCalendarPartCount(String idLike);
 }

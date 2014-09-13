@@ -1,5 +1,109 @@
 <!-- widget grid -->
 <section id="widget-grid" class="">
+	<div class="modal fade" id="remoteModal" tabindex="-1" role="dialog" aria-labelledby="remoteModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+						<form action="" id="login-form" class="smart-form">
+		
+						<fieldset>
+										<section>
+								<div class="row">
+									<label class="label col col-2">编号</label>
+									<div class="col col-10">
+										<label class="input">
+											<input type="text" name="id" id="ruleId" placeholder="Name on card">
+										</label>
+									</div>
+								</div>
+							</section>
+				
+							<section>
+								<div class="row">
+									<label class="label col col-2">年度</label>
+									<div class="col col-10">
+										<label class="input">
+											<input type="text" name="year" id="ruleYear"  placeholder="Name on card">
+										</label>
+									</div>
+								</div>
+							</section>
+							
+							<section>
+								<div class="row">
+									<label class="label col col-2">周</label>
+									<div class="col col-10">
+										<label class="input">
+											<input type="text" name="week" id="ruleWeek" placeholder="Name on card">
+										</label>
+									</div>
+								</div>
+							</section>
+							
+							<section>
+								<div class="row">
+									<label class="label col col-2">名称</label>
+									<div class="col col-10">
+										<label class="input">
+											<input type="text" name="name" id="ruleName" placeholder="Name on card">
+										</label>
+									</div>
+								</div>
+							</section>
+							
+							<section>
+								<div class="row">
+									<label class="label col col-2">工作时间</label>
+									<div class="col col-10">
+										<label class="input">
+											<input type="text" name="workdate" id="ruleWorkdate" placeholder="Name on card">
+										</label>
+									</div>
+								</div>
+							</section>
+							
+							<section>
+								<div class="row">
+									<label class="label col col-2">状态</label>
+									<div class="col col-10">
+										<label class="input">
+											<input type="text" name="status" id="ruleStatus" placeholder="Name on card">
+										</label>
+									</div>
+								</div>
+							</section>
+							
+							<section>
+								<div class="row">
+									<label class="label col col-2">类型ID</label>
+									<div class="col col-10">
+										<label class="input">
+											<input type="text" name="typeid" id="ruleTypeid" placeholder="Name on card">
+										</label>
+									</div>
+								</div>
+							</section>
+				
+						</fieldset>
+						<footer>
+							<button type="submit" class="btn btn-primary">
+								提交
+							</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								取消
+							</button>
+						</footer>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<div class="modal fade" id="remoteModalAdd" tabindex="-1" role="dialog" aria-labelledby="remoteModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				</div>
+			</div>>
+		</div>
+
 	<!-- row -->
 	<div class="row">
 		<!-- NEW WIDGET START -->
@@ -50,22 +154,67 @@
 </section>
 <!-- end widget grid --> 
 <script src="jsportal/calendarrule.js"></script>
-
+<script src="../portal/js/foxbpm/common.js"></script>
 <script type="text/javascript">
 	
 	//pageSetUp(); 
 	//alert(pagefunction);
 
+	// Load form valisation dependency
+		loadScript("js/plugin/jquery-form/jquery-form.min.js", $loginForm);
+
+		// Registration validation script
+		var $loginForm = $("#login-form").validate({
+			// Rules for form validation
+			rules : {
+				id : {
+					required : true,
+				},
+				name : {
+					required : true,
+					minlength : 3,
+					maxlength : 20
+				}
+			},
+
+			// Messages for form validation
+			messages : {
+				id : {
+					required : '编号不能为空',
+				},
+				name : {
+					required : '名称不能为空'
+				}
+			},
+
+			// Do not change code below
+			errorPlacement : function(error, element) {
+				error.insertAfter(element.parent());
+			}
+		});
+
+		$("#login-form").submit(function(){  
+			 $(this).ajaxSubmit({  
+	                type:"put",  //提交方式  
+	                dataType:"json", //数据类型  
+	                url:"/foxbpm-webapps-common/service/workcal/calendarrule/" + $("#ruleId").val(), //请求url  
+	                success:function(data){ //提交成功的回调函数  
+	                    /* alert(data.result); */
+	                }  
+	            });  
+	          return false; //不刷新页面
+    });  
 
 	// load related plugins
 	loadScript("js/plugin/datatables/jquery.dataTables.js", function(){
 		loadScript("js/plugin/datatables/dataTables.colVis.min.js", function(){
 			loadScript("js/plugin/datatables/dataTables.tableTools.min.js", function(){
 				loadScript("js/plugin/datatables/dataTables.bootstrap.min.js", function(){
-					loadScript("js/plugin/datatable-responsive/datatables.responsive.min.js", pagefunction)
+					loadScript("js/plugin/datatable-responsive/datatables.responsive.min.js", calendarrulepagefunction)
 				});
 			});
 		});
 	});
+	
  
 </script>

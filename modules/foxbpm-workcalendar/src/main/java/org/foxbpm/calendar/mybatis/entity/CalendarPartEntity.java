@@ -24,6 +24,14 @@ public class CalendarPartEntity{
 	private String starttime;
 	private String endtime;
 	private String ruleid;
+	
+	public CalendarPartEntity() {
+	}
+	
+	public CalendarPartEntity(String id) {
+		this.id = id;
+	}
+	
 	public String getId() {
 		return id;
 	}

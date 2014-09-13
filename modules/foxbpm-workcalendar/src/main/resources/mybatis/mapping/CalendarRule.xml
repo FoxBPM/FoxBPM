@@ -47,4 +47,47 @@
 			</if>
 		</where>
 	</select>
+	
+	<insert id="insertCalendarRule" parameterType="org.foxbpm.calendar.mybatis.entity.CalendarRuleEntity">
+	   INSERT INTO WORKCAL_RULE (ID, YEAR, WEEK, NAME, WORK_DATE, STATUS, TYPE_ID
+		)
+		values (#{id,jdbcType=VARCHAR},
+		#{year,jdbcType=INTEGER},
+		#{week,jdbcType=INTEGER},
+		#{name,jdbcType=VARCHAR},
+		#{workdate,jdbcType=TIMESTAMP},
+		#{status,jdbcType=INTEGER},
+		#{typeid,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="updateCalendarRule" parameterType="org.foxbpm.calendar.mybatis.entity.CalendarRuleEntity">
+	  UPDATE WORKCAL_RULE
+		SET 
+		 ID=#{id,jdbcType=VARCHAR}
+		 <if test="year != null">
+		 	,YEAR = #{year,jdbcType=INTEGER} 
+		 </if>
+		 <if test="week != null">
+		 	,WEEK = #{week,jdbcType=INTEGER} 
+		 </if>
+		 <if test="name != null">
+		 	,NAME = #{name,jdbcType=VARCHAR} 
+		 </if>
+		 <if test="workdate != null">
+		 	,WORK_DATE = #{workdate,jdbcType=TIMESTAMP} 
+		 </if>
+		 <if test="status != null">
+		 	,STATUS = #{status,jdbcType=INTEGER} 
+		 </if>
+		 <if test="typeid != null">
+		 	,TYPE_ID = #{typeid,jdbcType=VARCHAR} 
+		 </if>
+		 where
+		 ID=#{id,jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="deleteCalendarRuleById" parameterType="java.lang.String">
+  		DELETE FROM WORKCAL_RULE WHERE ID =  #{id,jdbcType=VARCHAR}
+  	</delete>
 </mapper>
