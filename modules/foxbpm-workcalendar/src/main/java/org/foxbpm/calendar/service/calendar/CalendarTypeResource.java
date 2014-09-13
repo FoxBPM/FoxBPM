@@ -22,22 +22,18 @@ import java.util.Map;
 import org.foxbpm.calendar.mybatis.entity.CalendarTypeEntity;
 import org.foxbpm.calendar.rest.common.AbstractRestResource;
 import org.foxbpm.calendar.service.WorkCalendarService;
-import org.foxbpm.engine.IdentityService;
-import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineManagement;
-import org.foxbpm.engine.impl.cache.CacheUtil;
-import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.restlet.representation.Representation;
+import org.restlet.resource.Delete;
 import org.restlet.resource.Get;
-import org.restlet.resource.Post;
 import org.restlet.resource.Put;
 
 public class CalendarTypeResource extends AbstractRestResource {
 	@Get
 	public Object getCalendarTypeById() {
 		// 获取参数
-		String id = getAttribute("id");
+		String id = getAttribute("calendartypeId");
 		if (StringUtil.isNotEmpty(id)) {
 			// 获取服务
 			WorkCalendarService workCalendarService = ProcessEngineManagement.getDefaultProcessEngine().getService(WorkCalendarService.class);
@@ -52,7 +48,7 @@ public class CalendarTypeResource extends AbstractRestResource {
 	@Put
 	public String updateCalendarType(Representation entity) {
 		// 获取参数
-		String id = getAttribute("id");
+		String id = getAttribute("calendartypeId");
 		Map<String, String> paramsMap = getRequestParams(entity);
 		String name = paramsMap.get("name");
 		if (StringUtil.isNotEmpty(id)) {
@@ -66,5 +62,14 @@ public class CalendarTypeResource extends AbstractRestResource {
 			workCalendarService.updateCalendarType(calendarTypeEntity);
 		}
 		return "{}";
+	}
+	
+	@Delete
+	public String deleteCalendarType() {
+		// 获取参数
+		String id = getAttribute("calendartypeId");
+		WorkCalendarService workCalendarService = ProcessEngineManagement.getDefaultProcessEngine().getService(WorkCalendarService.class);
+		workCalendarService.deleteCalendarType(id);
+		return "SUCCESS";
 	}
 }

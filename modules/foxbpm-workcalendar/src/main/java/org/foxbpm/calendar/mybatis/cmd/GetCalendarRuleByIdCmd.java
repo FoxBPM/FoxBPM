@@ -18,20 +18,20 @@
 package org.foxbpm.calendar.mybatis.cmd;
 
 import org.foxbpm.calendar.mybatis.entity.CalendarRuleEntity;
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
-public class AddCalendarRuleCmd implements Command<Void> {
-	private CalendarRuleEntity calendarRuleEntity;
-
-	public AddCalendarRuleCmd(CalendarRuleEntity calendarRuleEntity) {
-		this.calendarRuleEntity = calendarRuleEntity;
-	}
+public class GetCalendarRuleByIdCmd implements Command<CalendarRuleEntity> {
+	private String id;
 	
+	public GetCalendarRuleByIdCmd(String id) {
+		this.id = id;
+	}
+
 	@Override
-	public Void execute(CommandContext commandContext) {
-		commandContext.getSqlSession().insert("insertCalendarRule", calendarRuleEntity);
-		return null;
+	public CalendarRuleEntity execute(CommandContext commandContext) {
+		return (CalendarRuleEntity) Context.getCommandContext().getSqlSession().selectOne("selectCalendarRuleById", id);
 	}
 
 }

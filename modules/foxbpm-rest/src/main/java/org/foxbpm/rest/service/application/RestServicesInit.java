@@ -47,6 +47,7 @@ import org.foxbpm.rest.service.api.processinstance.ProcessInstanceCollectionReso
 import org.foxbpm.rest.service.api.task.FlowGraphicImgResource;
 import org.foxbpm.rest.service.api.task.TaskCollectionResource;
 import org.foxbpm.rest.service.api.task.TaskInforResource;
+import org.foxbpm.rest.service.api.task.TaskOperationCollectionResource;
 import org.foxbpm.rest.service.api.task.TaskRunTrackResource;
 import org.foxbpm.rest.service.designer.TestConnectionResource;
 import org.restlet.routing.Router;
@@ -77,6 +78,7 @@ public class RestServicesInit {
 		router.attach("/runtime/tasks/{taskId}", TaskCollectionResource.class);
 		router.attach("/runtime/tasks/{taskId}/identityLinks", TaskCollectionResource.class);
 		router.attach("/runtime/tasks/{taskId}/taskCommands", TaskCollectionResource.class);
+		router.attach("/runtime/tasks/{taskId}/operations", TaskOperationCollectionResource.class);
 
 		router.attach("/runtime/process-instances", ProcessInstanceCollectionResource.class);
 		router.attach("/runtime/process-instances/{processInstanceId}", TaskCollectionResource.class);

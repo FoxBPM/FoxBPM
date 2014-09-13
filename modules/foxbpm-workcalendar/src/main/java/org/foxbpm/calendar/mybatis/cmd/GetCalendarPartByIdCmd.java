@@ -17,21 +17,21 @@
  */
 package org.foxbpm.calendar.mybatis.cmd;
 
-import org.foxbpm.calendar.mybatis.entity.CalendarRuleEntity;
+import org.foxbpm.calendar.mybatis.entity.CalendarPartEntity;
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
-public class AddCalendarRuleCmd implements Command<Void> {
-	private CalendarRuleEntity calendarRuleEntity;
-
-	public AddCalendarRuleCmd(CalendarRuleEntity calendarRuleEntity) {
-		this.calendarRuleEntity = calendarRuleEntity;
-	}
+public class GetCalendarPartByIdCmd implements Command<CalendarPartEntity> {
+	private String id;
 	
+	public GetCalendarPartByIdCmd(String id) {
+		this.id = id;
+	}
+
 	@Override
-	public Void execute(CommandContext commandContext) {
-		commandContext.getSqlSession().insert("insertCalendarRule", calendarRuleEntity);
-		return null;
+	public CalendarPartEntity execute(CommandContext commandContext) {
+		return (CalendarPartEntity) Context.getCommandContext().getSqlSession().selectOne("selectCalendarPartById", id);
 	}
 
 }

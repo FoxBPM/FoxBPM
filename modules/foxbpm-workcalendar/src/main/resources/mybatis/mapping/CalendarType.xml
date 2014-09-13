@@ -10,12 +10,10 @@
 
 	<select id="selectCalendarTypeById" parameterType="java.lang.String"
 		resultMap="calendarTypeResultMap">
-		${limitBefore}
-		select ${limitBetween}
+		select 
 		*
 		from workcal_type
 		where id = #{id,jdbcType=VARCHAR}
-		${limitAfter}
 	</select>
 	
 	<select id="selectAllCalendarType" parameterType="org.foxbpm.engine.impl.db.ListQueryParameterObject"
@@ -58,9 +56,13 @@
 		SET 
 		 ID=#{id,jdbcType=VARCHAR}
 		 <if test="name != null">
-		 	,NAME = #{userName,jdbcType=VARCHAR} 
+		 	,NAME = #{name,jdbcType=VARCHAR} 
 		 </if>
 		 where
 		 ID=#{id,jdbcType=VARCHAR}
 	</update>
+	
+	<delete id="deleteCalendarTypeById" parameterType="java.lang.String">
+  		DELETE FROM WORKCAL_TYPE WHERE ID =  #{id,jdbcType=VARCHAR}
+  	</delete>
 </mapper>

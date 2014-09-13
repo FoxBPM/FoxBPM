@@ -42,4 +42,39 @@
 			</if>
 		</where>
 	</select>
+	
+	<insert id="insertCalendarPart" parameterType="org.foxbpm.calendar.mybatis.entity.CalendarPartEntity">
+	   INSERT INTO WORKCAL_PART (ID, SHIFT, START_TIME, END_TIME, RULE_ID
+		)
+		values (#{id,jdbcType=VARCHAR},
+		#{amorpm,jdbcType=VARCHAR},
+		#{starttime,jdbcType=VARCHAR},
+		#{endtime,jdbcType=VARCHAR},
+		#{ruleid,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<update id="updateCalendarPart" parameterType="org.foxbpm.calendar.mybatis.entity.CalendarPartEntity">
+	  UPDATE WORKCAL_PART
+		SET 
+		 ID=#{id,jdbcType=VARCHAR}
+		 <if test="amorpm != null">
+		 	,SHIFT = #{amorpm,jdbcType=INTEGER} 
+		 </if>
+		 <if test="starttime != null">
+		 	,START_TIME = #{starttime,jdbcType=VARCHAR} 
+		 </if>
+		 <if test="endtime != null">
+		 	,END_TIME = #{endtime,jdbcType=VARCHAR} 
+		 </if>
+		 <if test="ruleid != null">
+		 	,RULE_ID = #{ruleid,jdbcType=VARCHAR} 
+		 </if>
+		 where
+		 ID=#{id,jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="deleteCalendarPartById" parameterType="java.lang.String">
+  		DELETE FROM WORKCAL_PART WHERE ID =  #{id,jdbcType=VARCHAR}
+  	</delete>
 </mapper>

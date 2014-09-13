@@ -29,11 +29,23 @@
   
   <select id="selectProcessOperatingById" resultMap="ProcessOperatingResultMap" parameterType="java.lang.String" >
 
-    select 
-    <include refid="ProcessOperating_Column_List" />
+    SELECT 
+    *
     from FOXBPM_RUN_OPERATING
     where ID = #{id,jdbcType=VARCHAR}
   </select>
+  
+   <select id="findOperationByTaskId" resultMap="ProcessOperatingResultMap" parameterType="java.lang.String" >
+    SELECT 
+    *
+    FROM FOXBPM_RUN_OPERATING
+    WHERE TASK_ID = #{taskId,jdbcType=VARCHAR}
+  </select>
+  
+  
+  
+  
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
 
     delete from FOXBPM_RUN_OPERATING

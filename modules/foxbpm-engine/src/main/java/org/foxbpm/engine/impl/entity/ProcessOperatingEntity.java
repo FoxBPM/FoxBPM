@@ -18,6 +18,7 @@
 package org.foxbpm.engine.impl.entity;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.foxbpm.engine.db.HasRevision;
@@ -203,8 +204,23 @@ public class ProcessOperatingEntity  implements ProcessOperating,PersistentObjec
 
 	@Override
 	public Map<String, Object> getPersistentState() {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("processInstanceId", processInstanceId);
+		map.put("processDefinitionId", processDefinitionId);
+		map.put("processDefinitionKey", processDefinitionKey);
+		map.put("processDefinitionName", processDefinitionName);
+		map.put("tokenId", tokenId);
+		map.put("taskId", taskId);
+		map.put("nodeId", nodeId);
+		map.put("nodeName", nodeName);
+		map.put("commandId", commandId);
+		map.put("commandType", commandType);
+		map.put("commandMessage", commandMessage);
+		map.put("operatingComment", operatingComment);
+		map.put("operatingTime", operatingTime);
+		map.put("operator", operator);
+		return map;
 	}
 
 	@Override

@@ -31,19 +31,19 @@ public class MultiInstanceLoopCharacteristics extends LoopCharacteristics {
 	
 	
 	/** 输入数据集 */
-	protected Expression loopDataInputCollection;
+	private Expression loopDataInputCollection;
 	/** 输出数据集 */
-	protected Expression loopDataOutputCollection;
+	private Expression loopDataOutputCollection;
 	/** 输入项 */
-	protected Expression inputDataItem;
+	private Expression inputDataItem;
 	/** 输出项 */
-	protected Expression outputDataItem;
+	private Expression outputDataItem;
 	/** 完成条件 */
-	protected Expression completionCondition;
+	private Expression completionCondition;
 	/** 完成触发机制 */
-	protected MultiInstanceBehavior multiInstanceBehavior=MultiInstanceBehavior.ALL;
+	private MultiInstanceBehavior multiInstanceBehavior=MultiInstanceBehavior.ALL;
 	/** 是否是串行 */
-	protected boolean isSequential=false;
+	private boolean isSequential=false;
 	
 	
 	public Expression getLoopDataInputCollection() {

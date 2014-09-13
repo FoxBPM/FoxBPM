@@ -17,16 +17,21 @@
  */
 package org.foxbpm.calendar.mybatis.cmd;
 
-import java.util.List;
-
+import org.foxbpm.calendar.mybatis.entity.CalendarPartEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
-public class UpdateCalendarPartCmd implements Command<List<?>> {
-
+public class UpdateCalendarPartCmd implements Command<Void> {
+	private CalendarPartEntity calendarPartEntity;
+	
+	public UpdateCalendarPartCmd(CalendarPartEntity calendarPartEntity) {
+		this.calendarPartEntity = calendarPartEntity;
+	}
+	
 	@Override
-	public List<?> execute(CommandContext commandContext) {
-		return commandContext.getSqlSession().selectList("updateCalendarPart");
+	public Void execute(CommandContext commandContext) {
+		commandContext.getSqlSession().update("updateCalendarPart", calendarPartEntity);
+		return null;
 	}
 
 }
