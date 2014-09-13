@@ -76,7 +76,7 @@ function ruleaddfunc(id) {
 		$.ajax({
 			type : "DELETE",
 			url : "/foxbpm-webapps-common/service/workcal/calendarrule/" + id,
-			dataType : "json"
+			dataType : "text/json"
 		});
 	}
 }
@@ -84,7 +84,7 @@ function ruleeditFun(id){
 	$.ajax({
 		type : "GET",
 		url : "/foxbpm-webapps-common/service/workcal/calendarrule/" + id,
-		dataType : "json",
+		dataType : "text/json",
 		success:function(data){
 			 $("#ruleId").val(data.id);
              $("#ruleYear").val(data.year);
