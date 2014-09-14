@@ -1,5 +1,23 @@
+function Calendarpart(config) {
+	this._config = config;
+
+	// 私有函数定义
+	// 公共函数定义
+	this.loadData=function(){
+	};
+}
+/**
+ * 定义类成员
+ */
+Calendarpart.prototype = {
+	init : function() {
+	}
+};
+
+var dataTable = null;
+
 var calendarpartpagefunction = function() {
-	$('#datatable_col_reorder')
+	dataTable = $('#datatable_col_reorder')
 			.dataTable(
 					{
 						columns : [ {
@@ -52,7 +70,7 @@ var calendarpartpagefunction = function() {
 							"sEmptyTable" : "表中无数据存在！",
 							"sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
 							"sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
-							"sSearch" : "_INPUT_&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' <a href='ajaxpage/form-calendarpart.html' data-toggle='modal' data-target='#remoteModalAdd' class='btn btn-success btn-lg pull-right header-btn hidden-mobile'>新增</a>",
+							"sSearch" : "_INPUT_&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' <a href='javascript:void(0);' onclick='addpart()' class='btn btn-success btn-lg pull-right header-btn hidden-mobile'>新增</a>",
 							"oPaginate" : {
 								"sFirst" : "首页",
 								"sPrevious" : "上一页",
@@ -72,7 +90,30 @@ function partaddfunc(id) {
 		$.ajax({
 			type : "DELETE",
 			url : "/foxbpm-webapps-common/service/workcal/calendarpart/" + id,
-			dataType : "json"
+			dataType : "text",
+			success:function(data){ //提交成功的回调函数  
+                /* alert(data.result); */
+                 $('#remoteModal').modal('hide');
+                
+                 $.smallBox({ 
+            			title : '提示!',
+            			content : '删除成功！',
+  	     				color : '#296191',
+  	     				icon : 'fa fa-bell swing animated',
+            			timeout : 2000
+            		});
+                 dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarpart").load();
+            },
+            error:function(){
+            	dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarpart").load();
+            	$.smallBox({ 
+        			title : '错误!',
+        			content : '删除失败',
+        			color : "#C46A69",
+        			icon : "fa fa-warning shake animated",
+        			timeout : 2000
+        		});
+            }
 		});
 	}
 }
@@ -87,9 +128,18 @@ function parteditFun(id){
              $("#partStarttime").val(data.starttime);
              $("#partEndtime").val(data.endtime);
              $("#partRuleid").val(data.ruleid);
+             $("#login-form").attr("op", "0");
              $('#remoteModal').modal('show');
 		}
 	});
 }
 
-
+function addpart() {
+	$("#partId").val("");
+    $("#partAmorpm").val(0);
+    $("#partStarttime").val("");
+    $("#partEndtime").val("");
+    $("#partRuleid").val("");
+	$("#login-form").attr("op", "1");
+	$('#remoteModal').modal('show');
+}

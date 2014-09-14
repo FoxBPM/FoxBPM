@@ -11,7 +11,7 @@
 							<label class="label col col-2">编号</label>
 							<div class="col col-10">
 								<label class="input"> <input type="text" name="id"
-									id="typeId" placeholder="Name on card">
+									id="typeId" placeholder="请输入编号">
 								</label>
 							</div>
 						</div>
@@ -21,7 +21,7 @@
 							<label class="label col col-2">名称</label>
 							<div class="col col-10">
 								<label class="input"> <input type="text" name="name"
-									id="typeName" placeholder="Name on card">
+									id="typeName" placeholder="请输入名称">
 								</label>
 							</div>
 						</div>
@@ -93,7 +93,7 @@
 
 </section>
 <!-- end widget grid -->
-<!-- <script src="jsportal/calendartype.js"></script> -->
+<script src="jsportal/calendartype.js"></script>
 <script type="text/javascript">
 	
 	//pageSetUp(); 
@@ -111,7 +111,7 @@
 				},
 				name : {
 					required : true,
-					minlength : 3,
+					/* minlength : 3, */
 					maxlength : 20
 				}
 			},
@@ -138,6 +138,7 @@
 			 $(this).ajaxSubmit({  
 	                type:"put",  //提交方式  
 	                dataType:"text", //数据类型  
+	                contentType:'application/x-www-form-urlencoded; charset=UTF-8',
 	                url:"/foxbpm-webapps-common/service/workcal/calendartype/" + $("#typeId").val(), //请求url  
 	                success:function(data){ //提交成功的回调函数  
 	                    /* alert(data.result); */
@@ -167,6 +168,7 @@
 				$(this).ajaxSubmit({  
 	                type:"post",  //提交方式  
 	                dataType:"text", //数据类型  
+	                contentType:'application/x-www-form-urlencoded; charset=UTF-8',
 	                url:"/foxbpm-webapps-common/service/workcal/calendartype", //请求url  
 	                success:function(data){ //提交成功的回调函数  
 	                     $('#remoteModal').modal('hide');
