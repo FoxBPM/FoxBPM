@@ -792,6 +792,22 @@ function RunTrack(config) {
 
 				}
 			}
+			
+			var markerPathId = runningTrackInfor[index - 1].nodeId+"MarkerPath";
+			var markerPath =$("#" + markerPathId)[0];
+			if (markerPath) {
+				var rectAttributes = markerPath.attributes;
+				for (var j = 0; j < rectAttributes.length; j++) {
+					var rectAttribute = rectAttributes[j];
+					if (rectAttribute.name == "stroke") {
+						rectAttribute.nodeValue = backUpRunningTrackColorDictionary[markerPathId];
+					}
+					if (rectAttribute.name == "stroke-width") {
+						rectAttribute.nodeValue = backUpRunningTrackWidthDictionary[markerPathId];
+					}
+
+				}
+			}
 		}
 	};
 	// 移动节点光标
@@ -800,24 +816,46 @@ function RunTrack(config) {
 			currentRunningTrack = runningTrackInfor[runningTrackIndex];
 			if (currentRunningTrack) {
 				var nodeId = $("#" + currentRunningTrack.nodeId)[0];
+				var markerPathId = currentRunningTrack.nodeId+"MarkerPath";
+				var markerPath =$("#" + markerPathId)[0];
 				if (nodeId) {
 					var rectAttributes = nodeId.attributes;
 					for (var j = 0; j < rectAttributes.length; j++) {
 						var rectAttribute = rectAttributes[j];
 						if (rectAttribute.name == "stroke") {
 							if (tempNodeID != currentRunningTrack.nodeId) {
-								backUpRunningTrackColorDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue;
+								backUpRunningTrackColorDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue; 
 								rectAttribute.nodeValue = RUNNING_TRACK_COLOR;
 							}
 						}
 						if (rectAttribute.name == "stroke-width") {
 							if (tempNodeID != currentRunningTrack.nodeId) {
-								backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue;
+								backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue; 
 								rectAttribute.nodeValue = RUNNING_TRACK_WIDTH;
 							}
 						}
 					}
 					this.tempNodeID = currentRunningTrack.nodeId;
+				}
+				
+				if (markerPath) {
+					var rectAttributes = markerPath.attributes;
+					for (var j = 0; j < rectAttributes.length; j++) {
+						var rectAttribute = rectAttributes[j];
+						if (rectAttribute.name == "stroke") {
+							if (tempNodeID != markerPathId) {
+								backUpRunningTrackColorDictionary[markerPathId] = rectAttribute.nodeValue; 
+								rectAttribute.nodeValue = RUNNING_TRACK_COLOR;
+							}
+						}
+						if (rectAttribute.name == "stroke-width") {
+							if (tempNodeID != markerPathId) {
+								backUpRunningTrackWidthDictionary[markerPathId] = rectAttribute.nodeValue; 
+								rectAttribute.nodeValue = RUNNING_TRACK_WIDTH;
+							}
+						}
+					}
+					this.tempNodeID = markerPathId;
 				}
 			}
 		} else {
