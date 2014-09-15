@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.query.Query;
 import org.foxbpm.rest.common.RestConstants;
@@ -69,6 +70,21 @@ public abstract class AbstractRestResource extends ServerResource {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * 根据用户Id获取用户名称
+	 * @param userId 用户Id
+	 * @return 返回用户名
+	 */
+	protected String getUserName(String userId) {
+		if (StringUtil.isNotEmpty(userId)) {
+			UserEntity tmpUser = FoxBpmUtil.getProcessEngine().getIdentityService().getUser(userId);
+			if (tmpUser != null) {
+				return tmpUser.getUserName();
+			}
+		}
+		return "未知用户:" + userId;
 	}
 	
 	/**

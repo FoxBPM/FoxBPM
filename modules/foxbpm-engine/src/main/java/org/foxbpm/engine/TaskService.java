@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
 import org.foxbpm.engine.impl.entity.ProcessOperatingEntity;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.query.NativeTaskQuery;
@@ -195,5 +196,12 @@ public interface TaskService {
 	 * @return
 	 */
 	List<ProcessOperatingEntity> getTaskOperations(String taskId);
+	
+	/**
+	 * 获取任务的候选人
+	 * @param taskId
+	 * @return
+	 */
+	List<IdentityLinkEntity> getIdentityLinkByTaskId(String taskId);
 
 }

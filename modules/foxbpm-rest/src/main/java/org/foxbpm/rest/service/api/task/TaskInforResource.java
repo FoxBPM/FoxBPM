@@ -29,7 +29,12 @@ import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.exception.FoxBPMBizException;
+import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.entity.GroupEntity;
+import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
+import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.UserEntity;
+import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.runtime.ProcessInstanceQuery;
@@ -42,9 +47,7 @@ import org.restlet.data.Form;
 import org.restlet.resource.Get;
 
 /**
- * 
- * 常量类
- * 
+ * 获取任务详细信息
  * @author yangguangftlp
  * @date 2014年8月12日
  */
@@ -130,25 +133,90 @@ public class TaskInforResource extends AbstractRestResource {
 		resultData.put("processName", processName);
 		resultData.put("processInstanceId", processInstance.getId());
 		resultData.put("processDefinitionId", processInstance.getProcessDefinitionId());
-		resultData.put("status", processInstance.getInstanceStatus());
+		resultData.put("nowStep", getNowStepInfo(processInstance.getId()));
 		DataResult result = new DataResult();
 		result.setData(resultData);
 		return result;
 	}
+	
 	/**
-	 * 根据用户Id获取用户名称
-	 * 
-	 * @param userId
-	 *            用户Id
-	 * @return 返回用户名
+	 * @param processInstanceId
+	 * @return
 	 */
-	protected String getUserName(String userId) {
-		if (StringUtil.isNotEmpty(userId)) {
-			UserEntity tmpUser = FoxBpmUtil.getProcessEngine().getIdentityService().getUser(userId);
-			if (tmpUser != null) {
-				return tmpUser.getUserName();
+	public static Map<String,Object> getNowStepInfo(String processInstanceId) {
+		
+		Map<String,Object> result = new HashMap<String, Object>();
+		try {
+			ProcessEngine engine = FoxBpmUtil.getProcessEngine();
+			ProcessInstance processInstance = engine.getRuntimeService().createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+			result.put("status", processInstance.getInstanceStatus());
+			List<Task> tasks = new ArrayList<Task>();
+			tasks =engine.getTaskService().createTaskQuery().processInstanceId(processInstanceId).taskNotEnd().list();
+			List<Map<String ,Object>> taskInfo = new ArrayList<Map<String,Object>>();
+			Map<String,Object> tmpMap = null;
+			TaskEntity taskEntity = null;
+			for (Task task : tasks) {
+				tmpMap = new HashMap<String, Object>();
+				taskEntity = (TaskEntity)task;
+				tmpMap.put("nodeId", taskEntity.getNodeId());
+				tmpMap.put("nodeName", taskEntity.getNodeName());
+				tmpMap.put("user",taskUserInfo(taskEntity));
+				taskInfo.add(tmpMap);
+			}
+			result.put("taskInfo", taskInfo);
+			return result;
+		} catch (Exception e) {
+			throw new FoxBPMException("任务状态获取失败！实例号："+processInstanceId,e);
+		}
+	}
+	
+	private static List<Map<String,Object>> taskUserInfo(Task task) throws Exception{
+		List<Map<String,Object>> result = new ArrayList<Map<String,Object>>();
+		String assignee = task.getAssignee();
+		Map<String,Object> map = null;
+		//已经被领取
+		if(StringUtil.isNotEmpty(assignee)){
+			UserEntity user = Authentication.selectUserByUserId(assignee);
+			map = new HashMap<String, Object>();
+			map.put("type", "user");
+			map.put("id", user.getUserId());
+			map.put("name", user.getUserName());
+			result.add(map);
+			return result;
+		}
+		//未领取
+		TaskService taskService = FoxBpmUtil.getProcessEngine().getTaskService();
+		List<IdentityLinkEntity> identityLinkList = taskService.getIdentityLinkByTaskId(task.getId());
+		for (IdentityLinkEntity identityLink : identityLinkList) {
+			String userId = identityLink.getUserId();
+			if (userId == null) {
+				String groupTypeId = identityLink.getGroupType();
+				String groupId = identityLink.getGroupId();
+				GroupEntity group = Authentication.findGroupById(groupId, groupTypeId);
+				if (group == null) {
+					continue;
+				}
+				map = new HashMap<String, Object>();
+				map.put("type", groupTypeId);
+				map.put("id", groupId);
+				map.put("name", group.getGroupName());
+				result.add(map);
+			} else {
+				UserEntity user=null;
+				if (userId.equals("foxbpm_all_user")) {
+					user=new UserEntity("foxbpm_all_user", "所有人");
+				} else {
+					user= Authentication.selectUserByUserId(userId);
+				}
+				if(user!=null){
+					map = new HashMap<String, Object>();
+					map.put("type", "user");
+					map.put("id", user.getUserId());
+					map.put("name", user.getUserName());
+					result.add(map);
+				}
 			}
 		}
-		return "未知用户:" + userId;
+		return result;
 	}
 }

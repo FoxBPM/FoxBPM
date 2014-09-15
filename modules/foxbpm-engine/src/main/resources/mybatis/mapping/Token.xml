@@ -50,7 +50,7 @@
       ISLOCK = #{isLocked,jdbcType=VARCHAR},
       ISACTIVE = #{isActive,jdbcType=VARCHAR},
       ISSUBPROCESSROOTTOKEN = #{isSubProcessRootToken,jdbcType=VARCHAR},
-	  LOOP_COUNT=#{loopCount,jdbcType=INTEGER}
+	  LOOP_COUNT=#{loopCount,jdbcType=INTEGER},
       REV_ = #{revisionNext,jdbcType=INTEGER}
     where
       ID = #{id,jdbcType=VARCHAR} AND  REV_ = #{revision,jdbcType=INTEGER}

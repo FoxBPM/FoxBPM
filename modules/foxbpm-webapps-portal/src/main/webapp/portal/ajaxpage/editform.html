@@ -201,7 +201,6 @@ $(document).ready(function() {
     
     var _flowCommit = function(flowInfo){
     	if(confirm("确定要提交吗?")){
-    		alert(JSON.stringify(flowInfo));
     		$("#flowCommandInfo").val(JSON.stringify(flowInfo));
     		$("#form1").submit();
     	}

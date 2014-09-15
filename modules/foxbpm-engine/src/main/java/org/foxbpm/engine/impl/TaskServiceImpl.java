@@ -27,6 +27,7 @@ import org.foxbpm.engine.impl.cmd.ClaimCmd;
 import org.foxbpm.engine.impl.cmd.CompleteTaskCmd;
 import org.foxbpm.engine.impl.cmd.DeleteTasksCmd;
 import org.foxbpm.engine.impl.cmd.FindTaskCmd;
+import org.foxbpm.engine.impl.cmd.GetIdentityLinkByTaskIdCmd;
 import org.foxbpm.engine.impl.cmd.GetRollbackNodeCmd;
 import org.foxbpm.engine.impl.cmd.GetRollbackTasksCmd;
 import org.foxbpm.engine.impl.cmd.GetTaskCommandByKeyCmd;
@@ -35,6 +36,7 @@ import org.foxbpm.engine.impl.cmd.GetTaskOperationCmd;
 import org.foxbpm.engine.impl.cmd.NewTaskCmd;
 import org.foxbpm.engine.impl.cmd.SaveTaskCmd;
 import org.foxbpm.engine.impl.cmd.UnClaimCmd;
+import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
 import org.foxbpm.engine.impl.entity.ProcessOperatingEntity;
 import org.foxbpm.engine.impl.query.NativeTaskQueryImpl;
 import org.foxbpm.engine.impl.task.TaskQueryImpl;
@@ -137,6 +139,10 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 	@Override
 	public List<ProcessOperatingEntity> getTaskOperations(String taskId) {
 		return commandExecutor.execute(new GetTaskOperationCmd(taskId));
+	}
+	
+	public List<IdentityLinkEntity> getIdentityLinkByTaskId(String taskId){
+		return commandExecutor.execute(new GetIdentityLinkByTaskIdCmd(taskId));
 	}
 	
 	@Override
