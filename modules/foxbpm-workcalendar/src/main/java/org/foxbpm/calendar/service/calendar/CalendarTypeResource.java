@@ -17,6 +17,7 @@
  */
 package org.foxbpm.calendar.service.calendar;
 
+import java.net.URLDecoder;
 import java.util.Map;
 
 import org.foxbpm.calendar.mybatis.entity.CalendarTypeEntity;
@@ -50,7 +51,7 @@ public class CalendarTypeResource extends AbstractRestResource {
 		// 获取参数
 		String id = getAttribute("calendartypeId");
 		Map<String, String> paramsMap = getRequestParams(entity);
-		String name = paramsMap.get("name");
+		String name = URLDecoder.decode(paramsMap.get("name"));
 		if (StringUtil.isNotEmpty(id)) {
 			CalendarTypeEntity calendarTypeEntity = new CalendarTypeEntity(id);
 			if (StringUtil.isNotEmpty(name)) {
