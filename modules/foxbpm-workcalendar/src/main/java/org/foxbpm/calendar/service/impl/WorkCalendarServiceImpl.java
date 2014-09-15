@@ -17,6 +17,7 @@
  */
 package org.foxbpm.calendar.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.foxbpm.calendar.mybatis.cmd.AddCalendarPartCmd;
@@ -42,6 +43,7 @@ import org.foxbpm.calendar.mybatis.entity.CalendarRuleEntity;
 import org.foxbpm.calendar.mybatis.entity.CalendarTypeEntity;
 import org.foxbpm.calendar.service.WorkCalendarService;
 import org.foxbpm.engine.impl.ServiceImpl;
+import org.foxbpm.engine.impl.entity.GroupEntity;
 public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalendarService {
 	
 	@Override
@@ -79,6 +81,7 @@ public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalenda
 		commandExecutor.execute(new DeleteCalendarRuleCmd(id));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<CalendarRuleEntity> getCalendarRule(int pageIndex, int pageSize) {
 		return (List<CalendarRuleEntity>) commandExecutor.execute(new GetCalendarRuleCmd(pageIndex, pageSize));
@@ -99,6 +102,7 @@ public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalenda
 		commandExecutor.execute(new DeleteCalendarPartCmd(id));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<CalendarPartEntity> getCalendarPart(int pageIndex, int pageSize) {
 		return (List<CalendarPartEntity>) commandExecutor.execute(new GetCalendarPartCmd(pageIndex, pageSize));
@@ -124,6 +128,7 @@ public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalenda
 		return commandExecutor.execute(new GetCalendarTypeByIdCmd(id));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<CalendarTypeEntity> getCalendarType(int pageIndex, int pageSize, String idLike, String nameLike) {
 		return (List<CalendarTypeEntity>) commandExecutor.execute(new GetCalendarTypeCmd(pageIndex, pageSize, idLike, nameLike));
@@ -137,5 +142,17 @@ public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalenda
 	@Override
 	public CalendarPartEntity getCalendarPartById(String id) {
 		return commandExecutor.execute(new GetCalendarPartByIdCmd(id));
+	}
+	
+	@Override
+	public Date getDueTime(GroupEntity group, Date begin, double hours) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Date getDueTime(String userId, Date begin, double hours) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
