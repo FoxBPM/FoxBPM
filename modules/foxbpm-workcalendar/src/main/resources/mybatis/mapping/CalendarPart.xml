@@ -28,6 +28,14 @@
 		${limitAfter}
 	</select>
 	
+	<select id="selectCalendarPartsByRuleId" parameterType="java.lang.String"
+		resultMap="calendarPartResultMap">
+		select
+		*
+		from workcal_part
+		where rule_id = #{id,jdbcType=VARCHAR}
+	</select>
+	
 	<select id="selectCalendarPartCount" parameterType="java.util.Map"
 		resultType="long">
 		select
