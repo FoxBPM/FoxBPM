@@ -17,7 +17,9 @@
  */
 package org.foxbpm.calendar.mybatis.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class CalendarRuleEntity{
@@ -28,6 +30,7 @@ public class CalendarRuleEntity{
 	private Date workdate;
 	private int status;
 	private String typeid;
+	private List<CalendarPartEntity> calendarPartEntities;
 	
 	public CalendarRuleEntity() {
 	}
@@ -77,6 +80,17 @@ public class CalendarRuleEntity{
 	}
 	public void setTypeid(String typeid) {
 		this.typeid = typeid;
+	}
+
+	public List<CalendarPartEntity> getCalendarPartEntities() {
+		if(calendarPartEntities == null) {
+			calendarPartEntities = new ArrayList<CalendarPartEntity>();
+		}
+		return calendarPartEntities;
+	}
+
+	public void setCalendarPartEntities(List<CalendarPartEntity> calendarPartEntities) {
+		this.calendarPartEntities = calendarPartEntities;
 	}
 
 }

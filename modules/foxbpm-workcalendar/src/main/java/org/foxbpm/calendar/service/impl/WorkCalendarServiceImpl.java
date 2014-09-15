@@ -29,12 +29,15 @@ import org.foxbpm.calendar.mybatis.cmd.DeleteCalendarTypeCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarPartByIdCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarPartCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarPartCountCmd;
+import org.foxbpm.calendar.mybatis.cmd.GetCalendarPartsByRuleIdCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarRuleByIdCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarRuleCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarRuleCountCmd;
+import org.foxbpm.calendar.mybatis.cmd.GetCalendarRulesByTypeIdCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarTypeByIdCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarTypeCmd;
 import org.foxbpm.calendar.mybatis.cmd.GetCalendarTypeCountCmd;
+import org.foxbpm.calendar.mybatis.cmd.GetWorkCalendarEndTimeCmd;
 import org.foxbpm.calendar.mybatis.cmd.UpdateCalendarPartCmd;
 import org.foxbpm.calendar.mybatis.cmd.UpdateCalendarRuleCmd;
 import org.foxbpm.calendar.mybatis.cmd.UpdateCalendarTypeCmd;
@@ -146,13 +149,21 @@ public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalenda
 	
 	@Override
 	public Date getDueTime(GroupEntity group, Date begin, double hours) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
 	public Date getDueTime(String userId, Date begin, double hours) {
-		// TODO Auto-generated method stub
-		return null;
+		return commandExecutor.execute(new GetWorkCalendarEndTimeCmd(userId, begin, hours));
+	}
+
+	@Override
+	public List<CalendarRuleEntity> getCalendarRulesByTypeId(String typeId) {
+		return commandExecutor.execute(new GetCalendarRulesByTypeIdCmd(typeId));
+	}
+
+	@Override
+	public List<CalendarPartEntity> getCalendarPartsByRuleId(String ruleId) {
+		return commandExecutor.execute(new GetCalendarPartsByRuleIdCmd(ruleId));
 	}
 }

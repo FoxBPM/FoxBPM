@@ -17,10 +17,14 @@
  */
 package org.foxbpm.calendar.mybatis.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class CalendarTypeEntity{
 	private String id;
 	private String name;
+	private List<CalendarRuleEntity> calendarRuleEntities;
 	
 	public CalendarTypeEntity() {
 	}
@@ -40,6 +44,17 @@ public class CalendarTypeEntity{
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public List<CalendarRuleEntity> getCalendarRuleEntities() {
+		if(calendarRuleEntities == null) {
+			calendarRuleEntities = new ArrayList<CalendarRuleEntity>();
+		}
+		return calendarRuleEntities;
+	}
+
+	public void setCalendarRuleEntities(List<CalendarRuleEntity> calendarRuleEntities) {
+		this.calendarRuleEntities = calendarRuleEntities;
 	}
 
 }
