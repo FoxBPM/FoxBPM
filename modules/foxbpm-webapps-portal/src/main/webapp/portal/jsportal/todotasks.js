@@ -111,11 +111,11 @@ var pagefunction = function() {
 						"orderable" : true,
 						"serverSide" : true,
 						"ajax" : _serviceTaskUrl,
-						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'>C>"+
+						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'C>>"+
 								 "t"+
 								 "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p  l >>",
 						"colVis": {
-				            "buttonText": "选择展示的列",
+				            "buttonText": "展示列",
 				            "restore": "恢复默认展示",
 				            "showAll": "展示所有列",
 				            "showNone": "不展示列"
@@ -167,10 +167,13 @@ var pagefunction = function() {
 							//调整页面布局
 							$("#datatable_fixed_column_length").css("padding-right","10px");
 							$(".dt-toolbar").css("padding-bottom","6px");
-							$(".dt-toolbar").css("padding-right","32px");
+							$(".dt-toolbar").css("padding-right","42px");
 							$("#datatable_fixed_column_filter").css("width","1200px");
 							$("[type='search']").attr("placeholder","主题/发起人");
 							$("[type='search']").css("width","14%");
+							$(".ColVis").css("visible","true");
+							
+							
 //							var itemnumberInfo = $("#datatable_fixed_column_info").html();
 //							var totalNumber = itemnumberInfo.substring(itemnumberInfo.indexOf("共")+1,itemnumberInfo.indexOf("条记录"));
 //							$("#todo_item_number").html(totalNumber);
@@ -179,7 +182,7 @@ var pagefunction = function() {
 						
 					});
      
-	 todoTable.column(1).order( 'asc' );
+	 todoTable.column(5).order( 'desc' );
 	 clearCondition = function (){
 		$("[type='search']").val("");
 		$("#INITIATOR_SEARCH").val("");
