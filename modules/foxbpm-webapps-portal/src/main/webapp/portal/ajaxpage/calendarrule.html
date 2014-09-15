@@ -11,7 +11,7 @@
 									<label class="label col col-2">编号</label>
 									<div class="col col-10">
 										<label class="input">
-											<input type="text" name="id" id="ruleId" placeholder="Name on card">
+											<input type="text" name="id" id="ruleId" placeholder="请输入编号">
 										</label>
 									</div>
 								</div>
@@ -22,7 +22,7 @@
 									<label class="label col col-2">年度</label>
 									<div class="col col-10">
 										<label class="input">
-											<input type="text" name="year" id="ruleYear"  placeholder="Name on card">
+											<input type="text" name="year" id="ruleYear"  placeholder="请输入年度">
 										</label>
 									</div>
 								</div>
@@ -32,9 +32,17 @@
 								<div class="row">
 									<label class="label col col-2">周</label>
 									<div class="col col-10">
-										<label class="input">
-											<input type="text" name="week" id="ruleWeek" placeholder="Name on card">
-										</label>
+										<label class="select">
+											<!-- <input type="text" name="week" id="ruleWeek" placeholder="请输入周"> -->
+											<select id="ruleWeek" name="week">
+											    <option value="1" selected="">周一</option>
+												<option value="2">周二</option>
+												<option value="3">周三</option>
+												<option value="4">周四</option>
+												<option value="5">周五</option>
+												<option value="6">周六</option>
+												<option value="7">周日</option>
+											</select> <i></i> </label>
 									</div>
 								</div>
 							</section>
@@ -44,7 +52,7 @@
 									<label class="label col col-2">名称</label>
 									<div class="col col-10">
 										<label class="input">
-											<input type="text" name="name" id="ruleName" placeholder="Name on card">
+											<input type="text" name="name" id="ruleName" placeholder="请输入名称">
 										</label>
 									</div>
 								</div>
@@ -54,8 +62,8 @@
 								<div class="row">
 									<label class="label col col-2">工作时间</label>
 									<div class="col col-10">
-										<label class="input">
-											<input type="text" name="workdate" id="ruleWorkdate" placeholder="Name on card">
+										<label class="input"><i class="icon-append fa fa-calendar"></i>
+											<input type="text" name="workdate" id="ruleWorkdate" placeholder="请选择时间">
 										</label>
 									</div>
 								</div>
@@ -66,7 +74,7 @@
 									<label class="label col col-2">状态</label>
 									<div class="col col-10">
 										<label class="input">
-											<input type="text" name="status" id="ruleStatus" placeholder="Name on card">
+											<input type="text" name="status" id="ruleStatus" placeholder="请选择状态">
 										</label>
 									</div>
 								</div>
@@ -77,7 +85,7 @@
 									<label class="label col col-2">类型ID</label>
 									<div class="col col-10">
 										<label class="input">
-											<input type="text" name="typeid" id="ruleTypeid" placeholder="Name on card">
+											<input type="text" name="typeid" id="ruleTypeid" placeholder="请选择类型">
 										</label>
 									</div>
 								</div>
@@ -154,7 +162,6 @@
 </section>
 <!-- end widget grid --> 
 <script src="jsportal/calendarrule.js"></script>
-<script src="../portal/js/foxbpm/common.js"></script>
 <script type="text/javascript">
 	
 	//pageSetUp(); 
@@ -172,7 +179,7 @@
 				},
 				name : {
 					required : true,
-					minlength : 3,
+					/* minlength : 3, */
 					maxlength : 20
 				}
 			},
@@ -194,16 +201,79 @@
 		});
 
 		$("#login-form").submit(function(){  
+			var op =  $("#login-form").attr("op");
+			if(0 == op){
 			 $(this).ajaxSubmit({  
 	                type:"put",  //提交方式  
-	                dataType:"json", //数据类型  
+	                dataType:"text", //数据类型  
+	                contentType:'application/x-www-form-urlencoded; charset=UTF-8',
 	                url:"/foxbpm-webapps-common/service/workcal/calendarrule/" + $("#ruleId").val(), //请求url  
 	                success:function(data){ //提交成功的回调函数  
 	                    /* alert(data.result); */
-	                }  
+	                     $('#remoteModal').modal('hide');
+	                    
+	                     $.smallBox({ 
+		            			title : '提示!',
+		            			content : '提交成功！',
+		  	     				color : '#296191',
+		  	     				icon : 'fa fa-bell swing animated',
+		            			timeout : 2000
+		            		});
+	                     dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
+	                },
+	                error:function(){
+	                	dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
+	                	$.smallBox({ 
+	            			title : '错误!',
+	            			content : '提交数据失败',
+	            			color : "#C46A69",
+	            			icon : "fa fa-warning shake animated",
+	            			timeout : 2000
+	            		});
+	                }
 	            });  
+			}else {
+				$(this).ajaxSubmit({  
+	                type:"post",  //提交方式  
+	                dataType:"text", //数据类型  
+	                contentType:'application/x-www-form-urlencoded; charset=UTF-8',
+	                url:"/foxbpm-webapps-common/service/workcal/calendarrule", //请求url  
+	                success:function(data){ //提交成功的回调函数  
+	                     $('#remoteModal').modal('hide');
+	                
+	                     $.smallBox({ 
+		            			title : '提示!',
+		            			content : '提交成功！',
+		  	     				color : '#296191',
+		  	     				icon : 'fa fa-bell swing animated',
+		            			timeout : 2000
+		            		});
+	                
+	                     dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
+	                },
+	                error:function(){
+						 $.smallBox({ 
+							title : '错误!',
+							content : '提交数据失败',
+							color : "#C46A69",
+							icon : "fa fa-warning shake animated",
+							timeout : 2000
+						});
+	                	dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
+	                }
+	            }); 
+			}
 	          return false; //不刷新页面
-    });  
+    });
+		
+	$('#ruleWorkdate').datepicker({
+		dateFormat : 'yy-mm-dd',
+		prevText : '<i class="fa fa-chevron-left"></i>',
+		nextText : '<i class="fa fa-chevron-right"></i>',
+		/* onSelect : function(selectedDate) {
+			$('#finishdate').datepicker('option', 'minDate', selectedDate);
+		} */
+	});
 
 	// load related plugins
 	loadScript("js/plugin/datatables/jquery.dataTables.js", function(){

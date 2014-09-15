@@ -17,6 +17,7 @@
  */
 package org.foxbpm.calendar.service.calendar;
 
+import java.net.URLDecoder;
 import java.util.Map;
 
 import org.foxbpm.calendar.mybatis.entity.CalendarPartEntity;
@@ -50,10 +51,10 @@ public class CalendarPartResource extends AbstractRestResource{
 		// 获取参数
 		String id = getAttribute("calendarpartId");
 		Map<String, String> paramsMap = getRequestParams(entity);
-		String amorpm = paramsMap.get("amorpm");
-		String starttime = paramsMap.get("starttime");
-		String endtime = paramsMap.get("endtime");
-		String ruleid = paramsMap.get("ruleid");
+		String amorpm = URLDecoder.decode(paramsMap.get("amorpm"));
+		String starttime = URLDecoder.decode(paramsMap.get("starttime"));
+		String endtime = URLDecoder.decode(paramsMap.get("endtime"));
+		String ruleid = URLDecoder.decode(paramsMap.get("ruleid"));
 		if (StringUtil.isNotEmpty(id)) {
 			CalendarPartEntity calendarPartEntity = new CalendarPartEntity(id);
 			if (StringUtil.isNotEmpty(amorpm)) {

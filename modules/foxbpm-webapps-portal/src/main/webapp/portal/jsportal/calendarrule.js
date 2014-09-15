@@ -1,5 +1,23 @@
+function Calendarrule(config) {
+	this._config = config;
+
+	// 私有函数定义
+	// 公共函数定义
+	this.loadData=function(){
+	};
+}
+/**
+ * 定义类成员
+ */
+Calendarrule.prototype = {
+	init : function() {
+	}
+};
+
+var dataTable = null;
+
 var calendarrulepagefunction = function() {
-	$('#datatable_col_reorder')
+	dataTable = $('#datatable_col_reorder')
 			.dataTable(
 					{
 						columns : [ {
@@ -56,7 +74,7 @@ var calendarrulepagefunction = function() {
 							"sEmptyTable" : "表中无数据存在！",
 							"sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
 							"sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
-							"sSearch" : "_INPUT_&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' <a href='ajaxpage/form-calendarrule.html' data-toggle='modal' data-target='#remoteModalAdd' class='btn btn-success btn-lg pull-right header-btn hidden-mobile'>新增</a>",
+							"sSearch" : "_INPUT_&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' <a href='javascript:void(0);' onclick='addrule()' class='btn btn-success btn-lg pull-right header-btn hidden-mobile'>新增</a>",
 							"oPaginate" : {
 								"sFirst" : "首页",
 								"sPrevious" : "上一页",
@@ -76,7 +94,30 @@ function ruleaddfunc(id) {
 		$.ajax({
 			type : "DELETE",
 			url : "/foxbpm-webapps-common/service/workcal/calendarrule/" + id,
-			dataType : "json"
+			dataType : "text",
+			success:function(data){ //提交成功的回调函数  
+                /* alert(data.result); */
+                 $('#remoteModal').modal('hide');
+                
+                 $.smallBox({ 
+            			title : '提示!',
+            			content : '删除成功！',
+  	     				color : '#296191',
+  	     				icon : 'fa fa-bell swing animated',
+            			timeout : 2000
+            		});
+                 dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
+            },
+            error:function(){
+            	dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
+            	$.smallBox({ 
+        			title : '错误!',
+        			content : '删除失败',
+        			color : "#C46A69",
+        			icon : "fa fa-warning shake animated",
+        			timeout : 2000
+        		});
+            }
 		});
 	}
 }
@@ -93,9 +134,20 @@ function ruleeditFun(id){
              $("#ruleWorkdate").val(data.workdate);
              $("#ruleStatus").val(data.status);
              $("#ruleTypeid").val(data.typeid);
+             $("#login-form").attr("op", "0");
              $('#remoteModal').modal('show');
 		}
 	});
 }
 
-
+function addrule() {
+	 $("#ruleId").val("");
+     $("#ruleYear").val("");
+     $("#ruleWeek").val(1);
+     $("#ruleName").val("");
+     $("#ruleWorkdate").val("");
+     $("#ruleStatus").val("");
+     $("#ruleTypeid").val("");
+	$("#login-form").attr("op", "1");
+	$('#remoteModal').modal('show');
+}

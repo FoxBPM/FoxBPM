@@ -17,6 +17,7 @@
  */
 package org.foxbpm.calendar.service.calendar;
 
+import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Map;
@@ -52,12 +53,12 @@ public class CalendarRuleResource extends AbstractRestResource{
 		// 获取参数
 		String id = getAttribute("calendarruleId");
 		Map<String, String> paramsMap = getRequestParams(entity);
-		String year = paramsMap.get("year");
-		String week = paramsMap.get("week");
-		String name = paramsMap.get("name");
-		String workdate = paramsMap.get("workdate");
-		String status = paramsMap.get("status");
-		String typeid = paramsMap.get("typeid");
+		String year =  URLDecoder.decode(paramsMap.get("year"));
+		String week =  URLDecoder.decode(paramsMap.get("week"));
+		String name = URLDecoder.decode(paramsMap.get("name"));
+		String workdate = URLDecoder.decode(paramsMap.get("workdate"));
+		String status =  URLDecoder.decode(paramsMap.get("status"));
+		String typeid =  URLDecoder.decode(paramsMap.get("typeid"));
 		
 		if (StringUtil.isNotEmpty(id)) {
 			CalendarRuleEntity calendarRuleEntity = new CalendarRuleEntity(id);
@@ -71,7 +72,7 @@ public class CalendarRuleResource extends AbstractRestResource{
 				calendarRuleEntity.setName(name);
 			}
 			if (StringUtil.isNotEmpty(workdate)) {
-				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
 				try {
 					calendarRuleEntity.setWorkdate(dateFormat.parse(workdate));
 				} catch (ParseException e) {
