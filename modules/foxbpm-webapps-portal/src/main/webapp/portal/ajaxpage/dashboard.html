@@ -455,75 +455,88 @@
 			</div>
 			<!-- end widget -->
 
-			<!-- new widget -->
-			<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-3" data-widget-colorbutton="false">
-
-				<!-- widget options:
-				usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
-
-				data-widget-colorbutton="false"
-				data-widget-editbutton="false"
-				data-widget-togglebutton="false"
-				data-widget-deletebutton="false"
-				data-widget-fullscreenbutton="false"
-				data-widget-custombutton="false"
-				data-widget-collapsed="true"
-				data-widget-sortable="false"
-
-				-->
-				<header>
-					<span class="widget-icon"> <i class="fa fa-calendar"></i> </span>
-					<h2> My Events </h2>
-					<div class="widget-toolbar">
-						<!-- add: non-hidden - to disable auto hide -->
-						<div class="btn-group">
-							<button class="btn dropdown-toggle btn-xs btn-default" data-toggle="dropdown">
-								Showing <i class="fa fa-caret-down"></i>
-							</button>
-							<ul class="dropdown-menu js-status-update pull-right">
-								<li>
-									<a href="javascript:void(0);" id="mt">Month</a>
-								</li>
-								<li>
-									<a href="javascript:void(0);" id="ag">Agenda</a>
-								</li>
-								<li>
-									<a href="javascript:void(0);" id="td">Today</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</header>
-
-				<!-- widget div-->
-				<div>
-					<!-- widget edit box -->
-					<div class="jarviswidget-editbox">
-
-						<input class="form-control" type="text">
-
-					</div>
-					<!-- end widget edit box -->
-
-					<div class="widget-body no-padding">
-						<!-- content goes here -->
-						<div class="widget-body-toolbar">
-
-							<div id="calendar-buttons">
-
+			<div class="row">
+				<div class="col-sm-12 col-md-12 col-lg-9" style="width:100%">
+			
+					<!-- new widget -->
+					<div class="jarviswidget jarviswidget-color-blueDark">
+			
+						<!-- widget options:
+						usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+			
+						data-widget-colorbutton="false"
+						data-widget-editbutton="false"
+						data-widget-togglebutton="false"
+						data-widget-deletebutton="false"
+						data-widget-fullscreenbutton="false"
+						data-widget-custombutton="false"
+						data-widget-collapsed="true"
+						data-widget-sortable="false"
+			
+						-->
+						<header>
+							<span class="widget-icon"> <i class="fa fa-calendar"></i> </span>
+							<h2>日历面板 </h2>
+							<div class="widget-toolbar">
+								<!-- add: non-hidden - to disable auto hide -->
 								<div class="btn-group">
-									<a href="javascript:void(0)" class="btn btn-default btn-xs" id="btn-prev"><i class="fa fa-chevron-left"></i></a>
-									<a href="javascript:void(0)" class="btn btn-default btn-xs" id="btn-next"><i class="fa fa-chevron-right"></i></a>
+									<button id="select_time" class="btn dropdown-toggle btn-xs btn-default" data-toggle="dropdown">
+										任务创建<i class="fa fa-caret-down"></i>
+									</button>
+									<ul class="dropdown-menu js-status-update pull-right">
+										<li>
+											<a href="javascript:void(0);" id="task_createtime">任务创建</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);" id="task_duration">任务期限</a>
+										</li> 
+									</ul>
+								</div> &nbsp;&nbsp;&nbsp;
+								<div class="btn-group">
+									<button id="select_view" class="btn dropdown-toggle btn-xs btn-default" data-toggle="dropdown">
+										周-日程表<i class="fa fa-caret-down"></i>
+									</button>
+									<ul class="dropdown-menu js-status-update pull-right">
+										<li>
+											<a href="javascript:void(0);" id="mt">月 视图</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);" id="basicWeek">周 视图</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);" id="basicDay">日 视图</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);" id="ag">周-日程表</a>
+										</li>
+										<li>
+											<a href="javascript:void(0);" id="td">日-日程表</a>
+										</li>
+									</ul>
 								</div>
 							</div>
+						</header>
+			
+						<!-- widget div-->
+						<div>
+			
+							<div class="widget-body no-padding"> 
+										<div class="btn-group" style="padding-top:5px;padding-left:5px">
+											<a href="javascript:void(0)" class="btn btn-default btn-xs" id="btn-prev"><i class="fa fa-chevron-left"></i></a>
+											<a href="javascript:void(0)" class="btn btn-default btn-xs" id="btn-next"><i class="fa fa-chevron-right"></i></a>
+										</div> 
+								<div id="calendar" style="padding-top:6px"></div>
+			
+								<!-- end content -->
+							</div>
+			
 						</div>
-						<div id="calendar"></div>
-
-						<!-- end content -->
+						<!-- end widget div -->
 					</div>
-
+					<!-- end widget -->
+			
 				</div>
-				<!-- end widget div -->
+			
 			</div>
 			<!-- end widget -->
 
@@ -919,8 +932,26 @@
 
 	<!-- end row -->
 
+<div class="modal fade " id="remoteModal" tabindex="-1" role="dialog" aria-labelledby="remoteModalLabel" aria-hidden="true">  
+    <div class="modal-dialog" style="width:800px">  
+      	<iframe id="contentFrame" class="col-sm-10 col-md-12 col-lg-12" style="border:0px; height:500px;"></iframe>
+    </div>  
+</div>   
+<div id="eventInfoTip">
+	<div id="eventInfoTip2" class="SmallBox animated fadeInRight fast" style="top:500px;left:500px;background-color:#4C4F53">
+		<div>
+			<span id="eventInfoTipCreateTime"></span>
+			<span id="eventInfoTipTitle"></span>
+		</div>
+	</div>
+</div>
 </section>
 <!-- end widget grid -->
+
+<link href='../css/fullcalendar.min.css' rel='stylesheet' /> 
+<link href='../css/fullcalendar.print.css' rel='stylesheet' media='print' />
+
+<script src="../portal/js/foxbpm/common.js"></script>
 
 <script type="text/javascript">
 	/* DO NOT REMOVE : GLOBAL FUNCTIONS!
@@ -1431,147 +1462,184 @@
 		 * FULL CALENDAR JS
 		 */
 		
-		// Load Calendar dependency then setup calendar
-		loadScript("js/plugin/fullcalendar/jquery.fullcalendar.min.js", setupCalendar);
-		
-		function setupCalendar() {
-		
-		    if ($("#calendar").length) {
-		        var date = new Date();
-		        var d = date.getDate();
-		        var m = date.getMonth();
-		        var y = date.getFullYear();
-		
-		        var calendar = $('#calendar').fullCalendar({
-		
-		            editable: true,
-		            draggable: true,
-		            selectable: false,
-		            selectHelper: true,
-		            unselectAuto: false,
-		            disableResizing: false,
-		
-		            header: {
-		                left: 'title', //,today
-		                center: 'prev, next, today',
-		                right: 'month, agendaWeek, agenDay' //month, agendaDay,
-		            },
-		
-		            select: function (start, end, allDay) {
-		                var title = prompt('Event Title:');
-		                if (title) {
-		                    calendar.fullCalendar('renderEvent', {
-		                            title: title,
-		                            start: start,
-		                            end: end,
-		                            allDay: allDay
-		                        }, true // make the event "stick"
-		                    );
-		                }
-		                calendar.fullCalendar('unselect');
-		            },
-		
-		            events: [{
-		                title: 'All Day Event',
-		                start: new Date(y, m, 1),
-		                description: 'long description',
-		                className: ["event", "bg-color-greenLight"],
-		                icon: 'fa-check'
-		            }, {
-		                title: 'Long Event',
-		                start: new Date(y, m, d - 5),
-		                end: new Date(y, m, d - 2),
-		                className: ["event", "bg-color-red"],
-		                icon: 'fa-lock'
-		            }, {
-		                id: 999,
-		                title: 'Repeating Event',
-		                start: new Date(y, m, d - 3, 16, 0),
-		                allDay: false,
-		                className: ["event", "bg-color-blue"],
-		                icon: 'fa-clock-o'
-		            }, {
-		                id: 999,
-		                title: 'Repeating Event',
-		                start: new Date(y, m, d + 4, 16, 0),
-		                allDay: false,
-		                className: ["event", "bg-color-blue"],
-		                icon: 'fa-clock-o'
-		            }, {
-		                title: 'Meeting',
-		                start: new Date(y, m, d, 10, 30),
-		                allDay: false,
-		                className: ["event", "bg-color-darken"]
-		            }, {
-		                title: 'Lunch',
-		                start: new Date(y, m, d, 12, 0),
-		                end: new Date(y, m, d, 14, 0),
-		                allDay: false,
-		                className: ["event", "bg-color-darken"]
-		            }, {
-		                title: 'Birthday Party',
-		                start: new Date(y, m, d + 1, 19, 0),
-		                end: new Date(y, m, d + 1, 22, 30),
-		                allDay: false,
-		                className: ["event", "bg-color-darken"]
-		            }, {
-		                title: 'Smartadmin Open Day',
-		                start: new Date(y, m, 28),
-		                end: new Date(y, m, 29),
-		                className: ["event", "bg-color-darken"]
-		            }],
-		
-		            eventRender: function (event, element, icon) {
-		                if (!event.description == "") {
-		                    element.find('.fc-event-title').append("<br/><span class='ultra-light'>" + event.description +
-		                        "</span>");
-		                }
-		                if (!event.icon == "") {
-		                    element.find('.fc-event-title').append("<i class='air air-top-right fa " + event.icon +
-		                        " '></i>");
-		                }
-		            }
-		        });
-		
-		    };
-		
-		    /* hide default buttons */
-		    $('.fc-header-right, .fc-header-center').hide();
-		
-		}
-		
-		// calendar prev
-		$('#calendar-buttons #btn-prev').click(function () {
-		    $('.fc-button-prev').click();
-		    return false;
-		});
-		
-		// calendar next
-		$('#calendar-buttons #btn-next').click(function () {
-		    $('.fc-button-next').click();
-		    return false;
-		});
-		
-		// calendar today
-		$('#calendar-buttons #btn-today').click(function () {
-		    $('.fc-button-today').click();
-		    return false;
-		});
-		
-		// calendar month
-		$('#mt').click(function () {
-		    $('#calendar').fullCalendar('changeView', 'month');
-		});
-		
-		// calendar agenda week
-		$('#ag').click(function () {
-		    $('#calendar').fullCalendar('changeView', 'agendaWeek');
-		});
-		
-		// calendar agenda day
-		$('#td').click(function () {
-		    $('#calendar').fullCalendar('changeView', 'agendaDay');
-		});
+		 loadScript("../js/plugin/fullcalendar/moment.min.js", function(){
+				loadScript("../js/plugin/fullcalendar/fullcalendar.min.js",function(){
+					loadScript("../js/plugin/fullcalendar/lang-all.js",pagefunction)
+				});
+			});
+		 $("#eventInfoTip").hide(); 
+			function showFormByUrl(formUrl){
+				$("#contentFrame").attr("src",formUrl);
+				$('#remoteModal').modal({backdrop:"static"});
+				//$('#calendar').fullCalendar('refetchEvents');
+				//$('#calendar').fullCalendar( 'removeEvents', [formUrl ] );
+			}
+			$('#remoteModal').on('hide.bs.modal', function () {
+				if(_closeTaskFlag){
+					$('#calendar').fullCalendar('refetchEvents');
+				}
+				
+			});
+			pageSetUp();
+			var showWeekend = true;
+			var pagefunction = function() {
+				
+				// full calendar
+				 
+			    var hdr = {
+			        left:  'prev,next today',
+			        center: 'title',
+			        right:'month,agendaWeek,agendaDay'
+			    }; 
+			    /* initialize the calendar
+				 -----------------------------------------------------------------*/
+			    $('#calendar').fullCalendar({
+			    	lazyFetching:false,
+			    	aspectRatio:2,
+			    	allDaySlot:false,
+			    	weekends:showWeekend,
+			    	slotEventOverlap:false,
+			    	lang:'zh-cn',
+			    	defaultView: 'agendaWeek',
+			        header: hdr,
+			        editable: false,
+			        droppable: false, // this allows things to be dropped onto the calendar !!!
+			        viewRender:function(a,b){
+			        	$(".fc-toolbar").css("margin-bottom","0px");
+			        	 
+					},
+					eventMouseover:function(event, jsEvent, view ) {
+						
+						$("#eventInfoTipCreateTime").html("创建:  "+event.start.format());
+						$("#eventInfoTipTitle").html("标题:  "+event.title);
+						$("#eventInfoTip").css("display", "block");  
+		              	$("#eventInfoTip2").css("top",jsEvent.clientY-20);  
+		               	$("#eventInfoTip2").css("left",jsEvent.clientX-200);  
+						$("#eventInfoTip").show(); 
+					},
+					eventMouseout:function( calEvent, jsEvent, view ) {
+						$("#eventInfoTip").hide(); 
+					},
+					eventClick:function( event, jsEvent, view ) {
+						showFormByUrl(event.id);
+					},
+			
+			        events: function(start, end, timezone, callback) {
+				    	$.ajax({
+				            url: _serviceTaskUrl,
+				            dataType: 'json',
+				            data: {
+				            	createTimeB: start.format(),
+				            	createTimeE: end.format()
+				            },
+				            success: function(doc) {
+				                var events = []; 
+				                var taskColor;
+				                for(var i=0;i<doc.data.length;i++){ 
+				                	
+				                	if(doc.data[i].priority == "50"){
+				                		taskColor = ["event", "bg-color-greenLight"];
+				                	}else if(doc.data[i].priority == "0"){
+				                		taskColor = ["event", "bg-color-darken"];
+				                	}else if(doc.data[i].priority == "100"){
+				                		taskColor = ["event", "bg-color-red"];
+				                	}
+				                	var create_time = new Date(doc.data[i].createTime);
+				                	var due_time;
+				                	if(doc.data[i].dueDate == null){
+				                		due_time = null;
+				                	}else{
+				                		due_time = new Date(doc.data[i].dueDate);
+				                	}
+				                	events.push({
+				                        title: doc.data[i].subject,
+				                        start: create_time, 
+										end:due_time,
+				                        className: taskColor,
+				                        id:_formUrl+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId,
+				                    });
+				                }
+				                callback(events);
+				            }
+				        });
+				         
+				    },
+			
+			        eventRender: function (event, element, icon) {
+			        },
+			
+			        windowResize: function (event, ui) {
+			            $('#calendar').fullCalendar('render');
+			        }
+			    });
+			 
+			    $('.fc-right, .fc-left').hide();
+			
+				$('#btn-prev').click(function () {
+				    //$('.fc-prev-button').click();
+				    $('#calendar').fullCalendar('prev');
+				    var moment = $('#calendar').fullCalendar('getDate');
+				    //alert("The current date of the calendar is " + moment.format());
+				    
+				    var view = $('#calendar').fullCalendar('getView');
+				    //alert("The view's title is " + view.title);
+				    
+				    //alert("The view's name is " + view.name);
+				    
+				    //alert("The view's start is " + view.start.format());
+				    // alert("The view's end is " + view.end.format());
+				    //alert("The view's intervalStart is " + view.intervalStart.format());
+				    // alert("The view's intervalEnd is " + view.intervalEnd.format());
+				    
+				    return false;
+				});
+				
+				$('#btn-next').click(function () {
+				    //$('.fc-next-button').click();
+				    $('#calendar').fullCalendar('next');
+				    var moment = $('#calendar').fullCalendar('getDate'); 
+				    return false;
+				});
+				
+				$('#calendar-buttons #btn-today').click(function () {
+				    $('.fc-button-today').click();
+				    return false;
+				});
+				
+				$('#mt').click(function () {
+					$('#select_view').html($('#mt').html()+"<i class='fa fa-caret-down'></i>");
+				    $('#calendar').fullCalendar('changeView', 'month');
+				});
+				
+				$('#ag').click(function () {
+					$('#select_view').html($('#ag').html()+"<i class='fa fa-caret-down'></i>");
+				    $('#calendar').fullCalendar('changeView', 'agendaWeek');
+				});
+				
+				$('#td').click(function () {
+					$('#select_view').html($('#td').html()+"<i class='fa fa-caret-down'></i>");
+				    $('#calendar').fullCalendar('changeView', 'agendaDay');
+				});
+				
+				$('#basicWeek').click(function () {
+					$('#select_view').html($('#basicWeek').html()+"<i class='fa fa-caret-down'></i>");
+				    $('#calendar').fullCalendar('changeView', 'basicWeek');
+				});
+				
+				$('#basicDay').click(function () {
+					$('#select_view').html($('#basicDay').html()+"<i class='fa fa-caret-down'></i>");
+				    $('#calendar').fullCalendar('changeView', 'basicDay');
+				});
+				
+				$('#task_createtime').click(function () {
+					$('#select_time').html($('#task_createtime').html()+"<i class='fa fa-caret-down'></i>"); 
+				});
+				$('#task_duration').click(function () {
+					$('#select_time').html($('#task_duration').html()+"<i class='fa fa-caret-down'></i>"); 
+				});
+				
+				
+			};
 		
 		/*
 		 * CHAT

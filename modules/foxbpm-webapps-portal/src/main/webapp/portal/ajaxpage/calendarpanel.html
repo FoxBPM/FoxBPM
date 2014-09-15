@@ -1,6 +1,7 @@
-<div class="row">
+<!-- widget grid -->
+<section id="widget-grid" class="">
 
-	 
+<div class="row">
 	<div class="col-sm-12 col-md-12 col-lg-9" style="width:100%">
 
 		<!-- new widget -->
@@ -26,7 +27,7 @@
 					<!-- add: non-hidden - to disable auto hide -->
 					<div class="btn-group">
 						<button id="select_time" class="btn dropdown-toggle btn-xs btn-default" data-toggle="dropdown">
-							选择时间<i class="fa fa-caret-down"></i>
+							任务创建<i class="fa fa-caret-down"></i>
 						</button>
 						<ul class="dropdown-menu js-status-update pull-right">
 							<li>
@@ -39,7 +40,7 @@
 					</div> &nbsp;&nbsp;&nbsp;
 					<div class="btn-group">
 						<button id="select_view" class="btn dropdown-toggle btn-xs btn-default" data-toggle="dropdown">
-							选择视图<i class="fa fa-caret-down"></i>
+							周-日程表<i class="fa fa-caret-down"></i>
 						</button>
 						<ul class="dropdown-menu js-status-update pull-right">
 							<li>
@@ -56,10 +57,6 @@
 							</li>
 							<li>
 								<a href="javascript:void(0);" id="td">日-日程表</a>
-							</li>
-							
-							<li>
-								<a href="javascript:void(0);" id="notshowweekend">不展示周末</a>
 							</li>
 						</ul>
 					</div>
@@ -93,26 +90,33 @@
       	<iframe id="contentFrame" class="col-sm-10 col-md-12 col-lg-12" style="border:0px; height:500px;"></iframe>
     </div>  
 </div>   
-
-	
+<div id="eventInfoTip">
+	<div id="eventInfoTip2" class="SmallBox animated fadeInRight fast" style="top:500px;left:500px;background-color:#4C4F53">
+		<div>
+			<span id="eventInfoTipCreateTime"></span>
+			<span id="eventInfoTipTitle"></span>
+		</div>
+	</div>
+</div>
+</section>
 <link href='../css/fullcalendar.min.css' rel='stylesheet' /> 
 <link href='../css/fullcalendar.print.css' rel='stylesheet' media='print' />
 
 <script src="../portal/js/foxbpm/common.js"></script>
 <!-- end row --> 
 <script type="text/javascript">
+	$("#eventInfoTip").hide(); 
 	function showFormByUrl(formUrl){
 		$("#contentFrame").attr("src",formUrl);
 		$('#remoteModal').modal({backdrop:"static"});
-		
+		//$('#calendar').fullCalendar('refetchEvents');
 		//$('#calendar').fullCalendar( 'removeEvents', [formUrl ] );
 	}
-	pageSetUp();
-	 
-	$('#notshowweekend').click(function () {
-		pagefunction();
+	$('#remoteModal').on('hide.bs.modal', function () {
+			$('#calendar').fullCalendar('refetchEvents');
 	});
-	
+	pageSetUp();
+	var showWeekend = true;
 	var pagefunction = function() {
 		
 		// full calendar
@@ -125,13 +129,13 @@
 	    /* initialize the calendar
 		 -----------------------------------------------------------------*/
 	    $('#calendar').fullCalendar({
-	    	lazyFetching:true,
+	    	lazyFetching:false,
 	    	aspectRatio:2,
 	    	allDaySlot:false,
-	    	firstHour:8,
+	    	weekends:showWeekend,
 	    	slotEventOverlap:false,
 	    	lang:'zh-cn',
-	    	defaultView: 'agendaDay',
+	    	defaultView: 'agendaWeek',
 	        header: hdr,
 	        editable: false,
 	        droppable: false, // this allows things to be dropped onto the calendar !!!
@@ -139,8 +143,17 @@
 	        	$(".fc-toolbar").css("margin-bottom","0px");
 	        	 
 			},
-			eventMouseover:function( event, jsEvent, view ) { 
-				//alert(event.title);
+			eventMouseover:function(event, jsEvent, view ) {
+				
+				$("#eventInfoTipCreateTime").html("创建:  "+event.start.format());
+				$("#eventInfoTipTitle").html("标题:  "+event.title);
+				$("#eventInfoTip").css("display", "block");  
+              	$("#eventInfoTip2").css("top",jsEvent.clientY-20);  
+               	$("#eventInfoTip2").css("left",jsEvent.clientX-200);  
+				$("#eventInfoTip").show(); 
+			},
+			eventMouseout:function( calEvent, jsEvent, view ) {
+				$("#eventInfoTip").hide(); 
 			},
 			eventClick:function( event, jsEvent, view ) {
 				showFormByUrl(event.id);
@@ -166,10 +179,17 @@
 		                	}else if(doc.data[i].priority == "100"){
 		                		taskColor = ["event", "bg-color-red"];
 		                	}
+		                	var create_time = new Date(doc.data[i].createTime);
+		                	var due_time;
+		                	if(doc.data[i].dueDate == null){
+		                		due_time = null;
+		                	}else{
+		                		due_time = new Date(doc.data[i].dueDate);
+		                	}
 		                	events.push({
-		                        title: doc.data[i].name,
-		                        start: doc.data[i].createTime, 
-		                        end: doc.data[i].dueDate, 
+		                        title: doc.data[i].subject,
+		                        start: create_time, 
+								end:due_time,
 		                        className: taskColor,
 		                        id:_formUrl+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId,
 		                    });
@@ -181,14 +201,6 @@
 		    },
 	
 	        eventRender: function (event, element, icon) {
-	            if (!event.description == "") {
-	                element.find('.fc-event-title').append("<br/><span class='ultra-light'>" + event.description +
-	                    "</span>");
-	            }
-	            if (!event.icon == "") {
-	                element.find('.fc-event-title').append("<i class='air air-top-right fa " + event.icon +
-	                    " '></i>");
-	            }
 	        },
 	
 	        windowResize: function (event, ui) {
@@ -260,6 +272,7 @@
 		$('#task_duration').click(function () {
 			$('#select_time').html($('#task_duration').html()+"<i class='fa fa-caret-down'></i>"); 
 		});
+		
 		
 	};
 	

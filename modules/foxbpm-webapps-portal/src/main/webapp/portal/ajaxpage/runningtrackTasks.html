@@ -7,7 +7,7 @@
 			<div class="jarviswidget jarviswidget-color-blueDark" id="wid-id-2" data-widget-editbutton="false">
 				<header>
 					<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-					<h2>流程实例列表</h2>
+					<h2>流 程 追 踪</h2>
 
 				</header>
 				<!-- widget div-->
@@ -20,6 +20,7 @@
 									<th><i></i></th>
 									<th><i class="fa fa-fw fa-tasks text-muted hidden-md hidden-sm hidden-xs"></i>  主题</th>
 									<th ><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> 创建</th>
+									<th ><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> 更新</th>
 									<th><i class="fa fa-fw fa-flag text-muted hidden-md hidden-sm hidden-xs"></i> 状态</th>
 									<th><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> 发起人</th>
 									<th><i class="fa fa-location-arrow"></i> 位置</th>
@@ -44,8 +45,11 @@
 	</div>
 
 	<!-- end row -->
-
-	<!-- end row -->
+	<div class="modal fade " id="remoteModal" tabindex="-1" role="dialog" aria-labelledby="remoteModalLabel" aria-hidden="true">  
+	    <div class="modal-dialog" style="width:800px">  
+	      	<iframe id="contentFrame" class="col-sm-10 col-md-12 col-lg-12" style="border:0px; height:500px;"></iframe>
+	    </div>  
+	</div>  
 
 </section>
 <!-- end widget grid --> 

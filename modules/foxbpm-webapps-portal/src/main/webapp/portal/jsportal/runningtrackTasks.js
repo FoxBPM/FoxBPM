@@ -13,6 +13,9 @@ var pagefunction = function() {
 									data : 'startTime'
 								},
 								{
+									data : 'updateTime'
+								},
+								{
 									"orderable" : false,
 									"data" : 'instanceStatus',
 									"defaultContent" : "-"
@@ -44,7 +47,7 @@ var pagefunction = function() {
 									}
 								},
 								{
-									"targets" : [ 3 ],
+									"targets" : [ 4 ],
 									"orderable" : true,
 									"createdCell" : function(td, cellData,
 											rowData, row, col) {
@@ -72,11 +75,12 @@ var pagefunction = function() {
 									}
 								} ,
 								{
-									"targets" : [ 6 ],
+									"targets" : [ 7 ],
 									"orderable" : true,
 									"createdCell" : function(td, cellData,
 											rowData, row, col) { 
-										var tdHtml = " <a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=showDiagram('"+rowData.processDefinitionKey+"','"+rowData.id+"');><i class='fa fa-sitemap'></i> 流程图</a>";
+										var tdHtml = "<a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=showForm('"+cellData+"','"+rowData.processDefinitionKey+"','"+rowData.id+"');><i class='fa fa-pencil-square-o'></i> 查看</a>"+
+											" <a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=showDiagram('"+rowData.processDefinitionKey+"','"+rowData.id+"');><i class='fa fa-sitemap'></i> 流程图</a>";
 										$(td).html(tdHtml);
 									
 										
@@ -94,7 +98,7 @@ var pagefunction = function() {
 								+ "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p l>>",
 						"autoWidth" : true,
 						"colVis" : {
-							"buttonText" : "选择展示的列",
+							"buttonText" : "展示列",
 							"restore" : "恢复默认展示",
 							"showAll" : "展示所有列",
 							"showNone" : "不展示列"
@@ -136,7 +140,7 @@ var pagefunction = function() {
 						}
 
 					});
-	runningTrackTable.column(1).order( 'asc' );
+	runningTrackTable.column(3).order( 'desc' );
 	clearCondition = function (){
 		$("[type='search']").val("");
 		$("#INITIATOR_SEARCH").val("");
