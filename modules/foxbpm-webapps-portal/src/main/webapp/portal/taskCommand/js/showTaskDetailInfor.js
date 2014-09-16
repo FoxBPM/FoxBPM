@@ -9,6 +9,7 @@ var RUNNING_TRACK_COLOR = "#ff7200";
 var RUNNING_TRACK_WIDTH = 5;
 var RUNNING_MILLESIMAL_SPEED = 1000;
 
+
 /**
  * 全局变量
  */
@@ -16,7 +17,7 @@ var _GlobalFlowVar = {
 	taskListEnd : [],
 	taskListIng : [],
 	nodeInforArr : [],
-	isIE : window.ActiveXObject && $.browser.msie,
+	isIE : window.ActiveXObject && $.browser.msie && $.browser.version < 8.0,
 	_self : this,
 	_bpmServiceUrl : _serviceUrl,
 	init : function(config) {
