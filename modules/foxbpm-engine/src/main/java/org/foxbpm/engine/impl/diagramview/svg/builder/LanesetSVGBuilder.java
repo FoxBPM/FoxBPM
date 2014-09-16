@@ -76,9 +76,9 @@ public class LanesetSVGBuilder extends AbstractSVGBuilder {
 			// 水平泳道文本需要旋转
 			textX = this.rectVO.getX() + 10.0f;
 			textY = this.rectVO.getY() + this.rectVO.getHeight() / 2 + textWidth / 2;
-			this.textVO.setTransform("rotate(180 " + textX + COMMA + textY + BRACKET_SUFFIX);
+			this.textVO.setTransform("rotate(270 " + textX + COMMA + textY + BRACKET_SUFFIX);
 			StringBuffer styleBuffer = new StringBuffer(this.textVO.getStyle());
-			this.textVO.setStyle(styleBuffer.append(";writing-mode: tb;").toString());
+			this.textVO.setStyle(styleBuffer.append("").toString());
 
 		} else {
 			// 垂直泳道 文本不需要旋转
