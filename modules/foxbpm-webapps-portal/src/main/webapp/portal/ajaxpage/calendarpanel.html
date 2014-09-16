@@ -109,7 +109,7 @@
       	<iframe id="contentFrame" class="col-sm-10 col-md-12 col-lg-12" style="border:0px; height:500px;"></iframe>
     </div>  
 </div>   
-<div id="eventInfoTip">
+<div id="eventInfoTip" >
 	<div id="eventInfoTip2" class="SmallBox animated fadeInRight fast" style="top:500px;left:500px;background-color:#4C4F53">
 		<div>
 			<span id="eventInfoTipCreateTime"></span>
@@ -180,7 +180,13 @@
 				
 				$("#eventInfoTipPriority").html("优先级:  "+priority);
 				
-				$("#eventInfoTip").css("display", "block");  
+				$("#eventInfoTip").css("display", "block"); 
+				$("#eventInfoTip").css("z-index", "1000000"); 
+				$("#eventInfoTip").css("position", ""); 
+				if(document.getElementById("jarviswidget-fullscreen-mode")){
+					$("#eventInfoTip").css("position", "fixed"); 
+				}
+				
 				var tipLeft = jsEvent.clientX-200;
 				if(jsEvent.clientX+500>document.body.clientWidth){
 					tipLeft = jsEvent.clientX-(700-(document.body.clientWidth-jsEvent.clientX))
@@ -194,6 +200,10 @@
 				$("#eventInfoTip").hide(); 
 			},
 			eventClick:function( event, jsEvent, view ) {
+				if(document.getElementById("jarviswidget-fullscreen-mode")){
+					$("#remoteModal").css("z-index", "1000000"); 
+					$("#remoteModal").css("position", "fixed"); 
+				}
 				showFormByUrl(event.id);
 			},
 	
