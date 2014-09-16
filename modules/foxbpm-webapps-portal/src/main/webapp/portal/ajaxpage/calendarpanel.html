@@ -136,6 +136,7 @@
 	$('#remoteModal').on('hide.bs.modal', function () {
 			$('#calendar').fullCalendar('refetchEvents');
 	});
+	 
 	pageSetUp();
 	var showWeekend = true;
 	var pagefunction = function() {
@@ -165,7 +166,6 @@
 	        	 
 			},
 			eventMouseover:function(event, jsEvent, view ) {
-				
 				$("#eventInfoTipCreateTime").html("创        &nbsp;&nbsp; 建:  "+event.start.format("YYYY-MM-DD HH:mm:ss"));
 				$("#eventInfoTipTitle").html("主      &nbsp;&nbsp; 题:  "+event.title);
 				
@@ -181,9 +181,14 @@
 				$("#eventInfoTipPriority").html("优先级:  "+priority);
 				
 				$("#eventInfoTip").css("display", "block");  
-              	$("#eventInfoTip2").css("top",jsEvent.clientY-70+document.body.scrollTop);  
-               	$("#eventInfoTip2").css("left",jsEvent.clientX-200);  
-				$("#eventInfoTip").show(); 
+				var tipLeft = jsEvent.clientX-200;
+				if(jsEvent.clientX+500>document.body.clientWidth){
+					tipLeft = jsEvent.clientX-(700-(document.body.clientWidth-jsEvent.clientX))
+				}
+		      	$("#eventInfoTip2").css("top",jsEvent.clientY-70+document.body.scrollTop);  
+		       	$("#eventInfoTip2").css("left",tipLeft);  
+		       	$("#eventInfoTip").show();
+				
 			},
 			eventMouseout:function( calEvent, jsEvent, view ) {
 				$("#eventInfoTip").hide(); 

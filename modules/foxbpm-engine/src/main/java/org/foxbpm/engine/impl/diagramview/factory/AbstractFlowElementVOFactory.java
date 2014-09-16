@@ -115,6 +115,7 @@ public abstract class AbstractFlowElementVOFactory {
 		} else if (kernelBaseElement instanceof KernelSequenceFlowImpl) {
 			// 连接线
 			KernelSequenceFlowImpl kernelSequenceFlowImpl = (KernelSequenceFlowImpl) kernelBaseElement;
+			svgElementBuildDistincter.setKernelBaseElement(kernelBaseElement);
 			svgElementBuildDistincter.createSequenceElement(kernelSequenceFlowImpl.getId(), kernelSequenceFlowImpl.getName(), (String) kernelSequenceFlowImpl.getProperty(StyleOption.Foreground), kernelSequenceFlowImpl.getWaypoints());
 		} else if (kernelBaseElement instanceof KernelAssociationImpl) {
 			// 连接线

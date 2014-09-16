@@ -20,6 +20,7 @@ package org.foxbpm.engine.impl.diagramview.builder;
 import java.util.List;
 
 import org.foxbpm.engine.impl.diagramview.svg.Point;
+import org.foxbpm.engine.impl.diagramview.svg.vo.TextVO;
 
 /**
  * 流程图形信息构造接口
@@ -122,4 +123,6 @@ public interface FoxBpmnViewBuilder {
 	 * 泳道负责重写该方法 setTextLocationByHerizonFlag
 	 */
 	public void setTextLocationByHerizonFlag(boolean herizonFlag);
+	
+	public TextVO getTextVo();
 }

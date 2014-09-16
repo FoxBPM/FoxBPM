@@ -149,9 +149,14 @@ public class SvgElementBuildDistincter {
 		svgBuilder.setID(id);
 		svgBuilder.setWayPoints(pointList);
 		if (StringUtils.isNotBlank(name)) {
+			svgBuilder.setTextStroke((String) kernelBaseElement.getProperty(StyleOption.TextColor));
+			svgBuilder.setTextFill((String) kernelBaseElement.getProperty(StyleOption.TextColor));
+			svgBuilder.setTextStrokeWidth(0);
+			svgBuilder.setTextFont((String) kernelBaseElement.getProperty(StyleOption.Font));
+
 			svgBuilder.setText(name);
 			// 设置文本的相对位置
-			Point textPoint = PointUtils.caclDetailCenterPoint(pointList);
+			Point textPoint = PointUtils.caclDetailCenterPoint(pointList,svgBuilder.getTextVo());
 			svgBuilder.setTextX(textPoint.getX());
 			svgBuilder.setTextY(textPoint.getY());
 		}
