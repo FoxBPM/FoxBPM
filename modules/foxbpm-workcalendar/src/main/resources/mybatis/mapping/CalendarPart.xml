@@ -29,7 +29,7 @@
 	</select>
 	
 	<select id="selectCalendarPartsByRuleId" parameterType="java.lang.String"
-		resultMap="calendarPartResultMap">
+		resultMap="calendarpartResultMap">
 		select
 		*
 		from workcal_part
