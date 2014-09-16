@@ -26,6 +26,25 @@
 				<div class="widget-toolbar">
 					<!-- add: non-hidden - to disable auto hide -->
 					<div class="btn-group">
+						<button id="select_priority" class="btn dropdown-toggle btn-xs btn-default" data-toggle="dropdown">
+							优先级<i class="fa fa-caret-down"></i>
+						</button>
+						<ul class="dropdown-menu js-status-update pull-right">
+							<li>
+								<a href="javascript:void(0);" id="priority_all">所有</a>
+							</li>
+							<li>
+								<a href="javascript:void(0);" id="priority_high">高</a>
+							</li>
+							<li>
+								<a href="javascript:void(0);" id="priority_mid">中</a>
+							</li> 
+							<li>
+								<a href="javascript:void(0);" id="priority_low">低</a>
+							</li> 
+						</ul>
+					</div> &nbsp;&nbsp;&nbsp;
+					<div class="btn-group">
 						<button id="select_time" class="btn dropdown-toggle btn-xs btn-default" data-toggle="dropdown">
 							任务创建<i class="fa fa-caret-down"></i>
 						</button>
@@ -95,6 +114,7 @@
 		<div>
 			<span id="eventInfoTipCreateTime"></span>
 			<span id="eventInfoTipTitle"></span>
+			<span id="eventInfoTipPriority"></span>
 		</div>
 	</div>
 </div>
@@ -105,6 +125,7 @@
 <script src="../portal/js/foxbpm/common.js"></script>
 <!-- end row --> 
 <script type="text/javascript">
+	var taskPriority="";
 	$("#eventInfoTip").hide(); 
 	function showFormByUrl(formUrl){
 		$("#contentFrame").attr("src",formUrl);
@@ -145,10 +166,22 @@
 			},
 			eventMouseover:function(event, jsEvent, view ) {
 				
-				$("#eventInfoTipCreateTime").html("创建:  "+event.start.format());
-				$("#eventInfoTipTitle").html("主题:  "+event.title);
+				$("#eventInfoTipCreateTime").html("创        &nbsp;&nbsp; 建:  "+event.start.format("YYYY-MM-DD HH:mm:ss"));
+				$("#eventInfoTipTitle").html("主      &nbsp;&nbsp; 题:  "+event.title);
+				
+				var priority = "";
+				if(event.className == "event,bg-color-red"){
+					priority = "高";
+				}else if(event.className == "event,bg-color-greenLight"){
+					priority = "中";
+				}else if(event.className == "event,bg-color-darken"){
+					priority = "低";
+				}
+				
+				$("#eventInfoTipPriority").html("优先级:  "+priority);
+				
 				$("#eventInfoTip").css("display", "block");  
-              	$("#eventInfoTip2").css("top",jsEvent.clientY-20);  
+              	$("#eventInfoTip2").css("top",jsEvent.clientY-70+document.body.scrollTop);  
                	$("#eventInfoTip2").css("left",jsEvent.clientX-200);  
 				$("#eventInfoTip").show(); 
 			},
@@ -172,27 +205,53 @@
 		                var taskColor;
 		                for(var i=0;i<doc.data.length;i++){ 
 		                	
-		                	if(doc.data[i].priority == "50"){
-		                		taskColor = ["event", "bg-color-greenLight"];
-		                	}else if(doc.data[i].priority == "0"){
-		                		taskColor = ["event", "bg-color-darken"];
-		                	}else if(doc.data[i].priority == "100"){
-		                		taskColor = ["event", "bg-color-red"];
+		                	//判断是否选择了优先级
+		                	if(taskPriority == ""){
+		                		if(doc.data[i].priority == "50"){
+			                		taskColor = ["event", "bg-color-greenLight"];
+			                	}else if(doc.data[i].priority == "0"){
+			                		taskColor = ["event", "bg-color-darken"];
+			                	}else if(doc.data[i].priority == "100"){
+			                		taskColor = ["event", "bg-color-red"];
+			                	}
+			                	var create_time = new Date(doc.data[i].createTime);
+			                	var due_time;
+			                	if(doc.data[i].dueDate == null){
+			                		due_time = null;
+			                	}else{
+			                		due_time = new Date(doc.data[i].dueDate);
+			                	}
+			                	events.push({
+			                        title: doc.data[i].subject,
+			                        start: create_time, 
+									end:due_time,
+			                        className: taskColor,
+			                        id:_formUrl+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId,
+			                    });
+		                	}else if(taskPriority == doc.data[i].priority){
+		                		if(doc.data[i].priority == "50"){
+			                		taskColor = ["event", "bg-color-greenLight"];
+			                	}else if(doc.data[i].priority == "0"){
+			                		taskColor = ["event", "bg-color-darken"];
+			                	}else if(doc.data[i].priority == "100"){
+			                		taskColor = ["event", "bg-color-red"];
+			                	}
+			                	var create_time = new Date(doc.data[i].createTime);
+			                	var due_time;
+			                	if(doc.data[i].dueDate == null){
+			                		due_time = null;
+			                	}else{
+			                		due_time = new Date(doc.data[i].dueDate);
+			                	}
+			                	events.push({
+			                        title: doc.data[i].subject,
+			                        start: create_time, 
+									end:due_time,
+			                        className: taskColor,
+			                        id:_formUrl+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId,
+			                    });
 		                	}
-		                	var create_time = new Date(doc.data[i].createTime);
-		                	var due_time;
-		                	if(doc.data[i].dueDate == null){
-		                		due_time = null;
-		                	}else{
-		                		due_time = new Date(doc.data[i].dueDate);
-		                	}
-		                	events.push({
-		                        title: doc.data[i].subject,
-		                        start: create_time, 
-								end:due_time,
-		                        className: taskColor,
-		                        id:_formUrl+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId,
-		                    });
+		                	
 		                }
 		                callback(events);
 		            }
@@ -272,6 +331,30 @@
 		$('#task_duration').click(function () {
 			$('#select_time').html($('#task_duration').html()+"<i class='fa fa-caret-down'></i>"); 
 		});
+		
+		$('#priority_high').click(function () {
+			taskPriority = "100";
+			$('#select_priority').html($('#priority_high').html()+"<i class='fa fa-caret-down'></i>"); 
+			$('#calendar').fullCalendar('refetchEvents');
+		});
+		
+		$('#priority_mid').click(function () {
+			taskPriority = "50";
+			$('#select_priority').html($('#priority_mid').html()+"<i class='fa fa-caret-down'></i>"); 
+			$('#calendar').fullCalendar('refetchEvents');
+		});
+		
+		$('#priority_low').click(function () {
+			taskPriority = "0";
+			$('#select_priority').html($('#priority_low').html()+"<i class='fa fa-caret-down'></i>"); 
+			$('#calendar').fullCalendar('refetchEvents');
+		});
+		$('#priority_all').click(function () {
+			taskPriority = "";
+			$('#select_priority').html($('#priority_all').html()+"<i class='fa fa-caret-down'></i>"); 
+			$('#calendar').fullCalendar('refetchEvents');
+		});
+		
 		
 		
 	};
