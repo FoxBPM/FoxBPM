@@ -70,6 +70,18 @@ public class DateCalUtils {
 	}
 	
 	/**
+	 * 返回0是上午 1是下午
+	 * @param date
+	 * @return
+	 */
+	public static int dayForAMorPM(Date date) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		
+		return calendar.get(Calendar.AM_PM);
+	}
+	
+	/**
 	 * 取得当月天数
 	 * */
 	public static int getCurrentMonthLastDay()
@@ -103,7 +115,19 @@ public class DateCalUtils {
 //			e.printStackTrace();
 //		}
 //		System.out.println("今天是周" + result);
-		System.out.println("现在是0上午 1下午 :===" + dayForAMorPM("2014-02-25 11:41:40"));
+//		System.out.println("现在是0上午 1下午 :===" + dayForAMorPM("2014-02-25 11:41:40"));
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss");
+		Date date = null;
+		try {
+			date = simpleDateFormat.parse("08:30:00");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		Calendar startCalendar = Calendar.getInstance();
+		startCalendar.setTime(date);
+		
+		System.out.println(date);
 	}
 	
 	
