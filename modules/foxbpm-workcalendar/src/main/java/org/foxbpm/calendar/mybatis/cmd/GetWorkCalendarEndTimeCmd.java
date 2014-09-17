@@ -25,6 +25,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.foxbpm.calendar.mybatis.entity.CalendarPartEntity;
 import org.foxbpm.calendar.mybatis.entity.CalendarRuleEntity;
 import org.foxbpm.calendar.mybatis.entity.CalendarTypeEntity;
@@ -84,11 +85,26 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 		//从日历类型拿到对应的工作时间
 		for (k=0; k<calendarTypeEntity.getCalendarRuleEntities().size();k++) {
 			CalendarRuleEntity calRuleEntity = calendarTypeEntity.getCalendarRuleEntities().get(k);
+			//先判断在不在假期时间里
+			if(calRuleEntity.getWorkdate()!=null && calRuleEntity.getYear()==year && DateUtils.isSameDay(calRuleEntity.getWorkdate(), begin)) {
+				begin = DateUtils.addDays(begin, 1);
+				calendar.setTime(begin);
+				calendar.set(Calendar.HOUR, 0);
+				calendar.set(Calendar.MINUTE, 0);
+				calendar.set(Calendar.SECOND, 0);
+				begin = calendar.getTime();
+				year = calendar.get(Calendar.YEAR);
+				month = calendar.get(Calendar.MONTH) + 1;
+				day = calendar.get(Calendar.DATE);
+				hour = calendar.get(Calendar.HOUR);
+				minutes = calendar.get(Calendar.MINUTE);
+				seconds = calendar.get(Calendar.SECOND);
+			}
 			//判断到年份和周相等   还有种特殊的时间 不按周 按时间点添在最后 或
 			if(calRuleEntity.getYear()==year && calRuleEntity.getWeek()==DateCalUtils.dayForWeek(begin)) {
 				calendarRuleEntity = calRuleEntity;
 			}
-			else if((calRuleEntity.getWorkdate() != null && dateFormat.format(calRuleEntity.getWorkdate()).equals(dateFormat.format(begin)))) {
+			if((calRuleEntity.getWorkdate() != null && dateFormat.format(calRuleEntity.getWorkdate()).equals(dateFormat.format(begin)))) {
 				spCalendarRuleEntity = calRuleEntity;
 			}
 			
@@ -115,6 +131,12 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 		return null;
 	}
 
+	
+/**
+ * 计算结束时间
+ * @param calendarRuleEntity
+ * @return
+ */
 	private Date CalculateEndTime(CalendarRuleEntity calendarRuleEntity) {
 		Date endDate = null;
 
@@ -166,6 +188,16 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 		return endDate;
 	}
 	
+	/**
+	 * 具体分情况计算时间 递归
+	 * @param startTime
+	 * @param endTime
+	 * @param beginTime
+	 * @param beginEndTime
+	 * @param calendarRuleEntity
+	 * @param i
+	 * @return
+	 */
 	private Date CalculateTime(long startTime, long endTime, long beginTime, long beginEndTime, CalendarRuleEntity calendarRuleEntity, int i) {
 		Calendar endCalendar = Calendar.getInstance();
 		//1、不在时间段内
@@ -186,7 +218,7 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 			}
 			
 			//再次计算
-			return CalculateTime(startTime, endTime, beginTime, beginEndTime, calendarRuleEntity, i + 1);
+			return CalculateTime(startTime, endTime, beginTime, beginEndTime, calendarRuleEntity, i);
 		}
 		//如果是已经是超过时间段结束时间的，找下一个时间段
 		else if((beginTime>endTime && beginEndTime>endTime)) {
@@ -470,4 +502,23 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 		return startTime;
 	}
 	
+//	/**
+//	 * 循环找时间，直到在工作日内
+//	 * @param beginDate
+//	 * @param calRuleEntity
+//	 * @return
+//	 */
+//	private CalendarRuleEntity loopForWorkDate(Date beginDate) {
+//		CalendarRuleEntity calendarRuleEntity = null;
+//		for (CalendarRuleEntity calRuleEntity : calendarTypeEntity.getCalendarRuleEntities()) {
+//			if(calRuleEntity.getYear()==year && DateUtils.isSameDay(calRuleEntity.getWorkdate(), beginDate)) {
+//				beginDate = DateUtils.addDays(beginDate, 1);
+//				loopForWorkDate(beginDate);
+//			}
+//			else if(calRuleEntity.getYear()==year && calRuleEntity.getWeek()==DateCalUtils.dayForWeek(beginDate)) {
+//				calendarRuleEntity = calRuleEntity;
+//			}
+//		}
+//		return calendarRuleEntity;
+//	}
 }

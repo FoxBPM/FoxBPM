@@ -30,14 +30,14 @@ public class TestGetAllCalendarType extends AbstractFoxBpmTestCase{
 		WorkCalendarService workCalendarService = processEngine.getProcessEngineConfiguration().getService(WorkCalendarService.class);
 		
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.YEAR, 2015);
-		calendar.set(Calendar.MONTH, 8);
-		calendar.set(Calendar.DATE, 16);
-		calendar.set(Calendar.HOUR, 9);
+		calendar.set(Calendar.YEAR, 2014);
+		calendar.set(Calendar.MONTH, 9);
+		calendar.set(Calendar.DATE, 01);
+		calendar.set(Calendar.HOUR, 5);
 		calendar.set(Calendar.MINUTE, 30);
 		calendar.set(Calendar.SECOND, 00);
 		calendar.set(Calendar.AM_PM, 0);
 		
-		workCalendarService.getDueTime("AAA",calendar.getTime(), 12);
+		workCalendarService.getDueTime("AAA",calendar.getTime(), 5);
 	}
 }
