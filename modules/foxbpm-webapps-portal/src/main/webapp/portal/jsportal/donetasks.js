@@ -13,7 +13,7 @@ var pagefunction = function() {
 						},  { data: 'createTime' },
 				        { data: 'endTime' },
 						{
-							data : 'processInitiator'
+							data : 'initatorName'
 						}, {
 							"orderable" : false,
 							"data" : null,
@@ -44,7 +44,7 @@ var pagefunction = function() {
 											rowData, row, col) {
 										//任务主题避免这行
 										if(cellData.length>20){
-											$(td).html(cellData.substring(0,20));
+											$(td).html(cellData.substring(0,20)+"<b> . . .</b>");
 										}else{
 											$(td).html(cellData);
 										}

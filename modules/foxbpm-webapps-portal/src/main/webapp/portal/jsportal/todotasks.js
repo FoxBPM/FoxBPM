@@ -62,7 +62,7 @@ var pagefunction = function() {
 											rowData, row, col) {
 										//任务主题避免这行
 										if(cellData.length>24){
-											$(td).html(cellData.substring(0,24));
+											$(td).html(cellData.substring(0,20)+"<b> . . .</b>");
 										}else{
 											$(td).html(cellData);
 										}
