@@ -1,5 +1,20 @@
 <!-- widget grid -->
 
+<style>
+<!--
+table.dataTable tbody tr {
+  background-color: white;
+}
+table.dataTable tbody tr.selectedwy {
+  background-color: #b0bed9;
+}
+
+table.dataTable.stripe tbody tr.odd.selectedwy, table.dataTable.display tbody tr.odd.selectedwy {
+background-color: #abb9d3;
+}
+-->
+</style>
+
 <div class="modal fade" id="remoteModal" tabindex="-1" role="dialog"
 	aria-labelledby="remoteModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -93,14 +108,13 @@
 
 </section>
 <!-- end widget grid -->
-<script src="jsportal/calendartype.js"></script>
+<!-- <script src="jsportal/calendartype.js"></script> -->
 <script type="text/javascript">
 	
 	//pageSetUp(); 
 	//alert(pagefunction);
 
 	// Load form valisation dependency
-		loadScript("js/plugin/jquery-form/jquery-form.min.js", $loginForm);
 
 		// Registration validation script
 		var $loginForm = $("#login-form").validate({
@@ -151,10 +165,10 @@
 		  	     				icon : 'fa fa-bell swing animated',
 		            			timeout : 2000
 		            		});
-	                     dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
+	                     typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
 	                },
 	                error:function(){
-	                	dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
+	                	typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
 	                	$.smallBox({ 
 	            			title : '错误!',
 	            			content : '提交数据失败',
@@ -181,7 +195,7 @@
 		            			timeout : 2000
 		            		});
 	                
-	                     dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
+	                     typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
 	                },
 	                error:function(){
 						 $.smallBox({ 
@@ -191,13 +205,15 @@
 							icon : "fa fa-warning shake animated",
 							timeout : 2000
 						});
-	                	dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
+						 typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
 	                }
 	            }); 
 			}
 	          return false; //不刷新页面
-    });  
+    });
+	//loadScript("js/plugin/jquery-form/jquery-form.min.js", $loginForm);
 	// load related plugins
+	loadScript("jsportal/calendartype.js",function(){
 	loadScript("js/plugin/datatables/jquery.dataTables.js", function(){
 		loadScript("js/plugin/datatables/dataTables.colVis.min.js", function(){
 			loadScript("js/plugin/datatables/dataTables.tableTools.min.js", function(){
@@ -206,6 +222,7 @@
 				});
 			});
 		});
+	});
 	});
  
 </script>

@@ -8,7 +8,8 @@ function Calendartype(config) {
 	// 公共函数定义
 	this.loadData=function(){
 	};
-}
+};
+
 /**
  * 定义类成员
  */
@@ -17,11 +18,24 @@ Calendartype.prototype = {
 	}
 };
 
-var dataTable = null;
+var typedataTable = null;
 var calendartypepagefunction = function() {
-	dataTable = $('#datatable_col_reorder')
+	typedataTable = $('#datatable_col_reorder')
 			.DataTable(
 					{
+						initComplete:function(){
+							$('#datatable_col_reorder tbody').on( 'click', 'tr', function () {
+							    if ($(this).hasClass('selectedwy')) {
+							        $(this).removeClass('selectedwy');
+//							        alert($(this).children())
+							    }
+							    else {
+							    	typedataTable.$('tr.selectedwy').removeClass('selectedwy');
+							        $(this).addClass('selectedwy');
+//							        alert($(this).children())
+							    }
+							} );
+						},
 						columns : [ {
 							data : 'id'
 						}, {
@@ -84,7 +98,7 @@ var calendartypepagefunction = function() {
 							"sEmptyTable" : "表中无数据存在！",
 							"sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
 							"sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
-							"sSearch" : "_INPUT_&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' <a href='javascript:void(0);' onclick='add()'  class='btn btn-success btn-lg pull-right header-btn hidden-mobile'>新增</a>",
+							"sSearch" : "_INPUT_&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' <a href='javascript:void(0);' onclick='addtype()'  class='btn btn-success btn-lg pull-right header-btn hidden-mobile'>新增</a>",
 							"oPaginate" : {
 								"sFirst" : "首页",
 								"sPrevious" : "上一页",
@@ -97,6 +111,7 @@ var calendartypepagefunction = function() {
 					});
 
 };
+
 
 function typefunc(id) {
 	if (id != null) {
@@ -115,10 +130,10 @@ function typefunc(id) {
   	     				icon : 'fa fa-bell swing animated',
             			timeout : 2000
             		});
-                 dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
+                 typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
             },
             error:function(){
-            	dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
+            	typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
             	$.smallBox({ 
         			title : '错误!',
         			content : '删除失败',
@@ -129,7 +144,8 @@ function typefunc(id) {
             }
 		});
 	}
-}
+};
+
 function typpeeditfun(id) {
 	$.ajax({
 		type : "GET",
@@ -142,11 +158,11 @@ function typpeeditfun(id) {
 			$('#remoteModal').modal('show');
 		}
 	});
-}
+};
 
-function add() {
+function addtype() {
 	$("#typeId").val("");
 	$("#typeName").val("");
 	$("#login-form").attr("op", "1");
 	$('#remoteModal').modal('show');
-}
+};

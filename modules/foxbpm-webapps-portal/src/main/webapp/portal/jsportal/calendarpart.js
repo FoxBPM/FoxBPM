@@ -5,7 +5,7 @@ function Calendarpart(config) {
 	// 公共函数定义
 	this.loadData=function(){
 	};
-}
+};
 /**
  * 定义类成员
  */
@@ -14,11 +14,11 @@ Calendarpart.prototype = {
 	}
 };
 
-var dataTable = null;
+var partdataTable = null;
 
-var calendarpartpagefunction = function() {
-	dataTable = $('#datatable_col_reorder')
-			.dataTable(
+function calendarpartpagefunction() {
+	partdataTable = $('#datatable_col_reorder')
+			.DataTable(
 					{
 						columns : [ {
 							data : 'id'
@@ -102,10 +102,10 @@ function partaddfunc(id) {
   	     				icon : 'fa fa-bell swing animated',
             			timeout : 2000
             		});
-                 dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarpart").load();
+                 partdataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarpart").load();
             },
             error:function(){
-            	dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarpart").load();
+            	partdataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarpart").load();
             	$.smallBox({ 
         			title : '错误!',
         			content : '删除失败',
@@ -116,7 +116,8 @@ function partaddfunc(id) {
             }
 		});
 	}
-}
+};
+
 function parteditFun(id){
 	$.ajax({
 		type : "GET",
@@ -132,7 +133,7 @@ function parteditFun(id){
              $('#remoteModal').modal('show');
 		}
 	});
-}
+};
 
 function addpart() {
 	$("#partId").val("");
@@ -142,4 +143,4 @@ function addpart() {
     $("#partRuleid").val("");
 	$("#login-form").attr("op", "1");
 	$('#remoteModal').modal('show');
-}
+};
