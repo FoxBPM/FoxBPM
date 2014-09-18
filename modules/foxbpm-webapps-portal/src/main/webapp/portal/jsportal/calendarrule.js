@@ -148,7 +148,7 @@ function addrule() {
      $("#ruleWeek").val(1);
      $("#ruleName").val("");
      $("#ruleWorkdate").val("");
-     $("#ruleStatus").val("");
+     $("#ruleStatus").val("0");
      $("#ruleTypeid").val("");
 	$("#login-form").attr("op", "1");
 	$('#remoteModal').modal('show');
