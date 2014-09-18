@@ -19,6 +19,7 @@ package org.foxbpm.calendar.mybatis.cmd;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -36,6 +37,10 @@ import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 
 public class GetWorkCalendarEndTimeCmd implements Command<Date> {
+	//工作状态
+	public static final int WORKSTATUS = 0;
+	//假期状态
+	public static final int FREESTATUS = 1;
 	public static final long HOURTIME = 1000L * 60 * 60;
 	private String userId;
 	private Date begin;
@@ -86,19 +91,26 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 		for (k=0; k<calendarTypeEntity.getCalendarRuleEntities().size();k++) {
 			CalendarRuleEntity calRuleEntity = calendarTypeEntity.getCalendarRuleEntities().get(k);
 			//先判断在不在假期时间里
-			if(calRuleEntity.getWorkdate()!=null && calRuleEntity.getYear()==year && DateUtils.isSameDay(calRuleEntity.getWorkdate(), begin)) {
-				begin = DateUtils.addDays(begin, 1);
-				calendar.setTime(begin);
-				calendar.set(Calendar.HOUR, 0);
-				calendar.set(Calendar.MINUTE, 0);
-				calendar.set(Calendar.SECOND, 0);
-				begin = calendar.getTime();
-				year = calendar.get(Calendar.YEAR);
-				month = calendar.get(Calendar.MONTH) + 1;
-				day = calendar.get(Calendar.DATE);
-				hour = calendar.get(Calendar.HOUR);
-				minutes = calendar.get(Calendar.MINUTE);
-				seconds = calendar.get(Calendar.SECOND);
+			if(calRuleEntity.getStatus()==FREESTATUS && calRuleEntity.getWorkdate()!=null && calRuleEntity.getYear()==year && DateUtils.isSameDay(calRuleEntity.getWorkdate(), begin)) {
+				//如果这天没有设置时间段则跳过这一整天
+				if(calRuleEntity.getCalendarPartEntities().size()==0) {
+					begin = DateUtils.addDays(begin, 1);
+					calendar.setTime(begin);
+					calendar.set(Calendar.HOUR, 0);
+					calendar.set(Calendar.MINUTE, 0);
+					calendar.set(Calendar.SECOND, 0);
+					begin = calendar.getTime();
+					year = calendar.get(Calendar.YEAR);
+					month = calendar.get(Calendar.MONTH) + 1;
+					day = calendar.get(Calendar.DATE);
+					hour = calendar.get(Calendar.HOUR);
+					minutes = calendar.get(Calendar.MINUTE);
+					seconds = calendar.get(Calendar.SECOND);
+				}
+				//如果有设置时间段 则算出这天的工作时间去除假期时间的时间段 然后再计算
+				else {
+					calendarRuleEntity = getCalendarRuleEntityWithHoliday(calRuleEntity);
+				}
 			}
 			//判断到年份和周相等   还有种特殊的时间 不按周 按时间点添在最后 或
 			if(calRuleEntity.getYear()==year && calRuleEntity.getWeek()==DateCalUtils.dayForWeek(begin)) {
@@ -130,8 +142,57 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 		System.out.println("所给时间不在工作时间内，计算出错");
 		return null;
 	}
-
 	
+	/**
+	 * 计算假期后的时间段
+	 * @param calRuleEntity
+	 * @return
+	 */
+	private CalendarRuleEntity getCalendarRuleEntityWithHoliday(CalendarRuleEntity calRuleEntity) {
+		List<CalendarPartEntity> rightPartEntities = new ArrayList<CalendarPartEntity>();
+		if(calRuleEntity.getYear()==year && DateCalUtils.dayForWeek(calRuleEntity.getWorkdate())==DateCalUtils.dayForWeek(begin)) {
+			for (CalendarRuleEntity workRuleEntity : calendarTypeEntity.getCalendarRuleEntities()) {
+				//找到同一天的工作时间
+				if(workRuleEntity.getWeek() == DateCalUtils.dayForWeek(calRuleEntity.getWorkdate())) {
+					//工作时间
+					List<CalendarPartEntity> workPartEntities = workRuleEntity.getCalendarPartEntities();
+					//休息时间
+					List<CalendarPartEntity> freePartEntities = calRuleEntity.getCalendarPartEntities();
+					
+					int size = workPartEntities.size()<freePartEntities.size()?workPartEntities.size():freePartEntities.size();
+					
+					for (int i = 0; i < size; i++) {
+						try {
+							String workStart = workPartEntities.get(i).getStarttime();
+							String workEnd = workPartEntities.get(i).getEndtime();
+							
+							String freeStart = freePartEntities.get(i).getStarttime();
+							String freeEnd = freePartEntities.get(i).getEndtime();
+
+							long workStartDate = getCalculateTime(workStart, workPartEntities.get(i).getAmorpm());
+							long workEndDate = getCalculateTime(workEnd, workPartEntities.get(i).getAmorpm());
+							
+							long freeStartDate = getCalculateTime(freeStart, workPartEntities.get(i).getAmorpm());
+							long freeEndDate = getCalculateTime(freeEnd, workPartEntities.get(i).getAmorpm());
+							
+							//上下午时间段相同再计算
+							if(workPartEntities.get(i).getAmorpm()==workPartEntities.get(i).getAmorpm()) {
+								calculateWorkTimeWithHoliday(workStartDate, workEndDate, freeStartDate, freeEndDate, workPartEntities.get(i), i, rightPartEntities);
+							}
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+		for (CalendarPartEntity calendarPartEntity : rightPartEntities) {
+			System.out.println("和假期修改计算后时间段为:" + calendarPartEntity.getStarttime() + "---" + calendarPartEntity.getEndtime());
+		}
+		calRuleEntity.setCalendarPartEntities(rightPartEntities);
+		return calRuleEntity;
+	}
+
 /**
  * 计算结束时间
  * @param calendarRuleEntity
@@ -139,7 +200,50 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
  */
 	private Date CalculateEndTime(CalendarRuleEntity calendarRuleEntity) {
 		Date endDate = null;
-
+		
+		for (CalendarRuleEntity caRuleEntity : calendarTypeEntity.getCalendarRuleEntities()) {
+			//先判断在不在假期时间里
+			if(caRuleEntity.getStatus()==FREESTATUS && caRuleEntity.getWorkdate()!=null && caRuleEntity.getYear()==year && DateUtils.isSameDay(caRuleEntity.getWorkdate(), begin)) {
+				//如果这天没有设置时间段则跳过这一整天
+				if(caRuleEntity.getCalendarPartEntities().size()==0) {
+					begin = DateUtils.addDays(begin, 1);
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(begin);
+					calendar.set(Calendar.HOUR, 0);
+					calendar.set(Calendar.MINUTE, 0);
+					calendar.set(Calendar.SECOND, 0);
+					begin = calendar.getTime();
+					year = calendar.get(Calendar.YEAR);
+					month = calendar.get(Calendar.MONTH) + 1;
+					day = calendar.get(Calendar.DATE);
+					hour = calendar.get(Calendar.HOUR);
+					minutes = calendar.get(Calendar.MINUTE);
+					seconds = calendar.get(Calendar.SECOND);
+				}
+				//如果有设置时间段 则算出这天的工作时间去除假期时间的时间段 然后再计算
+				else {
+					calendarRuleEntity = getCalendarRuleEntityWithHoliday(caRuleEntity);
+				}
+			}
+		}
+		
+		//如果本天是假期就加一天继续
+		if(calendarRuleEntity.getStatus() == FREESTATUS && calendarRuleEntity.getCalendarPartEntities().size()==0) {
+			day+=1;
+			k+=1;
+			calendarRuleEntity = calendarTypeEntity.getCalendarRuleEntities().get(k+1);
+			Calendar calendar = Calendar.getInstance();
+			
+			if(calendarRuleEntity.getCalendarPartEntities().size()>0) {
+				try {
+					calendar.setTimeInMillis(getCalculateTime(calendarRuleEntity.getCalendarPartEntities().get(0).getStarttime(), calendarRuleEntity.getCalendarPartEntities().get(0).getAmorpm()));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+					begin = calendar.getTime();
+			}
+			endDate = CalculateEndTime(calendarRuleEntity);
+		}
 		for (int j=0;j<calendarRuleEntity.getCalendarPartEntities().size();j++) {
 			CalendarPartEntity calendarPartEntity = calendarRuleEntity.getCalendarPartEntities().get(j);
 			//先匹配上午下午 先默认里面只有一个上午一个下午  //TODO 暂时还没试，应该是支持的
@@ -265,18 +369,22 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 			else {
 				if(k+1 < calendarTypeEntity.getCalendarRuleEntities().size()) {
 					CalendarRuleEntity calendarRuleEntity2 = calendarTypeEntity.getCalendarRuleEntities().get(k+1);
-					day +=1;
-					isAddDay = true;
-					try {
-						startTime = getCalculateTime(calendarRuleEntity2.getCalendarPartEntities().get(0).getStarttime(), calendarRuleEntity2.getCalendarPartEntities().get(0).getAmorpm());
-						endTime = getCalculateTime(calendarRuleEntity2.getCalendarPartEntities().get(0).getEndtime(), calendarRuleEntity2.getCalendarPartEntities().get(0).getAmorpm());
-						beginTime = startTime;
-						Calendar calendar = Calendar.getInstance();
-						calendar.setTimeInMillis(beginTime);
-						begin = calendar.getTime();
-						beginEndTime = (long) (beginTime + hours * HOURTIME);
-					} catch (ParseException e) {
-						e.printStackTrace();
+					if(calendarRuleEntity2.getStatus()==FREESTATUS) {
+						day +=1;
+					} else {
+						day +=1;
+						isAddDay = true;
+						try {
+							startTime = getCalculateTime(calendarRuleEntity2.getCalendarPartEntities().get(0).getStarttime(), calendarRuleEntity2.getCalendarPartEntities().get(0).getAmorpm());
+							endTime = getCalculateTime(calendarRuleEntity2.getCalendarPartEntities().get(0).getEndtime(), calendarRuleEntity2.getCalendarPartEntities().get(0).getAmorpm());
+							beginTime = startTime;
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTimeInMillis(beginTime);
+							begin = calendar.getTime();
+							beginEndTime = (long) (beginTime + hours * HOURTIME);
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
 					}
 					return CalculateEndTime(calendarRuleEntity2);
 				}
@@ -357,19 +465,26 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 			else{
 				if(k+1 < calendarTypeEntity.getCalendarRuleEntities().size()) {
 					CalendarRuleEntity calendarRuleEntity2 = calendarTypeEntity.getCalendarRuleEntities().get(k+1);
-					day +=1;
-					try {
+					if(calendarRuleEntity2.getStatus()==FREESTATUS || isHoliday(begin)) {
+						day +=1;
 						hours = hours - ((double)(endTime-startTime)/(HOURTIME));
-						startTime = getCalculateTime(calendarRuleEntity2.getCalendarPartEntities().get(0).getStarttime(), calendarRuleEntity2.getCalendarPartEntities().get(0).getAmorpm());
-						endTime = getCalculateTime(calendarRuleEntity2.getCalendarPartEntities().get(0).getEndtime(), calendarRuleEntity2.getCalendarPartEntities().get(0).getAmorpm());
-						beginTime = startTime;
-						Calendar calendar = Calendar.getInstance();
-						calendar.setTimeInMillis(beginTime);
-						begin = calendar.getTime();
 						beginEndTime = (long) (beginTime + hours * HOURTIME);
-					} catch (ParseException e) {
-						e.printStackTrace();
+					}else{
+						day +=1;
+						try {
+							hours = hours - ((double)(endTime-startTime)/(HOURTIME));
+							startTime = getCalculateTime(calendarRuleEntity2.getCalendarPartEntities().get(0).getStarttime(), calendarRuleEntity2.getCalendarPartEntities().get(0).getAmorpm());
+							endTime = getCalculateTime(calendarRuleEntity2.getCalendarPartEntities().get(0).getEndtime(), calendarRuleEntity2.getCalendarPartEntities().get(0).getAmorpm());
+							beginTime = startTime;
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTimeInMillis(beginTime);
+							begin = calendar.getTime();
+							beginEndTime = (long) (beginTime + hours * HOURTIME);
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
 					}
+					
 					return CalculateEndTime(calendarRuleEntity2);
 				}
 			}
@@ -396,6 +511,21 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 		}
 		
 		return endCalendar.getTime();
+	}
+
+	/**
+	 * 判断日期在不在假期里面
+	 * @param begin2
+	 * @return
+	 */
+	private boolean isHoliday(Date begin2) {
+		boolean isHoliday = false;
+		for (CalendarRuleEntity calendarRuleEntity : calendarTypeEntity.getCalendarRuleEntities()) {
+			if(calendarRuleEntity.getStatus()==FREESTATUS && calendarRuleEntity.getWorkdate()!=null && calendarRuleEntity.getYear()==year && DateUtils.isSameDay(calendarRuleEntity.getWorkdate(), begin) && calendarRuleEntity.getCalendarPartEntities().size()==0) {
+				isHoliday = true;
+			}
+		}
+		return isHoliday;
 	}
 
 	/**
@@ -500,6 +630,62 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 		long startTime = formatCalendar.getTimeInMillis();
 		
 		return startTime;
+	}
+	
+	private void calculateWorkTimeWithHoliday(long workStartDate, long workEndDate, long freeStartDate, long freeEndDate, CalendarPartEntity workPart, int i, List<CalendarPartEntity> rightPartEntities) {
+		Calendar calendar = Calendar.getInstance();
+		
+		//1、假期不在工作时间段内(基本上用不到。。)
+		if(freeStartDate<=workStartDate && freeEndDate<=workStartDate) {
+			return;
+		}
+		//2、两头都在工作时间段内
+		else if(freeStartDate>=workStartDate && freeEndDate<=workEndDate) {
+			//如果两头时间刚好相等，则没有这段时间了
+			if(freeStartDate == workStartDate && freeEndDate== workEndDate) {
+				return;
+			}else {
+				CalendarPartEntity calendarPartEntity = new CalendarPartEntity(java.util.UUID.randomUUID().toString());
+				calendarPartEntity.setAmorpm(workPart.getAmorpm());
+				calendarPartEntity.setRuleid(workPart.getRuleid());
+				calendar.setTimeInMillis(workStartDate);
+				calendarPartEntity.setStarttime(timeFormat.format(calendar.getTime()));
+				calendar.setTimeInMillis(freeStartDate);
+				calendarPartEntity.setEndtime(timeFormat.format(calendar.getTime()));
+				rightPartEntities.add(calendarPartEntity);
+				
+				CalendarPartEntity calendarPartEntitynew = new CalendarPartEntity(java.util.UUID.randomUUID().toString());
+				calendarPartEntitynew.setAmorpm(workPart.getAmorpm());
+				calendarPartEntitynew.setRuleid(workPart.getRuleid());
+				calendar.setTimeInMillis(freeEndDate);
+				calendarPartEntitynew.setStarttime(timeFormat.format(calendar.getTime()));
+				calendar.setTimeInMillis(workEndDate);
+				calendarPartEntitynew.setEndtime(timeFormat.format(calendar.getTime()));
+				rightPartEntities.add(calendarPartEntitynew);
+			}
+		}
+		//3、左边超出
+		else if(freeStartDate<workStartDate && freeEndDate<=workEndDate) {
+			CalendarPartEntity calendarPartEntity = new CalendarPartEntity(java.util.UUID.randomUUID().toString());
+			calendarPartEntity.setAmorpm(workPart.getAmorpm());
+			calendarPartEntity.setRuleid(workPart.getRuleid());
+			calendarPartEntity.setStarttime(timeFormat.format(workStartDate));
+			calendarPartEntity.setEndtime(timeFormat.format(freeEndDate));
+			rightPartEntities.add(calendarPartEntity);
+			
+			
+		}
+		//4、右边超出
+		else if(freeStartDate>=workStartDate && freeEndDate>workEndDate) {
+			CalendarPartEntity calendarPartEntity = new CalendarPartEntity(java.util.UUID.randomUUID().toString());
+			calendarPartEntity.setAmorpm(workPart.getAmorpm());
+			calendarPartEntity.setRuleid(workPart.getRuleid());
+			calendarPartEntity.setStarttime(timeFormat.format(freeStartDate));
+			calendarPartEntity.setEndtime(timeFormat.format(workEndDate));
+//			if() {
+//				
+//			}
+		}
 	}
 	
 //	/**
