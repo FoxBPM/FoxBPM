@@ -961,8 +961,6 @@
 <link href='css/fullcalendar.min.css' rel='stylesheet' /> 
 <link href='css/fullcalendar.print.css' rel='stylesheet' media='print' />
 
-<script src="portal/js/foxbpm/common.js"></script>
-
 <script type="text/javascript">
 	/* DO NOT REMOVE : GLOBAL FUNCTIONS!
 	 *
@@ -1472,9 +1470,9 @@
 		 * FULL CALENDAR JS
 		 */
 		
-		 loadScript("../js/plugin/fullcalendar/moment.min.js", function(){
-				loadScript("../js/plugin/fullcalendar/fullcalendar.min.js",function(){
-					loadScript("../js/plugin/fullcalendar/lang-all.js",pagefunction)
+		 loadScript("js/plugin/fullcalendar/moment.min.js", function(){
+				loadScript("js/plugin/fullcalendar/fullcalendar.min.js",function(){
+					loadScript("js/plugin/fullcalendar/lang-all.js",pagefunction)
 				});
 			});
 		 $("#eventInfoTip").hide(); 
@@ -1490,7 +1488,7 @@
 				}
 				
 			});
-			pageSetUp();
+			//pageSetUp();
 			var showWeekend = true;
 			var pagefunction = function() {
 				

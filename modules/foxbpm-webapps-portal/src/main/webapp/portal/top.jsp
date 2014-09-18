@@ -103,11 +103,11 @@
 							</li>
 							<li class="divider"></li>
 							<li>
-								<a href="#ajaxpage/profile.html" class="padding-10 padding-top-0 padding-bottom-0"> <i class="fa fa-user"></i> <strong> 个人信息</strong></a>
+								<a href="portal/jsp/profile.jsp" class="padding-10 padding-top-0 padding-bottom-0"> <i class="fa fa-user"></i> <strong> 个人信息</strong></a>
 							</li>
 							<li class="divider"></li>
 							<li>
-								<a href="#ajaxpage/profile.html" class="padding-10 padding-top-0 padding-bottom-0"> <i class="fa fa-plane"></i> <strong> 委托授权</strong></a>
+								<a href="portal/jsp/profile.html" class="padding-10 padding-top-0 padding-bottom-0"> <i class="fa fa-plane"></i> <strong> 委托授权</strong></a>
 							</li>
 								<li class="divider"></li>
 							<li>
@@ -119,11 +119,11 @@
 							</li>
 							<li class="divider"></li>
 							<li>
-								<a href="lock.html" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-lock fa-lg"></i> <strong> 锁定系统</strong></a>
+								<a href="portal/jsp/lock.jsp" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-lock fa-lg"></i> <strong> 锁定系统</strong></a>
 							</li>
 								<li class="divider"></li>
 							<li>
-								<a href="login.html" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout"><i class="fa fa-sign-out fa-lg"></i> <strong> 登出系统</strong></a>
+								<a href="portal/jsp/login.jsp" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout"><i class="fa fa-sign-out fa-lg"></i> <strong> 登出系统</strong></a>
 							</li>
 						</ul>
 					</li>
@@ -263,49 +263,49 @@
 
 				<ul>
 					<li class="">
-						<a href="ajaxpage/dashboard.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-tachometer"></i> <span class="menu-item-parent">个 人 面 板</span></a>
+						<a href="portal/jsp/dashboard.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-tachometer"></i> <span class="menu-item-parent">个 人 面 板</span></a>
 					</li>
 					<li>
-						<a href="#ajaxpage/launchProcess.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-arrow-circle-right"></i> <span class="menu-item-parent">发 起 流 程</span></a>
+						<a href="portal/jsp/launchProcess.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-arrow-circle-right"></i> <span class="menu-item-parent">发 起 流 程</span></a>
 					</li>
 					<li>
-						<a href="ajaxpage/todotasks.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent">待 办 任 务</span><span class="badge pull-right inbox-badge">14</span></a>
+						<a href="portal/jsp//todotasks.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent">待 办 任 务</span><span class="badge pull-right inbox-badge">14</span></a>
 					</li>
 					<li>
-						<a href="ajaxpage/users.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent">用户列表</span><span class="badge pull-right inbox-badge">14</span></a>
+						<a href="portal/jsp//users.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent">用户列表</span><span class="badge pull-right inbox-badge">14</span></a>
 					</li>
 					<li>
-						<a href="ajaxpage/calendarpanel.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-calendar"></i> <span class="menu-item-parent">日 历 面 板</span></a>
+						<a href="portal/jsp//calendarpanel.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-calendar"></i> <span class="menu-item-parent">日 历 面 板</span></a>
 					</li>
 					<li>
 						<a href="ajax/inbox.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-bullhorn"></i> <span class="menu-item-parent">通 知 中 心</span><span class="badge pull-right inbox-badge">5</span></a>
 					</li>
 					<li>
-						<a href="ajaxpage/donetasks.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-check-square-o"></i> <span class="menu-item-parent">已 办 任 务</span></a>
+						<a href="portal/jsp/donetasks.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-check-square-o"></i> <span class="menu-item-parent">已 办 任 务</span></a>
 					</li>
 					<li>
-						<a href="ajaxpage/runningtrackTasks.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-check-square"></i> <span class="menu-item-parent">流 程 追 踪</span></a>
+						<a href="portal/jsp/runningtrackTasks.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-check-square"></i> <span class="menu-item-parent">流 程 追 踪</span></a>
 					</li>
 					<li>
-						<a href="ajaxpage/profile.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-comments-o"></i> <span class="menu-item-parent">社 交 中 心</span><span class="badge pull-right inbox-badge">8</span></a>
+						<a href="portal/jsp/profile.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-comments-o"></i> <span class="menu-item-parent">社 交 中 心</span><span class="badge pull-right inbox-badge">8</span></a>
 					</li>
 					<li>
-						<a href="ajax/dashboard.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-truck"></i> <span class="menu-item-parent">流 程 归 档</span><span class="badge bg-color-greenLight pull-right inbox-badge">9</span></a>
+						<a href="portal/jsp/dashboard.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-truck"></i> <span class="menu-item-parent">流 程 归 档</span><span class="badge bg-color-greenLight pull-right inbox-badge">9</span></a>
 					</li>
 					<li>
-						<a href="ajax/flot.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-bar-chart-o"></i> <span class="menu-item-parent">个 人 绩 效</span></a>
+						<a href="portal/jsp/flot.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-bar-chart-o"></i> <span class="menu-item-parent">个 人 绩 效</span></a>
 					</li>
 					<li>
 						<a href="#"><i class="fa fa-lg fa-fw fa-calendar"></i> <span class="menu-item-parent">工 作 日 历</span></a>
 						<ul>
 							<li>
-								<a href="ajaxpage/calendartype.html"><i class="fa fa-lg fa-fw fa-calendartype"></i> <span class="menu-item-parent">日 历 类 型</span><span class="badge pull-right inbox-badge"></span></a>
+								<a href="portal/jsp/calendartype.jsp"><i class="fa fa-lg fa-fw fa-calendartype"></i> <span class="menu-item-parent">日 历 类 型</span><span class="badge pull-right inbox-badge"></span></a>
 							</li>
 							<li>
-								<a href="ajaxpage/calendarrule.html"><i class="fa fa-lg fa-fw fa-calendarrule"></i> <span class="menu-item-parent">日 历 规 则</span><span class="badge pull-right inbox-badge"></span></a>
+								<a href="portal/jsp/calendarrule.jsp"><i class="fa fa-lg fa-fw fa-calendarrule"></i> <span class="menu-item-parent">日 历 规 则</span><span class="badge pull-right inbox-badge"></span></a>
 							</li>
 							<li>
-								<a href="ajaxpage/calendarpart.html"><i class="fa fa-lg fa-fw fa-calendarpart"></i> <span class="menu-item-parent">日 历 时 间</span><span class="badge pull-right inbox-badge"></span></a>
+								<a href="portal/jsp/calendarpart.jsp"><i class="fa fa-lg fa-fw fa-calendarpart"></i> <span class="menu-item-parent">日 历 时 间</span><span class="badge pull-right inbox-badge"></span></a>
 							</li>
 						</ul>
 					</li>
@@ -320,16 +320,16 @@
 						<a href="#"><i class="fa fa-lg fa-fw fa-bar-chart-o"></i> <span class="menu-item-parent">Graphs</span></a>
 						<ul>
 							<li>
-								<a href="ajax/flot.html">Flot Chart</a>
+								<a href="portal/jsp/flot.jsp">Flot Chart</a>
 							</li>
 							<li>
-								<a href="ajax/morris.html">Morris Charts</a>
+								<a href="portal/jsp/morris.jsp">Morris Charts</a>
 							</li>
 							<li>
-								<a href="ajax/inline-charts.html">Inline Charts</a>
+								<a href="portal/jsp/inline-charts.jsp">Inline Charts</a>
 							</li>
 							<li>
-								<a href="ajax/dygraphs.html">Dygraphs <span class="badge pull-right inbox-badge bg-color-yellow">new</span></a>
+								<a href="portal/jsp/dygraphs.jsp">Dygraphs <span class="badge pull-right inbox-badge bg-color-yellow">new</span></a>
 							</li>
 						</ul>
 					</li>
@@ -337,13 +337,13 @@
 						<a href="#"><i class="fa fa-lg fa-fw fa-table"></i> <span class="menu-item-parent">Tables</span></a>
 						<ul>
 							<li>
-								<a href="ajax/table.html">Normal Tables</a>
+								<a href="portal/jsp/table.jsp">Normal Tables</a>
 							</li>
 							<li>
-								<a href="ajax/datatables.html">Data Tables <span class="badge inbox-badge bg-color-greenLight">v1.10</span></a>
+								<a href="portal/jsp/datatables.jsp">Data Tables <span class="badge inbox-badge bg-color-greenLight">v1.10</span></a>
 							</li>
 							<li>
-								<a href="ajax/jqgrid.html">Jquery Grid</a>
+								<a href="portal/jsp/jqgrid.jsp">Jquery Grid</a>
 							</li>
 						</ul>
 					</li>
@@ -351,31 +351,31 @@
 						<a href="#"><i class="fa fa-lg fa-fw fa-pencil-square-o"></i> <span class="menu-item-parent">Forms</span></a>
 						<ul>
 							<li>
-								<a href="ajax/form-elements.html">Smart Form Elements</a>
+								<a href="portal/jsp/form-elements.jsp">Smart Form Elements</a>
 							</li>
 							<li>
-								<a href="ajax/form-templates.html">Smart Form Layouts</a>
+								<a href="portal/jsp/form-templates.jsp">Smart Form Layouts</a>
 							</li>
 							<li>
-								<a href="ajax/validation.html">Smart Form Validation</a>
+								<a href="portal/jsp/validation.jsp">Smart Form Validation</a>
 							</li>
 							<li>
-								<a href="ajax/bootstrap-forms.html">Bootstrap Form Elements</a>
+								<a href="portal/jsp/bootstrap-forms.jsp">Bootstrap Form Elements</a>
 							</li>
 							<li>
-								<a href="ajax/plugins.html">Form Plugins</a>
+								<a href="portal/jsp/plugins.jsp">Form Plugins</a>
 							</li>
 							<li>
-								<a href="ajax/wizard.html">Wizards</a>
+								<a href="portal/jsp/wizard.jsp">Wizards</a>
 							</li>
 							<li>
-								<a href="ajax/other-editors.html">Bootstrap Editors</a>
+								<a href="portal/jsp/other-editors.jsp">Bootstrap Editors</a>
 							</li>
 							<li>
-								<a href="ajax/dropzone.html">Dropzone</a>
+								<a href="portal/jsp/dropzone.jsp">Dropzone</a>
 							</li>
 							<li>
-								<a href="ajax/image-editor.html">Image Cropping <span class="badge pull-right inbox-badge bg-color-yellow">new</span></a>
+								<a href="portal/jsp/image-editor.jsp">Image Cropping <span class="badge pull-right inbox-badge bg-color-yellow">new</span></a>
 							</li>
 						</ul>
 					</li>
@@ -383,39 +383,39 @@
 						<a href="#"><i class="fa fa-lg fa-fw fa-desktop"></i> <span class="menu-item-parent">UI Elements</span></a>
 						<ul>
 							<li>
-								<a href="ajax/general-elements.html">General Elements</a>
+								<a href="portal/jsp/general-elements.jsp">General Elements</a>
 							</li>
 							<li>
-								<a href="ajax/buttons.html">Buttons</a>
+								<a href="portal/jsp/buttons.jsp">Buttons</a>
 							</li>
 							<li>
 								<a href="#">Icons</a>
 								<ul>
 									<li>
-										<a href="ajax/fa.html"><i class="fa fa-plane"></i> Font Awesome</a>
+										<a href="portal/jsp/fa.jsp"><i class="fa fa-plane"></i> Font Awesome</a>
 									</li>
 									<li>
-										<a href="ajax/glyph.html"><i class="glyphicon glyphicon-plane"></i> Glyph Icons</a>
+										<a href="portal/jsp/glyph.jsp"><i class="glyphicon glyphicon-plane"></i> Glyph Icons</a>
 									</li>
 									<li>
-										<a href="ajax/flags.html"><i class="fa fa-flag"></i> Flags</a>
+										<a href="portal/jsp/flags.jsp"><i class="fa fa-flag"></i> Flags</a>
 									</li>
 								</ul>
 							</li>
 							<li>
-								<a href="ajax/grid.html">Grid</a>
+								<a href="portal/jsp/grid.jsp">Grid</a>
 							</li>
 							<li>
-								<a href="ajax/treeview.html">Tree View</a>
+								<a href="portal/jsp/treeview.jsp">Tree View</a>
 							</li>
 							<li>
-								<a href="ajax/nestable-list.html">Nestable Lists</a>
+								<a href="portal/jsp/nestable-list.jsp">Nestable Lists</a>
 							</li>
 							<li>
-								<a href="ajax/jqui.html">JQuery UI</a>
+								<a href="portal/jsp/jqui.jsp">JQuery UI</a>
 							</li>
 							<li>
-								<a href="ajax/typography.html">Typography</a>
+								<a href="portal/jsp/typography.jsp">Typography</a>
 							</li>
 							<li>
 								<a href="#">Six Level Menu</a>
@@ -466,16 +466,16 @@
 						</ul>
 					</li>
 					<li>
-						<a href="ajax/calendar.html"><i class="fa fa-lg fa-fw fa-calendar"><em>3</em></i> <span class="menu-item-parent">Calendar</span></a>
+						<a href="portal/jsp/calendar.jsp"><i class="fa fa-lg fa-fw fa-calendar"><em>3</em></i> <span class="menu-item-parent">Calendar</span></a>
 					</li>
 					<li>
-						<a href="ajax/widgets.html"><i class="fa fa-lg fa-fw fa-list-alt"></i> <span class="menu-item-parent">Widgets</span></a>
+						<a href="portal/jsp/widgets.jsp"><i class="fa fa-lg fa-fw fa-list-alt"></i> <span class="menu-item-parent">Widgets</span></a>
 					</li>
 					<li>
-						<a href="#ajaxpage/launchProcess.html"><i class="fa fa-lg fa-fw fa-picture-o"></i> <span class="menu-item-parent">Gallery</span></a>
+						<a href="portal/jsp/launchProcess.jsp"><i class="fa fa-lg fa-fw fa-picture-o"></i> <span class="menu-item-parent">Gallery</span></a>
 					</li>
 					<li>
-						<a href="ajax/gmap-xml.html"><i class="fa fa-lg fa-fw fa-map-marker"></i> <span class="menu-item-parent">GMap Skins</span><span class="badge bg-color-greenLight pull-right inbox-badge">9</span></a>
+						<a href="portal/jsp/gmap-xml.jsp"><i class="fa fa-lg fa-fw fa-map-marker"></i> <span class="menu-item-parent">GMap Skins</span><span class="badge bg-color-greenLight pull-right inbox-badge">9</span></a>
 					</li>
 					<li>
 						<a href="#"><i class="fa fa-lg fa-fw fa-windows"></i> <span class="menu-item-parent">Miscellaneous</span></a>
@@ -484,21 +484,21 @@
 								<a href="#"><i class="fa fa-file"></i> Other Pages</a>
 								<ul>
 									<li>
-										<a href="ajax/forum.html">Forum Layout</a>
+										<a href="portal/jsp/forum.jsp">Forum Layout</a>
 									</li>
 									<li>
-										<a href="ajax/profile.html">Profile</a>
+										<a href="portal/jsp/profile.jsp">Profile</a>
 									</li>
 									<li>
-										<a href="ajax/timeline.html">Timeline</a>
+										<a href="portal/jsp/timeline.jsp">Timeline</a>
 									</li>
 								</ul>	
 							</li>
 							<li>
-								<a href="ajax/pricing-table.html">Pricing Tables</a>
+								<a href="portal/jsp/pricing-table.jsp">Pricing Tables</a>
 							</li>
 							<li>
-								<a href="ajax/invoice.html">Invoice</a>
+								<a href="portal/jsp/invoice.jsp">Invoice</a>
 							</li>
 							<li>
 								<a href="login.html" target="_top">Login</a>
@@ -589,11 +589,56 @@
 
 			<!-- #MAIN CONTENT -->
 			<div id="content">
-<!--加载用户图像 -->
-<script type="text/javascript">
-	$(document).ready(function(){
-	 $("img[name=uImg]").each(function(){
-	  $(this).attr("src","/foxbpm-webapps-common/service/identity/users/"+_userId+"/picture");
-	 });
-});
-</script>
+			<!-- #PLUGINS -->
+			<!-- IMPORTANT: APP CONFIG -->
+			<script src="js/app.config.js"></script>
+			<!-- JS TOUCH : include this plugin for mobile drag / drop touch events-->
+			<script src="js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script> 
+			<!-- BOOTSTRAP JS -->
+			<script src="js/bootstrap/bootstrap.min.js"></script>
+			<!-- CUSTOM NOTIFICATION -->
+			<script src="js/notification/SmartNotification.min.js"></script>
+			<!-- JARVIS WIDGETS -->
+			<script src="js/smartwidgets/jarvis.widget.min.js"></script>
+			<!-- EASY PIE CHARTS -->
+			<script src="js/plugin/easy-pie-chart/jquery.easy-pie-chart.min.js"></script>
+			<!-- SPARKLINES -->
+			<script src="js/plugin/sparkline/jquery.sparkline.min.js"></script> 
+			<!-- JQUERY VALIDATE -->
+			<script src="js/plugin/jquery-validate/jquery.validate.min.js"></script>
+			<!-- JQUERY MASKED INPUT -->
+			<script src="js/plugin/masked-input/jquery.maskedinput.min.js"></script>
+			<!-- JQUERY SELECT2 INPUT -->
+			<script src="js/plugin/select2/select2.min.js"></script>
+			<!-- JQUERY UI + Bootstrap Slider -->
+			<script src="js/plugin/bootstrap-slider/bootstrap-slider.min.js"></script>
+			<!-- browser msie issue fix -->
+			<script src="js/plugin/msie-fix/jquery.mb.browser.min.js"></script>
+			<!-- FastClick: For mobile devices: you can disable this in app.js -->
+			<script src="js/plugin/fastclick/fastclick.min.js"></script>
+			<!-- MAIN APP JS FILE -->
+			<script src="js/app.min.js"></script>
+			<!-- Voice command : plugin -->
+			<script src="js/speech/voicecommand.min.js"></script>
+			<!-- Your GOOGLE ANALYTICS CODE Below -->
+			<script type="text/javascript">
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
+			  _gaq.push(['_trackPageview']);
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+			</script>
+			<script type="text/javascript">
+				$(document).ready(function(){
+					//加载用户图像 
+					 $("img[name=uImg]").each(function(){
+					  $(this).attr("src","/foxbpm-webapps-common/service/identity/users/"+_userId+"/picture");
+					 });
+					 //添加展现左侧菜单点击显示样式
+					 var url = "portal"+location.href.split('portal').splice(1).join("portal");
+					 $('nav li:has(a[href="' + url + '"])').addClass("active");
+				});
+			</script>
