@@ -1,4 +1,3 @@
-//var _processInstanceId = 'f9fbcbd5-f7d2-4147-ba3e-bf55dc38f63d';
 /**
  * 标记常量属性
  */
@@ -10,6 +9,7 @@ var RUNNING_TRACK_COLOR = "#ff7200";
 var RUNNING_TRACK_WIDTH = 5;
 var RUNNING_MILLESIMAL_SPEED = 1000;
 
+
 /**
  * 全局变量
  */
@@ -17,65 +17,9 @@ var _GlobalFlowVar = {
 	taskListEnd : [],
 	taskListIng : [],
 	nodeInforArr : [],
-	isIE : window.ActiveXObject && $.browser.msie,
+	isIE : window.ActiveXObject && $.browser.msie && $.browser.version < 8.0,
 	_self : this,
 	_bpmServiceUrl : _serviceUrl,
-	showMsg:function(t,i){
-		var m = $(t);
-		if('false' == m.attr("flag")){
-			$("#msg_"+i).show();
-			$("#loading_"+i).show();
-			var taskId = $("#msg_"+i).attr("taskid");
-			$.ajax({
-				type : "get",// 使用get方法访问后台
-				cache:false,
-				dataType : "json",// 返回json格式的数据
-				url : _GlobalFlowVar._bpmServiceUrl + "runtime/tasks/"+taskId+"/operations",// 要访问的后台地址
-				success : function(msg) {
-					$("#loading_"+i).hide();
-					if (!msg && !msg.data) {
-						alert("返回数据为null");
-						return;
-					}
-					var data = msg.data;
-					if(data.length <= 0){
-						$("#tips_"+i).show();
-						return;
-					}
-					$("#tips_"+i).hide();
-					var html = "";
-					$.each(data,function(j, d) {
-						html+="<div class='discussion-item discussion-item-milestoned'>";
-						html+="<div class='discussion-item-header' id='event-130077772'>";
-						html+="<span class='octicon octicon-milestone discussion-item-icon'></span>";
-						html+="<img alt='kenshin' class='avatar' height='16' src='https://avatars3.githubusercontent.com/u/900179?v=2&amp;s=32' width='16'>";
-						html+="<a href='/kenshinnet' class='author'>"+d.operatorName+"</a>&nbsp"+d.commandMessage+"&nbsp<a href='javascript:void(0);' class='timestamp'><time class='timestamp' datetime='2014-06-10T19:38:56-07:00' is='relative-time' title='2014年6月11日 上午10:38 格林尼治标准时间+0800'>&nbsp"+d.operatingTime+"</time></a>";
-						html+="</div>";
-						html+="</div>";
-					});
-					//加载数据
-					$("#data_"+i).html("");
-					$("#data_"+i).append(html);
-				},
-				error:function(){
-					$("#loading_"+i).hide();
-					$("#tips_"+i).show();
-				},
-				beforeSend:function(){
-					$("#loading_"+i).show();
-					$("#tips_"+i).hide();
-				}
-			});
-			
-			m.attr("flag","true");
-			m.html("-");
-		}
-		else {
-			$("#msg_"+i).hide();
-			m.attr("flag","false");
-			m.html("+");
-		}
-	},
 	init : function(config) {
 		this.taskListEnd = config.taskListEnd || [];
 		this.taskListIng = config.taskListIng || [];
@@ -106,19 +50,17 @@ Foxbpm.TaskDeatailInfor = function(flowConfig) {
 		action : _GlobalFlowVar._bpmServiceUrl + 'task/runTrack',
 		processInstanceId : _processInstanceId
 	});
+	this._processInfor = new ProcessInfor({
+		
+	});
 	TaskDeatailInfor = this;
-};
-
-function loadMsg(i){
-	$("#msg"+i).hide();
 };
 Foxbpm.TaskDeatailInfor.prototype = {
 	init : function() {
 		var _self = this;
 		if (_processInstanceId && "" != _processInstanceId) {
 			// 设置定义名称
-			$
-					.ajax({
+			$.ajax({
 						type : "get",// 使用get方法访问后台
 						dataType : "json",// 返回json格式的数据
 						url : _GlobalFlowVar._bpmServiceUrl + "task/taskInfor",// 要访问的后台地址
@@ -132,45 +74,44 @@ Foxbpm.TaskDeatailInfor.prototype = {
 							}
 							var data = msg.data;
 							//加载流程状态
-							var processStatus = $("#processStatus");
+							/*var processStatus = $("#processStatus");
 							if (!!processStatus) {
 								var status = $("<a class='label css-truncate-target linked-labelstyle-84b6eb'>");
+								status.attr("href", "javascript:void(0);");
 								status.attr("title", "状态【" + data.status + "】");
 								status.html("状态【" + data.status + "】");
 								processStatus.append(status);
-							}
-							var taskDetailDiv = $("#"
-									+ TaskDeatailInfor._config.taskDetailDiv);
+							}*/
+							_self._processInfor.loadProcessSetp(data.nowStep);
+							var taskDetailDiv = $("#"+ TaskDeatailInfor._config.taskDetailDiv);
 							//添加流程主题信息
 							$("#processInfo").before($("<div class='container process'><h1 id='processDefinitionName'>"
 													+ data.processName
 													+ "</h1></div><br>"));
 							if (data.endTasks) {
-								taskDetailDiv
-										.append("<div style='border-bottom-style:solid;border-bottom-width:1px;border-bottom-color:#ddd'><span style='padding-right:4px;padding-bottom:3px;padding-left:4px;font-size:11px;font-weight:bold;display:inline-block;line-height:1;padding-top:3px;color:rgb(255,255,255);padding-top:0.2em;padding-left:0.6em;padding-right:0.6em;padding-bottom:0.3em;font-size:75%;display:inline;background-color: rgb(153, 153, 153);'>已完成</span></div>");
+								taskDetailDiv.append("<div style='border-bottom-style:solid;border-bottom-width:1px;border-bottom-color:#ddd'><span style='padding-right:4px;padding-bottom:3px;padding-left:4px;font-size:11px;font-weight:bold;display:inline-block;line-height:1;padding-top:3px;color:rgb(255,255,255);padding-top:0.2em;padding-left:0.6em;padding-right:0.6em;padding-bottom:0.3em;font-size:75%;display:inline;background-color: rgb(153, 153, 153);'>已完成</span></div>");
 								var completedDetailInfoDiv = $("<div class='js-discussion js-socket-channel'>");
 								var participants = "";
 								$.each(data.endTasks,
 									function(j, data) {
 										var completedRecord = $("<div class='timeline-comment-wrapper js-comment-container'>");
-										var a = $("<a href='/kenshinnet'>");
+										var a = $("<a href='javascript:void(0);'>");
 										var img = $("<img width='48' height='48' class='timeline-comment-avatar'>");
-										img.attr("alt", "admin");
-										img.attr("src",
-														"/foxbpm-webapps-common/service/identity/users/admin/picture");
+										img.attr("alt", data.userName);
+										img.attr("src",_GlobalFlowVar._bpmServiceUrl+ "identity/users/"+data.userName+"/picture");
 										a.append(img);
 										var comment = $("<div class='comment timeline-comment js-comment js-task-list-container  is-task-list-enabled'>");
 										var comment_header = $("<div class='timeline-comment-header'>");
 										var comment_action = $("<div class='timeline-comment-actions'>");
 										var comment_header_text = $("<div class='timeline-comment-header-text'>");
 										comment_header_text
-												.append("<strong> <a class='author' href='/kenshinnet'>"
+												.append("<strong> <a class='author' href='javascript:void(0);'>"
 														+ data.userName
 														+ "</a>");
 										comment_header_text.append("<strong>&nbsp"
 														+ data.nodeName
 														+ "&nbsp"
-														+ data.commandMessage
+														+ (!data.commandMessage? '': data.commandMessage)
 														+ "&nbsp"
 														+ data.endTime);
 										var comment_content = $("<div class='comment-content'>");
@@ -185,32 +126,20 @@ Foxbpm.TaskDeatailInfor.prototype = {
 										comment.append(comment_content);
 										completedRecord.append(a);
 										completedRecord.append(comment);
-										completedRecord.append("<a onclick='_GlobalFlowVar.showMsg(this,"+j+")' style='text-decoration:none;cursor:pointer;float: right;' flag='false'>+</a>");
+										var loadMsg = $("<a style='text-decoration:none;cursor:pointer;float: right;'>");
+										loadMsg.attr("href",'javascript:void(0);');
+										loadMsg.attr("flag",'false'); 
+										loadMsg.html("+");
+										loadMsg.on("click",{obj:loadMsg,flag:j},function(event){
+											_self._processInfor.loadMsg(event.data.obj,event.data.flag);
+										});
+										completedRecord.append(loadMsg);
 										completedDetailInfoDiv.append(completedRecord);
 										if (participants.indexOf(data.userName) < 0) {
 											participants += data.userName+ "#";
 										}
 										/**********************处理信息*****************************/
-										var html = "<div id=msg_"+j+" style='display:none' taskId="+data.id+" >";
-										html+="<div id='warning' style='text-align:center;'><span id=tips_"+j+" style='display:none'>数据为空!</span><img style='display:none' src='images/loading.gif' id=loading_"+j+" /></div>";
-										html+="<div id=data_"+j+" ></div>";
-										/*html+="<div class='discussion-item discussion-item-milestoned'>";
-										html+="<div class='discussion-item-header' id='event-130077772'>";
-										html+="<span class='octicon octicon-milestone discussion-item-icon'></span>";
-										html+="<img alt='kenshin' class='avatar' height='16' src='https://avatars3.githubusercontent.com/u/900179?v=2&amp;s=32' width='16'>";
-										html+=" <a href='/kenshinnet' class=''author'>kenshinnet</a>";
-										html+="added this to the <a href='/FoxBPM/FoxBPM/milestones/6.0版本' class='discussion-item-entity'>6.0版本</a> milestone <a href='https://github.com/FoxBPM/FoxBPM/issues/1#event-130077772' class='timestamp'><time class='timestamp' datetime='2014-06-10T19:38:56-07:00' is='relative-time' title='2014年6月11日 上午10:38 格林尼治标准时间+0800'>on 11 Jun</time></a>";
-										html+="</div>";
-										html+="</div>";
-										html+="<div class='discussion-item discussion-item-milestoned'>";
-										html+="<div class='discussion-item-header' id='event-130077772'>";
-										html+="<span class='octicon octicon-milestone discussion-item-icon'></span>";
-										html+="<img alt='kenshin' class='avatar' height='16' src='https://avatars3.githubusercontent.com/u/900179?v=2&amp;s=32' width='16'>";
-										html+=" <a href='/kenshinnet' class=''author'>kenshinnet</a>";
-										html+="added this to the <a href='/FoxBPM/FoxBPM/milestones/6.0版本' class='discussion-item-entity'>6.0版本</a> milestone <a href='https://github.com/FoxBPM/FoxBPM/issues/1#event-130077772' class='timestamp'><time class='timestamp' datetime='2014-06-10T19:38:56-07:00' is='relative-time' title='2014年6月11日 上午10:38 格林尼治标准时间+0800'>on 11 Jun</time></a>";
-										html+="</div>";
-										html+="</div>";*/
-										html+="</div>";
+										var html = _self._processInfor.createMsgTemplet(j, data.id);
 										completedDetailInfoDiv.append(html);
 										/**********************处理信息*****************************/
 									});
@@ -221,14 +150,14 @@ Foxbpm.TaskDeatailInfor.prototype = {
 								var len = participants.length;
 								if (len > 0) {
 									var participationDiv = $("#partial-users-participants");
-									participationDiv.append("<h3 class='discussion-sidebar-heading'>"+ len+ " participants</h3>");
+									participationDiv.append("<h3 class='discussion-sidebar-heading'>"+ len+ " 流程参入者</h3>");
 									var participationAvatarsDiv = $("<div class='participation-avatars'>");
 									var a = null;
 									var a_Img = null;
 									for (var i = 0; i < len; i++) {
 										a = $("<a class='participant-avatar tooltipped tooltipped-s'>");
-										a.attr("aria-label", participants[i]);
-										a.attr("href", "");
+										a.attr("title", participants[i]);
+										a.attr("href", "javascript:void(0);");
 										a_Img = $("<img width='20' height='20' class='avatar'>");
 										a_Img.attr("alt", participants[i]);
 										a_Img.attr("src",_GlobalFlowVar._bpmServiceUrl+ "identity/users/"+ participants[i]+ "/picture");
@@ -248,7 +177,7 @@ Foxbpm.TaskDeatailInfor.prototype = {
 												data.openTasks,
 												function(j, data) {
 													var completedRecord = $("<div class='timeline-comment-wrapper js-comment-container'>");
-													var a = $("<a href='/kenshinnet'>");
+													var a = $("<a href='javascript:void(0);'>");
 													var img = $("<img width='48' height='48' class='timeline-comment-avatar'>");
 													img.attr("alt", "admin");
 													img
@@ -260,7 +189,7 @@ Foxbpm.TaskDeatailInfor.prototype = {
 													var comment_action = $("<div class='timeline-comment-actions'>");
 													var comment_header_text = $("<div class='timeline-comment-header-text'>");
 													comment_header_text
-															.append("<strong> <a class='author' href='/kenshinnet'>"
+															.append("<strong> <a class='author' href='javascript:void(0);'>"
 																	+ data.userName
 																	+ "</a>");
 													comment_header_text
@@ -339,12 +268,9 @@ Foxbpm.TaskDeatailInfor.prototype = {
 		var ul = $("<ul>");
 		ul.append("<li class='img01'>已完成</li>");
 		ul.append("<li class='img02'>进行中</li>");
-		ul
-				.append("<li><input id='yczt' type='checkbox' name='cczt' />&nbsp;&nbsp;隐藏状态</li>");
-		ul
-				.append("<li><input id='runningTrackTable' type='checkbox' name='runningTrackTable' />&nbsp;&nbsp;轨迹信息</li>");
-		ul
-				.append("<li><input id='runningTrack' type='checkbox' name='runningTrack' />&nbsp;&nbsp;轨迹动态运行</li>");
+		ul.append("<li><input id='yczt' type='checkbox' name='cczt' />&nbsp;&nbsp;隐藏状态</li>");
+		ul.append("<li><input id='runningTrackTable' type='checkbox' name='runningTrackTable' />&nbsp;&nbsp;轨迹信息</li>");
+		ul.append("<li><input id='runningTrack' type='checkbox' name='runningTrack' />&nbsp;&nbsp;轨迹动态运行</li>");
 
 		h3.append(ul);
 		flowGraphicDiv.append(h3);
@@ -364,10 +290,130 @@ Foxbpm.TaskDeatailInfor.prototype = {
 };
 
 /**
+ * 流程信息加载
+ */
+function ProcessInfor(config){
+	this._config = config;
+	
+}
+
+/**
+ * 设置属性
+ */
+ProcessInfor.prototype = {
+		init : function(){},
+		loadStatus: function(){},
+		//创建流程信息模板
+		createMsgTemplet:function(flag,taskId){
+			var html = "<div id=msg_"+flag+" style='display:none' taskId="+taskId+" >";
+			html+="<div id='warning' style='text-align:center;'><span id=tips_"+flag+" style='display:none'>数据为空!</span><img style='display:none' src='images/loading.gif' id=loading_"+flag+" /></div>";
+			html+="<div id=data_"+flag+" ></div>";
+			return html;
+		},
+		loadProcessSetp : function(nowStep) {
+			if (nowStep) {
+				/** *****************************展现流程状态*************************** */
+				var status = nowStep.status;
+				if (status) {
+					var processStatus = $("#processStatus");
+					var statusEle = $("<a class='label css-truncate-target linked-labelstyle-84b6eb'>");
+					statusEle.attr("href", "javascript:void(0);");
+					statusEle.attr("title", "状态【" + status + "】");
+					statusEle.html("状态【" + status + "】");
+					processStatus.append(statusEle);
+				}
+				/** *********************************end***************************** */
+				// 展现当前处理者
+				var taskInfo = nowStep.taskInfo;
+				if (taskInfo) {
+					var sidebarAssignee = $("#sidebarAssignee");
+					var spanEle = null;
+					var imgEle = null;
+					var aEle = null;
+					var users = null;
+					for (var i = 0, j = taskInfo.length; i < j; i++) {
+						users =  taskInfo[i].user;
+						if(users){
+							for(var m = 0,n = users.length;m < n;m++){
+								spanEle = $("<span class='css-truncate js-assignee-infobar-item-wrapper'>");
+								imgEle = $("<img width='20' height='20' class='avatar'>");
+								imgEle.attr("src",_GlobalFlowVar._bpmServiceUrl+ "identity/users/"+users[m].name+"/picture");
+								imgEle.attr("alt",users[m].name);
+								aEle = $("<a class='assignee css-truncate-target'>");
+								aEle.attr("href","javascript:void(0);");
+								aEle.html(users[m].name);
+								spanEle.append(imgEle);
+								spanEle.append(aEle);
+								sidebarAssignee.append(spanEle);
+							}
+						}
+					}
+				}
+			}
+		},
+		loadMsg: function(t,i){
+			var m = $(t);
+			if('false' == m.attr("flag")){
+				$("#msg_"+i).show();
+				$("#loading_"+i).show();
+				var taskId = $("#msg_"+i).attr("taskid");
+				$.ajax({
+					type : "get",// 使用get方法访问后台
+					cache:false,
+					dataType : "json",// 返回json格式的数据
+					url : _GlobalFlowVar._bpmServiceUrl + "runtime/tasks/"+taskId+"/operations",// 要访问的后台地址
+					success : function(msg) {
+						$("#loading_"+i).hide();
+						if (!msg && !msg.data) {
+							alert("返回数据为null");
+							return;
+						}
+						var data = msg.data;
+						if(data.length <= 0){
+							$("#tips_"+i).show();
+							return;
+						}
+						$("#tips_"+i).hide();
+						var html = "";
+						$.each(data,function(j, d) {
+							html+="<div class='discussion-item discussion-item-milestoned'>";
+							html+="<div class='discussion-item-header' id='event-130077772'>";
+							html+="<span class='octicon octicon-milestone discussion-item-icon'></span>";
+							html+="<img alt='kenshin' class='avatar' height='16' src='https://avatars3.githubusercontent.com/u/900179?v=2&amp;s=32' width='16'>";
+							html+="<a href='javascript:void(0);' class='author'>"+d.operatorName+"</a>&nbsp"+d.commandMessage+"&nbsp<a href='javascript:void(0);' class='timestamp'><time class='timestamp' datetime='2014-06-10T19:38:56-07:00' is='relative-time' title='2014年6月11日 上午10:38 格林尼治标准时间+0800'>&nbsp"+d.operatingTime+"</time></a>";
+							html+="</div>";
+							html+="</div>";
+						});
+						//加载数据
+						$("#data_"+i).html("");
+						$("#data_"+i).append(html);
+					},
+					error:function(){
+						$("#loading_"+i).hide();
+						$("#tips_"+i).show();
+					},
+					beforeSend:function(){
+						$("#loading_"+i).show();
+						$("#tips_"+i).hide();
+					}
+				});
+				m.attr("flag","true");
+				m.html("-");
+			}
+			else {
+				$("#msg_"+i).hide();
+				m.attr("flag","false");
+				m.html("+");
+			}
+		}
+};
+
+/**
  * 流程图处理类 taskListEnd 任务结束节点 taskListIng 任务进入节点 nodeInfoArr 节点信息 isIE 是否IE
  * parentId 流程图添加到该元素中 <div id='xxx'><img /></div> action 图形加载后台action
  * processDefinitionId 流程定义id
  */
+
 function FlowGraphic(param) {
 	this.taskListEnd = param.taskListEnd || [];
 	this.taskListIng = param.taskListIng || [];
@@ -668,8 +714,7 @@ function RunTrack(config) {
 	 * 加载轨迹洗数据
 	 */
 	this.loadRunTrackData = function() {
-		$
-				.ajax({
+		$.ajax({
 					type : "get",// 使用get方法访问后台
 					dataType : "json",// 返回json格式的数据
 					url : this.action,// 要访问的后台地址
@@ -700,15 +745,15 @@ function RunTrack(config) {
 							table_thead
 									.append("<th style='width: 270px'>轨迹令牌编号</th>");
 							table_thead
-									.append("<th style='width: 270px'>轨迹父令牌编号</th>");
+									.append("<th style='width: 200px'>轨迹父令牌编号</th>");
 							table_thead
-									.append("<th style='width: 130px'>执行时间</th>");
+									.append("<th style='width: 200px'>执行时间</th>");
 							table_thead
 									.append("<th style='width: 130px'>事件名称</th>");
 							table_thead
 									.append("<th style='width: 60px'>处理者</th>");
 							table_thead
-									.append("<th style='width: 270px'>流程实例编号</th>");
+									.append("<th style='width: 200px'>流程实例编号</th>");
 							table_thead.append("</thead>");
 							table.append(table_thead);
 
@@ -792,6 +837,22 @@ function RunTrack(config) {
 
 				}
 			}
+			
+			var markerPathId = runningTrackInfor[index - 1].nodeId+"MarkerPath";
+			var markerPath =$("#" + markerPathId)[0];
+			if (markerPath) {
+				var rectAttributes = markerPath.attributes;
+				for (var j = 0; j < rectAttributes.length; j++) {
+					var rectAttribute = rectAttributes[j];
+					if (rectAttribute.name == "stroke") {
+						rectAttribute.nodeValue = backUpRunningTrackColorDictionary[markerPathId];
+					}
+					if (rectAttribute.name == "stroke-width") {
+						rectAttribute.nodeValue = backUpRunningTrackWidthDictionary[markerPathId];
+					}
+
+				}
+			}
 		}
 	};
 	// 移动节点光标
@@ -800,24 +861,46 @@ function RunTrack(config) {
 			currentRunningTrack = runningTrackInfor[runningTrackIndex];
 			if (currentRunningTrack) {
 				var nodeId = $("#" + currentRunningTrack.nodeId)[0];
+				var markerPathId = currentRunningTrack.nodeId+"MarkerPath";
+				var markerPath =$("#" + markerPathId)[0];
 				if (nodeId) {
 					var rectAttributes = nodeId.attributes;
 					for (var j = 0; j < rectAttributes.length; j++) {
 						var rectAttribute = rectAttributes[j];
 						if (rectAttribute.name == "stroke") {
 							if (tempNodeID != currentRunningTrack.nodeId) {
-								backUpRunningTrackColorDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue;
+								backUpRunningTrackColorDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue; 
 								rectAttribute.nodeValue = RUNNING_TRACK_COLOR;
 							}
 						}
 						if (rectAttribute.name == "stroke-width") {
 							if (tempNodeID != currentRunningTrack.nodeId) {
-								backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue;
+								backUpRunningTrackWidthDictionary[currentRunningTrack.nodeId] = rectAttribute.nodeValue; 
 								rectAttribute.nodeValue = RUNNING_TRACK_WIDTH;
 							}
 						}
 					}
 					this.tempNodeID = currentRunningTrack.nodeId;
+				}
+				
+				if (markerPath) {
+					var rectAttributes = markerPath.attributes;
+					for (var j = 0; j < rectAttributes.length; j++) {
+						var rectAttribute = rectAttributes[j];
+						if (rectAttribute.name == "stroke") {
+							if (tempNodeID != markerPathId) {
+								backUpRunningTrackColorDictionary[markerPathId] = rectAttribute.nodeValue; 
+								rectAttribute.nodeValue = RUNNING_TRACK_COLOR;
+							}
+						}
+						if (rectAttribute.name == "stroke-width") {
+							if (tempNodeID != markerPathId) {
+								backUpRunningTrackWidthDictionary[markerPathId] = rectAttribute.nodeValue; 
+								rectAttribute.nodeValue = RUNNING_TRACK_WIDTH;
+							}
+						}
+					}
+					this.tempNodeID = markerPathId;
 				}
 			}
 		} else {
@@ -832,3 +915,4 @@ function RunTrack(config) {
 		runningTrackIndex = runningTrackIndex + 1;
 	};
 };
+

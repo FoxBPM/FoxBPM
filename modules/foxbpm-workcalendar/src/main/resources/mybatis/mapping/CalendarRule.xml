@@ -21,6 +21,14 @@
 		where id = #{id,jdbcType=VARCHAR}
 	</select>
 	
+	<select id="selectCalendarRulesByTypeId" parameterType="java.lang.String"
+		resultMap="calendarRuleResultMap">
+		select
+		*
+		from workcal_rule
+		where type_id = #{id,jdbcType=VARCHAR}
+	</select>
+	
 	<select id="selectAllCalendarRule" parameterType="org.foxbpm.engine.impl.db.ListQueryParameterObject"
 		resultMap="calendarRuleResultMap">
 		${limitBefore}

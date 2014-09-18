@@ -39,6 +39,20 @@ var pagefunction = function() {
 									}
 								},
 								{
+									"targets" : [ 1 ],
+									"createdCell" : function(td, cellData,
+											rowData, row, col) {
+										//任务主题避免这行
+										if(cellData.length>20){
+											$(td).html(cellData.substring(0,20));
+										}else{
+											$(td).html(cellData);
+										}
+										
+										
+									}
+								},
+								{
 									"targets" : [ 2 ],
 									"orderable" : true,
 									"createdCell" : function(td, cellData,
@@ -91,7 +105,7 @@ var pagefunction = function() {
 								 "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p l>>",
 						"autoWidth" : true,
 						"colVis": {
-				            "buttonText": "展示列",
+				            "buttonText": "展 示 列",
 				            "restore": "恢复默认展示",
 				            "showAll": "展示所有列",
 				            "showNone": "不展示列"
@@ -130,7 +144,7 @@ var pagefunction = function() {
 							//调整页面布局
 							$("#datatable_col_reorder_length").css("padding-right","10px");
 							$(".dt-toolbar").css("padding-bottom","6px");
-							$(".dt-toolbar").css("padding-right","32px");
+							$(".dt-toolbar").css("padding-right","64px");
 							$("#datatable_col_reorder_filter").css("width","1200px");
 							$("[type='search']").attr("placeholder","主题/发起人");
 							pageSetUp();	

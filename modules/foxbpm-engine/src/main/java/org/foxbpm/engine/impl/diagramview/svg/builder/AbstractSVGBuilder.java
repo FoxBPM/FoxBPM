@@ -356,4 +356,8 @@ public abstract class AbstractSVGBuilder implements FoxBpmnViewBuilder {
 		}
 	}
 	
+	public TextVO getTextVo(){
+		return this.textVO;
+	}
+	
 }
