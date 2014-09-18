@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-
 <!-- #HEADER -->
 		<header id="header">
 			<div id="logo-group">
@@ -586,59 +585,4 @@
 
 			</div>
 			<!-- END RIBBON -->
-
-			<!-- #MAIN CONTENT -->
-			<div id="content">
-			<!-- #PLUGINS -->
-			<!-- IMPORTANT: APP CONFIG -->
-			<script src="js/app.config.js"></script>
-			<!-- JS TOUCH : include this plugin for mobile drag / drop touch events-->
-			<script src="js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script> 
-			<!-- BOOTSTRAP JS -->
-			<script src="js/bootstrap/bootstrap.min.js"></script>
-			<!-- CUSTOM NOTIFICATION -->
-			<script src="js/notification/SmartNotification.min.js"></script>
-			<!-- JARVIS WIDGETS -->
-			<script src="js/smartwidgets/jarvis.widget.min.js"></script>
-			<!-- EASY PIE CHARTS -->
-			<script src="js/plugin/easy-pie-chart/jquery.easy-pie-chart.min.js"></script>
-			<!-- SPARKLINES -->
-			<script src="js/plugin/sparkline/jquery.sparkline.min.js"></script> 
-			<!-- JQUERY VALIDATE -->
-			<script src="js/plugin/jquery-validate/jquery.validate.min.js"></script>
-			<!-- JQUERY MASKED INPUT -->
-			<script src="js/plugin/masked-input/jquery.maskedinput.min.js"></script>
-			<!-- JQUERY SELECT2 INPUT -->
-			<script src="js/plugin/select2/select2.min.js"></script>
-			<!-- JQUERY UI + Bootstrap Slider -->
-			<script src="js/plugin/bootstrap-slider/bootstrap-slider.min.js"></script>
-			<!-- browser msie issue fix -->
-			<script src="js/plugin/msie-fix/jquery.mb.browser.min.js"></script>
-			<!-- FastClick: For mobile devices: you can disable this in app.js -->
-			<script src="js/plugin/fastclick/fastclick.min.js"></script>
-			<!-- MAIN APP JS FILE -->
-			<script src="js/app.min.js"></script>
-			<!-- Voice command : plugin -->
-			<script src="js/speech/voicecommand.min.js"></script>
-			<!-- Your GOOGLE ANALYTICS CODE Below -->
-			<script type="text/javascript">
-			  var _gaq = _gaq || [];
-			  _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
-			  _gaq.push(['_trackPageview']);
-			  (function() {
-			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-			  })();
-			</script>
-			<script type="text/javascript">
-				$(document).ready(function(){
-					//加载用户图像 
-					 $("img[name=uImg]").each(function(){
-					  $(this).attr("src","/foxbpm-webapps-common/service/identity/users/"+_userId+"/picture");
-					 });
-					 //添加展现左侧菜单点击显示样式
-					 var url = "portal"+location.href.split('portal').splice(1).join("portal");
-					 $('nav li:has(a[href="' + url + '"])').addClass("active");
-				});
-			</script>
+<div id="content">

@@ -113,7 +113,7 @@
 	// end pagefunction
 	// run pagefunction on load
 	// load bootstrap-progress bar script
-	loadScript("portal/jsportal/gallery.js", function() {
+	loadScript("portal/jsportal/launchProcess.js", function() {
 		loadScript("portal/jsportal/plugin/superbox/superbox.min.js", pagefunction);
 	});
 </script>
