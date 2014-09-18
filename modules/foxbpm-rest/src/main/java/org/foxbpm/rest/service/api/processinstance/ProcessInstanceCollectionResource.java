@@ -99,7 +99,7 @@ public class ProcessInstanceCollectionResource extends AbstractRestResource {
 		DataResult result = paginateList(processIntanceQuery);
 		
 		List<Map<String,Object>> mapList = (List<Map<String,Object>>)result.getData();
-		if(mapList != null && mapList.size()>1){
+		if(mapList != null && mapList.size()>0){
 			for(Map<String,Object> tmp : mapList){
 				String initator = StringUtil.getString(tmp.get("initiator"));
 				String initatorName = getUserName(initator);

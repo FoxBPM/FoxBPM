@@ -17,6 +17,10 @@
  */
 package org.foxbpm.portal.model;
 
+import org.foxbpm.engine.impl.entity.GroupEntity;
+import org.foxbpm.engine.impl.entity.UserEntity;
+import org.foxbpm.engine.impl.identity.Authentication;
+
 
 /**
  * 报销单 业务实体
@@ -114,6 +118,22 @@ public class ExpenseEntity {
 
 	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
+	}
+	
+	public String getDeptName() {
+		GroupEntity group = Authentication.findGroupById(dept, "dept");
+		if(group != null){
+			return group.getGroupName();
+		}
+		return "未知部门";
+	}
+	
+	public String getOwnerName() {
+		UserEntity user = Authentication.selectUserByUserId(owner);
+		if(user != null){
+			return user.getUserName();
+		}
+		return "未知用户";
 	}
 
 }

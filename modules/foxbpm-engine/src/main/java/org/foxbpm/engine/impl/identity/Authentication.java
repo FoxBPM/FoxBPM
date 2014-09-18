@@ -144,7 +144,7 @@ public abstract class Authentication {
 	public static GroupEntity findGroupById(String groupId, String groupType) {
 		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
 		CommandExecutor commandExecutor = processEngine.getProcessEngineConfiguration().getCommandExecutor();
-		GroupEntity group = commandExecutor.execute(new FindGroupByIdCmd(groupId, groupType));
+		GroupEntity group = commandExecutor.execute(new FindGroupByIdCmd(groupType, groupId));
 		return group;
 	}
 	
