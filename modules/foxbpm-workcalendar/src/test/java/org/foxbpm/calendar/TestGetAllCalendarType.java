@@ -17,6 +17,8 @@
  */
 package org.foxbpm.calendar;
 
+import java.util.Calendar;
+
 import org.foxbpm.calendar.service.WorkCalendarService;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
 import org.junit.Test;
@@ -26,5 +28,16 @@ public class TestGetAllCalendarType extends AbstractFoxBpmTestCase{
 	@Test
 	public void testA(){
 		WorkCalendarService workCalendarService = processEngine.getProcessEngineConfiguration().getService(WorkCalendarService.class);
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, 2014);
+		calendar.set(Calendar.MONTH, 9);
+		calendar.set(Calendar.DATE, 01);
+		calendar.set(Calendar.HOUR, 5);
+		calendar.set(Calendar.MINUTE, 30);
+		calendar.set(Calendar.SECOND, 00);
+		calendar.set(Calendar.AM_PM, 0);
+		
+		workCalendarService.getDueTime("AAA",calendar.getTime(), 5);
 	}
 }
