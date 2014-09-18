@@ -16,7 +16,7 @@ var pagefunction = function() {
 						}, {
 							data : 'priority'
 						}, {
-							data : 'processInitiator'
+							data : 'initatorName'
 						}, {
 							data : 'endTime'
 						}, {

@@ -48,6 +48,8 @@ public class ProcessBehavior extends BaseElementBehavior {
 	
 	protected String name;
 	
+	protected String description;
+	
 	protected List<PotentialStarter> potentialStarters=new ArrayList<PotentialStarter>();
 
 	public List<PotentialStarter> getPotentialStarters() {
@@ -153,6 +155,12 @@ public class ProcessBehavior extends BaseElementBehavior {
 		this.formUriView = formUriView;
 	}
 	
-
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
 
 }

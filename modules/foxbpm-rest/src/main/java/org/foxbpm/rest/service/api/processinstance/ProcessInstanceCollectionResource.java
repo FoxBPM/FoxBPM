@@ -17,6 +17,8 @@
  */
 package org.foxbpm.rest.service.api.processinstance;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.foxbpm.engine.RuntimeService;
@@ -37,6 +39,7 @@ import org.restlet.resource.Get;
 public class ProcessInstanceCollectionResource extends AbstractRestResource {
 
 	
+	@SuppressWarnings("unchecked")
 	@Get
 	public DataResult getProcessInstance(){
 		if(!validationUser())
@@ -94,6 +97,15 @@ public class ProcessInstanceCollectionResource extends AbstractRestResource {
 		}
 		
 		DataResult result = paginateList(processIntanceQuery);
+		
+		List<Map<String,Object>> mapList = (List<Map<String,Object>>)result.getData();
+		if(mapList != null && mapList.size()>1){
+			for(Map<String,Object> tmp : mapList){
+				String initator = StringUtil.getString(tmp.get("initiator"));
+				String initatorName = getUserName(initator);
+				tmp.put("initatorName", initatorName);
+			}
+		}
 		return result;
 	}
 }

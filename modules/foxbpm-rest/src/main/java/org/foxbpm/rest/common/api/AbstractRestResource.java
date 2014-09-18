@@ -31,6 +31,7 @@ import java.util.Set;
 
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.impl.entity.UserEntity;
+import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.query.Query;
 import org.foxbpm.rest.common.RestConstants;
@@ -79,7 +80,7 @@ public abstract class AbstractRestResource extends ServerResource {
 	 */
 	protected String getUserName(String userId) {
 		if (StringUtil.isNotEmpty(userId)) {
-			UserEntity tmpUser = FoxBpmUtil.getProcessEngine().getIdentityService().getUser(userId);
+			UserEntity tmpUser = Authentication.selectUserByUserId(userId);
 			if (tmpUser != null) {
 				return tmpUser.getUserName();
 			}

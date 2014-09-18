@@ -20,6 +20,8 @@ package org.foxbpm.rest.service.api.task;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.foxbpm.engine.TaskService;
@@ -41,6 +43,7 @@ import org.restlet.resource.Get;
 public class TaskCollectionResource extends AbstractRestResource {
 
 	
+	@SuppressWarnings("unchecked")
 	@Get
 	public DataResult getTasks(){
 		
@@ -200,6 +203,15 @@ public class TaskCollectionResource extends AbstractRestResource {
 			taskQuery.taskNotEnd();
 		}
 		DataResult result = paginateList(taskQuery);
+		
+		List<Map<String,Object>> mapList = (List<Map<String,Object>>)result.getData();
+		if(mapList != null && mapList.size()>0){
+			for(Map<String,Object> tmp : mapList){
+				String initator = StringUtil.getString(tmp.get("processInitiator"));
+				String initatorName = getUserName(initator);
+				tmp.put("initatorName", initatorName);
+			}
+		}
 		return result;
 	}
 	

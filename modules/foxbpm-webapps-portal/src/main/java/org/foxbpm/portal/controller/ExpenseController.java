@@ -19,10 +19,14 @@ package org.foxbpm.portal.controller;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.portal.manager.ExpenseManager;
 import org.foxbpm.portal.model.ExpenseEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -34,53 +38,30 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class ExpenseController {
 
+	Logger log = LoggerFactory.getLogger(ExpenseController.class);
 	@Autowired
 	private ExpenseManager expenseManager;
 
 	@RequestMapping(value = { "/", "/expenses" }, method = RequestMethod.POST)
-	public void applyExpense(HttpServletResponse response, @ModelAttribute ExpenseEntity expenseEntity, @RequestParam String flowCommandInfo) throws IOException {
-		expenseManager.applyNewExpense(expenseEntity, flowCommandInfo);
+	public void applyExpense(HttpServletResponse response,HttpServletRequest request, @ModelAttribute ExpenseEntity expenseEntity, @RequestParam String flowCommandInfo) throws IOException {
 		response.setContentType("text/html;charset=utf-8");
-		response.getWriter().print(
-				"<script>"
-				+ "if(self.frameElement != null && self.frameElement.tagName=='IFRAME'){"
-				+ "		window.parent.$.smallBox({" 
-				+ "				title : '提示!',"
-				+ "				content : '保存成功！',"
-				+ "				color : '#296191'," 
-				+ "				icon : 'fa fa-bell swing animated',"
-				+"				timeout : 2000"
-				+ "		});"
-				+ "		window.parent.$('#remoteModal').modal('hide');"
-				+ "}"
-				+ "else{"
-				+"		alert('保存成功！');"
-				+ "		window.close();"
-				+ "}"
-				+ "</script>");
+		try{
+			UserEntity userEntity = (UserEntity)request.getSession().getAttribute("user");
+			expenseEntity.setOwner(userEntity.getUserId());
+			expenseManager.applyNewExpense(expenseEntity, flowCommandInfo);
+			response.getWriter().print(showMessage("启动成功！",true));
+		}catch(Exception ex){
+			log.error("报销流程启动失败！",ex);
+			response.getWriter().print(showMessage("启动失败，原因:" + ex.getMessage(),false));
+		}
+		
 	}
 
 	@RequestMapping(value = { "/", "/updateExpense" }, method = RequestMethod.POST)
 	public void updateExpense(HttpServletResponse response, @ModelAttribute ExpenseEntity expenseEntity, @RequestParam String flowCommandInfo) throws IOException {
 		expenseManager.updateExpense(expenseEntity, flowCommandInfo);
 		response.setContentType("text/html;charset=utf-8");
-		response.getWriter().print(
-				"<script>"
-				+ "if(self.frameElement != null && self.frameElement.tagName=='IFRAME'){"
-				+ "		window.parent.$.smallBox({" 
-				+ "				title : '提示!',"
-				+ "				content : '保存成功！',"
-				+ "				color : '#296191'," 
-				+ "				icon : 'fa fa-bell swing animated',"
-				+"				timeout : 2000"
-				+ "		});"
-				+ "		window.parent.$('#remoteModal').modal('hide');"
-				+ "}"
-				+ "else{"
-				+"		alert('保存成功！');"
-				+ "		window.close();"
-				+ "}"
-				+ "</script>");
+		response.getWriter().print(showMessage("更新成功！",true));
 	}
 	
 	
@@ -88,5 +69,28 @@ public class ExpenseController {
 	@ResponseBody
 	public ExpenseEntity getExpenseById(@RequestParam String expenseId){
 		return expenseManager.selectExpenseById(expenseId);
+	}
+	
+	public String showMessage(String msg,boolean isCloseWindow){
+		String result = "<script>"
+				+ "if(self.frameElement != null && self.frameElement.tagName=='IFRAME'){"
+				+ "		window.parent.$.smallBox({" 
+				+ "				title : '提示!',"
+				+ "				content : '"+msg+"',"
+				+ "				color : '#296191'," 
+				+ "				icon : 'fa fa-bell swing animated',"
+				+"				timeout : 2000"
+				+ "		});";
+				if(isCloseWindow){
+					result	+= "		window.parent.$('#remoteModal').modal('hide');";
+				}
+				result += "}"
+				+ "else{"
+				+"		alert('"+msg+"');"
+				+ "		window.close();"
+				+ "}"
+				+ "</script>";
+		
+		return result;
 	}
 }

@@ -21,7 +21,7 @@ var pagefunction = function() {
 									"defaultContent" : "-"
 								},
 								{
-									data : 'initiator'
+									data : 'initatorName'
 								},
 								{
 									"orderable" : false,
@@ -82,10 +82,6 @@ var pagefunction = function() {
 										var tdHtml = "<a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=showForm('"+cellData+"','"+rowData.processDefinitionKey+"','"+rowData.id+"');><i class='fa fa-pencil-square-o'></i> 查看</a>"+
 											" <a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=showDiagram('"+rowData.processDefinitionKey+"','"+rowData.id+"');><i class='fa fa-sitemap'></i> 流程图</a>";
 										$(td).html(tdHtml);
-									
-										
-										
-
 									}
 								}],
 
