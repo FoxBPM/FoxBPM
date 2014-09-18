@@ -49,6 +49,7 @@ public class LoginController {
 				if (null != userEntity && StringUtil.equals(password, userEntity.getPassword())) {
 					// 这里约定了一个参数，流程引擎在运行时会默认从session里按照这两个key来获取参数，如果替换了登录的方式，请保证这两个key依然可以获取到正确的数据
 					request.getSession().setAttribute("userId", userEntity.getUserId());
+					request.getSession().setAttribute("user", userEntity);
 					
 					String target = request.getParameter("target");
 					String targetUrl = "/portal/index.html";

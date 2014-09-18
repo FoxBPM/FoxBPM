@@ -21,6 +21,7 @@ package org.foxbpm.engine.impl.bpmn.parser.model;
 import java.util.List;
 
 import org.eclipse.bpmn2.BaseElement;
+import org.eclipse.bpmn2.Documentation;
 import org.eclipse.bpmn2.Process;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ProcessBehavior;
@@ -42,6 +43,14 @@ public class ProcessParser extends BaseElementParser {
 		processBehavior.setKey(process.getId());
 		processBehavior.setName(process.getName());
 		processBehavior.setSubject(BpmnModelUtil.getUserTaskSubject(baseElement));
+		
+		List<Documentation> docs = process.getDocumentation();
+		if(docs != null && docs.size() >0){
+			Documentation d = docs.get(0);
+			if(d != null){
+				processBehavior.setDescription(d.getText());
+			}
+		}
 		processBehavior.getPotentialStarters().clear();
 		List<PotentialStarter> potentialStarters = BpmnModelUtil.getPotentialStarters(process);
 		if(potentialStarters!=null){

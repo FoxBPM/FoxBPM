@@ -6,62 +6,63 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<link rel="stylesheet" type="text/css" media="screen"
-	href="../css/your_style.css">
-<link rel="stylesheet" type="text/css" media="screen"
-	href="../css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" media="screen"
-	href="../css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" media="screen"
-	href="../css/smartadmin-production.css">
-<link rel="stylesheet" type="text/css" media="screen"
-	href="../css/smartadmin-skins.min.css">
-<link rel="stylesheet" type="text/css" media="screen"
-	href="css/demo.min.css">
-
-<link rel="shortcut icon" href="img/favicon/favicon.ico"
-	type="image/x-icon">
-<link rel="icon" href="img/favicon/favicon.ico" type="image/x-icon">
-
-<link rel="apple-touch-icon" href="img/splash/sptouch-icon-iphone.png">
-<link rel="apple-touch-icon" sizes="76x76"
-	href="img/splash/touch-icon-ipad.png">
-<link rel="apple-touch-icon" sizes="120x120"
-	href="img/splash/touch-icon-iphone-retina.png">
-<link rel="apple-touch-icon" sizes="152x152"
-	href="img/splash/touch-icon-ipad-retina.png">
-
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-
-<!-- Startup image for web apps -->
-<link rel="apple-touch-startup-image"
-	href="img/splash/ipad-landscape.png"
-	media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
-<link rel="apple-touch-startup-image"
-	href="img/splash/ipad-portrait.png"
-	media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
-<link rel="apple-touch-startup-image" href="img/splash/iphone.png"
-	media="screen and (max-device-width: 320px)">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="stylesheet" type="text/css" media="screen" href="../css/your_style.css">
+<link rel="stylesheet" type="text/css" media="screen" href="../css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" media="screen" href="../css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" media="screen" href="../css/smartadmin-production.css">
 <script src="../js/libs/jquery-2.0.2.min.js"></script>
-<script src="../js/plugin/jquery-form/jquery-form.min.js"></script>
-<script>
-	if (!window.jQuery) {
-		document
-				.write('<script src="../js/libs/jquery-2.0.2.min.js"><\/script>');
-	}
-</script>
-
 <script src="../js/libs/jquery-ui-1.10.3.min.js"></script>
-<script>
-	if (!window.jQuery.ui) {
-		document
-				.write('<script src="js/libs/jquery-ui-1.10.3.min.js"><\/script>');
-	}
-</script>
 <script src="../js/foxbpm/common.js"></script>
+<script type="text/javascript" src="/foxbpm-webapps-common/portal/taskCommand/js/foxbpmframework.js"></script>
+<script type="text/javascript" src="/foxbpm-webapps-common/portal/taskCommand/js/flowCommandCompenent.js"></script>
+<script type="text/javascript" src="/foxbpm-webapps-common/portal/taskCommand/js/flowCommandHandler.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#closeModal").click(function(){
+			if(self.frameElement != null && self.frameElement.tagName=='IFRAME'){
+				window.parent.$('#remoteModal').modal('hide');
+			}else{
+				window.close();
+			}
+		});
+		
+		var $this = $("#createTime");
+		var dataDateFormat = $this.attr('data-dateformat') || 'yy-mm-dd';
+		$this.datepicker({
+					dateFormat : dataDateFormat,
+					prevText : '<i class="fa fa-chevron-left"></i>',
+					nextText : '<i class="fa fa-chevron-right"></i>',
+				});
+		var _getBizKey = function() {
+			return $("#expenseId").val();
+		};
+		var _getTaskComment = function() {
+			return "";
+		};
+
+		var _flowCommit = function(flowInfo) {
+			if (confirm("确定要提交吗?")) {
+				$("#flowCommandInfo").val(
+						JSON.stringify(flowInfo));
+				$("#form1").submit();
+			}
+			return false;
+
+		};
+		var flowconfig = {
+			getBizKey : _getBizKey,
+			getTaskComment : _getTaskComment,
+			flowCommit : _flowCommit
+		};
+
+		var flowCommandCompenent = new Foxbpm.FlowCommandCompenent(
+				flowconfig);
+		flowCommandCompenent.init();
+	});
+</script>
+	
 </head>
 
 <body class="">
@@ -155,49 +156,4 @@
 			</div>
 		</div>
 	</div>
-
-	<script type="text/javascript"
-		src="/foxbpm-webapps-common/portal/taskCommand/js/foxbpmframework.js"></script>
-	<script type="text/javascript"
-		src="/foxbpm-webapps-common/portal/taskCommand/js/flowCommandCompenent.js"></script>
-	<script type="text/javascript"
-		src="/foxbpm-webapps-common/portal/taskCommand/js/flowCommandHandler.js"></script>
-
-
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$("#closeModal").click(function(){
-				if(self.frameElement != null && self.frameElement.tagName=='IFRAME'){
-					window.parent.$('#remoteModal').modal('hide');
-				}else{
-					window.close();
-				}
-			});
-			var _getBizKey = function() {
-				return $("#expenseId").val();
-			};
-			var _getTaskComment = function() {
-				return "";
-			};
-
-			var _flowCommit = function(flowInfo) {
-				if (confirm("确定要提交吗?")) {
-					$("#flowCommandInfo").val(
-							JSON.stringify(flowInfo));
-					$("#form1").submit();
-				}
-				return false;
-
-			};
-			var flowconfig = {
-				getBizKey : _getBizKey,
-				getTaskComment : _getTaskComment,
-				flowCommit : _flowCommit
-			};
-
-			var flowCommandCompenent = new Foxbpm.FlowCommandCompenent(
-					flowconfig);
-			flowCommandCompenent.init();
-		});
-	</script>
 </body>

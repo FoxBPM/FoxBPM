@@ -67,13 +67,13 @@
 						<section class="col col-6">
 							<label class="label">单据号</label> <label class="input"> <i
 								class="icon-append fa fa-user"></i> <input type="text"
-								name="expenseId" id="expenseId">
+								name="expenseId" id="expenseId" readOnly>
 							</label>
 						</section>
 						<section class="col col-6">
 							<label class="label">申请日期</label> <label class="input">
 								<i class="icon-append fa fa-calendar"></i>
-								<input type="text" name="createTime" id="createTime" class="form-control">
+								<input type="text" name="createTime" id="createTime" class="form-control" readOnly>
 							</label>
 						</section>
 					</div>
@@ -82,13 +82,15 @@
 						<section class="col col-6">
 							<label class="label">报销人</label> <label class="input"> <i
 								class="icon-append fa fa-user"></i> <input type="text" class="form-control"
-								name="owner" id="owner">
+								name="ownerName" id="ownerName" readOnly>
+								<input type="hidden" name="owner" id="owner">
 							</label>
 						</section>
 						<section class="col col-6">
 							<label class="label">报销人部门</label> <label class="input">
 								<i class="icon-append fa fa-envelope-o"></i> <input type="email"
-								name="dept" id="dept">
+								name="deptName" id="deptName" readOnly>
+								<input type="hidden" id="dept" name="dept">
 							</label>
 						</section>
 					</div>
@@ -174,12 +176,14 @@ $(document).ready(function() {
         data:{expenseId:expenseId},
         success: function(msg){//msg为返回的数据，在这里做数据绑定
         	$("#expenseId").val(msg.expenseId);
-        	$("#owner").val(msg.owner);
+        	$("#ownerName").val(msg.ownerName);
         	$("#account").val(msg.account);
-        	$("#dept").val(msg.dept);
+        	$("#deptName").val(msg.deptName);
         	$("#reason").val(msg.reason);
         	$("#invoiceType").val(msg.invoiceType);
         	$("#createTime").val(msg.createTime);
+        	$("#owner").val(msg.owner);
+        	$("#dept").val(msg.dept);
         },
         error:function(msg){
         	$.smallBox({
