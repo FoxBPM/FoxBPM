@@ -26,7 +26,7 @@
 		
 		$("#closeModal").click(function(){
 			if(self.frameElement != null && self.frameElement.tagName=='IFRAME'){
-				window.parent.$('#remoteModal').modal('hide');
+				window.parent.closeModal();
 			}else{
 				window.close();
 			}

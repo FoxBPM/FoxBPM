@@ -202,6 +202,7 @@ public class TaskCollectionResource extends AbstractRestResource {
 		}else{
 			taskQuery.taskNotEnd();
 		}
+		taskQuery.orderByTaskCreateTime().desc();
 		DataResult result = paginateList(taskQuery);
 		
 		List<Map<String,Object>> mapList = (List<Map<String,Object>>)result.getData();
