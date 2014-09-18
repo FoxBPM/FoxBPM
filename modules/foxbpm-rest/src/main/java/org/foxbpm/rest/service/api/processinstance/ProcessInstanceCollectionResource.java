@@ -95,6 +95,7 @@ public class ProcessInstanceCollectionResource extends AbstractRestResource {
 		if(queryNames.contains("status")){
 			processIntanceQuery.processInstanceStatus(getQueryParameter("status", queryForm));
 		}
+		processIntanceQuery.orderByUpdateTime().desc();
 		
 		DataResult result = paginateList(processIntanceQuery);
 		
