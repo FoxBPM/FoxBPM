@@ -78,6 +78,7 @@
 <script src="js/plugin/fastclick/fastclick.min.js"></script>
 <!-- MAIN APP JS FILE -->
 <script src="js/app.min.js"></script>
+<script src="js/common.js"></script>
 <!-- Voice command : plugin -->
 <script src="js/speech/voicecommand.min.js"></script>
 <script type="text/javascript">
@@ -99,6 +100,5 @@
 	});
 </script>
 <!-- 自定义块 -->
-<script src="portal/js/foxbpm/common.js"></script>
 <!-- #PLUGINS -->
 		
