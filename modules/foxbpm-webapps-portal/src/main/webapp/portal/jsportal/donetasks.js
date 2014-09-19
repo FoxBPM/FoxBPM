@@ -1,3 +1,5 @@
+
+var doneTaskUrl = _serviceUrl + "runtime/tasks";
 var pagefunction = function() {
 	var doneTable = $('#datatable_col_reorder')
 			.DataTable(
@@ -44,7 +46,7 @@ var pagefunction = function() {
 											rowData, row, col) {
 										//任务主题避免这行
 										if(cellData.length>20){
-											$(td).html(cellData.substring(0,20)+"<b> . . .</b>");
+											$(td).html("<span data-original-title='"+cellData+"' rel='tooltip'>"+cellData.substring(0,20)+"<b> . . .</b>"+"</span>");
 										}else{
 											$(td).html(cellData);
 										}
@@ -80,7 +82,7 @@ var pagefunction = function() {
 									"orderable" : true,
 									"createdCell" : function(td, cellData,
 											rowData, row, col) { 
-										var tdHtml ="<a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=showForm('"+cellData+"','"+rowData.id+"','"+rowData.processInstanceId+"');><i class='fa fa-pencil-square-o'></i> 查看</a>"+
+										var tdHtml ="<a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=openTaskForm('"+cellData+"','"+rowData.id+"','"+rowData.processInstanceId+"');><i class='fa fa-pencil-square-o'></i> 查看</a>"+
 											"   <a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=showDiagram('"+rowData.processDefinitionKey+"','"+rowData.processInstanceId+"');><i class='fa fa-sitemap'></i> 流程图</a>";
 										$(td).html(tdHtml);
 									
@@ -95,7 +97,7 @@ var pagefunction = function() {
 						"orderable" : true,
 						"serverSide" : true,
 						"ajax": {
-				            "url": _serviceTaskUrl,
+				            "url": doneTaskUrl,
 				            "data": function ( d ) {
 				                d.ended = true; 
 				            }
@@ -161,12 +163,12 @@ var pagefunction = function() {
 			$("#createtime_start_dateselect_filter").val("");
 			$("#complete_start_dateselect_filter").val("");
 			$("#complete_end_dateselect_filter").val(""); 
-			 doneTable.ajax.url(_serviceTaskUrl).load();
+			 doneTable.ajax.url(doneTaskUrl).load();
 		};
 	     searchTodoTask = function() {
-	    	var baseUrl = _serviceTaskUrl+"?";
+	    	var baseUrl = doneTaskUrl;
 	    	var subjectLike =  $("[type='search']").val();
-	    	baseUrl = baseUrl + "ended=true";
+	    	baseUrl = baseUrl + "?ended=true";
 	    	if(subjectLike != ""){
 	    		baseUrl = baseUrl + "&subjectLike="+ subjectLike;
 	    	}
@@ -201,3 +203,14 @@ var pagefunction = function() {
 		    doneTable.ajax.url(baseUrl).load();
 	     };
 };
+
+function openTaskForm(url,dataId,taskId,processInstanceId){
+	//测试时暂时用报销的表单代替
+	url = "portal/expense/editExpense.jsp";
+	var formUrl = url+"?dataId="+dataId+"&taskId="+taskId+"&processInstanceId="+processInstanceId;
+	openModalForm(formUrl);
+}
+
+function showDiagram(processDefinitionKey,processInstanceId){ 
+	window.open("taskCommand/showTaskDetailInfor.html?processDefinitionKey="+processDefinitionKey+"&processInstanceId="+processInstanceId);
+}

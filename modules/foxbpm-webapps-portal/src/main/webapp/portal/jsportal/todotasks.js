@@ -1,4 +1,4 @@
-
+var todoTaskUrl = _serviceUrl + "runtime/tasks";
 var pagefunction = function() {
 	var responsiveHelper_datatable_fixed_column = undefined;
 	var breakpointDefinition = {
@@ -62,7 +62,7 @@ var pagefunction = function() {
 											rowData, row, col) {
 										//任务主题避免这行
 										if(cellData.length>24){
-											$(td).html(cellData.substring(0,20)+"<b> . . .</b>");
+											$(td).html("<span data-original-title='"+cellData+"' rel='tooltip'>"+cellData.substring(0,20)+"<b> . . .</b>"+"</span>");
 										}else{
 											$(td).html(cellData);
 										}
@@ -129,7 +129,7 @@ var pagefunction = function() {
 						"processing" : true,
 						"orderable" : true,
 						"serverSide" : true,
-						"ajax" : _serviceUrl + "runtime/tasks",
+						"ajax" : todoTaskUrl,
 						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'>C>"+
 								 "t"+
 								 "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p  l >>",
@@ -205,14 +205,14 @@ var pagefunction = function() {
 		$("#createtime_end_dateselect_filter").val("");
 		$("#duration_end_dateselect_filter").val(""); 
 		$("#createtime_start_dateselect_filter").val(""); 
-		todoTable.ajax.url(_serviceTaskUrl).load();
+		todoTable.ajax.url(todoTaskUrl).load();
 	};
      searchTodoTask = function() {
-    	var baseUrl = "tasks?";
+    	var baseUrl =todoTaskUrl;
     	var assigneed = $("#TASKSTATE_SEARCH").val();
     	var subjectLike =  $("[type='search']").val();
     	
-    	baseUrl = baseUrl + "assigneed="+assigneed;
+    	baseUrl = baseUrl + "?assigneed="+assigneed;
     	if(subjectLike != ""){
     		baseUrl = baseUrl + "&subjectLike="+ subjectLike;
     	}
