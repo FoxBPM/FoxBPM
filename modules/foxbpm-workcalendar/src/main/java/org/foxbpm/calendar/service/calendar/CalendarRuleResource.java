@@ -72,7 +72,7 @@ public class CalendarRuleResource extends AbstractRestResource{
 				calendarRuleEntity.setName(name);
 			}
 			if (StringUtil.isNotEmpty(workdate)) {
-				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 				try {
 					calendarRuleEntity.setWorkdate(dateFormat.parse(workdate));
 				} catch (ParseException e) {
