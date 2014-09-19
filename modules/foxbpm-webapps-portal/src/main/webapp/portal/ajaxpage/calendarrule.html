@@ -73,9 +73,12 @@
 								<div class="row">
 									<label class="label col col-2">状态</label>
 									<div class="col col-10">
-										<label class="input">
-											<input type="text" name="status" id="ruleStatus" placeholder="请选择状态">
-										</label>
+										<label class="select">
+											<!-- <input type="text" name="week" id="ruleWeek" placeholder="请输入周"> -->
+											<select id="ruleStatus" name="status">
+											    <option value="0" selected="">工作时间</option>
+												<option value="1">假期时间</option>
+										</select> <i></i> </label>
 									</div>
 								</div>
 							</section>
@@ -161,14 +164,13 @@
 
 </section>
 <!-- end widget grid --> 
-<script src="jsportal/calendarrule.js"></script>
+<!-- <script src="jsportal/calendarrule.js"></script> -->
 <script type="text/javascript">
 	
 	//pageSetUp(); 
 	//alert(pagefunction);
 
 	// Load form valisation dependency
-		loadScript("js/plugin/jquery-form/jquery-form.min.js", $loginForm);
 
 		// Registration validation script
 		var $loginForm = $("#login-form").validate({
@@ -219,10 +221,10 @@
 		  	     				icon : 'fa fa-bell swing animated',
 		            			timeout : 2000
 		            		});
-	                     dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
+	                     ruledataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
 	                },
 	                error:function(){
-	                	dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
+	                	ruledataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
 	                	$.smallBox({ 
 	            			title : '错误!',
 	            			content : '提交数据失败',
@@ -249,7 +251,7 @@
 		            			timeout : 2000
 		            		});
 	                
-	                     dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
+	                     ruledataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
 	                },
 	                error:function(){
 						 $.smallBox({ 
@@ -259,7 +261,7 @@
 							icon : "fa fa-warning shake animated",
 							timeout : 2000
 						});
-	                	dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
+						 ruledataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
 	                }
 	            }); 
 			}
@@ -274,8 +276,9 @@
 			$('#finishdate').datepicker('option', 'minDate', selectedDate);
 		} */
 	});
-
+	//loadScript("js/plugin/jquery-form/jquery-form.min.js", $loginForm);
 	// load related plugins
+	loadScript("jsportal/calendarrule.js",function(){
 	loadScript("js/plugin/datatables/jquery.dataTables.js", function(){
 		loadScript("js/plugin/datatables/dataTables.colVis.min.js", function(){
 			loadScript("js/plugin/datatables/dataTables.tableTools.min.js", function(){
@@ -284,6 +287,7 @@
 				});
 			});
 		});
+	});
 	});
 	
  

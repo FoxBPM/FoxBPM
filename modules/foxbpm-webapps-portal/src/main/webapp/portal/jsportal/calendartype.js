@@ -8,7 +8,8 @@ function Calendartype(config) {
 	// 公共函数定义
 	this.loadData=function(){
 	};
-}
+};
+
 /**
  * 定义类成员
  */
@@ -17,23 +18,55 @@ Calendartype.prototype = {
 	}
 };
 
-var dataTable = null;
+var selectedId = null;
+var typedataTable = null;
 var calendartypepagefunction = function() {
-	dataTable = $('#datatable_col_reorder')
+	typedataTable = $('#datatable_col_reorder')
 			.DataTable(
 					{
+						initComplete:function(){
+//							if(selectedId==null) {
+//								$.smallBox({ 
+//									title : '错误!',
+//									content : '请先选中一条记录',
+//									color : "#C46A69",
+//									icon : "fa fa-warning shake animated",
+//									timeout : 2000
+//								});
+//								$("#edittype").attr('disabled',"true");
+//							}else{
+//								$("#edittype").attr('disabled',"false");
+//							}
+							$('#datatable_col_reorder tbody').on( 'click', 'tr', function () {
+							    if ($(this).hasClass('selectedwy')) {
+							        $(this).removeClass('selectedwy');
+							        selectedId = $(this).children()[0].innerText;
+							        $("#edittype").attr('disabled',"true");
+							    }
+							    else {
+							    	typedataTable.$('tr.selectedwy').removeClass('selectedwy');
+							        $(this).addClass('selectedwy');
+							        selectedId = $(this).children()[0].innerText;
+							        $("#edittype").removeAttr("disabled");
+							    }
+							} );
+							
+							 $("#edittype").attr('disabled',"false");
+						},
 						columns : [ {
 							data : 'id'
 						}, {
 							data : 'name'
-						}, {
+						}
+//						, {
 						// "orderable" : false,
 						// "data" : null,
 						// "defaultContent" : "<a href='javascript:void(0);'
 						// onclick='func(1)' class='btn btn-danger'>删除</a> <a
 						// href='ajaxpage/form-calendartype.html?id=" + +"'
 						// class='btn btn-success'>编辑</a>"
-						} ],
+//						}
+					],
 
 						columnDefs : [ {
 							// The `data` parameter refers to the data for the
@@ -41,22 +74,22 @@ var calendartypepagefunction = function() {
 							// `data` option, which defaults to the column being
 							// worked with, in
 							// this case `data: 0`.
-							"render" : function(data, type, row) {
-								// return "<a href='javascript:void(0);'
-								// onclick='func("
-								// + row.id
-								// + ")' class='btn btn-danger'>删除</a> <a
-								// href='javascript:void(0);' onclick='func("
-								// + row.id
-								// + ")' class='btn btn-success'>编辑</a>";
-								return "<a href='javascript:void(0);' onclick='typefunc(\""
-										+ row.id
-										+ "\")' class='btn btn-danger'>删除</a>"
-										+ "<a onclick='typpeeditfun(\""
-										+ row.id
-										+ "\")' class='btn btn-success'>编辑</a>";
-							},
-							"targets" : 2
+//							"render" : function(data, type, row) {
+//								// return "<a href='javascript:void(0);'
+//								// onclick='func("
+//								// + row.id
+//								// + ")' class='btn btn-danger'>删除</a> <a
+//								// href='javascript:void(0);' onclick='func("
+//								// + row.id
+//								// + ")' class='btn btn-success'>编辑</a>";
+//								return "<a href='javascript:void(0);' onclick='typefunc(\""
+//										+ row.id
+//										+ "\")' class='btn btn-danger'>删除</a>"
+//										+ "<a onclick='typpeeditfun(\""
+//										+ row.id
+//										+ "\")' class='btn btn-success'>编辑</a>";
+//							},
+//							"targets" : 2
 						} ],
 						"processing" : true,
 						"orderable" : true,
@@ -84,7 +117,7 @@ var calendartypepagefunction = function() {
 							"sEmptyTable" : "表中无数据存在！",
 							"sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
 							"sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
-							"sSearch" : "_INPUT_&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' <a href='javascript:void(0);' onclick='add()'  class='btn btn-success btn-lg pull-right header-btn hidden-mobile'>新增</a>",
+							"sSearch" : "_INPUT_&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' <a href='javascript:void(0);' onclick='addtype()'  class='btn btn-success btn-lg pull-right header-btn hidden-mobile'>新增</a>&nbsp;&nbsp;<a href='javascript:void(0);' onclick='typpeeditfun()' id='edittype' class='btn btn-primary'>编辑</a>",
 							"oPaginate" : {
 								"sFirst" : "首页",
 								"sPrevious" : "上一页",
@@ -97,6 +130,7 @@ var calendartypepagefunction = function() {
 					});
 
 };
+
 
 function typefunc(id) {
 	if (id != null) {
@@ -115,10 +149,10 @@ function typefunc(id) {
   	     				icon : 'fa fa-bell swing animated',
             			timeout : 2000
             		});
-                 dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
+                 typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
             },
             error:function(){
-            	dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
+            	typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
             	$.smallBox({ 
         			title : '错误!',
         			content : '删除失败',
@@ -129,11 +163,12 @@ function typefunc(id) {
             }
 		});
 	}
-}
-function typpeeditfun(id) {
+};
+
+function typpeeditfun() {
 	$.ajax({
 		type : "GET",
-		url : "/foxbpm-webapps-common/service/workcal/calendartype/" + id,
+		url : "/foxbpm-webapps-common/service/workcal/calendartype/" + selectedId,
 		dataType : "json",
 		success : function(data) {
 			$("#typeId").val(data.id);
@@ -142,11 +177,11 @@ function typpeeditfun(id) {
 			$('#remoteModal').modal('show');
 		}
 	});
-}
+};
 
-function add() {
+function addtype() {
 	$("#typeId").val("");
 	$("#typeName").val("");
 	$("#login-form").attr("op", "1");
 	$('#remoteModal').modal('show');
-}
+};

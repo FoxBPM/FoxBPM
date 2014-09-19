@@ -5,7 +5,8 @@ function Calendarrule(config) {
 	// 公共函数定义
 	this.loadData=function(){
 	};
-}
+};
+
 /**
  * 定义类成员
  */
@@ -14,11 +15,11 @@ Calendarrule.prototype = {
 	}
 };
 
-var dataTable = null;
+var ruledataTable = null;
 
-var calendarrulepagefunction = function() {
-	dataTable = $('#datatable_col_reorder')
-			.dataTable(
+function calendarrulepagefunction() {
+	ruledataTable = $('#datatable_col_reorder')
+			.DataTable(
 					{
 						columns : [ {
 							data : 'id'
@@ -106,10 +107,10 @@ function ruleaddfunc(id) {
   	     				icon : 'fa fa-bell swing animated',
             			timeout : 2000
             		});
-                 dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
+                 ruledataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
             },
             error:function(){
-            	dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
+            	ruledataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
             	$.smallBox({ 
         			title : '错误!',
         			content : '删除失败',
@@ -120,7 +121,8 @@ function ruleaddfunc(id) {
             }
 		});
 	}
-}
+};
+
 function ruleeditFun(id){
 	$.ajax({
 		type : "GET",
@@ -138,7 +140,7 @@ function ruleeditFun(id){
              $('#remoteModal').modal('show');
 		}
 	});
-}
+};
 
 function addrule() {
 	 $("#ruleId").val("");
@@ -146,8 +148,8 @@ function addrule() {
      $("#ruleWeek").val(1);
      $("#ruleName").val("");
      $("#ruleWorkdate").val("");
-     $("#ruleStatus").val("");
+     $("#ruleStatus").val("0");
      $("#ruleTypeid").val("");
 	$("#login-form").attr("op", "1");
 	$('#remoteModal').modal('show');
-}
+};

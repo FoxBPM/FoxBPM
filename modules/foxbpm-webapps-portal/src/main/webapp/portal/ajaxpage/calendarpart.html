@@ -131,14 +131,13 @@
 
 </section>
 <!-- end widget grid --> 
-<script src="jsportal/calendarpart.js"></script>
+<!-- <script src="jsportal/calendarpart.js"></script> -->
 <script type="text/javascript">
 	
 	//pageSetUp(); 
 	//alert(pagefunction);
 
 	// Load form valisation dependency
-		loadScript("js/plugin/jquery-form/jquery-form.min.js", $loginForm);
 
 		// Registration validation script
 		var $loginForm = $("#login-form").validate({
@@ -198,10 +197,10 @@
 		  	     				icon : 'fa fa-bell swing animated',
 		            			timeout : 2000
 		            		});
-	                     dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarpart").load();
+	                     partdataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarpart").load();
 	                },
 	                error:function(){
-	                	dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarpart").load();
+	                	partdataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarpart").load();
 	                	$.smallBox({ 
 	            			title : '错误!',
 	            			content : '提交数据失败',
@@ -228,7 +227,7 @@
 		            			timeout : 2000
 		            		});
 	                
-	                     dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarpart").load();
+	                     partdataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarpart").load();
 	                },
 	                error:function(){
 						 $.smallBox({ 
@@ -238,7 +237,7 @@
 							icon : "fa fa-warning shake animated",
 							timeout : 2000
 						});
-	                	dataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarpart").load();
+						 partdataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarpart").load();
 	                }
 	            }); 
 			}
@@ -256,8 +255,9 @@
 		prevText : '<i class="fa fa-chevron-left"></i>',
 		nextText : '<i class="fa fa-chevron-right"></i>',
 	}); */
-	
+	//loadScript("js/plugin/jquery-form/jquery-form.min.js", $loginForm);
 	// load related plugins
+	loadScript("jsportal/calendarpart.js",function(){
 	loadScript("js/plugin/datatables/jquery.dataTables.js", function(){
 		loadScript("js/plugin/datatables/dataTables.colVis.min.js", function(){
 			loadScript("js/plugin/datatables/dataTables.tableTools.min.js", function(){
@@ -266,6 +266,7 @@
 				});
 			});
 		});
+	});
 	});
  
 </script>
