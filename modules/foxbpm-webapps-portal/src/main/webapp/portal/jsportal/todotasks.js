@@ -52,7 +52,7 @@ var pagefunction = function() {
 									"createdCell" : function(td, cellData,
 											rowData, row, col) {
 								
-										$(td).html("<img width='20' height='20' class='online' src='/foxbpm-webapps-common/service/identity/users/admin/picture'/>");
+										$(td).html("<img width='20' height='20' class='online' src='"+_serviceUrl+"identity/users/admin/picture'/>");
 										
 									}
 								},
@@ -66,8 +66,6 @@ var pagefunction = function() {
 										}else{
 											$(td).html(cellData);
 										}
-										
-										
 									}
 								},
 								{
@@ -77,19 +75,13 @@ var pagefunction = function() {
 											rowData, row, col) {
 
 										if (rowData.priority == "0") {
-											$(td)
-													.html(
-															"<span class='badge'>低</span>");
+											$(td).html("<span class='badge'>低</span>");
 										}
 										if (rowData.priority == "50") {
-											$(td)
-													.html(
-															"<span class='badge bg-color-greenLight'>中</span>");
+											$(td).html("<span class='badge bg-color-greenLight'>中</span>");
 										}
 										if (rowData.priority == "100") {
-											$(td)
-													.html(
-															"<span class='badge bg-color-red'>高</span>");
+											$(td).html("<span class='badge bg-color-red'>高</span>");
 										}
 									}
 								},
@@ -126,7 +118,7 @@ var pagefunction = function() {
 									"orderable" : true,
 									"createdCell" : function(td, cellData,
 											rowData, row, col) { 
-										var tdHtml = "<a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=openTaskForm('"+cellData+"','"+rowData.id+"','"+rowData.processInstanceId+"');><i class='fa fa-pencil-square-o'></i> 表单</a>"+
+										var tdHtml = "<a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=openTaskForm('"+rowData.formUri+"','"+cellData+"','"+rowData.id+"','"+rowData.processInstanceId+"');><i class='fa fa-pencil-square-o'></i> 表单</a>"+
 										"    <a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=showDiagram('"+rowData.processDefinitionKey+"','"+rowData.processInstanceId+"');><i class='fa fa-sitemap'></i> 流程图</a>";
 										$(td).html(tdHtml);
 									 
@@ -137,7 +129,7 @@ var pagefunction = function() {
 						"processing" : true,
 						"orderable" : true,
 						"serverSide" : true,
-						"ajax" : _serviceTaskUrl,
+						"ajax" : _serviceUrl + "runtime/tasks",
 						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'>C>"+
 								 "t"+
 								 "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p  l >>",
@@ -199,11 +191,6 @@ var pagefunction = function() {
 							$("[type='search']").attr("placeholder","主题/发起人");
 							$("[type='search']").css("width",subjectWidth);
 							$(".ColVis").css("visible","true");
-							
-							
-//							var itemnumberInfo = $("#datatable_fixed_column_info").html();
-//							var totalNumber = itemnumberInfo.substring(itemnumberInfo.indexOf("共")+1,itemnumberInfo.indexOf("条记录"));
-//							$("#todo_item_number").html(totalNumber);
 							pageSetUp();						
 						},
 						
@@ -221,7 +208,7 @@ var pagefunction = function() {
 		todoTable.ajax.url(_serviceTaskUrl).load();
 	};
      searchTodoTask = function() {
-    	var baseUrl = _serviceTaskUrl+"?";
+    	var baseUrl = "tasks?";
     	var assigneed = $("#TASKSTATE_SEARCH").val();
     	var subjectLike =  $("[type='search']").val();
     	
@@ -253,22 +240,20 @@ var pagefunction = function() {
 	    {
 	    	baseUrl = baseUrl + "&createTimeE="+ createTimeE;
 	    }
-	   
-     	
-//     	var searchURL = +"&initiator="+initiator+"&assigneed="+assigneed
-//     					+"&createTimeB="+createTimeB+"&createTimeE="+createTimeE+"&dueDateB="+dueDateB+"&dueDateE="+dueDateE;
      	todoTable.ajax.url(baseUrl).load();
     };
 };
 
 
-function openTaskForm(dataId,taskId,processInstanceId){
-	var formUrl = _formUrl+"?dataId="+dataId+"&taskId="+taskId+"&processInstanceId="+processInstanceId;
+function openTaskForm(url,dataId,taskId,processInstanceId){
+	//测试时暂时用报销的表单代替
+	url = "portal/expense/editExpense.jsp";
+	var formUrl = url+"?dataId="+dataId+"&taskId="+taskId+"&processInstanceId="+processInstanceId;
 	openModalForm(formUrl);
 }
 
 function showDiagram(processDefinitionKey,processInstanceId){ 
-	window.open("taskCommand/showTaskDetailInfor.html?processDefinitionKey="+processDefinitionKey+"&processInstanceId="+processInstanceId);
+	window.open("portal/taskCommand/showTaskDetailInfor.html?processDefinitionKey="+processDefinitionKey+"&processInstanceId="+processInstanceId);
 }
 
 
