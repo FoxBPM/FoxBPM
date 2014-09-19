@@ -1,3 +1,4 @@
+var runningTrackTaskUrl = _serviceUrl+"runtime/process-instances";
 var pagefunction = function() {
 	var runningTrackTable = $('#datatable_col_reorder')
 			.DataTable(
@@ -52,7 +53,7 @@ var pagefunction = function() {
 											rowData, row, col) {
 										//任务主题避免这行
 										if(cellData.length>24){
-											$(td).html(cellData.substring(0,20)+"<b> . . .</b>");
+											$(td).html("<span data-original-title='"+cellData+"' rel='tooltip'>"+cellData.substring(0,20)+"<b> . . .</b>"+"</span>");
 										}else{
 											$(td).html(cellData);
 										}
@@ -93,7 +94,7 @@ var pagefunction = function() {
 									"orderable" : true,
 									"createdCell" : function(td, cellData,
 											rowData, row, col) { 
-										var tdHtml = "<a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=viewForm('"+rowData.formUriView+"','"+rowData.id+"','"+rowData.bizKey+"');><i class='fa fa-pencil-square-o'></i> 查看</a>"+
+										var tdHtml = "<a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=openTaskForm('"+rowData.formUriView+"','"+rowData.id+"','"+rowData.bizKey+"');><i class='fa fa-pencil-square-o'></i> 查看</a>"+
 											" <a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=showDiagram('"+rowData.processDefinitionKey+"','"+rowData.id+"');><i class='fa fa-sitemap'></i> 流程图</a>";
 										$(td).html(tdHtml);
 									}
@@ -102,7 +103,7 @@ var pagefunction = function() {
 						"processing" : true,
 						"orderable" : true,
 						"serverSide" : true,
-						"ajax" : _serviceProcessInstanceUrl,
+						"ajax" : runningTrackTaskUrl,
 						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'>C>"
 								+ "t"
 								+ "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p l>>",
@@ -157,11 +158,11 @@ var pagefunction = function() {
 		$("#TASKSTATE_SEARCH").val("2");
 		$("#createtime_end_dateselect_filter").val("");
 		$("#createtime_start_dateselect_filter").val("");
-		var baseUrl = _serviceProcessInstanceUrl+"?participate=participate&";
+		var baseUrl = runningTrackTaskUrl+"?participate=participate&";
 		runningTrackTable.ajax.url(baseUrl).load();
 	};
      searchTodoTask = function() {
-    	var baseUrl = _serviceProcessInstanceUrl+"?participate=participate&";
+    	var baseUrl = runningTrackTaskUrl+"?participate=participate&";
     	var assigneed = $("#TASKSTATE_SEARCH").val();
     	var subjectLike =  $("[type='search']").val();
     	baseUrl = baseUrl + "assigneed="+assigneed;
@@ -193,5 +194,16 @@ function viewForm(formUrl,processInstanceId,bizKey){
 	$("#contentFrame").attr("src",url);
 	$('#remoteModal').modal({backdrop:"static"});
 	
+}
+
+function openTaskForm(url,dataId,taskId,processInstanceId){
+	//测试时暂时用报销的表单代替
+	url = "portal/expense/editExpense.jsp";
+	var formUrl = url+"?dataId="+dataId+"&taskId="+taskId+"&processInstanceId="+processInstanceId;
+	openModalForm(formUrl);
+}
+
+function showDiagram(processDefinitionKey,processInstanceId){ 
+	window.open("taskCommand/showTaskDetailInfor.html?processDefinitionKey="+processDefinitionKey+"&processInstanceId="+processInstanceId);
 }
 
