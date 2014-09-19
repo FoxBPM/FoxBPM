@@ -60,17 +60,11 @@
 				<!-- Suggestion: populate this list with fetch and push technique -->
 				<ul class="dropdown-menu">
 					<li>
-						<a href="javascript:void(0);">Online e-merchant management system - attaching integration with the iOS</a>
-					</li>
-					<li>
-						<a href="javascript:void(0);">Notes on pipeline upgradee</a>
-					</li>
-					<li>
-						<a href="javascript:void(0);">Assesment Report for merchant account</a>
+						<a href="javascript:void(0);">更新服务器端缓存，在发布新流程或更新用户后使用此功能清空服务器端缓存!</a>
 					</li>
 					<li class="divider"></li>
 					<li>
-						<a href="javascript:void(0);"><i class="fa fa-power-off"></i> Clear</a>
+						<a href="javascript:void(0);" id="clearCache"><i class="fa fa-power-off"></i> Clear</a>
 					</li>
 				</ul>
 				<!-- end dropdown-menu-->
@@ -316,7 +310,7 @@
 			<div id="ribbon">
 
 				<span class="ribbon-button-alignment"> 
-					<span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh" rel="tooltip" data-placement="bottom" data-original-title="<i class='text-warning fa fa-warning'></i> Warning! This will reset all your widget settings." data-html="true" data-reset-msg="Would you like to RESET all your saved widgets and clear LocalStorage?"><i class="fa fa-refresh"></i></span> 
+					<span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh" rel="tooltip" data-placement="bottom" data-original-title="<i class='text-warning fa fa-warning'></i>注意! 此操作会清空的本地样式缓存." data-html="true" data-reset-msg="是否清空本地缓存，恢复初始样式?"><i class="fa fa-refresh"></i></span> 
 				</span>
 
 				<!-- breadcrumb -->
