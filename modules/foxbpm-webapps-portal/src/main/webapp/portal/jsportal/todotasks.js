@@ -137,7 +137,7 @@ var pagefunction = function() {
 						"processing" : true,
 						"orderable" : true,
 						"serverSide" : true,
-						"ajax" : _serviceTaskUrl,
+						"ajax" : _serviceUrl + "runtime/tasks",
 						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'>C>"+
 								 "t"+
 								 "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p  l >>",
@@ -221,7 +221,7 @@ var pagefunction = function() {
 		todoTable.ajax.url(_serviceTaskUrl).load();
 	};
      searchTodoTask = function() {
-    	var baseUrl = _serviceTaskUrl+"?";
+    	var baseUrl = "tasks?";
     	var assigneed = $("#TASKSTATE_SEARCH").val();
     	var subjectLike =  $("[type='search']").val();
     	

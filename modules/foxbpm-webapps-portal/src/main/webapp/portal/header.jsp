@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page import="org.foxbpm.engine.impl.entity.UserEntity" %>
 <%
-  String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/";
+    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/";
+	UserEntity user = (UserEntity)request.getSession().getAttribute("user");
 %>
 <base href="<%=basePath%>">
 <meta charset="utf-8">
@@ -93,7 +95,7 @@
 	$(document).ready(function(){
 		//加载用户图像 
 		 $("img[name=uImg]").each(function(){
-		  $(this).attr("src","/foxbpm-webapps-common/service/identity/users/"+_userId+"/picture");
+		  $(this).attr("src","/foxbpm-webapps-common/service/identity/users/<%=user.getUserId()%>/picture");
 		 });
 		 //添加展现左侧菜单点击显示样式
 		 var url = "portal"+location.href.split('portal').splice(1).join("portal");
