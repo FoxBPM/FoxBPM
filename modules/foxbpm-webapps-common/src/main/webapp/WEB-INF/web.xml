@@ -34,6 +34,16 @@
    <filter-mapping>    
         <filter-name>encodingFilter</filter-name>    
         <url-pattern>/*</url-pattern>    
+  </filter-mapping> 
+  
+  <filter>   
+      <filter-name>onlineFilter</filter-name>   
+      <filter-class>org.foxbpm.web.controller.LoginFilter</filter-class>   
+   </filter> 
+   
+   <filter-mapping>   
+        <filter-name>onlineFilter</filter-name>   
+      <url-pattern>*.jsp</url-pattern>   
   </filter-mapping>   
   
   
@@ -70,6 +80,6 @@
  
   <welcome-file-list>
     <welcome-file>login.html</welcome-file>
-    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
 </web-app>

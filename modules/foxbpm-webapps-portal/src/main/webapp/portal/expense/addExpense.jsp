@@ -49,6 +49,7 @@
 					prevText : '<i class="fa fa-chevron-left"></i>',
 					nextText : '<i class="fa fa-chevron-right"></i>',
 				});
+		$this = null;
 		
 		
 		$("#form1").validate({
@@ -190,11 +191,6 @@
 						<button type='button' id="closeModal" class='btn btn-primary'>关闭</button>
 					 </footer>
 					<input type="hidden" name="flowCommandInfo" id="flowCommandInfo">
-
-					<div class="message">
-						<i class="fa fa-thumbs-up"></i>
-						<p>Your message was successfully sent!</p>
-					</div>
 				</form>
 
 			</div>

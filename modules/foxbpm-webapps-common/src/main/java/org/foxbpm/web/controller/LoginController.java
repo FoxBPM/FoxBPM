@@ -52,7 +52,7 @@ public class LoginController {
 					request.getSession().setAttribute("user", userEntity);
 					
 					String target = request.getParameter("target");
-					String targetUrl = "/portal/index.html";
+					String targetUrl = "/portal/index.jsp";
 					if("1".equals(target)){
 						targetUrl = "/manage/index.html";
 					}else if("2".equals(target)){

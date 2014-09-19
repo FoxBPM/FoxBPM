@@ -94,7 +94,7 @@ var pagefunction = function() {
 									"orderable" : true,
 									"createdCell" : function(td, cellData,
 											rowData, row, col) { 
-										var tdHtml = "<a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=openTaskForm('"+rowData.formUriView+"','"+rowData.id+"','"+rowData.bizKey+"');><i class='fa fa-pencil-square-o'></i> 查看</a>"+
+										var tdHtml = "<a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=openTaskForm('"+rowData.formUriView+"','"+rowData.bizKey+"','"+rowData.id+"');><i class='fa fa-pencil-square-o'></i> 查看</a>"+
 											" <a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=showDiagram('"+rowData.processDefinitionKey+"','"+rowData.id+"');><i class='fa fa-sitemap'></i> 流程图</a>";
 										$(td).html(tdHtml);
 									}
@@ -198,12 +198,12 @@ function viewForm(formUrl,processInstanceId,bizKey){
 
 function openTaskForm(url,dataId,taskId,processInstanceId){
 	//测试时暂时用报销的表单代替
-	url = "portal/expense/editExpense.jsp";
+	url = "portal/expense/viewExpense.jsp";
 	var formUrl = url+"?dataId="+dataId+"&taskId="+taskId+"&processInstanceId="+processInstanceId;
 	openModalForm(formUrl);
 }
 
 function showDiagram(processDefinitionKey,processInstanceId){ 
-	window.open("taskCommand/showTaskDetailInfor.html?processDefinitionKey="+processDefinitionKey+"&processInstanceId="+processInstanceId);
+	window.open("portal/taskCommand/showTaskDetailInfor.html?processDefinitionKey="+processDefinitionKey+"&processInstanceId="+processInstanceId);
 }
 

@@ -4,7 +4,7 @@
 	<head>
 		 <jsp:include page="../header.jsp"/>
 	</head>
-	<script src="jsportal/runningtrackTasks.js"></script> 
+	<script src="portal/jsportal/runningtrackTasks.js"></script> 
 	<script src="js/plugin/datatables/jquery.dataTables.min.js"></script>
 	<script src="js/plugin/datatables/dataTables.colVis.min.js"></script>
 	<script src="js/plugin/datatables/dataTables.tableTools.min.js"></script>

@@ -268,22 +268,22 @@
 						<a href="portal/jsp/launchProcess.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-arrow-circle-right"></i> <span class="menu-item-parent">发 起 流 程</span></a>
 					</li>
 					<li>
-						<a href="portal/jsp//todotasks.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent">待 办 任 务</span><span class="badge pull-right inbox-badge">14</span></a>
+						<a href="portal/jsp/todoTasks.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent">待 办 任 务</span><span class="badge pull-right inbox-badge">14</span></a>
 					</li>
 					<li>
-						<a href="portal/jsp//users.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent">用户列表</span><span class="badge pull-right inbox-badge">14</span></a>
+						<a href="portal/jsp/users.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent">用户列表</span><span class="badge pull-right inbox-badge">14</span></a>
 					</li>
 					<li>
-						<a href="portal/jsp//calendarpanel.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-calendar"></i> <span class="menu-item-parent">日 历 面 板</span></a>
+						<a href="portal/jsp/calendarpanel.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-calendar"></i> <span class="menu-item-parent">日 历 面 板</span></a>
 					</li>
 					<li>
 						<a href="ajax/inbox.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-bullhorn"></i> <span class="menu-item-parent">通 知 中 心</span><span class="badge pull-right inbox-badge">5</span></a>
 					</li>
 					<li>
-						<a href="portal/jsp/donetasks.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-check-square-o"></i> <span class="menu-item-parent">已 办 任 务</span></a>
+						<a href="portal/jsp/doneTasks.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-check-square-o"></i> <span class="menu-item-parent">已 办 任 务</span></a>
 					</li>
 					<li>
-						<a href="portal/jsp/runningtrackTasks.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-check-square"></i> <span class="menu-item-parent">流 程 追 踪</span></a>
+						<a href="portal/jsp/runningTrackTasks.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-check-square"></i> <span class="menu-item-parent">流 程 追 踪</span></a>
 					</li>
 					<li>
 						<a href="portal/jsp/profile.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-comments-o"></i> <span class="menu-item-parent">社 交 中 心</span><span class="badge pull-right inbox-badge">8</span></a>
