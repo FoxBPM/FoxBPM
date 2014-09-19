@@ -16,7 +16,6 @@
 	<link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production.css">
 	<script src="js/libs/jquery-2.0.2.min.js"></script>
-	<script src="js/notification/SmartNotification.min.js"></script>
 	<script src="js/libs/jquery-ui-1.10.3.min.js"></script>
 	<script src="js/plugin/jquery-validate/jquery.validate.min.js"></script>
 	<script src="js/common.js"></script>
@@ -109,9 +108,9 @@
 	</script>
 </head>
 	
-<body class="">
+<body>
 
-<div class="jarviswidget" id="wid-id-8" data-widget-editbutton="false" data-widget-custombutton="false">
+<div class="jarviswidget" id="wid-id-8" data-widget-editbutton="false" data-widget-custombutton="false"  style="margin:0 0 0 0">
 	<header>
 		<span class="widget-icon"> <i class="fa fa-edit"></i>
 		</span>
