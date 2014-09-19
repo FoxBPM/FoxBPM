@@ -7,7 +7,10 @@
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
-<meta charset="utf-8">
+<%
+    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/";
+%>
+<base href="<%=basePath%>">
 <title>FoxBPM流程门户</title>
 <meta name="description" content="">
 <meta name="author" content="">
@@ -18,19 +21,19 @@
 %>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<link rel="stylesheet" type="text/css" media="screen" href="../css/your_style.css">
-<link rel="stylesheet" type="text/css" media="screen" href="../css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" media="screen" href="../css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" media="screen" href="../css/smartadmin-production.css">
-<script src="../js/libs/jquery-2.0.2.min.js"></script>
-<script src="../js/libs/jquery-ui-1.10.3.min.js"></script>
+<link rel="stylesheet" type="text/css" media="screen" href="css/your_style.css">
+<link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" media="screen" href="css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" media="screen" href="css/smartadmin-production.css">
+<script src="js/libs/jquery-2.0.2.min.js"></script>
+<script src="js/libs/jquery-ui-1.10.3.min.js"></script>
 <!-- JQUERY VALIDATE -->
-<script src="../../js/plugin/jquery-validate/jquery.validate.min.js"></script>
-<script src="../js/foxbpm/common.js"></script>
-<script src="../../js/notification/SmartNotification.min.js"></script>
-<script type="text/javascript" src="/foxbpm-webapps-common/portal/taskCommand/js/foxbpmframework.js"></script>
-<script type="text/javascript" src="/foxbpm-webapps-common/portal/taskCommand/js/flowCommandCompenent.js"></script>
-<script type="text/javascript" src="/foxbpm-webapps-common/portal/taskCommand/js/flowCommandHandler.js"></script>
+<script src="js/plugin/jquery-validate/jquery.validate.min.js"></script>
+<script src="js/common.js"></script>
+<script src="js/notification/SmartNotification.min.js"></script>
+<script type="text/javascript" src="portal/taskCommand/js/foxbpmframework.js"></script>
+<script type="text/javascript" src="portal/taskCommand/js/flowCommandCompenent.js"></script>
+<script type="text/javascript" src="portal/taskCommand/js/flowCommandHandler.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -107,7 +110,7 @@
 			<div class="jarviswidget-editbox"></div>
 			<div class="widget-body no-padding">
 
-				<form action="/foxbpm-webapps-common/expenses.action" method="post"
+				<form action="expenses.action" method="post"
 					id="form1" class="smart-form">
 					<fieldset>
 						<div class="row">
