@@ -80,7 +80,7 @@ var pagefunction = function() {
 									"orderable" : true,
 									"createdCell" : function(td, cellData,
 											rowData, row, col) { 
-										var tdHtml ="<a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=showForm('"+cellData+"','"+rowData.id+"','"+rowData.processInstanceId+"');><i class='fa fa-pencil-square-o'></i> 查看</a>"+
+										var tdHtml ="<a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=openTaskForm('"+cellData+"','"+rowData.id+"','"+rowData.processInstanceId+"');><i class='fa fa-pencil-square-o'></i> 查看</a>"+
 											"   <a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=showDiagram('"+rowData.processDefinitionKey+"','"+rowData.processInstanceId+"');><i class='fa fa-sitemap'></i> 流程图</a>";
 										$(td).html(tdHtml);
 									
@@ -201,3 +201,12 @@ var pagefunction = function() {
 		    doneTable.ajax.url(baseUrl).load();
 	     };
 };
+
+function openTaskForm(dataId,taskId,processInstanceId){
+	var formUrl = _formUrl+"?dataId="+dataId+"&taskId="+taskId+"&processInstanceId="+processInstanceId;
+	openModalForm(formUrl);
+}
+
+function showDiagram(processDefinitionKey,processInstanceId){ 
+	window.open("taskCommand/showTaskDetailInfor.html?processDefinitionKey="+processDefinitionKey+"&processInstanceId="+processInstanceId);
+}
