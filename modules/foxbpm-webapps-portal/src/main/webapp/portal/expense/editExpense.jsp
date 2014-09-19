@@ -58,13 +58,7 @@
 	function initFormData(){
 		var expenseId = requestUrlParam("dataId");
 		if(expenseId == null || expenseId == undefined || expenseId == ""){
-			$.smallBox({ 
-				title : '错误!',
-				content : '单据号为空！',
-				color : "#C46A69",
-				icon : "fa fa-warning shake animated",
-				timeout : 2000
-			});
+			showMessage("错误","单据号为空！","error");
 			return;
 		}
 		$.ajax({
@@ -84,13 +78,7 @@
 	        	$("#dept").val(msg.dept);
 	        },
 	        error:function(msg){
-	        	$.smallBox({
-					title : '提示!',
-					content : '系统错误，请联系管理员！',
-					color : "#C46A69",
-					icon : "fa fa-warning shake animated",
-					timeout : 2000
-				});
+	        	showMessage("错误","系统错误，请重新打开或联系管理员！","error");
 	        }
 		});
 	}
@@ -110,13 +98,7 @@
 				}
 			},
 			errorPlacement : function(error, element) {
-				$.smallBox({
-							title : '错误!',
-							content : error.html(),
-							color : '#296191',
-							icon : 'fa fa-bell swing animated',
-							timeout : 2000
-						});
+				showMessage("错误",error.html(),"error");
 			}
 		});
 	}

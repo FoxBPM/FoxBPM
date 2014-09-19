@@ -101,7 +101,7 @@
 	// pagefunction
 	var pagefunction = function() {
 		  new Gallery({
-			imgServiceUrl : '/foxbpm-webapps-common/service/',
+			imgServiceUrl : _serviceUrl,
 			searchId:"searchbtton",
 			doAfter : function() {
 				//资源异步加载成功后执行

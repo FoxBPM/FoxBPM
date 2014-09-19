@@ -65,13 +65,7 @@
 					}
 				},
 				errorPlacement : function(error, element) {
-					$.smallBox({
-								title : '错误!',
-								content : error.html(),
-								color : '#296191',
-								icon : 'fa fa-bell swing animated',
-								timeout : 2000
-							});
+					showMessage("错误",error.html(),"error");
 				}});
 		var _getBizKey = function() {
 			return $("#expenseId").val();

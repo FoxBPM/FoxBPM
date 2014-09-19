@@ -2,6 +2,14 @@
  * 
  */
 var _serviceUrl = "service/";
+
+/**
+ * iframe弹出框
+ * 依赖：bootstrap.js
+ * @param url url路径
+ * @param height 高度，由于宽度需要自适应，所以这里只给了高度参数
+ * 例：openModalForm("http://www.baidu.com",500);
+ */
 function openModalForm(url,height){
 	if(height || height === undefined){
 		height=550;
@@ -12,6 +20,10 @@ function openModalForm(url,height){
 	$('#remoteModal').modal({backdrop:"static"});
 }
 
+/**
+ * 关闭modal,如果页面中存在打开的modal,则关闭之
+ * <p>此关闭方法会清空浏览器缓存，防止iframe内存泄露问题</p>
+ */
 function closeModal(){
 	var contentFrame = $("#contentFrame");
 	if(contentFrame){
@@ -23,6 +35,36 @@ function closeModal(){
 	}
 }
 
+/**
+ * web中的通知方式
+ * 依赖：bootstrap.js、SmartNotification.js
+ * @param mesTitle 标题
+ * @param mes 信息内容
+ * @param type 类型：error,info,warning
+ * 例：showMesssage("提示","保存成功","info")
+ */
+function showMessage(mesTitle,mes,type){
+	if(mesTitle || mesTitle === undefined){
+		mesTitle ="提示";
+	}
+	$.smallBox({ 
+		title : mesTitle,
+		content : mes,
+		color : "#C46A69",
+		icon : "fa fa-warning shake animated",
+		timeout : 2000
+	});
+}
+
+/**
+ * 截取url中的parameter
+ * 依赖：无
+ * @param paras
+ * @return
+ * 例：url http://localhost:8080/index.jsp?username=admin
+ * requestUrlParam("username");
+ * 则return admin
+ */
 function requestUrlParam(paras) {
 	var url = location.href;
 	var paraString = url.substring(url.indexOf("?") + 1, url.length).split("&");
