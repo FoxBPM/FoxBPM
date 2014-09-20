@@ -41,7 +41,7 @@
   border-bottom: 1px dashed #dddddd;
   min-height: 10px;
   padding: 10px;
-}
+}menu-on-top
 .md-editor > textarea {
   font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
   font-size: 13px;
@@ -23075,7 +23075,7 @@ label:hover input[type="checkbox"][disabled].checkbox:checked + span:before {
   margin-top: 0px !important;
 }
 #mobile-profile-img {
-  display: none;
+  display: block !important;
 }
 .menu-on-top #mobile-profile-img {
   display: block !important;
@@ -23381,7 +23381,7 @@ body.menu-on-top.fixed-header.fixed-navigation.fixed-ribbon #ribbon {
     left: 0px !important;
   }
   .menu-on-top #hide-menu {
-    display: block !important;
+    display: none !important;
   }
   .menu-on-top aside#left-panel nav {
     height: 300px !important;

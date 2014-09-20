@@ -77,14 +77,14 @@
 			<div class="pull-right">
 				
 				<!-- collapse menu button -->
-				<div id="hide-menu" class="btn-header pull-right">
+				<div id="hide-menu" class="btn-header pull-right no-margin">
 					<span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fa fa-reorder"></i></a> </span>
 				</div>
 				<!-- end collapse menu -->
 				
 				<!-- #MOBILE -->
 				<!-- Top menu profile link : this shows only when top menu is active -->
-				<ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
+				<ul id="mobile-profile-img" class="header-dropdown-list hidden-xs no-padding padding-top-10">
 					<li class="">
 						<a href="#" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown"> 
 							<!-- <img src="img/avatars/sunny.png" alt="John Doe" class="online" /> -->  
@@ -123,9 +123,9 @@
 				</ul>
 
 				<!-- logout button -->
-				<div id="logout" class="btn-header transparent pull-right">
+				<!-- <div id="logout" class="btn-header transparent pull-right">
 					<span> <a href="login.html" title="Sign Out" data-action="userLogout" data-logout-msg="您确定要退出系统？"><i class="fa fa-sign-out"></i></a> </span>
-				</div>
+				</div> -->
 				<!-- end logout button -->
 
 				<!-- search mobile button (this is hidden till mobile view port) -->
