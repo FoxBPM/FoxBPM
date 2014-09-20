@@ -115,7 +115,19 @@
 				$('#finishdate').datepicker('option', 'minDate', selectedDate);
 			} */
 		});
-			
+		
+		$.ajax({
+			  url: 'service/workcal/calendartype',
+			  type : 'get',
+			  dataType: 'json',
+			  success: function(data){
+				  $('#ruleTypeid').innerHTML = "";
+				  for (var i = 0; i < data.data.length; i++) {
+					  $('#ruleTypeid').append($("<option value=\'"+ data.data[i].id +"\'>").html(data.data[i].name));
+					};
+			  },
+		});
+		
 			calendarrulepagefunction();
 		});
 	</script>	
@@ -210,8 +222,13 @@
 								<div class="row">
 									<label class="label col col-2">类型ID</label>
 									<div class="col col-10">
-										<label class="input">
+										<!-- <label class="input">
 											<input type="text" name="typeid" id="ruleTypeid" placeholder="请选择类型">
+										</label> -->
+										<label class="select">
+											<!-- <input type="text" name="week" id="ruleWeek" placeholder="请输入周"> -->
+											<select id="ruleTypeid" name="typeid">
+											</select> <i></i> 
 										</label>
 									</div>
 								</div>
