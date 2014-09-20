@@ -89,7 +89,16 @@
 		 });
 		 //添加展现左侧菜单点击显示样式
 		 var url = "portal"+location.href.split('portal').splice(1).join("portal");
-		 $('nav li:has(a[href="' + url + '"])').addClass("active");
+		 if("portal/index.jsp" == url){
+			var $this = $('nav > ul > li:first-child > a[href!="#"]');
+			$('nav li:has(a[href="' + $this.attr("href") + '"])').addClass("active");
+		 }else {
+		 	var a = $('nav li:has(a[href="' + url + '"])').addClass("active");
+		    if(a.first().find("ul").length > 0){
+		 	  a.first().children().first().click();
+		    }
+		 }
+		 
 		 $('body').find('> *').filter(':not(' + ignore_key_elms + ')').empty().remove();
 		 // draw breadcrumb
 		 drawBreadCrumb();

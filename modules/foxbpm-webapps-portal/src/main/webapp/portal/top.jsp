@@ -1,4 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page import="org.foxbpm.engine.impl.entity.UserEntity" %>
+<%
+	UserEntity user = (UserEntity)request.getSession().getAttribute("user");
+%>
 <!-- #HEADER -->
 		<header id="header">
 			<div id="logo-group">
@@ -232,7 +236,7 @@
 						<!-- <img src="img/avatars/sunny.jpg" alt="me" class="online" />  -->
 						<img  alt="me" name="uImg" class="online" style="width:30px;height:30px"/> 
 						<span>
-							kenshin
+						<%=user.getUserName() %>
 						</span>
 						<i class="fa fa-angle-down"></i>
 					</a> 
@@ -333,3 +337,9 @@
 			</div>
 			<!-- END RIBBON -->
 <div id="content">
+<!-- 处理系统设置 -->
+<script type="text/javascript">
+	//这里处理左侧菜单展现时机
+	initApp.menuPos();
+	initApp.leftNav();
+</script>

@@ -23,7 +23,8 @@ function calendarpartpagefunction() {
 						initComplete:function(){
 							$('#datatable_col_reorder tbody').on( 'click', 'tr', function () {
 								var flag = $(this).attr("flag");
-								$("#edittype").removeAttr("disabled");
+								$("#editpart").removeAttr("disabled");
+								$("#deletepart").removeAttr("disabled");
 								partdataTable.$('tr').children().attr("style","");
 								if(1 == flag){
 									$(this).children().attr("style","background-color:#b0bed9");
@@ -38,7 +39,8 @@ function calendarpartpagefunction() {
 								
 							} );
 							
-							 $("#edittype").attr('disabled',"true");
+							 $("#editpart").attr('disabled',"true");
+							 $("#deletepart").attr('disabled',"true");
 						},
 						
 						columns : [ {
@@ -90,7 +92,7 @@ function calendarpartpagefunction() {
 							"sEmptyTable" : "表中无数据存在！",
 							"sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
 							"sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
-							"sSearch" : "_INPUT_&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' <a href='javascript:void(0);' onclick='addpartfunc()'  class='btn btn-success btn-lg pull-right header-btn hidden-mobile'>新增</a>&nbsp;&nbsp;<a href='javascript:void(0);' onclick='editpartfunc()' id='edittype' class='btn btn-primary' style='height: 30px; disabled: true;'>编辑</a>&nbsp;&nbsp;<a href='javascript:void(0);' onclick='deletepartfunc()' id='deletetype' class='btn btn-primary' style='height: 30px; disabled: true;'>删除</a>",
+							"sSearch" : "_INPUT_&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' <a href='javascript:void(0);' onclick='addpartfunc()'  class='btn btn-success btn-lg pull-right header-btn hidden-mobile'>新增</a>&nbsp;&nbsp;<a href='javascript:void(0);' onclick='editpartfunc()' id='editpart' class='btn btn-primary' style='height: 30px; disabled: true;'>编辑</a>&nbsp;&nbsp;<a href='javascript:void(0);' onclick='deletepartfunc()' id='deletepart' class='btn btn-primary' style='height: 30px; disabled: true;'>删除</a>",
 							"oPaginate" : {
 								"sFirst" : "首页",
 								"sPrevious" : "上一页",
