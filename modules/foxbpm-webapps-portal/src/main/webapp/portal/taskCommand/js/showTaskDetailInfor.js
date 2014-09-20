@@ -74,14 +74,6 @@ Foxbpm.TaskDeatailInfor.prototype = {
 							}
 							var data = msg.data;
 							//加载流程状态
-							/*var processStatus = $("#processStatus");
-							if (!!processStatus) {
-								var status = $("<a class='label css-truncate-target linked-labelstyle-84b6eb'>");
-								status.attr("href", "javascript:void(0);");
-								status.attr("title", "状态【" + data.status + "】");
-								status.html("状态【" + data.status + "】");
-								processStatus.append(status);
-							}*/
 							_self._processInfor.loadProcessSetp(data.nowStep);
 							var taskDetailDiv = $("#"+ TaskDeatailInfor._config.taskDetailDiv);
 							//添加流程主题信息
@@ -331,13 +323,30 @@ ProcessInfor.prototype = {
 					var imgEle = null;
 					var aEle = null;
 					var users = null;
+					var type = null;
+					var id = null;
 					for (var i = 0, j = taskInfo.length; i < j; i++) {
 						users =  taskInfo[i].user;
 						if(users){
 							for(var m = 0,n = users.length;m < n;m++){
 								spanEle = $("<span class='css-truncate js-assignee-infobar-item-wrapper'>");
 								imgEle = $("<img width='20' height='20' class='avatar'>");
-								imgEle.attr("src",_GlobalFlowVar._bpmServiceUrl+ "identity/users/"+users[m].name+"/picture");
+								type = users[i].type;
+								id = users[i].id;
+								if("user" == type){
+									if("foxbpm_all_user" == id){
+										imgEle.attr("src","images/default.png");
+									}else {
+										imgEle.attr("src",_GlobalFlowVar._bpmServiceUrl+ "identity/users/"+users[m].name+"/picture");
+									}
+								}else if("role" == type){
+									imgEle.attr("src","images/group.png");
+								}else if("dept" == type){
+									imgEle.attr("src","images/group.png");
+								}else {
+									//默认
+									imgEle.attr("src","images/group.png");
+								}
 								imgEle.attr("alt",users[m].name);
 								aEle = $("<a class='assignee css-truncate-target'>");
 								aEle.attr("href","javascript:void(0);");
