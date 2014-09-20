@@ -58,6 +58,11 @@
 
 			$("#login-form").submit(function(){  
 				var op =  $("#login-form").attr("op");
+				if(loginForm.validate()) {
+					alert(1);
+				}else{
+					alert(2);
+				}
 				if(0 == op){
 				 $(this).ajaxSubmit({  
 		                type:"put",  //提交方式  
@@ -122,7 +127,7 @@
 		          return false; //不刷新页面
 	    }); 
 			
-		function runClockPicker(){
+		/* function runClockPicker(){
 			$('#partStarttime').clockpicker({
 				placement: 'top',
 			    donetext: '完成'
@@ -133,10 +138,21 @@
 			});
 		}
 		
-			runClockPicker();
-			calendarpartpagefunction();
+			runClockPicker(); */
 			
-			$(".clockpicker-popover").addClass("aa");
+			$.ajax({
+				  url: 'service/workcal/calendarrule',
+				  type : 'get',
+				  dataType: 'json',
+				  success: function(data){
+					  $('#ruleTypeid').innerHTML = "";
+					  for (var i = 0; i < data.data.length; i++) {
+						  $('#partRuleid').append($("<option value=\'"+ data.data[i].id +"\'>").html(data.data[i].name));
+						};
+				  },
+			});
+			
+			calendarpartpagefunction();
 		});
 	</script>	
 	<body>
@@ -176,34 +192,42 @@
 							<section>
 								<div class="row">
 									<label class="label col col-2">开始时间</label>
-									<!-- <div class="col col-10">
-										<label class="input"><i class="icon-append fa fa-calendar"></i>
-											<input type="text" name="starttime" id="partStarttime" placeholder="请输入开始时间">
-										</label>
-									</div> -->
 									<div class="col col-10">
+										<div class="input-group">
+											<input type="text" id="partStarttime" name="starttime" class="form-control" data-mask="0X:XX:XX" data-mask-placeholder= "X">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+										<p class="note">
+											输入格式 08:30:00
+										</p>
+									</div>
+									<!-- <div class="col col-10">
 										<div class="input-group">
 											<input class="form-control" id="partStarttime" name="starttime" type="text" placeholder="请选择开始时间">
 											<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 										</div>
-									</div>
+									</div> -->
 								</div>
 							</section>
 							
 							<section>
 								<div class="row">
 									<label class="label col col-2">结束时间</label>
-									<!-- <div class="col col-10">
-										<label class="input"><i class="icon-append fa fa-calendar"></i>
-											<input type="text" name="endtime" id="partEndtime" placeholder="请输入结束时间">
-										</label>
-									</div> -->
 									<div class="col col-10">
+										<div class="input-group">
+											<input type="text" id="partEndtime" name="endtime" class="form-control" data-mask="0X:XX:XX" data-mask-placeholder= "X">
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>
+										<p class="note">
+											输入格式 05:30:00
+										</p>
+									</div>
+									<!-- <div class="col col-10">
 										<div class="input-group">
 											<input class="form-control" id="partEndtime" name="endtime" type="text" placeholder="请选择结束时间" data-autoclose="true">
 											<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 										</div>
-									</div>
+									</div> -->
 								</div>
 							</section>
 							
@@ -211,8 +235,13 @@
 								<div class="row">
 									<label class="label col col-2">规则ID</label>
 									<div class="col col-10">
-										<label class="input">
+										<!-- <label class="input">
 											<input type="text" name="ruleid" id="partRuleid" placeholder="请输入规则编号">
+										</label> -->
+										<label class="select">
+											<!-- <input type="text" name="week" id="ruleWeek" placeholder="请输入周"> -->
+											<select id="partRuleid" name="ruleid">
+											</select> <i></i> 
 										</label>
 									</div>
 								</div>
