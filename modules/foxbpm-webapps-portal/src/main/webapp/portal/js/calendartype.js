@@ -111,7 +111,7 @@ var calendartypepagefunction = function() {
 							"sEmptyTable" : "表中无数据存在！",
 							"sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
 							"sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
-							"sSearch" : "_INPUT_&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);' onclick='searchcalendartype()'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' <a href='javascript:void(0);' onclick='addtypefunc()'  class='btn btn-success btn-lg pull-right header-btn hidden-mobile'>新增</a>&nbsp;&nbsp;<a href='javascript:void(0);' onclick='edittypefunc()' id='edittype' class='btn btn-primary' style='height: 30px; disabled: true;'>编辑</a>&nbsp;&nbsp;<a href='javascript:void(0);' onclick='deletetypefunc()' id='deletetype' class='btn btn-primary' style='height: 30px; disabled: true;'>删除</a>",
+							"sSearch" : "_INPUT_&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);' onclick='searchcalendartype()'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' <a href='javascript:void(0);' onclick='addtypefunc()'  class='btn btn-success btn-lg pull-right header-btn hidden-mobile'>新增</a>&nbsp;&nbsp;<a href='javascript:void(0);' onclick='edittypefunc()' id='edittype' class='btn btn-primary' style='height: 30px; disabled: true;'>编辑</a>&nbsp;&nbsp;<a href='javascript:void(0);' onclick='deletetypefunc()' id='deletetype' class='btn btn-primary' style='height: 30px; disabled: true;'>删除</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' onclick='cleartype();' href='javascript:void(0);'>重置</a>",
 							"oPaginate" : {
 								"sFirst" : "首页",
 								"sPrevious" : "上一页",
@@ -184,4 +184,9 @@ function searchcalendartype() {
 	var typename =  $("[type='search']").val();
 	typeurl = "/foxbpm-webapps-common/service/workcal/calendartype" + "?name=" + typename;
 	typedataTable.ajax.url(typeurl).load();
+};
+
+function cleartype() {
+	$("[type='search']").val("");
+	typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
 };
