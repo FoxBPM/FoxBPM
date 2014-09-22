@@ -58,6 +58,18 @@ function calendarpartpagefunction() {
 						],
 
 						columnDefs : [ {
+							"targets" : [ 1 ],
+							"orderable" : false,
+							"createdCell" : function(td, cellData,
+									rowData, row, col) {
+
+								if (rowData.amorpm == "0") {
+									$(td).html("<span class='badge bg-color-greenLight'>上午</span>");
+								}
+								if (rowData.amorpm == "1") {
+									$(td).html("<span class='badge bg-color-red'>下午</span>");
+								}
+							}
 //							"render" : function(data, type, row) {
 //								 return "<a href='javascript:void(0);' onclick='partaddfunc(\""+ row.id + "\")' class='btn btn-danger'>删除</a>" +
 //								 		"<a onclick='parteditFun(\""+ row.id + "\")' class='btn btn-success'>编辑</a>";

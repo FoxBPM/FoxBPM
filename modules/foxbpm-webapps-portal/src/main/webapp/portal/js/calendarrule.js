@@ -63,6 +63,51 @@ function calendarrulepagefunction() {
 						],
 
 						columnDefs : [ {
+							"targets" : [ 2 ],
+							"orderable" : false,
+							"createdCell" : function(td, cellData,
+									rowData, row, col) {
+
+								if (rowData.week == "0") {
+									$(td).html("<span class='badge'>无</span>");
+								}
+								if (rowData.week == "1") {
+									$(td).html("<span class='badge bg-color-greenLight'>周一</span>");
+								}
+								if (rowData.week == "2") {
+									$(td).html("<span class='badge bg-color-greenLight'>周二</span>");
+								}
+								if (rowData.week == "3") {
+									$(td).html("<span class='badge bg-color-greenLight'>周三</span>");
+								}
+								if (rowData.week == "4") {
+									$(td).html("<span class='badge bg-color-greenLight'>周四</span>");
+								}
+								if (rowData.week == "5") {
+									$(td).html("<span class='badge bg-color-greenLight'>周五</span>");
+								}
+								if (rowData.week == "6") {
+									$(td).html("<span class='badge bg-color-red'>周六</span>");
+								}
+								if (rowData.week == "7") {
+									$(td).html("<span class='badge bg-color-red'>周日</span>");
+								}
+							}
+						},
+							
+						{
+							"targets" : [ 5 ],
+							"orderable" : false,
+							"createdCell" : function(td, cellData,
+									rowData, row, col) {
+
+								if (rowData.status == "0") {
+									$(td).html("<span class='badge'>工作时间</span>");
+								}
+								if (rowData.status == "1") {
+									$(td).html("<span class='badge bg-color-greenLight'>假期时间</span>");
+								}
+							}
 //							"render" : function(data, type, row) {
 //								 return "<a href='javascript:void(0);' onclick='ruleaddfunc(\""+ row.id + "\")' class='btn btn-danger'>删除</a>" +
 //								 		"<a onclick='ruleeditFun(\""+ row.id + "\")' class='btn btn-success'>编辑</a>";
