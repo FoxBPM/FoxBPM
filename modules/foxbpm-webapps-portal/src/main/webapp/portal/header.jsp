@@ -44,6 +44,10 @@
 <!-- Startup image for web apps -->
 <link rel="apple-touch-startup-image" href="img/splash/ipad-landscape.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
 <link rel="apple-touch-startup-image" href="img/splash/ipad-portrait.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
+<!-- 初始化全局变量 -->
+<script type="text/javascript">
+ var _userId = '<%=user.getUserId()%>';
+</script>
 <link rel="apple-touch-startup-image" href="img/splash/iphone.png" media="screen and (max-device-width: 320px)">
 <script src="js/libs/jquery-2.0.2.min.js"></script>
 <script src="js/plugin/jquery-form/jquery-form.min.js"></script>

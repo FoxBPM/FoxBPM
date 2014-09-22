@@ -121,7 +121,6 @@
 										<!-- <img width="100" height="100" src="img/avatars/sunny-big.png"
 											id="userPicture" /> -->
 										<img width="100" height="100"
-											src="/foxbpm-webapps-common/service/identity/users/admin/picture"
 											id="userPicture" /><br> <a href="javascript:void(0);"
 											id="updatePicture" class="btn btn-xs" style="display: none"><small>更换图像</small>
 										</a>
@@ -628,7 +627,7 @@
 	 *
 	 */
 	 pageSetUp();
-	 loadScript("portal/jsportal/profile.js", function() {
+	 loadScript("portal/js/profile.js", function() {
 		personInfo = new PersonInfo({
 			userId : _userId
 		});
