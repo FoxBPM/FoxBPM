@@ -12,6 +12,7 @@ function PersonInfo(config) {
 PersonInfo.prototype = {
 	init : function() {
 		if (this.userId) {
+			$("#userPicture").attr("src",_serviceUrl+"identity/users/"+this.userId+"/picture");
 			$("#editPersonalInfo").show();
 			$("#updatePersonalInfo").show();
 			this.loadPersonalInfo();
@@ -139,25 +140,30 @@ PersonInfo.prototype = {
 		}
 	},
 	updatePersonalInfo : function() {
-		var _self = this;
-		$.ajax({
-			url : "/foxbpm-webapps-common/service/identity/users/"
-					+ this.userId,
-			type : 'put',
-			dataType : "json",
-			cache : false,
-			data : {
-				name : $("#name").val(),
-				email : $("#email").val(),
-				tel : $("#tel").val()
-			},
-			error : function() {
-			},
-			success : function(data, status) {
-				_self.loadPersonInfo();
-				$("#editPersonalInfo").click();
-			}
-		});
+		//var _self = this;
+		if("1" == $("#editPersonalInfo").attr("flag")){
+			$.ajax({
+				url : "/foxbpm-webapps-common/service/identity/users/"
+						+ this.userId,
+				type : 'put',
+				dataType : "json",
+				cache : false,
+				data : {
+					name : $("#name").val(),
+					email : $("#email").val(),
+					tel : $("#tel").val()
+				},
+				error : function() {
+				},
+				success : function(data, status) {
+					//_self.loadPersonInfo();
+					//$("#editPersonalInfo").click();
+					window.location.reload(true);
+				}
+			});
+		}else {
+			showMessage("提示","请先编辑!","warning");
+		}
 	},
 	loadPersonalInfo : function() {
 		$.ajax({

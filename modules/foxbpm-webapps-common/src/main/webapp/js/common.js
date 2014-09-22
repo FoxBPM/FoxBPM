@@ -1,7 +1,7 @@
 /**
  * 
  */
-var _serviceUrl = "service/";
+var _serviceUrl = document.getElementsByTagName("base")[0].href+"service/";
 
 /**
  * iframe弹出框
