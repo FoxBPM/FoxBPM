@@ -24,7 +24,8 @@ import javax.servlet.http.HttpSession;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.springframework.aop.AfterReturningAdvice;
 import org.springframework.aop.MethodBeforeAdvice;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * 对workflowService的实现方法进行拦截
@@ -36,8 +37,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class FoxbpmUserInterceptor implements AfterReturningAdvice, MethodBeforeAdvice{
 	
-	@Autowired
-    private HttpSession session;
 	@Override
 	public void afterReturning(Object returnObj, Method method, Object[] params, Object implObj) throws Throwable {
 		Authentication.setAuthenticatedUserId(null);
@@ -45,6 +44,11 @@ public class FoxbpmUserInterceptor implements AfterReturningAdvice, MethodBefore
 
 	@Override
 	public void before(Method method, Object[] params, Object implObj) throws Throwable {
-		Authentication.setAuthenticatedUserId("admin");
+		HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession(); 
+		if(session == null || session.getAttribute("userId") == null){
+			throw new RuntimeException("未登陆用户不能进行此操作！");
+		}
+		String userId = (String)session.getAttribute("userId");
+		Authentication.setAuthenticatedUserId(userId);
 	}
 }

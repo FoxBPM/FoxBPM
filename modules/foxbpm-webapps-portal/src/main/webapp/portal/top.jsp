@@ -156,7 +156,7 @@
 				<!-- end fullscreen button -->
 
 				<!-- #Voice Command: Start Speech -->
-				<div id="speech-btn" class="btn-header transparent pull-right hidden-sm hidden-xs">
+				<!-- <div id="speech-btn" class="btn-header transparent pull-right hidden-sm hidden-xs">
 					<div> 
 						<a href="javascript:void(0)" title="Voice Command" data-action="voiceCommand"><i class="fa fa-microphone"></i></a> 
 						<div class="popover bottom"><div class="arrow"></div>
@@ -172,7 +172,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 				<!-- end voice command -->
 
 				<!-- multiple lang dropdown : find all flags in the flags page -->
