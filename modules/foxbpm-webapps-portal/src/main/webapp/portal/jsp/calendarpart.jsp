@@ -3,18 +3,13 @@
 <html lang="en-us">	
 	<head>
 		 <jsp:include page="../header.jsp"/>
-		 <style type="text/css">
-		    .aa{
-		      z-index:10000;
-		    }
-		 </style>
 	</head>
 	<script src="js/plugin/datatables/jquery.dataTables.js"></script>
 	<script src="js/plugin/datatables/dataTables.colVis.min.js"></script>
 	<script src="js/plugin/datatables/dataTables.tableTools.min.js"></script>
 	<script src="js/plugin/datatables/dataTables.bootstrap.min.js"></script>
 	<script src="js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
-	<script src="js/plugin/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
+	<script src="js/plugin/clockpicker/clockpicker12.min.js"></script>
 	<script src="portal/js/calendarpart.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
@@ -138,19 +133,6 @@
 				}
 	    }); 
 			
-		/* function runClockPicker(){
-			$('#partStarttime').clockpicker({
-				placement: 'top',
-			    donetext: '完成'
-			});
-			$('#partEndtime').clockpicker({
-				placement: 'top',
-			    donetext: '完成'
-			});
-		}
-		
-			runClockPicker(); */
-			
 			$.ajax({
 				  url: 'service/workcal/calendarrule',
 				  type : 'get',
@@ -162,6 +144,27 @@
 						};
 				  },
 			});
+			
+			$('#partStarttime').clockpicker({
+				placement: 'bottom',
+			    donetext: '完成'
+			});
+			
+			$('#partEndtime').clockpicker({
+				placement: 'bottom',
+			    donetext: '完成'
+			});
+			
+			$('#partStarttime').focus(function(){
+				$('.clockpicker-popover').css('z-index', '10000');
+			});
+			
+			$('#partEndtime').focus(function(){
+				$('.clockpicker-popover').css('z-index', '10000');
+			});
+			
+			$('#partStarttime').attr("readonly","readonly");
+			$('#partEndtime').attr("readonly","readonly");
 			
 			calendarpartpagefunction();
 		});
@@ -205,12 +208,12 @@
 									<label class="label col col-2">开始时间</label>
 									<div class="col col-10">
 										<div class="input-group">
-											<input type="text" id="partStarttime" name="starttime" class="form-control" data-mask="0X:XX:XX" data-mask-placeholder= "X">
+											<input type="text" id="partStarttime" name="starttime" class="form-control" placeholder="请选择开始时间" data-autoclose="true">
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
-										<p class="note">
+										<!-- <p class="note">
 											输入格式 08:30:00
-										</p>
+										</p> -->
 									</div>
 									<!-- <div class="col col-10">
 										<div class="input-group">
@@ -226,12 +229,12 @@
 									<label class="label col col-2">结束时间</label>
 									<div class="col col-10">
 										<div class="input-group">
-											<input type="text" id="partEndtime" name="endtime" class="form-control" data-mask="0X:XX:XX" data-mask-placeholder= "X">
+											<input id="partEndtime" name="endtime" type="text" class="form-control" placeholder="请选择结束时间" data-autoclose="true">
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>
-										<p class="note">
+										<!-- <p class="note">
 											输入格式 05:30:00
-										</p>
+										</p> -->
 									</div>
 									<!-- <div class="col col-10">
 										<div class="input-group">
