@@ -86,8 +86,8 @@ public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalenda
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<CalendarRuleEntity> getCalendarRule(int pageIndex, int pageSize) {
-		return (List<CalendarRuleEntity>) commandExecutor.execute(new GetCalendarRuleCmd(pageIndex, pageSize));
+	public List<CalendarRuleEntity> getCalendarRule(int pageIndex, int pageSize, String idLike, String nameLike) {
+		return (List<CalendarRuleEntity>) commandExecutor.execute(new GetCalendarRuleCmd(pageIndex, pageSize, idLike, nameLike));
 	}
 
 	@Override
@@ -107,8 +107,8 @@ public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalenda
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<CalendarPartEntity> getCalendarPart(int pageIndex, int pageSize) {
-		return (List<CalendarPartEntity>) commandExecutor.execute(new GetCalendarPartCmd(pageIndex, pageSize));
+	public List<CalendarPartEntity> getCalendarPart(int pageIndex, int pageSize, String idLike) {
+		return (List<CalendarPartEntity>) commandExecutor.execute(new GetCalendarPartCmd(pageIndex, pageSize, idLike));
 	}
 
 	@Override

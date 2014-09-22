@@ -25,6 +25,14 @@
 		select ${limitBetween}
 		*
 		from workcal_part
+		<where>
+			<if test=" 1==1">
+				1=1
+			</if>
+			<if test="parameter.id != null">
+				AND ID LIKE #{parameter.id}
+			</if>
+		</where>
 		${limitAfter}
 	</select>
 	
