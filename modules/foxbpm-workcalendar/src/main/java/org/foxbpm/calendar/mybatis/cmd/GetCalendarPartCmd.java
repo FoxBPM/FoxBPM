@@ -29,15 +29,23 @@ import org.foxbpm.engine.impl.interceptor.CommandContext;
 public class GetCalendarPartCmd implements Command<List<?>> {
 	private int pageIndex;
 	private int pageSize;
+	private String idLike;
 	
 	public GetCalendarPartCmd(int pageIndex, int pageSize) {
 		this.pageIndex = pageIndex;
 		this.pageSize = pageSize;
 	}
 	
+	public GetCalendarPartCmd(int pageIndex, int pageSize, String idLike) {
+		this.pageIndex = pageIndex;
+		this.pageSize = pageSize;
+		this.idLike = idLike;
+	}
+	
 	@Override
 	public List<CalendarPartEntity> execute(CommandContext commandContext) {
 		Map<String, Object> queryMap = new HashMap<String, Object>();
+		queryMap.put("id", idLike);
 		int firstResult = pageIndex * pageSize - pageSize;
 		int maxResults = pageSize;
 		ListQueryParameterObject queryParams = new ListQueryParameterObject(queryMap, firstResult, maxResults);

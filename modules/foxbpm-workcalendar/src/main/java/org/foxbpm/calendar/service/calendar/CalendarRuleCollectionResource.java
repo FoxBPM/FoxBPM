@@ -74,7 +74,7 @@ public class CalendarRuleCollectionResource extends AbstractRestResource{
 		WorkCalendarService workCalendarService = ProcessEngineManagement.getDefaultProcessEngine().getService(WorkCalendarService.class);
 		
 		DataResult result = new DataResult();
-		result.setData(workCalendarService.getCalendarRule(pageIndex, pageSize));
+		result.setData(workCalendarService.getCalendarRule(pageIndex, pageSize, idLike, nameLike));
 		result.setPageIndex(pageIndex);
 		result.setPageSize(pageSize);
 		result.setRecordsTotal(workCalendarService.getCalendarRuleCount(idLike, nameLike));

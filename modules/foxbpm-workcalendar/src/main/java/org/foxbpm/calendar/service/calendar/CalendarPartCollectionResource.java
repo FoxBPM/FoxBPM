@@ -68,7 +68,7 @@ public class CalendarPartCollectionResource extends AbstractRestResource{
 		WorkCalendarService workCalendarService = ProcessEngineManagement.getDefaultProcessEngine().getService(WorkCalendarService.class);
 		
 		DataResult result = new DataResult();
-		result.setData(workCalendarService.getCalendarPart(pageIndex, pageSize));
+		result.setData(workCalendarService.getCalendarPart(pageIndex, pageSize, idLike));
 		result.setPageIndex(pageIndex);
 		result.setPageSize(pageSize);
 		result.setRecordsTotal(workCalendarService.getCalendarPartCount(idLike));

@@ -94,7 +94,7 @@ public interface WorkCalendarService {
 	 * @param pageSize
 	 * @return
 	 */
-	List<CalendarRuleEntity> getCalendarRule(int pageIndex, int pageSize);
+	List<CalendarRuleEntity> getCalendarRule(int pageIndex, int pageSize, String idLike, String nameLike);
 	
 	/**
 	 * 根据ID查询日历规则
@@ -135,7 +135,7 @@ public interface WorkCalendarService {
 	 * @param pageSize
 	 * @return
 	 */
-	List<CalendarPartEntity> getCalendarPart(int pageIndex, int pageSize);
+	List<CalendarPartEntity> getCalendarPart(int pageIndex, int pageSize, String idLike);
 	
 	/**
 	 * 根据ID查询日历时间
