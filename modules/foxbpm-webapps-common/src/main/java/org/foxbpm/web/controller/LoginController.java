@@ -76,6 +76,9 @@ public class LoginController {
 					}else if("2".equals(target)){
 						targetUrl = "/governance/index.html";
 					}
+					Cookie cookie = new Cookie("foxSid", userEntity.getUserId());
+					cookie.setMaxAge(-1);
+					response.addCookie(cookie);
 					response.sendRedirect(contextPath + targetUrl);
 				} else {
 					response.setContentType("text/html;charset=utf-8");
