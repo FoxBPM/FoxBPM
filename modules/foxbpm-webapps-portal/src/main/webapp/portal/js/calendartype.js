@@ -174,6 +174,7 @@ function edittypefunc() {
 };
 
 function addtypefunc() {
+	$("#login-form").validate().resetForm();
 	$("#typeId").val("");
 	$("#typeName").val("");
 	$("#login-form").attr("op", "1");

@@ -41,70 +41,72 @@
 				}
 			});
 
-			$("#login-form").submit(function(){  
-				var op =  $("#login-form").attr("op");
-				if(0 == op){
-				 $(this).ajaxSubmit({  
-		                type:"put",  //提交方式  
-		                dataType:"text", //数据类型  
-		                contentType:'application/x-www-form-urlencoded; charset=UTF-8',
-		                url:"/foxbpm-webapps-common/service/workcal/calendartype/" + $("#typeId").val(), //请求url  
-		                success:function(data){ //提交成功的回调函数  
-		                    /* alert(data.result); */
-		                     $('#remoteModal').modal('hide');
-		                    
-		                     $.smallBox({ 
-			            			title : '提示!',
-			            			content : '提交成功！',
-			  	     				color : '#296191',
-			  	     				icon : 'fa fa-bell swing animated',
+			$("#login-form").submit(function(){
+				if($("#login-form").valid()) {
+					var op =  $("#login-form").attr("op");
+					if(0 == op){
+					 $(this).ajaxSubmit({  
+			                type:"put",  //提交方式  
+			                dataType:"text", //数据类型  
+			                contentType:'application/x-www-form-urlencoded; charset=UTF-8',
+			                url:"/foxbpm-webapps-common/service/workcal/calendartype/" + $("#typeId").val(), //请求url  
+			                success:function(data){ //提交成功的回调函数  
+			                    /* alert(data.result); */
+			                     $('#remoteModal').modal('hide');
+			                    
+			                     $.smallBox({ 
+				            			title : '提示!',
+				            			content : '提交成功！',
+				  	     				color : '#296191',
+				  	     				icon : 'fa fa-bell swing animated',
+				            			timeout : 2000
+				            		});
+			                     typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
+			                },
+			                error:function(){
+			                	typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
+			                	$.smallBox({ 
+			            			title : '错误!',
+			            			content : '提交数据失败',
+			            			color : "#C46A69",
+			            			icon : "fa fa-warning shake animated",
 			            			timeout : 2000
 			            		});
-		                     typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
-		                },
-		                error:function(){
-		                	typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
-		                	$.smallBox({ 
-		            			title : '错误!',
-		            			content : '提交数据失败',
-		            			color : "#C46A69",
-		            			icon : "fa fa-warning shake animated",
-		            			timeout : 2000
-		            		});
-		                }
-		            });  
-				}else {
-					$(this).ajaxSubmit({  
-		                type:"post",  //提交方式  
-		                dataType:"text", //数据类型  
-		                contentType:'application/x-www-form-urlencoded; charset=UTF-8',
-		                url:"/foxbpm-webapps-common/service/workcal/calendartype", //请求url  
-		                success:function(data){ //提交成功的回调函数  
-		                     $('#remoteModal').modal('hide');
-		                
-		                     $.smallBox({ 
-			            			title : '提示!',
-			            			content : '提交成功！',
-			  	     				color : '#296191',
-			  	     				icon : 'fa fa-bell swing animated',
-			            			timeout : 2000
-			            		});
-		                
-		                     typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
-		                },
-		                error:function(){
-							 $.smallBox({ 
-								title : '错误!',
-								content : '提交数据失败',
-								color : "#C46A69",
-								icon : "fa fa-warning shake animated",
-								timeout : 2000
-							});
-							 typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
-		                }
-		            }); 
+			                }
+			            });  
+					}else {
+						$(this).ajaxSubmit({
+			                type:"post",  //提交方式  
+			                dataType:"text", //数据类型  
+			                contentType:'application/x-www-form-urlencoded; charset=UTF-8',
+			                url:"/foxbpm-webapps-common/service/workcal/calendartype", //请求url  
+			                success:function(data){ //提交成功的回调函数  
+			                     $('#remoteModal').modal('hide');
+			                
+			                     $.smallBox({ 
+				            			title : '提示!',
+				            			content : '提交成功！',
+				  	     				color : '#296191',
+				  	     				icon : 'fa fa-bell swing animated',
+				            			timeout : 2000
+				            		});
+			                
+			                     typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
+			                },
+			                error:function(){
+								 $.smallBox({ 
+									title : '错误!',
+									content : '提交数据失败',
+									color : "#C46A69",
+									icon : "fa fa-warning shake animated",
+									timeout : 2000
+								});
+								 typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
+			                }
+			            }); 
+					}
+			          return false; //不刷新页面
 				}
-		          return false; //不刷新页面
 	    });
 			
 			calendartypepagefunction();

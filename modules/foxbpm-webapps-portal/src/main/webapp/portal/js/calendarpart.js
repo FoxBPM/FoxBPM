@@ -171,6 +171,7 @@ function editpartfunc(){
 };
 
 function addpartfunc() {
+	$("#login-form").validate().resetForm();
 	$("#partId").val("");
     $("#partAmorpm").val(0);
     $("#partStarttime").val("");
