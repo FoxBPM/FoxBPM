@@ -25,7 +25,7 @@ function calendarrulepagefunction() {
 						$('#datatable_col_reorder tbody').on( 'click', 'tr', function () {
 							var flag = $(this).attr("flag");
 							$("#editrule").removeAttr("disabled");
-							$("#deleterule").attr('disabled',"true");
+							$("#deleterule").removeAttr("disabled");
 							ruledataTable.$('tr').children().attr("style","");
 							if(1 == flag){
 								$(this).children().attr("style","background-color:#b0bed9");
