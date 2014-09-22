@@ -294,18 +294,6 @@ a:active {
 	position: relative;
 }
 
-.discussion-timeline::before {
-	left: 79px;
-	top: 0px;
-	width: 2px;
-	bottom: 0px;
-	display: block;
-	position: absolute;
-	z-index: -1;
-	content: "";
-	background-color: rgb(243, 243, 243);
-}
-
 .discussion-sidebar {
 	top: 0px;
 	width: 140px;
@@ -575,16 +563,12 @@ button.discussion-sidebar-toggle {
 }
 
 .timeline-comment-wrapper {
+	position: relative;
 	padding-left: 64px;
 	margin-top: 15px;
 	margin-bottom: 15px;
-	border-top-color: rgb(255, 255, 255);
-	border-bottom-color: rgb(255, 255, 255);
-	border-top-width: 2px;
-	border-bottom-width: 2px;
-	border-top-style: solid;
-	border-bottom-style: solid;
-	position: relative;
+	border-top: 2px solid #fff;
+	border-bottom: 2px solid #fff;
 }
 
 :first-child.timeline-comment-wrapper {
@@ -847,4 +831,30 @@ button.discussion-sidebar-toggle {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	vertical-align: top;
+}
+
+/* .js-discussiona:before {
+	display: block;
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 79px;
+	width: 2px;
+	background-color: #f3f3f3;
+	z-index: -1;
+} */
+
+.timeline-comment-wrapper:first-child {
+	margin-top: 0;
+}
+
+.discussion-item+.discussion-item {
+	padding-top: 15px;
+	border-top: 1px solid #f5f5f5;
+}
+
+.discussion-timeline-actions {
+	border-top: 2px solid #f3f3f3;
+	background-color: #fff;
 }

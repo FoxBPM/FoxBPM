@@ -299,7 +299,7 @@ ProcessInfor.prototype = {
 		createMsgTemplet:function(flag,taskId){
 			var html = "<div id=msg_"+flag+" style='display:none' taskId="+taskId+" >";
 			html+="<div id='warning' style='text-align:center;'><span id=tips_"+flag+" style='display:none'>数据为空!</span><img style='display:none' src='images/loading.gif' id=loading_"+flag+" /></div>";
-			html+="<div id=data_"+flag+" ></div>";
+			html+="<div id=data_"+flag+"></div>";
 			return html;
 		},
 		loadProcessSetp : function(nowStep) {
@@ -395,6 +395,7 @@ ProcessInfor.prototype = {
 						});
 						//加载数据
 						$("#data_"+i).html("");
+						html+="<div class='discussion-timeline-actions'></div>";
 						$("#data_"+i).append(html);
 					},
 					error:function(){

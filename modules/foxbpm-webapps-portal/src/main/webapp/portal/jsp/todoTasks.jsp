@@ -4,19 +4,6 @@
 	<head>
 		 <jsp:include page="../header.jsp"/>
 	</head>
-	<script src="portal/jsportal/todotasks.js"></script>
-	<script src="js/plugin/datatables/jquery.dataTables.min.js"></script>
-	<script src="js/plugin/datatables/dataTables.colVis.min.js"></script>
-	<script src="js/plugin/datatables/dataTables.tableTools.min.js"></script>
-	<script src="js/plugin/datatables/dataTables.bootstrap.min.js"></script>
-	<script src="js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function(){
-			pageSetUp();
-			pagefunction();
-		});
-		
-	</script>	
 	<body>
 <jsp:include page="../top.jsp"/>
 <!-- widget grid -->
@@ -74,6 +61,18 @@
 	<!-- end row -->
 </section>
 <jsp:include page="../bottom.jsp"/>
+    <!-- js -->
+	<script src="portal/js/todotasks.js"></script>
+	<script src="js/plugin/datatables/jquery.dataTables.min.js"></script>
+	<script src="js/plugin/datatables/dataTables.colVis.min.js"></script>
+	<script src="js/plugin/datatables/dataTables.tableTools.min.js"></script>
+	<script src="js/plugin/datatables/dataTables.bootstrap.min.js"></script>
+	<script src="js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			pageSetUp();
+			pagefunction();
+		});
+	</script>	
 </body>
-
 </html>
