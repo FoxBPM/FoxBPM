@@ -276,7 +276,7 @@
 						<a href="#"><i class="fa fa-lg fa-fw fa-calendar"></i> <span class="menu-item-parent">报 销 系 统</span></a>
 						<ul>
 							<li>
-								<a href="portal/jsp/calendartype.jsp"><i class="fa fa-lg fa-fw fa-calendartype"></i> <span class="menu-item-parent">报销单列表</span><span class="badge pull-right inbox-badge"></span></a>
+								<a href="portal/expense/expenseList.jsp"><i class="fa fa-lg fa-fw fa-calendartype"></i> <span class="menu-item-parent">报销单列表</span><span class="badge pull-right inbox-badge"></span></a>
 							</li>
 						</ul>
 					</li>
