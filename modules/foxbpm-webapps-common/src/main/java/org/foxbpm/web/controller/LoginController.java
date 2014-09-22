@@ -42,8 +42,26 @@ public class LoginController {
 			String logout = request.getParameter("doLogOut");
 			String contextPath = request.getContextPath();
 			if (StringUtil.isNotEmpty(logout)) {
+				UserEntity user = (UserEntity)request.getSession().getAttribute("user");
 				request.getSession().invalidate();
-				response.sendRedirect(contextPath + "/login.html");
+				if(logout.equals("lock") && user != null){
+					
+					Cookie cookie = new Cookie("userId",  user.getUserId());
+					cookie.setMaxAge(-1);
+					response.addCookie(cookie);
+					
+					Cookie cookie2 = new Cookie("email",  user.getEmail());
+					cookie2.setMaxAge(-1);
+					response.addCookie(cookie2);
+					
+					request.setAttribute("userId",user.getUserId());
+					request.setAttribute("userName", user.getUserName());
+					request.setAttribute("email", user.getEmail());
+					response.sendRedirect(contextPath + "/lock.jsp");
+				}else{
+					response.sendRedirect(contextPath + "/login.html");
+				}
+				
 			} else {
 				UserEntity userEntity = (UserEntity) Authentication.selectUserByUserId(userName);
 				if (null != userEntity && StringUtil.equals(password, userEntity.getPassword())) {
@@ -58,9 +76,6 @@ public class LoginController {
 					}else if("2".equals(target)){
 						targetUrl = "/governance/index.html";
 					}
-					Cookie cookie = new Cookie("foxSid", userEntity.getUserId());
-					cookie.setMaxAge(-1);
-					response.addCookie(cookie);
 					response.sendRedirect(contextPath + targetUrl);
 				} else {
 					response.setContentType("text/html;charset=utf-8");

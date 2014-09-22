@@ -116,11 +116,11 @@
 							</li>
 							<li class="divider"></li>
 							<li>
-								<a href="portal/jsp/lock.jsp" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-lock fa-lg"></i> <strong> 锁定系统</strong></a>
+								<a href="login.action?doLogOut=lock" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-lock fa-lg"></i> <strong> 锁定系统</strong></a>
 							</li>
 								<li class="divider"></li>
 							<li>
-								<a href="portal/jsp/login.jsp" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout"><i class="fa fa-sign-out fa-lg"></i> <strong> 登出系统</strong></a>
+								<a href="login.action?doLogOut=true" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout"><i class="fa fa-sign-out fa-lg"></i> <strong> 登出系统</strong></a>
 							</li>
 						</ul>
 					</li>
