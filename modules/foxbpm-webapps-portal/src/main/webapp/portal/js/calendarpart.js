@@ -42,6 +42,7 @@ function calendarpartpagefunction() {
 							 $("#editpart").attr('disabled',"true");
 							 $("#deletepart").attr('disabled',"true");
 							 $("[type='search']").attr("placeholder","编号");
+							 $("[type='search']").val("");
 						},
 						
 						columns : [ {

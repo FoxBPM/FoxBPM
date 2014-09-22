@@ -46,6 +46,7 @@ var calendartypepagefunction = function() {
 							 $("#edittype").attr('disabled',"true");
 							 $("#deletetype").attr('disabled',"true");
 							 $("[type='search']").attr("placeholder","名称");
+							 $("[type='search']").val("");
 						},
 						columns : [ {
 							data : 'id'

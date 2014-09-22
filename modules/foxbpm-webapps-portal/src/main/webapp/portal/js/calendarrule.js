@@ -43,6 +43,7 @@ function calendarrulepagefunction() {
 						 $("#editrule").attr('disabled',"true");
 						 $("#deleterule").attr('disabled',"true");
 						 $("[type='search']").attr("placeholder","名称");
+						 $("[type='search']").val("");
 						},
 						
 						columns : [ {
