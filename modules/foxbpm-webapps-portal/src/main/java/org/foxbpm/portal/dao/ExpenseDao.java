@@ -45,20 +45,7 @@ public class ExpenseDao {
 	
 	public ExpenseEntity selectExpenseById(String entityId){
 		String sqlSel = "select * from tb_expense where id=?";
-		List<ExpenseEntity> resultList = jdbcTemplate.query(sqlSel, new Object[]{entityId}, new RowMapper<ExpenseEntity>(){
-			@Override
-			public ExpenseEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
-				ExpenseEntity expenseEntity = new ExpenseEntity();
-				expenseEntity.setExpenseId(rs.getString("id"));
-				expenseEntity.setOwner(rs.getString("owner"));
-				expenseEntity.setAccount(rs.getDouble("account"));
-				expenseEntity.setCreateTime(rs.getString("create_time"));
-				expenseEntity.setReason(rs.getString("reason"));
-				expenseEntity.setDept(rs.getString("dept"));
-				expenseEntity.setInvoiceType(rs.getString("invoiceType"));
-				return expenseEntity;
-			}
-		});
+		List<ExpenseEntity> resultList = jdbcTemplate.query(sqlSel, new Object[]{entityId}, new ExpenseRowMapper());
 		if(resultList != null && resultList.size() >0){
 			return resultList.get(0);
 		}
@@ -66,7 +53,27 @@ public class ExpenseDao {
 	}
 	
 	public List<ExpenseEntity> selectExpenseByPage(int pageIndex,int pageSize){
-		
-		return null;
+		int begin = (pageIndex -1)*pageSize;
+		int end = pageIndex * pageSize;
+		String sql = "select t2.* from (select rownum , t.* from tb_expense t where rownum > ?) t2 where rownum < ? ";
+		Object []args = new Object[]{begin,end};
+		List<ExpenseEntity> list = jdbcTemplate.query(sql,args, new ExpenseRowMapper());
+		return list;
+	}
+	
+	
+	private class ExpenseRowMapper implements RowMapper<ExpenseEntity>{
+		@Override
+		public ExpenseEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
+			ExpenseEntity expenseEntity = new ExpenseEntity();
+			expenseEntity.setExpenseId(rs.getString("id"));
+			expenseEntity.setOwner(rs.getString("owner"));
+			expenseEntity.setAccount(rs.getDouble("account"));
+			expenseEntity.setCreateTime(rs.getString("create_time"));
+			expenseEntity.setReason(rs.getString("reason"));
+			expenseEntity.setDept(rs.getString("dept"));
+			expenseEntity.setInvoiceType(rs.getString("invoiceType"));
+			return expenseEntity;
+		}
 	}
 }

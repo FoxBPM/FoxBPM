@@ -18,7 +18,6 @@
 package org.foxbpm.portal.manager;
 
 import java.util.List;
-import java.util.Map;
 
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.portal.dao.ExpenseDao;
@@ -55,8 +54,8 @@ public class ExpenseManager {
 		workFlowService.executeTaskCommandJson(flowCommandInfo);
 	}
 	
-	public List<Map<String,Object>> selectByPage(int pageIndex,int pageSize){
-		return null;
+	public List<ExpenseEntity> selectByPage(int pageIndex,int pageSize){
+		return expenseDao.selectExpenseByPage(pageIndex, pageSize);
 	}
 	
 	public ExpenseEntity selectExpenseById(String expenseId){

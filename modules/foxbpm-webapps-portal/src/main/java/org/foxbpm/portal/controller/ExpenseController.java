@@ -18,6 +18,8 @@
 package org.foxbpm.portal.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -69,6 +71,14 @@ public class ExpenseController {
 	@ResponseBody
 	public ExpenseEntity getExpenseById(@RequestParam String expenseId){
 		return expenseManager.selectExpenseById(expenseId);
+	}
+	
+	@RequestMapping(value = { "/", "/listExpense" }, method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String,Object> getExpenseByPage(@RequestParam int pageIndex,@RequestParam int pageSize){
+		Map< String, Object> result = new HashMap<String, Object>();
+		result.put("data", expenseManager.selectByPage(pageIndex, pageSize));
+		return result;
 	}
 	
 	public String showMessage(String msg,boolean isCloseWindow){
