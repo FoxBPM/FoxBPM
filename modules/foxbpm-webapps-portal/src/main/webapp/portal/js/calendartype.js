@@ -46,6 +46,7 @@ var calendartypepagefunction = function() {
 							 $("#edittype").attr('disabled',"true");
 							 $("#deletetype").attr('disabled',"true");
 							 $("[type='search']").attr("placeholder","名称");
+							 $("[type='search']").val("");
 						},
 						columns : [ {
 							data : 'id'
@@ -144,9 +145,10 @@ function deletetypefunc() {
             			timeout : 2000
             		});
                  typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
-            },
+				 $("#edittype").attr('disabled',"true");
+				 $("#deletetype").attr('disabled',"true");
+			},
             error:function(){
-            	typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
             	$.smallBox({ 
         			title : '错误!',
         			content : '删除失败',
@@ -154,6 +156,9 @@ function deletetypefunc() {
         			icon : "fa fa-warning shake animated",
         			timeout : 2000
         		});
+            	typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
+				 $("#edittype").attr('disabled',"true");
+				 $("#deletetype").attr('disabled',"true");
             }
 		});
 	}
@@ -185,9 +190,13 @@ function searchcalendartype() {
 	var typename =  $("[type='search']").val();
 	typeurl = "/foxbpm-webapps-common/service/workcal/calendartype" + "?name=" + typename;
 	typedataTable.ajax.url(typeurl).load();
+	 $("#edittype").attr('disabled',"true");
+	 $("#deletetype").attr('disabled',"true");
 };
 
 function cleartype() {
 	$("[type='search']").val("");
 	typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
+	 $("#edittype").attr('disabled',"true");
+	 $("#deletetype").attr('disabled',"true");
 };
