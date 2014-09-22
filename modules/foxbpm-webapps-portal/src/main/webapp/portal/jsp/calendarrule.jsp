@@ -74,9 +74,10 @@
 				            			timeout : 2000
 				            		});
 			                     ruledataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
+								 $("#editrule").attr('disabled',"true");
+								 $("#deleterule").attr('disabled',"true");
 			                },
 			                error:function(){
-			                	ruledataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
 			                	$.smallBox({ 
 			            			title : '错误!',
 			            			content : '提交数据失败',
@@ -84,6 +85,9 @@
 			            			icon : "fa fa-warning shake animated",
 			            			timeout : 2000
 			            		});
+			                	ruledataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
+								 $("#editrule").attr('disabled',"true");
+								 $("#deleterule").attr('disabled',"true");
 			                }
 			            });  
 					}else {
@@ -104,6 +108,8 @@
 				            		});
 			                
 			                     ruledataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
+								 $("#editrule").attr('disabled',"true");
+								 $("#deleterule").attr('disabled',"true");
 			                },
 			                error:function(){
 								 $.smallBox({ 
@@ -114,6 +120,8 @@
 									timeout : 2000
 								});
 								 ruledataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
+								 $("#editrule").attr('disabled',"true");
+								 $("#deleterule").attr('disabled',"true");
 			                }
 			            }); 
 					}

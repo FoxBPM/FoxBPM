@@ -138,9 +138,10 @@ function deletepartfunc() {
             			timeout : 2000
             		});
                  partdataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarpart").load();
-            },
+				 $("#editpart").attr('disabled',"true");
+				 $("#deletepart").attr('disabled',"true");
+			},
             error:function(){
-            	partdataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarpart").load();
             	$.smallBox({ 
         			title : '错误!',
         			content : '删除失败',
@@ -148,6 +149,9 @@ function deletepartfunc() {
         			icon : "fa fa-warning shake animated",
         			timeout : 2000
         		});
+            	partdataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarpart").load();
+				 $("#editpart").attr('disabled',"true");
+				 $("#deletepart").attr('disabled',"true");
             }
 		});
 	}
@@ -185,9 +189,13 @@ function searchcalendarpart() {
 	var partid =  $("[type='search']").val();
 	parturl = "/foxbpm-webapps-common/service/workcal/calendarpart" + "?id=" + partid;
 	partdataTable.ajax.url(parturl).load();
+	 $("#editpart").attr('disabled',"true");
+	 $("#deletepart").attr('disabled',"true");
 };
 
 function clearpart() {
 	$("[type='search']").val("");
 	partdataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarpart").load();
+	 $("#editpart").attr('disabled',"true");
+	 $("#deletepart").attr('disabled',"true");
 };

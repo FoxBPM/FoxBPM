@@ -62,9 +62,10 @@
 				            			timeout : 2000
 				            		});
 			                     typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
+								 $("#edittype").attr('disabled',"true");
+								 $("#deletetype").attr('disabled',"true");
 			                },
 			                error:function(){
-			                	typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
 			                	$.smallBox({ 
 			            			title : '错误!',
 			            			content : '提交数据失败',
@@ -72,6 +73,9 @@
 			            			icon : "fa fa-warning shake animated",
 			            			timeout : 2000
 			            		});
+			                	typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
+								 $("#edittype").attr('disabled',"true");
+								 $("#deletetype").attr('disabled',"true");
 			                }
 			            });  
 					}else {
@@ -92,6 +96,8 @@
 				            		});
 			                
 			                     typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
+								 $("#edittype").attr('disabled',"true");
+								 $("#deletetype").attr('disabled',"true");
 			                },
 			                error:function(){
 								 $.smallBox({ 
@@ -102,6 +108,8 @@
 									timeout : 2000
 								});
 								 typedataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendartype").load();
+								 $("#edittype").attr('disabled',"true");
+								 $("#deletetype").attr('disabled',"true");
 			                }
 			            }); 
 					}

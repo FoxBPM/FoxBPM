@@ -176,9 +176,10 @@ function deleterulefunc() {
             			timeout : 2000
             		});
                  ruledataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
-            },
+				 $("#editrule").attr('disabled',"true");
+				 $("#deleterule").attr('disabled',"true");
+			},
             error:function(){
-            	ruledataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
             	$.smallBox({ 
         			title : '错误!',
         			content : '删除失败',
@@ -186,6 +187,9 @@ function deleterulefunc() {
         			icon : "fa fa-warning shake animated",
         			timeout : 2000
         		});
+            	ruledataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
+				 $("#editrule").attr('disabled',"true");
+				 $("#deleterule").attr('disabled',"true");
             }
 		});
 	}
@@ -227,9 +231,13 @@ function searchcalendarrule() {
 	var rulename =  $("[type='search']").val();
 	ruleurl = "/foxbpm-webapps-common/service/workcal/calendarrule" + "?name=" + rulename;
 	ruledataTable.ajax.url(ruleurl).load();
+	 $("#editrule").attr('disabled',"true");
+	 $("#deleterule").attr('disabled',"true");
 };
 
 function clearrule() {
 	$("[type='search']").val("");
 	ruledataTable.ajax.url("/foxbpm-webapps-common/service/workcal/calendarrule").load();
+	 $("#editrule").attr('disabled',"true");
+	 $("#deleterule").attr('disabled',"true");
 };
