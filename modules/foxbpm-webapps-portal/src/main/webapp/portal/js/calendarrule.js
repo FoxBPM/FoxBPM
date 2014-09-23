@@ -219,7 +219,7 @@ function addrulefunc() {
 	$("#login-form").validate().resetForm();
 	 $("#ruleId").val("");
      $("#ruleYear").val("");
-     $("#ruleWeek").val(1);
+     $("#ruleWeek").val(0);
      $("#ruleName").val("");
      $("#ruleWorkdate").val("");
      $("#ruleStatus").val("0");

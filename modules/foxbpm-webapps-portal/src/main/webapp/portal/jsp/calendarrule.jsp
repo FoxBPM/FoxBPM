@@ -192,7 +192,8 @@
 										<label class="select">
 											<!-- <input type="text" name="week" id="ruleWeek" placeholder="请输入周"> -->
 											<select id="ruleWeek" name="week">
-											    <option value="1" selected="">周一</option>
+												<option value="0" selected=""></option>
+											    <option value="1">周一</option>
 												<option value="2">周二</option>
 												<option value="3">周三</option>
 												<option value="4">周四</option>
@@ -200,6 +201,10 @@
 												<option value="6">周六</option>
 												<option value="7">周日</option>
 											</select> <i></i> </label>
+											
+										<p class="note">
+											如果为特定工作时间，则此项可以不选。
+										</p>
 									</div>
 								</div>
 							</section>
