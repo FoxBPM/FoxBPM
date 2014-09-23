@@ -145,7 +145,7 @@
 			  success: function(data){
 				  $('#ruleTypeid').innerHTML = "";
 				  for (var i = 0; i < data.data.length; i++) {
-					  $('#ruleTypeid').append($("<option value=\'"+ data.data[i].id +"\'>").html(data.data[i].name));
+					  $('#ruleTypeid').append($("<option value=\'"+ data.data[i].id +"\'>").html(data.data[i].name + "&nbsp;&nbsp;(" +data.data[i].id + ")"));
 					};
 			  },
 		});
