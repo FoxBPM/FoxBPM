@@ -63,11 +63,6 @@
 			$("#login-form").submit(function(){  
 				if($("#login-form").valid()) {
 					var op =  $("#login-form").attr("op");
-					if(loginForm.validate()) {
-						alert(1);
-					}else{
-						alert(2);
-					}
 					if(0 == op){
 					 $(this).ajaxSubmit({  
 			                type:"put",  //提交方式  
