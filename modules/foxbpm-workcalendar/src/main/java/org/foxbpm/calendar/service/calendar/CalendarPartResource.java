@@ -78,11 +78,11 @@ public class CalendarPartResource extends AbstractRestResource{
 	}
 	
 	@Delete
-	public String deleteCalendarRule() {
+	public String deleteCalendarPart() {
 		// 获取参数
 		String id = getAttribute("calendarpartId");
 		WorkCalendarService workCalendarService = ProcessEngineManagement.getDefaultProcessEngine().getService(WorkCalendarService.class);
-		workCalendarService.deleteCalendarRule(id);
+		workCalendarService.deleteCalendarPart(id);
 		return "SUCCESS";
 	}
 }
