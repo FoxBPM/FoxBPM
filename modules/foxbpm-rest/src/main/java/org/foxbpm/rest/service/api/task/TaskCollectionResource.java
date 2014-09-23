@@ -231,6 +231,8 @@ public class TaskCollectionResource extends AbstractRestResource {
 				String initator = StringUtil.getString(tmp.get("processInitiator"));
 				String initatorName = getUserName(initator);
 				tmp.put("initatorName", initatorName);
+				String assignee = StringUtil.getString(tmp.get("assignee"));
+				tmp.put("assigneeName", getUserName(assignee));
 			}
 		}
 		return result;
