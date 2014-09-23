@@ -113,8 +113,8 @@
 	// end pagefunction
 	// run pagefunction on load
 	// load bootstrap-progress bar script
-	loadScript("portal/jsportal/launchProcess.js", function() {
-		loadScript("portal/jsportal/plugin/superbox/superbox.min.js", pagefunction);
+	loadScript("portal/js/launchProcess.js", function() {
+		loadScript("portal/js/plugin/superbox/superbox.min.js", pagefunction);
 	});
 </script>
 		<jsp:include page="../bottom.jsp"/>
