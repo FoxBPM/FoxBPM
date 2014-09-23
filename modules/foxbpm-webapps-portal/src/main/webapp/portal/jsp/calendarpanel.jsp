@@ -8,7 +8,7 @@
 	<link href='css/fullcalendar.min.css' rel='stylesheet' /> 
 	<link href='css/fullcalendar.print.css' rel='stylesheet' media='print' />
 	
-	<script src="portal/jsportal/calendarpanel.js"></script>
+	<script src="portal/js/calendarpanel.js"></script>
 	<script src="js/plugin/fullcalendar/moment.min.js"></script>
 	<script src="js/plugin/fullcalendar/fullcalendar.min.js"></script>
 	<script src="js/plugin/fullcalendar/lang-all.js"></script>
