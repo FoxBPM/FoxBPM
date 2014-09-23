@@ -20,13 +20,16 @@ package org.foxbpm.rest.service.api.task;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
+import org.foxbpm.engine.impl.task.TaskQueryProperty;
 import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.query.QueryProperty;
 import org.foxbpm.engine.task.TaskQuery;
 import org.foxbpm.rest.common.RestConstants;
 import org.foxbpm.rest.common.api.AbstractRestResource;
@@ -43,6 +46,19 @@ import org.restlet.resource.Get;
 public class TaskCollectionResource extends AbstractRestResource {
 
 	
+	private static HashMap<String, QueryProperty> properties = new HashMap<String, QueryProperty>();
+
+	static {
+		properties.put("id", TaskQueryProperty.TASK_ID);
+		properties.put("name", TaskQueryProperty.NAME);
+		properties.put("description", TaskQueryProperty.DESCRIPTION);
+		properties.put("dueDate", TaskQueryProperty.DUE_DATE);
+		properties.put("createTime", TaskQueryProperty.CREATE_TIME);
+		properties.put("priority", TaskQueryProperty.PRIORITY);
+		properties.put("processInstanceId", TaskQueryProperty.PROCESS_INSTANCE_ID);
+		properties.put("endTime", TaskQueryProperty.END_TIME);
+	}
+
 	@SuppressWarnings("unchecked")
 	@Get
 	public DataResult getTasks(){
@@ -52,13 +68,21 @@ public class TaskCollectionResource extends AbstractRestResource {
 		Form queryForm = getQuery();
 		Set<String> queryNames = queryForm.getNames();
 		
-		if(!validationUser())
-			return null;
+//		if(!validationUser())
+//			return null;
 		TaskService taskService = FoxBpmUtil.getProcessEngine().getTaskService();
 		TaskQuery taskQuery = taskService.createTaskQuery();
 		
-		taskQuery.taskAssignee(userId);
-		taskQuery.taskCandidateUser(userId);
+		userId = "admin";
+		
+		if(queryNames.contains("assignee")){
+			String assignee = getQueryParameter("assignee", queryForm);
+			taskQuery.taskAssignee(assignee);
+		}
+		if(queryNames.contains("candidateUser")){
+			String candidateUser = getQueryParameter("candidateUser", queryForm);
+			taskQuery.taskCandidateUser(candidateUser);
+		}
 		
 		if(queryNames.contains("nameLike")) {
 			taskQuery.taskNameLike(parseLikeValue(getQueryParameter("nameLike", queryForm)));
@@ -193,18 +217,17 @@ public class TaskCollectionResource extends AbstractRestResource {
 		
 		
 		
-		boolean ended = false;
+		String ended = null;
 		if(queryNames.contains(RestConstants.IS_END)){
-			ended = StringUtil.getBoolean(getQueryParameter(RestConstants.IS_END, queryForm));
+			ended = StringUtil.getString(getQueryParameter(RestConstants.IS_END, queryForm));
 		}
-		if(ended){
+		if("true".equals(ended)){
 			taskQuery.taskIsEnd();
-		}else{
+		}else if("false".equals(ended)){
 			taskQuery.taskNotEnd();
 		}
-		taskQuery.orderByTaskCreateTime().desc();
-		DataResult result = paginateList(taskQuery);
 		
+		DataResult result = paginateList(taskQuery,properties,"createTime");
 		List<Map<String,Object>> mapList = (List<Map<String,Object>>)result.getData();
 		if(mapList != null && mapList.size()>0){
 			for(Map<String,Object> tmp : mapList){

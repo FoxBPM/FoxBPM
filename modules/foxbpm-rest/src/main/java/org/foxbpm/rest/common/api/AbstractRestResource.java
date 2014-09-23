@@ -30,10 +30,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
+import org.foxbpm.engine.impl.query.AbstractQuery;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.query.Query;
+import org.foxbpm.engine.query.QueryProperty;
 import org.foxbpm.rest.common.RestConstants;
 import org.restlet.Request;
 import org.restlet.data.Cookie;
@@ -108,18 +111,48 @@ public abstract class AbstractRestResource extends ServerResource {
 		return true;
 	}
 	
+	
+	@SuppressWarnings("rawtypes")
+	public DataResult paginateList(Query query){
+		return paginateList(query , null ,null);
+	}
+	
 	/**
 	 * foxbpm rest接口的分页机制 接收参数： start:起始行数 lenth:每页条数 pageIndex:当前页
 	 * pageSize:每页条数 冲突解决：优先处理pageIndex、pageSize
-	 * 
+	 * 默认降序排列
 	 * @param query
+	 * @param properties 支持的排序字段
+	 * @param defaultOrderBy 默认排序字段
 	 * @return
 	 */
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	public DataResult paginateList(Query query) {
+	public DataResult paginateList(Query query,Map<String,QueryProperty>properties, String defaultOrderBy) {
 		
 		Form queryForm = getQuery();
 		Set<String> queryNames = queryForm.getNames();
+		
+		if(properties != null){
+			String orderby = StringUtil.getString(getQueryParameter(RestConstants.ORDERBY, queryForm));
+			if(StringUtil.isEmpty(orderby)){
+				orderby = defaultOrderBy;
+			}
+			QueryProperty orderByProPerty = properties.get(orderby);
+			if(orderByProPerty== null) {
+				throw new FoxBPMIllegalArgumentException("不支持的排序字段:"+orderby);
+			}
+			((AbstractQuery)query).orderBy(orderByProPerty);
+			
+			String sort = StringUtil.getString(getQueryParameter(RestConstants.SORT, queryForm));
+			if(StringUtil.isEmpty(sort)){
+				sort = "desc";
+			}
+			if("asc".equals(sort)){
+				((AbstractQuery)query).asc();
+			}else{
+				((AbstractQuery)query).desc();
+			}
+		}
 		
 		if (queryNames.contains(RestConstants.PAGE_START)) {
 			if (queryNames.contains(RestConstants.PAGE_LENGTH)) {

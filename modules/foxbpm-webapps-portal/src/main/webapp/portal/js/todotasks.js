@@ -1,4 +1,4 @@
-var todoTaskUrl = _serviceUrl + "runtime/tasks";
+var todoTaskUrl = _serviceUrl + "runtime/tasks?assignee="+_userId+"&candidateUser="+_userId+"&ended=false";
 var pagefunction = function() {
 	var responsiveHelper_datatable_fixed_column = undefined;
 	var breakpointDefinition = {
@@ -212,11 +212,11 @@ var pagefunction = function() {
     	var assigneed = $("#TASKSTATE_SEARCH").val();
     	var subjectLike =  $("[type='search']").val();
     	
-    	baseUrl = baseUrl + "?assigneed="+assigneed;
+    	baseUrl = baseUrl + "&assigneed="+assigneed;
     	if(subjectLike != ""){
     		baseUrl = baseUrl + "&subjectLike="+ subjectLike;
     	}
-     	var initiator = "";//$("[type='search']").val();
+     	var initiator = "";
      	if(initiator != ""){
      		baseUrl = baseUrl + "&initiator="+ initiator;
      	}

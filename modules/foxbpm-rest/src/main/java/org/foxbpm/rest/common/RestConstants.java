@@ -53,4 +53,7 @@ public interface RestConstants {
 	//是否我参与的
 	final static String PARTICIPATE = "participate";
 	final static String INITIATOR = "initiator";
+	
+	final static String SORT = "sort";
+	final static String ORDERBY ="orderby";
 }
