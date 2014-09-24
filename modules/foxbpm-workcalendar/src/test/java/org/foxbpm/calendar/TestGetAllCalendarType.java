@@ -17,7 +17,10 @@
  */
 package org.foxbpm.calendar;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import org.foxbpm.calendar.service.WorkCalendarService;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
@@ -30,14 +33,13 @@ public class TestGetAllCalendarType extends AbstractFoxBpmTestCase{
 		WorkCalendarService workCalendarService = processEngine.getProcessEngineConfiguration().getService(WorkCalendarService.class);
 		
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.YEAR, 2014);
-		calendar.set(Calendar.MONTH, 9);
-		calendar.set(Calendar.DATE, 01);
-		calendar.set(Calendar.HOUR, 5);
-		calendar.set(Calendar.MINUTE, 30);
-		calendar.set(Calendar.SECOND, 00);
-		calendar.set(Calendar.AM_PM, 0);
 		
-		workCalendarService.getDueTime("AAA",calendar.getTime(), 5);
+		Date date = workCalendarService.getDueTime(calendar.getTime(), 45,null);
+		
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		
+		System.out.println(df.format(date));
+		
 	}
 }

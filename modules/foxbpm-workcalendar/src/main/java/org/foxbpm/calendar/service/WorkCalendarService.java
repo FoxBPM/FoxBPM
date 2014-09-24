@@ -17,15 +17,14 @@
  */
 package org.foxbpm.calendar.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.foxbpm.calendar.mybatis.entity.CalendarPartEntity;
 import org.foxbpm.calendar.mybatis.entity.CalendarRuleEntity;
 import org.foxbpm.calendar.mybatis.entity.CalendarTypeEntity;
-import org.foxbpm.engine.impl.entity.GroupEntity;
+import org.foxbpm.engine.calendar.WorkCalendar;
 
-public interface WorkCalendarService {
+public interface WorkCalendarService extends WorkCalendar {
 
 	/**
 	 * 添加日历类型
@@ -165,21 +164,4 @@ public interface WorkCalendarService {
 	 */
 	List<CalendarPartEntity> getCalendarPartsByRuleId(String ruleId);
 	
-	/**
-	 * 查询截止时间
-	 * @param userId 用户编号
-	 * @param begin 开始时间
-	 * @param hours 间隔时间
-	 * @return
-	 */
-	Date getDueTime(String userId,Date begin,double hours);
-	
-	/**
-	 * 查询截止时间
-	 * @param group 组【id:组编号，type:组类型（部门，角色）】
-	 * @param begin 开始时间
-	 * @param hours 间隔时间
-	 * @return
-	 */
-	Date getDueTime(GroupEntity group,Date begin,double hours);
 }

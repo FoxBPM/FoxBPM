@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.foxbpm.calendar.mybatis.entity.CalendarPartEntity;
@@ -35,8 +36,12 @@ import org.foxbpm.calendar.utils.DateCalUtils;
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GetWorkCalendarEndTimeCmd implements Command<Date> {
+	
+	private static Logger log = LoggerFactory.getLogger(GetWorkCalendarEndTimeCmd.class);
 	//工作状态
 	public static final int WORKSTATUS = 0;
 	//假期状态
@@ -58,8 +63,7 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 	private CalendarTypeEntity calendarTypeEntity;
 	private boolean isAddDay = false;
 
-	public GetWorkCalendarEndTimeCmd(String userId,Date begin,double hours) {
-		this.userId = userId;
+	public GetWorkCalendarEndTimeCmd(Date begin,double hours ,Map<String,Object>params) {
 		this.begin = begin;
 		this.hours = hours;
 		this.workCalendarService = ProcessEngineManagement.getDefaultProcessEngine().getService(WorkCalendarService.class);
@@ -80,7 +84,7 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 		seconds = calendar.get(Calendar.SECOND);
 		
 		//根据userId找到对应套用的日历类型
-		calendarTypeEntity = getCalendarTypeById(userId);
+		calendarTypeEntity = getCalendarTypeById("AAA");
 		
 		//初始化日历类型，找到里面所有的工作时间
 		initCalendarType(calendarTypeEntity);
@@ -129,7 +133,7 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 				Calendar endCalendar = Calendar.getInstance();
 				Date endDate = CalculateEndTime(calendarRuleEntity);
 				endCalendar.setTime(endDate);
-				System.out.println("最终的计算结果为：" + endCalendar.getTime());
+				log.debug("最终的计算结果为：" + endCalendar.getTime());
 				return endDate;
 			}
 		}
@@ -139,7 +143,7 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 //	} catch (Exception e) {
 //		e.printStackTrace();
 //	}
-		System.out.println("所给时间不在工作时间内，计算出错");
+		log.debug("所给时间不在工作时间内，计算出错");
 		return null;
 	}
 	
@@ -187,7 +191,7 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 			}
 		}
 		for (CalendarPartEntity calendarPartEntity : rightPartEntities) {
-			System.out.println("和假期修改计算后时间段为:" + calendarPartEntity.getStarttime() + "---" + calendarPartEntity.getEndtime());
+			log.debug("和假期修改计算后时间段为:" + calendarPartEntity.getStarttime() + "---" + calendarPartEntity.getEndtime());
 		}
 		calRuleEntity.setCalendarPartEntities(rightPartEntities);
 		return calRuleEntity;
@@ -261,28 +265,28 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 					//时间段开始的毫秒数
 					long startTime = getCalculateTime(calendarPartEntity.getStarttime(), calendarPartEntity.getAmorpm());
 					formatCalendar.setTimeInMillis(startTime);
-					System.out.println("开始时间段为" + formatCalendar.getTime());
+					log.debug("开始时间段为" + formatCalendar.getTime());
 
 					//时间段结束的毫秒数
 					long endTime = getCalculateTime(calendarPartEntity.getEndtime(), calendarPartEntity.getAmorpm());
 					formatCalendar.setTimeInMillis(endTime);
-					System.out.println("结束时间段为" + formatCalendar.getTime());
+					log.debug("结束时间段为" + formatCalendar.getTime());
 					
 					//传过来时间的毫秒数
 					long beginTime = begin.getTime();
 					formatCalendar.setTime(begin);
-					System.out.println("参数开始时间段为" + formatCalendar.getTime());
+					log.debug("参数开始时间段为" + formatCalendar.getTime());
 					
 					//传过来的时间加上小时数的毫秒数
 					long beginEndTime = (long) (hours * this.HOURTIME + beginTime);
 					formatCalendar.setTimeInMillis(beginEndTime);
-					System.out.println("预计结束时间段为" + formatCalendar.getTime());
+					log.debug("预计结束时间段为" + formatCalendar.getTime());
 					
-					System.out.println("剩余时间为" +  hours + "小时");
+					log.debug("剩余时间为" +  hours + "小时");
 					
 					endDate = CalculateTime(startTime, endTime, beginTime, beginEndTime, calendarRuleEntity, j);
 					if(endDate==null) {
-						System.out.println("计算出错");
+						log.debug("计算出错");
 						break;
 					}
 					
@@ -589,7 +593,7 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 						}
 						
 						o1s = calendar.getTimeInMillis();
-//						System.out.println("===========日期1:" + calendar.getTime());
+//						log.debug("===========日期1:" + calendar.getTime());
 						
 						Date o2d = simpleDateFormat.parse(o2.getStarttime());
 						calendar.setTime(o2d);
@@ -605,7 +609,7 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 						
 						o2s = calendar.getTimeInMillis();
 						calendar.getTime();
-//						System.out.println("============日期2:" + calendar.getTime());
+//						log.debug("============日期2:" + calendar.getTime());
 					} catch (ParseException e) {
 						e.printStackTrace();
 					}
