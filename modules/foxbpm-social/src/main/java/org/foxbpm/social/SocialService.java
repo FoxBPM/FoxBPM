@@ -17,6 +17,36 @@
  */
 package org.foxbpm.social;
 
-public interface SocialService {
+import java.util.List;
 
+import org.foxbpm.social.impl.entity.SocialMessageInfo;
+import org.foxbpm.social.impl.entity.SocialUser;
+
+/**
+ * 
+ * @author MAENLIANG
+ * 
+ */
+public interface SocialService {
+	/**
+	 * 添加用户
+	 * 
+	 * @param socialUser
+	 */
+	public void addSocialUserInfo(SocialUser socialUser);
+
+	/**
+	 * 添加社交消息，包括聊天消息、评论消息、回复消息
+	 * 
+	 * @param socialMessageInfo
+	 */
+	public void addSocialMessageInfo(SocialMessageInfo socialMessageInfo);
+
+	/**
+	 * 根据任务ID获取任务所关联的社交消息
+	 * 
+	 * @param taskId
+	 * @return
+	 */
+	public List<SocialMessageInfo> findSocialMessageInfos(String taskId);
 }

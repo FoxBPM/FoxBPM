@@ -37,7 +37,7 @@ public class SocialMessageRelation implements Serializable  {
 	private String refedUserId;
 	/** 被引用消息编号 */
 	private String refedMsgId;
-	/** 操作类型(1,评论；2，转发) */
+	/** 操作类型(1,评论；2，转发；3，消息回复) */
 	private int type;
 	/** 发布时间 */
 	private Date time;

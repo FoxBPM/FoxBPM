@@ -1,12 +1,12 @@
 var taskPriority="";
 $("#eventInfoTip").hide(); 
 function showFormByUrl(formUrl){
-	$("#contentFrame").attr("src",formUrl);
-	$('#remoteModal').modal({backdrop:"static"});
+	openModalForm(formUrl);
+	$('#remoteModal').on('hidden.bs.modal', function () {
+		$('#calendar').fullCalendar('refetchEvents');
+	});
 }
-$('#remoteModal').on('hide.bs.modal', function () {
-	$('#calendar').fullCalendar('refetchEvents');
-});
+
   
 var showWeekend = true;
 var pagefunction = function() {

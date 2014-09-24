@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author demornain
+ * @author MAENLIANG
  */
 package org.foxbpm.social.impl.mybatis;
 
@@ -27,9 +27,11 @@ public class SocialMapperConfigImpl implements FoxbpmMapperConfig {
 	@Override
 	public List<String> getMapperConfig() {
 		List<String> xmlList = new ArrayList<String>();
-		xmlList.add("mybatis/mapping/CalendarType.xml");
-		xmlList.add("mybatis/mapping/CalendarRule.xml");
-		xmlList.add("mybatis/mapping/CalendarPart.xml");
+		xmlList.add("mybatis/mapping/SocialMessageIndex.xml");
+		xmlList.add("mybatis/mapping/SocialMessageInfo.xml");
+		xmlList.add("mybatis/mapping/SocialMessageRelation.xml");
+		xmlList.add("mybatis/mapping/SocialUser.xml");
+		xmlList.add("mybatis/mapping/SocialUserRelation.xml");
 		return xmlList;
 	}
 
