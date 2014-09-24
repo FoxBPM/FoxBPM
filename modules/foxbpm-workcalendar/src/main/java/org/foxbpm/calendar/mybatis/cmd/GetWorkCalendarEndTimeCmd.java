@@ -47,18 +47,13 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 	//假期状态
 	public static final int FREESTATUS = 1;
 	public static final long HOURTIME = 1000L * 60 * 60;
-	private String userId;
 	private Date begin;
 	private double hours;
 	private WorkCalendarService workCalendarService;
-	private SimpleDateFormat dateFormat;
 	private SimpleDateFormat timeFormat;
 	private int year = 0;
 	private int month = 0;
 	private int day = 0;
-	private int hour = 0;
-	private int minutes = 0;
-	private int seconds = 0;
 	private int k=0;
 	private CalendarTypeEntity calendarTypeEntity;
 	private boolean isAddDay = false;
@@ -67,7 +62,6 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 		this.begin = begin;
 		this.hours = hours;
 		this.workCalendarService = ProcessEngineManagement.getDefaultProcessEngine().getService(WorkCalendarService.class);
-		this.dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		this.timeFormat = new SimpleDateFormat("hh:mm");
 	}
 	
@@ -79,9 +73,9 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 		year = calendar.get(Calendar.YEAR);
 		month = calendar.get(Calendar.MONTH) + 1;
 		day = calendar.get(Calendar.DATE);
-		hour = calendar.get(Calendar.HOUR);
-		minutes = calendar.get(Calendar.MINUTE);
-		seconds = calendar.get(Calendar.SECOND);
+		calendar.get(Calendar.HOUR);
+		calendar.get(Calendar.MINUTE);
+		calendar.get(Calendar.SECOND);
 		
 		//根据userId找到对应套用的日历类型
 		calendarTypeEntity = getCalendarTypeById("AAA");
@@ -90,7 +84,6 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 		initCalendarType(calendarTypeEntity);
 		
 		CalendarRuleEntity calendarRuleEntity = null;
-		CalendarRuleEntity spCalendarRuleEntity = null;
 		//从日历类型拿到对应的工作时间
 		for (k=0; k<calendarTypeEntity.getCalendarRuleEntities().size();k++) {
 			CalendarRuleEntity calRuleEntity = calendarTypeEntity.getCalendarRuleEntities().get(k);
@@ -107,9 +100,9 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 					year = calendar.get(Calendar.YEAR);
 					month = calendar.get(Calendar.MONTH) + 1;
 					day = calendar.get(Calendar.DATE);
-					hour = calendar.get(Calendar.HOUR);
-					minutes = calendar.get(Calendar.MINUTE);
-					seconds = calendar.get(Calendar.SECOND);
+					calendar.get(Calendar.HOUR);
+					calendar.get(Calendar.MINUTE);
+					calendar.get(Calendar.SECOND);
 				}
 				//如果有设置时间段 则算出这天的工作时间去除假期时间的时间段 然后再计算
 				else {
@@ -120,10 +113,6 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 			if(calRuleEntity.getYear()==year && calRuleEntity.getWeek()==DateCalUtils.dayForWeek(begin)) {
 				calendarRuleEntity = calRuleEntity;
 			}
-			if((calRuleEntity.getWorkdate() != null && dateFormat.format(calRuleEntity.getWorkdate()).equals(dateFormat.format(begin)))) {
-				spCalendarRuleEntity = calRuleEntity;
-			}
-			
 			//如果不在工作时间内 则报错
 			if(calendarRuleEntity == null) {
 				continue;
@@ -227,9 +216,9 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 					year = calendar.get(Calendar.YEAR);
 					month = calendar.get(Calendar.MONTH) + 1;
 					day = calendar.get(Calendar.DATE);
-					hour = calendar.get(Calendar.HOUR);
-					minutes = calendar.get(Calendar.MINUTE);
-					seconds = calendar.get(Calendar.SECOND);
+					calendar.get(Calendar.HOUR);
+					calendar.get(Calendar.MINUTE);
+					calendar.get(Calendar.SECOND);
 				}
 				//如果有设置时间段 则算出这天的工作时间去除假期时间的时间段 然后再计算
 				else {
@@ -278,7 +267,7 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 					log.debug("参数开始时间段为" + formatCalendar.getTime());
 					
 					//传过来的时间加上小时数的毫秒数
-					long beginEndTime = (long) (hours * this.HOURTIME + beginTime);
+					long beginEndTime = (long) (hours * HOURTIME + beginTime);
 					formatCalendar.setTimeInMillis(beginEndTime);
 					log.debug("预计结束时间段为" + formatCalendar.getTime());
 					
