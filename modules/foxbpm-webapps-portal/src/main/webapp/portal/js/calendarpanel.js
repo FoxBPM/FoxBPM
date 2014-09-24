@@ -7,7 +7,7 @@ function showFormByUrl(formUrl){
 $('#remoteModal').on('hide.bs.modal', function () {
 	$('#calendar').fullCalendar('refetchEvents');
 });
- 
+  
 var showWeekend = true;
 var pagefunction = function() {
 	
@@ -64,6 +64,7 @@ var pagefunction = function() {
 	      	$("#eventInfoTip2").css("top",jsEvent.clientY-70+document.body.scrollTop);  
 	       	$("#eventInfoTip2").css("left",tipLeft);  
 	       	$("#eventInfoTip").show();
+	    	$("#eventInfoTip2").show();
 			
 		},
 		eventMouseout:function( calEvent, jsEvent, view ) {
@@ -79,7 +80,7 @@ var pagefunction = function() {
 
         events: function(start, end, timezone, callback) {
 	    	$.ajax({
-	            url: _serviceTaskUrl,
+	            url: _serviceUrl + "runtime/tasks?assignee="+_userId+"&candidateUser="+_userId+"&ended=false",
 	            dataType: 'json',
 	            data: {
 	            	createTimeB: start.format(),
@@ -111,7 +112,7 @@ var pagefunction = function() {
 		                        start: create_time, 
 								end:due_time,
 		                        className: taskColor,
-		                        id:_formUrl+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId,
+		                        id:"portal/expense/editExpense.jsp"+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId,
 		                    });
 	                	}else if(taskPriority == doc.data[i].priority){
 	                		if(doc.data[i].priority == "50"){
@@ -133,7 +134,7 @@ var pagefunction = function() {
 		                        start: create_time, 
 								end:due_time,
 		                        className: taskColor,
-		                        id:_formUrl+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId,
+		                        id:"portal/expense/editExpense.jsp"+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId,
 		                    });
 	                	}
 	                	

@@ -133,7 +133,7 @@
 	    </div>  
 	</div>   
 	<div id="eventInfoTip" >
-		<div id="eventInfoTip2" class="SmallBox animated fadeInRight fast" style="top:500px;left:500px;background-color:#4C4F53">
+		<div id="eventInfoTip2" class="SmallBox animated fadeInRight fast" style="top:500px;left:500px;background-color:#4C4F53;display:none">
 			<div>
 				<span id="eventInfoTipCreateTime"></span>
 				<span id="eventInfoTipTitle"></span>

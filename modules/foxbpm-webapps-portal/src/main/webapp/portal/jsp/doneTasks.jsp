@@ -4,8 +4,7 @@
 	<head>
 		 <jsp:include page="../header.jsp"/>
 	</head>
-	<script src="portal/jsportal/donetasks.js"></script>
-	<script src="portal/js/foxbpm/common.js"></script> 
+	<script src="portal/js/donetasks.js"></script>
 	<script src="js/plugin/datatables/jquery.dataTables.min.js"></script>
 	<script src="js/plugin/datatables/dataTables.colVis.min.js"></script>
 	<script src="js/plugin/datatables/dataTables.tableTools.min.js"></script>
