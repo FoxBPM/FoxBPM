@@ -47,6 +47,7 @@ import org.foxbpm.rest.service.api.model.VariableDefinitonResouces;
 import org.foxbpm.rest.service.api.processinstance.ProcessInstanceCollectionResource;
 import org.foxbpm.rest.service.api.processinstance.ProcessInstanceResource;
 import org.foxbpm.rest.service.api.task.FlowGraphicImgResource;
+import org.foxbpm.rest.service.api.task.FlowGraphicPositionResource;
 import org.foxbpm.rest.service.api.task.TaskCollectionResource;
 import org.foxbpm.rest.service.api.task.TaskInforResource;
 import org.foxbpm.rest.service.api.task.TaskOperationCollectionResource;
@@ -125,6 +126,7 @@ public class RestServicesInit {
 		//type all,endData,notEnd
 		router.attach("/task/taskInfor", TaskInforResource.class);
 		router.attach("/task/runTrack", TaskRunTrackResource.class);
+		router.attach("/flowGraphic/position",FlowGraphicPositionResource.class);
 		router.attach("/flowGraphic/flowImg", FlowGraphicImgResource.class);
 		router.attach("/task/rollbackTasks", RollbackTaskCollectionResource.class);
 		router.attach("/flowNode/rollbackNodes", RollbackNodeCollectionResource.class);
