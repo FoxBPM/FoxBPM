@@ -199,6 +199,13 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
  * @return
  */
 	private Date CalculateEndTime(CalendarRuleEntity calendarRuleEntity) {
+		//如果这天没有规则则再加一天计算
+		if(getCalendarRuleByDate(begin)==null) {
+			day+=1;
+			begin = DateUtils.addDays(begin, 1);
+			CalculateEndTime(calendarRuleEntity);
+		}
+		
 		Date endDate = null;
 		
 		for (CalendarRuleEntity caRuleEntity : calendarTypeEntity.getCalendarRuleEntities()) {
@@ -270,6 +277,8 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 					long beginEndTime = (long) (hours * this.HOURTIME + beginTime);
 					formatCalendar.setTimeInMillis(beginEndTime);
 					System.out.println("预计结束时间段为" + formatCalendar.getTime());
+					
+					System.out.println("剩余时间为" +  hours + "小时");
 					
 					endDate = CalculateTime(startTime, endTime, beginTime, beginEndTime, calendarRuleEntity, j);
 					if(endDate==null) {
@@ -699,29 +708,24 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 			calendarPartEntity.setRuleid(workPart.getRuleid());
 			calendarPartEntity.setStarttime(timeFormat.format(freeStartDate));
 			calendarPartEntity.setEndtime(timeFormat.format(workEndDate));
-//			if() {
-//				
-//			}
 		}
 	}
 	
-//	/**
-//	 * 循环找时间，直到在工作日内
-//	 * @param beginDate
-//	 * @param calRuleEntity
-//	 * @return
-//	 */
-//	private CalendarRuleEntity loopForWorkDate(Date beginDate) {
-//		CalendarRuleEntity calendarRuleEntity = null;
-//		for (CalendarRuleEntity calRuleEntity : calendarTypeEntity.getCalendarRuleEntities()) {
-//			if(calRuleEntity.getYear()==year && DateUtils.isSameDay(calRuleEntity.getWorkdate(), beginDate)) {
-//				beginDate = DateUtils.addDays(beginDate, 1);
-//				loopForWorkDate(beginDate);
-//			}
-//			else if(calRuleEntity.getYear()==year && calRuleEntity.getWeek()==DateCalUtils.dayForWeek(beginDate)) {
-//				calendarRuleEntity = calRuleEntity;
-//			}
-//		}
-//		return calendarRuleEntity;
-//	}
+	/**
+	 * 根据日期拿到对应的规则
+	 * @param date
+	 * @return
+	 */
+	private CalendarRuleEntity getCalendarRuleByDate(Date date) {
+		CalendarRuleEntity calendarRuleEntity = null;
+		for (CalendarRuleEntity calendarRuleEntity2 : calendarTypeEntity.getCalendarRuleEntities()) {
+			if(calendarRuleEntity2.getWeek()==DateCalUtils.dayForWeek(date)) {
+				return calendarRuleEntity2;
+			}
+			if(calendarRuleEntity2.getWorkdate()!=null && DateUtils.isSameDay(calendarRuleEntity2.getWorkdate(), date) && calendarRuleEntity2.getCalendarPartEntities().size()!=0) {
+				return calendarRuleEntity2;
+			}
+		}
+		return calendarRuleEntity;
+	}
 }
