@@ -33,7 +33,7 @@ public class CoreUtil {
 		List<TaskCommand> taskCommands = new ArrayList<TaskCommand>();
 		if (task != null) {
 			Map<String, AbstractCommandFilter> abstractCommandFilterMap = Context
-					.getProcessEngineConfiguration().getAbstractCommandFilterMap();
+					.getProcessEngineConfiguration().getCommandFilterMap();
 			for (TaskCommand taskCommand : task.getTaskDefinition().getTaskCommands()) {
 				AbstractCommandFilter abstractCommandFilter = abstractCommandFilterMap
 						.get(taskCommand.getTaskCommandType());
@@ -60,7 +60,7 @@ public class CoreUtil {
 		List<TaskCommand> taskCommandInsts = taskDefinition.getTaskCommands();
 		List<TaskCommand> taskCommandInstsNew = new ArrayList<TaskCommand>();
 		Map<String, AbstractCommandFilter> abstractCommandFilterMap = Context
-				.getProcessEngineConfiguration().getAbstractCommandFilterMap();
+				.getProcessEngineConfiguration().getCommandFilterMap();
 		for (TaskCommand taskCommandInst : taskCommandInsts) {
 			AbstractCommandFilter abstractCommandFilter = abstractCommandFilterMap.get(taskCommandInst.getTaskCommandType());
 			if (abstractCommandFilter != null) {

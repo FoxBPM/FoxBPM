@@ -23,6 +23,7 @@ import org.foxbpm.engine.IdentityService;
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.impl.cache.CacheUtil;
 import org.foxbpm.engine.impl.entity.UserEntity;
+import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
@@ -43,11 +44,8 @@ public class UserResource extends AbstractRestResource {
 		// 获取参数
 		String userId = getAttribute("userId");
 		if (StringUtil.isNotEmpty(userId)) {
-			// 获取引擎
-			ProcessEngine processEngine = FoxBpmUtil.getProcessEngine();
 			// 获取身份服务
-			IdentityService identityService = processEngine.getIdentityService();
-			UserEntity userEntity = identityService.getUser(userId);
+			UserEntity userEntity = Authentication.selectUserByUserId(userId);
 			if (null != userEntity) {
 				return userEntity.getPersistentState();
 			}

@@ -89,7 +89,7 @@ public class AutoSendMail implements FlowConnectorHandler {
 			// 判断是否独占任务
 			UserEntity user = null;
 			if (StringUtil.isNotEmpty(taskEntity.getAssignee())) {
-				user = identityService.getUser(taskEntity.getAssignee());
+				user = Authentication.selectUserByUserId(taskEntity.getAssignee());
 				// 判断用户是否为空
 				if (null != user) {
 					// 如果用户存在邮件地址即发生邮件

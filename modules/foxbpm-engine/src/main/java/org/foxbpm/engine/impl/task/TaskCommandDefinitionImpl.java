@@ -24,12 +24,44 @@ import org.foxbpm.engine.task.TaskCommandDefinition;
 
 public class TaskCommandDefinitionImpl implements TaskCommandDefinition {
 
+	/**
+	 * 命令定义ID
+	 */
 	private String id;
+	
+	/**
+	 * 默认名称
+	 */
 	private String name;
+	
+	/**
+	 * 参数实现类
+	 */
 	private String commandClass;
+	
+	/**
+	 * 执行实现类
+	 */
 	private String cmdClass;
+	
+	/**
+	 * 过滤器实现类
+	 */
 	private String filterClass;
+	
+	/**
+	 * 命令描述
+	 */
 	private String description;
+	
+	/**
+	 * 命令类型，待办任务或者系统命令
+	 */
+	private String type;
+	
+	/**
+	 * 命令参数
+	 */
 	private List<CommandParam> commandParams;
 
 	public String getId() {
@@ -86,6 +118,15 @@ public class TaskCommandDefinitionImpl implements TaskCommandDefinition {
 
 	public void setCommandParam(List<CommandParam> commandParams) {
 		this.commandParams = commandParams;
+	}
+	
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	@Override
+	public String getType() {
+		return type;
 	}
 
 }

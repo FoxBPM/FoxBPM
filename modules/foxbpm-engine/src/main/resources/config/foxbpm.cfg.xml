@@ -318,13 +318,8 @@
 			classImpl="com.founder.fix.fixflow.expand.database.GeneralConnectionManagement" />
 	</connectionManagementConfig>
 	<eventListenerConfig>
-		<!-- <eventListener eventType="process-start" listenerClass="org.foxbpm.engine.impl.listener.runningtrack.StartEventTrackListener" 
-			/> -->
 		<eventListener eventType="node-enter"
 			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" />
-		<!-- <eventListener eventType="node-execute" listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" 
-			/> <eventListener eventType="node-leave" listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" 
-			/> -->
 		<eventListener eventType="sequenceflow-take"
 			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.SequenceTrackEventListener" />
 		<eventListener eventType="process-start"
@@ -334,7 +329,7 @@
 	</eventListenerConfig>
 
 	<bizDataObjectConfig>
-		<dataObjectBehavior id="dataBaseMode" name="数据库表模式"
+		<dataObjectBehavior id="dataBaseMode" name="数据库表模R式"
 			behavior="org.foxbpm.engine.impl.datavariable.BizDataObjectBehaviorImpl" />
 
 	</bizDataObjectConfig>

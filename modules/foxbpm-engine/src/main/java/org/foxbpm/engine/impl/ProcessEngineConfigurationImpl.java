@@ -56,8 +56,8 @@ import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.identity.UserDefinition;
-import org.foxbpm.engine.impl.bpmn.deployer.AbstractDeployer;
 import org.foxbpm.engine.impl.bpmn.deployer.BpmnDeployer;
+import org.foxbpm.engine.impl.bpmn.deployer.PngDeployer;
 import org.foxbpm.engine.impl.cache.DefaultCache;
 import org.foxbpm.engine.impl.db.DefaultDataSourceManage;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateContainer;
@@ -126,48 +126,48 @@ import org.slf4j.LoggerFactory;
 public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	private static Logger log = LoggerFactory.getLogger(ProcessEngineConfigurationImpl.class);
 	private static int QUART_START_DELAYTIME = 10;
+	protected List<ProcessEngineConfigurator> configurators;
+	
 	protected CommandExecutor commandExecutor;
 	protected CommandContextFactory commandContextFactory;
 	protected List<CommandInterceptor> commandInterceptors;
 	protected FoxBPMConfig foxBpmConfig;
 	protected ResourcePathConfig resourcePathConfig;
-	protected List<ProcessService> processServices;
+	protected BizDataObjectConfig bizDataObjectConfig;
+	protected FoxBPMStyleConfig foxBPMStyleConfig;
+	protected SysMailConfig sysMailConfig;
+	
 	// service
+	protected List<ProcessService> processServices;
 	protected Map<Class<?>,ProcessService> serviceMap = new HashMap<Class<?>, ProcessService>();
 	protected ISqlSessionFactory sqlSessionFactory;
 	protected Map<Class<?>, SessionFactory> sessionFactories;
 	protected DataSource dataSource;
-	protected BizDataObjectConfig bizDataObjectConfig;
+	
 	protected boolean quartzEnabled = false;
-	// 定义及发布
+	// 缓存配置
 	protected int processDefinitionCacheLimit = -1; // By default, no limit
 	protected Cache<ProcessDefinition> processDefinitionCache;
-	
 	protected int userProcessDefinitionCacheLimit = -1;
 	protected Cache<Object> userProcessDefinitionCache;
-	
 	protected int identityCacheLimit = -1;
 	protected Cache<Object> identityCache;
 	
-	protected AbstractDeployer bpmnDeployer;
-	protected ProcessModelParseHandler processModelParseHandler;
+	
 	protected List<Deployer> customPreDeployers;
 	protected List<Deployer> customPostDeployers;
 	protected List<Deployer> deployers;
 	protected DeploymentManager deploymentManager;
 	protected TransactionContextFactory transactionContextFactory;
-	protected List<ProcessEngineConfigurator> configurators = new ArrayList<ProcessEngineConfigurator>();
+	
 	protected List<GroupDefinition> groupDefinitions = new ArrayList<GroupDefinition>();
 	protected UserDefinition userDefinition;
-	protected FoxBPMStyleConfig foxBPMStyleConfig;
+	
 	protected Map<String, Style> styleMap = new HashMap<String, Style>();
 	protected TaskCommandConfig taskCommandConfig;
-	
 	protected Map<String, TaskCommandDefinition> taskCommandDefinitionMap;
+	protected Map<String, AbstractCommandFilter> commandFilterMap;
 	
-	protected Map<String, AbstractCommandFilter> abstractCommandFilterMap;
-	
-	protected SysMailConfig sysMailConfig;
 	protected String prefix = "foxbpm";
 	/**
 	 * FOXBPM任务调度器
@@ -180,58 +180,38 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 	
 	protected void init() {
+		//加载外部插件
 		initConfigurators();
 		configuratorsBeforeInit();
 		initExceptionResource();
+		//加载foxbpm.cfg.xml配置文件，配置了引擎默认配置。
 		initEmfFile();
 		initCache();
-		initResourcePathConfig();
 		initDataSource();
+		//加载sessionFactory
 		initSqlSessionFactory();
+		initSessionFactories();
+		//加载命令相关
 		initCommandContextFactory();
 		initCommandExecutors();
+		initTaskCommand();
 		initServices();
-		initSessionFactories();
 		initDeployers();
+		//加载组织机构相关
 		initGroupDefinitions();
 		initUserDefinition();
 		initTransactionContextFactory();
-		// initDbConfig();// dbType
-		// // 任务命令配置加载
-		initTaskCommandConfig();
-		//
-		// initImportDataVariableConfig();
-		//
+	
 		initQuartz();
-		// initUserDefinition();
-		initSysMailConfig();
-		// initExpandClassConfig();
-		// initEventSubscriptionConfig();
-		// initMessageSubscription();
-		// initScriptLanguageConfig();
-		// initInternationalizationConfig();
-		// initFixFlowResources();
-		// initPigeonholeConfig();
-		// initExpandCmdConfig();
-		// initAbstractCommandFilter();
-		// initBizData();
-		// initPriorityConfig();
-		// initAssignPolicyConfig();
-		// initThreadPool();
 		// 加载主题样式文件
 		initStyle();
 		// 加载SVG模版资源
 		initSVG();
-		// 加载任务命令过滤器
-		initAbstractCommandFilter();
-		
-		initBizDataObjectConfig();
-		
 		configuratorsAfterInit();
 	}
 	
 	protected void initConfigurators() {
-		if (configurators.size() > 0) {
+		if (configurators != null && configurators.size() > 0) {
 			Collections.sort(configurators, new Comparator<ProcessEngineConfigurator>() {
 				@Override
 				public int compare(ProcessEngineConfigurator configurator1,
@@ -255,25 +235,22 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 	
 	protected void configuratorsBeforeInit() {
-		for (ProcessEngineConfigurator configurator : configurators) {
-			log.info("Executing configure() of {} (priority:{})", configurator.getClass(), configurator.getPriority());
-			configurator.beforeInit(this);
+		if(configurators != null){
+			for (ProcessEngineConfigurator configurator : configurators) {
+				log.info("Executing configure() of {} (priority:{})", configurator.getClass(), configurator.getPriority());
+				configurator.beforeInit(this);
+			}
 		}
+		
 	}
 	
 	protected void configuratorsAfterInit() {
-		for (ProcessEngineConfigurator configurator : configurators) {
-			log.info("Executing configure() of {} (priority:{})", configurator.getClass(), configurator.getPriority());
-			configurator.configure(this);
+		if(configurators != null){
+			for (ProcessEngineConfigurator configurator : configurators) {
+				log.info("Executing configure() of {} (priority:{})", configurator.getClass(), configurator.getPriority());
+				configurator.configure(this);
+			}
 		}
-	}
-	
-	private void initBizDataObjectConfig() {
-		this.bizDataObjectConfig = this.foxBpmConfig.getBizDataObjectConfig();
-	}
-	
-	protected void initSysMailConfig() {
-		this.sysMailConfig = foxBpmConfig.getSysMailConfig();
 	}
 	
 	protected void initQuartz() {
@@ -316,18 +293,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		SVGTemplateContainer.getContainerInstance();
 	}
 	
-	protected void initAbstractCommandFilter() {
-		abstractCommandFilterMap = new HashMap<String, AbstractCommandFilter>();
-		String filter = null;
-		for (Map.Entry<String,TaskCommandDefinition> tmp : taskCommandDefinitionMap.entrySet()) {
-			TaskCommandDefinition taskDefintion = tmp.getValue();
-			filter = taskDefintion.getFilterClass();
-			if (StringUtil.isNotBlank(filter)) {
-				abstractCommandFilterMap.put(taskDefintion.getId(), (AbstractCommandFilter) ReflectUtil.instantiate(filter));
-			}
-		}
-	}
-	
 	private void initStyle() {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xml", new XMIResourceFactoryImpl());
@@ -368,11 +333,14 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		}
 	}
 	
-	protected void initTaskCommandConfig() {
-		this.taskCommandConfig = foxBpmConfig.getTaskCommandConfig();
+	protected void initTaskCommand() {
 		taskCommandDefinitionMap = new HashMap<String, TaskCommandDefinition>();
+		commandFilterMap = new HashMap<String, AbstractCommandFilter>();
 		for (TaskCommandDefinition taskCommandDef : getTaskCommandDefinition()) {
 			taskCommandDefinitionMap.put(taskCommandDef.getId(), taskCommandDef);
+			if("toDoTasks".equals(taskCommandDef.getType())){
+				commandFilterMap.put(taskCommandDef.getId(), (AbstractCommandFilter) ReflectUtil.instantiate(taskCommandDef.getFilterClass()));
+			}
 		}
 	}
 	
@@ -381,9 +349,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		List<org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition> commandDefintions = taskCommandConfig.getTaskCommandDefinition();
 		//加载foxbpm.cfg.xml中配置的任务命令
 		for(org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition tmpCommand :commandDefintions){
-			if("system".equals(tmpCommand.getType())){
-				break;
-			}
 			if(!StringUtil.getBoolean(tmpCommand.getIsEnabled())){
 				break;
 			}
@@ -394,6 +359,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			commandImpl.setCmdClass(tmpCommand.getCmd());
 			commandImpl.setFilterClass(tmpCommand.getFilter());
 			commandImpl.setDescription(tmpCommand.getDescription());
+			commandImpl.setType(tmpCommand.getType());
 			List<CommandParam> commandParams = new ArrayList<CommandParam>();
 			
 			for(org.foxbpm.model.config.foxbpmconfig.CommandParam param : tmpCommand.getCommandParam()){
@@ -508,17 +474,13 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	protected Collection<? extends Deployer> getDefaultDeployers() {
 		List<Deployer> defaultDeployers = new ArrayList<Deployer>();
-		
-		if (bpmnDeployer == null) {
-			// 添加部署的时候自动启动流程实例 功能，修改时间 2014-06-24
-			bpmnDeployer = new BpmnDeployer();
-		}
-		
-		if (processModelParseHandler == null) {
-			processModelParseHandler = (ProcessModelParseHandler) ReflectUtil.instantiate("org.foxbpm.engine.impl.bpmn.parser.BpmnParseHandlerImpl");
-		}
+		// 添加部署的时候自动启动流程实例 功能，修改时间 2014-06-24
+		BpmnDeployer bpmnDeployer = new BpmnDeployer();
+		PngDeployer pngDeployer = new PngDeployer();
+		ProcessModelParseHandler processModelParseHandler = (ProcessModelParseHandler) ReflectUtil.instantiate("org.foxbpm.engine.impl.bpmn.parser.BpmnParseHandlerImpl");
 		bpmnDeployer.setProcessModelParseHandler(processModelParseHandler);
 		defaultDeployers.add(bpmnDeployer);
+		defaultDeployers.add(pngDeployer);
 		return defaultDeployers;
 	}
 	
@@ -569,6 +531,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		}
 		
 		foxBpmConfig = (FoxBPMConfig) resource.getContents().get(0);
+		taskCommandConfig = foxBpmConfig.getTaskCommandConfig();
+		sysMailConfig = foxBpmConfig.getSysMailConfig();
+		bizDataObjectConfig = foxBpmConfig.getBizDataObjectConfig();
+		resourcePathConfig = foxBpmConfig.getResourcePathConfig();
 		
 	}
 	
@@ -577,10 +543,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			sqlSessionFactory = new MyBatisSqlSessionFactory();
 			sqlSessionFactory.init(dataSource,prefix);
 		}
-	}
-	
-	public ISqlSessionFactory getSqlSessionFactory() {
-		return this.sqlSessionFactory;
 	}
 	
 	/**
@@ -677,18 +639,11 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return chain.get(0);
 	}
 	
-	private void initResourcePathConfig() {
-		resourcePathConfig = foxBpmConfig.getResourcePathConfig();
-	}
-	
-	// Setter
-	
-	public ProcessEngineConfiguration setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-		return this;
-	}
-	
 	// Getter方法
+	
+	public ISqlSessionFactory getSqlSessionFactory() {
+		return this.sqlSessionFactory;
+	}
 	
 	public ModelService getModelService() {
 		return getService(ModelService.class);
@@ -726,6 +681,11 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	public IdentityService getIdentityService() {
 		return getService(IdentityService.class);
+	}
+	
+	public ProcessEngineConfiguration setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+		return this;
 	}
 	
 	public DataSource getDataSource() {
@@ -815,10 +775,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return deploymentManager;
 	}
 	
-	public void setDeploymentManager(DeploymentManager deploymentManager) {
-		this.deploymentManager = deploymentManager;
-	}
-	
 	public Map<String, TaskCommandDefinition> getTaskCommandDefinitionMap() {
 		return taskCommandDefinitionMap;
 	}
@@ -859,6 +815,9 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 	
 	public FoxbpmScheduler getFoxbpmScheduler() {
+		if(!quartzEnabled){
+			return null;
+		}
 		return foxbpmScheduler;
 	}
 	
@@ -867,8 +826,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return this;
 	}
 	
-	public Map<String, AbstractCommandFilter> getAbstractCommandFilterMap() {
-		return abstractCommandFilterMap;
+	public Map<String, AbstractCommandFilter> getCommandFilterMap() {
+		return commandFilterMap;
 	}
 	
 	public SysMailConfig getSysMailConfig() {
