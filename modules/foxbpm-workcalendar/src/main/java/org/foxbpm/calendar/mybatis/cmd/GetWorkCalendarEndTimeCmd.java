@@ -73,11 +73,8 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 		year = calendar.get(Calendar.YEAR);
 		month = calendar.get(Calendar.MONTH) + 1;
 		day = calendar.get(Calendar.DATE);
-		calendar.get(Calendar.HOUR);
-		calendar.get(Calendar.MINUTE);
-		calendar.get(Calendar.SECOND);
 		
-		//根据userId找到对应套用的日历类型
+		//拿到对应的工作日历方案
 		calendarTypeEntity = getCalendarTypeById("AAA");
 		
 		//初始化日历类型，找到里面所有的工作时间
@@ -109,15 +106,15 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 					calendarRuleEntity = getCalendarRuleEntityWithHoliday(calRuleEntity);
 				}
 			}
-			//判断到年份和周相等   还有种特殊的时间 不按周 按时间点添在最后 或
-			if(calRuleEntity.getYear()==year && calRuleEntity.getWeek()==DateCalUtils.dayForWeek(begin)) {
+			//判断在不在工作时间里
+			if(calRuleEntity.getWeek()!=0 && calRuleEntity.getYear()==year && calRuleEntity.getWeek()==DateCalUtils.dayForWeek(begin)) {
 				calendarRuleEntity = calRuleEntity;
 			}
-			//如果不在工作时间内 则报错
+			//如果不在工作时间内则继续循环找
 			if(calendarRuleEntity == null) {
 				continue;
 			}
-			//如果在的话开始算时间
+			//当找到规则时开始算时间
 			else {
 				Calendar endCalendar = Calendar.getInstance();
 				Date endDate = CalculateEndTime(calendarRuleEntity);
@@ -127,11 +124,6 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 			}
 		}
 		
-//		try {
-//		throw new Exception("所给时间不在工作时间内，计算出错");
-//	} catch (Exception e) {
-//		e.printStackTrace();
-//	}
 		log.debug("所给时间不在工作时间内，计算出错");
 		return null;
 	}
@@ -249,47 +241,41 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 			//先匹配上午下午 先默认里面只有一个上午一个下午  //TODO 暂时还没试，应该是支持的
 			if(calendarPartEntity.getAmorpm() == DateCalUtils.dayForAMorPM(begin)) {
 				try {
-					Calendar formatCalendar = Calendar.getInstance();
-
-					//时间段开始的毫秒数
-					long startTime = getCalculateTime(calendarPartEntity.getStarttime(), calendarPartEntity.getAmorpm());
-					formatCalendar.setTimeInMillis(startTime);
-					log.debug("开始时间段为" + formatCalendar.getTime());
-
-					//时间段结束的毫秒数
-					long endTime = getCalculateTime(calendarPartEntity.getEndtime(), calendarPartEntity.getAmorpm());
-					formatCalendar.setTimeInMillis(endTime);
-					log.debug("结束时间段为" + formatCalendar.getTime());
-					
-					//传过来时间的毫秒数
-					long beginTime = begin.getTime();
-					formatCalendar.setTime(begin);
-					log.debug("参数开始时间段为" + formatCalendar.getTime());
-					
-					//传过来的时间加上小时数的毫秒数
-					long beginEndTime = (long) (hours * HOURTIME + beginTime);
-					formatCalendar.setTimeInMillis(beginEndTime);
-					log.debug("预计结束时间段为" + formatCalendar.getTime());
-					
-					log.debug("剩余时间为" +  hours + "小时");
-					
-					endDate = CalculateTime(startTime, endTime, beginTime, beginEndTime, calendarRuleEntity, j);
-					if(endDate==null) {
-						log.debug("计算出错");
-						break;
+						Calendar formatCalendar = Calendar.getInstance();
+	
+						//时间段开始的毫秒数
+						long startTime = getCalculateTime(calendarPartEntity.getStarttime(), calendarPartEntity.getAmorpm());
+						formatCalendar.setTimeInMillis(startTime);
+						log.debug("开始时间段为" + formatCalendar.getTime());
+	
+						//时间段结束的毫秒数
+						long endTime = getCalculateTime(calendarPartEntity.getEndtime(), calendarPartEntity.getAmorpm());
+						formatCalendar.setTimeInMillis(endTime);
+						log.debug("结束时间段为" + formatCalendar.getTime());
+						
+						//传过来时间的毫秒数
+						long beginTime = begin.getTime();
+						formatCalendar.setTime(begin);
+						log.debug("参数开始时间段为" + formatCalendar.getTime());
+						
+						//传过来的时间加上小时数的毫秒数
+						long beginEndTime = (long) (hours * HOURTIME + beginTime);
+						formatCalendar.setTimeInMillis(beginEndTime);
+						log.debug("预计结束时间段为" + formatCalendar.getTime());
+						
+						log.debug("剩余时间为" +  hours + "小时");
+						
+						endDate = CalculateTime(startTime, endTime, beginTime, beginEndTime, calendarRuleEntity, j);
+						if(endDate==null) {
+							log.debug("计算出错");
+							break;
+						}
+						
+						return endDate;
+					} catch (ParseException e) {
+						e.printStackTrace();
 					}
-					
-					return endDate;
-				} catch (ParseException e) {
-					e.printStackTrace();
 				}
-			}
-			
-			//计算当前所给时间到本天工作时间结束还有多长时间
-			
-			//如果工作时间够用则直接把时间相加 （不行，中间可能时间段是隔开的）
-			
-			//如果工作时间不够用，往后推最近的工作时间再次计算。
 			}
 		return endDate;
 	}
@@ -582,7 +568,6 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 						}
 						
 						o1s = calendar.getTimeInMillis();
-//						log.debug("===========日期1:" + calendar.getTime());
 						
 						Date o2d = simpleDateFormat.parse(o2.getStarttime());
 						calendar.setTime(o2d);
@@ -598,7 +583,6 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 						
 						o2s = calendar.getTimeInMillis();
 						calendar.getTime();
-//						log.debug("============日期2:" + calendar.getTime());
 					} catch (ParseException e) {
 						e.printStackTrace();
 					}
