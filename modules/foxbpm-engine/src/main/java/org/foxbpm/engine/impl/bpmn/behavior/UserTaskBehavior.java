@@ -143,7 +143,7 @@ public class UserTaskBehavior extends TaskBehavior {
 		if(workCalendar != null && expectedTime >0){
 			Map<String,Object> calendarParams = new HashMap<String, Object>();
 			calendarParams.put("assignee", task.getAssignee());
-			calendarParams.put("candidates",task.getCandidates());
+			calendarParams.put("identityLinks",task.getIdentityLinks());
 			calendarParams.put("processDefinitionKey",task.getProcessDefinitionKey());
 			
 			Date now = ClockUtil.getCurrentTime();

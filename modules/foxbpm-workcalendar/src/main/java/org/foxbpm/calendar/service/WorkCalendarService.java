@@ -17,14 +17,14 @@
  */
 package org.foxbpm.calendar.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.foxbpm.calendar.mybatis.entity.CalendarPartEntity;
 import org.foxbpm.calendar.mybatis.entity.CalendarRuleEntity;
 import org.foxbpm.calendar.mybatis.entity.CalendarTypeEntity;
-import org.foxbpm.engine.calendar.WorkCalendar;
 
-public interface WorkCalendarService extends WorkCalendar {
+public interface WorkCalendarService{
 
 	/**
 	 * 添加日历类型
@@ -163,5 +163,14 @@ public interface WorkCalendarService extends WorkCalendar {
 	 * @return
 	 */
 	List<CalendarPartEntity> getCalendarPartsByRuleId(String ruleId);
+	
+	/**
+	 * 获取过期时间
+	 * @param ruleId 规则编号
+	 * @param begin 开始计算时间
+	 * @param hours 预计执行时间
+	 * @return
+	 */
+	Date getDueTime(String ruleId,Date begin,double hours);
 	
 }

@@ -98,6 +98,7 @@ import org.foxbpm.engine.impl.transaction.DefaultTransactionContextFactory;
 import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.engine.impl.util.ServiceLoader;
 import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.impl.workcalendar.DefaultWorkCalendar;
 import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
@@ -204,13 +205,19 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initGroupDefinitions();
 		initUserDefinition();
 		initTransactionContextFactory();
-	
+		initCalendar();
 		initQuartz();
 		// 加载主题样式文件
 		initStyle();
 		// 加载SVG模版资源
 		initSVG();
 		configuratorsAfterInit();
+	}
+	
+	protected void initCalendar(){
+		if(workCalendar == null){
+			workCalendar = new DefaultWorkCalendar();
+		}
 	}
 	
 	protected void initConfigurators() {

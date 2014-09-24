@@ -58,7 +58,7 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 	private CalendarTypeEntity calendarTypeEntity;
 	private boolean isAddDay = false;
 
-	public GetWorkCalendarEndTimeCmd(Date begin,double hours ,Map<String,Object>params) {
+	public GetWorkCalendarEndTimeCmd(Date begin,double hours ,String ruleId) {
 		this.begin = begin;
 		this.hours = hours;
 		this.workCalendarService = ProcessEngineManagement.getDefaultProcessEngine().getService(WorkCalendarService.class);

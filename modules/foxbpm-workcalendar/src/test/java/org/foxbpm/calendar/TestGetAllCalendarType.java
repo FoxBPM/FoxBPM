@@ -34,7 +34,7 @@ public class TestGetAllCalendarType extends AbstractFoxBpmTestCase{
 		
 		Calendar calendar = Calendar.getInstance();
 		
-		Date date = workCalendarService.getDueTime(calendar.getTime(), 45,null);
+		Date date = workCalendarService.getDueTime("AAA",calendar.getTime(), 45);
 		
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		

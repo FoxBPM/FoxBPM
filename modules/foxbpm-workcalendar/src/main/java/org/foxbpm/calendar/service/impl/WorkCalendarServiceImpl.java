@@ -19,7 +19,6 @@ package org.foxbpm.calendar.service.impl;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.foxbpm.calendar.mybatis.cmd.AddCalendarPartCmd;
 import org.foxbpm.calendar.mybatis.cmd.AddCalendarRuleCmd;
@@ -147,9 +146,8 @@ public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalenda
 		return commandExecutor.execute(new GetCalendarPartByIdCmd(id));
 	}
 	
-	@Override
-	public Date getDueTime(Date begin, double hours,Map<String,Object> params) {
-		return commandExecutor.execute(new GetWorkCalendarEndTimeCmd( begin, hours,params));
+	public Date getDueTime(String ruleId,Date begin, double hours) {
+		return commandExecutor.execute(new GetWorkCalendarEndTimeCmd( begin, hours,ruleId));
 	}
 	
 	@Override
