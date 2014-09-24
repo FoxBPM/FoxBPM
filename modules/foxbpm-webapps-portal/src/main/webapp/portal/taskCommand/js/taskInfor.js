@@ -43,12 +43,12 @@ TaskInfor.prototype = {
 							var recordsDiv = null;
 							var isEnd = false;
 							var isOpen = false;
-							var participants = "";
+							var participants = [];
 							var taskListEnd = [];
 							var taskListIng = [];
 							var processDefinitionId = null;
-							$
-									.each(
+							var flag = false;
+							$.each(
 											data,
 											function(i, d) {
 												if (null != d.endTime) {
@@ -136,12 +136,17 @@ TaskInfor.prototype = {
 												recordsDiv.append(record);
 												/** ********************处理信息**************************** */
 												if (null != d.endTime) {
-													if (participants.indexOf(data.userName) < 0) {
-														participants += data.userName+ "#";
+													flag = false;
+													$.each(participants,function(j,data){
+														if(data.id == d.assignee){
+															flag = true;
+															return;
+														}
+													});
+													if(!flag){
+														participants.push({id:d.assignee,name:d.assigneeName});
 													}
-													recordsDiv.append($this
-															.createMsgTemplet(
-																	i, d.id));
+													recordsDiv.append($this.createMsgTemplet(i, d.id));
 												}
 												if(null == processDefinitionId){
 													processDefinitionId = d.processDefinitionId;
@@ -150,7 +155,6 @@ TaskInfor.prototype = {
 												taskDetailInforDiv.append(recordsDiv);
 											});
 							//初始化流程参入者信息
-							participants = participants.substring(0,participants.length - 1).split("#");
 							if($this.flowInforObj){
 								$this.flowInforObj.loadProcessParticipant(participants);
 							}

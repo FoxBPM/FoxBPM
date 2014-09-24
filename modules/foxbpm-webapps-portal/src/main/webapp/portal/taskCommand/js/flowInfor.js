@@ -132,12 +132,12 @@ FlowInfor.prototype.loadProcessParticipant = function(participants) {
 		var a_Img = null;
 		for (var i = 0; i < len; i++) {
 			a = $("<a class='participant-avatar tooltipped tooltipped-s'>");
-			a.attr("title", participants[i]);
+			a.attr("title", participants[i].name);
 			a.attr("href", "javascript:void(0);");
 			a_Img = $("<img width='20' height='20' class='avatar'>");
-			a_Img.attr("alt", participants[i]);
+			a_Img.attr("alt", participants[i].name);
 			a_Img.attr("src", this.action + "identity/users/"
-					+ participants[i] + "/picture");
+					+ participants[i].id + "/picture");
 			a.append(a_Img);
 			participationAvatarsDiv.append(a);
 		}
