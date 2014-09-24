@@ -46,6 +46,7 @@ public class CalendarTypeResource extends AbstractRestResource {
 		return null;
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Put
 	public String updateCalendarType(Representation entity) {
 		// 获取参数
