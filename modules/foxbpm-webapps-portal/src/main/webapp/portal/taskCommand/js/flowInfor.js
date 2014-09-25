@@ -5,7 +5,7 @@ function FlowInfor(config) {
 	this.eleId = config.eleId;
 	this.action = config.action;
 	this.processInstanceId = config.processInstanceId;
-
+	var $this = this;
 	this.loadData = function() {
 		var $this = this;
 		$.ajax({
@@ -56,7 +56,7 @@ function FlowInfor(config) {
 									imgEle.attr("src", "images/default.png");
 								} else {
 									imgEle.attr("src",
-											_GlobalFlowVar._bpmServiceUrl
+													$this.action
 													+ "identity/users/"
 													+ users[m].name
 													+ "/picture");
