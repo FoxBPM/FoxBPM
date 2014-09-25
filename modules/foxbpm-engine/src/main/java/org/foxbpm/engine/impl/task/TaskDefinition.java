@@ -58,6 +58,8 @@ public class TaskDefinition implements Serializable {
 
 	private List<FormParam> formParams;
 	
+	private double expectExecuteTime;
+	
 	/**
 	 * 处理命令集合
 	 */
@@ -212,6 +214,14 @@ public class TaskDefinition implements Serializable {
 
 	public void setClaimType(String claimType) {
 		this.claimType = claimType;
+	}
+	
+	public void setExpectExecuteTime(double expectExecuteTime) {
+		this.expectExecuteTime = expectExecuteTime;
+	}
+	
+	public double getExpectExecuteTime() {
+		return expectExecuteTime;
 	}
 
 }

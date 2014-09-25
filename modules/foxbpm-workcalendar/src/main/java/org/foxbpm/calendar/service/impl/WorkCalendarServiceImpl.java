@@ -46,7 +46,6 @@ import org.foxbpm.calendar.mybatis.entity.CalendarRuleEntity;
 import org.foxbpm.calendar.mybatis.entity.CalendarTypeEntity;
 import org.foxbpm.calendar.service.WorkCalendarService;
 import org.foxbpm.engine.impl.ServiceImpl;
-import org.foxbpm.engine.impl.entity.GroupEntity;
 public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalendarService {
 	
 	@Override
@@ -147,16 +146,10 @@ public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalenda
 		return commandExecutor.execute(new GetCalendarPartByIdCmd(id));
 	}
 	
-	@Override
-	public Date getDueTime(GroupEntity group, Date begin, double hours) {
-		return null;
+	public Date getDueTime(String ruleId,Date begin, double hours) {
+		return commandExecutor.execute(new GetWorkCalendarEndTimeCmd( begin, hours,ruleId));
 	}
 	
-	@Override
-	public Date getDueTime(String userId, Date begin, double hours) {
-		return commandExecutor.execute(new GetWorkCalendarEndTimeCmd(userId, begin, hours));
-	}
-
 	@Override
 	public List<CalendarRuleEntity> getCalendarRulesByTypeId(String typeId) {
 		return commandExecutor.execute(new GetCalendarRulesByTypeIdCmd(typeId));
@@ -166,4 +159,6 @@ public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalenda
 	public List<CalendarPartEntity> getCalendarPartsByRuleId(String ruleId) {
 		return commandExecutor.execute(new GetCalendarPartsByRuleIdCmd(ruleId));
 	}
+	
+	
 }

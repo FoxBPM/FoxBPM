@@ -117,7 +117,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	
 	protected boolean isDraft = false;
 	
-	protected int expectedExecutionTime = 0;
+	protected double expectedExecutionTime = 0;
 	
 	protected String agent;
 	
@@ -602,11 +602,11 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		this.isDraft = isDraft;
 	}
 	
-	public int getExpectedExecutionTime() {
+	public double getExpectedExecutionTime() {
 		return expectedExecutionTime;
 	}
 	
-	public void setExpectedExecutionTime(int expectedExecutionTime) {
+	public void setExpectedExecutionTime(double expectedExecutionTime) {
 		this.expectedExecutionTime = expectedExecutionTime;
 	}
 	

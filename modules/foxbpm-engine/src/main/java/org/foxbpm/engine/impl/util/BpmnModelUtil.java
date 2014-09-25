@@ -49,6 +49,7 @@ import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.model.bpmn.foxbpm.AssignPolicyType;
 import org.foxbpm.model.bpmn.foxbpm.CompleteTaskDescription;
+import org.foxbpm.model.bpmn.foxbpm.ExpectedExecutionTime;
 import org.foxbpm.model.bpmn.foxbpm.FormParamContainer;
 import org.foxbpm.model.bpmn.foxbpm.FormUri;
 import org.foxbpm.model.bpmn.foxbpm.FormUriView;
@@ -163,6 +164,23 @@ public class BpmnModelUtil {
 			return taskDescription.getExpression().getValue();
 		}
 		return null;
+	}
+	
+	/**
+	 * 获取人工任务描述
+	 * @param baseElement
+	 * @return
+	 */
+	public static double getExpectedExecuteTime(BaseElement baseElement){
+		ExpectedExecutionTime time = (ExpectedExecutionTime)BpmnModelUtil.getExtensionElement(baseElement,FoxBPMPackage.Literals.DOCUMENT_ROOT__EXPECTED_EXECUTION_TIME);
+		if(time != null){
+			int day = time.getDay();
+			int hours = time.getHour();
+			int minute = time.getMinute();
+			double expectTime = day*24 + hours + ((double)minute)/60;
+			return expectTime;
+		}
+		return 0;
 	}
 	
 	/**

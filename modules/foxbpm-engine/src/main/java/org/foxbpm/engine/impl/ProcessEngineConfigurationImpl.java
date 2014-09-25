@@ -48,6 +48,7 @@ import org.foxbpm.engine.ProcessService;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.cache.Cache;
+import org.foxbpm.engine.calendar.WorkCalendar;
 import org.foxbpm.engine.config.ProcessEngineConfigurator;
 import org.foxbpm.engine.db.DataSourceManage;
 import org.foxbpm.engine.exception.ExceptionCode;
@@ -97,6 +98,7 @@ import org.foxbpm.engine.impl.transaction.DefaultTransactionContextFactory;
 import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.engine.impl.util.ServiceLoader;
 import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.impl.workcalendar.DefaultWorkCalendar;
 import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
@@ -143,6 +145,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected ISqlSessionFactory sqlSessionFactory;
 	protected Map<Class<?>, SessionFactory> sessionFactories;
 	protected DataSource dataSource;
+	
+	protected WorkCalendar workCalendar;
 	
 	protected boolean quartzEnabled = false;
 	// 缓存配置
@@ -201,13 +205,19 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initGroupDefinitions();
 		initUserDefinition();
 		initTransactionContextFactory();
-	
+		initCalendar();
 		initQuartz();
 		// 加载主题样式文件
 		initStyle();
 		// 加载SVG模版资源
 		initSVG();
 		configuratorsAfterInit();
+	}
+	
+	protected void initCalendar(){
+		if(workCalendar == null){
+			workCalendar = new DefaultWorkCalendar();
+		}
 	}
 	
 	protected void initConfigurators() {
@@ -505,9 +515,9 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		inputStream = ReflectUtil.getResourceAsStream("foxbpm.cfg.xml");
 		if (inputStream != null) {
 			classPath = "foxbpm.cfg.xml";
-			log.info("开始从classes根目录加载foxbpm.cfg.xml文件");
+			log.info("从classes根目录加载foxbpm.cfg.xml文件");
 		} else {
-			log.info("开始从classes/config/foxbpm.cfg.xml目录加载foxbpm.cfg.xml文件");
+			log.info("从classes/config/foxbpm.cfg.xml目录加载foxbpm.cfg.xml文件");
 		}
 		URL url = this.getClass().getClassLoader().getResource(classPath);
 		if (url == null) {
@@ -899,5 +909,13 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	public String getPrefix() {
 		return prefix;
+	}
+	
+	public void setWorkCalendar(WorkCalendar workCalendar) {
+		this.workCalendar = workCalendar;
+	}
+	
+	public WorkCalendar getWorkCalendar() {
+		return workCalendar;
 	}
 }

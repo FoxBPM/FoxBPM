@@ -18,10 +18,12 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.engine.calendar.WorkCalendar;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.connector.Connector;
@@ -32,6 +34,7 @@ import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.event.AbstractTaskEvent;
 import org.foxbpm.engine.impl.task.FormParam;
 import org.foxbpm.engine.impl.task.TaskDefinition;
+import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
@@ -134,7 +137,21 @@ public class UserTaskBehavior extends TaskBehavior {
 			}
 		}
 		
-		
+		WorkCalendar workCalendar = Context.getProcessEngineConfiguration().getWorkCalendar();
+		double expectedTime = taskDefinition.getExpectExecuteTime();
+		task.setExpectedExecutionTime(expectedTime);
+		if(workCalendar != null && expectedTime >0){
+			Map<String,Object> calendarParams = new HashMap<String, Object>();
+			calendarParams.put("assignee", task.getAssignee());
+			calendarParams.put("identityLinks",task.getIdentityLinks());
+			calendarParams.put("processDefinitionKey",task.getProcessDefinitionKey());
+			
+			Date now = ClockUtil.getCurrentTime();
+			Date dueDate = workCalendar.getDueTime(now, expectedTime, calendarParams);
+			task.setDueDate(dueDate);
+		}else{
+			task.setDueDate(ClockUtil.getCurrentTime());
+		}
 		
 		token.setAssignTask(task);
 		/** 触发分配事件(后事件) */
