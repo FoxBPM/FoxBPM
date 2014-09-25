@@ -237,6 +237,9 @@
 						<a href="portal/jsp/dashboard.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-tachometer"></i> <span class="menu-item-parent">个 人 面 板</span></a>
 					</li>
 					<li>
+						<a href="portal/jsp/users.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-arrow-circle-right"></i> <span class="menu-item-parent">用户列表</span></a>
+					</li>
+					<li>
 						<a href="portal/jsp/launchProcess.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-arrow-circle-right"></i> <span class="menu-item-parent">发 起 流 程</span></a>
 					</li>
 					<li>
