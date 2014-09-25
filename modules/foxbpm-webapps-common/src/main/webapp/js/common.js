@@ -2,7 +2,7 @@
  * 
  */
 var _serviceUrl = document.getElementsByTagName("base")[0].href+"service/";
-
+var formCommit = false;
 /**
  * iframe弹出框
  * 依赖：bootstrap.js
