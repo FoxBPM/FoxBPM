@@ -26,6 +26,19 @@ function FlowInfor(config) {
 	function loadStatus(instanceStatus) {
 		var statusEle = $("<a class='label css-truncate-target linked-labelstyle-84b6eb'>");
 		statusEle.attr("href", "javascript:void(0);");
+
+		if ("running" == instanceStatus) {
+			instanceStatus = "运行中";
+		} else if ("suspend" == instanceStatus) {
+			instanceStatus = "暂停";
+		} else if ("abort" == instanceStatus) {
+			instanceStatus = "终止";
+		} else if ("complete" == instanceStatus) {
+			instanceStatus = "正常结束";
+		} else {
+			instanceStatus = "未知状态";
+		}
+		
 		statusEle.attr("title", "状态【" + instanceStatus + "】");
 		statusEle.html("状态【" + instanceStatus + "】");
 		$("#processStatus").append(statusEle);
