@@ -112,7 +112,6 @@ public class UserTaskBehavior extends TaskBehavior {
 		if(formParams!=null&&formParams.size()>0){
 			Map<String, Object> paramMap=new HashMap<String, Object>();
 			for (FormParam formParam : formParams) {
-				
 				paramMap.put(formParam.getParamKey(), formParam.getExpression().getValue(executionContext));
 			}
 			task.setParamMap(paramMap);
@@ -149,8 +148,6 @@ public class UserTaskBehavior extends TaskBehavior {
 			Date now = ClockUtil.getCurrentTime();
 			Date dueDate = workCalendar.getDueTime(now, expectedTime, calendarParams);
 			task.setDueDate(dueDate);
-		}else{
-			task.setDueDate(ClockUtil.getCurrentTime());
 		}
 		
 		token.setAssignTask(task);

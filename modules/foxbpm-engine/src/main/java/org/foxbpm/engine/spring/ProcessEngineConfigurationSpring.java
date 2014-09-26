@@ -35,14 +35,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 public class ProcessEngineConfigurationSpring extends ProcessEngineConfigurationImpl {
 
 	protected PlatformTransactionManager transactionManager;
-
-	@Override
-	protected void initTransactionContextFactory() {
-		if (transactionContextFactory == null && transactionManager != null) {
-			transactionContextFactory = new SpringTransactionContextFactory(transactionManager);
-		}
-	}
-	
 	@Override
 	  public ProcessEngineConfiguration setDataSource(DataSource dataSource) {
 	    if (dataSource instanceof TransactionAwareDataSourceProxy) {
@@ -65,7 +57,4 @@ public class ProcessEngineConfigurationSpring extends ProcessEngineConfiguration
 	protected CommandInterceptor createTransactionInterceptor() {
 		return new SpringTransactionInterceptor(transactionManager);
 	}
-	
-	
-
 }
