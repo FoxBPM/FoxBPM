@@ -505,39 +505,46 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 					SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm");
 					long o1s = 0;
 					long o2s = 0;
+					Calendar calendar = Calendar.getInstance();
+					Date o1d = null;
 					try {
-						Calendar calendar = Calendar.getInstance();
-						Date o1d = simpleDateFormat.parse(o1.getStarttime());
-						calendar.setTime(o1d);
-						//"12点和0点特殊对待上午下午"
-						if(o1.getStarttime().equals("12:00")) {
-							calendar.set(Calendar.AM_PM, 1);
-						}
-						else if(o1.getStarttime().equals("00:00")) {
-							calendar.set(Calendar.AM_PM, 0);
-						}else {
-							calendar.set(Calendar.AM_PM, o1.getAmorpm());
-						}
-						
-						o1s = calendar.getTimeInMillis();
-						
-						Date o2d = simpleDateFormat.parse(o2.getStarttime());
-						calendar.setTime(o2d);
-						//"12点和0点特殊对待上午下午"
-						if(o2.getStarttime().equals("12:00")) {
-							calendar.set(Calendar.AM_PM, 1);
-						}
-						else if(o2.getStarttime().equals("00:00")) {
-							calendar.set(Calendar.AM_PM, 0);
-						}else {
-							calendar.set(Calendar.AM_PM, o2.getAmorpm());
-						}
-						
-						o2s = calendar.getTimeInMillis();
-						calendar.getTime();
+						o1d = simpleDateFormat.parse(o1.getStarttime());
 					} catch (ParseException e) {
-						e.printStackTrace();
+						throw new FoxBPMIllegalArgumentException("时间格式错误！期望格式：HH:mm,实际格式："+o1.getStarttime());
 					}
+					calendar.setTime(o1d);
+					//"12点和0点特殊对待上午下午"
+					if(o1.getStarttime().equals("12:00")) {
+						calendar.set(Calendar.AM_PM, 1);
+					}
+					else if(o1.getStarttime().equals("00:00")) {
+						calendar.set(Calendar.AM_PM, 0);
+					}else {
+						calendar.set(Calendar.AM_PM, o1.getAmorpm());
+					}
+					
+					o1s = calendar.getTimeInMillis();
+					
+					Date o2d = null;
+					try {
+						o2d = simpleDateFormat.parse(o2.getStarttime());
+					} catch (ParseException e) {
+						throw new FoxBPMIllegalArgumentException("时间格式错误！期望格式：HH:mm,实际格式："+o2.getStarttime());
+					}
+					calendar.setTime(o2d);
+					//"12点和0点特殊对待上午下午"
+					if(o2.getStarttime().equals("12:00")) {
+						calendar.set(Calendar.AM_PM, 1);
+					}
+					else if(o2.getStarttime().equals("00:00")) {
+						calendar.set(Calendar.AM_PM, 0);
+					}else {
+						calendar.set(Calendar.AM_PM, o2.getAmorpm());
+					}
+					
+					o2s = calendar.getTimeInMillis();
+					calendar.getTime();
+					
 					return o1s<o2s==true?0:1;
 				}
 			});
