@@ -120,7 +120,7 @@ var pagefunction = function() {
 				                        title: doc.data[i].subject,
 				                        start: create_time, 
 				                        className: taskColor,
-				                        id:"portal/expense/editExpense.jsp"+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId,
+				                        id:"portal/expense/editExpense.jsp"+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId+"&refresh="+new Date(),
 				                    };
 		                		events.push(eventConfig);
 		                	}else {
@@ -129,7 +129,7 @@ var pagefunction = function() {
 					                        title: doc.data[i].subject,
 					                        start: due_time,  
 					                        className: taskColor,
-					                        id:"portal/expense/editExpense.jsp"+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId,
+					                        id:"portal/expense/editExpense.jsp"+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId+"&refresh="+new Date(),
 					                    };
 		                			events.push(eventConfig);
 			                	}
@@ -157,7 +157,7 @@ var pagefunction = function() {
 				                        title: doc.data[i].subject,
 				                        start: create_time, 
 				                        className: taskColor,
-				                        id:"portal/expense/editExpense.jsp"+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId,
+				                        id:"portal/expense/editExpense.jsp"+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId+"&refresh="+new Date(),
 				                    };
 		                		events.push(eventConfig);
 		                	}else{
@@ -166,7 +166,7 @@ var pagefunction = function() {
 					                        title: doc.data[i].subject,
 					                        start: due_time, 
 					                        className: taskColor,
-					                        id:"portal/expense/editExpense.jsp"+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId,
+					                        id:"portal/expense/editExpense.jsp"+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId+"&refresh="+new Date(),
 					                    };
 			                		events.push(eventConfig);
 			                	}

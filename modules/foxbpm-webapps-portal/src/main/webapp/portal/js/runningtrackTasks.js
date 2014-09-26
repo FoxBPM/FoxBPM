@@ -199,7 +199,7 @@ function viewForm(formUrl,processInstanceId,bizKey){
 function openTaskForm(url,dataId,taskId,processInstanceId){
 	//测试时暂时用报销的表单代替
 	url = "portal/expense/viewExpense.jsp";
-	var formUrl = url+"?dataId="+dataId+"&taskId="+taskId+"&processInstanceId="+processInstanceId;
+	var formUrl = url+"?dataId="+dataId+"&taskId="+taskId+"&processInstanceId="+processInstanceId+"&refresh="+new Date();
 	openModalForm(formUrl);
 }
 
