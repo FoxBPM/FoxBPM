@@ -278,6 +278,44 @@
 			<commandParam key="isVerification" name="是否触发验证" value="false"
 				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
+		
+		<!-- <taskCommandDefinition id="addSignUser" name="加签-用户控制" command="org.foxbpm.engine.impl.task.command.AddSignUserCommand" 
+			cmd="org.foxbpm.engine.impl.task.cmd.AddSignUserCmd" isEnabled="true" 
+			type="processInstanceInfo" filter="org.foxbpm.engine.impl.task.filter.AddSignFilter">
+			<commandParam key="isSaveData" name="是否保存数据" value="false"
+				description="" dataType="String" bizType="ControlParam" />
+			<commandParam key="isVerification" name="是否触发验证" value="false"
+				description="" dataType="String" bizType="ControlParam" />
+			<commandParam key="addResources" name="加签资源" description="添加的加签者,可以是用户也可以是组."
+				dataType="String" bizType="InputParam" />	
+			<commandParam key="isParallel" name="" description="是否并行加签"
+				dataType="String" bizType="InputParam" value="true" />
+			<commandParam key="isResolved" name="" description="是否需要还回"
+				dataType="String" bizType="InputParam" value="true"/>
+			<commandParam key="isMoreAddSign" name="" description="是否允许多次加签"
+				dataType="String" bizType="InputParam" value="true"/>		
+		</taskCommandDefinition>
+		
+		
+		
+		<taskCommandDefinition id="addSignSystem" name="加签-后台控制" command="org.foxbpm.engine.impl.task.command.AddSignSystemCommand" 
+			cmd="org.foxbpm.engine.impl.task.cmd.AddSignSystemCmd" isEnabled="true" 
+			type="processInstanceInfo" filter="org.foxbpm.engine.impl.task.filter.AddSignFilter">
+			<commandParam key="isSaveData" name="是否保存数据" value="false"
+				description="" dataType="String" bizType="ControlParam" />
+			<commandParam key="isVerification" name="是否触发验证" value="false"
+				description="" dataType="String" bizType="ControlParam" />
+			<commandParam key="addResources" name="加签资源" description="添加的加签者,可以是用户也可以是组."
+				dataType="String" bizType="InputParam" />	
+			<commandParam key="isParallel" name="" description="是否并行加签"
+				dataType="String" bizType="ExecuteParam" value="true" />
+			<commandParam key="isResolved" name="" description="是否需要还回"
+				dataType="String" bizType="ExecuteParam" value="true"/>
+			<commandParam key="isMoreAddSign" name="" description="是否允许多次加签"
+				dataType="String" bizType="ExecuteParam" value="true"/>		
+		</taskCommandDefinition>
+		 -->
+		
 
 		<!-- <taskCommandDefinition id="reminders" name="催办" command="com.founder.fix.fixflow.expand.command.RemindersTaskCommand" 
 			cmd="com.founder.fix.fixflow.expand.cmd.RemindersTaskCmd" isEnabled="true" 
