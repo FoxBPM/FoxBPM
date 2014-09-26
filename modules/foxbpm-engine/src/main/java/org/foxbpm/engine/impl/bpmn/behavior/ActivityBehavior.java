@@ -21,11 +21,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.exception.ExceptionCode;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.exception.FoxBPMExpressionException;
 import org.foxbpm.engine.expression.Expression;
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduler;
@@ -469,8 +469,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 	@Override
 	public void cleanData(FlowNodeExecutionContext executionContext) {
 		try {
-			FoxbpmScheduler foxbpmScheduler = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration()
-					.getFoxbpmScheduler();
+			FoxbpmScheduler foxbpmScheduler =Context.getProcessEngineConfiguration().getFoxbpmScheduler();
 			if (foxbpmScheduler == null) {
 				LOG.debug("自动调度器未启动，导致任务节点离开时清空相关数据失败！");
 				return;

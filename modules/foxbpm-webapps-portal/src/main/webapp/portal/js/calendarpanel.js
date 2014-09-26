@@ -1,12 +1,14 @@
 var taskPriority="";
+var displayByCreateTime = true;
 $("#eventInfoTip").hide(); 
 function showFormByUrl(formUrl){
-	$("#contentFrame").attr("src",formUrl);
-	$('#remoteModal').modal({backdrop:"static"});
+	openModalForm(formUrl);
+	$('#remoteModal').on('hidden.bs.modal', function () {
+		if(formCommit){$('#calendar').fullCalendar('refetchEvents');}
+		
+	});
 }
-$('#remoteModal').on('hide.bs.modal', function () {
-	$('#calendar').fullCalendar('refetchEvents');
-});
+
   
 var showWeekend = true;
 var pagefunction = function() {
@@ -36,7 +38,12 @@ var pagefunction = function() {
         	 
 		},
 		eventMouseover:function(event, jsEvent, view ) {
-			$("#eventInfoTipCreateTime").html("创        &nbsp;&nbsp; 建:  "+event.start.format("YYYY-MM-DD HH:mm:ss"));
+			if(displayByCreateTime){
+				$("#eventInfoTipCreateTime").html("创        &nbsp;&nbsp; 建:  "+event.start.format("YYYY-MM-DD HH:mm:ss"));
+			}else{
+				$("#eventInfoTipCreateTime").html("期        &nbsp;&nbsp; 限:  "+event.start.format("YYYY-MM-DD HH:mm:ss"));
+			}
+			
 			$("#eventInfoTipTitle").html("主      &nbsp;&nbsp; 题:  "+event.title);
 			
 			var priority = "";
@@ -61,7 +68,7 @@ var pagefunction = function() {
 			if(jsEvent.clientX+500>document.body.clientWidth){
 				tipLeft = jsEvent.clientX-(700-(document.body.clientWidth-jsEvent.clientX))
 			}
-	      	$("#eventInfoTip2").css("top",jsEvent.clientY-70+document.body.scrollTop);  
+	      	$("#eventInfoTip2").css("top",jsEvent.clientY-140+document.body.scrollTop);  
 	       	$("#eventInfoTip2").css("left",tipLeft);  
 	       	$("#eventInfoTip").show();
 	    	$("#eventInfoTip2").show();
@@ -89,6 +96,7 @@ var pagefunction = function() {
 	            success: function(doc) {
 	                var events = []; 
 	                var taskColor;
+	                var eventConfig;
 	                for(var i=0;i<doc.data.length;i++){ 
 	                	
 	                	//判断是否选择了优先级
@@ -107,13 +115,27 @@ var pagefunction = function() {
 		                	}else{
 		                		due_time = new Date(doc.data[i].dueDate);
 		                	}
-		                	events.push({
-		                        title: doc.data[i].subject,
-		                        start: create_time, 
-								end:due_time,
-		                        className: taskColor,
-		                        id:"portal/expense/editExpense.jsp"+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId,
-		                    });
+		                	if(displayByCreateTime){
+		                		eventConfig = {
+				                        title: doc.data[i].subject,
+				                        start: create_time, 
+				                        className: taskColor,
+				                        id:"portal/expense/editExpense.jsp"+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId,
+				                    };
+		                		events.push(eventConfig);
+		                	}else {
+		                		if(doc.data[i].dueDate != null){
+		                			eventConfig = {
+					                        title: doc.data[i].subject,
+					                        start: due_time,  
+					                        className: taskColor,
+					                        id:"portal/expense/editExpense.jsp"+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId,
+					                    };
+		                			events.push(eventConfig);
+			                	}
+		                	}
+		                	 
+		                	
 	                	}else if(taskPriority == doc.data[i].priority){
 	                		if(doc.data[i].priority == "50"){
 		                		taskColor = ["event", "bg-color-greenLight"];
@@ -129,13 +151,29 @@ var pagefunction = function() {
 		                	}else{
 		                		due_time = new Date(doc.data[i].dueDate);
 		                	}
-		                	events.push({
-		                        title: doc.data[i].subject,
-		                        start: create_time, 
-								end:due_time,
-		                        className: taskColor,
-		                        id:"portal/expense/editExpense.jsp"+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId,
-		                    });
+		                	
+		                	if(displayByCreateTime){
+		                		eventConfig = {
+				                        title: doc.data[i].subject,
+				                        start: create_time, 
+				                        className: taskColor,
+				                        id:"portal/expense/editExpense.jsp"+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId,
+				                    };
+		                		events.push(eventConfig);
+		                	}else{
+		                		if(doc.data[i].dueDate != null){
+			                		eventConfig = {
+					                        title: doc.data[i].subject,
+					                        start: due_time, 
+					                        className: taskColor,
+					                        id:"portal/expense/editExpense.jsp"+"?dataId="+doc.data[i].bizKey+"&taskId="+doc.data[i].id+"&processInstanceId="+doc.data[i].processInstanceId,
+					                    };
+			                		events.push(eventConfig);
+			                	}
+		                	}
+		                	
+		                	 
+		                	
 	                	}
 	                	
 	                }
@@ -200,10 +238,14 @@ var pagefunction = function() {
 	});
 	
 	$('#task_createtime').click(function () {
+		displayByCreateTime = true;
 		$('#select_time').html($('#task_createtime').html()+"<i class='fa fa-caret-down'></i>"); 
+		$('#calendar').fullCalendar('refetchEvents');
 	});
 	$('#task_duration').click(function () {
+		displayByCreateTime = false;
 		$('#select_time').html($('#task_duration').html()+"<i class='fa fa-caret-down'></i>"); 
+		$('#calendar').fullCalendar('refetchEvents');
 	});
 	
 	$('#priority_high').click(function () {

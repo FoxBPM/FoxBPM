@@ -12,7 +12,7 @@
 		resultMap="calendarTypeResultMap">
 		select 
 		*
-		from workcal_type
+		from foxbpm_workcal_type
 		where id = #{id,jdbcType=VARCHAR}
 	</select>
 	
@@ -21,7 +21,7 @@
 		${limitBefore}
 		select ${limitBetween}
 		*
-		from workcal_type
+		from foxbpm_workcal_type
 		<where>
 			<if test=" 1==1">
 				1=1
@@ -40,7 +40,7 @@
 		resultType="long">
 		select
 		count(a.id)
-		from workcal_type a
+		from foxbpm_workcal_type a
 		<where>
 			<if test=" 1==1">
 				1=1
@@ -55,7 +55,7 @@
 	</select>
 	
 	<insert id="insertCalendarType" parameterType="org.foxbpm.calendar.mybatis.entity.CalendarTypeEntity">
-	   INSERT INTO WORKCAL_TYPE (ID, NAME
+	   INSERT INTO FOXBPM_WORKCAL_TYPE (ID, NAME
 		)
 		values (#{id,jdbcType=VARCHAR},
 		#{name,jdbcType=VARCHAR}
@@ -63,7 +63,7 @@
 	</insert>
 	
 	<update id="updateCalendarType" parameterType="org.foxbpm.calendar.mybatis.entity.CalendarTypeEntity">
-	  UPDATE WORKCAL_TYPE
+	  UPDATE FOXBPM_WORKCAL_TYPE
 		SET 
 		 ID=#{id,jdbcType=VARCHAR}
 		 <if test="name != null">
@@ -74,6 +74,6 @@
 	</update>
 	
 	<delete id="deleteCalendarTypeById" parameterType="java.lang.String">
-  		DELETE FROM WORKCAL_TYPE WHERE ID =  #{id,jdbcType=VARCHAR}
+  		DELETE FROM FOXBPM_WORKCAL_TYPE WHERE ID =  #{id,jdbcType=VARCHAR}
   	</delete>
 </mapper>

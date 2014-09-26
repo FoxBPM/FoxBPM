@@ -15,7 +15,7 @@
 		resultMap="calendarpartResultMap">
 		select
 		*
-		from workcal_part
+		from foxbpm_workcal_part
 		where id = #{id,jdbcType=VARCHAR}
 	</select>
 	
@@ -24,7 +24,7 @@
 		${limitBefore}
 		select ${limitBetween}
 		*
-		from workcal_part
+		from foxbpm_workcal_part
 		<where>
 			<if test=" 1==1">
 				1=1
@@ -40,7 +40,7 @@
 		resultMap="calendarpartResultMap">
 		select
 		*
-		from workcal_part
+		from foxbpm_workcal_part
 		where rule_id = #{id,jdbcType=VARCHAR}
 	</select>
 	
@@ -48,7 +48,7 @@
 		resultType="long">
 		select
 		count(a.id)
-		from workcal_part a
+		from foxbpm_workcal_part a
 		<where>
 			<if test=" 1==1">
 				1=1
@@ -60,7 +60,7 @@
 	</select>
 	
 	<insert id="insertCalendarPart" parameterType="org.foxbpm.calendar.mybatis.entity.CalendarPartEntity">
-	   INSERT INTO WORKCAL_PART (ID, SHIFT, START_TIME, END_TIME, RULE_ID
+	   INSERT INTO FOXBPM_WORKCAL_PART (ID, SHIFT, START_TIME, END_TIME, RULE_ID
 		)
 		values (#{id,jdbcType=VARCHAR},
 		#{amorpm,jdbcType=VARCHAR},
@@ -71,7 +71,7 @@
 	</insert>
 	
 	<update id="updateCalendarPart" parameterType="org.foxbpm.calendar.mybatis.entity.CalendarPartEntity">
-	  UPDATE WORKCAL_PART
+	  UPDATE FOXBPM_WORKCAL_PART
 		SET 
 		 ID=#{id,jdbcType=VARCHAR}
 		 <if test="amorpm != null">
@@ -91,6 +91,6 @@
 	</update>
 	
 	<delete id="deleteCalendarPartById" parameterType="java.lang.String">
-  		DELETE FROM WORKCAL_PART WHERE ID =  #{id,jdbcType=VARCHAR}
+  		DELETE FROM FOXBPM_WORKCAL_PART WHERE ID =  #{id,jdbcType=VARCHAR}
   	</delete>
 </mapper>

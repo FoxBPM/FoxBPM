@@ -17,7 +17,7 @@
 		resultMap="calendarRuleResultMap">
 		select
 		*
-		from workcal_rule
+		from foxbpm_workcal_rule
 		where id = #{id,jdbcType=VARCHAR}
 	</select>
 	
@@ -25,7 +25,7 @@
 		resultMap="calendarRuleResultMap">
 		select
 		*
-		from workcal_rule
+		from foxbpm_workcal_rule
 		where type_id = #{id,jdbcType=VARCHAR}
 	</select>
 	
@@ -34,7 +34,7 @@
 		${limitBefore}
 		select ${limitBetween}
 		*
-		from workcal_rule
+		from foxbpm_workcal_rule
 		<where>
 			<if test=" 1==1">
 				1=1
@@ -53,7 +53,7 @@
 		resultType="long">
 		select
 		count(a.id)
-		from workcal_rule a
+		from foxbpm_workcal_rule a
 		<where>
 			<if test=" 1==1">
 				1=1
@@ -68,7 +68,7 @@
 	</select>
 	
 	<insert id="insertCalendarRule" parameterType="org.foxbpm.calendar.mybatis.entity.CalendarRuleEntity">
-	   INSERT INTO WORKCAL_RULE (ID, YEAR, WEEK, NAME, WORK_DATE, STATUS, TYPE_ID
+	   INSERT INTO FOXBPM_WORKCAL_RULE (ID, YEAR, WEEK, NAME, WORK_DATE, STATUS, TYPE_ID
 		)
 		values (#{id,jdbcType=VARCHAR},
 		#{year,jdbcType=INTEGER},
@@ -81,7 +81,7 @@
 	</insert>
 	
 	<update id="updateCalendarRule" parameterType="org.foxbpm.calendar.mybatis.entity.CalendarRuleEntity">
-	  UPDATE WORKCAL_RULE
+	  UPDATE FOXBPM_WORKCAL_RULE
 		SET 
 		 ID=#{id,jdbcType=VARCHAR}
 		 <if test="year != null">
@@ -107,6 +107,6 @@
 	</update>
 	
 	<delete id="deleteCalendarRuleById" parameterType="java.lang.String">
-  		DELETE FROM WORKCAL_RULE WHERE ID =  #{id,jdbcType=VARCHAR}
+  		DELETE FROM FOXBPM_WORKCAL_RULE WHERE ID =  #{id,jdbcType=VARCHAR}
   	</delete>
 </mapper>

@@ -49,7 +49,8 @@
 	    
 	    var _flowCommit = function(flowInfo){
     		$("#flowCommandInfo").val(JSON.stringify(flowInfo));
-    		$("#form1").submit();
+    		$("#form1").submit(); 
+    		formCommit = true;
 	    };
 		var flowconfig ={ getBizKey: _getBizKey, getTaskComment: _getTaskComment,flowCommit:_flowCommit };
 		

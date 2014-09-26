@@ -30,6 +30,7 @@ import org.foxbpm.engine.IdentityService;
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.impl.cache.CacheUtil;
 import org.foxbpm.engine.impl.entity.UserEntity;
+import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
@@ -67,7 +68,7 @@ public class UserPictureResource extends AbstractRestResource {
 			ProcessEngine processEngine = FoxBpmUtil.getProcessEngine();
 			// 获取身份服务
 			IdentityService identityService = processEngine.getIdentityService();
-			UserEntity userEntity = identityService.getUser(userId);
+			UserEntity userEntity = Authentication.selectUserByUserId(userId);
 			List<FileItem> fileItems = fileUpload.parseRepresentation(multipartForm);
 			String fileName = null;
 			String imgName = null;
@@ -103,8 +104,7 @@ public class UserPictureResource extends AbstractRestResource {
 	public InputStream getResource() throws FileNotFoundException {
 		String path = getPath();
 		String userId = getAttribute("userId");
-		IdentityService identityService = FoxBpmUtil.getProcessEngine().getIdentityService();
-		UserEntity userEntity = identityService.getUser(userId);
+		UserEntity userEntity = Authentication.selectUserByUserId(userId);
 		// 获取图片
 		InputStream in = null;
 		File file = null;

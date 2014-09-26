@@ -6,7 +6,10 @@
 <link rel="stylesheet" type="text/css" href="css/taskDetailInfor.css" />
 <script src="js/jquery.js"></script>
 <script src="js/foxbpmframework.js"></script>
-<script src="js/showTaskDetailInfor.js"></script>
+<script src="js/taskInfor.js"></script>
+<script src="js/flowInfor.js"></script> 
+<script src="js/flowGraphicInfor.js"></script>
+<script src="js/flowRunTrackInfor.js"></script>
 </head>
 <body>
 	<br>
@@ -20,80 +23,11 @@
 						<div class="issues-listing">
 							<div class="js-issues-results" id="show_issue">
 								<div class="tab-content clearfix" id="discussion_bucket">
-									<div class="discussion-sidebar">
-										<!-- 流程状态 -->
-										<div class="discussion-sidebar-item sidebar-labels">
-											<div
-												class="select-menu label-select-menu js-issue-show-label-select-menu js-menu-container js-select-menu">
-												<button
-													class="discussion-sidebar-heading discussion-sidebar-toggle js-menu-target"
-													aria-haspopup="true" aria-label="Manage labels"
-													data-hotkey="l">流程状态</button>
-											</div>
-											<div class="labels css-truncate js-timeline-label-list" id="processStatus"></div>
-										</div>
-										<!-- 当前处理者 -->
-										<div class="discussion-sidebar-item sidebar-assignee" id="sidebarAssignee">
-											<div class="select-menu js-menu-container js-select-menu js-assignee-picker is-showing-clear-item">
-												<button class="discussion-sidebar-heading discussion-sidebar-toggle js-menu-target">
-													<span class="octicon octicon-gear"></span>当前处理者
-												</button>
-											</div>
-											<!-- <span class="css-truncate js-assignee-infobar-item-wrapper">
-												<img width="20" height="20" class="avatar" alt="maenliang"
-												src="https://avatars3.githubusercontent.com/u/7787703?v=2&amp;s=40"
-												data-user="7787703"><a
-												class="assignee css-truncate-target"
-												href="/FoxBPM/FoxBPM/issues/assigned/maenliang">maenliang</a>
-											</span> -->
-										</div>
-										<!-- 暂时不考虑 -->
-										<div class="discussion-sidebar-item sidebar-notifications">
-											<h3 class="discussion-sidebar-heading">Notifications</h3>
-											<div
-												class="thread-subscription-status js-thread-subscription-status js-socket-channel js-updatable-content"
-												data-url="/notifications/thread_subscription?repository_id=18086708&amp;thread_class=Issue&amp;thread_id=35445625"
-												data-channel="FoxBPM/FoxBPM:thread-subscription:35445625:yangguangftlp">
-
-												<span class="mega-octicon octicon-radio-tower"></span>
-
-												<form class="thread-subscribe-form"
-													action="/notifications/thread" method="post"
-													accept-charset="UTF-8" data-remote="true">
-													<div style="margin: 0px; padding: 0px; display: inline;">
-														<input name="utf8" type="hidden" value="✓"><input
-															name="authenticity_token" type="hidden"
-															value="xLcpIS/HEC8I74WJ3dCqkxbBuFJTEuc5k0TIMTi7evW/ykaMon5xPeMukKGOlOMYyDa0bNoZ9JU4910uQvOJyA==">
-													</div>
-													<input name="repository_id" type="hidden" value="18086708">
-													<input name="thread_id" type="hidden" value="35445625">
-													<input name="thread_class" type="hidden" value="Issue">
-													<input name="id" type="hidden" value="mute">
-
-													<button class="minibutton" type="submit"
-														data-disable-with="">
-														<span class="octicon octicon-mute"></span>Unsubscribe
-													</button>
-												</form>
-												<p class="reason">You're receiving notifications because
-													you're subscribed to this repository.</p>
-											</div>
-
-										</div>
-                                        <!-- 流程参入者 -->
-										<div class="discussion-sidebar-item js-socket-channel js-updatable-content">
-											<div class="participation" id="partial-users-participants">
-											</div>
-										</div>
-										<!-- 用户锁定 -->
-										<div class="discussion-sidebar-item lock-toggle">
-											<a class="lock-toggle-link" href="javascript:void(0);"><span class="octicon octicon-lock"></span>
-												Lock issue
-											</a>
-										</div>
+									<!-- 流程信息 -->
+									<div class="discussion-sidebar" id="flowInforEle">
 									</div>
 									<!-- 任务详细信息 -->
-									<div class="discussion-timeline js-quote-selection-container" id="taksDetailInfoDiv">
+									<div class="discussion-timeline js-quote-selection-container" id="taskInforEle">
 									</div>
 								</div>
 							</div>
@@ -106,22 +40,47 @@
 	<br>
 	<div class="container process">
 		<div id="process">
-			<div id="runningTrackDiv" style="display: none;" class="proc_bg"></div>
-			<div id="flowGraphicDiv" class="proc_bg"></div>
+			<div id="flowRunTrackInforEle" style="display: none;" class="proc_bg"></div>
+			<div id="flowGraphicInforEle" class="proc_bg"></div>
 		</div>
 	</div>
-
 	<script type="text/javascript">
-		function pagefunction() {
-			//创建任务详细信息对象
-			var taskDeatailInfor = new Foxbpm.TaskDeatailInfor({
-				taskDetailDiv : 'taksDetailInfoDiv',
-				runningTrackDiv : 'runningTrackDiv',
-				flowGraphicDiv : 'flowGraphicDiv'
+		$(document).ready(function(){
+			var isIELowVer = window.ActiveXObject && ($.browser.msie && $.browser.version < 8.0); 
+			//流程信息
+			var flowInfor = new FlowInfor({
+				 eleId:'flowInforEle',
+			    action : _serviceUrl,
+				processInstanceId : _processInstanceId
 			});
-			taskDeatailInfor.init();
-		}
-		pagefunction();
+			flowInfor.init(); 
+			//流程运行轨迹信息
+			var flowRunTrackInfor = new FlowRunTrackInfor({
+				eleId:'flowRunTrackInforEle',
+				isIELowVer:isIELowVer,
+				action : _serviceUrl + 'task/runTrack',
+				processInstanceId : _processInstanceId
+			});
+			flowRunTrackInfor.init();
+			//流程图信息
+			var flowGraphicInfor = new FlowGraphicInfor({
+				eleId:'flowGraphicInforEle',
+				isIELowVer : isIELowVer,
+				action : _serviceUrl,
+				processInstanceId : _processInstanceId,
+				runTrackObj:flowRunTrackInfor
+			});
+			flowGraphicInfor.init();
+			//任务信息
+		     var taskInfor = new TaskInfor({
+		    	eleId:'taskInforEle',
+		    	action : _serviceUrl,
+				processInstanceId : _processInstanceId,
+				processDefinitionKey : _processDefinitionKey,
+				flowInforObj:flowInfor,
+				flowGraphicInforObj:flowGraphicInfor
+			}).init();
+		});
 	</script>
 </body>
 </html>

@@ -44,6 +44,12 @@ public interface TaskCommandDefinition {
 	 * @return
 	 */
 	String getCmdClass();
+	
+	/**
+	 * 命令类型，system、todoTasks等
+	 * @return
+	 */
+	String getType();
 
 	/**
 	 * filter类全名

@@ -80,6 +80,7 @@ public class CalendarTypeCollectionResource extends AbstractRestResource{
 		return result;
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Post
 	public void addCalendarType(Representation entity) {
 		// 获取参数

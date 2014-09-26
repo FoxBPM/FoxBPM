@@ -33,7 +33,7 @@ public class SocialMessageInfo implements Serializable  {
 	private String msgId;
 	/** 消息内容 */
 	private String content;
-	/** 消息类型（0，原创；1，评论；2，转发） */
+	/** 消息类型（0，原创；1，评论；2，转发； 3，聊天） */
 	private int type;
 	/** 评论过数量（只增不减，删除评论不影响此值，可以作为评论多页显示的页码） */
 	private String commentedCount;
@@ -45,8 +45,32 @@ public class SocialMessageInfo implements Serializable  {
 	private String transferCount;
 	/** 发布时间 */
 	private String time;
+	/** 任务ID*/
+	private String taskId;
+	/** 流程实例ID*/
+	private String processInstanceId;
+	/** 是否公开FLAG*/
+	private int openFlag;
 	
 	
+	public String getTaskId() {
+		return taskId;
+	}
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
+	}
+	public String getProcessInstanceId() {
+		return processInstanceId;
+	}
+	public void setProcessInstanceId(String processInstanceId) {
+		this.processInstanceId = processInstanceId;
+	}
+	public int getOpenFlag() {
+		return openFlag;
+	}
+	public void setOpenFlag(int openFlag) {
+		this.openFlag = openFlag;
+	}
 	public String getUserId() {
 		return userId;
 	}

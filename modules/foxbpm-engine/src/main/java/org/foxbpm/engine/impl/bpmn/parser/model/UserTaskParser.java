@@ -121,8 +121,10 @@ public class UserTaskParser extends TaskParser {
 		String formUri = BpmnModelUtil.getFormUri(baseElement);
 		String formUriView = BpmnModelUtil.getFormUriView(baseElement);
 		String taskDescription = BpmnModelUtil.getUserTaskDescription(baseElement);
-		String taskCompleteDescription = BpmnModelUtil
-				.getUserTaskCompleteTaskDescription(baseElement);
+		String taskCompleteDescription = BpmnModelUtil.getUserTaskCompleteTaskDescription(baseElement);
+		
+		double expectedExecuteTime = BpmnModelUtil.getExpectedExecuteTime(baseElement);		
+		
 		String taskType = BpmnModelUtil.getUserTaskType(baseElement);
 		taskDefinition.setTaskType(taskType);
 		taskDefinition.setTaskSubject(subject);
@@ -130,6 +132,7 @@ public class UserTaskParser extends TaskParser {
 		taskDefinition.setFormUriView(formUriView);
 		taskDefinition.setTaskDescription(taskDescription);
 		taskDefinition.setCompleteTaskDescription(taskCompleteDescription);
+		taskDefinition.setExpectExecuteTime(expectedExecuteTime);
 
 		return super.parser(baseElement);
 	}

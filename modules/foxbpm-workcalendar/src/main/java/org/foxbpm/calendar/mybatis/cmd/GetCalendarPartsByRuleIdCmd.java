@@ -31,6 +31,7 @@ public class GetCalendarPartsByRuleIdCmd implements Command<List<CalendarPartEnt
 		this.id = id;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<CalendarPartEntity> execute(CommandContext commandContext) {
 		return (List<CalendarPartEntity>) Context.getCommandContext().getSqlSession().selectList("selectCalendarPartsByRuleId", id);

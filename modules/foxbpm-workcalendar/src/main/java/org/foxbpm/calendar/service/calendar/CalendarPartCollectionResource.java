@@ -43,7 +43,6 @@ public class CalendarPartCollectionResource extends AbstractRestResource{
 		String id = StringUtil.getString(getQueryParameter("id", queryForm));
 		
 		String idLike = null;
-		String nameLike = null;
 		if (StringUtil.isNotEmpty(id)) {
 			idLike = "%" + id + "%";
 		}
@@ -76,6 +75,7 @@ public class CalendarPartCollectionResource extends AbstractRestResource{
 		return result;
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Post
 	public void addCalendarPart(Representation entity) {
 		// 获取参数

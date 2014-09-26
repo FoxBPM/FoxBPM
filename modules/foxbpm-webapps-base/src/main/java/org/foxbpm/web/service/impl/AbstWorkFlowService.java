@@ -22,6 +22,7 @@ import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.impl.entity.UserEntity;
+import org.foxbpm.engine.impl.identity.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -65,7 +66,7 @@ public abstract class AbstWorkFlowService {
 		if (userId == null || "".equals(userId)) {
 			return "空用户名";
 		}
-		UserEntity tmpUser = identityService.getUser(userId);
+		UserEntity tmpUser =Authentication.selectUserByUserId(userId);
 		if (tmpUser != null) {
 			return tmpUser.getUserName();
 		} else {
