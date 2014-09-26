@@ -60,8 +60,6 @@ public class CommandContext {
 		this.command = command;
 		this.processEngineConfigurationImpl = processEngineConfigurationImpl;
 		sessionFactories = processEngineConfigurationImpl.getSessionFactories();
-		this.transactionContext = processEngineConfigurationImpl.getTransactionContextFactory()
-				.openTransactionContext(this);
 	}
 
 	public ProcessEngineConfigurationImpl getProcessEngineConfigurationImpl() {
@@ -159,26 +157,8 @@ public class CommandContext {
 
 	public void close() {
 		try {
-			try {
-				if (exception == null) {
-
-					flushSession();
-				}
-			} catch (Exception ex) {
-				exception(ex);
-			} finally {
-
-				try {
-					if (exception == null) {
-						transactionContext.commit();
-					}
-				} catch (Throwable exception) {
-					exception(exception);
-				}
-
-				if (exception != null) {
-					transactionContext.rollback();
-				}
+			if (exception == null) {
+				flushSession();
 			}
 		} catch (Exception ex) {
 			exception(ex);

@@ -157,6 +157,15 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	/** 控制并发修改标示 */
 	protected int revision;
 	
+	/** 下一步骤任务 */
+	protected String nextTaskId;
+	
+	
+
+	protected String addSignType;
+	
+	
+	
 	protected Map<String, Object> paramMap = new HashMap<String, Object>();
 	
 	public TaskEntity() {
@@ -981,6 +990,8 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		persistentState.put("processInitiator", getProcessInitiator());
 		persistentState.put("completeDescription", getCompleteDescription());
 		persistentState.put("completionRate", getCompletionRate());
+		persistentState.put("nextTaskId", getNextTaskId());
+		persistentState.put("addSignType", getAddSignType());
 		
 		return persistentState;
 	}
@@ -1032,6 +1043,30 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 			return super.clone();
 		} catch (CloneNotSupportedException e) {
 			throw new FoxBPMException("task clone 异常", e);
+		}
+	}
+	
+	public String getNextTaskId() {
+		return nextTaskId;
+	}
+
+	public void setNextTaskId(String nextTaskId) {
+		this.nextTaskId = nextTaskId;
+	}
+
+	public String getAddSignType() {
+		return addSignType;
+	}
+
+	public void setAddSignType(String addSignType) {
+		this.addSignType = addSignType;
+	}
+	
+	public boolean isAddSign() {
+		if(StringUtil.isEmpty(this.addSignType)){
+			return false;
+		}else{
+			return true;
 		}
 	}
 	

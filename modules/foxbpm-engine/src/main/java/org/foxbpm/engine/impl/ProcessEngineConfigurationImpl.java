@@ -94,7 +94,6 @@ import org.foxbpm.engine.impl.schedule.FoxbpmScheduler;
 import org.foxbpm.engine.impl.task.CommandParamImpl;
 import org.foxbpm.engine.impl.task.TaskCommandDefinitionImpl;
 import org.foxbpm.engine.impl.task.filter.AbstractCommandFilter;
-import org.foxbpm.engine.impl.transaction.DefaultTransactionContextFactory;
 import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.engine.impl.util.ServiceLoader;
 import org.foxbpm.engine.impl.util.StringUtil;
@@ -105,7 +104,6 @@ import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 import org.foxbpm.engine.task.CommandParam;
 import org.foxbpm.engine.task.CommandParamType;
 import org.foxbpm.engine.task.TaskCommandDefinition;
-import org.foxbpm.engine.transaction.TransactionContextFactory;
 import org.foxbpm.model.config.foxbpmconfig.BizDataObjectConfig;
 import org.foxbpm.model.config.foxbpmconfig.FoxBPMConfig;
 import org.foxbpm.model.config.foxbpmconfig.FoxBPMConfigPackage;
@@ -162,7 +160,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected List<Deployer> customPostDeployers;
 	protected List<Deployer> deployers;
 	protected DeploymentManager deploymentManager;
-	protected TransactionContextFactory transactionContextFactory;
 	
 	protected List<GroupDefinition> groupDefinitions = new ArrayList<GroupDefinition>();
 	protected UserDefinition userDefinition;
@@ -204,7 +201,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		//加载组织机构相关
 		initGroupDefinitions();
 		initUserDefinition();
-		initTransactionContextFactory();
 		initCalendar();
 		initQuartz();
 		// 加载主题样式文件
@@ -394,12 +390,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			log.debug("发现注册任务命令：id:{},name:{},class:{}", command.getId(),command.getName(),command.getClass());
 		}
 		return taskCommands;
-	}
-	
-	protected void initTransactionContextFactory() {
-		if (transactionContextFactory == null) {
-			transactionContextFactory = new DefaultTransactionContextFactory();
-		}
 	}
 	
 	protected void initUserDefinition() {
@@ -661,15 +651,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	public ResourcePathConfig getResourcePathConfig() {
 		return resourcePathConfig;
-	}
-	
-	public TransactionContextFactory getTransactionContextFactory() {
-		return transactionContextFactory;
-	}
-	
-	public ProcessEngineConfiguration setTransactionContextFactory(TransactionContextFactory transactionFactory) {
-		this.transactionContextFactory = transactionFactory;
-		return this;
 	}
 	
 	public List<GroupDefinition> getGroupDefinitions() {
