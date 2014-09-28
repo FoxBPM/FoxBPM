@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipOutputStream;
 
+import org.foxbpm.engine.ProcessEngine;
+import org.foxbpm.engine.ProcessEngineManagement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +51,12 @@ public class FlowResourceService {
 	}
 	public void generateFlowResouceZipFile(){
 		ZipOutputStream out = null;
+		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
+		
+		if(processEngine == null){
+			log.warn("引擎获取失败，不进行生成flowResouceZip.zip临时文件的操作，设计器将无法同步！！");
+			return;
+		}
 		log.info("开始生成flowResouceZip.zip临时文件...");
 		try{
 			String systemPath = this.getClass().getResource("/").getPath();

@@ -38,6 +38,7 @@ public class FoxBpmRestServletContextListener implements ServletContextListener{
 			flowResouceService.generateFlowResouceZipFile();
 		}catch(Exception ex){
 			log.error("引擎启动失败:"+ex.getMessage(),ex);
+			throw new RuntimeException(ex);
 		}
 	}
 	

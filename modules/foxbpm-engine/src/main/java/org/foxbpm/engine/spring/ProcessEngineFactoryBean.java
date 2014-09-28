@@ -22,6 +22,8 @@ import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.ProcessEngineImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.FactoryBean;
@@ -35,16 +37,23 @@ import org.springframework.context.ApplicationContextAware;
  */
 public class ProcessEngineFactoryBean implements FactoryBean<ProcessEngine>,
 		DisposableBean, ApplicationContextAware {
-
+	private static final Logger log = LoggerFactory.getLogger(ProcessEngineFactoryBean.class);
 	protected ProcessEngineConfigurationImpl processEngineConfiguration;
 	protected ApplicationContext applicationContext;
 	protected ProcessEngineImpl processEngine;
 
 	@Override
 	public ProcessEngine getObject() throws Exception {
-		processEngine = (ProcessEngineImpl) processEngineConfiguration.setProcessEngineName(ProcessEngineManagement.NAME_DEFAULT)
-				.buildProcessEngine();
-		ProcessEngineManagement.setInit();
+		try{
+			processEngine = (ProcessEngineImpl) processEngineConfiguration.setProcessEngineName(ProcessEngineManagement.NAME_DEFAULT)
+					.buildProcessEngine();
+		}catch(Exception ex){
+			log.error("流程引擎启动失败，失败原因："+ex.getMessage());
+			throw ex;
+		}
+		finally{
+			ProcessEngineManagement.setInit();
+		}
 		return processEngine;
 	}
 
