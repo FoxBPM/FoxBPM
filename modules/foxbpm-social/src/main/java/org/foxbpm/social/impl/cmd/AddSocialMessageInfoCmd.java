@@ -36,6 +36,7 @@ public class AddSocialMessageInfoCmd implements Command<SocialMessageInfo> {
 
 	@Override
 	public SocialMessageInfo execute(CommandContext commandContext) {
+		commandContext.getSqlSession().insert("addSocialMessageInfo", socialMessageInfo);
 		return null;
 	}
 

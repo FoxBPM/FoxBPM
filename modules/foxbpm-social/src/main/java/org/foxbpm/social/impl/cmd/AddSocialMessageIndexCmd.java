@@ -23,20 +23,22 @@ import org.foxbpm.social.impl.entity.SocialMessageIndex;
 
 /**
  * 添加一条消息的索引
+ * 
  * @author MAENLIANG
- *
+ * 
  */
-public class AddSocialMessageIndexCmd implements Command<Void>{
-private SocialMessageIndex socialMessageIndex;
+public class AddSocialMessageIndexCmd implements Command<Void> {
+	private SocialMessageIndex socialMessageIndex;
 
-public AddSocialMessageIndexCmd(SocialMessageIndex socialMessageIndex){
-	this.socialMessageIndex = socialMessageIndex;
-}
+	public AddSocialMessageIndexCmd(SocialMessageIndex socialMessageIndex) {
+		this.socialMessageIndex = socialMessageIndex;
+	}
 
-@Override
-public Void execute(CommandContext commandContext) {
-	// TODO Auto-generated method stub
-	return null;
-}
+	@Override
+	public Void execute(CommandContext commandContext) {
+		commandContext.getSqlSession().insert("addSocialMessageInfoIndex",
+				socialMessageIndex);
+		return null;
+	}
 
 }

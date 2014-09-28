@@ -57,8 +57,33 @@
 		
 		var flowCommandCompenent = new Foxbpm.FlowCommandCompenent(flowconfig);
 		flowCommandCompenent.init();
+		initChatMsg();
 	});
 	
+	function initChatMsg(){
+		var msgUrl = _serviceUrl+"social";
+		alert(msgUrl);
+		$.ajax({
+	        type: "get",//使用get方法访问后台
+	        dataType: "json",//返回json格式的数据
+	        url: msgUrl,//要访问的后台地址
+	        data:{taskId:"",msgType:"findAll",userId:"",loginTime:new Date},
+	        success: function(msg){//msg为返回的数据，在这里做数据绑定
+	        	$("#expenseId").val(msg.expenseId);
+	        	$("#ownerName").val(msg.ownerName);
+	        	$("#account").val(msg.account);
+	        	$("#deptName").val(msg.deptName);
+	        	$("#reason").val(msg.reason);
+	        	$("#invoiceType").val(msg.invoiceType);
+	        	$("#createTime").val(msg.createTime);
+	        	$("#owner").val(msg.owner);
+	        	$("#dept").val(msg.dept);
+	        },
+	        error:function(msg){
+	        	showMessage("错误","系统错误，请重新打开或联系管理员！","error");
+	        }
+		});
+	}
 	
 	function initFormData(){
 		var expenseId = requestUrlParam("dataId");

@@ -25,6 +25,7 @@ import org.foxbpm.calendar.service.calendar.CalendarTypeCollectionResource;
 import org.foxbpm.calendar.service.calendar.CalendarTypeResource;
 import org.foxbpm.rest.service.api.ClearCacheResource;
 import org.foxbpm.rest.service.api.LoginStateResource;
+import org.foxbpm.rest.service.api.SocialResource;
 import org.foxbpm.rest.service.api.config.FlowConfigResouce;
 import org.foxbpm.rest.service.api.engine.RollbackNodeCollectionResource;
 import org.foxbpm.rest.service.api.engine.RollbackTaskCollectionResource;
@@ -49,12 +50,12 @@ import org.foxbpm.rest.service.api.processinstance.ProcessInstanceResource;
 import org.foxbpm.rest.service.api.task.FlowGraphicImgResource;
 import org.foxbpm.rest.service.api.task.FlowGraphicPositionResource;
 import org.foxbpm.rest.service.api.task.TaskCollectionResource;
+import org.foxbpm.rest.service.api.task.TaskCollectionResources;
 import org.foxbpm.rest.service.api.task.TaskInforResource;
 import org.foxbpm.rest.service.api.task.TaskOperationCollectionResource;
 import org.foxbpm.rest.service.api.task.TaskRunTrackResource;
 import org.foxbpm.rest.service.designer.TestConnectionResource;
 import org.restlet.routing.Router;
-
 /**
  * foxbpm 的资源初始化服务
  * 
@@ -80,6 +81,7 @@ public class RestServicesInit {
 		router.attach("/model/process-definitions/{processDefinitionKey}/{version}/taskCommands", ProcessDefinitionResouce.class);
 		
 		router.attach("/runtime/tasks", TaskCollectionResource.class);
+		router.attach("/runtime/taskss", TaskCollectionResources.class);
 		router.attach("/runtime/tasks/{taskId}", TaskCollectionResource.class);
 		router.attach("/runtime/tasks/{taskId}/identityLinks", TaskCollectionResource.class);
 		router.attach("/runtime/tasks/{taskId}/taskCommands", TaskCollectionResource.class);
@@ -122,6 +124,7 @@ public class RestServicesInit {
 		router.attach("/identity/allGroupDefinitions", GroupDefinitionCollection.class);
 		
 		router.attach("/task/taskCommands", TaskCommandCollectionResource.class);
+
 		/***********************************详细页面*******************************************************/
 		//type all,endData,notEnd
 		router.attach("/task/taskInfor", TaskInforResource.class);
@@ -140,5 +143,8 @@ public class RestServicesInit {
 		router.attach("/workcal/calendartype", CalendarTypeCollectionResource.class);
 		router.attach("/workcal/calendarrule", CalendarRuleCollectionResource.class);
 		router.attach("/workcal/calendarpart", CalendarPartCollectionResource.class);
+		
+		router.attach("/social", SocialResource.class);
+		
 	}
 }

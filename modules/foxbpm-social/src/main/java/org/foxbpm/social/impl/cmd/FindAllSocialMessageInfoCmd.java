@@ -17,29 +17,36 @@
  */
 package org.foxbpm.social.impl.cmd;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.foxbpm.engine.impl.db.ListQueryParameterObject;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.social.impl.entity.SocialMessageInfo;
 
 /**
- * 根据任务ID，查找对应的消息信息
+ * 第一次打开表单获取所有的聊天信息
  * @author MAENLIANG
  *
  */
-public class FindSocialMessageInfosCmd implements Command<List<SocialMessageInfo>> {
+public class FindAllSocialMessageInfoCmd implements Command<List<SocialMessageInfo>> {
 
 	private String taskId;
 
-	public FindSocialMessageInfosCmd(String taskId) {
+	public FindAllSocialMessageInfoCmd(String taskId) {
 		this.taskId = taskId;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<SocialMessageInfo> execute(CommandContext commandContext) {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, Object> queryMap = new HashMap<String, Object>();
+		queryMap.put("taskId", taskId); 
+		ListQueryParameterObject queryParams = new ListQueryParameterObject();
+		queryParams.setParameter(queryMap);
+		return (List<SocialMessageInfo>) commandContext.getSqlSession().selectList("findAllSocialMessageInfo", queryParams);
 	}
 
 }

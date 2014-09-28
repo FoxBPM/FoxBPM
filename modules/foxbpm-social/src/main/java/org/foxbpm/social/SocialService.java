@@ -48,5 +48,14 @@ public interface SocialService {
 	 * @param taskId
 	 * @return
 	 */
-	public List<SocialMessageInfo> findSocialMessageInfos(String taskId);
+	public List<SocialMessageInfo> findAllSocialMessageInfo(String taskId);
+
+	/**
+	 * 获取及时聊天回复
+	 * 
+	 * @param taskId
+	 * @return
+	 */
+	public List<SocialMessageInfo> findAllSocialMessageInfo(String taskId,
+			String userId, String loginTime);
 }
