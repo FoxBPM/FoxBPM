@@ -43,10 +43,8 @@ public class FindAllSocialMessageInfoCmd implements Command<List<SocialMessageIn
 	@Override
 	public List<SocialMessageInfo> execute(CommandContext commandContext) {
 		Map<String, Object> queryMap = new HashMap<String, Object>();
-		queryMap.put("taskId", taskId); 
-		ListQueryParameterObject queryParams = new ListQueryParameterObject();
-		queryParams.setParameter(queryMap);
-		return (List<SocialMessageInfo>) commandContext.getSqlSession().selectList("findAllSocialMessageInfo", queryParams);
+		queryMap.put("taskId", taskId);  
+		return (List<SocialMessageInfo>) commandContext.getSqlSession().selectList("findAllSocialMessageInfo", queryMap);
 	}
 
 }

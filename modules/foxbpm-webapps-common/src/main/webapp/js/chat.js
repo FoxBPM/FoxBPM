@@ -5,6 +5,20 @@ function message() {
 	},
 	8e3)
 }
+function sendMsg(userId,content,time){
+	var msgUrl = _serviceUrl+"social";
+	$.ajax({
+        type: "post",
+        url: msgUrl,//要访问的后台地址
+        data:{taskId:"taskId",msgType:"findAll",userId:userId,time:time,type:3,content:content,commentedCount:"",commentCount:"",transferredCount:"",transferCount:"",processInstanceId:"processInstanceId",openFlag:0},
+        success: function(msg){//msg为返回的数据，在这里做数据绑定 
+        },
+        error:function(msg){
+        	showMessage("错误","系统错误，请重新打开或联系管理员！","error");
+        }
+	});
+}
+
 $(document).ready(function() {
 	function e() {
 		function h() { - 1 != g.indexOf("*#emo_") && (g = g.replace("*#", "<img src='img/").replace("#*", ".gif'/>"), h())
@@ -13,7 +27,7 @@ $(document).ready(function() {
 		f = "";
 		f += e.getFullYear() + "-",
 		f += e.getMonth() + 1 + "-",
-		f += e.getDate() + "  ",
+		f += e.getDate() + " ",
 		f += e.getHours() + ":",
 		f += e.getMinutes() + ":",
 		f += e.getSeconds();
@@ -21,8 +35,11 @@ $(document).ready(function() {
 		 
 		h();
 		var i = "<div class='message clearfix' style='border-bottom:0px'><div class='user-logo' style='float:right'><img src='" + b + "'/>" + "</div>" +"<div class='msgDiv' style='margin-top:0px;margin-right:65;position:relative;width:110px;'>&nbsp;"+g+" <div style='position:absolute;top:5px;right:-16px;border:solid 8px;border-color:rgba(15, 15, 15, 0) rgba(200, 37, 207, 0) rgba(248, 195, 1, 0) #66FFFF;'></div></div>" + "<div class='wrap-ri'>" + "<div clsss='clearfix' style='bottom: 5px;right:150px;width:200px' style='float:right'><span>" + f + "</span></div>" + "</div>" + "<div style='clear:both;'></div>" + "</div>";
-		  i = i+"<div class='message clearfix' style='border-bottom:0px'><div class='user-logo' style='float:left'><img src='" + b + "'/>" + "</div>" +"<div class='msgDiv' style='margin-top:0px;margin-left:65;width:110px;background:#33CC99'>&nbsp;"+g+" <div style='position:absolute;top:5px;left:-20px;border:solid 10px;border-color: rgba(15, 15, 15, 0) #33CC99 rgba(200, 37, 207, 0) rgba(248, 195, 1, 0);'></div>"+ "<div class='wrap-ri'>" + "<div clsss='clearfix' style='bottom: 0px;width: 150px;left: 50px;top: 40px;' style='float:right'><span>" + f + "</span></div>" + "</div>" + "<div style='clear:both;'></div>" + "</div>";
-		null != g && "" != g ? ($(".mes" + a).append(i), $(".chat01_content").scrollTop($(".mes" + a).height()), $("#textarea").val(""), message()) : alert("asdf")
+		  //i = i+"<div class='message clearfix' style='border-bottom:0px'><div class='user-logo' style='float:left'><img src='" + b + "'/>" + "</div>" +"<div class='msgDiv' style='margin-top:0px;margin-left:65;width:110px;background:#33CC99'>&nbsp;"+g+" <div style='position:absolute;top:5px;left:-20px;border:solid 10px;border-color: rgba(15, 15, 15, 0) #33CC99 rgba(200, 37, 207, 0) rgba(248, 195, 1, 0);'></div>"+ "<div class='wrap-ri'>" + "<div clsss='clearfix' style='bottom: 0px;width: 150px;left: 50px;top: 40px;' style='float:right'><span>" + f + "</span></div>" + "</div>" + "<div style='clear:both;'></div>" + "</div>";
+		
+		  null != g && "" != g ? ($(".mes" + a).append(i), $(".chat01_content").scrollTop($(".mes" + a).height()), $("#textarea").val(""), message()) : alert("asdf")
+		
+		  sendMsg("admin",g,f); 
 	}
 	var a = 3,
 	b = "img/head/2024.jpg",

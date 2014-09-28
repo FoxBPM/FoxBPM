@@ -50,7 +50,6 @@ import org.foxbpm.rest.service.api.processinstance.ProcessInstanceResource;
 import org.foxbpm.rest.service.api.task.FlowGraphicImgResource;
 import org.foxbpm.rest.service.api.task.FlowGraphicPositionResource;
 import org.foxbpm.rest.service.api.task.TaskCollectionResource;
-import org.foxbpm.rest.service.api.task.TaskCollectionResources;
 import org.foxbpm.rest.service.api.task.TaskInforResource;
 import org.foxbpm.rest.service.api.task.TaskOperationCollectionResource;
 import org.foxbpm.rest.service.api.task.TaskRunTrackResource;
@@ -81,7 +80,6 @@ public class RestServicesInit {
 		router.attach("/model/process-definitions/{processDefinitionKey}/{version}/taskCommands", ProcessDefinitionResouce.class);
 		
 		router.attach("/runtime/tasks", TaskCollectionResource.class);
-		router.attach("/runtime/taskss", TaskCollectionResources.class);
 		router.attach("/runtime/tasks/{taskId}", TaskCollectionResource.class);
 		router.attach("/runtime/tasks/{taskId}/identityLinks", TaskCollectionResource.class);
 		router.attach("/runtime/tasks/{taskId}/taskCommands", TaskCollectionResource.class);

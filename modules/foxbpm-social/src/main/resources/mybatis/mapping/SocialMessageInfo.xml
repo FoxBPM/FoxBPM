@@ -12,7 +12,7 @@
 		<result column="COMMENT_COUNT" property="commentCount" jdbcType="INTEGER" />
 		<result column="TRANSFERRED_COUNT" property="transferredCount" jdbcType="INTEGER" />
 		<result column="TRANSFER_COUNT" property="transferCount" jdbcType="INTEGER" />
-		<result column="TIME_T" property="time" jdbcType="TIMESTAMP" />
+		<result column="TIME_T" property="time" jdbcType="VARCHAR" />
 		<result column="TASK_ID" property="taskId" jdbcType="VARCHAR" />
 		<result column="PROCESS_INSTANCEID" property="processInstanceId" jdbcType="VARCHAR" />
 		<result column="OPEN_FLAG" property="openFlag" jdbcType="INTEGER" />
@@ -20,7 +20,7 @@
 
 	<select id="findAllSocialMessageInfo" parameterType="java.lang.String"
 		resultMap="socialMessageInfoResultMap">
-		SELECT * FROM FOXBPM_SOCIAL_MSG_INFO WHERE TYPE = 3 AND TASK_ID = #{taskId,jdbcType=VARCHAR} ORDER BY TIME_T
+		SELECT * FROM FOXBPM_SOCIAL_MSG_INFO WHERE TYPE = 3 AND TASK_ID = #{taskId,jdbcType=VARCHAR} ORDER BY TIME_T DESC
 	</select>
 	<select id="findReplaySocialMessageInfo" parameterType="java.lang.String"
 		resultMap="socialMessageInfoResultMap">
@@ -32,7 +32,7 @@
 		VALUES (#{userId,jdbcType=VARCHAR},
 		#{msgId,jdbcType=VARCHAR},
 		#{content,jdbcType=VARCHAR},3,0,0,0,0,
-		#{time,jdbcType=TIMESTAMP},
+		#{time,jdbcType=VARCHAR},
 		#{taskId,jdbcType=VARCHAR},
 		#{processInstanceId,jdbcType=VARCHAR},
 		#{openFlag,jdbcType=INTEGER}

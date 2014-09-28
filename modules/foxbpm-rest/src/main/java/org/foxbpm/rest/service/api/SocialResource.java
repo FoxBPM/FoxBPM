@@ -20,12 +20,14 @@ package org.foxbpm.rest.service.api;
 import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.social.SocialService;
 import org.foxbpm.social.impl.entity.SocialMessageInfo;
+import org.restlet.data.Form;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
@@ -39,13 +41,14 @@ import org.restlet.resource.Post;
 public class SocialResource extends AbstractRestResource {
 	@Get
 	public Object findSocialMessageInfo() {
-		String msgType = getAttribute("msgType");
+		Form queryForm = getQuery();
+		String msgType = getQueryParameter("msgType", queryForm);
 		SocialService socialService = ProcessEngineManagement
 				.getDefaultProcessEngine().getService(SocialService.class);
 		List<SocialMessageInfo> allSocialMessageInfo = null;
 		if (StringUtil.equals(msgType, "findAll")) {
 			// 获取参数
-			String taskId = getAttribute("taskId");
+			String taskId =  getQueryParameter("taskId", queryForm);
 			if (StringUtil.isNotEmpty(taskId)) {
 				allSocialMessageInfo = socialService
 						.findAllSocialMessageInfo(taskId);
@@ -54,9 +57,9 @@ public class SocialResource extends AbstractRestResource {
 				}
 			}
 		} else if (StringUtil.equals(msgType, "findReply")) {
-			String taskId = getAttribute("taskId");
-			String userId = getAttribute("userId");
-			String loginTime = getAttribute("loginTime");
+			String taskId = getQueryParameter("taskId", queryForm);
+			String userId = getQueryParameter("userId", queryForm);
+			String loginTime =  getQueryParameter("loginTime", queryForm);
 			if (StringUtil.isNotEmpty(taskId)) {
 				// 获取服务
 				allSocialMessageInfo = socialService.findAllSocialMessageInfo(
@@ -75,7 +78,7 @@ public class SocialResource extends AbstractRestResource {
 	public void addSocialMessageInfo(Representation entity) {
 		Map<String, String> paramsMap = getRequestParams(entity);
 		String userId = URLDecoder.decode(paramsMap.get("userId"));
-		String msgId = URLDecoder.decode(paramsMap.get("msgId"));
+		String msgId = UUID.randomUUID().toString();
 		String content = URLDecoder.decode(paramsMap.get("content"));
 		int type = Integer.valueOf(URLDecoder.decode(paramsMap.get("type")));
 		String commentedCount = URLDecoder.decode(paramsMap

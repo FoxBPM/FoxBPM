@@ -58,26 +58,24 @@
 		var flowCommandCompenent = new Foxbpm.FlowCommandCompenent(flowconfig);
 		flowCommandCompenent.init();
 		initChatMsg();
+		setInterval(function() { 
+			//$(".mes" + 3).append("<div class='message clearfix' style='border-bottom:0px'><div class='user-logo' style='float:left'><img src='" + "img/head/2024.jpg" + "'/>" + "</div>" +"<div class='msgDiv' style='margin-top:0px;margin-left:65;width:110px;background:#33CC99'>&nbsp;"+"oiuoo"+" <div style='position:absolute;top:5px;left:-20px;border:solid 10px;border-color: rgba(15, 15, 15, 0) #33CC99 rgba(200, 37, 207, 0) rgba(248, 195, 1, 0);'></div>"+ "<div class='wrap-ri'>" + "<div clsss='clearfix' style='bottom: 0px;width: 150px;left: 50px;top: 40px;' style='float:right'><span>" + "2014-09-28 21:40:05" + "</span></div>" + "</div>" + "<div style='clear:both;'></div>" + "</div>");
+			//$(".chat01_content").scrollTop($(".mes" + 3).height());
+		}, 2000);
 	});
 	
 	function initChatMsg(){
 		var msgUrl = _serviceUrl+"social";
-		alert(msgUrl);
 		$.ajax({
 	        type: "get",//使用get方法访问后台
 	        dataType: "json",//返回json格式的数据
 	        url: msgUrl,//要访问的后台地址
-	        data:{taskId:"",msgType:"findAll",userId:"",loginTime:new Date},
-	        success: function(msg){//msg为返回的数据，在这里做数据绑定
-	        	$("#expenseId").val(msg.expenseId);
-	        	$("#ownerName").val(msg.ownerName);
-	        	$("#account").val(msg.account);
-	        	$("#deptName").val(msg.deptName);
-	        	$("#reason").val(msg.reason);
-	        	$("#invoiceType").val(msg.invoiceType);
-	        	$("#createTime").val(msg.createTime);
-	        	$("#owner").val(msg.owner);
-	        	$("#dept").val(msg.dept);
+	        data:{taskId:"taskId",msgType:"findAll",userId:"",loginTime:new Date},
+	        success: function(msgInfos){//msg为返回的数据，在这里做数据绑定  
+	        	for(var i=0;i<msgInfos.length;i++){
+	        		$(".mes" + 3).append("<div class='message clearfix' style='border-bottom:0px'><div class='user-logo' style='float:left'><img src='" + "img/head/2024.jpg" + "'/>" + "</div>" +"<div class='msgDiv' style='margin-top:0px;margin-left:65;width:110px;background:#33CC99'>&nbsp;"+msgInfos[i].content+" <div style='position:absolute;top:5px;left:-20px;border:solid 10px;border-color: rgba(15, 15, 15, 0) #33CC99 rgba(200, 37, 207, 0) rgba(248, 195, 1, 0);'></div>"+ "<div class='wrap-ri'>" + "<div clsss='clearfix' style='bottom: 0px;width: 150px;left: 50px;top: 40px;' style='float:right'><span>" + msgInfos[i].time + "</span></div>" + "</div>" + "<div style='clear:both;'></div>" + "</div>");
+	        		$(".chat01_content").scrollTop($(".mes" + 3).height());
+	        	}
 	        },
 	        error:function(msg){
 	        	showMessage("错误","系统错误，请重新打开或联系管理员！","error");
