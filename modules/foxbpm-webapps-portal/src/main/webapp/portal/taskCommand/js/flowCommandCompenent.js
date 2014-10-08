@@ -11,6 +11,9 @@ Foxbpm.FlowCommandCompenent.prototype={
 	init:function(){
 		var self = this;
 		var toolbarsDiv = $("#toolbar");
+		if(!_taskId || null == _taskId || '' == _taskId){
+			_taskId = 'null';
+		}
 		 $.ajax({
 	         type: "get",//使用get方法访问后台
 	         dataType: "json",//返回json格式的数据
