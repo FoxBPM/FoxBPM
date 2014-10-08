@@ -22,13 +22,13 @@
 					<div class="btn-group btn-group-justified" data-toggle="buttons">
 						<label class="btn btn-default">
 							<input type="radio" name="activity" id="ajax/notify/mail.html">
-							消息 (14) </label>
+							消息 (2) </label>
 						<label class="btn btn-default">
 							<input type="radio" name="activity" id="ajax/notify/notifications.html">
-							通知 (3) </label>
+							通知 (2) </label>
 						<label class="btn btn-default">
 							<input type="radio" name="activity" id="ajax/notify/tasks.html">
-							任务 (4) </label>
+							任务 (2) </label>
 					</div>
 
 					<!-- notification content -->
@@ -236,20 +236,20 @@
 					<li class="">
 						<a href="portal/jsp/dashboard.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-tachometer"></i> <span class="menu-item-parent">个 人 面 板</span></a>
 					</li>
-					<li>
+					<!-- <li>
 						<a href="portal/jsp/users.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-arrow-circle-right"></i> <span class="menu-item-parent">用户列表</span></a>
-					</li>
+					</li> -->
 					<li>
 						<a href="portal/jsp/launchProcess.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-arrow-circle-right"></i> <span class="menu-item-parent">发 起 流 程</span></a>
 					</li>
 					<li>
-						<a href="portal/jsp/todoTasks.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent">待 办 任 务</span><span class="badge pull-right inbox-badge">14</span></a>
+						<a href="portal/jsp/todoTasks.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent">待 办 任 务</span></a>
 					</li>
 					<li>
 						<a href="portal/jsp/calendarpanel.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-calendar"></i> <span class="menu-item-parent">日 历 面 板</span></a>
 					</li>
 					<li>
-						<a href="ajax/inbox.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-bullhorn"></i> <span class="menu-item-parent">通 知 中 心</span><span class="badge pull-right inbox-badge">5</span></a>
+						<a href="ajax/inbox.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-bullhorn"></i> <span class="menu-item-parent">通 知 中 心</span></a>
 					</li>
 					<li>
 						<a href="portal/jsp/doneTasks.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-check-square-o"></i> <span class="menu-item-parent">已 办 任 务</span></a>
@@ -258,19 +258,19 @@
 						<a href="portal/jsp/runningTrackTasks.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-check-square"></i> <span class="menu-item-parent">流 程 追 踪</span></a>
 					</li>
 					<li>
-						<a href="portal/jsp/profile.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-comments-o"></i> <span class="menu-item-parent">社 交 中 心</span><span class="badge pull-right inbox-badge">8</span></a>
+						<a href="portal/jsp/profile.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-comments-o"></i> <span class="menu-item-parent">社 交 中 心</span></a>
 					</li>
 					<li>
 						<a href="#"><i class="fa fa-lg fa-fw fa-calendar"></i> <span class="menu-item-parent">工 作 日 历</span></a>
 						<ul>
 							<li>
-								<a href="portal/jsp/calendartype.jsp"><i class="fa fa-lg fa-fw fa-calendartype"></i> <span class="menu-item-parent">日 历 类 型</span><span class="badge pull-right inbox-badge"></span></a>
+								<a href="portal/jsp/calendartype.jsp"><i class="fa fa-lg fa-fw fa-calendartype"></i> <span class="menu-item-parent">日 历 类 型</span></a>
 							</li>
 							<li>
-								<a href="portal/jsp/calendarrule.jsp"><i class="fa fa-lg fa-fw fa-calendarrule"></i> <span class="menu-item-parent">日 历 规 则</span><span class="badge pull-right inbox-badge"></span></a>
+								<a href="portal/jsp/calendarrule.jsp"><i class="fa fa-lg fa-fw fa-calendarrule"></i> <span class="menu-item-parent">日 历 规 则</span></a>
 							</li>
 							<li>
-								<a href="portal/jsp/calendarpart.jsp"><i class="fa fa-lg fa-fw fa-calendarpart"></i> <span class="menu-item-parent">日 历 时 间</span><span class="badge pull-right inbox-badge"></span></a>
+								<a href="portal/jsp/calendarpart.jsp"><i class="fa fa-lg fa-fw fa-calendarpart"></i> <span class="menu-item-parent">日 历 时 间</span></a>
 							</li>
 						</ul>
 					</li>
@@ -279,7 +279,7 @@
 						<a href="#"><i class="fa fa-lg fa-fw fa-calendar"></i> <span class="menu-item-parent">报 销 系 统</span></a>
 						<ul>
 							<li>
-								<a href="portal/expense/expenseList.jsp"><i class="fa fa-lg fa-fw fa-calendartype"></i> <span class="menu-item-parent">报销单列表</span><span class="badge pull-right inbox-badge"></span></a>
+								<a href="portal/expense/expenseList.jsp"><i class="fa fa-lg fa-fw fa-calendartype"></i> <span class="menu-item-parent">报销单列表</span></a>
 							</li>
 						</ul>
 					</li>

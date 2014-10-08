@@ -231,8 +231,8 @@
 							</div>
 
 						</div>
-
-						<div class="row">
+						<!-- 
+						<div class="row"> 
 
 							<div class="col-sm-12">
 
@@ -384,19 +384,20 @@
 											</div>
 
 										</div>
-										<!-- end tab -->
+										end tab
 									</div>
 
 								</div>
 
 							</div>
 
-						</div>
+						</div> -->
 						<!-- end row -->
 
 					</div>
 
 				</div>
+				<!-- 
 				<div class="col-sm-12 col-md-12 col-lg-6">
 
 					<form method="post" class="well padding-bottom-10"
@@ -583,7 +584,7 @@
 					</div>
 
 
-				</div>
+				</div> -->
 			</div>
 
 		</div>
