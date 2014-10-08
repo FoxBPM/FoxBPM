@@ -50,7 +50,7 @@ public class DemoServiceImpl implements IDemoService {
 	@Autowired
 	private IWorkFlowService workFlowService;
 
-	@Override
+	 
 	public Map<String, Object> startTask(Map<String, Object> params) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("viewName", WebViewName.START_TASK_VIEWNAME);
@@ -70,7 +70,7 @@ public class DemoServiceImpl implements IDemoService {
 		return resultMap;
 	}
 
-	@Override
+	 
 	public ProcessInstance completeTask(Map<String, Object> params) {
 		String infor = StringUtil.getString(params.get("infor"));
 		String taskStauts = StringUtil.getString(params.get("taskStauts"));

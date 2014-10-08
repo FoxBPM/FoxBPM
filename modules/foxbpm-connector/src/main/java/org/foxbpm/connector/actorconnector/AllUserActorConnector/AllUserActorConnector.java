@@ -26,7 +26,7 @@ public class AllUserActorConnector extends ActorConnectorHandler {
 
 	private static final long serialVersionUID = 1L;
 
-	@Override
+	 
 	public void assign(DelegateTask task) throws Exception {
 		task.addCandidateUser(Constant.FOXBPM_ALL_USER);
 	}

@@ -32,7 +32,7 @@ public class GetCalendarRulesByTypeIdCmd implements Command<List<CalendarRuleEnt
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	 
 	public List<CalendarRuleEntity> execute(CommandContext commandContext) {
 		return (List<CalendarRuleEntity>) Context.getCommandContext().getSqlSession().selectList("selectCalendarRulesByTypeId", id);
 	}

@@ -93,7 +93,7 @@ public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl implemen
 	public List<KernelSequenceFlow> getOutgoingSequenceFlows() {
 		// 调用排序方法
 		Collections.sort(outgoingSequenceFlows, new Comparator<KernelSequenceFlow>() {
-			@Override
+			 
 			public int compare(KernelSequenceFlow sequenceFlowBehavior1,
 					KernelSequenceFlow sequenceFlowBehavior2) {
 				int orderId1 = sequenceFlowBehavior1.getOrderId();

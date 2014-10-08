@@ -29,7 +29,7 @@ public class GetCalendarRuleByIdCmd implements Command<CalendarRuleEntity> {
 		this.id = id;
 	}
 
-	@Override
+	 
 	public CalendarRuleEntity execute(CommandContext commandContext) {
 		return (CalendarRuleEntity) Context.getCommandContext().getSqlSession().selectOne("selectCalendarRuleById", id);
 	}

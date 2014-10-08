@@ -33,7 +33,7 @@ public class LastStepActorConnector extends ActorConnectorHandler {
 
 	private static final long serialVersionUID = 1L;
 
-	@Override
+	 
 	public void assign(DelegateTask task) throws Exception {
 		String userId = Authentication.getAuthenticatedUserId();
 		if (StringUtil.isEmpty(userId)) {

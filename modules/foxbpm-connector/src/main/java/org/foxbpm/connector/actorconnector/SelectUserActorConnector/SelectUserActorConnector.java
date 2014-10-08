@@ -41,7 +41,7 @@ public class SelectUserActorConnector extends ActorConnectorHandler {
 		this.userId = userId;
 	}
 
-	@Override
+	 
 	public void assign(DelegateTask task) throws Exception {
 
 		if (StringUtil.isEmpty(StringUtil.trim(userId))) {

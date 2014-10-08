@@ -36,27 +36,27 @@ import org.foxbpm.social.impl.entity.SocialUser;
  */
 public class SocialServiceImpl extends ServiceImpl implements SocialService {
 
-	@Override
+	 
 	public Class<?> getInterfaceClass() {
 		return SocialService.class;
 	}
 
-	@Override
+	 
 	public void addSocialUserInfo(SocialUser socialUser) {
 		commandExecutor.execute(new AddSocialUserCmd(socialUser));
 	}
 
-	@Override
+	 
 	public void addSocialMessageInfo(SocialMessageInfo socialMessageInfo) {
 		commandExecutor.execute(new AddSocialMessageInfoCmd(socialMessageInfo));
 	}
 
-	@Override
+	 
 	public List<SocialMessageInfo> findAllSocialMessageInfo(String taskId) {
 		return commandExecutor.execute(new FindAllSocialMessageInfoCmd(taskId));
 	}
 
-	@Override
+	 
 	public List<SocialMessageInfo> findAllSocialMessageInfo(String taskId,
 			String userId, Date loginTime) {
 		List<SocialMessageInfo> listSocialMessageInfo = commandExecutor.execute(new FindReplySocialMessageInfoCmd(

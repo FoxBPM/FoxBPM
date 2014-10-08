@@ -227,7 +227,7 @@ public class FlowManageController extends AbstWebController {
 		}
 	}
 
-	@Override
+	 
 	protected String getPrefix() {
 		return "manageCenter/";
 	}

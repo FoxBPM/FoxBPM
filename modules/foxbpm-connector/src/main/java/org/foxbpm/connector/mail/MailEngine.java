@@ -99,7 +99,7 @@ public class MailEngine {
 		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
 		transactionTemplate.setPropagationBehavior(TransactionTemplate.PROPAGATION_REQUIRES_NEW);
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-			@Override
+			 
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
 				// 获取邮件配置
 				SysMailConfig sysMailConfig = Context.getProcessEngineConfiguration().getSysMailConfig();

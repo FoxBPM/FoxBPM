@@ -59,7 +59,7 @@ public class CommonNodeBehavior implements KernelFlowNodeBehavior {
 		LOG.debug("清理节点: "+executionContext.getFlowNode().getId());
 	}
 
-	@Override
+	 
 	public void setKernelFlowNode(KernelFlowNodeImpl KernelFlowNode) {
 		// TODO Auto-generated method stub
 		

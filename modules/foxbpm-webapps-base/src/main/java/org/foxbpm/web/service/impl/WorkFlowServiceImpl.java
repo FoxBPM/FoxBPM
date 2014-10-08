@@ -59,7 +59,7 @@ import org.springframework.stereotype.Service;
 @Service("workFlowServiceImpl")
 public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlowService {
 	
-	@Override
+	 
 	public List<Map<String, Object>> queryStartProcess(Map<String, Object> params)
 	    throws FoxbpmWebException {
 		// 创建流程定义查询
@@ -79,7 +79,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		return runtimeService.createRunningTrackQuery().processInstanceID(processInstanceID).list();
 	}
 	
-	@Override
+	 
 	public List<Map<String, Object>> queryProcessInst(Pagination<String> pageInfor,
 	    Map<String, Object> params) {
 		// 返回结果
@@ -173,7 +173,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		return resultData;
 	}
 	
-	@Override
+	 
 	public Map<String, Object> queryTaskDetailInfor(Map<String, Object> params) {
 		// 返回结果
 		Map<String, Object> resultData = new HashMap<String, Object>();
@@ -232,7 +232,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		return resultData;
 	}
 	
-	@Override
+	 
 	public List<Map<String, Object>> queryToDoTask(Pagination<String> pageInfor,
 	    Map<String, Object> params) {
 		
@@ -306,7 +306,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		return resultData;
 	}
 	
-	@Override
+	 
 	public Map<String, Object> startTask(Map<String, Object> params) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		List<Map<String, Object>> tmpres = new ArrayList<Map<String, Object>>();
@@ -330,7 +330,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		return resultMap;
 	}
 	
-	@Override
+	 
 	public ProcessInstance completeTask(String flowInfo) {
 		
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -396,7 +396,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		return processInstance;
 	}
 	
-	@Override
+	 
 	public String getFlowSvgGraph(Map<String, Object> params) {
 		String processDefinitionId = StringUtil.getString(params.get("processDefinitionId"));
 		// 流程定义Id
@@ -416,7 +416,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		return modelService.getProcessDefinitionSVG(processDefinitionId);
 	}
 	
-	@Override
+	 
 	public InputStream getFlowImagGraph(Map<String, Object> params) {
 		String processDefinitionId = StringUtil.getString(params.get("processDefinitionId"));
 		// 流程定义Id
@@ -436,7 +436,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		return modelService.GetFlowGraphicsImgStreamByDefId(processDefinitionId);
 	}
 	
-	@Override
+	 
 	public Map<String, Object> queryUserDelegationInfo(Map<String, Object> params) {
 		String agentUser = Authentication.getAuthenticatedUserId();
 		Map<String, Object> resultData = new HashMap<String, Object>();
@@ -452,7 +452,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		return resultData;
 	}
 	
-	@Override
+	 
 	public List<UserEntity> queryUsers(Pagination<String> pageInfor, Map<String, Object> params) {
 		
 		String id = StringUtil.getString(params.get("id"));
@@ -472,7 +472,7 @@ public class WorkFlowServiceImpl extends AbstWorkFlowService implements IWorkFlo
 		return identityService.getUsers(idLike, nameLike, page);
 	}
 	
-	@Override
+	 
 	public Long queryUsersCount(Map<String, Object> params) {
 		String idLike = StringUtil.getString(params.get("idLike"));
 		String nameLike = StringUtil.getString(params.get("nameLike"));

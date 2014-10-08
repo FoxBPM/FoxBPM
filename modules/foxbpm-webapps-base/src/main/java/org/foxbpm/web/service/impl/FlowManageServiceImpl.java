@@ -52,7 +52,7 @@ import org.springframework.stereotype.Service;
 @SuppressWarnings("unchecked")
 public class FlowManageServiceImpl extends AbstWorkFlowService implements IFlowManageService {
 
-	@Override
+	 
 	public void deployByZip(Map<String, Object> params) {
 		ZipInputStream zipInputStream = null;
 		try {
@@ -81,7 +81,7 @@ public class FlowManageServiceImpl extends AbstWorkFlowService implements IFlowM
 		}
 	}
 
-	@Override
+	 
 	public void deleteDeploy(Map<String, Object> params) {
 		String deploymentId = StringUtil.getString(params.get("deploymentId"));
 		try {
@@ -97,7 +97,7 @@ public class FlowManageServiceImpl extends AbstWorkFlowService implements IFlowM
 		}
 	}
 
-	@Override
+	 
 	public List<Map<String, Object>> queryProcessDef(Pagination<String> pageInfor, Map<String, Object> params) throws FoxbpmWebException {
 		// 返回结果
 		List<Map<String, Object>> resultData = new ArrayList<Map<String, Object>>();
@@ -146,7 +146,7 @@ public class FlowManageServiceImpl extends AbstWorkFlowService implements IFlowM
 	 * @return 返回查询结果
 	 * @throws FoxbpmWebException
 	 */
-	@Override
+	 
 	public List<Map<String, Object>> queryProcessInst(Pagination<String> pageInfor, Map<String, Object> params) throws FoxbpmWebException {
 		// 返回结果
 		List<Map<String, Object>> resultData = new ArrayList<Map<String, Object>>();
@@ -237,7 +237,7 @@ public class FlowManageServiceImpl extends AbstWorkFlowService implements IFlowM
 		return resultData;
 	}
 
-	@Override
+	 
 	public void saveUserDelegationInfo(Map<String, Object> params) {
 		String addInfo = StringUtil.getString(params.get("add"));
 		String updateInfo = StringUtil.getString(params.get("update"));
@@ -315,7 +315,7 @@ public class FlowManageServiceImpl extends AbstWorkFlowService implements IFlowM
 
 	}
 
-	@Override
+	 
 	public void deleUserDelegationInfo(Map<String, Object> params) {
 		String agentInfoJson = StringUtil.getString(params.get("deleteIndex"));
 		String agentId = StringUtil.getString(params.get("agentId"));

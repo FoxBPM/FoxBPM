@@ -30,7 +30,7 @@ public class StartConnector implements KernelListener {
 	
 	private static final long serialVersionUID = 8867467806067616193L;
 
-	@Override
+	 
 	public void notify(ListenerExecutionContext executionContext)
 			throws Exception {
 		System.out.println("执行 开始事件 连接器");

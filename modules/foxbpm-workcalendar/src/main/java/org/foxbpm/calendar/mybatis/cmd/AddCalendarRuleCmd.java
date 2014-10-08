@@ -28,7 +28,7 @@ public class AddCalendarRuleCmd implements Command<Void> {
 		this.calendarRuleEntity = calendarRuleEntity;
 	}
 	
-	@Override
+	 
 	public Void execute(CommandContext commandContext) {
 		commandContext.getSqlSession().insert("insertCalendarRule", calendarRuleEntity);
 		return null;

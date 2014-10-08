@@ -29,7 +29,7 @@ public class GetCalendarTypeByIdCmd implements Command<CalendarTypeEntity> {
 		this.id = id;
 	}
 
-	@Override
+	 
 	public CalendarTypeEntity execute(CommandContext commandContext) {
 		return (CalendarTypeEntity) Context.getCommandContext().getSqlSession().selectOne("selectCalendarTypeById", id);
 	}

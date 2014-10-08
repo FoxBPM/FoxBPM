@@ -41,14 +41,14 @@ public class FoxbpmUserInterceptor implements AfterReturningAdvice, MethodBefore
 	
 	@Autowired
     private HttpSession session;
-	@Override
+	 
 	public void afterReturning(Object returnObj, Method method, Object[] params, Object implObj) throws Throwable {
 		if(implObj instanceof AbstWorkFlowService){
 			Authentication.setAuthenticatedUserId(null);
 		}
 	}
 
-	@Override
+	 
 	public void before(Method method, Object[] params, Object implObj) throws Throwable {
 		if(implObj instanceof AbstWorkFlowService){
 			String userId = StringUtil.getString(session.getAttribute(WebContextAttributeName.USERID));

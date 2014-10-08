@@ -28,7 +28,7 @@ import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 
 public class WorkCalendarImpl implements WorkCalendar {
 
-	@Override
+	 
 	public Date getDueTime(Date begin, double expectedHours, Map<String, Object> params) {
 		WorkCalendarService workCalendarService = null;
 		ProcessEngineConfigurationImpl processEngineConfigurationImpl = Context.getProcessEngineConfiguration();

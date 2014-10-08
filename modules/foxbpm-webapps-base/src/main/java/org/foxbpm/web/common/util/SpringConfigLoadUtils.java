@@ -30,7 +30,7 @@ import org.springframework.context.ApplicationContextAware;
 public class SpringConfigLoadUtils implements ApplicationContextAware {
 
 	private static ApplicationContext applicationContext; 
-	@Override
+	 
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		SpringConfigLoadUtils.applicationContext = applicationContext;
 	}

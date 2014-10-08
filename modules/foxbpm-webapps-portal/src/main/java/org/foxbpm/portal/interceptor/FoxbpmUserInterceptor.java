@@ -37,12 +37,12 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  */
 public class FoxbpmUserInterceptor implements AfterReturningAdvice, MethodBeforeAdvice{
 	
-	@Override
+	 
 	public void afterReturning(Object returnObj, Method method, Object[] params, Object implObj) throws Throwable {
 		Authentication.setAuthenticatedUserId(null);
 	}
 
-	@Override
+	 
 	public void before(Method method, Object[] params, Object implObj) throws Throwable {
 		HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession(); 
 		if(session == null || session.getAttribute("userId") == null){

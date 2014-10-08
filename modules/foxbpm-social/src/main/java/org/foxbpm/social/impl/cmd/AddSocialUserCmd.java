@@ -35,7 +35,7 @@ public class AddSocialUserCmd implements Command<Void>{
 		this.socialUser=socialUser;
 	}
 
-	@Override
+	 
 	public Void execute(CommandContext commandContext) {
 		SocialManager socialManager=new SocialManager();
 		socialManager.addSocialUser(socialUser);

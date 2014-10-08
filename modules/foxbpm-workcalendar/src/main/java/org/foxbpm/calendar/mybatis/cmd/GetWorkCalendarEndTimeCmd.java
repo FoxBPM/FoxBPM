@@ -66,7 +66,7 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 		this.ruleId = ruleId;
 	}
 	
-	@Override
+	 
 	public Date execute(CommandContext commandContext) {
 		//拿到参数中的时间
 		Calendar calendar = Calendar.getInstance();
@@ -500,7 +500,7 @@ public class GetWorkCalendarEndTimeCmd implements Command<Date> {
 			//给时间段排序
 			Collections.sort(calendarPartEntities, new Comparator<CalendarPartEntity>() {
 
-				@Override
+				 
 				public int compare(CalendarPartEntity o1, CalendarPartEntity o2) {
 					SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm");
 					long o1s = 0;

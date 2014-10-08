@@ -28,7 +28,7 @@ public class UpdateCalendarPartCmd implements Command<Void> {
 		this.calendarPartEntity = calendarPartEntity;
 	}
 	
-	@Override
+	 
 	public Void execute(CommandContext commandContext) {
 		commandContext.getSqlSession().update("updateCalendarPart", calendarPartEntity);
 		return null;

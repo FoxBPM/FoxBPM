@@ -87,7 +87,7 @@ public class LoginController extends AbstWebController {
 		}
 	}
 
-	@Override
+	 
 	protected String getPrefix() {
 		return null;
 	}

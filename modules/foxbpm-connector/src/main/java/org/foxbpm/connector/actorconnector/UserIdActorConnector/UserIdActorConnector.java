@@ -36,7 +36,7 @@ public class UserIdActorConnector extends ActorConnectorHandler {
 	}
 
 
-	@Override
+	 
 	public void assign(DelegateTask task) throws Exception {
 		
 		String userId = Authentication.getAuthenticatedUserId();

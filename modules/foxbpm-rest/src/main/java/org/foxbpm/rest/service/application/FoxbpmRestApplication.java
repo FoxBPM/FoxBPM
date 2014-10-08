@@ -33,7 +33,7 @@ public class FoxbpmRestApplication extends AbstractRestApplication {
 		super();
 	}
 	
-	@Override
+	 
 	public Restlet createInboundRoot() {
 //		initializeAuthentication();
 		Router router = new Router(getContext());

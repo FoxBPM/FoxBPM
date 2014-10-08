@@ -30,7 +30,7 @@ public class GetCalendarPartCountCmd implements Command<Long> {
 		this.idLike = idLike;
 	}
 
-	@Override
+	 
 	public Long execute(CommandContext commandContext) {
 		Map<String, Object> queryMap = new HashMap<String, Object>();
 		if (idLike != null) {

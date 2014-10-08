@@ -46,7 +46,7 @@ public class GetCalendarTypeCmd implements Command<List<?>> {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	 
 	public List<CalendarTypeEntity> execute(CommandContext commandContext) {
 		Map<String, Object> queryMap = new HashMap<String, Object>();
 		queryMap.put("id", idLike);

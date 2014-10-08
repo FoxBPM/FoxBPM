@@ -36,7 +36,7 @@ public class StartAuthorActorConnector extends ActorConnectorHandler {
 	}
 
 
-	@Override
+	 
 	public void assign(DelegateTask task) throws Exception {
 		
 		String initiator=task.getExecutionContext().getStartAuthor();

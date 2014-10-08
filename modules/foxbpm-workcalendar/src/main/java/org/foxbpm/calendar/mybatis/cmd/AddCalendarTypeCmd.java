@@ -29,7 +29,7 @@ public class AddCalendarTypeCmd implements Command<Void> {
 		this.calendarTypeEntity = calendarTypeEntity;
 	}
 
-	@Override
+	 
 	public Void execute(CommandContext commandContext) {
 		commandContext.getSqlSession().insert("insertCalendarType", calendarTypeEntity);
 		return null;

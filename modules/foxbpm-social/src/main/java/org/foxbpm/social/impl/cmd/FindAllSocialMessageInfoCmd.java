@@ -40,7 +40,7 @@ public class FindAllSocialMessageInfoCmd implements Command<List<SocialMessageIn
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	 
 	public List<SocialMessageInfo> execute(CommandContext commandContext) {
 		Map<String, Object> queryMap = new HashMap<String, Object>();
 		queryMap.put("taskId", taskId);  

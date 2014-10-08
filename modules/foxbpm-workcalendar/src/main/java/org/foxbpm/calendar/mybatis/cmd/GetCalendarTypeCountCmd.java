@@ -32,7 +32,7 @@ public class GetCalendarTypeCountCmd implements Command<Long> {
 		this.nameLike = nameLike;
 	}
 
-	@Override
+	 
 	public Long execute(CommandContext commandContext) {
 		Map<String, Object> queryMap = new HashMap<String, Object>();
 		if (idLike != null) {

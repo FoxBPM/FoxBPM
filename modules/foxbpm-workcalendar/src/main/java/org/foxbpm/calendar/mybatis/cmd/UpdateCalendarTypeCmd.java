@@ -28,7 +28,7 @@ public class UpdateCalendarTypeCmd implements Command<Void> {
 		this.calendarTypeEntity = calendarTypeEntity;
 	}
 
-	@Override
+	 
 	public Void execute(CommandContext commandContext) {
 		commandContext.getSqlSession().update("updateCalendarType", calendarTypeEntity);
 		return null;
