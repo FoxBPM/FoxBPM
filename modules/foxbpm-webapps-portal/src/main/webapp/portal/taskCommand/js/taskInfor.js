@@ -17,7 +17,7 @@ TaskInfor.prototype = {
 					.ajax({
 						type : "get",// 使用get方法访问后台
 						dataType : "json",// 返回json格式的数据
-						url : $this.action + "tasks",// 要访问的后台地址
+						url : $this.action + "runtime/tasks",// 要访问的后台地址
 						data : {
 							processInstanceId : $this.processInstanceId,
 							orderby : 'endTime',

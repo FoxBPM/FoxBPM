@@ -20,7 +20,7 @@ function Gallery(config) {
 			} 
 		} 
 		$.ajax({
-			url : imgServiceUrl+"process-definitions",
+			url : imgServiceUrl+"model/process-definitions",
 			data:_data,
 			type : 'get',
 			dataType : "json",
