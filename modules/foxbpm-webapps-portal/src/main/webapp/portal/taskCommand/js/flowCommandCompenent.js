@@ -14,8 +14,8 @@ Foxbpm.FlowCommandCompenent.prototype={
 		 $.ajax({
 	         type: "get",//使用get方法访问后台
 	         dataType: "json",//返回json格式的数据
-	         url: _bpmServiceUrl+"/task/taskCommands",//要访问的后台地址
-	         data:{key:_processDefinitionKey,taskId:_taskId},
+	         url: _bpmServiceUrl+"/runtime/tasks/"+_taskId+"/taskCommands",//要访问的后台地址
+	         data:{key:_processDefinitionKey},
 	         success: function(msg){//msg为返回的数据，在这里做数据绑定
 	             var data = msg.data;
 	             

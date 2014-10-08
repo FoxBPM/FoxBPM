@@ -46,13 +46,12 @@ public class TaskCommandCollectionResource extends AbstractRestResource {
 	public DataResult getTaskCommands(){
 		Form query = getQuery();
 		String processKey = getQueryParameter(RestConstants.PROCESS_KEY, query);
-		String taskId = getQueryParameter(RestConstants.TASK_ID, query); 
+		String taskId = getAttribute(RestConstants.TASK_ID); 
 		List<TaskCommand> taskCommands = null;
 		TaskService taskService = FoxBpmUtil.getProcessEngine().getTaskService();
 		List<Map<String,Object>> resultList = new ArrayList<Map<String,Object>>();
-		if(StringUtil.isNotEmpty(taskId)){
+		if(StringUtil.isNotEmpty(taskId) && !"null".equals(taskId)){
 			taskCommands = taskService.getTaskCommandByTaskId(taskId);
-			
 		}else{
 			if(StringUtil.isEmpty(processKey)){
 				throw new FoxBPMException("查询任务命令时参数不足");

@@ -29,6 +29,7 @@ import org.foxbpm.rest.service.api.SocialResource;
 import org.foxbpm.rest.service.api.config.FlowConfigResouce;
 import org.foxbpm.rest.service.api.engine.RollbackNodeCollectionResource;
 import org.foxbpm.rest.service.api.engine.RollbackTaskCollectionResource;
+import org.foxbpm.rest.service.api.engine.TaskCommandCollectionResource;
 import org.foxbpm.rest.service.api.identity.GroupCollectionResouce;
 import org.foxbpm.rest.service.api.identity.GroupDefinitionCollection;
 import org.foxbpm.rest.service.api.identity.GroupRelationCollectionResouce;
@@ -78,7 +79,7 @@ public class RestServicesInit {
 		router.attach("/runtime/tasks", TaskCollectionResource.class);
 		router.attach("/runtime/tasks/{taskId}", TaskCollectionResource.class);
 		router.attach("/runtime/tasks/{taskId}/identityLinks", TaskCollectionResource.class);
-		router.attach("/runtime/tasks/{taskId}/taskCommands", TaskCollectionResource.class);
+		router.attach("/runtime/tasks/{taskId}/taskCommands", TaskCommandCollectionResource.class);
 		router.attach("/runtime/tasks/{taskId}/operations", TaskOperationCollectionResource.class);
 		router.attach("/runtime/tasks/{taskId}/rollbackTasks", RollbackTaskCollectionResource.class);
 		router.attach("/runtime/tasks/{taskId}/rollbackNodes", RollbackNodeCollectionResource.class);
@@ -100,8 +101,6 @@ public class RestServicesInit {
 	    router.attach("/attachments", TaskCollectionResource.class);
 	    router.attach("/attachments/{attachmentId}", TaskCollectionResource.class);
 	    
-	    
-	    /* old */
 		router.attach("/designer/flowconfig", FlowConfigResouce.class);
 		router.attach("/designer/identity/allGroups", GroupCollectionResouce.class);
 		router.attach("/designer/identity/allRelations", GroupRelationCollectionResouce.class);
