@@ -98,7 +98,7 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 		commandExecutor.execute(new CompleteTaskCmd(taskId, transientVariables,persistenceVariables));
 	}
 
-	@Override
+	 
 	public <T> T expandTaskComplete(ExpandTaskCommand expandTaskCommand, T classReturn) {
 		return (T) commandExecutor.execute(new ExpandTaskCompleteCmd<T>(expandTaskCommand));
 	}
@@ -111,32 +111,32 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 		return new TaskQueryImpl(commandExecutor);
 	}
 	
-	@Override
+	 
 	public List<TaskCommand> getSubTaskCommandByKey(String Key) {
 		return commandExecutor.execute(new GetTaskCommandByKeyCmd(Key));
 	}
 	
-	@Override
+	 
 	public List<TaskCommand> getTaskCommandByTaskId(String taskId) {
 		return commandExecutor.execute(new GetTaskCommandByTaskIdCmd(taskId,false));
 	}
 	
-	@Override
+	 
 	public List<TaskCommand> getTaskCommandByTaskId(String taskId,boolean isProcessTracking) {
 		return commandExecutor.execute(new GetTaskCommandByTaskIdCmd(taskId,isProcessTracking));
 	}
 	
-	@Override
+	 
 	public List<KernelFlowNode> getRollbackFlowNode(String taskId) {
 		return commandExecutor.execute(new GetRollbackNodeCmd(taskId));
 	}
 	
-	@Override
+	 
 	public List<Task> getRollbackTasks(String taskId) {
 		return commandExecutor.execute(new GetRollbackTasksCmd(taskId));
 	}
 	
-	@Override
+	 
 	public List<ProcessOperatingEntity> getTaskOperations(String taskId) {
 		return commandExecutor.execute(new GetTaskOperationCmd(taskId));
 	}
@@ -145,7 +145,7 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 		return commandExecutor.execute(new GetIdentityLinkByTaskIdCmd(taskId));
 	}
 	
-	@Override
+	 
 	public Class<?> getInterfaceClass() {
 		return TaskService.class;
 	}

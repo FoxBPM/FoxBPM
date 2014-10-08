@@ -40,7 +40,7 @@ public class FindUserByGroupIdAndTypeCmd implements Command<List<String>>{
 		this.groupType = groupType;
 	}
 	
-	@Override
+	 
 	public List<String> execute(CommandContext commandContext) {
 		List<String> userIds = new ArrayList<String>();
 		//处理组织机构

@@ -32,7 +32,7 @@ public class ClaimCmd extends NeedsActiveTaskCmd<Void> {
 		this.userId = userId;
 	}
 	
-	@Override
+	 
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
 		if(userId == null){
 			throw new FoxBPMIllegalArgumentException("userId is null");

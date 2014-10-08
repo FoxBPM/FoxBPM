@@ -67,69 +67,69 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 		return new ProcessDefinitionQueryImpl(commandExecutor);
 	}
 	
-	@Override
+	 
 	public InputStream GetFlowGraphicsImgStreamByDefId(String processDefinitionId) {
 		return commandExecutor.execute(new GetFlowGraphicsImgStreamCmd(processDefinitionId, null));
 	}
 	
-	@Override
+	 
 	public InputStream GetFlowGraphicsImgStreamByDefKey(String processDefinitionKey) {
 		return commandExecutor.execute(new GetFlowGraphicsImgStreamCmd(null, processDefinitionKey));
 	}
 	
-	@Override
+	 
 	public ProcessDefinition getProcessDefinition(String processDefinitionId) {
 		return commandExecutor.execute(new GetProcessDefinitionCmd(processDefinitionId));
 	}
 	
-	@Override
+	 
 	public ProcessDefinition getProcessDefinition(String processKey, int version) {
 		return commandExecutor.execute(new GetProcessDefinitionByKeyAndVersionCmd(processKey, version));
 	}
 	
-	@Override
+	 
 	public Map<String, Map<String, Object>> getFlowGraphicsElementPositionById(
 	    String processDefinitionId) {
 		return commandExecutor.execute(new GetFlowGraphicsElementPositionCmd(processDefinitionId, null));
 	}
 	
-	@Override
+	 
 	public Map<String, Map<String, Object>> getFlowGraphicsElementPositionByKey(
 	    String processDefinitionKey) {
 		return commandExecutor.execute(new GetFlowGraphicsElementPositionCmd(null, processDefinitionKey));
 	}
 	
-	@Override
+	 
 	public String getProcessDefinitionSVG(String processDefinitionId) {
 		return commandExecutor.execute(new GetProcessDefinitionSVGCmd(processDefinitionId));
 	}
 	
-	@Override
+	 
 	public boolean verifyStartProcessByUserId(String userId, String processDefinitionId) {
 		return commandExecutor.execute(new VerificationStartUserCmd(userId, null, processDefinitionId));
 	}
 	
-	@Override
+	 
 	public InputStream getResourceByDeployIdAndName(String deployId, String resourceName) {
 		return commandExecutor.execute(new GetResouceByDeployIdAndNameCmd(deployId, resourceName));
 	}
 	
-	@Override
+	 
 	public ProcessDefinition getLatestProcessDefinition(String processDefinitionKey) {
 		return commandExecutor.execute(new GetLatestProcessDefinitionByKey(processDefinitionKey));
 	}
 	
-	@Override
+	 
 	public List<BizDataObject> getBizDataObject(String behaviorId, String dataSource) {
 		return commandExecutor.execute(new GetBizDataObjectCmd(behaviorId, dataSource));
 	}
 	
-	@Override
+	 
 	public List<Map<String,Object>> getAllBizObjects() {
 		return commandExecutor.execute(new GetAllBizObjectsCmd());
 	}
 	
-	@Override
+	 
 	public Class<?> getInterfaceClass() {
 		return ModelService.class;
 	}

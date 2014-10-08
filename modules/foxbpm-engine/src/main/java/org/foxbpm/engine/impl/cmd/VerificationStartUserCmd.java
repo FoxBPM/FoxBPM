@@ -52,7 +52,7 @@ public class VerificationStartUserCmd implements Command<Boolean> {
 		this.processDefinitionId = processDefinitionId;
 	}
 
-	@Override
+	 
 	public Boolean execute(CommandContext commandContext) {
 		DeploymentManager deployCache = commandContext.getProcessEngineConfigurationImpl()
 				.getDeploymentManager();

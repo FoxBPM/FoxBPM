@@ -122,7 +122,7 @@ public class VariableQueryTest extends AbstractFoxBpmTestCase{
 			this.isUpdate = isUpdate;
 		}
     	
-		@Override
+		 
 		public Void execute(CommandContext commandContext) {
 			
 			Map<String,String> variableValue = new HashMap<String, String>();

@@ -30,7 +30,7 @@ import org.foxbpm.engine.impl.util.BpmnModelUtil;
  */
 public class StartEventParser extends CatchEventParser {
 
-	@Override
+	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		Boolean isPersistence = BpmnModelUtil.getStartEventPersistence(baseElement);
 		StartEventBehavior startEventBehavior = (StartEventBehavior)baseElementBehavior;
@@ -38,7 +38,7 @@ public class StartEventParser extends CatchEventParser {
 		return super.parser(baseElement);
 	}
 	
-	@Override
+	 
 	public void init() {
 		baseElementBehavior = new StartEventBehavior();
 	}

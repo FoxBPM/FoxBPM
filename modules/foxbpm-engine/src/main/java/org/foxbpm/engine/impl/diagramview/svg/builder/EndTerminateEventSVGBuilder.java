@@ -38,7 +38,7 @@ public class EndTerminateEventSVGBuilder extends EventSVGBuilder {
 		super(voNode);
 		this.terminateCircleVO = SVGUtils.getEndTerminateEventVOFromSvgVO(voNode);
 	}
-	@Override
+	 
 	public void setStroke(String stroke) {
 		if (StringUtils.isBlank(stroke)) {
 			this.terminateCircleVO.setStroke(STROKE_DEFAULT);
@@ -47,16 +47,16 @@ public class EndTerminateEventSVGBuilder extends EventSVGBuilder {
 		this.terminateCircleVO.setStroke(COLOR_FLAG + stroke);
 		super.setStroke(stroke);
 	}
-	@Override
+	 
 	public void setStrokeWidth(float strokeWidth) {
 		this.terminateCircleVO.setStrokeWidth(strokeWidth);
 		super.setStrokeWidth(strokeWidth);
 	}
-	@Override
+	 
 	public void setFill(String fill) {
 		super.setFill(fill);
 	}
-	@Override
+	 
 	public void setXAndY(float x, float y) {
 		this.terminateCircleVO.setCx(x + this.circleVO.getR());
 		this.terminateCircleVO.setCy(y + this.circleVO.getR());

@@ -32,7 +32,7 @@ public class StartEventTrackListener extends AbstractTrackListener {
 	 */
 	private static final long serialVersionUID = -4666204303153498711L;
 
-	@Override
+	 
 	protected RunningTrackEntity recordRunningTrack(ListenerExecutionContext executionContext) {
 		KernelTokenImpl kernelTokenImpl = (KernelTokenImpl) executionContext;
 		ProcessInstanceEntity processInstanceEntity = (ProcessInstanceEntity) kernelTokenImpl

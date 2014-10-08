@@ -28,12 +28,12 @@ import org.foxbpm.engine.impl.Context;
  */
 public class CommandInvoker extends CommandInterceptor {
 
-	@Override
+	 
 	public <T> T execute(CommandConfig config,Command<T> command) {
 		return command.execute(Context.getCommandContext());
 	}
 	
-	@Override
+	 
 	public void setNext(CommandInterceptor commandInterceptor) {
 		throw new FoxBPMException("commandInvoke必须是最后一个拦截器");
 	}

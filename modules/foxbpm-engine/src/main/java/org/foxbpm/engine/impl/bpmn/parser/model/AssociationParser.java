@@ -28,7 +28,7 @@ import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
  */
 public class AssociationParser extends BaseElementParser {
 
-	@Override
+	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		Association association = (Association) baseElement;
 		AssociationBehavior associationBehavior = (AssociationBehavior) baseElementBehavior;
@@ -39,7 +39,7 @@ public class AssociationParser extends BaseElementParser {
 		return super.parser(baseElement);
 	}
 
-	@Override
+	 
 	public void init() {
 		baseElementBehavior = new AssociationBehavior();
 	}

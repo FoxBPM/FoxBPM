@@ -51,7 +51,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 		}
 	}
 
-	@Override
+	 
 	public void continueJob(String name, String group) {
 		try {
 			foxbpmScheduler.resumeJob(new JobKey(name, group));
@@ -60,7 +60,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 		}
 	}
 
-	@Override
+	 
 	public List<Trigger> getTriggerList(String jobName, String jobGroup) {
 		// TODO Auto-generated method stub
 		return null;

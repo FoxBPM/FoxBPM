@@ -374,25 +374,25 @@ public abstract class AbstractManager implements Session {
 			this.parameter = parameter;
 		}
 		
-		@Override
+		 
 		public boolean sameIdentity(PersistentObject other) {
 			// this implementation is unable to determine what the identity of
 			// the removed object(s) will be.
 			return false;
 		}
 		
-		@Override
+		 
 		public void clearCache() {
 			// this implementation cannot clear the object(s) to be removed from
 			// the cache.
 		}
 		
-		@Override
+		 
 		public void execute() {
 			getSqlSession().delete(statement, parameter);
 		}
 		
-		@Override
+		 
 		public String toString() {
 			return "bulk delete: " + statement + "(" + parameter + ")";
 		}
@@ -411,13 +411,13 @@ public abstract class AbstractManager implements Session {
 			this.persistentObject = persistentObject;
 		}
 		
-		@Override
+		 
 		public boolean sameIdentity(PersistentObject other) {
 			return persistentObject.getClass().equals(other.getClass())
 			        && persistentObject.getId().equals(other.getId());
 		}
 		
-		@Override
+		 
 		public void clearCache() {
 			cacheRemove(persistentObject.getId());
 		}
@@ -435,7 +435,7 @@ public abstract class AbstractManager implements Session {
 			return persistentObject;
 		}
 		
-		@Override
+		 
 		public String toString() {
 			return "delete " + persistentObject;
 		}

@@ -46,7 +46,7 @@ import org.foxbpm.model.bpmn.foxbpm.Param;
  */
 public class UserTaskParser extends TaskParser {
 
-	@Override
+	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		UserTaskBehavior userTaskBehavior = (UserTaskBehavior) baseElementBehavior;
 		TaskDefinition taskDefinition = new TaskDefinition();
@@ -137,7 +137,7 @@ public class UserTaskParser extends TaskParser {
 		return super.parser(baseElement);
 	}
 
-	@Override
+	 
 	public void init() {
 		baseElementBehavior = new UserTaskBehavior();
 	}

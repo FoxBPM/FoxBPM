@@ -25,12 +25,12 @@ import org.foxbpm.engine.impl.bpmn.behavior.SubProcessBehavior;
 public class SubProcessParser extends FlowNodeParser {
 
 	
-	@Override
+	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		return super.parser(baseElement);
 	}
 	
-	@Override
+	 
 	public void init() {
 		baseElementBehavior = new SubProcessBehavior();
 	}

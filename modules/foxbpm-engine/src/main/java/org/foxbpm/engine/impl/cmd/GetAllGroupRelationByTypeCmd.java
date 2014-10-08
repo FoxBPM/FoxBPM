@@ -38,7 +38,7 @@ public class GetAllGroupRelationByTypeCmd implements Command<List<GroupRelationE
 		this.groupType = groupType;
 	}
 	
-	@Override
+	 
 	public List<GroupRelationEntity> execute(CommandContext commandContext) {
 		if(this.groupType == null || this.groupType.equals("")){
 			throw new FoxBPMIllegalArgumentException("groupType不能为null");

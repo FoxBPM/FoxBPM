@@ -120,7 +120,7 @@ public class ResourceEntity implements Serializable, PersistentObject {
 		}
 		return properties.get(key);
 	}
-	@Override
+	 
 	public String toString() {
 		return new StringBuffer("ResourceEntity[id=").append(id).append(", name=").append(name)
 				.append("]").toString();

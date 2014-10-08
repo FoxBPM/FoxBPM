@@ -38,7 +38,7 @@ public class RecoverTaskCmd extends AbstractExpandTaskCmd<RecoverTaskCommand, Vo
 		super(abstractCustomExpandTaskCommand);
 	}
 
-	@Override
+	 
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
 		
 		/** 获取任务命令 */

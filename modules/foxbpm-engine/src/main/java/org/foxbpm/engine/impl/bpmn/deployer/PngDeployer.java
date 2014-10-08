@@ -43,7 +43,7 @@ public class PngDeployer extends AbstractDeployer {
 	/** 日志处理 */
 	private final static Logger LOG = LoggerFactory.getLogger(PngDeployer.class);
 	
-	@Override
+	 
 	public String deploy(DeploymentEntity deployment) {
 		LOG.debug("start deploy PNG");
 		// 获取流程定义Id

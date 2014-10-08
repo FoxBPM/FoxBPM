@@ -42,26 +42,26 @@ public class GroupRoleImpl implements GroupDefinition {
 		return groups;
 	}
 	
-	@Override
+	 
 	public String getType() {
 		return type;
 	}
 	
-	@Override
+	 
 	public String getName() {
 		// TODO Auto-generated method stub
 		return name;
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Override
+	 
 	public List<String> selectUserIdsByGroupId(String groupId) {
 		ISqlSession sqlsession = Context.getCommandContext().getSqlSession();
 		List<String> userIds = (List<String>)sqlsession.selectList("selectUserIdsByRoleId", groupId);
 		return userIds;
 	}
 	
-	@Override
+	 
 	public List<GroupEntity> selectChildrenByGroupId(String groupId) {
 		List<GroupEntity> groups = new ArrayList<GroupEntity>();
 		GroupEntity role = selectGroupByGroupId(groupId);
@@ -71,7 +71,7 @@ public class GroupRoleImpl implements GroupDefinition {
 		return groups;
 	}
 	
-	@Override
+	 
 	public GroupEntity selectGroupByGroupId(String groupId) {
 		ISqlSession sqlSession = Context.getCommandContext().getSqlSession();
 		GroupEntity group = (GroupEntity) sqlSession.selectOne("selectRoleById", groupId);
@@ -79,7 +79,7 @@ public class GroupRoleImpl implements GroupDefinition {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Override
+	 
 	public List<GroupEntity> selectAllGroup() {
 		ISqlSession sqlSession = Context.getCommandContext().getSqlSession();
 		List<GroupEntity> groups = (List<GroupEntity>) sqlSession.selectList("selectAllRole");
@@ -87,7 +87,7 @@ public class GroupRoleImpl implements GroupDefinition {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Override
+	 
 	public List<GroupRelationEntity> selectAllRelation() {
 		ISqlSession sqlSession = Context.getCommandContext().getSqlSession();
 		List<GroupRelationEntity> groupRelations = (List<GroupRelationEntity>) sqlSession.selectList("selectAllRoleRelation");

@@ -219,7 +219,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected void initConfigurators() {
 		if (configurators != null && configurators.size() > 0) {
 			Collections.sort(configurators, new Comparator<ProcessEngineConfigurator>() {
-				@Override
+				 
 				public int compare(ProcessEngineConfigurator configurator1,
 				    ProcessEngineConfigurator configurator2) {
 					int priority1 = configurator1.getPriority();

@@ -48,22 +48,22 @@ public class GroupSVGBuilder extends AbstractSVGBuilder {
 		}
 	}
 
-	@Override
+	 
 	public void setWayPoints(List<Point> pointList) {
 
 	}
 
-	@Override
+	 
 	public void setWidth(float width) {
 		this.rectVO.setWidth(width);
 	}
 
-	@Override
+	 
 	public void setHeight(float height) {
 		this.rectVO.setHeight(height);
 	}
 
-	@Override
+	 
 	public void setXAndY(float x, float y) {
 		this.rectVO.setX(x);
 		this.rectVO.setY(y);
@@ -83,59 +83,59 @@ public class GroupSVGBuilder extends AbstractSVGBuilder {
 		}
 	}
 
-	@Override
+	 
 	public void setStroke(String stroke) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setStrokeWidth(float strokeWidth) {
 		this.rectVO.setStrokeWidth(strokeWidth);
 	}
 
-	@Override
+	 
 	public void setFill(String fill) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setID(String id) {
 		this.rectVO.setId(id);
 	}
 
-	@Override
+	 
 	public void setName(String name) {
 		this.rectVO.setName(name);
 
 	}
 
-	@Override
+	 
 	public void setStyle(String style) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setTypeStroke(String stroke) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setTypeStrokeWidth(float strokeWidth) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setTypeFill(String fill) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setTypeStyle(String style) {
 		// TODO Auto-generated method stub
 

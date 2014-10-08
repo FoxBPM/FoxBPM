@@ -25,7 +25,7 @@ import org.foxbpm.engine.task.Task;
  */
 public class JumpTaskFilter extends AbstractCommandFilter {
 
-	@Override
+	 
 	public boolean accept(Task task) {
 
 		if (task == null) {

@@ -22,7 +22,7 @@ public class SignalCmd extends NeedsTokenCmd<Object> {
 		this.persistenceVariables = persistenceVariables;
 	}
 
-	@Override
+	 
 	protected Object execute(CommandContext commandContext, TokenEntity token) {
 		if (transientVariables != null) {
 			token.setProcessInstanceVariables(transientVariables);
@@ -32,7 +32,7 @@ public class SignalCmd extends NeedsTokenCmd<Object> {
 		return null;
 	}
 
-	@Override
+	 
 	protected String getSuspendedExceptionMessage() {
 		return "Cannot signal an execution that is suspended";
 	}

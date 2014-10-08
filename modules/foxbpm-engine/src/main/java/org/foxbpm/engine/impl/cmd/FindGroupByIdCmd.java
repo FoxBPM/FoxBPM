@@ -40,7 +40,7 @@ public class FindGroupByIdCmd  implements Command<GroupEntity>{
 		this.groupType = groupType;
 	}
 	
-	@Override
+	 
 	public GroupEntity execute(CommandContext commandContext) {
 		if(groupId == null || groupType == null){
 			throw new FoxBPMIllegalArgumentException("参数不能为空:groupId="+groupId+",groupType="+groupType);

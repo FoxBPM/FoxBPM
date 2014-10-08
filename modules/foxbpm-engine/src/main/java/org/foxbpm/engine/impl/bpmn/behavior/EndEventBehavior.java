@@ -28,7 +28,7 @@ public class EndEventBehavior extends EventBehavior {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	@Override
+	 
 	public void enter(FlowNodeExecutionContext executionContext) {
 		executionContext.execute();
 	}

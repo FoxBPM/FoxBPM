@@ -55,13 +55,13 @@ public class RunningTrackQueryImpl extends AbstractQuery<RunningTrackQuery, Runn
 		return (List<RunningTrack>) commandContext.getRunningTrackManager()
 				.findRunningTrackByProcessInstanceId(processInstanceID);
 	}
-	@Override
+	 
 	public RunningTrackQuery processInstanceID(String processInstanceID) {
 		this.processInstanceID = processInstanceID;
 		return this;
 	}
 
-	@Override
+	 
 	public long executeCount(CommandContext commandContext) {
 		return 0;
 	}

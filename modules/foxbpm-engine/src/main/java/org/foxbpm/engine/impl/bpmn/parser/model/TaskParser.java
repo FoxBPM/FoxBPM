@@ -24,13 +24,13 @@ import org.foxbpm.engine.impl.bpmn.behavior.TaskBehavior;
 
 public class TaskParser extends ActivityParser {
 
-	@Override
+	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		// TODO Auto-generated method stub
 		return super.parser(baseElement);
 	}
 
-	@Override
+	 
 	public void init() {
 		baseElementBehavior=new TaskBehavior();
 	}

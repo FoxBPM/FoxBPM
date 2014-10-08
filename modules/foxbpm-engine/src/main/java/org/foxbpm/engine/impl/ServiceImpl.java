@@ -32,7 +32,7 @@ public abstract class ServiceImpl implements ProcessService {
 	    this.commandExecutor = commandExecutor;
 	}
 	
-	@Override
+	 
 	public Class<?> getInterfaceClass() {
 		return null;
 	}

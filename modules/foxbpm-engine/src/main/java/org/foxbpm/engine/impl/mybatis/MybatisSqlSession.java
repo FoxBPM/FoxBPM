@@ -33,7 +33,7 @@ public class MybatisSqlSession implements ISqlSession,Session {
 		this.sqlSession = sqlSession;
 	}
 	
-	@Override
+	 
 	public void insert(String insertStatement, Object persistentObject) {
 		sqlSession.insert(insertStatement, persistentObject);
 	}
@@ -71,14 +71,14 @@ public class MybatisSqlSession implements ISqlSession,Session {
 		}
 	}
 	
-	@Override
+	 
 	public void close() {
 		if(this.sqlSession != null){
 			this.sqlSession.close();
 		}
 	}
 	
-	@Override
+	 
 	public void flush() {
 		
 	}

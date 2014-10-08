@@ -42,7 +42,7 @@ public class StartAndSubmitTaskCmd extends AbstractExpandTaskCmd<StartAndSubmitT
 		super(abstractCustomExpandTaskCommand);
 	}
 
-	@Override
+	 
 	public ProcessInstance execute(CommandContext commandContext) {
 		TaskEntity task = Context.getCommandContext().getTaskManager().findTaskById(taskId);
 
@@ -53,7 +53,7 @@ public class StartAndSubmitTaskCmd extends AbstractExpandTaskCmd<StartAndSubmitT
 		return execute(commandContext, task);
 	}
 
-	@Override
+	 
 	protected ProcessInstance execute(CommandContext commandContext, TaskEntity task) {
 		ProcessInstanceEntity processInstance = null;
 		if (task == null) {

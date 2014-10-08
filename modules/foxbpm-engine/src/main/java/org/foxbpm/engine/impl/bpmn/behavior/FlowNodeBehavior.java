@@ -48,7 +48,7 @@ public abstract class FlowNodeBehavior extends FlowElementBehavior implements Ke
 		
 	}
 
-	@Override
+	 
 	public void setKernelFlowNode(KernelFlowNodeImpl KernelFlowNode) {
 		this.flowNode=KernelFlowNode;
 	}

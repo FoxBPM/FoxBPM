@@ -76,7 +76,7 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 	protected int loopCount=0;
 	
 
-	@Override
+	 
 	public void setFlowNode(KernelFlowNodeImpl flowNode) {
 		if (flowNode != null) {
 			setNodeId(flowNode.getId());
@@ -85,14 +85,14 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		super.setFlowNode(flowNode);
 	}
 	
-	@Override
+	 
 	protected void ensureFlowNodeInitialized() {
 		if ((currentFlowNode == null) && (nodeId != null)) {
 			currentFlowNode = getProcessDefinition().findFlowNode(nodeId);
 		}
 	}
 	
-	@Override
+	 
 	protected void ensureParentInitialized() {
 		if (this.parent == null && StringUtil.isNotBlank(this.parentId)) {
 			this.parent = Context.getCommandContext().getTokenManager().findTokenById(this.parentId);
@@ -110,38 +110,38 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		}
 	}
 	
-	@Override
+	 
 	protected void ensureProcessInstanceInitialized() {
 		if ((processInstance == null) && (processInstanceId != null)) {
 			processInstance = Context.getCommandContext().getProcessInstanceManager().findProcessInstanceById(processInstanceId);
 		}
 	}
 	
-	@Override
+	 
 	public void setProcessInstance(KernelProcessInstanceImpl processInstance) {
 		setProcessInstanceId(processInstance.getId());
 		super.setProcessInstance(processInstance);
 	}
 	
-	@Override
+	 
 	public void setParent(KernelTokenImpl parent) {
 		setParentId(parent.getId());
 		super.setParent(parent);
 	}
 	
-	@Override
+	 
 	public void ensureEnterInitialized(KernelFlowNodeImpl flowNode) {
 		/** 设置令牌进入节点的时间 */
 		setNodeEnterTime(ClockUtil.getCurrentTime());
 		super.ensureEnterInitialized(flowNode);
 	}
 	
-	@Override
+	 
 	public void clearExecutionContextData() {
 		super.clearExecutionContextData();
 	}
 	
-	@Override
+	 
 	public String getId() {
 		return this.id;
 	}
@@ -198,7 +198,7 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		return endTime;
 	}
 	
-	@Override
+	 
 	public boolean isEnded() {
 		if (endTime == null) {
 			return false;
@@ -247,7 +247,7 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		return true;
 	}
 	
-	@Override
+	 
 	public ProcessInstanceEntity getProcessInstance() {
 		return (ProcessInstanceEntity) super.getProcessInstance();
 	}
@@ -313,7 +313,7 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		}
 	}
 	
-	@Override
+	 
 	public void end(boolean verifyParentTermination) {
 		
 		endTime = ClockUtil.getCurrentTime();
@@ -328,7 +328,7 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		this.groupID = groupID;
 	}
 	
-	@Override
+	 
 	protected boolean isSignalParentToken() {
 		if (isSubProcessRootToken) {
 			if (!getParent().isEnded()) {
@@ -338,7 +338,7 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		return super.isSignalParentToken();
 	}
 	
-	@Override
+	 
 	public void setEnded(boolean isEnded) {
 		if (isEnded) {
 			this.endTime = ClockUtil.getCurrentTime();
@@ -374,7 +374,7 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		this.processDefinitionKey = processDefinitionKey;
 	}
 	
-	@Override
+	 
 	public KernelProcessInstance createSubProcessInstance(KernelProcessDefinition processDefinition) {
 		
 		return super.createSubProcessInstance(processDefinition);

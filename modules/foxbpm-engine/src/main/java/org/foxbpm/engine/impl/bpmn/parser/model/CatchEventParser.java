@@ -29,7 +29,7 @@ import org.foxbpm.engine.impl.bpmn.behavior.CatchEventBehavior;
 
 public class CatchEventParser extends EventParser {
 
-	@Override
+	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
 
 		CatchEventBehavior catchEventBehavior = (CatchEventBehavior) baseElementBehavior;

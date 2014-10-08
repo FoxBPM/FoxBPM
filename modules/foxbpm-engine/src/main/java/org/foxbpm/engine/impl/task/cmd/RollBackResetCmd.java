@@ -43,7 +43,7 @@ public class RollBackResetCmd extends AbstractExpandTaskCmd<RollBackResetCommand
 		this.rollBackNodeId = rollBackResetCommand.getRollBackNodeId();
 	}
 
-	@Override
+	 
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
 		
 		/** 获取任务命令 */

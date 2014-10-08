@@ -35,7 +35,7 @@ public class GetAllGroupDefinitionsCmd implements Command<List<GroupDefinition>>
 		
 	}
 	
-	@Override
+	 
 	public List<GroupDefinition> execute(CommandContext commandContext) {
 		List<GroupDefinition> groupDefinitins = commandContext.getProcessEngineConfigurationImpl().getGroupDefinitions();
 		return groupDefinitins;

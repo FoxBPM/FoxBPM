@@ -43,7 +43,7 @@ public class RollBackTaskDesignationAssigneeCmd extends AbstractExpandTaskCmd<Ro
 		super(abstractCustomExpandTaskCommand);
 	}
 
-	@Override
+	 
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
 
 		/** 获取任务命令 */

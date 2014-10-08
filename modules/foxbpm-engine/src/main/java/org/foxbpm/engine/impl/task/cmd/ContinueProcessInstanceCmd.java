@@ -22,7 +22,7 @@ public class ContinueProcessInstanceCmd extends AbstractExpandTaskCmd<ContinuePr
 		super(abstractCustomExpandTaskCommand);
 	}
 
-	@Override
+	 
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
 		/** 获取任务命令 */
 		TaskCommand taskCommand = getTaskCommand(task);

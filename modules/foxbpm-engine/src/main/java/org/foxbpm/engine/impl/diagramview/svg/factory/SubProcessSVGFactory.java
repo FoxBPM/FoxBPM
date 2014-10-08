@@ -44,12 +44,12 @@ public class SubProcessSVGFactory extends AbstractFlowElementSVGFactory {
 		super(kernelBaseElement, svgTemplateFileName);
 	}
 	
-	@Override
+	 
 	public VONode createSVGVO() {
 		return (SvgVO) super.loadSVGVO(this.voTemplateFileName);
 	}
 	
-	@Override
+	 
 	public void filterChildVO(VONode voNode, List<String> filterCondition) {
 		// TODO Auto-generated method stub
 		

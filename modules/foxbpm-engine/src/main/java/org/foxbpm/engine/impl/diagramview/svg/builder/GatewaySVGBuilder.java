@@ -47,17 +47,17 @@ public class GatewaySVGBuilder extends AbstractSVGBuilder {
 		this.pathVo = SVGUtils.getGatewayVOFromSvgVO(svgVo);
 	}
 
-	@Override
+	 
 	public void setWidth(float width) {
 		this.tempWidth = width;
 	}
 
-	@Override
+	 
 	public void setHeight(float height) {
 		this.tempHeight = height;
 	}
 
-	@Override
+	 
 	public void setXAndY(float x, float y) {
 		this.tempX = x;
 		this.tempY = y;
@@ -78,7 +78,7 @@ public class GatewaySVGBuilder extends AbstractSVGBuilder {
 		}
 
 	}
-	@Override
+	 
 	public void setStroke(String stroke) {
 		if (StringUtils.isBlank(stroke)) {
 			stroke = STROKE_DEFAULT;
@@ -86,12 +86,12 @@ public class GatewaySVGBuilder extends AbstractSVGBuilder {
 		this.pathVo.setStroke(COLOR_FLAG + stroke);
 	}
 
-	@Override
+	 
 	public void setStrokeWidth(float strokeWidth) {
 		this.pathVo.setStrokeWidth(strokeWidth);
 	}
 
-	@Override
+	 
 	public void setFill(String fill) {
 		if (StringUtils.isBlank(fill)) {
 			fill = DEFAULT_FILL;
@@ -99,48 +99,48 @@ public class GatewaySVGBuilder extends AbstractSVGBuilder {
 		this.buildLinearGradient(fill, pathVo, 0, 0, 0, 40);
 	}
 
-	@Override
+	 
 	public void setID(String id) {
 		this.pathVo.setId(id);
 	}
 
-	@Override
+	 
 	public void setName(String name) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setStyle(String style) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setTypeStroke(String stroke) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setTypeStrokeWidth(float strokeWidth) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setTypeFill(String fill) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setTypeStyle(String style) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setWayPoints(List<Point> pointList) {
 		// TODO Auto-generated method stub
 

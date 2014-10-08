@@ -53,7 +53,7 @@ public class AssociationSVGBuilder extends AbstractSVGBuilder {
 		}
 	}
 
-	@Override
+	 
 	public void setWayPoints(List<Point> pointList) {
 		if (pointList == null || pointList.size() == 0) {
 			return;
@@ -107,25 +107,25 @@ public class AssociationSVGBuilder extends AbstractSVGBuilder {
 		this.pathVo.setD(pathBuffer.toString());
 	}
 
-	@Override
+	 
 	public void setWidth(float width) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setHeight(float height) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setXAndY(float x, float y) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setStroke(String stroke) {
 		if (StringUtils.isBlank(stroke)) {
 			this.pathVo.setStroke(STROKE_DEFAULT);
@@ -135,13 +135,13 @@ public class AssociationSVGBuilder extends AbstractSVGBuilder {
 
 	}
 
-	@Override
+	 
 	public void setStrokeWidth(float strokeWidth) {
 		this.pathVo.setStrokeWidth(strokeWidth);
 
 	}
 
-	@Override
+	 
 	public void setFill(String fill) {
 		if (StringUtils.isBlank(fill)) {
 			this.pathVo.setFill(FILL_DEFAULT);
@@ -151,43 +151,43 @@ public class AssociationSVGBuilder extends AbstractSVGBuilder {
 
 	}
 
-	@Override
+	 
 	public void setID(String id) {
 		this.pathVo.setId(id);
 
 	}
 
-	@Override
+	 
 	public void setName(String name) {
 		this.pathVo.setName(name);
 
 	}
 
-	@Override
+	 
 	public void setStyle(String style) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setTypeStroke(String stroke) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setTypeStrokeWidth(float strokeWidth) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setTypeFill(String fill) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setTypeStyle(String style) {
 		// TODO Auto-generated method stub
 

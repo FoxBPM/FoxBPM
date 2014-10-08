@@ -31,7 +31,7 @@ public class ReleaseTaskCmd extends AbstractExpandTaskCmd<ReleaseTaskCommand, Vo
 		super(abstractCustomExpandTaskCommand);
 	}
 
-	@Override
+	 
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
 		
 		if (task.getAssignee() != null) {

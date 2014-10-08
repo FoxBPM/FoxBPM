@@ -44,7 +44,7 @@ public class CallActivitySVGFactory extends TaskSVGFactory {
 		super(kernelBaseElement, svgTemplateFileName);
 	}
 	
-	@Override
+	 
 	public VONode createSVGVO() {
 		return (SvgVO) super.loadSVGVO(this.voTemplateFileName);
 	}

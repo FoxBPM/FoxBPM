@@ -38,7 +38,7 @@ public class IntermediateCatchEventBehavior extends CatchEventBehavior {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	@Override
+	 
 	public void execute(FlowNodeExecutionContext executionContext) {
 		// 执行中间事件定义,例如 时间定义
 		List<EventDefinition> eventDefinitions = this.getEventDefinitions();

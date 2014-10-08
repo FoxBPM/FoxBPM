@@ -38,24 +38,24 @@ public class TextAnnotationSVGBuilder extends AbstractSVGBuilder {
 		super(svgVo);
 	}
 
-	@Override
+	 
 	public void setWayPoints(List<Point> pointList) {
 
 	}
 
-	@Override
+	 
 	public void setWidth(float width) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setHeight(float height) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setXAndY(float x, float y) {
 		// 设置整体坐标，包括子类型
 		this.svgVo.getgVo().setTransform(
@@ -63,61 +63,61 @@ public class TextAnnotationSVGBuilder extends AbstractSVGBuilder {
 						.append(BRACKET_SUFFIX).toString());
 	}
 
-	@Override
+	 
 	public void setStroke(String stroke) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setStrokeWidth(float strokeWidth) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setFill(String fill) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setID(String id) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setName(String name) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setStyle(String style) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setTypeStroke(String stroke) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setTypeStrokeWidth(float strokeWidth) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setTypeFill(String fill) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setTypeStyle(String style) {
 		// TODO Auto-generated method stub
 

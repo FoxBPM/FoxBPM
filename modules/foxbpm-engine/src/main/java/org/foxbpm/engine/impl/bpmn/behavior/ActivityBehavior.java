@@ -51,7 +51,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 	/** 循环对象 */
 	protected LoopCharacteristics loopCharacteristics;
 
-	@Override
+	 
 	public void enter(FlowNodeExecutionContext executionContext) {
 
 		/** 事件顺序如下,先判断跳过策略,再判断边界事件,再执行多实例,最后执行节点进入事件 */
@@ -357,7 +357,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
+	 
 	public void leave(FlowNodeExecutionContext executionContext) {
 
 		TokenEntity token = (TokenEntity) executionContext;
@@ -466,7 +466,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		}
 	}
 
-	@Override
+	 
 	public void cleanData(FlowNodeExecutionContext executionContext) {
 		try {
 			FoxbpmScheduler foxbpmScheduler =Context.getProcessEngineConfiguration().getFoxbpmScheduler();

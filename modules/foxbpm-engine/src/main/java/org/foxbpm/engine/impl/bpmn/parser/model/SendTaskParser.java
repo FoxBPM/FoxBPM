@@ -22,12 +22,12 @@ import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.SendTaskBehavior;
 
 public class SendTaskParser extends TaskParser {
-	@Override
+	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		return super.parser(baseElement);
 	}
 	
-	@Override
+	 
 	public void init() {
 		baseElementBehavior=new SendTaskBehavior();
 	}

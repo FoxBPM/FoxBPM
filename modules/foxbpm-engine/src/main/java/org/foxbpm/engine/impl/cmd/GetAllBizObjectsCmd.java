@@ -42,7 +42,7 @@ import org.foxbpm.model.config.foxbpmconfig.DataObjectBehavior;
  */
 public class GetAllBizObjectsCmd implements Command<List<Map<String,Object>>> {
 
-	@Override
+	 
 	public List<Map<String, Object>> execute(CommandContext commandContext) {
 		List<Map<String,Object>> result = new ArrayList<Map<String,Object>>();
 		ProcessEngineConfigurationImpl processEngine = commandContext.getProcessEngineConfigurationImpl();

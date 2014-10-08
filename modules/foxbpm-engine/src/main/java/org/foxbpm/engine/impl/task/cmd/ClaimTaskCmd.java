@@ -33,7 +33,7 @@ public class ClaimTaskCmd extends AbstractExpandTaskCmd<ClaimTaskCommand, Void> 
 		super(claimTaskCommand);
 	}
 
-	@Override
+	 
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
 
 		if (StringUtil.isNotEmpty(agent)) {

@@ -32,7 +32,7 @@ import org.foxbpm.model.bpmn.foxbpm.PotentialStarter;
 public class ProcessParser extends BaseElementParser {
 	
 
-	@Override
+	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		Process process=(Process)baseElement;
 		ProcessBehavior processBehavior=(ProcessBehavior)baseElementBehavior;
@@ -69,7 +69,7 @@ public class ProcessParser extends BaseElementParser {
 		return super.parser(baseElement);
 	}
 
-	@Override
+	 
 	public void init() {
 		baseElementBehavior=new ProcessBehavior();
 	}

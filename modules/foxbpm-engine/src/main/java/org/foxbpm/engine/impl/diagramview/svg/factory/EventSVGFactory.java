@@ -42,11 +42,11 @@ public class EventSVGFactory extends AbstractFlowElementSVGFactory {
 	public EventSVGFactory(KernelBaseElement kernelBaseElement, String voTemplateFileName) {
 		super(kernelBaseElement, voTemplateFileName);
 	}
-	@Override
+	 
 	public VONode createSVGVO() {
 		return (SvgVO) super.loadSVGVO(voTemplateFileName);
 	}
-	@Override
+	 
 	public void filterChildVO(VONode voNode, List<String> filterCondition) {
 		// TODO Auto-generated method stub
 		

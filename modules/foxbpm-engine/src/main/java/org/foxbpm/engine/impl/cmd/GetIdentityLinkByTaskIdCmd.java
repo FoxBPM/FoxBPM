@@ -36,7 +36,7 @@ public class GetIdentityLinkByTaskIdCmd implements Command<List<IdentityLinkEnti
 		this.taskId = taskId;
 	}
 	
-	@Override
+	 
 	public List<IdentityLinkEntity> execute(CommandContext commandContext) {
 		return commandContext.getIdentityLinkManager().findIdentityLinksByTaskId(taskId);
 	}

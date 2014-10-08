@@ -34,7 +34,7 @@ import org.foxbpm.model.bpmn.foxbpm.LoopDataOutputCollection;
 
 public class MultiInstanceLoopCharacteristicsParser extends LoopCharacteristicsParser {
 
-	@Override
+	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
 
 		org.eclipse.bpmn2.MultiInstanceLoopCharacteristics mLoopBpmn = (org.eclipse.bpmn2.MultiInstanceLoopCharacteristics) baseElement;
@@ -72,7 +72,7 @@ public class MultiInstanceLoopCharacteristicsParser extends LoopCharacteristicsP
 		return super.parser(baseElement);
 	}
  
-	@Override
+	 
 	public void init() {
 		baseElementBehavior = new MultiInstanceLoopCharacteristics();
 	}

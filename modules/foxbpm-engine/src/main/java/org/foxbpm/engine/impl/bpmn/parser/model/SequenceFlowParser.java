@@ -32,7 +32,7 @@ import org.foxbpm.engine.impl.util.BpmnModelUtil;
  */
 public class SequenceFlowParser extends FlowElementParser {
 
-	@Override
+	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		String conditionExpression = BpmnModelUtil.getSequenceFlowCondition(baseElement);
 		SequenceFlowBehavior sequenceFlowBehavior = (SequenceFlowBehavior)baseElementBehavior;
@@ -42,7 +42,7 @@ public class SequenceFlowParser extends FlowElementParser {
 		return super.parser(baseElement);
 	}
 	
-	@Override
+	 
 	public void init() {
 		baseElementBehavior = new SequenceFlowBehavior();
 	}

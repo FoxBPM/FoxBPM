@@ -68,17 +68,17 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 		
 	}
 	
-	@Override
+	 
 	public void setWidth(float width) {
 		rectVO.setWidth(width);
 	}
 	
-	@Override
+	 
 	public void setHeight(float height) {
 		this.rectVO.setHeight(height);
 	}
 	
-	@Override
+	 
 	public void setStroke(String stroke) {
 		if (StringUtils.isBlank(stroke)) {
 			this.rectVO.setStroke(STROKE_DEFAULT);
@@ -90,12 +90,12 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 		}
 	}
 	
-	@Override
+	 
 	public void setStrokeWidth(float strokeWidth) {
 		this.rectVO.setStrokeWidth(strokeWidth);
 	}
 	
-	@Override
+	 
 	public void setFill(String fill) {
 		if (StringUtils.isBlank(fill)) {
 			fill = FILL_DEFAULT;
@@ -103,7 +103,7 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 		this.buildLinearGradient(fill);
 	}
 	
-	@Override
+	 
 	public void setXAndY(float x, float y) {
 		// 设置整体坐标，包括子类型
 		this.svgVo.getgVo().setTransform(new StringBuffer(TRANSLANT_PREFIX).append(x).append(COMMA).append(y).append(BRACKET_SUFFIX).toString());
@@ -181,47 +181,47 @@ public class TaskSVGBuilder extends AbstractSVGBuilder {
 		
 	}
 	
-	@Override
+	 
 	public void setID(String id) {
 		this.rectVO.setId(id);
 	}
 	
-	@Override
+	 
 	public void setName(String name) {
 		
 	}
 	
-	@Override
+	 
 	public void setStyle(String style) {
 		// TODO Auto-generated method stub
 		
 	}
 	
-	@Override
+	 
 	public void setTypeStroke(String stroke) {
 		// TODO Auto-generated method stub
 		
 	}
 	
-	@Override
+	 
 	public void setTypeStrokeWidth(float strokeWidth) {
 		// TODO Auto-generated method stub
 		
 	}
 	
-	@Override
+	 
 	public void setTypeFill(String fill) {
 		// TODO Auto-generated method stub
 		
 	}
 	
-	@Override
+	 
 	public void setTypeStyle(String style) {
 		// TODO Auto-generated method stub
 		
 	}
 	
-	@Override
+	 
 	public void setWayPoints(List<Point> pointList) {
 		// TODO Auto-generated method stub
 		

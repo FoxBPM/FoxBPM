@@ -97,7 +97,7 @@ public class BoundaryEventSVGBuilder extends AbstractSVGBuilder {
 		pathVo.setStyle(typeStyle);
 	}
 
-	@Override
+	 
 	public void setTypeStroke(String stroke) {
 		if (pathVo == null) {
 			return;
@@ -105,7 +105,7 @@ public class BoundaryEventSVGBuilder extends AbstractSVGBuilder {
 		this.pathVo.setStroke(stroke);
 	}
 
-	@Override
+	 
 	public void setTypeStrokeWidth(float strokeWidth) {
 		if (pathVo == null) {
 			return;
@@ -113,7 +113,7 @@ public class BoundaryEventSVGBuilder extends AbstractSVGBuilder {
 		this.pathVo.setStrokeWidth(strokeWidth);
 	}
 
-	@Override
+	 
 	public void setTypeFill(String fill) {
 		if (pathVo == null) {
 			return;
@@ -121,7 +121,7 @@ public class BoundaryEventSVGBuilder extends AbstractSVGBuilder {
 		this.pathVo.setFill(fill);
 	}
 
-	@Override
+	 
 	public void setWidth(float width) {
 		float tempWidth = width / 2;
 		this.circleVO1.setR(tempWidth);
@@ -130,7 +130,7 @@ public class BoundaryEventSVGBuilder extends AbstractSVGBuilder {
 
 	}
 
-	@Override
+	 
 	public void setStroke(String stroke) {
 		if (StringUtils.isBlank(stroke)) {
 			this.circleVO1.setStroke(STROKE_DEFAULT);
@@ -143,7 +143,7 @@ public class BoundaryEventSVGBuilder extends AbstractSVGBuilder {
 		this.circleVO3.setStroke(COLOR_FLAG + stroke);
 	}
 
-	@Override
+	 
 	public void setStrokeWidth(float strokeWidth) {
 		this.circleVO1.setStrokeWidth(strokeWidth);
 		this.circleVO2.setStrokeWidth(strokeWidth);
@@ -151,7 +151,7 @@ public class BoundaryEventSVGBuilder extends AbstractSVGBuilder {
 
 	}
 
-	@Override
+	 
 	public void setFill(String fill) {
 		if (StringUtils.isBlank(fill)) {
 			fill = FILL_DEFAULT;
@@ -182,17 +182,17 @@ public class BoundaryEventSVGBuilder extends AbstractSVGBuilder {
 		}
 	}
 
-	@Override
+	 
 	public void setID(String id) {
 		this.circleVO1.setId(id);
 	}
 
-	@Override
+	 
 	public void setName(String name) {
 		this.circleVO1.setName(name);
 	}
 
-	@Override
+	 
 	public void setStyle(String style) {
 		this.circleVO1.setStyle(style);
 	}
@@ -201,7 +201,7 @@ public class BoundaryEventSVGBuilder extends AbstractSVGBuilder {
 	 * @TODO 圆心坐标设置是绝对坐标值，后期如果需要添加子类型，则采用transform的形式
 	 * 
 	 */
-	@Override
+	 
 	public void setXAndY(float x, float y) {
 		// 流程图定义的是圆对应矩形左上角的坐标，所以对应的SVG坐标需要将坐标值加半径
 		// 如果是事件节点，字体横坐标和圆心的横坐标一直，纵坐标等圆心坐标值加圆的半径值

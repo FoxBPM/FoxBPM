@@ -39,7 +39,7 @@ public class RunningTrackEntity implements RunningTrack, PersistentObject {
 	protected Date archiveTime;
 	protected String trackRecord;
 	
-	@Override
+	 
 	public Map<String, Object> getPersistentState() {
 		Map<String, Object> objectParam = new HashMap<String, Object>();
 		objectParam.put("id", this.id);
@@ -67,19 +67,19 @@ public class RunningTrackEntity implements RunningTrack, PersistentObject {
 		this.parentTokenId = parentTokenId;
 	}
 	
-	@Override
+	 
 	public boolean isModified() {
 		return false;
 	}
 	
 	public RunningTrackEntity() {
 	}
-	@Override
+	 
 	public String getId() {
 		return this.id;
 	}
 	
-	@Override
+	 
 	public void setId(String id) {
 		this.id = id;
 	}
