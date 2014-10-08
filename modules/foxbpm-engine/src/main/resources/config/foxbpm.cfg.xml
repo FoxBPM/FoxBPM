@@ -55,7 +55,7 @@
 
 		<taskCommandDefinition id="claim" name="接收任务"
 			command="org.foxbpm.engine.impl.task.command.ClaimTaskCommand" cmd="org.foxbpm.engine.impl.task.cmd.ClaimTaskCmd"
-			isEnabled="true" type="sharedTasks"
+			isEnabled="true" type="toDoTasks"
 			filter="org.foxbpm.engine.impl.task.filter.ClaimTaskFilter">
 			<commandParam key="isSaveData" name="是否保存数据" value="false"
 				description="" dataType="String" bizType="ControlParam" />

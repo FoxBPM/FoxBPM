@@ -67,7 +67,7 @@ public abstract class Authentication {
 	public static List<GroupEntity> selectGroupByUserId(String userId) {
 		UserEntity user = selectUserByUserId(userId);
 		if (user == null) {
-			throw new FoxBPMObjectNotFoundException("为找到ID:" + userId + "的用户！");
+			throw new FoxBPMObjectNotFoundException("未找到ID:" + userId + "的用户！");
 		}
 		return user.getGroups();
 	}
@@ -79,12 +79,11 @@ public abstract class Authentication {
 	 * @return
 	 */
 	public static UserEntity selectUserByUserId(String userId) {
-		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
-		
 		UserEntity result = (UserEntity) CacheUtil.getIdentityCache().get("user_" + userId);
 		if (result != null) {
 			return result;
 		}
+		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
 		CommandExecutor commandExecutor = processEngine.getProcessEngineConfiguration().getCommandExecutor();
 		UserEntity user = commandExecutor.execute(new FindUserByIdNoCacheCmd(userId));
 		CacheUtil.getIdentityCache().add("user_" + userId, user);
@@ -119,10 +118,18 @@ public abstract class Authentication {
 	 * @param groupType
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public static List<String> selectUserIdsByGroupIdAndType(String groupId, String groupType) {
+		List<String> userIds = (List<String>) CacheUtil.getIdentityCache().get("groupUserIdsCache_" + groupType + "_" + groupId);
+		if(userIds != null){
+			return userIds;
+		}
 		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
 		CommandExecutor commandExecutor = processEngine.getProcessEngineConfiguration().getCommandExecutor();
-		List<String> userIds = commandExecutor.execute(new FindUserByGroupIdAndTypeCmd(groupId, groupType));
+		userIds = commandExecutor.execute(new FindUserByGroupIdAndTypeCmd(groupId, groupType));
+		if(userIds != null){
+			CacheUtil.getIdentityCache().add("groupUserIdsCache_" + groupType + "_" + groupId, userIds);
+		}
 		return userIds;
 	}
 	
@@ -133,18 +140,34 @@ public abstract class Authentication {
 	 *            组编号
 	 * @return 子组的集合(包含父组)
 	 */
+	@SuppressWarnings("unchecked")
 	public static List<GroupEntity> findGroupChildMembersIncludeByGroupId(String groupId,
 	    String groupType) {
+		List<GroupEntity> groups = (List<GroupEntity>)CacheUtil.getIdentityCache().get("selectChildrenByGroupId_" + groupId);
+		if(groups != null){
+			return groups;
+		}
+		
 		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
 		CommandExecutor commandExecutor = processEngine.getProcessEngineConfiguration().getCommandExecutor();
-		List<GroupEntity> groups = commandExecutor.execute(new FindGroupChildrenIncludeByGroupIdCmd(groupId, groupType));
+		groups = commandExecutor.execute(new FindGroupChildrenIncludeByGroupIdCmd(groupId, groupType));
+		if(groups != null){
+			CacheUtil.getIdentityCache().add("childrenGroup_"+ groupType + "_" + groupId,groups);
+		}
 		return groups;
 	}
 	
 	public static GroupEntity findGroupById(String groupId, String groupType) {
+		GroupEntity group = (GroupEntity)CacheUtil.getIdentityCache().get("Cache_" + groupType + "_" + groupId);
+		if(group != null){
+			return group;
+		}
 		ProcessEngine processEngine = ProcessEngineManagement.getDefaultProcessEngine();
 		CommandExecutor commandExecutor = processEngine.getProcessEngineConfiguration().getCommandExecutor();
-		GroupEntity group = commandExecutor.execute(new FindGroupByIdCmd(groupType, groupId));
+		group = commandExecutor.execute(new FindGroupByIdCmd(groupType, groupId));
+		if(group != null){
+			CacheUtil.getIdentityCache().add("Cache_" + groupType + "_" + groupId, group);
+		}
 		return group;
 	}
 	

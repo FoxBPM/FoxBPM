@@ -30,7 +30,6 @@ import org.foxbpm.rest.common.RestConstants;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.DataResult;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
-import org.restlet.data.Form;
 import org.restlet.resource.Get;
 
 /**
@@ -42,9 +41,7 @@ public class RollbackNodeCollectionResource extends AbstractRestResource{
 
 	@Get
 	public DataResult getRollbackNode(){
-		
-		Form query = getQuery();
-		String taskId = getQueryParameter(RestConstants.TASK_ID, query);
+		String taskId = getAttribute(RestConstants.TASK_ID);
 		if(StringUtil.isEmpty(taskId)){
 			throw new FoxBPMIllegalArgumentException("taskId is null");
 		}

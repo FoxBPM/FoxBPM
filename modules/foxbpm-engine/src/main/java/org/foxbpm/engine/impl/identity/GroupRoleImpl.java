@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.impl.Context;
-import org.foxbpm.engine.impl.cache.CacheUtil;
 import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 
@@ -38,13 +37,8 @@ public class GroupRoleImpl implements GroupDefinition {
 	
 	@SuppressWarnings("unchecked")
 	public List<GroupEntity> selectGroupByUserId(String userId) {
-		List<GroupEntity> groups = (List<GroupEntity>) CacheUtil.getIdentityCache().get("userRoleCache_" + userId);
-		if(groups != null){
-			return groups;
-		}
 		ISqlSession sqlsession = Context.getCommandContext().getSqlSession();
-		groups = (List<GroupEntity>)sqlsession.selectList("selectRoleByUserId", userId);
-		CacheUtil.getIdentityCache().add("userRoleCache_" + userId, groups);
+		List<GroupEntity> groups = (List<GroupEntity>)sqlsession.selectList("selectRoleByUserId", userId);
 		return groups;
 	}
 	
@@ -62,13 +56,8 @@ public class GroupRoleImpl implements GroupDefinition {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> selectUserIdsByGroupId(String groupId) {
-		List<String> userIds = (List<String>) CacheUtil.getIdentityCache().get("roleUserCache_" + groupId);
-		if(userIds != null){
-			return userIds;
-		}
 		ISqlSession sqlsession = Context.getCommandContext().getSqlSession();
-		userIds = (List<String>)sqlsession.selectList("selectUserIdsByRoleId", groupId);
-		CacheUtil.getIdentityCache().add("roleUserCache_" + groupId, userIds);
+		List<String> userIds = (List<String>)sqlsession.selectList("selectUserIdsByRoleId", groupId);
 		return userIds;
 	}
 	
@@ -84,13 +73,8 @@ public class GroupRoleImpl implements GroupDefinition {
 	
 	@Override
 	public GroupEntity selectGroupByGroupId(String groupId) {
-		GroupEntity group = (GroupEntity)CacheUtil.getIdentityCache().get("roleCache_" + groupId);
-		if(group != null){
-			return group;
-		}
 		ISqlSession sqlSession = Context.getCommandContext().getSqlSession();
-		group = (GroupEntity) sqlSession.selectOne("selectRoleById", groupId);
-		CacheUtil.getIdentityCache().add("roleCache_" + groupId, group);
+		GroupEntity group = (GroupEntity) sqlSession.selectOne("selectRoleById", groupId);
 		return group;
 	}
 	

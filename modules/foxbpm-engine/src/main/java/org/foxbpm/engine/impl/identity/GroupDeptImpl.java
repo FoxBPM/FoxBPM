@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.impl.Context;
-import org.foxbpm.engine.impl.cache.CacheUtil;
 import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 
@@ -37,13 +36,8 @@ public class GroupDeptImpl implements GroupDefinition {
 	}
 	@SuppressWarnings("unchecked")
 	public List<GroupEntity> selectGroupByUserId(String userId) {
-		List<GroupEntity> groups = (List<GroupEntity>) CacheUtil.getIdentityCache().get("userDeptCache_" + userId);
-		if(groups != null){
-			return groups;
-		}
 		ISqlSession sqlsession = Context.getCommandContext().getSqlSession();
-		groups = (List<GroupEntity>)sqlsession.selectList("selectDeptByUserId", userId);
-		CacheUtil.getIdentityCache().add("userDeptCache_" + userId, groups);
+		List<GroupEntity> groups = (List<GroupEntity>)sqlsession.selectList("selectDeptByUserId", userId);
 		return groups;
 	}
 	
@@ -61,24 +55,14 @@ public class GroupDeptImpl implements GroupDefinition {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> selectUserIdsByGroupId(String groupId) {
-		List<String> userIds =(List<String>) CacheUtil.getIdentityCache().get("deptUserCache_" + groupId);
-		if(userIds != null){
-			return userIds;
-		}
 		ISqlSession sqlsession = Context.getCommandContext().getSqlSession();
-		userIds = (List<String>)sqlsession.selectList("selectUserIdsByDeptId", groupId);
-		CacheUtil.getIdentityCache().add("deptUserCache_" + groupId, userIds);
+		List<String> userIds = (List<String>)sqlsession.selectList("selectUserIdsByDeptId", groupId);
 		return userIds;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<GroupEntity> selectChildrenByGroupId(String groupId) {
-		List<GroupEntity> groups = (List<GroupEntity>)CacheUtil.getIdentityCache().get("selectChildrenByGroupId_" + groupId);
-		if(groups != null){
-			return groups;
-		}
-		groups = new ArrayList<GroupEntity>();
+		List<GroupEntity> groups = new ArrayList<GroupEntity>();
 		//获取本身
 		GroupEntity group = selectGroupByGroupId(groupId);
 		if(group != null){
@@ -108,13 +92,8 @@ public class GroupDeptImpl implements GroupDefinition {
 	
 	@Override
 	public GroupEntity selectGroupByGroupId(String groupId) {
-		GroupEntity group = (GroupEntity)CacheUtil.getIdentityCache().get("deptCache_" + groupId);
-		if(group != null){
-			return group;
-		}
 		ISqlSession sqlSession = Context.getCommandContext().getSqlSession();
-		group = (GroupEntity) sqlSession.selectOne("selectDeptById", groupId);
-		CacheUtil.getIdentityCache().add("deptCache_" + groupId, group);
+		GroupEntity group = (GroupEntity) sqlSession.selectOne("selectDeptById", groupId);
 		return group;
 	}
 	

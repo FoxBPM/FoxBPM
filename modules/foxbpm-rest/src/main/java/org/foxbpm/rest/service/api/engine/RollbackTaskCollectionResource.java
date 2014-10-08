@@ -25,15 +25,12 @@ import java.util.Map;
 
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
-import org.foxbpm.engine.impl.entity.UserEntity;
-import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.rest.common.RestConstants;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.DataResult;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
-import org.restlet.data.Form;
 import org.restlet.resource.Get;
 
 /**
@@ -46,8 +43,7 @@ public class RollbackTaskCollectionResource extends AbstractRestResource{
 	@Get
 	public DataResult getRollbackTask(){
 		
-		Form query = getQuery();
-		String taskId = getQueryParameter(RestConstants.TASK_ID, query);
+		String taskId = getAttribute(RestConstants.TASK_ID);
 		if(StringUtil.isEmpty(taskId)){
 			throw new FoxBPMIllegalArgumentException("taskId is null");
 		}
@@ -69,18 +65,5 @@ public class RollbackTaskCollectionResource extends AbstractRestResource{
 		result.setData(resultList);
 		result.setTotal(resultList.size());
 		return result;
-	}
-	
-	protected String getUserName(String userId) {
-		if (userId == null || "".equals(userId)) {
-			return "空用户名";
-		}
-		UserEntity tmpUser = Authentication.selectUserByUserId(userId);
-		if (tmpUser != null) {
-			return tmpUser.getUserName();
-		} else {
-			return "未知用户:" + userId;
-		}
-
 	}
 }
