@@ -103,7 +103,11 @@ var pagefunction = function() {
 						"processing" : true,
 						"orderable" : true,
 						"serverSide" : true,
-						"ajax" : runningTrackTaskUrl,
+						"ajax" : {
+							"url":runningTrackTaskUrl,
+							"async":false
+							
+						},
 						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'>C>"
 								+ "t"
 								+ "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p l>>",
