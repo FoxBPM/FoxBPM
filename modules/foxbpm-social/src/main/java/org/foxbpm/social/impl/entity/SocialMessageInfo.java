@@ -18,6 +18,7 @@
 package org.foxbpm.social.impl.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 消息实体
@@ -44,7 +45,7 @@ public class SocialMessageInfo implements Serializable  {
 	/** 保留的转发数量 */
 	private String transferCount;
 	/** 发布时间 */
-	private String time;
+	private Date time;
 	/** 任务ID*/
 	private String taskId;
 	/** 流程实例ID*/
@@ -52,7 +53,15 @@ public class SocialMessageInfo implements Serializable  {
 	/** 是否公开FLAG*/
 	private int openFlag;
 	
+	/**是否已读FLAG*/
+	private int readFlag;
 	
+	public int getReadFlag() {
+		return readFlag;
+	}
+	public void setReadFlag(int readFlag) {
+		this.readFlag = readFlag;
+	}
 	public String getTaskId() {
 		return taskId;
 	}
@@ -119,10 +128,10 @@ public class SocialMessageInfo implements Serializable  {
 	public void setTransferCount(String transferCount) {
 		this.transferCount = transferCount;
 	}
-	public String getTime() {
+	public Date getTime() {
 		return time;
 	}
-	public void setTime(String time) {
+	public void setTime(Date time) {
 		this.time = time;
 	}
 

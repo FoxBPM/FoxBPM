@@ -16,28 +16,35 @@
 		<result column="TASK_ID" property="taskId" jdbcType="VARCHAR" />
 		<result column="PROCESS_INSTANCEID" property="processInstanceId" jdbcType="VARCHAR" />
 		<result column="OPEN_FLAG" property="openFlag" jdbcType="INTEGER" />
+		<result column="READ_FLAG" property="readFlag" jdbcType="INTEGER" />
 	</resultMap>
 
 	<select id="findAllSocialMessageInfo" parameterType="java.lang.String"
 		resultMap="socialMessageInfoResultMap">
-		SELECT * FROM FOXBPM_SOCIAL_MSG_INFO WHERE TYPE = 3 AND TASK_ID = #{taskId,jdbcType=VARCHAR} ORDER BY TIME_T DESC
+		SELECT * FROM FOXBPM_SOCIAL_MSG_INFO WHERE TYPE = 3 AND TASK_ID = #{taskId,jdbcType=VARCHAR} ORDER BY TIME_T
 	</select>
 	<select id="findReplaySocialMessageInfo" parameterType="java.lang.String"
 		resultMap="socialMessageInfoResultMap">
-		SELECT * FROM FOXBPM_SOCIAL_MSG_INFO WHERE TYPE = 3 AND TASK_ID = #{taskId,jdbcType=VARCHAR} AND TIME_T > #{loginTime,jdbcType=TIMESTAMP} AND USER_ID != #{taskId,jdbcType=VARCHAR}
+		SELECT * FROM FOXBPM_SOCIAL_MSG_INFO WHERE TYPE = 3 AND TASK_ID = #{taskId,jdbcType=VARCHAR} AND USER_ID != #{userId,jdbcType=VARCHAR} AND READ_FLAG = 0 ORDER BY TIME_T
 	</select>
 	
 	<insert id="addSocialMessageInfo" parameterType="org.foxbpm.social.impl.entity.SocialMessageInfo">
-	   INSERT INTO FOXBPM_SOCIAL_MSG_INFO (USER_ID, MSG_ID, CONTENT, TYPE, COMMENTED_COUNT,COMMENT_COUNT,TRANSFERRED_COUNT,TRANSFER_COUNT,TIME_T,TASK_ID,PROCESS_INSTANCEID,OPEN_FLAG)
+	   INSERT INTO FOXBPM_SOCIAL_MSG_INFO (USER_ID, MSG_ID, CONTENT, TYPE, COMMENTED_COUNT,COMMENT_COUNT,TRANSFERRED_COUNT,TRANSFER_COUNT,TIME_T,TASK_ID,PROCESS_INSTANCEID,OPEN_FLAG,READ_FLAG)
 		VALUES (#{userId,jdbcType=VARCHAR},
 		#{msgId,jdbcType=VARCHAR},
 		#{content,jdbcType=VARCHAR},3,0,0,0,0,
 		#{time,jdbcType=VARCHAR},
 		#{taskId,jdbcType=VARCHAR},
 		#{processInstanceId,jdbcType=VARCHAR},
-		#{openFlag,jdbcType=INTEGER}
+		#{openFlag,jdbcType=INTEGER},
+		#{readFlag,jdbcType=INTEGER}
 		)
 	</insert>
+	
+	<update id="updateSocialMessageInfoReadFlag">
+	   UPDATE FOXBPM_SOCIAL_MSG_INFO SET READ_FLAG = 1 WHERE 
+		)
+	</update>
 	
  
 </mapper>

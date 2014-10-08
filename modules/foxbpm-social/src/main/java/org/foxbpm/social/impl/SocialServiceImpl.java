@@ -17,6 +17,7 @@
  */
 package org.foxbpm.social.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.foxbpm.engine.impl.ServiceImpl;
@@ -57,9 +58,11 @@ public class SocialServiceImpl extends ServiceImpl implements SocialService {
 
 	@Override
 	public List<SocialMessageInfo> findAllSocialMessageInfo(String taskId,
-			String userId, String loginTime) {
-		return commandExecutor.execute(new FindReplySocialMessageInfoCmd(
+			String userId, Date loginTime) {
+		List<SocialMessageInfo> listSocialMessageInfo = commandExecutor.execute(new FindReplySocialMessageInfoCmd(
 				taskId, userId, loginTime));
+		
+		return listSocialMessageInfo;
 	}
 
 }

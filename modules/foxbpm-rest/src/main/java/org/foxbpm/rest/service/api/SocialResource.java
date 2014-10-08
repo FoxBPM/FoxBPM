@@ -17,7 +17,9 @@
  */
 package org.foxbpm.rest.service.api;
 
+import java.io.IOException;
 import java.net.URLDecoder;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -32,12 +34,14 @@ import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 
+import sun.misc.BASE64Decoder;
 /**
  * 社交rest资源类
  * 
  * @author Administrator
  * 
  */
+@SuppressWarnings("restriction")
 public class SocialResource extends AbstractRestResource {
 	@Get
 	public Object findSocialMessageInfo() {
@@ -58,8 +62,9 @@ public class SocialResource extends AbstractRestResource {
 			}
 		} else if (StringUtil.equals(msgType, "findReply")) {
 			String taskId = getQueryParameter("taskId", queryForm);
-			String userId = getQueryParameter("userId", queryForm);
-			String loginTime =  getQueryParameter("loginTime", queryForm);
+			String userId = getQueryParameter("userId", queryForm); 
+			userId = this.getRequest().getCookies().get(1).getValue();
+			Date loginTime = new Date(getQueryParameter("loginTime", queryForm));
 			if (StringUtil.isNotEmpty(taskId)) {
 				// 获取服务
 				allSocialMessageInfo = socialService.findAllSocialMessageInfo(
@@ -78,6 +83,7 @@ public class SocialResource extends AbstractRestResource {
 	public void addSocialMessageInfo(Representation entity) {
 		Map<String, String> paramsMap = getRequestParams(entity);
 		String userId = URLDecoder.decode(paramsMap.get("userId"));
+		userId = this.getRequest().getCookies().get(1).getValue();
 		String msgId = UUID.randomUUID().toString();
 		String content = URLDecoder.decode(paramsMap.get("content"));
 		int type = Integer.valueOf(URLDecoder.decode(paramsMap.get("type")));
@@ -87,8 +93,7 @@ public class SocialResource extends AbstractRestResource {
 		String transferredCount = URLDecoder.decode(paramsMap
 				.get("transferredCount"));
 		String transferCount = URLDecoder
-				.decode(paramsMap.get("transferCount"));
-		String time = URLDecoder.decode(paramsMap.get("time"));
+				.decode(paramsMap.get("transferCount")); 
 		String taskId = URLDecoder.decode(paramsMap.get("taskId"));
 		String processInstanceId = URLDecoder.decode(paramsMap
 				.get("processInstanceId"));
@@ -104,11 +109,11 @@ public class SocialResource extends AbstractRestResource {
 		socialMessageInfo.setCommentedCount(commentedCount);
 		socialMessageInfo.setTransferredCount(transferredCount);
 		socialMessageInfo.setTransferCount(transferCount);
-		socialMessageInfo.setTime(time);
+		socialMessageInfo.setTime(new Date());
 		socialMessageInfo.setTaskId(taskId);
 		socialMessageInfo.setProcessInstanceId(processInstanceId);
 		socialMessageInfo.setOpenFlag(openFlag);
-
+		socialMessageInfo.setReadFlag(0);
 		// 获取服务
 		SocialService socialService = ProcessEngineManagement
 				.getDefaultProcessEngine().getService(SocialService.class);

@@ -17,11 +17,11 @@
  */
 package org.foxbpm.social.impl.cmd;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.foxbpm.engine.impl.db.ListQueryParameterObject;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.social.impl.entity.SocialMessageInfo;
@@ -45,8 +45,8 @@ public class FindReplySocialMessageInfoCmd implements Command<List<SocialMessage
 	/**
 	 * 用户登录系统的时间
 	 */
-	private String loginTime;
-	public FindReplySocialMessageInfoCmd(String taskId,String userId,String loginTime) {
+	private Date loginTime;
+	public FindReplySocialMessageInfoCmd(String taskId,String userId,Date loginTime) {
 		this.taskId = taskId;
 		this.userId = userId;
 		this.loginTime = loginTime;
@@ -59,9 +59,7 @@ public class FindReplySocialMessageInfoCmd implements Command<List<SocialMessage
 		queryMap.put("taskId", taskId); 
 		queryMap.put("userId", userId); 
 		queryMap.put("loginTime", loginTime); 
-		ListQueryParameterObject queryParams = new ListQueryParameterObject();
-		queryParams.setParameter(queryMap);
-		return (List<SocialMessageInfo>) commandContext.getSqlSession().selectList("findReplaySocialMessageInfo", queryParams);
+		return (List<SocialMessageInfo>) commandContext.getSqlSession().selectList("findReplaySocialMessageInfo", queryMap);
 	}
 
 }
