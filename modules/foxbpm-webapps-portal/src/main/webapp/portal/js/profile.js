@@ -128,6 +128,14 @@ PersonInfo.prototype = {
 			hiddenFileInput.setAttribute("multiple", "multiple");
 			hiddenFileInput.style.visibility = "hidden";
 			hiddenFileInput.onchange = function() {
+				if(this.files.length > 1){
+					showMessage("错误","请选择一个文件！","error");
+					return;
+				}
+				if (this.files[0].size > 1 * 1024 * 1024) {
+					showMessage("错误","文件过大，请选择小于1MB的文件！","error");
+					return;
+				}
 				_self.previewImage(this);
 				_self.ajaxSubmit("uploadForm");
 			};
@@ -156,8 +164,6 @@ PersonInfo.prototype = {
 				error : function() {
 				},
 				success : function(data, status) {
-					//_self.loadPersonInfo();
-					//$("#editPersonalInfo").click();
 					window.location.reload(true);
 				}
 			});
