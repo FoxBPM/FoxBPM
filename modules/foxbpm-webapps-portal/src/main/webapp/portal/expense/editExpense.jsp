@@ -155,7 +155,7 @@
 		<h2>报销单据</h2>
 	</header>
 	<!-- widget div-->
-	<div id="leftDiv" style="float:left;width:100%;height:100%; border:1px solid red;">
+	<div id="leftDiv" style="float:left;width:100%;height:93%; border:1px solid red;">
 		<div class="jarviswidget-editbox">
 		</div>
 		<div class="widget-body no-padding" style="border-right-width:2px;border-right-style:outset;">

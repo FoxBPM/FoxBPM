@@ -249,7 +249,7 @@ function openTaskForm(url,dataId,taskId,processInstanceId){
 	//测试时暂时用报销的表单代替
 	url = "portal/expense/editExpense.jsp";
 	var formUrl = url+"?dataId="+dataId+"&taskId="+taskId+"&processInstanceId="+processInstanceId+"&refresh="+new Date();
-	openModalForm(formUrl);
+	openModalForm(formUrl,700);
 }
 
 function showDiagram(processDefinitionKey,processInstanceId){ 
