@@ -80,7 +80,7 @@ public class WorkFlowService {
 			}
 		}
 		expandTaskCommand.setParamMap(taskParams);
-		if (taskIdNode != null && StringUtil.isNotEmpty(taskIdNode.getTextValue())) {
+		if (taskIdNode != null && StringUtil.isNotEmpty(taskIdNode.getTextValue())&& !StringUtil.equals(taskIdNode.getTextValue(),"null")) {
 			expandTaskCommand.setTaskId(taskIdNode.getTextValue());
 		} else {
 			String userId = Authentication.getAuthenticatedUserId();

@@ -23,7 +23,6 @@ import org.foxbpm.engine.exception.FoxBPMDbException;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 /**
  * 数据变量工具类
@@ -36,7 +35,7 @@ public class DataVarUtil {
 	private static DataVarUtil instance;
 	/** 查询sql */
 	private final static String QUERY_DATASQL = "select {0} from {1} where {2} = ?";
-	
+
 	public static DataVarUtil getInstance() {
 		if (null == instance) {
 			synchronized (DataVarUtil.class) {
@@ -47,7 +46,7 @@ public class DataVarUtil {
 		}
 		return instance;
 	}
-	
+
 	/**
 	 * 获取数据值
 	 * 
@@ -59,22 +58,24 @@ public class DataVarUtil {
 	 *            字段名称
 	 * @return 返回字段值
 	 */
-	public Object getDataValue(String dataSource, String bizkey, String field,FlowNodeExecutionContext executionContext) {
+	public Object getDataValue(String dataSource, String bizkey, String field,
+			FlowNodeExecutionContext executionContext) {
 		try {
-			JdbcTemplate jdbcTemplate = new JdbcTemplate(DBUtils.getDataSource(dataSource));
-			
-			String bizObjName = StringUtil.getString(ExpressionMgmt.execute("${_BizName}",executionContext));
-			String bizField = StringUtil.getString(ExpressionMgmt.execute("${_BizKeyField}",executionContext));
-			
-			String sql = MessageFormat.format(QUERY_DATASQL, new Object[]{field, bizObjName, bizField});
-			SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, new Object[]{bizkey});
-			while (sqlRowSet.next()) {
-				return sqlRowSet.getObject(field);
-			}
-			
+			JdbcTemplate jdbcTemplate = new JdbcTemplate(
+					DBUtils.getDataSource(dataSource));
+
+			String bizObjName = StringUtil.getString(ExpressionMgmt.execute(
+					"${_BizName}", executionContext));
+			String bizField = StringUtil.getString(ExpressionMgmt.execute(
+					"${_BizKeyField}", executionContext));
+
+			String sql = MessageFormat.format(QUERY_DATASQL, new Object[] {
+					field, bizObjName, bizField });
+			return jdbcTemplate.queryForObject(sql, Object.class,
+					new Object[] { bizkey });
+
 		} catch (Exception e) {
 			throw new FoxBPMDbException("数据变量值获取失败!", e);
 		}
-		return null;
 	}
 }
