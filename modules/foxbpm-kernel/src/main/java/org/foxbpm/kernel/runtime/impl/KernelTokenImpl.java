@@ -629,7 +629,7 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 		return null;
 	}
 
-	@Override
+	 
 	public List<KernelTokenImpl> findInactiveToken(KernelFlowNode flowNode) {
 		List<KernelTokenImpl> inactiveTokenInActivity = new ArrayList<KernelTokenImpl>();
 		List<KernelTokenImpl> otherToken = new ArrayList<KernelTokenImpl>();
@@ -652,7 +652,7 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 		return inactiveTokenInActivity;
 	}
 
-	@Override
+	 
 	public FlowNodeExecutionContext createChildrenToken() {
 
 		KernelTokenImpl createdToken = getProcessInstance().createChildrenToken(this);
@@ -660,7 +660,7 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 		return createdToken;
 	}
 
-	@Override
+	 
 	public KernelProcessInstance createSubProcessInstance(KernelProcessDefinition processDefinition) {
 
 		KernelProcessInstance processInstance = getProcessInstance().createSubProcessInstance(

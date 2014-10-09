@@ -32,7 +32,7 @@ import org.foxbpm.engine.impl.bpmn.behavior.TerminateEventBehavior;
 public class EndEventParser extends FlowNodeParser {
 
 	
-	@Override
+	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		EndEventImpl endEventImpl = (EndEventImpl)baseElement;
 		List<EventDefinition> eventDefinitions = endEventImpl.getEventDefinitions();
@@ -48,7 +48,7 @@ public class EndEventParser extends FlowNodeParser {
 		return super.parser(baseElement);
 	}
 	
-	@Override
+	 
 	public void init() {
 		baseElementBehavior = new EndEventBehavior();
 	}

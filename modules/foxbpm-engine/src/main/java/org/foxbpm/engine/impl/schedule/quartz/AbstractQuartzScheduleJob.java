@@ -54,7 +54,7 @@ public abstract class AbstractQuartzScheduleJob extends FoxbpmScheduleJob {
 		super(name, groupName);
 	}
 	
-	@Override
+	 
 	public void execute(JobExecutionContext context) {
 		// 统一封装数据,统一设置执行命令
 		FoxbpmJobExecutionContext foxpmJobExecutionContext = new FoxbpmJobExecutionContext(context);

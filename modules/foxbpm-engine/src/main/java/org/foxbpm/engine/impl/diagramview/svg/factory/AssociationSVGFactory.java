@@ -38,12 +38,12 @@ public class AssociationSVGFactory extends AbstractFlowElementSVGFactory {
 	public AssociationSVGFactory(KernelBaseElement kernelBaseElement, String svgTemplateFileName) {
 		super(kernelBaseElement, svgTemplateFileName);
 	}
-	@Override
+	 
 	public VONode createSVGVO() {
 		return (SvgVO) super.loadSVGVO(voTemplateFileName);
 	}
 	
-	@Override
+	 
 	public void filterChildVO(VONode voNode, List<String> filterCondition) {
 		
 	}

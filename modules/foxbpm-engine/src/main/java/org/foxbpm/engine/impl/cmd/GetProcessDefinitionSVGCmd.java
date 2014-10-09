@@ -41,7 +41,7 @@ public class GetProcessDefinitionSVGCmd implements Command<String> {
 		this.processDefinitionId = processDefinitionId;
 	}
 
-	@Override
+	 
 	public String execute(CommandContext commandContext) {
 		ProcessDefinitionEntity deployedProcessDefinition = commandContext
 				.getProcessEngineConfigurationImpl().getDeploymentManager()

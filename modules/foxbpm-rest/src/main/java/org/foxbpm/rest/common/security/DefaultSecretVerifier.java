@@ -26,7 +26,7 @@ import org.restlet.security.SecretVerifier;
  */
 public class DefaultSecretVerifier extends SecretVerifier{
 
-	@Override
+	 
 	public boolean verify(String userName, char[] password) throws IllegalArgumentException {
 		System.out.println("UserName is :" + userName);
 		String pwd = new String(password);

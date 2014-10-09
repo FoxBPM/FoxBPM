@@ -23,7 +23,7 @@ import org.foxbpm.engine.impl.bpmn.behavior.MultiInstanceLoopCharacteristics;
 
 public class StandardLoopCharacteristicsParser extends LoopCharacteristicsParser {
 	
-	@Override
+	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		
 
@@ -32,7 +32,7 @@ public class StandardLoopCharacteristicsParser extends LoopCharacteristicsParser
 	}
 	
 
-	@Override
+	 
 	public void init() {
 		baseElementBehavior=new MultiInstanceLoopCharacteristics();
 	}

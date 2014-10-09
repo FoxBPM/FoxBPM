@@ -21,7 +21,7 @@ import org.foxbpm.engine.task.Task;
 
 public class ClaimTaskFilter extends AbstractCommandFilter {
 
-	@Override
+	 
 	public boolean accept(Task task) {
 		// TODO 自动生成的方法存根
 

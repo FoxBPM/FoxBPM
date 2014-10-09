@@ -97,7 +97,7 @@ public class AgentEntity implements PersistentObject{
 		this.id = id;
 	}
 	
-	@Override
+	 
 	public Map<String, Object> getPersistentState() {
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("id", id);
@@ -108,7 +108,7 @@ public class AgentEntity implements PersistentObject{
 		return map;
 	}
 	
-	@Override
+	 
 	public boolean isModified() {
 		return false;
 	}

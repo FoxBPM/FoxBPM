@@ -17,6 +17,7 @@
  */
 package org.foxbpm.social;
 
+import java.util.Date;
 import java.util.List;
 
 import org.foxbpm.social.impl.entity.SocialMessageInfo;
@@ -57,5 +58,5 @@ public interface SocialService {
 	 * @return
 	 */
 	public List<SocialMessageInfo> findAllSocialMessageInfo(String taskId,
-			String userId, String loginTime);
+			String userId, Date loginTime);
 }

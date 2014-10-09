@@ -45,12 +45,12 @@ public class GroupSVGFactory extends AbstractFlowElementSVGFactory {
 	public GroupSVGFactory(KernelBaseElement kernelBaseElement, String svgTemplateFileName) {
 		super(kernelBaseElement, svgTemplateFileName);
 	}
-	@Override
+	 
 	public VONode createSVGVO() {
 		return (SvgVO) super.loadSVGVO(voTemplateFileName);
 	}
 	
-	@Override
+	 
 	public void filterChildVO(VONode voNode, List<String> filterCondition) {
 		
 	}

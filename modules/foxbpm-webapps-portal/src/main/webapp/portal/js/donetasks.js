@@ -98,6 +98,7 @@ var pagefunction = function() {
 						"serverSide" : true,
 						"ajax": {
 				            "url": doneTaskUrl,
+				            "async":false,
 				            "data": function ( d ) {
 				                d.ended = true; 
 				            }

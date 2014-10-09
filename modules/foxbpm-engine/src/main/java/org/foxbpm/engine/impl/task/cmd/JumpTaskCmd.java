@@ -30,7 +30,7 @@ public class JumpTaskCmd extends AbstractExpandTaskCmd<JumpTaskCommand, Void> {
 	}
 
 	
-	@Override
+	 
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
 		
 		/** 获取任务命令 */

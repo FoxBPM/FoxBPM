@@ -33,7 +33,7 @@ public class DeleteUserCmd implements Command<Void> {
 		this.userId = userId;
 	}
 	
-	@Override
+	 
 	public Void execute(CommandContext commandContext) {
 		commandContext.getUserEntityManager().deleteUser(userId);
 		return null;

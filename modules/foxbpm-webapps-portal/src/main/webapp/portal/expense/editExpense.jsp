@@ -59,9 +59,75 @@
 		flowCommandCompenent.init();
 		initChatMsg();
 		setInterval(function() { 
-			//$(".mes" + 3).append("<div class='message clearfix' style='border-bottom:0px'><div class='user-logo' style='float:left'><img src='" + "img/head/2024.jpg" + "'/>" + "</div>" +"<div class='msgDiv' style='margin-top:0px;margin-left:65;width:110px;background:#33CC99'>&nbsp;"+"oiuoo"+" <div style='position:absolute;top:5px;left:-20px;border:solid 10px;border-color: rgba(15, 15, 15, 0) #33CC99 rgba(200, 37, 207, 0) rgba(248, 195, 1, 0);'></div>"+ "<div class='wrap-ri'>" + "<div clsss='clearfix' style='bottom: 0px;width: 150px;left: 50px;top: 40px;' style='float:right'><span>" + "2014-09-28 21:40:05" + "</span></div>" + "</div>" + "<div style='clear:both;'></div>" + "</div>");
-			//$(".chat01_content").scrollTop($(".mes" + 3).height());
+			var msgUrl = _serviceUrl+"social";
+			$.ajax({
+		        type: "get",//使用get方法访问后台
+		        dataType: "json",//返回json格式的数据
+		        url: msgUrl,//要访问的后台地址
+		        data:{taskId:"taskId",msgType:"findReply",userId:"",loginTime:new Date},
+		        success: function(msgInfos){//msg为返回的数据，在这里做数据绑定  
+		        	for(var i=0;i<msgInfos.length;i++){
+		        		//$(".mes" + 3).append("<div class='message clearfix' style='border-bottom:0px'><div class='user-logo' style='float:left'><img src='" + "img/head/2024.jpg" + "'/>" + "</div>" +"<div class='msgDiv' style='margin-top:0px;margin-left:65;width:110px;background:#33CC99'>&nbsp;"+msgInfos[i].content+" <div style='position:absolute;top:5px;left:-20px;border:solid 10px;border-color: rgba(15, 15, 15, 0) #33CC99 rgba(200, 37, 207, 0) rgba(248, 195, 1, 0);'></div>"+ "<div class='wrap-ri'>" + "<div clsss='clearfix' style='bottom: 0px;width: 150px;left: 50px;top: 40px;' style='float:right'><span>" + msgInfos[i].time + "</span></div>" + "</div>" + "<div style='clear:both;'></div>" + "</div>");
+		        		$("#msg_list").append("<li class='message'><img src='img/avatars/sunny.png' class='online' alt=''><div class='message-text'><time>2014-01-13</time> <a href='javascript:void(0);' class='username'>John Doe</a>"+msgInfos[i].content+" <i class='fa fa-smile-o txt-color-orange'></i></div></li>");
+		        		$("#chat-body").scrollTop($("#msg_list").height());
+		        	}
+		        },
+		        error:function(msg){
+		        	showMessage("错误","系统错误，请重新打开或联系管理员！","error");
+		        }
+			});
 		}, 2000);
+		
+		
+		var filter_input = $('#filter-chat-list'),
+		chat_users_container = $('#chat-container > .chat-list-body'),
+		chat_users = $('#chat-users'),
+		chat_list_btn = $('#chat-container > .chat-list-open-close'),
+		chat_body = $('#chat-body');
+		
+		// open chat list
+		/*
+		 * LIST FILTER (CHAT)
+		 */
+		
+		// custom css expression for a case-insensitive contains()
+		jQuery.expr[':'].Contains = function (a, i, m) {
+		    return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+		};
+		
+		function listFilter(list) { // header is any element, list is an unordered list
+		    // create and add the filter form to the header
+		
+		    filter_input.change(function () {
+		        var filter = $(this).val();
+		        if (filter) {
+		            // this finds all links in a list that contain the input,
+		            // and hide the ones not containing the input while showing the ones that do
+		            chat_users.find("a:not(:Contains(" + filter + "))").parent().slideUp();
+		            chat_users.find("a:Contains(" + filter + ")").parent().slideDown();
+		        } else {
+		            chat_users.find("li").slideDown();
+		        }
+		        return false;
+		    }).keyup(function () {
+		        // fire the above change event after every letter
+		        $(this).change();
+		
+		    });
+		
+		}
+		
+		// on dom ready
+		listFilter(chat_users);
+		
+		// open chat list
+		chat_list_btn.click(function () {
+		    $(this).parent('#chat-container').toggleClass('open');
+		});
+		
+		chat_body.animate({
+		    scrollTop: chat_body[0].scrollHeight
+		}, 500);
 	});
 	
 	function initChatMsg(){
@@ -74,7 +140,7 @@
 	        success: function(msgInfos){//msg为返回的数据，在这里做数据绑定  
 	        	for(var i=0;i<msgInfos.length;i++){
 	        		$(".mes" + 3).append("<div class='message clearfix' style='border-bottom:0px'><div class='user-logo' style='float:left'><img src='" + "img/head/2024.jpg" + "'/>" + "</div>" +"<div class='msgDiv' style='margin-top:0px;margin-left:65;width:110px;background:#33CC99'>&nbsp;"+msgInfos[i].content+" <div style='position:absolute;top:5px;left:-20px;border:solid 10px;border-color: rgba(15, 15, 15, 0) #33CC99 rgba(200, 37, 207, 0) rgba(248, 195, 1, 0);'></div>"+ "<div class='wrap-ri'>" + "<div clsss='clearfix' style='bottom: 0px;width: 150px;left: 50px;top: 40px;' style='float:right'><span>" + msgInfos[i].time + "</span></div>" + "</div>" + "<div style='clear:both;'></div>" + "</div>");
-	        		$(".chat01_content").scrollTop($(".mes" + 3).height());
+	        		$("#chat-body").scrollTop($("#chat-body").height())
 	        	}
 	        },
 	        error:function(msg){
@@ -155,7 +221,7 @@
 		<h2>报销单据</h2>
 	</header>
 	<!-- widget div-->
-	<div id="leftDiv" style="float:left;width:100%;height:93%; border:1px solid red;">
+	<div id="leftDiv" style="float:left;width:100%;height:455px; border:1px solid red;">
 		<div class="jarviswidget-editbox">
 		</div>
 		<div class="widget-body no-padding" style="border-right-width:2px;border-right-style:outset;">
@@ -231,7 +297,7 @@
 				</fieldset>
 
 				<footer id="toolbar">
-				<button type='button' id="closeModal" class='btn btn-primary'>关闭</button>
+				<button type='button' id="closeModal" class='btn btn-primary' style='margin-top: 0px;'>关闭</button>
 				</footer>
 				<input type="hidden" name="flowCommandInfo" id="flowCommandInfo">
 			</form>
@@ -240,193 +306,159 @@
 		
 		</div>
 	</div>
-        <div id="rightDiv" style="float:left;display:none;height:100%; border:1px solid red;border-left-width:0px;padding-left: 0px;padding-top: 0px;">
+        <div id="rightDiv" style="float:left;display:none;height:450px; border:1px solid red;border-left-width:0px;padding-left: 0px;padding-top: 0px;">
  
-			<!--效果html开始-->
-			    <div class="content" style="background-color:white;height: 480px;width: 500px;">
-			        <div class="chatBox"  style="margin-left: 0px;width: 500px">
-			        <div class="chatLeft" style="width: 339px;">
-			                <div class="chat01">
-			                    <div class="chat01_title">
-			                        <ul class="talkTo">
-			                            <li><a href="javascript:;">王旭</a></li></ul>
-			                    </div>
-			                    <div class="chat01_content" style="height:294px">
-			                        <div class="message_box mes1">
-			                        </div>
-			                        <div class="message_box mes2">
-			                        </div>
-			                        <div class="message_box mes3" style="display: block;">
-			                        </div>
-			                        <div class="message_box mes4">
-			                        </div>
-			                        <div class="message_box mes5">
-			                        </div>
-			                        <div class="message_box mes6">
-			                        </div>
-			                        <div class="message_box mes7">
-			                        </div>
-			                        <div class="message_box mes8">
-			                        </div>
-			                        <div class="message_box mes9">
-			                        </div>
-			                        <div class="message_box mes10">
-			                        </div>
-			                    </div>
-			                </div>
-			                <div class="chat02">
-			                    <div class="chat02_title">
-			                        <a class="chat02_title_btn ctb01" href="javascript:;"></a><a class="chat02_title_btn ctb02"
-			                            href="javascript:;" title="选择文件">
-			                            <embed width="15" height="16" flashvars="swfid=2556975203&amp;maxSumSize=50&amp;maxFileSize=50&amp;maxFileNum=1&amp;multiSelect=0&amp;uploadAPI=http%3A%2F%2Fupload.api.weibo.com%2F2%2Fmss%2Fupload.json%3Fsource%3D209678993%26tuid%3D1887188824&amp;initFun=STK.webim.ui.chatWindow.msgToolBar.upload.initFun&amp;sucFun=STK.webim.ui.chatWindow.msgToolBar.upload.sucFun&amp;errFun=STK.webim.ui.chatWindow.msgToolBar.upload.errFun&amp;beginFun=STK.webim.ui.chatWindow.msgToolBar.upload.beginFun&amp;showTipFun=STK.webim.ui.chatWindow.msgToolBar.upload.showTipFun&amp;hiddenTipFun=STK.webim.ui.chatWindow.msgToolBar.upload.hiddenTipFun&amp;areaInfo=0-16|12-16&amp;fExt=*.jpg;*.gif;*.jpeg;*.png|*&amp;fExtDec=选择图片|选择文件"
-			                                data="upload.swf" wmode="transparent" bgcolor="" allowscriptaccess="always" allowfullscreen="true"
-			                                scale="noScale" menu="false" type="application/x-shockwave-flash" src="http://service.weibo.com/staticjs/tools/upload.swf?v=36c9997f1313d1c4"
-			                                id="swf_3140">
-			                        </a><a class="chat02_title_btn ctb03" href="javascript:;" title="选择附件">
-			                            <embed width="15" height="16" flashvars="swfid=2556975203&amp;maxSumSize=50&amp;maxFileSize=50&amp;maxFileNum=1&amp;multiSelect=0&amp;uploadAPI=http%3A%2F%2Fupload.api.weibo.com%2F2%2Fmss%2Fupload.json%3Fsource%3D209678993%26tuid%3D1887188824&amp;initFun=STK.webim.ui.chatWindow.msgToolBar.upload.initFun&amp;sucFun=STK.webim.ui.chatWindow.msgToolBar.upload.sucFun&amp;errFun=STK.webim.ui.chatWindow.msgToolBar.upload.errFun&amp;beginFun=STK.webim.ui.chatWindow.msgToolBar.upload.beginFun&amp;showTipFun=STK.webim.ui.chatWindow.msgToolBar.upload.showTipFun&amp;hiddenTipFun=STK.webim.ui.chatWindow.msgToolBar.upload.hiddenTipFun&amp;areaInfo=0-16|12-16&amp;fExt=*.jpg;*.gif;*.jpeg;*.png|*&amp;fExtDec=选择图片|选择文件"
-			                                data="upload.swf" wmode="transparent" bgcolor="" allowscriptaccess="always" allowfullscreen="true"
-			                                scale="noScale" menu="false" type="application/x-shockwave-flash" src="http://service.weibo.com/staticjs/tools/upload.swf?v=36c9997f1313d1c4"
-			                                id="swf_3140">
-			                        </a>
-			                        <label class="chat02_title_t">
-			                            <a href="chat.htm" target="_blank">聊天记录</a></label>
-			                        <div class="wl_faces_box">
-			                            <div class="wl_faces_content">
-			                                <div class="title">
-			                                    <ul>
-			                                        <li class="title_name">常用表情</li><li class="wl_faces_close"><span>&nbsp;</span></li></ul>
-			                                </div>
-			                                <div class="wl_faces_main">
-			                                    <ul>
-			                                        <li><a href="javascript:;">
-			                                            <img src="img/emo_01.gif" /></a></li><li><a href="javascript:;">
-			                                                <img src="img/emo_02.gif" /></a></li><li><a href="javascript:;">
-			                                                    <img src="img/emo_03.gif" /></a></li>
-			                                        <li><a href="javascript:;">
-			                                            <img src="img/emo_04.gif" /></a></li><li><a href="javascript:;">
-			                                                <img src="img/emo_05.gif" /></a></li><li><a href="javascript:;">
-			                                                    <img src="img/emo_06.gif" /></a></li>
-			                                        <li><a href="javascript:;">
-			                                            <img src="img/emo_07.gif" /></a></li><li><a href="javascript:;">
-			                                                <img src="img/emo_08.gif" /></a></li><li><a href="javascript:;">
-			                                                    <img src="img/emo_09.gif" /></a></li>
-			                                        <li><a href="javascript:;">
-			                                            <img src="img/emo_10.gif" /></a></li><li><a href="javascript:;">
-			                                                <img src="img/emo_11.gif" /></a></li><li><a href="javascript:;">
-			                                                    <img src="img/emo_12.gif" /></a></li>
-			                                        <li><a href="javascript:;">
-			                                            <img src="img/emo_13.gif" /></a></li><li><a href="javascript:;">
-			                                                <img src="img/emo_14.gif" /></a></li><li><a href="javascript:;">
-			                                                    <img src="img/emo_15.gif" /></a></li>
-			                                        <li><a href="javascript:;">
-			                                            <img src="img/emo_16.gif" /></a></li><li><a href="javascript:;">
-			                                                <img src="img/emo_17.gif" /></a></li><li><a href="javascript:;">
-			                                                    <img src="img/emo_18.gif" /></a></li>
-			                                        <li><a href="javascript:;">
-			                                            <img src="img/emo_19.gif" /></a></li><li><a href="javascript:;">
-			                                                <img src="img/emo_20.gif" /></a></li><li><a href="javascript:;">
-			                                                    <img src="img/emo_21.gif" /></a></li>
-			                                        <li><a href="javascript:;">
-			                                            <img src="img/emo_22.gif" /></a></li><li><a href="javascript:;">
-			                                                <img src="img/emo_23.gif" /></a></li><li><a href="javascript:;">
-			                                                    <img src="img/emo_24.gif" /></a></li>
-			                                        <li><a href="javascript:;">
-			                                            <img src="img/emo_25.gif" /></a></li><li><a href="javascript:;">
-			                                                <img src="img/emo_26.gif" /></a></li><li><a href="javascript:;">
-			                                                    <img src="img/emo_27.gif" /></a></li>
-			                                        <li><a href="javascript:;">
-			                                            <img src="img/emo_28.gif" /></a></li><li><a href="javascript:;">
-			                                                <img src="img/emo_29.gif" /></a></li><li><a href="javascript:;">
-			                                                    <img src="img/emo_30.gif" /></a></li>
-			                                        <li><a href="javascript:;">
-			                                            <img src="img/emo_31.gif" /></a></li><li><a href="javascript:;">
-			                                                <img src="img/emo_32.gif" /></a></li><li><a href="javascript:;">
-			                                                    <img src="img/emo_33.gif" /></a></li>
-			                                        <li><a href="javascript:;">
-			                                            <img src="img/emo_34.gif" /></a></li><li><a href="javascript:;">
-			                                                <img src="img/emo_35.gif" /></a></li><li><a href="javascript:;">
-			                                                    <img src="img/emo_36.gif" /></a></li>
-			                                        <li><a href="javascript:;">
-			                                            <img src="img/emo_37.gif" /></a></li><li><a href="javascript:;">
-			                                                <img src="img/emo_38.gif" /></a></li><li><a href="javascript:;">
-			                                                    <img src="img/emo_39.gif" /></a></li>
-			                                        <li><a href="javascript:;">
-			                                            <img src="img/emo_40.gif" /></a></li><li><a href="javascript:;">
-			                                                <img src="img/emo_41.gif" /></a></li><li><a href="javascript:;">
-			                                                    <img src="img/emo_42.gif" /></a></li>
-			                                        <li><a href="javascript:;">
-			                                            <img src="img/emo_43.gif" /></a></li><li><a href="javascript:;">
-			                                                <img src="img/emo_44.gif" /></a></li><li><a href="javascript:;">
-			                                                    <img src="img/emo_45.gif" /></a></li>
-			                                        <li><a href="javascript:;">
-			                                            <img src="img/emo_46.gif" /></a></li><li><a href="javascript:;">
-			                                                <img src="img/emo_47.gif" /></a></li><li><a href="javascript:;">
-			                                                    <img src="img/emo_48.gif" /></a></li>
-			                                        <li><a href="javascript:;">
-			                                            <img src="img/emo_49.gif" /></a></li><li><a href="javascript:;">
-			                                                <img src="img/emo_50.gif" /></a></li><li><a href="javascript:;">
-			                                                    <img src="img/emo_51.gif" /></a></li>
-			                                        <li><a href="javascript:;">
-			                                            <img src="img/emo_52.gif" /></a></li><li><a href="javascript:;">
-			                                                <img src="img/emo_53.gif" /></a></li><li><a href="javascript:;">
-			                                                    <img src="img/emo_54.gif" /></a></li>
-			                                        <li><a href="javascript:;">
-			                                            <img src="img/emo_55.gif" /></a></li><li><a href="javascript:;">
-			                                                <img src="img/emo_56.gif" /></a></li><li><a href="javascript:;">
-			                                                    <img src="img/emo_57.gif" /></a></li>
-			                                        <li><a href="javascript:;">
-			                                            <img src="img/emo_58.gif" /></a></li><li><a href="javascript:;">
-			                                                <img src="img/emo_59.gif" /></a></li><li><a href="javascript:;">
-			                                                    <img src="img/emo_60.gif" /></a></li>
-			                                    </ul>
-			                                </div>
-			                            </div>
-			                            <div class="wlf_icon">
-			                            </div>
-			                        </div>
-			                    </div>
-			                    <div class="chat02_content">
-			                        <textarea id="textarea" style="width: 338px;"></textarea>
-			                    </div>
-			                    <div class="chat02_bar">
-			                        <ul>
-			                            <li style="left: 2px; top: 10px; padding-left: 0px;">任务沟通中心</li>
-			                            <li style="right: 5px; top: 5px;"><a href="javascript:;">
-			                                <img src="img/send_btn.jpg"></a></li>
-			                        </ul>
-			                    </div>
-			                </div>
-			            </div>
-			            <div class="chatRight" style="width: 158px;">
-			                <div class="chat03">
-			                    <div class="chat03_title">
-			                        <label class="chat03_title_t">
-			                            成员列表</label>
-			                    </div>
-			                    <div class="chat03_content">
-			                        <ul>
-			                            <li>
-			                                <label class="online">
-			                                </label>
-			                                <a href="javascript:;">
-			                                    <img src="img/head/2013.jpg"></a><a href="javascript:;" class="chat03_name">刘秀</a>
-			                            </li>
-			                            <li>
-			                                <label class="offline">
-			                                </label>
-			                                <a href="javascript:;">
-			                                    <img src="img/head/2014.jpg"></a><a href="javascript:;" class="chat03_name">陈诚</a>
-			                            </li>
-			                            
-			                        </ul>
-			                    </div>
-			                </div>
-			            </div>
-			            <div style="clear: both;">
-			            </div>
-			        </div>
-			    </div>
-			<!--效果html结束-->
+			<!--效果html开始--> 
+			     <!-- new widget -->
+			<div class="jarviswidget jarviswidget-color-blueDark" style="background-color:white;height: 455px;width: 500px;" id="wid-id-1" data-widget-editbutton="false" data-widget-fullscreenbutton="false">
+
+				<!-- widget options:
+				usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+				data-widget-colorbutton="false"
+				data-widget-editbutton="false"
+				data-widget-togglebutton="false"
+				data-widget-deletebutton="false"
+				data-widget-fullscreenbutton="false"
+				data-widget-custombutton="false"
+				data-widget-collapsed="true"
+				data-widget-sortable="false"
+
+				-->
+
+				<header>
+					<span class="widget-icon"> <i class="fa fa-comments txt-color-white"></i> </span>
+					<h2>社交面板</h2>
+					<div class="widget-toolbar">
+						<!-- add: non-hidden - to disable auto hide -->
+
+						<div class="btn-group">
+							<button class="btn dropdown-toggle btn-xs btn-success" data-toggle="dropdown">
+								Status <i class="fa fa-caret-down"></i>
+							</button>
+							<ul class="dropdown-menu pull-right js-status-update">
+								<li>
+									<a href="javascript:void(0);"><i class="fa fa-circle txt-color-green"></i> Online</a>
+								</li>
+								<li>
+									<a href="javascript:void(0);"><i class="fa fa-circle txt-color-red"></i> Busy</a>
+								</li>
+								<li>
+									<a href="javascript:void(0);"><i class="fa fa-circle txt-color-orange"></i> Away</a>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<a href="javascript:void(0);"><i class="fa fa-power-off"></i> Log Off</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</header>
+
+				<!-- widget div-->
+				<div>
+					<!-- widget edit box -->
+					<div class="jarviswidget-editbox">
+						<div>
+							<label>Title:</label>
+							<input type="text" />
+						</div>
+					</div>
+					<!-- end widget edit box -->
+
+					<div class="widget-body widget-hide-overflow no-padding">
+						<!-- content goes here -->
+
+						<!-- CHAT CONTAINER -->
+						<div id="chat-container">
+							<span class="chat-list-open-close"><i class="fa fa-user"></i><b>!</b></span>
+
+							<div class="chat-list-body custom-scroll">
+								<ul id="chat-users">
+									<li>
+										<a href="javascript:void(0);"><img src="img/avatars/5.png" alt="">Robin Berry <span class="badge badge-inverse">23</span><span class="state"><i class="fa fa-circle txt-color-green pull-right"></i></span></a>
+									</li>
+									<li>
+										<a href="javascript:void(0);"><img src="img/avatars/male.png" alt="">Mark Zeukartech <span class="state"><i class="last-online pull-right">2hrs</i></span></a>
+									</li>
+									 
+								</ul>
+							</div>
+							<div class="chat-list-footer">
+								<div class="control-group">
+									<form class="smart-form">
+										<section>
+											<label class="input">
+												<input type="text" id="filter-chat-list" placeholder="Filter">
+											</label>
+										</section>
+
+									</form>
+
+								</div>
+
+							</div>
+
+						</div>
+
+						<!-- CHAT BODY -->
+						<div id="chat-body" class="chat-body custom-scroll">
+							<ul id="msg_list">
+								<li class="message">
+									<img src="img/avatars/5.png" class="online" alt="">
+									<div class="message-text">
+										<time>
+											2014-01-13
+										</time> <a href="javascript:void(0);" class="username">Sadi Orlaf</a> Hey did you meet the new board of director? He's a bit of an arse if you ask me...anyway here is the report you requested. I am off to launch with Lisa and Andrew, you wanna join?
+										<p class="chat-file row">
+											<b class="pull-left col-sm-6"> <!--<i class="fa fa-spinner fa-spin"></i>--> <i class="fa fa-file"></i> report-2013-demographic-report-annual-earnings.xls </b>
+											<span class="col-sm-6 pull-right"> <a href="javascript:void(0);" class="btn btn-xs btn-default">cancel</a> <a href="javascript:void(0);" class="btn btn-xs btn-success">save</a> </span>
+										</p>
+										<p class="chat-file row">
+											<b class="pull-left col-sm-6"> <i class="fa fa-ok txt-color-green"></i> tobacco-report-2012.doc </b>
+											<span class="col-sm-6 pull-right"> <a href="javascript:void(0);" class="btn btn-xs btn-primary">open</a> </span>
+										</p> </div>
+								</li>
+								<li class="message">
+									<img src="img/avatars/sunny.png" class="online" alt="">
+									<div class="message-text">
+										<time>
+											2014-01-13
+										</time> <a href="javascript:void(0);" class="username">John Doe</a> Haha! Yeah I know what you mean. Thanks for the file Sadi! <i class="fa fa-smile-o txt-color-orange"></i> 
+									</div>
+								</li>
+							</ul>
+
+						</div>
+
+						<!-- CHAT FOOTER -->
+						<div class="chat-footer" style="height: 166px;">
+
+							<!-- CHAT TEXTAREA -->
+							<div class="textarea-div">
+
+								<div class="typearea" style="height: 111px;">
+									<textarea placeholder="Write a reply..." id="textarea-expand" class="custom-scroll"></textarea>
+								</div>
+
+							</div>
+
+							<!-- CHAT REPLY/SEND -->
+							<span class="textarea-controls">
+								<button class="btn btn-sm btn-primary pull-right" id="ReplyChat">
+									Reply
+								</button> <span class="pull-right smart-form" style="margin-top: 3px; margin-right: 10px;"> <label class="checkbox pull-right">
+										<input type="checkbox" name="subscription" id="subscription">
+										<i></i>Press <strong> ENTER </strong> to send </label> </span> <a href="javascript:void(0);" class="pull-left"><i class="fa fa-camera fa-fw fa-lg"></i></a> </span>
+
+						</div>
+
+						<!-- end content -->
+					</div>
+
+				</div>
+				<!-- end widget div -->
+			</div>
         </div>
 </div>
 </body>
@@ -444,24 +476,26 @@
 			$this.css("border-bottom", "10px solid rgba(0, 0, 255, 0)");
 			$this.css("border-right", "0 none");
 			$this.css("right", "-9px");
+			$(this).attr("flag", "1");
+			
 			 $('#leftDiv').css("width", 600);
-			   parent.window.$('#contentFrame').css("width",1100);
+			   parent.window.$('#contentFrame').css("width",1176);
 			   $('body').css("width", 1100);
 			   $('#rightDiv').css("width", 340);
-			   $('#rightDiv').css("display", "block");
-			   $(this).attr("flag","1");
-			$(this).attr("flag", "1");
+			   $('#rightDiv').css("display", "block"); 
+			
 		} else {
 			$this.css("border-right", "10px solid #993366");
 			$this.css("border-top", "10px solid rgba(241, 248, 241, 0)");
 			$this.css("border-bottom", "10px solid rgba(0, 0, 255, 0)");
 			$this.css("border-left", "0 none");
 			$this.css("right", "-4px");
+			$(this).attr("flag","0");
 			parent.window.$('#contentFrame').css("width",650);
 			   $('body').css("width", 600);
 			   $('#leftDiv').css("width", "100%");
 			   $('#rightDiv').css("display", "none");
-			   $(this).attr("flag","0");
+			   
 		}
 	});
 

@@ -54,7 +54,7 @@ public class ConnectorSVGFactory extends AbstractFlowElementSVGFactory {
 		super(kernelBaseElement, voTemplateFileName);
 	}
 	
-	@Override
+	 
 	public VONode createSVGVO() {
 		SvgVO connectorVO = (SvgVO) super.loadSVGVO(voTemplateFileName);
 		GVO newGVO = new GVO();
@@ -67,7 +67,7 @@ public class ConnectorSVGFactory extends AbstractFlowElementSVGFactory {
 		return connectorVO;
 	}
 	
-	@Override
+	 
 	public void filterChildVO(VONode voNode, List<String> filterCondition) {
 		KernelSequenceFlowImpl kernelSequenceFlowImpl = (KernelSequenceFlowImpl) this.kernelBaseElement;
 		KernelFlowNodeImpl sourceRef = kernelSequenceFlowImpl.getSourceRef();

@@ -24,7 +24,7 @@ import org.foxbpm.engine.impl.bpmn.behavior.FlowElementBehavior;
 
 public abstract class FlowElementParser extends BaseElementParser {
 
-	@Override
+	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		
 		FlowElementBehavior flowElementBehavior=(FlowElementBehavior)baseElementBehavior;

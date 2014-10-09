@@ -42,7 +42,7 @@ public class ProcessEngineFactoryBean implements FactoryBean<ProcessEngine>,
 	protected ApplicationContext applicationContext;
 	protected ProcessEngineImpl processEngine;
 
-	@Override
+	 
 	public ProcessEngine getObject() throws Exception {
 		try{
 			processEngine = (ProcessEngineImpl) processEngineConfiguration.setProcessEngineName(ProcessEngineManagement.NAME_DEFAULT)
@@ -57,25 +57,25 @@ public class ProcessEngineFactoryBean implements FactoryBean<ProcessEngine>,
 		return processEngine;
 	}
 
-	@Override
+	 
 	public void destroy() throws Exception {
 		if (processEngine != null) {
 			processEngine.closeEngine();
 		}
 	}
 
-	@Override
+	 
 	public Class<?> getObjectType() {
 		return ProcessEngine.class;
 	}
 
-	@Override
+	 
 	public void setApplicationContext(ApplicationContext applicationContext)
 			throws BeansException {
 		this.applicationContext = applicationContext;
 	}
 
-	@Override
+	 
 	public boolean isSingleton() {
 		return true;
 	}

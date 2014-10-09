@@ -30,7 +30,7 @@ import org.foxbpm.engine.calendar.WorkCalendar;
  */
 public class DefaultWorkCalendar implements WorkCalendar {
 
-	@Override
+	 
 	public Date getDueTime(Date begin, double expectedHours, Map<String, Object> params) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(begin);

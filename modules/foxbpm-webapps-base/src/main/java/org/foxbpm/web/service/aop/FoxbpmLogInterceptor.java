@@ -33,13 +33,13 @@ import org.springframework.aop.ThrowsAdvice;
  */
 public class FoxbpmLogInterceptor implements AfterReturningAdvice, MethodBeforeAdvice, ThrowsAdvice {
 
-	@Override
+	 
 	public void afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable {
 		Logger logger = LoggerFactory.getLogger(target.getClass());
 		logger.debug("结束方法,方法名:" + method.getName() + ",执行结果" + returnValue);
 	}
 
-	@Override
+	 
 	public void before(Method method, Object[] args, Object target) throws Throwable {
 		Logger logger = LoggerFactory.getLogger(target.getClass());
 		logger.debug("进入方法,方法名:" + method.getName());

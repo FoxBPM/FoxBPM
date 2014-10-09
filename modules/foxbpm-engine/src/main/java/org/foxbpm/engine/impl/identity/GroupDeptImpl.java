@@ -41,26 +41,26 @@ public class GroupDeptImpl implements GroupDefinition {
 		return groups;
 	}
 	
-	@Override
+	 
 	public String getType() {
 		return type;
 	}
 	
-	@Override
+	 
 	public String getName() {
 		// TODO Auto-generated method stub
 		return name;
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Override
+	 
 	public List<String> selectUserIdsByGroupId(String groupId) {
 		ISqlSession sqlsession = Context.getCommandContext().getSqlSession();
 		List<String> userIds = (List<String>)sqlsession.selectList("selectUserIdsByDeptId", groupId);
 		return userIds;
 	}
 	
-	@Override
+	 
 	public List<GroupEntity> selectChildrenByGroupId(String groupId) {
 		List<GroupEntity> groups = new ArrayList<GroupEntity>();
 		//获取本身
@@ -90,7 +90,7 @@ public class GroupDeptImpl implements GroupDefinition {
 		}
 	}
 	
-	@Override
+	 
 	public GroupEntity selectGroupByGroupId(String groupId) {
 		ISqlSession sqlSession = Context.getCommandContext().getSqlSession();
 		GroupEntity group = (GroupEntity) sqlSession.selectOne("selectDeptById", groupId);
@@ -98,7 +98,7 @@ public class GroupDeptImpl implements GroupDefinition {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Override
+	 
 	public List<GroupEntity> selectAllGroup() {
 		ISqlSession sqlSession = Context.getCommandContext().getSqlSession();
 		List<GroupEntity> groups = (List<GroupEntity>) sqlSession.selectList("selectAllDept");
@@ -106,7 +106,7 @@ public class GroupDeptImpl implements GroupDefinition {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Override
+	 
 	public List<GroupRelationEntity> selectAllRelation() {
 		ISqlSession sqlSession = Context.getCommandContext().getSqlSession();
 		List<GroupRelationEntity> groupRelations = (List<GroupRelationEntity>) sqlSession.selectList("selectAllDeptRelation");

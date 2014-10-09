@@ -38,7 +38,7 @@ public class SuspendProcessInstanceCmd extends AbstractExpandTaskCmd<SuspendProc
 	}
 
 
-	@Override
+	 
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
 		
 		/** 获取任务命令 */

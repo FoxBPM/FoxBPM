@@ -36,7 +36,7 @@ public class SelectDeptActorConnector extends ActorConnectorHandler {
 		this.deptId = deptId;
 	}
 
-	@Override
+	 
 	public void assign(DelegateTask task) throws Exception {
 
 		if (StringUtil.isEmpty(StringUtil.trim(deptId))) {

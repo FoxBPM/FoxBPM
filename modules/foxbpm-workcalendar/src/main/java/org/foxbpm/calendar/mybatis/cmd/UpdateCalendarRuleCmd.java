@@ -28,7 +28,7 @@ public class UpdateCalendarRuleCmd implements Command<Void> {
 		this.calendarRuleEntity = calendarRuleEntity;
 	}
 	
-	@Override
+	 
 	public Void execute(CommandContext commandContext) {
 		commandContext.getSqlSession().update("updateCalendarRule", calendarRuleEntity);
 		return null;

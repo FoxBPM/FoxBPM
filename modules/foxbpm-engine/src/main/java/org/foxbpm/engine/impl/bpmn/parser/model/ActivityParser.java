@@ -29,7 +29,7 @@ import org.foxbpm.engine.impl.util.BpmnModelUtil;
 
 public class ActivityParser extends FlowNodeParser {
 
-	@Override
+	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
 
 		Activity activity = (Activity) baseElement;
@@ -49,7 +49,7 @@ public class ActivityParser extends FlowNodeParser {
 		return super.parser(baseElement);
 	}
 
-	@Override
+	 
 	public void init() {
 		baseElementBehavior = new ActivityBehavior();
 	}

@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 public class TemplateGenerator implements IZipGenerator {
 
 	Logger log = LoggerFactory.getLogger(TemplateGenerator.class);
-	@Override
+	 
 	public void generate(ZipOutputStream out) {
 		log.debug("开始处理template...");
 		try{

@@ -91,7 +91,7 @@ public class ModelsResouce extends AbstractRestResource{
 			PlatformTransactionManager transactionManager = new DataSourceTransactionManager(DBUtils.getDataSource());
 			TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-				@Override
+				 
 				protected void doInTransactionWithoutResult(TransactionStatus status) {
 					try{
 						ModelService modelService = FoxBpmUtil.getProcessEngine().getModelService();

@@ -174,35 +174,35 @@ public class ProcessOperatingEntity  implements ProcessOperating,PersistentObjec
 		this.operator = operator;
 	}
 
-	@Override
+	 
 	public void setRevision(int revision) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	 
 	public int getRevision() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
+	 
 	public int getRevisionNext() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
+	 
 	public String getId() {
 		return this.id;
 	}
 
-	@Override
+	 
 	public void setId(String id) {
 		this.id=id;
 	}
 
-	@Override
+	 
 	public Map<String, Object> getPersistentState() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("id", id);
@@ -223,7 +223,7 @@ public class ProcessOperatingEntity  implements ProcessOperating,PersistentObjec
 		return map;
 	}
 
-	@Override
+	 
 	public boolean isModified() {
 		// TODO Auto-generated method stub
 		return false;

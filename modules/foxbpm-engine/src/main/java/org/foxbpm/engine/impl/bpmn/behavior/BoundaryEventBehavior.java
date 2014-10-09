@@ -38,7 +38,7 @@ public class BoundaryEventBehavior extends CatchEventBehavior {
 	 * 标识是否终止
 	 */
 	private boolean isCancelActivity;
-	@Override
+	 
 	public void execute(FlowNodeExecutionContext executionContext) {
 		// 执行边界事件定义,例如 时间定义
 		List<EventDefinition> eventDefinitions = this.getEventDefinitions();

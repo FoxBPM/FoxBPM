@@ -47,17 +47,17 @@ public class LanesetSVGBuilder extends AbstractSVGBuilder {
 		rectVO = SVGUtils.getTaskVOFromSvgVO(svgVo);
 	}
 
-	@Override
+	 
 	public void setWidth(float width) {
 		this.rectVO.setWidth(width);
 	}
 
-	@Override
+	 
 	public void setHeight(float height) {
 		this.rectVO.setHeight(height);
 	}
 
-	@Override
+	 
 	public void setXAndY(float x, float y) {
 		this.rectVO.setX(x);
 		this.rectVO.setY(y);
@@ -90,7 +90,7 @@ public class LanesetSVGBuilder extends AbstractSVGBuilder {
 
 	}
 
-	@Override
+	 
 	public void setStroke(String stroke) {
 		if (StringUtils.isBlank(stroke)) {
 			this.rectVO.setStroke(STROKE_DEFAULT);
@@ -99,12 +99,12 @@ public class LanesetSVGBuilder extends AbstractSVGBuilder {
 		this.rectVO.setStroke(COLOR_FLAG + stroke);
 	}
 
-	@Override
+	 
 	public void setStrokeWidth(float strokeWidth) {
 		this.rectVO.setStrokeWidth(strokeWidth);
 	}
 
-	@Override
+	 
 	public void setFill(String fill) {
 		if (StringUtils.isBlank(fill)) {
 			fill = FILL_DEFAULT;
@@ -133,49 +133,49 @@ public class LanesetSVGBuilder extends AbstractSVGBuilder {
 		this.textVO.setFontSize(fonts[1]);
 	}
 
-	@Override
+	 
 	public void setID(String id) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setName(String name) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setStyle(String style) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setTypeStroke(String stroke) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setTypeStrokeWidth(float strokeWidth) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setTypeFill(String fill) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setTypeStyle(String style) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	 
 	public void setWayPoints(List<Point> pointList) {
 		// TODO Auto-generated method stub
 

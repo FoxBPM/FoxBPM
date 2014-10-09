@@ -37,7 +37,7 @@ public class CompleteTaskCmd extends NeedsActiveTaskCmd<Void> {
 		this.persistenceVariables = persistenceVariables;
 	}
 
-	@Override
+	 
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
 		
 		if (transientVariables != null && !transientVariables.isEmpty()) {

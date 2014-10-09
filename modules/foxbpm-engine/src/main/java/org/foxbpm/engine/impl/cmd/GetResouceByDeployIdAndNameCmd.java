@@ -39,7 +39,7 @@ public class GetResouceByDeployIdAndNameCmd implements Command<InputStream> {
 		this.resourceName = resourceName;
 	}
 	
-	@Override
+	 
 	public InputStream execute(CommandContext commandContext) {
 		if(deployId == null || resourceName == null){
 			throw new FoxBPMIllegalArgumentException("查询资源名称时参数错误：deployId"+deployId+";ResourceName"+resourceName);

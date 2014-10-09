@@ -109,12 +109,12 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 		return new ProcessInstanceQueryImpl(commandExecutor);
 	}
 
-	@Override
+	 
 	public VariableQuery createVariableQuery() {
 		return new VariableQueryImpl(commandExecutor);
 	}
 
-	@Override
+	 
 	public RunningTrackQuery createRunningTrackQuery() {
 		return new RunningTrackQueryImpl(commandExecutor);
 	}
@@ -195,12 +195,12 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 		this.commandExecutor.execute(new StartProcessInstanceCmd<ProcessInstance>(processDefinitionKey, processDefinitionId, bizKey, transientVariables, persistenceVariables));
 	}
 
-	@Override
+	 
 	public void deleteProcessInstance(String processInstanceId) {
 		this.commandExecutor.execute(new DeleteProcessInstanceByIdCmd(processInstanceId));
 	}
 	
-	@Override
+	 
 	public Class<?> getInterfaceClass() {
 		return RuntimeService.class;
 	}

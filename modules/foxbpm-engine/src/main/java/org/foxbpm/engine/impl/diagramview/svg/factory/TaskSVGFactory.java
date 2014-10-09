@@ -44,12 +44,12 @@ public class TaskSVGFactory extends AbstractFlowElementSVGFactory {
 		super(kernelBaseElement, voTemplateFileName);
 	}
 	
-	@Override
+	 
 	public VONode createSVGVO() {
 		return (SvgVO) super.loadSVGVO(this.voTemplateFileName);
 	}
 	
-	@Override
+	 
 	public void filterChildVO(VONode voNode, List<String> gIDList) {
 		GVO gvo = ((SvgVO) voNode).getgVo();
 		List<GVO> gvoList = gvo.getgVoList();

@@ -28,7 +28,7 @@ public class AddCalendarPartCmd implements Command<Void> {
 		this.calendarPartEntity = calendarPartEntity;
 	}
 	
-	@Override
+	 
 	public Void execute(CommandContext commandContext) {
 		commandContext.getSqlSession().insert("insertCalendarPart", calendarPartEntity);
 		return null;

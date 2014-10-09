@@ -72,7 +72,7 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 		pathVo.setStyle(typeStyle);
 	}
 
-	@Override
+	 
 	public void setTypeStroke(String stroke) {
 		if (pathVo == null) {
 			return;
@@ -80,7 +80,7 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 		this.pathVo.setStroke(stroke);
 	}
 
-	@Override
+	 
 	public void setTypeStrokeWidth(float strokeWidth) {
 		if (pathVo == null) {
 			return;
@@ -88,7 +88,7 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 		this.pathVo.setStrokeWidth(strokeWidth);
 	}
 
-	@Override
+	 
 	public void setTypeFill(String fill) {
 		if (pathVo == null) {
 			return;
@@ -96,13 +96,13 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 		this.pathVo.setFill(fill);
 	}
 
-	@Override
+	 
 	public void setWidth(float width) {
 		this.circleVO.setR(width / 2);
 
 	}
 
-	@Override
+	 
 	public void setStroke(String stroke) {
 		if (StringUtils.isBlank(stroke)) {
 			this.circleVO.setStroke(STROKE_DEFAULT);
@@ -111,13 +111,13 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 		this.circleVO.setStroke(COLOR_FLAG + stroke);
 	}
 
-	@Override
+	 
 	public void setStrokeWidth(float strokeWidth) {
 		this.circleVO.setStrokeWidth(strokeWidth);
 
 	}
 
-	@Override
+	 
 	public void setFill(String fill) {
 		if (StringUtils.isBlank(fill)) {
 			fill = FILL_DEFAULT;
@@ -148,17 +148,17 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 		}
 	}
 
-	@Override
+	 
 	public void setID(String id) {
 		this.circleVO.setId(id);
 	}
 
-	@Override
+	 
 	public void setName(String name) {
 		this.circleVO.setName(name);
 	}
 
-	@Override
+	 
 	public void setStyle(String style) {
 		this.circleVO.setStyle(style);
 	}
@@ -167,7 +167,7 @@ public class EventSVGBuilder extends AbstractSVGBuilder {
 	 * @TODO 圆心坐标设置是绝对坐标值，后期如果需要添加子类型，则采用transform的形式
 	 * 
 	 */
-	@Override
+	 
 	public void setXAndY(float x, float y) {
 		// 流程图定义的是圆对应矩形左上角的坐标，所以对应的SVG坐标需要将坐标值加半径
 		y = y + this.circleVO.getR();

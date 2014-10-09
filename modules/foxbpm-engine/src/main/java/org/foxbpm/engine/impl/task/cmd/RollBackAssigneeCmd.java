@@ -47,7 +47,7 @@ public class RollBackAssigneeCmd extends AbstractExpandTaskCmd<RollBackAssigneeC
 		this.rollBackAssignee=rollBackAssigneeCommand.getRollBackAssignee();
 	}
 
-	@Override
+	 
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
 		
 		/** 获取任务命令 */

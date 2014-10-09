@@ -30,6 +30,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import sun.misc.BASE64Encoder;
+@SuppressWarnings("restriction")
 @Controller
 public class LoginController {
 	@RequestMapping(value = "login", method = { RequestMethod.GET, RequestMethod.POST })
@@ -79,6 +81,18 @@ public class LoginController {
 					Cookie cookie = new Cookie("foxSid", userEntity.getUserId());
 					cookie.setMaxAge(-1);
 					response.addCookie(cookie);
+					
+					Cookie userIdCookie = new Cookie("userId",  userEntity.getUserId());
+					userIdCookie.setMaxAge(-1);
+					response.addCookie(userIdCookie);
+					
+//					@SuppressWarnings("restriction")
+//					BASE64Encoder encoder = new BASE64Encoder(); 
+//					@SuppressWarnings("restriction")
+//					Cookie userNameCookie = new Cookie("userName",  encoder.encode(userEntity.getUserName().getBytes()));
+//					userNameCookie.setMaxAge(-1);
+//					response.addCookie(userNameCookie);
+					
 					response.sendRedirect(contextPath + targetUrl);
 				} else {
 					response.setContentType("text/html;charset=utf-8");

@@ -40,7 +40,7 @@ public class ServiceTaskSVGBuilder extends TaskSVGBuilder {
 		}
 
 	}
-	@Override
+	 
 	public void setFill(String fill) {
 		super.setFill(fill);
 		if (StringUtils.isBlank(fill)) {

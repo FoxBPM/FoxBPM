@@ -242,7 +242,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 		return this;
 	}
 
-	@Override
+	 
 	public TaskQuery taskSubject(String subject) {
 		if (subject == null) {
 			throw new FoxBPMIllegalArgumentException("subject is null");
@@ -251,7 +251,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 		return this;
 	}
 
-	@Override
+	 
 	public TaskQuery taskSubjectLike(String subjectLike) {
 		if (subjectLike == null) {
 			throw new FoxBPMIllegalArgumentException("subjectLike is null");
@@ -315,37 +315,37 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 		return this;
 	}
 	
-	@Override
+	 
 	public TaskQuery taskDueDateOn(Date dueDate) {
 		this.dueDate = dueDate;
 		return this;
 	}
 	
-	@Override
+	 
 	public TaskQuery taskDueDateBefore(Date before) {
 		this.dueDateBefore = before;
 		return this;
 	}
 	
-	@Override
+	 
 	public TaskQuery taskDueDateAfter(Date after) {
 		this.dueDateAfter = after;
 		return this;
 	}
 	
-	@Override
+	 
 	public TaskQuery taskEndTimeOn(Date endTime) {
 		this.endTime = endTime;
 		return this;
 	}
 	
-	@Override
+	 
 	public TaskQuery taskEndTimeBefore(Date before) {
 		this.endTimeBefore = before;
 		return this;
 	}
 	
-	@Override
+	 
 	public TaskQuery taskEndTimeAfter(Date after) {
 		this.endTimeAfter = after;
 		return this;

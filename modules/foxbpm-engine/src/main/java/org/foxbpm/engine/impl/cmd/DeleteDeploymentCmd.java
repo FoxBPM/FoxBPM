@@ -36,7 +36,7 @@ public class DeleteDeploymentCmd implements Command<Void>{
 		this.deploymentId = deploymentId;
 	}
 	
-	@Override
+	 
 	public Void execute(CommandContext commandContext) {
 		if(deploymentId == null){
 			throw new FoxBPMIllegalArgumentException("删除的发布号为null");

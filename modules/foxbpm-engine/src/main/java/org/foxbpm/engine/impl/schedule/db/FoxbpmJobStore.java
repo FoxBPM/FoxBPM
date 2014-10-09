@@ -32,7 +32,7 @@ import org.quartz.impl.jdbcjobstore.JobStoreTX;
  * 
  */
 public class FoxbpmJobStore extends JobStoreTX {
-	@Override
+	 
 	protected Connection getConnection() throws JobPersistenceException {
 		Connection connection = DBUtils.getConnection();
 		try {
@@ -43,7 +43,7 @@ public class FoxbpmJobStore extends JobStoreTX {
 		return connection;
 	}
 	
-	@Override
+	 
 	protected void closeConnection(Connection connection) {
 		try {
 			if (!connection.getAutoCommit()) {
@@ -56,12 +56,12 @@ public class FoxbpmJobStore extends JobStoreTX {
 		super.closeConnection(connection);
 	}
 	
-	@Override
+	 
 	protected void commitConnection(Connection connection) throws JobPersistenceException {
 		super.commitConnection(connection);
 	}
 	
-	@Override
+	 
 	protected void rollbackConnection(Connection connection) {
 		super.rollbackConnection(connection);
 	}

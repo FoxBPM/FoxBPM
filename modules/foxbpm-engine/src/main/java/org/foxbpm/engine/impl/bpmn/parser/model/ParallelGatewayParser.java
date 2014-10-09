@@ -26,7 +26,7 @@ import org.foxbpm.engine.impl.util.StringUtil;
 
 public class ParallelGatewayParser extends GatewayParser {
 
-	@Override
+	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		ParallelGatewayBehavior parallelGatewayBehavior=(ParallelGatewayBehavior)baseElementBehavior;
 		
@@ -42,7 +42,7 @@ public class ParallelGatewayParser extends GatewayParser {
 	}
 	
 
-	@Override
+	 
 	public void init() {
 		baseElementBehavior=new ParallelGatewayBehavior();
 	}

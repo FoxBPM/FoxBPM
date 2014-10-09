@@ -30,7 +30,7 @@ public class FindUserByIdCmd implements Command<UserEntity> {
 		this.userId = userId;
 	}
 	
-	@Override
+	 
 	public UserEntity execute(CommandContext commandContext) {
 		return Authentication.selectUserByUserId(userId);
 	}

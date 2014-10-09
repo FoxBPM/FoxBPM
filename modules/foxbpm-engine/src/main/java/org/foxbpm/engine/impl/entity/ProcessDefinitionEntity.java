@@ -201,7 +201,7 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl
 		return createProcessInstance(null);
 	}
 
-	@Override
+	 
 	protected InterpretableProcessInstance newProcessInstance(KernelFlowNodeImpl startFlowNode) {
 		ProcessInstanceEntity processInstance = new ProcessInstanceEntity(startFlowNode);
 		return processInstance;
@@ -249,7 +249,7 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl
 		this.extensionFields.put(fieldName, fieldValue);
 	}
 
-	@Override
+	 
 	public KernelSequenceFlowImpl createSequenceFlow(String id,
 			KernelProcessDefinitionImpl processDefinition) {
 		return super.createSequenceFlow(id, processDefinition);

@@ -41,7 +41,7 @@ public class UpdateCompletionRateCmd extends AbstractExpandTaskCmd<UpdateComplet
 	}
 
 	
-	@Override
+	 
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
 		
 		/** 获取任务命令 */

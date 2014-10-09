@@ -52,7 +52,7 @@ public class ConnectorAutoExecuteJob extends AbstractQuartzScheduleJob {
 		super(name, groupName);
 	}
 	
-	@Override
+	 
 	public void executeJob(FoxbpmJobExecutionContext foxpmJobExecutionContext)
 	    throws JobExecutionException {
 		String processInstanceID = foxpmJobExecutionContext.getProcessInstanceId();

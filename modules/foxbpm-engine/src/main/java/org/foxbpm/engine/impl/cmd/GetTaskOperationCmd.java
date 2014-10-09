@@ -36,7 +36,7 @@ public class GetTaskOperationCmd implements Command<List<ProcessOperatingEntity>
 		this.taskId = taskId;
 	}
 	
-	@Override
+	 
 	public List<ProcessOperatingEntity> execute(CommandContext commandContext) {
 		return commandContext.getProcessOperatingManager().findOperationByTaskId(taskId);
 	}

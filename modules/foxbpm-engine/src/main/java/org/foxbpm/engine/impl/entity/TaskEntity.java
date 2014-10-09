@@ -996,7 +996,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		return persistentState;
 	}
 	
-	@Override
+	 
 	public boolean hasEnded() {
 		return endTime != null;
 	}
@@ -1037,7 +1037,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		this.completionRate = completionRate;
 	}
 	
-	@Override
+	 
 	public Object clone() {
 		try {
 			return super.clone();

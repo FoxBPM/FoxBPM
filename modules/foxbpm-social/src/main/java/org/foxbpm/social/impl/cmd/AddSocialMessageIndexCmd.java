@@ -34,7 +34,7 @@ public class AddSocialMessageIndexCmd implements Command<Void> {
 		this.socialMessageIndex = socialMessageIndex;
 	}
 
-	@Override
+	 
 	public Void execute(CommandContext commandContext) {
 		commandContext.getSqlSession().insert("addSocialMessageInfoIndex",
 				socialMessageIndex);

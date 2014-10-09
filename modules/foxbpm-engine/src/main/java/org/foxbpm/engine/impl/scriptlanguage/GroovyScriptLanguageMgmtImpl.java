@@ -34,18 +34,18 @@ public class GroovyScriptLanguageMgmtImpl extends AbstractScriptLanguageMgmt {
 
 	private GroovyShell groovyShell;
 
-	@Override
+	 
 	public AbstractScriptLanguageMgmt init() {
 		groovyShell = new GroovyShell();
 		return this;
 	}
 
-	@Override
+	 
 	public void close() {
 		groovyShell = null;
 	}
 
-	@Override
+	 
 	public Object execute(String scriptText, ProcessDefinitionEntity processDefinition) {
 		List<String> dvList = getDataVariableList(scriptText);
 		if (dvList.size() > 0) {
@@ -75,14 +75,14 @@ public class GroovyScriptLanguageMgmtImpl extends AbstractScriptLanguageMgmt {
 
 	}
 
-	@Override
+	 
 	public void setVariable(String variableName, Object variableObj) {
 
 		groovyShell.setVariable(variableName, variableObj);
 
 	}
 
-	@Override
+	 
 	public void setVariable(String variableName, Object variableObj, FlowNodeExecutionContext executionContext) {
 		dataVariableCalculate(variableName, executionContext);
 		String scriptText = getExpressionAll(variableName);
@@ -91,14 +91,14 @@ public class GroovyScriptLanguageMgmtImpl extends AbstractScriptLanguageMgmt {
 
 	}
 
-	@Override
+	 
 	public Object getVariable(String variableName) {
 
 		return groovyShell.getVariable(variableName);
 
 	}
 
-	@Override
+	 
 	public Object execute(String scriptText, FlowNodeExecutionContext executionContext) {
 		if (scriptText == null) {
 			return null;
@@ -124,7 +124,7 @@ public class GroovyScriptLanguageMgmtImpl extends AbstractScriptLanguageMgmt {
 		return resultObj;
 	}
 
-	@Override
+	 
 	public Object execute(String scriptText) {
 		return groovyShell.evaluate(scriptText);
 	}

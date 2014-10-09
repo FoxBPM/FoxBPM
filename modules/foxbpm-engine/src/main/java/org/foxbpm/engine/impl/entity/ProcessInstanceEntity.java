@@ -136,7 +136,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		this.contextInstance = new ContextInstanceImpl();
 	}
 	
-	@Override
+	 
 	public void start() {
 		this.instanceStatus = ProcessInstanceStatus.RUNNING;
 		this.setStartTime(ClockUtil.getCurrentTime());
@@ -149,14 +149,14 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		super.start();
 	}
 	
-	@Override
+	 
 	public KernelTokenImpl createRootToken() {
 		super.createRootToken();
 		this.rootTokenId = this.rootToken.getId();
 		return this.rootToken;
 	}
 	
-	@Override
+	 
 	public KernelTokenImpl createToken() {
 		TokenEntity tokenObj = new TokenEntity();
 		String tokenObjId = GuidUtil.CreateGuid();
@@ -169,7 +169,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		return tokenObj;
 	}
 	
-	@Override
+	 
 	public void initialize() {
 		super.initialize();
 		this.tasks = new ArrayList<TaskEntity>();
@@ -200,7 +200,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		getTasksInternal().remove(task);
 	}
 	
-	@Override
+	 
 	public void ensureParentProcessInstanceTokenInitialized() {
 		
 		if (parentProcessInstanceToken == null && parentTokenId != null) {
@@ -210,7 +210,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		
 	}
 	
-	@Override
+	 
 	public KernelProcessInstance createSubProcessInstance(KernelProcessDefinitionImpl processDefinition,
 	    KernelTokenImpl token) {
 		
@@ -223,7 +223,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		return createSubProcessInstance;
 	}
 	
-	@Override
+	 
 	protected void ensureParentProcessInstanceInitialized() {
 		if (parentProcessInstance == null && parentId != null) {
 			ProcessInstanceEntity parentProcessInstance = Context.getCommandContext().getProcessInstanceManager().findProcessInstanceById(parentId);
@@ -231,7 +231,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		}
 	}
 	
-	@Override
+	 
 	public void ensureRootTokenInitialized() {
 		if (rootToken == null && rootTokenId != null) {
 			TokenEntity token = Context.getCommandContext().getTokenManager().findTokenById(rootTokenId);
@@ -239,7 +239,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		}
 	}
 	
-	@Override
+	 
 	public void ensureProcessDefinitionInitialized() {
 		if ((processDefinition == null) && (processDefinitionId != null)) {
 			ProcessDefinitionEntity deployedProcessDefinition = Context.getProcessEngineConfiguration().getDeploymentManager().findDeployedProcessDefinitionById(processDefinitionId);
@@ -248,27 +248,27 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	}
 	
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	@Override
+	 
 	protected void ensureTokensInitialized() {
 		if (tokens == null) {
 			this.tokens = (List) Context.getCommandContext().getTokenManager().findTokensByProcessInstanceId(id);
 		}
 	}
 	
-	@Override
+	 
 	public void setParentProcessInstance(KernelProcessInstanceImpl parentProcessInstance) {
 		ProcessInstanceEntity processInstanceEntity = ((ProcessInstanceEntity) parentProcessInstance);
 		this.parentProcessInstance = processInstanceEntity;
 		this.parentId = processInstanceEntity.getParentId();
 	}
 	
-	@Override
+	 
 	public void setParentProcessInstanceToken(KernelTokenImpl parentProcessInstanceToken) {
 		this.parentProcessInstanceToken = parentProcessInstanceToken;
 		this.parentTokenId = parentProcessInstanceToken.getId();
 	}
 	
-	@Override
+	 
 	public void setRootToken(KernelTokenImpl rootToken) {
 		this.rootTokenId = rootToken.getId();
 		super.setRootToken(rootToken);
@@ -395,7 +395,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		this.dataVariableMgmtInstance = dataVariableMgmtInstance;
 	}
 	
-	@Override
+	 
 	public void setProcessDefinition(KernelProcessDefinitionImpl processDefinition) {
 		this.processDefinition = processDefinition;
 		this.processDefinitionId = processDefinition.getId();
@@ -410,7 +410,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		this.bizKey = bizKey;
 	}
 	
-	@Override
+	 
 	public String getId() {
 		return id;
 	}
@@ -507,7 +507,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		return endTime != null;
 	}
 	
-	@Override
+	 
 	public void end() {
 		endTime = ClockUtil.getCurrentTime();
 		super.end();
@@ -526,7 +526,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		return null;
 	}
 	
-	@Override
+	 
 	protected KernelProcessInstanceImpl newProcessInstance() {
 		return new ProcessInstanceEntity();
 	}

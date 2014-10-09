@@ -31,7 +31,7 @@ import org.foxbpm.social.impl.entity.SocialMessageIndex;
 public class FindSocialMessageIndexCmd implements Command<List<SocialMessageIndex>> {
 
 	private String userId;
-	@Override
+	 
 	public List<SocialMessageIndex> execute(CommandContext commandContext) {
 		// TODO Auto-generated method stub
 		return null;

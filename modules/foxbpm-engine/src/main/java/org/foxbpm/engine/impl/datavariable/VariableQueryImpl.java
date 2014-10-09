@@ -50,49 +50,49 @@ public class VariableQueryImpl extends AbstractQuery<VariableQuery, VariableInst
 		super(commandExecutor);
 	}
 	
-	@Override
+	 
 	public VariableQuery id(String id) {
 		this.id = id;
 		return this;
 	}
 	
-	@Override
+	 
 	public VariableQuery processInstanceId(String processInstanceId) {
 		this.processInstanceId = processInstanceId;
 		return this;
 	}
 	
-	@Override
+	 
 	public VariableQuery processDefinitionId(String processDefinitionId) {
 		this.processDefinitionId = processDefinitionId;
 		return this;
 	}
 	
-	@Override
+	 
 	public VariableQuery processDefinitionKey(String processDefinitionKey) {
 		this.processDefinitionKey = processDefinitionKey;
 		return this;
 	}
 	
-	@Override
+	 
 	public VariableQuery taskId(String taskId) {
 		this.taskId = taskId;
 		return this;
 	}
 	
-	@Override
+	 
 	public VariableQuery tokenId(String tokenId) {
 		this.tokenId = tokenId;
 		return this;
 	}
 	
-	@Override
+	 
 	public VariableQuery nodeId(String nodeId) {
 		this.nodeId = nodeId;
 		return this;
 	}
 	
-	@Override
+	 
 	public VariableQuery addVariableKey(String key) {
 		if(keys == null){
 			keys = new ArrayList<String>();
@@ -137,13 +137,13 @@ public class VariableQueryImpl extends AbstractQuery<VariableQuery, VariableInst
 	}
 	
 
-	@Override
+	 
 	public long executeCount(CommandContext commandContext) {
 		return commandContext.getVariableManager().findVariablesCountByQueryCriteria(this);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
+	 
 	public List<VariableInstance> executeList(CommandContext commandContext) {
 		return (List)commandContext.getVariableManager().findVariablesByQueryCriteria(this);
 	}

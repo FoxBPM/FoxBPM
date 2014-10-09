@@ -28,7 +28,7 @@ public class UnClaimCmd extends NeedsActiveTaskCmd<Void> {
 		super(taskId);
 	}
 	
-	@Override
+	 
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
 		if (task.getAssignee() != null) {
 			if(task.getIdentityLinks().size()>0){

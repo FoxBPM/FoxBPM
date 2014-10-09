@@ -24,7 +24,7 @@ import org.foxbpm.engine.impl.bpmn.behavior.ScriptTaskBehavior;
 
 public class ScriptTaskParser extends TaskParser {
 
-	@Override
+	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		ScriptTaskBehavior scriptTaskBehavior = (ScriptTaskBehavior) baseElementBehavior;
 		ScriptTask scriptTask=(ScriptTask)baseElement;
@@ -35,7 +35,7 @@ public class ScriptTaskParser extends TaskParser {
 		return super.parser(baseElement);
 	}
 	
-	@Override
+	 
 	public void init() {
 		baseElementBehavior=new ScriptTaskBehavior();
 	}

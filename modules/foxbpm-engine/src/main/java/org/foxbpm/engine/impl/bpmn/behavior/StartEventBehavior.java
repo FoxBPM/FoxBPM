@@ -35,13 +35,13 @@ public class StartEventBehavior extends CatchEventBehavior {
 		this.isPersistence = isPersistence;
 	}
 	
-	@Override
+	 
 	public void enter(FlowNodeExecutionContext executionContext) {
 		//System.out.println("startTask进入");
 		executionContext.execute();
 	}
 	
-	@Override
+	 
 	public void execute(FlowNodeExecutionContext executionContext) {
 		//System.out.println("startTask执行");
 		executionContext.signal();

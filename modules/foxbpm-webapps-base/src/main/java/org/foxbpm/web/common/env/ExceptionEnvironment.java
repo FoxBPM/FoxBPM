@@ -23,7 +23,7 @@ public class ExceptionEnvironment extends Environment {
 		}
 	}
 
-	@Override
+	 
 	public void init() {
 		InputStream inputStream = null;
 		try {
@@ -41,7 +41,7 @@ public class ExceptionEnvironment extends Environment {
 		}
 	}
 
-	@Override
+	 
 	public String getValue(String key) {
 		return this.properties.getProperty(key);
 	}

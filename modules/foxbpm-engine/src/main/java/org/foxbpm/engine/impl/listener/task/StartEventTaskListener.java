@@ -39,7 +39,7 @@ public class StartEventTaskListener extends AbstractTaskEventListener {
 	private static final long serialVersionUID = 8093133229946107408L;
 
 
-	@Override
+	 
 	protected TaskEntity handleTaskEntity(ListenerExecutionContext executionContext) {
 		TokenEntity tokenEntity = (TokenEntity) executionContext;
 		KernelFlowNodeImpl kernelFlowNode = tokenEntity.getProcessInstance().getStartFlowNode();

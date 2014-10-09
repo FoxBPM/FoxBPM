@@ -43,7 +43,7 @@ public class TransferTaskCmd extends AbstractExpandTaskCmd<TransferTaskCommand, 
 
 	}
 
-	@Override
+	 
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
 		
 		/** 获取任务命令 */

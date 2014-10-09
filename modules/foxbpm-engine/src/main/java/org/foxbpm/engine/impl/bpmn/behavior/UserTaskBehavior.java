@@ -54,7 +54,7 @@ public class UserTaskBehavior extends TaskBehavior {
 	private TaskDefinition taskDefinition;
 
 
-	@Override
+	 
 	public void execute(FlowNodeExecutionContext executionContext) {
 		
 		TokenEntity token=(TokenEntity)executionContext;
@@ -168,7 +168,7 @@ public class UserTaskBehavior extends TaskBehavior {
 	/**
 	 * 节点离开时清理事件
 	 */
-	@Override
+	 
 	public void cleanData(FlowNodeExecutionContext executionContext) {
 		removeTaskInstanceSynchronization(executionContext);
 		super.cleanData(executionContext);

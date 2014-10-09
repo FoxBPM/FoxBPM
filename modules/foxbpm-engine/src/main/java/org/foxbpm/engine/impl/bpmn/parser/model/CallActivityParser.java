@@ -31,7 +31,7 @@ import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
 import org.foxbpm.model.bpmn.foxbpm.SubProcessToDataSourceMapping;
 
 public class CallActivityParser extends TaskParser {
-	@Override
+	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		
 		CallActivity callActivity=(CallActivity)baseElement;
@@ -101,7 +101,7 @@ public class CallActivityParser extends TaskParser {
 		return super.parser(baseElement);
 	}
 	
-	@Override
+	 
 	public void init() {
 		baseElementBehavior=new CallActivityBehavior();
 	}

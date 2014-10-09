@@ -27,7 +27,7 @@ public class DeleteCalendarRuleCmd implements Command<Void> {
 		this.id = id;
 	}
 	
-	@Override
+	 
 	public Void execute(CommandContext commandContext) {
 		commandContext.getSqlSession().delete("deleteCalendarRuleById", id);
 		return null;

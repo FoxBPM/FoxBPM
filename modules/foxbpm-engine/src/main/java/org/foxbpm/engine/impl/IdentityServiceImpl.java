@@ -45,22 +45,22 @@ import org.foxbpm.engine.impl.identity.GroupRelationEntity;
 
 public class IdentityServiceImpl extends ServiceImpl implements IdentityService {
 	
-	@Override
+	 
 	public UserEntity getUser(String userId) {
 		return commandExecutor.execute(new FindUserByIdCmd(userId));
 	}
 	
-	@Override
+	 
 	public List<UserEntity> getUsers(String idLike, String nameLike) {
 		return commandExecutor.execute(new FindUsersCmd(idLike, nameLike, null));
 	}
 	
-	@Override
+	 
 	public void addAgent(AgentEntity agentInfo) {
 		commandExecutor.execute(new SaveAgentEntityCmd(agentInfo));
 	}
 	
-	@Override
+	 
 	public void addAgentDetails(AgentDetailsEntity agentDetails) {
 		commandExecutor.execute(new SaveAgentDetailsEntityCmd(agentDetails));
 	}
@@ -73,47 +73,47 @@ public class IdentityServiceImpl extends ServiceImpl implements IdentityService 
 		commandExecutor.execute(new UpdatePersistentObjectCmd(agentDetails));
 	}
 	
-	@Override
+	 
 	public void deleteAgent(String agentId) {
 		commandExecutor.execute(new DeleteAgentCmd(agentId));
 	}
 	
-	@Override
+	 
 	public void deleteAgentDetails(String agentDetailsId) {
 		commandExecutor.execute(new DeleteAgentDetailsCmd(agentDetailsId));
 	}
 	
-	@Override
+	 
 	public AgentEntity queryAgent(String agentUser) {
 		return commandExecutor.execute(new FindAgentEntityCmd(agentUser));
 	}
 	
-	@Override
+	 
 	public List<UserEntity> getUsers(String idLike, String nameLike, Page page) {
 		return commandExecutor.execute(new FindUsersCmd(idLike, nameLike, page));
 	}
 	
-	@Override
+	 
 	public Long getUsersCount(String idLike, String nameLike) {
 		return commandExecutor.execute(new FindUsersCountCmd(idLike, nameLike));
 	}
 	
-	@Override
+	 
 	public List<GroupEntity> getAllGroup(String groupType) {
 		return commandExecutor.execute(new GetAllGroupByTypeCmd(groupType));
 	}
 	
-	@Override
+	 
 	public List<GroupRelationEntity> getAllGroupRelation(String groupType) {
 		return commandExecutor.execute(new GetAllGroupRelationByTypeCmd(groupType));
 	}
 	
-	@Override
+	 
 	public List<GroupDefinition> getAllGroupDefinitions() {
 		return commandExecutor.execute(new GetAllGroupDefinitionsCmd());
 	}
 	
-	@Override
+	 
 	public GroupDefinition getGroupDefinition(String groupType) {
 		if (groupType == null) {
 			return null;
@@ -127,22 +127,22 @@ public class IdentityServiceImpl extends ServiceImpl implements IdentityService 
 		return null;
 	}
 	
-	@Override
+	 
 	public void updateUser(UserEntity user) {
 		commandExecutor.execute(new UpdateUserCmd(user));
 	}
 	
-	@Override
+	 
 	public void addUser(UserEntity user) {
 		commandExecutor.execute(new AddUserCmd(user));
 	}
 	
-	@Override
+	 
 	public void deleteUser(String userId) {
 		commandExecutor.execute(new DeleteUserCmd(userId));
 	}
 	
-	@Override
+	 
 	public Class<?> getInterfaceClass() {
 		return IdentityService.class;
 	}

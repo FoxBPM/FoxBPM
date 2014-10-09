@@ -34,7 +34,7 @@ import org.foxbpm.engine.impl.bpmn.parser.BpmnParseHandlerImpl;
  * 
  */
 public class BoundaryEventParser extends CatchEventParser {
-	@Override
+	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		BoundaryEventBehavior boundaryEventBehavior = (BoundaryEventBehavior) baseElementBehavior;
 		BoundaryEventImpl boundaryEventImpl = (BoundaryEventImpl) baseElement;
@@ -44,7 +44,7 @@ public class BoundaryEventParser extends CatchEventParser {
 				boundaryEventImpl.getAttachedToRef(), boundaryEventBehavior);
 		return super.parser(baseElement);
 	}
-	@Override
+	 
 	public void init() {
 		baseElementBehavior = new BoundaryEventBehavior();
 	}

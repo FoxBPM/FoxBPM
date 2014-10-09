@@ -28,7 +28,7 @@ public class SequenceTrackEventListener extends AbstractTrackListener {
 	 * serialVersionUID:序列化ID
 	 */
 	private static final long serialVersionUID = -4927827964817111540L;
-	@Override
+	 
 	protected RunningTrackEntity recordRunningTrack(ListenerExecutionContext executionContext) {
 		KernelTokenImpl kernelTokenImpl = (KernelTokenImpl) executionContext;
 		// 创建运行轨迹

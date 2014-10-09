@@ -26,7 +26,7 @@ import org.foxbpm.engine.impl.bpmn.behavior.InclusiveGatewayBehavior;
  */
 public class InclusiveGatewayParser extends GatewayParser {
 	
-	@Override
+	 
 	public void init() {
 		baseElementBehavior=new InclusiveGatewayBehavior();
 	}

@@ -38,7 +38,7 @@ public class GetAllGroupByTypeCmd implements Command<List<GroupEntity>> {
 		this.groupType = groupType;
 	}
 	
-	@Override
+	 
 	public List<GroupEntity> execute(CommandContext commandContext) {
 		if(this.groupType == null || this.groupType.equals("")){
 			throw new FoxBPMIllegalArgumentException("groupType不能为null");

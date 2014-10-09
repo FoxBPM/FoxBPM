@@ -24,7 +24,7 @@ import org.foxbpm.engine.impl.mybatis.FoxbpmMapperConfig;
 
 public class SocialMapperConfigImpl implements FoxbpmMapperConfig {
 
-	@Override
+	 
 	public List<String> getMapperConfig() {
 		List<String> xmlList = new ArrayList<String>();
 		xmlList.add("mybatis/mapping/SocialMessageIndex.xml");

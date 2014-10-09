@@ -29,7 +29,7 @@ import org.foxbpm.engine.impl.bpmn.behavior.TextAnnotationBehavior;
  */
 public class TextAnnotationParser extends BaseElementParser {
 
-	@Override
+	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		TextAnnotation textAnnotation = (TextAnnotation) baseElement;
 		TextAnnotationBehavior textAnnotationBehavior = (TextAnnotationBehavior) baseElementBehavior;
@@ -38,7 +38,7 @@ public class TextAnnotationParser extends BaseElementParser {
 		return super.parser(baseElement);
 	}
 
-	@Override
+	 
 	public void init() {
 		baseElementBehavior = new TextAnnotationBehavior();
 	}

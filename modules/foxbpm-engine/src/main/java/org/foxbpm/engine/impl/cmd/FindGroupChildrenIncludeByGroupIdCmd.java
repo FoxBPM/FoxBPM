@@ -41,7 +41,7 @@ public class FindGroupChildrenIncludeByGroupIdCmd  implements Command<List<Group
 		this.groupType = groupType;
 	}
 	
-	@Override
+	 
 	public List<GroupEntity> execute(CommandContext commandContext) {
 		if(groupId == null || groupType == null){
 			throw new FoxBPMIllegalArgumentException("参数不能为空:groupId="+groupId+",groupType="+groupType);

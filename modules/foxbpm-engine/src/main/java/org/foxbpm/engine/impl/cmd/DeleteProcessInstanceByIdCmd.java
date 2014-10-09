@@ -10,7 +10,7 @@ public class DeleteProcessInstanceByIdCmd implements Command<Void> {
 		this.processInstanceId = processInstanceId;
 	}
 	
-	@Override
+	 
 	public Void execute(CommandContext commandContext) {
 		commandContext.getProcessInstanceManager().deleteProcessInstanceById(processInstanceId);
 		return null;

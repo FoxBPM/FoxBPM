@@ -33,7 +33,7 @@ public class UserDefinitionImpl implements UserDefinition {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Override
+	 
 	public List<UserEntity> findUsers(String idLike, String nameLike) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (idLike != null) {
@@ -46,7 +46,7 @@ public class UserDefinitionImpl implements UserDefinition {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Override
+	 
 	public List<UserEntity> findUsers(String idLike, String nameLike, int pageIndex, int pageSize) {
 		Map<String, Object> queryMap = new HashMap<String, Object>();
 		if (idLike != null) {
@@ -61,7 +61,7 @@ public class UserDefinitionImpl implements UserDefinition {
 		return (List<UserEntity>) Context.getCommandContext().getSqlSession().selectList("selectUsersByPage", queryParams);
 	}
 	
-	@Override
+	 
 	public Long findUserCount(String idLike, String nameLike) {
 		Map<String, Object> queryMap = new HashMap<String, Object>();
 		if (idLike != null) {
@@ -73,17 +73,17 @@ public class UserDefinitionImpl implements UserDefinition {
 		return (Long) Context.getCommandContext().getSqlSession().selectOne("selectUsersCount", queryMap);
 	}
 	
-	@Override
+	 
 	public void updateUser(UserEntity user) {
 		Context.getCommandContext().getSqlSession().update("updateUser", user);
 	}
 	
-	@Override
+	 
 	public void addUser(UserEntity user) {
 		Context.getCommandContext().getSqlSession().insert("insertUser", user);
 	}
 	
-	@Override
+	 
 	public void deleteUser(String userId) {
 		Context.getCommandContext().getSqlSession().delete("insertUser", userId);
 	}

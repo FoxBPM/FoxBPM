@@ -24,7 +24,7 @@ import org.foxbpm.engine.impl.bpmn.behavior.ExclusiveGatewayBehavior;
  *
  */
 public class ExclusiveGatewayParser extends GatewayParser {
-	@Override
+	 
 	public void init() {
 		baseElementBehavior=new ExclusiveGatewayBehavior();
 	}

@@ -210,12 +210,12 @@ public class MailEntity implements PersistentObject {
 		return objectParam;
 	}
 
-	@Override
+	 
 	public void setId(String id) {
 		this.mailId = id;
 	}
 
-	@Override
+	 
 	public boolean isModified() {
 		return false;
 	}

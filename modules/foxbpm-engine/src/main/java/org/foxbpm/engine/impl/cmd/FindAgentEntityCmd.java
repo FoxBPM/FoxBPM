@@ -35,7 +35,7 @@ public class FindAgentEntityCmd implements Command<AgentEntity> {
 		this.agentUser = agentUser;
 	}
 
-	@Override
+	 
 	public AgentEntity execute(CommandContext commandContext) {
 		return commandContext.getAgentManager().queryAgentEntity(agentUser);
 	}

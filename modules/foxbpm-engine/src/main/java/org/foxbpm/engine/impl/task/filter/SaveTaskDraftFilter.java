@@ -4,7 +4,7 @@ import org.foxbpm.engine.task.Task;
 
 public class SaveTaskDraftFilter extends AbstractCommandFilter {
 
-	@Override
+	 
 	public boolean accept(Task task) {
 		if (task == null) {
 			return true;

@@ -29,7 +29,7 @@ import org.foxbpm.engine.impl.bpmn.behavior.GatewayDirection;
  */
 public class GatewayParser extends FlowNodeParser {
 
-	@Override
+	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		
 		GatewayBehavior gatewayBehavior = (GatewayBehavior) baseElementBehavior;

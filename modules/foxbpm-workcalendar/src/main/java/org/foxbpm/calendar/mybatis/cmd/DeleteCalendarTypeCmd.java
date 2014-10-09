@@ -27,7 +27,7 @@ public class DeleteCalendarTypeCmd implements Command<Void> {
 		this.id = id;
 	}
 
-	@Override
+	 
 	public Void execute(CommandContext commandContext) {
 		commandContext.getSqlSession().delete("deleteCalendarTypeById", id);
 		return null;

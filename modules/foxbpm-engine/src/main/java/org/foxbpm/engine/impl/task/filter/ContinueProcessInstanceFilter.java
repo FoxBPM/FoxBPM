@@ -11,7 +11,7 @@ import org.foxbpm.engine.task.Task;
  */
 public class ContinueProcessInstanceFilter  extends AbstractCommandFilter {
 
-	@Override
+	 
 	public boolean accept(Task task) {
 	
 

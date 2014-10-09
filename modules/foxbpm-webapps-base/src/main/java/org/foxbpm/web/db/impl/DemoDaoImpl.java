@@ -37,13 +37,13 @@ public class DemoDaoImpl extends AbstrJdbcTemplate implements IDemoDao {
 	private static final String QUERY_DEMOSQL = "select * from demotable where bKey = ?";
 	private static final String INSERT_DEMOSQL = "insert into demotable (bKey,infor) values(?,?)";
 
-	@Override
+	 
 	public List<TDemo> queryDemoData(List<Object> sqpParams) {
 		List<TDemo> tdList = this.jdbcTemplate.query(QUERY_DEMOSQL, (Object[]) sqpParams.toArray(), new TDemoMapper<TDemo>());
 		return tdList;
 	}
 
-	@Override
+	 
 	public void saveDemoData(TDemo tdemo) {
 		List<Object> args = new ArrayList<Object>();
 		args.add(tdemo.getbKey());
@@ -58,7 +58,7 @@ public class DemoDaoImpl extends AbstrJdbcTemplate implements IDemoDao {
 	 * @param <T>
 	 */
 	protected class TDemoMapper<T> implements RowMapper<T> {
-		@Override
+		 
 		public T mapRow(java.sql.ResultSet rs, int arg1) throws SQLException {
 			TDemo tDemo = new TDemo();
 			tDemo.setbKey(rs.getString("bKey"));

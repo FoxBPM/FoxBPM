@@ -63,7 +63,7 @@ public class ExpenseDao {
 	
 	
 	private class ExpenseRowMapper implements RowMapper<ExpenseEntity>{
-		@Override
+		 
 		public ExpenseEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
 			ExpenseEntity expenseEntity = new ExpenseEntity();
 			expenseEntity.setExpenseId(rs.getString("id"));

@@ -41,7 +41,7 @@ import org.restlet.service.StatusService;
 public class FoxbpmStatusService extends StatusService {
 
 	protected static final String NEWLINE_REPLACE_REGEX = "\\r\\n|\\r|\\n";
-	@Override
+	 
 	public Representation getRepresentation(Status status, Request request, Response response) {
 		if (status != null && status.isError()) {
 			RestError error = new RestError();
@@ -53,7 +53,7 @@ public class FoxbpmStatusService extends StatusService {
 		}
 	}
 
-	@Override
+	 
 	public Status getStatus(Throwable throwable, Request request, Response response) {
 		Status status = null;
 		if (throwable instanceof JsonMappingException && throwable.getCause() != null) {

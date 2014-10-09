@@ -48,100 +48,100 @@ import org.foxbpm.calendar.service.WorkCalendarService;
 import org.foxbpm.engine.impl.ServiceImpl;
 public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalendarService {
 	
-	@Override
+	 
 	public Class<?> getInterfaceClass() {
 		return WorkCalendarService.class;
 	}
 
-	@Override
+	 
 	public void addCalendarType(CalendarTypeEntity calendarTypeEntity) {
 		commandExecutor.execute(new AddCalendarTypeCmd(calendarTypeEntity));
 	}
 
-	@Override
+	 
 	public void updateCalendarType(CalendarTypeEntity calendarTypeEntity) {
 		commandExecutor.execute(new UpdateCalendarTypeCmd(calendarTypeEntity));
 	}
 
-	@Override
+	 
 	public void deleteCalendarType(String id) {
 		commandExecutor.execute(new DeleteCalendarTypeCmd(id));
 	}
 
-	@Override
+	 
 	public void addCalendarRule(CalendarRuleEntity calendarRuleEntity) {
 		commandExecutor.execute(new AddCalendarRuleCmd(calendarRuleEntity));
 	}
 
-	@Override
+	 
 	public void updateCalendarRule(CalendarRuleEntity calendarRuleEntity) {
 		commandExecutor.execute(new UpdateCalendarRuleCmd(calendarRuleEntity));
 	}
 
-	@Override
+	 
 	public void deleteCalendarRule(String id) {
 		commandExecutor.execute(new DeleteCalendarRuleCmd(id));
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	 
 	public List<CalendarRuleEntity> getCalendarRule(int pageIndex, int pageSize, String idLike, String nameLike) {
 		return (List<CalendarRuleEntity>) commandExecutor.execute(new GetCalendarRuleCmd(pageIndex, pageSize, idLike, nameLike));
 	}
 
-	@Override
+	 
 	public void addCalendarPart(CalendarPartEntity calendarPartEntity) {
 		commandExecutor.execute(new AddCalendarPartCmd(calendarPartEntity));
 	}
 
-	@Override
+	 
 	public void updateCalendarPart(CalendarPartEntity calendarPartEntity) {
 		commandExecutor.execute(new UpdateCalendarPartCmd(calendarPartEntity));
 	}
 
-	@Override
+	 
 	public void deleteCalendarPart(String id) {
 		commandExecutor.execute(new DeleteCalendarPartCmd(id));
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	 
 	public List<CalendarPartEntity> getCalendarPart(int pageIndex, int pageSize, String idLike) {
 		return (List<CalendarPartEntity>) commandExecutor.execute(new GetCalendarPartCmd(pageIndex, pageSize, idLike));
 	}
 
-	@Override
+	 
 	public Long getCalendarTypeCount(String idLike, String nameLike) {
 		return commandExecutor.execute(new GetCalendarTypeCountCmd(idLike, nameLike));
 	}
 
-	@Override
+	 
 	public Long getCalendarRuleCount(String idLike, String nameLike) {
 		return commandExecutor.execute(new GetCalendarRuleCountCmd(idLike, nameLike));
 	}
 
-	@Override
+	 
 	public Long getCalendarPartCount(String idLike) {
 		return commandExecutor.execute(new GetCalendarPartCountCmd(idLike));
 	}
 
-	@Override
+	 
 	public CalendarTypeEntity getCalendarTypeById(String id) {
 		return commandExecutor.execute(new GetCalendarTypeByIdCmd(id));
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	 
 	public List<CalendarTypeEntity> getCalendarType(int pageIndex, int pageSize, String idLike, String nameLike) {
 		return (List<CalendarTypeEntity>) commandExecutor.execute(new GetCalendarTypeCmd(pageIndex, pageSize, idLike, nameLike));
 	}
 
-	@Override
+	 
 	public CalendarRuleEntity getCalendarRuleById(String id) {
 		return commandExecutor.execute(new GetCalendarRuleByIdCmd(id));
 	}
 
-	@Override
+	 
 	public CalendarPartEntity getCalendarPartById(String id) {
 		return commandExecutor.execute(new GetCalendarPartByIdCmd(id));
 	}
@@ -150,12 +150,12 @@ public class WorkCalendarServiceImpl  extends ServiceImpl implements WorkCalenda
 		return commandExecutor.execute(new GetWorkCalendarEndTimeCmd( begin, hours,ruleId));
 	}
 	
-	@Override
+	 
 	public List<CalendarRuleEntity> getCalendarRulesByTypeId(String typeId) {
 		return commandExecutor.execute(new GetCalendarRulesByTypeIdCmd(typeId));
 	}
 
-	@Override
+	 
 	public List<CalendarPartEntity> getCalendarPartsByRuleId(String ruleId) {
 		return commandExecutor.execute(new GetCalendarPartsByRuleIdCmd(ruleId));
 	}

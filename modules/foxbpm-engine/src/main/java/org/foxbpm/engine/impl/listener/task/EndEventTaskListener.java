@@ -37,7 +37,7 @@ public class EndEventTaskListener extends AbstractTaskEventListener {
 
 	private static final long serialVersionUID = -261843320544102107L;
 
-	@Override
+	 
 	protected TaskEntity handleTaskEntity(ListenerExecutionContext executionContext) {
 		TokenEntity tokenEntity = (TokenEntity) executionContext;
 		KernelFlowNodeImpl kernelFlowNode = tokenEntity.getFlowNode();
