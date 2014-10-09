@@ -22,10 +22,11 @@ import java.util.Date;
 
 /**
  * 消息实体
+ * 
  * @author kenshin
- *
+ * 
  */
-public class SocialMessageInfo implements Serializable  {
+public class SocialMessageInfo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	/** 发消息用户编号 */
@@ -46,91 +47,105 @@ public class SocialMessageInfo implements Serializable  {
 	private String transferCount;
 	/** 发布时间 */
 	private Date time;
-	/** 任务ID*/
+	/** 任务ID */
 	private String taskId;
-	/** 流程实例ID*/
+	/** 流程实例ID */
 	private String processInstanceId;
-	/** 是否公开FLAG*/
+	/** 是否公开FLAG */
 	private int openFlag;
-	
-	/**是否已读FLAG*/
-	private int readFlag;
-	
-	public int getReadFlag() {
-		return readFlag;
-	}
-	public void setReadFlag(int readFlag) {
-		this.readFlag = readFlag;
-	}
+
 	public String getTaskId() {
 		return taskId;
 	}
+
 	public void setTaskId(String taskId) {
 		this.taskId = taskId;
 	}
+
 	public String getProcessInstanceId() {
 		return processInstanceId;
 	}
+
 	public void setProcessInstanceId(String processInstanceId) {
 		this.processInstanceId = processInstanceId;
 	}
+
 	public int getOpenFlag() {
 		return openFlag;
 	}
+
 	public void setOpenFlag(int openFlag) {
 		this.openFlag = openFlag;
 	}
+
 	public String getUserId() {
 		return userId;
 	}
+
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+
 	public String getMsgId() {
 		return msgId;
 	}
+
 	public void setMsgId(String msgId) {
 		this.msgId = msgId;
 	}
+
 	public String getContent() {
 		return content;
 	}
+
 	public void setContent(String content) {
 		this.content = content;
 	}
+
 	public int getType() {
 		return type;
 	}
+
 	public void setType(int type) {
 		this.type = type;
 	}
+
 	public String getCommentedCount() {
 		return commentedCount;
 	}
+
 	public void setCommentedCount(String commentedCount) {
 		this.commentedCount = commentedCount;
 	}
+
 	public String getCommentCount() {
 		return commentCount;
 	}
+
 	public void setCommentCount(String commentCount) {
 		this.commentCount = commentCount;
 	}
+
 	public String getTransferredCount() {
 		return transferredCount;
 	}
+
 	public void setTransferredCount(String transferredCount) {
 		this.transferredCount = transferredCount;
 	}
+
 	public String getTransferCount() {
 		return transferCount;
 	}
+
 	public void setTransferCount(String transferCount) {
 		this.transferCount = transferCount;
 	}
+
 	public Date getTime() {
 		return time;
 	}
+
 	public void setTime(Date time) {
 		this.time = time;
 	}

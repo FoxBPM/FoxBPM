@@ -58,9 +58,9 @@ public class SocialServiceImpl extends ServiceImpl implements SocialService {
 
 	 
 	public List<SocialMessageInfo> findAllSocialMessageInfo(String taskId,
-			String userId, Date loginTime) {
+			String userId, Date lastReadTime) {
 		List<SocialMessageInfo> listSocialMessageInfo = commandExecutor.execute(new FindReplySocialMessageInfoCmd(
-				taskId, userId, loginTime));
+				taskId, userId, lastReadTime));
 		
 		return listSocialMessageInfo;
 	}

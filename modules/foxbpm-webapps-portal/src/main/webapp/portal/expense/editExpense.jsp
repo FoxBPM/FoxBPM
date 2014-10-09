@@ -26,6 +26,8 @@
 	
 	<script type="text/javascript">
 	 parent.window.$('#contentFrame').css("width",650);
+	 //设置上次读取的时间，表单初始化和每次轮询之后设置值
+	 var lastReadTime;
 	$(document).ready(function() {
 		
 		$("#closeModal").click(function(){
@@ -64,11 +66,13 @@
 		        type: "get",//使用get方法访问后台
 		        dataType: "json",//返回json格式的数据
 		        url: msgUrl,//要访问的后台地址
-		        data:{taskId:"taskId",msgType:"findReply",userId:"",loginTime:new Date},
+		        data:{taskId:"taskId",msgType:"findReply",lastReadTime:lastReadTime},
 		        success: function(msgInfos){//msg为返回的数据，在这里做数据绑定  
+		        	//设置上次读取消息的时间
+		        	setLastReadTime();
 		        	for(var i=0;i<msgInfos.length;i++){
 		        		//$(".mes" + 3).append("<div class='message clearfix' style='border-bottom:0px'><div class='user-logo' style='float:left'><img src='" + "img/head/2024.jpg" + "'/>" + "</div>" +"<div class='msgDiv' style='margin-top:0px;margin-left:65;width:110px;background:#33CC99'>&nbsp;"+msgInfos[i].content+" <div style='position:absolute;top:5px;left:-20px;border:solid 10px;border-color: rgba(15, 15, 15, 0) #33CC99 rgba(200, 37, 207, 0) rgba(248, 195, 1, 0);'></div>"+ "<div class='wrap-ri'>" + "<div clsss='clearfix' style='bottom: 0px;width: 150px;left: 50px;top: 40px;' style='float:right'><span>" + msgInfos[i].time + "</span></div>" + "</div>" + "<div style='clear:both;'></div>" + "</div>");
-		        		$("#msg_list").append("<li class='message'><img src='img/avatars/sunny.png' class='online' alt=''><div class='message-text'><time>2014-01-13</time> <a href='javascript:void(0);' class='username'>John Doe</a>"+msgInfos[i].content+" <i class='fa fa-smile-o txt-color-orange'></i></div></li>");
+		        		$("#msg_list").append("<li style='height: 69px' class='message'><img src='img/avatars/sunny.png' class='online' alt=''><div class='message-text'><time>"+msgInfos[i].time+"</time> <a href='javascript:void(0);' class='username'>John Doe</a>"+msgInfos[i].content+" <i class='fa fa-smile-o txt-color-orange'></i></div></li>");
 		        		$("#chat-body").scrollTop($("#msg_list").height());
 		        	}
 		        },
@@ -76,7 +80,7 @@
 		        	showMessage("错误","系统错误，请重新打开或联系管理员！","error");
 		        }
 			});
-		}, 2000);
+		}, 3000);
 		
 		
 		var filter_input = $('#filter-chat-list'),
@@ -130,16 +134,29 @@
 		}, 500);
 	});
 	
+	function setLastReadTime(){
+		var e = new Date,
+		f = "";
+		f += e.getFullYear() + "-",
+		f += e.getMonth() + 1 + "-",
+		f += e.getDate() + " ";
+		f += e.getHours() + ":",
+		f += e.getMinutes() + ":",
+		f += e.getSeconds();
+		lastReadTime = f;
+	}
 	function initChatMsg(){
+		//设置读取消息的时间
+		setLastReadTime();
 		var msgUrl = _serviceUrl+"social";
 		$.ajax({
 	        type: "get",//使用get方法访问后台
 	        dataType: "json",//返回json格式的数据
 	        url: msgUrl,//要访问的后台地址
-	        data:{taskId:"taskId",msgType:"findAll",userId:"",loginTime:new Date},
+	        data:{taskId:"taskId",msgType:"findAll"},
 	        success: function(msgInfos){//msg为返回的数据，在这里做数据绑定  
 	        	for(var i=0;i<msgInfos.length;i++){
-	        		$(".mes" + 3).append("<div class='message clearfix' style='border-bottom:0px'><div class='user-logo' style='float:left'><img src='" + "img/head/2024.jpg" + "'/>" + "</div>" +"<div class='msgDiv' style='margin-top:0px;margin-left:65;width:110px;background:#33CC99'>&nbsp;"+msgInfos[i].content+" <div style='position:absolute;top:5px;left:-20px;border:solid 10px;border-color: rgba(15, 15, 15, 0) #33CC99 rgba(200, 37, 207, 0) rgba(248, 195, 1, 0);'></div>"+ "<div class='wrap-ri'>" + "<div clsss='clearfix' style='bottom: 0px;width: 150px;left: 50px;top: 40px;' style='float:right'><span>" + msgInfos[i].time + "</span></div>" + "</div>" + "<div style='clear:both;'></div>" + "</div>");
+	        		$("#msg_list").append("<li style='height: 69px' class='message'><img src='img/avatars/sunny.png' class='online' alt=''><div class='message-text'><time>"+msgInfos[i].time+"</time> <a href='javascript:void(0);' class='username'>John Doe</a>"+msgInfos[i].content+" <i class='fa fa-smile-o txt-color-orange'></i></div></li>");
 	        		$("#chat-body").scrollTop($("#chat-body").height())
 	        	}
 	        },

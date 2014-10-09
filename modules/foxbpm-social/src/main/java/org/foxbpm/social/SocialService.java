@@ -58,5 +58,5 @@ public interface SocialService {
 	 * @return
 	 */
 	public List<SocialMessageInfo> findAllSocialMessageInfo(String taskId,
-			String userId, Date loginTime);
+			String userId, Date lastReadTime);
 }
