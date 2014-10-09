@@ -18,7 +18,10 @@
 package org.foxbpm.engine.impl.interceptor;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
 import org.foxbpm.engine.exception.FoxBPMException;
@@ -142,9 +145,16 @@ public class CommandContext {
 	}
 
 	public void flushSession() {
-		for (Session session : sessions.values()) {
+		Set<Entry<Class<?>, Session>> entrySet = sessions.entrySet();
+		Iterator<Entry<Class<?>, Session>> iterator = entrySet.iterator();
+		while(iterator.hasNext()){
+			Entry<Class<?>, Session> next = iterator.next();
+			Session session = next.getValue();
 			session.flush();
 		}
+//		for (Session session : sessions.values()) {
+//			session.flush();
+//		}
 	}
 
 	public Throwable getException() {
@@ -179,13 +189,24 @@ public class CommandContext {
 	}
 
 	public void closeSessions() {
-		for (Session session : sessions.values()) {
+		Set<Entry<Class<?>, Session>> entrySet = sessions.entrySet();
+		Iterator<Entry<Class<?>, Session>> iterator = entrySet.iterator();
+		while(iterator.hasNext()){
+			Entry<Class<?>, Session> next = iterator.next();
+			Session session = next.getValue();
 			try {
 				session.close();
 			} catch (Throwable exception) {
 				exception(exception);
 			}
 		}
+//		for (Session session : sessions.values()) {
+//			try {
+//				session.close();
+//			} catch (Throwable exception) {
+//				exception(exception);
+//			}
+//		}
 	}
 
 	public void exception(Throwable e) {
