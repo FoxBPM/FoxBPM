@@ -45,11 +45,11 @@ public class FindReplySocialMessageInfoCmd implements Command<List<SocialMessage
 	/**
 	 * 用户登录系统的时间
 	 */
-	private Date loginTime;
-	public FindReplySocialMessageInfoCmd(String taskId,String userId,Date loginTime) {
+	private Date lastReadTime;
+	public FindReplySocialMessageInfoCmd(String taskId,String userId,Date lastReadTime) {
 		this.taskId = taskId;
 		this.userId = userId;
-		this.loginTime = loginTime;
+		this.lastReadTime = lastReadTime;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -58,7 +58,7 @@ public class FindReplySocialMessageInfoCmd implements Command<List<SocialMessage
 		Map<String, Object> queryMap = new HashMap<String, Object>();
 		queryMap.put("taskId", taskId); 
 		queryMap.put("userId", userId); 
-		queryMap.put("loginTime", loginTime); 
+		queryMap.put("lastReadTime", lastReadTime); 
 		return (List<SocialMessageInfo>) commandContext.getSqlSession().selectList("findReplaySocialMessageInfo", queryMap);
 	}
 

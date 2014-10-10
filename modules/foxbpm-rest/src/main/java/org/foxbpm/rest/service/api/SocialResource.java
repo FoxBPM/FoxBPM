@@ -17,11 +17,13 @@
  */
 package org.foxbpm.rest.service.api;
 
-import java.io.IOException;
 import java.net.URLDecoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import org.foxbpm.engine.ProcessEngineManagement;
@@ -33,15 +35,12 @@ import org.restlet.data.Form;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
-
-import sun.misc.BASE64Decoder;
 /**
  * 社交rest资源类
  * 
  * @author Administrator
  * 
- */
-@SuppressWarnings("restriction")
+ */ 
 public class SocialResource extends AbstractRestResource {
 	@Get
 	public Object findSocialMessageInfo() {
@@ -62,13 +61,17 @@ public class SocialResource extends AbstractRestResource {
 			}
 		} else if (StringUtil.equals(msgType, "findReply")) {
 			String taskId = getQueryParameter("taskId", queryForm);
-			String userId = getQueryParameter("userId", queryForm); 
-			userId = this.getRequest().getCookies().get(1).getValue();
-			Date loginTime = new Date(getQueryParameter("loginTime", queryForm));
+			String userId = this.getRequest().getCookies().get(1).getValue();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date lastReadTime = null;
+			try {
+				lastReadTime = sdf.parse(getQueryParameter("lastReadTime", queryForm));
+			} catch (ParseException e) {
+			}
 			if (StringUtil.isNotEmpty(taskId)) {
 				// 获取服务
 				allSocialMessageInfo = socialService.findAllSocialMessageInfo(
-						taskId, userId, loginTime);
+						taskId, userId, lastReadTime);
 				if (null != allSocialMessageInfo) {
 					return allSocialMessageInfo;
 				}
@@ -109,11 +112,13 @@ public class SocialResource extends AbstractRestResource {
 		socialMessageInfo.setCommentedCount(commentedCount);
 		socialMessageInfo.setTransferredCount(transferredCount);
 		socialMessageInfo.setTransferCount(transferCount);
-		socialMessageInfo.setTime(new Date());
+		TimeZone tz = TimeZone.getTimeZone("ETC/GMT-8");
+		TimeZone.setDefault(tz);
+		Date createTime = new Date();
+		socialMessageInfo.setTime(createTime);
 		socialMessageInfo.setTaskId(taskId);
 		socialMessageInfo.setProcessInstanceId(processInstanceId);
 		socialMessageInfo.setOpenFlag(openFlag);
-		socialMessageInfo.setReadFlag(0);
 		// 获取服务
 		SocialService socialService = ProcessEngineManagement
 				.getDefaultProcessEngine().getService(SocialService.class);

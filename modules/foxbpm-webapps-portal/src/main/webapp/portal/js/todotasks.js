@@ -195,6 +195,8 @@ var pagefunction = function() {
 							$("[type='search']").attr("placeholder","主题/发起人");
 							$("[type='search']").css("width",subjectWidth);
 							$(".ColVis").css("visible","true");
+							//屏蔽搜索框所有事件
+							$("#datatable_fixed_column_filter input[type=search]").unbind();
 							pageSetUp();						
 						},
 						
@@ -253,7 +255,7 @@ function openTaskForm(url,dataId,taskId,processInstanceId){
 	//测试时暂时用报销的表单代替
 	url = "portal/expense/editExpense.jsp";
 	var formUrl = url+"?dataId="+dataId+"&taskId="+taskId+"&processInstanceId="+processInstanceId+"&refresh="+new Date();
-	openModalForm(formUrl,700);
+	openModalForm(formUrl,505);
 }
 
 function showDiagram(processDefinitionKey,processInstanceId){ 

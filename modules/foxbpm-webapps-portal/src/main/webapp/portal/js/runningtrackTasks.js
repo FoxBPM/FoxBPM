@@ -150,7 +150,8 @@ var pagefunction = function() {
 							$(".dt-toolbar").css("padding-right","64px");
 							$("#datatable_col_reorder_filter").css("width","900px");
 							$("[type='search']").attr("placeholder","主题/发起人");
-							 
+							//屏蔽搜索框所有事件
+							$("#datatable_col_reorder_filter input[type=search]").unbind();
 							pageSetUp();		
 						}
 
