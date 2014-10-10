@@ -122,9 +122,9 @@ function calendarrulepagefunction() {
 						"orderable" : true,
 						"serverSide" : true,
 						"ajax" : "/foxbpm-webapps-common/service/workcal/calendarrule",
-						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'lC>>"
-								+ "t"
-								+ "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'>C>"+
+								 "t"+
+								 "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p l>>",
 						"autoWidth" : true,
 
 						"colVis" : {
@@ -139,7 +139,6 @@ function calendarrulepagefunction() {
 						},
 						"oLanguage" : {
 							"sProcessing" : "正在加载中......",
-							"sLengthMenu" : "每页显示 _MENU_ 条记录",
 							"sZeroRecords" : "对不起，查询不到相关数据！",
 							"sEmptyTable" : "表中无数据存在！",
 							"sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
@@ -152,8 +151,12 @@ function calendarrulepagefunction() {
 								"sLast" : "末页"
 							}
 						},
-						"bStateSave" : true
-
+						"bStateSave" : true,
+						"sPaginationType":'full_numbers',
+						"drawCallback":function(){
+							//屏蔽搜索框所有事件
+							$("#datatable_col_reorder_filter input[type=search]").unbind();
+						}
 					});
 	
 	

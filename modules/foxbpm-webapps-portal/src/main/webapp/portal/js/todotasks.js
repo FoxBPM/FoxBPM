@@ -195,6 +195,8 @@ var pagefunction = function() {
 							$("[type='search']").attr("placeholder","主题/发起人");
 							$("[type='search']").css("width",subjectWidth);
 							$(".ColVis").css("visible","true");
+							//屏蔽搜索框所有事件
+							$("#datatable_fixed_column_filter input[type=search]").unbind();
 							pageSetUp();						
 						},
 						
