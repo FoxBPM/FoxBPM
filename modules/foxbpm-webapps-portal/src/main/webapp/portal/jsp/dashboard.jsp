@@ -401,7 +401,7 @@
 		<article class="col-sm-12 col-md-12 col-lg-6">
 
 			<!-- new widget -->
-			<div class="jarviswidget jarviswidget-color-blue" id="wid-id-4" data-widget-editbutton="false" data-widget-colorbutton="false">
+			<div class="jarviswidget jarviswidget-color-blue" id="wid-id-4" data-widget-editbutton="false" >
 
 				<!-- widget options:
 				usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
@@ -419,11 +419,7 @@
 
 				<header>
 					<span class="widget-icon"> <i class="fa fa-check txt-color-white"></i> </span>
-					<h2> ToDo's </h2>
-					<!-- <div class="widget-toolbar">
-					add: non-hidden - to disable auto hide
-
-					</div>-->
+					<h2>待办任务</h2>
 				</header>
 
 				<!-- widget div-->
@@ -439,7 +435,7 @@
 
 					<div class="widget-body no-padding smart-form">
 						<!-- content goes here -->
-						<h5 class="todo-group-title"><i class="fa fa-warning"></i> Critical Tasks (<small class="num-of-tasks">1</small>)</h5>
+						<!-- <h5 class="todo-group-title"><i class="fa fa-warning"></i> Critical Tasks (<small class="num-of-tasks">1</small>)</h5>
 						<ul id="sortable1" class="todo">
 							<li>
 								<span class="handle"> <label class="checkbox">
@@ -450,38 +446,12 @@
 									<span class="date">Jan 1, 2014</span>
 								</p>
 							</li>
+						</ul> -->
+						<!-- <h5 class="todo-group-title"><i class="fa fa-exclamation"></i> Important Tasks (<small class="num-of-tasks">3</small>)</h5> -->
+						<ul id="todotasks" class="todo" style='width:100%;height:275px;overflow:auto;overflow-x:hidden;'>
 						</ul>
-						<h5 class="todo-group-title"><i class="fa fa-exclamation"></i> Important Tasks (<small class="num-of-tasks">3</small>)</h5>
-						<ul id="sortable2" class="todo">
-							<li>
-								<span class="handle"> <label class="checkbox">
-										<input type="checkbox" name="checkbox-inline">
-										<i></i> </label> </span>
-								<p>
-									<strong>Ticket #1347</strong> - Inbox email is being sent twice <small>(bug fix)</small> [<a href="javascript:void(0);" class="font-xs">More Details</a>] <span class="date">Nov 22, 2013</span>
-								</p>
-							</li>
-							<li>
-								<span class="handle"> <label class="checkbox">
-										<input type="checkbox" name="checkbox-inline">
-										<i></i> </label> </span>
-								<p>
-									<strong>Ticket #1314</strong> - Call customer support re: Issue <a href="javascript:void(0);" class="font-xs">#6134</a><small> (code review)</small>
-									<span class="date">Nov 22, 2013</span>
-								</p>
-							</li>
-							<li>
-								<span class="handle"> <label class="checkbox">
-										<input type="checkbox" name="checkbox-inline">
-										<i></i> </label> </span>
-								<p>
-									<strong>Ticket #17643</strong> - Hotfix for WebApp interface issue [<a href="javascript:void(0);" class="font-xs">More Details</a>] <span class="text-muted">Sea deep blessed bearing under darkness from God air living isn't. </span>
-									<span class="date">Jan 1, 2014</span>
-								</p>
-							</li>
-						</ul>
-
-						<h5 class="todo-group-title"><i class="fa fa-check"></i> Completed Tasks (<small class="num-of-tasks">1</small>)</h5>
+                        <span style="float: right;padding-right: 5px;"><a id="moreDetail" href="javascript:void(0);">更多详细</a></span>
+						<!-- <h5 class="todo-group-title"><i class="fa fa-check"></i> Completed Tasks (<small class="num-of-tasks">1</small>)</h5>
 						<ul id="sortable3" class="todo">
 							<li class="complete">
 								<span class="handle"> <label class="checkbox state-disabled" style="display:none">
@@ -493,7 +463,7 @@
 								</p>
 							</li>
 						</ul>
-
+ -->
 						<!-- end content -->
 					</div>
 
@@ -1046,6 +1016,59 @@
 					});
 				});
 		});
+		/**
+		 代办任务加载
+		*/
+		(function(){
+			var container = $("#todotasks");
+			var url = _serviceUrl+"runtime/tasks";
+			$.ajax({
+				type : "GET",
+				dataType : 'json',
+				url : url,
+				data:{
+					assignee:_userId,
+					candidateUser:_userId,
+					ended:false,
+					pageIndex:1,
+					pageSize:5
+					},
+				cache : false,
+				async : true ,
+				beforeSend : function() {
+					container.removeData().html("");
+					container.html('<h1 class="ajax-loading-animation"><i class="fa fa-cog fa-spin"></i> Loading...</h1>');
+				},
+				success : function(msg) {
+					if (!msg && !msg.data) {
+						alert("返回数据为null");
+						return;
+					}
+					var data = msg.data;
+					var li = '';
+					$.each(data,function(i,d){
+						li += "<li>";
+						li += "<span class='handle'></span>";
+						li += "<p style='padding-top:14px;'></span><span>"+d.subject+"</span> <span class='date'>"+d.createTime+"</span></p>";
+						li += "</li>";
+						li += "<li>";
+					});
+					container.html(li);
+					// clear data var
+					msg = null;
+					container = null;
+				},
+				error : function(xhr, ajaxOptions, thrownError) {
+					container.html('<h4 class="ajax-loading-error"><i class="fa fa-warning txt-color-orangeDark"></i> Error 404! Page not found.</h4>');
+				}
+			});
+			
+			$("#moreDetail").on("click",function(){
+				window.location.href = $("base").attr("href")+"portal/jsp/todoTasks.jsp";
+			});
+		})();
+		
+		
 	};
 	init();
 	
