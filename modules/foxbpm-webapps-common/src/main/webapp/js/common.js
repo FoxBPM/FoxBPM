@@ -11,7 +11,7 @@ var formCommit = false;
  * 例：openModalForm("http://www.baidu.com",500);
  */
 function openModalForm(url,height){
-	if(height || height === undefined){
+	if(height === undefined){
 		height=550;
 	}
 	var contentFrame = $("<div class='modal fade ' id='remoteModal' tabindex='-1'  scrolling='no' role='dialog' aria-labelledby='remoteModalLabel' aria-hidden='true'> <div class='modal-dialog' style='width:900px'> <iframe id='contentFrame' class='col-sm-10 col-md-12 col-lg-12' style='border:0px; height:"+height+"px;'></iframe></div> </div>  ");
