@@ -238,7 +238,7 @@
 		<h2>报销单据</h2>
 	</header>
 	<!-- widget div-->
-	<div id="leftDiv" style="float:left;width:100%;height:455px; border:1px solid red;">
+	<div id="leftDiv" style="float:left;width:100%;height:495px; border:1px solid red;">
 		<div class="jarviswidget-editbox">
 		</div>
 		<div class="widget-body no-padding" style="border-right-width:2px;border-right-style:outset;">
@@ -313,8 +313,8 @@
 
 				</fieldset>
 
-				<footer id="toolbar">
-				<button type='button' id="closeModal" class='btn btn-primary' style='margin-top: 0px;'>关闭</button>
+				<footer id="toolbar" style="padding-top:3px;padding-bottom:3px">
+				<button type='button' id="closeModal" class='btn btn-primary' >关闭</button>
 				</footer>
 				<input type="hidden" name="flowCommandInfo" id="flowCommandInfo">
 			</form>
@@ -323,7 +323,7 @@
 		
 		</div>
 	</div>
-        <div id="rightDiv" style="float:left;display:none;height:450px; border:1px solid red;border-left-width:0px;padding-left: 0px;padding-top: 0px;">
+        <div id="rightDiv" style="float:left;display:none;height:502px; border:1px solid red;border-left-width:0px;padding-left: 0px;padding-top: 0px;">
  
 			<!--效果html开始--> 
 			     <!-- new widget -->
@@ -421,29 +421,7 @@
 						<!-- CHAT BODY -->
 						<div id="chat-body" class="chat-body custom-scroll">
 							<ul id="msg_list">
-								<li class="message">
-									<img src="img/avatars/5.png" class="online" alt="">
-									<div class="message-text">
-										<time>
-											2014-01-13
-										</time> <a href="javascript:void(0);" class="username">Sadi Orlaf</a> Hey did you meet the new board of director? He's a bit of an arse if you ask me...anyway here is the report you requested. I am off to launch with Lisa and Andrew, you wanna join?
-										<p class="chat-file row">
-											<b class="pull-left col-sm-6"> <!--<i class="fa fa-spinner fa-spin"></i>--> <i class="fa fa-file"></i> report-2013-demographic-report-annual-earnings.xls </b>
-											<span class="col-sm-6 pull-right"> <a href="javascript:void(0);" class="btn btn-xs btn-default">cancel</a> <a href="javascript:void(0);" class="btn btn-xs btn-success">save</a> </span>
-										</p>
-										<p class="chat-file row">
-											<b class="pull-left col-sm-6"> <i class="fa fa-ok txt-color-green"></i> tobacco-report-2012.doc </b>
-											<span class="col-sm-6 pull-right"> <a href="javascript:void(0);" class="btn btn-xs btn-primary">open</a> </span>
-										</p> </div>
-								</li>
-								<li class="message">
-									<img src="img/avatars/sunny.png" class="online" alt="">
-									<div class="message-text">
-										<time>
-											2014-01-13
-										</time> <a href="javascript:void(0);" class="username">John Doe</a> Haha! Yeah I know what you mean. Thanks for the file Sadi! <i class="fa fa-smile-o txt-color-orange"></i> 
-									</div>
-								</li>
+								 
 							</ul>
 
 						</div>
@@ -463,7 +441,7 @@
 							<!-- CHAT REPLY/SEND -->
 							<span class="textarea-controls">
 								<button class="btn btn-sm btn-primary pull-right" id="ReplyChat">
-									Reply
+									回复
 								</button> <span class="pull-right smart-form" style="margin-top: 3px; margin-right: 10px;"> <label class="checkbox pull-right">
 										<input type="checkbox" name="subscription" id="subscription">
 										<i></i>Press <strong> ENTER </strong> to send </label> </span> <a href="javascript:void(0);" class="pull-left"><i class="fa fa-camera fa-fw fa-lg"></i></a> </span>
@@ -496,9 +474,14 @@
 			$(this).attr("flag", "1");
 			
 			 $('#leftDiv').css("width", 600);
+			 $('#leftDiv').css("height", "495");
 			   parent.window.$('#contentFrame').css("width",1176);
+			   parent.window.$('#contentFrame').css("height",505);
 			   $('body').css("width", 1100);
 			   $('#rightDiv').css("width", 340);
+			   $('#rightDiv').css("height", 465); 
+			   $('#leftDiv').css("height", 480);
+			   $('body').css("height", 500);
 			   $('#rightDiv').css("display", "block"); 
 			
 		} else {
@@ -509,7 +492,9 @@
 			$this.css("right", "-4px");
 			$(this).attr("flag","0");
 			parent.window.$('#contentFrame').css("width",650);
+			
 			   $('body').css("width", 600);
+			   $('#leftDiv').css("height", "495");
 			   $('#leftDiv').css("width", "100%");
 			   $('#rightDiv').css("display", "none");
 			   

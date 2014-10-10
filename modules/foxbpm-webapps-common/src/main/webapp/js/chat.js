@@ -35,9 +35,14 @@ $(document).ready(function() {
 		  //i = i+"<div class='message clearfix' style='border-bottom:0px'><div class='user-logo' style='float:left'><img src='" + b + "'/>" + "</div>" +"<div class='msgDiv' style='margin-top:0px;margin-left:65;width:110px;background:#33CC99'>&nbsp;"+g+" <div style='position:absolute;top:5px;left:-20px;border:solid 10px;border-color: rgba(15, 15, 15, 0) #33CC99 rgba(200, 37, 207, 0) rgba(248, 195, 1, 0);'></div>"+ "<div class='wrap-ri'>" + "<div clsss='clearfix' style='bottom: 0px;width: 150px;left: 50px;top: 40px;' style='float:right'><span>" + f + "</span></div>" + "</div>" + "<div style='clear:both;'></div>" + "</div>";
 		$("#msg_list").append("<li style='height: 69px' id='msg1' class='message'><img src='img/avatars/sunny.png' class='online' alt=''><div class='message-text'><time>"+f+"</time> <a href='javascript:void(0);' class='username'>John Doe</a> "+g+"<i class='fa fa-smile-o txt-color-orange'></i></div></li>");
 
-		  null != g && "" != g ? ($("#chat-body").scrollTop($("#msg_list").height()), $("#textarea-expand").val(""), message()) : alert("请输入消息")
-		
-		  sendMsg("admin",g,f); 
+		if(null != g && "" != g){
+			$("#chat-body").scrollTop($("#msg_list").height());
+			$("#textarea-expand").val(""), message();
+			sendMsg("admin",g,f); 
+		}else{
+			alert("请输入消息");
+		}
+		  
 	}
 	var a = 3,
 	b = "img/head/2024.jpg",
