@@ -3,6 +3,8 @@
 <%
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/";
 	UserEntity user = (UserEntity)request.getSession().getAttribute("user");
+	
+	String BASE_64_CODE = (String)request.getSession().getAttribute("BASE_64_CODE");
 %>
 <base href="<%=basePath%>">
 <meta charset="utf-8">
@@ -47,6 +49,7 @@
 <!-- 初始化全局变量 -->
 <script type="text/javascript">
  var _userId = '<%=user.getUserId()%>';
+ var BASE_64_CODE = '<%=BASE_64_CODE%>';
 </script>
 <link rel="apple-touch-startup-image" href="img/splash/iphone.png" media="screen and (max-device-width: 320px)">
 <script src="js/libs/jquery-2.0.2.min.js"></script>

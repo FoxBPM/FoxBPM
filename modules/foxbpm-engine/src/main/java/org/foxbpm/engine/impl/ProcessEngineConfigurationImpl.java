@@ -526,7 +526,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			resourceSet.getPackageRegistry().put(FoxBPMConfigPackage.eINSTANCE.getNsURI(), FoxBPMConfigPackage.eINSTANCE);
 			resource.load(null);
 		} catch (Exception e) {
-			log.error("fixflowconfig.xml文件加载失败", e);
+			log.error("foxbpm.cfg.xml文件加载失败", e);
 			throw new FoxBPMClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION, "fixflowconfig.xml", e);
 		}
 		

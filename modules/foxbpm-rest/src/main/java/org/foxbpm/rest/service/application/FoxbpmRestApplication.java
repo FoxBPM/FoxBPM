@@ -32,13 +32,12 @@ public class FoxbpmRestApplication extends AbstractRestApplication {
 	public FoxbpmRestApplication() {
 		super();
 	}
-	
 	 
 	public Restlet createInboundRoot() {
-//		initializeAuthentication();
+		initializeAuthentication();
 		Router router = new Router(getContext());
 		RestServicesInit.attachResources(router);
-//		authenticator.setNext(router);
-		return router;
+		authenticator.setNext(router);
+		return authenticator;
 	}
 }

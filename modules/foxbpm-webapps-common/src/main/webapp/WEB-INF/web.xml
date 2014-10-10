@@ -68,7 +68,7 @@
     <init-param>
       <!-- Application class name -->
       <param-name>org.restlet.application</param-name>
-      <param-value>org.foxbpm.rest.service.application.FoxbpmRestApplication</param-value>
+      <param-value>org.foxbpm.rest.CustomRestApplication</param-value>
     </init-param>
   </servlet>
   

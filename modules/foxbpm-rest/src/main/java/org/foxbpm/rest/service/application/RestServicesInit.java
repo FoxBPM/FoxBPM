@@ -24,7 +24,6 @@ import org.foxbpm.calendar.service.calendar.CalendarRuleResource;
 import org.foxbpm.calendar.service.calendar.CalendarTypeCollectionResource;
 import org.foxbpm.calendar.service.calendar.CalendarTypeResource;
 import org.foxbpm.rest.service.api.ClearCacheResource;
-import org.foxbpm.rest.service.api.LoginStateResource;
 import org.foxbpm.rest.service.api.SocialResource;
 import org.foxbpm.rest.service.api.config.FlowConfigResouce;
 import org.foxbpm.rest.service.api.engine.RollbackNodeCollectionResource;
@@ -63,8 +62,6 @@ public class RestServicesInit {
 		
 		//设计器测试是否网络连通
 		router.attach("/testConnection", TestConnectionResource.class);
-		router.attach("/getLoginState", LoginStateResource.class);
-		
 		router.attach("/clearCache",ClearCacheResource.class);
 		
 		router.attach("/model/deployments", DeploymentCollectionResource.class);

@@ -364,6 +364,10 @@
 			listenerClass="org.foxbpm.engine.impl.listener.task.StartEventTaskListener" />
 		<eventListener eventType="process-end"
 			listenerClass="org.foxbpm.engine.impl.listener.task.EndEventTaskListener" />
+		<eventListener eventType="process-start"
+			listenerClass="org.foxbpm.engine.impl.event.UpdateBizTableListener" />
+		<eventListener eventType="process-end"
+			listenerClass="org.foxbpm.engine.impl.event.UpdateBizTableListener" />	
 	</eventListenerConfig>
 
 	<bizDataObjectConfig>
