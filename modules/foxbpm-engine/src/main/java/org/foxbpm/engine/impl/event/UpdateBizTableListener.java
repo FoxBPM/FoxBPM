@@ -48,7 +48,7 @@ public class UpdateBizTableListener implements KernelListener {
 		if(bizName != null && bizKeyField != null){
 			String bizNameString = StringUtil.getString(bizName.getExpression().getValue(null));
 			String bizKeyFiledString = StringUtil.getString(bizKeyField.getExpression().getValue(null));
-			String sql = "update "+bizNameString + " set _processInstanceId = ?,_processInstanceStatus = ?, _processStep = ? "
+			String sql = "update "+bizNameString + " set processInstanceId = ?,processInstanceStatus = ?, processStep = ? "
 					+ "where " + bizKeyFiledString + "=?";
 			ProcessInstanceEntity processInstanceEntity = (ProcessInstanceEntity)kernelTokenImpl.getProcessInstance();
 			Object []params = new Object[]{

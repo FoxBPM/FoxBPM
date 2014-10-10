@@ -9,14 +9,11 @@ public class CustomRestApplication extends FoxbpmRestApplication {
 	public CustomRestApplication() {
 		super();
 		this.restAuthenticator = new RestAuthenticator() {
-			
 			public boolean requestRequiresAuthentication(Request request) {
-				// TODO Auto-generated method stub
 				return false;
 			}
 			
 			public boolean isRequestAuthorized(Request request) {
-				// TODO Auto-generated method stub
 				return false;
 			}
 		};
