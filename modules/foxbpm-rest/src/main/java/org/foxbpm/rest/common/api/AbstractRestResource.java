@@ -23,11 +23,15 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
@@ -38,10 +42,12 @@ import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.query.Query;
 import org.foxbpm.engine.query.QueryProperty;
 import org.foxbpm.rest.common.RestConstants;
+import org.restlet.Context;
 import org.restlet.Request;
-import org.restlet.data.Cookie;
+import org.restlet.Response;
 import org.restlet.data.Form;
-import org.restlet.data.Status;
+import org.restlet.engine.http.HttpRequest;
+import org.restlet.ext.servlet.internal.ServletCall;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ServerResource;
 
@@ -91,26 +97,41 @@ public abstract class AbstractRestResource extends ServerResource {
 		return "未知用户:" + userId;
 	}
 	
-	/**
-	 * 验证登陆，从cookie中获取用户编号
-	 * 
-	 * @return
-	 */
-	protected boolean validationUser() {
-		Request request = getRequest();
-		for (Cookie cookie : request.getCookies()) {
-			if ("foxSid".equals(cookie.getName())) {
-				userId = cookie.getValue();
-			}
-		}
-		if (StringUtil.isEmpty(userId)) {
-			setStatus(new Status(Status.CLIENT_ERROR_UNAUTHORIZED, "未登陆用户！"));
-			return false;
-		}
-		userId = "admin";
-		return true;
-	}
+//	protected boolean validationUser(){
+//		return authenticate(null);
+//	}
 	
+//	/**
+//	 * 验证登陆，从cookie中获取用户编号
+//	 * 
+//	 * @return
+//	 */
+//	protected boolean authenticate(String group) {
+//		
+//		userId = ((FoxbpmRestApplication) getApplication()).authenticate(getRequest(), getResponse());
+//	    if(userId == null) {
+//	      // Not authenticated
+//	      setStatus(Status.CLIENT_ERROR_UNAUTHORIZED, "Authentication is required");
+//	      return false;
+//	    
+//	    } else if(group == null) {
+//	      Authentication.setAuthenticatedUserId(userId);
+//	      return true;
+//	    
+//	    } else {
+//	      boolean allowed = false;
+//	      UserEntity tmpUser = Authentication.selectUserByUserId(userId);
+//	      List<GroupEntity> groupList = tmpUser.getGroups();
+//	      if(groupList != null) {
+//	          allowed = true;
+//	      }
+//	      if(allowed == false) {
+//	    	  setStatus(Status.CLIENT_ERROR_UNAUTHORIZED, "User is not part of the group " + group);
+//	      }
+//	      return allowed;
+//	    }
+//	}
+//	
 	
 	@SuppressWarnings("rawtypes")
 	public DataResult paginateList(Query query){

@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.runtime.ProcessInstanceQuery;
@@ -29,6 +31,8 @@ import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.DataResult;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
 import org.restlet.data.Form;
+import org.restlet.data.Status;
+import org.restlet.ext.servlet.ServletUtils;
 import org.restlet.resource.Get;
 
 /**
@@ -50,13 +54,12 @@ public class ProcessInstanceCollectionResource extends AbstractRestResource {
 		RuntimeService runtimeService = FoxBpmUtil.getProcessEngine().getRuntimeService();
 		ProcessInstanceQuery processIntanceQuery = runtimeService.createProcessInstanceQuery();
 		if(queryNames.contains(RestConstants.PARTICIPATE)){
-			processIntanceQuery.taskParticipants(userId);
-			if(queryNames.contains(RestConstants.INITIATOR)){
-				String initotor = StringUtil.getString(getQueryParameter(RestConstants.INITIATOR, queryForm));
-				processIntanceQuery.initiator(initotor);
-			}
-		}else {
-			processIntanceQuery.initiator(userId);
+			String participate = StringUtil.getString(getQueryParameter(RestConstants.PARTICIPATE, queryForm));
+			processIntanceQuery.taskParticipants(participate);
+		}
+		if(queryNames.contains(RestConstants.INITIATOR)){
+			String initotor = StringUtil.getString(getQueryParameter(RestConstants.INITIATOR, queryForm));
+			processIntanceQuery.initiator(initotor);
 		}
 		
 		if(queryNames.contains(RestConstants.PROCESS_KEY)){
@@ -108,5 +111,20 @@ public class ProcessInstanceCollectionResource extends AbstractRestResource {
 			}
 		}
 		return result;
+	}
+	
+	protected boolean validationUser(){
+		
+		HttpServletRequest request = ServletUtils.getRequest(getRequest());
+		String userId = (String)request.getSession().getAttribute("userId");
+		
+		Form queryForm = getQuery();
+		String participate = getQueryParameter(RestConstants.PARTICIPATE, queryForm);
+		String initiator = getQueryParameter(RestConstants.INITIATOR, queryForm);
+		if(userId == null || (participate == null && !userId.equals(initiator)) || (participate != null && !userId.equals(participate))){
+			setStatus(Status.CLIENT_ERROR_UNAUTHORIZED,"对应的请求无权访问！");
+			return false;
+		}
+		return true;
 	}
 }

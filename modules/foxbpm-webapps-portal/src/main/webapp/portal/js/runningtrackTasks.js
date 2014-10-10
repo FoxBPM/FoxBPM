@@ -1,4 +1,4 @@
-var runningTrackTaskUrl = _serviceUrl+"runtime/process-instances";
+var runningTrackTaskUrl = _serviceUrl+"runtime/process-instances?participate="+_userId;
 var pagefunction = function() {
 	var runningTrackTable = $('#datatable_col_reorder')
 			.DataTable(
@@ -163,11 +163,11 @@ var pagefunction = function() {
 		$("#TASKSTATE_SEARCH").val("2");
 		$("#createtime_end_dateselect_filter").val("");
 		$("#createtime_start_dateselect_filter").val("");
-		var baseUrl = runningTrackTaskUrl+"?participate=participate&";
+		var baseUrl = runningTrackTaskUrl+"&";
 		runningTrackTable.ajax.url(baseUrl).load();
 	};
      searchTodoTask = function() {
-    	var baseUrl = runningTrackTaskUrl+"?participate=participate&";
+    	var baseUrl = runningTrackTaskUrl+"&";
     	var assigneed = $("#TASKSTATE_SEARCH").val();
     	var subjectLike =  $("[type='search']").val();
     	baseUrl = baseUrl + "assigneed="+assigneed;

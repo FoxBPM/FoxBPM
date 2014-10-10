@@ -23,6 +23,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import jodd.util.Base64;
+
 import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
@@ -76,20 +78,17 @@ public class LoginController {
 					}else if("2".equals(target)){
 						targetUrl = "/governance/index.html";
 					}
-					Cookie cookie = new Cookie("foxSid", userEntity.getUserId());
-					cookie.setMaxAge(-1);
-					response.addCookie(cookie);
+//					Cookie cookie = new Cookie("foxSid", userEntity.getUserId());
+//					cookie.setMaxAge(-1);
+//					response.addCookie(cookie);
+					
+					 // 生成base 64位验证码
+			        String base64Code = "Basic " + Base64.encodeToString(userEntity.getUserId() + ":" + userEntity.getPassword());
+			        request.getSession().setAttribute("BASE_64_CODE", base64Code);
 					
 					Cookie userIdCookie = new Cookie("userId",  userEntity.getUserId());
 					userIdCookie.setMaxAge(-1);
 					response.addCookie(userIdCookie);
-					
-//					@SuppressWarnings("restriction")
-//					BASE64Encoder encoder = new BASE64Encoder(); 
-//					@SuppressWarnings("restriction")
-//					Cookie userNameCookie = new Cookie("userName",  encoder.encode(userEntity.getUserName().getBytes()));
-//					userNameCookie.setMaxAge(-1);
-//					response.addCookie(userNameCookie);
 					
 					response.sendRedirect(contextPath + targetUrl);
 				} else {

@@ -11,13 +11,16 @@ Foxbpm.FlowCommandCompenent.prototype={
 	init:function(){
 		var self = this;
 		var toolbarsDiv = $("#toolbar");
+		var tmpTaskId ;
 		if(!_taskId || null == _taskId || '' == _taskId){
-			_taskId = 'null';
+			tmpTaskId = 'null';
+		}else{
+			tmpTaskId = _taskId;
 		}
 		 $.ajax({
 	         type: "get",//使用get方法访问后台
 	         dataType: "json",//返回json格式的数据
-	         url: _bpmServiceUrl+"/runtime/tasks/"+_taskId+"/taskCommands",//要访问的后台地址
+	         url: _bpmServiceUrl+"/runtime/tasks/"+tmpTaskId+"/taskCommands",//要访问的后台地址
 	         data:{key:_processDefinitionKey},
 	         success: function(msg){//msg为返回的数据，在这里做数据绑定
 	             var data = msg.data;

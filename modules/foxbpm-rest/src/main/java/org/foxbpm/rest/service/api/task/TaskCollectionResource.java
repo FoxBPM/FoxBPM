@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.task.TaskQueryProperty;
@@ -36,6 +38,8 @@ import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.DataResult;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
 import org.restlet.data.Form;
+import org.restlet.data.Status;
+import org.restlet.ext.servlet.ServletUtils;
 import org.restlet.resource.Get;
 
 /**
@@ -67,8 +71,7 @@ public class TaskCollectionResource extends AbstractRestResource {
 		
 		Form queryForm = getQuery();
 		Set<String> queryNames = queryForm.getNames();
-		
-		if(!validationUser())
+		if(!validateUser())
 			return null;
 		TaskService taskService = FoxBpmUtil.getProcessEngine().getTaskService();
 		TaskQuery taskQuery = taskService.createTaskQuery();
@@ -238,4 +241,16 @@ public class TaskCollectionResource extends AbstractRestResource {
 		return result;
 	}
 	
+	protected boolean validateUser(){
+		HttpServletRequest request = ServletUtils.getRequest(getRequest());
+		String userId = (String)request.getSession().getAttribute("userId");
+		Form queryForm = getQuery();
+		String assignee = getQueryParameter("assignee", queryForm);
+		String candidateUser = getQueryParameter("candidateUser", queryForm);
+		if(userId == null || (assignee == null && candidateUser == null) || (assignee != null && !userId.equals(assignee)) ||(candidateUser != null && !userId.equals(candidateUser))){
+			setStatus(Status.CLIENT_ERROR_UNAUTHORIZED,"对应的请求无权访问！");
+			return false;
+		}
+		return true;
+	}
 }
