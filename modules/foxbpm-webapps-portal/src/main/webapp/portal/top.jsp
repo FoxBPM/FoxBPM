@@ -13,7 +13,7 @@
 
 				<!-- Note: The activity badge color changes when clicked and resets the number to 0
 					 Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->
-				<span id="activity" class="activity-dropdown"> <i class="fa fa-user"></i> <b class="badge"> 21 </b> </span>
+				<span id="activity" class="activity-dropdown"> <i class="fa fa-user"></i></span>
 
 				<!-- AJAX-DROPDOWN : control this dropdown height, look and feel from the LESS variable file -->
 				<div class="ajax-dropdown">
@@ -21,14 +21,14 @@
 					<!-- the ID links are fetched via AJAX to the ajax container "ajax-notifications" -->
 					<div class="btn-group btn-group-justified" data-toggle="buttons">
 						<label class="btn btn-default">
-							<input type="radio" name="activity" id="ajax/notify/mail.html">
-							消息 (2) </label>
+							<input type="radio" name="activity" url="ajax/notify/mail.html" notifyType='0'>
+							消息  </label>
 						<label class="btn btn-default">
-							<input type="radio" name="activity" id="ajax/notify/notifications.html">
-							通知 (2) </label>
+							<input type="radio" name="activity" url="ajax/notify/notifications.html" notifyType='1'>
+							通知  </label>
 						<label class="btn btn-default">
-							<input type="radio" name="activity" id="ajax/notify/tasks.html">
-							任务 (2) </label>
+							<input type="radio" name="activity" url="runtime/tasks" notifyType='2'>
+							任务  </label>
 					</div>
 
 					<!-- notification content -->
