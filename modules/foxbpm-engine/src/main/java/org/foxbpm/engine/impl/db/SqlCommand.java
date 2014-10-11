@@ -541,7 +541,9 @@ public class SqlCommand {
 		try {
 			debugLog.debug("FixFlow引擎数据持久化语句: " + querySql.toString());
 			debugLog.debug("参数data: " + data);
-			debugLog.debug("参数sdata: " + Arrays.asList(sdata));
+			if(sdata != null && sdata.length >0){
+				debugLog.debug("参数sdata: " + Arrays.asList(sdata));
+			}
 			pstmt = conn.prepareStatement(querySql.toString());
 			Object[] keyArray = keys.toArray();
 			int j = 1;
