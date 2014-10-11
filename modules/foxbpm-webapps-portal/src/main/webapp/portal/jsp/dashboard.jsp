@@ -450,7 +450,7 @@
 						<!-- <h5 class="todo-group-title"><i class="fa fa-exclamation"></i> Important Tasks (<small class="num-of-tasks">3</small>)</h5> -->
 						<ul id="todotasks" class="todo" style='width:100%;height:275px;overflow:auto;overflow-x:hidden;'>
 						</ul>
-                        <span style="float: right;padding-right: 5px;"><a id="moreDetail" href="javascript:void(0);">更多详细</a></span>
+                        <span style="float: right;padding-right: 5px;"><a id="moreDetail" href="javascript:void(0);">更多</a></span>
 						<!-- <h5 class="todo-group-title"><i class="fa fa-check"></i> Completed Tasks (<small class="num-of-tasks">1</small>)</h5>
 						<ul id="sortable3" class="todo">
 							<li class="complete">
@@ -1049,7 +1049,7 @@
 					$.each(data,function(i,d){
 						li += "<li>";
 						li += "<span class='handle'></span>";
-						li += "<p style='padding-top:14px;'></span><span>"+d.subject+"</span> <span class='date'>"+d.createTime+"</span></p>";
+						li += "<p style='padding-top:14px;'></span><span><a href='javascript:void(0);' onclick=openTaskForm('"+d.formUri+"','"+d.bizKey+"','"+d.id+"','"+d.processInstanceId+"');>"+d.subject+"</a></span> <span class='date'>"+d.createTime+"</span></p>";
 						li += "</li>";
 						li += "<li>";
 					});
@@ -1071,7 +1071,19 @@
 		
 	};
 	init();
-	
+	/**
+	 * 打开表单
+	 * @param url
+	 * @param dataId
+	 * @param taskId
+	 * @param processInstanceId
+	 */
+	function openTaskForm (url,dataId,taskId,processInstanceId){
+		//测试时暂时用报销的表单代替
+		url = "portal/expense/editExpense.jsp";
+		var formUrl = url+"?dataId="+dataId+"&taskId="+taskId+"&processInstanceId="+processInstanceId+"&refresh="+new Date();
+		openModalForm(formUrl,505);
+	}
 </script>
 	<jsp:include page="../bottom.jsp" />
 </body>
