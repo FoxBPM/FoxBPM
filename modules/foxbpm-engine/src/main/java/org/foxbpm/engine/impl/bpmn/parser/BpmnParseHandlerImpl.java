@@ -81,6 +81,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.event.EventListener;
 import org.foxbpm.engine.exception.ExceptionCode;
 import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
 import org.foxbpm.engine.exception.FoxBPMException;
@@ -118,8 +119,6 @@ import org.foxbpm.kernel.process.impl.KernelLaneImpl;
 import org.foxbpm.kernel.process.impl.KernelLaneSetImpl;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
-import org.foxbpm.model.config.foxbpmconfig.EventListener;
-import org.foxbpm.model.config.foxbpmconfig.EventListenerConfig;
 import org.foxbpm.model.config.style.Style;
 
 public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
@@ -269,45 +268,41 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	 * @param processEntity
 	 */
 	private void registListener(ProcessDefinitionEntity processEntity) {
-		EventListenerConfig eventListenerConfig = Context.getProcessEngineConfiguration().getFoxBpmConfig().getEventListenerConfig();
-		if (eventListenerConfig != null) {
-			// 加载监听器
-			List<EventListener> eventListenerList = eventListenerConfig.getEventListener();
-			KernelListener foxbpmEventListener = null;
-			try {
-				for (EventListener eventListener : eventListenerList) {
-					foxbpmEventListener = (KernelListener) Class.forName(eventListener.getListenerClass()).newInstance();
-					if (StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_START)
-					        || StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_END)) {
-						// 注册启动监听
-						processEntity.addKernelListener(eventListener.getEventType(), foxbpmEventListener);
-					} else {
-						if (StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_SEQUENCEFLOW_TAKE)) {
-							// 注册线条监听
-							Map<String, KernelSequenceFlowImpl> sequenceFlows = processEntity.getSequenceFlows();
-							Set<Entry<String, KernelSequenceFlowImpl>> sequenceEntrySet = sequenceFlows.entrySet();
-							Iterator<Entry<String, KernelSequenceFlowImpl>> sequenceEntryIter = sequenceEntrySet.iterator();
-							Entry<String, KernelSequenceFlowImpl> sequenceFlow = null;
-							KernelSequenceFlowImpl kernelSequenceFlowImpl = null;
-							while (sequenceEntryIter.hasNext()) {
-								sequenceFlow = sequenceEntryIter.next();
-								kernelSequenceFlowImpl = sequenceFlow.getValue();
-								kernelSequenceFlowImpl.addKernelListener(foxbpmEventListener);
-							}
-						} else {
-							// 注册节点监听
-							List<KernelFlowNodeImpl> flowNodes = processEntity.getFlowNodes();
-							this.registerFlowNodeListener(flowNodes, eventListener, foxbpmEventListener);
+		// 加载监听器
+		List<EventListener> eventListenerList = Context.getProcessEngineConfiguration().getEventListenerConfig();
+		KernelListener foxbpmEventListener = null;
+		try {
+			for (EventListener eventListener : eventListenerList) {
+				foxbpmEventListener = (KernelListener) Class.forName(eventListener.getListenerClass()).newInstance();
+				if (StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_START)
+				        || StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_END)) {
+					// 注册启动监听
+					processEntity.addKernelListener(eventListener.getEventType(), foxbpmEventListener);
+				} else {
+					if (StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_SEQUENCEFLOW_TAKE)) {
+						// 注册线条监听
+						Map<String, KernelSequenceFlowImpl> sequenceFlows = processEntity.getSequenceFlows();
+						Set<Entry<String, KernelSequenceFlowImpl>> sequenceEntrySet = sequenceFlows.entrySet();
+						Iterator<Entry<String, KernelSequenceFlowImpl>> sequenceEntryIter = sequenceEntrySet.iterator();
+						Entry<String, KernelSequenceFlowImpl> sequenceFlow = null;
+						KernelSequenceFlowImpl kernelSequenceFlowImpl = null;
+						while (sequenceEntryIter.hasNext()) {
+							sequenceFlow = sequenceEntryIter.next();
+							kernelSequenceFlowImpl = sequenceFlow.getValue();
+							kernelSequenceFlowImpl.addKernelListener(foxbpmEventListener);
 						}
-						
+					} else {
+						// 注册节点监听
+						List<KernelFlowNodeImpl> flowNodes = processEntity.getFlowNodes();
+						this.registerFlowNodeListener(flowNodes, eventListener, foxbpmEventListener);
 					}
 					
 				}
-			} catch (Exception e) {
-				throw new FoxBPMException("加载运行轨迹监听器时出现问题", e);
+				
 			}
+		} catch (Exception e) {
+			throw new FoxBPMException("加载运行轨迹监听器时出现问题", e);
 		}
-		
 	}
 	
 	/**

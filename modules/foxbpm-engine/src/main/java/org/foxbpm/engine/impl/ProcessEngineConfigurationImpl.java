@@ -51,6 +51,7 @@ import org.foxbpm.engine.cache.Cache;
 import org.foxbpm.engine.calendar.WorkCalendar;
 import org.foxbpm.engine.config.ProcessEngineConfigurator;
 import org.foxbpm.engine.db.DataSourceManage;
+import org.foxbpm.engine.event.EventListener;
 import org.foxbpm.engine.exception.ExceptionCode;
 import org.foxbpm.engine.exception.ExceptionI18NCore;
 import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
@@ -62,6 +63,7 @@ import org.foxbpm.engine.impl.bpmn.deployer.PngDeployer;
 import org.foxbpm.engine.impl.cache.DefaultCache;
 import org.foxbpm.engine.impl.db.DefaultDataSourceManage;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateContainer;
+import org.foxbpm.engine.impl.event.EventListenerImpl;
 import org.foxbpm.engine.impl.identity.GroupDeptImpl;
 import org.foxbpm.engine.impl.identity.GroupRoleImpl;
 import org.foxbpm.engine.impl.identity.UserDefinitionImpl;
@@ -105,13 +107,13 @@ import org.foxbpm.engine.task.CommandParam;
 import org.foxbpm.engine.task.CommandParamType;
 import org.foxbpm.engine.task.TaskCommandDefinition;
 import org.foxbpm.model.config.foxbpmconfig.BizDataObjectConfig;
+import org.foxbpm.model.config.foxbpmconfig.EventListenerConfig;
 import org.foxbpm.model.config.foxbpmconfig.FoxBPMConfig;
 import org.foxbpm.model.config.foxbpmconfig.FoxBPMConfigPackage;
 import org.foxbpm.model.config.foxbpmconfig.MailInfo;
 import org.foxbpm.model.config.foxbpmconfig.ResourcePath;
 import org.foxbpm.model.config.foxbpmconfig.ResourcePathConfig;
 import org.foxbpm.model.config.foxbpmconfig.SysMailConfig;
-import org.foxbpm.model.config.foxbpmconfig.TaskCommandConfig;
 import org.foxbpm.model.config.style.ElementStyle;
 import org.foxbpm.model.config.style.FoxBPMStyleConfig;
 import org.foxbpm.model.config.style.Style;
@@ -165,11 +167,32 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected UserDefinition userDefinition;
 	
 	protected Map<String, Style> styleMap = new HashMap<String, Style>();
-	protected TaskCommandConfig taskCommandConfig;
+	
+	/**
+	 * 任务命令定义配置
+	 */
 	protected Map<String, TaskCommandDefinition> taskCommandDefinitionMap;
+	
+	/**
+	 * 任务命令展现过滤器配置
+	 */
 	protected Map<String, AbstractCommandFilter> commandFilterMap;
 	
+	/**
+	 * 事件监听配置
+	 */
+	protected List<EventListener> eventListenerConfig;
+	
+	/**
+	 * 数据表前缀
+	 */
 	protected String prefix = "foxbpm";
+	
+	/**
+	 * 任务是否自动领取
+	 */
+	protected int autoClaim = -1;
+	
 	/**
 	 * FOXBPM任务调度器
 	 */
@@ -196,6 +219,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initCommandContextFactory();
 		initCommandExecutors();
 		initTaskCommand();
+		initEventListenerConfig();
 		initServices();
 		initDeployers();
 		//加载组织机构相关
@@ -259,8 +283,22 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		}
 	}
 	
+	protected void initEventListenerConfig(){
+		this.eventListenerConfig = new ArrayList<EventListener>();
+		EventListenerConfig modelEventListenerConfig = foxBpmConfig.getEventListenerConfig();
+		if(modelEventListenerConfig != null){
+			List<org.foxbpm.model.config.foxbpmconfig.EventListener> listeners = modelEventListenerConfig.getEventListener();
+			EventListenerImpl event;
+			for(org.foxbpm.model.config.foxbpmconfig.EventListener tmp : listeners){
+				event = new EventListenerImpl();
+				event.setEventType(tmp.getEventType());
+				event.setEventListenerClass(tmp.getListenerClass());
+				this.eventListenerConfig.add(event);
+			}
+		}
+	}
+	
 	protected void initQuartz() {
-		
 		if (!this.quartzEnabled) {
 			return;
 		}
@@ -352,7 +390,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	protected List<TaskCommandDefinition> getTaskCommandDefinition(){
 		List<TaskCommandDefinition> taskCommands = new ArrayList<TaskCommandDefinition>();
-		List<org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition> commandDefintions = taskCommandConfig.getTaskCommandDefinition();
+		List<org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition> commandDefintions = foxBpmConfig.getTaskCommandConfig().getTaskCommandDefinition();
 		//加载foxbpm.cfg.xml中配置的任务命令
 		for(org.foxbpm.model.config.foxbpmconfig.TaskCommandDefinition tmpCommand :commandDefintions){
 			if(!StringUtil.getBoolean(tmpCommand.getIsEnabled())){
@@ -531,11 +569,18 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		}
 		
 		foxBpmConfig = (FoxBPMConfig) resource.getContents().get(0);
-		taskCommandConfig = foxBpmConfig.getTaskCommandConfig();
 		sysMailConfig = foxBpmConfig.getSysMailConfig();
 		bizDataObjectConfig = foxBpmConfig.getBizDataObjectConfig();
 		resourcePathConfig = foxBpmConfig.getResourcePathConfig();
 		
+		//留下外部注入的接口，可通过spring或者set的形式注入该参数
+		if(autoClaim == -1){
+			if(StringUtil.getBoolean(foxBpmConfig.getTaskCommandConfig().getIsAutoClaim())){
+				autoClaim = 1;
+			}else{
+				autoClaim = 0;
+			}
+		}
 	}
 	
 	public void initSqlSessionFactory() {
@@ -774,6 +819,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return taskCommandDefinitionMap.get(taskCommandDefinitionId);
 	}
 	
+	public List<EventListener> getEventListenerConfig() {
+		return eventListenerConfig;
+	}
+
 	public FoxBPMStyleConfig getFoxBPMStyleConfig() {
 		
 		return foxBPMStyleConfig;
@@ -844,10 +893,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return null;
 	}
 	
-	public TaskCommandConfig getTaskCommandConfig() {
-		return taskCommandConfig;
-	}
-	
 	public BizDataObjectConfig getBizDataObjectConfig() {
 		return bizDataObjectConfig;
 	}
@@ -892,6 +937,14 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return prefix;
 	}
 	
+	public boolean isAutoClaim() {
+		return autoClaim == 1;
+	}
+
+	public void setAutoClaim(int isAutoClaim) {
+		this.autoClaim = isAutoClaim;
+	}
+
 	public void setWorkCalendar(WorkCalendar workCalendar) {
 		this.workCalendar = workCalendar;
 	}

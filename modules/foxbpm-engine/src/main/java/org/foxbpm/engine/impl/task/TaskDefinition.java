@@ -184,11 +184,8 @@ public class TaskDefinition implements Serializable {
 	}
 
 	public boolean isAutoClaim() {
-
-		boolean defaultClaimType = StringUtil.getBoolean(Context.getProcessEngineConfiguration().getTaskCommandConfig().getIsAutoClaim());
-
+		boolean defaultClaimType = Context.getProcessEngineConfiguration().isAutoClaim();
 		if (StringUtil.isNotEmpty(claimType)) {
-
 			if (claimType.toLowerCase().equals(ClaimType.DEFAULT_CLAIM)) {
 				return defaultClaimType;
 			}

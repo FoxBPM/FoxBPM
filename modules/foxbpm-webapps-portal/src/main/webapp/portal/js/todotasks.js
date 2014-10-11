@@ -132,7 +132,6 @@ var pagefunction = function() {
 						"ajax" : {
 							"url":todoTaskUrl,
 							"async":false
-							
 						},
 						"sDom" : "<'dt-toolbar'<'col-sm-6 col-xs-12 hidden-xs'f><'col-sm-6 col-xs-12 hidden-xs'>C>"+
 								 "t"+
