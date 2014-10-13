@@ -23,8 +23,6 @@ import java.util.List;
 import org.foxbpm.engine.impl.mybatis.FoxbpmMapperConfig;
 
 public class FoxbpmCalendarMapper implements FoxbpmMapperConfig {
-
-	 
 	public List<String> getMapperConfig() {
 		List<String> xmlList = new ArrayList<String>();
 		xmlList.add("mybatis/mapping/CalendarType.xml");
@@ -32,5 +30,4 @@ public class FoxbpmCalendarMapper implements FoxbpmMapperConfig {
 		xmlList.add("mybatis/mapping/CalendarPart.xml");
 		return xmlList;
 	}
-
 }

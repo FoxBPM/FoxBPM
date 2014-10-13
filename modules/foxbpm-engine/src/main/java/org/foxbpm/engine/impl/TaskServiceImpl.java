@@ -149,8 +149,5 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 	public Class<?> getInterfaceClass() {
 		return TaskService.class;
 	}
-	
-	
-
 
 }

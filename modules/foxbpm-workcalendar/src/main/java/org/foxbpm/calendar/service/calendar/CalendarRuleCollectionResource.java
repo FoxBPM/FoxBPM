@@ -68,9 +68,6 @@ public class CalendarRuleCollectionResource extends AbstractRestResource{
 			pageSize = StringUtil.getInt(getQueryParameter(RestConstants.PAGE_SIZE, queryForm));
 		}
 		
-		if(!validationUser())
-			return null;
-		
 		WorkCalendarService workCalendarService = ProcessEngineManagement.getDefaultProcessEngine().getService(WorkCalendarService.class);
 		
 		DataResult result = new DataResult();

@@ -76,6 +76,7 @@ import org.foxbpm.engine.impl.interceptor.CommandInterceptor;
 import org.foxbpm.engine.impl.interceptor.CommandInvoker;
 import org.foxbpm.engine.impl.interceptor.LogInterceptor;
 import org.foxbpm.engine.impl.interceptor.SessionFactory;
+import org.foxbpm.engine.impl.mybatis.FoxbpmMapperConfig;
 import org.foxbpm.engine.impl.mybatis.MyBatisSqlSessionFactory;
 import org.foxbpm.engine.impl.persistence.AgentManager;
 import org.foxbpm.engine.impl.persistence.DeploymentEntityManager;
@@ -129,6 +130,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	private static Logger log = LoggerFactory.getLogger(ProcessEngineConfigurationImpl.class);
 	private static int QUART_START_DELAYTIME = 10;
 	protected List<ProcessEngineConfigurator> configurators;
+	protected List<ProcessEngineConfigurator> allConfigurators;
 	
 	protected CommandExecutor commandExecutor;
 	protected CommandContextFactory commandContextFactory;
@@ -140,7 +142,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected SysMailConfig sysMailConfig;
 	
 	// service
-	protected List<ProcessService> processServices;
+	protected List<ProcessService> processServices = new ArrayList<ProcessService>();
 	protected Map<Class<?>,ProcessService> serviceMap = new HashMap<Class<?>, ProcessService>();
 	protected ISqlSessionFactory sqlSessionFactory;
 	protected Map<Class<?>, SessionFactory> sessionFactories;
@@ -198,6 +200,11 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	 */
 	protected FoxbpmScheduler foxbpmScheduler;
 	
+	/**
+	 * 自定义mapper文件
+	 */
+	protected List<FoxbpmMapperConfig> customMapperConfig = new ArrayList<FoxbpmMapperConfig>();
+	
 	public ProcessEngine buildProcessEngine() {
 		init();
 		return new ProcessEngineImpl(this);
@@ -241,8 +248,16 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 	
 	protected void initConfigurators() {
-		if (configurators != null && configurators.size() > 0) {
-			Collections.sort(configurators, new Comparator<ProcessEngineConfigurator>() {
+		allConfigurators = new ArrayList<ProcessEngineConfigurator>();
+		if(configurators != null){
+			allConfigurators.addAll(configurators);
+		}
+		ServiceLoader<ProcessEngineConfigurator> configuratorServiceLoader = ServiceLoader.load(ProcessEngineConfigurator.class);
+		for (ProcessEngineConfigurator configurator : configuratorServiceLoader) {
+			allConfigurators.add(configurator);
+		}
+		if (allConfigurators != null && allConfigurators.size() > 0) {
+			Collections.sort(allConfigurators, new Comparator<ProcessEngineConfigurator>() {
 				 
 				public int compare(ProcessEngineConfigurator configurator1,
 				    ProcessEngineConfigurator configurator2) {
@@ -257,26 +272,25 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 					return 0;
 				}
 			});
-			log.info("Found {} Process Engine Configurators in total:", configurators.size());
-			for (ProcessEngineConfigurator configurator : configurators) {
-				log.info("{} (priority:{})", configurator.getClass(), configurator.getPriority());
+			log.info("共发现 {} 个Configurators配置:", allConfigurators.size());
+			for (ProcessEngineConfigurator configurator : allConfigurators) {
+				log.info("{} (优先级:{})", configurator.getClass(), configurator.getPriority());
 			}
 		}
 	}
 	
 	protected void configuratorsBeforeInit() {
-		if(configurators != null){
-			for (ProcessEngineConfigurator configurator : configurators) {
-				log.info("Executing configure() of {} (priority:{})", configurator.getClass(), configurator.getPriority());
+		if(allConfigurators != null){
+			for (ProcessEngineConfigurator configurator : allConfigurators) {
+				log.info("加载 configure： {} (优先级:{})", configurator.getClass(), configurator.getPriority());
 				configurator.beforeInit(this);
 			}
 		}
-		
 	}
 	
 	protected void configuratorsAfterInit() {
-		if(configurators != null){
-			for (ProcessEngineConfigurator configurator : configurators) {
+		if(allConfigurators != null){
+			for (ProcessEngineConfigurator configurator : allConfigurators) {
 				log.info("Executing configure() of {} (priority:{})", configurator.getClass(), configurator.getPriority());
 				configurator.configure(this);
 			}
@@ -586,35 +600,16 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	public void initSqlSessionFactory() {
 		if(sqlSessionFactory == null){
 			sqlSessionFactory = new MyBatisSqlSessionFactory();
-			sqlSessionFactory.init(dataSource,prefix);
+			sqlSessionFactory.init(this);
 		}
 	}
 	
-	/**
-	 * <p>ProcessService加载机制</p>
-	 * <p>    1.先扫描外部是否注入，如spring注入</p>
-	 * <p>    2.加载默认的service,如taskService等</p>
-	 * <p>    3.加载serviceLoader中发现的service,见 java spi机制</p> 
-	 * <p> 注：冲突解决方案：优先级为  外部注入>默认service>serviceLoader中</p>      		
-	 */
 	protected void initServices() {
-		
-		if(processServices == null){
-			processServices = new ArrayList<ProcessService>();
-		}
 		
 		processServices.add(new ModelServiceImpl());
 		processServices.add(new RuntimeServiceImpl());
 		processServices.add(new TaskServiceImpl());
 		processServices.add(new IdentityServiceImpl());
-		
-		//serviceLoader方式加载外部注册service
-		ServiceLoader<ProcessService> services = ServiceLoader.load(ProcessService.class);
-		Iterator<ProcessService> serviceIterator = services.iterator();
-		while(serviceIterator.hasNext()){
-			ProcessService tmpService = serviceIterator.next();
-			processServices.add(tmpService);
-		}
 		
 		Iterator<ProcessService> iterator = processServices.iterator();
 		while(iterator.hasNext()){
@@ -924,10 +919,14 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return this.quartzEnabled;
 	}
 	
-	public void setProcessServices(List<ProcessService> processServices) {
-		this.processServices = processServices;
+	public List<ProcessService> getProcessServices() {
+		return this.processServices;
 	}
 	
+	public List<FoxbpmMapperConfig> getCustomMapperConfig() {
+		return customMapperConfig;
+	}
+
 	public ProcessEngineConfiguration setPrefix(String prefix) {
 		this.prefix = prefix;
 		return this;
