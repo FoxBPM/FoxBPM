@@ -32,7 +32,7 @@ function requestUrlParam(paras) {
 var _appName = "/foxbpm-webapps-common/";
 var _serviceUrl = "/foxbpm-webapps-common/service/";
 var _userId = "";
-$.ajax({
+/*$.ajax({
 	type : "get",
 	dataType : "json",
 	async : false,
@@ -46,3 +46,4 @@ $.ajax({
 		}
 	}
 });
+*/
