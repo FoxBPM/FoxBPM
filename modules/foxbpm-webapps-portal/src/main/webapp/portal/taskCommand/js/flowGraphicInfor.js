@@ -219,12 +219,12 @@ function FlowGraphicInfor(config) {
 			// 加载svg图片
 			$.ajax({
 				type : "GET",
-				url : this.action + 'flowGraphic/flowImg',
-				dataType : "html",// 返回json格式的数据
-				data : "flag=svg&processInstanceId=" + this.processInstanceId
+				url : this.action + 'flowGraphic/flowSvg',
+				dataType : "json",// 返回json格式的数据
+				data : "processInstanceId=" + this.processInstanceId
 						+ "&processDefinitionKey=" + this.processDefinitionKey,
 				success : function(src) {
-					$('#flowImg').html(src);
+					$('#flowImg').html(src.data);
 					// 防止详细信息先加载
 					_self.signProcessState();
 				}

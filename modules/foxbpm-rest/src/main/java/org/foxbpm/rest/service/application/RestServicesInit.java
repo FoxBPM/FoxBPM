@@ -45,6 +45,7 @@ import org.foxbpm.rest.service.api.processinstance.ProcessInstanceCollectionReso
 import org.foxbpm.rest.service.api.processinstance.ProcessInstanceResource;
 import org.foxbpm.rest.service.api.task.FlowGraphicImgResource;
 import org.foxbpm.rest.service.api.task.FlowGraphicPositionResource;
+import org.foxbpm.rest.service.api.task.FlowGraphicSvgResource;
 import org.foxbpm.rest.service.api.task.TaskCollectionResource;
 import org.foxbpm.rest.service.api.task.TaskInforResource;
 import org.foxbpm.rest.service.api.task.TaskOperationCollectionResource;
@@ -110,7 +111,8 @@ public class RestServicesInit {
 		router.attach("/task/runTrack", TaskRunTrackResource.class);
 		router.attach("/flowGraphic/position",FlowGraphicPositionResource.class);
 		router.attach("/flowGraphic/flowImg", FlowGraphicImgResource.class);
-		
+		router.attach("/flowGraphic/flowSvg", FlowGraphicSvgResource.class);
+
 		//工作日历
 		router.attach("/workcal/calendartype/{calendartypeId}", CalendarTypeResource.class);
 		router.attach("/workcal/calendarrule/{calendarruleId}", CalendarRuleResource.class);
