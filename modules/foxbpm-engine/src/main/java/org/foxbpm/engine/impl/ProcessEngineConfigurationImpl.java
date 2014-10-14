@@ -50,7 +50,6 @@ import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.cache.Cache;
 import org.foxbpm.engine.calendar.WorkCalendar;
 import org.foxbpm.engine.config.ProcessEngineConfigurator;
-import org.foxbpm.engine.db.DataSourceManage;
 import org.foxbpm.engine.event.EventListener;
 import org.foxbpm.engine.exception.ExceptionCode;
 import org.foxbpm.engine.exception.ExceptionI18NCore;
@@ -61,7 +60,6 @@ import org.foxbpm.engine.identity.UserDefinition;
 import org.foxbpm.engine.impl.bpmn.deployer.BpmnDeployer;
 import org.foxbpm.engine.impl.bpmn.deployer.PngDeployer;
 import org.foxbpm.engine.impl.cache.DefaultCache;
-import org.foxbpm.engine.impl.db.DefaultDataSourceManage;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateContainer;
 import org.foxbpm.engine.impl.event.EventListenerImpl;
 import org.foxbpm.engine.impl.identity.GroupDeptImpl;
@@ -218,7 +216,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		//加载foxbpm.cfg.xml配置文件，配置了引擎默认配置。
 		initEmfFile();
 		initCache();
-		initDataSource();
+//		initDataSource();
 		//加载sessionFactory
 		initSqlSessionFactory();
 		initSessionFactories();
@@ -534,15 +532,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		defaultDeployers.add(bpmnDeployer);
 		defaultDeployers.add(pngDeployer);
 		return defaultDeployers;
-	}
-	
-	public void initDataSource() {
-		if (dataSource == null) {
-			DataSourceManage dataSourceManager = new DefaultDataSourceManage();
-			dataSourceManager.init();
-			dataSource = dataSourceManager.getDataSource();
-		}
-		
 	}
 	
 	public void initExceptionResource() {
