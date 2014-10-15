@@ -3,12 +3,7 @@ package org.foxbpm.model;
 import java.util.List;
 import java.util.Map;
 
-public class BpmnModel extends BaseElement {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class BpmnModel{
 
 	protected List<Process> processes;
 	
