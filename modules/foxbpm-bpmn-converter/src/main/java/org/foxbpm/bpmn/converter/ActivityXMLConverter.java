@@ -27,7 +27,7 @@ import org.w3c.dom.Element;
  * @author yangguangftlp
  * @date 2014年10月15日
  */
-public class ActivityXMLConverter extends BaseElementXMLConverter {
+public class ActivityXMLConverter extends FlowNodeXMLConverter {
 	
 	@Override
 	protected Class<? extends BaseElement> getBpmnElementType() {
