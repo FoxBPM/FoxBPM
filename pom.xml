@@ -25,6 +25,7 @@
         <module>modules/foxbpm-workcalendar</module>
         <module>modules/foxbpm-notification</module>
         <module>modules/foxbpm-bpmn-model</module>
+        <module>modules/foxbpm-bpmn-converter</module>
 	</modules>
 
 	<build>
