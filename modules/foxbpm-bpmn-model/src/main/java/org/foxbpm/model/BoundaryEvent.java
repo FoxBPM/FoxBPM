@@ -3,7 +3,12 @@ package org.foxbpm.model;
 public class BoundaryEvent extends CatchEvent 
 {
    
-   public BoundaryEvent() 
+   /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+public BoundaryEvent() 
    {
     
    }

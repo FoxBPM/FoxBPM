@@ -2,6 +2,10 @@ package org.foxbpm.model;
 
 public class SkipStrategy extends BaseElement {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected String skipExpression;
 	protected boolean isEnable = false;
 	protected boolean isCreateSkipTaskRecord = true;

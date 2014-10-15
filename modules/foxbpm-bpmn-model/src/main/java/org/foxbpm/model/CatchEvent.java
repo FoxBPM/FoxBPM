@@ -2,7 +2,12 @@ package org.foxbpm.model;
 
 public class CatchEvent extends Event {
 	
-   public CatchEvent() {
+   /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+public CatchEvent() {
     
    }
 }

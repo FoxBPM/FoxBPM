@@ -5,6 +5,11 @@ import java.util.Map;
 
 public class BpmnModel extends BaseElement {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	protected List<Process> processes;
 	
 	protected Map<String,Graphic> graphicMap;

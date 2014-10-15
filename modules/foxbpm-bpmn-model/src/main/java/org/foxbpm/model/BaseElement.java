@@ -1,8 +1,11 @@
 package org.foxbpm.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class BaseElement {
+public class BaseElement implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	protected String id;
 	

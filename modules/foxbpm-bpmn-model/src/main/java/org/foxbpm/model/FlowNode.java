@@ -5,6 +5,10 @@ import java.util.List;
 
 public class FlowNode extends FlowElement {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected List<SequenceFlow> incomingFlows = new ArrayList<SequenceFlow>();
 	protected List<SequenceFlow> outgoingFlows = new ArrayList<SequenceFlow>();
 	

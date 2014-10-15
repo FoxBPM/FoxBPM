@@ -4,6 +4,11 @@ package org.foxbpm.model;
 public class DataVariable extends BaseElement {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * 数据类型
 	 */
 	protected String dataType;

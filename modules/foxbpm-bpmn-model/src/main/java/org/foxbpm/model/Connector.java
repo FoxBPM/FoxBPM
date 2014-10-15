@@ -4,6 +4,10 @@ import java.util.List;
 
 public class Connector extends BaseElement {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected String packageName;
 	protected String className;
 	protected String connectorInstanceId;

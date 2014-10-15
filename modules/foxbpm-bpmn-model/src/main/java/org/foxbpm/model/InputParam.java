@@ -1,6 +1,11 @@
 package org.foxbpm.model;
 public class InputParam extends BaseElement {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	protected String name;
 
 	protected String dataType;
