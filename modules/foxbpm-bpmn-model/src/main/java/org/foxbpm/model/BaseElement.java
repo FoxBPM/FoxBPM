@@ -1,8 +1,12 @@
 package org.foxbpm.model;
 
+import java.util.List;
+
 public class BaseElement {
 
-	private String id;
+	protected String id;
+	
+	protected List<Connector> connector;
 
 	public String getId() {
 		return id;
@@ -11,6 +15,4 @@ public class BaseElement {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
-	
 }
