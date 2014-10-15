@@ -24,6 +24,7 @@
 		<module>modules/foxbpm-social</module>
         <module>modules/foxbpm-workcalendar</module>
         <module>modules/foxbpm-notification</module>
+        <module>modules/foxbpm-bpmn-model</module>
 	</modules>
 
 	<build>
