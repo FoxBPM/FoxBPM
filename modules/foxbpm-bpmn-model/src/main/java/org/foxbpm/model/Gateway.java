@@ -22,7 +22,7 @@ package org.foxbpm.model;
  * @author ych
  *
  */
-public class Gateway extends FlowNode {
+public abstract class Gateway extends FlowNode {
 	
 	private static final long serialVersionUID = 1L;
 

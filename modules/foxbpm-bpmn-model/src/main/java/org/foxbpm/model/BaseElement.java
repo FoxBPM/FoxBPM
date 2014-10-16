@@ -24,10 +24,10 @@ import java.io.Serializable;
  * @author ych
  *
  */
-public class BaseElement implements Serializable {
+public abstract class BaseElement implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+ 
 	/**
 	 * 编号
 	 */

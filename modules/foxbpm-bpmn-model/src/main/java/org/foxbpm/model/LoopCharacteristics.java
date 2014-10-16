@@ -22,7 +22,7 @@ package org.foxbpm.model;
  * @author ych
  *
  */
-public class LoopCharacteristics extends BaseElement {
+public abstract class LoopCharacteristics extends BaseElement {
 
 	private static final long serialVersionUID = 1L;
 

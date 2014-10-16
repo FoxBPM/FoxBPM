@@ -24,7 +24,7 @@ import java.util.List;
  * @author ych
  *
  */
-public class Event extends FlowNode {
+public abstract class Event extends FlowNode {
 
 	private static final long serialVersionUID = 1L;
 

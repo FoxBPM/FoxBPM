@@ -24,11 +24,8 @@ import java.util.List;
  * @author ych
  *
  */
-public class Activity extends FlowNode {
+public abstract class Activity extends FlowNode {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**

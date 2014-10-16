@@ -22,7 +22,7 @@ package org.foxbpm.model;
  * @author ych
  *
  */
-public class Task extends Activity {
+public abstract class Task extends Activity {
 	private static final long serialVersionUID = 1L;
 
 }

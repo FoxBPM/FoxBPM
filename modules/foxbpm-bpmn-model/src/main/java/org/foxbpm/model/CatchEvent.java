@@ -22,7 +22,7 @@ package org.foxbpm.model;
  * @author Administrator
  *
  */
-public class CatchEvent extends Event {
+public abstract class CatchEvent extends Event {
 
 	private static final long serialVersionUID = 1L;
 

@@ -22,7 +22,7 @@ package org.foxbpm.model;
  * @author ych
  *
  */
-public class EventDefinition extends BaseElement {
+public abstract class EventDefinition extends BaseElement {
 
 	private static final long serialVersionUID = 1L;
 
