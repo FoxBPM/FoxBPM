@@ -18,30 +18,71 @@
 package org.foxbpm.model;
 
 /**
- * 流程可发起人
+ * 任务命令参数
  * @author ych
  *
  */
-public class PotentialStarter extends BaseElement {
-	
+public class CommandParameter extends BaseElement {
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 资源类型(角色，人员，部门等)
+	 * 名称
 	 */
-	protected String resourceType;
+	protected String name;
+
+	/**
+	 * 描述
+	 */
+	protected String description;
+
+	/**
+	 * 业务类型
+	 */
+	protected String bizType;
+
+	/**
+	 * 数据类型
+	 */
+	protected String dataType;
 
 	/**
 	 * 值表达式
 	 */
 	protected String expression;
 
-	public String getResourceType() {
-		return resourceType;
+	public String getName() {
+		return name;
 	}
 
-	public void setResourceType(String resourceType) {
-		this.resourceType = resourceType;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getBizType() {
+		return bizType;
+	}
+
+	public void setBizType(String bizType) {
+		this.bizType = bizType;
+	}
+
+	public String getDataType() {
+		return dataType;
+	}
+
+	public void setDataType(String dataType) {
+		this.dataType = dataType;
 	}
 
 	public String getExpression() {
@@ -52,11 +93,4 @@ public class PotentialStarter extends BaseElement {
 		this.expression = expression;
 	}
 
-	public String getDocumentation() {
-		return documentation;
-	}
-
-	public void setDocumentation(String documentation) {
-		this.documentation = documentation;
-	}
 }

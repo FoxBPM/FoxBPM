@@ -52,8 +52,8 @@ public class UserTaskParser extends TaskParser {
 		TaskDefinition taskDefinition = new TaskDefinition();
 
 		UserTask userTask = (UserTask) baseElement;
-		String userID = userTask.getId();
-		taskDefinition.setId(userID);
+		String taskID = userTask.getId();
+		taskDefinition.setId(taskID);
 		taskDefinition.setName(userTask.getName());
 		List<org.foxbpm.model.bpmn.foxbpm.TaskCommand> taskCommandsObj = BpmnModelUtil
 				.getExtensionElementList(org.foxbpm.model.bpmn.foxbpm.TaskCommand.class, userTask,
@@ -98,7 +98,7 @@ public class UserTaskParser extends TaskParser {
 		userTaskBehavior.setTaskDefinition(taskDefinition);
 
 		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) getFlowElementsContainer();
-		processDefinition.getTaskDefinitions().put(userID, taskDefinition);
+		processDefinition.getTaskDefinitions().put(taskID, taskDefinition);
 
 		FormParamContainer formParamContainer = BpmnModelUtil.getFormParamContainer(baseElement);
 

@@ -17,43 +17,38 @@
  */
 package org.foxbpm.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * 节点元素
- * 
- * @author ych
+ * 表单参数
  * 
  */
-public abstract class FlowNode extends FlowElement {
+public class FormParam extends BaseElement {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 进入线条编号集合
+	 * 参数类型
 	 */
-	protected List<String> incomingFlows = new ArrayList<String>();
+	private String paramType;
 
 	/**
-	 * 流出线条编号集合
+	 * 参数值表达式
 	 */
-	protected List<String> outgoingFlows = new ArrayList<String>();
+	private String expression;
 
-	public List<String> getIncomingFlows() {
-		return incomingFlows;
+	public String getParamType() {
+		return paramType;
 	}
 
-	public void setIncomingFlows(List<String> incomingFlows) {
-		this.incomingFlows = incomingFlows;
+	public void setParamType(String paramType) {
+		this.paramType = paramType;
 	}
 
-	public List<String> getOutgoingFlows() {
-		return outgoingFlows;
+	public String getExpression() {
+		return expression;
 	}
 
-	public void setOutgoingFlows(List<String> outgoingFlows) {
-		this.outgoingFlows = outgoingFlows;
+	public void setExpression(String expression) {
+		this.expression = expression;
 	}
 
 }
