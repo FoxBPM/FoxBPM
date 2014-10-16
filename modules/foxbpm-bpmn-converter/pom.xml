@@ -22,6 +22,10 @@
 			<artifactId>foxbpm-bpmn-model</artifactId>
 			<version>6.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+		</dependency>
   </dependencies>
   <description>foxbpm-bpmn-converter</description>
 </project>

@@ -17,6 +17,8 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import org.foxbpm.model.BaseElement;
+
 /**
  * 常量类
  * 
@@ -24,5 +26,17 @@ package org.foxbpm.bpmn.converter;
  * @date 2014年10月15日
  */
 public class InclusiveGatewayXMLConverter extends GatewayXMLConverter {
+
+	@Override
+    protected Class<? extends BaseElement> getBpmnElementType() {
+	    // TODO Auto-generated method stub
+	    return null;
+    }
+
+	@Override
+    protected String getXMLElementName() {
+	    // TODO Auto-generated method stub
+	    return null;
+    }
 	
 }

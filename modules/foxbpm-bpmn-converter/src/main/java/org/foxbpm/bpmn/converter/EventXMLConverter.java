@@ -23,6 +23,6 @@ package org.foxbpm.bpmn.converter;
  * @author yangguangftlp
  * @date 2014年10月15日
  */
-public class EventXMLConverter extends FlowNodeXMLConverter {
+public abstract class EventXMLConverter extends FlowNodeXMLConverter {
 	
 }

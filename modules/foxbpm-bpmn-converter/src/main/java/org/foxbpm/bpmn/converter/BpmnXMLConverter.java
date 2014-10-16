@@ -20,13 +20,10 @@ package org.foxbpm.bpmn.converter;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.dom4j.Document;
+import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
-import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.model.BpmnModel;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * BpmnXML转换类
@@ -47,7 +44,6 @@ public class BpmnXMLConverter implements BpmnXMLConstants {
 		
 		// tasks
 		addConverter(new UserTaskXMLConverter());
-		addConverter(new TaskXMLConverter());
 		addConverter(new CallActivityXMLConverter());
 	}
 	
@@ -57,13 +53,12 @@ public class BpmnXMLConverter implements BpmnXMLConstants {
 	
 	public BpmnModel convertToBpmnModel(Document doc) {
 		BpmnModel model = new BpmnModel();
-		Element definitions = doc.getDocumentElement();
-		String nodeName = BpmnXMLUtil.getEleLoclaName(definitions.getNodeName());
+		Element definitions = doc.getRootElement();
+		String nodeName = definitions.getName();
 		// definitions
 		if (ELEMENT_DEFINITIONS.equals(nodeName)) {
 			// ...
-			NodeList nodeList = definitions.getChildNodes();
-			Node node = null;
+			/*List nodeList = definitions.elements();
 			int length = nodeList.getLength();
 			for (int i = 0; i < length; i++) {
 				node = nodeList.item(i);
@@ -75,7 +70,7 @@ public class BpmnXMLConverter implements BpmnXMLConstants {
 				} else if (ELEMENT_DI_DIAGRAM.equals(nodeName)) {
 					
 				}
-			}
+			}*/
 		}
 		return model;
 	}

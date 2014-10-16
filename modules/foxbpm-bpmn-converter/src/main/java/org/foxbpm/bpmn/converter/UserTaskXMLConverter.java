@@ -19,7 +19,7 @@ package org.foxbpm.bpmn.converter;
 
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.BpmnModel;
-import org.w3c.dom.Element;
+import org.dom4j.Element;
 
 /**
  * 常量类
@@ -30,18 +30,24 @@ import org.w3c.dom.Element;
 public class UserTaskXMLConverter extends TaskXMLConverter {
 	
 	@Override
-	protected Class<? extends BaseElement> getBpmnElementType() {
-		return super.getBpmnElementType();
-	}
-	
-	@Override
-	protected BaseElement convertXMLToElement(Element element, BpmnModel model) throws Exception {
-		return super.convertXMLToElement(element, model);
-	}
-	
-	@Override
 	protected String getXMLElementName() {
 		return ELEMENT_TASK_USER;
 	}
 	
+	@Override
+	protected Class<? extends BaseElement> getBpmnElementType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	protected BaseElement convertXMLToMode(Element element, BpmnModel model) throws Exception {
+		// TODO Auto-generated method stub
+		return super.convertXMLToMode(element, model);
+	}
+	
+	@Override
+	protected Element convertModeToXML(Element element, BpmnModel model) throws Exception {
+		// TODO Auto-generated method stub
+		return super.convertModeToXML(element, model);
+	}
 }

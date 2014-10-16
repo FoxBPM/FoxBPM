@@ -17,10 +17,10 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.BpmnModel;
-import org.w3c.dom.Element;
 
 /**
  * 常量类
@@ -30,8 +30,7 @@ import org.w3c.dom.Element;
  */
 public abstract class BaseElementXMLConverter implements BpmnXMLConstants {
 	protected abstract Class<? extends BaseElement> getBpmnElementType();
-	
-	protected abstract BaseElement convertXMLToElement(Element element, BpmnModel model) throws Exception;
-	
+	protected abstract BaseElement convertXMLToMode(Element element, BpmnModel model) throws Exception;
+	protected abstract Element convertModeToXML(Element element, BpmnModel model) throws Exception;
 	protected abstract String getXMLElementName();
 }

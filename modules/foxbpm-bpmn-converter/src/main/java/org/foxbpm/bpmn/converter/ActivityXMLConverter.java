@@ -19,7 +19,7 @@ package org.foxbpm.bpmn.converter;
 
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.BpmnModel;
-import org.w3c.dom.Element;
+import org.dom4j.Element;
 
 /**
  * 活动元素处理
@@ -27,21 +27,19 @@ import org.w3c.dom.Element;
  * @author yangguangftlp
  * @date 2014年10月15日
  */
-public class ActivityXMLConverter extends FlowNodeXMLConverter {
-	
+public abstract class ActivityXMLConverter extends FlowNodeXMLConverter {
+
 	@Override
-	protected Class<? extends BaseElement> getBpmnElementType() {
-		return null;
-	}
-	
+    protected BaseElement convertXMLToMode(Element element, BpmnModel model) throws Exception {
+	    // TODO Auto-generated method stub
+	    return super.convertXMLToMode(element, model);
+    }
+
 	@Override
-	protected BaseElement convertXMLToElement(Element element, BpmnModel model) throws Exception {
-		return null;
-	}
+    protected Element convertModeToXML(Element element, BpmnModel model) throws Exception {
+	    // TODO Auto-generated method stub
+	    return super.convertModeToXML(element, model);
+    }
 	
-	@Override
-	protected String getXMLElementName() {
-		return ELEMENT_TASK_USER;
-	}
 	
 }
