@@ -17,7 +17,10 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import org.dom4j.Element;
 import org.foxbpm.model.BaseElement;
+import org.foxbpm.model.BpmnModel;
+import org.foxbpm.model.FlowElement;
 
 /**
  * 常量类
@@ -26,17 +29,34 @@ import org.foxbpm.model.BaseElement;
  * @date 2014年10月15日
  */
 public class SubProcessXMLConverter extends ActivityXMLConverter {
-
+	
+	public FlowElement cretateFlowElement() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	@Override
 	public Class<? extends BaseElement> getBpmnElementType() {
-	    // TODO Auto-generated method stub
-	    return null;
-    }
-
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public void convertXMLToModel(Element element, BaseElement baseElement) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void convertModelToXML(Element element, BpmnModel model) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	@Override
 	public String getXMLElementName() {
-	    // TODO Auto-generated method stub
-	    return null;
-    }
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

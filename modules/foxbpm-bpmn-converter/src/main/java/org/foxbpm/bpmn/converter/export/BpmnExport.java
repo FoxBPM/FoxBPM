@@ -15,15 +15,16 @@
  * 
  * @author yangguangftlp
  */
-package org.foxbpm.bpmn.converter;
+package org.foxbpm.bpmn.converter.export;
 
+import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 
 /**
  * 常量类
  * 
  * @author yangguangftlp
- * @date 2014年10月15日
+ * @date 2014年10月16日
  */
-public abstract class FlowNodeXMLConverter extends FlowElementXMLConverter {
+public abstract class BpmnExport implements BpmnXMLConstants{
 	
 }

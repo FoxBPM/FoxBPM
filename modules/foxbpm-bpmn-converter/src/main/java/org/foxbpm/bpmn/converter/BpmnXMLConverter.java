@@ -22,7 +22,9 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.dom4j.Document;
+import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
+import org.dom4j.QName;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.bpmn.converter.parser.BpmnDiagramParser;
 import org.foxbpm.bpmn.converter.parser.ProcessParser;
@@ -86,7 +88,20 @@ public class BpmnXMLConverter implements BpmnXMLConstants {
 		}
 		return model;
 	}
-	
+	/**
+	 * 将bpmnModel转换成xml
+	 * 
+	 * @param model
+	 *            bpmn模型
+	 */
+	public void convertToXML(BpmnModel model) {
+		DocumentFactory factory = DocumentFactory.getInstance();
+		//BPMNDI_PREFIX, ELEMENT_DI_DIAGRAM, BPMNDI_NAMESPACE
+		Element root = factory.createElement(new QName(null, null, null));
+		
+		
+		
+	}
 	public static BaseElementXMLConverter getConverter(String key) {
 		return convertersToBpmnMap.get(key);
 	}

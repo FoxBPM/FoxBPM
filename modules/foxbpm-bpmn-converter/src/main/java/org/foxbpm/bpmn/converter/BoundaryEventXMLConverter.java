@@ -19,6 +19,7 @@ package org.foxbpm.bpmn.converter;
 
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.BpmnModel;
+import org.foxbpm.model.FlowElement;
 import org.dom4j.Element;
 
 /**
@@ -28,26 +29,35 @@ import org.dom4j.Element;
  * @date 2014年10月15日
  */
 public class BoundaryEventXMLConverter extends CatchEventXMLConverter {
+
+	public FlowElement cretateFlowElement() {
+	    // TODO Auto-generated method stub
+	    return null;
+    }
+
+	@Override
+    public Class<? extends BaseElement> getBpmnElementType() {
+	    // TODO Auto-generated method stub
+	    return null;
+    }
+
+	@Override
+    public void convertXMLToModel(Element element, BaseElement baseElement) {
+	    // TODO Auto-generated method stub
+	    
+    }
+
+	@Override
+    public void convertModelToXML(Element element, BpmnModel model) {
+	    // TODO Auto-generated method stub
+	    
+    }
+
+	@Override
+    public String getXMLElementName() {
+	    // TODO Auto-generated method stub
+	    return null;
+    }
+
 	
-	@Override
-	public Class<? extends BaseElement> getBpmnElementType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public String getXMLElementName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public BaseElement convertXMLToMode(Element element, BpmnModel model) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public Element convertModeToXML(Element element, BpmnModel model) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

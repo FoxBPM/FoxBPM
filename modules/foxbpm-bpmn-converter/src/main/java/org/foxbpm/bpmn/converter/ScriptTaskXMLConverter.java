@@ -19,6 +19,7 @@ package org.foxbpm.bpmn.converter;
 
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.BpmnModel;
+import org.foxbpm.model.FlowElement;
 import org.dom4j.Element;
 
 /**
@@ -29,6 +30,11 @@ import org.dom4j.Element;
  */
 public class ScriptTaskXMLConverter extends TaskXMLConverter {
 	
+	public FlowElement cretateFlowElement() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	@Override
 	public Class<? extends BaseElement> getBpmnElementType() {
 		// TODO Auto-generated method stub
@@ -36,19 +42,21 @@ public class ScriptTaskXMLConverter extends TaskXMLConverter {
 	}
 	
 	@Override
+	public void convertXMLToModel(Element element, BaseElement baseElement) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void convertModelToXML(Element element, BpmnModel model) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public String getXMLElementName() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	@Override
-	public BaseElement convertXMLToMode(Element element, BpmnModel model) throws Exception {
-		// TODO Auto-generated method stub
-		return super.convertXMLToMode(element, model);
-	}
 	
-	@Override
-	public Element convertModeToXML(Element element, BpmnModel model) throws Exception {
-		// TODO Auto-generated method stub
-		return super.convertModeToXML(element, model);
-	}
 }

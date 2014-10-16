@@ -17,9 +17,6 @@
  */
 package org.foxbpm.bpmn.converter;
 
-import org.dom4j.Element;
-import org.foxbpm.model.BaseElement;
-import org.foxbpm.model.BpmnModel;
 
 /**
  * 常量类
@@ -29,16 +26,5 @@ import org.foxbpm.model.BpmnModel;
  */
 public abstract class EventXMLConverter extends FlowNodeXMLConverter {
 	
-	@Override
-	public BaseElement convertXMLToMode(Element element, BpmnModel model) throws Exception {
-		// TODO Auto-generated method stub
-		return super.convertXMLToMode(element, model);
-	}
-	
-	@Override
-	public Element convertModeToXML(Element element, BpmnModel model) throws Exception {
-		// TODO Auto-generated method stub
-		return super.convertModeToXML(element, model);
-	}
 	
 }

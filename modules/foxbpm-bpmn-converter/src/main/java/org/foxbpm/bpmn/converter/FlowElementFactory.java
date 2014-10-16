@@ -17,13 +17,20 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import org.foxbpm.model.FlowElement;
 
 /**
  * 常量类
  * 
  * @author yangguangftlp
- * @date 2014年10月15日
+ * @date 2014年10月16日
  */
-public abstract class FlowNodeXMLConverter extends FlowElementXMLConverter {
+public interface FlowElementFactory {
 	
+	/**
+	 * 创建FlowElement
+	 * 
+	 * @return
+	 */
+	FlowElement cretateFlowElement();
 }

@@ -17,7 +17,9 @@
  */
 package org.foxbpm.bpmn.converter.util;
 
+import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
+import org.foxbpm.model.FlowElement;
 
 /**
  * 
@@ -41,5 +43,10 @@ public class BpmnXMLUtil implements BpmnXMLConstants {
 			return nodeName.substring(index + 1);
 		}
 		return nodeName;
+	}
+	
+	public static void parserConnectorElement(FlowElement flowElment, Element element) {
+	}
+	public static void parserElementConnector(FlowElement flowElment, Element element) {
 	}
 }

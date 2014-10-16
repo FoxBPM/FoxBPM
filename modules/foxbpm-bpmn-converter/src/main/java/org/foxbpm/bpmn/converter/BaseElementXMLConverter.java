@@ -18,7 +18,6 @@
 package org.foxbpm.bpmn.converter;
 
 import org.dom4j.Element;
-import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.BpmnModel;
 
@@ -28,9 +27,9 @@ import org.foxbpm.model.BpmnModel;
  * @author yangguangftlp
  * @date 2014年10月15日
  */
-public abstract class BaseElementXMLConverter implements BpmnXMLConstants {
+public abstract class BaseElementXMLConverter implements FlowElementFactory {
 	public abstract Class<? extends BaseElement> getBpmnElementType();
-	public abstract BaseElement convertXMLToMode(Element element, BpmnModel model) throws Exception;
-	public abstract Element convertModeToXML(Element element, BpmnModel model) throws Exception;
+	public abstract void convertXMLToModel(Element element, BaseElement baseElement);
+	public abstract void convertModelToXML(Element element, BpmnModel model);
 	public abstract String getXMLElementName();
 }

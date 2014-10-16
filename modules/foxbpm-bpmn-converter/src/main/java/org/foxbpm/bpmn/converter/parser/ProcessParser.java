@@ -25,6 +25,7 @@ import org.dom4j.Node;
 import org.foxbpm.bpmn.converter.BpmnXMLConverter;
 import org.foxbpm.model.BpmnModel;
 import org.foxbpm.model.DataVariable;
+import org.foxbpm.model.PotentialStarter;
 import org.foxbpm.model.Process;
 ;
 
@@ -57,7 +58,7 @@ public class ProcessParser extends BpmnParser {
 			if (ELEMENT_DOCUMENTATION.equalsIgnoreCase(name)) {
 				process.setDocumentation(elem.getText());
 			} else if (null != BpmnXMLConverter.getConverter(name)) {
-				BpmnXMLConverter.getConverter(name).convertXMLToMode(elem, model);
+				//BpmnXMLConverter.getConverter(name).convertXMLToMode(elem, model);
 			}
 		}
 	}
@@ -67,41 +68,62 @@ public class ProcessParser extends BpmnParser {
 		String parentNodeName = element.getName();
 		String nodeName = null;
 		String expression = null;
+		String documentation = null;
 		Element elem = null;
+		
+		// 处理子节点
 		for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
 			elem = (Element) iterator.next();
 			nodeName = elem.getName();
-			if (ELEMENT_FORMURI.equalsIgnoreCase(nodeName) 
-					|| ELEMENT_FORMURIVIEW.equalsIgnoreCase(nodeName)
+			if (ELEMENT_FORMURI.equalsIgnoreCase(nodeName) || ELEMENT_FORMURIVIEW.equalsIgnoreCase(nodeName)
 			        || ELEMENT_DATAVARIABLE.equalsIgnoreCase(nodeName)
-			        || ELEMENT_TASKSUBJECT.equalsIgnoreCase(nodeName)) {
-				parseExtElements(process, element);
+			        || ELEMENT_TASKSUBJECT.equalsIgnoreCase(nodeName) || ELEMENT_POTENTIALSTARTER.equals(nodeName)) {
+				parseExtElements(process, elem);
+				// 继续下一个
+				continue;
 			}
 			if (ELEMENT_EXPRESSION.equalsIgnoreCase(nodeName)) {
 				// 表达式解析
 				expression = parseExpression(elem);
-				// 处理数据变量
-				if (ELEMENT_DATAVARIABLE.equalsIgnoreCase(parentNodeName)) {
-					
-					if (null == process.getDataVariables()) {
-						process.setDataVariables(new ArrayList<DataVariable>());
-					}
-					DataVariable dataVariable = new DataVariable();
-					dataVariable.setId(element.attributeValue(ATTRIBUTE_ID));
-					dataVariable.setBizType(element.attributeValue(ATTRIBUTE_BIZTYPE));
-					dataVariable.setDataType(element.attributeValue(ATTRIBUTE_DATATYPE));
-					dataVariable.setFieldName(element.attributeValue(ATTRIBUTE_FIELDNAME));
-					dataVariable.setExpression(expression);
-					process.getDataVariables().add(dataVariable);
-					
-				} else if (ELEMENT_FORMURI.equalsIgnoreCase(parentNodeName)) {
-					process.setFormUri(expression);
-				} else if (ELEMENT_FORMURIVIEW.equalsIgnoreCase(parentNodeName)) {
-					process.setFormUriView(expression);
-				} else if (ELEMENT_TASKSUBJECT.equalsIgnoreCase(parentNodeName)) {
-					process.setSubject(expression);
-				}
+			} else if (ELEMENT_DOCUMENTATION.equalsIgnoreCase(nodeName)) {
+				documentation = elem.getText();
 			}
+			/** 处理表单url */
+			if (ELEMENT_FORMURI.equalsIgnoreCase(parentNodeName)) {
+				process.setFormUri(expression);
+			} else /** 处理表单视图 */
+			if (ELEMENT_FORMURIVIEW.equalsIgnoreCase(parentNodeName)) {
+				process.setFormUriView(expression);
+			} else /** 处理任务主题 */
+			if (ELEMENT_TASKSUBJECT.equalsIgnoreCase(parentNodeName)) {
+				process.setSubject(expression);
+			}
+		}
+		
+		// 处理数据变量
+		if (ELEMENT_DATAVARIABLE.equalsIgnoreCase(parentNodeName)) {
+			DataVariable dataVariable = new DataVariable();
+			dataVariable.setId(element.attributeValue(ATTRIBUTE_ID));
+			dataVariable.setBizType(element.attributeValue(ATTRIBUTE_BIZTYPE));
+			dataVariable.setDataType(element.attributeValue(ATTRIBUTE_DATATYPE));
+			dataVariable.setFieldName(element.attributeValue(ATTRIBUTE_FIELDNAME));
+			dataVariable.setExpression(expression);
+			dataVariable.setDocumentation(documentation);
+			if (null == process.getDataVariables()) {
+				process.setDataVariables(new ArrayList<DataVariable>());
+			}
+			process.getDataVariables().add(dataVariable);
+		}
+		// 处理启动人
+		if (ELEMENT_POTENTIALSTARTER.equalsIgnoreCase(parentNodeName)) {
+			PotentialStarter potentialStarter = new PotentialStarter();
+			potentialStarter.setId(element.attributeValue(ATTRIBUTE_ID));
+			potentialStarter.setResourceType(element.attributeValue(ATTRIBUTE_RESOURCETYPE));
+			potentialStarter.setDocumentation(element.attributeValue(ATTRIBUTE_DESCRIPTION));
+			if (null == process.getDataVariables()) {
+				process.setPotentialStarters(new ArrayList<PotentialStarter>());
+			}
+			process.getPotentialStarters().add(potentialStarter);
 		}
 	}
 	
