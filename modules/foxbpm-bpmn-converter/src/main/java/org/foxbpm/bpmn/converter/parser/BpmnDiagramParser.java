@@ -17,47 +17,53 @@
  */
 package org.foxbpm.bpmn.converter.parser;
 
-import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
-import org.foxbpm.model.BpmnModel;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import java.util.ArrayList;
+import java.util.Iterator;
 
+import org.dom4j.Element;
+import org.foxbpm.model.BpmnModel;
+import org.foxbpm.model.Graphic;
 /**
  * 常量类
  * 
  * @author yangguangftlp
  * @date 2014年10月15日
  */
+@SuppressWarnings("rawtypes")
 public class BpmnDiagramParser extends BpmnParser {
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.foxbpm.bpmn.converter.parser.BpmnParser#parse(org.w3c.dom.Element,
-	 * org.foxbpm.model.BpmnModel)
-	 */
 	@Override
 	public void parse(Element element, BpmnModel model) throws Exception {
-		NodeList nodeList = element.getChildNodes();
-		Node node = null;
+		
+		Element elem = null;
 		String name = null;
-		int length = nodeList.getLength();
-		for (int i = 0; i < length; i++) {
-			node = nodeList.item(i);
-			name = BpmnXMLUtil.getEleLoclaName(node.getNodeName());
-			if (node instanceof Element) {
-				if (ELEMENT_DI_PLANE.equalsIgnoreCase(name) || ELEMENT_DI_SHAPE.equalsIgnoreCase(name)
-				        || ELEMENT_DI_EDGE.equalsIgnoreCase(name)) {
-					parse((Element) node, model);
-					break;
+		Graphic graphic = null;
+		String bpmnElement = null;
+		for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
+			elem = (Element) iterator.next();
+			name = elem.getName();
+			if (ELEMENT_DI_PLANE.equalsIgnoreCase(name) || ELEMENT_DI_SHAPE.equalsIgnoreCase(name)
+			        || ELEMENT_DI_EDGE.equalsIgnoreCase(name)) {
+				parse((Element) elem, model);
+				break;
+			}
+			//处理dc:Bounds和di:waypoint
+			graphic = new Graphic();
+			graphic.setExpanded(("true".equalsIgnoreCase(element.attributeValue(ATTRIBUTE_DI_IS_EXPANDED))));
+			graphic.setBpmnElement(element.attributeValue(ATTRIBUTE_DI_BPMNELEMENT));
+			graphic.setX(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_X)));
+			graphic.setY(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_Y)));
+			
+			if (ELEMENT_DI_BOUNDS.equalsIgnoreCase(name)) {
+				graphic.setHeight(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_HEIGHT)));
+				graphic.setWidth(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_WIDTH)));
+				model.addBoundsGraphic(graphic.getBpmnElement(), graphic);
+			} else if (ELEMENT_DI_WAYPOINT.equalsIgnoreCase(name)) {
+				bpmnElement = element.attributeValue(ATTRIBUTE_DI_BPMNELEMENT);
+				if (null == model.getWaypointGraphic(bpmnElement)) {
+					model.addWaypointGraphic(bpmnElement, new ArrayList<Graphic>());
 				}
-				if (ELEMENT_DI_BOUNDS.equalsIgnoreCase(name)) {
-					
-				} else if (ELEMENT_DI_WAYPOINT.equalsIgnoreCase(name)) {
-					
-				}
+				model.getWaypointGraphic(bpmnElement).add(graphic);
 			}
 		}
 	}

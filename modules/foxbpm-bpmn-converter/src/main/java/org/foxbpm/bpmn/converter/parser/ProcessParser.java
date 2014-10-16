@@ -17,9 +17,16 @@
  */
 package org.foxbpm.bpmn.converter.parser;
 
-import org.foxbpm.bpmn.constants.BpmnXMLConstants;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import org.dom4j.Element;
+import org.dom4j.Node;
+import org.foxbpm.bpmn.converter.BpmnXMLConverter;
 import org.foxbpm.model.BpmnModel;
-import org.w3c.dom.Element;
+import org.foxbpm.model.DataVariable;
+import org.foxbpm.model.Process;
+;
 
 /**
  * 
@@ -28,35 +35,85 @@ import org.w3c.dom.Element;
  * @author yangguangftlp
  * @date 2014年10月15日
  */
-public class ProcessParser implements BpmnXMLConstants {
+public class ProcessParser extends BpmnParser {
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void parse(Element element, BpmnModel model) throws Exception {
+		Process process = new Process();
+		process.setId(element.attributeValue(ATTRIBUTE_ID));
+		process.setName(element.attributeValue(ATTRIBUTE_NAME));
+		process.setCategory(element.attributeValue(ATTRIBUTE_CATEGORY));
+		process.setSubject(element.attributeValue(ATTRIBUTE_SUBJECT));
+		process.setKey(element.attributeValue(ATTRIBUTE_KEY));
+		// 扩展元素
+		Element elem = null;
+		String name = null;
+		for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
+			elem = (Element) iterator.next();
+			name = elem.getName();
+			if (ELEMENT_EXTENSIONS.equalsIgnoreCase(name)) {
+				parseExtElements(process, elem);
+			}
+			if (ELEMENT_DOCUMENTATION.equalsIgnoreCase(name)) {
+				process.setDocumentation(elem.getText());
+			} else if (null != BpmnXMLConverter.getConverter(name)) {
+				BpmnXMLConverter.getConverter(name).convertXMLToMode(elem, model);
+			}
+		}
+	}
 	
-	public Process parse(Element element, BpmnModel model) throws Exception {
-		Process process = null;
-/*		if (StringUtils.isNotEmpty(xtr.getAttributeValue(null, ATTRIBUTE_ID))) {
-			String processId = xtr.getAttributeValue(null, ATTRIBUTE_ID);
-			process = new Process();
-			process.setId(processId);
-			BpmnXMLUtil.addXMLLocation(process, xtr);
-			process.setName(xtr.getAttributeValue(null, ATTRIBUTE_NAME));
-			if (StringUtils.isNotEmpty(xtr.getAttributeValue(null, ATTRIBUTE_PROCESS_EXECUTABLE))) {
-				process.setExecutable(Boolean.parseBoolean(xtr.getAttributeValue(null, ATTRIBUTE_PROCESS_EXECUTABLE)));
+	@SuppressWarnings("rawtypes")
+	private void parseExtElements(Process process, Element element) {
+		String parentNodeName = element.getName();
+		String nodeName = null;
+		String expression = null;
+		Element elem = null;
+		for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
+			elem = (Element) iterator.next();
+			nodeName = elem.getName();
+			if (ELEMENT_FORMURI.equalsIgnoreCase(nodeName) 
+					|| ELEMENT_FORMURIVIEW.equalsIgnoreCase(nodeName)
+			        || ELEMENT_DATAVARIABLE.equalsIgnoreCase(nodeName)
+			        || ELEMENT_TASKSUBJECT.equalsIgnoreCase(nodeName)) {
+				parseExtElements(process, element);
 			}
-			String candidateUsersString = xtr.getAttributeValue(ACTIVITI_EXTENSIONS_NAMESPACE, ATTRIBUTE_PROCESS_CANDIDATE_USERS);
-			if (StringUtils.isNotEmpty(candidateUsersString)) {
-				List<String> candidateUsers = BpmnXMLUtil.parseDelimitedList(candidateUsersString);
-				process.setCandidateStarterUsers(candidateUsers);
+			if (ELEMENT_EXPRESSION.equalsIgnoreCase(nodeName)) {
+				// 表达式解析
+				expression = parseExpression(elem);
+				// 处理数据变量
+				if (ELEMENT_DATAVARIABLE.equalsIgnoreCase(parentNodeName)) {
+					
+					if (null == process.getDataVariables()) {
+						process.setDataVariables(new ArrayList<DataVariable>());
+					}
+					DataVariable dataVariable = new DataVariable();
+					dataVariable.setId(element.attributeValue(ATTRIBUTE_ID));
+					dataVariable.setBizType(element.attributeValue(ATTRIBUTE_BIZTYPE));
+					dataVariable.setDataType(element.attributeValue(ATTRIBUTE_DATATYPE));
+					dataVariable.setFieldName(element.attributeValue(ATTRIBUTE_FIELDNAME));
+					dataVariable.setExpression(expression);
+					process.getDataVariables().add(dataVariable);
+					
+				} else if (ELEMENT_FORMURI.equalsIgnoreCase(parentNodeName)) {
+					process.setFormUri(expression);
+				} else if (ELEMENT_FORMURIVIEW.equalsIgnoreCase(parentNodeName)) {
+					process.setFormUriView(expression);
+				} else if (ELEMENT_TASKSUBJECT.equalsIgnoreCase(parentNodeName)) {
+					process.setSubject(expression);
+				}
 			}
-			String candidateGroupsString = xtr.getAttributeValue(ACTIVITI_EXTENSIONS_NAMESPACE, ATTRIBUTE_PROCESS_CANDIDATE_GROUPS);
-			if (StringUtils.isNotEmpty(candidateGroupsString)) {
-				List<String> candidateGroups = BpmnXMLUtil.parseDelimitedList(candidateGroupsString);
-				process.setCandidateStarterGroups(candidateGroups);
+		}
+	}
+	
+	@SuppressWarnings("rawtypes")
+	private String parseExpression(Element element) {
+		Node node = null;
+		for (Iterator iterator = element.nodeIterator(); iterator.hasNext();) {
+			node = (Node) iterator.next();
+			if (Element.CDATA_SECTION_NODE == node.getNodeType()) {
+				return node.getText();
 			}
-			
-			BpmnXMLUtil.addCustomAttributes(xtr, process, ProcessExport.defaultProcessAttributes);
-			
-			model.getProcesses().add(process);
-			
-		}*/
-		return process;
+		}
+		return null;
 	}
 }

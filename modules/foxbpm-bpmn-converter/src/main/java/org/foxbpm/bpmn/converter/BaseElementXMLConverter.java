@@ -29,8 +29,8 @@ import org.foxbpm.model.BpmnModel;
  * @date 2014年10月15日
  */
 public abstract class BaseElementXMLConverter implements BpmnXMLConstants {
-	protected abstract Class<? extends BaseElement> getBpmnElementType();
-	protected abstract BaseElement convertXMLToMode(Element element, BpmnModel model) throws Exception;
-	protected abstract Element convertModeToXML(Element element, BpmnModel model) throws Exception;
-	protected abstract String getXMLElementName();
+	public abstract Class<? extends BaseElement> getBpmnElementType();
+	public abstract BaseElement convertXMLToMode(Element element, BpmnModel model) throws Exception;
+	public abstract Element convertModeToXML(Element element, BpmnModel model) throws Exception;
+	public abstract String getXMLElementName();
 }

@@ -30,23 +30,23 @@ import org.dom4j.Element;
 public class BoundaryEventXMLConverter extends CatchEventXMLConverter {
 	
 	@Override
-	protected Class<? extends BaseElement> getBpmnElementType() {
+	public Class<? extends BaseElement> getBpmnElementType() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
-	protected String getXMLElementName() {
+	public String getXMLElementName() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
-	protected BaseElement convertXMLToMode(Element element, BpmnModel model) throws Exception {
+	public BaseElement convertXMLToMode(Element element, BpmnModel model) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
-	protected Element convertModeToXML(Element element, BpmnModel model) throws Exception {
+	public Element convertModeToXML(Element element, BpmnModel model) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

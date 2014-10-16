@@ -19,7 +19,7 @@ package org.foxbpm.bpmn.converter.parser;
 
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.model.BpmnModel;
-import org.w3c.dom.Element;
+import org.dom4j.Element;
 
 /**
  * 常量类

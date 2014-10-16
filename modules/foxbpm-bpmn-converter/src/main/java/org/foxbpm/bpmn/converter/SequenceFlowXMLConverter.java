@@ -31,24 +31,24 @@ import org.dom4j.Element;
 public class SequenceFlowXMLConverter extends FlowElementXMLConverter {
 	
 	@Override
-	protected Class<? extends BaseElement> getBpmnElementType() {
+	public Class<? extends BaseElement> getBpmnElementType() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
-	protected String getXMLElementName() {
+	public String getXMLElementName() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
-	protected BaseElement convertXMLToMode(Element element, BpmnModel model) throws Exception {
+	public BaseElement convertXMLToMode(Element element, BpmnModel model) throws Exception {
 		// TODO Auto-generated method stub
 		return super.convertXMLToMode(element, model);
 	}
 	
 	@Override
-	protected Element convertModeToXML(Element element, BpmnModel model) throws Exception {
+	public Element convertModeToXML(Element element, BpmnModel model) throws Exception {
 		// TODO Auto-generated method stub
 		return super.convertModeToXML(element, model);
 	}

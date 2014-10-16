@@ -18,11 +18,14 @@
 package org.foxbpm.bpmn.converter;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
+import org.foxbpm.bpmn.converter.parser.BpmnDiagramParser;
+import org.foxbpm.bpmn.converter.parser.ProcessParser;
 import org.foxbpm.model.BpmnModel;
 
 /**
@@ -41,37 +44,50 @@ public class BpmnXMLConverter implements BpmnXMLConstants {
 		// events
 		addConverter(new EndEventXMLConverter());
 		addConverter(new StartEventXMLConverter());
-		
 		// tasks
 		addConverter(new UserTaskXMLConverter());
 		addConverter(new CallActivityXMLConverter());
 	}
 	
+	protected BpmnDiagramParser bpmnDiagramParser;
+	protected ProcessParser processParser;
+	
 	public static void addConverter(BaseElementXMLConverter converter) {
 		convertersToBpmnMap.put(converter.getXMLElementName(), converter);
 	}
 	
+	public BpmnXMLConverter() {
+		bpmnDiagramParser = new BpmnDiagramParser();
+		processParser = new ProcessParser();
+	}
+	
+	@SuppressWarnings("rawtypes")
 	public BpmnModel convertToBpmnModel(Document doc) {
 		BpmnModel model = new BpmnModel();
 		Element definitions = doc.getRootElement();
-		String nodeName = definitions.getName();
+		String name = definitions.getName();
 		// definitions
-		if (ELEMENT_DEFINITIONS.equals(nodeName)) {
-			// ...
-			/*List nodeList = definitions.elements();
-			int length = nodeList.getLength();
-			for (int i = 0; i < length; i++) {
-				node = nodeList.item(i);
-				nodeName = BpmnXMLUtil.getEleLoclaName(node.getNodeName());
-				// process
-				if (ELEMENT_PROCESS.equals(nodeName)) {
-					
-					// BPMNDiagram
-				} else if (ELEMENT_DI_DIAGRAM.equals(nodeName)) {
-					
+		Element elem = null;
+		if (ELEMENT_DEFINITIONS.equals(name)) {
+			try {
+				
+				for (Iterator iterator = definitions.elements().iterator(); iterator.hasNext();) {
+					elem = (Element) iterator.next();
+					name = elem.getName();
+					if (ELEMENT_DI_DIAGRAM.equalsIgnoreCase(name)) {
+						new BpmnDiagramParser().parse(elem, model);
+					} else if (ELEMENT_PROCESS.equalsIgnoreCase(name)) {
+						new ProcessParser().parse(elem, model);
+					}
 				}
-			}*/
+			} catch (Exception e) {
+				
+			}
 		}
 		return model;
+	}
+	
+	public static BaseElementXMLConverter getConverter(String key) {
+		return convertersToBpmnMap.get(key);
 	}
 }

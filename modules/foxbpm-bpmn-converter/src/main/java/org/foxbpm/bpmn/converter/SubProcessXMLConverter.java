@@ -28,13 +28,13 @@ import org.foxbpm.model.BaseElement;
 public class SubProcessXMLConverter extends ActivityXMLConverter {
 
 	@Override
-    protected Class<? extends BaseElement> getBpmnElementType() {
+	public Class<? extends BaseElement> getBpmnElementType() {
 	    // TODO Auto-generated method stub
 	    return null;
     }
 
 	@Override
-    protected String getXMLElementName() {
+	public String getXMLElementName() {
 	    // TODO Auto-generated method stub
 	    return null;
     }

@@ -30,13 +30,13 @@ import org.dom4j.Element;
 public abstract class FlowElementXMLConverter extends BaseElementXMLConverter {
 
 	@Override
-    protected BaseElement convertXMLToMode(Element element, BpmnModel model) throws Exception {
+	public BaseElement convertXMLToMode(Element element, BpmnModel model) throws Exception {
 	    // TODO Auto-generated method stub
 	    return null;
     }
 
 	@Override
-    protected Element convertModeToXML(Element element, BpmnModel model) throws Exception {
+	public Element convertModeToXML(Element element, BpmnModel model) throws Exception {
 	    // TODO Auto-generated method stub
 	    return null;
     }
