@@ -17,6 +17,8 @@
  */
 package org.foxbpm.model;
 
+import java.util.List;
+
 /**
  * 调用活动
  * 多用于外部子流程
@@ -26,5 +28,67 @@ package org.foxbpm.model;
 public class CallActivity extends Activity {
 
 	private static final long serialVersionUID = 1L;
+	
+	protected boolean isAsync;
+	
+	protected String callableElementId;
+	
+	protected String callableElementVersion;
+	
+	protected String bizKey;
+
+	protected List<VariableMapping> toSubProcessMapping;
+
+	protected List<VariableMapping> formSubProcessMapping;
+
+	public boolean isAsync() {
+		return isAsync;
+	}
+
+	public void setAsync(boolean isAsync) {
+		this.isAsync = isAsync;
+	}
+
+	public String getCallableElementId() {
+		return callableElementId;
+	}
+
+	public void setCallableElementId(String callableElementId) {
+		this.callableElementId = callableElementId;
+	}
+
+	public String getCallableElementVersion() {
+		return callableElementVersion;
+	}
+
+	public void setCallableElementVersion(String callableElementVersion) {
+		this.callableElementVersion = callableElementVersion;
+	}
+
+	public String getBizKey() {
+		return bizKey;
+	}
+
+	public void setBizKey(String bizKey) {
+		this.bizKey = bizKey;
+	}
+
+	public List<VariableMapping> getToSubProcessMapping() {
+		return toSubProcessMapping;
+	}
+
+	public void setToSubProcessMapping(List<VariableMapping> toSubProcessMapping) {
+		this.toSubProcessMapping = toSubProcessMapping;
+	}
+
+	public List<VariableMapping> getFormSubProcessMapping() {
+		return formSubProcessMapping;
+	}
+
+	public void setFormSubProcessMapping(List<VariableMapping> formSubProcessMapping) {
+		this.formSubProcessMapping = formSubProcessMapping;
+	}
+	
+	
 
 }

@@ -18,6 +18,7 @@
 package org.foxbpm.model;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 流程定义模型
@@ -69,6 +70,11 @@ public class Process extends FlowElement {
 	 * 流程元素集合
 	 */
 	protected List<FlowElement> flowElements;
+	
+	/**
+	 * 线条map
+	 */
+	protected Map<String,SequenceFlow> sequenceFlows;
 
 	public String getName() {
 		return name;
@@ -142,12 +148,20 @@ public class Process extends FlowElement {
 		this.laneSets = laneSets;
 	}
 
-	public List<FlowElement> getFlowNodes() {
+	public List<FlowElement> getFlowElements() {
 		return flowElements;
 	}
 
-	public void setFlowNodes(List<FlowElement> flowElements) {
+	public void setFlowElements(List<FlowElement> flowElements) {
 		this.flowElements = flowElements;
 	}
 
+	public Map<String, SequenceFlow> getSequenceFlows() {
+		return sequenceFlows;
+	}
+
+	public void setSequenceFlows(Map<String, SequenceFlow> sequenceFlows) {
+		this.sequenceFlows = sequenceFlows;
+	}
+	
 }

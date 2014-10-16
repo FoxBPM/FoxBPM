@@ -19,11 +19,42 @@ package org.foxbpm.model;
 
 /**
  * 时间事件定义
+ * 
  * @author ych
- *
+ * 
  */
 public class TimerEventDefinition extends EventDefinition {
 
 	private static final long serialVersionUID = 1L;
+
+	private String timeCycle;
+
+	private String timeDuration;
+
+	private String timeDate;
+
+	public String getTimeCycle() {
+		return timeCycle;
+	}
+
+	public void setTimeCycle(String timeCycle) {
+		this.timeCycle = timeCycle;
+	}
+
+	public String getTimeDuration() {
+		return timeDuration;
+	}
+
+	public void setTimeDuration(String timeDuration) {
+		this.timeDuration = timeDuration;
+	}
+
+	public String getTimeDate() {
+		return timeDate;
+	}
+
+	public void setTimeDate(String timeDate) {
+		this.timeDate = timeDate;
+	}
 
 }

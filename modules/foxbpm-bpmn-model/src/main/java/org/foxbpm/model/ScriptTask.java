@@ -30,13 +30,23 @@ public class ScriptTask extends Task {
 	 * 脚本表达式
 	 */
 	protected String script;
-
+	
+	protected String scriptFormat;
+	
 	public String getScript() {
 		return script;
 	}
 
 	public void setScript(String script) {
 		this.script = script;
+	}
+	
+	public void setScriptFormat(String scriptFormat) {
+		this.scriptFormat = scriptFormat;
+	}
+	
+	public String getScriptFormat() {
+		return scriptFormat;
 	}
 
 }

@@ -26,6 +26,10 @@ public class SequenceFlow extends FlowElement {
 
 	private static final long serialVersionUID = 1L;
 	
+	private String sourceRefId;
+	
+	private String targetRefId;
+	
 	/**
 	 * 线条表达式，一般用来判断路径是否可通过
 	 */
@@ -38,5 +42,23 @@ public class SequenceFlow extends FlowElement {
 	public void setFlowCondition(String flowCondition) {
 		this.flowCondition = flowCondition;
 	}
+
+	public String getSourceRefId() {
+		return sourceRefId;
+	}
+
+	public void setSourceRefId(String sourceRefId) {
+		this.sourceRefId = sourceRefId;
+	}
+
+	public String getTargetRefId() {
+		return targetRefId;
+	}
+
+	public void setTargetRefId(String targetRefId) {
+		this.targetRefId = targetRefId;
+	}
+	
+	
 
 }

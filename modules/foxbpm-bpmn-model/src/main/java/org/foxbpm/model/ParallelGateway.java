@@ -17,6 +17,7 @@
  */
 package org.foxbpm.model;
 
+
 /**
  * 并行网关
  * @author ych
@@ -25,5 +26,15 @@ package org.foxbpm.model;
 public class ParallelGateway extends Gateway {
 
 	private static final long serialVersionUID = 1L;
+	
+	protected String convergType;
+	
+	public void setConvergType(String convergType) {
+		this.convergType = convergType;
+	}
+	
+	public String getConvergType() {
+		return convergType;
+	}
 
 }

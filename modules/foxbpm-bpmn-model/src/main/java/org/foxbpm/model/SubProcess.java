@@ -17,6 +17,8 @@
  */
 package org.foxbpm.model;
 
+import java.util.List;
+
 /**
  * 内部子流程
  * @author ych
@@ -25,5 +27,15 @@ package org.foxbpm.model;
 public class SubProcess extends Activity {
 
 	private static final long serialVersionUID = 1L;
+	
+	protected List<FlowElement> flowElements;
+
+	public List<FlowElement> getFlowElements() {
+		return flowElements;
+	}
+
+	public void setFlowElements(List<FlowElement> flowElements) {
+		this.flowElements = flowElements;
+	}
 
 }

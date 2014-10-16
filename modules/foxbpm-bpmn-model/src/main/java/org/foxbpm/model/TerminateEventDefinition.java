@@ -1,5 +1,5 @@
 /**
- * Copyright 1996-2014 FoxBPM ORG.
+ * Copyright 1996-2014 FoxBPM Co.,Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,34 +17,8 @@
  */
 package org.foxbpm.model;
 
-/**
- * 边界事件
- * 
- * @author ych
- * 
- */
-public class BoundaryEvent extends CatchEvent {
+public class TerminateEventDefinition extends EventDefinition {
 
 	private static final long serialVersionUID = 1L;
-	
-	private String attachedToRef;
-	
-	private boolean isCancelActivity;
-	
-	public boolean isCancelActivity() {
-		return isCancelActivity;
-	}
-
-	public void setCancelActivity(boolean isCancelActivity) {
-		this.isCancelActivity = isCancelActivity;
-	}
-
-	public void setAttachedToRef(String attachedToRef) {
-		this.attachedToRef = attachedToRef;
-	}
-	
-	public String getAttachedToRef() {
-		return attachedToRef;
-	}
 
 }
