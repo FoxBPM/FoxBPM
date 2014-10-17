@@ -155,4 +155,13 @@ public interface BpmnXMLConstants {
 	/** y */
 	String ATTRIBUTE_DI_Y = "y";
 	
+	String ELEMENT_TASKCOMMAND = "taskCommand";
+	String ELEMENT_PARAMS = "params";
+	String ELEMENT_TASKPRIORITY = "taskPriority";
+	String ELEMENT_INCOMING = "incoming";
+	String ELEMENT_OUTGOING = "outgoing";
+	String ELEMENT_POTENTIALOWNER = "potentialOwner";
+	
+	String ATTRIBUTE_COMMANDTYPE = "commandType";
+	
 }
