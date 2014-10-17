@@ -17,6 +17,14 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import org.dom4j.Element;
+import org.foxbpm.bpmn.constants.BpmnXMLConstants;
+import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
+import org.foxbpm.model.BaseElement;
+import org.foxbpm.model.FlowNode;
 
 /**
  * 常量类
@@ -25,5 +33,37 @@ package org.foxbpm.bpmn.converter;
  * @date 2014年10月15日
  */
 public abstract class FlowNodeXMLConverter extends FlowElementXMLConverter {
+	
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void convertXMLToModel(Element element, BaseElement baseElement) {
+		
+		FlowNode flowNode = (FlowNode) baseElement;
+		String nodeName = null;
+		Element elem = null;
+		for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
+			elem = (Element) iterator.next();
+			nodeName = elem.getName();
+			if (BpmnXMLConstants.ELEMENT_OUTGOING.equalsIgnoreCase(nodeName)) {
+				if (null == flowNode.getIncomingFlows()) {
+					flowNode.setIncomingFlows(new ArrayList<String>());
+				}
+				flowNode.getOutgoingFlows().add(BpmnXMLUtil.parseIncoming(elem));
+			} else if (BpmnXMLConstants.ELEMENT_INCOMING.equalsIgnoreCase(nodeName)) {
+				
+				if (null == flowNode.getOutgoingFlows()) {
+					flowNode.setOutgoingFlows(new ArrayList<String>());
+				}
+				flowNode.getOutgoingFlows().add(BpmnXMLUtil.parse0utgoing(elem));
+			}
+		}
+		super.convertXMLToModel(element, baseElement);
+	}
+	
+	@Override
+	public void convertModelToXML(Element element, BaseElement baseElement) {
+		
+		super.convertModelToXML(element, baseElement);
+	}
 	
 }

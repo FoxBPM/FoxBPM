@@ -18,6 +18,7 @@
 package org.foxbpm.bpmn.converter;
 
 import org.dom4j.Element;
+import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.model.BaseElement;
 
 /**
@@ -28,7 +29,11 @@ import org.foxbpm.model.BaseElement;
  */
 public abstract class BaseElementXMLConverter implements FlowElementFactory {
 	public abstract Class<? extends BaseElement> getBpmnElementType();
-	public abstract void convertXMLToModel(Element element, BaseElement baseElement);
-	public abstract void convertModelToXML(Element element, BaseElement baseElement);
+	
+	public void convertXMLToModel(Element element, BaseElement baseElement) {
+		baseElement.setId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
+	}
+	public void convertModelToXML(Element element, BaseElement baseElement) {
+	}
 	public abstract String getXMLElementName();
 }

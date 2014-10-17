@@ -17,6 +17,11 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import org.dom4j.Element;
+import org.foxbpm.bpmn.constants.BpmnXMLConstants;
+import org.foxbpm.model.BaseElement;
+import org.foxbpm.model.FlowElement;
+
 
 /**
  * 常量类
@@ -25,5 +30,15 @@ package org.foxbpm.bpmn.converter;
  * @date 2014年10月15日
  */
 public abstract class FlowElementXMLConverter extends BaseElementXMLConverter {
+
+	@Override
+    public void convertXMLToModel(Element element, BaseElement baseElement) {
+		((FlowElement)baseElement).setName(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_NAME));
+    }
+
+	@Override
+    public void convertModelToXML(Element element, BaseElement baseElement) {
+	    
+    }
 	
 }

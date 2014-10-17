@@ -161,6 +161,8 @@ public interface BpmnXMLConstants {
 	String ELEMENT_CONNECTORINSTANCEELEMENTS = "connectorInstanceElements";
 	/** sequenceFlow */
 	String ELEMENT_SEQUENCEFLOW = "sequenceFlow";
+	/** startEvent */
+	String ELEMENT_STARTEVENT = "startEvent";
 	// 结束
 	
 	/** isExecutable */
