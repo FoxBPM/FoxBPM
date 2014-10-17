@@ -25,6 +25,8 @@ package org.foxbpm.bpmn.constants;
  */
 public interface BpmnXMLConstants {
 	
+	
+	String EMPTY_STRING = "";
 	String BPMN2_PREFIX = "bpmn2";
 	String BPMN2_NAMESPACE = "http://www.omg.org/spec/BPMN/20100524/MODEL";
 	String XSI_PREFIX = "xsi";
@@ -34,7 +36,7 @@ public interface BpmnXMLConstants {
 	String XMLNS_PREFIX = "xmlns";
 	String XMLNS_NAMESPACE = "http://www.foxbpm.org";
 	
-	String FOXBPM_PREFIX = "http://www.omg.org/spec/BPMN/20100524/DI";
+	String FOXBPM_PREFIX = "foxbpm";
 	String FOXBPM_NAMESPACE = "http://www.omg.org/spec/BPMN/20100524/DI";
 	String DI_PREFIX = "di";
 	String DI_NAMESPACE = "http://www.omg.org/spec/DD/20100524/DI";
@@ -100,7 +102,7 @@ public interface BpmnXMLConstants {
 	/** transaction */
 	String ELEMENT_TRANSACTION = "transaction";
 	/** extensionElements */
-	String ELEMENT_EXTENSIONS = "extensionElements";
+	String ELEMENT_EXTENSION_ELEMENTS = "extensionElements";
 	/** subProcess */
 	String ELEMENT_SUBPROCESS = "subProcess";
 	/** potentialStarter */
