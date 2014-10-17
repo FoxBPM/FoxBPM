@@ -17,16 +17,15 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.dom4j.Document;
-import org.dom4j.DocumentFactory;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.Namespace;
-import org.dom4j.QName;
+import org.dom4j.DocumentException;
 import org.dom4j.io.OutputFormat;
+import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
+import org.foxbpm.model.BpmnModel;
 import org.junit.Test;
 
 /**
@@ -41,27 +40,21 @@ public class TestCase {
 	@Test
 	public void testA() {
 		
-		Document doc = DocumentHelper.createDocument();
-		// BPMNDI_PREFIX, ELEMENT_DI_DIAGRAM, BPMNDI_NAMESPACE
-		// Element root = factory.createElement(new QName(null, null, null));
-		// Namespace namespace =
-		// DocumentFactory.getInstance().createNamespace("bpmn2",
-		// "http://www.omg.org/spec/BPMN/20100524/MODEL");
-		Element element = DocumentFactory.getInstance().createElement("bpmn2:definitions", "http://www.foxbpm.org");
-		// element = doc.addElement("definitions", "http://www.foxbpm.org");
-		element.addNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-		element.addNamespace("bpmn2", "http://www.omg.org/spec/BPMN/20100524/MODEL");
-		element.addNamespace("dc", "http://www.omg.org/spec/DD/20100524/DC");
-		element.addNamespace("di", "http://www.omg.org/spec/DD/20100524/DI");
-		element.addNamespace("foxbpm", "http://www.foxbpm.org/foxbpm");
-		element.addNamespace("xsd", "http://www.w3.org/2001/XMLSchema");
-		element.addAttribute("xmlns", "http://www.foxbpm.org");
-		element.addAttribute("id", "Definitions_1");
-		element.addAttribute("targetNamespace", "http://www.foxbpm.org");
-		// Element element = doc.addElement("bpmn2:definitions");
-		// element.addAttribute("xmlns:xsi",
-		// "http://www.w3.org/2001/XMLSchema-instance");
-		 doc.add(element);
+		BpmnXMLConverter converter = new BpmnXMLConverter();
+		SAXReader reader = new SAXReader();
+		try {
+			Document doc = reader.read(new File("E:\\workspace_6.0\\FoxBPM.0.1\\Test\\selector\\test\\abc_1.bpmn"));
+			BpmnModel bpmnModel = converter.convertToBpmnModel(doc);
+			System.out.println(bpmnModel);
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	@Test
+	public void testB() {
+		BpmnXMLConverter converter = new BpmnXMLConverter();
+		Document doc = converter.convertToXML(null);
 		try {
 			// 定义输出流的目的地
 			OutputFormat format = OutputFormat.createPrettyPrint();
@@ -73,7 +66,5 @@ public class TestCase {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 	}
-	
 }

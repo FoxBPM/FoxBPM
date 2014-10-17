@@ -28,6 +28,8 @@ import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.bpmn.converter.parser.BpmnDiagramParser;
 import org.foxbpm.bpmn.converter.parser.ProcessParser;
 import org.foxbpm.model.BpmnModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * BpmnXML转换类
@@ -35,10 +37,9 @@ import org.foxbpm.model.BpmnModel;
  * @author yangguangftlp
  * @date 2014年10月15日
  */
-public class BpmnXMLConverter implements BpmnXMLConstants {
+public class BpmnXMLConverter {
 	
-	// protected static final Logger LOGGER =
-	// LoggerFactory.getLogger(BpmnXMLConverter.class);
+	protected static final Logger LOGGER = LoggerFactory.getLogger(BpmnXMLConverter.class);
 	
 	protected static Map<String, BaseElementXMLConverter> convertersToBpmnMap = new HashMap<String, BaseElementXMLConverter>();
 	static {
@@ -69,20 +70,20 @@ public class BpmnXMLConverter implements BpmnXMLConstants {
 		String name = definitions.getName();
 		// definitions
 		Element elem = null;
-		if (ELEMENT_DEFINITIONS.equals(name)) {
+		if (BpmnXMLConstants.ELEMENT_DEFINITIONS.equals(name)) {
 			try {
 				
 				for (Iterator iterator = definitions.elements().iterator(); iterator.hasNext();) {
 					elem = (Element) iterator.next();
 					name = elem.getName();
-					if (ELEMENT_DI_DIAGRAM.equalsIgnoreCase(name)) {
+					if (BpmnXMLConstants.ELEMENT_DI_DIAGRAM.equalsIgnoreCase(name)) {
 						new BpmnDiagramParser().parse(elem, model);
-					} else if (ELEMENT_PROCESS.equalsIgnoreCase(name)) {
+					} else if (BpmnXMLConstants.ELEMENT_PROCESS.equalsIgnoreCase(name)) {
 						new ProcessParser().parse(elem, model);
 					}
 				}
 			} catch (Exception e) {
-				
+				e.printStackTrace();
 			}
 		}
 		return model;
@@ -96,20 +97,22 @@ public class BpmnXMLConverter implements BpmnXMLConstants {
 	public Document convertToXML(BpmnModel model) {
 		DocumentFactory factory = DocumentFactory.getInstance();
 		Document doc = factory.createDocument();
-		Element element = DocumentFactory.getInstance().createElement(BPMN2_PREFIX + ':' + ELEMENT_DEFINITIONS, "http://www.foxbpm.org");
-		element.addNamespace(XSI_PREFIX, XSI_NAMESPACE);
-		element.addNamespace(BPMN2_PREFIX, BPMN2_NAMESPACE);
-		element.addNamespace(DC_PREFIX, DC_NAMESPACE);
-		element.addNamespace(DI_PREFIX, DI_NAMESPACE);
-		element.addNamespace(BPMNDI_PREFIX, BPMNDI_NAMESPACE);
-		element.addNamespace(FOXBPM_PREFIX, FOXBPM_NAMESPACE);
-		element.addNamespace(XSD_PREFIX, XSD_NAMESPACE);
-		element.addAttribute(XMLNS_PREFIX, XMLNS_NAMESPACE);
-		element.addAttribute(ATTRIBUTE_ID, "Definitions_1");
-		element.addAttribute(TARGET_NAMESPACE_ATTRIBUTE, XMLNS_NAMESPACE);
+		Element element = DocumentFactory.getInstance().createElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+		        + BpmnXMLConstants.ELEMENT_DEFINITIONS, BpmnXMLConstants.BPMN2_NAMESPACE);
+		element.addNamespace(BpmnXMLConstants.XSI_PREFIX, BpmnXMLConstants.XSI_NAMESPACE);
+		element.addNamespace(BpmnXMLConstants.DC_PREFIX, BpmnXMLConstants.DC_NAMESPACE);
+		element.addNamespace(BpmnXMLConstants.DI_PREFIX, BpmnXMLConstants.DI_NAMESPACE);
+		element.addNamespace(BpmnXMLConstants.BPMNDI_PREFIX, BpmnXMLConstants.BPMNDI_NAMESPACE);
+		element.addNamespace(BpmnXMLConstants.FOXBPM_PREFIX, BpmnXMLConstants.FOXBPM_NAMESPACE);
+		element.addNamespace(BpmnXMLConstants.XSD_PREFIX, BpmnXMLConstants.XSD_NAMESPACE);
+		// 添加属性
+		element.addAttribute(BpmnXMLConstants.EMPTY_STRING, BpmnXMLConstants.XMLNS_NAMESPACE);
+		element.addAttribute(BpmnXMLConstants.TARGET_NAMESPACE_ATTRIBUTE, BpmnXMLConstants.XMLNS_NAMESPACE);
+		element.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, "Definitions_1");
 		doc.add(element);
-		
 		// 流程转换
+		
+		
 		// 位置坐标转换
 		return doc;
 	}

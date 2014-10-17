@@ -17,7 +17,6 @@
  */
 package org.foxbpm.bpmn.converter.export;
 
-import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 
 /**
  * 常量类
@@ -25,6 +24,6 @@ import org.foxbpm.bpmn.constants.BpmnXMLConstants;
  * @author yangguangftlp
  * @date 2014年10月16日
  */
-public abstract class BpmnExport implements BpmnXMLConstants{
+public abstract class BpmnExport {
 	
 }

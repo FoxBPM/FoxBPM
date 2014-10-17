@@ -17,6 +17,7 @@
  */
 package org.foxbpm.model;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,7 @@ import java.util.Map;
  * 
  */
 public class BpmnModel {
-	protected List<Process> processes;
+	protected List<Process> processes = new ArrayList<Process>();
 	protected Map<String, Graphic> boundsLocationMap = new LinkedHashMap<String, Graphic>();
 	protected Map<String, List<Graphic>> waypointLocationMap = new LinkedHashMap<String, List<Graphic>>();
 	

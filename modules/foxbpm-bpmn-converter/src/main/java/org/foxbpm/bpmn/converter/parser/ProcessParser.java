@@ -21,10 +21,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.dom4j.Element;
-import org.dom4j.Node;
+import org.foxbpm.bpmn.constants.BpmnXMLConstants;
+import org.foxbpm.bpmn.converter.BaseElementXMLConverter;
 import org.foxbpm.bpmn.converter.BpmnXMLConverter;
+import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.model.BpmnModel;
 import org.foxbpm.model.DataVariable;
+import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.PotentialStarter;
 import org.foxbpm.model.Process;
 ;
@@ -41,28 +44,39 @@ public class ProcessParser extends BpmnParser {
 	@Override
 	public void parse(Element element, BpmnModel model) throws Exception {
 		Process process = new Process();
-		process.setId(element.attributeValue(ATTRIBUTE_ID));
-		process.setName(element.attributeValue(ATTRIBUTE_NAME));
-		process.setCategory(element.attributeValue(ATTRIBUTE_CATEGORY));
-		process.setSubject(element.attributeValue(ATTRIBUTE_SUBJECT));
-		process.setKey(element.attributeValue(ATTRIBUTE_KEY));
+		process.setId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
+		process.setName(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_NAME));
+		process.setCategory(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_CATEGORY));
+		process.setSubject(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_SUBJECT));
+		process.setKey(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_KEY));
 		// 扩展元素
 		Element elem = null;
 		String name = null;
 		for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
 			elem = (Element) iterator.next();
 			name = elem.getName();
-			if (ELEMENT_EXTENSIONS.equalsIgnoreCase(name)) {
+			if (BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS.equalsIgnoreCase(name)) {
 				parseExtElements(process, elem);
 			}
-			if (ELEMENT_DOCUMENTATION.equalsIgnoreCase(name)) {
+			if (BpmnXMLConstants.ELEMENT_DOCUMENTATION.equalsIgnoreCase(name)) {
 				process.setDocumentation(elem.getText());
 			} else if (null != BpmnXMLConverter.getConverter(name)) {
-				//BpmnXMLConverter.getConverter(name).convertXMLToMode(elem, model);
+				BaseElementXMLConverter converter = BpmnXMLConverter.getConverter(name);
+				FlowElement flowElement = converter.cretateFlowElement();
+				converter.convertXMLToModel(element, flowElement);
+				process.getFlowElements().add(flowElement);
 			}
 		}
+		model.getProcesses().add(process);
 	}
-	
+	/**
+	 * 处理扩展节点
+	 * 
+	 * @param process
+	 *            当前流程
+	 * @param element
+	 *            流程下扩展元素
+	 */
 	@SuppressWarnings("rawtypes")
 	private void parseExtElements(Process process, Element element) {
 		String parentNodeName = element.getName();
@@ -75,38 +89,40 @@ public class ProcessParser extends BpmnParser {
 		for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
 			elem = (Element) iterator.next();
 			nodeName = elem.getName();
-			if (ELEMENT_FORMURI.equalsIgnoreCase(nodeName) || ELEMENT_FORMURIVIEW.equalsIgnoreCase(nodeName)
-			        || ELEMENT_DATAVARIABLE.equalsIgnoreCase(nodeName)
-			        || ELEMENT_TASKSUBJECT.equalsIgnoreCase(nodeName) || ELEMENT_POTENTIALSTARTER.equals(nodeName)) {
+			if (BpmnXMLConstants.ELEMENT_FORMURI.equalsIgnoreCase(nodeName)
+			        || BpmnXMLConstants.ELEMENT_FORMURIVIEW.equalsIgnoreCase(nodeName)
+			        || BpmnXMLConstants.ELEMENT_DATAVARIABLE.equalsIgnoreCase(nodeName)
+			        || BpmnXMLConstants.ELEMENT_TASKSUBJECT.equalsIgnoreCase(nodeName)
+			        || BpmnXMLConstants.ELEMENT_POTENTIALSTARTER.equals(nodeName)) {
 				parseExtElements(process, elem);
 				// 继续下一个
 				continue;
 			}
-			if (ELEMENT_EXPRESSION.equalsIgnoreCase(nodeName)) {
+			if (BpmnXMLConstants.ELEMENT_EXPRESSION.equalsIgnoreCase(nodeName)) {
 				// 表达式解析
-				expression = parseExpression(elem);
-			} else if (ELEMENT_DOCUMENTATION.equalsIgnoreCase(nodeName)) {
+				expression = BpmnXMLUtil.parseExpression(elem);
+			} else if (BpmnXMLConstants.ELEMENT_DOCUMENTATION.equalsIgnoreCase(nodeName)) {
 				documentation = elem.getText();
 			}
 			/** 处理表单url */
-			if (ELEMENT_FORMURI.equalsIgnoreCase(parentNodeName)) {
+			if (BpmnXMLConstants.ELEMENT_FORMURI.equalsIgnoreCase(parentNodeName)) {
 				process.setFormUri(expression);
 			} else /** 处理表单视图 */
-			if (ELEMENT_FORMURIVIEW.equalsIgnoreCase(parentNodeName)) {
+			if (BpmnXMLConstants.ELEMENT_FORMURIVIEW.equalsIgnoreCase(parentNodeName)) {
 				process.setFormUriView(expression);
 			} else /** 处理任务主题 */
-			if (ELEMENT_TASKSUBJECT.equalsIgnoreCase(parentNodeName)) {
+			if (BpmnXMLConstants.ELEMENT_TASKSUBJECT.equalsIgnoreCase(parentNodeName)) {
 				process.setSubject(expression);
 			}
 		}
 		
 		// 处理数据变量
-		if (ELEMENT_DATAVARIABLE.equalsIgnoreCase(parentNodeName)) {
+		if (BpmnXMLConstants.ELEMENT_DATAVARIABLE.equalsIgnoreCase(parentNodeName)) {
 			DataVariable dataVariable = new DataVariable();
-			dataVariable.setId(element.attributeValue(ATTRIBUTE_ID));
-			dataVariable.setBizType(element.attributeValue(ATTRIBUTE_BIZTYPE));
-			dataVariable.setDataType(element.attributeValue(ATTRIBUTE_DATATYPE));
-			dataVariable.setFieldName(element.attributeValue(ATTRIBUTE_FIELDNAME));
+			dataVariable.setId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
+			dataVariable.setBizType(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_BIZTYPE));
+			dataVariable.setDataType(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_DATATYPE));
+			dataVariable.setFieldName(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_FIELDNAME));
 			dataVariable.setExpression(expression);
 			dataVariable.setDocumentation(documentation);
 			if (null == process.getDataVariables()) {
@@ -115,27 +131,19 @@ public class ProcessParser extends BpmnParser {
 			process.getDataVariables().add(dataVariable);
 		}
 		// 处理启动人
-		if (ELEMENT_POTENTIALSTARTER.equalsIgnoreCase(parentNodeName)) {
+		if (BpmnXMLConstants.ELEMENT_POTENTIALSTARTER.equalsIgnoreCase(parentNodeName)) {
 			PotentialStarter potentialStarter = new PotentialStarter();
-			potentialStarter.setId(element.attributeValue(ATTRIBUTE_ID));
-			potentialStarter.setResourceType(element.attributeValue(ATTRIBUTE_RESOURCETYPE));
-			potentialStarter.setDocumentation(element.attributeValue(ATTRIBUTE_DESCRIPTION));
-			if (null == process.getDataVariables()) {
+			potentialStarter.setId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
+			potentialStarter.setResourceType(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_RESOURCETYPE));
+			potentialStarter.setDocumentation(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_DESCRIPTION));
+			if (null == process.getPotentialStarters()) {
 				process.setPotentialStarters(new ArrayList<PotentialStarter>());
 			}
 			process.getPotentialStarters().add(potentialStarter);
 		}
-	}
-	
-	@SuppressWarnings("rawtypes")
-	private String parseExpression(Element element) {
-		Node node = null;
-		for (Iterator iterator = element.nodeIterator(); iterator.hasNext();) {
-			node = (Node) iterator.next();
-			if (Element.CDATA_SECTION_NODE == node.getNodeType()) {
-				return node.getText();
-			}
+		// 处理连接器
+		if (BpmnXMLConstants.ELEMENT_CONNECTORINSTANCE_ELEMENTS.equalsIgnoreCase(parentNodeName)) {
+			
 		}
-		return null;
 	}
 }

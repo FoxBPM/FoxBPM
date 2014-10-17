@@ -94,11 +94,14 @@ public interface BpmnXMLConstants {
 	String ATTRIBUTE_ERRORCODE = "errorCode";
 	/** isTimeExecute */
 	String ATTRIBUTE_ISTIMEEXECUTE = "isTimeExecute";
+	/** isExecute */
+	String ATTRIBUTE_ISEXECUTE = "isExecute";
+	/** variableTarget */
+	String ATTRIBUTE_VARIABLETARGET = "variableTarget";
 	
 	// 结束
 	
-	
-	//扩展属性
+	// 扩展属性
 	String ATTRIBUTE_FOXBPM_CLAIMTYPE = "claimType";
 	String ATTRIBUTE_FOXBPM_TASKTYPE = "taskType";
 	

@@ -17,9 +17,15 @@
  */
 package org.foxbpm.bpmn.converter.util;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import org.dom4j.Element;
+import org.dom4j.Node;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
-import org.foxbpm.model.FlowElement;
+import org.foxbpm.model.Connector;
+import org.foxbpm.model.InputParam;
+import org.foxbpm.model.OutputParam;
 
 /**
  * 
@@ -44,9 +50,124 @@ public class BpmnXMLUtil implements BpmnXMLConstants {
 		}
 		return nodeName;
 	}
-	
-	public static void parserConnectorElement(FlowElement flowElment, Element element) {
+	/**
+	 * 表达式解析
+	 * 
+	 * @param element
+	 *            表达式节点
+	 * @return 返回表达式
+	 */
+	@SuppressWarnings("rawtypes")
+	public static String parseExpression(Element element) {
+		Node node = null;
+		for (Iterator iterator = element.nodeIterator(); iterator.hasNext();) {
+			node = (Node) iterator.next();
+			if (Element.CDATA_SECTION_NODE == node.getNodeType()) {
+				return node.getText();
+			}
+		}
+		return null;
 	}
-	public static void parserElementConnector(FlowElement flowElment, Element element) {
+	/**
+	 * 连接器解析
+	 * 
+	 * @param element
+	 *            连接器节点connectorInstanceElements
+	 * @return 返回连接器实例对象
+	 */
+	@SuppressWarnings("rawtypes")
+	public static Connector parserConnectorElement(Element element) {
+		Element elem = null;
+		Connector connector = new Connector();
+		for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
+			elem = (Element) iterator.next();
+			parserElementConnector(connector, elem);
+		}
+		return connector;
+	}
+	/**
+	 * 设置连接器属性
+	 * 
+	 * @param connector
+	 *            连接器对象
+	 * @param element
+	 *            连接器节点或子节点
+	 * 
+	 * @return 返回连接器实例对象
+	 */
+	@SuppressWarnings("rawtypes")
+	public static void parserElementConnector(Connector connector, Element element) {
+		Element elem = null;
+		String parentNodeName = element.getName();
+		String nodeName = null;
+		String expression = null;
+		for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
+			elem = (Element) iterator.next();
+			nodeName = elem.getName();
+			if (BpmnXMLConstants.ELEMENT_CONNECTORINSTANCE.equalsIgnoreCase(nodeName)
+			        || BpmnXMLConstants.ELEMENT_CONNECTORPARAMETER_INPUTS.equalsIgnoreCase(nodeName)
+			        || BpmnXMLConstants.ELEMENT_TIMEEXPRESSION.equalsIgnoreCase(nodeName)
+			        || BpmnXMLConstants.ELEMENT_TIMESKIPEXPRESSION.equalsIgnoreCase(nodeName)
+			        || BpmnXMLConstants.ELEMENT_SKIPCOMMENT.equals(nodeName)) {
+				parserElementConnector(connector, elem);
+				// 继续下一个
+				continue;
+			}
+			if (BpmnXMLConstants.ELEMENT_EXPRESSION.equalsIgnoreCase(nodeName)) {
+				// 表达式解析
+				expression = parseExpression(elem);
+			} else if (BpmnXMLConstants.ELEMENT_DOCUMENTATION.equalsIgnoreCase(nodeName)) {
+				connector.setDocumentation(elem.getText());
+			}
+			/** 连接输入参数 */
+			if (BpmnXMLConstants.ELEMENT_CONNECTORPARAMETER_INPUTS.equalsIgnoreCase(parentNodeName)) {
+				
+				if (null == connector.getInputsParam()) {
+					connector.setInputsParam(new ArrayList<InputParam>());
+				}
+				InputParam inputParam = new InputParam();
+				inputParam.setId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
+				inputParam.setName(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_NAME));
+				inputParam.setDataType(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_DATATYPE));
+				inputParam.setExecute(Boolean.valueOf(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ISEXECUTE)));
+				inputParam.setExpression(expression);
+				connector.getInputsParam().add(inputParam);
+			} else if (BpmnXMLConstants.ELEMENT_CONNECTORPARAMETER_OUTPUTS.equalsIgnoreCase(parentNodeName)) {
+				if (null == connector.getOutputsParam()) {
+					connector.setOutputsParam(new ArrayList<OutputParam>());
+				}
+				OutputParam outputParam = new OutputParam();
+				outputParam.setId(elem.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
+				outputParam.setVariableTarget(elem.attributeValue(BpmnXMLConstants.ATTRIBUTE_VARIABLETARGET));
+				outputParam.setDocumentation("");
+				connector.getOutputsParam().add(outputParam);
+				
+			} else if (BpmnXMLConstants.ELEMENT_CONNECTORPARAMETER_OUTPUTSDEF.equalsIgnoreCase(parentNodeName)) {
+				
+			} else /**  */
+			/**  */
+			if (BpmnXMLConstants.ELEMENT_TIMEEXPRESSION.equalsIgnoreCase(parentNodeName)) {
+				connector.setTimerEventDefinition(null);
+			} else /**  */
+			if (BpmnXMLConstants.ELEMENT_TIMESKIPEXPRESSION.equalsIgnoreCase(parentNodeName)) {
+				// connector.setSkipExpression(expression);
+			} else /**  */
+			if (BpmnXMLConstants.ELEMENT_SKIPCOMMENT.equalsIgnoreCase(parentNodeName)) {
+				// connector.setInputsParam(inputsParam);
+			}
+		}
+		
+		/** 处理connectorInstance节点基本属性 */
+		if (BpmnXMLConstants.ELEMENT_CONNECTORINSTANCE.equalsIgnoreCase(parentNodeName)) {
+			connector.setId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_CONNECTORID));
+			connector.setPackageName(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_PACKAGENAME));
+			connector.setClassName(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_CLASSNAME));
+			connector.setConnectorInstanceId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_CONNECTORINSTANCE_ID));
+			connector.setConnectorInstanceName(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_CONNECTORINSTANCE_NAME));
+			connector.setEventType(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_EVENTTYPE));
+			connector.setErrorCode(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ERRORCODE));
+			connector.setErrorHandling(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ERRORHANDLING));
+			connector.setIsTimeExecute(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ISTIMEEXECUTE));
+		}
 	}
 }
