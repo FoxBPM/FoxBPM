@@ -163,6 +163,10 @@ public interface BpmnXMLConstants {
 	String ELEMENT_SEQUENCEFLOW = "sequenceFlow";
 	/** startEvent */
 	String ELEMENT_STARTEVENT = "startEvent";
+	/** endEvent */
+	String ELEMENT_ENDEVENT = "endEvent";
+	/** terminateEventDefinition */
+	String ELEMENT_TERMINATEEVENTDEFINITION = "terminateEventDefinition";
 	// 结束
 	
 	/** isExecutable */

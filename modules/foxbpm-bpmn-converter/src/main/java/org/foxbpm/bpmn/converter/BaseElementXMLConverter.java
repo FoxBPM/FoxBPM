@@ -17,12 +17,14 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import java.util.Iterator;
+
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.model.BaseElement;
 
 /**
- * 模型基类转换
+ * 模型基类转换处理类
  * 
  * @author yangguangftlp
  * @date 2014年10月15日
@@ -31,8 +33,18 @@ public abstract class BaseElementXMLConverter implements FlowElementFactory {
 	
 	public abstract Class<? extends BaseElement> getBpmnElementType();
 	
+	@SuppressWarnings("rawtypes")
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
 		baseElement.setId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
+		Element elem = null;
+		String nodeName = null;
+		for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
+			elem = (Element) iterator.next();
+			nodeName = elem.getName();
+			if (BpmnXMLConstants.ELEMENT_DOCUMENTATION.equalsIgnoreCase(nodeName)) {
+				baseElement.setDocumentation(elem.getText());
+			}
+		}
 	}
 	public void convertModelToXML(Element element, BaseElement baseElement) {
 	}

@@ -17,14 +17,46 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import org.dom4j.Element;
+import org.foxbpm.bpmn.constants.BpmnXMLConstants;
+import org.foxbpm.model.BaseElement;
+import org.foxbpm.model.Event;
+import org.foxbpm.model.EventDefinition;
+import org.foxbpm.model.TerminateEventDefinition;
 
 /**
- * 常量类
+ * 事件转换处理类
  * 
  * @author yangguangftlp
  * @date 2014年10月15日
  */
 public abstract class EventXMLConverter extends FlowNodeXMLConverter {
 	
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void convertXMLToModel(Element element, BaseElement baseElement) {
+		Event event = (Event) baseElement;
+		String nodeName = null;
+		Element elem = null;
+		EventDefinition eventDefinition = null;
+		for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
+			elem = (Element) iterator.next();
+			nodeName = elem.getName();
+			if (BpmnXMLConstants.ELEMENT_TERMINATEEVENTDEFINITION.equalsIgnoreCase(nodeName)) {
+				if (null == event.getEventDefinitions()) {
+					event.setEventDefinitions(new ArrayList<EventDefinition>());
+				}
+				eventDefinition = new TerminateEventDefinition();
+				
+				eventDefinition.setId(elem.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
+				
+				event.getEventDefinitions().add(eventDefinition);
+			}
+		}
+		super.convertXMLToModel(element, baseElement);
+	}
 	
 }
