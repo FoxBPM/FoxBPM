@@ -12,17 +12,20 @@
  */
 package org.foxbpm.bpmn.converter.export;
 
+import java.util.Iterator;
+
 import org.dom4j.CDATA;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
+import org.foxbpm.bpmn.converter.BpmnXMLConverter;
+import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.Process;
-import org.springframework.util.StringUtils;
 
 public class ProcessExport extends BpmnExport {
 	
-	public static void writeProcess(Process process, Element parentElement) throws Exception {
-		if (StringUtils.isEmpty(process)) {
+	public static void writeProcess(Process process, Element parentElement) {
+		if (null != process) {
 			// 创建流程元素
 			Element processEle = DocumentFactory.getInstance().createElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
 			        + BpmnXMLConstants.ELEMENT_PROCESS);
@@ -46,8 +49,17 @@ public class ProcessExport extends BpmnExport {
 			expression.add(cdata);
 			formUri.add(expression);
 			extensionElements.add(formUri);
-			
+			// 处理流程节点
+			process.getFlowElements();
+			FlowElement flowElement = null;
+			if (null != process.getFlowElements()) {
+				for (Iterator<FlowElement> iterator = process.getFlowElements().iterator(); iterator.hasNext();) {
+					flowElement = iterator.next();
+					BpmnXMLConverter.getConverter(flowElement.getClass()).convertModelToXML(processEle, flowElement);;
+				}
+			}
+			processEle.add(extensionElements);
+			parentElement.add(processEle);
 		}
-		
 	}
 }

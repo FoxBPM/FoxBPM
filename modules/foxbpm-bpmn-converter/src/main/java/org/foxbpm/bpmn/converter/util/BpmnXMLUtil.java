@@ -27,6 +27,8 @@ import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.model.Connector;
 import org.foxbpm.model.InputParam;
 import org.foxbpm.model.OutputParam;
+import org.foxbpm.model.SequenceFlow;
+import org.foxbpm.model.TimerEventDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +39,7 @@ import org.slf4j.LoggerFactory;
  * @author yangguangftlp
  * @date 2014年10月15日
  */
-public class BpmnXMLUtil implements BpmnXMLConstants {
+public class BpmnXMLUtil {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BpmnXMLUtil.class);
 	/**
 	 * 处理针对element节点限定名称(xx:aa)的本地部分aa
@@ -70,6 +72,52 @@ public class BpmnXMLUtil implements BpmnXMLConstants {
 			}
 		}
 		return null;
+	}
+	/**
+	 * 表达式解析
+	 * 
+	 * @param element
+	 *            Incoming
+	 * @return 返回表达式
+	 */
+	public static String parseIncoming(Element element) {
+		return element.getText();
+	}
+	/**
+	 * 表达式解析
+	 * 
+	 * @param element
+	 *            0utgoing
+	 * @return 返回表达式
+	 */
+	public static String parse0utgoing(Element element) {
+		return element.getText();
+	}
+	/**
+	 * 表达式解析
+	 * 
+	 * @param element
+	 *            sequenceFlow
+	 * @return SequenceFlow 对象
+	 */
+	@SuppressWarnings("rawtypes")
+	public static SequenceFlow parseSequenceFlow(Element element) {
+		SequenceFlow sequenceFlow = new SequenceFlow();
+		sequenceFlow.setId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
+		sequenceFlow.setSourceRefId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_SOURCEREF));
+		sequenceFlow.setTargetRefId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_TARGETREF));
+		Element elem = null;
+		String nodeName = null;
+		for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
+			elem = (Element) iterator.next();
+			nodeName = elem.getName();
+			if (BpmnXMLConstants.ELEMENT_DOCUMENTATION.equalsIgnoreCase(nodeName)) {
+				sequenceFlow.setDocumentation(elem.getText());
+			} else if (BpmnXMLConstants.ELEMENT_CONDITIONEXPRESSION.equalsIgnoreCase(nodeName)) {
+				sequenceFlow.setFlowCondition(elem.getText());
+			}
+		}
+		return sequenceFlow;
 	}
 	/**
 	 * 连接器解析
@@ -150,17 +198,19 @@ public class BpmnXMLUtil implements BpmnXMLConstants {
 				connector.getOutputsParam().add(outputParam);
 				
 			} else if (BpmnXMLConstants.ELEMENT_CONNECTORPARAMETER_OUTPUTSDEF.equalsIgnoreCase(parentNodeName)) {
-				
+				TimerEventDefinition timerEventDefinition = new TimerEventDefinition();
+				timerEventDefinition.setTimeDate(expression);
+				connector.setTimerEventDefinition(timerEventDefinition);
 			} else /**  */
 			/**  */
 			if (BpmnXMLConstants.ELEMENT_TIMEEXPRESSION.equalsIgnoreCase(parentNodeName)) {
-				connector.setTimerEventDefinition(null);
+				
 			} else /**  */
 			if (BpmnXMLConstants.ELEMENT_TIMESKIPEXPRESSION.equalsIgnoreCase(parentNodeName)) {
-				// connector.setSkipExpression(expression);
+				connector.setSkipExpression(expression);
 			} else /**  */
 			if (BpmnXMLConstants.ELEMENT_SKIPCOMMENT.equalsIgnoreCase(parentNodeName)) {
-				// connector.setInputsParam(inputsParam);
+				connector.setSkipExpression(expression);
 			}
 		}
 		
