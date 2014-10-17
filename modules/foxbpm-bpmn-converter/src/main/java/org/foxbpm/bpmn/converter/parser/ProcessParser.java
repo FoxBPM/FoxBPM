@@ -18,6 +18,7 @@
 package org.foxbpm.bpmn.converter.parser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import org.dom4j.Element;
@@ -30,6 +31,7 @@ import org.foxbpm.model.DataVariable;
 import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.PotentialStarter;
 import org.foxbpm.model.Process;
+import org.foxbpm.model.SequenceFlow;
 ;
 
 /**
@@ -60,6 +62,12 @@ public class ProcessParser extends BpmnParser {
 			}
 			if (BpmnXMLConstants.ELEMENT_DOCUMENTATION.equalsIgnoreCase(name)) {
 				process.setDocumentation(elem.getText());
+			} else if (BpmnXMLConstants.ELEMENT_SEQUENCEFLOW.equalsIgnoreCase(name)) {
+				if (null == process.getSequenceFlows()) {
+					process.setSequenceFlows(new HashMap<String, SequenceFlow>());
+				}
+				// 线条处理
+				process.getSequenceFlows().put(elem.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID), BpmnXMLUtil.parseSequenceFlow(elem));
 			} else if (null != BpmnXMLConverter.getConverter(name)) {
 				BaseElementXMLConverter converter = BpmnXMLConverter.getConverter(name);
 				FlowElement flowElement = converter.cretateFlowElement();
