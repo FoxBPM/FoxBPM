@@ -19,6 +19,7 @@ package org.foxbpm.bpmn.converter.util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.dom4j.Element;
 import org.dom4j.Node;
@@ -26,6 +27,8 @@ import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.model.Connector;
 import org.foxbpm.model.InputParam;
 import org.foxbpm.model.OutputParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -35,7 +38,7 @@ import org.foxbpm.model.OutputParam;
  * @date 2014年10月15日
  */
 public class BpmnXMLUtil implements BpmnXMLConstants {
-	
+	private static final Logger LOGGER = LoggerFactory.getLogger(BpmnXMLUtil.class);
 	/**
 	 * 处理针对element节点限定名称(xx:aa)的本地部分aa
 	 * 
@@ -76,14 +79,17 @@ public class BpmnXMLUtil implements BpmnXMLConstants {
 	 * @return 返回连接器实例对象
 	 */
 	@SuppressWarnings("rawtypes")
-	public static Connector parserConnectorElement(Element element) {
+	public static List<Connector> parserConnectorElement(Element element) {
 		Element elem = null;
-		Connector connector = new Connector();
+		List<Connector> connectorList = new ArrayList<Connector>();
+		Connector connector = null;
 		for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
 			elem = (Element) iterator.next();
+			connector = new Connector();
 			parserElementConnector(connector, elem);
+			connectorList.add(connector);
 		}
-		return connector;
+		return connectorList;
 	}
 	/**
 	 * 设置连接器属性
@@ -109,6 +115,7 @@ public class BpmnXMLUtil implements BpmnXMLConstants {
 			        || BpmnXMLConstants.ELEMENT_TIMEEXPRESSION.equalsIgnoreCase(nodeName)
 			        || BpmnXMLConstants.ELEMENT_TIMESKIPEXPRESSION.equalsIgnoreCase(nodeName)
 			        || BpmnXMLConstants.ELEMENT_SKIPCOMMENT.equals(nodeName)) {
+				LOGGER.debug("处理" + nodeName + "子节点");
 				parserElementConnector(connector, elem);
 				// 继续下一个
 				continue;
