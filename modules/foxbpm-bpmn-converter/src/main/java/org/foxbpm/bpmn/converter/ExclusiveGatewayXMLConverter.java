@@ -19,31 +19,23 @@ package org.foxbpm.bpmn.converter;
 
 import org.dom4j.Element;
 import org.foxbpm.model.BaseElement;
+import org.foxbpm.model.ExclusiveGateway;
 import org.foxbpm.model.FlowElement;
 
 /**
- * 常量类
- * 
+ * 排他网关转换器
  * @author yangguangftlp
  * @date 2014年10月15日
  */
 public class ExclusiveGatewayXMLConverter extends GatewayXMLConverter {
 	
 	public FlowElement cretateFlowElement() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ExclusiveGateway();
 	}
 	
 	@Override
 	public Class<? extends BaseElement> getBpmnElementType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public void convertXMLToModel(Element element, BaseElement baseElement) {
-		// TODO Auto-generated method stub
-		
+		return ExclusiveGateway.class;
 	}
 	
 	@Override
@@ -54,8 +46,7 @@ public class ExclusiveGatewayXMLConverter extends GatewayXMLConverter {
 	
 	@Override
 	public String getXMLElementName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "exclusiveGateway";
 	}
 	
 }

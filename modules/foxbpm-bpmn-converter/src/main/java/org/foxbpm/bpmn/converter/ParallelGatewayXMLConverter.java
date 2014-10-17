@@ -20,8 +20,9 @@ package org.foxbpm.bpmn.converter;
 import org.dom4j.Element;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.FlowElement;
+import org.foxbpm.model.ParallelGateway;
 /**
- * 常量类
+ * 并行网关转换器
  * 
  * @author yangguangftlp
  * @date 2014年10月15日
@@ -29,20 +30,27 @@ import org.foxbpm.model.FlowElement;
 public class ParallelGatewayXMLConverter extends GatewayXMLConverter {
 	
 	public FlowElement cretateFlowElement() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ParallelGateway();
 	}
 	
 	@Override
 	public Class<? extends BaseElement> getBpmnElementType() {
-		// TODO Auto-generated method stub
-		return null;
+		return ParallelGateway.class;
 	}
 	
 	@Override
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
-		// TODO Auto-generated method stub
-		
+		ParallelGateway parallelGateway = (ParallelGateway)baseElement;
+		String convergType = element.attributeValue("foxbpm:convergType");
+		String gatewayDirection = element.attributeValue("gatewayDirection");
+		//合并策略
+		if(convergType != null && !convergType.equals("")){
+			parallelGateway.setConvergType(convergType);
+		}
+		if(gatewayDirection != null && !gatewayDirection.equals("")){
+			parallelGateway.setGatewayDirection(gatewayDirection);
+		}
+		super.convertXMLToModel(element,baseElement);
 	}
 	
 	@Override
@@ -53,8 +61,7 @@ public class ParallelGatewayXMLConverter extends GatewayXMLConverter {
 	
 	@Override
 	public String getXMLElementName() {
-		// TODO Auto-generated method stub
-		return null;
+		return "ParallelGateway";
 	}
 	
 }

@@ -23,7 +23,7 @@ package org.foxbpm.model;
  * @author ych
  * 
  */
-public class DataVariable extends BaseElement {
+public class DataVariableDefinition extends BaseElement {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -56,6 +56,8 @@ public class DataVariable extends BaseElement {
 	 * 业务类型
 	 */
 	protected String bizType;
+	
+	protected String nodeId;
 	
 	/**
 	 * 是否公有（暂时没用）
@@ -116,5 +118,13 @@ public class DataVariable extends BaseElement {
 	
 	public void setBizType(String bizType) {
 		this.bizType = bizType;
+	}
+
+	public String getNodeId() {
+		return nodeId;
+	}
+
+	public void setNodeId(String nodeId) {
+		this.nodeId = nodeId;
 	}
 }
