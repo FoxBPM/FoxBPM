@@ -97,6 +97,16 @@ public class BpmnXMLUtil {
 	 * 表达式解析
 	 * 
 	 * @param element
+	 *            0utgoing
+	 * @return 返回表达式
+	 */
+	public static String parseCDATA(Element element) {
+		return parseExpression(element);
+	}
+	/**
+	 * 表达式解析
+	 * 
+	 * @param element
 	 *            sequenceFlow
 	 * @return SequenceFlow 对象
 	 */

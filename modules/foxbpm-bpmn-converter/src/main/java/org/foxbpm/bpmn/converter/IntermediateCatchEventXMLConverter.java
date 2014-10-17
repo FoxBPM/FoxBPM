@@ -18,8 +18,10 @@
 package org.foxbpm.bpmn.converter;
 
 import org.dom4j.Element;
+import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.FlowElement;
+import org.foxbpm.model.IntermediateCatchEvent;
 
 /**
  * 常量类
@@ -30,20 +32,18 @@ import org.foxbpm.model.FlowElement;
 public class IntermediateCatchEventXMLConverter extends CatchEventXMLConverter {
 	
 	public FlowElement cretateFlowElement() {
-		// TODO Auto-generated method stub
-		return null;
+		return new IntermediateCatchEvent();
 	}
 	
 	@Override
 	public Class<? extends BaseElement> getBpmnElementType() {
 		// TODO Auto-generated method stub
-		return null;
+		return IntermediateCatchEvent.class;
 	}
 	
 	@Override
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
-		// TODO Auto-generated method stub
-		
+		super.convertXMLToModel(element, baseElement);
 	}
 	
 	@Override
@@ -55,7 +55,7 @@ public class IntermediateCatchEventXMLConverter extends CatchEventXMLConverter {
 	@Override
 	public String getXMLElementName() {
 		// TODO Auto-generated method stub
-		return null;
+		return BpmnXMLConstants.ELEMENT_INTERMEDIATECATCHEVENT;
 	}
 	
 }

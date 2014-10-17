@@ -102,6 +102,12 @@ public interface BpmnXMLConstants {
 	String ATTRIBUTE_SOURCEREF = "sourceRef";
 	/** targetRef */
 	String ATTRIBUTE_TARGETREF = "targetRef";
+	/** timeDate */
+	String ATTRIBUTE_TIMEDATE = "timeDate";
+	/** timeDuration */
+	String ATTRIBUTE_TIMEDURATION = "timeDuration";
+	/** timeCycle */
+	String ATTRIBUTE_TIMECYCLE = "timeCycle";
 	
 	// 结束
 	
@@ -167,6 +173,10 @@ public interface BpmnXMLConstants {
 	String ELEMENT_ENDEVENT = "endEvent";
 	/** terminateEventDefinition */
 	String ELEMENT_TERMINATEEVENTDEFINITION = "terminateEventDefinition";
+	/** timerEventDefinition */
+	String ELEMENT_TIMEREVENTDEFINITION = "timerEventDefinition";
+	/** intermediateCatchEvent */
+	String ELEMENT_INTERMEDIATECATCHEVENT = "intermediateCatchEvent";
 	// 结束
 	
 	/** isExecutable */
