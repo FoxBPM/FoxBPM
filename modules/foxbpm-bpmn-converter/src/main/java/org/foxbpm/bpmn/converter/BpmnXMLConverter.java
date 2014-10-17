@@ -24,7 +24,6 @@ import java.util.Map;
 import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
-import org.dom4j.QName;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.bpmn.converter.parser.BpmnDiagramParser;
 import org.foxbpm.bpmn.converter.parser.ProcessParser;
@@ -94,13 +93,25 @@ public class BpmnXMLConverter implements BpmnXMLConstants {
 	 * @param model
 	 *            bpmn模型
 	 */
-	public void convertToXML(BpmnModel model) {
+	public Document convertToXML(BpmnModel model) {
 		DocumentFactory factory = DocumentFactory.getInstance();
-		//BPMNDI_PREFIX, ELEMENT_DI_DIAGRAM, BPMNDI_NAMESPACE
-		Element root = factory.createElement(new QName(null, null, null));
+		Document doc = factory.createDocument();
+		Element element = DocumentFactory.getInstance().createElement(BPMN2_PREFIX + ':' + ELEMENT_DEFINITIONS, "http://www.foxbpm.org");
+		element.addNamespace(XSI_PREFIX, XSI_NAMESPACE);
+		element.addNamespace(BPMN2_PREFIX, BPMN2_NAMESPACE);
+		element.addNamespace(DC_PREFIX, DC_NAMESPACE);
+		element.addNamespace(DI_PREFIX, DI_NAMESPACE);
+		element.addNamespace(BPMNDI_PREFIX, BPMNDI_NAMESPACE);
+		element.addNamespace(FOXBPM_PREFIX, FOXBPM_NAMESPACE);
+		element.addNamespace(XSD_PREFIX, XSD_NAMESPACE);
+		element.addAttribute(XMLNS_PREFIX, XMLNS_NAMESPACE);
+		element.addAttribute(ATTRIBUTE_ID, "Definitions_1");
+		element.addAttribute(TARGET_NAMESPACE_ATTRIBUTE, XMLNS_NAMESPACE);
+		doc.add(element);
 		
-		
-		
+		// 流程转换
+		// 位置坐标转换
+		return doc;
 	}
 	public static BaseElementXMLConverter getConverter(String key) {
 		return convertersToBpmnMap.get(key);

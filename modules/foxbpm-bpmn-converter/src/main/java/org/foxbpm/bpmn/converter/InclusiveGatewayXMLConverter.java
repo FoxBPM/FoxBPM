@@ -19,7 +19,6 @@ package org.foxbpm.bpmn.converter;
 
 import org.dom4j.Element;
 import org.foxbpm.model.BaseElement;
-import org.foxbpm.model.BpmnModel;
 import org.foxbpm.model.FlowElement;
 
 /**
@@ -29,34 +28,35 @@ import org.foxbpm.model.FlowElement;
  * @date 2014年10月15日
  */
 public class InclusiveGatewayXMLConverter extends GatewayXMLConverter {
-	
+
 	public FlowElement cretateFlowElement() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
+	    // TODO Auto-generated method stub
+	    return null;
+    }
+
 	@Override
-	public Class<? extends BaseElement> getBpmnElementType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
+    public Class<? extends BaseElement> getBpmnElementType() {
+	    // TODO Auto-generated method stub
+	    return null;
+    }
+
 	@Override
-	public void convertXMLToModel(Element element, BaseElement baseElement) {
-		// TODO Auto-generated method stub
-		
-	}
-	
+    public void convertXMLToModel(Element element, BaseElement baseElement) {
+	    // TODO Auto-generated method stub
+	    
+    }
+
 	@Override
-	public void convertModelToXML(Element element, BpmnModel model) {
-		// TODO Auto-generated method stub
-		
-	}
-	
+    public void convertModelToXML(Element element, BaseElement baseElement) {
+	    // TODO Auto-generated method stub
+	    
+    }
+
 	@Override
-	public String getXMLElementName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public String getXMLElementName() {
+	    // TODO Auto-generated method stub
+	    return null;
+    }
+	
 	
 }

@@ -111,10 +111,9 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 			}
 		}
 	}
-	
+	 
 	public void convertModelToXML(Element element, BpmnModel model) {
-		// TODO Auto-generated method stub
-		
+ 
 	}
 	
 	public String getXMLElementName() {

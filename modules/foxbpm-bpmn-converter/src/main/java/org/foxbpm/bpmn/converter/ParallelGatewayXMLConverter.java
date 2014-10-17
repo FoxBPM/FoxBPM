@@ -17,10 +17,9 @@
  */
 package org.foxbpm.bpmn.converter;
 
-import org.foxbpm.model.BaseElement;
-import org.foxbpm.model.BpmnModel;
-import org.foxbpm.model.FlowElement;
 import org.dom4j.Element;
+import org.foxbpm.model.BaseElement;
+import org.foxbpm.model.FlowElement;
 /**
  * 常量类
  * 
@@ -47,7 +46,7 @@ public class ParallelGatewayXMLConverter extends GatewayXMLConverter {
 	}
 	
 	@Override
-	public void convertModelToXML(Element element, BpmnModel model) {
+	public void convertModelToXML(Element element, BaseElement baseElement) {
 		// TODO Auto-generated method stub
 		
 	}
