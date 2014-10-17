@@ -63,7 +63,7 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 		Element extentionElement = null;
 		while(elementIterator.hasNext()){
 			subElement = elementIterator.next();
-			if(BpmnXMLConstants.ELEMENT_EXTENSIONS.equals(subElement.getName())){
+			if(BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS.equals(subElement.getName())){
 				Iterator<Element> extentionIterator = subElement.elements().iterator();
 				while(extentionIterator.hasNext()){
 					extentionElement = extentionIterator.next();
@@ -119,6 +119,11 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 	public String getXMLElementName() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void convertModelToXML(Element element, BaseElement baseElement) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
