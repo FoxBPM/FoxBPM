@@ -22,12 +22,13 @@ import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.model.BaseElement;
 
 /**
- * 常量类
+ * 模型基类转换
  * 
  * @author yangguangftlp
  * @date 2014年10月15日
  */
 public abstract class BaseElementXMLConverter implements FlowElementFactory {
+	
 	public abstract Class<? extends BaseElement> getBpmnElementType();
 	
 	public void convertXMLToModel(Element element, BaseElement baseElement) {

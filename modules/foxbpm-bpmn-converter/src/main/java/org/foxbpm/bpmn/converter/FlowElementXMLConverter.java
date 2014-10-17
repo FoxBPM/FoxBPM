@@ -17,11 +17,14 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import java.util.Iterator;
+
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
-import org.foxbpm.model.BaseElement;
+import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.model.FlowElement;
-
+//github.com/FoxBPM/FoxBPM.git
+import org.foxbpm.model.BaseElement;
 
 /**
  * 常量类
@@ -30,15 +33,52 @@ import org.foxbpm.model.FlowElement;
  * @date 2014年10月15日
  */
 public abstract class FlowElementXMLConverter extends BaseElementXMLConverter {
-
+	
+	public FlowElement cretateFlowElement() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	@Override
-    public void convertXMLToModel(Element element, BaseElement baseElement) {
-		((FlowElement)baseElement).setName(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_NAME));
-    }
-
+	public Class<? extends BaseElement> getBpmnElementType() {
+		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void convertXMLToModel(Element element, BaseElement baseElement) {
+		FlowElement flowElement = (FlowElement) baseElement;
+		flowElement.setName(BpmnXMLConstants.ATTRIBUTE_NAME);
+		
+		Iterator<Element> elementIterator = element.elements().iterator();
+		Element subElement = null;
+		Element extentionElement = null;
+		while (elementIterator.hasNext()) {
+			subElement = elementIterator.next();
+			if (BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS.equals(subElement.getName())) {
+				Iterator<Element> extentionIterator = subElement.elements().iterator();
+				while (extentionIterator.hasNext()) {
+					extentionElement = extentionIterator.next();
+					// 转化连接器
+					if (BpmnXMLConstants.ELEMENT_CONNECTORINSTANCEELEMENTS.equals(extentionElement.getName())) {
+						flowElement.setConnector(BpmnXMLUtil.parserConnectorElement(extentionElement));
+					}
+					
+				}
+			}
+		}
+		
+	}
+	
 	@Override
-    public void convertModelToXML(Element element, BaseElement baseElement) {
-	    
-    }
+	public void convertModelToXML(Element element, BaseElement baseElement) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public String getXMLElementName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

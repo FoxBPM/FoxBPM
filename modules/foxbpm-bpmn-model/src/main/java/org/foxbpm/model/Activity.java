@@ -17,12 +17,11 @@
  */
 package org.foxbpm.model;
 
-import java.util.List;
-
 /**
  * 活动
+ * 
  * @author ych
- *
+ * 
  */
 public abstract class Activity extends FlowNode {
 
@@ -32,16 +31,11 @@ public abstract class Activity extends FlowNode {
 	 * 跳过策略
 	 */
 	protected SkipStrategy skipStrategy;
-	
+
 	/**
 	 * 循环对象，如多实例
 	 */
 	protected LoopCharacteristics loopCharacteristics;
-
-	/**
-	 * 边界事件
-	 */
-	protected List<BoundaryEvent> boundaryEvents;
 
 	public SkipStrategy getSkipStrategy() {
 		return skipStrategy;
@@ -58,13 +52,4 @@ public abstract class Activity extends FlowNode {
 	public void setLoopCharacteristics(LoopCharacteristics loopCharacteristics) {
 		this.loopCharacteristics = loopCharacteristics;
 	}
-
-	public List<BoundaryEvent> getBoundaryEvents() {
-		return boundaryEvents;
-	}
-
-	public void setBoundaryEvents(List<BoundaryEvent> boundaryEvents) {
-		this.boundaryEvents = boundaryEvents;
-	}
-
 }

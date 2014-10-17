@@ -24,6 +24,7 @@ import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.model.BaseElement;
+import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.FlowNode;
 
 /**
@@ -33,6 +34,23 @@ import org.foxbpm.model.FlowNode;
  * @date 2014年10月15日
  */
 public abstract class FlowNodeXMLConverter extends FlowElementXMLConverter {
+	
+	public FlowElement cretateFlowElement() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public Class<? extends BaseElement> getBpmnElementType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public String getXMLElementName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -58,12 +76,6 @@ public abstract class FlowNodeXMLConverter extends FlowElementXMLConverter {
 			}
 		}
 		super.convertXMLToModel(element, baseElement);
-	}
-	
-	@Override
-	public void convertModelToXML(Element element, BaseElement baseElement) {
-		
-		super.convertModelToXML(element, baseElement);
 	}
 	
 }

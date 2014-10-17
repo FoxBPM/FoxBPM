@@ -211,4 +211,13 @@ public interface BpmnXMLConstants {
 	
 	String ATTRIBUTE_COMMANDTYPE = "commandType";
 	
+	String ELEMENT_MULTIINSTANCELOOPCHARACTERISTICS = "multiInstanceLoopCharacteristics";
+	
+	String ELEMENT_LOOPDATAINPUTCOLLECTION = "loopDataInputCollection";
+	String ELEMENT_LOOPDATAOUTPUTCOLLECTION = "loopDataOutputCollection";
+	String ELEMENT_INPUTDATAITEM = "inputDataItem";
+	String ELEMENT_OUTPUTDATAITEM = "outputDataItem";
+	String ELEMENT_COMPLETIONCONDITION = "completionCondition";
+	String ELEMENT_ISSEQUENTIAL = "isSequential";
+	
 }

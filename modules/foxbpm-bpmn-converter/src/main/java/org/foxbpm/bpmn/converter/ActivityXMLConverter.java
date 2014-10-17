@@ -17,6 +17,16 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import java.util.Iterator;
+
+import org.dom4j.Element;
+import org.foxbpm.bpmn.constants.BpmnXMLConstants;
+import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
+import org.foxbpm.model.Activity;
+import org.foxbpm.model.BaseElement;
+import org.foxbpm.model.FlowElement;
+import org.foxbpm.model.MultiInstanceLoopCharacteristics;
+
 
 /**
  * 活动元素处理
@@ -25,6 +35,70 @@ package org.foxbpm.bpmn.converter;
  * @date 2014年10月15日
  */
 public abstract class ActivityXMLConverter extends FlowNodeXMLConverter {
+
+	@Override
+	public FlowElement cretateFlowElement() {
+		// TODO Auto-generated method stub
+		return super.cretateFlowElement();
+	}
+
+	@Override
+	public Class<? extends BaseElement> getBpmnElementType() {
+		// TODO Auto-generated method stub
+		return super.getBpmnElementType();
+	}
+
+	@SuppressWarnings("unchecked")
+	public void convertXMLToModel(Element element, BaseElement baseElement) {
+		Activity activity =(Activity)baseElement;
+		Iterator<Element> elementIterator = element.elements().iterator();
+		Element subElement = null;
+		Element extentionElement = null;
+		while(elementIterator.hasNext()){
+			subElement = elementIterator.next();
+			if(BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS.equals(subElement.getName())){
+				Iterator<Element> extentionIterator = subElement.elements().iterator();
+				while(extentionIterator.hasNext()){
+					extentionElement = extentionIterator.next();
+					 if(BpmnXMLConstants.ELEMENT_MULTIINSTANCELOOPCHARACTERISTICS.equals(extentionElement.getName())){
+						MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics = new MultiInstanceLoopCharacteristics();
+						multiInstanceLoopCharacteristics.setId(extentionElement.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
+						
+						Element multiExtentionElement = extentionElement.element(BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS);
+						if(multiExtentionElement != null){
+							multiInstanceLoopCharacteristics.setLoopDataInputCollection(BpmnXMLUtil.parseExpression(multiExtentionElement.element(BpmnXMLConstants.ELEMENT_LOOPDATAINPUTCOLLECTION).element(BpmnXMLConstants.ELEMENT_EXPRESSION)));
+							multiInstanceLoopCharacteristics.setLoopDataOutputCollection(BpmnXMLUtil.parseExpression(multiExtentionElement.element(BpmnXMLConstants.ELEMENT_LOOPDATAOUTPUTCOLLECTION).element(BpmnXMLConstants.ELEMENT_EXPRESSION)));
+						}
+						multiInstanceLoopCharacteristics.setCompletionCondition(multiExtentionElement.element(BpmnXMLConstants.ELEMENT_COMPLETIONCONDITION).getText());
+						multiInstanceLoopCharacteristics.setInputDataItem(BpmnXMLUtil.parseExpression(multiExtentionElement.element(BpmnXMLConstants.ELEMENT_INPUTDATAITEM).element(BpmnXMLConstants.ELEMENT_EXPRESSION)));
+						
+						multiInstanceLoopCharacteristics.setOutputDataItem(BpmnXMLUtil.parseExpression(multiExtentionElement.element(BpmnXMLConstants.ELEMENT_OUTPUTDATAITEM).element(BpmnXMLConstants.ELEMENT_EXPRESSION)));
+						if(extentionElement.attributeValue(BpmnXMLConstants.ELEMENT_ISSEQUENTIAL) != null){
+							multiInstanceLoopCharacteristics.setSequential(Boolean.valueOf(extentionElement.attributeValue(BpmnXMLConstants.ELEMENT_ISSEQUENTIAL)));
+						}
+						
+						activity.setLoopCharacteristics(multiInstanceLoopCharacteristics);
+					}
+					
+
+				}
+			}
+		}
+		
+		super.convertXMLToModel(element, baseElement);
+	}
+
+	@Override
+	public void convertModelToXML(Element element, BaseElement baseElement) {
+		// TODO Auto-generated method stub
+		super.convertModelToXML(element, baseElement);
+	}
+
+	@Override
+	public String getXMLElementName() {
+		// TODO Auto-generated method stub
+		return super.getXMLElementName();
+	}
 	
 	
 	
