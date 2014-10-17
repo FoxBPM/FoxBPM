@@ -62,7 +62,7 @@ public class Process extends FlowElement {
 	/**
 	 * 流程变量定义
 	 */
-	protected List<DataVariable> dataVariables;
+	protected List<DataVariableDefinition> dataVariables;
 
 	protected List<LaneSet> laneSets;
 
@@ -132,11 +132,11 @@ public class Process extends FlowElement {
 		this.potentialStarters = potentialStarters;
 	}
 
-	public List<DataVariable> getDataVariables() {
+	public List<DataVariableDefinition> getDataVariables() {
 		return dataVariables;
 	}
 
-	public void setDataVariables(List<DataVariable> dataVariables) {
+	public void setDataVariables(List<DataVariableDefinition> dataVariables) {
 		this.dataVariables = dataVariables;
 	}
 
