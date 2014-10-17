@@ -97,6 +97,11 @@ public interface BpmnXMLConstants {
 	
 	// 结束
 	
+	
+	//扩展属性
+	String ATTRIBUTE_FOXBPM_CLAIMTYPE = "claimType";
+	String ATTRIBUTE_FOXBPM_TASKTYPE = "taskType";
+	
 	// 节点名称
 	/** formUri */
 	String ELEMENT_FORMURI = "formUri";
@@ -143,6 +148,8 @@ public interface BpmnXMLConstants {
 	String ELEMENT_POTENTIAL_STARTER = "potentialStarter";
 	/** userTask */
 	String ELEMENT_TASK_USER = "userTask";
+	
+	String ELEMENT_CONNECTORINSTANCEELEMENTS = "connectorInstanceElements";
 	// 结束
 	
 	/** isExecutable */
@@ -181,5 +188,14 @@ public interface BpmnXMLConstants {
 	String ATTRIBUTE_DI_X = "x";
 	/** y */
 	String ATTRIBUTE_DI_Y = "y";
+	
+	String ELEMENT_TASKCOMMAND = "taskCommand";
+	String ELEMENT_PARAMS = "params";
+	String ELEMENT_TASKPRIORITY = "taskPriority";
+	String ELEMENT_INCOMING = "incoming";
+	String ELEMENT_OUTGOING = "outgoing";
+	String ELEMENT_POTENTIALOWNER = "potentialOwner";
+	
+	String ATTRIBUTE_COMMANDTYPE = "commandType";
 	
 }
