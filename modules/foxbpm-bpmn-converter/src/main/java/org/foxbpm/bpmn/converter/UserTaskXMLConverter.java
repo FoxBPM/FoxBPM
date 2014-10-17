@@ -26,6 +26,7 @@ import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.BpmnModel;
+import org.foxbpm.model.CommandParameter;
 import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.TaskCommand;
 import org.foxbpm.model.UserTask;
@@ -51,7 +52,6 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 	@SuppressWarnings("unchecked")
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
 		UserTask userTask =(UserTask)baseElement;
-		userTask.setId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID)); 
 		userTask.setClaimType(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_FOXBPM_CLAIMTYPE));
 		userTask.setTaskType(BpmnXMLConstants.ATTRIBUTE_FOXBPM_TASKTYPE);
 		
@@ -60,11 +60,13 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 		Element extentionElement = null;
 		while(elementIterator.hasNext()){
 			subElement = elementIterator.next();
+			//扩展元素
 			if(BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS.equals(subElement.getName())){
 				Iterator<Element> extentionIterator = subElement.elements().iterator();
 				while(extentionIterator.hasNext()){
 					extentionElement = extentionIterator.next();
 					 
+					//任务命令
 					if(BpmnXMLConstants.ELEMENT_TASKCOMMAND.equals(extentionElement.getName())){
 						List<TaskCommand> listTaskCommand = userTask.getTaskCommands();
 						if(listTaskCommand == null){
@@ -76,8 +78,30 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 						taskCommand.setId(extentionElement.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
 						taskCommand.setTaskCommandType(extentionElement.attributeValue(BpmnXMLConstants.ATTRIBUTE_COMMANDTYPE));
 						
+						//命令参数
+						Iterator<Element> taskCommandParamIter = extentionElement.elementIterator(BpmnXMLConstants.ELEMENT_PARAMS);
+						List<CommandParameter> commandParams = taskCommand.getCommandParams();
+						Element taskCommandParamElement = null;
+						while(taskCommandParamIter.hasNext()){
+							taskCommandParamElement = taskCommandParamIter.next();
+							if(commandParams == null){
+								commandParams = new ArrayList<CommandParameter>();
+								taskCommand.setCommandParams(commandParams);
+							}
+							
+							CommandParameter commandParameter = new CommandParameter();
+							commandParameter.setBizType(taskCommandParamElement.attributeValue(BpmnXMLConstants.ATTRIBUTE_BIZTYPE));
+							commandParameter.setDataType(taskCommandParamElement.attributeValue(BpmnXMLConstants.ATTRIBUTE_DATATYPE));
+							commandParameter.setDescription(taskCommandParamElement.attributeValue(BpmnXMLConstants.ATTRIBUTE_DESCRIPTION));
+							commandParameter.setName(taskCommandParamElement.attributeValue(BpmnXMLConstants.ATTRIBUTE_NAME));
+							commandParameter.setExpression(BpmnXMLUtil.parseExpression(taskCommandParamElement.element(BpmnXMLConstants.ELEMENT_EXPRESSION)));
+							
+							commandParams.add(commandParameter);
+						}
+						
 						listTaskCommand.add(taskCommand);
 					}else if(BpmnXMLConstants.ELEMENT_POTENTIALOWNER.equals(extentionElement.getName())){
+						//任务分配连接器
 						userTask.setActorConnectors(BpmnXMLUtil.parserConnectorElement(extentionElement.element(BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS).element(BpmnXMLConstants.ELEMENT_CONNECTORINSTANCEELEMENTS)));
 					} 
 					
