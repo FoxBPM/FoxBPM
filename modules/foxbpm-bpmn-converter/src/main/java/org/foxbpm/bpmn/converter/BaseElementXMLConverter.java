@@ -19,7 +19,6 @@ package org.foxbpm.bpmn.converter;
 
 import org.dom4j.Element;
 import org.foxbpm.model.BaseElement;
-import org.foxbpm.model.BpmnModel;
 
 /**
  * 常量类
@@ -30,6 +29,6 @@ import org.foxbpm.model.BpmnModel;
 public abstract class BaseElementXMLConverter implements FlowElementFactory {
 	public abstract Class<? extends BaseElement> getBpmnElementType();
 	public abstract void convertXMLToModel(Element element, BaseElement baseElement);
-	public abstract void convertModelToXML(Element element, BpmnModel model);
+	public abstract void convertModelToXML(Element element, BaseElement baseElement);
 	public abstract String getXMLElementName();
 }
