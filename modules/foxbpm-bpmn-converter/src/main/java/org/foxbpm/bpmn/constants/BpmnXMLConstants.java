@@ -25,7 +25,6 @@ package org.foxbpm.bpmn.constants;
  */
 public interface BpmnXMLConstants {
 	
-	
 	String EMPTY_STRING = "";
 	String BPMN2_PREFIX = "bpmn2";
 	String BPMN2_NAMESPACE = "http://www.omg.org/spec/BPMN/20100524/MODEL";
@@ -77,6 +76,24 @@ public interface BpmnXMLConstants {
 	String ATTRIBUTE_RESOURCETYPE = "resourceType";
 	/** description */
 	String ATTRIBUTE_DESCRIPTION = "description";
+	/** connectorId */
+	String ATTRIBUTE_CONNECTORID = "connectorId";
+	/** packageName */
+	String ATTRIBUTE_PACKAGENAME = "packageName";
+	/** className */
+	String ATTRIBUTE_CLASSNAME = "className";
+	/** connectorInstanceId */
+	String ATTRIBUTE_CONNECTORINSTANCE_ID = "connectorInstanceId";
+	/** connectorInstanceName */
+	String ATTRIBUTE_CONNECTORINSTANCE_NAME = "connectorInstanceName";
+	/** eventType */
+	String ATTRIBUTE_EVENTTYPE = "eventType";
+	/** errorHandling */
+	String ATTRIBUTE_ERRORHANDLING = "errorHandling";
+	/** errorCode */
+	String ATTRIBUTE_ERRORCODE = "errorCode";
+	/** isTimeExecute */
+	String ATTRIBUTE_ISTIMEEXECUTE = "isTimeExecute";
 	
 	// 结束
 	
@@ -91,6 +108,23 @@ public interface BpmnXMLConstants {
 	String ELEMENT_DATAVARIABLE = "dataVariable";
 	/** potentialStarter */
 	String ELEMENT_POTENTIALSTARTER = "potentialStarter";
+	/** connectorInstanceElements */
+	String ELEMENT_CONNECTORINSTANCE_ELEMENTS = "connectorInstanceElements";
+	/** connectorInstance */
+	String ELEMENT_CONNECTORINSTANCE = "connectorInstance";
+	/** connectorParameterInputs */
+	String ELEMENT_CONNECTORPARAMETER_INPUTS = "connectorParameterInputs";
+	/** connectorParameterOutputs */
+	String ELEMENT_CONNECTORPARAMETER_OUTPUTS = "connectorParameterOutputs";
+	/** connectorParameterOutputsDef */
+	String ELEMENT_CONNECTORPARAMETER_OUTPUTSDEF = "connectorParameterOutputsDef";
+	/** timeExpression */
+	String ELEMENT_TIMEEXPRESSION = "timeExpression";
+	/** timeSkipExpression */
+	String ELEMENT_TIMESKIPEXPRESSION = "timeSkipExpression";
+	/** skipComment */
+	String ELEMENT_SKIPCOMMENT = "skipComment";
+	
 	/** expression */
 	String ELEMENT_EXPRESSION = "expression";
 	/** definitions */
