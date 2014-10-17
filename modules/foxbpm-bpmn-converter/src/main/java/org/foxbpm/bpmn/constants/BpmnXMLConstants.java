@@ -98,6 +98,10 @@ public interface BpmnXMLConstants {
 	String ATTRIBUTE_ISEXECUTE = "isExecute";
 	/** variableTarget */
 	String ATTRIBUTE_VARIABLETARGET = "variableTarget";
+	/** sourceRef */
+	String ATTRIBUTE_SOURCEREF = "sourceRef";
+	/** targetRef */
+	String ATTRIBUTE_TARGETREF = "targetRef";
 	
 	// 结束
 	
@@ -151,8 +155,12 @@ public interface BpmnXMLConstants {
 	String ELEMENT_POTENTIAL_STARTER = "potentialStarter";
 	/** userTask */
 	String ELEMENT_TASK_USER = "userTask";
-	
+	/** conditionExpression */
+	String ELEMENT_CONDITIONEXPRESSION = "conditionExpression";
+	/** connectorInstanceElements */
 	String ELEMENT_CONNECTORINSTANCEELEMENTS = "connectorInstanceElements";
+	/** sequenceFlow */
+	String ELEMENT_SEQUENCEFLOW = "sequenceFlow";
 	// 结束
 	
 	/** isExecutable */

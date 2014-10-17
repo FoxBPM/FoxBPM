@@ -85,6 +85,11 @@ public class Connector extends BaseElement {
 	protected TimerEventDefinition timerEventDefinition;
 	
 	/**
+	 * 定时器跳过策略
+	 */
+	protected String timerSkipExpression;
+	
+	/**
 	 * 连接器跳过策略
 	 */
 	protected String skipExpression;
@@ -188,13 +193,20 @@ public class Connector extends BaseElement {
 	public void setSkipExpression(String skipExpression) {
 		this.skipExpression = skipExpression;
 	}
-
+	
 	public String getIsTimeExecute() {
 		return isTimeExecute;
 	}
-
+	
 	public void setIsTimeExecute(String isTimeExecute) {
 		this.isTimeExecute = isTimeExecute;
 	}
-	
+
+	public String getTimerSkipExpression() {
+		return timerSkipExpression;
+	}
+
+	public void setTimerSkipExpression(String timerSkipExpression) {
+		this.timerSkipExpression = timerSkipExpression;
+	}
 }

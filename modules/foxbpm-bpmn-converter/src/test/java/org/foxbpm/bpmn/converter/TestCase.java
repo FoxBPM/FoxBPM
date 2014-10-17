@@ -45,7 +45,20 @@ public class TestCase {
 		try {
 			Document doc = reader.read(new File("E:\\workspace_6.0\\FoxBPM.0.1\\Test\\selector\\test\\abc_1.bpmn"));
 			BpmnModel bpmnModel = converter.convertToBpmnModel(doc);
-			System.out.println(bpmnModel);
+			doc = converter.convertToXML(bpmnModel);
+			try {
+				// 定义输出流的目的地
+				OutputFormat format = OutputFormat.createPrettyPrint();
+				format.setEncoding("UTF-8");
+				//format.setNewlines(false);
+				//format.setXHTML(true);
+				// 定义用于输出xml文件的XMLWriter对象
+				XMLWriter xmlWriter = new XMLWriter(System.out, format);
+				xmlWriter.write(doc);
+				xmlWriter.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		} catch (DocumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
