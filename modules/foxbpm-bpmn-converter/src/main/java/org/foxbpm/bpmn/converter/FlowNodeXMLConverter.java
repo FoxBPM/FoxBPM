@@ -81,6 +81,7 @@ public abstract class FlowNodeXMLConverter extends FlowElementXMLConverter {
 				}
 			}
 		}
+		super.convertXMLToModel(element, baseElement);
 	}
 
 	@Override

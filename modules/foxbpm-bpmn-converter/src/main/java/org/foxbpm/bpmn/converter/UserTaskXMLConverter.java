@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
+import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.BpmnModel;
 import org.foxbpm.model.FlowElement;
@@ -77,13 +78,15 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 						
 						listTaskCommand.add(taskCommand);
 					}else if(BpmnXMLConstants.ELEMENT_POTENTIALOWNER.equals(extentionElement.getName())){
-						userTask.setActorConnectors(null);
+						userTask.setActorConnectors(BpmnXMLUtil.parserConnectorElement(extentionElement.element(BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS).element(BpmnXMLConstants.ELEMENT_CONNECTORINSTANCEELEMENTS)));
 					} 
 					
 
 				}
 			}
 		}
+		
+		super.convertXMLToModel(element, baseElement);
 	}
 	 
 	public void convertModelToXML(Element element, BpmnModel model) {

@@ -17,15 +17,12 @@
  */
 package org.foxbpm.bpmn.converter;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.model.BaseElement;
-import org.foxbpm.model.Connector;
 import org.foxbpm.model.FlowElement;
 
 
@@ -64,9 +61,7 @@ public abstract class FlowElementXMLConverter extends BaseElementXMLConverter {
 					extentionElement = extentionIterator.next();
 					//转化连接器
 					if(BpmnXMLConstants.ELEMENT_CONNECTORINSTANCEELEMENTS.equals(extentionElement.getName())){
-						List<Connector> listConnector = new ArrayList<Connector>();
-						 BpmnXMLUtil.parserConnectorElement(extentionElement);
-						 flowElement.setConnector(listConnector);
+						flowElement.setConnector(BpmnXMLUtil.parserConnectorElement(extentionElement));
 					} 
 					
 
