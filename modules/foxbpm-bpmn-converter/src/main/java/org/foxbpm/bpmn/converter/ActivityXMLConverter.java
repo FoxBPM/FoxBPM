@@ -24,7 +24,6 @@ import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.model.Activity;
 import org.foxbpm.model.BaseElement;
-import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.MultiInstanceLoopCharacteristics;
 
 
@@ -35,18 +34,6 @@ import org.foxbpm.model.MultiInstanceLoopCharacteristics;
  * @date 2014年10月15日
  */
 public abstract class ActivityXMLConverter extends FlowNodeXMLConverter {
-
-	@Override
-	public FlowElement cretateFlowElement() {
-		// TODO Auto-generated method stub
-		return super.cretateFlowElement();
-	}
-
-	@Override
-	public Class<? extends BaseElement> getBpmnElementType() {
-		// TODO Auto-generated method stub
-		return super.getBpmnElementType();
-	}
 
 	@SuppressWarnings("unchecked")
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
@@ -94,12 +81,4 @@ public abstract class ActivityXMLConverter extends FlowNodeXMLConverter {
 		super.convertModelToXML(element, baseElement);
 	}
 
-	@Override
-	public String getXMLElementName() {
-		// TODO Auto-generated method stub
-		return super.getXMLElementName();
-	}
-	
-	
-	
 }

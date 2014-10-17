@@ -34,16 +34,6 @@ import org.foxbpm.model.BaseElement;
  */
 public abstract class FlowElementXMLConverter extends BaseElementXMLConverter {
 	
-	public FlowElement cretateFlowElement() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public Class<? extends BaseElement> getBpmnElementType() {
-		return null;
-	}
-	
 	@SuppressWarnings("unchecked")
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
 		FlowElement flowElement = (FlowElement) baseElement;
@@ -74,11 +64,4 @@ public abstract class FlowElementXMLConverter extends BaseElementXMLConverter {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	@Override
-	public String getXMLElementName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 }

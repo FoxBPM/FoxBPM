@@ -27,7 +27,7 @@ import org.foxbpm.bpmn.converter.BaseElementXMLConverter;
 import org.foxbpm.bpmn.converter.BpmnXMLConverter;
 import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.model.BpmnModel;
-import org.foxbpm.model.DataVariable;
+import org.foxbpm.model.DataVariableDefinition;
 import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.PotentialStarter;
 import org.foxbpm.model.Process;
@@ -126,7 +126,7 @@ public class ProcessParser extends BpmnParser {
 		
 		// 处理数据变量
 		if (BpmnXMLConstants.ELEMENT_DATAVARIABLE.equalsIgnoreCase(parentNodeName)) {
-			DataVariable dataVariable = new DataVariable();
+			DataVariableDefinition dataVariable = new DataVariableDefinition();
 			dataVariable.setId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
 			dataVariable.setBizType(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_BIZTYPE));
 			dataVariable.setDataType(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_DATATYPE));
@@ -134,7 +134,7 @@ public class ProcessParser extends BpmnParser {
 			dataVariable.setExpression(expression);
 			dataVariable.setDocumentation(documentation);
 			if (null == process.getDataVariables()) {
-				process.setDataVariables(new ArrayList<DataVariable>());
+				process.setDataVariables(new ArrayList<DataVariableDefinition>());
 			}
 			process.getDataVariables().add(dataVariable);
 		}
