@@ -25,24 +25,28 @@ package org.foxbpm.bpmn.constants;
  */
 public interface BpmnXMLConstants {
 	
+	String BPMN2_PREFIX = "bpmn2";
 	String BPMN2_NAMESPACE = "http://www.omg.org/spec/BPMN/20100524/MODEL";
-	String XSI_NAMESPACE = "http://www.w3.org/2001/XMLSchema-instance";
 	String XSI_PREFIX = "xsi";
-	String SCHEMA_NAMESPACE = "http://www.w3.org/2001/XMLSchema";
+	String XSI_NAMESPACE = "http://www.w3.org/2001/XMLSchema-instance";
 	String XSD_PREFIX = "xsd";
+	String XSD_NAMESPACE = "http://www.w3.org/2001/XMLSchema";
+	String XMLNS_PREFIX = "xmlns";
+	String XMLNS_NAMESPACE = "http://www.foxbpm.org";
+	
+	String FOXBPM_PREFIX = "http://www.omg.org/spec/BPMN/20100524/DI";
+	String FOXBPM_NAMESPACE = "http://www.omg.org/spec/BPMN/20100524/DI";
+	String DI_PREFIX = "di";
+	String DI_NAMESPACE = "http://www.omg.org/spec/DD/20100524/DI";
+	String DC_PREFIX = "dc";
+	String DC_NAMESPACE = "http://www.omg.org/spec/DD/20100524/DC";
+	String BPMNDI_PREFIX = "bpmndi";
+	String BPMNDI_NAMESPACE = "http://www.omg.org/spec/BPMN/20100524/DI";
+	
 	String TYPE_LANGUAGE_ATTRIBUTE = "typeLanguage";
-	String XPATH_NAMESPACE = "http://www.w3.org/1999/XPath";
+	String TARGET_NAMESPACE_ATTRIBUTE = "targetNamespace";
 	String EXPRESSION_LANGUAGE_ATTRIBUTE = "expressionLanguage";
 	String PROCESS_NAMESPACE = "http://www.activiti.org/test";
-	String TARGET_NAMESPACE_ATTRIBUTE = "targetNamespace";
-	String ACTIVITI_EXTENSIONS_NAMESPACE = "http://activiti.org/bpmn";
-	String ACTIVITI_EXTENSIONS_PREFIX = "activiti";
-	String BPMNDI_NAMESPACE = "http://www.omg.org/spec/BPMN/20100524/DI";
-	String BPMNDI_PREFIX = "bpmndi";
-	String OMGDC_NAMESPACE = "http://www.omg.org/spec/DD/20100524/DC";
-	String OMGDC_PREFIX = "omgdc";
-	String OMGDI_NAMESPACE = "http://www.omg.org/spec/DD/20100524/DI";
-	String OMGDI_PREFIX = "omgdi";
 	
 	// 属性
 	/** category */
@@ -67,6 +71,10 @@ public interface BpmnXMLConstants {
 	String ATTRIBUTE_DATATYPE = "dataType";
 	/** fieldName */
 	String ATTRIBUTE_FIELDNAME = "fieldName";
+	/** resourceType */
+	String ATTRIBUTE_RESOURCETYPE = "resourceType";
+	/** description */
+	String ATTRIBUTE_DESCRIPTION = "description";
 	
 	// 结束
 	
@@ -79,6 +87,8 @@ public interface BpmnXMLConstants {
 	String ELEMENT_TASKSUBJECT = "taskSubject";
 	/** dataVariable */
 	String ELEMENT_DATAVARIABLE = "dataVariable";
+	/** potentialStarter */
+	String ELEMENT_POTENTIALSTARTER = "potentialStarter";
 	/** expression */
 	String ELEMENT_EXPRESSION = "expression";
 	/** definitions */
