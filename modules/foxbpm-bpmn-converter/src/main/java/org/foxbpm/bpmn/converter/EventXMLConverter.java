@@ -48,13 +48,4 @@ public abstract class EventXMLConverter extends FlowNodeXMLConverter {
 		}
 		super.convertXMLToModel(element, baseElement);
 	}
-	/*
-	 * private void parseTerminateEventDefinition(){ <bpmn2:timeDate
-	 * xsi:type="bpmn2:tFormalExpression" id="FormalExpression_2"
-	 * foxbpm:name=""><![CDATA["DDD"]]></bpmn2:timeDate> <bpmn2:timeDuration
-	 * xsi:type="bpmn2:tFormalExpression" id="FormalExpression_3"
-	 * foxbpm:name=""><![CDATA["XXX"]]></bpmn2:timeDuration> <bpmn2:timeCycle
-	 * xsi:type="bpmn2:tFormalExpression" id="FormalExpression_4"
-	 * foxbpm:name=""><![CDATA["XXX"]]></bpmn2:timeCycle> }
-	 */
 }

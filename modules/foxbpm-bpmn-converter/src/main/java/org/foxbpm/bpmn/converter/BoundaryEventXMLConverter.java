@@ -18,7 +18,9 @@
 package org.foxbpm.bpmn.converter;
 
 import org.dom4j.Element;
+import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.model.BaseElement;
+import org.foxbpm.model.BoundaryEvent;
 import org.foxbpm.model.FlowElement;
 
 /**
@@ -28,36 +30,38 @@ import org.foxbpm.model.FlowElement;
  * @date 2014年10月15日
  */
 public class BoundaryEventXMLConverter extends CatchEventXMLConverter {
-
-	public FlowElement cretateFlowElement() {
-	    // TODO Auto-generated method stub
-	    return null;
-    }
-
-	@Override
-    public Class<? extends BaseElement> getBpmnElementType() {
-	    // TODO Auto-generated method stub
-	    return null;
-    }
-
-	@Override
-    public void convertXMLToModel(Element element, BaseElement baseElement) {
-	    // TODO Auto-generated method stub
-	    
-    }
-
-	@Override
-    public void convertModelToXML(Element element, BaseElement baseElement) {
-	    // TODO Auto-generated method stub
-	    
-    }
-
-	@Override
-    public String getXMLElementName() {
-	    // TODO Auto-generated method stub
-	    return null;
-    }
-
 	
+	public FlowElement cretateFlowElement() {
+		return new BoundaryEvent();
+	}
+	
+	@Override
+	public Class<? extends BaseElement> getBpmnElementType() {
+		return BoundaryEvent.class;
+	}
+	
+	@Override
+	public void convertXMLToModel(Element element, BaseElement baseElement) {
+		BoundaryEvent boundaryEvent = (BoundaryEvent) baseElement;
+		boundaryEvent.setAttachedToRef(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ATTACHEDTOREF));
+		String isCancelActivity = element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ISCANCELACTIVITY);
+		if (BpmnXMLConstants.IS_TRUE.equalsIgnoreCase(isCancelActivity)) {
+			boundaryEvent.setCancelActivity(true);
+		} else if (BpmnXMLConstants.IS_FALSE.equalsIgnoreCase(isCancelActivity)) {
+			boundaryEvent.setCancelActivity(false);
+		}
+		super.convertXMLToModel(element, baseElement);;
+	}
+	
+	@Override
+	public void convertModelToXML(Element element, BaseElement baseElement) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public String getXMLElementName() {
+		return BpmnXMLConstants.ELEMENT_BOUNDARYEVENT;
+	}
 	
 }

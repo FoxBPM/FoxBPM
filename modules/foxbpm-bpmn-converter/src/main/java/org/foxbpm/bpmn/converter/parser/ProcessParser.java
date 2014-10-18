@@ -72,6 +72,9 @@ public class ProcessParser extends BpmnParser {
 				BaseElementXMLConverter converter = BpmnXMLConverter.getConverter(name);
 				FlowElement flowElement = converter.cretateFlowElement();
 				converter.convertXMLToModel(element, flowElement);
+				if (null == process.getFlowElements()) {
+					process.setFlowElements(new ArrayList<FlowElement>());
+				}
 				process.getFlowElements().add(flowElement);
 			}
 		}

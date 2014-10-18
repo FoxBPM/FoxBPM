@@ -24,8 +24,13 @@ package org.foxbpm.bpmn.constants;
  * @date 2014年10月15日
  */
 public interface BpmnXMLConstants {
-	
+	/** "" */
 	String EMPTY_STRING = "";
+	/** true */
+	String IS_TRUE = "true";
+	/** false */
+	String IS_FALSE = "false";
+	
 	String BPMN2_PREFIX = "bpmn2";
 	String BPMN2_NAMESPACE = "http://www.omg.org/spec/BPMN/20100524/MODEL";
 	String XSI_PREFIX = "xsi";
@@ -108,6 +113,10 @@ public interface BpmnXMLConstants {
 	String ATTRIBUTE_TIMEDURATION = "timeDuration";
 	/** timeCycle */
 	String ATTRIBUTE_TIMECYCLE = "timeCycle";
+	/** attachedToRef */
+	String ATTRIBUTE_ATTACHEDTOREF = "attachedToRef";
+	/** isCancelActivity */
+	String ATTRIBUTE_ISCANCELACTIVITY = "isCancelActivity";
 	
 	// 结束
 	
@@ -177,6 +186,8 @@ public interface BpmnXMLConstants {
 	String ELEMENT_TIMEREVENTDEFINITION = "timerEventDefinition";
 	/** intermediateCatchEvent */
 	String ELEMENT_INTERMEDIATECATCHEVENT = "intermediateCatchEvent";
+	/** boundaryEvent */
+	String ELEMENT_BOUNDARYEVENT = "boundaryEvent";
 	// 结束
 	
 	/** isExecutable */

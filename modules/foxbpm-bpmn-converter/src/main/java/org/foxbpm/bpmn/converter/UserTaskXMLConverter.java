@@ -40,36 +40,34 @@ import org.foxbpm.model.UserTask;
 public class UserTaskXMLConverter extends TaskXMLConverter {
 	
 	public FlowElement cretateFlowElement() {
-		// TODO Auto-generated method stub
-		return null;
+		return new UserTask();
 	}
 	
 	public Class<? extends BaseElement> getBpmnElementType() {
-		// TODO Auto-generated method stub
-		return null;
+		return UserTask.class;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
-		UserTask userTask =(UserTask)baseElement;
+		UserTask userTask = (UserTask) baseElement;
 		userTask.setClaimType(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_FOXBPM_CLAIMTYPE));
 		userTask.setTaskType(BpmnXMLConstants.ATTRIBUTE_FOXBPM_TASKTYPE);
 		
 		Iterator<Element> elementIterator = element.elements().iterator();
 		Element subElement = null;
 		Element extentionElement = null;
-		while(elementIterator.hasNext()){
+		while (elementIterator.hasNext()) {
 			subElement = elementIterator.next();
-			//扩展元素
-			if(BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS.equals(subElement.getName())){
+			// 扩展元素
+			if (BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS.equals(subElement.getName())) {
 				Iterator<Element> extentionIterator = subElement.elements().iterator();
-				while(extentionIterator.hasNext()){
+				while (extentionIterator.hasNext()) {
 					extentionElement = extentionIterator.next();
-					 
-					//任务命令
-					if(BpmnXMLConstants.ELEMENT_TASKCOMMAND.equals(extentionElement.getName())){
+					
+					// 任务命令
+					if (BpmnXMLConstants.ELEMENT_TASKCOMMAND.equals(extentionElement.getName())) {
 						List<TaskCommand> listTaskCommand = userTask.getTaskCommands();
-						if(listTaskCommand == null){
+						if (listTaskCommand == null) {
 							listTaskCommand = new ArrayList<TaskCommand>();
 							userTask.setTaskCommands(listTaskCommand);
 						}
@@ -78,13 +76,13 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 						taskCommand.setId(extentionElement.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
 						taskCommand.setTaskCommandType(extentionElement.attributeValue(BpmnXMLConstants.ATTRIBUTE_COMMANDTYPE));
 						
-						//命令参数
+						// 命令参数
 						Iterator<Element> taskCommandParamIter = extentionElement.elementIterator(BpmnXMLConstants.ELEMENT_PARAMS);
 						List<CommandParameter> commandParams = taskCommand.getCommandParams();
 						Element taskCommandParamElement = null;
-						while(taskCommandParamIter.hasNext()){
+						while (taskCommandParamIter.hasNext()) {
 							taskCommandParamElement = taskCommandParamIter.next();
-							if(commandParams == null){
+							if (commandParams == null) {
 								commandParams = new ArrayList<CommandParameter>();
 								taskCommand.setCommandParams(commandParams);
 							}
@@ -100,28 +98,26 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 						}
 						
 						listTaskCommand.add(taskCommand);
-					}else if(BpmnXMLConstants.ELEMENT_POTENTIALOWNER.equals(extentionElement.getName())){
-						//任务分配连接器
+					} else if (BpmnXMLConstants.ELEMENT_POTENTIALOWNER.equals(extentionElement.getName())) {
+						// 任务分配连接器
 						userTask.setActorConnectors(BpmnXMLUtil.parserConnectorElement(extentionElement.element(BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS).element(BpmnXMLConstants.ELEMENT_CONNECTORINSTANCEELEMENTS)));
-					} 
+					}
 					
-
 				}
 			}
 		}
 		
 		super.convertXMLToModel(element, baseElement);
 	}
-	 
+	
 	public void convertModelToXML(Element element, BpmnModel model) {
- 
+		
 	}
 	
 	public String getXMLElementName() {
-		// TODO Auto-generated method stub
-		return null;
+		return BpmnXMLConstants.ELEMENT_TASK_USER;
 	}
-
+	
 	public void convertModelToXML(Element element, BaseElement baseElement) {
 		// TODO Auto-generated method stub
 		

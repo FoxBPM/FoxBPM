@@ -17,14 +17,20 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import org.dom4j.Element;
+import org.foxbpm.model.BaseElement;
 
 /**
- * 常量类
+ * 捕获事件转换器处理类
  * 
  * @author yangguangftlp
  * @date 2014年10月15日
  */
 public abstract class CatchEventXMLConverter extends EventXMLConverter {
 	
+	@Override
+	public void convertXMLToModel(Element element, BaseElement baseElement) {
+		super.convertXMLToModel(element, baseElement);
+	}
 	
 }

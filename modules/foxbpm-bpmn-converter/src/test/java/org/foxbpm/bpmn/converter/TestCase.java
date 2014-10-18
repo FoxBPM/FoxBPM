@@ -64,7 +64,7 @@ public class TestCase {
 			e.printStackTrace();
 		}
 	}
-	@Test
+	//@Test
 	public void testB() {
 		BpmnXMLConverter converter = new BpmnXMLConverter();
 		Document doc = converter.convertToXML(null);
