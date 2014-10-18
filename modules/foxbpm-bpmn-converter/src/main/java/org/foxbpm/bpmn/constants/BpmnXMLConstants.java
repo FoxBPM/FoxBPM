@@ -26,6 +26,8 @@ package org.foxbpm.bpmn.constants;
 public interface BpmnXMLConstants {
 	/** "" */
 	String EMPTY_STRING = "";
+	/** xml中 &quot; */
+	String XML_QUOT = "&quot;";
 	/** true */
 	String IS_TRUE = "true";
 	/** false */
@@ -117,7 +119,10 @@ public interface BpmnXMLConstants {
 	String ATTRIBUTE_ATTACHEDTOREF = "attachedToRef";
 	/** isCancelActivity */
 	String ATTRIBUTE_ISCANCELACTIVITY = "isCancelActivity";
-	
+	/* scriptName */
+	String ATTRIBUTE_SCRIPTNAME = "scriptName";
+	/** scriptFormat */
+	String ATTRIBUTE_SCRIPTFORMAT = "scriptFormat";
 	// 结束
 	
 	// 扩展属性
@@ -188,6 +193,18 @@ public interface BpmnXMLConstants {
 	String ELEMENT_INTERMEDIATECATCHEVENT = "intermediateCatchEvent";
 	/** boundaryEvent */
 	String ELEMENT_BOUNDARYEVENT = "boundaryEvent";
+	/** parallelGateway */
+	String ELEMENT_PARALLELGATEWAY = "parallelGateway";
+	/** inclusiveGateway */
+	String ELEMENT_INCLUSIVEGATEWAY = "inclusiveGateway";
+	/** exclusiveGateway */
+	String ELEMENT_EXCLUSIVEGATEWAY = "exclusiveGateway";
+	/** callActivity */
+	String ELEMENT_CALLACTIVITY = "callActivity";
+	/** scriptTask */
+	String ELEMENT_SCRIPTTASK = "scriptTask";
+	/** script */
+	String ELEMENT_SCRIPT = "script";
 	// 结束
 	
 	/** isExecutable */

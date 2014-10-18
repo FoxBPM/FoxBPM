@@ -50,9 +50,17 @@ public class BpmnXMLConverter {
 		// events
 		addConverter(new EndEventXMLConverter());
 		addConverter(new StartEventXMLConverter());
+		addConverter(new IntermediateCatchEventXMLConverter());
+		addConverter(new BoundaryEventXMLConverter());
+		// sequence
+		addConverter(new SequenceFlowXMLConverter());
 		// tasks
 		addConverter(new UserTaskXMLConverter());
-		addConverter(new CallActivityXMLConverter());
+		addConverter(new ScriptTaskXMLConverter());
+		// gateway
+		addConverter(new ExclusiveGatewayXMLConverter());
+		addConverter(new InclusiveGatewayXMLConverter());
+		addConverter(new ParallelGatewayXMLConverter());
 	}
 	
 	protected BpmnDiagramParser bpmnDiagramParser;

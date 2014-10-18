@@ -20,7 +20,6 @@ package org.foxbpm.bpmn.converter.util;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.dom4j.Element;
 import org.dom4j.Node;
@@ -42,21 +41,15 @@ import org.slf4j.LoggerFactory;
  */
 public class BpmnXMLUtil {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BpmnXMLUtil.class);
-	private static AtomicInteger uniqueId = new AtomicInteger(10);
 	
-	public static String nextId() {
-		return Integer.toString(uniqueId.incrementAndGet());
+	/**
+	 * 将字符串转换成Boolean值
+	 * @param strBoolean 字符串
+	 * @return 返回Boolean值
+	 */
+	public static boolean parseBoolean(String strBoolean) {
+		return Boolean.parseBoolean(strBoolean);
 	}
-	
-	public static String generateExpression()
-	{
-		return null;
-	}
-	public static void main(String[] args) {
-	    for (int i = 0; i <100; i++) {
-	        System.out.println(uniqueId.incrementAndGet());
-        }
-    }
 	
 	/**
 	 * 处理针对element节点限定名称(xx:aa)的本地部分aa

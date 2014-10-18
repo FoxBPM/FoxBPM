@@ -18,6 +18,7 @@
 package org.foxbpm.bpmn.converter;
 
 import org.dom4j.Element;
+import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.InclusiveGateway;
@@ -29,24 +30,24 @@ import org.foxbpm.model.InclusiveGateway;
  * @date 2014年10月15日
  */
 public class InclusiveGatewayXMLConverter extends GatewayXMLConverter {
-
+	
 	public FlowElement cretateFlowElement() {
-	    return new InclusiveGateway();
-    }
-
+		return new InclusiveGateway();
+	}
+	
 	@Override
-    public Class<? extends BaseElement> getBpmnElementType() {
-	    return InclusiveGateway.class;
-    }
-
+	public Class<? extends BaseElement> getBpmnElementType() {
+		return InclusiveGateway.class;
+	}
+	
 	@Override
-    public void convertModelToXML(Element element, BaseElement baseElement) {
-	    
-    }
-
+	public void convertModelToXML(Element element, BaseElement baseElement) {
+		
+	}
+	
 	@Override
-    public String getXMLElementName() {
-	    return "inclusiveGateway";
-    }
+	public String getXMLElementName() {
+		return BpmnXMLConstants.ELEMENT_INCLUSIVEGATEWAY;
+	}
 	
 }

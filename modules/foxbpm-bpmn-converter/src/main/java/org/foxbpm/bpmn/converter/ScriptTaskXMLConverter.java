@@ -17,9 +17,14 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import java.util.Iterator;
+
 import org.dom4j.Element;
+import org.foxbpm.bpmn.constants.BpmnXMLConstants;
+import org.foxbpm.bpmn.converter.parser.MultiInstanceParser;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.FlowElement;
+import org.foxbpm.model.ScriptTask;
 
 /**
  * 常量类
@@ -30,32 +35,45 @@ import org.foxbpm.model.FlowElement;
 public class ScriptTaskXMLConverter extends TaskXMLConverter {
 	
 	public FlowElement cretateFlowElement() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ScriptTask();
 	}
 	
 	@Override
 	public Class<? extends BaseElement> getBpmnElementType() {
-		// TODO Auto-generated method stub
-		return null;
+		return ScriptTask.class;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
-		// TODO Auto-generated method stub
+		ScriptTask scriptTask = (ScriptTask) baseElement;
+		scriptTask.setScript(element.attributeValue(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+		        + BpmnXMLConstants.ATTRIBUTE_SCRIPTNAME));
+		scriptTask.setScriptFormat(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_SCRIPTFORMAT));
 		
+		Element elem = null;
+		String nodeName = null;
+		for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
+			elem = (Element) iterator.next();
+			nodeName = elem.getName();
+			if (BpmnXMLConstants.ELEMENT_SCRIPT.equalsIgnoreCase(nodeName)) {
+				scriptTask.setScript(elem.getText().replace(BpmnXMLConstants.XML_QUOT, BpmnXMLConstants.EMPTY_STRING));
+			} else if (BpmnXMLConstants.ELEMENT_MULTIINSTANCELOOPCHARACTERISTICS.equalsIgnoreCase(nodeName)) {
+				scriptTask.setLoopCharacteristics(MultiInstanceParser.parser(elem));
+			}
+		}
+		// element.g
+		super.convertXMLToModel(element, baseElement);
 	}
 	
 	@Override
 	public void convertModelToXML(Element element, BaseElement baseElement) {
-		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
 	public String getXMLElementName() {
-		// TODO Auto-generated method stub
-		return null;
+		return BpmnXMLConstants.ELEMENT_SCRIPTTASK;
 	}
 	
 }

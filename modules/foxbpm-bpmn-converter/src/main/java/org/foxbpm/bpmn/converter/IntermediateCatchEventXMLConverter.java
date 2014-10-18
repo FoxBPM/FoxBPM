@@ -37,7 +37,6 @@ public class IntermediateCatchEventXMLConverter extends CatchEventXMLConverter {
 	
 	@Override
 	public Class<? extends BaseElement> getBpmnElementType() {
-		// TODO Auto-generated method stub
 		return IntermediateCatchEvent.class;
 	}
 	
@@ -48,13 +47,11 @@ public class IntermediateCatchEventXMLConverter extends CatchEventXMLConverter {
 	
 	@Override
 	public void convertModelToXML(Element element, BaseElement baseElement) {
-		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
 	public String getXMLElementName() {
-		// TODO Auto-generated method stub
 		return BpmnXMLConstants.ELEMENT_INTERMEDIATECATCHEVENT;
 	}
 	
