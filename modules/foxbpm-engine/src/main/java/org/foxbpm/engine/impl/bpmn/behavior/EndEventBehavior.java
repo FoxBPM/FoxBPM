@@ -27,7 +27,6 @@ public class EndEventBehavior extends EventBehavior {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
 	 
 	public void enter(FlowNodeExecutionContext executionContext) {
 		executionContext.execute();
@@ -35,11 +34,10 @@ public class EndEventBehavior extends EventBehavior {
 	
 	public void execute(FlowNodeExecutionContext executionContext) {
 		// 执行边界事件定义,例如 时间定义
-		List<EventDefinition> eventDefinitions = this.getEventDefinitions();
-		for (EventDefinition eventDefinition : eventDefinitions) {
+		List<EventDefinitionBehavior> eventDefinitions = getEventDefinitionBehaviors();
+		for (EventDefinitionBehavior eventDefinition : eventDefinitions) {
 			eventDefinition.execute(executionContext, null, null);
 		}
 		executionContext.end();
 	}
-	
 }

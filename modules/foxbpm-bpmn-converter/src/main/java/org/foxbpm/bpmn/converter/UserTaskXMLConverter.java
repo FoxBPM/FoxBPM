@@ -25,7 +25,6 @@ import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.model.BaseElement;
-import org.foxbpm.model.BpmnModel;
 import org.foxbpm.model.CommandParameter;
 import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.FormParam;
@@ -148,10 +147,6 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 		}
 		
 		super.convertXMLToModel(element, baseElement);
-	}
-	
-	public void convertModelToXML(Element element, BpmnModel model) {
-		
 	}
 	
 	public String getXMLElementName() {

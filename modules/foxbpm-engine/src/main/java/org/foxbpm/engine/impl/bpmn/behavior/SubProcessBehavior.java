@@ -18,7 +18,6 @@
 package org.foxbpm.engine.impl.bpmn.behavior;
 
 import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.impl.bpmn.parser.model.BpmnParser;
 import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
@@ -29,7 +28,6 @@ public class SubProcessBehavior extends ActivityBehavior {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
 	 
 	public void execute(FlowNodeExecutionContext executionContext) {
 		
@@ -37,7 +35,7 @@ public class SubProcessBehavior extends ActivityBehavior {
 		
 		KernelFlowNodeImpl flowNode =executionContext.getFlowNode();
 		
-		KernelFlowNodeImpl initialFlowNode = (KernelFlowNodeImpl) flowNode.getProperty(BpmnParser.INITIAL);
+		KernelFlowNodeImpl initialFlowNode = (KernelFlowNodeImpl) flowNode.getProperty("initial");
 	    
 	    if (initialFlowNode == null) {
 	      throw new FoxBPMException("内部子流程("+flowNode.getId()+")里没有找到启动节点");

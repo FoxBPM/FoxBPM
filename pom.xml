@@ -26,6 +26,7 @@
         <module>modules/foxbpm-notification</module>
         <module>modules/foxbpm-bpmn-model</module>
         <module>modules/foxbpm-bpmn-converter</module>
+        <module>modules/foxbpm-model-converter</module>
 	</modules>
 
 	<build>

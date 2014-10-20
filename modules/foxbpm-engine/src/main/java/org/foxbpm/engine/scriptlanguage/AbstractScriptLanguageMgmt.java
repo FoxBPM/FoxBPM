@@ -26,7 +26,6 @@ import java.util.regex.Pattern;
 import org.foxbpm.engine.datavariable.VariableQuery;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
-import org.foxbpm.engine.impl.datavariable.DataVariableDefinition;
 import org.foxbpm.engine.impl.datavariable.VariableQueryImpl;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
@@ -34,6 +33,7 @@ import org.foxbpm.engine.impl.entity.VariableInstanceEntity;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtInstance;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
+import org.foxbpm.model.DataVariableDefinition;
 
 public abstract class AbstractScriptLanguageMgmt {
 

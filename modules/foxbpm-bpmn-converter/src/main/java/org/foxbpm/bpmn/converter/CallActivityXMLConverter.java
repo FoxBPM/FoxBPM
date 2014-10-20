@@ -22,9 +22,10 @@ import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.CallActivity;
 import org.foxbpm.model.FlowElement;
+import org.springframework.util.StringUtils;
 
 /**
- * 常量类
+ * 公有子流程节点转换处理类
  * 
  * @author yangguangftlp
  * @date 2014年10月15日
@@ -32,7 +33,6 @@ import org.foxbpm.model.FlowElement;
 public class CallActivityXMLConverter extends ActivityXMLConverter {
 	
 	public FlowElement cretateFlowElement() {
-		// TODO Auto-generated method stub
 		return new CallActivity();
 	}
 	
@@ -43,7 +43,26 @@ public class CallActivityXMLConverter extends ActivityXMLConverter {
 	
 	@Override
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
+		CallActivity activity = (CallActivity)baseElement;
+		String callElementId = element.attributeValue("foxbpm:callableElementId");
+		String callElementVersion = element.attributeValue("foxbpm:callableElementVersion");
+		String bizKey = element.attributeValue("foxbpm:callableElementBizKey");
+		String isAsync = element.attributeValue("foxbpm:isAsync");
+		if(!StringUtils.isEmpty(callElementId)){
+			activity.setCallableElementId(callElementId);
+		}
 		
+		if(!StringUtils.isEmpty(callElementVersion)){
+			activity.setCallableElementVersion(callElementVersion);
+		}
+		
+		if(!StringUtils.isEmpty(bizKey)){
+			activity.setBizKey(bizKey);
+		}
+		
+		if(!StringUtils.isEmpty(isAsync)){
+			activity.setAsync(Boolean.parseBoolean(isAsync));
+		}
 	}
 	
 	@Override
