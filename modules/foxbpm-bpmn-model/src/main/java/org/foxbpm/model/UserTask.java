@@ -74,11 +74,22 @@ public class UserTask extends Task {
 	 */
 	protected String completeDescription;
 
-	/**
-	 * 期望执行时间
-	 */
-	protected double expectedTime;
 
+	/**
+	 * 期望执行时间 日
+	 */
+	protected int expectedExecuteDay;
+	
+	/**
+	 * 期望执行时间 时
+	 */
+	protected int expectedExecuteHour;
+	
+	/**
+	 * 期望执行时间 分
+	 */
+	protected int expectedExecuteMinute;
+	
 	/**
 	 * 表单参数
 	 */
@@ -166,12 +177,28 @@ public class UserTask extends Task {
 		this.completeDescription = completeDescription;
 	}
 
-	public double getExpectedTime() {
-		return expectedTime;
+	public int getExpectedExecuteDay() {
+		return expectedExecuteDay;
 	}
 
-	public void setExpectedTime(double expectedTime) {
-		this.expectedTime = expectedTime;
+	public void setExpectedExecuteDay(int expectedExecuteDay) {
+		this.expectedExecuteDay = expectedExecuteDay;
+	}
+
+	public int getExpectedExecuteHour() {
+		return expectedExecuteHour;
+	}
+
+	public void setExpectedExecuteHour(int expectedExecuteHour) {
+		this.expectedExecuteHour = expectedExecuteHour;
+	}
+
+	public int getExpectedExecuteMinute() {
+		return expectedExecuteMinute;
+	}
+
+	public void setExpectedExecuteMinute(int expectedExecuteMinute) {
+		this.expectedExecuteMinute = expectedExecuteMinute;
 	}
 
 	public List<FormParam> getFormParams() {
