@@ -118,10 +118,10 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 						// 任务优先级
 						userTask.setTaskPriority(BpmnXMLUtil.parseExpression(extentionElement.element(BpmnXMLConstants.ELEMENT_EXPRESSION)));
 					} else if (BpmnXMLConstants.ELEMENT_EXPECTEDEXECUTIONTIME.equals(extentionElement.getName())) {
-						// 任务期望执行时间
-						userTask.setExpectedExecuteDay(Integer.valueOf(extentionElement.attributeValue(BpmnXMLConstants.ATTRIBUTE_DAY)));
-						userTask.setExpectedExecuteHour(Integer.valueOf(extentionElement.attributeValue(BpmnXMLConstants.ATTRIBUTE_HOUR)));
-						userTask.setExpectedExecuteMinute(Integer.valueOf(extentionElement.attributeValue(BpmnXMLConstants.ATTRIBUTE_MINUTE)));
+//						// 任务期望执行时间
+//						userTask.setExpectedExecuteDay(Integer.valueOf(extentionElement.attributeValue(BpmnXMLConstants.ATTRIBUTE_DAY)));
+//						userTask.setExpectedExecuteHour(Integer.valueOf(extentionElement.attributeValue(BpmnXMLConstants.ATTRIBUTE_HOUR)));
+//						userTask.setExpectedExecuteMinute(Integer.valueOf(extentionElement.attributeValue(BpmnXMLConstants.ATTRIBUTE_MINUTE)));
 					} else if (BpmnXMLConstants.ELEMENT_FORMPARAMCONTAINER.equals(extentionElement.getName())) {
 						// 任务表单参数
 						List<FormParam> listFormParam = userTask.getFormParams();

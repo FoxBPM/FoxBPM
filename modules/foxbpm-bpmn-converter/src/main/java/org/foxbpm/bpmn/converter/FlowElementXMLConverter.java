@@ -37,7 +37,7 @@ public abstract class FlowElementXMLConverter extends BaseElementXMLConverter {
 	@SuppressWarnings("unchecked")
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
 		FlowElement flowElement = (FlowElement) baseElement;
-		flowElement.setName(BpmnXMLConstants.ATTRIBUTE_NAME);
+		flowElement.setName(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_NAME));
 		
 		Iterator<Element> elementIterator = element.elements().iterator();
 		Element subElement = null;
@@ -55,6 +55,8 @@ public abstract class FlowElementXMLConverter extends BaseElementXMLConverter {
 				}
 			}
 		}
+		
+		super.convertXMLToModel(element, baseElement);
 		
 	}
 	
