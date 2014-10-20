@@ -17,18 +17,21 @@
  */
 package org.foxbpm.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * 流程定义模型
+ * 
  * @author ych
- *
+ * 
  */
-public class Process extends FlowElement {
-
+public class Process extends FlowElement implements FlowContainer {
+	
 	private static final long serialVersionUID = 1L;
-
+	
 	/**
 	 * 流程定义编号（不唯一，可能有多个版本）
 	 */
@@ -58,14 +61,14 @@ public class Process extends FlowElement {
 	 * 流程可发起人
 	 */
 	protected List<PotentialStarter> potentialStarters;
-
+	
 	/**
 	 * 流程变量定义
 	 */
 	protected List<DataVariableDefinition> dataVariables;
-
+	
 	protected List<LaneSet> laneSets;
-
+	
 	/**
 	 * 流程元素集合
 	 */
@@ -74,94 +77,108 @@ public class Process extends FlowElement {
 	/**
 	 * 线条map
 	 */
-	protected Map<String,SequenceFlow> sequenceFlows;
-
+	protected Map<String, SequenceFlow> sequenceFlows;
+	
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public String getKey() {
 		return key;
 	}
-
+	
 	public void setKey(String key) {
 		this.key = key;
 	}
-
+	
 	public String getSubject() {
 		return subject;
 	}
-
+	
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
-
+	
 	public String getFormUri() {
 		return formUri;
 	}
-
+	
 	public void setFormUri(String formUri) {
 		this.formUri = formUri;
 	}
-
+	
 	public String getFormUriView() {
 		return formUriView;
 	}
-
+	
 	public void setFormUriView(String formUriView) {
 		this.formUriView = formUriView;
 	}
-
+	
 	public String getCategory() {
 		return category;
 	}
-
+	
 	public void setCategory(String category) {
 		this.category = category;
 	}
-
+	
 	public List<PotentialStarter> getPotentialStarters() {
 		return potentialStarters;
 	}
-
+	
 	public void setPotentialStarters(List<PotentialStarter> potentialStarters) {
 		this.potentialStarters = potentialStarters;
 	}
-
+	
 	public List<DataVariableDefinition> getDataVariables() {
 		return dataVariables;
 	}
-
+	
 	public void setDataVariables(List<DataVariableDefinition> dataVariables) {
 		this.dataVariables = dataVariables;
 	}
-
+	
 	public List<LaneSet> getLaneSets() {
 		return laneSets;
 	}
-
+	
 	public void setLaneSets(List<LaneSet> laneSets) {
 		this.laneSets = laneSets;
 	}
-
+	
 	public List<FlowElement> getFlowElements() {
 		return flowElements;
 	}
-
+	
 	public void setFlowElements(List<FlowElement> flowElements) {
 		this.flowElements = flowElements;
 	}
-
+	
 	public Map<String, SequenceFlow> getSequenceFlows() {
 		return sequenceFlows;
 	}
-
+	
 	public void setSequenceFlows(Map<String, SequenceFlow> sequenceFlows) {
 		this.sequenceFlows = sequenceFlows;
+	}
+	
+	public void addFlowElement(FlowElement flowElement) {
+		if (null == flowElements) {
+			flowElements = new ArrayList<FlowElement>();
+		}
+		flowElements.add(flowElement);
+	}
+	
+	public void addSequenceFlow(SequenceFlow sequenceFlow) {
+		if (null == sequenceFlows) {
+			sequenceFlows = new HashMap<String, SequenceFlow>();
+		}
+		sequenceFlows.put(sequenceFlow.getId(), sequenceFlow);
 	}
 	
 }

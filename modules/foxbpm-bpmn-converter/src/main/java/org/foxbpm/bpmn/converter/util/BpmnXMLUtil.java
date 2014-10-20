@@ -24,7 +24,12 @@ import java.util.List;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
+import org.foxbpm.bpmn.converter.BaseElementXMLConverter;
+import org.foxbpm.bpmn.converter.BpmnXMLConverter;
+import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.Connector;
+import org.foxbpm.model.FlowContainer;
+import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.InputParam;
 import org.foxbpm.model.OutputParam;
 import org.foxbpm.model.SequenceFlow;
@@ -44,7 +49,9 @@ public class BpmnXMLUtil {
 	
 	/**
 	 * 将字符串转换成Boolean值
-	 * @param strBoolean 字符串
+	 * 
+	 * @param strBoolean
+	 *            字符串
 	 * @return 返回Boolean值
 	 */
 	public static boolean parseBoolean(String strBoolean) {
@@ -245,6 +252,33 @@ public class BpmnXMLUtil {
 			connector.setErrorCode(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ERRORCODE));
 			connector.setErrorHandling(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ERRORHANDLING));
 			connector.setIsTimeExecute(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ISTIMEEXECUTE));
+		}
+	}
+	/**
+	 * 处理流程、子流程 线条和node节点
+	 * 
+	 * @param element
+	 * @param baseElement
+	 */
+	@SuppressWarnings("rawtypes")
+	public static void doFlowContainer(Element element, BaseElement baseElement) {
+		Element elem;
+		if (baseElement instanceof FlowContainer) {
+			FlowContainer flowContainer = (FlowContainer) baseElement;
+			String name = null;
+			for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
+				elem = (Element) iterator.next();
+				name = elem.getName();
+				if (BpmnXMLConstants.ELEMENT_SEQUENCEFLOW.equalsIgnoreCase(name)) {
+					// 线条处理
+					flowContainer.addSequenceFlow(parseSequenceFlow(elem));
+				} else if (null != BpmnXMLConverter.getConverter(name)) {
+					BaseElementXMLConverter converter = BpmnXMLConverter.getConverter(name);
+					FlowElement flowElement = converter.cretateFlowElement();
+					converter.convertXMLToModel(element, flowElement);
+					flowContainer.addFlowElement(flowElement);
+				}
+			}
 		}
 	}
 }

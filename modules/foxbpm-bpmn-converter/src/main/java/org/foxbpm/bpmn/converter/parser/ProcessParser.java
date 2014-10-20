@@ -18,7 +18,6 @@
 package org.foxbpm.bpmn.converter.parser;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import org.dom4j.Element;
@@ -31,7 +30,6 @@ import org.foxbpm.model.DataVariableDefinition;
 import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.PotentialStarter;
 import org.foxbpm.model.Process;
-import org.foxbpm.model.SequenceFlow;
 ;
 
 /**
@@ -42,44 +40,6 @@ import org.foxbpm.model.SequenceFlow;
  * @date 2014年10月15日
  */
 public class ProcessParser extends BpmnParser {
-	@SuppressWarnings("rawtypes")
-	@Override
-	public void parse(Element element, BpmnModel model) throws Exception {
-		Process process = new Process();
-		process.setId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
-		process.setName(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_NAME));
-		process.setCategory(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_CATEGORY));
-		process.setSubject(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_SUBJECT));
-		process.setKey(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_KEY));
-		// 扩展元素
-		Element elem = null;
-		String name = null;
-		for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
-			elem = (Element) iterator.next();
-			name = elem.getName();
-			if (BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS.equalsIgnoreCase(name)) {
-				parseExtElements(process, elem);
-			}
-			if (BpmnXMLConstants.ELEMENT_DOCUMENTATION.equalsIgnoreCase(name)) {
-				process.setDocumentation(elem.getText());
-			} else if (BpmnXMLConstants.ELEMENT_SEQUENCEFLOW.equalsIgnoreCase(name)) {
-				if (null == process.getSequenceFlows()) {
-					process.setSequenceFlows(new HashMap<String, SequenceFlow>());
-				}
-				// 线条处理
-				process.getSequenceFlows().put(elem.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID), BpmnXMLUtil.parseSequenceFlow(elem));
-			} else if (null != BpmnXMLConverter.getConverter(name)) {
-				BaseElementXMLConverter converter = BpmnXMLConverter.getConverter(name);
-				FlowElement flowElement = converter.cretateFlowElement();
-				converter.convertXMLToModel(element, flowElement);
-				if (null == process.getFlowElements()) {
-					process.setFlowElements(new ArrayList<FlowElement>());
-				}
-				process.getFlowElements().add(flowElement);
-			}
-		}
-		model.getProcesses().add(process);
-	}
 	/**
 	 * 处理扩展节点
 	 * 
@@ -156,5 +116,42 @@ public class ProcessParser extends BpmnParser {
 		if (BpmnXMLConstants.ELEMENT_CONNECTORINSTANCE_ELEMENTS.equalsIgnoreCase(parentNodeName)) {
 			
 		}
+	}
+	@SuppressWarnings("rawtypes")
+	public Process parser(Element element) {
+		// 处理流程
+		Process process = new Process();
+		process.setId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
+		process.setName(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_NAME));
+		process.setCategory(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_CATEGORY));
+		process.setSubject(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_SUBJECT));
+		process.setKey(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_KEY));
+		// end
+		// 扩展元素
+		Element elem = null;
+		String name = null;
+		for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
+			elem = (Element) iterator.next();
+			name = elem.getName();
+			if (BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS.equalsIgnoreCase(name)) {
+				parseExtElements(process, elem);
+			} else if (BpmnXMLConstants.ELEMENT_DOCUMENTATION.equalsIgnoreCase(name)) {
+				process.setDocumentation(elem.getText());
+			} else /** 线条处理 */
+			if (BpmnXMLConstants.ELEMENT_SEQUENCEFLOW.equalsIgnoreCase(name)) {
+				process.addSequenceFlow(BpmnXMLUtil.parseSequenceFlow(elem));
+			} else if (null != BpmnXMLConverter.getConverter(name)) {
+				BaseElementXMLConverter converter = BpmnXMLConverter.getConverter(name);
+				FlowElement flowElement = converter.cretateFlowElement();
+				converter.convertXMLToModel(element, flowElement);
+				process.addFlowElement(flowElement);
+			}
+		}
+		return process;
+	}
+	@Override
+	public void parse(Element element, BpmnModel model) throws Exception {
+		
+		
 	}
 }
