@@ -84,14 +84,13 @@ public class BpmnXMLConverter {
 		Element elem = null;
 		if (BpmnXMLConstants.ELEMENT_DEFINITIONS.equals(name)) {
 			try {
-				
 				for (Iterator iterator = definitions.elements().iterator(); iterator.hasNext();) {
 					elem = (Element) iterator.next();
 					name = elem.getName();
 					if (BpmnXMLConstants.ELEMENT_DI_DIAGRAM.equalsIgnoreCase(name)) {
 						new BpmnDiagramParser().parse(elem, model);
 					} else if (BpmnXMLConstants.ELEMENT_PROCESS.equalsIgnoreCase(name)) {
-						new ProcessParser().parse(elem, model);
+						model.getProcesses().add(processParser.parser(elem));
 					}
 				}
 			} catch (Exception e) {

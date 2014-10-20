@@ -21,7 +21,9 @@ import java.util.Iterator;
 
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
+import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.model.BaseElement;
+import org.foxbpm.model.FlowContainer;
 
 /**
  * 模型基类转换处理类
@@ -32,6 +34,7 @@ import org.foxbpm.model.BaseElement;
 public abstract class BaseElementXMLConverter implements FlowElementFactory {
 	
 	public abstract Class<? extends BaseElement> getBpmnElementType();
+	public abstract String getXMLElementName();
 	
 	@SuppressWarnings("rawtypes")
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
@@ -45,8 +48,11 @@ public abstract class BaseElementXMLConverter implements FlowElementFactory {
 				baseElement.setDocumentation(elem.getText());
 			}
 		}
+		// 处理流程
+		if (baseElement instanceof FlowContainer) {
+			BpmnXMLUtil.doFlowContainer(element, baseElement);
+		}
 	}
 	public void convertModelToXML(Element element, BaseElement baseElement) {
 	}
-	public abstract String getXMLElementName();
 }

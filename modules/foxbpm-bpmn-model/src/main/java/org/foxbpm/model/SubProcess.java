@@ -17,25 +17,50 @@
  */
 package org.foxbpm.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 内部子流程
+ * 
  * @author ych
- *
+ * 
  */
-public class SubProcess extends Activity {
-
+public class SubProcess extends Activity implements FlowContainer {
+	
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * 流程元素集合
+	 */
 	protected List<FlowElement> flowElements;
-
+	
+	/**
+	 * 线条map
+	 */
+	protected Map<String, SequenceFlow> sequenceFlows;
+	
 	public List<FlowElement> getFlowElements() {
 		return flowElements;
 	}
-
+	
 	public void setFlowElements(List<FlowElement> flowElements) {
 		this.flowElements = flowElements;
 	}
-
+	
+	public void addFlowElement(FlowElement flowElement) {
+		if (null == flowElements) {
+			flowElements = new ArrayList<FlowElement>();
+		}
+		flowElements.add(flowElement);
+	}
+	
+	public void addSequenceFlow(SequenceFlow sequenceFlow) {
+		if (null == sequenceFlows) {
+			sequenceFlows = new HashMap<String, SequenceFlow>();
+		}
+		sequenceFlows.put(sequenceFlow.getId(), sequenceFlow);
+	}
 }
