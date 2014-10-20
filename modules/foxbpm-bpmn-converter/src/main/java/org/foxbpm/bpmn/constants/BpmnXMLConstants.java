@@ -269,5 +269,8 @@ public interface BpmnXMLConstants {
 	String ELEMENT_FORMPARAM = "formParam";
 	String ATTRIBUTE_PARAMKEY = "paramKey";
 	String ATTRIBUTE_PARAMTYPE = "paramType";
+	String ATTRIBUTE_DAY = "day";
+	String ATTRIBUTE_HOUR = "hour";
+	String ATTRIBUTE_MINUTE = "minute";
 	
 }
