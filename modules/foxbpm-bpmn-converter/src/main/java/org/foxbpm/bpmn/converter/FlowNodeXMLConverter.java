@@ -51,14 +51,14 @@ public abstract class FlowNodeXMLConverter extends FlowElementXMLConverter {
 					outgoingFlows = new ArrayList<String>();
 					flowNode.setOutgoingFlows(outgoingFlows);
 				}
-				outgoingFlows.add(BpmnXMLUtil.parseIncoming(elem));
+				outgoingFlows.add(BpmnXMLUtil.parse0utgoing(elem));
 			} else if (BpmnXMLConstants.ELEMENT_INCOMING.equalsIgnoreCase(nodeName)) {
 				List<String> incomingFlows = flowNode.getIncomingFlows();
 				if (null == incomingFlows) {
 					incomingFlows = new ArrayList<String>();
 					flowNode.setIncomingFlows(incomingFlows);
 				}
-				incomingFlows.add(BpmnXMLUtil.parse0utgoing(elem));
+				incomingFlows.add(BpmnXMLUtil.parseIncoming(elem));
 			}
 		}
 		super.convertXMLToModel(element, baseElement);

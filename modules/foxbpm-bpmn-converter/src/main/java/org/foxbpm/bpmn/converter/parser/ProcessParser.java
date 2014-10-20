@@ -114,7 +114,7 @@ public class ProcessParser extends BpmnParser {
 		}
 		// 处理连接器
 		if (BpmnXMLConstants.ELEMENT_CONNECTORINSTANCE_ELEMENTS.equalsIgnoreCase(parentNodeName)) {
-			
+			process.setConnector(BpmnXMLUtil.parserConnectorElement(elem));
 		}
 	}
 	@SuppressWarnings("rawtypes")
@@ -143,7 +143,7 @@ public class ProcessParser extends BpmnParser {
 			} else if (null != BpmnXMLConverter.getConverter(name)) {
 				BaseElementXMLConverter converter = BpmnXMLConverter.getConverter(name);
 				FlowElement flowElement = converter.cretateFlowElement();
-				converter.convertXMLToModel(element, flowElement);
+				converter.convertXMLToModel(elem, flowElement);
 				process.addFlowElement(flowElement);
 			}
 		}
@@ -151,7 +151,6 @@ public class ProcessParser extends BpmnParser {
 	}
 	@Override
 	public void parse(Element element, BpmnModel model) throws Exception {
-		
 		
 	}
 }

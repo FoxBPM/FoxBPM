@@ -18,8 +18,8 @@ import java.util.Map.Entry;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
+import org.foxbpm.model.Bounds;
 import org.foxbpm.model.BpmnModel;
-import org.foxbpm.model.Graphic;
 
 public class BPMNDIExport extends BpmnExport {
 	
@@ -36,10 +36,10 @@ public class BPMNDIExport extends BpmnExport {
 		
 		// 生成bpmnshape及子元素
 		if (null != model.getBoundsLocationMap()) {
-			Entry<String, Graphic> entry = null;
+			Entry<String, Bounds> entry = null;
 			Element bpmnshape = null;
 			Element bounds = null;
-			for (Iterator<Entry<String, Graphic>> iterator = model.getBoundsLocationMap().entrySet().iterator(); iterator.hasNext();) {
+			for (Iterator<Entry<String, Bounds>> iterator = model.getBoundsLocationMap().entrySet().iterator(); iterator.hasNext();) {
 				entry = iterator.next();
 				bpmnshape = DocumentFactory.getInstance().createElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
 				        + BpmnXMLConstants.ELEMENT_DI_SHAPE);

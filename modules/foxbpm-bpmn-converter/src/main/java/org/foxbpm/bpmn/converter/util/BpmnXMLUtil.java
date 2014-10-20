@@ -82,6 +82,9 @@ public class BpmnXMLUtil {
 	@SuppressWarnings("rawtypes")
 	public static String parseExpression(Element element) {
 		Node node = null;
+		if(element == null){
+			return null;
+		}
 		for (Iterator iterator = element.nodeIterator(); iterator.hasNext();) {
 			node = (Node) iterator.next();
 			if (Element.CDATA_SECTION_NODE == node.getNodeType()) {
