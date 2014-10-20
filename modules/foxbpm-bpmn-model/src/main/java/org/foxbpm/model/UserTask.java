@@ -84,6 +84,16 @@ public class UserTask extends Task {
 	 */
 	protected List<FormParam> formParams;
 
+	protected String taskPriority;
+	
+	public String getTaskPriority() {
+		return taskPriority;
+	}
+
+	public void setTaskPriority(String taskPriority) {
+		this.taskPriority = taskPriority;
+	}
+
 	public String getFormUri() {
 		return formUri;
 	}

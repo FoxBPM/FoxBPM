@@ -262,4 +262,12 @@ public interface BpmnXMLConstants {
 	String ELEMENT_COMPLETIONCONDITION = "completionCondition";
 	String ELEMENT_ISSEQUENTIAL = "isSequential";
 	
+	String ELEMENT_TASKDESCRIPTION =  "taskDescription";
+	String ELEMENT_COMPLETETASKDESCRIPTION ="completeTaskDescription";
+	String ELEMENT_EXPECTEDEXECUTIONTIME = "expectedExecutionTime";
+	String ELEMENT_FORMPARAMCONTAINER = "formParamContainer";
+	String ELEMENT_FORMPARAM = "formParam";
+	String ATTRIBUTE_PARAMKEY = "paramKey";
+	String ATTRIBUTE_PARAMTYPE = "paramType";
+	
 }

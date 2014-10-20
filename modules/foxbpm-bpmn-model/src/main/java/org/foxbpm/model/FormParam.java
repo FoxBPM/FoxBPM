@@ -35,6 +35,16 @@ public class FormParam extends BaseElement {
 	 */
 	private String expression;
 
+	private String paramKey;
+	
+	public String getParamKey() {
+		return paramKey;
+	}
+
+	public void setParamKey(String paramKey) {
+		this.paramKey = paramKey;
+	}
+	
 	public String getParamType() {
 		return paramType;
 	}

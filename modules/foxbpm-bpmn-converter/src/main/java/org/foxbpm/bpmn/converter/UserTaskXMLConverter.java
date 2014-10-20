@@ -28,6 +28,7 @@ import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.BpmnModel;
 import org.foxbpm.model.CommandParameter;
 import org.foxbpm.model.FlowElement;
+import org.foxbpm.model.FormParam;
 import org.foxbpm.model.TaskCommand;
 import org.foxbpm.model.UserTask;
 
@@ -50,9 +51,10 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 	@SuppressWarnings("unchecked")
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
 		UserTask userTask = (UserTask) baseElement;
+		//领取方式
 		userTask.setClaimType(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_FOXBPM_CLAIMTYPE));
+		//任务类型
 		userTask.setTaskType(BpmnXMLConstants.ATTRIBUTE_FOXBPM_TASKTYPE);
-		
 		Iterator<Element> elementIterator = element.elements().iterator();
 		Element subElement = null;
 		Element extentionElement = null;
@@ -98,12 +100,50 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 						}
 						
 						listTaskCommand.add(taskCommand);
-					} else if (BpmnXMLConstants.ELEMENT_POTENTIALOWNER.equals(extentionElement.getName())) {
-						// 任务分配连接器
-						userTask.setActorConnectors(BpmnXMLUtil.parserConnectorElement(extentionElement.element(BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS).element(BpmnXMLConstants.ELEMENT_CONNECTORINSTANCEELEMENTS)));
+					} else if (BpmnXMLConstants.ELEMENT_TASKSUBJECT.equals(extentionElement.getName())) {
+						// 任务主题
+						userTask.setSubject(BpmnXMLUtil.parseExpression(extentionElement.element(BpmnXMLConstants.ELEMENT_EXPRESSION)));
+					} else if (BpmnXMLConstants.ELEMENT_TASKDESCRIPTION.equals(extentionElement.getName())) {
+						// 任务描述
+						userTask.setTaskDescription(BpmnXMLUtil.parseExpression(extentionElement.element(BpmnXMLConstants.ELEMENT_EXPRESSION)));
+					} else if (BpmnXMLConstants.ELEMENT_COMPLETETASKDESCRIPTION.equals(extentionElement.getName())) {
+						// 任务完成描述
+						userTask.setCompleteDescription(BpmnXMLUtil.parseExpression(extentionElement.element(BpmnXMLConstants.ELEMENT_EXPRESSION)));
+					} else if (BpmnXMLConstants.ELEMENT_FORMURI.equals(extentionElement.getName())) {
+						// 任务表单
+						userTask.setFormUri(BpmnXMLUtil.parseExpression(extentionElement.element(BpmnXMLConstants.ELEMENT_EXPRESSION)));
+					} else if (BpmnXMLConstants.ELEMENT_FORMURIVIEW.equals(extentionElement.getName())) {
+						// 任务查看表单
+						userTask.setFormUriView(BpmnXMLUtil.parseExpression(extentionElement.element(BpmnXMLConstants.ELEMENT_EXPRESSION)));
+					} else if (BpmnXMLConstants.ELEMENT_TASKPRIORITY.equals(extentionElement.getName())) {
+						// 任务优先级
+						userTask.setTaskPriority(BpmnXMLUtil.parseExpression(extentionElement.element(BpmnXMLConstants.ELEMENT_EXPRESSION)));
+					} else if (BpmnXMLConstants.ELEMENT_EXPECTEDEXECUTIONTIME.equals(extentionElement.getName())) {
+						// 任务查看表单
+						//userTask.set(Double.valueOf(BpmnXMLUtil.parseExpression(extentionElement.element(BpmnXMLConstants.ELEMENT_EXPRESSION)));
+					} else if (BpmnXMLConstants.ELEMENT_FORMPARAMCONTAINER.equals(extentionElement.getName())) {
+						// 任务表单参数
+						List<FormParam> listFormParam = userTask.getFormParams();
+						if(listFormParam == null){
+							listFormParam = new ArrayList<FormParam>();
+							userTask.setFormParams(listFormParam);
+						}
+						Iterator<Element> formParamIter = extentionElement.elementIterator(BpmnXMLConstants.ELEMENT_FORMPARAM);
+						Element formParamElement = null;
+						while(formParamIter.hasNext()){
+							formParamElement = formParamIter.next();
+							FormParam formParam = new FormParam(); 
+							formParam.setParamType(formParamElement.attributeValue(BpmnXMLConstants.ATTRIBUTE_PARAMTYPE));
+							formParam.setParamKey(formParamElement.attributeValue(BpmnXMLConstants.ATTRIBUTE_PARAMKEY));
+							formParam.setExpression(BpmnXMLUtil.parseExpression(formParamElement.element(BpmnXMLConstants.ELEMENT_EXPRESSION)));
+							listFormParam.add(formParam);
+						}
 					}
 					
-				}
+				} 
+			} else if (BpmnXMLConstants.ELEMENT_POTENTIALOWNER.equals(extentionElement.getName())) {
+				// 任务分配连接器
+				userTask.setActorConnectors(BpmnXMLUtil.parserConnectorElement(extentionElement.element(BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS).element(BpmnXMLConstants.ELEMENT_CONNECTORINSTANCEELEMENTS)));
 			}
 		}
 		
@@ -122,5 +162,5 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 		// TODO Auto-generated method stub
 		
 	}
-	
+ 
 }
