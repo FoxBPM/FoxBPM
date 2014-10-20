@@ -17,6 +17,7 @@
  */
 package org.foxbpm.model;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -153,7 +154,11 @@ public class UserTask extends Task {
 		this.taskCommands = taskCommands;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Connector> getActorConnectors() {
+		if(actorConnectors == null){
+			return Collections.EMPTY_LIST;
+		}
 		return actorConnectors;
 	}
 
