@@ -26,6 +26,8 @@ package org.foxbpm.bpmn.constants;
 public interface BpmnXMLConstants {
 	/** "" */
 	String EMPTY_STRING = "";
+	/** type */
+	String TYPE = "type";
 	/** xml中 &quot; */
 	String XML_QUOT = "&quot;";
 	/** true */
@@ -105,6 +107,8 @@ public interface BpmnXMLConstants {
 	String ATTRIBUTE_ISEXECUTE = "isExecute";
 	/** variableTarget */
 	String ATTRIBUTE_VARIABLETARGET = "variableTarget";
+	/** foxbpm */
+	String ATTRIBUTE_FOXBPM = "foxbpm";
 	/** sourceRef */
 	String ATTRIBUTE_SOURCEREF = "sourceRef";
 	/** targetRef */
@@ -128,8 +132,12 @@ public interface BpmnXMLConstants {
 	// 结束
 	
 	// 扩展属性
+	/** claimType */
 	String ATTRIBUTE_FOXBPM_CLAIMTYPE = "claimType";
+	/** taskType */
 	String ATTRIBUTE_FOXBPM_TASKTYPE = "taskType";
+	/** connrctorType */
+	String ATTRIBUTE_CONNRCTORTYPE = "connrctorType";
 	
 	// 节点名称
 	/** formUri */
@@ -278,5 +286,13 @@ public interface BpmnXMLConstants {
 	String ATTRIBUTE_DAY = "day";
 	String ATTRIBUTE_HOUR = "hour";
 	String ATTRIBUTE_MINUTE = "minute";
+	// 类型
+	String TYPE_FORMALEXPRESSION = "tFormalExpression";
+	/** foxbpm:Expression */
+	String TYPE_EXPRESSION = "Expression";
+	/** foxbpm:Documentation */
+	String TYPE_DOCUMENTATION = "Documentation";
+	/** FormalExpression */
+	String FORMALEXPRESSION = "FormalExpression";
 	
 }

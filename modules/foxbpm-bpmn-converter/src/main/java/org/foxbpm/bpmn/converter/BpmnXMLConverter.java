@@ -97,6 +97,7 @@ public class BpmnXMLConverter {
 				}
 			} catch (Exception e) {
 				LOGGER.error("Bpmn文件转换Model错误!",e);
+				e.printStackTrace();
 				throw new BpmnConverterException(e);
 			}
 		}

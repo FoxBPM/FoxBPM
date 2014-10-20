@@ -25,7 +25,7 @@ import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.model.SkipStrategy;
 
 /**
- * 常量类
+ * 跳过策略转换处理类
  * 
  * @author yangguangftlp
  * @date 2014年10月20日

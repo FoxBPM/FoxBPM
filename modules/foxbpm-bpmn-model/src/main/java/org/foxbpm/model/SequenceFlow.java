@@ -30,6 +30,8 @@ public class SequenceFlow extends FlowElement {
 	
 	private String targetRefId;
 	
+	private String sort;
+	
 	/**
 	 * 线条表达式，一般用来判断路径是否可通过
 	 */
@@ -58,7 +60,12 @@ public class SequenceFlow extends FlowElement {
 	public void setTargetRefId(String targetRefId) {
 		this.targetRefId = targetRefId;
 	}
-	
-	
 
+	public String getSort() {
+		return sort;
+	}
+
+	public void setSort(String sort) {
+		this.sort = sort;
+	}
 }

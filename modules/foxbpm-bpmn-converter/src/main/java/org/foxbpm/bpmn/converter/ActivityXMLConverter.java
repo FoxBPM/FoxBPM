@@ -42,16 +42,19 @@ public abstract class ActivityXMLConverter extends FlowNodeXMLConverter {
 		String nodeName = null;
 		// 处理跳过策略
 		for (Iterator<Element> iterator = element.elements().iterator(); iterator.hasNext();) {
-			elem = (Element) iterator.next();
-			
-			for (Iterator<Element> childIterator = elem.elements().iterator(); iterator.hasNext();) {
-				childElem = childIterator.next();
-				nodeName = elem.getName();
-				if (BpmnXMLConstants.ELEMENT_SKIPSTRATEGY.equalsIgnoreCase(nodeName)) {
-					activity.setSkipStrategy(SkipStrategyParser.parser(element));
-				} else if (BpmnXMLConstants.ELEMENT_MULTIINSTANCELOOPCHARACTERISTICS.equalsIgnoreCase(nodeName)) {
-					activity.setLoopCharacteristics(MultiInstanceParser.parser(childElem));
+			elem = iterator.next();
+			nodeName = elem.getName();
+			if (BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS.equalsIgnoreCase(nodeName)) {
+				for (Iterator<Element> childIterator = elem.elements().iterator(); childIterator.hasNext();) {
+					childElem = childIterator.next();
+					nodeName = elem.getName();
+					if (BpmnXMLConstants.ELEMENT_SKIPSTRATEGY.equalsIgnoreCase(nodeName)) {
+						activity.setSkipStrategy(SkipStrategyParser.parser(element));
+					} else if (BpmnXMLConstants.ELEMENT_MULTIINSTANCELOOPCHARACTERISTICS.equalsIgnoreCase(nodeName)) {
+						activity.setLoopCharacteristics(MultiInstanceParser.parser(childElem));
+					}
 				}
+				break;
 			}
 		}
 		
