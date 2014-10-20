@@ -24,8 +24,15 @@ package org.foxbpm.bpmn.constants;
  * @date 2014年10月15日
  */
 public interface BpmnXMLConstants {
-	
+	/** "" */
 	String EMPTY_STRING = "";
+	/** xml中 &quot; */
+	String XML_QUOT = "&quot;";
+	/** true */
+	String IS_TRUE = "true";
+	/** false */
+	String IS_FALSE = "false";
+	
 	String BPMN2_PREFIX = "bpmn2";
 	String BPMN2_NAMESPACE = "http://www.omg.org/spec/BPMN/20100524/MODEL";
 	String XSI_PREFIX = "xsi";
@@ -102,7 +109,20 @@ public interface BpmnXMLConstants {
 	String ATTRIBUTE_SOURCEREF = "sourceRef";
 	/** targetRef */
 	String ATTRIBUTE_TARGETREF = "targetRef";
-	
+	/** timeDate */
+	String ATTRIBUTE_TIMEDATE = "timeDate";
+	/** timeDuration */
+	String ATTRIBUTE_TIMEDURATION = "timeDuration";
+	/** timeCycle */
+	String ATTRIBUTE_TIMECYCLE = "timeCycle";
+	/** attachedToRef */
+	String ATTRIBUTE_ATTACHEDTOREF = "attachedToRef";
+	/** isCancelActivity */
+	String ATTRIBUTE_ISCANCELACTIVITY = "isCancelActivity";
+	/* scriptName */
+	String ATTRIBUTE_SCRIPTNAME = "scriptName";
+	/** scriptFormat */
+	String ATTRIBUTE_SCRIPTFORMAT = "scriptFormat";
 	// 结束
 	
 	// 扩展属性
@@ -167,6 +187,24 @@ public interface BpmnXMLConstants {
 	String ELEMENT_ENDEVENT = "endEvent";
 	/** terminateEventDefinition */
 	String ELEMENT_TERMINATEEVENTDEFINITION = "terminateEventDefinition";
+	/** timerEventDefinition */
+	String ELEMENT_TIMEREVENTDEFINITION = "timerEventDefinition";
+	/** intermediateCatchEvent */
+	String ELEMENT_INTERMEDIATECATCHEVENT = "intermediateCatchEvent";
+	/** boundaryEvent */
+	String ELEMENT_BOUNDARYEVENT = "boundaryEvent";
+	/** parallelGateway */
+	String ELEMENT_PARALLELGATEWAY = "parallelGateway";
+	/** inclusiveGateway */
+	String ELEMENT_INCLUSIVEGATEWAY = "inclusiveGateway";
+	/** exclusiveGateway */
+	String ELEMENT_EXCLUSIVEGATEWAY = "exclusiveGateway";
+	/** callActivity */
+	String ELEMENT_CALLACTIVITY = "callActivity";
+	/** scriptTask */
+	String ELEMENT_SCRIPTTASK = "scriptTask";
+	/** script */
+	String ELEMENT_SCRIPT = "script";
 	// 结束
 	
 	/** isExecutable */

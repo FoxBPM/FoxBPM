@@ -42,11 +42,10 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.BasicEObjectImpl;
 import org.eclipse.emf.ecore.impl.EStructuralFeatureImpl.SimpleFeatureMapEntry;
 import org.eclipse.emf.ecore.util.FeatureMap;
-import org.foxbpm.engine.impl.bpmn.behavior.SkipStrategy;
-import org.foxbpm.engine.impl.connector.Connector;
+import org.foxbpm.engine.impl.connector.ConnectorListener;
 import org.foxbpm.engine.impl.task.TaskAssigneeDefinition;
-import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.TaskCommand;
+import org.foxbpm.model.SkipStrategy;
 import org.foxbpm.model.bpmn.foxbpm.AssignPolicyType;
 import org.foxbpm.model.bpmn.foxbpm.CompleteTaskDescription;
 import org.foxbpm.model.bpmn.foxbpm.ExpectedExecutionTime;
@@ -90,9 +89,9 @@ public class BpmnModelUtil {
 		return extensionElementList;
 	}
 	
-	public List<Connector> getcConnectors(BaseElement baseElement){
+	public List<ConnectorListener> getcConnectors(BaseElement baseElement){
 		
-		List<Connector> connectors=new ArrayList<Connector>();
+		List<ConnectorListener> connectors=new ArrayList<ConnectorListener>();
 		
 		
 		return connectors;

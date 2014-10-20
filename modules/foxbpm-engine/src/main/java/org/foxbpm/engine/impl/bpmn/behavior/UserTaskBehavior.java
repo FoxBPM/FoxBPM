@@ -26,7 +26,7 @@ import java.util.Map;
 import org.foxbpm.engine.calendar.WorkCalendar;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
-import org.foxbpm.engine.impl.connector.Connector;
+import org.foxbpm.engine.impl.connector.ConnectorListener;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
@@ -48,13 +48,8 @@ import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 public class UserTaskBehavior extends TaskBehavior {
 
 	private static final long serialVersionUID = 1L;
-
-
 	/** 任务信息定义 */
 	private TaskDefinition taskDefinition;
-
-
-	 
 	public void execute(FlowNodeExecutionContext executionContext) {
 		
 		TokenEntity token=(TokenEntity)executionContext;
@@ -123,7 +118,7 @@ public class UserTaskBehavior extends TaskBehavior {
 			task.setAssignee(token.getTaskAssignee());
 		}else{
 			/** 重新分配任务 */
-			for (Connector connector : taskDefinition.getActorConnectors()) {
+			for (ConnectorListener connector : taskDefinition.getActorConnectors()) {
 				try {
 					connector.notify((ListenerExecutionContext) executionContext);
 				} catch (Exception e) {
@@ -228,5 +223,5 @@ public class UserTaskBehavior extends TaskBehavior {
 		formUriView = getFormUri(executionContext);
 		return formUriView;
 	}
-
+	
 }

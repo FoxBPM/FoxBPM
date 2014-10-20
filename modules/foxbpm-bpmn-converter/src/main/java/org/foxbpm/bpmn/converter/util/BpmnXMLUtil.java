@@ -41,6 +41,16 @@ import org.slf4j.LoggerFactory;
  */
 public class BpmnXMLUtil {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BpmnXMLUtil.class);
+	
+	/**
+	 * 将字符串转换成Boolean值
+	 * @param strBoolean 字符串
+	 * @return 返回Boolean值
+	 */
+	public static boolean parseBoolean(String strBoolean) {
+		return Boolean.parseBoolean(strBoolean);
+	}
+	
 	/**
 	 * 处理针对element节点限定名称(xx:aa)的本地部分aa
 	 * 
@@ -92,6 +102,16 @@ public class BpmnXMLUtil {
 	 */
 	public static String parse0utgoing(Element element) {
 		return element.getText();
+	}
+	/**
+	 * 表达式解析
+	 * 
+	 * @param element
+	 *            0utgoing
+	 * @return 返回表达式
+	 */
+	public static String parseCDATA(Element element) {
+		return parseExpression(element);
 	}
 	/**
 	 * 表达式解析

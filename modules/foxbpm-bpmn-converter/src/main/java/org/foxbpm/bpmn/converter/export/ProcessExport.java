@@ -19,6 +19,7 @@ import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.bpmn.converter.BpmnXMLConverter;
+import org.foxbpm.bpmn.converter.util.UniqueIDUtil;
 import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.Process;
 
@@ -42,8 +43,7 @@ public class ProcessExport extends BpmnExport {
 			Element expression = DocumentFactory.getInstance().createElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 			        + BpmnXMLConstants.ELEMENT_EXPRESSION);
 			expression.addAttribute("xsi:type", "foxbpm:Expression");
-			expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, BpmnXMLConstants.FOXBPM_PREFIX + ':'
-			        + BpmnXMLConstants.ELEMENT_EXPRESSION);
+			expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_EXPRESSION));
 			expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLConstants.EMPTY_STRING);
 			CDATA cdata = DocumentFactory.getInstance().createCDATA(process.getFormUri());
 			expression.add(cdata);

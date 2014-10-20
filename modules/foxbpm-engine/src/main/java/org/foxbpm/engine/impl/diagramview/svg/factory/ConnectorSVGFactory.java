@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.bpmn.behavior.GatewayBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.SequenceFlowBehavior;
 import org.foxbpm.engine.impl.diagramview.svg.SVGUtils;
@@ -34,6 +33,7 @@ import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
 import org.foxbpm.kernel.process.KernelBaseElement;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
+import org.foxbpm.model.SequenceFlow;
 
 /**
  * BPMN2.0事件元素之线条定义
@@ -74,9 +74,9 @@ public class ConnectorSVGFactory extends AbstractFlowElementSVGFactory {
 		KernelFlowNodeBehavior sourceRefBehavior = sourceRef.getKernelFlowNodeBehavior();
 		
 		SequenceFlowBehavior sequenceFlowBehavior = (SequenceFlowBehavior) kernelSequenceFlowImpl.getSequenceFlowBehavior();
-		Expression conditionExpression = sequenceFlowBehavior.getConditionExpression();
+		String conditionExpression = ((SequenceFlow)sequenceFlowBehavior.getBaseElement()).getFlowCondition();
 		if (conditionExpression != null
-		        & StringUtil.isNotBlank(conditionExpression.getExpressionText())
+		        & StringUtil.isNotBlank(conditionExpression)
 		        && !(sourceRefBehavior instanceof GatewayBehavior)) {
 			SvgVO connectorVO = (SvgVO) voNode;
 			PathVO pathVo = null;

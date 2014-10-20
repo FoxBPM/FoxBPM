@@ -15,13 +15,14 @@ import java.util.Map;
 import org.foxbpm.engine.datavariable.VariableInstance;
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
-import org.foxbpm.engine.impl.datavariable.DataVariableDefinition;
+import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtInstance;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.scriptlanguage.AbstractScriptLanguageMgmt;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelVariableInstanceImpl;
+import org.foxbpm.model.DataVariableDefinition;
 
 public class VariableInstanceEntity extends KernelVariableInstanceImpl implements VariableInstance, PersistentObject,
     HasRevision, Serializable {
@@ -269,7 +270,7 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 		
 		Object object = null;
 		if (dataVariableDefinition != null && dataVariableDefinition.getExpression() != null) {
-			object = dataVariableDefinition.getExpression().getValue(executionContext);
+			object = new ExpressionImpl(dataVariableDefinition.getExpression()).getValue(executionContext);
 		}
 		return object;
 	}

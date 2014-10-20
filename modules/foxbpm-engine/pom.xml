@@ -16,6 +16,13 @@
 			<artifactId>foxbpm-kernel</artifactId>
 			<version>6.0.1-SNAPSHOT</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.foxbpm</groupId>
+			<artifactId>foxbpm-bpmn-model</artifactId>
+			<version>6.0.1-SNAPSHOT</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.eclipse.emf</groupId>
 			<artifactId>org.eclipse.emf.common</artifactId>

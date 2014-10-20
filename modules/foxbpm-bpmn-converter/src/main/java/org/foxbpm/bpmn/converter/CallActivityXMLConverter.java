@@ -18,13 +18,14 @@
 package org.foxbpm.bpmn.converter;
 
 import org.dom4j.Element;
+import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.CallActivity;
 import org.foxbpm.model.FlowElement;
 import org.springframework.util.StringUtils;
 
 /**
- * 常量类
+ * 公有子流程节点转换处理类
  * 
  * @author yangguangftlp
  * @date 2014年10月15日
@@ -66,14 +67,12 @@ public class CallActivityXMLConverter extends ActivityXMLConverter {
 	
 	@Override
 	public void convertModelToXML(Element element, BaseElement baseElement) {
-		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
 	public String getXMLElementName() {
-		// TODO Auto-generated method stub
-		return "callActivity";
+		return BpmnXMLConstants.ELEMENT_CALLACTIVITY;
 	}
 	
 }

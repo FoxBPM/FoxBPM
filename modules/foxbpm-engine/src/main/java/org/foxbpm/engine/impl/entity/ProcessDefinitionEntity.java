@@ -28,7 +28,6 @@ import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
-import org.foxbpm.engine.impl.identity.PotentialStarter;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtDefinition;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.repository.ProcessDefinition;
@@ -37,6 +36,7 @@ import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 import org.foxbpm.kernel.runtime.InterpretableProcessInstance;
+import org.foxbpm.model.PotentialStarter;
 
 public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl
 		implements

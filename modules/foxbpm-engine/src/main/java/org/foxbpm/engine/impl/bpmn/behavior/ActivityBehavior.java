@@ -27,12 +27,18 @@ import org.foxbpm.engine.exception.FoxBPMExpressionException;
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.TokenEntity;
+import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduler;
 import org.foxbpm.engine.impl.schedule.FoxbpmSchedulerGroupnameGernerater;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
+import org.foxbpm.model.Activity;
+import org.foxbpm.model.BoundaryEvent;
+import org.foxbpm.model.LoopCharacteristics;
+import org.foxbpm.model.MultiInstanceLoopCharacteristics;
+import org.foxbpm.model.SkipStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,30 +48,22 @@ public class ActivityBehavior extends FlowNodeBehavior {
 
 	private static Logger LOG = LoggerFactory.getLogger(ActivityBehavior.class);
 
-	/** 跳过策略 */
-	protected SkipStrategy skipStrategy;
-
-	/** 边界事件集合 */
-	protected List<BoundaryEventBehavior> boundaryEvents = new ArrayList<BoundaryEventBehavior>();
-
-	/** 循环对象 */
-	protected LoopCharacteristics loopCharacteristics;
-
-	 
 	public void enter(FlowNodeExecutionContext executionContext) {
 
+		Activity activity = (Activity)baseElement;
+		SkipStrategy skipStrategy = activity.getSkipStrategy();
 		/** 事件顺序如下,先判断跳过策略,再判断边界事件,再执行多实例,最后执行节点进入事件 */
 		/** 判断跳过策略 */
 		if (skipStrategy != null) {
-			boolean isEnable = skipStrategy.isEnable;
+			boolean isEnable = skipStrategy.isEnable();
 			// 判断是否启用
 			if (isEnable) {
 				// 启用跳过策略处理的情况
 				LOG.debug("节点: {}({}) 启用跳过策略.", this.getName(), this.getId());
 				boolean valueObj = false;
 				// 处理跳过策略表达式
-				if (skipStrategy.getSkipAssignee() != null && StringUtil.isNotEmpty(skipStrategy.getSkipAssignee().getExpressionText())) {
-					Expression expression = skipStrategy.getSkipAssignee();
+				if (StringUtil.isNotEmpty(skipStrategy.getSkipAssignee())) {
+					Expression expression = new ExpressionImpl(skipStrategy.getSkipAssignee());
 					try {
 						LOG.debug("节点: {}({}) 跳过策略开始直接,跳过策略表达式内容为:\n {}", this.getName(), this.getId(), expression.getExpressionText());
 						// 执行验证表达式
@@ -91,58 +89,45 @@ public class ActivityBehavior extends FlowNodeBehavior {
 					LOG.debug("节点: {}({}),跳过策略未生效.", this.getName(), this.getId());
 				}
 			}
-
 		}
-
 		eventExecute(executionContext);
-
 	}
 
 	protected void eventExecute(FlowNodeExecutionContext executionContext) {
 
+		Activity activity = (Activity)baseElement;
+		List<BoundaryEvent> boundaryEvents = activity.getBoundaryEvents();
 		// 验证是否含有边界事件
-		if (this.boundaryEvents.size() > 0) {
-
+		if (boundaryEvents.size() > 0) {
 			/*
 			 * 边界事件的处理逻辑是这样的, 如果有边界事件,主令牌创建一个儿子,进入到当前节点, 主令牌自己去执行边界事件的执行方法,
 			 * 当定时到的时候如果是中断边界,则直接杀掉主令牌所有的儿子,将主令牌推下去
 			 * 如果是非中断,则主令牌再生成个儿子给边界事件继续向下走,最后需要并行合并网关将他们收回。
 			 */
-
 			TokenEntity tokenEntity = (TokenEntity) executionContext;
 
 			LOG.debug("节点: {}({}) 含有 {} 个边界事件,令牌号: {}({}).", this.getName(), this.getId(), boundaryEvents.size(), tokenEntity.getName(),
 					tokenEntity.getId());
-
-			// String nodeTokenId = this.getId();
-			// 创建分支令牌并添加到集合中
-			// TokenEntity nodeToken = (TokenEntity)
-			// tokenEntity.createForkedToken(tokenEntity, nodeTokenId).token;
-
-			// LOG.debug("主令牌创建子令牌,子令牌: {}({}).", tokenEntity.getName(),
-			// tokenEntity.getId());
-
 			LOG.debug("主令牌: {}({}),进入节点.", tokenEntity.getName(), tokenEntity.getId());
 			// 将子令牌放入节点
-
 			forkedTokenEnter(tokenEntity);
-
 			if (tokenEntity.getFlowNode().getId().equals(this.getId())) {
 				// 遍历边界事件
-				for (BoundaryEventBehavior boundaryEvent : getBoundaryEvents()) {
-
+				for (BoundaryEventBehavior boundaryEvent : getBoundaryEventBehaviors()) {
 					LOG.debug("主令牌: {}({}),触发边界事件: {} 执行.", tokenEntity.getName(), tokenEntity.getId(), boundaryEvent.getId());
 					// 主令牌执行边界事件里的事件定义
 					boundaryEvent.execute(executionContext);
-
 				}
 			}
-
 		} else {
 			// 没有边界事件,则执行多实例执行
 			loopExecute(executionContext);
 		}
 
+	}
+	
+	private List<BoundaryEventBehavior> getBoundaryEventBehaviors(){
+		return null;
 	}
 
 	private void forkedTokenEnter(FlowNodeExecutionContext executionContext) {
@@ -154,9 +139,10 @@ public class ActivityBehavior extends FlowNodeBehavior {
 	}
 
 	protected void loopExecute(FlowNodeExecutionContext executionContext) {
-
+		Activity activity = (Activity)baseElement;
+		
 		// 获取 Activity 的多实例信息
-		LoopCharacteristics loopCharacteristics = getLoopCharacteristics();
+		LoopCharacteristics loopCharacteristics = activity.getLoopCharacteristics();
 		// 非多实例执行
 		if (loopCharacteristics == null || !(loopCharacteristics instanceof MultiInstanceLoopCharacteristics)) {
 			// 执行令牌进入节点方法
@@ -170,22 +156,15 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		// 并行多实例处理
 		LOG.debug("节点: {}({}) 含有并行多实例,将进入多实例'进入'阶段处理,令牌号: {}({}).", getName(), getId(), token.getName(), token.getId());
 		// 输出数据集
-		Expression loopDataOutputCollection = milc.getLoopDataOutputCollection();
-		String loopDataOutputCollectionExpressionValue = loopDataOutputCollection != null ? loopDataOutputCollection.getExpressionText()
-				: null;
+		String loopDataOutputCollectionExpressionValue = milc.getLoopDataOutputCollection();
 		// 多实例输入数据集
-		Expression loopDataInputCollection = milc.getLoopDataInputCollection();
-		String loopDataInputCollectionExpressionValue = loopDataInputCollection != null ? loopDataInputCollection.getExpressionText()
-				: null;
+		String loopDataInputCollectionExpressionValue =milc.getLoopDataInputCollection();
 		// 多实例输入项
-		Expression inputDataItem = milc.getInputDataItem();
-		String inputDataItemExpressionValue = inputDataItem != null ? inputDataItem.getExpressionText() : null;
+		String inputDataItemExpressionValue = milc.getInputDataItem();
 		// 多实例输出项
-		Expression outputDataItem = milc.getOutputDataItem();
-		String outputDataItemExpressionValue = outputDataItem != null ? outputDataItem.getExpressionText() : null;
+		String outputDataItemExpressionValue = milc.getOutputDataItem();
 		// 完成条件
-		Expression completionCondition = milc.getCompletionCondition();
-		String completionConditionExpressionValue = completionCondition != null ? completionCondition.getExpressionText() : null;
+		String completionConditionExpressionValue = milc.getCompletionCondition();
 		// 打印日志信息
 		LOG.debug("\n多实例配置信息: \n 【输入数据集】: \n{}", loopDataInputCollectionExpressionValue);
 		LOG.debug("\n【输入项编号】: \n{}", inputDataItemExpressionValue);
@@ -195,7 +174,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		// 解决多实例处理退回BUG
 		// 在进入多实例的第一次先清空多实例输出集合,以防历史数据影响。
 		if (loopDataOutputCollectionExpressionValue != null && !loopDataOutputCollectionExpressionValue.equals("")) {
-			Object valueObj = loopDataOutputCollection.getValue(executionContext);
+			Object valueObj = new ExpressionImpl(loopDataOutputCollectionExpressionValue).getValue(executionContext);
 			if (valueObj != null) {
 				if (valueObj instanceof Collection) {
 					LOG.debug("清空多实例输出集合");
@@ -220,7 +199,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		token.setGroupID(groupID);
 		LOG.debug("为多实例生成唯一组号: '{}'", groupID);
 		// 执行多实例 输入数据集 解释
-		Collection<?> valueObjCollection =getloopDataInputCollection(executionContext,loopDataInputCollection);
+		Collection<?> valueObjCollection =getloopDataInputCollection(executionContext,loopDataInputCollectionExpressionValue);
 
 		if (valueObjCollection == null) {
 			LOG.error("多实例输出集合不是一个集合");
@@ -232,7 +211,6 @@ public class ActivityBehavior extends FlowNodeBehavior {
 			LOG.error("多实例输入集合的个数为 0,请重新检查多实例输入集合配置.");
 			throw new FoxBPMExpressionException(ExceptionCode.EXPRESSION_EXCEPTION_LOOPDATAINPUTCOLLECTIONEMPTY, this.getId(),
 					this.getName(), loopDataInputCollectionExpressionValue);
-
 		}
 
 		// 判断事都是并行多实例
@@ -246,13 +224,11 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		}
 	}
 	
-	protected Collection<?>  getloopDataInputCollection(FlowNodeExecutionContext executionContext,Expression loopDataInputCollection){
+	protected Collection<?>  getloopDataInputCollection(FlowNodeExecutionContext executionContext,String loopDataInputCollectionExpressionValue){
 		
-		String loopDataInputCollectionExpressionValue = loopDataInputCollection != null ? loopDataInputCollection.getExpressionText()
-				: null;
 		Object valueObj = null;
 		try {
-			valueObj = loopDataInputCollection.getValue(executionContext);
+			valueObj = new ExpressionImpl(loopDataInputCollectionExpressionValue).getValue(executionContext);
 		} catch (Exception e) {
 			LOG.error("多实例输入数据集解释出错,错误信息: " + e.getMessage(), e);
 			throw new FoxBPMExpressionException(ExceptionCode.EXPRESSION_EXCEPTION_LOOPDATAOUTPUTCOLLECTION_COLLECTIONCHECK, this.getId(),
@@ -360,9 +336,10 @@ public class ActivityBehavior extends FlowNodeBehavior {
 	 
 	public void leave(FlowNodeExecutionContext executionContext) {
 
+		Activity activity = (Activity)baseElement;
 		TokenEntity token = (TokenEntity) executionContext;
 		// 获取 Activity 的多实例信息
-		LoopCharacteristics loopCharacteristics = getLoopCharacteristics();
+		LoopCharacteristics loopCharacteristics = activity.getLoopCharacteristics();
 		// 非多实例执行
 		if (loopCharacteristics == null || !(loopCharacteristics instanceof MultiInstanceLoopCharacteristics)) {
 			// 执行令牌进入节点方法
@@ -373,21 +350,15 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		MultiInstanceLoopCharacteristics milc = (MultiInstanceLoopCharacteristics) loopCharacteristics;
 		LOG.debug("节点: {}({}) 含有并行多实例,将进入多实例'离开'阶段处理,令牌号: {}({}).", this.getName(), this.getId(), token.getName(), token.getId());
 		// 输出数据集
-		Expression loopDataOutputCollection = milc.getLoopDataOutputCollection();
-		String loopDataOutputCollectionExpressionValue = loopDataOutputCollection != null ? loopDataOutputCollection.getExpressionText()
-				: null;
+		String loopDataOutputCollectionExpressionValue =milc.getLoopDataOutputCollection();
 		// 多实例输入数据集
-		Expression loopDataInputCollection = milc.getLoopDataInputCollection();
-		String loopDataInputCollectionExpressionValue = loopDataInputCollection != null ? loopDataInputCollection.getExpressionText()
-				: null;
+		String loopDataInputCollectionExpressionValue = milc.getLoopDataInputCollection();
 		// 多实例输入项
-		Expression inputDataItem = milc.getInputDataItem();
-		String inputDataItemExpressionValue = inputDataItem != null ? inputDataItem.getExpressionText() : null;
+		String inputDataItemExpressionValue = milc.getInputDataItem();
 		// 多实例输出项
-		Expression outputDataItem = milc.getOutputDataItem();
-		String outputDataItemExpressionValue = outputDataItem != null ? outputDataItem.getExpressionText() : null;
+		String outputDataItemExpressionValue = milc.getOutputDataItem();
 		// 完成条件
-		Expression completionCondition = milc.getCompletionCondition();
+		Expression completionCondition = new ExpressionImpl(milc.getCompletionCondition());
 		String completionConditionExpressionValue = completionCondition != null ? completionCondition.getExpressionText() : null;
 		// 打印日志信息
 		LOG.debug("\n多实例配置信息: \n 【输入数据集】: \n{}", loopDataInputCollectionExpressionValue);
@@ -401,7 +372,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 			if (valueObj != null) {
 				if (valueObj instanceof Collection) {
 					Collection collection = (Collection) valueObj;
-					collection.add(outputDataItem.getValue(executionContext));
+					collection.add(new ExpressionImpl(outputDataItemExpressionValue).getValue(executionContext));
 				} else {
 					throw new FoxBPMException("输出集合类型必须是Collection");
 				}
@@ -436,25 +407,24 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		}else{
 			parallelMultiInstanceLeave(executionContext,isCompletion);
 		}
-
 	}
 
 	protected void sequentialMultiInstanceLeave(FlowNodeExecutionContext executionContext,boolean isCompletion) {
+		
 		if (isCompletion) {
 			super.leave(executionContext);
 		}else{
 			
+			Activity activity = (Activity)baseElement;
+			LoopCharacteristics loopCharacteristics = activity.getLoopCharacteristics();
 			MultiInstanceLoopCharacteristics milc = (MultiInstanceLoopCharacteristics) loopCharacteristics;
 			Collection<?> valueObjCollection =getloopDataInputCollection(executionContext,milc.getLoopDataInputCollection());
-			Expression inputDataItem = milc.getInputDataItem();
-			String inputDataItemExpressionValue = inputDataItem != null ? inputDataItem.getExpressionText() : null;
+			String inputDataItemExpressionValue = milc.getInputDataItem();
 			TokenEntity token=(TokenEntity)executionContext;
 			token.setLoopCount(1);
-			
 			if(token.getLoopCount()==valueObjCollection.size()){
 				throw new FoxBPMException("串行多实例集合全部处理完毕,但完成条件依然不满足!");
 			}
-			
 			sequentialMultiInstanceExecute(executionContext, valueObjCollection, inputDataItemExpressionValue);
 			
 		}
@@ -485,29 +455,4 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		token.setLoopCount(0);
 		super.cleanData(executionContext);
 	}
-
-	public SkipStrategy getSkipStrategy() {
-		return skipStrategy;
-	}
-
-	public void setSkipStrategy(SkipStrategy skipStrategy) {
-		this.skipStrategy = skipStrategy;
-	}
-
-	public List<BoundaryEventBehavior> getBoundaryEvents() {
-		return boundaryEvents;
-	}
-
-	public void setBoundaryEvents(List<BoundaryEventBehavior> boundaryEvents) {
-		this.boundaryEvents = boundaryEvents;
-	}
-
-	public LoopCharacteristics getLoopCharacteristics() {
-		return loopCharacteristics;
-	}
-
-	public void setLoopCharacteristics(LoopCharacteristics loopCharacteristics) {
-		this.loopCharacteristics = loopCharacteristics;
-	}
-
 }

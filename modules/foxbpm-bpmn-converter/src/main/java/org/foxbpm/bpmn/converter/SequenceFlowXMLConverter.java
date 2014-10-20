@@ -18,8 +18,11 @@
 package org.foxbpm.bpmn.converter;
 
 import org.dom4j.Element;
+import org.foxbpm.bpmn.constants.BpmnXMLConstants;
+import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.FlowElement;
+import org.foxbpm.model.SequenceFlow;
 
 /**
  * 常量类
@@ -30,32 +33,31 @@ import org.foxbpm.model.FlowElement;
 public class SequenceFlowXMLConverter extends FlowElementXMLConverter {
 	
 	public FlowElement cretateFlowElement() {
-		// TODO Auto-generated method stub
-		return null;
+		return new SequenceFlow();
 	}
 	
 	@Override
 	public Class<? extends BaseElement> getBpmnElementType() {
-		// TODO Auto-generated method stub
-		return null;
+		return SequenceFlow.class;
 	}
 	
 	@Override
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
-		// TODO Auto-generated method stub
-		
+		SequenceFlow sequenceFlow = new SequenceFlow();
+		sequenceFlow.setSourceRefId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_SOURCEREF));
+		sequenceFlow.setTargetRefId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_TARGETREF));
+		sequenceFlow.setFlowCondition(BpmnXMLUtil.parseExpression(element));
+		super.convertXMLToModel(element, baseElement);
 	}
 	
 	@Override
 	public void convertModelToXML(Element element, BaseElement baseElement) {
-		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
 	public String getXMLElementName() {
-		// TODO Auto-generated method stub
-		return null;
+		return BpmnXMLConstants.ELEMENT_SEQUENCEFLOW;
 	}
 	
 }

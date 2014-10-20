@@ -17,80 +17,61 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
+import java.util.List;
+
 import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
-import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
+import org.foxbpm.model.CallActivity;
+import org.foxbpm.model.VariableMapping;
 
 public class CallActivityBehavior extends ActivityBehavior {
 
 	private static final long serialVersionUID = 1L;
 
-	protected boolean isAsync = false;
-
-	protected Expression callableElementId;
-
-	protected Expression callableElementVersion;
-
-	protected Expression callableElementBizKey;
-
-	protected DataSourceToSubProcessMapping dataSourceToSubProcessMapping;
-
-	protected SubProcessToDataSourceMapping subProcessToDataSourceMapping;
-
-	 
 	public void execute(FlowNodeExecutionContext executionContext) {
-
+		CallActivity callActivity = (CallActivity)baseElement;
 		// 创建子流程
 
 		createSubProcess(executionContext);
 		// 如果为异步子流程则创建子流程完毕后直接
 		// 执行离开事件
-		if (isAsync()) {
-
+		if (callActivity.isAsync()) {
 			super.execute(executionContext);
-
 		}
-
 	}
 
 	private ProcessInstanceEntity createSubProcess(FlowNodeExecutionContext executionContext) {
-		String flowId = StringUtil.getString(getCallableElementId() != null ? getCallableElementId().getExpressionText() : null);
+		
+		CallActivity callActivity = (CallActivity)baseElement;
+		String flowId = callActivity.getCallableElementId();
 
-		String flowVersion = StringUtil.getString(getCallableElementVersion() != null ? getCallableElementVersion().getExpressionText(): null);
+		String flowVersion = callActivity.getCallableElementVersion();
 		int version = StringUtil.getInt(flowVersion);
 
-		String bizKey = StringUtil.getString(getCallableElementBizKey() != null ? getCallableElementBizKey().getValue(executionContext)
-				: null);
+		String bizKey = callActivity.getBizKey();
 
 		ProcessDefinitionEntity processDefinition = Context.getProcessEngineConfiguration().getDeploymentManager()
 				.findDeployedProcessDefinitionByKeyAndVersion(flowId, version);
-
 		ProcessInstanceEntity createSubProcessInstance = (ProcessInstanceEntity) executionContext
 				.createSubProcessInstance(processDefinition);
-
 		createSubProcessInstance.setBizKey(bizKey);
 
 		/**  */
 		createSubProcessInstance.setStartAuthor(Authentication.getAuthenticatedUserId());
 
 		/** 映射数据变量 */
-		DataSourceToSubProcessMapping dataSourceToSubProcessMapping = getDataSourceToSubProcessMapping();
-		if (dataSourceToSubProcessMapping != null) {
-			for (DataVariableMapping dataVariableMapping : dataSourceToSubProcessMapping.getDataVariableMappings()) {
-				String dataSourceId = "${" + dataVariableMapping.getDataSourceId() + "}";
-				createSubProcessInstance.setVariable(dataVariableMapping.getSubProcesId(),
-						ExpressionMgmt.execute(dataSourceId, executionContext));
-			}
-
+		List<VariableMapping> dataSourceToSubProcessMapping = callActivity.getToSubProcessMapping();
+		for (VariableMapping dataVariableMapping : dataSourceToSubProcessMapping) {
+			String dataSourceId = "${" + dataVariableMapping.getFormId() + "}";
+			createSubProcessInstance.setVariable(dataVariableMapping.getToId(),
+					ExpressionMgmt.execute(dataSourceId, executionContext));
 		}
-
 		try {
 			// 启动流程实例
 			createSubProcessInstance.start();
@@ -101,53 +82,4 @@ public class CallActivityBehavior extends ActivityBehavior {
 		return createSubProcessInstance;
 
 	}
-
-	public boolean isAsync() {
-		return isAsync;
-	}
-
-	public void setAsync(boolean isAsync) {
-		this.isAsync = isAsync;
-	}
-
-	public Expression getCallableElementId() {
-		return callableElementId;
-	}
-
-	public void setCallableElementId(String callableElementId) {
-		this.callableElementId = new ExpressionImpl(callableElementId);
-	}
-
-	public Expression getCallableElementVersion() {
-		return callableElementVersion;
-	}
-
-	public void setCallableElementVersion(String callableElementVersion) {
-		this.callableElementVersion = new ExpressionImpl(callableElementVersion);
-	}
-
-	public Expression getCallableElementBizKey() {
-		return callableElementBizKey;
-	}
-
-	public void setCallableElementBizKey(String callableElementBizKey) {
-		this.callableElementBizKey = new ExpressionImpl(callableElementBizKey);
-	}
-
-	public DataSourceToSubProcessMapping getDataSourceToSubProcessMapping() {
-		return dataSourceToSubProcessMapping;
-	}
-
-	public void setDataSourceToSubProcessMapping(DataSourceToSubProcessMapping dataSourceToSubProcessMapping) {
-		this.dataSourceToSubProcessMapping = dataSourceToSubProcessMapping;
-	}
-
-	public SubProcessToDataSourceMapping getSubProcessToDataSourceMapping() {
-		return subProcessToDataSourceMapping;
-	}
-
-	public void setSubProcessToDataSourceMapping(SubProcessToDataSourceMapping subProcessToDataSourceMapping) {
-		this.subProcessToDataSourceMapping = subProcessToDataSourceMapping;
-	}
-
 }

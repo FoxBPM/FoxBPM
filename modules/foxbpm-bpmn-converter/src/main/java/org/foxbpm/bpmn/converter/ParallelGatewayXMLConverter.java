@@ -18,6 +18,7 @@
 package org.foxbpm.bpmn.converter;
 
 import org.dom4j.Element;
+import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.ParallelGateway;
@@ -40,17 +41,17 @@ public class ParallelGatewayXMLConverter extends GatewayXMLConverter {
 	
 	@Override
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
-		ParallelGateway parallelGateway = (ParallelGateway)baseElement;
+		ParallelGateway parallelGateway = (ParallelGateway) baseElement;
 		String convergType = element.attributeValue("foxbpm:convergType");
 		String gatewayDirection = element.attributeValue("gatewayDirection");
-		//合并策略
-		if(convergType != null && !convergType.equals("")){
+		// 合并策略
+		if (convergType != null && !convergType.equals("")) {
 			parallelGateway.setConvergType(convergType);
 		}
-		if(gatewayDirection != null && !gatewayDirection.equals("")){
+		if (gatewayDirection != null && !gatewayDirection.equals("")) {
 			parallelGateway.setGatewayDirection(gatewayDirection);
 		}
-		super.convertXMLToModel(element,baseElement);
+		super.convertXMLToModel(element, baseElement);
 	}
 	
 	@Override
@@ -61,7 +62,7 @@ public class ParallelGatewayXMLConverter extends GatewayXMLConverter {
 	
 	@Override
 	public String getXMLElementName() {
-		return "ParallelGateway";
+		return BpmnXMLConstants.ELEMENT_PARALLELGATEWAY;
 	}
 	
 }

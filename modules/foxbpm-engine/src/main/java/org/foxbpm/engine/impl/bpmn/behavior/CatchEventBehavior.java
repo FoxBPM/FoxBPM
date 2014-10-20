@@ -18,15 +18,8 @@
 package org.foxbpm.engine.impl.bpmn.behavior;
 
 public abstract class CatchEventBehavior extends EventBehavior {
+	
 	private static final long serialVersionUID = 1L;
 
-	private boolean isParallelMultiple;
-	public boolean isParallelMultiple() {
-		return isParallelMultiple;
-	}
-
-	public void setParallelMultiple(boolean isParallelMultiple) {
-		this.isParallelMultiple = isParallelMultiple;
-	}
-
+	
 }

@@ -20,7 +20,7 @@ package org.foxbpm.bpmn.converter;
 import org.foxbpm.model.FlowElement;
 
 /**
- * 常量类
+ * FlowElment节点工厂
  * 
  * @author yangguangftlp
  * @date 2014年10月16日

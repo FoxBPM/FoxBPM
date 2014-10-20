@@ -17,15 +17,16 @@
  */
 package org.foxbpm.engine.impl.event;
 
-import org.foxbpm.engine.impl.datavariable.DataVariableDefinition;
 import org.foxbpm.engine.impl.db.SqlCommand;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
+import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.util.DBUtils;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.event.KernelListener;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
+import org.foxbpm.model.DataVariableDefinition;
 
 /**
  * <p>更新业务字段监听</p>
@@ -46,8 +47,8 @@ public class UpdateBizTableListener implements KernelListener {
 		DataVariableDefinition bizName = processDefinition.getDataVariableMgmtDefinition().getProcessDataVariableDefinition("_BizName");
 		DataVariableDefinition bizKeyField = processDefinition.getDataVariableMgmtDefinition().getProcessDataVariableDefinition("_BizKeyField");
 		if(bizName != null && bizKeyField != null){
-			String bizNameString = StringUtil.getString(bizName.getExpression().getValue(null));
-			String bizKeyFiledString = StringUtil.getString(bizKeyField.getExpression().getValue(null));
+			String bizNameString = StringUtil.getString(new ExpressionImpl(bizName.getExpression()).getValue(null));
+			String bizKeyFiledString = StringUtil.getString(new ExpressionImpl(bizKeyField.getExpression()).getValue(null));
 			String sql = "update "+bizNameString + " set processInstanceId = ?,processInstanceStatus = ?, processStep = ? "
 					+ "where " + bizKeyFiledString + "=?";
 			ProcessInstanceEntity processInstanceEntity = (ProcessInstanceEntity)kernelTokenImpl.getProcessInstance();
