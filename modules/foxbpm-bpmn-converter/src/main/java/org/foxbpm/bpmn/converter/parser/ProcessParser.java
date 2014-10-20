@@ -74,6 +74,9 @@ public class ProcessParser extends BpmnParser {
 				expression = BpmnXMLUtil.parseExpression(elem);
 			} else if (BpmnXMLConstants.ELEMENT_DOCUMENTATION.equalsIgnoreCase(nodeName)) {
 				documentation = elem.getText();
+			} else /** 处理连接器 **/
+			if (BpmnXMLConstants.ELEMENT_CONNECTORINSTANCE_ELEMENTS.equalsIgnoreCase(nodeName)) {
+				process.setConnector(BpmnXMLUtil.parserConnectorElement(elem));
 			}
 			/** 处理表单url */
 			if (BpmnXMLConstants.ELEMENT_FORMURI.equalsIgnoreCase(parentNodeName)) {
@@ -111,10 +114,6 @@ public class ProcessParser extends BpmnParser {
 				process.setPotentialStarters(new ArrayList<PotentialStarter>());
 			}
 			process.getPotentialStarters().add(potentialStarter);
-		}
-		// 处理连接器
-		if (BpmnXMLConstants.ELEMENT_CONNECTORINSTANCE_ELEMENTS.equalsIgnoreCase(parentNodeName)) {
-			process.setConnector(BpmnXMLUtil.parserConnectorElement(elem));
 		}
 	}
 	@SuppressWarnings("rawtypes")
