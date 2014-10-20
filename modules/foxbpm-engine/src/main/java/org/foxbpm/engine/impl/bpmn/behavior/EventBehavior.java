@@ -20,19 +20,30 @@ package org.foxbpm.engine.impl.bpmn.behavior;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.foxbpm.engine.impl.bpmn.behavior.factory.DefaultBehaviorFactory;
+import org.foxbpm.model.Event;
+import org.foxbpm.model.EventDefinition;
+
+
 public abstract class EventBehavior extends FlowNodeBehavior {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	protected List<EventDefinition> eventDefinitions = new ArrayList<EventDefinition>();
-	public List<EventDefinition> getEventDefinitions() {
-		return eventDefinitions;
+	
+	protected List<EventDefinitionBehavior> getEventDefinitionBehaviors(){
+		
+		Event event = (Event)baseElement;
+		List<EventDefinitionBehavior> result = new ArrayList<EventDefinitionBehavior>();
+		List<EventDefinition> eventDefinitions = event.getEventDefinitions();
+		if(eventDefinitions != null){
+			for(EventDefinition eventTmp : eventDefinitions){
+				EventDefinitionBehavior eventDefinitionBehavior = DefaultBehaviorFactory.createEventDefinitionBehavior(eventTmp);
+				result.add(eventDefinitionBehavior);
+			}
+		}
+		return result;
 	}
 
-	public void setEventDefinitions(List<EventDefinition> eventDefinitions) {
-		this.eventDefinitions = eventDefinitions;
-	}
 }

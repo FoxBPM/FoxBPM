@@ -17,9 +17,7 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
-import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
@@ -36,6 +34,7 @@ import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.event.KernelEventType;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
+import org.foxbpm.model.TimerEventDefinition;
 
 /**
  * 
@@ -47,7 +46,7 @@ import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
  * @version 1.0.0
  * 
  */
-public class TimerEventBehavior extends EventDefinition {
+public class TimerEventBehavior extends EventDefinitionBehavior {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -69,20 +68,12 @@ public class TimerEventBehavior extends EventDefinition {
 	 */
 	public final static String EVENT_TYPE_CONNECTOR = "connectorTimeEvent";
 	
-	/**
-	 * 日期表达式
-	 */
-	private Expression timeDate;
 	
-	/**
-	 * 时间间隔表达式
-	 */
-	private Expression timeDuration;
+	private TimerEventDefinition timerEventDefinition;
 	
-	/**
-	 * Cycle表达式
-	 */
-	private Expression timeCycle;
+	public TimerEventBehavior(TimerEventDefinition timerEventDefinition){
+		this.timerEventDefinition = timerEventDefinition;
+	}
 	
 	 
 	public void execute(FlowNodeExecutionContext executionContext, String eventType,
@@ -126,7 +117,7 @@ public class TimerEventBehavior extends EventDefinition {
 			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.EVENT_NAME, params[1]);
 			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.TOKEN_ID, executionContext.getId());
 			jobDetail.putContextAttribute(FoxbpmJobExecutionContext.NODE_ID, params[2]);
-			if (StringUtils.equalsIgnoreCase(params[1], KernelEventType.EVENTTYPE_TASK_ASSIGN)) {
+			if (StringUtil.equalsIgnoreCase(params[1], KernelEventType.EVENTTYPE_TASK_ASSIGN)) {
 				TaskEntity assignTask = ((TokenEntity) executionContext).getAssignTask();
 				if (assignTask != null) {
 					jobDetail.putContextAttribute(FoxbpmJobExecutionContext.TASK_ID, assignTask.getId());
@@ -141,7 +132,7 @@ public class TimerEventBehavior extends EventDefinition {
 			// 创建Trigger List
 			if (StringUtil.equals(eventType, EVENT_TYPE_CONNECTOR)) {
 				//连接器以兼容模式创建TRIGGER
-				jobDetail.createCompatibleTriggerList(this.timeDate, kernelTokenImpl, groupName);
+				jobDetail.createCompatibleTriggerList(new ExpressionImpl(timerEventDefinition.getTimeDate()), kernelTokenImpl, groupName);
 			}else{
 				this.createTriggerList(jobDetail, kernelTokenImpl, groupName);
 			}
@@ -163,32 +154,19 @@ public class TimerEventBehavior extends EventDefinition {
 	 */
 	private void createTriggerList(FoxbpmJobDetail<FoxbpmScheduleJob> jobDetail,
 	    KernelTokenImpl kernelTokenImpl, String groupName) {
-		jobDetail.createDateTimeTriggerList(this.timeDate, kernelTokenImpl, groupName);
-		jobDetail.createTriggerListByDuration(this.timeDuration, kernelTokenImpl, groupName);
-		jobDetail.createDateTimeTriggerList(this.timeCycle, kernelTokenImpl, groupName);
+		jobDetail.createDateTimeTriggerList(new ExpressionImpl(timerEventDefinition.getTimeDate()), kernelTokenImpl, groupName);
+		jobDetail.createTriggerListByDuration(new ExpressionImpl(timerEventDefinition.getTimeDuration()), kernelTokenImpl, groupName);
+		jobDetail.createDateTimeTriggerList(new ExpressionImpl(timerEventDefinition.getTimeCycle()), kernelTokenImpl, groupName);
 	}
-	public Expression getTimeDate() {
-		return timeDate;
+
+
+	public TimerEventDefinition getTimerEventDefinition() {
+		return timerEventDefinition;
 	}
-	
-	public void setTimeDate(String timeDate) {
-		this.timeDate = new ExpressionImpl(timeDate);
-	}
-	
-	public Expression getTimeDuration() {
-		return timeDuration;
-	}
-	
-	public void setTimeDuration(String timeDuration) {
-		this.timeDuration = new ExpressionImpl(timeDuration);
-	}
-	
-	public Expression getTimeCycle() {
-		return timeCycle;
-	}
-	
-	public void setTimeCycle(String timeCycle) {
-		this.timeCycle = new ExpressionImpl(timeCycle);
+
+
+	public void setTimerEventDefinition(TimerEventDefinition timerEventDefinition) {
+		this.timerEventDefinition = timerEventDefinition;
 	}
 	
 }

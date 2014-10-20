@@ -22,9 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.foxbpm.engine.impl.datavariable.DataVariableDefinition;
 import org.foxbpm.engine.impl.entity.VariableInstanceEntity;
 import org.foxbpm.kernel.runtime.impl.KernelProcessInstanceImpl;
+import org.foxbpm.model.DataVariableDefinition;
 
 public class DataVariableMgmtInstance implements Serializable {
 
