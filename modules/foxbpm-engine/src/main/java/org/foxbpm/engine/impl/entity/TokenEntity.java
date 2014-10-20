@@ -100,7 +100,7 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 	}
 	
 	protected void ensureChildrenInitialized() {
-		if (this.children == null) {
+		if (this.children != null) {
 			List<TokenEntity> listResult = Context.getCommandContext().getTokenManager().findChildTokensByTokenId(this.id);
 			
 			for (TokenEntity tokenEntity : listResult) {
