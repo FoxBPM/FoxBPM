@@ -19,6 +19,7 @@ package org.foxbpm.bpmn.converter;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
@@ -45,16 +46,19 @@ public abstract class FlowNodeXMLConverter extends FlowElementXMLConverter {
 			elem = (Element) iterator.next();
 			nodeName = elem.getName();
 			if (BpmnXMLConstants.ELEMENT_OUTGOING.equalsIgnoreCase(nodeName)) {
-				if (null == flowNode.getIncomingFlows()) {
-					flowNode.setIncomingFlows(new ArrayList<String>());
+				List<String> outgoingFlows = flowNode.getOutgoingFlows();
+				if (null == outgoingFlows) {
+					outgoingFlows = new ArrayList<String>();
+					flowNode.setOutgoingFlows(outgoingFlows);
 				}
-				flowNode.getOutgoingFlows().add(BpmnXMLUtil.parseIncoming(elem));
+				outgoingFlows.add(BpmnXMLUtil.parseIncoming(elem));
 			} else if (BpmnXMLConstants.ELEMENT_INCOMING.equalsIgnoreCase(nodeName)) {
-				
-				if (null == flowNode.getOutgoingFlows()) {
-					flowNode.setOutgoingFlows(new ArrayList<String>());
+				List<String> incomingFlows = flowNode.getIncomingFlows();
+				if (null == incomingFlows) {
+					incomingFlows = new ArrayList<String>();
+					flowNode.setIncomingFlows(incomingFlows);
 				}
-				flowNode.getOutgoingFlows().add(BpmnXMLUtil.parse0utgoing(elem));
+				incomingFlows.add(BpmnXMLUtil.parse0utgoing(elem));
 			}
 		}
 		super.convertXMLToModel(element, baseElement);
