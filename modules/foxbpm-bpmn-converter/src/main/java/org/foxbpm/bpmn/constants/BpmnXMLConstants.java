@@ -123,6 +123,8 @@ public interface BpmnXMLConstants {
 	String ATTRIBUTE_SCRIPTNAME = "scriptName";
 	/** scriptFormat */
 	String ATTRIBUTE_SCRIPTFORMAT = "scriptFormat";
+	/** isEnable */
+	String ATTRIBUTE_ISENABLE = "isEnable";
 	// 结束
 	
 	// 扩展属性
@@ -156,6 +158,10 @@ public interface BpmnXMLConstants {
 	String ELEMENT_TIMESKIPEXPRESSION = "timeSkipExpression";
 	/** skipComment */
 	String ELEMENT_SKIPCOMMENT = "skipComment";
+	/** skipStrategy */
+	String ELEMENT_SKIPSTRATEGY = "skipStrategy";
+	/** skipAssignee */
+	String ELEMENT_SKIPASSIGNEE = "skipAssignee";
 	
 	/** expression */
 	String ELEMENT_EXPRESSION = "expression";
@@ -262,8 +268,8 @@ public interface BpmnXMLConstants {
 	String ELEMENT_COMPLETIONCONDITION = "completionCondition";
 	String ELEMENT_ISSEQUENTIAL = "isSequential";
 	
-	String ELEMENT_TASKDESCRIPTION =  "taskDescription";
-	String ELEMENT_COMPLETETASKDESCRIPTION ="completeTaskDescription";
+	String ELEMENT_TASKDESCRIPTION = "taskDescription";
+	String ELEMENT_COMPLETETASKDESCRIPTION = "completeTaskDescription";
 	String ELEMENT_EXPECTEDEXECUTIONTIME = "expectedExecutionTime";
 	String ELEMENT_FORMPARAMCONTAINER = "formParamContainer";
 	String ELEMENT_FORMPARAM = "formParam";
