@@ -17,12 +17,13 @@
  */
 package org.foxbpm.bpmn.converter.parser;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.dom4j.Element;
+import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
+import org.foxbpm.model.Bounds;
 import org.foxbpm.model.BpmnModel;
-import org.foxbpm.model.Graphic;
+import org.foxbpm.model.WayPoint;
 /**
  * 常量类
  * 
@@ -37,7 +38,8 @@ public class BpmnDiagramParser extends BpmnParser {
 		
 		Element elem = null;
 		String name = null;
-		Graphic graphic = null;
+		Bounds bounds = null;
+		WayPoint wayPoint = null;
 		String bpmnElement = null;
 		for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
 			elem = (Element) iterator.next();
@@ -47,23 +49,22 @@ public class BpmnDiagramParser extends BpmnParser {
 				parse((Element) elem, model);
 				break;
 			}
-			//处理dc:Bounds和di:waypoint
-			graphic = new Graphic();
-			graphic.setExpanded(("true".equalsIgnoreCase(element.attributeValue(ATTRIBUTE_DI_IS_EXPANDED))));
-			graphic.setBpmnElement(element.attributeValue(ATTRIBUTE_DI_BPMNELEMENT));
-			graphic.setX(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_X)));
-			graphic.setY(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_Y)));
-			
+			bpmnElement = element.attributeValue(ATTRIBUTE_DI_BPMNELEMENT);
+			// 处理dc:Bounds和di:waypoint
 			if (ELEMENT_DI_BOUNDS.equalsIgnoreCase(name)) {
-				graphic.setHeight(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_HEIGHT)));
-				graphic.setWidth(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_WIDTH)));
-				model.addBoundsGraphic(graphic.getBpmnElement(), graphic);
+				bounds = new Bounds();
+				bounds.setExpanded(BpmnXMLUtil.parseBoolean(element.attributeValue(ATTRIBUTE_DI_IS_EXPANDED)));
+				bounds.setBpmnElement(element.attributeValue(ATTRIBUTE_DI_BPMNELEMENT));
+				bounds.setX(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_X)));
+				bounds.setY(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_Y)));
+				bounds.setHeight(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_HEIGHT)));
+				bounds.setWidth(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_WIDTH)));
+				model.getBoundsLocationMap().put(bpmnElement, bounds);
 			} else if (ELEMENT_DI_WAYPOINT.equalsIgnoreCase(name)) {
-				bpmnElement = element.attributeValue(ATTRIBUTE_DI_BPMNELEMENT);
-				if (null == model.getWaypointGraphic(bpmnElement)) {
-					model.addWaypointGraphic(bpmnElement, new ArrayList<Graphic>());
-				}
-				model.getWaypointGraphic(bpmnElement).add(graphic);
+				wayPoint = new WayPoint();
+				wayPoint.setX(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_X)));
+				wayPoint.setY(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_Y)));
+				model.addWaypoint(bpmnElement, wayPoint);
 			}
 		}
 	}

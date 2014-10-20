@@ -114,7 +114,7 @@ public class ProcessParser extends BpmnParser {
 		}
 		// 处理连接器
 		if (BpmnXMLConstants.ELEMENT_CONNECTORINSTANCE_ELEMENTS.equalsIgnoreCase(parentNodeName)) {
-			
+			process.setConnector(BpmnXMLUtil.parserConnectorElement(elem));
 		}
 	}
 	@SuppressWarnings("rawtypes")
@@ -151,7 +151,6 @@ public class ProcessParser extends BpmnParser {
 	}
 	@Override
 	public void parse(Element element, BpmnModel model) throws Exception {
-		
 		
 	}
 }
