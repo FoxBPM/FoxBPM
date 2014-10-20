@@ -1,5 +1,5 @@
 
-var doneTaskUrl = _serviceUrl + "runtime/tasks";
+var doneTaskUrl = _serviceUrl + "runtime/tasks?assignee="+_userId+"&candidateUser="+_userId+"&ended=true";
 var pagefunction = function() {
 	var doneTable = $('#datatable_col_reorder')
 			.DataTable(
@@ -214,5 +214,5 @@ function openTaskForm(url,dataId,taskId,processInstanceId){
 }
 
 function showDiagram(processDefinitionKey,processInstanceId){ 
-	window.open("taskCommand/showTaskDetailInfor.html?processDefinitionKey="+processDefinitionKey+"&processInstanceId="+processInstanceId);
+	window.open("portal/taskCommand/showTaskDetailInfor.html?processDefinitionKey="+processDefinitionKey+"&processInstanceId="+processInstanceId);
 }

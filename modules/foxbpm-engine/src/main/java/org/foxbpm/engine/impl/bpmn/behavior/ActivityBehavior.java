@@ -258,7 +258,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 			throw new FoxBPMExpressionException(ExceptionCode.EXPRESSION_EXCEPTION_LOOPDATAOUTPUTCOLLECTION_COLLECTIONCHECK, this.getId(),
 					this.getName(), loopDataInputCollectionExpressionValue, e);
 		}
-		if (valueObj != null) {
+		if (valueObj == null) {
 			LOG.error("多实例输入集合值为空");
 			throw new FoxBPMExpressionException("多实例输入集合值为空");
 		}
