@@ -24,7 +24,7 @@ import org.foxbpm.model.CallActivity;
 import org.foxbpm.model.FlowElement;
 
 /**
- * 常量类
+ * 公有子流程节点转换处理类
  * 
  * @author yangguangftlp
  * @date 2014年10月15日

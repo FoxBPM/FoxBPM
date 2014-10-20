@@ -24,7 +24,7 @@ import org.foxbpm.model.BoundaryEvent;
 import org.foxbpm.model.FlowElement;
 
 /**
- * 常量类
+ * 边界世界节点转换处理类
  * 
  * @author yangguangftlp
  * @date 2014年10月15日

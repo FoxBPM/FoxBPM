@@ -43,7 +43,7 @@ public class SubProcessXMLConverter extends ActivityXMLConverter {
 	
 	@Override
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
-		
+		super.convertXMLToModel(element, baseElement);
 	}
 	
 	@Override

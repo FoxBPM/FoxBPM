@@ -17,6 +17,9 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import org.dom4j.Element;
+import org.foxbpm.model.BaseElement;
+
 
 /**
  * 常量类
@@ -25,5 +28,16 @@ package org.foxbpm.bpmn.converter;
  * @date 2014年10月15日
  */
 public abstract class TaskXMLConverter extends ActivityXMLConverter {
-	
+
+	@Override
+    public void convertXMLToModel(Element element, BaseElement baseElement) {
+	    // TODO Auto-generated method stub
+	    super.convertXMLToModel(element, baseElement);
+    }
+
+	@Override
+    public void convertModelToXML(Element element, BaseElement baseElement) {
+	    // TODO Auto-generated method stub
+	    super.convertModelToXML(element, baseElement);
+    }
 }

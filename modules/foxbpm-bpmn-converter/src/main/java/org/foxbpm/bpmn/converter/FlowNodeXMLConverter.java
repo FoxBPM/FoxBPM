@@ -27,7 +27,7 @@ import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.FlowNode;
 
 /**
- * 常量类
+ * 流程节点转换处理类
  * 
  * @author yangguangftlp
  * @date 2014年10月15日
@@ -60,4 +60,9 @@ public abstract class FlowNodeXMLConverter extends FlowElementXMLConverter {
 		super.convertXMLToModel(element, baseElement);
 	}
 	
+	@Override
+	public void convertModelToXML(Element element, BaseElement baseElement) {
+		// TODO Auto-generated method stub
+		super.convertModelToXML(element, baseElement);
+	}
 }

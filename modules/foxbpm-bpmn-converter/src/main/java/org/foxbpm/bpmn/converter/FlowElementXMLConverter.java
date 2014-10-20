@@ -27,7 +27,7 @@ import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.BaseElement;
 
 /**
- * 常量类
+ * 流程节点转换处理类
  * 
  * @author yangguangftlp
  * @date 2014年10月15日
@@ -52,7 +52,6 @@ public abstract class FlowElementXMLConverter extends BaseElementXMLConverter {
 					if (BpmnXMLConstants.ELEMENT_CONNECTORINSTANCEELEMENTS.equals(extentionElement.getName())) {
 						flowElement.setConnector(BpmnXMLUtil.parserConnectorElement(extentionElement));
 					}
-					
 				}
 			}
 		}

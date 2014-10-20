@@ -21,13 +21,12 @@ import java.util.Iterator;
 
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
-import org.foxbpm.bpmn.converter.parser.MultiInstanceParser;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.ScriptTask;
 
 /**
- * 常量类
+ * 脚本任务节点转换处理类
  * 
  * @author yangguangftlp
  * @date 2014年10月15日
@@ -58,11 +57,8 @@ public class ScriptTaskXMLConverter extends TaskXMLConverter {
 			nodeName = elem.getName();
 			if (BpmnXMLConstants.ELEMENT_SCRIPT.equalsIgnoreCase(nodeName)) {
 				scriptTask.setScript(elem.getText().replace(BpmnXMLConstants.XML_QUOT, BpmnXMLConstants.EMPTY_STRING));
-			} else if (BpmnXMLConstants.ELEMENT_MULTIINSTANCELOOPCHARACTERISTICS.equalsIgnoreCase(nodeName)) {
-				scriptTask.setLoopCharacteristics(MultiInstanceParser.parser(elem));
 			}
 		}
-		// element.g
 		super.convertXMLToModel(element, baseElement);
 	}
 	
