@@ -52,7 +52,7 @@ public class StartEventXMLConverter extends CatchEventXMLConverter {
 	
 	@Override
 	public String getXMLElementName() {
-		return BpmnXMLConstants.ELEMENT_TASK_USER;
+		return BpmnXMLConstants.ELEMENT_STARTEVENT;
 	}
 	
 }
