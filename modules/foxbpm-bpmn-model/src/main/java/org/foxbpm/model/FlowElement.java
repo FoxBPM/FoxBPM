@@ -17,6 +17,7 @@
  */
 package org.foxbpm.model;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -46,7 +47,11 @@ public abstract class FlowElement extends BaseElement {
 		this.name = name;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Connector> getConnector() {
+		if(connector == null){
+			return Collections.EMPTY_LIST;
+		}
 		return connector;
 	}
 
