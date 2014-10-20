@@ -25,9 +25,11 @@ import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
+import org.foxbpm.bpmn.converter.export.BPMNDIExport;
 import org.foxbpm.bpmn.converter.export.ProcessExport;
 import org.foxbpm.bpmn.converter.parser.BpmnDiagramParser;
 import org.foxbpm.bpmn.converter.parser.ProcessParser;
+import org.foxbpm.bpmn.exceptions.BpmnConverterException;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.BpmnModel;
 import org.foxbpm.model.Process;
@@ -94,7 +96,8 @@ public class BpmnXMLConverter {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOGGER.error("Bpmn文件转换Model错误!",e);
+				throw new BpmnConverterException(e);
 			}
 		}
 		return model;
@@ -127,6 +130,7 @@ public class BpmnXMLConverter {
 				ProcessExport.writeProcess(iterator.next(), element);
 			}
 			// 位置坐标转换
+			BPMNDIExport.writeBPMNDI(model, element);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

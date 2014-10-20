@@ -17,6 +17,9 @@
  */
 package org.foxbpm.model;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 流程容器 流程、子流程
  * 
@@ -38,4 +41,17 @@ public interface FlowContainer {
 	 *            sequenceFlow
 	 */
 	void addSequenceFlow(SequenceFlow sequenceFlow);
+	/**
+	 * 获取流程节点
+	 * 
+	 * @return 返回容器节点集合
+	 */
+	public List<FlowElement> getFlowElements();
+	/**
+	 * 获取线条
+	 * 
+	 * @return 返回容器线条集合
+	 */
+	public Map<String, SequenceFlow> getSequenceFlows();
+	
 }
