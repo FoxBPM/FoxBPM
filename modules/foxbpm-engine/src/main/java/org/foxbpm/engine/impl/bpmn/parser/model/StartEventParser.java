@@ -17,10 +17,7 @@
  */
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
-import org.eclipse.bpmn2.BaseElement;
-import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.StartEventBehavior;
-import org.foxbpm.engine.impl.util.BpmnModelUtil;
 
 /**
  * 开始节点转换器
@@ -29,16 +26,6 @@ import org.foxbpm.engine.impl.util.BpmnModelUtil;
  * @author ych
  */
 public class StartEventParser extends CatchEventParser {
-
-	 
-	public BaseElementBehavior parser(BaseElement baseElement) {
-		Boolean isPersistence = BpmnModelUtil.getStartEventPersistence(baseElement);
-		StartEventBehavior startEventBehavior = (StartEventBehavior)baseElementBehavior;
-		startEventBehavior.setPersistence(isPersistence);
-		return super.parser(baseElement);
-	}
-	
-	 
 	public void init() {
 		baseElementBehavior = new StartEventBehavior();
 	}

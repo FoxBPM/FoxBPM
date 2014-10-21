@@ -17,9 +17,9 @@
  */
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
-import org.eclipse.bpmn2.BaseElement;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.BusinessRuleTaskBehavior;
+import org.foxbpm.model.BaseElement;
 
 public class BusinessRuleTaskParser extends TaskParser {
 	 

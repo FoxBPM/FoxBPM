@@ -17,10 +17,7 @@
  */
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
-import org.eclipse.bpmn2.Association;
-import org.eclipse.bpmn2.BaseElement;
 import org.foxbpm.engine.impl.bpmn.behavior.AssociationBehavior;
-import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 
 /**
  * @author kenshin
@@ -28,18 +25,6 @@ import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
  */
 public class AssociationParser extends BaseElementParser {
 
-	 
-	public BaseElementBehavior parser(BaseElement baseElement) {
-		Association association = (Association) baseElement;
-		AssociationBehavior associationBehavior = (AssociationBehavior) baseElementBehavior;
-		associationBehavior.setSourceRef(association.getSourceRef() != null ? association
-				.getSourceRef().getId() : null);
-		associationBehavior.setTargetRef(association.getTargetRef() != null ? association
-				.getTargetRef().getId() : null);
-		return super.parser(baseElement);
-	}
-
-	 
 	public void init() {
 		baseElementBehavior = new AssociationBehavior();
 	}

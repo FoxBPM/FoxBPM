@@ -17,6 +17,8 @@
  */
 package org.foxbpm.model;
 
+import java.util.Map;
+
 /**
  * 数据变量定义
  * 
@@ -126,5 +128,10 @@ public class DataVariableDefinition extends BaseElement {
 
 	public void setNodeId(String nodeId) {
 		this.nodeId = nodeId;
+	}
+	
+	public Map<String,Object> getPersistentState(){
+		
+		return null;
 	}
 }

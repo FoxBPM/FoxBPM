@@ -95,8 +95,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 
 	protected void eventExecute(FlowNodeExecutionContext executionContext) {
 
-		Activity activity = (Activity)baseElement;
-		List<BoundaryEvent> boundaryEvents = activity.getBoundaryEvents();
+		List<BoundaryEvent> boundaryEvents = getBoundaryEvents();
 		// 验证是否含有边界事件
 		if (boundaryEvents.size() > 0) {
 			/*
@@ -454,5 +453,10 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		token.setGroupID(null);
 		token.setLoopCount(0);
 		super.cleanData(executionContext);
+	}
+	
+	private List<BoundaryEvent> getBoundaryEvents(){
+		
+		return null;
 	}
 }

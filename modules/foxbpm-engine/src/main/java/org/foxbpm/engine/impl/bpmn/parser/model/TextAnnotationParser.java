@@ -18,9 +18,6 @@
  */
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
-import org.eclipse.bpmn2.BaseElement;
-import org.eclipse.bpmn2.TextAnnotation;
-import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.TextAnnotationBehavior;
 
 /**
@@ -29,16 +26,6 @@ import org.foxbpm.engine.impl.bpmn.behavior.TextAnnotationBehavior;
  */
 public class TextAnnotationParser extends BaseElementParser {
 
-	 
-	public BaseElementBehavior parser(BaseElement baseElement) {
-		TextAnnotation textAnnotation = (TextAnnotation) baseElement;
-		TextAnnotationBehavior textAnnotationBehavior = (TextAnnotationBehavior) baseElementBehavior;
-		textAnnotationBehavior.setText(textAnnotation.getText());
-		textAnnotationBehavior.setTextFormat(textAnnotation.getTextFormat());
-		return super.parser(baseElement);
-	}
-
-	 
 	public void init() {
 		baseElementBehavior = new TextAnnotationBehavior();
 	}

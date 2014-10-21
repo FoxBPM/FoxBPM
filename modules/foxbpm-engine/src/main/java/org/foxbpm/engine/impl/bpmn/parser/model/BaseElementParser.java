@@ -18,31 +18,16 @@
  */
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.bpmn2.BaseElement;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
-import org.foxbpm.engine.impl.bpmn.behavior.TimerEventBehavior;
-import org.foxbpm.engine.impl.connector.Connector;
-import org.foxbpm.engine.impl.connector.ConnectorInputParam;
-import org.foxbpm.engine.impl.connector.ConnectorOutputParam;
-import org.foxbpm.engine.impl.datavariable.DataVariableDefinition;
-import org.foxbpm.engine.impl.expression.ExpressionImpl;
-import org.foxbpm.engine.impl.util.BpmnModelUtil;
-import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.impl.connector.ConnectorListener;
 import org.foxbpm.kernel.process.impl.KernelFlowElementsContainerImpl;
-import org.foxbpm.model.bpmn.foxbpm.ConnectorInstance;
-import org.foxbpm.model.bpmn.foxbpm.ConnectorInstanceElements;
-import org.foxbpm.model.bpmn.foxbpm.ConnectorParameterInput;
-import org.foxbpm.model.bpmn.foxbpm.ConnectorParameterOutput;
-import org.foxbpm.model.bpmn.foxbpm.DataVariable;
-import org.foxbpm.model.bpmn.foxbpm.FoxBPMPackage;
+import org.foxbpm.model.BaseElement;
 
 public class BaseElementParser {
 
 	protected KernelFlowElementsContainerImpl flowElementsContainer;
-
 	protected BaseElementBehavior baseElementBehavior;
 
 	/**
@@ -50,131 +35,13 @@ public class BaseElementParser {
 	 * @return
 	 */
 	public BaseElementBehavior parser(BaseElement baseElement) {
-
 		baseElementBehavior.setId(baseElement.getId());
-		baseElementBehavior.getConnectors().addAll(parserConnector(baseElement, "flowConnector"));
-		baseElementBehavior.getDataVariableDefinitions().addAll(parserDataVariable(baseElement));
-
+		baseElementBehavior.setBaseElement(baseElement);
 		return baseElementBehavior;
 	}
 
-	protected List<DataVariableDefinition> parserDataVariable(BaseElement baseElement) {
-
-		List<DataVariable> dataVariables = BpmnModelUtil.getExtensionElementList(
-				DataVariable.class, baseElement,
-				FoxBPMPackage.Literals.DOCUMENT_ROOT__DATA_VARIABLE);
-		List<DataVariableDefinition> dataVariableDefinitions = new ArrayList<DataVariableDefinition>();
-		if (dataVariables != null && dataVariables.size() > 0) {
-			for (DataVariable dataVariable : dataVariables) {
-				DataVariableDefinition dataVariableDefinition = new DataVariableDefinition();
-				dataVariableDefinition.setId(dataVariable.getId());
-				dataVariableDefinition.setBizType(dataVariable.getBizType());
-				dataVariableDefinition.setDataType(dataVariable.getDataType());
-				dataVariableDefinition.setDocumentation(dataVariable.getDocumentation() != null
-						&& dataVariable.getDocumentation().size() > 0 ? dataVariable
-						.getDocumentation().get(0).getValue() : null);
-				dataVariableDefinition.setExpression(dataVariable.getExpression() != null
-						? dataVariable.getExpression().getValue()
-						: null);
-				dataVariableDefinition.setPubilc(true);
-				dataVariableDefinition.setPersistence(dataVariable.isIsPersistence());
-				dataVariableDefinitions.add(dataVariableDefinition);
-			}
-		}
-
-		return dataVariableDefinitions;
-	}
-
-	protected List<Connector> parserConnector(BaseElement baseElement, String connrctorType) {
-		List<ConnectorInstanceElements> connectorInstanceElements = BpmnModelUtil
-				.getExtensionElementList(ConnectorInstanceElements.class, baseElement,
-						FoxBPMPackage.Literals.DOCUMENT_ROOT__CONNECTOR_INSTANCE_ELEMENTS);
-		List<ConnectorInstance> connectorInstances = new ArrayList<ConnectorInstance>();
-		if (connectorInstanceElements != null) {
-			for (ConnectorInstanceElements connectorInstanceElementsObj : connectorInstanceElements) {
-				if (connectorInstanceElementsObj.getConnrctorType().equals(connrctorType)) {
-					connectorInstances.addAll(connectorInstanceElementsObj.getConnectorInstance());
-				}
-
-			}
-		}
-
-		List<Connector> connectors = new ArrayList<Connector>();
-
-		for (ConnectorInstance connectorInstance : connectorInstances) {
-			String packageNamesString = connectorInstance.getPackageName();
-			String classNameString = connectorInstance.getClassName();
-			String eventTypeString = connectorInstance.getEventType();
-			String connectorIdString = connectorInstance.getConnectorId();
-			String connectorInstanceIdString = connectorInstance.getConnectorInstanceId();
-			String connectorInstanceNameString = connectorInstance.getConnectorInstanceName();
-			String errorHandlingString = connectorInstance.getErrorHandling();
-			String errorCodeString = connectorInstance.getErrorCode();
-			boolean isTimeExecute = connectorInstance.isIsTimeExecute();
-			String documentationString = connectorInstance.getDocumentation() != null
-					? connectorInstance.getDocumentation().getValue()
-					: null;
-			String skipExpression = null;
-			if (connectorInstance.getSkipComment() != null) {
-				skipExpression = connectorInstance.getSkipComment().getExpression().getValue();
-			}
-			String timeExpression = null;
-			if (connectorInstance.getTimeExpression() != null) {
-				timeExpression = connectorInstance.getTimeExpression().getExpression().getValue();
-			}
-			Connector connectorInstanceBehavior = new Connector();
-			connectorInstanceBehavior.setConnectorId(connectorIdString);
-			connectorInstanceBehavior.setConnectorInstanceId(connectorInstanceIdString);
-			connectorInstanceBehavior.setClassName(classNameString);
-			connectorInstanceBehavior.setConnectorInstanceName(connectorInstanceNameString);
-			connectorInstanceBehavior.setDocumentation(documentationString);
-			connectorInstanceBehavior.setErrorCode(errorCodeString);
-			connectorInstanceBehavior.setErrorHandling(errorHandlingString);
-			connectorInstanceBehavior.setEventType(eventTypeString);
-			connectorInstanceBehavior.setPackageName(packageNamesString);
-			connectorInstanceBehavior.setSkipExpression(new ExpressionImpl(skipExpression));
-			if (isTimeExecute) {
-				TimerEventBehavior timerEventBehavior = new TimerEventBehavior();
-				timerEventBehavior.setTimeDate(timeExpression);
-				connectorInstanceBehavior.setTimerEventBehavior(timerEventBehavior);
-			}
-
-			List<ConnectorInputParam> connectorInputParameters = new ArrayList<ConnectorInputParam>();
-
-			List<ConnectorOutputParam> connectorOutputParameters = new ArrayList<ConnectorOutputParam>();
-
-			List<ConnectorParameterInput> connectorParameterInputs = connectorInstance
-					.getConnectorParameterInputs();
-			List<ConnectorParameterOutput> connectorParameterOutputs = connectorInstance
-					.getConnectorParameterOutputs();
-
-			for (ConnectorParameterInput connectorInputParamEmf : connectorParameterInputs) {
-
-				ConnectorInputParam connectorInputParam = new ConnectorInputParam();
-				connectorInputParam.setId(connectorInputParamEmf.getId());
-				connectorInputParam.setExecute(StringUtil.getBoolean(connectorInputParamEmf
-						.getIsExecute()));
-				connectorInputParam.setDataType(connectorInputParamEmf.getDataType());
-				connectorInputParam.setName(connectorInputParamEmf.getName());
-				if (connectorInputParamEmf.getExpression() != null) {
-					connectorInputParam.setExpression(new ExpressionImpl(connectorInputParamEmf
-							.getExpression().getValue()));
-				}
-				connectorInputParameters.add(connectorInputParam);
-			}
-
-			for (ConnectorParameterOutput connectorOutputParamEmf : connectorParameterOutputs) {
-				ConnectorOutputParam connectorOutputParam = new ConnectorOutputParam();
-				connectorOutputParam.setOutputId(connectorOutputParamEmf.getOutputId());
-				connectorOutputParam.setVariableTarget(connectorOutputParamEmf.getVariableTarget());
-				connectorOutputParameters.add(connectorOutputParam);
-			}
-			connectorInstanceBehavior.setConnectorInputsParam(connectorInputParameters);
-			connectorInstanceBehavior.setConnectorOutputsParam(connectorOutputParameters);
-			connectors.add(connectorInstanceBehavior);
-		}
-
-		return connectors;
+	protected List<ConnectorListener> parserConnector(BaseElement baseElement, String connrctorType) {
+		return null;
 	}
 
 	public void init() {
