@@ -35,7 +35,6 @@ import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.model.Activity;
-import org.foxbpm.model.BoundaryEvent;
 import org.foxbpm.model.LoopCharacteristics;
 import org.foxbpm.model.MultiInstanceLoopCharacteristics;
 import org.foxbpm.model.SkipStrategy;
@@ -47,6 +46,8 @@ public class ActivityBehavior extends FlowNodeBehavior {
 	private static final long serialVersionUID = 1L;
 
 	private static Logger LOG = LoggerFactory.getLogger(ActivityBehavior.class);
+	
+	private List<BoundaryEventBehavior> boundaryEventBehaviors;
 
 	public void enter(FlowNodeExecutionContext executionContext) {
 
@@ -95,9 +96,9 @@ public class ActivityBehavior extends FlowNodeBehavior {
 
 	protected void eventExecute(FlowNodeExecutionContext executionContext) {
 
-		List<BoundaryEvent> boundaryEvents = getBoundaryEvents();
+		List<BoundaryEventBehavior> boundaryEventBehaviors = getBoundaryEventBehaviors();
 		// 验证是否含有边界事件
-		if (boundaryEvents.size() > 0) {
+		if (boundaryEventBehaviors.size() > 0) {
 			/*
 			 * 边界事件的处理逻辑是这样的, 如果有边界事件,主令牌创建一个儿子,进入到当前节点, 主令牌自己去执行边界事件的执行方法,
 			 * 当定时到的时候如果是中断边界,则直接杀掉主令牌所有的儿子,将主令牌推下去
@@ -105,7 +106,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 			 */
 			TokenEntity tokenEntity = (TokenEntity) executionContext;
 
-			LOG.debug("节点: {}({}) 含有 {} 个边界事件,令牌号: {}({}).", this.getName(), this.getId(), boundaryEvents.size(), tokenEntity.getName(),
+			LOG.debug("节点: {}({}) 含有 {} 个边界事件,令牌号: {}({}).", this.getName(), this.getId(), boundaryEventBehaviors.size(), tokenEntity.getName(),
 					tokenEntity.getId());
 			LOG.debug("主令牌: {}({}),进入节点.", tokenEntity.getName(), tokenEntity.getId());
 			// 将子令牌放入节点
@@ -125,8 +126,12 @@ public class ActivityBehavior extends FlowNodeBehavior {
 
 	}
 	
-	private List<BoundaryEventBehavior> getBoundaryEventBehaviors(){
-		return null;
+	public List<BoundaryEventBehavior> getBoundaryEventBehaviors(){
+		return boundaryEventBehaviors;
+	}
+	
+	public void setBoundaryEventBehaviors(List<BoundaryEventBehavior> boundaryEventBehaviors) {
+		this.boundaryEventBehaviors = boundaryEventBehaviors;
 	}
 
 	private void forkedTokenEnter(FlowNodeExecutionContext executionContext) {
@@ -453,10 +458,5 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		token.setGroupID(null);
 		token.setLoopCount(0);
 		super.cleanData(executionContext);
-	}
-	
-	private List<BoundaryEvent> getBoundaryEvents(){
-		
-		return new ArrayList<BoundaryEvent>();
 	}
 }
