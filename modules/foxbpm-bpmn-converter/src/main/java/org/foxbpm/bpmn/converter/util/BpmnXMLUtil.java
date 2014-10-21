@@ -398,6 +398,7 @@ public class BpmnXMLUtil {
 		if (null != inputsParam && !inputsParam.isEmpty()) {
 			InputParam inputParam = null;
 			Element childElem = null;
+			Element expressionElem = null;
 			for (Iterator<InputParam> iterator = inputsParam.iterator(); iterator.hasNext();) {
 				inputParam = iterator.next();
 				childElem = parentElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
@@ -408,6 +409,14 @@ public class BpmnXMLUtil {
 				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_NAME, inputParam.getName());
 				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_DATATYPE, inputParam.getDataType());
 				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_ISEXECUTE, String.valueOf(inputParam.isExecute()));
+				if (null != inputParam.getExpression()) {
+					expressionElem = childElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+					        + BpmnXMLConstants.ELEMENT_EXPRESSION);
+					expressionElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
+					        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);
+					expressionElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(inputParam.getExpression()));
+					expressionElem.add(new DOMCDATA(inputParam.getExpression()));
+				}
 			}
 		}
 		
@@ -472,8 +481,8 @@ public class BpmnXMLUtil {
 	 * 字符串截取 0~length
 	 * 
 	 * @param str
-	 * @param length > 0
-	 *            截取长度 字符串
+	 * @param length
+	 *            > 0 截取长度 字符串
 	 * @return 返回截取字符串
 	 */
 	public static String interceptStr(String str, int length) {
