@@ -48,9 +48,9 @@ public abstract class BaseElementXMLConverter implements FlowElementFactory {
 				baseElement.setDocumentation(elem.getText());
 			}
 		}
-		// 处理流程
+		// 处理流程容器
 		if (baseElement instanceof FlowContainer) {
-			BpmnXMLUtil.doFlowContainer(element, baseElement);
+			BpmnXMLUtil.parseFlowContainer(element, baseElement);
 		}
 	}
 	public void convertModelToXML(Element element, BaseElement baseElement) {
