@@ -32,10 +32,27 @@ import org.foxbpm.model.FlowContainer;
  * @date 2014年10月15日
  */
 public abstract class BaseElementXMLConverter implements FlowElementFactory {
-	
+	/**
+	 * 转换器对应模型元素类型
+	 * 
+	 * @return 返回模型类型
+	 */
 	public abstract Class<? extends BaseElement> getBpmnElementType();
+	/**
+	 * 转换器对应XML元素名称
+	 * 
+	 * @return
+	 */
 	public abstract String getXMLElementName();
 	
+	/**
+	 * 将xml元素转换model
+	 * 
+	 * @param element
+	 *            xml元素
+	 * @param baseElement
+	 *            模型实例
+	 */
 	@SuppressWarnings("rawtypes")
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
 		baseElement.setId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
@@ -53,6 +70,14 @@ public abstract class BaseElementXMLConverter implements FlowElementFactory {
 			BpmnXMLUtil.parseFlowContainer(element, baseElement);
 		}
 	}
+	/**
+	 * 将模型转换成XML元素
+	 * 
+	 * @param element
+	 *            元素节点
+	 * @param baseElement
+	 *            模型实例
+	 */
 	public void convertModelToXML(Element element, BaseElement baseElement) {
 		
 		if (null != baseElement.getId()) {

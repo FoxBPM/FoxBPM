@@ -319,73 +319,72 @@ public class BpmnXMLUtil {
 	public static void createConectorElement(Element parentElement, List<Connector> connectors) {
 		if (null != connectors) {
 			Connector connector = null;
-			Element connectorInstanceElement = null;
+			Element connectorInstanceElements = null;
+			Element connectorInstanceElem = null;
 			Element childElem = null;
 			Element expressionElem = null;
-			connectorInstanceElement = parentElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+			connectorInstanceElements = parentElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 			        + BpmnXMLConstants.ELEMENT_CONNECTORINSTANCEELEMENTS);
-			connectorInstanceElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_CONNRCTORTYPE, "flowConnector");
+			connectorInstanceElements.addAttribute(BpmnXMLConstants.ATTRIBUTE_CONNRCTORTYPE, "flowConnector");
 			
 			for (Iterator<Connector> iterator = connectors.iterator(); iterator.hasNext();) {
 				connector = iterator.next();
 				// 处理基本属性
-				childElem = connectorInstanceElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+				connectorInstanceElem = connectorInstanceElements.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 				        + BpmnXMLConstants.ELEMENT_CONNECTORINSTANCE);
-				childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_PACKAGENAME, connector.getPackageName());
-				childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, connector.getId());
-				childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_CLASSNAME, connector.getClassName());
-				childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_CONNECTORINSTANCE_ID, connector.getConnectorInstanceId());
-				childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_CONNECTORINSTANCE_NAME, connector.getConnectorInstanceName());
-				childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_EVENTTYPE, connector.getEventType());
-				childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ERRORHANDLING, connector.getErrorHandling());
-				childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ERRORCODE, connector.getErrorCode());
+				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_PACKAGENAME, connector.getPackageName());
+				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, connector.getId());
+				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_CLASSNAME, connector.getClassName());
+				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_CONNECTORINSTANCE_ID, connector.getConnectorInstanceId());
+				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_CONNECTORINSTANCE_NAME, connector.getConnectorInstanceName());
+				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_EVENTTYPE, connector.getEventType());
+				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ERRORHANDLING, connector.getErrorHandling());
+				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ERRORCODE, connector.getErrorCode());
 				// 结束
-				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_TYPE, connector.getType());
+				BpmnXMLUtil.addElemAttribute(connectorInstanceElem, BpmnXMLConstants.ATTRIBUTE_TYPE, connector.getType());
 				// 处理输入参数
-				createInputsParam(childElem, connector.getInputsParam());
+				createInputsParam(connectorInstanceElem, connector.getInputsParam());
 				// 处理输出参数
-				createOutputsParam(childElem, connector.getOutputsParam());
+				createOutputsParam(connectorInstanceElem, connector.getOutputsParam());
 				// 处理输出参数
-				createOutputsParamDef(childElem, connector.getOutputsParamDef());
+				createOutputsParamDef(connectorInstanceElem, connector.getOutputsParamDef());
 				// 处理其他
 				// 处理foxbpm:skipComment
-				childElem = connectorInstanceElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-				        + BpmnXMLConstants.ELEMENT_SKIPCOMMENT);
-				childElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
-				        + ':' + BpmnXMLConstants.ELEMENT_SKIPCOMMENT);
-				expressionElem = childElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-				        + BpmnXMLConstants.ELEMENT_EXPRESSION);
-				expressionElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
-				        + ':' + BpmnXMLConstants.ELEMENT_EXPRESSION);
-				expressionElem.add(new DOMCDATA(connector.getSkipComment()));
+				if (null != connector.getSkipComment()) {
+					childElem = connectorInstanceElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+					        + BpmnXMLConstants.ELEMENT_SKIPCOMMENT);
+					childElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
+					        + ':' + BpmnXMLConstants.ELEMENT_SKIPCOMMENT);
+					expressionElem = childElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+					        + BpmnXMLConstants.ELEMENT_EXPRESSION);
+					createExpressionElement(expressionElem, connector.getSkipComment());
+				}
 				// 处理foxbpm:timeExpression
 				if (null != connector.getTimerEventDefinition()) {
-					childElem = connectorInstanceElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+					childElem = connectorInstanceElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 					        + BpmnXMLConstants.ELEMENT_TIMEEXPRESSION);
 					childElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
 					        + ':' + BpmnXMLConstants.ELEMENT_TIMEEXPRESSION);
-					expressionElem = childElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-					        + BpmnXMLConstants.ELEMENT_EXPRESSION);
-					expressionElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
-					        + ':' + BpmnXMLConstants.ELEMENT_EXPRESSION);
-					expressionElem.add(new DOMCDATA(connector.getTimerEventDefinition().getTimeDuration()));
+					if (null != connector.getTimerEventDefinition().getTimeDate()) {
+						expressionElem = childElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+						        + BpmnXMLConstants.ELEMENT_EXPRESSION);
+						createExpressionElement(expressionElem, connector.getTimerEventDefinition().getTimeDate());
+					}
 					
 				}
 				// foxbpm:timeSkipExpression
 				if (null != connector.getSkipExpression()) {
-					childElem = connectorInstanceElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+					childElem = connectorInstanceElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 					        + BpmnXMLConstants.ELEMENT_TIMESKIPEXPRESSION);
 					childElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
 					        + ':' + BpmnXMLConstants.ELEMENT_TIMESKIPEXPRESSION);
 					expressionElem = childElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 					        + BpmnXMLConstants.ELEMENT_EXPRESSION);
-					expressionElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
-					        + ':' + BpmnXMLConstants.ELEMENT_EXPRESSION);
-					expressionElem.add(new DOMCDATA(connector.getSkipExpression()));
+					createExpressionElement(expressionElem, connector.getSkipExpression());
 				}
 				// 描述
 				if (null != connector.getDocumentation()) {
-					childElem = connectorInstanceElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+					childElem = connectorInstanceElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 					        + BpmnXMLConstants.ELEMENT_DOCUMENTATION);
 					childElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
 					        + ':' + BpmnXMLConstants.ELEMENT_DOCUMENTATION);
@@ -394,10 +393,26 @@ public class BpmnXMLUtil {
 			}
 		}
 	}
+	/**
+	 * foxbpm:expression 给xml元素添加属性
+	 * 
+	 * @param element
+	 *            foxbpm:expression
+	 * @param obj
+	 */
+	private static void createExpressionElement(Element element, Object obj) {
+		String expression = obj.toString();
+		element.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
+		        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);
+		element.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.TYPE_EXPRESSION));
+		element.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(expression));
+		element.add(new DOMCDATA(expression));
+	}
 	private static void createInputsParam(Element parentElement, List<InputParam> inputsParam) {
 		if (null != inputsParam && !inputsParam.isEmpty()) {
 			InputParam inputParam = null;
 			Element childElem = null;
+			Element expressionElem = null;
 			for (Iterator<InputParam> iterator = inputsParam.iterator(); iterator.hasNext();) {
 				inputParam = iterator.next();
 				childElem = parentElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
@@ -408,6 +423,14 @@ public class BpmnXMLUtil {
 				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_NAME, inputParam.getName());
 				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_DATATYPE, inputParam.getDataType());
 				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_ISEXECUTE, String.valueOf(inputParam.isExecute()));
+				if (null != inputParam.getExpression()) {
+					expressionElem = childElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+					        + BpmnXMLConstants.ELEMENT_EXPRESSION);
+					expressionElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
+					        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);
+					expressionElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(inputParam.getExpression()));
+					expressionElem.add(new DOMCDATA(inputParam.getExpression()));
+				}
 			}
 		}
 		
@@ -472,8 +495,8 @@ public class BpmnXMLUtil {
 	 * 字符串截取 0~length
 	 * 
 	 * @param str
-	 * @param length > 0
-	 *            截取长度 字符串
+	 * @param length
+	 *            > 0 截取长度 字符串
 	 * @return 返回截取字符串
 	 */
 	public static String interceptStr(String str, int length) {

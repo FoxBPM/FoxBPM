@@ -17,8 +17,10 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
+import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.BoundaryEvent;
 import org.foxbpm.model.FlowElement;
@@ -44,29 +46,28 @@ public class BoundaryEventXMLConverter extends CatchEventXMLConverter {
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
 		BoundaryEvent boundaryEvent = (BoundaryEvent) baseElement;
 		boundaryEvent.setAttachedToRef(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ATTACHEDTOREF));
-		String isCancelActivity = element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ISCANCELACTIVITY);
-		if (BpmnXMLConstants.IS_TRUE.equalsIgnoreCase(isCancelActivity)) {
-			boundaryEvent.setCancelActivity(true);
-		} else if (BpmnXMLConstants.IS_FALSE.equalsIgnoreCase(isCancelActivity)) {
-			boundaryEvent.setCancelActivity(false);
-		}
+		boundaryEvent.setCancelActivity(BpmnXMLUtil.parseBoolean(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ISCANCELACTIVITY)));
 		super.convertXMLToModel(element, baseElement);;
 	}
 	
 	@Override
 	public void convertModelToXML(Element element, BaseElement baseElement) {
-		// TODO Auto-generated method stub
-		
+		BoundaryEvent boundaryEvent = (BoundaryEvent) baseElement;
+		if (null != boundaryEvent.getAttachedToRef()) {
+			element.addAttribute(BpmnXMLConstants.ATTRIBUTE_ATTACHEDTOREF, boundaryEvent.getAttachedToRef());
+		}
+		element.addAttribute(BpmnXMLConstants.ATTRIBUTE_ISCANCELACTIVITY, String.valueOf(boundaryEvent.isCancelActivity()));
+		super.convertModelToXML(element, baseElement);
 	}
 	
 	@Override
 	public String getXMLElementName() {
 		return BpmnXMLConstants.ELEMENT_BOUNDARYEVENT;
 	}
-
+	
 	public Element cretateXMLElement() {
-	    // TODO Auto-generated method stub
-	    return null;
-    }
+		return DocumentFactory.getInstance().createElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+		        + BpmnXMLConstants.ELEMENT_BOUNDARYEVENT, BpmnXMLConstants.BPMN2_NAMESPACE);
+	}
 	
 }
