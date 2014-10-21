@@ -18,7 +18,6 @@
 package org.foxbpm.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,19 +60,19 @@ public class Process extends FlowElement implements FlowContainer {
 	/**
 	 * 流程可发起人
 	 */
-	protected List<PotentialStarter> potentialStarters;
+	protected List<PotentialStarter> potentialStarters = new ArrayList<PotentialStarter>();
 	
 	/**
 	 * 流程变量定义
 	 */
-	protected List<DataVariableDefinition> dataVariables;
+	protected List<DataVariableDefinition> dataVariables = new ArrayList<DataVariableDefinition>();
 	
 	protected List<LaneSet> laneSets;
 	
 	/**
 	 * 流程元素集合
 	 */
-	protected List<FlowElement> flowElements;
+	protected List<FlowElement> flowElements = new ArrayList<FlowElement>();
 	
 	/**
 	 * 线条map
@@ -128,11 +127,7 @@ public class Process extends FlowElement implements FlowContainer {
 		this.category = category;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<PotentialStarter> getPotentialStarters() {
-		if(potentialStarters == null){
-			return Collections.EMPTY_LIST;
-		}
 		return potentialStarters;
 	}
 	
@@ -140,11 +135,7 @@ public class Process extends FlowElement implements FlowContainer {
 		this.potentialStarters = potentialStarters;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<DataVariableDefinition> getDataVariables() {
-		if(dataVariables == null){
-			return Collections.EMPTY_LIST;
-		}
 		return dataVariables;
 	}
 	

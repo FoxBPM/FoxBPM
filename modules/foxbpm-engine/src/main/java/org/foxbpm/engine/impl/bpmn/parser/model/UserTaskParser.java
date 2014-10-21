@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
+import org.foxbpm.engine.impl.connector.ConnectorListener;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.task.CommandParamImpl;
@@ -79,15 +80,7 @@ public class UserTaskParser extends TaskParser {
 
 		String claimType = userTask.getClaimType();
 		taskDefinition.setClaimType(claimType);
-
-		List<Connector> resources = userTask.getActorConnectors();
-		if (resources.size() > 0) {
-			taskDefinition.getActorConnectors().addAll(
-					parserConnector(resources.get(0), "actorConnector"));
-
-		}
 		userTaskBehavior.setTaskDefinition(taskDefinition);
-
 		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) getFlowElementsContainer();
 		processDefinition.getTaskDefinitions().put(taskID, taskDefinition);
 
@@ -113,6 +106,15 @@ public class UserTaskParser extends TaskParser {
 		taskDefinition.setTaskDescription(userTask.getTaskDescription());
 		taskDefinition.setCompleteTaskDescription(userTask.getCompleteDescription());
 		taskDefinition.setExpectExecuteTime(0);
+		
+		List<Connector> actors = userTask.getActorConnectors();
+		if(actors != null){
+			for(Connector tmpConnector : actors){
+				ConnectorListener cListener = new ConnectorListener();
+				cListener.setConnector(tmpConnector);
+				taskDefinition.getActorConnectors().add(cListener);
+			}
+		}
 		return super.parser(baseElement);
 	}
 

@@ -100,7 +100,7 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 	}
 	
 	protected void ensureChildrenInitialized() {
-		if (this.children == null) {
+		if (this.children != null) {
 			List<TokenEntity> listResult = Context.getCommandContext().getTokenManager().findChildTokensByTokenId(this.id);
 			
 			for (TokenEntity tokenEntity : listResult) {
@@ -395,5 +395,14 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 
 	public void setLoopCount(int loopCount) {
 		this.loopCount = loopCount;
+	}
+	
+	public String getBizKey(){
+		ensureProcessInstanceInitialized();
+		if(processInstance != null){
+			ProcessInstanceEntity tmp = (ProcessInstanceEntity)processInstance;
+			return tmp.getBizKey();
+		}
+		return null;
 	}
 }

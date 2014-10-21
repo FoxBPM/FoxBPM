@@ -62,6 +62,10 @@ public abstract class FlowElementXMLConverter extends BaseElementXMLConverter {
 	
 	@Override
 	public void convertModelToXML(Element element, BaseElement baseElement) {
+		FlowElement flowElement = (FlowElement) baseElement;
+		if (null != flowElement.getName()) {
+			element.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, flowElement.getName());
+		}
 		super.convertModelToXML(element, baseElement);
 	}
 }

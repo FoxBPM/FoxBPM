@@ -44,10 +44,10 @@ public class CallActivityXMLConverter extends ActivityXMLConverter {
 	@Override
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
 		CallActivity activity = (CallActivity)baseElement;
-		String callElementId = element.attributeValue("foxbpm:callableElementId");
-		String callElementVersion = element.attributeValue("foxbpm:callableElementVersion");
-		String bizKey = element.attributeValue("foxbpm:callableElementBizKey");
-		String isAsync = element.attributeValue("foxbpm:isAsync");
+		String callElementId = element.attributeValue("callableElementId");
+		String callElementVersion = element.attributeValue("callableElementVersion");
+		String bizKey = element.attributeValue("callableElementBizKey");
+		String isAsync = element.attributeValue("isAsync");
 		if(!StringUtils.isEmpty(callElementId)){
 			activity.setCallableElementId(callElementId);
 		}
@@ -63,6 +63,7 @@ public class CallActivityXMLConverter extends ActivityXMLConverter {
 		if(!StringUtils.isEmpty(isAsync)){
 			activity.setAsync(Boolean.parseBoolean(isAsync));
 		}
+		super.convertXMLToModel(element, baseElement);
 	}
 	
 	@Override

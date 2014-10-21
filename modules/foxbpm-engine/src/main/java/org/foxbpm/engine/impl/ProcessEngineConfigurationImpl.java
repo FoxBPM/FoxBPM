@@ -564,6 +564,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			} else {
 				resource = resourceSet.createResource(URI.createURI(filePath));
 			}
+			System.setProperty("org.eclipse.emf.ecore.plugin.EcorePlugin.doNotLoadResourcesPlugin","true");
 			resourceSet.getPackageRegistry().put(FoxBPMConfigPackage.eINSTANCE.getNsURI(), FoxBPMConfigPackage.eINSTANCE);
 			resource.load(null);
 		} catch (Exception e) {

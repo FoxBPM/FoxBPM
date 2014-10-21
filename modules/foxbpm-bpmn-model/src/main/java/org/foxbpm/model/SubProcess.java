@@ -35,12 +35,12 @@ public class SubProcess extends Activity implements FlowContainer {
 	/**
 	 * 流程元素集合
 	 */
-	protected List<FlowElement> flowElements;
+	protected List<FlowElement> flowElements = new ArrayList<FlowElement>();
 	
 	/**
 	 * 线条map
 	 */
-	protected Map<String, SequenceFlow> sequenceFlows;
+	protected Map<String, SequenceFlow> sequenceFlows = new HashMap<String, SequenceFlow>();
 	
 	public List<FlowElement> getFlowElements() {
 		return flowElements;

@@ -18,10 +18,7 @@
  */
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
-import java.util.List;
-
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
-import org.foxbpm.engine.impl.connector.ConnectorListener;
 import org.foxbpm.kernel.process.impl.KernelFlowElementsContainerImpl;
 import org.foxbpm.model.BaseElement;
 
@@ -38,10 +35,6 @@ public class BaseElementParser {
 		baseElementBehavior.setId(baseElement.getId());
 		baseElementBehavior.setBaseElement(baseElement);
 		return baseElementBehavior;
-	}
-
-	protected List<ConnectorListener> parserConnector(BaseElement baseElement, String connrctorType) {
-		return null;
 	}
 
 	public void init() {

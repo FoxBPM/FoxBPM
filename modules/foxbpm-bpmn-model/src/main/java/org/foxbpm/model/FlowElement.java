@@ -17,6 +17,7 @@
  */
 package org.foxbpm.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public abstract class FlowElement extends BaseElement {
 	/**
 	 * 连接器集合
 	 */
-	protected List<Connector> connector;
+	protected List<Connector> connector = new ArrayList<Connector>();
 
 	public String getName() {
 		return name;

@@ -153,7 +153,12 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 
 		childrenToken.setParent(parent);
 
-		parent.getChildren().add(childrenToken);
+		List<KernelTokenImpl> children = parent.getChildren();
+		if(children == null){
+			children = new ArrayList<KernelTokenImpl>();
+			parent.setChildren(children);
+		}
+		children.add(childrenToken);
 		// 将生成的新节点放入流程实例令牌列表中
 		// addToken(childrenToken);
 
