@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.foxbpm.engine.impl.datavariable.DataVariableDefinition;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.rest.common.RestConstants;
@@ -34,21 +33,21 @@ public class VariableDefinitonResouces extends AbstractRestResource {
 
 	@Get
 	public DataResult getProcessDefinitionVariable(){
-		String processKey = getAttribute(RestConstants.PROCESS_KEY);
-		int version = StringUtil.getInt(getAttribute(RestConstants.VERSION));
-		
-		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity)FoxBpmUtil.getProcessEngine().getModelService().getProcessDefinition(processKey, version); 
-		if(processDefinition == null){
-			return null;
-		}
-		List<DataVariableDefinition> dataVariableDefinitions = processDefinition.getDataVariableMgmtDefinition().getDataVariableDefinitions();
-		List<Map<String,Object>> results = new ArrayList<Map<String,Object>>();
-		for (DataVariableDefinition variableDefinition : dataVariableDefinitions) {
-			results.add(variableDefinition.getPersistentState());
-		}
-		DataResult result = new DataResult();
-		result.setData(results);
-		result.setTotal(dataVariableDefinitions.size());
-		return result;
+//		String processKey = getAttribute(RestConstants.PROCESS_KEY);
+//		int version = StringUtil.getInt(getAttribute(RestConstants.VERSION));
+//		
+//		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity)FoxBpmUtil.getProcessEngine().getModelService().getProcessDefinition(processKey, version); 
+//		if(processDefinition == null){
+//			return null;
+//		}
+//		List<DataVariableDefinition> dataVariableDefinitions = processDefinition.getDataVariableMgmtDefinition().getDataVariableDefinitions();
+//		List<Map<String,Object>> results = new ArrayList<Map<String,Object>>();
+//		for (DataVariableDefinition variableDefinition : dataVariableDefinitions) {
+//			results.add(variableDefinition.getPersistentState());
+//		}
+//		DataResult result = new DataResult();
+//		result.setData(results);
+//		result.setTotal(dataVariableDefinitions.size());
+		return null;
 	}
 }

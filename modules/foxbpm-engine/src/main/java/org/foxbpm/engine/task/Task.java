@@ -279,4 +279,10 @@ public interface Task{
 	 * @param nodeName
 	 */
 	void setNodeName(String nodeName);
+	
+	/**
+	 * 设置任务类型
+	 * @param taskType
+	 */
+	void setTaskType(String taskType);
 }
