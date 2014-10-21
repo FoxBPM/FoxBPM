@@ -54,5 +54,10 @@ public class IntermediateCatchEventXMLConverter extends CatchEventXMLConverter {
 	public String getXMLElementName() {
 		return BpmnXMLConstants.ELEMENT_INTERMEDIATECATCHEVENT;
 	}
+
+	public Element cretateXMLElement() {
+	    // TODO Auto-generated method stub
+	    return null;
+    }
 	
 }

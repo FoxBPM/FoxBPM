@@ -90,7 +90,7 @@ public class BpmnModel {
 				return process.getSequenceFlows();
 			} else {
 				if (null != process.getFlowElements()) {
-					for (Iterator<FlowElement> iteratorFlowElement = process.getFlowElements().iterator(); iterator.hasNext();) {
+					for (Iterator<FlowElement> iteratorFlowElement = process.getFlowElements().iterator(); iteratorFlowElement.hasNext();) {
 						flowElement = iteratorFlowElement.next();
 						if (flowElement instanceof FlowContainer) {
 							flowContainer = (FlowContainer) flowElement;

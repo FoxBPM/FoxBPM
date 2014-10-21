@@ -17,6 +17,7 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import org.dom4j.Element;
 import org.foxbpm.model.FlowElement;
 
 /**
@@ -33,4 +34,10 @@ public interface FlowElementFactory {
 	 * @return
 	 */
 	FlowElement cretateFlowElement();
+	/**
+	 * 创建XMLElement
+	 * 
+	 * @return
+	 */
+	Element cretateXMLElement();
 }

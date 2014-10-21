@@ -57,12 +57,14 @@ public class BpmnXMLConverter {
 		// sequence
 		addConverter(new SequenceFlowXMLConverter());
 		// tasks
-		addConverter(new UserTaskXMLConverter());
+		//addConverter(new UserTaskXMLConverter());
 		addConverter(new ScriptTaskXMLConverter());
 		// gateway
 		addConverter(new ExclusiveGatewayXMLConverter());
 		addConverter(new InclusiveGatewayXMLConverter());
 		addConverter(new ParallelGatewayXMLConverter());
+		//subProcess
+		addConverter(new SubProcessXMLConverter());
 	}
 	
 	protected BpmnDiagramParser bpmnDiagramParser;

@@ -63,5 +63,10 @@ public class BoundaryEventXMLConverter extends CatchEventXMLConverter {
 	public String getXMLElementName() {
 		return BpmnXMLConstants.ELEMENT_BOUNDARYEVENT;
 	}
+
+	public Element cretateXMLElement() {
+	    // TODO Auto-generated method stub
+	    return null;
+    }
 	
 }

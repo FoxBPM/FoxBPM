@@ -71,5 +71,10 @@ public class ScriptTaskXMLConverter extends TaskXMLConverter {
 	public String getXMLElementName() {
 		return BpmnXMLConstants.ELEMENT_SCRIPTTASK;
 	}
+
+	public Element cretateXMLElement() {
+	    // TODO Auto-generated method stub
+	    return null;
+    }
 	
 }

@@ -66,7 +66,18 @@ public abstract class FlowNodeXMLConverter extends FlowElementXMLConverter {
 	
 	@Override
 	public void convertModelToXML(Element element, BaseElement baseElement) {
-		// TODO Auto-generated method stub
+		FlowNode flowNode = (FlowNode) baseElement;
+		Element childElem = null;
+		// 处理incoming
+		for (Iterator<String> iterator = flowNode.getIncomingFlows().iterator(); iterator.hasNext();) {
+			childElem = element.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':' + BpmnXMLConstants.ELEMENT_INCOMING);
+			childElem.setText(iterator.next());
+		}
+		// 处理outgoing
+		for (Iterator<String> iterator = flowNode.getIncomingFlows().iterator(); iterator.hasNext();) {
+			childElem = element.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':' + BpmnXMLConstants.ELEMENT_OUTGOING);
+			childElem.setText(iterator.next());
+		}
 		super.convertModelToXML(element, baseElement);
 	}
 }

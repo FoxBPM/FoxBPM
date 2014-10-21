@@ -43,29 +43,35 @@ public class BPMNDIExport extends BpmnExport {
 			WayPoint entryWapoint = null;
 			Element bpmnEdge = null;
 			Element elWapoint = null;
+			
 			for (Iterator<Entry<String, Map<String, Bounds>>> iterator = model.getBoundsLocationMap().entrySet().iterator(); iterator.hasNext();) {
 				entry = iterator.next();
 				sequenceFlowMap = model.findSequenceFlow(entry.getKey());
-				if(null == sequenceFlowMap){
-					//错误
-					return ;
+				if (null == sequenceFlowMap) {
+					// 错误
+					return;
 				}
-				bpmndiagram = parentElement.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'+ BpmnXMLConstants.ELEMENT_DI_DIAGRAM);
+				bpmndiagram = parentElement.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+				        + BpmnXMLConstants.ELEMENT_DI_DIAGRAM);
 				bpmndiagram.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID("BPMNDiagram"));
 				bpmndiagram.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, "Default Process Diagram");
 				
-				bpmnplane = bpmndiagram.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'+ BpmnXMLConstants.ELEMENT_DI_PLANE);
+				bpmnplane = bpmndiagram.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+				        + BpmnXMLConstants.ELEMENT_DI_PLANE);
 				bpmnplane.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID("BPMNPlane"));
 				bpmnplane.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_BPMNELEMENT, entry.getKey());
 				
 				// 生成bpmnshape
 				for (Iterator<Entry<String, Bounds>> iteratorBounds = entry.getValue().entrySet().iterator(); iteratorBounds.hasNext();) {
 					entryBounds = iteratorBounds.next();
-					bpmnShape = bpmnplane.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'+ BpmnXMLConstants.ELEMENT_DI_SHAPE);
-					bpmnShape.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, BpmnXMLConstants.ELEMENT_DI_SHAPE + '_' + entryBounds.getKey());
+					bpmnShape = bpmnplane.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+					        + BpmnXMLConstants.ELEMENT_DI_SHAPE);
+					bpmnShape.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, BpmnXMLConstants.ELEMENT_DI_SHAPE + '_'
+					        + entryBounds.getKey());
 					bpmnShape.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_BPMNELEMENT, entryBounds.getKey());
 					
-					elBounds = bpmnShape.addElement(BpmnXMLConstants.DC_PREFIX + ':' + BpmnXMLConstants.ELEMENT_DI_BOUNDS);
+					elBounds = bpmnShape.addElement(BpmnXMLConstants.DC_PREFIX + ':'
+					        + BpmnXMLConstants.ELEMENT_DI_BOUNDS);
 					elBounds.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_X, String.valueOf(entryBounds.getValue().getX()));
 					elBounds.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_Y, String.valueOf(entryBounds.getValue().getY()));
 					elBounds.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_WIDTH, String.valueOf(entryBounds.getValue().getY()));
@@ -75,20 +81,24 @@ public class BPMNDIExport extends BpmnExport {
 				if (null != model.getWaypointLocationMap().get(entry.getKey())) {
 					for (Iterator<Entry<String, List<WayPoint>>> iteratorEntry = model.getWaypointLocationMap().get(entry.getKey()).entrySet().iterator(); iteratorEntry.hasNext();) {
 						entryList = iteratorEntry.next();
-						bpmnEdge = bpmnplane.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'+ BpmnXMLConstants.ELEMENT_DI_EDGE);
+						bpmnEdge = bpmnplane.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+						        + BpmnXMLConstants.ELEMENT_DI_EDGE);
 						bpmnEdge.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, "BPMNPlane_" + entryList.getKey());
 						bpmnEdge.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_BPMNELEMENT, entryList.getKey());
 						SequenceFlow = sequenceFlowMap.get(entryList.getKey());
-						if(null == SequenceFlow){
-							//异常
+						if (null == SequenceFlow) {
+							// 异常
 						}
-						bpmnEdge.addAttribute(BpmnXMLConstants.ATTRIBUTE_SOURCEREF, "BPMNShape_" + SequenceFlow.getSourceRefId());
-						bpmnEdge.addAttribute(BpmnXMLConstants.ATTRIBUTE_TARGETREF, "BPMNShape_" + SequenceFlow.getTargetRefId());
+						bpmnEdge.addAttribute(BpmnXMLConstants.ATTRIBUTE_SOURCEREF, "BPMNShape_"
+						        + SequenceFlow.getSourceRefId());
+						bpmnEdge.addAttribute(BpmnXMLConstants.ATTRIBUTE_TARGETREF, "BPMNShape_"
+						        + SequenceFlow.getTargetRefId());
 						
 						for (Iterator<WayPoint> iteratorEntryWayPoint = entryList.getValue().iterator(); iteratorEntryWayPoint.hasNext();) {
 							entryWapoint = iteratorEntryWayPoint.next();
 							
-							elWapoint = bpmnEdge.addElement(BpmnXMLConstants.DC_PREFIX + ':'+ BpmnXMLConstants.ELEMENT_DI_WAYPOINT);
+							elWapoint = bpmnEdge.addElement(BpmnXMLConstants.DC_PREFIX + ':'
+							        + BpmnXMLConstants.ELEMENT_DI_WAYPOINT);
 							elWapoint.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_X, String.valueOf(entryWapoint.getX()));
 							elWapoint.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_Y, String.valueOf(entryWapoint.getY()));
 						}

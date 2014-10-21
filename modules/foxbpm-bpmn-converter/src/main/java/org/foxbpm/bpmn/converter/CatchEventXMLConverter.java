@@ -33,4 +33,9 @@ public abstract class CatchEventXMLConverter extends EventXMLConverter {
 		super.convertXMLToModel(element, baseElement);
 	}
 	
+	@Override
+	public void convertModelToXML(Element element, BaseElement baseElement) {
+		// TODO Auto-generated method stub
+		super.convertModelToXML(element, baseElement);
+	}
 }

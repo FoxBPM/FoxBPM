@@ -167,5 +167,10 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public Element cretateXMLElement() {
+	    // TODO Auto-generated method stub
+	    return null;
+    }
  
 }
