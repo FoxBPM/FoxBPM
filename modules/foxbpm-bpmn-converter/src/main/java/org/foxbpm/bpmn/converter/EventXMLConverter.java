@@ -104,10 +104,11 @@ public abstract class EventXMLConverter extends FlowNodeXMLConverter {
 					timerEventDefinition = (TimerEventDefinition) eventDefinition;
 					childElem = element.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
 					        + BpmnXMLConstants.ELEMENT_TIMEREVENTDEFINITION);
+					childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, timerEventDefinition.getId());
 					if (null != timerEventDefinition.getTimeCycle()) {
 						nodeElem = childElem.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
 						        + BpmnXMLConstants.ELEMENT_TIMECYCLE);
-						nodeElem.addAttribute(BpmnXMLConstants.BPMN2_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.BPMN2_PREFIX
+						nodeElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.BPMN2_PREFIX
 						        + ':' + BpmnXMLConstants.TYPE_FORMALEXPRESSION);
 						nodeElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.FORMALEXPRESSION));
 						nodeElem.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':' + BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(timerEventDefinition.getTimeCycle()));
@@ -116,7 +117,7 @@ public abstract class EventXMLConverter extends FlowNodeXMLConverter {
 					if (null != timerEventDefinition.getTimeDuration()) {
 						nodeElem = childElem.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
 						        + BpmnXMLConstants.ELEMENT_TIMEDURATION);
-						nodeElem.addAttribute(BpmnXMLConstants.BPMN2_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.BPMN2_PREFIX
+						nodeElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.BPMN2_PREFIX
 						        + ':' + BpmnXMLConstants.TYPE_FORMALEXPRESSION);
 						nodeElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.FORMALEXPRESSION));
 						nodeElem.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':' + BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(timerEventDefinition.getTimeDuration()));
@@ -125,7 +126,7 @@ public abstract class EventXMLConverter extends FlowNodeXMLConverter {
 					if (null != timerEventDefinition.getTimeDate()) {
 						nodeElem = childElem.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
 						        + BpmnXMLConstants.ELEMENT_TIMEDATE);
-						nodeElem.addAttribute(BpmnXMLConstants.BPMN2_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.BPMN2_PREFIX
+						nodeElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.BPMN2_PREFIX
 						        + ':' + BpmnXMLConstants.TYPE_FORMALEXPRESSION);
 						nodeElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.FORMALEXPRESSION));
 						nodeElem.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':' + BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(timerEventDefinition.getTimeDate()));

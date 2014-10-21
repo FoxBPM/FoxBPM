@@ -22,6 +22,7 @@ import java.util.Iterator;
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
+import org.foxbpm.bpmn.converter.util.UniqueIDUtil;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.FlowContainer;
 
@@ -86,7 +87,7 @@ public abstract class BaseElementXMLConverter implements FlowElementFactory {
 		if (null != baseElement.getDocumentation()) {
 			Element childElem = element.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
 			        + BpmnXMLConstants.ELEMENT_DOCUMENTATION);
-			childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, baseElement.getId());
+			childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_DOCUMENTATION));
 			childElem.setText(baseElement.getDocumentation());
 		}
 	}

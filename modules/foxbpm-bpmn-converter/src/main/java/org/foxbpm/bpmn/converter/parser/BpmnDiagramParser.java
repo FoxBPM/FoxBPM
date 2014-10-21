@@ -55,7 +55,7 @@ public class BpmnDiagramParser extends BpmnParser {
 				// 处理dc:Bounds和di:waypoint
 				if (ELEMENT_DI_BOUNDS.equalsIgnoreCase(name)) {
 					bounds = new Bounds();
-					bounds.setExpanded(BpmnXMLUtil.parseBoolean(element.attributeValue(ATTRIBUTE_DI_IS_EXPANDED)));
+					bounds.setMarkerVisible(BpmnXMLUtil.parseBoolean(element.attributeValue(ATTRIBUTE_DI_IS_MARKERVISIBLE)));
 					bounds.setBpmnElement(element.attributeValue(ATTRIBUTE_DI_BPMNELEMENT));
 					bounds.setX(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_X)));
 					bounds.setY(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_Y)));

@@ -46,17 +46,12 @@ public class BPMNDIExport extends BpmnExport {
 			
 			for (Iterator<Entry<String, Map<String, Bounds>>> iterator = model.getBoundsLocationMap().entrySet().iterator(); iterator.hasNext();) {
 				entry = iterator.next();
-				sequenceFlowMap = model.findSequenceFlow(entry.getKey());
-				if (null == sequenceFlowMap) {
-					// 错误
-					return;
-				}
-				bpmndiagram = parentElement.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+				bpmndiagram = parentElement.addElement(BpmnXMLConstants.BPMNDI_PREFIX + ':'
 				        + BpmnXMLConstants.ELEMENT_DI_DIAGRAM);
 				bpmndiagram.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID("BPMNDiagram"));
 				bpmndiagram.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, "Default Process Diagram");
 				
-				bpmnplane = bpmndiagram.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+				bpmnplane = bpmndiagram.addElement(BpmnXMLConstants.BPMNDI_PREFIX + ':'
 				        + BpmnXMLConstants.ELEMENT_DI_PLANE);
 				bpmnplane.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID("BPMNPlane"));
 				bpmnplane.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_BPMNELEMENT, entry.getKey());
@@ -64,7 +59,7 @@ public class BPMNDIExport extends BpmnExport {
 				// 生成bpmnshape
 				for (Iterator<Entry<String, Bounds>> iteratorBounds = entry.getValue().entrySet().iterator(); iteratorBounds.hasNext();) {
 					entryBounds = iteratorBounds.next();
-					bpmnShape = bpmnplane.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+					bpmnShape = bpmnplane.addElement(BpmnXMLConstants.BPMNDI_PREFIX + ':'
 					        + BpmnXMLConstants.ELEMENT_DI_SHAPE);
 					bpmnShape.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, BpmnXMLConstants.ELEMENT_DI_SHAPE + '_'
 					        + entryBounds.getKey());
@@ -74,14 +69,22 @@ public class BPMNDIExport extends BpmnExport {
 					        + BpmnXMLConstants.ELEMENT_DI_BOUNDS);
 					elBounds.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_X, String.valueOf(entryBounds.getValue().getX()));
 					elBounds.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_Y, String.valueOf(entryBounds.getValue().getY()));
-					elBounds.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_WIDTH, String.valueOf(entryBounds.getValue().getY()));
-					elBounds.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_HEIGHT, String.valueOf(entryBounds.getValue().getY()));
+					elBounds.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_WIDTH, String.valueOf(entryBounds.getValue().getWidth()));
+					elBounds.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_HEIGHT, String.valueOf(entryBounds.getValue().getHeight()));
+					if (entryBounds.getValue().isMarkerVisible()) {
+						bpmnShape.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_IS_MARKERVISIBLE, String.valueOf(true));
+					}
+				}
+				sequenceFlowMap = model.findSequenceFlow(entry.getKey());
+				if (null == sequenceFlowMap) {
+					// 错误
+					return;
 				}
 				// 处理
 				if (null != model.getWaypointLocationMap().get(entry.getKey())) {
 					for (Iterator<Entry<String, List<WayPoint>>> iteratorEntry = model.getWaypointLocationMap().get(entry.getKey()).entrySet().iterator(); iteratorEntry.hasNext();) {
 						entryList = iteratorEntry.next();
-						bpmnEdge = bpmnplane.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+						bpmnEdge = bpmnplane.addElement(BpmnXMLConstants.BPMNDI_PREFIX + ':'
 						        + BpmnXMLConstants.ELEMENT_DI_EDGE);
 						bpmnEdge.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, "BPMNPlane_" + entryList.getKey());
 						bpmnEdge.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_BPMNELEMENT, entryList.getKey());

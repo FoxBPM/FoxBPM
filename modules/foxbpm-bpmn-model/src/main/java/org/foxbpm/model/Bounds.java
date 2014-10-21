@@ -29,7 +29,7 @@ public class Bounds {
 	protected double height;
 	protected double width;
 	protected String bpmnElement;
-	protected Boolean expanded;
+	protected boolean isMarkerVisible;
 	public double getX() {
 		return x;
 	}
@@ -60,10 +60,10 @@ public class Bounds {
 	public void setBpmnElement(String bpmnElement) {
 		this.bpmnElement = bpmnElement;
 	}
-	public Boolean getExpanded() {
-		return expanded;
+	public boolean isMarkerVisible() {
+		return isMarkerVisible;
 	}
-	public void setExpanded(Boolean expanded) {
-		this.expanded = expanded;
+	public void setMarkerVisible(boolean isMarkerVisible) {
+		this.isMarkerVisible = isMarkerVisible;
 	}
 }

@@ -58,7 +58,7 @@ public class InclusiveGatewayXMLConverter extends GatewayXMLConverter {
 	
 	public Element cretateXMLElement() {
 		return DocumentFactory.getInstance().createElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
-		        + BpmnXMLConstants.ELEMENT_INTERMEDIATECATCHEVENT, BpmnXMLConstants.BPMN2_NAMESPACE);
+		        + BpmnXMLConstants.ELEMENT_INCLUSIVEGATEWAY, BpmnXMLConstants.BPMN2_NAMESPACE);
 	}
 	
 }
