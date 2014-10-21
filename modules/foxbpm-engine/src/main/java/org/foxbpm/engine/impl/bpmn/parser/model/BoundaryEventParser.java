@@ -19,6 +19,7 @@ package org.foxbpm.engine.impl.bpmn.parser.model;
 
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.BoundaryEventBehavior;
+import org.foxbpm.engine.impl.bpmn.parser.BpmnParseHandlerImpl;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.BoundaryEvent;
 
@@ -38,7 +39,7 @@ public class BoundaryEventParser extends CatchEventParser {
 		BoundaryEventBehavior boundaryEventBehavior = (BoundaryEventBehavior) baseElementBehavior;
 		BoundaryEvent boundaryEventImpl = (BoundaryEvent) baseElement;
 		boundaryEventBehavior.setCancelActivity(boundaryEventImpl.isCancelActivity());
-//		BpmnParseHandlerImpl.behaviorRelationMemo.addBeAttachedActivity(boundaryEventImpl.getAttachedToRef(), boundaryEventBehavior);
+		BpmnParseHandlerImpl.behaviorRelationMemo.addBeAttachedActivity(boundaryEventImpl.getAttachedToRef(), boundaryEventBehavior);
 		return super.parser(baseElement);
 	}
 	 

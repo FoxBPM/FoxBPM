@@ -80,7 +80,6 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			throw new FoxBPMException("文件中没有对应的流程定义，请检查bpmn文件内容和流程key是否对应！");
 		}
 		KernelProcessDefinition processDefinition = loadProcess(bpmnModel);
-		
 		// 关联保存下来的关系
 		behaviorRelationMemo.attachActivityAndBoundaryEventBehaviorRelation();
 		// 加载监听器
