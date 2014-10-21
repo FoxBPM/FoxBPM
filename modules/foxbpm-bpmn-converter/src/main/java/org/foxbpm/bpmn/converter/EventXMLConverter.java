@@ -21,10 +21,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.dom4j.Element;
-import org.foxbpm.bpmn.converter.parser.EventDefintionParser;
+import org.dom4j.dom.DOMCDATA;
+import org.foxbpm.bpmn.constants.BpmnXMLConstants;
+import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
+import org.foxbpm.bpmn.converter.util.UniqueIDUtil;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.Event;
 import org.foxbpm.model.EventDefinition;
+import org.foxbpm.model.TerminateEventDefinition;
+import org.foxbpm.model.TimerEventDefinition;
 
 /**
  * 事件转换处理类
@@ -38,14 +43,102 @@ public abstract class EventXMLConverter extends FlowNodeXMLConverter {
 	@Override
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
 		Event event = (Event) baseElement;
-		Element elem = null;
+		Element childElem = null;
+		String nodeName = null;
 		for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
-			elem = (Element) iterator.next();
-			if (null == event.getEventDefinitions()) {
-				event.setEventDefinitions(new ArrayList<EventDefinition>());
+			childElem = (Element) iterator.next();
+			nodeName = childElem.getName();
+			if (BpmnXMLConstants.ELEMENT_TERMINATEEVENTDEFINITION.equalsIgnoreCase(nodeName)
+			        || BpmnXMLConstants.ELEMENT_TIMEREVENTDEFINITION.equalsIgnoreCase(nodeName)) {
+				if (null == event.getEventDefinitions()) {
+					event.setEventDefinitions(new ArrayList<EventDefinition>());
+				}
+				event.getEventDefinitions().add(convertEventDefinition(childElem));
 			}
-			event.getEventDefinitions().add(EventDefintionParser.parserEventDefinition(elem));
 		}
 		super.convertXMLToModel(element, baseElement);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private EventDefinition convertEventDefinition(Element element) {
+		String nodeName = element.getName();
+		TimerEventDefinition timerEventDefinition = null;
+		TerminateEventDefinition terminateEventDefinition = null;
+		if (BpmnXMLConstants.ELEMENT_TERMINATEEVENTDEFINITION.equalsIgnoreCase(nodeName)) {
+			terminateEventDefinition = new TerminateEventDefinition();
+			terminateEventDefinition.setId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
+			return terminateEventDefinition;
+		} else if (BpmnXMLConstants.ELEMENT_TIMEREVENTDEFINITION.equalsIgnoreCase(nodeName)) {
+			timerEventDefinition = new TimerEventDefinition();
+			timerEventDefinition.setId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
+			Element elem = null;
+			for (Iterator<Element> iterator = element.elements().iterator(); iterator.hasNext();) {
+				elem = (Element) iterator.next();
+				nodeName = elem.getName();
+				if (BpmnXMLConstants.ELEMENT_TIMEDATE.equalsIgnoreCase(nodeName)) {
+					timerEventDefinition.setTimeDate(BpmnXMLUtil.parseCDATA(elem));
+				} else if (BpmnXMLConstants.ELEMENT_TIMEDURATION.equalsIgnoreCase(nodeName)) {
+					timerEventDefinition.setTimeDuration(BpmnXMLUtil.parseCDATA(elem));
+				} else if (BpmnXMLConstants.ELEMENT_TIMECYCLE.equalsIgnoreCase(nodeName)) {
+					timerEventDefinition.setTimeCycle(BpmnXMLUtil.parseCDATA(elem));
+				}
+			}
+			return timerEventDefinition;
+		}
+		return null;
+	}
+	
+	@Override
+	public void convertModelToXML(Element element, BaseElement baseElement) {
+		Event event = (Event) baseElement;
+		if (null != event.getEventDefinitions()) {
+			EventDefinition eventDefinition = null;
+			TimerEventDefinition timerEventDefinition = null;
+			TerminateEventDefinition terminateEventDefinition = null;
+			Element childElem = null;
+			Element nodeElem = null;
+			for (Iterator<EventDefinition> iterator = event.getEventDefinitions().iterator(); iterator.hasNext();) {
+				eventDefinition = iterator.next();
+				// 处理时间
+				if (eventDefinition instanceof TimerEventDefinition) {
+					timerEventDefinition = (TimerEventDefinition) eventDefinition;
+					childElem = element.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+					        + BpmnXMLConstants.ELEMENT_TIMEREVENTDEFINITION);
+					if (null != timerEventDefinition.getTimeCycle()) {
+						nodeElem = childElem.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+						        + BpmnXMLConstants.ELEMENT_TIMECYCLE);
+						nodeElem.addAttribute(BpmnXMLConstants.BPMN2_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.BPMN2_PREFIX
+						        + ':' + BpmnXMLConstants.TYPE_FORMALEXPRESSION);
+						nodeElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.FORMALEXPRESSION));
+						nodeElem.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':' + BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(timerEventDefinition.getTimeCycle()));
+						nodeElem.add(new DOMCDATA(timerEventDefinition.getTimeCycle()));
+					}
+					if (null != timerEventDefinition.getTimeDuration()) {
+						nodeElem = childElem.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+						        + BpmnXMLConstants.ELEMENT_TIMEDURATION);
+						nodeElem.addAttribute(BpmnXMLConstants.BPMN2_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.BPMN2_PREFIX
+						        + ':' + BpmnXMLConstants.TYPE_FORMALEXPRESSION);
+						nodeElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.FORMALEXPRESSION));
+						nodeElem.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':' + BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(timerEventDefinition.getTimeDuration()));
+						nodeElem.add(new DOMCDATA(timerEventDefinition.getTimeDuration()));
+					}
+					if (null != timerEventDefinition.getTimeDate()) {
+						nodeElem = childElem.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+						        + BpmnXMLConstants.ELEMENT_TIMEDATE);
+						nodeElem.addAttribute(BpmnXMLConstants.BPMN2_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.BPMN2_PREFIX
+						        + ':' + BpmnXMLConstants.TYPE_FORMALEXPRESSION);
+						nodeElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.FORMALEXPRESSION));
+						nodeElem.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':' + BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(timerEventDefinition.getTimeDate()));
+						nodeElem.add(new DOMCDATA(timerEventDefinition.getTimeDate()));
+					}
+				} else if (eventDefinition instanceof TerminateEventDefinition) {
+					terminateEventDefinition = (TerminateEventDefinition) eventDefinition;
+					childElem = element.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+					        + BpmnXMLConstants.ELEMENT_TERMINATEEVENTDEFINITION);
+					childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, terminateEventDefinition.getId());
+				}
+			}
+		}
+		super.convertModelToXML(element, baseElement);
 	}
 }

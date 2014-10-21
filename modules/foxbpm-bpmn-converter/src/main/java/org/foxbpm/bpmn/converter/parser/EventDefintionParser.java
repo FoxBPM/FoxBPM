@@ -48,11 +48,11 @@ public class EventDefintionParser {
 			for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
 				elem = (Element) iterator.next();
 				nodeName = elem.getName();
-				if (BpmnXMLConstants.ATTRIBUTE_TIMEDATE.equalsIgnoreCase(nodeName)) {
+				if (BpmnXMLConstants.ELEMENT_TIMEDATE.equalsIgnoreCase(nodeName)) {
 					timerEventDefinition.setTimeDate(BpmnXMLUtil.parseCDATA(elem));
-				} else if (BpmnXMLConstants.ATTRIBUTE_TIMEDURATION.equalsIgnoreCase(nodeName)) {
+				} else if (BpmnXMLConstants.ELEMENT_TIMEDURATION.equalsIgnoreCase(nodeName)) {
 					timerEventDefinition.setTimeDuration(BpmnXMLUtil.parseCDATA(elem));
-				} else if (BpmnXMLConstants.ATTRIBUTE_TIMECYCLE.equalsIgnoreCase(nodeName)) {
+				} else if (BpmnXMLConstants.ELEMENT_TIMECYCLE.equalsIgnoreCase(nodeName)) {
 					timerEventDefinition.setTimeCycle(BpmnXMLUtil.parseCDATA(elem));
 				}
 			}

@@ -115,12 +115,6 @@ public interface BpmnXMLConstants {
 	String ATTRIBUTE_SOURCEREF = "sourceRef";
 	/** targetRef */
 	String ATTRIBUTE_TARGETREF = "targetRef";
-	/** timeDate */
-	String ATTRIBUTE_TIMEDATE = "timeDate";
-	/** timeDuration */
-	String ATTRIBUTE_TIMEDURATION = "timeDuration";
-	/** timeCycle */
-	String ATTRIBUTE_TIMECYCLE = "timeCycle";
 	/** attachedToRef */
 	String ATTRIBUTE_ATTACHEDTOREF = "attachedToRef";
 	/** isCancelActivity */
@@ -225,6 +219,12 @@ public interface BpmnXMLConstants {
 	String ELEMENT_SCRIPTTASK = "scriptTask";
 	/** script */
 	String ELEMENT_SCRIPT = "script";
+	/** timeDate */
+	String ELEMENT_TIMEDATE = "timeDate";
+	/** timeDuration */
+	String ELEMENT_TIMEDURATION = "timeDuration";
+	/** timeCycle */
+	String ELEMENT_TIMECYCLE = "timeCycle";
 	// 结束
 	
 	/** isExecutable */

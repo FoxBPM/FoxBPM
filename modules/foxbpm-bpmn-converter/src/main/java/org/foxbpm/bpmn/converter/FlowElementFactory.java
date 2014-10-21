@@ -31,13 +31,13 @@ public interface FlowElementFactory {
 	/**
 	 * 创建FlowElement
 	 * 
-	 * @return
+	 * @return 返回流程元素实例
 	 */
 	FlowElement cretateFlowElement();
 	/**
 	 * 创建XMLElement
 	 * 
-	 * @return
+	 * @return 返回xml元素实例
 	 */
 	Element cretateXMLElement();
 }
