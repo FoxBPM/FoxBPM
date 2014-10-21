@@ -19,8 +19,10 @@ package org.foxbpm.bpmn.converter;
 
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
+import org.dom4j.dom.DOMCDATA;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
+import org.foxbpm.bpmn.converter.util.UniqueIDUtil;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.SequenceFlow;
@@ -44,7 +46,7 @@ public class SequenceFlowXMLConverter extends FlowElementXMLConverter {
 	
 	@Override
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
-		SequenceFlow sequenceFlow = new SequenceFlow();
+		SequenceFlow sequenceFlow = (SequenceFlow) baseElement;
 		sequenceFlow.setSourceRefId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_SOURCEREF));
 		sequenceFlow.setTargetRefId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_TARGETREF));
 		sequenceFlow.setFlowCondition(BpmnXMLUtil.parseExpression(element));
@@ -53,17 +55,29 @@ public class SequenceFlowXMLConverter extends FlowElementXMLConverter {
 	
 	@Override
 	public void convertModelToXML(Element element, BaseElement baseElement) {
-		
+		SequenceFlow sequenceFlow = (SequenceFlow) baseElement;
+		element.addAttribute(BpmnXMLConstants.ATTRIBUTE_SOURCEREF, sequenceFlow.getSourceRefId());
+		element.addAttribute(BpmnXMLConstants.ATTRIBUTE_SOURCEREF, sequenceFlow.getTargetRefId());
+		if (null != sequenceFlow.getFlowCondition()) {
+			String condition = sequenceFlow.getFlowCondition();
+			Element childElem = element.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+			        + BpmnXMLConstants.ELEMENT_CONDITIONEXPRESSION);
+			childElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.BPMN2_PREFIX
+			        + ':' + BpmnXMLConstants.TYPE_FORMALEXPRESSION);
+			childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.TYPE_FORMALEXPRESSION));
+			childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(condition));
+			childElem.add(new DOMCDATA(condition));
+		}
 	}
 	
 	@Override
 	public String getXMLElementName() {
 		return BpmnXMLConstants.ELEMENT_SEQUENCEFLOW;
 	}
-
+	
 	public Element cretateXMLElement() {
 		return DocumentFactory.getInstance().createElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
-	        + BpmnXMLConstants.ELEMENT_SEQUENCEFLOW, BpmnXMLConstants.BPMN2_NAMESPACE);
-    }
+		        + BpmnXMLConstants.ELEMENT_SEQUENCEFLOW, BpmnXMLConstants.BPMN2_NAMESPACE);
+	}
 	
 }

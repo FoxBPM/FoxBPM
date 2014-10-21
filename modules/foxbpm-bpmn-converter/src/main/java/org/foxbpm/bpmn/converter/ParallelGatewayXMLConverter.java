@@ -17,6 +17,7 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.model.BaseElement;
@@ -42,8 +43,9 @@ public class ParallelGatewayXMLConverter extends GatewayXMLConverter {
 	@Override
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
 		ParallelGateway parallelGateway = (ParallelGateway) baseElement;
-		String convergType = element.attributeValue("foxbpm:convergType");
-		String gatewayDirection = element.attributeValue("gatewayDirection");
+		String convergType = element.attributeValue(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+		        + BpmnXMLConstants.ATTRIBUTE_CONVERGTYPE);
+		String gatewayDirection = element.attributeValue(BpmnXMLConstants.ATTRIBUTE_GATEWAYDIRECTION);
 		// 合并策略
 		if (convergType != null && !convergType.equals("")) {
 			parallelGateway.setConvergType(convergType);
@@ -56,18 +58,23 @@ public class ParallelGatewayXMLConverter extends GatewayXMLConverter {
 	
 	@Override
 	public void convertModelToXML(Element element, BaseElement baseElement) {
-		// TODO Auto-generated method stub
-		
+		ParallelGateway parallelGateway = (ParallelGateway) baseElement;
+		if (null != parallelGateway.getConvergType()) {
+			element.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':' + BpmnXMLConstants.ATTRIBUTE_CONVERGTYPE, parallelGateway.getConvergType());
+		}
+		if (null != parallelGateway.getGatewayDirection()) {
+			element.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':' + BpmnXMLConstants.ATTRIBUTE_CONVERGTYPE, parallelGateway.getGatewayDirection());
+		}
+		super.convertModelToXML(element, baseElement);
 	}
 	
 	@Override
 	public String getXMLElementName() {
 		return BpmnXMLConstants.ELEMENT_PARALLELGATEWAY;
 	}
-
-	public Element cretateXMLElement() {
-	    // TODO Auto-generated method stub
-	    return null;
-    }
 	
+	public Element cretateXMLElement() {
+		return DocumentFactory.getInstance().createElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+		        + BpmnXMLConstants.ELEMENT_PARALLELGATEWAY, BpmnXMLConstants.BPMN2_NAMESPACE);
+	}
 }

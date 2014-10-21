@@ -131,6 +131,10 @@ public interface BpmnXMLConstants {
 	String ATTRIBUTE_SCRIPTFORMAT = "scriptFormat";
 	/** isEnable */
 	String ATTRIBUTE_ISENABLE = "isEnable";
+	/** gatewayDirection */
+	String ATTRIBUTE_GATEWAYDIRECTION = "gatewayDirection";
+	/** convergType */
+	String ATTRIBUTE_CONVERGTYPE = "convergType";
 	// 结束
 	
 	// 扩展属性
