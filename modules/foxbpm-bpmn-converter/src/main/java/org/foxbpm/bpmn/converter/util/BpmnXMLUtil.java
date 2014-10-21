@@ -293,17 +293,20 @@ public class BpmnXMLUtil {
 			for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
 				elem = (Element) iterator.next();
 				name = elem.getName();
-			/*	if (BpmnXMLConstants.ELEMENT_SEQUENCEFLOW.equalsIgnoreCase(name)) {
-					// 线条处理
-					flowContainer.addSequenceFlow(parseSequenceFlow(elem));
-				} else */
+				/*
+				 * if
+				 * (BpmnXMLConstants.ELEMENT_SEQUENCEFLOW.equalsIgnoreCase(name
+				 * )) { // 线条处理
+				 * flowContainer.addSequenceFlow(parseSequenceFlow(elem)); }
+				 * else
+				 */
 				if (null != BpmnXMLConverter.getConverter(name)) {
 					BaseElementXMLConverter converter = BpmnXMLConverter.getConverter(name);
 					FlowElement flowElement = converter.cretateFlowElement();
 					converter.convertXMLToModel(elem, flowElement);
 					if (BpmnXMLConstants.ELEMENT_SEQUENCEFLOW.equalsIgnoreCase(name)) {
 						// 线条处理
-						flowContainer.addSequenceFlow((SequenceFlow)flowElement);
+						flowContainer.addSequenceFlow((SequenceFlow) flowElement);
 					} else {
 						flowContainer.addFlowElement(flowElement);
 					}
@@ -454,5 +457,29 @@ public class BpmnXMLUtil {
 		if (null != value) {
 			element.addAttribute(name, value);
 		}
+	}
+	/**
+	 * 字符串截取
+	 * 
+	 * @param str
+	 *            截取长度 字符串
+	 * @return 返回截取字符串
+	 */
+	public static String interceptStr(String str) {
+		return interceptStr(str, 10);
+	}
+	/**
+	 * 字符串截取 0~length
+	 * 
+	 * @param str
+	 * @param length > 0
+	 *            截取长度 字符串
+	 * @return 返回截取字符串
+	 */
+	public static String interceptStr(String str, int length) {
+		if (null != str && (length > 0 && length < str.length())) {
+			return str.substring(0, length);
+		}
+		return str;
 	}
 }
