@@ -26,6 +26,7 @@ import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.CommandParameter;
+import org.foxbpm.model.Connector;
 import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.FormParam;
 import org.foxbpm.model.TaskCommand;
@@ -39,6 +40,11 @@ import org.foxbpm.model.UserTask;
  */
 public class UserTaskXMLConverter extends TaskXMLConverter {
 	
+	private final static String ELEMENT_NAME_FOXBPM_TASKCOMMAND = BpmnXMLConstants.FOXBPM_PREFIX+":"+BpmnXMLConstants.ELEMENT_TASKCOMMAND;
+	private final static String ELEMENT_NAME_FOXBPM_PARAMS = BpmnXMLConstants.FOXBPM_PREFIX+":"+BpmnXMLConstants.ELEMENT_PARAMS;
+	private final static String ELEMENT_NAME_BPMN2_POTENTIALOWNER = BpmnXMLConstants.BPMN2_PREFIX+":"+BpmnXMLConstants.ELEMENT_POTENTIALOWNER;
+
+	private final static String ATTRIBUTE_NAME_XSI_TYPE=  BpmnXMLConstants.XSI_PREFIX+":"+BpmnXMLConstants.ATTRIBUTE_TYPE;
 	public FlowElement cretateFlowElement() {
 		return new UserTask();
 	}
@@ -164,7 +170,118 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 	}
 	
 	public void convertModelToXML(Element element, BaseElement baseElement) {
-		// TODO Auto-generated method stub
+		UserTask userTask = (UserTask)baseElement;
+		element.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX+":"+BpmnXMLConstants.ATTRIBUTE_FOXBPM_CLAIMTYPE, userTask.getClaimType());
+		element.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX+":"+BpmnXMLConstants.ATTRIBUTE_FOXBPM_TASKTYPE, userTask.getTaskType());
+		
+		Element extensionElement = element.addElement(ELEMENT_NAME_BPMN2_EXTENSIONELEMENT); 
+		
+		//转换任务命令
+		List<TaskCommand> taskCommands = userTask.getTaskCommands();
+		if(taskCommands != null){
+			Element taskCommandElement = null;
+			List<CommandParameter> commandParams =  null;
+			for(TaskCommand taskCommand: taskCommands){
+				taskCommandElement = extensionElement.addElement(ELEMENT_NAME_FOXBPM_TASKCOMMAND);
+				taskCommandElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, taskCommand.getId());
+				taskCommandElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, taskCommand.getName());
+				taskCommandElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_COMMANDTYPE, taskCommand.getTaskCommandType());
+				
+				//任务命令参数
+				commandParams = taskCommand.getCommandParams();
+				if(commandParams != null){
+					Element commandParamElement = null;
+					for(CommandParameter commandParameter : commandParams){
+						commandParamElement = taskCommandElement.addElement(ELEMENT_NAME_FOXBPM_PARAMS);
+						
+						commandParamElement.addAttribute(ATTRIBUTE_NAME_XSI_TYPE, "foxbpm:CommandParam");
+						commandParamElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_DATATYPE, commandParameter.getDataType());
+						commandParamElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_BIZTYPE, commandParameter.getBizType());
+						commandParamElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, commandParameter.getName());
+						commandParamElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_DESCRIPTION, commandParameter.getDescription());
+						
+						if(commandParameter.getExpression() != null){
+							BpmnXMLUtil.createExpressionElement(commandParamElement, commandParameter.getExpression());
+						}
+					}
+				}
+				
+				String taskCommandExpression = taskCommand.getExpression();
+				if(taskCommandExpression != null){
+					BpmnXMLUtil.createExpressionElement(taskCommandElement, taskCommandExpression);
+				}
+				
+				
+			}
+		}
+		
+		//任务优先级
+		String taskPriority = userTask.getTaskPriority();
+		if(taskPriority != null) {
+			Element taskPriorityElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX+":"+BpmnXMLConstants.ELEMENT_TASKPRIORITY);
+			BpmnXMLUtil.createExpressionElement(taskPriorityElement, taskPriority);
+		}
+		
+		//操作表单
+		String formUri = userTask.getFormUri();
+		if(formUri != null){
+			Element formUriElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX+":"+BpmnXMLConstants.ELEMENT_FORMURI);
+			BpmnXMLUtil.createExpressionElement(formUriElement, formUri);
+		}
+		
+		//浏览表单
+		String formUriView = userTask.getFormUriView();
+		if(formUriView != null){
+			Element formUriViewElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX+":"+BpmnXMLConstants.ELEMENT_FORMURIVIEW);
+			BpmnXMLUtil.createExpressionElement(formUriViewElement, formUriView);
+		}
+		
+		//任务主题
+		String taskSubject = userTask.getSubject();
+		if(taskSubject != null){
+			Element taskSubjectElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX+":"+BpmnXMLConstants.ELEMENT_TASKSUBJECT);
+			BpmnXMLUtil.createExpressionElement(taskSubjectElement, taskSubject);
+
+		}
+		
+		//任务描述
+		String taskDescription = userTask.getTaskDescription();
+		if(taskDescription != null){
+			Element taskDescriptionElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX+":"+BpmnXMLConstants.ELEMENT_TASKDESCRIPTION);
+			BpmnXMLUtil.createExpressionElement(taskDescriptionElement, taskDescription);
+
+		}
+		
+		//任务完成描述
+		String completeDescription = userTask.getCompleteDescription();
+		if(completeDescription != null){
+			Element completeDescriptionElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX+":"+BpmnXMLConstants.ELEMENT_COMPLETETASKDESCRIPTION);
+			BpmnXMLUtil.createExpressionElement(completeDescriptionElement, completeDescription);
+		}
+		
+		//预期执行时间
+		int expectedExecuteDay = userTask.getExpectedExecuteDay();
+		int expectedExecuteHour = userTask.getExpectedExecuteHour();
+		int expectedExecuteMinute = userTask.getExpectedExecuteMinute();
+		if(expectedExecuteDay !=0 || expectedExecuteHour !=0 || expectedExecuteMinute !=0 ) {
+			Element expectedExecuteElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX+":"+BpmnXMLConstants.ELEMENT_EXPECTEDEXECUTIONTIME);
+			if(expectedExecuteDay != 0){
+				expectedExecuteElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_DAY, String.valueOf(expectedExecuteDay));
+			}
+			if(expectedExecuteHour != 0){
+				expectedExecuteElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_DAY, String.valueOf(expectedExecuteHour));
+			}
+			if(expectedExecuteMinute != 0){
+				expectedExecuteElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_DAY, String.valueOf(expectedExecuteMinute));
+			}
+		}
+		
+		//任务分配
+		List<Connector> actorConnectors = userTask.getActorConnectors();
+		if(actorConnectors != null && actorConnectors.size() >0){
+			Element potentialOwner = element.addElement(ELEMENT_NAME_BPMN2_POTENTIALOWNER);
+			BpmnXMLUtil.createConectorElement(potentialOwner.addElement(ELEMENT_NAME_BPMN2_EXTENSIONELEMENT), actorConnectors);
+		}
 		
 	}
 

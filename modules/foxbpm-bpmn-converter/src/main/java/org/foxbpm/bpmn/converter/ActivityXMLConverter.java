@@ -39,6 +39,8 @@ import org.foxbpm.model.SkipStrategy;
  */
 public abstract class ActivityXMLConverter extends FlowNodeXMLConverter {
 	
+	public final static String ELEMENT_NAME_BPMN2_EXTENSIONELEMENT = BpmnXMLConstants.BPMN2_PREFIX + ':'
+	        + BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS;
 	@SuppressWarnings("unchecked")
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
 		Activity activity = (Activity) baseElement;
@@ -72,37 +74,40 @@ public abstract class ActivityXMLConverter extends FlowNodeXMLConverter {
 		
 		Element extensionElement = element.element(BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS);
 		if(extensionElement == null){
-			extensionElement = element.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-			        + BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS);
+			extensionElement = element.addElement(ELEMENT_NAME_BPMN2_EXTENSIONELEMENT);
 		}
 		if(skipStrategy!=null){
+			//跳过策略
 			Element skipStrategyElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 			        + BpmnXMLConstants.ELEMENT_SKIPSTRATEGY);
 			skipStrategyElement.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 				        + BpmnXMLConstants.ATTRIBUTE_ISENABLE, String.valueOf(skipStrategy.isEnable()));
-			
-			if(skipStrategy.getSkipExpression()!= null){
+			String skipExpression = skipStrategy.getSkipExpression();
+			if(skipExpression!= null){
 				
-				ExpressionParser.parseExpressionElement(skipStrategyElement, skipStrategy.getSkipExpression(), BpmnXMLUtil.interceptStr(skipStrategy.getSkipExpression()));
+				ExpressionParser.parseExpressionElement(skipStrategyElement, skipExpression, BpmnXMLUtil.interceptStr(skipExpression));
 			}
 			
-			if(skipStrategy.getSkipAssignee() != null){
+			String skipAssignee = skipStrategy.getSkipAssignee();
+			if(skipAssignee != null){
 				Element skipAssigneElement = skipStrategyElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 				        + BpmnXMLConstants.ELEMENT_SKIPASSIGNEE);
 				skipAssigneElement.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':'
 				        + BpmnXMLConstants.ATTRIBUTE_TYPE, "foxbpm:SkipAssignee");
-				ExpressionParser.parseExpressionElement(skipAssigneElement, skipStrategy.getSkipAssignee(), BpmnXMLUtil.interceptStr(skipStrategy.getSkipAssignee()));
+				ExpressionParser.parseExpressionElement(skipAssigneElement, skipAssignee, BpmnXMLUtil.interceptStr(skipAssignee));
 			
 			}
 			 	
-			if(skipStrategy.getSkipComment() != null){
+			String skipComment = skipStrategy.getSkipComment();
+			if(skipComment != null){
 				Element skipCommentElement = skipStrategyElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 				        + BpmnXMLConstants.ELEMENT_SKIPCOMMENT);
 				skipCommentElement.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':'
 				        + BpmnXMLConstants.ATTRIBUTE_TYPE, "foxbpm:SkipComment");
-				ExpressionParser.parseExpressionElement(skipCommentElement, skipStrategy.getSkipComment(), BpmnXMLUtil.interceptStr(skipStrategy.getSkipAssignee()));
+				ExpressionParser.parseExpressionElement(skipCommentElement, skipComment, BpmnXMLUtil.interceptStr(skipAssignee));
 			}
 		} 
+		//多实例转换
 		LoopCharacteristics loopCharacteristics = activity.getLoopCharacteristics();
 		if(loopCharacteristics != null){
 			MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics =(MultiInstanceLoopCharacteristics)loopCharacteristics;
@@ -112,21 +117,62 @@ public abstract class ActivityXMLConverter extends FlowNodeXMLConverter {
 			multiInstanceElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, multiInstanceLoopCharacteristics.getId());
 			Element multiInstanceExtensionElement = null;
 			
-			if(multiInstanceLoopCharacteristics.getLoopDataInputCollection() != null
-					&& !multiInstanceLoopCharacteristics.getLoopDataInputCollection().trim().equals("")){
-				multiInstanceExtensionElement = multiInstanceElement.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
-				        + BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS);
+			//输入数据集合
+			String loopDataInputCollection = multiInstanceLoopCharacteristics.getLoopDataInputCollection();
+			if(loopDataInputCollection != null
+					&& !loopDataInputCollection.trim().equals("")){
+				multiInstanceExtensionElement = multiInstanceElement.addElement(ELEMENT_NAME_BPMN2_EXTENSIONELEMENT);
 				Element loopDataInputElement = multiInstanceExtensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 				        + BpmnXMLConstants.ELEMENT_LOOPDATAINPUTCOLLECTION);
-				ExpressionParser.parseExpressionElement(loopDataInputElement, multiInstanceLoopCharacteristics.getLoopDataInputCollection(), BpmnXMLUtil.interceptStr(multiInstanceLoopCharacteristics.getLoopDataInputCollection()));
+				ExpressionParser.parseExpressionElement(loopDataInputElement, loopDataInputCollection, BpmnXMLUtil.interceptStr(loopDataInputCollection));
 			}
 			
-			if(multiInstanceLoopCharacteristics.getLoopDataOutputCollection() != null
-					&& !multiInstanceLoopCharacteristics.getLoopDataOutputCollection().trim().equals("")){
+			//输出数据集合
+			String loopDataOutputCollection = multiInstanceLoopCharacteristics.getLoopDataOutputCollection();
+			if(loopDataOutputCollection != null
+					&& !loopDataOutputCollection.trim().equals("")){
 				if(multiInstanceExtensionElement==null){
-					multiInstanceExtensionElement = multiInstanceElement.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
-					        + BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS);
+					multiInstanceExtensionElement = multiInstanceElement.addElement(ELEMENT_NAME_BPMN2_EXTENSIONELEMENT);
+					Element loopDataOutputElement = multiInstanceExtensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+				        + BpmnXMLConstants.ELEMENT_LOOPDATAOUTPUTCOLLECTION);
+					ExpressionParser.parseExpressionElement(loopDataOutputElement, loopDataOutputCollection, BpmnXMLUtil.interceptStr(loopDataOutputCollection));
+
 				}
+			}
+			
+			//输入项
+			String inputDataItem = multiInstanceLoopCharacteristics.getInputDataItem();
+			if(inputDataItem != null 
+					&& !inputDataItem.trim().equals("")){
+				Element dataInputItemElement = multiInstanceElement.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+				        + BpmnXMLConstants.ELEMENT_INPUTDATAITEM);
+				dataInputItemElement.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':'
+				        + BpmnXMLConstants.ATTRIBUTE_TYPE, "bpmn2:tDataInput");
+				Element dataInputExtensionElement = dataInputItemElement.addElement(ELEMENT_NAME_BPMN2_EXTENSIONELEMENT);
+				ExpressionParser.parseExpressionElement(dataInputExtensionElement, inputDataItem, BpmnXMLUtil.interceptStr(inputDataItem));
+				
+			}
+			
+			//输出项
+			String outputDataItem = multiInstanceLoopCharacteristics.getOutputDataItem();
+			if(outputDataItem != null 
+					&& !inputDataItem.trim().equals("")){
+				Element dataOutputItemElement = multiInstanceElement.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+				        + BpmnXMLConstants.ELEMENT_OUTPUTDATAITEM);
+				dataOutputItemElement.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':'
+				        + BpmnXMLConstants.ATTRIBUTE_TYPE, "bpmn2:tDataOutput");
+				Element dataOutputExtensionElement = dataOutputItemElement.addElement(ELEMENT_NAME_BPMN2_EXTENSIONELEMENT);
+				ExpressionParser.parseExpressionElement(dataOutputExtensionElement, outputDataItem, BpmnXMLUtil.interceptStr(outputDataItem));
+				
+			}
+			
+			//完成条件
+			String completeCondition = multiInstanceLoopCharacteristics.getCompletionCondition();
+			if(completeCondition != null 
+					&& !completeCondition.trim().equals("")){
+				Element completeConditionElement = multiInstanceElement.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+				        + BpmnXMLConstants.ELEMENT_COMPLETIONCONDITION);
+				completeConditionElement.setText(completeCondition);
 			}
 			
 		} 
