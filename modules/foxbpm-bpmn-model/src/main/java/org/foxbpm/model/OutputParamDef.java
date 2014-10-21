@@ -13,43 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author ych
+ * @author yangguangftlp
  */
 package org.foxbpm.model;
 
 /**
- * 连接器输出参数
+ * 常量类
  * 
- * @author ych
- * 
+ * @author yangguangftlp
+ * @date 2014年10月21日
  */
-public class OutputParam extends BaseElement {
-	
-	private static final long serialVersionUID = 1L;
+public class OutputParamDef extends BaseElement {
 	
 	/**
-	 * 输出参数映射目标变量
+	 * 
 	 */
-	protected String variableTarget;
+	private static final long serialVersionUID = 4475621907579136653L;
+	
 	/**
-	 * 输出参数映射目标变量
+	 * 名称
 	 */
-	protected String output;
-	
-	public String getVariableTarget() {
-		return variableTarget;
+	protected String name;
+	/**
+	 * 数据类型
+	 */
+	protected String dataType;
+	public String getName() {
+		return name;
 	}
-	
-	public void setVariableTarget(String variableTarget) {
-		this.variableTarget = variableTarget;
+	public void setName(String name) {
+		this.name = name;
 	}
-	
-	public String getOutput() {
-		return output;
+	public String getDataType() {
+		return dataType;
 	}
-	
-	public void setOutput(String output) {
-		this.output = output;
+	public void setDataType(String dataType) {
+		this.dataType = dataType;
 	}
 	
 }

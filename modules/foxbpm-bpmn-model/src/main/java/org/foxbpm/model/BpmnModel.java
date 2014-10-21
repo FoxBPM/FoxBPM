@@ -89,12 +89,14 @@ public class BpmnModel {
 			if (process.getId().equals(processId)) {
 				return process.getSequenceFlows();
 			} else {
-				for (Iterator<FlowElement> iteratorFlowElement = process.getFlowElements().iterator(); iterator.hasNext();) {
-					flowElement = iteratorFlowElement.next();
-					if (flowElement instanceof FlowContainer) {
-						flowContainer = (FlowContainer) flowElement;
-						if (flowElement.getId().equals(processId)) {
-							return flowContainer.getSequenceFlows();
+				if (null != process.getFlowElements()) {
+					for (Iterator<FlowElement> iteratorFlowElement = process.getFlowElements().iterator(); iterator.hasNext();) {
+						flowElement = iteratorFlowElement.next();
+						if (flowElement instanceof FlowContainer) {
+							flowContainer = (FlowContainer) flowElement;
+							if (flowElement.getId().equals(processId)) {
+								return flowContainer.getSequenceFlows();
+							}
 						}
 					}
 				}

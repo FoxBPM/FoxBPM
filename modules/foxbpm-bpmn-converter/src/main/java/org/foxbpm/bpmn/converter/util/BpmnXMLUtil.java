@@ -32,6 +32,7 @@ import org.foxbpm.model.FlowContainer;
 import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.InputParam;
 import org.foxbpm.model.OutputParam;
+import org.foxbpm.model.OutputParamDef;
 import org.foxbpm.model.SequenceFlow;
 import org.foxbpm.model.TimerEventDefinition;
 import org.slf4j.Logger;
@@ -82,7 +83,7 @@ public class BpmnXMLUtil {
 	@SuppressWarnings("rawtypes")
 	public static String parseExpression(Element element) {
 		Node node = null;
-		if(element == null){
+		if (element == null) {
 			return null;
 		}
 		for (Iterator iterator = element.nodeIterator(); iterator.hasNext();) {
@@ -222,25 +223,35 @@ public class BpmnXMLUtil {
 					connector.setOutputsParam(new ArrayList<OutputParam>());
 				}
 				OutputParam outputParam = new OutputParam();
-				outputParam.setId(elem.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
+				// outputParam.setId(elem.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
 				outputParam.setVariableTarget(elem.attributeValue(BpmnXMLConstants.ATTRIBUTE_VARIABLETARGET));
-				outputParam.setDocumentation("");
+				outputParam.setOutput(elem.attributeValue(BpmnXMLConstants.ATTRIBUTE_OUTPUT));
+				
 				connector.getOutputsParam().add(outputParam);
 				
-			} else if (BpmnXMLConstants.ELEMENT_CONNECTORPARAMETER_OUTPUTSDEF.equalsIgnoreCase(parentNodeName)) {
+			} else /** 变量定义 */
+			if (BpmnXMLConstants.ELEMENT_CONNECTORPARAMETER_OUTPUTSDEF.equalsIgnoreCase(parentNodeName)) {
+				
+				if (null == connector.getOutputsParamDef()) {
+					connector.setOutputsParamDef(new ArrayList<OutputParamDef>());
+				}
+				OutputParamDef outputParamDef = new OutputParamDef();
+				outputParamDef.setName(elem.attributeValue(BpmnXMLConstants.ATTRIBUTE_NAME));
+				outputParamDef.setDataType(elem.attributeValue(BpmnXMLConstants.ATTRIBUTE_DATATYPE));
+				connector.getOutputsParamDef().add(outputParamDef);
+			} else
+			/** 时间表达式 */
+			if (BpmnXMLConstants.ELEMENT_TIMEEXPRESSION.equalsIgnoreCase(parentNodeName)) {
 				TimerEventDefinition timerEventDefinition = new TimerEventDefinition();
 				timerEventDefinition.setTimeDate(expression);
 				connector.setTimerEventDefinition(timerEventDefinition);
-			} else /**  */
-			/**  */
-			if (BpmnXMLConstants.ELEMENT_TIMEEXPRESSION.equalsIgnoreCase(parentNodeName)) {
 				
-			} else /**  */
+			} else /** 跳过时间策略 */
 			if (BpmnXMLConstants.ELEMENT_TIMESKIPEXPRESSION.equalsIgnoreCase(parentNodeName)) {
 				connector.setSkipExpression(expression);
-			} else /**  */
+			} else /** 策略描述 */
 			if (BpmnXMLConstants.ELEMENT_SKIPCOMMENT.equalsIgnoreCase(parentNodeName)) {
-				connector.setSkipExpression(expression);
+				connector.setSkipComment(expression);
 			}
 		}
 		
@@ -255,6 +266,7 @@ public class BpmnXMLUtil {
 			connector.setErrorCode(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ERRORCODE));
 			connector.setErrorHandling(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ERRORHANDLING));
 			connector.setIsTimeExecute(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ISTIMEEXECUTE));
+			connector.setType(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_TYPE));
 		}
 	}
 	/**
@@ -282,6 +294,22 @@ public class BpmnXMLUtil {
 					flowContainer.addFlowElement(flowElement);
 				}
 			}
+		}
+	}
+	
+	/**
+	 * 给节点添加属性
+	 * 
+	 * @param element
+	 *            元素节点
+	 * @param name
+	 *            名称
+	 * @param value
+	 *            值
+	 */
+	public static void addElemAttribute(Element element, String name, String value) {
+		if (null != value) {
+			element.addAttribute(name, value);
 		}
 	}
 }

@@ -107,6 +107,8 @@ public interface BpmnXMLConstants {
 	String ATTRIBUTE_ISEXECUTE = "isExecute";
 	/** variableTarget */
 	String ATTRIBUTE_VARIABLETARGET = "variableTarget";
+	/** output */
+	String ATTRIBUTE_OUTPUT = "output";
 	/** foxbpm */
 	String ATTRIBUTE_FOXBPM = "foxbpm";
 	/** sourceRef */
@@ -292,6 +294,12 @@ public interface BpmnXMLConstants {
 	String TYPE_EXPRESSION = "Expression";
 	/** foxbpm:Documentation */
 	String TYPE_DOCUMENTATION = "Documentation";
+	/** ConnectorParameterInput */
+	String TYPE_CONNECTORPARAMETERINPUT = "ConnectorParameterInput";
+	/** ConnectorParameterOutput */
+	String TYPE_CONNECTORPARAMETEROUTPUT = "ConnectorParameterOutput";
+	/** ConnectorParameterOutputDef */
+	String TYPE_CONNECTORPARAMETEROUTPUTDEF = "ConnectorParameterOutputDef";
 	/** FormalExpression */
 	String FORMALEXPRESSION = "FormalExpression";
 	

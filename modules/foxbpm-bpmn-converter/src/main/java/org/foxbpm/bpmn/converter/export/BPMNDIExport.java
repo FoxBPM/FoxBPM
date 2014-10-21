@@ -56,6 +56,7 @@ public class BPMNDIExport extends BpmnExport {
 				
 				bpmnplane = bpmndiagram.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'+ BpmnXMLConstants.ELEMENT_DI_PLANE);
 				bpmnplane.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID("BPMNPlane"));
+				bpmnplane.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_BPMNELEMENT, entry.getKey());
 				
 				// 生成bpmnshape
 				for (Iterator<Entry<String, Bounds>> iteratorBounds = entry.getValue().entrySet().iterator(); iteratorBounds.hasNext();) {
