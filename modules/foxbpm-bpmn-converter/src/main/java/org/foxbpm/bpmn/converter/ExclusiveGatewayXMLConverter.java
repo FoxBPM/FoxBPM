@@ -17,6 +17,7 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.model.BaseElement;
@@ -41,18 +42,25 @@ public class ExclusiveGatewayXMLConverter extends GatewayXMLConverter {
 	}
 	
 	@Override
+	public void convertXMLToModel(Element element, BaseElement baseElement) {
+		// TODO Auto-generated method stub
+		super.convertXMLToModel(element, baseElement);
+	}
+	
+	@Override
 	public void convertModelToXML(Element element, BaseElement baseElement) {
-		
+		// TODO Auto-generated method stub
+		super.convertModelToXML(element, baseElement);
 	}
 	
 	@Override
 	public String getXMLElementName() {
 		return BpmnXMLConstants.ELEMENT_EXCLUSIVEGATEWAY;
 	}
-
+	
 	public Element cretateXMLElement() {
-	    // TODO Auto-generated method stub
-	    return null;
-    }
+		return DocumentFactory.getInstance().createElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+		        + BpmnXMLConstants.ELEMENT_EXCLUSIVEGATEWAY, BpmnXMLConstants.BPMN2_NAMESPACE);
+	}
 	
 }
