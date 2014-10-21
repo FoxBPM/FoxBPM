@@ -150,9 +150,9 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 					}
 					
 				} 
-			} else if (BpmnXMLConstants.ELEMENT_POTENTIALOWNER.equals(extentionElement.getName())) {
+			} else if (BpmnXMLConstants.ELEMENT_POTENTIALOWNER.equals(subElement.getName())) {
 				// 任务分配连接器
-				userTask.setActorConnectors(BpmnXMLUtil.parserConnectorElement(extentionElement.element(BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS).element(BpmnXMLConstants.ELEMENT_CONNECTORINSTANCEELEMENTS)));
+				userTask.setActorConnectors(BpmnXMLUtil.parserConnectorElement(subElement.element(BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS).element(BpmnXMLConstants.ELEMENT_CONNECTORINSTANCEELEMENTS)));
 			}
 		}
 		

@@ -79,10 +79,12 @@ public class CallActivityBehavior extends ActivityBehavior {
 
 		/** 映射数据变量 */
 		List<VariableMapping> dataSourceToSubProcessMapping = callActivity.getToSubProcessMapping();
-		for (VariableMapping dataVariableMapping : dataSourceToSubProcessMapping) {
-			String dataSourceId = "${" + dataVariableMapping.getFormId() + "}";
-			createSubProcessInstance.setVariable(dataVariableMapping.getToId(),
-					ExpressionMgmt.execute(dataSourceId, executionContext));
+		if(dataSourceToSubProcessMapping != null){
+			for (VariableMapping dataVariableMapping : dataSourceToSubProcessMapping) {
+				String dataSourceId = "${" + dataVariableMapping.getFormId() + "}";
+				createSubProcessInstance.setVariable(dataVariableMapping.getToId(),
+						ExpressionMgmt.execute(dataSourceId, executionContext));
+			}
 		}
 		try {
 			// 启动流程实例

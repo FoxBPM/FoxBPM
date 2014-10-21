@@ -17,6 +17,7 @@
  */
 package org.foxbpm.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -72,16 +73,16 @@ public class Connector extends BaseElement {
 	/**
 	 * 连接器输入参数集合
 	 */
-	protected List<InputParam> inputsParam;
+	protected List<InputParam> inputsParam = new ArrayList<InputParam>();
 	
 	/**
 	 * 连接器输出参数集合
 	 */
-	protected List<OutputParam> outputsParam;
+	protected List<OutputParam> outputsParam = new ArrayList<OutputParam>();
 	/**
 	 * 连接器输出参数定义集合
 	 */
-	protected List<OutputParamDef> outputsParamDef;
+	protected List<OutputParamDef> outputsParamDef = new ArrayList<OutputParamDef>();
 	
 	/**
 	 * 连接器定时器
