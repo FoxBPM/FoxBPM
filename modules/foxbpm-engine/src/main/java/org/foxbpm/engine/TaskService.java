@@ -191,6 +191,13 @@ public interface TaskService {
 	List<Task> getRollbackTasks(String taskId);
 	
 	/**
+	 * 获取将要办理的任务，只有节点ID，和节点name
+	 * @param todoTaskId
+	 * @return
+	 */
+	List<Task> getFutureTasks(String todoTaskId);
+	
+	/**
 	 * 获取任务的操作、评论等信息
 	 * @param taskId
 	 * @return
