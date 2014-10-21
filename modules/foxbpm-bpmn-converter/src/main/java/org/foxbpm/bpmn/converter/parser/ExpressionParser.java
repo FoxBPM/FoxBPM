@@ -26,7 +26,7 @@ import org.foxbpm.bpmn.constants.BpmnXMLConstants;
  *
  */
 public class ExpressionParser {
-	public static Element parseExpressionElement(Element element,String expression,String name){
+	public static void parseExpressionElement(Element element,String expression,String name){
 		Element expressionElement = element.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 		        + BpmnXMLConstants.ELEMENT_EXPRESSION);
 		expressionElement.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':'
@@ -34,6 +34,5 @@ public class ExpressionParser {
 		expressionElement.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':'
 		        + BpmnXMLConstants.ATTRIBUTE_TYPE, "foxbpm:Expression");
 		expressionElement.setText(expression);
-		return expressionElement;
 	}
 }

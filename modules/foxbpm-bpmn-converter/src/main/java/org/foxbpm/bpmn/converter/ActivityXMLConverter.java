@@ -21,10 +21,15 @@ import java.util.Iterator;
 
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
+import org.foxbpm.bpmn.converter.parser.ExpressionParser;
 import org.foxbpm.bpmn.converter.parser.MultiInstanceParser;
 import org.foxbpm.bpmn.converter.parser.SkipStrategyParser;
+import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.model.Activity;
 import org.foxbpm.model.BaseElement;
+import org.foxbpm.model.LoopCharacteristics;
+import org.foxbpm.model.MultiInstanceLoopCharacteristics;
+import org.foxbpm.model.SkipStrategy;
 
 /**
  * 活动元素处理
@@ -62,8 +67,72 @@ public abstract class ActivityXMLConverter extends FlowNodeXMLConverter {
 	}
 	@Override
 	public void convertModelToXML(Element element, BaseElement baseElement) {
-		// TODO Auto-generated method stub
+		Activity activity = (Activity) baseElement;
+		SkipStrategy skipStrategy = activity.getSkipStrategy(); 
+		
+		Element extensionElement = element.element(BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS);
+		if(extensionElement == null){
+			extensionElement = element.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+			        + BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS);
+		}
+		if(skipStrategy!=null){
+			Element skipStrategyElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+			        + BpmnXMLConstants.ELEMENT_SKIPSTRATEGY);
+			skipStrategyElement.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+				        + BpmnXMLConstants.ATTRIBUTE_ISENABLE, String.valueOf(skipStrategy.isEnable()));
+			
+			if(skipStrategy.getSkipExpression()!= null){
+				
+				ExpressionParser.parseExpressionElement(skipStrategyElement, skipStrategy.getSkipExpression(), BpmnXMLUtil.interceptStr(skipStrategy.getSkipExpression()));
+			}
+			
+			if(skipStrategy.getSkipAssignee() != null){
+				Element skipAssigneElement = skipStrategyElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+				        + BpmnXMLConstants.ELEMENT_SKIPASSIGNEE);
+				skipAssigneElement.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':'
+				        + BpmnXMLConstants.ATTRIBUTE_TYPE, "foxbpm:SkipAssignee");
+				ExpressionParser.parseExpressionElement(skipAssigneElement, skipStrategy.getSkipAssignee(), BpmnXMLUtil.interceptStr(skipStrategy.getSkipAssignee()));
+			
+			}
+			 	
+			if(skipStrategy.getSkipComment() != null){
+				Element skipCommentElement = skipStrategyElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+				        + BpmnXMLConstants.ELEMENT_SKIPCOMMENT);
+				skipCommentElement.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':'
+				        + BpmnXMLConstants.ATTRIBUTE_TYPE, "foxbpm:SkipComment");
+				ExpressionParser.parseExpressionElement(skipCommentElement, skipStrategy.getSkipComment(), BpmnXMLUtil.interceptStr(skipStrategy.getSkipAssignee()));
+			}
+		} 
+		LoopCharacteristics loopCharacteristics = activity.getLoopCharacteristics();
+		if(loopCharacteristics != null){
+			MultiInstanceLoopCharacteristics multiInstanceLoopCharacteristics =(MultiInstanceLoopCharacteristics)loopCharacteristics;
+			
+			Element multiInstanceElement = element.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+				        + BpmnXMLConstants.ELEMENT_MULTIINSTANCELOOPCHARACTERISTICS);
+			multiInstanceElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, multiInstanceLoopCharacteristics.getId());
+			Element multiInstanceExtensionElement = null;
+			
+			if(multiInstanceLoopCharacteristics.getLoopDataInputCollection() != null
+					&& !multiInstanceLoopCharacteristics.getLoopDataInputCollection().trim().equals("")){
+				multiInstanceExtensionElement = multiInstanceElement.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+				        + BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS);
+				Element loopDataInputElement = multiInstanceExtensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+				        + BpmnXMLConstants.ELEMENT_LOOPDATAINPUTCOLLECTION);
+				ExpressionParser.parseExpressionElement(loopDataInputElement, multiInstanceLoopCharacteristics.getLoopDataInputCollection(), BpmnXMLUtil.interceptStr(multiInstanceLoopCharacteristics.getLoopDataInputCollection()));
+			}
+			
+			if(multiInstanceLoopCharacteristics.getLoopDataOutputCollection() != null
+					&& !multiInstanceLoopCharacteristics.getLoopDataOutputCollection().trim().equals("")){
+				if(multiInstanceExtensionElement==null){
+					multiInstanceExtensionElement = multiInstanceElement.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+					        + BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS);
+				}
+			}
+			
+		} 
 		super.convertModelToXML(element, baseElement);
 	}
+	
+	
 	
 }
