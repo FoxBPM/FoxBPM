@@ -326,7 +326,8 @@ public class BpmnXMLUtil {
 				connectorInstanceElem = connectorInstanceElements.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 				        + BpmnXMLConstants.ELEMENT_CONNECTORINSTANCE);
 				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_PACKAGENAME, connector.getPackageName());
-				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, connector.getId());
+				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ISTIMEEXECUTE, connector.getIsTimeExecute());
+				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_CONNECTORID, connector.getId());
 				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_CLASSNAME, connector.getClassName());
 				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_CONNECTORINSTANCE_ID, connector.getConnectorInstanceId());
 				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_CONNECTORINSTANCE_NAME, connector.getConnectorInstanceName());
