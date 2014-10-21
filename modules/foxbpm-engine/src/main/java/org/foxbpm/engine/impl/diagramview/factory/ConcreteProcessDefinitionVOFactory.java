@@ -34,15 +34,12 @@ import org.foxbpm.engine.impl.bpmn.behavior.BusinessRuleTaskBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.CallActivityBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.CatchEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.EndEventBehavior;
-import org.foxbpm.engine.impl.bpmn.behavior.EventDefinition;
 import org.foxbpm.engine.impl.bpmn.behavior.ExclusiveGatewayBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.GatewayBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.GroupBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.InclusiveGatewayBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.IntermediateCatchEventBehavior;
-import org.foxbpm.engine.impl.bpmn.behavior.LoopCharacteristics;
 import org.foxbpm.engine.impl.bpmn.behavior.ManualTaskBehavior;
-import org.foxbpm.engine.impl.bpmn.behavior.MultiInstanceLoopCharacteristics;
 import org.foxbpm.engine.impl.bpmn.behavior.ParallelGatewayBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ReceiveTaskBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ScriptTaskBehavior;
@@ -70,6 +67,10 @@ import org.foxbpm.kernel.process.KernelSequenceFlow;
 import org.foxbpm.kernel.process.impl.KernelArtifactImpl;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
+import org.foxbpm.model.Activity;
+import org.foxbpm.model.EventDefinition;
+import org.foxbpm.model.LoopCharacteristics;
+import org.foxbpm.model.MultiInstanceLoopCharacteristics;
 
 /**
  * PROCESS流程图形工厂类
@@ -322,7 +323,7 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 			// 判断多实例，暂时只添加活动节点
 			if (kernelFlowNodeBehavior instanceof ActivityBehavior) {
 				ActivityBehavior activityBehavior = (ActivityBehavior) kernelFlowNodeBehavior;
-				LoopCharacteristics loopCharacteristics = activityBehavior.getLoopCharacteristics();
+				LoopCharacteristics loopCharacteristics = ((Activity)(activityBehavior.getBaseElement())).getLoopCharacteristics();
 				if (loopCharacteristics != null
 				        && loopCharacteristics instanceof MultiInstanceLoopCharacteristics) {
 					temp = svgTypeMap.get(kernelFlowNodeBehavior.getClass());
@@ -385,14 +386,14 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 	 * @since 1.0.0
 	 */
 	private boolean hasTerminateDefinition(EndEventBehavior endEventBehavior) {
-		List<EventDefinition> eventDefinitions = endEventBehavior.getEventDefinitions();
-		Iterator<EventDefinition> iterator = eventDefinitions.iterator();
-		while (iterator.hasNext()) {
-			EventDefinition next = iterator.next();
-			if (next instanceof TerminateEventBehavior) {
-				return true;
-			}
-		}
+//		List<EventDefinition> eventDefinitions = endEventBehavior.getEventDefinitions();
+//		Iterator<EventDefinition> iterator = eventDefinitions.iterator();
+//		while (iterator.hasNext()) {
+//			EventDefinition next = iterator.next();
+//			if (next instanceof TerminateEventBehavior) {
+//				return true;
+//			}
+//		}
 		return false;
 		
 	}
@@ -406,14 +407,14 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 	 * @since 1.0.0
 	 */
 	private boolean hasTimerDefinition(CatchEventBehavior catchEventBehavior) {
-		List<EventDefinition> eventDefinitions = catchEventBehavior.getEventDefinitions();
-		Iterator<EventDefinition> iterator = eventDefinitions.iterator();
-		while (iterator.hasNext()) {
-			EventDefinition next = iterator.next();
-			if (next instanceof TimerEventBehavior) {
-				return true;
-			}
-		}
+//		List<EventDefinition> eventDefinitions = catchEventBehavior.getEventDefinitions();
+//		Iterator<EventDefinition> iterator = eventDefinitions.iterator();
+//		while (iterator.hasNext()) {
+//			EventDefinition next = iterator.next();
+//			if (next instanceof TimerEventBehavior) {
+//				return true;
+//			}
+//		}
 		return false;
 	}
 	/**

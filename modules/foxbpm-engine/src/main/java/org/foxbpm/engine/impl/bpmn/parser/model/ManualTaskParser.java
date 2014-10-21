@@ -17,9 +17,9 @@
  */
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
-import org.eclipse.bpmn2.BaseElement;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ManualTaskBehavior;
+import org.foxbpm.model.BaseElement;
 
 public class ManualTaskParser extends TaskParser {
 	 

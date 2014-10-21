@@ -18,6 +18,7 @@
 package org.foxbpm.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,7 +128,11 @@ public class Process extends FlowElement implements FlowContainer {
 		this.category = category;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<PotentialStarter> getPotentialStarters() {
+		if(potentialStarters == null){
+			return Collections.EMPTY_LIST;
+		}
 		return potentialStarters;
 	}
 	
@@ -135,7 +140,11 @@ public class Process extends FlowElement implements FlowContainer {
 		this.potentialStarters = potentialStarters;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<DataVariableDefinition> getDataVariables() {
+		if(dataVariables == null){
+			return Collections.EMPTY_LIST;
+		}
 		return dataVariables;
 	}
 	

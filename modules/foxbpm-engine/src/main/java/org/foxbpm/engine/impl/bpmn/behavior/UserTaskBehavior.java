@@ -125,7 +125,7 @@ public class UserTaskBehavior extends TaskBehavior {
 					if(e instanceof FoxBPMException)
 						throw (FoxBPMException)e;
 					else{
-						throw new FoxBPMException("执行选择人处理器失败！节点"+this.getId()+",处理器："+connector.getConnectorId() , e);
+						throw new FoxBPMException("执行选择人处理器失败！节点"+this.getId()+",处理器："+connector.getConnector().getConnectorInstanceId() , e);
 					}
 				}
 			}
