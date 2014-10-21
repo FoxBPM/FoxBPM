@@ -393,7 +393,7 @@ public class BpmnXMLUtil {
 	 *            foxbpm:expression
 	 * @param obj
 	 */
-	private static void createExpressionElement(Element element, Object obj) {
+	public static void createExpressionElement(Element element, Object obj) {
 		String expression = obj.toString();
 		element.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
 		        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);
