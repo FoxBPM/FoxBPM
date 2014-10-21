@@ -17,6 +17,7 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
@@ -61,8 +62,8 @@ public class SequenceFlowXMLConverter extends FlowElementXMLConverter {
 	}
 
 	public Element cretateXMLElement() {
-	    // TODO Auto-generated method stub
-	    return null;
+		return DocumentFactory.getInstance().createElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+	        + BpmnXMLConstants.ELEMENT_SEQUENCEFLOW, BpmnXMLConstants.BPMN2_NAMESPACE);
     }
 	
 }
