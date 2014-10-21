@@ -293,13 +293,6 @@ public class BpmnXMLUtil {
 			for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
 				elem = (Element) iterator.next();
 				name = elem.getName();
-				/*
-				 * if
-				 * (BpmnXMLConstants.ELEMENT_SEQUENCEFLOW.equalsIgnoreCase(name
-				 * )) { // 线条处理
-				 * flowContainer.addSequenceFlow(parseSequenceFlow(elem)); }
-				 * else
-				 */
 				if (null != BpmnXMLConverter.getConverter(name)) {
 					BaseElementXMLConverter converter = BpmnXMLConverter.getConverter(name);
 					FlowElement flowElement = converter.cretateFlowElement();
