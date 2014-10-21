@@ -457,6 +457,6 @@ public class ActivityBehavior extends FlowNodeBehavior {
 	
 	private List<BoundaryEvent> getBoundaryEvents(){
 		
-		return null;
+		return new ArrayList<BoundaryEvent>();
 	}
 }
