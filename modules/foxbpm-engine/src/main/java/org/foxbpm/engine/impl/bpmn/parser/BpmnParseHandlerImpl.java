@@ -17,7 +17,6 @@
  */
 package org.foxbpm.engine.impl.bpmn.parser;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +35,7 @@ import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.ProcessDefinitionEntityBuilder;
 import org.foxbpm.engine.impl.bpmn.behavior.ActivityBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.BoundaryEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.EventBehavior;
 import org.foxbpm.engine.impl.connector.ConnectorListener;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
@@ -80,7 +80,6 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			throw new FoxBPMException("文件中没有对应的流程定义，请检查bpmn文件内容和流程key是否对应！");
 		}
 		KernelProcessDefinition processDefinition = loadProcess(bpmnModel);
-		
 		// 关联保存下来的关系
 		behaviorRelationMemo.attachActivityAndBoundaryEventBehaviorRelation();
 		// 加载监听器
@@ -597,7 +596,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	public static class BehaviorRelationMemo {
 		/** 临时存储MAP */
 		private Map<String, ActivityBehavior> attachActivityMap = new HashMap<String, ActivityBehavior>();
-		private Map<String, List<EventBehavior>> beAttachedActivityMap = new HashMap<String, List<EventBehavior>>();
+		private Map<String, List<BoundaryEventBehavior>> beAttachedActivityMap = new HashMap<String, List<BoundaryEventBehavior>>();
 		
 		/**
 		 * 
@@ -611,9 +610,9 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			Set<String> keySet = beAttachedActivityMap.keySet();
 			for (String activityID : keySet) {
 				if (attachActivityMap.containsKey(activityID)) {
-					List<EventBehavior> list = beAttachedActivityMap.get(activityID);
+					List<BoundaryEventBehavior> list = beAttachedActivityMap.get(activityID);
 					for (EventBehavior behavior : list) {
-//						attachActivityMap.get(activityID).getBoundaryEvents().add((BoundaryEventBehavior) behavior);
+						attachActivityMap.get(activityID).getBoundaryEventBehaviors().add((BoundaryEventBehavior) behavior);
 					}
 					
 				}
@@ -645,10 +644,10 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		 * @exception
 		 * @since 1.0.0
 		 */
-		public void addBeAttachedActivity(String activityId, EventBehavior eventBehavior) {
-			List<EventBehavior> list = beAttachedActivityMap.get(activityId);
+		public void addBeAttachedActivity(String activityId, BoundaryEventBehavior eventBehavior) {
+			List<BoundaryEventBehavior> list = beAttachedActivityMap.get(activityId);
 			if (list == null) {
-				list = new ArrayList<EventBehavior>();
+				list = new ArrayList<BoundaryEventBehavior>();
 				this.beAttachedActivityMap.put(activityId, list);
 			}
 			list.add(eventBehavior);

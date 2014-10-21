@@ -18,9 +18,20 @@
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
 import org.foxbpm.engine.impl.bpmn.behavior.ActivityBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
+import org.foxbpm.engine.impl.bpmn.parser.BpmnParseHandlerImpl;
+import org.foxbpm.model.Activity;
+import org.foxbpm.model.BaseElement;
 
 public class ActivityParser extends FlowNodeParser {
 	 
+	
+	@Override
+	public BaseElementBehavior parser(BaseElement baseElement) {
+		Activity activity = (Activity) baseElement;
+		BpmnParseHandlerImpl.behaviorRelationMemo.addActivity(activity, (ActivityBehavior)baseElementBehavior);
+		return super.parser(baseElement);
+	}
 	public void init() {
 		baseElementBehavior = new ActivityBehavior();
 	}
