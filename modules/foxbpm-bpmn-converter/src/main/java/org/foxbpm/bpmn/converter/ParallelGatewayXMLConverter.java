@@ -64,5 +64,10 @@ public class ParallelGatewayXMLConverter extends GatewayXMLConverter {
 	public String getXMLElementName() {
 		return BpmnXMLConstants.ELEMENT_PARALLELGATEWAY;
 	}
+
+	public Element cretateXMLElement() {
+	    // TODO Auto-generated method stub
+	    return null;
+    }
 	
 }

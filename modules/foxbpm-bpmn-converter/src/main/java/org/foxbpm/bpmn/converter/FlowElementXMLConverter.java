@@ -62,7 +62,6 @@ public abstract class FlowElementXMLConverter extends BaseElementXMLConverter {
 	
 	@Override
 	public void convertModelToXML(Element element, BaseElement baseElement) {
-		// TODO Auto-generated method stub
-		
+		super.convertModelToXML(element, baseElement);
 	}
 }

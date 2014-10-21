@@ -78,6 +78,10 @@ public class Connector extends BaseElement {
 	 * 连接器输出参数集合
 	 */
 	protected List<OutputParam> outputsParam;
+	/**
+	 * 连接器输出参数定义集合
+	 */
+	protected List<OutputParamDef> outputsParamDef;
 	
 	/**
 	 * 连接器定时器
@@ -94,10 +98,17 @@ public class Connector extends BaseElement {
 	 */
 	protected String skipExpression;
 	/**
+	 * 连接器跳过策略
+	 */
+	protected String skipComment;
+	/**
 	 * 时间执行
 	 */
 	protected String isTimeExecute;
-	
+	/**
+	 * 类型
+	 */
+	protected String type;
 	public String getPackageName() {
 		return packageName;
 	}
@@ -201,12 +212,36 @@ public class Connector extends BaseElement {
 	public void setIsTimeExecute(String isTimeExecute) {
 		this.isTimeExecute = isTimeExecute;
 	}
-
+	
 	public String getTimerSkipExpression() {
 		return timerSkipExpression;
 	}
-
+	
 	public void setTimerSkipExpression(String timerSkipExpression) {
 		this.timerSkipExpression = timerSkipExpression;
+	}
+	
+	public String getType() {
+		return type;
+	}
+	
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	public String getSkipComment() {
+		return skipComment;
+	}
+	
+	public void setSkipComment(String skipComment) {
+		this.skipComment = skipComment;
+	}
+	
+	public List<OutputParamDef> getOutputsParamDef() {
+		return outputsParamDef;
+	}
+	
+	public void setOutputsParamDef(List<OutputParamDef> outputsParamDef) {
+		this.outputsParamDef = outputsParamDef;
 	}
 }

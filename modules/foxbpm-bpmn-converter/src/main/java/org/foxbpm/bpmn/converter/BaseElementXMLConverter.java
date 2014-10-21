@@ -54,5 +54,15 @@ public abstract class BaseElementXMLConverter implements FlowElementFactory {
 		}
 	}
 	public void convertModelToXML(Element element, BaseElement baseElement) {
+		
+		if (null != baseElement.getId()) {
+			element.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, baseElement.getId());
+		}
+		if (null != baseElement.getDocumentation()) {
+			Element childElem = element.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+			        + BpmnXMLConstants.ELEMENT_DOCUMENTATION);
+			childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, baseElement.getId());
+			childElem.setText(baseElement.getDocumentation());
+		}
 	}
 }

@@ -18,7 +18,7 @@
 package org.foxbpm.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +31,8 @@ import java.util.Map;
  */
 public class BpmnModel {
 	protected List<Process> processes = new ArrayList<Process>();
-	protected Map<String, Bounds> boundsLocationMap = new LinkedHashMap<String, Bounds>();
-	protected Map<String, List<WayPoint>> waypointLocationMap = new LinkedHashMap<String, List<WayPoint>>();
+	protected Map<String, Map<String, Bounds>> boundsLocationMap = new LinkedHashMap<String, Map<String, Bounds>>();
+	protected Map<String, Map<String, List<WayPoint>>> waypointLocationMap = new LinkedHashMap<String, Map<String, List<WayPoint>>>();
 	
 	public List<Process> getProcesses() {
 		return processes;
@@ -42,32 +42,66 @@ public class BpmnModel {
 		this.processes = processes;
 	}
 	
-	public Map<String, Bounds> getBoundsLocationMap() {
+	public Map<String, Map<String, Bounds>> getBoundsLocationMap() {
 		return boundsLocationMap;
 	}
 	
-	public void setBoundsLocationMap(Map<String, Bounds> boundsLocationMap) {
+	public void setBoundsLocationMap(Map<String, Map<String, Bounds>> boundsLocationMap) {
 		this.boundsLocationMap = boundsLocationMap;
 	}
 	
-	public Map<String, List<WayPoint>> getWaypointLocationMap() {
+	public Map<String, Map<String, List<WayPoint>>> getWaypointLocationMap() {
 		return waypointLocationMap;
 	}
 	
-	public void setWaypointLocationMap(Map<String, List<WayPoint>> waypointLocationMap) {
+	public void setWaypointLocationMap(Map<String, Map<String, List<WayPoint>>> waypointLocationMap) {
 		this.waypointLocationMap = waypointLocationMap;
 	}
 	
-	public void addBounds(String bpmnElement, Bounds bounds) {
-		boundsLocationMap.put(bpmnElement, bounds);
+	public void addBounds(String bpmnPlanId, String bpmnElement, Bounds bounds) {
+		if (null == boundsLocationMap.get(bpmnPlanId)) {
+			boundsLocationMap.put(bpmnPlanId, new LinkedHashMap<String, Bounds>());
+		}
+		boundsLocationMap.get(bpmnPlanId).put(bpmnElement, bounds);
 	}
-	public void addWaypoint(String bpmnElement, WayPoint wayPoint) {
-		if (null == waypointLocationMap) {
-			waypointLocationMap = new HashMap<String, List<WayPoint>>();
+	public void addWaypoint(String bpmnPlanId, String bpmnElement, WayPoint wayPoint) {
+		if (null == waypointLocationMap.get(bpmnPlanId)) {
+			waypointLocationMap.put(bpmnPlanId, new LinkedHashMap<String, List<WayPoint>>());
 		}
-		if (null == waypointLocationMap.get(bpmnElement)) {
-			waypointLocationMap.put(bpmnElement, new ArrayList<WayPoint>());
+		if (null == waypointLocationMap.get(bpmnPlanId).get(bpmnElement)) {
+			waypointLocationMap.get(bpmnPlanId).put(bpmnElement, new ArrayList<WayPoint>());
 		}
-		waypointLocationMap.get(bpmnElement).add(wayPoint);
+		waypointLocationMap.get(bpmnPlanId).get(bpmnElement).add(wayPoint);
+	}
+	/**
+	 * 获取流程线条集合
+	 * 
+	 * @param processId
+	 *            流程ID
+	 * @return 返回线条集合
+	 */
+	public Map<String, SequenceFlow> findSequenceFlow(String processId) {
+		Process process = null;
+		FlowElement flowElement = null;
+		FlowContainer flowContainer = null;
+		for (Iterator<Process> iterator = processes.iterator(); iterator.hasNext();) {
+			process = iterator.next();
+			if (process.getId().equals(processId)) {
+				return process.getSequenceFlows();
+			} else {
+				if (null != process.getFlowElements()) {
+					for (Iterator<FlowElement> iteratorFlowElement = process.getFlowElements().iterator(); iteratorFlowElement.hasNext();) {
+						flowElement = iteratorFlowElement.next();
+						if (flowElement instanceof FlowContainer) {
+							flowContainer = (FlowContainer) flowElement;
+							if (flowElement.getId().equals(processId)) {
+								return flowContainer.getSequenceFlows();
+							}
+						}
+					}
+				}
+			}
+		}
+		return null;
 	}
 }

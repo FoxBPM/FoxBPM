@@ -17,41 +17,38 @@
  */
 package org.foxbpm.model;
 
-import java.util.List;
-import java.util.Map;
-
 /**
- * 流程容器 流程、子流程
+ * 常量类
  * 
  * @author yangguangftlp
- * @date 2014年10月20日
+ * @date 2014年10月21日
  */
-public interface FlowContainer {
+public class OutputParamDef extends BaseElement {
+	
 	/**
-	 * 添加流程元素
 	 * 
-	 * @param flowElement
-	 *            flowElement
 	 */
-	void addFlowElement(FlowElement flowElement);
+	private static final long serialVersionUID = 4475621907579136653L;
+	
 	/**
-	 * 线条元素
-	 * 
-	 * @param sequenceFlow
-	 *            sequenceFlow
+	 * 名称
 	 */
-	void addSequenceFlow(SequenceFlow sequenceFlow);
+	protected String name;
 	/**
-	 * 获取流程节点
-	 * 
-	 * @return 返回容器节点集合
+	 * 数据类型
 	 */
-	public List<FlowElement> getFlowElements();
-	/**
-	 * 获取线条
-	 * 
-	 * @return 返回容器线条集合
-	 */
-	public Map<String, SequenceFlow> getSequenceFlows();
+	protected String dataType;
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getDataType() {
+		return dataType;
+	}
+	public void setDataType(String dataType) {
+		this.dataType = dataType;
+	}
 	
 }

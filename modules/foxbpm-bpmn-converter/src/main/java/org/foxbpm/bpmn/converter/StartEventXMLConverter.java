@@ -17,6 +17,7 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.model.BaseElement;
@@ -47,12 +48,17 @@ public class StartEventXMLConverter extends CatchEventXMLConverter {
 	
 	@Override
 	public void convertModelToXML(Element element, BaseElement baseElement) {
-		
+		super.convertModelToXML(element, baseElement);
 	}
 	
 	@Override
 	public String getXMLElementName() {
 		return BpmnXMLConstants.ELEMENT_STARTEVENT;
+	}
+	
+	public Element cretateXMLElement() {
+		return DocumentFactory.getInstance().createElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+		        + BpmnXMLConstants.ELEMENT_STARTEVENT, BpmnXMLConstants.BPMN2_NAMESPACE);
 	}
 	
 }

@@ -50,6 +50,14 @@ public class SubProcess extends Activity implements FlowContainer {
 		this.flowElements = flowElements;
 	}
 	
+	public Map<String, SequenceFlow> getSequenceFlows() {
+		return sequenceFlows;
+	}
+	
+	public void setSequenceFlows(Map<String, SequenceFlow> sequenceFlows) {
+		this.sequenceFlows = sequenceFlows;
+	}
+	
 	public void addFlowElement(FlowElement flowElement) {
 		if (null == flowElements) {
 			flowElements = new ArrayList<FlowElement>();

@@ -49,5 +49,10 @@ public class ExclusiveGatewayXMLConverter extends GatewayXMLConverter {
 	public String getXMLElementName() {
 		return BpmnXMLConstants.ELEMENT_EXCLUSIVEGATEWAY;
 	}
+
+	public Element cretateXMLElement() {
+	    // TODO Auto-generated method stub
+	    return null;
+    }
 	
 }

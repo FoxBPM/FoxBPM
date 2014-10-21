@@ -19,8 +19,9 @@ package org.foxbpm.model;
 
 /**
  * 连接器输出参数
+ * 
  * @author ych
- *
+ * 
  */
 public class OutputParam extends BaseElement {
 	
@@ -30,12 +31,25 @@ public class OutputParam extends BaseElement {
 	 * 输出参数映射目标变量
 	 */
 	protected String variableTarget;
-
+	/**
+	 * 输出参数映射目标变量
+	 */
+	protected String output;
+	
 	public String getVariableTarget() {
 		return variableTarget;
 	}
-
+	
 	public void setVariableTarget(String variableTarget) {
 		this.variableTarget = variableTarget;
 	}
+	
+	public String getOutput() {
+		return output;
+	}
+	
+	public void setOutput(String output) {
+		this.output = output;
+	}
+	
 }

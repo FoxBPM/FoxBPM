@@ -74,5 +74,10 @@ public class CallActivityXMLConverter extends ActivityXMLConverter {
 	public String getXMLElementName() {
 		return BpmnXMLConstants.ELEMENT_CALLACTIVITY;
 	}
+
+	public Element cretateXMLElement() {
+	    // TODO Auto-generated method stub
+	    return null;
+    }
 	
 }
