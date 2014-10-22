@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.dom4j.Element;
+import org.dom4j.dom.DOMCDATA;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.bpmn.converter.parser.MultiInstanceParser;
 import org.foxbpm.bpmn.converter.parser.SkipStrategyParser;
@@ -174,7 +175,7 @@ public abstract class ActivityXMLConverter extends FlowNodeXMLConverter {
 					&& !completeCondition.trim().equals("")){
 				Element completeConditionElement = multiInstanceElement.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
 				        + BpmnXMLConstants.ELEMENT_COMPLETIONCONDITION);
-				completeConditionElement.setText(completeCondition);
+				completeConditionElement.add(new DOMCDATA(completeCondition));
 			}
 			
 		} 
