@@ -110,6 +110,7 @@ public class ProcessParser extends BpmnParser {
 			potentialStarter.setId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
 			potentialStarter.setResourceType(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_RESOURCETYPE));
 			potentialStarter.setDocumentation(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_DESCRIPTION));
+			potentialStarter.setExpression(expression);
 			if (null == process.getPotentialStarters()) {
 				process.setPotentialStarters(new ArrayList<PotentialStarter>());
 			}
@@ -136,7 +137,7 @@ public class ProcessParser extends BpmnParser {
 				parseExtElements(process, elem);
 			} else if (BpmnXMLConstants.ELEMENT_DOCUMENTATION.equalsIgnoreCase(name)) {
 				process.setDocumentation(elem.getText());
-			} else if(BpmnXMLConstants.ELEMENT_LANESET.equalsIgnoreCase(name)){
+			} else if (BpmnXMLConstants.ELEMENT_LANESET.equalsIgnoreCase(name)) {
 				LaneSet laneSet = new LaneSet();
 				LaneSetXmlConverter laneSetXmlConverter = new LaneSetXmlConverter();
 				laneSetXmlConverter.convertXMLToModel(elem, laneSet);

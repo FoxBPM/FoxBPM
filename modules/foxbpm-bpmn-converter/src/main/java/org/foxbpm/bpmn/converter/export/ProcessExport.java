@@ -41,7 +41,7 @@ public class ProcessExport extends BpmnExport {
 			// 处理扩展
 			createExtensionElement(processEle, process);
 			
-			createLaneSetElement(processEle,process);
+			createLaneSetElement(processEle, process);
 			// 处理流程节点
 			BpmnXMLUtil.createFlowElement(processEle, process.getFlowElements());
 			// 处理流程线条
@@ -58,10 +58,10 @@ public class ProcessExport extends BpmnExport {
 		}
 	}
 	
-	private static void createLaneSetElement(Element processEle, Process process){
+	private static void createLaneSetElement(Element processEle, Process process) {
 		List<LaneSet> laneSets = process.getLaneSets();
-		if(laneSets != null){
-			for(LaneSet lanset : laneSets){
+		if (laneSets != null) {
+			for (LaneSet lanset : laneSets) {
 				LaneSetXmlConverter laneSetXmlConverter = new LaneSetXmlConverter();
 				Element elementLaneSet = laneSetXmlConverter.cretateXMLElement();
 				laneSetXmlConverter.convertModelToXML(elementLaneSet, lanset);
@@ -127,6 +127,7 @@ public class ProcessExport extends BpmnExport {
 			PotentialStarter potentialStarter = null;
 			Element potentialStarterEle = null;
 			Element childElem = null;
+			String id = null;
 			for (Iterator<PotentialStarter> iterator = potentialStarters.iterator(); iterator.hasNext();) {
 				potentialStarter = iterator.next();
 				potentialStarterEle = parentElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
@@ -138,7 +139,9 @@ public class ProcessExport extends BpmnExport {
 				        + BpmnXMLConstants.ELEMENT_EXPRESSION);
 				childElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
 				        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);
-				childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_EXPRESSION));
+				id = UniqueIDUtil.getInstance().generateElementID(null);
+				childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, BpmnXMLConstants.ELEMENT_EXPRESSION + '_' + id);
+				childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, id);
 				childElem.add(new DOMCDATA(potentialStarter.getExpression()));
 			}
 		}

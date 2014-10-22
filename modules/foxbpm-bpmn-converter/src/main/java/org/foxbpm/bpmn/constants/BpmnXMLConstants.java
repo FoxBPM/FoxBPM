@@ -151,7 +151,7 @@ public interface BpmnXMLConstants {
 	/** taskSubject */
 	String ELEMENT_TASKSUBJECT = "taskSubject";
 	/** dataVariable */
-	String ELEMENT_DATAVARIABLE = "dataVariable";
+	String ELEMENT_DATAVARIABLE = "DataVariable";
 	/** potentialStarter */
 	String ELEMENT_POTENTIALSTARTER = "potentialStarter";
 	/** connectorInstanceElements */
