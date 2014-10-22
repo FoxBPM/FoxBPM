@@ -37,6 +37,8 @@ import org.foxbpm.engine.impl.bpmn.behavior.ActivityBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.BoundaryEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.EventBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.FlowNodeBehavior;
+import org.foxbpm.engine.impl.bpmn.behavior.SubProcessBehavior;
 import org.foxbpm.engine.impl.connector.ConnectorListener;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtDefinition;
@@ -58,6 +60,8 @@ import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelLaneImpl;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 import org.foxbpm.model.Activity;
+import org.foxbpm.model.BaseElement;
+import org.foxbpm.model.Bounds;
 import org.foxbpm.model.BpmnModel;
 import org.foxbpm.model.Connector;
 import org.foxbpm.model.FlowElement;
@@ -66,12 +70,20 @@ import org.foxbpm.model.Process;
 import org.foxbpm.model.SequenceFlow;
 import org.foxbpm.model.StartEvent;
 import org.foxbpm.model.SubProcess;
+import org.foxbpm.model.WayPoint;
 import org.foxbpm.model.config.style.Style;
 import org.foxbpm.model.constant.StyleOption;
 
 public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	
-//	private static Map<Class<?>, Style> styleContainer = new HashMap<Class<?>, Style>();
+	private static Map<Class<?>, Style> styleContainer = new HashMap<Class<?>, Style>();
+	
+	public BpmnParseHandlerImpl() {
+		//加载style.xml内容
+		
+		
+		
+	}
 	public static BehaviorRelationMemo behaviorRelationMemo = new BehaviorRelationMemo();
 	public KernelProcessDefinition createProcessDefinition(String processId, Object processFile) {
 		BpmnModel bpmnModel = null;
@@ -83,14 +95,12 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		// 关联保存下来的关系
 		behaviorRelationMemo.attachActivityAndBoundaryEventBehaviorRelation();
 		// 加载监听器
-		this.registListener((ProcessDefinitionEntity) processDefinition);
+		registListener((ProcessDefinitionEntity) processDefinition);
 		return processDefinition;
 	}
 	
 	/**
-	 * 
 	 * loadBehavior 根据Process模型加载流程定义对象
-	 * 
 	 * @param process
 	 * @return 流程定义对象
 	 */
@@ -147,8 +157,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		DataVariableMgmtDefinition dataVariableMgmtDefinition = new DataVariableMgmtDefinition(processDefinition);
 		dataVariableMgmtDefinition.getDataVariableDefinitions().addAll(process.getDataVariables());
 		processDefinition.setDataVariableMgmtDefinition(dataVariableMgmtDefinition);
-		processDI(processDefinition, process);
-		
+		processDI(processDefinition, bpmnModel);
 		return processDefinition;
 	}
 	
@@ -295,73 +304,54 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		
 //	}
 	
-	private void processDI(ProcessDefinitionEntity processDefinition, Process process) {
-//		Definitions definitions = (Definitions) process.eResource().getContents().get(0).eContents().get(0);
-//		List<BPMNDiagram> diagrams = definitions.getDiagrams();
-//		if (diagrams == null || diagrams.size() == 0) {
-//			return;
-//		}
-//		float maxX = 0;
-//		float maxY = 0;
-//		float minY = 0;
-//		float minX = 0;
-//		for (BPMNDiagram bpmnDiagram : diagrams) {
-//			for (DiagramElement diagramElement : bpmnDiagram.getPlane().getPlaneElement()) {
-//				// 节点信息
-//				if (diagramElement instanceof BPMNShape) {
-//					BPMNShape bpmnShape = (BPMNShape) diagramElement;
-//					Bounds bounds = bpmnShape.getBounds();
-//					float x = bounds.getX();
-//					float y = bounds.getY();
-//					float width = bounds.getWidth();
-//					float height = bounds.getHeight();
-//					if (x + width > maxX) {
-//						maxX = x + width;
-//					}
-//					if (y + height > maxY) {
-//						maxY = y + height;
-//					}
-//					if (minY == 0) {
-//						minY = y;
-//					} else {
-//						if (y < minY) {
-//							minY = y;
-//						}
-//					}
-//					
-//					if (minX == 0) {
-//						minX = x;
-//					} else {
-//						if (x < minX) {
-//							minX = x;
-//						}
-//					}
-//					this.loadBPMNShape(width, height, x, y, bpmnShape, processDefinition);
-//				}
-//				// 线条信息
-//				if (diagramElement instanceof BPMNEdge) {
-//					BPMNEdge bpmnEdge = (BPMNEdge) diagramElement;
-//					List<Point> pointList = bpmnEdge.getWaypoint();
-//					for (Point point : pointList) {
-//						float x = point.getX();
-//						float y = point.getY();
-//						if (x > maxX) {
-//							maxX = x;
-//						}
-//						if (y > maxY) {
-//							maxY = y;
-//						}
-//					}
-//					this.loadBPMNEdge(pointList, bpmnEdge, processDefinition);
-//					
-//				}
-//			}
-//		}
-//		
-//		processDefinition.setProperty("canvas_maxX", maxX + 30);
-//		processDefinition.setProperty("canvas_maxY", maxY + 70);
-//		processDefinition.setProperty("canvas_minX", minX);
-//		processDefinition.setProperty("canvas_minY", minY);
+	private void processDI(ProcessDefinitionEntity processDefinition, BpmnModel bpmnModel) {
+		
+		String processId = bpmnModel.getProcesses().get(0).getId();
+		Map<String,Bounds> boundsMap = bpmnModel.getBoundsLocationMap().get(processId);
+		Map<String,List<WayPoint>> wayPointsMap = bpmnModel.getWaypointLocationMap().get(processId);
+		double maxX = 0;
+		double maxY = 0;
+		double minY = 0;
+		double minX = 0;
+		
+		for(Bounds tmpBounds:boundsMap.values()){
+			double x = tmpBounds.getX();
+			double y = tmpBounds.getY();
+			double width = tmpBounds.getWidth();
+			double height = tmpBounds.getHeight();
+			if (x + width > maxX) {
+				maxX = x + width;
+			}
+			if (y + height > maxY) {
+				maxY = y + height;
+			}
+			if (minY == 0) {
+				minY = y;
+			} else {
+				if (y < minY) {
+					minY = y;
+				}
+			}
+			
+			if (minX == 0) {
+				minX = x;
+			} else {
+				if (x < minX) {
+					minX = x;
+				}
+			}
+			loadBPMNShape(tmpBounds, processDefinition);
+		}
+		
+		for(String edgeId : wayPointsMap.keySet()){
+			List<WayPoint> tmpPointList = wayPointsMap.get(edgeId);
+			loadBPMNEdge(tmpPointList,edgeId,processDefinition);
+		}
+		
+		processDefinition.setProperty("canvas_maxX", maxX + 30);
+		processDefinition.setProperty("canvas_maxY", maxY + 70);
+		processDefinition.setProperty("canvas_minX", minX);
+		processDefinition.setProperty("canvas_minY", minY);
 	}
 	
 	/**
@@ -378,65 +368,62 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	 * @exception
 	 * @since 1.0.0
 	 */
-//	private void loadBPMNShape(float width, float height, float x, float y, BPMNShape bpmnShape,
-//	    ProcessDefinitionEntity processDefinition) {
-//		ProcessEngineConfigurationImpl processEngineConfiguration = Context.getProcessEngineConfiguration();
-//		BaseElement bpmnElement = getBaseElement(bpmnShape.getBpmnElement());
-//		if(bpmnElement == null){
-//			return;
-//		}
-//		Style style = this.getStyle(bpmnElement, processEngineConfiguration);
-//		KernelDIBounds kernelDIBounds = this.getDIElementFromProcessDefinition(processDefinition, bpmnElement.getId());
-//		if (kernelDIBounds != null) {
-//			// 图形基本属性
-//			kernelDIBounds.setWidth(width);
-//			kernelDIBounds.setHeight(height);
-//			kernelDIBounds.setX(x);
-//			kernelDIBounds.setY(y);
-//			// 泳道水平垂直属性
-//			if (kernelDIBounds instanceof KernelLaneImpl) {
-//				kernelDIBounds.setProperty(StyleOption.IsHorizontal, bpmnShape.isIsHorizontal());
-//			}
-//			// 内部子流程展开收起属性
-//			if (kernelDIBounds instanceof KernelFlowNodeImpl
-//			        && ((KernelFlowNodeImpl) kernelDIBounds).getKernelFlowNodeBehavior() instanceof SubProcessBehavior) {
-//				kernelDIBounds.setProperty(StyleOption.IsExpanded, bpmnShape.isIsExpanded());
-//			}
-//			
-//			// 图形式样属性
-//			this.setStyleProperties((KernelBaseElementImpl) kernelDIBounds, style);
-//		}
-//	}
-//	/**
-//	 * 
-//	 * loadBPMNEdge(加载bpmnEdge信息)
-//	 * 
-//	 * @param pointList
-//	 * @param bpmnEdge
-//	 * @param processDefinition
-//	 *            void
-//	 * @exception
-//	 * @since 1.0.0
-//	 */
-//	private void loadBPMNEdge(List<Point> pointList, BPMNEdge bpmnEdge,
-//	    ProcessDefinitionEntity processDefinition) {
-//		ProcessEngineConfigurationImpl processEngineConfiguration = Context.getProcessEngineConfiguration();
-//		BaseElement bpmnElement = getBaseElement(bpmnEdge.getBpmnElement());
-//		Style style = null;
-//		if (bpmnElement instanceof SequenceFlow) {
-//			KernelSequenceFlowImpl findSequenceFlow = processDefinition.findSequenceFlow(bpmnElement.getId());
-//			style = processEngineConfiguration.getStyle("SequenceFlow");
-//			List<Integer> waypoints = new ArrayList<Integer>();
-//			for (Point point : pointList) {
-//				waypoints.add((new Float(point.getX())).intValue());
-//				waypoints.add((new Float(point.getY())).intValue());
-//			}
-//			
-//			findSequenceFlow.setWaypoints(waypoints);
-//			if (style != null) {
-//				this.setStyleProperties(findSequenceFlow, style);
-//			}
-//		}
+	private void loadBPMNShape(Bounds bounds,ProcessDefinitionEntity processDefinition) {
+		String elementId = bounds.getBpmnElement();
+		KernelFlowNodeImpl flowNodeImpl = processDefinition.findFlowNode(elementId);
+		FlowNodeBehavior behavior = (FlowNodeBehavior)flowNodeImpl.getKernelFlowNodeBehavior();
+		Style style = getStyle(behavior.getBaseElement());
+
+		KernelDIBounds kernelDIBounds = this.getDIElementFromProcessDefinition(processDefinition, elementId);
+		if (kernelDIBounds != null) {
+			// 图形基本属性
+			kernelDIBounds.setWidth((float)bounds.getWidth());
+			kernelDIBounds.setHeight((float)bounds.getHeight());
+			kernelDIBounds.setX((float)bounds.getX());
+			kernelDIBounds.setY((float)bounds.getY());
+			// 泳道水平垂直属性
+			if (kernelDIBounds instanceof KernelLaneImpl) {
+				kernelDIBounds.setProperty(StyleOption.IsHorizontal, bounds.isHorizontal());
+			}
+			// 内部子流程展开收起属性
+			if (kernelDIBounds instanceof KernelFlowNodeImpl
+			        && ((KernelFlowNodeImpl) kernelDIBounds).getKernelFlowNodeBehavior() instanceof SubProcessBehavior) {
+				kernelDIBounds.setProperty(StyleOption.IsExpanded, bounds.getExpanded());
+			}
+			// 图形式样属性
+			setStyleProperties((KernelBaseElementImpl) kernelDIBounds, style);
+		}
+	}
+	/**
+	 * 
+	 * loadBPMNEdge(加载bpmnEdge信息)
+	 * 
+	 * @param pointList
+	 * @param bpmnEdge
+	 * @param processDefinition
+	 *            void
+	 * @exception
+	 * @since 1.0.0
+	 */
+	private void loadBPMNEdge(List<WayPoint> pointList, String elementId,ProcessDefinitionEntity processDefinition) {
+		Style style = null;
+		KernelFlowNodeImpl flowNodeImpl = processDefinition.findFlowNode(elementId);
+		FlowNodeBehavior behavior = (FlowNodeBehavior)flowNodeImpl.getKernelFlowNodeBehavior();
+		BaseElement baseElement = behavior.getBaseElement();
+		if (baseElement instanceof SequenceFlow) {
+			KernelSequenceFlowImpl findSequenceFlow = processDefinition.findSequenceFlow(elementId);
+			style = getStyle(baseElement);
+			
+			List<Integer> waypoints = new ArrayList<Integer>();
+			for (WayPoint point : pointList) {
+				waypoints.add((int)point.getX());
+				waypoints.add((int)point.getY());
+			}
+			findSequenceFlow.setWaypoints(waypoints);
+			if (style != null) {
+				setStyleProperties(findSequenceFlow, style);
+			}
+		}
 //		if (bpmnElement instanceof Association) {
 //			KernelAssociationImpl kernelAssociationImpl = (KernelAssociationImpl) processDefinition.getKernelArtifactById(bpmnElement.getId());
 //			style = processEngineConfiguration.getStyle("Association");
@@ -454,7 +441,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 //		if (bpmnElement instanceof MessageFlow) {
 //			// TODO MESSAGEFLOW
 //		}
-//	}
+	}
 	
 	/**
 	 * 
@@ -515,40 +502,13 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	 * @exception
 	 * @since 1.0.0
 	 */
-//	private Style getStyle(BaseElement bpmnElement,
-//	    ProcessEngineConfigurationImpl processEngineConfiguration) {
-//		Style style = null;
-//		if (styleContainer.size() == 0) {
-//			styleContainer.put(StartEventImpl.class, processEngineConfiguration.getStyle("StartEvent"));
-//			styleContainer.put(EndEventImpl.class, processEngineConfiguration.getStyle("EndEvent"));
-//			styleContainer.put(ParallelGatewayImpl.class, processEngineConfiguration.getStyle("ParallelGateway"));
-//			styleContainer.put(InclusiveGatewayImpl.class, processEngineConfiguration.getStyle("InclusiveGateway"));
-//			styleContainer.put(ExclusiveGatewayImpl.class, processEngineConfiguration.getStyle("ExclusiveGateway"));
-//			styleContainer.put(UserTaskImpl.class, processEngineConfiguration.getStyle("UserTask"));
-//			styleContainer.put(LaneImpl.class, processEngineConfiguration.getStyle("Lane"));
-//			styleContainer.put(TextAnnotationImpl.class, processEngineConfiguration.getStyle("TextAnnotation"));
-//			styleContainer.put(GroupImpl.class, processEngineConfiguration.getStyle("Group"));
-//			styleContainer.put(SubProcessImpl.class, processEngineConfiguration.getStyle("SubProcess"));
-//			styleContainer.put(CallActivityImpl.class, processEngineConfiguration.getStyle("CallActivity"));
-//			styleContainer.put(ServiceTaskImpl.class, processEngineConfiguration.getStyle("ServiceTask"));
-//			styleContainer.put(TaskImpl.class, processEngineConfiguration.getStyle("Task"));
-//			styleContainer.put(ManualTaskImpl.class, processEngineConfiguration.getStyle("ManualTask"));
-//			styleContainer.put(ScriptTaskImpl.class, processEngineConfiguration.getStyle("ScriptTask"));
-//			styleContainer.put(SendTaskImpl.class, processEngineConfiguration.getStyle("SendTask"));
-//			styleContainer.put(ReceiveTaskImpl.class, processEngineConfiguration.getStyle("ReceiveTask"));
-//			styleContainer.put(BusinessRuleTaskImpl.class, processEngineConfiguration.getStyle("BusinessRuleTask"));
-//			styleContainer.put(BoundaryEventImpl.class, processEngineConfiguration.getStyle("BoundaryEvent"));
-//			styleContainer.put(IntermediateCatchEventImpl.class, processEngineConfiguration.getStyle("IntermediateCatchEvent"));
-//			styleContainer.put(IntermediateThrowEventImpl.class, processEngineConfiguration.getStyle("IntermediateThrowEvent"));
-//		}
-//		
-//		style = styleContainer.get(bpmnElement.getClass());
-//		
-//		if (style == null) {
-//			throw new FoxBPMException("未找到" + bpmnElement.getClass() + "的style样式");
-//		}
-//		return style;
-//	}
+	private Style getStyle(BaseElement bpmnElement) {
+		Style style = styleContainer.get(bpmnElement.getClass());
+		if (style == null) {
+			throw new FoxBPMException("未找到" + bpmnElement.getClass() + "的style样式");
+		}
+		return style;
+	}
 	
 	/**
 	 * 

@@ -17,8 +17,20 @@
  */
 package org.foxbpm.model;
 
-public class LaneSet extends BaseElement {
+import java.util.ArrayList;
+import java.util.List;
+
+public class LaneSet extends FlowElement {
 
 	private static final long serialVersionUID = 1L;
-
+	
+	private List<Lane> lanes = new ArrayList<Lane>();
+	
+	public void setLanes(List<Lane> lanes) {
+		this.lanes = lanes;
+	}
+	
+	public List<Lane> getLanes() {
+		return lanes;
+	}
 }

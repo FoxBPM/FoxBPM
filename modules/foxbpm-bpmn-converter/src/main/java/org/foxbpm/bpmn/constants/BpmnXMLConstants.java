@@ -171,6 +171,18 @@ public interface BpmnXMLConstants {
 	/** skipAssignee */
 	String ELEMENT_SKIPASSIGNEE = "skipAssignee";
 	
+	/** laneSet */
+	String ELEMENT_LANESET = "laneSet";
+	
+	/** lane */
+	String ELEMENT_LANE = "lane";
+	
+	/** flowNodeRef */
+	String ELEMENT_FLOWNODEREF = "flowNodeRef";
+	
+	/** childLaneSet */
+	String ELEMENT_CHILDLANESET = "childLaneSet";
+	
 	/** expression */
 	String ELEMENT_EXPRESSION = "expression";
 	/** definitions */
