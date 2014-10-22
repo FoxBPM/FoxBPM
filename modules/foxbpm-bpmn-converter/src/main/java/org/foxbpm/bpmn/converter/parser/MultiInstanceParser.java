@@ -49,27 +49,53 @@ public class MultiInstanceParser {
 		Element elem = null;
 		String parentName = element.getName();
 		String nodeName = null;
+		String expression = null;
 		for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
 			elem = (Element) iterator.next();
 			nodeName = elem.getName();
 			if (BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS.equalsIgnoreCase(nodeName)
-			        || BpmnXMLConstants.ELEMENT_INPUTDATAITEM.equalsIgnoreCase(nodeName)
-			        || BpmnXMLConstants.ELEMENT_OUTPUTDATAITEM.equalsIgnoreCase(nodeName)
 			        || BpmnXMLConstants.ELEMENT_LOOPDATAINPUTCOLLECTION.equalsIgnoreCase(nodeName)
 			        || BpmnXMLConstants.ELEMENT_LOOPDATAOUTPUTCOLLECTION.equalsIgnoreCase(nodeName)) {
 				parserElement(elem, multiInstance);
 				continue;
+			} else if (BpmnXMLConstants.ELEMENT_INPUTDATAITEM.equalsIgnoreCase(nodeName)) {
+				multiInstance.setInputDataItem(parserInputAndOuputDataItem(elem));
+				continue;
+			} else if (BpmnXMLConstants.ELEMENT_OUTPUTDATAITEM.equalsIgnoreCase(nodeName)) {
+				multiInstance.setOutputDataItem(parserInputAndOuputDataItem(elem));
+				continue;
 			}
 			
-			if (BpmnXMLConstants.ELEMENT_INPUTDATAITEM.equalsIgnoreCase(parentName)) {
-				multiInstance.setInputDataItem(BpmnXMLUtil.parseExpression(elem));
-			} else if (BpmnXMLConstants.ELEMENT_OUTPUTDATAITEM.equalsIgnoreCase(parentName)) {
-				multiInstance.setOutputDataItem(BpmnXMLUtil.parseExpression(elem));
-			} else if (BpmnXMLConstants.ELEMENT_LOOPDATAINPUTCOLLECTION.equalsIgnoreCase(parentName)) {
-				multiInstance.setLoopDataInputCollection(BpmnXMLUtil.parseExpression(elem));
+			if (BpmnXMLConstants.ELEMENT_EXPRESSION.equalsIgnoreCase(nodeName)) {
+				expression = BpmnXMLUtil.parseExpression(elem);
+			} else if (BpmnXMLConstants.ELEMENT_COMPLETIONCONDITION.equalsIgnoreCase(nodeName)) {
+				multiInstance.setCompletionCondition(BpmnXMLUtil.parseExpression(elem));
+			}
+			
+			//
+			if (BpmnXMLConstants.ELEMENT_LOOPDATAINPUTCOLLECTION.equalsIgnoreCase(parentName)) {
+				multiInstance.setLoopDataInputCollection(expression);
 			} else if (BpmnXMLConstants.ELEMENT_LOOPDATAOUTPUTCOLLECTION.equalsIgnoreCase(parentName)) {
-				multiInstance.setLoopDataOutputCollection(BpmnXMLUtil.parseExpression(elem));
+				multiInstance.setLoopDataOutputCollection(expression);
 			}
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static String parserInputAndOuputDataItem(Element element) {
+		
+		Element elem = null;
+		String nodeName = null;
+		for (Iterator<Element> iterator = element.elements().iterator(); iterator.hasNext();) {
+			elem = iterator.next();
+			nodeName = elem.getName();
+			if (BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS.equalsIgnoreCase(nodeName)) {
+				return parserInputAndOuputDataItem(elem);
+			}
+			if (BpmnXMLConstants.ELEMENT_EXPRESSION.equalsIgnoreCase(nodeName)) {
+				return BpmnXMLUtil.parseExpression(elem);
+			}
+		}
+		return null;
 	}
 }
