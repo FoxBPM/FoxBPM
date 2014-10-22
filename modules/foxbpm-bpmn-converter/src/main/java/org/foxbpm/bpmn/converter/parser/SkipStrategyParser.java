@@ -37,8 +37,7 @@ public class SkipStrategyParser {
 		}
 		
 		SkipStrategy skipStrategy = new SkipStrategy();
-		skipStrategy.setEnable(BpmnXMLUtil.parseBoolean(element.attributeValue(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-		        + BpmnXMLConstants.ATTRIBUTE_ISENABLE)));
+		skipStrategy.setEnable(BpmnXMLUtil.parseBoolean(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ISENABLE)));
 		parserElement(element, skipStrategy);
 		return skipStrategy;
 	}
