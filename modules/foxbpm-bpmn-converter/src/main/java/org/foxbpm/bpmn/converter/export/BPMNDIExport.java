@@ -20,13 +20,16 @@ import java.util.Map.Entry;
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.bpmn.converter.util.UniqueIDUtil;
+import org.foxbpm.bpmn.exceptions.BpmnConverterException;
 import org.foxbpm.model.Bounds;
 import org.foxbpm.model.BpmnModel;
 import org.foxbpm.model.SequenceFlow;
 import org.foxbpm.model.WayPoint;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class BPMNDIExport extends BpmnExport {
-	
+public class BPMNDIExport {
+	protected static final Logger LOGGER = LoggerFactory.getLogger(BPMNDIExport.class);
 	public static void writeBPMNDI(BpmnModel model, Element parentElement) throws Exception {
 		
 		Element bpmndiagram = null;
@@ -94,6 +97,8 @@ public class BPMNDIExport extends BpmnExport {
 						SequenceFlow = sequenceFlowMap.get(entryList.getKey());
 						if (null == SequenceFlow) {
 							// 异常
+							LOGGER.error("获取ID：" + entryList.getKey() + "线条为空!");
+							throw new BpmnConverterException("获取ID：" + entryList.getKey() + "线条为空!");
 						}
 						bpmnEdge.addAttribute(BpmnXMLConstants.ATTRIBUTE_SOURCEELEMENT, BpmnXMLConstants.ELEMENT_DI_SHAPE
 						        + '_' + SequenceFlow.getSourceRefId());

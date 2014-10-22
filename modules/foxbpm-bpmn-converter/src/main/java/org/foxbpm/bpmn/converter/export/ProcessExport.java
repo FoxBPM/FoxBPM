@@ -26,7 +26,7 @@ import org.foxbpm.model.LaneSet;
 import org.foxbpm.model.PotentialStarter;
 import org.foxbpm.model.Process;
 
-public class ProcessExport extends BpmnExport {
+public class ProcessExport {
 	
 	public static void writeProcess(Process process, Element parentElement) {
 		if (null != process) {

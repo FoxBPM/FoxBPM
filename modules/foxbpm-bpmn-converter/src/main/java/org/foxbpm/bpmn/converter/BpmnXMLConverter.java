@@ -63,10 +63,10 @@ public class BpmnXMLConverter {
 		addConverter(new ExclusiveGatewayXMLConverter());
 		addConverter(new InclusiveGatewayXMLConverter());
 		addConverter(new ParallelGatewayXMLConverter());
-		//subProcess
+		// subProcess
 		addConverter(new SubProcessXMLConverter());
 		addConverter(new CallActivityXMLConverter());
-		//laneset
+		// laneset
 	}
 	
 	protected BpmnDiagramParser bpmnDiagramParser;
@@ -100,7 +100,7 @@ public class BpmnXMLConverter {
 					}
 				}
 			} catch (Exception e) {
-				LOGGER.error("Bpmn文件转换Model错误!",e);
+				LOGGER.error("Bpmn文件转换BpmnModel错误!", e);
 				e.printStackTrace();
 				throw new BpmnConverterException(e);
 			}
@@ -137,7 +137,9 @@ public class BpmnXMLConverter {
 			// 位置坐标转换
 			BPMNDIExport.writeBPMNDI(model, element);
 		} catch (Exception e) {
+			LOGGER.error("BpmnModel转换Bpmn文件错误!", e);
 			e.printStackTrace();
+			throw new BpmnConverterException(e);
 		}
 		return doc;
 	}
