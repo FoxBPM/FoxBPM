@@ -67,7 +67,6 @@ public class BpmnXMLConverter {
 		addConverter(new SubProcessXMLConverter());
 		addConverter(new CallActivityXMLConverter());
 		//laneset
-		addConverter(new LaneSetXmlConverter());
 	}
 	
 	protected BpmnDiagramParser bpmnDiagramParser;
