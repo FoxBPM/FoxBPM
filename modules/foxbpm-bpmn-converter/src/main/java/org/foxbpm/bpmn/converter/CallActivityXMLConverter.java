@@ -68,7 +68,7 @@ public class CallActivityXMLConverter extends ActivityXMLConverter {
 	
 	@Override
 	public void convertModelToXML(Element element, BaseElement baseElement) {
-		
+		CallActivity activity = (CallActivity)baseElement;
 	}
 	
 	@Override
