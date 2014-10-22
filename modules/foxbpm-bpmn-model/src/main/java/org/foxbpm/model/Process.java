@@ -56,6 +56,10 @@ public class Process extends FlowElement implements FlowContainer {
 	 * 流程分类
 	 */
 	protected String category;
+	/**
+	 * 是否持久化 默认true
+	 */
+	protected boolean isPersistence = true;
 	
 	/**
 	 * 流程可发起人
@@ -165,6 +169,14 @@ public class Process extends FlowElement implements FlowContainer {
 	
 	public void setSequenceFlows(Map<String, SequenceFlow> sequenceFlows) {
 		this.sequenceFlows = sequenceFlows;
+	}
+	
+	public boolean isPersistence() {
+		return isPersistence;
+	}
+	
+	public void setPersistence(boolean isPersistence) {
+		this.isPersistence = isPersistence;
 	}
 	
 	public void addFlowElement(FlowElement flowElement) {

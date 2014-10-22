@@ -37,6 +37,9 @@ public class ProcessExport extends BpmnExport {
 			processEle.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, process.getName());
 			processEle.addAttribute(BpmnXMLConstants.ATTRIBUTE_CATEGORY, process.getCategory());
 			processEle.addAttribute(BpmnXMLConstants.ATTRIBUTE_KEY, process.getKey());
+			if (!process.isPersistence()) {
+				processEle.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':' + BpmnXMLConstants.ATTRIBUTE_ISPERSISTENCE, String.valueOf(false));
+			}
 			
 			// 处理扩展
 			createExtensionElement(processEle, process);
@@ -118,7 +121,7 @@ public class ProcessExport extends BpmnExport {
 			// 启动人
 			createStarterElement(extensionElements, process.getPotentialStarters());
 			// 连接器
-			BpmnXMLUtil.createConectorElement(extensionElements,BpmnXMLConstants.TYPE_FLOWCONNECTOR, process.getConnector());
+			BpmnXMLUtil.createConectorElement(extensionElements, BpmnXMLConstants.TYPE_FLOWCONNECTOR, process.getConnector());
 		}
 	}
 	

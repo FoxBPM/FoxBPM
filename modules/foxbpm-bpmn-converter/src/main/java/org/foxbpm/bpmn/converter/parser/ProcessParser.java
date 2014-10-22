@@ -126,6 +126,8 @@ public class ProcessParser extends BpmnParser {
 		process.setCategory(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_CATEGORY));
 		process.setSubject(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_SUBJECT));
 		process.setKey(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_KEY));
+		process.setPersistence(BpmnXMLUtil.parseBoolean(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ISPERSISTENCE)));
+		
 		// end
 		// 扩展元素
 		Element elem = null;

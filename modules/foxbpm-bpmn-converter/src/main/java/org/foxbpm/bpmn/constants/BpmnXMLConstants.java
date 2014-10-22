@@ -63,6 +63,8 @@ public interface BpmnXMLConstants {
 	String PROCESS_NAMESPACE = "http://www.activiti.org/test";
 	
 	// 属性
+	/** isPersistence */
+	String ATTRIBUTE_ISPERSISTENCE = "isPersistence";
 	/** category */
 	String ATTRIBUTE_CATEGORY = "category";
 	/** subject */

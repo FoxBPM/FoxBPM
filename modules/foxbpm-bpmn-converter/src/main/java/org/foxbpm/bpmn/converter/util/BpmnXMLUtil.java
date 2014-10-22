@@ -335,7 +335,7 @@ public class BpmnXMLUtil {
 	}
 	
 	/*******************************************************************************************/
-	public static void createConectorElement(Element parentElement,String connrctorType, List<Connector> connectors) {
+	public static void createConectorElement(Element parentElement, String connrctorType, List<Connector> connectors) {
 		if (null != connectors) {
 			Connector connector = null;
 			Element connectorInstanceElements = null;
@@ -539,7 +539,7 @@ public class BpmnXMLUtil {
 	 */
 	public static String interceptStr(String str, int length) {
 		if (null != str && (length > 0 && length < str.length())) {
-			return str.substring(0, length);
+			return str.substring(0, length).replace("\"", BpmnXMLConstants.EMPTY_STRING);
 		}
 		return str;
 	}
