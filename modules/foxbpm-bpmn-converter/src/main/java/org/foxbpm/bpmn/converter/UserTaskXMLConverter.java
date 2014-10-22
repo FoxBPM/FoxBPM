@@ -109,6 +109,10 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 							commandParams.add(commandParameter);
 						}
 						
+						Element taskCommandExpElement = extentionElement.element(BpmnXMLConstants.ELEMENT_EXPRESSION);
+						if(taskCommandExpElement != null){
+							taskCommand.setExpression(taskCommandExpElement.getText());
+						}
 						listTaskCommand.add(taskCommand);
 					} else if (BpmnXMLConstants.ELEMENT_TASKSUBJECT.equals(extentionElement.getName())) {
 						// 任务主题
