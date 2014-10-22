@@ -269,6 +269,8 @@ public interface BpmnXMLConstants {
 	String ATTRIBUTE_DI_IS_EXPANDED = "isExpanded";
 	/** isMarkerVisible */
 	String ATTRIBUTE_DI_IS_MARKERVISIBLE = "isMarkerVisible";
+	/** isHorizontal */
+	String ATTRIBUTE_DI_IS_HORIZONTAL = "isHorizontal";
 	/** width */
 	String ATTRIBUTE_DI_WIDTH = "width";
 	/** height */

@@ -74,6 +74,12 @@ public class BPMNDIExport extends BpmnExport {
 					if (entryBounds.getValue().isMarkerVisible()) {
 						bpmnShape.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_IS_MARKERVISIBLE, String.valueOf(true));
 					}
+					if (entryBounds.getValue().isExpanded()) {
+						bpmnShape.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_IS_EXPANDED, String.valueOf(true));
+					}
+					if (entryBounds.getValue().isHorizontal()) {
+						bpmnShape.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_IS_HORIZONTAL, String.valueOf(true));
+					}
 				}
 				sequenceFlowMap = model.findSequenceFlow(entry.getKey());
 				if (null == sequenceFlowMap) {
