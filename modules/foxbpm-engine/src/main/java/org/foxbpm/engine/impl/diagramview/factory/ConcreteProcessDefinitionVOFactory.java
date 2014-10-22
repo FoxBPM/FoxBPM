@@ -392,18 +392,17 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 	 * @since 1.0.0
 	 */
 	private boolean hasTerminateDefinition(EndEventBehavior endEventBehavior) {
-		
-		
 		List<EventDefinition> eventDefinitions = ((EndEvent)endEventBehavior.getBaseElement()).getEventDefinitions();
-		Iterator<EventDefinition> iterator = eventDefinitions.iterator();
-		while (iterator.hasNext()) {
-			EventDefinition next = iterator.next();
-			if (next instanceof TerminateEventDefinition) {
-				return true;
+		if(eventDefinitions != null){
+			Iterator<EventDefinition> iterator = eventDefinitions.iterator();
+			while (iterator.hasNext()) {
+				EventDefinition next = iterator.next();
+				if (next instanceof TerminateEventDefinition) {
+					return true;
+				}
 			}
 		}
 		return false;
-		
 	}
 	/**
 	 * 
@@ -416,11 +415,13 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 	 */
 	private boolean hasTimerDefinition(CatchEventBehavior catchEventBehavior) {
 		List<EventDefinition> eventDefinitions = ((CatchEvent)catchEventBehavior.getBaseElement()).getEventDefinitions();
-		Iterator<EventDefinition> iterator = eventDefinitions.iterator();
-		while (iterator.hasNext()) {
-			EventDefinition next = iterator.next();
-			if (next instanceof TimerEventDefinition) {
-				return true;
+		if(eventDefinitions != null){
+			Iterator<EventDefinition> iterator = eventDefinitions.iterator();
+			while (iterator.hasNext()) {
+				EventDefinition next = iterator.next();
+				if (next instanceof TimerEventDefinition) {
+					return true;
+				}
 			}
 		}
 		return false;
