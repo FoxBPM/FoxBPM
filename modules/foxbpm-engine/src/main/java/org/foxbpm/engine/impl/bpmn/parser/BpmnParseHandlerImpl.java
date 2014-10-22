@@ -103,7 +103,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 				}
 			}
 			if (styleConfigElemnt == null) {
-				throw new RuntimeException("ddd");
+				throw new RuntimeException("style.xml文件格式不正确，请检查！");
 			}
 			Iterator<Element> styleElementIterator = styleConfigElemnt.elements("style").iterator();
 			while (styleElementIterator.hasNext()) {
