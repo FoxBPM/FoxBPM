@@ -35,7 +35,6 @@ public class BPMNDIExport extends BpmnExport {
 		if (null != model.getBoundsLocationMap()) {
 			Entry<String, Map<String, Bounds>> entry = null;
 			Entry<String, Bounds> entryBounds = null;
-			Map<String, SequenceFlow> sequenceFlowMap = null;
 			SequenceFlow SequenceFlow = null;
 			Element bpmnShape = null;
 			Element elBounds = null;
@@ -43,7 +42,9 @@ public class BPMNDIExport extends BpmnExport {
 			WayPoint entryWapoint = null;
 			Element bpmnEdge = null;
 			Element elWapoint = null;
-			
+			Map<String, SequenceFlow> sequenceFlowMap = null;
+			// 初始化所有线条
+			sequenceFlowMap = model.findAllSequenceFlows();
 			for (Iterator<Entry<String, Map<String, Bounds>>> iterator = model.getBoundsLocationMap().entrySet().iterator(); iterator.hasNext();) {
 				entry = iterator.next();
 				bpmndiagram = parentElement.addElement(BpmnXMLConstants.BPMNDI_PREFIX + ':'
@@ -81,11 +82,7 @@ public class BPMNDIExport extends BpmnExport {
 						bpmnShape.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_IS_HORIZONTAL, String.valueOf(true));
 					}
 				}
-				sequenceFlowMap = model.findSequenceFlow(entry.getKey());
-				if (null == sequenceFlowMap) {
-					// 错误
-					return;
-				}
+				
 				// 处理
 				if (null != model.getWaypointLocationMap().get(entry.getKey())) {
 					for (Iterator<Entry<String, List<WayPoint>>> iteratorEntry = model.getWaypointLocationMap().get(entry.getKey()).entrySet().iterator(); iteratorEntry.hasNext();) {

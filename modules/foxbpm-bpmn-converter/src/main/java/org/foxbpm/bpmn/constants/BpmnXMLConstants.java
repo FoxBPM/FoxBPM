@@ -128,7 +128,7 @@ public interface BpmnXMLConstants {
 	/** attachedToRef */
 	String ATTRIBUTE_ATTACHEDTOREF = "attachedToRef";
 	/** isCancelActivity */
-	String ATTRIBUTE_ISCANCELACTIVITY = "isCancelActivity";
+	String ATTRIBUTE_CANCELACTIVITY = "cancelActivity";
 	/* scriptName */
 	String ATTRIBUTE_SCRIPTNAME = "scriptName";
 	/** scriptFormat */

@@ -46,7 +46,7 @@ public class BoundaryEventXMLConverter extends CatchEventXMLConverter {
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
 		BoundaryEvent boundaryEvent = (BoundaryEvent) baseElement;
 		boundaryEvent.setAttachedToRef(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ATTACHEDTOREF));
-		boundaryEvent.setCancelActivity(BpmnXMLUtil.parseBoolean(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ISCANCELACTIVITY)));
+		boundaryEvent.setCancelActivity(BpmnXMLUtil.parseBoolean(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_CANCELACTIVITY)));
 		super.convertXMLToModel(element, baseElement);;
 	}
 	
@@ -56,7 +56,9 @@ public class BoundaryEventXMLConverter extends CatchEventXMLConverter {
 		if (null != boundaryEvent.getAttachedToRef()) {
 			element.addAttribute(BpmnXMLConstants.ATTRIBUTE_ATTACHEDTOREF, boundaryEvent.getAttachedToRef());
 		}
-		element.addAttribute(BpmnXMLConstants.ATTRIBUTE_ISCANCELACTIVITY, String.valueOf(boundaryEvent.isCancelActivity()));
+		if (!boundaryEvent.isCancelActivity()) {
+			element.addAttribute(BpmnXMLConstants.ATTRIBUTE_CANCELACTIVITY, String.valueOf(false));
+		}
 		super.convertModelToXML(element, baseElement);
 	}
 	

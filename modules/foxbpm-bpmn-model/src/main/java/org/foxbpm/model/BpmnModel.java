@@ -18,6 +18,7 @@
 package org.foxbpm.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -103,5 +104,49 @@ public class BpmnModel {
 			}
 		}
 		return null;
+	}
+	/**
+	 * 获取所有流程线条集合 包括子流程
+	 * 
+	 * @param processId
+	 *            流程ID
+	 * @return 返回线条集合
+	 */
+	public Map<String, SequenceFlow> findAllSequenceFlows() {
+		Process process = null;
+		Map<String, SequenceFlow> sequenceFlowMaps = new HashMap<String, SequenceFlow>();
+		
+		for (Iterator<Process> iterator = processes.iterator(); iterator.hasNext();) {
+			process = iterator.next();
+			if (null != process.getSequenceFlows()) {
+				sequenceFlowMaps.putAll(process.getSequenceFlows());
+			}
+			findOtherSequenceFlow(process.getFlowElements(), sequenceFlowMaps);
+		}
+		return sequenceFlowMaps;
+	}
+	/**
+	 * 递归遍历FlowContainer 子流程获取线条
+	 * 
+	 * @param flowElements
+	 *            流程节点
+	 * @param sequenceFlowMaps
+	 *            存放线条集合
+	 */
+	private void findOtherSequenceFlow(List<FlowElement> flowElements, Map<String, SequenceFlow> sequenceFlowMaps) {
+		if (null != flowElements) {
+			FlowElement flowElement = null;
+			FlowContainer flowContainer = null;
+			for (Iterator<FlowElement> iteratorFlowElement = flowElements.iterator(); iteratorFlowElement.hasNext();) {
+				flowElement = iteratorFlowElement.next();
+				if (flowElement instanceof FlowContainer) {
+					flowContainer = (FlowContainer) flowElement;
+					if (null != flowContainer.getSequenceFlows()) {
+						sequenceFlowMaps.putAll(flowContainer.getSequenceFlows());
+					}
+					findOtherSequenceFlow(flowContainer.getFlowElements(), sequenceFlowMaps);
+				}
+			}
+		}
 	}
 }
