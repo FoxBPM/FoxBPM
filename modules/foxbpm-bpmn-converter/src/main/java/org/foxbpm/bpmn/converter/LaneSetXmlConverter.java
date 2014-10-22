@@ -11,12 +11,13 @@ import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.Lane;
 import org.foxbpm.model.LaneSet;
 
-public class LaneSetXmlConverter extends FlowElementXMLConverter {
+public class LaneSetXmlConverter extends BaseElementXMLConverter {
 
+	@Deprecated
 	public FlowElement cretateFlowElement() {
-		return new LaneSet();
+		// TODO Auto-generated method stub
+		return null;
 	}
-
 	public Element cretateXMLElement() {
 		return DocumentFactory.getInstance().createElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
 		        + BpmnXMLConstants.ELEMENT_LANESET, BpmnXMLConstants.BPMN2_NAMESPACE);
@@ -72,6 +73,10 @@ public class LaneSetXmlConverter extends FlowElementXMLConverter {
 			Element laneSetElement = DocumentFactory.getInstance().createElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
 			        + BpmnXMLConstants.ELEMENT_CHILDLANESET, BpmnXMLConstants.BPMN2_NAMESPACE);
 			laneSetElement.addAttribute("xsi:type", "bpmn2:tLaneSet");
+			laneSetElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, laneSet.getId());
+			laneSetElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, laneSet.getName());
+			
+			
 			if(lanes != null){
 				for(Lane tmpLane : lanes){
 					Element tmpElement = parseLaneToXml(tmpLane);
@@ -101,6 +106,8 @@ public class LaneSetXmlConverter extends FlowElementXMLConverter {
 		Element childLaneSet = element.element(BpmnXMLConstants.ELEMENT_CHILDLANESET);
 		if(childLaneSet != null){
 			LaneSet laneSet = new LaneSet();
+			laneSet.setId(childLaneSet.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
+			laneSet.setName(childLaneSet.attributeValue(BpmnXMLConstants.ATTRIBUTE_NAME));
 			Iterator<Element> elementIterator = childLaneSet.elements(BpmnXMLConstants.ELEMENT_LANE).iterator();
 			while(elementIterator.hasNext()){
 				Element tmp = elementIterator.next();

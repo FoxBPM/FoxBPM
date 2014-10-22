@@ -67,7 +67,7 @@ public class Process extends FlowElement implements FlowContainer {
 	 */
 	protected List<DataVariableDefinition> dataVariables = new ArrayList<DataVariableDefinition>();
 	
-	protected List<LaneSet> laneSets;
+	protected List<LaneSet> laneSets = new ArrayList<LaneSet>();
 	
 	/**
 	 * 流程元素集合

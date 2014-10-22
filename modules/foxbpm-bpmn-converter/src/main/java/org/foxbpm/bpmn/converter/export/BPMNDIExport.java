@@ -98,18 +98,22 @@ public class BPMNDIExport extends BpmnExport {
 						if (null == SequenceFlow) {
 							// 异常
 						}
-						bpmnEdge.addAttribute(BpmnXMLConstants.ATTRIBUTE_SOURCEREF, "BPMNShape_"
-						        + SequenceFlow.getSourceRefId());
-						bpmnEdge.addAttribute(BpmnXMLConstants.ATTRIBUTE_TARGETREF, "BPMNShape_"
-						        + SequenceFlow.getTargetRefId());
+						bpmnEdge.addAttribute(BpmnXMLConstants.ATTRIBUTE_SOURCEELEMENT, BpmnXMLConstants.ELEMENT_DI_SHAPE
+						        + '_' + SequenceFlow.getSourceRefId());
+						bpmnEdge.addAttribute(BpmnXMLConstants.ATTRIBUTE_TARGETELEMENT, BpmnXMLConstants.ELEMENT_DI_SHAPE
+						        + '_' + SequenceFlow.getTargetRefId());
 						
 						for (Iterator<WayPoint> iteratorEntryWayPoint = entryList.getValue().iterator(); iteratorEntryWayPoint.hasNext();) {
 							entryWapoint = iteratorEntryWayPoint.next();
 							
-							elWapoint = bpmnEdge.addElement(BpmnXMLConstants.DC_PREFIX + ':'
+							elWapoint = bpmnEdge.addElement(BpmnXMLConstants.DI_PREFIX + ':'
 							        + BpmnXMLConstants.ELEMENT_DI_WAYPOINT);
 							elWapoint.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_X, String.valueOf(entryWapoint.getX()));
 							elWapoint.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_Y, String.valueOf(entryWapoint.getY()));
+							elWapoint.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.DC_PREFIX
+							        + ':' + BpmnXMLConstants.TYPE_POINT);
+							elWapoint.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.DC_PREFIX
+							        + ':' + BpmnXMLConstants.TYPE_POINT);
 						}
 					}
 				}

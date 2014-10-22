@@ -115,6 +115,10 @@ public interface BpmnXMLConstants {
 	String ATTRIBUTE_SOURCEREF = "sourceRef";
 	/** targetRef */
 	String ATTRIBUTE_TARGETREF = "targetRef";
+	/** sourceElement */
+	String ATTRIBUTE_SOURCEELEMENT = "sourceElement";
+	/** targetElement */
+	String ATTRIBUTE_TARGETELEMENT = "targetElement";
 	/** attachedToRef */
 	String ATTRIBUTE_ATTACHEDTOREF = "attachedToRef";
 	/** isCancelActivity */
@@ -147,7 +151,7 @@ public interface BpmnXMLConstants {
 	/** taskSubject */
 	String ELEMENT_TASKSUBJECT = "taskSubject";
 	/** dataVariable */
-	String ELEMENT_DATAVARIABLE = "dataVariable";
+	String ELEMENT_DATAVARIABLE = "DataVariable";
 	/** potentialStarter */
 	String ELEMENT_POTENTIALSTARTER = "potentialStarter";
 	/** connectorInstanceElements */
@@ -324,4 +328,6 @@ public interface BpmnXMLConstants {
 	String FORMALEXPRESSION = "FormalExpression";
 	/** SkipComment */
 	String TYPE_SKIPCOMMENT = "SkipComment";
+	/** Point */
+	String TYPE_POINT = "Point";
 }

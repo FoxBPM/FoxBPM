@@ -56,6 +56,8 @@ public class BpmnDiagramParser extends BpmnParser {
 				if (ELEMENT_DI_BOUNDS.equalsIgnoreCase(name)) {
 					bounds = new Bounds();
 					bounds.setMarkerVisible(BpmnXMLUtil.parseBoolean(element.attributeValue(ATTRIBUTE_DI_IS_MARKERVISIBLE)));
+					bounds.setExpanded(BpmnXMLUtil.parseBoolean(element.attributeValue(ATTRIBUTE_DI_IS_EXPANDED)));
+					bounds.setHorizontal(BpmnXMLUtil.parseBoolean(element.attributeValue(ATTRIBUTE_DI_IS_HORIZONTAL)));
 					bounds.setBpmnElement(element.attributeValue(ATTRIBUTE_DI_BPMNELEMENT));
 					bounds.setX(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_X)));
 					bounds.setY(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_Y)));
