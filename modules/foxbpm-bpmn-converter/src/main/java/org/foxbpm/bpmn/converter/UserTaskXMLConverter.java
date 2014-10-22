@@ -190,7 +190,7 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 			Element taskCommandElement = null;
 			List<CommandParameter> commandParams = null;
 			for (TaskCommand taskCommand : taskCommands) {
-				taskCommandElement = extensionElement.addElement(ELEMENT_NAME_FOXBPM_TASKCOMMAND);
+				taskCommandElement = extensionElement.addElement(ELEMENT_NAME_FOXBPM_TASKCOMMAND,BpmnXMLConstants.FOXBPM_NAMESPACE);
 				taskCommandElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, taskCommand.getId());
 				taskCommandElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, taskCommand.getName());
 				taskCommandElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_COMMANDTYPE, taskCommand.getTaskCommandType());

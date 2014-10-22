@@ -343,7 +343,7 @@ public class BpmnXMLUtil {
 			Element childElem = null;
 			Element expressionElem = null;
 			connectorInstanceElements = parentElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-			        + BpmnXMLConstants.ELEMENT_CONNECTORINSTANCEELEMENTS);
+			        + BpmnXMLConstants.ELEMENT_CONNECTORINSTANCEELEMENTS,BpmnXMLConstants.FOXBPM_NAMESPACE);
 			connectorInstanceElements.addAttribute(BpmnXMLConstants.ATTRIBUTE_CONNRCTORTYPE, "flowConnector");
 			
 			for (Iterator<Connector> iterator = connectors.iterator(); iterator.hasNext();) {

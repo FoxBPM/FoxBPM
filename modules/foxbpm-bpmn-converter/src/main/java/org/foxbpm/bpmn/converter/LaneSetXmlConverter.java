@@ -61,17 +61,24 @@ public class LaneSetXmlConverter extends FlowElementXMLConverter {
 	
 	protected Element parseLaneToXml(Lane lane){
 		Element element = DocumentFactory.getInstance().createElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
-		        + BpmnXMLConstants.ELEMENT_CHILDLANESET, BpmnXMLConstants.BPMN2_NAMESPACE);
-		element.addAttribute("xsi:type", "bpmn2:tLaneSet");
+		        + BpmnXMLConstants.ELEMENT_LANE, BpmnXMLConstants.BPMN2_NAMESPACE);
+		
+		element.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, lane.getId());
+		element.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, lane.getName());
+		
 		LaneSet laneSet= lane.getChildLaneSet();
 		if(laneSet != null){
 			List<Lane> lanes = laneSet.getLanes();
+			Element laneSetElement = DocumentFactory.getInstance().createElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+			        + BpmnXMLConstants.ELEMENT_CHILDLANESET, BpmnXMLConstants.BPMN2_NAMESPACE);
+			laneSetElement.addAttribute("xsi:type", "bpmn2:tLaneSet");
 			if(lanes != null){
 				for(Lane tmpLane : lanes){
 					Element tmpElement = parseLaneToXml(tmpLane);
-					element.add(tmpElement);
+					laneSetElement.add(tmpElement);
 				}
 			}
+			element.add(laneSetElement);
 		}
 		List<String> flowNodeRefs = lane.getFlowElementRefs();
 		if(flowNodeRefs != null){
