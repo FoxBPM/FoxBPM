@@ -388,7 +388,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			// 内部子流程展开收起属性
 			if (kernelDIBounds instanceof KernelFlowNodeImpl
 			        && ((KernelFlowNodeImpl) kernelDIBounds).getKernelFlowNodeBehavior() instanceof SubProcessBehavior) {
-				kernelDIBounds.setProperty(StyleOption.IsExpanded, bounds.getExpanded());
+				kernelDIBounds.setProperty(StyleOption.IsExpanded, bounds.isExpanded());
 			}
 			// 图形式样属性
 			setStyleProperties((KernelBaseElementImpl) kernelDIBounds, style);

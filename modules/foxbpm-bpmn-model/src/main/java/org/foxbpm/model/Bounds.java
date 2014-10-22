@@ -30,6 +30,8 @@ public class Bounds {
 	protected double width;
 	protected String bpmnElement;
 	protected boolean isMarkerVisible;
+	protected boolean isHorizontal;
+	protected boolean isExpanded;
 	public double getX() {
 		return x;
 	}
@@ -65,5 +67,21 @@ public class Bounds {
 	}
 	public void setMarkerVisible(boolean isMarkerVisible) {
 		this.isMarkerVisible = isMarkerVisible;
+	}
+	
+	public void setHorizontal(boolean isHorizontal) {
+		this.isHorizontal = isHorizontal;
+	}
+	
+	public boolean isHorizontal() {
+		return isHorizontal;
+	}
+	
+	public void setExpanded(boolean isExpanded) {
+		this.isExpanded = isExpanded;
+	}
+	
+	public boolean isExpanded() {
+		return isExpanded;
 	}
 }
