@@ -58,6 +58,7 @@ import org.foxbpm.kernel.process.impl.KernelAssociationImpl;
 import org.foxbpm.kernel.process.impl.KernelBaseElementImpl;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelLaneImpl;
+import org.foxbpm.kernel.process.impl.KernelLaneSetImpl;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 import org.foxbpm.model.Activity;
 import org.foxbpm.model.BaseElement;
@@ -66,6 +67,8 @@ import org.foxbpm.model.BpmnModel;
 import org.foxbpm.model.Connector;
 import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.FlowNode;
+import org.foxbpm.model.Lane;
+import org.foxbpm.model.LaneSet;
 import org.foxbpm.model.Process;
 import org.foxbpm.model.SequenceFlow;
 import org.foxbpm.model.StartEvent;
@@ -80,8 +83,6 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	
 	public BpmnParseHandlerImpl() {
 		//加载style.xml内容
-		
-		
 		
 	}
 	public static BehaviorRelationMemo behaviorRelationMemo = new BehaviorRelationMemo();
@@ -121,16 +122,16 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		
 		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) processDefinitionBuilder.buildProcessDefinition();
 		
-//		if (process.getLaneSets() != null && process.getLaneSets().size() > 0) {
-//			for (LaneSet laneSet : process.getLaneSets()) {
-//				
-//				KernelLaneSetImpl laneSetObj = new KernelLaneSetImpl(laneSet.getId(), processDefinition);
-//				laneSetObj.setName(laneSet.getName());
-//				loadLane(laneSetObj, laneSet, processDefinition);
-//				
-//				processDefinition.getLaneSets().add(laneSetObj);
-//			}
-//		}
+		if (process.getLaneSets() != null && process.getLaneSets().size() > 0) {
+			for (LaneSet laneSet : process.getLaneSets()) {
+				
+				KernelLaneSetImpl laneSetObj = new KernelLaneSetImpl(laneSet.getId(), processDefinition);
+				laneSetObj.setName(laneSet.getName());
+				loadLane(laneSetObj, laneSet, processDefinition);
+				
+				processDefinition.getLaneSets().add(laneSetObj);
+			}
+		}
 		
 //		// 加载其他元素
 //		for (Artifact artifact : process.getArtifacts()) {
@@ -280,29 +281,26 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		}
 	}
 	
-//	private void loadLane(KernelLaneSet kernelLaneSet, LaneSet laneSet,
-//	    ProcessDefinitionEntity processDefinition) {
-//		kernelLaneSet.setName(laneSet.getName());
-//		for (Lane lane : laneSet.getLanes()) {
-//			if (lane != null) {
-//				
-//				KernelLaneImpl KernelLaneImpl = new KernelLaneImpl(lane.getId(), processDefinition);
-//				KernelLaneImpl.setName(lane.getName());
-//				kernelLaneSet.getLanes().add(KernelLaneImpl);
-//				LaneSet childLaneSet = lane.getChildLaneSet();
-//				if (childLaneSet != null) {
-//					KernelLaneSetImpl KernelLaneSetImpl = new KernelLaneSetImpl(childLaneSet.getId(), processDefinition);
-//					KernelLaneSetImpl.setName(childLaneSet.getName());
-//					KernelLaneImpl.setChildLaneSet(KernelLaneSetImpl);
-//					loadLane(KernelLaneSetImpl, childLaneSet, processDefinition);
-//				} else {
-//					continue;
-//				}
-//			}
-//			
-//		}
-		
-//	}
+	private void loadLane(KernelLaneSet kernelLaneSet, LaneSet laneSet,
+	    ProcessDefinitionEntity processDefinition) {
+		kernelLaneSet.setName(laneSet.getName());
+		for (Lane lane : laneSet.getLanes()) {
+			if (lane != null) {
+				KernelLaneImpl KernelLaneImpl = new KernelLaneImpl(lane.getId(), processDefinition);
+				KernelLaneImpl.setName(lane.getName());
+				kernelLaneSet.getLanes().add(KernelLaneImpl);
+				LaneSet childLaneSet = lane.getChildLaneSet();
+				if (childLaneSet != null) {
+					KernelLaneSetImpl KernelLaneSetImpl = new KernelLaneSetImpl(childLaneSet.getId(), processDefinition);
+					KernelLaneSetImpl.setName(childLaneSet.getName());
+					KernelLaneImpl.setChildLaneSet(KernelLaneSetImpl);
+					loadLane(KernelLaneSetImpl, childLaneSet, processDefinition);
+				} else {
+					continue;
+				}	
+			}
+		}
+	}
 	
 	private void processDI(ProcessDefinitionEntity processDefinition, BpmnModel bpmnModel) {
 		

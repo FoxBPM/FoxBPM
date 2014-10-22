@@ -18,9 +18,11 @@ import java.util.List;
 import org.dom4j.Element;
 import org.dom4j.dom.DOMCDATA;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
+import org.foxbpm.bpmn.converter.LaneSetXmlConverter;
 import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.bpmn.converter.util.UniqueIDUtil;
 import org.foxbpm.model.DataVariableDefinition;
+import org.foxbpm.model.LaneSet;
 import org.foxbpm.model.PotentialStarter;
 import org.foxbpm.model.Process;
 
@@ -38,6 +40,8 @@ public class ProcessExport extends BpmnExport {
 			
 			// 处理扩展
 			createExtensionElement(processEle, process);
+			
+			createLaneSetElement(processEle,process);
 			// 处理流程节点
 			BpmnXMLUtil.createFlowElement(processEle, process.getFlowElements());
 			// 处理流程线条
@@ -50,6 +54,18 @@ public class ProcessExport extends BpmnExport {
 				        + BpmnXMLConstants.ELEMENT_DOCUMENTATION);
 				childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_DOCUMENTATION));
 				childElem.setText(process.getDocumentation());
+			}
+		}
+	}
+	
+	private static void createLaneSetElement(Element processEle, Process process){
+		List<LaneSet> laneSets = process.getLaneSets();
+		if(laneSets != null){
+			for(LaneSet lanset : laneSets){
+				LaneSetXmlConverter laneSetXmlConverter = new LaneSetXmlConverter();
+				Element elementLaneSet = laneSetXmlConverter.cretateXMLElement();
+				laneSetXmlConverter.convertModelToXML(elementLaneSet, lanset);
+				processEle.add(elementLaneSet);
 			}
 		}
 	}

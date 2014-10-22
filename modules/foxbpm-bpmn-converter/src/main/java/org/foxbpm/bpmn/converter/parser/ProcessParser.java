@@ -22,11 +22,12 @@ import java.util.Iterator;
 
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
-import org.foxbpm.bpmn.converter.BpmnXMLConverter;
+import org.foxbpm.bpmn.converter.LaneSetXmlConverter;
 import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.model.BpmnModel;
 import org.foxbpm.model.DataVariableDefinition;
 import org.foxbpm.model.FlowContainer;
+import org.foxbpm.model.LaneSet;
 import org.foxbpm.model.PotentialStarter;
 import org.foxbpm.model.Process;
 ;
@@ -135,15 +136,11 @@ public class ProcessParser extends BpmnParser {
 				parseExtElements(process, elem);
 			} else if (BpmnXMLConstants.ELEMENT_DOCUMENTATION.equalsIgnoreCase(name)) {
 				process.setDocumentation(elem.getText());
-			} else /** 线条处理 */
-            /*	if (BpmnXMLConstants.ELEMENT_SEQUENCEFLOW.equalsIgnoreCase(name)) {
-				process.addSequenceFlow(BpmnXMLUtil.parseSequenceFlow(elem));
-			} else*/
-			if (null != BpmnXMLConverter.getConverter(name)) {
-				/*BaseElementXMLConverter converter = BpmnXMLConverter.getConverter(name);
-				FlowElement flowElement = converter.cretateFlowElement();
-				converter.convertXMLToModel(elem, flowElement);
-				process.addFlowElement(flowElement);*/
+			} else if(BpmnXMLConstants.ELEMENT_LANESET.equalsIgnoreCase(name)){
+				LaneSet laneSet = new LaneSet();
+				LaneSetXmlConverter laneSetXmlConverter = new LaneSetXmlConverter();
+				laneSetXmlConverter.convertXMLToModel(elem, laneSet);
+				process.getLaneSets().add(laneSet);
 			}
 		}
 		// 处理流程容器
