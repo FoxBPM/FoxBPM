@@ -209,14 +209,14 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 						commandParamElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_DESCRIPTION, commandParameter.getDescription());
 						
 						if (commandParameter.getExpression() != null) {
-							BpmnXMLUtil.createExpressionElement(commandParamElement, commandParameter.getExpression());
+							BpmnXMLUtil.createExpressionElementByParent(commandParamElement, commandParameter.getExpression());
 						}
 					}
 				}
 				
 				String taskCommandExpression = taskCommand.getExpression();
 				if (taskCommandExpression != null) {
-					BpmnXMLUtil.createExpressionElement(taskCommandElement, taskCommandExpression);
+					BpmnXMLUtil.createExpressionElementByParent(taskCommandElement, taskCommandExpression);
 				}
 				
 			}
@@ -226,32 +226,32 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 		String taskPriority = userTask.getTaskPriority();
 		if (taskPriority != null) {
 			Element taskPriorityElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ":"
-			        + BpmnXMLConstants.ELEMENT_TASKPRIORITY);
-			BpmnXMLUtil.createExpressionElement(taskPriorityElement, taskPriority);
+			        + BpmnXMLConstants.ELEMENT_TASKPRIORITY,BpmnXMLConstants.FOXBPM_NAMESPACE);
+			BpmnXMLUtil.createExpressionElementByParent(taskPriorityElement, taskPriority);
 		}
 		
 		// 操作表单
 		String formUri = userTask.getFormUri();
 		if (formUri != null) {
 			Element formUriElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ":"
-			        + BpmnXMLConstants.ELEMENT_FORMURI);
-			BpmnXMLUtil.createExpressionElement(formUriElement, formUri);
+			        + BpmnXMLConstants.ELEMENT_FORMURI,BpmnXMLConstants.FOXBPM_NAMESPACE);
+			BpmnXMLUtil.createExpressionElementByParent(formUriElement, formUri);
 		}
 		
 		// 浏览表单
 		String formUriView = userTask.getFormUriView();
 		if (formUriView != null) {
 			Element formUriViewElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ":"
-			        + BpmnXMLConstants.ELEMENT_FORMURIVIEW);
-			BpmnXMLUtil.createExpressionElement(formUriViewElement, formUriView);
+			        + BpmnXMLConstants.ELEMENT_FORMURIVIEW,BpmnXMLConstants.FOXBPM_NAMESPACE);
+			BpmnXMLUtil.createExpressionElementByParent(formUriViewElement, formUriView);
 		}
 		
 		// 任务主题
 		String taskSubject = userTask.getSubject();
 		if (taskSubject != null) {
 			Element taskSubjectElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ":"
-			        + BpmnXMLConstants.ELEMENT_TASKSUBJECT);
-			BpmnXMLUtil.createExpressionElement(taskSubjectElement, taskSubject);
+			        + BpmnXMLConstants.ELEMENT_TASKSUBJECT,BpmnXMLConstants.FOXBPM_NAMESPACE);
+			BpmnXMLUtil.createExpressionElementByParent(taskSubjectElement, taskSubject);
 			
 		}
 		
@@ -259,8 +259,8 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 		String taskDescription = userTask.getTaskDescription();
 		if (taskDescription != null) {
 			Element taskDescriptionElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ":"
-			        + BpmnXMLConstants.ELEMENT_TASKDESCRIPTION);
-			BpmnXMLUtil.createExpressionElement(taskDescriptionElement, taskDescription);
+			        + BpmnXMLConstants.ELEMENT_TASKDESCRIPTION,BpmnXMLConstants.FOXBPM_NAMESPACE);
+			BpmnXMLUtil.createExpressionElementByParent(taskDescriptionElement, taskDescription);
 			
 		}
 		
@@ -268,8 +268,8 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 		String completeDescription = userTask.getCompleteDescription();
 		if (completeDescription != null) {
 			Element completeDescriptionElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ":"
-			        + BpmnXMLConstants.ELEMENT_COMPLETETASKDESCRIPTION);
-			BpmnXMLUtil.createExpressionElement(completeDescriptionElement, completeDescription);
+			        + BpmnXMLConstants.ELEMENT_COMPLETETASKDESCRIPTION,BpmnXMLConstants.FOXBPM_NAMESPACE);
+			BpmnXMLUtil.createExpressionElementByParent(completeDescriptionElement, completeDescription);
 		}
 		
 		// 预期执行时间
@@ -296,6 +296,7 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 			Element potentialOwner = element.addElement(ELEMENT_NAME_BPMN2_POTENTIALOWNER);
 			BpmnXMLUtil.createConectorElement(potentialOwner.addElement(ELEMENT_NAME_BPMN2_EXTENSIONELEMENT), actorConnectors);
 		}
+		super.convertModelToXML(element, baseElement);
 		
 	}
 	

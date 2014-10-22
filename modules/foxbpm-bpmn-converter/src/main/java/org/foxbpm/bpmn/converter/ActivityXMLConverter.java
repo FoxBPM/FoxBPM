@@ -18,6 +18,7 @@
 package org.foxbpm.bpmn.converter;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
@@ -43,26 +44,28 @@ public abstract class ActivityXMLConverter extends FlowNodeXMLConverter {
 	@SuppressWarnings("unchecked")
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
 		Activity activity = (Activity) baseElement;
-		Element elem = null;
 		Element childElem = null;
 		String nodeName = null;
 		// 处理跳过策略
-		for (Iterator<Element> iterator = element.elements().iterator(); iterator.hasNext();) {
-			elem = iterator.next();
+		List<Element> elements = element.elements();
+		for(Element elem : elements){
 			nodeName = elem.getName();
 			if (BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS.equalsIgnoreCase(nodeName)) {
 				for (Iterator<Element> childIterator = elem.elements().iterator(); childIterator.hasNext();) {
 					childElem = childIterator.next();
-					nodeName = elem.getName();
-					if (BpmnXMLConstants.ELEMENT_SKIPSTRATEGY.equalsIgnoreCase(nodeName)) {
-						activity.setSkipStrategy(SkipStrategyParser.parser(element));
-					} else if (BpmnXMLConstants.ELEMENT_MULTIINSTANCELOOPCHARACTERISTICS.equalsIgnoreCase(nodeName)) {
-						activity.setLoopCharacteristics(MultiInstanceParser.parser(childElem));
-					}
+					String subNodeName = childElem.getName();
+					if (BpmnXMLConstants.ELEMENT_SKIPSTRATEGY.equalsIgnoreCase(subNodeName)) {
+						activity.setSkipStrategy(SkipStrategyParser.parser(childElem));
+					} 
 				}
-				break;
+			}
+			
+			if (BpmnXMLConstants.ELEMENT_MULTIINSTANCELOOPCHARACTERISTICS.equalsIgnoreCase(nodeName)) {
+				activity.setLoopCharacteristics(MultiInstanceParser.parser(elem));
 			}
 		}
+		
+		
 		
 		super.convertXMLToModel(element, baseElement);
 	}
@@ -78,13 +81,13 @@ public abstract class ActivityXMLConverter extends FlowNodeXMLConverter {
 		if(skipStrategy!=null){
 			//跳过策略
 			Element skipStrategyElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-			        + BpmnXMLConstants.ELEMENT_SKIPSTRATEGY);
+			        + BpmnXMLConstants.ELEMENT_SKIPSTRATEGY,BpmnXMLConstants.FOXBPM_NAMESPACE);
 			skipStrategyElement.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 				        + BpmnXMLConstants.ATTRIBUTE_ISENABLE, String.valueOf(skipStrategy.isEnable()));
 			String skipExpression = skipStrategy.getSkipExpression();
 			if(skipExpression!= null){
 				
-				BpmnXMLUtil.createExpressionElement(skipStrategyElement, skipExpression);
+				BpmnXMLUtil.createExpressionElementByParent(skipStrategyElement, skipExpression);
 			}
 			
 			String skipAssignee = skipStrategy.getSkipAssignee();
@@ -93,7 +96,7 @@ public abstract class ActivityXMLConverter extends FlowNodeXMLConverter {
 				        + BpmnXMLConstants.ELEMENT_SKIPASSIGNEE);
 				skipAssigneElement.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':'
 				        + BpmnXMLConstants.ATTRIBUTE_TYPE, "foxbpm:SkipAssignee");
-				BpmnXMLUtil.createExpressionElement(skipAssigneElement, skipAssignee);
+				BpmnXMLUtil.createExpressionElementByParent(skipAssigneElement, skipAssignee);
 			
 			}
 			 	
@@ -103,7 +106,7 @@ public abstract class ActivityXMLConverter extends FlowNodeXMLConverter {
 				        + BpmnXMLConstants.ELEMENT_SKIPCOMMENT);
 				skipCommentElement.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':'
 				        + BpmnXMLConstants.ATTRIBUTE_TYPE, "foxbpm:SkipComment");
-				BpmnXMLUtil.createExpressionElement(skipCommentElement, skipComment);
+				BpmnXMLUtil.createExpressionElementByParent(skipCommentElement, skipComment);
 			}
 		} 
 		//多实例转换
@@ -122,8 +125,8 @@ public abstract class ActivityXMLConverter extends FlowNodeXMLConverter {
 					&& !loopDataInputCollection.trim().equals("")){
 				multiInstanceExtensionElement = multiInstanceElement.addElement(ELEMENT_NAME_BPMN2_EXTENSIONELEMENT);
 				Element loopDataInputElement = multiInstanceExtensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-				        + BpmnXMLConstants.ELEMENT_LOOPDATAINPUTCOLLECTION);
-				BpmnXMLUtil.createExpressionElement(loopDataInputElement, loopDataInputCollection);
+				        + BpmnXMLConstants.ELEMENT_LOOPDATAINPUTCOLLECTION,BpmnXMLConstants.FOXBPM_NAMESPACE);
+				BpmnXMLUtil.createExpressionElementByParent(loopDataInputElement, loopDataInputCollection);
 			}
 			
 			//输出数据集合
@@ -132,11 +135,10 @@ public abstract class ActivityXMLConverter extends FlowNodeXMLConverter {
 					&& !loopDataOutputCollection.trim().equals("")){
 				if(multiInstanceExtensionElement==null){
 					multiInstanceExtensionElement = multiInstanceElement.addElement(ELEMENT_NAME_BPMN2_EXTENSIONELEMENT);
-					Element loopDataOutputElement = multiInstanceExtensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-				        + BpmnXMLConstants.ELEMENT_LOOPDATAOUTPUTCOLLECTION);
-					BpmnXMLUtil.createExpressionElement(loopDataOutputElement, loopDataOutputCollection);
-
 				}
+				Element loopDataOutputElement = multiInstanceExtensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+				        + BpmnXMLConstants.ELEMENT_LOOPDATAOUTPUTCOLLECTION,BpmnXMLConstants.FOXBPM_NAMESPACE);
+					BpmnXMLUtil.createExpressionElementByParent(loopDataOutputElement, loopDataOutputCollection);
 			}
 			
 			//输入项
@@ -148,7 +150,7 @@ public abstract class ActivityXMLConverter extends FlowNodeXMLConverter {
 				dataInputItemElement.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':'
 				        + BpmnXMLConstants.ATTRIBUTE_TYPE, "bpmn2:tDataInput");
 				Element dataInputExtensionElement = dataInputItemElement.addElement(ELEMENT_NAME_BPMN2_EXTENSIONELEMENT);
-				BpmnXMLUtil.createExpressionElement(dataInputExtensionElement, inputDataItem);
+				BpmnXMLUtil.createExpressionElementByParent(dataInputExtensionElement, inputDataItem);
 				
 			}
 			
@@ -161,7 +163,7 @@ public abstract class ActivityXMLConverter extends FlowNodeXMLConverter {
 				dataOutputItemElement.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':'
 				        + BpmnXMLConstants.ATTRIBUTE_TYPE, "bpmn2:tDataOutput");
 				Element dataOutputExtensionElement = dataOutputItemElement.addElement(ELEMENT_NAME_BPMN2_EXTENSIONELEMENT);
-				BpmnXMLUtil.createExpressionElement(dataOutputExtensionElement, outputDataItem);
+				BpmnXMLUtil.createExpressionElementByParent(dataOutputExtensionElement, outputDataItem);
 				
 			}
 			

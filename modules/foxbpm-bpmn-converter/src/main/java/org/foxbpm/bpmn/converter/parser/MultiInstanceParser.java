@@ -57,7 +57,7 @@ public class MultiInstanceParser {
 			        || BpmnXMLConstants.ELEMENT_OUTPUTDATAITEM.equalsIgnoreCase(nodeName)
 			        || BpmnXMLConstants.ELEMENT_LOOPDATAINPUTCOLLECTION.equalsIgnoreCase(nodeName)
 			        || BpmnXMLConstants.ELEMENT_LOOPDATAOUTPUTCOLLECTION.equalsIgnoreCase(nodeName)) {
-				parserElement(element, multiInstance);
+				parserElement(elem, multiInstance);
 				continue;
 			}
 			

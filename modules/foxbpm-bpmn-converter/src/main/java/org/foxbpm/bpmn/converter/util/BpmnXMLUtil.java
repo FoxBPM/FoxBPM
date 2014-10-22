@@ -428,6 +428,22 @@ public class BpmnXMLUtil {
 		element.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(expression));
 		element.add(new DOMCDATA(expression));
 	}
+	
+	/**
+	 * 创建foxbpm:expression 节点
+	 * @param element
+	 * @param obj
+	 */
+	public static void createExpressionElementByParent(Element element, Object obj) {
+		Element expressionElement = element.addElement("foxbpm:expression");
+		String expression = obj.toString();
+		expressionElement.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
+		        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);
+		expressionElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.TYPE_EXPRESSION));
+		expressionElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(expression));
+		expressionElement.add(new DOMCDATA(expression));
+	}
+	
 	private static void createInputsParam(Element parentElement, List<InputParam> inputsParam) {
 		if (null != inputsParam && !inputsParam.isEmpty()) {
 			InputParam inputParam = null;
