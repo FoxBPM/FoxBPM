@@ -308,6 +308,33 @@ public class BpmnXMLUtil {
 		}
 	}
 	
+	/**
+	 * 处理流程容器节点
+	 * 
+	 * @param parentElement
+	 *            父节点
+	 * @param flowElements
+	 *            流程节点
+	 */
+	public static void createFlowElement(Element parentElement, List<FlowElement> flowElements) {
+		if (null != flowElements) {
+			FlowElement flowElement = null;
+			BaseElementXMLConverter converter = null;
+			Element childElem = null;
+			for (Iterator<FlowElement> iterator = flowElements.iterator(); iterator.hasNext();) {
+				flowElement = iterator.next();
+				converter = BpmnXMLConverter.getConverter(flowElement.getClass());
+				if (null != converter) {
+					childElem = converter.cretateXMLElement();
+					if (null != childElem) {
+						converter.convertModelToXML(childElem, flowElement);
+						parentElement.add(childElem);
+					}
+				}
+			}
+		}
+	}
+	
 	/*******************************************************************************************/
 	public static void createConectorElement(Element parentElement, List<Connector> connectors) {
 		if (null != connectors) {
