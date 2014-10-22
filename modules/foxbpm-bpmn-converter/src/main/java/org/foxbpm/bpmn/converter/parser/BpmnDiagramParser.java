@@ -59,10 +59,10 @@ public class BpmnDiagramParser extends BpmnParser {
 					bounds.setExpanded(BpmnXMLUtil.parseBoolean(element.attributeValue(ATTRIBUTE_DI_IS_EXPANDED)));
 					bounds.setHorizontal(BpmnXMLUtil.parseBoolean(element.attributeValue(ATTRIBUTE_DI_IS_HORIZONTAL)));
 					bounds.setBpmnElement(element.attributeValue(ATTRIBUTE_DI_BPMNELEMENT));
-					bounds.setX(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_X)));
-					bounds.setY(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_Y)));
-					bounds.setHeight(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_HEIGHT)));
-					bounds.setWidth(Double.valueOf(elem.attributeValue(ATTRIBUTE_DI_WIDTH)));
+					bounds.setX(Float.valueOf(elem.attributeValue(ATTRIBUTE_DI_X)));
+					bounds.setY(Float.valueOf(elem.attributeValue(ATTRIBUTE_DI_Y)));
+					bounds.setHeight(Float.valueOf(elem.attributeValue(ATTRIBUTE_DI_HEIGHT)));
+					bounds.setWidth(Float.valueOf(elem.attributeValue(ATTRIBUTE_DI_WIDTH)));
 					model.addBounds(element.getParent().attributeValue(ATTRIBUTE_DI_BPMNELEMENT), bpmnElement, bounds);
 				} else if (ELEMENT_DI_WAYPOINT.equalsIgnoreCase(name)) {
 					wayPoint = new WayPoint();

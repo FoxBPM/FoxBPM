@@ -24,36 +24,36 @@ package org.foxbpm.model;
  * @date 2014年10月20日
  */
 public class Bounds {
-	protected double x;
-	protected double y;
-	protected double height;
-	protected double width;
+	protected float x;
+	protected float y;
+	protected float height;
+	protected float width;
 	protected String bpmnElement;
 	protected boolean isMarkerVisible;
 	protected boolean isHorizontal;
 	protected boolean isExpanded;
-	public double getX() {
+	public float getX() {
 		return x;
 	}
-	public void setX(double x) {
+	public void setX(float x) {
 		this.x = x;
 	}
-	public double getY() {
+	public float getY() {
 		return y;
 	}
-	public void setY(double y) {
+	public void setY(float y) {
 		this.y = y;
 	}
-	public double getHeight() {
+	public float getHeight() {
 		return height;
 	}
-	public void setHeight(double height) {
+	public void setHeight(float height) {
 		this.height = height;
 	}
-	public double getWidth() {
+	public float getWidth() {
 		return width;
 	}
-	public void setWidth(double width) {
+	public void setWidth(float width) {
 		this.width = width;
 	}
 	public String getBpmnElement() {
