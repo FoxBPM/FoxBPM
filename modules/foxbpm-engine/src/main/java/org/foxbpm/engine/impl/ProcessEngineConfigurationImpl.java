@@ -33,7 +33,6 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -113,10 +112,6 @@ import org.foxbpm.model.config.foxbpmconfig.MailInfo;
 import org.foxbpm.model.config.foxbpmconfig.ResourcePath;
 import org.foxbpm.model.config.foxbpmconfig.ResourcePathConfig;
 import org.foxbpm.model.config.foxbpmconfig.SysMailConfig;
-import org.foxbpm.model.config.style.ElementStyle;
-import org.foxbpm.model.config.style.FoxBPMStyleConfig;
-import org.foxbpm.model.config.style.Style;
-import org.foxbpm.model.config.style.StylePackage;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
@@ -136,7 +131,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected FoxBPMConfig foxBpmConfig;
 	protected ResourcePathConfig resourcePathConfig;
 	protected BizDataObjectConfig bizDataObjectConfig;
-	protected FoxBPMStyleConfig foxBPMStyleConfig;
 	protected SysMailConfig sysMailConfig;
 	
 	// service
@@ -165,8 +159,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	protected List<GroupDefinition> groupDefinitions = new ArrayList<GroupDefinition>();
 	protected UserDefinition userDefinition;
-	
-	protected Map<String, Style> styleMap = new HashMap<String, Style>();
 	
 	/**
 	 * 任务命令定义配置
@@ -232,8 +224,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initUserDefinition();
 		initCalendar();
 		initQuartz();
-		// 加载主题样式文件
-		initStyle();
 		// 加载SVG模版资源
 		initSVG();
 		configuratorsAfterInit();
@@ -347,46 +337,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	protected void initSVG() {
 		SVGTemplateContainer.getContainerInstance();
-	}
-	
-	private void initStyle() {
-		ResourceSet resourceSet = new ResourceSetImpl();
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xml", new XMIResourceFactoryImpl());
-		InputStream inputStream = null;
-		String classPath = "config/style.xml";
-		inputStream = ReflectUtil.getResourceAsStream("style.xml");
-		if (inputStream != null) {
-			classPath = "foxbpm.cfg.xml";
-		}
-		URL url = this.getClass().getClassLoader().getResource(classPath);
-		if (url == null) {
-			log.error("未能从{}目录下找到style.xml文件", classPath);
-			throw new FoxBPMClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION_FILENOTFOUND, "style.xml");
-		}
-		String filePath = url.toString();
-		Resource resource = null;
-		try {
-			if (!filePath.startsWith("jar")) {
-				filePath = java.net.URLDecoder.decode(ReflectUtil.getResource(classPath).getFile(), "utf-8");
-				resource = resourceSet.createResource(URI.createFileURI(filePath));
-			} else {
-				resource = resourceSet.createResource(URI.createURI(filePath));
-			}
-			resourceSet.getPackageRegistry().put(StylePackage.eINSTANCE.getNsURI(), StylePackage.eINSTANCE);
-			resource.load(null);
-		} catch (Exception e) {
-			log.error("style.xml文件加载失败", e);
-			throw new FoxBPMClassLoadingException(ExceptionCode.CLASSLOAD_EXCEPTION, "style.xml", e);
-		}
-		
-		foxBPMStyleConfig = (FoxBPMStyleConfig) resource.getContents().get(0);
-		
-		EList<ElementStyle> elementStyleList = foxBPMStyleConfig.getElementStyleConfig().getElementStyle();
-		for (ElementStyle elementStyle : elementStyleList) {
-			for (Style style : elementStyle.getStyle()) {
-				styleMap.put(elementStyle.getStyleId() + style.getObject(), style);
-			}
-		}
 	}
 	
 	protected void initTaskCommand() {
@@ -808,37 +758,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return eventListenerConfig;
 	}
 
-	public FoxBPMStyleConfig getFoxBPMStyleConfig() {
-		
-		return foxBPMStyleConfig;
-	}
-	
-	public ElementStyle getDefaultElementStyle() {
-		String currentStyle = foxBPMStyleConfig.getElementStyleConfig().getCurrentStyle();
-		
-		return getElementStyle(currentStyle);
-		
-	}
-	
-	public Style getStyle(String styleId, String styleObjId) {
-		return styleMap.get(styleId + styleObjId);
-	}
-	
-	public Style getStyle(String styleObjId) {
-		String currentStyle = foxBPMStyleConfig.getElementStyleConfig().getCurrentStyle();
-		return styleMap.get(currentStyle + styleObjId);
-	}
-	
-	public ElementStyle getElementStyle(String styleId) {
-		EList<ElementStyle> elementStyleList = foxBPMStyleConfig.getElementStyleConfig().getElementStyle();
-		for (ElementStyle elementStyle : elementStyleList) {
-			if (StringUtil.equals(elementStyle.getStyleId(), styleId)) {
-				return elementStyle;
-			}
-		}
-		return null;
-	}
-	
 	public FoxbpmScheduler getFoxbpmScheduler() {
 		if(!quartzEnabled){
 			return null;

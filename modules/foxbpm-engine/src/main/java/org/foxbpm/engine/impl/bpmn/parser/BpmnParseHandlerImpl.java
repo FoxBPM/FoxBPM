@@ -74,12 +74,12 @@ import org.foxbpm.model.SequenceFlow;
 import org.foxbpm.model.StartEvent;
 import org.foxbpm.model.SubProcess;
 import org.foxbpm.model.WayPoint;
-import org.foxbpm.model.config.style.Style;
 import org.foxbpm.model.constant.StyleOption;
+import org.foxbpm.model.style.Style;
 
 public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	
-	private static Map<Class<?>, Style> styleContainer = new HashMap<Class<?>, Style>();
+	private static Map<String, Style> styleContainer = new HashMap<String, Style>();
 	
 	public BpmnParseHandlerImpl() {
 		//加载style.xml内容
@@ -501,7 +501,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	 * @since 1.0.0
 	 */
 	private Style getStyle(BaseElement bpmnElement) {
-		Style style = styleContainer.get(bpmnElement.getClass());
+		Style style = styleContainer.get(bpmnElement.getClass().getSimpleName());
 		if (style == null) {
 			throw new FoxBPMException("未找到" + bpmnElement.getClass() + "的style样式");
 		}
@@ -518,11 +518,11 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	 * @since 1.0.0
 	 */
 	private void setStyleProperties(KernelBaseElementImpl kernelBaseElementImpl, Style style) {
-		kernelBaseElementImpl.setProperty(StyleOption.Background, style.getBackground());
+		kernelBaseElementImpl.setProperty(StyleOption.Background, style.getBackGround());
 		kernelBaseElementImpl.setProperty(StyleOption.Font, style.getFont());
-		kernelBaseElementImpl.setProperty(StyleOption.Foreground, style.getForeground());
+		kernelBaseElementImpl.setProperty(StyleOption.Foreground, style.getForeGround());
 		kernelBaseElementImpl.setProperty(StyleOption.MulitSelectedColor, style.getMulitSelectedColor());
-		kernelBaseElementImpl.setProperty(StyleOption.StyleObject, style.getObject());
+		kernelBaseElementImpl.setProperty(StyleOption.StyleObject, style.getElementType());
 		kernelBaseElementImpl.setProperty(StyleOption.SelectedColor, style.getSelectedColor());
 		kernelBaseElementImpl.setProperty(StyleOption.TextColor, style.getTextColor());
 	}
