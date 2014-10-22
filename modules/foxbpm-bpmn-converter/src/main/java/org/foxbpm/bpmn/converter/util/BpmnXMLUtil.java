@@ -293,13 +293,6 @@ public class BpmnXMLUtil {
 			for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
 				elem = (Element) iterator.next();
 				name = elem.getName();
-				/*
-				 * if
-				 * (BpmnXMLConstants.ELEMENT_SEQUENCEFLOW.equalsIgnoreCase(name
-				 * )) { // 线条处理
-				 * flowContainer.addSequenceFlow(parseSequenceFlow(elem)); }
-				 * else
-				 */
 				if (null != BpmnXMLConverter.getConverter(name)) {
 					BaseElementXMLConverter converter = BpmnXMLConverter.getConverter(name);
 					FlowElement flowElement = converter.cretateFlowElement();
@@ -309,6 +302,33 @@ public class BpmnXMLUtil {
 						flowContainer.addSequenceFlow((SequenceFlow) flowElement);
 					} else {
 						flowContainer.addFlowElement(flowElement);
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * 处理流程容器节点
+	 * 
+	 * @param parentElement
+	 *            父节点
+	 * @param flowElements
+	 *            流程节点
+	 */
+	public static void createFlowElement(Element parentElement, List<FlowElement> flowElements) {
+		if (null != flowElements) {
+			FlowElement flowElement = null;
+			BaseElementXMLConverter converter = null;
+			Element childElem = null;
+			for (Iterator<FlowElement> iterator = flowElements.iterator(); iterator.hasNext();) {
+				flowElement = iterator.next();
+				converter = BpmnXMLConverter.getConverter(flowElement.getClass());
+				if (null != converter) {
+					childElem = converter.cretateXMLElement();
+					if (null != childElem) {
+						converter.convertModelToXML(childElem, flowElement);
+						parentElement.add(childElem);
 					}
 				}
 			}
@@ -333,7 +353,8 @@ public class BpmnXMLUtil {
 				connectorInstanceElem = connectorInstanceElements.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 				        + BpmnXMLConstants.ELEMENT_CONNECTORINSTANCE);
 				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_PACKAGENAME, connector.getPackageName());
-				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, connector.getId());
+				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ISTIMEEXECUTE, connector.getIsTimeExecute());
+				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_CONNECTORID, connector.getId());
 				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_CLASSNAME, connector.getClassName());
 				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_CONNECTORINSTANCE_ID, connector.getConnectorInstanceId());
 				connectorInstanceElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_CONNECTORINSTANCE_NAME, connector.getConnectorInstanceName());
@@ -354,7 +375,7 @@ public class BpmnXMLUtil {
 					childElem = connectorInstanceElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 					        + BpmnXMLConstants.ELEMENT_SKIPCOMMENT);
 					childElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
-					        + ':' + BpmnXMLConstants.ELEMENT_SKIPCOMMENT);
+					        + ':' + BpmnXMLConstants.TYPE_SKIPCOMMENT);
 					expressionElem = childElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 					        + BpmnXMLConstants.ELEMENT_EXPRESSION);
 					createExpressionElement(expressionElem, connector.getSkipComment());
@@ -387,7 +408,7 @@ public class BpmnXMLUtil {
 					childElem = connectorInstanceElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 					        + BpmnXMLConstants.ELEMENT_DOCUMENTATION);
 					childElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
-					        + ':' + BpmnXMLConstants.ELEMENT_DOCUMENTATION);
+					        + ':' + BpmnXMLConstants.TYPE_DOCUMENTATION);
 					childElem.setText(connector.getDocumentation());
 				}
 			}
@@ -400,7 +421,7 @@ public class BpmnXMLUtil {
 	 *            foxbpm:expression
 	 * @param obj
 	 */
-	private static void createExpressionElement(Element element, Object obj) {
+	public static void createExpressionElement(Element element, Object obj) {
 		String expression = obj.toString();
 		element.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
 		        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);
@@ -504,5 +525,58 @@ public class BpmnXMLUtil {
 			return str.substring(0, length);
 		}
 		return str;
+	}
+	
+	/**
+	 * 去掉特殊字符针对xml中的
+	 * 
+	 * @param text
+	 *            字符串
+	 * @return 返回处理后的字符串
+	 */
+	public static String removeSpecialStr(String text) {
+		return removeSpecialStr(text, BpmnXMLConstants.XML_QUOT);
+	}
+	/**
+	 * 去掉特殊字符针对xml中的
+	 * 
+	 * @param text
+	 *            字符串
+	 * @param specialStr
+	 *            特殊字符串
+	 * @return 返回处理后的字符串
+	 */
+	public static String removeSpecialStr(String text, String... specialStr) {
+		StringBuffer sbuffer = new StringBuffer(text);
+		if (null != specialStr) {
+			int length = specialStr.length;
+			for (int i = 0; i < length; i++) {
+				sbuffer.replace(0, sbuffer.length(), (sbuffer.toString().replace(BpmnXMLConstants.XML_QUOT, BpmnXMLConstants.EMPTY_STRING)));
+			}
+		}
+		return sbuffer.toString();
+	}
+	/**
+	 * 添加特殊字符串前后
+	 * 
+	 * @param text
+	 *            字符串
+	 * @return 返回处理后的字符串
+	 */
+	public static String addSpecialStrBeforeAndAfter(String text) {
+		return addSpecialStrBeforeAndAfter(text, BpmnXMLConstants.XML_QUOT);
+	}
+	/**
+	 * 添加特殊字符串前后
+	 * 
+	 * @param text
+	 *            字符串
+	 * @param specialStr
+	 *            特殊字符串
+	 * 
+	 * @return 返回处理后的字符串
+	 */
+	public static String addSpecialStrBeforeAndAfter(String text, String specialStr) {
+		return new StringBuffer(specialStr).append(text).append(specialStr).toString();
 	}
 }

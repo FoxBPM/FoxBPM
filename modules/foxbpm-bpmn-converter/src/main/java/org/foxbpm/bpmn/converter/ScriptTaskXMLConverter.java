@@ -19,8 +19,10 @@ package org.foxbpm.bpmn.converter;
 
 import java.util.Iterator;
 
+import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
+import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.ScriptTask;
@@ -46,17 +48,15 @@ public class ScriptTaskXMLConverter extends TaskXMLConverter {
 	@Override
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
 		ScriptTask scriptTask = (ScriptTask) baseElement;
-		scriptTask.setScript(element.attributeValue(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-		        + BpmnXMLConstants.ATTRIBUTE_SCRIPTNAME));
 		scriptTask.setScriptFormat(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_SCRIPTFORMAT));
-		
 		Element elem = null;
 		String nodeName = null;
 		for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
 			elem = (Element) iterator.next();
 			nodeName = elem.getName();
 			if (BpmnXMLConstants.ELEMENT_SCRIPT.equalsIgnoreCase(nodeName)) {
-				scriptTask.setScript(elem.getText().replace(BpmnXMLConstants.XML_QUOT, BpmnXMLConstants.EMPTY_STRING));
+				scriptTask.setScript(BpmnXMLUtil.removeSpecialStr(elem.getText()));
+				break;
 			}
 		}
 		super.convertXMLToModel(element, baseElement);
@@ -65,16 +65,27 @@ public class ScriptTaskXMLConverter extends TaskXMLConverter {
 	@Override
 	public void convertModelToXML(Element element, BaseElement baseElement) {
 		
+		ScriptTask scriptTask = (ScriptTask) baseElement;
+		if (null != scriptTask.getScript()) {
+			element.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':' + BpmnXMLConstants.ATTRIBUTE_SCRIPTNAME, BpmnXMLUtil.interceptStr(scriptTask.getScript()));
+			Element childElem = element.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+			        + BpmnXMLConstants.ELEMENT_SCRIPT);
+			childElem.setText(BpmnXMLUtil.addSpecialStrBeforeAndAfter(scriptTask.getScript()));
+		}
+		if (null != scriptTask.getScriptFormat()) {
+			element.addAttribute(BpmnXMLConstants.ATTRIBUTE_SCRIPTFORMAT, scriptTask.getScriptFormat());
+		}
+		super.convertModelToXML(element, baseElement);
 	}
 	
 	@Override
 	public String getXMLElementName() {
 		return BpmnXMLConstants.ELEMENT_SCRIPTTASK;
 	}
-
+	
 	public Element cretateXMLElement() {
-	    // TODO Auto-generated method stub
-	    return null;
-    }
+		return DocumentFactory.getInstance().createElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+		        + BpmnXMLConstants.ELEMENT_SCRIPTTASK, BpmnXMLConstants.BPMN2_NAMESPACE);
+	}
 	
 }

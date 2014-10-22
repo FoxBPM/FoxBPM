@@ -17,6 +17,7 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.model.BaseElement;
@@ -68,6 +69,23 @@ public class CallActivityXMLConverter extends ActivityXMLConverter {
 	
 	@Override
 	public void convertModelToXML(Element element, BaseElement baseElement) {
+		CallActivity activity = (CallActivity)baseElement;
+		String callableElementId = activity.getCallableElementId();
+		if(callableElementId != null){
+			element.addAttribute("foxbpm:callableElementId", callableElementId);
+			element.addAttribute("foxbpm:callableElementName", callableElementId);
+		}
+		String callableElementVersion = activity.getCallableElementVersion();
+		if(callableElementVersion != null){
+			element.addAttribute("foxbpm:callableElementVersion", callableElementVersion);
+			element.addAttribute("foxbpm:callableElementVersionName", callableElementVersion);
+		}
+		element.addAttribute("foxbpm:isAsync", String.valueOf(activity.isAsync()));
+		
+		String bizKey = activity.getBizKey();
+		if(bizKey != null){
+			element.addAttribute("foxbpm:callableElementBizKey", bizKey);
+		}
 		
 	}
 	
@@ -77,8 +95,8 @@ public class CallActivityXMLConverter extends ActivityXMLConverter {
 	}
 
 	public Element cretateXMLElement() {
-	    // TODO Auto-generated method stub
-	    return null;
+		return DocumentFactory.getInstance().createElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+		        + BpmnXMLConstants.ELEMENT_CALLACTIVITY, BpmnXMLConstants.BPMN2_NAMESPACE);
     }
 	
 }

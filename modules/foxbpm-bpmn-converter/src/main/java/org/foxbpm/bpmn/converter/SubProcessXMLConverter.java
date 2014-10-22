@@ -17,6 +17,7 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.model.BaseElement;
@@ -37,7 +38,6 @@ public class SubProcessXMLConverter extends ActivityXMLConverter {
 	
 	@Override
 	public Class<? extends BaseElement> getBpmnElementType() {
-		// TODO Auto-generated method stub
 		return SubProcess.class;
 	}
 	
@@ -48,7 +48,7 @@ public class SubProcessXMLConverter extends ActivityXMLConverter {
 	
 	@Override
 	public void convertModelToXML(Element element, BaseElement baseElement) {
-		
+		super.convertModelToXML(element, baseElement);
 	}
 	
 	@Override
@@ -57,7 +57,7 @@ public class SubProcessXMLConverter extends ActivityXMLConverter {
 	}
 
 	public Element cretateXMLElement() {
-	    // TODO Auto-generated method stub
-	    return null;
+		return DocumentFactory.getInstance().createElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+		        + BpmnXMLConstants.ELEMENT_SUBPROCESS, BpmnXMLConstants.BPMN2_NAMESPACE);
     }
 }

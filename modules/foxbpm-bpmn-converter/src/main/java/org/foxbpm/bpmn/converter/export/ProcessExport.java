@@ -76,30 +76,31 @@ public class ProcessExport extends BpmnExport {
 			        + BpmnXMLConstants.ELEMENT_FORMURI);
 			expression = childElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 			        + BpmnXMLConstants.ELEMENT_EXPRESSION);
-			expression.addAttribute(BpmnXMLConstants.XSD_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
+			expression.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
 			        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);
 			expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_EXPRESSION));
-			expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLConstants.EMPTY_STRING);
+			expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(process.getFormUri()));
 			expression.add(new DOMCDATA(process.getFormUri()));
 			// taskSubject
 			childElem = extensionElements.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 			        + BpmnXMLConstants.ELEMENT_TASKSUBJECT);
+			childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_TASKSUBJECT));
 			expression = childElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 			        + BpmnXMLConstants.ELEMENT_EXPRESSION);
-			expression.addAttribute(BpmnXMLConstants.XSD_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
+			expression.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
 			        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);
 			expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_EXPRESSION));
-			expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLConstants.EMPTY_STRING);
+			expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(process.getSubject()));
 			expression.add(new DOMCDATA(process.getSubject()));
 			// formUriView
 			childElem = extensionElements.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 			        + BpmnXMLConstants.ELEMENT_FORMURIVIEW);
 			expression = childElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 			        + BpmnXMLConstants.ELEMENT_EXPRESSION);
-			expression.addAttribute(BpmnXMLConstants.XSD_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
+			expression.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
 			        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);
 			expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_EXPRESSION));
-			expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLConstants.EMPTY_STRING);
+			expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(process.getFormUriView()));
 			expression.add(new DOMCDATA(process.getFormUriView()));
 			
 			// 数据变量

@@ -45,7 +45,7 @@ public interface BpmnXMLConstants {
 	String XMLNS_NAMESPACE = "http://www.foxbpm.org";
 	
 	String FOXBPM_PREFIX = "foxbpm";
-	String FOXBPM_NAMESPACE = "http://www.omg.org/spec/BPMN/20100524/DI";
+	String FOXBPM_NAMESPACE = "http://www.foxbpm.org/foxbpm";
 	String DI_PREFIX = "di";
 	String DI_NAMESPACE = "http://www.omg.org/spec/DD/20100524/DI";
 	String DC_PREFIX = "dc";
@@ -267,6 +267,8 @@ public interface BpmnXMLConstants {
 	String ATTRIBUTE_DI_BPMNELEMENT = "bpmnElement";
 	/** isExpanded */
 	String ATTRIBUTE_DI_IS_EXPANDED = "isExpanded";
+	/** isMarkerVisible */
+	String ATTRIBUTE_DI_IS_MARKERVISIBLE = "isMarkerVisible";
 	/** width */
 	String ATTRIBUTE_DI_WIDTH = "width";
 	/** height */
@@ -318,5 +320,6 @@ public interface BpmnXMLConstants {
 	String TYPE_CONNECTORPARAMETEROUTPUTDEF = "ConnectorParameterOutputDef";
 	/** FormalExpression */
 	String FORMALEXPRESSION = "FormalExpression";
-	
+	/** SkipComment */
+	String TYPE_SKIPCOMMENT = "SkipComment";
 }

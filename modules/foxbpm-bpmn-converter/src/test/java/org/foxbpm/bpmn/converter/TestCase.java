@@ -52,6 +52,7 @@ public class TestCase {
 				OutputFormat format = OutputFormat.createPrettyPrint();
 				format.setEncoding("UTF-8");
 				XMLWriter xmlWriter = new XMLWriter(System.out, format);
+				xmlWriter.setEscapeText(false);
 				xmlWriter.write(doc);
 				xmlWriter.close();
 			} catch (IOException e) {
