@@ -346,9 +346,9 @@ public class BpmnXMLUtil {
 				// 处理foxbpm:skipComment
 				if (null != connector.getSkipComment()) {
 					childElem = connectorInstanceElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-					        + BpmnXMLConstants.TYPE_SKIPCOMMENT);
+					        + BpmnXMLConstants.ELEMENT_SKIPCOMMENT);
 					childElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
-					        + ':' + BpmnXMLConstants.ELEMENT_SKIPCOMMENT);
+					        + ':' + BpmnXMLConstants.TYPE_SKIPCOMMENT);
 					expressionElem = childElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 					        + BpmnXMLConstants.ELEMENT_EXPRESSION);
 					createExpressionElement(expressionElem, connector.getSkipComment());
@@ -379,9 +379,9 @@ public class BpmnXMLUtil {
 				// 描述
 				if (null != connector.getDocumentation()) {
 					childElem = connectorInstanceElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-					        + BpmnXMLConstants.TYPE_DOCUMENTATION);
+					        + BpmnXMLConstants.ELEMENT_DOCUMENTATION);
 					childElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
-					        + ':' + BpmnXMLConstants.ELEMENT_DOCUMENTATION);
+					        + ':' + BpmnXMLConstants.TYPE_DOCUMENTATION);
 					childElem.setText(connector.getDocumentation());
 				}
 			}
