@@ -308,5 +308,6 @@ public interface BpmnXMLConstants {
 	String TYPE_CONNECTORPARAMETEROUTPUTDEF = "ConnectorParameterOutputDef";
 	/** FormalExpression */
 	String FORMALEXPRESSION = "FormalExpression";
-	
+	/** SkipComment */
+	String TYPE_SKIPCOMMENT = "SkipComment";
 }
