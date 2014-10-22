@@ -508,7 +508,7 @@ public class BpmnXMLUtil {
 	 * @return 返回处理后的字符串
 	 */
 	public static String removeSpecialStr(String text) {
-		return removeSpecialStr(text);
+		return removeSpecialStr(text, BpmnXMLConstants.XML_QUOT);
 	}
 	/**
 	 * 去掉特殊字符针对xml中的
