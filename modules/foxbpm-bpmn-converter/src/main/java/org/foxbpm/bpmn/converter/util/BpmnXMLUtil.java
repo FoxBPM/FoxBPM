@@ -499,4 +499,57 @@ public class BpmnXMLUtil {
 		}
 		return str;
 	}
+	
+	/**
+	 * 去掉特殊字符针对xml中的
+	 * 
+	 * @param text
+	 *            字符串
+	 * @return 返回处理后的字符串
+	 */
+	public static String removeSpecialStr(String text) {
+		return removeSpecialStr(text);
+	}
+	/**
+	 * 去掉特殊字符针对xml中的
+	 * 
+	 * @param text
+	 *            字符串
+	 * @param specialStr
+	 *            特殊字符串
+	 * @return 返回处理后的字符串
+	 */
+	public static String removeSpecialStr(String text, String... specialStr) {
+		StringBuffer sbuffer = new StringBuffer(text);
+		if (null != specialStr) {
+			int length = specialStr.length;
+			for (int i = 0; i < length; i++) {
+				sbuffer.replace(0, sbuffer.length(), (sbuffer.toString().replace(BpmnXMLConstants.XML_QUOT, BpmnXMLConstants.EMPTY_STRING)));
+			}
+		}
+		return sbuffer.toString();
+	}
+	/**
+	 * 添加特殊字符串前后
+	 * 
+	 * @param text
+	 *            字符串
+	 * @return 返回处理后的字符串
+	 */
+	public static String addSpecialStrBeforeAndAfter(String text) {
+		return addSpecialStrBeforeAndAfter(text, BpmnXMLConstants.XML_QUOT);
+	}
+	/**
+	 * 添加特殊字符串前后
+	 * 
+	 * @param text
+	 *            字符串
+	 * @param specialStr
+	 *            特殊字符串
+	 * 
+	 * @return 返回处理后的字符串
+	 */
+	public static String addSpecialStrBeforeAndAfter(String text, String specialStr) {
+		return new StringBuffer(specialStr).append(text).append(specialStr).toString();
+	}
 }
