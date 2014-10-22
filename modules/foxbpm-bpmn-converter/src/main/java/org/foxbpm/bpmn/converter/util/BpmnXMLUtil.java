@@ -335,7 +335,7 @@ public class BpmnXMLUtil {
 	}
 	
 	/*******************************************************************************************/
-	public static void createConectorElement(Element parentElement, List<Connector> connectors) {
+	public static void createConectorElement(Element parentElement,String connrctorType, List<Connector> connectors) {
 		if (null != connectors) {
 			Connector connector = null;
 			Element connectorInstanceElements = null;
@@ -343,8 +343,8 @@ public class BpmnXMLUtil {
 			Element childElem = null;
 			Element expressionElem = null;
 			connectorInstanceElements = parentElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-			        + BpmnXMLConstants.ELEMENT_CONNECTORINSTANCEELEMENTS,BpmnXMLConstants.FOXBPM_NAMESPACE);
-			connectorInstanceElements.addAttribute(BpmnXMLConstants.ATTRIBUTE_CONNRCTORTYPE, "flowConnector");
+			        + BpmnXMLConstants.ELEMENT_CONNECTORINSTANCEELEMENTS, BpmnXMLConstants.FOXBPM_NAMESPACE);
+			connectorInstanceElements.addAttribute(BpmnXMLConstants.ATTRIBUTE_CONNRCTORTYPE, connrctorType);
 			
 			for (Iterator<Connector> iterator = connectors.iterator(); iterator.hasNext();) {
 				connector = iterator.next();
@@ -431,11 +431,13 @@ public class BpmnXMLUtil {
 	
 	/**
 	 * 创建foxbpm:expression 节点
+	 * 
 	 * @param element
 	 * @param obj
 	 */
 	public static void createExpressionElementByParent(Element element, Object obj) {
-		Element expressionElement = element.addElement("foxbpm:expression",BpmnXMLConstants.FOXBPM_NAMESPACE);
+		Element expressionElement = element.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+		        + BpmnXMLConstants.ELEMENT_EXPRESSION, BpmnXMLConstants.FOXBPM_NAMESPACE);
 		String expression = obj.toString();
 		expressionElement.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
 		        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);

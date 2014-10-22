@@ -118,7 +118,7 @@ public class ProcessExport extends BpmnExport {
 			// 启动人
 			createStarterElement(extensionElements, process.getPotentialStarters());
 			// 连接器
-			BpmnXMLUtil.createConectorElement(extensionElements, process.getConnector());
+			BpmnXMLUtil.createConectorElement(extensionElements,BpmnXMLConstants.TYPE_FLOWCONNECTOR, process.getConnector());
 		}
 	}
 	

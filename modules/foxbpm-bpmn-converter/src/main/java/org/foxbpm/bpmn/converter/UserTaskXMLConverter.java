@@ -25,6 +25,7 @@ import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
+import org.foxbpm.bpmn.converter.util.UniqueIDUtil;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.CommandParameter;
 import org.foxbpm.model.Connector;
@@ -64,7 +65,7 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 		// 领取方式
 		userTask.setClaimType(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_FOXBPM_CLAIMTYPE));
 		// 任务类型
-		userTask.setTaskType(BpmnXMLConstants.ATTRIBUTE_FOXBPM_TASKTYPE);
+		userTask.setTaskType(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_FOXBPM_TASKTYPE));
 		Iterator<Element> elementIterator = element.elements().iterator();
 		Element subElement = null;
 		Element extentionElement = null;
@@ -110,7 +111,7 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 						}
 						
 						Element taskCommandExpElement = extentionElement.element(BpmnXMLConstants.ELEMENT_EXPRESSION);
-						if(taskCommandExpElement != null){
+						if (taskCommandExpElement != null) {
 							taskCommand.setExpression(taskCommandExpElement.getText());
 						}
 						listTaskCommand.add(taskCommand);
@@ -194,7 +195,7 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 			Element taskCommandElement = null;
 			List<CommandParameter> commandParams = null;
 			for (TaskCommand taskCommand : taskCommands) {
-				taskCommandElement = extensionElement.addElement(ELEMENT_NAME_FOXBPM_TASKCOMMAND,BpmnXMLConstants.FOXBPM_NAMESPACE);
+				taskCommandElement = extensionElement.addElement(ELEMENT_NAME_FOXBPM_TASKCOMMAND, BpmnXMLConstants.FOXBPM_NAMESPACE);
 				taskCommandElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, taskCommand.getId());
 				taskCommandElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, taskCommand.getName());
 				taskCommandElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_COMMANDTYPE, taskCommand.getTaskCommandType());
@@ -230,7 +231,7 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 		String taskPriority = userTask.getTaskPriority();
 		if (taskPriority != null) {
 			Element taskPriorityElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ":"
-			        + BpmnXMLConstants.ELEMENT_TASKPRIORITY,BpmnXMLConstants.FOXBPM_NAMESPACE);
+			        + BpmnXMLConstants.ELEMENT_TASKPRIORITY, BpmnXMLConstants.FOXBPM_NAMESPACE);
 			BpmnXMLUtil.createExpressionElementByParent(taskPriorityElement, taskPriority);
 		}
 		
@@ -238,7 +239,7 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 		String formUri = userTask.getFormUri();
 		if (formUri != null) {
 			Element formUriElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ":"
-			        + BpmnXMLConstants.ELEMENT_FORMURI,BpmnXMLConstants.FOXBPM_NAMESPACE);
+			        + BpmnXMLConstants.ELEMENT_FORMURI, BpmnXMLConstants.FOXBPM_NAMESPACE);
 			BpmnXMLUtil.createExpressionElementByParent(formUriElement, formUri);
 		}
 		
@@ -246,7 +247,7 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 		String formUriView = userTask.getFormUriView();
 		if (formUriView != null) {
 			Element formUriViewElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ":"
-			        + BpmnXMLConstants.ELEMENT_FORMURIVIEW,BpmnXMLConstants.FOXBPM_NAMESPACE);
+			        + BpmnXMLConstants.ELEMENT_FORMURIVIEW, BpmnXMLConstants.FOXBPM_NAMESPACE);
 			BpmnXMLUtil.createExpressionElementByParent(formUriViewElement, formUriView);
 		}
 		
@@ -254,7 +255,7 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 		String taskSubject = userTask.getSubject();
 		if (taskSubject != null) {
 			Element taskSubjectElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ":"
-			        + BpmnXMLConstants.ELEMENT_TASKSUBJECT,BpmnXMLConstants.FOXBPM_NAMESPACE);
+			        + BpmnXMLConstants.ELEMENT_TASKSUBJECT, BpmnXMLConstants.FOXBPM_NAMESPACE);
 			BpmnXMLUtil.createExpressionElementByParent(taskSubjectElement, taskSubject);
 			
 		}
@@ -263,7 +264,7 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 		String taskDescription = userTask.getTaskDescription();
 		if (taskDescription != null) {
 			Element taskDescriptionElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ":"
-			        + BpmnXMLConstants.ELEMENT_TASKDESCRIPTION,BpmnXMLConstants.FOXBPM_NAMESPACE);
+			        + BpmnXMLConstants.ELEMENT_TASKDESCRIPTION, BpmnXMLConstants.FOXBPM_NAMESPACE);
 			BpmnXMLUtil.createExpressionElementByParent(taskDescriptionElement, taskDescription);
 			
 		}
@@ -272,7 +273,7 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 		String completeDescription = userTask.getCompleteDescription();
 		if (completeDescription != null) {
 			Element completeDescriptionElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ":"
-			        + BpmnXMLConstants.ELEMENT_COMPLETETASKDESCRIPTION,BpmnXMLConstants.FOXBPM_NAMESPACE);
+			        + BpmnXMLConstants.ELEMENT_COMPLETETASKDESCRIPTION, BpmnXMLConstants.FOXBPM_NAMESPACE);
 			BpmnXMLUtil.createExpressionElementByParent(completeDescriptionElement, completeDescription);
 		}
 		
@@ -282,7 +283,7 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 		int expectedExecuteMinute = userTask.getExpectedExecuteMinute();
 		if (expectedExecuteDay != 0 || expectedExecuteHour != 0 || expectedExecuteMinute != 0) {
 			Element expectedExecuteElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ":"
-			        + BpmnXMLConstants.ELEMENT_EXPECTEDEXECUTIONTIME,BpmnXMLConstants.FOXBPM_NAMESPACE);
+			        + BpmnXMLConstants.ELEMENT_EXPECTEDEXECUTIONTIME, BpmnXMLConstants.FOXBPM_NAMESPACE);
 			if (expectedExecuteDay != 0) {
 				expectedExecuteElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_DAY, String.valueOf(expectedExecuteDay));
 			}
@@ -297,8 +298,10 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 		// 任务分配
 		List<Connector> actorConnectors = userTask.getActorConnectors();
 		if (actorConnectors != null && actorConnectors.size() > 0) {
-			Element potentialOwner = element.addElement(ELEMENT_NAME_BPMN2_POTENTIALOWNER,BpmnXMLConstants.FOXBPM_NAMESPACE);
-			BpmnXMLUtil.createConectorElement(potentialOwner.addElement(ELEMENT_NAME_BPMN2_EXTENSIONELEMENT), actorConnectors);
+			
+			Element potentialOwner = element.addElement(ELEMENT_NAME_BPMN2_POTENTIALOWNER);
+			potentialOwner.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_POTENTIALOWNER));
+			BpmnXMLUtil.createConectorElement(potentialOwner.addElement(ELEMENT_NAME_BPMN2_EXTENSIONELEMENT), BpmnXMLConstants.TYPE_ACTORCONNECTOR, actorConnectors);
 		}
 		super.convertModelToXML(element, baseElement);
 		

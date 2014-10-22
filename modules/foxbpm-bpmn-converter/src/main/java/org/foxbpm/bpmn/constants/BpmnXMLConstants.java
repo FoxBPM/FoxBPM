@@ -34,6 +34,10 @@ public interface BpmnXMLConstants {
 	String IS_TRUE = "true";
 	/** false */
 	String IS_FALSE = "false";
+	/** flowConnector */
+	String TYPE_FLOWCONNECTOR = "flowConnector";
+	/** actorconnector */
+	String TYPE_ACTORCONNECTOR = "actorConnector";
 	
 	String BPMN2_PREFIX = "bpmn2";
 	String BPMN2_NAMESPACE = "http://www.omg.org/spec/BPMN/20100524/MODEL";
