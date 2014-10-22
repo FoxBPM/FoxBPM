@@ -20,12 +20,9 @@ import java.util.Map.Entry;
 import org.dom4j.Element;
 import org.dom4j.dom.DOMCDATA;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
-import org.foxbpm.bpmn.converter.BaseElementXMLConverter;
-import org.foxbpm.bpmn.converter.BpmnXMLConverter;
 import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.bpmn.converter.util.UniqueIDUtil;
 import org.foxbpm.model.DataVariableDefinition;
-import org.foxbpm.model.FlowElement;
 import org.foxbpm.model.PotentialStarter;
 import org.foxbpm.model.Process;
 import org.foxbpm.model.SequenceFlow;
@@ -46,7 +43,7 @@ public class ProcessExport extends BpmnExport {
 			// 处理扩展
 			createExtensionElement(processEle, process);
 			// 处理流程节点
-			createFlowElement(processEle, process.getFlowElements());
+			BpmnXMLUtil.createFlowElement(processEle, process.getFlowElements());
 			// 处理流程线条
 			createSequenceFlowElement(processEle, process.getSequenceFlows());
 			// 描述
@@ -164,24 +161,6 @@ public class ProcessExport extends BpmnExport {
 					        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);
 					childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_EXPRESSION));
 					childElem.add(new DOMCDATA(dataVariableDefinition.getExpression()));
-				}
-			}
-		}
-	}
-	private static void createFlowElement(Element parentElement, List<FlowElement> flowElements) {
-		if (null != flowElements) {
-			FlowElement flowElement = null;
-			BaseElementXMLConverter converter = null;
-			Element childElem = null;
-			for (Iterator<FlowElement> iterator = flowElements.iterator(); iterator.hasNext();) {
-				flowElement = iterator.next();
-				converter = BpmnXMLConverter.getConverter(flowElement.getClass());
-				if (null != converter) {
-					childElem = converter.cretateXMLElement();
-					if (null != childElem) {
-						converter.convertModelToXML(childElem, flowElement);
-						parentElement.add(childElem);
-					}
 				}
 			}
 		}

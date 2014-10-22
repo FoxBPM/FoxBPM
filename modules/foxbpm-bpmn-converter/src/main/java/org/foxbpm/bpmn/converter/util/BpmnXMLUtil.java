@@ -300,9 +300,8 @@ public class BpmnXMLUtil {
 					if (BpmnXMLConstants.ELEMENT_SEQUENCEFLOW.equalsIgnoreCase(name)) {
 						// 线条处理
 						flowContainer.addSequenceFlow((SequenceFlow) flowElement);
-					} else {
-						flowContainer.addFlowElement(flowElement);
 					}
+					flowContainer.addFlowElement(flowElement);
 				}
 			}
 		}
