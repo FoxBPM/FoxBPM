@@ -282,22 +282,22 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 		int expectedExecuteMinute = userTask.getExpectedExecuteMinute();
 		if (expectedExecuteDay != 0 || expectedExecuteHour != 0 || expectedExecuteMinute != 0) {
 			Element expectedExecuteElement = extensionElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ":"
-			        + BpmnXMLConstants.ELEMENT_EXPECTEDEXECUTIONTIME);
+			        + BpmnXMLConstants.ELEMENT_EXPECTEDEXECUTIONTIME,BpmnXMLConstants.FOXBPM_NAMESPACE);
 			if (expectedExecuteDay != 0) {
 				expectedExecuteElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_DAY, String.valueOf(expectedExecuteDay));
 			}
 			if (expectedExecuteHour != 0) {
-				expectedExecuteElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_DAY, String.valueOf(expectedExecuteHour));
+				expectedExecuteElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_HOUR, String.valueOf(expectedExecuteHour));
 			}
 			if (expectedExecuteMinute != 0) {
-				expectedExecuteElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_DAY, String.valueOf(expectedExecuteMinute));
+				expectedExecuteElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_MINUTE, String.valueOf(expectedExecuteMinute));
 			}
 		}
 		
 		// 任务分配
 		List<Connector> actorConnectors = userTask.getActorConnectors();
 		if (actorConnectors != null && actorConnectors.size() > 0) {
-			Element potentialOwner = element.addElement(ELEMENT_NAME_BPMN2_POTENTIALOWNER);
+			Element potentialOwner = element.addElement(ELEMENT_NAME_BPMN2_POTENTIALOWNER,BpmnXMLConstants.FOXBPM_NAMESPACE);
 			BpmnXMLUtil.createConectorElement(potentialOwner.addElement(ELEMENT_NAME_BPMN2_EXTENSIONELEMENT), actorConnectors);
 		}
 		super.convertModelToXML(element, baseElement);

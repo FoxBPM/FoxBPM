@@ -84,6 +84,7 @@ public abstract class ActivityXMLConverter extends FlowNodeXMLConverter {
 			        + BpmnXMLConstants.ELEMENT_SKIPSTRATEGY,BpmnXMLConstants.FOXBPM_NAMESPACE);
 			skipStrategyElement.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 				        + BpmnXMLConstants.ATTRIBUTE_ISENABLE, String.valueOf(skipStrategy.isEnable()));
+			 
 			String skipExpression = skipStrategy.getSkipExpression();
 			if(skipExpression!= null){
 				
