@@ -90,5 +90,10 @@ public abstract class BaseElementXMLConverter implements FlowElementFactory {
 			childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_DOCUMENTATION));
 			childElem.setText(baseElement.getDocumentation());
 		}
+		
+		// 处理流程容器
+		if (baseElement instanceof FlowContainer) {
+			BpmnXMLUtil.createFlowElement(element, ((FlowContainer) baseElement).getFlowElements());
+		}
 	}
 }
