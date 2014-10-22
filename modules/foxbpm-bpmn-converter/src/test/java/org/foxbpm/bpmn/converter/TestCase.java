@@ -43,8 +43,8 @@ public class TestCase {
 		BpmnXMLConverter converter = new BpmnXMLConverter();
 		SAXReader reader = new SAXReader();
 		try {
-			//Document doc = reader.read(new File("E:\\workspace_6.0\\FoxBPM.0.1\\Test\\selector\\test\\abc_1.bpmn"));
-			Document doc = reader.read(new File("E:\\workspace_foxbpm\\BPMN\\LANE_TEST_1.bpmn"));
+			Document doc = reader.read(new File("E:\\workspace_6.0\\FoxBPM.0.1\\Test\\selector\\test\\a_1.bpmn"));
+			//Document doc = reader.read(new File("E:\\workspace_foxbpm\\BPMN\\LANE_TEST_1.bpmn"));
 			BpmnModel bpmnModel = converter.convertToBpmnModel(doc);
 			doc = converter.convertToXML(bpmnModel);
 			try {

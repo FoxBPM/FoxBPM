@@ -14,8 +14,6 @@ package org.foxbpm.bpmn.converter.export;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.dom4j.Element;
 import org.dom4j.dom.DOMCDATA;
@@ -25,8 +23,6 @@ import org.foxbpm.bpmn.converter.util.UniqueIDUtil;
 import org.foxbpm.model.DataVariableDefinition;
 import org.foxbpm.model.PotentialStarter;
 import org.foxbpm.model.Process;
-import org.foxbpm.model.SequenceFlow;
-import org.springframework.util.StringUtils;
 
 public class ProcessExport extends BpmnExport {
 	
@@ -45,7 +41,8 @@ public class ProcessExport extends BpmnExport {
 			// 处理流程节点
 			BpmnXMLUtil.createFlowElement(processEle, process.getFlowElements());
 			// 处理流程线条
-			createSequenceFlowElement(processEle, process.getSequenceFlows());
+			// createSequenceFlowElement(processEle,
+			// process.getSequenceFlows());
 			// 描述
 			Element childElem = null;
 			if (null != process.getDocumentation()) {
@@ -161,54 +158,6 @@ public class ProcessExport extends BpmnExport {
 					        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);
 					childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_EXPRESSION));
 					childElem.add(new DOMCDATA(dataVariableDefinition.getExpression()));
-				}
-			}
-		}
-	}
-	
-	/*
-	 * 创建线条element
-	 * 
-	 * @param sequenceFlows 线条
-	 * 
-	 * @param processEle 父节点
-	 */
-	private static void createSequenceFlowElement(Element parentElement, Map<String, SequenceFlow> sequenceFlows) {
-		if (null != sequenceFlows) {
-			Entry<String, SequenceFlow> sequenceFlow = null;
-			Element sequenceFlowEle = null;
-			Element childElem = null;
-			for (Iterator<Entry<String, SequenceFlow>> iterator = sequenceFlows.entrySet().iterator(); iterator.hasNext();) {
-				sequenceFlow = iterator.next();
-				
-				sequenceFlowEle = parentElement.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
-				        + BpmnXMLConstants.ELEMENT_SEQUENCEFLOW);
-				sequenceFlowEle.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, sequenceFlow.getValue().getId());
-				sequenceFlowEle.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, sequenceFlow.getValue().getName());
-				/** 排序未处理 */
-				if (!StringUtils.isEmpty(sequenceFlow.getValue().getSort())) {
-					sequenceFlowEle.addAttribute(BpmnXMLConstants.ATTRIBUTE_FOXBPM, sequenceFlow.getValue().getSort());
-				}
-				sequenceFlowEle.addAttribute(BpmnXMLConstants.ATTRIBUTE_SOURCEREF, sequenceFlow.getValue().getSourceRefId());
-				sequenceFlowEle.addAttribute(BpmnXMLConstants.ATTRIBUTE_TARGETREF, sequenceFlow.getValue().getTargetRefId());
-				// 描述
-				if (!StringUtils.isEmpty(sequenceFlow.getValue().getDocumentation())) {
-					childElem = sequenceFlowEle.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
-					        + BpmnXMLConstants.ELEMENT_DOCUMENTATION);
-					childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_DOCUMENTATION));
-					childElem.setText(sequenceFlow.getValue().getDocumentation());
-				}
-				// 表达式
-				if (null != sequenceFlow.getValue().getFlowCondition()) {
-					childElem = sequenceFlowEle.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
-					        + BpmnXMLConstants.ELEMENT_CONDITIONEXPRESSION);
-					childElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.BPMN2_PREFIX
-					        + ':' + BpmnXMLConstants.TYPE_FORMALEXPRESSION);
-					childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.FORMALEXPRESSION));
-					if (!StringUtils.isEmpty(sequenceFlow.getValue().getName())) {
-						childElem.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':' + BpmnXMLConstants.ATTRIBUTE_NAME, sequenceFlow.getValue().getName());
-					}
-					childElem.add(new DOMCDATA(sequenceFlow.getValue().getFlowCondition()));
 				}
 			}
 		}
