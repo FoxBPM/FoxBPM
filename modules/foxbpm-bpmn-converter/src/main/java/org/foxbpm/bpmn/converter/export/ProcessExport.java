@@ -165,6 +165,9 @@ public class ProcessExport {
 				dataVariableEle.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, dataVariableDefinition.getId());
 				dataVariableEle.addAttribute(BpmnXMLConstants.ATTRIBUTE_DATATYPE, dataVariableDefinition.getDataType());
 				dataVariableEle.addAttribute(BpmnXMLConstants.ATTRIBUTE_BIZTYPE, dataVariableDefinition.getBizType());
+				if (dataVariableDefinition.isPersistence()) {
+					dataVariableEle.addAttribute(BpmnXMLConstants.ATTRIBUTE_ISPERSISTENCE, String.valueOf(dataVariableDefinition.isPersistence()));
+				}
 				// 描述
 				if (null != dataVariableDefinition.getDocumentation()) {
 					childElem = dataVariableEle.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
@@ -180,6 +183,7 @@ public class ProcessExport {
 					childElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
 					        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);
 					childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_EXPRESSION));
+					childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(dataVariableDefinition.getExpression()));
 					childElem.add(new DOMCDATA(dataVariableDefinition.getExpression()));
 				}
 			}

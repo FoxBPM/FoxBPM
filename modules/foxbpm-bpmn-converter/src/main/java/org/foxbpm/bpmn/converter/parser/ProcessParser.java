@@ -97,6 +97,7 @@ public class ProcessParser extends BpmnParser {
 			dataVariable.setBizType(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_BIZTYPE));
 			dataVariable.setDataType(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_DATATYPE));
 			dataVariable.setFieldName(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_FIELDNAME));
+			dataVariable.setPersistence(BpmnXMLUtil.parseBoolean(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ISPERSISTENCE)));
 			dataVariable.setExpression(expression);
 			dataVariable.setDocumentation(documentation);
 			if (null == process.getDataVariables()) {
