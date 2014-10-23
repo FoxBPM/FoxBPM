@@ -296,6 +296,9 @@ public class BpmnXMLUtil {
 				if (null != BpmnXMLConverter.getConverter(name)) {
 					BaseElementXMLConverter converter = BpmnXMLConverter.getConverter(name);
 					FlowElement flowElement = converter.cretateFlowElement();
+					if(flowElement instanceof FlowContainer){
+						((FlowContainer)flowElement).setParentContainer(flowContainer);
+					}
 					converter.convertXMLToModel(elem, flowElement);
 					if (BpmnXMLConstants.ELEMENT_SEQUENCEFLOW.equalsIgnoreCase(name)) {
 						// 线条处理

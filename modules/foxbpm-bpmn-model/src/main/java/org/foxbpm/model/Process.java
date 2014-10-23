@@ -193,4 +193,12 @@ public class Process extends FlowElement implements FlowContainer {
 		sequenceFlows.put(sequenceFlow.getId(), sequenceFlow);
 	}
 	
+	public FlowContainer getParentContainer() {
+		return null;
+	}
+	
+	public void setParentContainer(FlowContainer container) {
+		throw new RuntimeException("主流程不支持此操作!");
+	}
+	
 }
