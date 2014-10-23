@@ -17,8 +17,15 @@
  */
 package org.foxbpm.engine.test;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Method;
 
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
+import org.foxbpm.bpmn.converter.BpmnXMLConverter;
 import org.foxbpm.engine.IdentityService;
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngine;
@@ -26,7 +33,9 @@ import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.cache.CacheUtil;
+import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.engine.repository.DeploymentBuilder;
+import org.foxbpm.model.BpmnModel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -87,8 +96,8 @@ public abstract class AbstractFoxBpmTestCase extends AbstractTransactionalJUnit4
 		if (method.isAnnotationPresent(Clear.class)) {
 			Clear clearAnnotation = method.getAnnotation(Clear.class);
 			String[] tableNames = clearAnnotation.tables();
-			for(String tableName : tableNames){
-				jdbcTemplate.execute("delete from "+tableName);
+			for (String tableName : tableNames) {
+				jdbcTemplate.execute("delete from " + tableName);
 			}
 		}
 		Deployment deploymentAnnotation = method.getAnnotation(Deployment.class);
@@ -99,10 +108,30 @@ public abstract class AbstractFoxBpmTestCase extends AbstractTransactionalJUnit4
 			}
 			DeploymentBuilder deploymentBuilder = null;// processEngine.getModelService().createDeployment().name("测试名称");
 			// 由于当前不支持一次发布多个流程定义
+			BpmnXMLConverter bpmnXMLConverter = new BpmnXMLConverter();
+			BpmnModel bpmnModel = null;
+			SAXReader reader = new SAXReader();
+			ByteArrayOutputStream out = null;
+			OutputFormat format = null;
 			for (String resource : resources) {
+				bpmnModel = bpmnXMLConverter.convertToBpmnModel(reader.read(ReflectUtil.getResourceAsStream(resource)));
 				deploymentBuilder = processEngine.getModelService().createDeployment().name("测试名称");
-				deploymentBuilder.addClasspathResource(resource);
-				deploymentBuilder.deploy();
+				// deploymentBuilder.addClasspathResource(resource);
+				try {
+					out = new ByteArrayOutputStream();
+					// 定义输出流的目的地
+					format = OutputFormat.createPrettyPrint();
+					format.setEncoding("UTF-8");
+					XMLWriter xmlWriter = new XMLWriter(out, format);
+					xmlWriter.setEscapeText(false);
+					xmlWriter.write(bpmnXMLConverter.convertToXML(bpmnModel));
+					xmlWriter.close();
+					System.out.println(resource + "---------------" + out.toString());
+					deploymentBuilder.addInputStream(resource, new ByteArrayInputStream(out.toByteArray()));
+					deploymentBuilder.deploy();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
