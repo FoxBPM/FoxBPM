@@ -227,7 +227,7 @@ public class BpmnXMLUtil {
 				inputParam.setExecute(Boolean.valueOf(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ISEXECUTE)));
 				inputParam.setExpression(expression);
 				connector.getInputsParam().add(inputParam);
-			} else if (BpmnXMLConstants.ELEMENT_CONNECTORPARAMETER_OUTPUTS.equalsIgnoreCase(parentNodeName)) {
+			} else if (BpmnXMLConstants.ELEMENT_CONNECTORPARAMETER_OUTPUTS.equalsIgnoreCase(nodeName)) {
 				if (null == connector.getOutputsParam()) {
 					connector.setOutputsParam(new ArrayList<OutputParam>());
 				}
@@ -239,7 +239,7 @@ public class BpmnXMLUtil {
 				connector.getOutputsParam().add(outputParam);
 				
 			} else /** 变量定义 */
-			if (BpmnXMLConstants.ELEMENT_CONNECTORPARAMETER_OUTPUTSDEF.equalsIgnoreCase(parentNodeName)) {
+			if (BpmnXMLConstants.ELEMENT_CONNECTORPARAMETER_OUTPUTSDEF.equalsIgnoreCase(nodeName)) {
 				
 				if (null == connector.getOutputsParamDef()) {
 					connector.setOutputsParamDef(new ArrayList<OutputParamDef>());
