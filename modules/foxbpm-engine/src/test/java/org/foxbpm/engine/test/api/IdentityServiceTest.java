@@ -90,7 +90,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		jdbcTemplate.execute(sqlInsertUser2);
 		jdbcTemplate.execute(sqlInsertUser3);
 		
-		Page page = new Page(0, 1);
+		Page page = new Page(1, 1);
 		List<UserEntity> users = identityService.getUsers("%est_admin%", "%测试%理员%",page);
 		assertEquals(1,users.size());
 	}
@@ -253,7 +253,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		assertEquals("role1001", role.getGroupId());
 		assertEquals("角色名称", role.getGroupName());
 		assertEquals("role", role.getGroupType());
-		assertEquals("", role.getSupGroupId());
+		assertEquals(null, role.getSupGroupId());
 		
 		groups = identityService.getAllGroup("dept");
 		assertEquals(1,groups.size());
