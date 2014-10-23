@@ -76,53 +76,46 @@ public class ProcessExport {
 	private static void createExtensionElement(Element processEle, Process process) {
 		// 基本属性设置
 		Element extensionElements = null;
-		if (null != process.getFormUri() || null != process.getSubject()) {
-			extensionElements = processEle.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
-			        + BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS);
-		}
+		extensionElements = processEle.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+		        + BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS);
 		
-		if (null != extensionElements) {
-			Element childElem = null;
-			Element expression = null;
-			// 表单url
-			childElem = extensionElements.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-			        + BpmnXMLConstants.ELEMENT_FORMURI);
-			expression = childElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-			        + BpmnXMLConstants.ELEMENT_EXPRESSION);
-			expression.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
-			        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);
-			expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_EXPRESSION));
-			expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(process.getFormUri()));
-			expression.add(new DOMCDATA(process.getFormUri()));
-			// taskSubject
-			childElem = extensionElements.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-			        + BpmnXMLConstants.ELEMENT_TASKSUBJECT);
-			childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_TASKSUBJECT));
-			expression = childElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-			        + BpmnXMLConstants.ELEMENT_EXPRESSION);
-			expression.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
-			        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);
-			expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_EXPRESSION));
-			expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(process.getSubject()));
-			expression.add(new DOMCDATA(process.getSubject()));
-			// formUriView
-			childElem = extensionElements.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-			        + BpmnXMLConstants.ELEMENT_FORMURIVIEW);
-			expression = childElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-			        + BpmnXMLConstants.ELEMENT_EXPRESSION);
-			expression.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
-			        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);
-			expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_EXPRESSION));
-			expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(process.getFormUriView()));
-			expression.add(new DOMCDATA(process.getFormUriView()));
-			
-			// 数据变量
-			createDataVariableElement(extensionElements, process.getDataVariables());
-			// 启动人
-			createStarterElement(extensionElements, process.getPotentialStarters());
-			// 连接器
-			BpmnXMLUtil.createConectorElement(extensionElements, BpmnXMLConstants.TYPE_FLOWCONNECTOR, process.getConnector());
-		}
+		Element childElem = null;
+		Element expression = null;
+		// 表单url
+		childElem = extensionElements.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+		        + BpmnXMLConstants.ELEMENT_FORMURI);
+		expression = childElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':' + BpmnXMLConstants.ELEMENT_EXPRESSION);
+		expression.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
+		        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);
+		expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_EXPRESSION));
+		expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(process.getFormUri()));
+		expression.add(new DOMCDATA(process.getFormUri()));
+		// taskSubject
+		childElem = extensionElements.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+		        + BpmnXMLConstants.ELEMENT_TASKSUBJECT);
+		childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_TASKSUBJECT));
+		expression = childElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':' + BpmnXMLConstants.ELEMENT_EXPRESSION);
+		expression.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
+		        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);
+		expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_EXPRESSION));
+		expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(process.getSubject()));
+		expression.add(new DOMCDATA(process.getSubject()));
+		// formUriView
+		childElem = extensionElements.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+		        + BpmnXMLConstants.ELEMENT_FORMURIVIEW);
+		expression = childElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':' + BpmnXMLConstants.ELEMENT_EXPRESSION);
+		expression.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
+		        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);
+		expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_EXPRESSION));
+		expression.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(process.getFormUriView()));
+		expression.add(new DOMCDATA(process.getFormUriView()));
+		
+		// 数据变量
+		createDataVariableElement(extensionElements, process.getDataVariables());
+		// 启动人
+		createStarterElement(extensionElements, process.getPotentialStarters());
+		// 连接器
+		BpmnXMLUtil.createConectorElement(extensionElements, BpmnXMLConstants.TYPE_FLOWCONNECTOR, process.getConnector());
 	}
 	
 	private static void createStarterElement(Element parentElement, List<PotentialStarter> potentialStarters) {
