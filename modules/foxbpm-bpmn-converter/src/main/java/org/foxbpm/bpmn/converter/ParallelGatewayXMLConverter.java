@@ -63,7 +63,7 @@ public class ParallelGatewayXMLConverter extends GatewayXMLConverter {
 			element.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':' + BpmnXMLConstants.ATTRIBUTE_CONVERGTYPE, parallelGateway.getConvergType());
 		}
 		if (null != parallelGateway.getGatewayDirection()) {
-			element.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':' + BpmnXMLConstants.ATTRIBUTE_CONVERGTYPE, parallelGateway.getGatewayDirection());
+			element.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':' + BpmnXMLConstants.ATTRIBUTE_GATEWAYDIRECTION, parallelGateway.getGatewayDirection());
 		}
 		super.convertModelToXML(element, baseElement);
 	}
