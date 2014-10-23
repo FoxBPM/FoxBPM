@@ -26,7 +26,6 @@ import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.impl.cmd.ClaimCmd;
 import org.foxbpm.engine.impl.cmd.CompleteTaskCmd;
 import org.foxbpm.engine.impl.cmd.DeleteTasksCmd;
-import org.foxbpm.engine.impl.cmd.FindFutureTaskCmd;
 import org.foxbpm.engine.impl.cmd.FindTaskCmd;
 import org.foxbpm.engine.impl.cmd.GetIdentityLinkByTaskIdCmd;
 import org.foxbpm.engine.impl.cmd.GetRollbackNodeCmd;
@@ -149,10 +148,6 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 	 
 	public Class<?> getInterfaceClass() {
 		return TaskService.class;
-	}
-
-	public List<Task> getFutureTasks(String todoTaskId) {
-		return commandExecutor.execute(new FindFutureTaskCmd(todoTaskId));
 	}
 
 }
