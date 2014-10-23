@@ -303,6 +303,11 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 			potentialOwner.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.ELEMENT_POTENTIALOWNER));
 			BpmnXMLUtil.createConectorElement(potentialOwner.addElement(ELEMENT_NAME_BPMN2_EXTENSIONELEMENT), BpmnXMLConstants.TYPE_ACTORCONNECTOR, actorConnectors);
 		}
+		// 连接器
+		List<Connector> connectors = userTask.getConnector();
+		if (connectors != null && connectors.size() > 0) {
+			BpmnXMLUtil.createConectorElement(extensionElement, BpmnXMLConstants.TYPE_FLOWCONNECTOR, connectors);
+		}
 		super.convertModelToXML(element, baseElement);
 		
 	}
