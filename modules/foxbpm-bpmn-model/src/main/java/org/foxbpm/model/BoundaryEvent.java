@@ -24,21 +24,21 @@ package org.foxbpm.model;
  * 
  */
 public class BoundaryEvent extends CatchEvent {
-
+	
 	private static final long serialVersionUID = 1L;
 	
 	private String attachedToRef;
-	
-	private boolean isCancelActivity;
+	/** 默认值true */
+	private boolean isCancelActivity = true;
 	
 	public boolean isCancelActivity() {
 		return isCancelActivity;
 	}
-
+	
 	public void setCancelActivity(boolean isCancelActivity) {
 		this.isCancelActivity = isCancelActivity;
 	}
-
+	
 	public void setAttachedToRef(String attachedToRef) {
 		this.attachedToRef = attachedToRef;
 	}
@@ -46,5 +46,5 @@ public class BoundaryEvent extends CatchEvent {
 	public String getAttachedToRef() {
 		return attachedToRef;
 	}
-
+	
 }
