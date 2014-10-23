@@ -26,7 +26,6 @@ import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.impl.cmd.ClaimCmd;
 import org.foxbpm.engine.impl.cmd.CompleteTaskCmd;
 import org.foxbpm.engine.impl.cmd.DeleteTasksCmd;
-import org.foxbpm.engine.impl.cmd.FindFutureTaskCmd;
 import org.foxbpm.engine.impl.cmd.FindTaskCmd;
 import org.foxbpm.engine.impl.cmd.GetIdentityLinkByTaskIdCmd;
 import org.foxbpm.engine.impl.cmd.GetRollbackNodeCmd;
@@ -68,19 +67,19 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 	}
 
 	public void deleteTask(String taskId) {
-		deleteTask(taskId,true);
+		deleteTask(taskId, true);
 	}
 
 	public void deleteTasks(Collection<String> taskIds) {
-		deleteTasks(taskIds,true);
+		deleteTasks(taskIds, true);
 	}
 
 	public void deleteTask(String taskId, boolean cascade) {
-		commandExecutor.execute( new DeleteTasksCmd(taskId,cascade));
+		commandExecutor.execute(new DeleteTasksCmd(taskId, cascade));
 	}
 
 	public void deleteTasks(Collection<String> taskIds, boolean cascade) {
-		commandExecutor.execute( new DeleteTasksCmd(taskIds,cascade));
+		commandExecutor.execute(new DeleteTasksCmd(taskIds, cascade));
 	}
 
 	public void claim(String taskId, String userId) {
@@ -92,67 +91,61 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 	}
 
 	public void complete(String taskId) {
-		commandExecutor.execute(new CompleteTaskCmd(taskId, null,null));
-	}
-	
-	public void complete(String taskId,Map<String, Object> transientVariables,Map<String, Object> persistenceVariables) {
-		commandExecutor.execute(new CompleteTaskCmd(taskId, transientVariables,persistenceVariables));
+		commandExecutor.execute(new CompleteTaskCmd(taskId, null, null));
 	}
 
-	 
-	public <T> T expandTaskComplete(ExpandTaskCommand expandTaskCommand, T classReturn) {
-		return (T) commandExecutor.execute(new ExpandTaskCompleteCmd<T>(expandTaskCommand));
+	public void complete(String taskId, Map<String, Object> transientVariables,
+			Map<String, Object> persistenceVariables) {
+		commandExecutor.execute(new CompleteTaskCmd(taskId, transientVariables,
+				persistenceVariables));
 	}
-	
+
+	public <T> T expandTaskComplete(ExpandTaskCommand expandTaskCommand,
+			T classReturn) {
+		return (T) commandExecutor.execute(new ExpandTaskCompleteCmd<T>(
+				expandTaskCommand));
+	}
+
 	public NativeTaskQuery createNativeTaskQuery() {
 		return new NativeTaskQueryImpl(commandExecutor);
 	}
-	
+
 	public TaskQuery createTaskQuery() {
 		return new TaskQueryImpl(commandExecutor);
 	}
-	
-	 
+
 	public List<TaskCommand> getSubTaskCommandByKey(String Key) {
 		return commandExecutor.execute(new GetTaskCommandByKeyCmd(Key));
 	}
-	
-	 
+
 	public List<TaskCommand> getTaskCommandByTaskId(String taskId) {
-		return commandExecutor.execute(new GetTaskCommandByTaskIdCmd(taskId,false));
+		return commandExecutor.execute(new GetTaskCommandByTaskIdCmd(taskId,
+				false));
 	}
-	
-	 
-	public List<TaskCommand> getTaskCommandByTaskId(String taskId,boolean isProcessTracking) {
-		return commandExecutor.execute(new GetTaskCommandByTaskIdCmd(taskId,isProcessTracking));
+
+	public List<TaskCommand> getTaskCommandByTaskId(String taskId,
+			boolean isProcessTracking) {
+		return commandExecutor.execute(new GetTaskCommandByTaskIdCmd(taskId,
+				isProcessTracking));
 	}
-	
-	 
+
 	public List<KernelFlowNode> getRollbackFlowNode(String taskId) {
 		return commandExecutor.execute(new GetRollbackNodeCmd(taskId));
 	}
-	
-	 
+
 	public List<Task> getRollbackTasks(String taskId) {
 		return commandExecutor.execute(new GetRollbackTasksCmd(taskId));
 	}
-	
-	 
+
 	public List<ProcessOperatingEntity> getTaskOperations(String taskId) {
 		return commandExecutor.execute(new GetTaskOperationCmd(taskId));
 	}
-	
-	public List<IdentityLinkEntity> getIdentityLinkByTaskId(String taskId){
+
+	public List<IdentityLinkEntity> getIdentityLinkByTaskId(String taskId) {
 		return commandExecutor.execute(new GetIdentityLinkByTaskIdCmd(taskId));
 	}
-	
-	 
+
 	public Class<?> getInterfaceClass() {
 		return TaskService.class;
 	}
-
-	public List<Task> getFutureTasks(String todoTaskId) {
-		return commandExecutor.execute(new FindFutureTaskCmd(todoTaskId));
-	}
-
 }
