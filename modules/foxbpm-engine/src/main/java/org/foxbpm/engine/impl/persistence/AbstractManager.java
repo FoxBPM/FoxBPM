@@ -152,9 +152,9 @@ public abstract class AbstractManager implements Session {
 	}
 	
 	public void flush() {
-		if (cachedObjects.isEmpty()) {
-			return;
-		}
+//		if (cachedObjects.isEmpty()) {
+//			return;
+//		}
 		removeUnnecessaryOperations();
 		List<PersistentObject> updatedObjects = getUpdatedObjects();
 		

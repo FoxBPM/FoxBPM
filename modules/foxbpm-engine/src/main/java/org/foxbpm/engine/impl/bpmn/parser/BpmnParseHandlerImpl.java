@@ -55,6 +55,7 @@ import org.foxbpm.kernel.event.KernelEventType;
 import org.foxbpm.kernel.event.KernelListener;
 import org.foxbpm.kernel.process.KernelDIBounds;
 import org.foxbpm.kernel.process.KernelFlowElementsContainer;
+import org.foxbpm.kernel.process.KernelLane;
 import org.foxbpm.kernel.process.KernelLaneSet;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.process.impl.KernelArtifactImpl;
@@ -408,16 +409,23 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	 * @since 1.0.0
 	 */
 	private void loadBPMNShape(Bounds bounds, ProcessDefinitionEntity processDefinition) {
+		
 		String elementId = bounds.getBpmnElement();
-		KernelFlowNodeImpl flowNodeImpl = processDefinition.findFlowNode(elementId);
-		if(flowNodeImpl == null){
-			return;
-		}
-		FlowNodeBehavior behavior = (FlowNodeBehavior) flowNodeImpl.getKernelFlowNodeBehavior();
-		Style style = getStyle(behavior.getBaseElement());
-
+		
+		Style style = null;
 		KernelDIBounds kernelDIBounds = this.getDIElementFromProcessDefinition(processDefinition, elementId);
 		if (kernelDIBounds != null) {
+			if(kernelDIBounds instanceof KernelLane){
+				style = styleContainer.get("Lane");
+			}else{
+				KernelFlowNodeImpl flowNodeImpl = processDefinition.findFlowNode(elementId);
+				if(flowNodeImpl == null){
+					return;
+				}
+				FlowNodeBehavior behavior = (FlowNodeBehavior) flowNodeImpl.getKernelFlowNodeBehavior();
+				style = getStyle(behavior.getBaseElement());
+			}
+		
 			// 图形基本属性
 			kernelDIBounds.setWidth((float) bounds.getWidth());
 			kernelDIBounds.setHeight((float) bounds.getHeight());
