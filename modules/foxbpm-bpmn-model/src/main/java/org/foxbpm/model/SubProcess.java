@@ -32,6 +32,8 @@ public class SubProcess extends Activity implements FlowContainer {
 	
 	private static final long serialVersionUID = 1L;
 	
+	private FlowContainer parentContainer;
+	
 	/**
 	 * 流程元素集合
 	 */
@@ -70,5 +72,17 @@ public class SubProcess extends Activity implements FlowContainer {
 			sequenceFlows = new HashMap<String, SequenceFlow>();
 		}
 		sequenceFlows.put(sequenceFlow.getId(), sequenceFlow);
+		if(this.parentContainer != null){
+			parentContainer.addSequenceFlow(sequenceFlow);
+		}
+	}
+	
+	public void setParentContainer(FlowContainer container) {
+		this.parentContainer = container;
+	}
+	
+	public FlowContainer getParentContainer() {
+		// TODO Auto-generated method stub
+		return parentContainer;
 	}
 }

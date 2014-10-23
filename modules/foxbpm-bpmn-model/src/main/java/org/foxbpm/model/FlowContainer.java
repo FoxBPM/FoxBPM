@@ -54,4 +54,8 @@ public interface FlowContainer {
 	 */
 	public Map<String, SequenceFlow> getSequenceFlows();
 	
+	FlowContainer getParentContainer();
+	
+	void setParentContainer(FlowContainer container);
+	
 }

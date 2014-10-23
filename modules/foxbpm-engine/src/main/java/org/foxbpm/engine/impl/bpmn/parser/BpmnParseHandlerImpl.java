@@ -410,6 +410,9 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	private void loadBPMNShape(Bounds bounds, ProcessDefinitionEntity processDefinition) {
 		String elementId = bounds.getBpmnElement();
 		KernelFlowNodeImpl flowNodeImpl = processDefinition.findFlowNode(elementId);
+		if(flowNodeImpl == null){
+			return;
+		}
 		FlowNodeBehavior behavior = (FlowNodeBehavior) flowNodeImpl.getKernelFlowNodeBehavior();
 		Style style = getStyle(behavior.getBaseElement());
 
