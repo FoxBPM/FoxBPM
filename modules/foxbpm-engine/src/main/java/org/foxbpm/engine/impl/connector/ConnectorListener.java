@@ -103,7 +103,7 @@ public class ConnectorListener implements KernelListener {
 			connectorInstance.execute((ConnectorExecutionContext) executionContext);
 			for (OutputParam connectorParameterOutputs : connector.getOutputsParam()) {
 				if (!StringUtil.isEmpty(connectorParameterOutputs.getVariableTarget())) {
-					String parameterOutputsId = connectorParameterOutputs.getVariableTarget();
+					String parameterOutputsId = connectorParameterOutputs.getOutput();
 					String methodString = GETFUNCTION_PREFFIX
 							+ parameterOutputsId.substring(0, 1).toUpperCase()
 							+ parameterOutputsId.substring(1, parameterOutputsId.length());
