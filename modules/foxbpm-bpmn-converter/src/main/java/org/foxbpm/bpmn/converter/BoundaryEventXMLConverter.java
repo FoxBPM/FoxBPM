@@ -20,7 +20,6 @@ package org.foxbpm.bpmn.converter;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
-import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.BoundaryEvent;
 import org.foxbpm.model.FlowElement;
@@ -46,7 +45,9 @@ public class BoundaryEventXMLConverter extends CatchEventXMLConverter {
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
 		BoundaryEvent boundaryEvent = (BoundaryEvent) baseElement;
 		boundaryEvent.setAttachedToRef(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ATTACHEDTOREF));
-		boundaryEvent.setCancelActivity(BpmnXMLUtil.parseBoolean(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_CANCELACTIVITY)));
+		if (BpmnXMLConstants.IS_FALSE.equalsIgnoreCase(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_CANCELACTIVITY))) {
+			boundaryEvent.setCancelActivity(false);
+		}
 		super.convertXMLToModel(element, baseElement);;
 	}
 	
