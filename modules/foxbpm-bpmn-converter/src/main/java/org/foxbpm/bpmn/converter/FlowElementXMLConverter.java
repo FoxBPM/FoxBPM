@@ -18,10 +18,12 @@
 package org.foxbpm.bpmn.converter;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
+import org.foxbpm.model.Connector;
 import org.foxbpm.model.FlowElement;
 //github.com/FoxBPM/FoxBPM.git
 import org.foxbpm.model.BaseElement;
@@ -65,6 +67,14 @@ public abstract class FlowElementXMLConverter extends BaseElementXMLConverter {
 		FlowElement flowElement = (FlowElement) baseElement;
 		if (null != flowElement.getName()) {
 			element.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, flowElement.getName());
+		}
+		List<Connector> connectors = flowElement.getConnector();
+		if(connectors != null && connectors.size() >0){
+			Element extensionElement = element.element(BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS);
+			if(extensionElement == null){
+				  extensionElement = element.addElement(BpmnXMLConstants.BPMN2_PREFIX+":"+BpmnXMLConstants.ELEMENT_EXTENSION_ELEMENTS);
+			}
+			BpmnXMLUtil.createConectorElement(extensionElement, BpmnXMLConstants.TYPE_FLOWCONNECTOR, connectors);
 		}
 		super.convertModelToXML(element, baseElement);
 	}
