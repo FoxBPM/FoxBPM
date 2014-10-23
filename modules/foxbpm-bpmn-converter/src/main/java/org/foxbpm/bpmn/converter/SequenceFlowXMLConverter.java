@@ -49,7 +49,10 @@ public class SequenceFlowXMLConverter extends FlowElementXMLConverter {
 		SequenceFlow sequenceFlow = (SequenceFlow) baseElement;
 		sequenceFlow.setSourceRefId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_SOURCEREF));
 		sequenceFlow.setTargetRefId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_TARGETREF));
-		sequenceFlow.setFlowCondition(BpmnXMLUtil.parseExpression(element));
+		Element conditionElement = element.element("conditionExpression");
+		if(conditionElement != null){
+			sequenceFlow.setFlowCondition(BpmnXMLUtil.parseExpression(conditionElement));
+		}
 		super.convertXMLToModel(element, baseElement);
 	}
 	
