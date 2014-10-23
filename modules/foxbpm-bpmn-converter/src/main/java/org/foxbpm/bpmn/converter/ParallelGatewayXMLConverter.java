@@ -43,14 +43,13 @@ public class ParallelGatewayXMLConverter extends GatewayXMLConverter {
 	@Override
 	public void convertXMLToModel(Element element, BaseElement baseElement) {
 		ParallelGateway parallelGateway = (ParallelGateway) baseElement;
-		String convergType = element.attributeValue(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-		        + BpmnXMLConstants.ATTRIBUTE_CONVERGTYPE);
+		String convergType = element.attributeValue(BpmnXMLConstants.ATTRIBUTE_CONVERGTYPE);
 		String gatewayDirection = element.attributeValue(BpmnXMLConstants.ATTRIBUTE_GATEWAYDIRECTION);
 		// 合并策略
-		if (convergType != null && !convergType.equals("")) {
+		if (null != convergType) {
 			parallelGateway.setConvergType(convergType);
 		}
-		if (gatewayDirection != null && !gatewayDirection.equals("")) {
+		if (null != gatewayDirection) {
 			parallelGateway.setGatewayDirection(gatewayDirection);
 		}
 		super.convertXMLToModel(element, baseElement);
