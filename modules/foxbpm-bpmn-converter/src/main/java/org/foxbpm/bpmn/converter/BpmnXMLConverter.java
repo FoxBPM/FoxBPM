@@ -101,8 +101,11 @@ public class BpmnXMLConverter {
 				}
 			} catch (Exception e) {
 				LOGGER.error("Bpmn文件转换BpmnModel错误!", e);
-				e.printStackTrace();
-				throw new BpmnConverterException(e);
+				if(e instanceof BpmnConverterException){
+					throw (BpmnConverterException)e;
+				}else{
+					throw new BpmnConverterException("模型转换XML失败，流程名："+model.getProcesses().get(0).getName(), e);
+				}
 			}
 		}
 		return model;
@@ -137,9 +140,12 @@ public class BpmnXMLConverter {
 			// 位置坐标转换
 			BPMNDIExport.writeBPMNDI(model, element);
 		} catch (Exception e) {
-			LOGGER.error("BpmnModel转换Bpmn文件错误!", e);
-			e.printStackTrace();
-			throw new BpmnConverterException(e);
+			LOGGER.error("模型转换XML失败，流程名"+model.getProcesses().get(0).getName(), e);
+			if(e instanceof BpmnConverterException){
+				throw (BpmnConverterException)e;
+			}else{
+				throw new BpmnConverterException("模型转换XML失败，流程名："+model.getProcesses().get(0).getName(), e);
+			}
 		}
 		return doc;
 	}

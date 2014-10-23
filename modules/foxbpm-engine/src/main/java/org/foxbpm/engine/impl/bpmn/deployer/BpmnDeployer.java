@@ -194,12 +194,14 @@ public class BpmnDeployer extends AbstractDeployer {
 			// 获取START EVENT节点
 			if (kernelFlowNodeBehavior instanceof StartEventBehavior) {
 				eventDefinitions = ((StartEvent)((StartEventBehavior) kernelFlowNodeBehavior).getBaseElement()).getEventDefinitions();
-				for (EventDefinition eventDefinition : eventDefinitions) {
-					// 如果开始节点存在自动启动属性，那么就调度或者刷新 工作任务
-					if (eventDefinition instanceof TimerEventDefinition) {
-						TimerEventBehavior timerEventBehavior = new TimerEventBehavior((TimerEventDefinition)eventDefinition);
-						Object[] params = new String[]{processDefinition.getId(), processDefinition.getKey(), processDefinition.getName(), kernelFlowNodeImpl.getId()};
-						timerEventBehavior.execute(null, TimerEventBehavior.EVENT_TYPE_START, params);
+				if(eventDefinitions != null){
+					for (EventDefinition eventDefinition : eventDefinitions) {
+						// 如果开始节点存在自动启动属性，那么就调度或者刷新 工作任务
+						if (eventDefinition instanceof TimerEventDefinition) {
+							TimerEventBehavior timerEventBehavior = new TimerEventBehavior((TimerEventDefinition)eventDefinition);
+							Object[] params = new String[]{processDefinition.getId(), processDefinition.getKey(), processDefinition.getName(), kernelFlowNodeImpl.getId()};
+							timerEventBehavior.execute(null, TimerEventBehavior.EVENT_TYPE_START, params);
+						}
 					}
 				}
 			}

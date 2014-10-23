@@ -47,7 +47,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 
 	private static Logger LOG = LoggerFactory.getLogger(ActivityBehavior.class);
 	
-	private List<BoundaryEventBehavior> boundaryEventBehaviors;
+	private List<BoundaryEventBehavior> boundaryEventBehaviors = new ArrayList<BoundaryEventBehavior>();
 
 	public void enter(FlowNodeExecutionContext executionContext) {
 

@@ -38,6 +38,8 @@ import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 人工任务处理器
@@ -47,6 +49,8 @@ import org.foxbpm.kernel.runtime.ListenerExecutionContext;
  */
 public class UserTaskBehavior extends TaskBehavior {
 
+	
+	private static Logger logger = LoggerFactory.getLogger(UserTaskBehavior.class);
 	private static final long serialVersionUID = 1L;
 	/** 任务信息定义 */
 	private TaskDefinition taskDefinition;
@@ -122,8 +126,10 @@ public class UserTaskBehavior extends TaskBehavior {
 				try {
 					connector.notify((ListenerExecutionContext) executionContext);
 				} catch (Exception e) {
-					if(e instanceof FoxBPMException)
+					logger.error("执行选择人处理器失败！节点"+this.getId()+",处理器："+connector.getConnector().getConnectorInstanceId(), e);
+					if(e instanceof FoxBPMException){
 						throw (FoxBPMException)e;
+					}
 					else{
 						throw new FoxBPMException("执行选择人处理器失败！节点"+this.getId()+",处理器："+connector.getConnector().getConnectorInstanceId() , e);
 					}
