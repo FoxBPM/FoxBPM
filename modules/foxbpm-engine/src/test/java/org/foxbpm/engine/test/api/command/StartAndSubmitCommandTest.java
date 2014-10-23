@@ -55,7 +55,7 @@ public class StartAndSubmitCommandTest extends AbstractFoxBpmTestCase {
 		
 		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
 		expandTaskCommand.setProcessDefinitionKey("simpleTaskCommandTest_1");
-		expandTaskCommand.setTaskCommandId("HandleCommand_1");
+		expandTaskCommand.setTaskCommandId("HandleCommand_2");
 		expandTaskCommand.setCommandType("startandsubmit");
 		expandTaskCommand.setBusinessKey("bizKey");
 		expandTaskCommand.setInitiator("admin");

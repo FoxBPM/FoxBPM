@@ -44,7 +44,7 @@ public class ProcessInstanceQueryTest extends AbstractFoxBpmTestCase {
 		
 		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
 		expandTaskCommand.setProcessDefinitionKey("Test_RuntimeService_1");
-		expandTaskCommand.setTaskCommandId("HandleCommand_1");
+		expandTaskCommand.setTaskCommandId("HandleCommand_2");
 		expandTaskCommand.setCommandType("startandsubmit");
 		expandTaskCommand.setBusinessKey("runtimeServiceBizKey");
 		expandTaskCommand.setInitiator("test_admin2");
