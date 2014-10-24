@@ -26,7 +26,6 @@
         <module>modules/foxbpm-notification</module>
         <module>modules/foxbpm-bpmn-model</module>
         <module>modules/foxbpm-bpmn-converter</module>
-        <module>modules/foxbpm-model-converter</module>
 	</modules>
 
 	<build>
@@ -112,6 +111,11 @@
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
 				<version>2.4</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>3.1</version>
 			</dependency>
 
 		</dependencies>

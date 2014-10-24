@@ -19,12 +19,12 @@ package org.foxbpm.bpmn.converter.parser;
 
 import java.util.Iterator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
 import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.model.Bounds;
 import org.foxbpm.model.BpmnModel;
 import org.foxbpm.model.WayPoint;
-import org.springframework.util.StringUtils;
 /**
  * 图位置信息解析处理类
  * 
