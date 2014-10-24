@@ -68,7 +68,7 @@ public class BpmnXMLUtil {
 	 * @return 名称
 	 */
 	public static String getEleLoclaName(String nodeName) {
-		if (nodeName != null) {
+		if(nodeName != null){
 			int index = nodeName.indexOf(':');
 			if (index > 0) {
 				return nodeName.substring(index + 1);
@@ -97,7 +97,7 @@ public class BpmnXMLUtil {
 		}
 		return null;
 	}
-	
+ 
 	/**
 	 * 表达式解析
 	 * 
@@ -107,7 +107,7 @@ public class BpmnXMLUtil {
 	 */
 	@SuppressWarnings("rawtypes")
 	public static SequenceFlow parseSequenceFlow(Element element) {
-		if (element != null) {
+		if(element != null){ 
 			SequenceFlow sequenceFlow = new SequenceFlow();
 			sequenceFlow.setId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
 			sequenceFlow.setSourceRefId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_SOURCEREF));
@@ -265,8 +265,8 @@ public class BpmnXMLUtil {
 				if (null != BpmnXMLConverter.getConverter(name)) {
 					BaseElementXMLConverter converter = BpmnXMLConverter.getConverter(name);
 					FlowElement flowElement = converter.cretateFlowElement();
-					if (flowElement instanceof FlowContainer) {
-						((FlowContainer) flowElement).setParentContainer(flowContainer);
+					if(flowElement instanceof FlowContainer){
+						((FlowContainer)flowElement).setParentContainer(flowContainer);
 					}
 					converter.convertXMLToModel(elem, flowElement);
 					if (BpmnXMLConstants.ELEMENT_SEQUENCEFLOW.equalsIgnoreCase(name)) {
@@ -486,6 +486,29 @@ public class BpmnXMLUtil {
 			}
 		}
 		return sbuffer.toString();
+	}
+	/**
+	 * 添加特殊字符串前后
+	 * 
+	 * @param text
+	 *            字符串
+	 * @return 返回处理后的字符串
+	 */
+	public static String addSpecialStrBeforeAndAfter(String text) {
+		return addSpecialStrBeforeAndAfter(text, BpmnXMLConstants.XML_QUOT);
+	}
+	/**
+	 * 添加特殊字符串前后
+	 * 
+	 * @param text
+	 *            字符串
+	 * @param specialStr
+	 *            特殊字符串
+	 * 
+	 * @return 返回处理后的字符串
+	 */
+	public static String addSpecialStrBeforeAndAfter(String text, String specialStr) {
+		return new StringBuffer(specialStr).append(text).append(specialStr).toString();
 	}
 	
 	private static void createInputsParam(Element parentElement, List<InputParam> inputsParam) {

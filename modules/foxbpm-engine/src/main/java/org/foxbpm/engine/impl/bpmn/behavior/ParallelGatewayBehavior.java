@@ -120,7 +120,7 @@ public class ParallelGatewayBehavior extends GatewayBehavior {
 	 */
 	private void signalParentToken(KernelTokenImpl parentToken, KernelFlowNodeImpl flowNode) {
 		for (KernelToken cToken : parentToken.getChildren()) {
-			((KernelTokenImpl) cToken).end();
+			((KernelTokenImpl) cToken).end(false);
 		}
 		parentToken.setFlowNode(flowNode);
 		parentToken.signal();
