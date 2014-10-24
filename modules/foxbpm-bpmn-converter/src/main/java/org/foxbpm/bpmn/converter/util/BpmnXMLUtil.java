@@ -68,9 +68,11 @@ public class BpmnXMLUtil {
 	 * @return 名称
 	 */
 	public static String getEleLoclaName(String nodeName) {
-		int index = nodeName.indexOf(':');
-		if (index > 0) {
-			return nodeName.substring(index + 1);
+		if(nodeName != null){
+			int index = nodeName.indexOf(':');
+			if (index > 0) {
+				return nodeName.substring(index + 1);
+			}
 		}
 		return nodeName;
 	}
@@ -95,36 +97,7 @@ public class BpmnXMLUtil {
 		}
 		return null;
 	}
-	/**
-	 * 表达式解析
-	 * 
-	 * @param element
-	 *            Incoming
-	 * @return 返回表达式
-	 */
-	public static String parseIncoming(Element element) {
-		return element.getText();
-	}
-	/**
-	 * 表达式解析
-	 * 
-	 * @param element
-	 *            0utgoing
-	 * @return 返回表达式
-	 */
-	public static String parse0utgoing(Element element) {
-		return element.getText();
-	}
-	/**
-	 * 表达式解析
-	 * 
-	 * @param element
-	 *            0utgoing
-	 * @return 返回表达式
-	 */
-	public static String parseCDATA(Element element) {
-		return parseExpression(element);
-	}
+ 
 	/**
 	 * 表达式解析
 	 * 
@@ -134,31 +107,27 @@ public class BpmnXMLUtil {
 	 */
 	@SuppressWarnings("rawtypes")
 	public static SequenceFlow parseSequenceFlow(Element element) {
-		SequenceFlow sequenceFlow = new SequenceFlow();
-		sequenceFlow.setId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
-		sequenceFlow.setSourceRefId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_SOURCEREF));
-		sequenceFlow.setTargetRefId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_TARGETREF));
-		Element elem = null;
-		String nodeName = null;
-		for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
-			elem = (Element) iterator.next();
-			nodeName = elem.getName();
-			if (BpmnXMLConstants.ELEMENT_DOCUMENTATION.equalsIgnoreCase(nodeName)) {
-				sequenceFlow.setDocumentation(elem.getText());
-			} else if (BpmnXMLConstants.ELEMENT_CONDITIONEXPRESSION.equalsIgnoreCase(nodeName)) {
-				sequenceFlow.setFlowCondition(elem.getText());
+		if(element != null){ 
+			SequenceFlow sequenceFlow = new SequenceFlow();
+			sequenceFlow.setId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ID));
+			sequenceFlow.setSourceRefId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_SOURCEREF));
+			sequenceFlow.setTargetRefId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_TARGETREF));
+			Element elem = null;
+			String nodeName = null;
+			for (Iterator iterator = element.elements().iterator(); iterator.hasNext();) {
+				elem = (Element) iterator.next();
+				nodeName = elem.getName();
+				if (BpmnXMLConstants.ELEMENT_DOCUMENTATION.equalsIgnoreCase(nodeName)) {
+					sequenceFlow.setDocumentation(elem.getText());
+				} else if (BpmnXMLConstants.ELEMENT_CONDITIONEXPRESSION.equalsIgnoreCase(nodeName)) {
+					sequenceFlow.setFlowCondition(elem.getText());
+				}
 			}
+			return sequenceFlow;
 		}
-		return sequenceFlow;
-	}
-	
-	/**
-	 * 
-	 */
-	public static void createSequenceFlowElement() {
+		return null;
 		
 	}
-	
 	/**
 	 * 连接器解析
 	 * 
@@ -449,64 +418,6 @@ public class BpmnXMLUtil {
 		expressionElement.add(new DOMCDATA(expression));
 	}
 	
-	private static void createInputsParam(Element parentElement, List<InputParam> inputsParam) {
-		if (null != inputsParam && !inputsParam.isEmpty()) {
-			InputParam inputParam = null;
-			Element childElem = null;
-			Element expressionElem = null;
-			for (Iterator<InputParam> iterator = inputsParam.iterator(); iterator.hasNext();) {
-				inputParam = iterator.next();
-				childElem = parentElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-				        + BpmnXMLConstants.ELEMENT_CONNECTORPARAMETER_INPUTS);
-				childElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
-				        + ':' + BpmnXMLConstants.TYPE_CONNECTORPARAMETERINPUT);
-				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_ID, inputParam.getId());
-				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_NAME, inputParam.getName());
-				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_DATATYPE, inputParam.getDataType());
-				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_ISEXECUTE, String.valueOf(inputParam.isExecute()));
-				if (null != inputParam.getExpression()) {
-					expressionElem = childElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-					        + BpmnXMLConstants.ELEMENT_EXPRESSION);
-					expressionElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
-					        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);
-					expressionElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(inputParam.getExpression()));
-					expressionElem.add(new DOMCDATA(inputParam.getExpression()));
-				}
-			}
-		}
-		
-	}
-	
-	private static void createOutputsParam(Element parentElement, List<OutputParam> outputsParam) {
-		if (null != outputsParam && !outputsParam.isEmpty()) {
-			OutputParam outputParam = null;
-			Element childElem = null;
-			for (Iterator<OutputParam> iterator = outputsParam.iterator(); iterator.hasNext();) {
-				outputParam = iterator.next();
-				childElem = parentElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-				        + BpmnXMLConstants.ELEMENT_CONNECTORPARAMETER_OUTPUTS);
-				childElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
-				        + ':' + BpmnXMLConstants.TYPE_CONNECTORPARAMETEROUTPUT);
-				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_VARIABLETARGET, outputParam.getVariableTarget());
-				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_OUTPUT, outputParam.getOutput());
-			}
-		}
-	}
-	private static void createOutputsParamDef(Element parentElement, List<OutputParamDef> outputsParamDef) {
-		if (null != outputsParamDef && !outputsParamDef.isEmpty()) {
-			OutputParamDef outputParamDef = null;
-			Element childElem = null;
-			for (Iterator<OutputParamDef> iterator = outputsParamDef.iterator(); iterator.hasNext();) {
-				outputParamDef = iterator.next();
-				childElem = parentElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
-				        + BpmnXMLConstants.ELEMENT_CONNECTORPARAMETER_OUTPUTSDEF);
-				childElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
-				        + ':' + BpmnXMLConstants.TYPE_CONNECTORPARAMETEROUTPUTDEF);
-				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_NAME, outputParamDef.getName());
-				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_DATATYPE, outputParamDef.getDataType());
-			}
-		}
-	}
 	/**
 	 * 给节点添加属性
 	 * 
@@ -599,4 +510,64 @@ public class BpmnXMLUtil {
 	public static String addSpecialStrBeforeAndAfter(String text, String specialStr) {
 		return new StringBuffer(specialStr).append(text).append(specialStr).toString();
 	}
+	
+	private static void createInputsParam(Element parentElement, List<InputParam> inputsParam) {
+		if (null != inputsParam && !inputsParam.isEmpty()) {
+			InputParam inputParam = null;
+			Element childElem = null;
+			Element expressionElem = null;
+			for (Iterator<InputParam> iterator = inputsParam.iterator(); iterator.hasNext();) {
+				inputParam = iterator.next();
+				childElem = parentElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+				        + BpmnXMLConstants.ELEMENT_CONNECTORPARAMETER_INPUTS);
+				childElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
+				        + ':' + BpmnXMLConstants.TYPE_CONNECTORPARAMETERINPUT);
+				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_ID, inputParam.getId());
+				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_NAME, inputParam.getName());
+				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_DATATYPE, inputParam.getDataType());
+				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_ISEXECUTE, String.valueOf(inputParam.isExecute()));
+				if (null != inputParam.getExpression()) {
+					expressionElem = childElem.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+					        + BpmnXMLConstants.ELEMENT_EXPRESSION);
+					expressionElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
+					        + ':' + BpmnXMLConstants.TYPE_EXPRESSION);
+					expressionElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(inputParam.getExpression()));
+					expressionElem.add(new DOMCDATA(inputParam.getExpression()));
+				}
+			}
+		}
+		
+	}
+	
+	private static void createOutputsParam(Element parentElement, List<OutputParam> outputsParam) {
+		if (null != outputsParam && !outputsParam.isEmpty()) {
+			OutputParam outputParam = null;
+			Element childElem = null;
+			for (Iterator<OutputParam> iterator = outputsParam.iterator(); iterator.hasNext();) {
+				outputParam = iterator.next();
+				childElem = parentElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+				        + BpmnXMLConstants.ELEMENT_CONNECTORPARAMETER_OUTPUTS);
+				childElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
+				        + ':' + BpmnXMLConstants.TYPE_CONNECTORPARAMETEROUTPUT);
+				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_VARIABLETARGET, outputParam.getVariableTarget());
+				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_OUTPUT, outputParam.getOutput());
+			}
+		}
+	}
+	private static void createOutputsParamDef(Element parentElement, List<OutputParamDef> outputsParamDef) {
+		if (null != outputsParamDef && !outputsParamDef.isEmpty()) {
+			OutputParamDef outputParamDef = null;
+			Element childElem = null;
+			for (Iterator<OutputParamDef> iterator = outputsParamDef.iterator(); iterator.hasNext();) {
+				outputParamDef = iterator.next();
+				childElem = parentElement.addElement(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+				        + BpmnXMLConstants.ELEMENT_CONNECTORPARAMETER_OUTPUTSDEF);
+				childElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.FOXBPM_PREFIX
+				        + ':' + BpmnXMLConstants.TYPE_CONNECTORPARAMETEROUTPUTDEF);
+				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_NAME, outputParamDef.getName());
+				BpmnXMLUtil.addElemAttribute(childElem, BpmnXMLConstants.ATTRIBUTE_DATATYPE, outputParamDef.getDataType());
+			}
+		}
+	}
+	
 }

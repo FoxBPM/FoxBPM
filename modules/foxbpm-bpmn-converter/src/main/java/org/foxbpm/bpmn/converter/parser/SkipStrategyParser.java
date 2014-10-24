@@ -32,7 +32,7 @@ import org.foxbpm.model.SkipStrategy;
  */
 public class SkipStrategyParser {
 	public static SkipStrategy parser(Element element) {
-		if (!BpmnXMLConstants.ELEMENT_SKIPSTRATEGY.equalsIgnoreCase(element.getName())) {
+		if (element ==null || !BpmnXMLConstants.ELEMENT_SKIPSTRATEGY.equalsIgnoreCase(element.getName())) {
 			return null;
 		}
 		

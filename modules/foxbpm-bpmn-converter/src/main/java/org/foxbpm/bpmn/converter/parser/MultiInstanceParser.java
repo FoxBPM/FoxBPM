@@ -34,7 +34,7 @@ import org.foxbpm.model.MultiInstanceLoopCharacteristics;
 public class MultiInstanceParser {
 	
 	public static LoopCharacteristics parser(Element element) {
-		if (!BpmnXMLConstants.ELEMENT_MULTIINSTANCELOOPCHARACTERISTICS.equalsIgnoreCase(element.getName())) {
+		if (element ==null || !BpmnXMLConstants.ELEMENT_MULTIINSTANCELOOPCHARACTERISTICS.equalsIgnoreCase(element.getName())) {
 			return null;
 		}
 		MultiInstanceLoopCharacteristics multiInstance = new MultiInstanceLoopCharacteristics();
