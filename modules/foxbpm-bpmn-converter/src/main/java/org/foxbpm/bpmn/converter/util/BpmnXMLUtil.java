@@ -495,7 +495,7 @@ public class BpmnXMLUtil {
 	 * @return 返回处理后的字符串
 	 */
 	public static String addSpecialStrBeforeAndAfter(String text) {
-		return addSpecialStrBeforeAndAfter(text, BpmnXMLConstants.EMPTY_STRING);
+		return addSpecialStrBeforeAndAfter(text, BpmnXMLConstants.XML_QUOT);
 	}
 	/**
 	 * 添加特殊字符串前后
