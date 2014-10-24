@@ -19,6 +19,7 @@
 	<script src="js/libs/jquery-ui-1.10.3.min.js"></script>
 	<script src="js/plugin/jquery-validate/jquery.validate.min.js"></script>
 	<script src="js/common.js"></script>
+	<script src="js/notification/SmartNotification.min.js"></script>
 	<script type="text/javascript" src="portal/taskCommand/js/foxbpmframework.js"></script>
 	<script type="text/javascript" src="portal/taskCommand/js/flowCommandCompenent.js"></script>
 	<script type="text/javascript" src="portal/taskCommand/js/flowCommandHandler.js"></script>
