@@ -37,7 +37,7 @@
 	
 	<bean id="scheduler"
 		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-		<property name="autoStartup" value="false"></property>
+		<property name="autoStartup" value="start"></property>
 		<!-- 注入数据源 -->
 		<property name="dataSource">
 			<ref bean="foxbpmDataSource" />
@@ -63,6 +63,7 @@
 		<property name="dataSource" ref="foxbpmDataSource" />
 		<property name="transactionManager" ref="foxbpmTransactionManager" />
 		<property name="foxbpmScheduler" ref="foxbpmScheduler"></property>
+		<property name="quartzEnabled" value="true"></property>
 	    <!-- 可选的发布处理行为,可卸载 -->
 	</bean>
 	
