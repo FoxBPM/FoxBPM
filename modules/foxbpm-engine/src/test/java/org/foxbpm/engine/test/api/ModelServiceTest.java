@@ -64,7 +64,7 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	public void testGetStartProcessByUserId() {
 		jdbcTemplate.execute("insert into au_userInfo(userId,USERNAME) VALUES ('test_admin3','管理员3')");
 		List<ProcessDefinition> result = modelService.getStartProcessByUserId("test_admin3");
-		assertTrue(result.size() > 1);
+		assertTrue(!result.isEmpty());
 	}
 	
 	/**
