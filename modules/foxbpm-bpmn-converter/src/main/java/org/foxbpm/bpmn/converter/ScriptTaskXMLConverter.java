@@ -70,7 +70,7 @@ public class ScriptTaskXMLConverter extends TaskXMLConverter {
 			element.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':' + BpmnXMLConstants.ATTRIBUTE_SCRIPTNAME, BpmnXMLUtil.interceptStr(scriptTask.getScript()));
 			Element childElem = element.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
 			        + BpmnXMLConstants.ELEMENT_SCRIPT);
-			childElem.setText(BpmnXMLUtil.addSpecialStrBeforeAndAfter(scriptTask.getScript()));
+			childElem.setText(scriptTask.getScript());
 		}
 		if (null != scriptTask.getScriptFormat()) {
 			element.addAttribute(BpmnXMLConstants.ATTRIBUTE_SCRIPTFORMAT, scriptTask.getScriptFormat());
