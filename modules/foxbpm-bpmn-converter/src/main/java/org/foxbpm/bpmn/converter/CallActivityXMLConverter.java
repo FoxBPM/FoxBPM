@@ -86,7 +86,7 @@ public class CallActivityXMLConverter extends ActivityXMLConverter {
 		if(bizKey != null){
 			element.addAttribute("foxbpm:callableElementBizKey", bizKey);
 		}
-		
+		super.convertModelToXML(element, baseElement);
 	}
 	
 	@Override
