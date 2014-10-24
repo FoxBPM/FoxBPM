@@ -17,13 +17,16 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.bpmn.converter.export.BPMNDIExport;
 import org.foxbpm.bpmn.converter.export.ProcessExport;
@@ -80,7 +83,31 @@ public class BpmnXMLConverter {
 		bpmnDiagramParser = new BpmnDiagramParser();
 		processParser = new ProcessParser();
 	}
+	/**
+	 * 从流中获取bpmn文件内容并转换bpmn模型
+	 * 
+	 * @param in
+	 *            流
+	 * @return 返回转换后的bpmn模型
+	 */
+	public BpmnModel convertToBpmnModel(InputStream in) {
+		SAXReader reader = new SAXReader();
+		BpmnModel model = null;
+		try {
+			model = convertToBpmnModel(reader.read(in));
+		} catch (DocumentException e) {
+			throw new BpmnConverterException("转换模型出现错误！", e);
+		}
+		return model;
+	}
 	
+	/**
+	 * 从doc转换bpmn模型
+	 * 
+	 * @param doc
+	 *            bpmn文档结构
+	 * @return 返回转换后的bpmn模型
+	 */
 	@SuppressWarnings("rawtypes")
 	public BpmnModel convertToBpmnModel(Document doc) {
 		BpmnModel model = new BpmnModel();
@@ -110,14 +137,14 @@ public class BpmnXMLConverter {
 		}
 		return model;
 	}
+	
 	/**
-	 * 将bpmnModel转换成xml
+	 * 将bpmnModel转换成documnet
 	 * 
 	 * @param model
 	 *            bpmn模型
 	 */
 	public Document convertToXML(BpmnModel model) {
-		
 		
 		if (null == model) {
 			throw new BpmnConverterException("模型转换XML失败，模型实例不能为空!");
@@ -125,7 +152,8 @@ public class BpmnXMLConverter {
 		
 		DocumentFactory factory = DocumentFactory.getInstance();
 		Document doc = factory.createDocument();
-		Element element = factory.createElement(BpmnXMLConstants.BPMN2_PREFIX + ':' + BpmnXMLConstants.ELEMENT_DEFINITIONS, BpmnXMLConstants.BPMN2_NAMESPACE);
+		Element element = factory.createElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
+		        + BpmnXMLConstants.ELEMENT_DEFINITIONS, BpmnXMLConstants.BPMN2_NAMESPACE);
 		element.addNamespace(BpmnXMLConstants.XSI_PREFIX, BpmnXMLConstants.XSI_NAMESPACE);
 		element.addNamespace(BpmnXMLConstants.DC_PREFIX, BpmnXMLConstants.DC_NAMESPACE);
 		element.addNamespace(BpmnXMLConstants.DI_PREFIX, BpmnXMLConstants.DI_NAMESPACE);
@@ -154,9 +182,23 @@ public class BpmnXMLConverter {
 		}
 		return doc;
 	}
+	/**
+	 * 获取xml转换器
+	 * 
+	 * @param key
+	 *            key
+	 * @return 返回转换器
+	 */
 	public static BaseElementXMLConverter getConverter(String key) {
 		return convertersToBpmnMap.get(key);
 	}
+	/**
+	 * 获取bpmn模型转换器
+	 * 
+	 * @param key
+	 *            key
+	 * @return 返回转换器
+	 */
 	public static BaseElementXMLConverter getConverter(Class<? extends BaseElement> key) {
 		return convertersToXMLMap.get(key);
 	}
