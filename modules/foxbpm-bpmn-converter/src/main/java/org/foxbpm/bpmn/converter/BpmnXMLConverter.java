@@ -101,10 +101,10 @@ public class BpmnXMLConverter {
 				}
 			} catch (Exception e) {
 				LOGGER.error("Bpmn文件转换BpmnModel错误!", e);
-				if(e instanceof BpmnConverterException){
-					throw (BpmnConverterException)e;
-				}else{
-					throw new BpmnConverterException("模型转换XML失败，流程名："+model.getProcesses().get(0).getName(), e);
+				if (e instanceof BpmnConverterException) {
+					throw (BpmnConverterException) e;
+				} else {
+					throw new BpmnConverterException("模型转换XML失败，流程名：" + model.getProcesses().get(0).getName(), e);
 				}
 			}
 		}
@@ -117,10 +117,15 @@ public class BpmnXMLConverter {
 	 *            bpmn模型
 	 */
 	public Document convertToXML(BpmnModel model) {
+		
+		
+		if (null == model) {
+			throw new BpmnConverterException("模型转换XML失败，模型实例不能为空!");
+		}
+		
 		DocumentFactory factory = DocumentFactory.getInstance();
 		Document doc = factory.createDocument();
-		Element element = DocumentFactory.getInstance().createElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
-		        + BpmnXMLConstants.ELEMENT_DEFINITIONS, BpmnXMLConstants.BPMN2_NAMESPACE);
+		Element element = factory.createElement(BpmnXMLConstants.BPMN2_PREFIX + ':' + BpmnXMLConstants.ELEMENT_DEFINITIONS, BpmnXMLConstants.BPMN2_NAMESPACE);
 		element.addNamespace(BpmnXMLConstants.XSI_PREFIX, BpmnXMLConstants.XSI_NAMESPACE);
 		element.addNamespace(BpmnXMLConstants.DC_PREFIX, BpmnXMLConstants.DC_NAMESPACE);
 		element.addNamespace(BpmnXMLConstants.DI_PREFIX, BpmnXMLConstants.DI_NAMESPACE);
@@ -140,11 +145,11 @@ public class BpmnXMLConverter {
 			// 位置坐标转换
 			BPMNDIExport.writeBPMNDI(model, element);
 		} catch (Exception e) {
-			LOGGER.error("模型转换XML失败，流程名"+model.getProcesses().get(0).getName(), e);
-			if(e instanceof BpmnConverterException){
-				throw (BpmnConverterException)e;
-			}else{
-				throw new BpmnConverterException("模型转换XML失败，流程名："+model.getProcesses().get(0).getName(), e);
+			LOGGER.error("模型转换XML失败，流程名" + model.getProcesses().get(0).getName(), e);
+			if (e instanceof BpmnConverterException) {
+				throw (BpmnConverterException) e;
+			} else {
+				throw new BpmnConverterException("模型转换XML失败，流程名：" + model.getProcesses().get(0).getName(), e);
 			}
 		}
 		return doc;
