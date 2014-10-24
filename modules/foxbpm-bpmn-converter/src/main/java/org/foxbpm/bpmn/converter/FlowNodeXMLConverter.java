@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
-import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.FlowNode;
 
@@ -51,14 +50,14 @@ public abstract class FlowNodeXMLConverter extends FlowElementXMLConverter {
 					outgoingFlows = new ArrayList<String>();
 					flowNode.setOutgoingFlows(outgoingFlows);
 				}
-				outgoingFlows.add(BpmnXMLUtil.parse0utgoing(elem));
+				outgoingFlows.add(elem.getText());
 			} else if (BpmnXMLConstants.ELEMENT_INCOMING.equalsIgnoreCase(nodeName)) {
 				List<String> incomingFlows = flowNode.getIncomingFlows();
 				if (null == incomingFlows) {
 					incomingFlows = new ArrayList<String>();
 					flowNode.setIncomingFlows(incomingFlows);
 				}
-				incomingFlows.add(BpmnXMLUtil.parseIncoming(elem));
+				incomingFlows.add(elem.getText());
 			}
 		}
 		super.convertXMLToModel(element, baseElement);

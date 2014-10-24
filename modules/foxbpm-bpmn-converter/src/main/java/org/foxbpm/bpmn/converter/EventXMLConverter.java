@@ -76,11 +76,11 @@ public abstract class EventXMLConverter extends FlowNodeXMLConverter {
 				elem = (Element) iterator.next();
 				nodeName = elem.getName();
 				if (BpmnXMLConstants.ELEMENT_TIMEDATE.equalsIgnoreCase(nodeName)) {
-					timerEventDefinition.setTimeDate(BpmnXMLUtil.parseCDATA(elem));
+					timerEventDefinition.setTimeDate(BpmnXMLUtil.parseExpression(elem));
 				} else if (BpmnXMLConstants.ELEMENT_TIMEDURATION.equalsIgnoreCase(nodeName)) {
-					timerEventDefinition.setTimeDuration(BpmnXMLUtil.parseCDATA(elem));
+					timerEventDefinition.setTimeDuration(BpmnXMLUtil.parseExpression(elem));
 				} else if (BpmnXMLConstants.ELEMENT_TIMECYCLE.equalsIgnoreCase(nodeName)) {
-					timerEventDefinition.setTimeCycle(BpmnXMLUtil.parseCDATA(elem));
+					timerEventDefinition.setTimeCycle(BpmnXMLUtil.parseExpression(elem));
 				}
 			}
 			return timerEventDefinition;
