@@ -19,11 +19,12 @@ package org.foxbpm.model;
 
 /**
  * 流程线条元素
+ * 
  * @author ych
- *
+ * 
  */
 public class SequenceFlow extends FlowElement {
-
+	
 	private static final long serialVersionUID = 1L;
 	
 	private String sourceRefId;
@@ -36,36 +37,40 @@ public class SequenceFlow extends FlowElement {
 	 * 线条表达式，一般用来判断路径是否可通过
 	 */
 	private String flowCondition;
-
+	
 	public String getFlowCondition() {
 		return flowCondition;
 	}
-
+	
 	public void setFlowCondition(String flowCondition) {
 		this.flowCondition = flowCondition;
 	}
-
+	
 	public String getSourceRefId() {
 		return sourceRefId;
 	}
-
+	
 	public void setSourceRefId(String sourceRefId) {
 		this.sourceRefId = sourceRefId;
 	}
-
+	
 	public String getTargetRefId() {
 		return targetRefId;
 	}
-
+	
 	public void setTargetRefId(String targetRefId) {
 		this.targetRefId = targetRefId;
 	}
-
+	
 	public String getSort() {
 		return sort;
 	}
-
+	
 	public void setSort(String sort) {
 		this.sort = sort;
+	}
+	@Override
+	public String toString() {
+		return "SequenceFlow [ " + " id=" + id + ", (" + sourceRefId + " ---->" + targetRefId + ")]";
 	}
 }

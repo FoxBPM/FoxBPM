@@ -23,11 +23,12 @@ import java.util.List;
 
 /**
  * 流程元素
+ * 
  * @author ych
- *
+ * 
  */
 public abstract class FlowElement extends BaseElement {
-
+	
 	private static final long serialVersionUID = 1L;
 	
 	/**
@@ -39,25 +40,28 @@ public abstract class FlowElement extends BaseElement {
 	 * 连接器集合
 	 */
 	protected List<Connector> connector = new ArrayList<Connector>();
-
+	
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public List<Connector> getConnector() {
-		if(connector == null){
+		if (connector == null) {
 			return Collections.EMPTY_LIST;
 		}
 		return connector;
 	}
-
+	
 	public void setConnector(List<Connector> connector) {
 		this.connector = connector;
 	}
-
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName() + " [id=" + id + ", name=" + name + ']';
+	}
 }

@@ -200,5 +200,8 @@ public class Process extends FlowElement implements FlowContainer {
 	public void setParentContainer(FlowContainer container) {
 		throw new RuntimeException("主流程不支持此操作!");
 	}
-	
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName() + " [id=" + id + ", name=" + name + ']';
+	}
 }

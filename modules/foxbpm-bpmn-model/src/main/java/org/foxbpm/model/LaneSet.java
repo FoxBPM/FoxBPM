@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LaneSet extends BaseElement {
-
+	
 	private static final long serialVersionUID = 1L;
 	
 	private String name;
@@ -42,6 +42,11 @@ public class LaneSet extends BaseElement {
 	
 	public String getName() {
 		return name;
+	}
+	
+	@Override
+	public String toString() {
+		return "LaneSet [name=" + name + ", id=" + id + ']';
 	}
 	
 }
