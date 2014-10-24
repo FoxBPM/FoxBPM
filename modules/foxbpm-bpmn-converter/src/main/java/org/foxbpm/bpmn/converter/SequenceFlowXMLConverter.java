@@ -50,7 +50,7 @@ public class SequenceFlowXMLConverter extends FlowElementXMLConverter {
 		sequenceFlow.setSourceRefId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_SOURCEREF));
 		sequenceFlow.setTargetRefId(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_TARGETREF));
 		Element conditionElement = element.element("conditionExpression");
-		if(conditionElement != null){
+		if (conditionElement != null) {
 			sequenceFlow.setFlowCondition(BpmnXMLUtil.parseExpression(conditionElement));
 		}
 		super.convertXMLToModel(element, baseElement);
@@ -68,7 +68,7 @@ public class SequenceFlowXMLConverter extends FlowElementXMLConverter {
 			childElem.addAttribute(BpmnXMLConstants.XSI_PREFIX + ':' + BpmnXMLConstants.TYPE, BpmnXMLConstants.BPMN2_PREFIX
 			        + ':' + BpmnXMLConstants.TYPE_FORMALEXPRESSION);
 			childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, UniqueIDUtil.getInstance().generateElementID(BpmnXMLConstants.TYPE_FORMALEXPRESSION));
-			childElem.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(condition));
+			childElem.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':' + BpmnXMLConstants.ATTRIBUTE_NAME, BpmnXMLUtil.interceptStr(condition));
 			childElem.add(new DOMCDATA(condition));
 		}
 		super.convertModelToXML(element, baseElement);

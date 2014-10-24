@@ -92,7 +92,8 @@ public class BPMNDIExport {
 						entryList = iteratorEntry.next();
 						bpmnEdge = bpmnplane.addElement(BpmnXMLConstants.BPMNDI_PREFIX + ':'
 						        + BpmnXMLConstants.ELEMENT_DI_EDGE);
-						bpmnEdge.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, "BPMNPlane_" + entryList.getKey());
+						bpmnEdge.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, BpmnXMLConstants.ELEMENT_DI_EDGE + '_'
+						        + entryList.getKey());
 						bpmnEdge.addAttribute(BpmnXMLConstants.ATTRIBUTE_DI_BPMNELEMENT, entryList.getKey());
 						SequenceFlow = sequenceFlowMap.get(entryList.getKey());
 						if (null == SequenceFlow) {
