@@ -259,7 +259,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	public void setParentProcessInstance(KernelProcessInstanceImpl parentProcessInstance) {
 		ProcessInstanceEntity processInstanceEntity = ((ProcessInstanceEntity) parentProcessInstance);
 		this.parentProcessInstance = processInstanceEntity;
-		this.parentId = processInstanceEntity.getParentId();
+		this.parentId = processInstanceEntity.getId();
 	}
 	
 	 
