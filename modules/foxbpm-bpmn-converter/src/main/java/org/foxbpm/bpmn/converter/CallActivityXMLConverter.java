@@ -17,13 +17,13 @@
  */
 package org.foxbpm.bpmn.converter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.CallActivity;
 import org.foxbpm.model.FlowElement;
-import org.springframework.util.StringUtils;
 
 /**
  * 公有子流程节点转换处理类
