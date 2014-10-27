@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.foxbpm.org" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:foxbpm="http://www.foxbpm.org/foxbpm" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="Definitions_1" targetNamespace="http://www.foxbpm.org">
-  <bpmn2:process id="skipStrategy_1" foxbpm:dbid="skipStrategy_1:2:b5d0ec50-7522-4028-9deb-628ab3ee4459" name="skipStrategy">
+  <bpmn2:process id="callActivity_1" foxbpm:dbid="callActivity_1:2:82343e45-8504-4226-bbd0-a9b61f0658bb" name="callActivity">
     <bpmn2:extensionElements>
       <foxbpm:potentialStarter resourceType="user" description="所有用户都可以发起流程">
         <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_3" name="所有人"><![CDATA["foxbpm_all_user"]]></foxbpm:expression>
@@ -52,36 +52,26 @@
         <foxbpm:taskCommand id="HandleCommand_5" name="流程状态" commandType="processStatus">
           <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_13" name=""><![CDATA[]]></foxbpm:expression>
         </foxbpm:taskCommand>
-        <foxbpm:skipStrategy/>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
-      <bpmn2:potentialOwner id="PotentialOwner_4">
+      <bpmn2:potentialOwner id="PotentialOwner_1">
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
-            <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="0533ef37-0e1f-4c80-b605-a3b9f7a09808" connectorInstanceName="all_user" errorHandling="" type="actorconnector">
-              <foxbpm:documentation xsi:type="foxbpm:Documentation">all_user</foxbpm:documentation>
+            <foxbpm:connectorInstance connectorId="InitiatorActorConnector" packageName="org.foxbpm.connector.actorconnector.InitiatorActorConnector" className="InitiatorActorConnector" connectorInstanceId="f3f56d55-a8ec-4ce4-a268-cba7f7f9be64" connectorInstanceName="发起人" errorHandling="" type="actorconnector">
+              <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_1"></foxbpm:documentation>
             </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
     <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="UserTask_1" targetRef="UserTask_2"/>
-    <bpmn2:endEvent id="EndEvent_1" name="结束">
-      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
-    </bpmn2:endEvent>
     <bpmn2:userTask id="UserTask_2" foxbpm:taskType="foxbpmtask" foxbpm:claimType="defaultClaim" name="人工任务_2">
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
         <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
-        <foxbpm:skipStrategy foxbpm:isEnable="true">
-          <foxbpm:expression xsi:type="foxbpm:Expression" name="true"><![CDATA[true;]]></foxbpm:expression>
-          <foxbpm:skipAssignee xsi:type="foxbpm:SkipAssignee">
-            <foxbpm:expression xsi:type="foxbpm:Expression" name="true"><![CDATA[true]]></foxbpm:expression>
-          </foxbpm:skipAssignee>
-        </foxbpm:skipStrategy>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
@@ -96,17 +86,21 @@
         </bpmn2:extensionElements>
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_1" sourceRef="UserTask_2" targetRef="UserTask_3"/>
+    <bpmn2:callActivity id="CallActivity_1" foxbpm:callableElementId="&quot;skipStrategy_1&quot;" foxbpm:callableElementName="skipStrategy_1" foxbpm:callableElementVersion="1" foxbpm:callableElementVersionName="2" foxbpm:callableElementBizKey="&quot;callActivity&quot;" foxbpm:callableElementBizKeyName="callActivity" name="外部流程">
+      <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
+    </bpmn2:callActivity>
+    <bpmn2:sequenceFlow id="SequenceFlow_1" sourceRef="UserTask_2" targetRef="CallActivity_1"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_3" sourceRef="CallActivity_1" targetRef="UserTask_3"/>
     <bpmn2:userTask id="UserTask_3" foxbpm:taskType="foxbpmtask" foxbpm:claimType="defaultClaim" name="人工任务_3">
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
         <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
-        <foxbpm:skipStrategy/>
       </bpmn2:extensionElements>
-      <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
+      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
       <bpmn2:potentialOwner id="PotentialOwner_3">
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
@@ -118,12 +112,15 @@
         </bpmn2:extensionElements>
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_3" sourceRef="UserTask_3" targetRef="EndEvent_1"/>
+    <bpmn2:endEvent id="EndEvent_1" name="结束">
+      <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_4" sourceRef="UserTask_3" targetRef="EndEvent_1"/>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="skipStrategy_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="callActivity_1">
       <bpmndi:BPMNShape id="BPMNShape_2" bpmnElement="EndEvent_1">
-        <dc:Bounds height="36.0" width="36.0" x="550.0" y="66.0"/>
+        <dc:Bounds height="36.0" width="36.0" x="680.0" y="152.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds height="36.0" width="36.0" x="90.0" y="66.0"/>
@@ -132,16 +129,19 @@
         <dc:Bounds height="50.0" width="110.0" x="300.0" y="59.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_UserTask_2" bpmnElement="UserTask_2">
-        <dc:Bounds height="50.0" width="110.0" x="300.0" y="140.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="300.0" y="150.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_CallActivity_1" bpmnElement="CallActivity_1" isExpanded="true">
+        <dc:Bounds height="50.0" width="110.0" x="300.0" y="240.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_UserTask_3" bpmnElement="UserTask_3">
-        <dc:Bounds height="50.0" width="110.0" x="301.0" y="224.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="505.0" y="145.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_UserTask_1" targetElement="BPMNShape_UserTask_2">
-        <di:waypoint xsi:type="dc:Point" x="355.0" y="109.0"/>
-        <di:waypoint xsi:type="dc:Point" x="355.0" y="125.0"/>
-        <di:waypoint xsi:type="dc:Point" x="355.0" y="125.0"/>
-        <di:waypoint xsi:type="dc:Point" x="355.0" y="140.0"/>
+        <di:waypoint xsi:type="dc:Point" x="300.0" y="84.0"/>
+        <di:waypoint xsi:type="dc:Point" x="280.0" y="84.0"/>
+        <di:waypoint xsi:type="dc:Point" x="280.0" y="175.0"/>
+        <di:waypoint xsi:type="dc:Point" x="300.0" y="175.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_5" bpmnElement="SequenceFlow_5" sourceElement="BPMNShape_StartEvent_2" targetElement="BPMNShape_UserTask_1">
         <di:waypoint xsi:type="dc:Point" x="126.0" y="84.0"/>
@@ -149,16 +149,22 @@
         <di:waypoint xsi:type="dc:Point" x="204.0" y="84.0"/>
         <di:waypoint xsi:type="dc:Point" x="300.0" y="84.0"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1" sourceElement="BPMNShape_UserTask_2" targetElement="BPMNShape_UserTask_3">
-        <di:waypoint xsi:type="dc:Point" x="355.0" y="190.0"/>
-        <di:waypoint xsi:type="dc:Point" x="355.0" y="206.0"/>
-        <di:waypoint xsi:type="dc:Point" x="356.0" y="206.0"/>
-        <di:waypoint xsi:type="dc:Point" x="356.0" y="224.0"/>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1" sourceElement="BPMNShape_UserTask_2" targetElement="BPMNShape_CallActivity_1">
+        <di:waypoint xsi:type="dc:Point" x="355.0" y="200.0"/>
+        <di:waypoint xsi:type="dc:Point" x="355.0" y="240.0"/>
+        <di:waypoint xsi:type="dc:Point" x="355.0" y="240.0"/>
+        <di:waypoint xsi:type="dc:Point" x="355.0" y="240.0"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="BPMNShape_UserTask_3" targetElement="BPMNShape_2">
-        <di:waypoint xsi:type="dc:Point" x="411.0" y="249.0"/>
-        <di:waypoint xsi:type="dc:Point" x="568.0" y="249.0"/>
-        <di:waypoint xsi:type="dc:Point" x="568.0" y="102.0"/>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="BPMNShape_CallActivity_1" targetElement="BPMNShape_UserTask_3">
+        <di:waypoint xsi:type="dc:Point" x="410.0" y="265.0"/>
+        <di:waypoint xsi:type="dc:Point" x="560.0" y="265.0"/>
+        <di:waypoint xsi:type="dc:Point" x="560.0" y="195.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4" sourceElement="BPMNShape_UserTask_3" targetElement="BPMNShape_2">
+        <di:waypoint xsi:type="dc:Point" x="615.0" y="170.0"/>
+        <di:waypoint xsi:type="dc:Point" x="644.0" y="170.0"/>
+        <di:waypoint xsi:type="dc:Point" x="644.0" y="170.0"/>
+        <di:waypoint xsi:type="dc:Point" x="680.0" y="170.0"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
