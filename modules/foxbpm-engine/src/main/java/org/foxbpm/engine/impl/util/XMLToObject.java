@@ -34,6 +34,9 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.foxbpm.engine.exception.FoxBPMException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.DOMException;
 
 /**
@@ -44,6 +47,7 @@ import org.w3c.dom.DOMException;
  */
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class XMLToObject {
+	protected static final Logger LOGGER = LoggerFactory.getLogger(XMLToObject.class);
 	public static final String GENERAL_M_PREFIX = "set";
 	public static final String BOOL_PREFIX = "is";
 	private static XMLToObject instance;
@@ -93,9 +97,9 @@ public class XMLToObject {
 			SAXReader reader = new SAXReader();
 			return transform(reader.read(in), objClass, flag);
 		} catch (DocumentException e) {
-			e.printStackTrace();
+			LOGGER.error("从IO中读取文档出现错误!", e);
+			throw new FoxBPMException("从IO中读取文档出现错误!", e);
 		}
-		return null;
 	}
 	
 	/**
@@ -123,20 +127,14 @@ public class XMLToObject {
 			throw new IllegalArgumentException("objClass is null!");
 		}
 		try {
-			return doRootNode(doc.getRootElement(), objClass.newInstance(), flag);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
+			return doRootElement(doc.getRootElement(), objClass.newInstance(), flag);
+		} catch (Exception e) {
+			LOGGER.error("解析文档出现错误!", e);
+			throw new FoxBPMException("解析文档出现错误!", e);
 		}
-		return null;
 	}
 	
-	private Object doRootNode(Element root, Object obj, boolean flag) throws ClassNotFoundException,
+	private Object doRootElement(Element root, Object obj, boolean flag) throws ClassNotFoundException,
 	    IllegalAccessException, InvocationTargetException, InstantiationException {
 		if (null != root) {
 			Element element = null;
@@ -203,7 +201,6 @@ public class XMLToObject {
 			method = methods.get(generateMethodName(GENERAL_M_PREFIX, attribute.getName()));
 			if (null != method && method.getParameterTypes().length == 1) {
 				doAttributeValue(paramObj, method, attribute.getValue(), method.getParameterTypes()[0]);
-				// method.invoke(paramObj, attribute.getValue());
 			}
 		}
 	}
@@ -228,6 +225,7 @@ public class XMLToObject {
 			method.invoke(pObj, Boolean.valueOf(value));
 		} else {
 			// 暂不支持的类型
+			LOGGER.warn("不支持的类型是:" + pType);
 		}
 	}
 	
@@ -236,7 +234,7 @@ public class XMLToObject {
 	 * 
 	 * @param nodeList
 	 * @param obj
-	 * @param flag 
+	 * @param flag
 	 * @return
 	 * @throws IllegalArgumentException
 	 * @throws DOMException
