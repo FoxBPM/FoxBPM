@@ -106,7 +106,7 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 							commandParameter.setDescription(taskCommandParamElement.attributeValue(BpmnXMLConstants.ATTRIBUTE_DESCRIPTION));
 							commandParameter.setName(taskCommandParamElement.attributeValue(BpmnXMLConstants.ATTRIBUTE_NAME));
 							commandParameter.setExpression(BpmnXMLUtil.parseExpression(taskCommandParamElement.element(BpmnXMLConstants.ELEMENT_EXPRESSION)));
-							
+							commandParameter.setKey(taskCommandParamElement.attributeValue(BpmnXMLConstants.ATTRIBUTE_KEY));
 							commandParams.add(commandParameter);
 						}
 						
@@ -212,7 +212,7 @@ public class UserTaskXMLConverter extends TaskXMLConverter {
 						commandParamElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_BIZTYPE, commandParameter.getBizType());
 						commandParamElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, commandParameter.getName());
 						commandParamElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_DESCRIPTION, commandParameter.getDescription());
-						
+						commandParamElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_KEY, commandParameter.getKey());
 						if (commandParameter.getExpression() != null) {
 							BpmnXMLUtil.createExpressionElementByParent(commandParamElement, commandParameter.getExpression());
 						}
