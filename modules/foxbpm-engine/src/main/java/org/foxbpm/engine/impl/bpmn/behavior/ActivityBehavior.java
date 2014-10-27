@@ -63,8 +63,8 @@ public class ActivityBehavior extends FlowNodeBehavior {
 				LOG.debug("节点: {}({}) 启用跳过策略.", this.getName(), this.getId());
 				boolean valueObj = false;
 				// 处理跳过策略表达式
-				if (StringUtil.isNotEmpty(skipStrategy.getSkipAssignee())) {
-					Expression expression = new ExpressionImpl(skipStrategy.getSkipAssignee());
+				if (StringUtil.isNotEmpty(skipStrategy.getSkipExpression())) {
+					Expression expression = new ExpressionImpl(skipStrategy.getSkipExpression());
 					try {
 						LOG.debug("节点: {}({}) 跳过策略开始直接,跳过策略表达式内容为:\n {}", this.getName(), this.getId(), expression.getExpressionText());
 						// 执行验证表达式
