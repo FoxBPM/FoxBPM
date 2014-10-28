@@ -22,6 +22,8 @@ import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -80,7 +82,7 @@ public class XMLToObject {
 	 * @param objClass
 	 *            class
 	 * @param flag
-	 *            是否获取 objClass 继承的所有方法
+	 *            方法可见性 true public false all
 	 * @return 返回 生成objClass 实例对象
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
@@ -258,7 +260,7 @@ public class XMLToObject {
 				methodName = generateMethodName(GENERAL_M_PREFIX, element.getName());
 				method = methodMap.get(methodName);
 				if (null != method && method.getParameterTypes().length == 1) {
-					paramObj = method.getParameterTypes()[0].isArray() ? getParamClass(method.getParameterTypes()[0].getName()).newInstance() : method.getParameterTypes()[0].newInstance();
+					paramObj = createParameterInstance(method);
 					if (!objMap.containsKey(methodName)) {
 						objMap.put(methodName, new ArrayList<Object>());
 					}
@@ -266,17 +268,51 @@ public class XMLToObject {
 					objMap.get(methodName).add(doChildElement(element.elements(), paramObj, flag));
 				}
 			}
-			
+			// 这里处理子节点
 			for (Entry<String, List<Object>> entry : objMap.entrySet()) {
 				method = methodMap.get(entry.getKey());
+				// 处理数组
 				if (method.getParameterTypes()[0].isArray()) {
 					method.invoke(obj, (Object) copyOf(entry.getValue().toArray(), entry.getValue().size(), (Class) method.getParameterTypes()[0]));
+				} else /** 处理list集合 */
+				if (method.getParameterTypes()[0].isAssignableFrom(List.class)) {
+					method.invoke(obj, entry.getValue());
 				} else {
 					method.invoke(obj, entry.getValue().get(0));
 				}
 			}
 		}
 		return obj;
+	}
+	
+	/**
+	 * 根据参数类型创建实例
+	 * 
+	 * @param method
+	 * @return
+	 */
+	private Object createParameterInstance(Method method) {
+		Object paramObj = null;
+		Class<?> class1 = method.getParameterTypes()[0];
+		try {
+			if (class1.isArray()) {
+				paramObj = Class.forName(new StringBuffer().append(class1.getName()).delete(0, 2).reverse().deleteCharAt(0).reverse().toString()).newInstance();
+			} else if (class1.isAssignableFrom(List.class)) {
+				Type paramType = method.getGenericParameterTypes()[0];// 方法的参数列表
+				if (paramType instanceof ParameterizedType)/**//* 如果是泛型类型 */{
+					Type type = ((ParameterizedType) paramType).getActualTypeArguments()[0];// 泛型类型列表
+					if (type instanceof Class) {
+						paramObj = Class.forName(((Class) type).getName()).newInstance();
+					}
+				}
+			} else {
+				paramObj = class1.newInstance();
+			}
+		} catch (Exception e) {
+			LOGGER.error("根据参数类型实例对象出现错误!,参数类型:" + class1);
+			throw new FoxBPMException("根据参数类型实例对象出现错误!,参数类型:" + class1, e);
+		}
+		return paramObj;
 	}
 	
 	/**
@@ -297,22 +333,6 @@ public class XMLToObject {
 	}
 	
 	/**
-	 * 获取参数类型
-	 * 
-	 * @param name
-	 * @return
-	 * @throws ClassNotFoundException
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 */
-	private Class getParamClass(String name) throws ClassNotFoundException, InstantiationException,
-	    IllegalAccessException {
-		StringBuffer className = new StringBuffer(name);
-		className.delete(0, 2).deleteCharAt(className.length() - 1);
-		return Class.forName(className.toString());
-	}
-	
-	/**
 	 * 根据前缀获取class上的方法
 	 * 
 	 * @param prefix
@@ -320,7 +340,8 @@ public class XMLToObject {
 	 * @param cls
 	 *            class
 	 * @param flag
-	 *            自定义方法还是所有方法
+	 *            true 获取public方法,false includes public, protected, default
+	 *            (package) access, and private methods
 	 * @return 返回prefix前缀的所有方法
 	 */
 	private Map<String, Method> getMethods(String prefix, Class cls, boolean flag) {
@@ -328,7 +349,8 @@ public class XMLToObject {
 		Method[] methods = flag ? cls.getMethods() : cls.getDeclaredMethods();
 		if (null != methods) {
 			for (Method m : methods) {
-				if (m.getName().startsWith(prefix) && Modifier.PUBLIC == m.getModifiers()) {
+				if (m.getParameterTypes().length == 1 && m.getName().startsWith(prefix)
+				        && Modifier.PUBLIC == m.getModifiers()) {
 					methodMap.put(m.getName(), m);
 				}
 			}
