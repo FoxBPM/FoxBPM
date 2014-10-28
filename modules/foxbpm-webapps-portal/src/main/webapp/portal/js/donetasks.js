@@ -60,20 +60,20 @@ var pagefunction = function() {
 									"createdCell" : function(td, cellData,
 											rowData, row, col) {
 
-										if (rowData.priority == "0") {
-											$(td)
-													.html(
-															"<span class='badge'>低</span>");
+										if (rowData.priority == "20") {
+											$(td).html("<span class='badge bg-color-blueLight'>非常低</span>");
+										}
+										if (rowData.priority == "40") {
+											$(td).html("<span class='badge bg-color-blue'>低</span>");
 										}
 										if (rowData.priority == "50") {
-											$(td)
-													.html(
-															"<span class='badge bg-color-greenLight'>中</span>");
+											$(td).html("<span class='badge bg-color-greenLight'>一般</span>");
+										}
+										if (rowData.priority == "80") {
+											$(td).html("<span class='badge bg-color-redLight'>高</span>");
 										}
 										if (rowData.priority == "100") {
-											$(td)
-													.html(
-															"<span class='badge bg-color-red'>高</span>");
+											$(td).html("<span class='badge bg-color-red'>非常高</span>");
 										}
 									}
 								},

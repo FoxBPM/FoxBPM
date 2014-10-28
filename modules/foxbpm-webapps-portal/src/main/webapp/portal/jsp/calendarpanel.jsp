@@ -57,13 +57,19 @@
 									<a href="javascript:void(0);" id="priority_all">所有</a>
 								</li>
 								<li>
-									<a href="javascript:void(0);" id="priority_high">高</a>
+									<a href="javascript:void(0);" id="priority_veryhigh">非常高</a>
 								</li>
 								<li>
-									<a href="javascript:void(0);" id="priority_mid">中</a>
+									<a href="javascript:void(0);" id="priority_high">高</a>
+								</li> 
+								<li>
+									<a href="javascript:void(0);" id="priority_normal">一般</a>
 								</li> 
 								<li>
 									<a href="javascript:void(0);" id="priority_low">低</a>
+								</li> 
+								<li>
+									<a href="javascript:void(0);" id="priority_verylow">非常低</a>
 								</li> 
 							</ul>
 						</div> &nbsp;&nbsp;&nbsp;
