@@ -65,7 +65,7 @@ public class UserTaskParser extends TaskParser {
 				taskCommandNew.setUserTask(userTaskBehavior);
 				for (CommandParameter param : taskCommand.getCommandParams()) {
 					CommandParamImpl commandParamEngine=new CommandParamImpl();
-					commandParamEngine.setKey(param.getId());
+					commandParamEngine.setKey(param.getKey());
 					commandParamEngine.setName(param.getName());
 					commandParamEngine.setDescription(param.getDescription());
 					commandParamEngine.setBizType(CommandParamType.valueOf(param.getBizType()));
