@@ -253,7 +253,7 @@
 		<if test="candidateUser != null">
 			left join ${prefix}_RUN_TASKIDENTITYLINK I on I.TASK_ID = RES.ID
 		</if>
-		<if test="initiator != null">
+		<if test="initiator != null || (subjectUnionInitiator == true &amp;&amp; subjectLike !=null)">
 			inner join ${prefix}_RUN_PROCESSINSTANCE P ON P.ID = RES.PROCESSINSTANCE_ID
 		</if>
 		<where>
@@ -280,7 +280,13 @@
 				and SUBJECT = #{subject}
 			</if>
 			<if test="subjectLike != null">
-				and SUBJECT like #{subjectLike}
+				<if test="subjectUnionInitiator == true">
+					and (RES.SUBJECT like #{subjectLike} or P.INITIATOR like #{subjectLike})
+				</if>
+				<if test="subjectUnionInitiator == false">
+					and SUBJECT like #{subjectLike}
+				</if>
+				 
 			</if>
 
 			<if test="createTimeBefore != null">
@@ -339,8 +345,13 @@
 				and BIZKEY like #{businessKeyLike}
 			</if>
 
-			<if test="unassigned">
-				and ASSIGNEE is null
+			<if test="assignedFlag != 2">
+				<if test="assignedFlag == 0">
+					and ASSIGNEE is null
+				</if>
+				<if test="assignedFlag == 1">
+					and ASSIGNEE is not null
+				</if>
 			</if>
 			<if test="processDefinitionId != null">
 				and PROCESSDEFINITION_ID = #{processDefinitionId}
