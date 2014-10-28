@@ -28,7 +28,7 @@ public interface Task{
 	
 	int PRIORITY_VERYLOW = 20;
 	int PRIORITY_LOW = 40;
-	int PRIORITY_NORMAL = 60;
+	int PRIORITY_NORMAL = 50;
 	int PRIORITY_HIGH = 80;
 	int PRIORITY_VERYHIGH = 100;
 	/**
