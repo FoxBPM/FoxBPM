@@ -17,6 +17,10 @@
  */
 package org.foxbpm.engine.config;
 
+import java.util.List;
+
+import org.foxbpm.engine.impl.task.TaskCommandDefinitionImpl;
+
 /**
  * 常量类
  * 
@@ -24,13 +28,13 @@ package org.foxbpm.engine.config;
  * @date 2014年10月27日
  */
 public class TaskCommandConfig {
-	protected TaskCommandDefinitionImpl[] taskCommandDefinition;
+	protected List<TaskCommandDefinitionImpl> taskCommandDefinitions;
 	
-	public TaskCommandDefinitionImpl[] getTaskCommandDefinition() {
-		return taskCommandDefinition;
+	public List<TaskCommandDefinitionImpl> getTaskCommandDefinitions() {
+		return taskCommandDefinitions;
 	}
 	
-	public void setTaskCommandDefinition(TaskCommandDefinitionImpl[] taskCommandDefinition) {
-		this.taskCommandDefinition = taskCommandDefinition;
+	public void setTaskCommandDefinitions(List<TaskCommandDefinitionImpl> taskCommandDefinitions) {
+		this.taskCommandDefinitions = taskCommandDefinitions;
 	}
 }

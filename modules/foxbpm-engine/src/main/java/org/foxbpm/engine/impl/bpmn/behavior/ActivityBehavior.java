@@ -446,11 +446,11 @@ public class ActivityBehavior extends FlowNodeBehavior {
 			FoxbpmScheduler foxbpmScheduler =Context.getProcessEngineConfiguration().getFoxbpmScheduler();
 			if (foxbpmScheduler == null) {
 				LOG.debug("自动调度器未启动，导致任务节点离开时清空相关数据失败！");
-				return;
+			}else{
+				String groupName = null;
+				groupName = new FoxbpmSchedulerGroupnameGernerater(executionContext).gernerateDefinitionGroupName();
+				foxbpmScheduler.deleteJobsByGroupName(groupName);
 			}
-			String groupName = null;
-			groupName = new FoxbpmSchedulerGroupnameGernerater(executionContext).gernerateDefinitionGroupName();
-			foxbpmScheduler.deleteJobsByGroupName(groupName);
 		} catch (Exception e) {
 			throw new FoxBPMException("Activity 离开时清空 节点调度器报错", e);
 		}

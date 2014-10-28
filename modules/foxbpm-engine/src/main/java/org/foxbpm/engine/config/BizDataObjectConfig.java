@@ -17,6 +17,10 @@
  */
 package org.foxbpm.engine.config;
 
+import java.util.List;
+
+import org.foxbpm.engine.impl.datavariable.DataObjectDefinitionImpl;
+
 /**
  * 常量类
  * 
@@ -24,14 +28,15 @@ package org.foxbpm.engine.config;
  * @date 2014年10月27日
  */
 public class BizDataObjectConfig {
-	protected DataObjectBehaviorImpl dataObjectBehavior;
 	
-	public DataObjectBehaviorImpl getDataObjectBehavior() {
-		return dataObjectBehavior;
+	protected List<DataObjectDefinitionImpl> dataObjectDefinitions;
+	
+	public void setDataObjectDefinitions(List<DataObjectDefinitionImpl> dataObjectDefinitions) {
+		this.dataObjectDefinitions = dataObjectDefinitions;
 	}
 	
-	public void setDataObjectBehavior(DataObjectBehaviorImpl dataObjectBehavior) {
-		this.dataObjectBehavior = dataObjectBehavior;
+	public List<DataObjectDefinitionImpl> getDataObjectDefinitions() {
+		return dataObjectDefinitions;
 	}
 	
 }

@@ -17,6 +17,7 @@ import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.task.TaskCommandSystemType;
 import org.foxbpm.engine.impl.task.TaskDefinition;
+import org.foxbpm.engine.impl.task.TaskQueryImpl;
 import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
@@ -27,6 +28,7 @@ import org.foxbpm.engine.task.IdentityLinkType;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.engine.task.TaskCommandDefinition;
+import org.foxbpm.engine.task.TaskQuery;
 import org.foxbpm.engine.task.TaskType;
 import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
@@ -849,13 +851,26 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		}
 		/** 获取令牌 */
 		if (tokenId != null) {
-			TokenEntity token = getToken();
+			TokenEntity token = null;
+			token = getToken();
+			if(toFlowNode != null){
+				//如果指定了目标节点，则首先判断本令牌是否走过该节点
+				//如果走过该节点（taskCount != 0）则正常退回
+				//如果未走过该节点，则递归查询父令牌是否经过，如果父令牌走过，则结束父令牌的child，并推动父令牌退回，如果父令牌也未走过，则抛出异常
+				String nodeId = toFlowNode.getId();
+				TaskQuery taskQuery = new TaskQueryImpl(Context.getCommandContext());
+				long taskCount = taskQuery.tokenId(tokenId).nodeId(nodeId).count();
+				if(taskCount == 0){
+					token = getParentTokenByNodeId((TokenEntity)token.getParent(),toFlowNode.getId());
+					if(token == null){
+						throw new FoxBPMException("无法退回到节点："+nodeId +",原因：流程尚未走过该节点");
+					}
+					token.terminationChildToken();
+					token.setToFlowNode(toFlowNode);
+				}
+			}
 			/** 移除令牌上注册任务 */
 			token.removeTask(this);
-			/** 设置去向节点 */
-			if (toFlowNode != null) {
-				token.setToFlowNode(toFlowNode);
-			}
 			if (StringUtil.isNotEmpty(assignee)) {
 				token.setTaskAssignee(assignee);
 			}
@@ -863,6 +878,25 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 			token.signal();
 		}
 		
+	}
+	
+	/**
+	 * 递归查询经过指定节点的父令牌
+	 * @param token
+	 * @param nodeId
+	 * @return
+	 */
+	private TokenEntity getParentTokenByNodeId(TokenEntity token,String nodeId){
+		if(token == null){
+			return null;
+		}
+		TaskQuery taskQuery = new TaskQueryImpl(Context.getCommandContext());
+		long taskCount = taskQuery.tokenId(token.getId()).nodeId(nodeId).count();
+		if(taskCount != 0){
+			return token;
+		}else{
+			return getParentTokenByNodeId((TokenEntity)token.getParent(),nodeId);
+		}
 	}
 	
 	/**

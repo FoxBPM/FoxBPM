@@ -25,6 +25,7 @@ package org.foxbpm.engine.event;
  */
 public interface EventListener {
 	
+	String getId();
 	/**
 	 * 监听的事件类型
 	 * @return

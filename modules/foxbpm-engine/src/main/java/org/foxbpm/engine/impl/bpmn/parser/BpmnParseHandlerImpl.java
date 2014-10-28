@@ -267,10 +267,13 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	 */
 	private void registListener(ProcessDefinitionEntity processEntity) {
 		// 加载监听器
-		List<EventListener> eventListenerList = Context.getProcessEngineConfiguration().getEventListenerConfig();
+		Map<String,EventListener> eventListenerList = Context.getProcessEngineConfiguration().getEventListeners();
+		if(eventListenerList == null){
+			return;
+		}
 		KernelListener foxbpmEventListener = null;
 		try {
-			for (EventListener eventListener : eventListenerList) {
+			for (EventListener eventListener : eventListenerList.values()) {
 				foxbpmEventListener = (KernelListener) Class.forName(eventListener.getListenerClass()).newInstance();
 				if (StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_START) || StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_END)) {
 					// 注册启动监听
@@ -298,7 +301,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 
 			}
 		} catch (Exception e) {
-			throw new FoxBPMException("加载运行轨迹监听器时出现问题", e);
+			throw new FoxBPMException("加载运行监听器时出现问题", e);
 		}
 	}
 

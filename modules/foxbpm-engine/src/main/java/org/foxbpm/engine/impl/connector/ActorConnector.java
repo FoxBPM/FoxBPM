@@ -13,28 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author yangguangftlp
+ * @author kenshin
  */
-package org.foxbpm.engine.config;
+package org.foxbpm.engine.impl.connector;
 
-import java.util.List;
+public interface ActorConnector extends ConnectorDefinition{
 
-import org.foxbpm.engine.impl.event.EventListenerImpl;
-
-/**
- * 常量类
- * 
- * @author yangguangftlp
- * @date 2014年10月27日
- */
-public class EventListenerConfig {
-	protected List<EventListenerImpl> eventListeners;
-	
-	public List<EventListenerImpl> getEventListeners() {
-		return eventListeners;
-	}
-	
-	public void setEventListeners(List<EventListenerImpl> eventListeners) {
-		this.eventListeners = eventListeners;
-	}
 }

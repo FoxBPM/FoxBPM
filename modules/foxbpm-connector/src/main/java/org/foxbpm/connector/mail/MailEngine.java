@@ -33,8 +33,6 @@ import org.foxbpm.engine.impl.util.DBUtils;
 import org.foxbpm.engine.impl.util.MailUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.spring.ProcessEngineConfigurationSpring;
-import org.foxbpm.model.config.foxbpmconfig.MailInfo;
-import org.foxbpm.model.config.foxbpmconfig.SysMailConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -95,6 +93,17 @@ public class MailEngine {
 	public synchronized void sendMail() {
 		LOGGER.debug("start sendMail()");
 		ProcessEngineConfigurationSpring processEngineConfig = (ProcessEngineConfigurationSpring) Context.getProcessEngineConfiguration();
+		
+		final String mailServerHost = processEngineConfig.getMailServerAddress();
+		final String mailServerPort = processEngineConfig.getMailServerPort();
+		final String mailUserName = processEngineConfig.getMailUserName();
+		final String passWord = processEngineConfig.getMailPassword();
+		
+		if (mailServerHost == null || mailServerPort == null || mailUserName == null || passWord == null) {
+			LOGGER.error("系统邮件配置错误请检查流程邮件配置！");
+			throw new FoxBPMException("系统邮件配置错误请检查流程邮件配置！");
+		}
+		
 		PlatformTransactionManager transactionManager = processEngineConfig.getTransactionManager();
 		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
 		transactionTemplate.setPropagationBehavior(TransactionTemplate.PROPAGATION_REQUIRES_NEW);
@@ -102,18 +111,6 @@ public class MailEngine {
 			 
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
 				// 获取邮件配置
-				SysMailConfig sysMailConfig = Context.getProcessEngineConfiguration().getSysMailConfig();
-				MailInfo mailInfoObj = null;
-				for (MailInfo mailInfo : sysMailConfig.getMailInfo()) {
-					if (mailInfo.getMailName().equals(sysMailConfig.getSelected())) {
-						mailInfoObj = mailInfo;
-					}
-				}
-				if (mailInfoObj == null) {
-					LOGGER.error("系统邮件配置错误请检查流程邮件配置！");
-					throw new FoxBPMException("系统邮件配置错误请检查流程邮件配置！");
-				}
-
 				List<Object> pObjects = new ArrayList<Object>();
 				// 添加查询条件
 				pObjects.add(MailStatus.NOSEND.toString());
@@ -131,8 +128,8 @@ public class MailEngine {
 						mailEntity.persistentInit(mapData);
 						// 邮件处理
 						MailUtil mailUtil = new MailUtil();
-						mailUtil.setSmtpHost(mailInfoObj.getSmtpHost(), StringUtil.getInt(mailInfoObj.getSmtpPort()));
-						mailUtil.setSmtpAuthentication(mailInfoObj.getUserName(), mailInfoObj.getPassword());
+						mailUtil.setSmtpHost(mailServerHost, StringUtil.getInt(mailServerPort));
+						mailUtil.setSmtpAuthentication(mailUserName, passWord);
 						// 支持发送多人邮件 #4185
 						String to = mailEntity.getMailTo();
 						if (StringUtil.isEmpty(StringUtil.trim(to))) {
@@ -167,7 +164,7 @@ public class MailEngine {
 							mailUtil.setCC(userMailCCList.toArray(new String[0]));
 						}
 
-						mailUtil.setFrom(mailInfoObj.getMailAddress());
+						mailUtil.setFrom(mailUserName);
 						mailUtil.setSubject(mailEntity.getMailSubject());
 						mailUtil.setBody(mailEntity.getMailBody());
 						mailUtil.setContentType(MailUtil.MODE_HTML);

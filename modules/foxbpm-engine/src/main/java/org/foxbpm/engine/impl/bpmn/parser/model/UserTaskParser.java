@@ -25,7 +25,7 @@ import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
 import org.foxbpm.engine.impl.connector.ConnectorListener;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
-import org.foxbpm.engine.impl.task.CommandParamImpl;
+import org.foxbpm.engine.impl.task.CommandParam;
 import org.foxbpm.engine.impl.task.FormParam;
 import org.foxbpm.engine.impl.task.TaskCommandImpl;
 import org.foxbpm.engine.impl.task.TaskDefinition;
@@ -64,7 +64,7 @@ public class UserTaskParser extends TaskParser {
 				taskCommandNew.setTaskCommandType(taskCommand.getTaskCommandType());
 				taskCommandNew.setUserTask(userTaskBehavior);
 				for (CommandParameter param : taskCommand.getCommandParams()) {
-					CommandParamImpl commandParamEngine=new CommandParamImpl();
+					CommandParam commandParamEngine=new CommandParam();
 					commandParamEngine.setKey(param.getKey());
 					commandParamEngine.setName(param.getName());
 					commandParamEngine.setDescription(param.getDescription());

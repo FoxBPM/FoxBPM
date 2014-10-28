@@ -25,7 +25,6 @@ import java.util.Map;
 
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
-import org.foxbpm.engine.task.CommandParam;
 import org.foxbpm.engine.task.CommandParamType;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;

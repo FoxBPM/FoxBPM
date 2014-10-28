@@ -19,18 +19,15 @@ package org.foxbpm.engine.impl.task;
 
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
-import org.foxbpm.engine.task.CommandParam;
 import org.foxbpm.engine.task.CommandParamType;
 
 /**
- * 任务命令参数
  * @author kenshin
+ *
  */
-public class CommandParamImpl implements CommandParam {
+public class CommandParam {
 	
 	protected String key;
-	
-	
 
 	protected String name;
 	
@@ -89,7 +86,5 @@ public class CommandParamImpl implements CommandParam {
 	public void setExpression(String expression) {
 		this.expression = new ExpressionImpl(expression);
 	}
-	
-	
 
 }

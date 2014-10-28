@@ -15,44 +15,16 @@
  * 
  * @author yangguangftlp
  */
-package org.foxbpm.engine.config;
-
-import org.foxbpm.engine.datavariable.DataObjectBehavior;
+package org.foxbpm.engine.datavariable;
 
 /**
- * 数据变量配置实现类
+ * 数据变量配置
  * 
  * @author yangguangftlp
  * @date 2014年10月27日
  */
-public class DataObjectBehaviorImpl implements DataObjectBehavior {
-	
-	protected String id;
-	protected String name;
-	protected String behavior;
-	
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public void setBehavior(String behavior) {
-		this.behavior = behavior;
-	}
-	
-	public String getId() {
-		return null;
-	}
-	
-	public String getName() {
-		return null;
-	}
-	
-	public String getBehavior() {
-		return null;
-	}
-	
+public interface DataObjectDefinition {
+	String getId();
+	String getName();
+	String getBehavior();
 }

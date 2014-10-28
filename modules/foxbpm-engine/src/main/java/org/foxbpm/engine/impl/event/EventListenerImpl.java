@@ -21,6 +21,8 @@ import org.foxbpm.engine.event.EventListener;
 
 public class EventListenerImpl implements EventListener {
 
+	
+	private String id;
 	private String eventType;
 	private String eventListenerClass;
 	public String getEventType() {
@@ -34,6 +36,14 @@ public class EventListenerImpl implements EventListener {
 	}
 	public void setEventListenerClass(String eventListenerClass) {
 		this.eventListenerClass = eventListenerClass;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	public String getId() {
+		return id;
 	}
 
 }

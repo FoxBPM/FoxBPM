@@ -19,7 +19,6 @@ package org.foxbpm.engine.impl.task;
 
 import java.util.List;
 
-import org.foxbpm.engine.task.CommandParam;
 import org.foxbpm.engine.task.TaskCommandDefinition;
 
 public class TaskCommandDefinitionImpl implements TaskCommandDefinition {
