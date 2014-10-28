@@ -160,7 +160,14 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery taskSubjectLike(String subjectLike);
+	
+	/**
+	 * 任务主题发起人共用一个查询条件
+	 * 
+	 */
+	TaskQuery subjectUnionInitiator();
 
+	
 	/**
 	 * 指定用户的独占任务
 	 * 

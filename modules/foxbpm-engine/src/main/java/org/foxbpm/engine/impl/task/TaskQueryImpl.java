@@ -78,6 +78,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 	protected String processDefinitionNameLike;
 	protected String subject;
 	protected String subjectLike;
+	protected boolean subjectUnionInitiator = false;
 	protected String initiator;
 	protected String isSuspended;
 	protected String tokenId;
@@ -251,7 +252,13 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 		this.subject = subject;
 		return this;
 	}
-
+	
+	public TaskQuery subjectUnionInitiator() {
+		this.subjectUnionInitiator = true;
+		return this;
+	}
+	
+	
 	 
 	public TaskQuery taskSubjectLike(String subjectLike) {
 		if (subjectLike == null) {

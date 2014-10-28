@@ -134,7 +134,8 @@ public class TaskCollectionResource extends AbstractRestResource {
 		if (queryNames.contains("subjectLike")) {
 			taskQuery.taskSubjectLike(parseLikeValue(getQueryParameter("subjectLike", queryForm)));
 		}
-		
+		//任务主题和 发起人共用一个查询条件
+		taskQuery.subjectUnionInitiator();
 		if (queryNames.contains("initiator")) {
 			taskQuery.initiator(getQueryParameter("initiator", queryForm));
 		}
