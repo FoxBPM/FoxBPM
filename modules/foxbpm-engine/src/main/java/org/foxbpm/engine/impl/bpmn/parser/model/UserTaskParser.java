@@ -99,14 +99,14 @@ public class UserTaskParser extends TaskParser {
 		}
 		taskDefinition.setFormParams(formParams);
 
+		taskDefinition.setTaskPriority(userTask.getTaskPriority());
 		taskDefinition.setTaskType(userTask.getTaskType());
 		taskDefinition.setTaskSubject(userTask.getSubject());
 		taskDefinition.setFormUri(userTask.getFormUri());
 		taskDefinition.setFormUriView(userTask.getFormUriView());
 		taskDefinition.setTaskDescription(userTask.getTaskDescription());
 		taskDefinition.setCompleteTaskDescription(userTask.getCompleteDescription());
-		taskDefinition.setExpectExecuteTime(0);
-		
+		taskDefinition.setExpectExecuteTime(userTask.getExpectedExecuteDay()*60+userTask.getExpectedExecuteHour()+((double)userTask.getExpectedExecuteMinute())/60);
 		List<Connector> actors = userTask.getActorConnectors();
 		if(actors != null){
 			for(Connector tmpConnector : actors){
