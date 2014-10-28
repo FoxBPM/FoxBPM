@@ -183,6 +183,20 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery taskUnnassigned();
+	
+	/**
+	 * 被领取的任务
+	 * 
+	 * @return
+	 */
+	TaskQuery taskAssigned();
+	
+	/**
+	 * 不区分领取和未领取的任务
+	 * 
+	 * @return
+	 */
+	TaskQuery ignorTaskAssigned();
 
 	/**
 	 * 指定用户的的共享任务

@@ -118,13 +118,15 @@ public class TaskCollectionResource extends AbstractRestResource {
 		}
 		
 		if (queryNames.contains("assigneed")) {
-			String unassigneed = getQueryParameter("processDefinitionId", queryForm);
-			if ("0".equals(unassigneed)) {
+			String assigneedFlag = getQueryParameter("assigneed", queryForm);
+			if ("0".equals(assigneedFlag)) {
 				taskQuery.taskUnnassigned();
-			} else if ("1".equals(unassigneed)) {
-				// 已领取
+			} else if ("1".equals(assigneedFlag)) {
+				//领取
+				taskQuery.taskAssigned();
 			} else {
 				// 全部
+				taskQuery.ignorTaskAssigned();
 			}
 			
 		}

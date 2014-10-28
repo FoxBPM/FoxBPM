@@ -339,8 +339,13 @@
 				and BIZKEY like #{businessKeyLike}
 			</if>
 
-			<if test="unassigned">
-				and ASSIGNEE is null
+			<if test="assignedFlag != 2">
+				<if test="assignedFlag == 0">
+					and ASSIGNEE is null
+				</if>
+				<if test="assignedFlag == 1">
+					and ASSIGNEE is not null
+				</if>
 			</if>
 			<if test="processDefinitionId != null">
 				and PROCESSDEFINITION_ID = #{processDefinitionId}
