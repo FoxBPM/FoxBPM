@@ -124,9 +124,11 @@ public class RollBackTaskDesignationResetCommandTest extends AbstractFoxBpmTestC
 		// 预置用户用户
 		jdbcTemplate.execute("insert into au_userInfo(userId,USERNAME) VALUES ('test01','管理员Tst')");
 		jdbcTemplate.execute("insert into au_userInfo(userId,USERNAME) VALUES ('test02','管理员Tst')");
+		jdbcTemplate.execute("insert into au_userInfo(userId,USERNAME) VALUES ('test03','管理员Tst')");
 		// 设置用户和部门关系
 		jdbcTemplate.execute("insert into au_group_relation(guid,userid,groupid,grouptype) VALUES ('11100000000000001','test01','20000001','role')");
 		jdbcTemplate.execute("insert into au_group_relation(guid,userid,groupid,grouptype) VALUES ('11100000000000002','test02','20000001','role')");
+		jdbcTemplate.execute("insert into au_group_relation(guid,userid,groupid,grouptype) VALUES ('11100000000000003','test03','20000001','role')");
 		
 		// 启动任务
 		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
@@ -176,14 +178,58 @@ public class RollBackTaskDesignationResetCommandTest extends AbstractFoxBpmTestC
 		// 查询任务是否在B节点上
 		taskQuery = taskService.createTaskQuery();
 		taskQuery.processDefinitionKey("branchReturned_1");
-		for (Task task2 : taskQuery.taskNotEnd().list()) {
-			System.out.println(task2.getNodeId() + " " + task2.getNodeName());
-		}
-		
 		task = taskQuery.taskNotEnd().singleResult();
 		assertEquals(null, task.getAssignee());
 		assertEquals("UserTask_2", task.getNodeId());
+		// 分支内退回
+		// 接收任务b
+		expandTaskCommand = new ExpandTaskCommand();
+		expandTaskCommand.setTaskCommandId("HandleCommand_1");
+		expandTaskCommand.setCommandType("claim");
+		expandTaskCommand.setTaskId(task.getId());
+		taskService.expandTaskComplete(expandTaskCommand, null);
 		
+		expandTaskCommand = new ExpandTaskCommand();
+		expandTaskCommand.setTaskCommandId("HandleCommand_3");
+		expandTaskCommand.setCommandType("general");
+		expandTaskCommand.setTaskId(task.getId());
+		expandTaskCommand.setBusinessKey("bizKey");
+		expandTaskCommand.setInitiator("admin");
+		taskService.expandTaskComplete(expandTaskCommand, null);
+		
+		
+		// 查询test01下任务
+		taskQuery = taskService.createTaskQuery();
+		taskQuery.processDefinitionKey("branchReturned_1");
+		taskQuery.taskAssignee("test01");
+		task = taskQuery.taskNotEnd().singleResult();
+		// 处理任务d
+		expandTaskCommand = new ExpandTaskCommand();
+		expandTaskCommand.setTaskCommandId("HandleCommand_3");
+		expandTaskCommand.setCommandType("general");
+		expandTaskCommand.setTaskId(task.getId());
+		expandTaskCommand.setBusinessKey("bizKey");
+		expandTaskCommand.setInitiator("admin");
+		taskService.expandTaskComplete(expandTaskCommand, null);
+		// 查询待办任务
+		taskQuery = taskService.createTaskQuery();
+		taskQuery.processDefinitionKey("branchReturned_1");
+		taskQuery.taskAssignee("test03");
+		task = taskQuery.taskNotEnd().singleResult();
+		// 执行退回命令
+		expandTaskCommand = new ExpandTaskCommand();
+		expandTaskCommand.setTaskCommandId("HandleCommand_5");
+		expandTaskCommand.setCommandType("rollBack_designation_reset");
+		expandTaskCommand.setTaskId(task.getId());
+		expandTaskCommand.setBusinessKey("bizKey");
+		expandTaskCommand.setInitiator("test01");
+		taskService.expandTaskComplete(expandTaskCommand, null);
+		//查询任务位置
+		taskQuery = taskService.createTaskQuery();
+		taskQuery.processDefinitionKey("branchReturned_1");
+		taskQuery.taskAssignee("test01");
+		task = taskQuery.taskNotEnd().singleResult();
+		assertEquals("UserTask_4", task.getNodeId());
 	}
 	/**
 	 * 多实例退回
