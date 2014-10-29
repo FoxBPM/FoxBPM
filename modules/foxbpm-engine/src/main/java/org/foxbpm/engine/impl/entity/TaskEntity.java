@@ -866,8 +866,8 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 						throw new FoxBPMException("无法退回到节点："+nodeId +",原因：流程尚未走过该节点");
 					}
 					token.terminationChildToken();
-					token.setToFlowNode(toFlowNode);
 				}
+				token.setToFlowNode(toFlowNode);
 			}
 			/** 移除令牌上注册任务 */
 			token.removeTask(this);
