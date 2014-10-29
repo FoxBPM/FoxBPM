@@ -31,6 +31,7 @@ public interface Task{
 	int PRIORITY_NORMAL = 50;
 	int PRIORITY_HIGH = 80;
 	int PRIORITY_VERYHIGH = 100;
+	String TYPE_FOXBPMTASK = "foxbpmtask";
 	/**
 	 * 获取任务编号
 	 */

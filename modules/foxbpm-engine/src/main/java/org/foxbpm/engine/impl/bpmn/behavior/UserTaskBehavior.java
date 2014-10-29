@@ -33,10 +33,12 @@ import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.event.AbstractTaskEvent;
+import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.task.FormParam;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskCommandDefinition;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
@@ -190,7 +192,7 @@ public class UserTaskBehavior extends TaskBehavior {
 		newTask.setNodeId(this.getId());
 
 		if (skipAssignee != null && !skipAssignee.equals("")) {
-			newTask.setAssignee(skipAssignee);
+			newTask.setAssignee(StringUtil.getString(new ExpressionImpl(skipAssignee).getValue(executionContext)));
 		}
 
 		newTask.setDraft(false);
@@ -204,17 +206,17 @@ public class UserTaskBehavior extends TaskBehavior {
 
 		newTask.setEndTime(date);
 		newTask.setPriority(50);
-
-		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity)token.getProcessInstance().getProcessDefinition();
-		String processDefinitionId = processDefinition.getId();
-		newTask.setProcessDefinitionId(processDefinitionId);
+		ProcessInstanceEntity processInstance = token.getProcessInstance();
+		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity)processInstance.getProcessDefinition();
+		newTask.setProcessDefinitionId(processDefinition.getId());
 		newTask.setProcessDefinitionKey(processDefinition.getKey());
+		newTask.setProcessInitiator(processInstance.getInitiator());
 		newTask.setName(this.getName());
 		newTask.setNodeName(this.getName());
 		newTask.setProcessInstanceId(token.getProcessInstance().getId());
 		newTask.setTokenId(token.getId());
 		newTask.setProcessDefinitionName(processDefinition.getName());
-		newTask.setTaskType("foxbpmtask");
+		newTask.setTaskType(Task.TYPE_FOXBPMTASK);
 		String bizKey = token.getProcessInstance().getBizKey();
 		newTask.setBizKey(bizKey);
 		newTask.setCommandId("skipNode");
@@ -227,7 +229,7 @@ public class UserTaskBehavior extends TaskBehavior {
 		}
 
 		if (skipComment != null && !skipComment.equals("")) {
-			newTask.setTaskComment(skipComment);
+			newTask.setTaskComment(StringUtil.getString(new ExpressionImpl(skipComment).getValue(executionContext)));
 		}
 		
 		if(taskDefinition.getTaskSubject()==null||StringUtil.isEmpty(taskDefinition.getTaskSubject().getExpressionText())){
