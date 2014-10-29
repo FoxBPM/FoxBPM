@@ -52,6 +52,9 @@
         <foxbpm:taskCommand id="HandleCommand_5" name="流程状态" commandType="processStatus">
           <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_13" name=""><![CDATA[]]></foxbpm:expression>
         </foxbpm:taskCommand>
+        <foxbpm:taskPriority>
+          <foxbpm:expression xsi:type="foxbpm:Expression" name="一般"><![CDATA[50]]></foxbpm:expression>
+        </foxbpm:taskPriority>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
