@@ -261,7 +261,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initCommandContextFactory();
 		initCommandExecutors();
 		initTaskCommand();
-		initEventListenerConfig();
+		initEventListeners();
 		initServices();
 		initDeployers();
 		//加载组织机构相关
@@ -330,11 +330,13 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		}
 	}
 	
-	protected void initEventListenerConfig(){
+	protected void initEventListeners(){
 		List<EventListenerImpl> eventListenerImpls = foxBpmConfig.getEventListeners();
 		if(eventListenerImpls != null){
 			this.eventListeners = new HashMap<String, EventListener>();
+			log.debug("发现{}个全局监听，列表如下：",eventListenerImpls.size());
 			for(EventListenerImpl tmp :eventListenerImpls){
+				log.debug("监听编号：{},监听事件：{},类名：{}",tmp.getId(),tmp.getEventType(),tmp.getListenerClass());
 				eventListeners.put(tmp.getId(), tmp);
 			}
 		}
@@ -859,6 +861,22 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	public List<TaskCommandDefinition> getTaskCommandDefinitions() {
 		return taskCommandDefinitions;
+	}
+	
+	public void setConfigXmlPath(String configXmlPath) {
+		this.configXmlPath = configXmlPath;
+	}
+	
+	public String getConfigXmlPath() {
+		return configXmlPath;
+	}
+	
+	public void setConfigXmlStream(InputStream configXmlStream) {
+		this.configXmlStream = configXmlStream;
+	}
+	
+	public InputStream getConfigXmlStream() {
+		return configXmlStream;
 	}
 	
 	
