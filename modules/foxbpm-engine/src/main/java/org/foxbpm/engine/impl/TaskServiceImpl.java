@@ -38,6 +38,7 @@ import org.foxbpm.engine.impl.cmd.SaveTaskCmd;
 import org.foxbpm.engine.impl.cmd.UnClaimCmd;
 import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
 import org.foxbpm.engine.impl.entity.ProcessOperatingEntity;
+import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.query.NativeTaskQueryImpl;
 import org.foxbpm.engine.impl.task.TaskQueryImpl;
 import org.foxbpm.engine.impl.task.cmd.ExpandTaskCompleteCmd;
@@ -50,11 +51,11 @@ import org.foxbpm.kernel.process.KernelFlowNode;
 
 public class TaskServiceImpl extends ServiceImpl implements TaskService {
 
-	public Task newTask() {
+	public TaskEntity newTask() {
 		return newTask(null);
 	}
 
-	public Task newTask(String taskId) {
+	public TaskEntity newTask(String taskId) {
 		return commandExecutor.execute(new NewTaskCmd(taskId));
 	}
 

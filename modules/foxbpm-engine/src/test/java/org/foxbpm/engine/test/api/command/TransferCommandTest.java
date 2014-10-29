@@ -39,9 +39,10 @@ public class TransferCommandTest extends AbstractFoxBpmTestCase {
 	 * <p>3.命令所需参数：transferUserId 既：转发目的人编号</p>
 	 * <p>4.注意事项：</p>
 	 * <p>			1.只有任务当前处理者（Assignee）有权转发，否则抛出异常</p>
-	 * <p>			2.转发会结束当前任务，并且重新生成任务，留下转发记录</p>
+	 * <p>			2.直接转发当前任务，不留下转发记录</p>
 	 * <p>4.测试用例：</p>
 	 * <p>		1.转发后，流程当前任务节点不变，新任务assignee字段为转发目的人</p>
+	 * <p>		2.当前待办任务和转办之前的任务编号相同</p>
 	 */
 	@Test
 	@Deployment(resources = { "org/foxbpm/test/command/TaskCommandTest_1.bpmn" })
@@ -77,8 +78,10 @@ public class TransferCommandTest extends AbstractFoxBpmTestCase {
 		expandTaskCommand.setParamMap(map);
 		taskService.expandTaskComplete(expandTaskCommand, null);
 		
-		task = taskQuery.singleResult();
-		assertEquals("admin2", task.getAssignee());
+		Task task2 = taskQuery.singleResult();
+		
+		assertEquals(task.getId(),task2.getId());
+		assertEquals("admin2", task2.getAssignee());
 		
 	}
 }
