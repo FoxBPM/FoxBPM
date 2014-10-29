@@ -17,14 +17,9 @@
  */
 package org.foxbpm.connector.actorconnector.SelectTaskByLeast;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.foxbpm.connector.common.constant.Constants;
@@ -67,9 +62,11 @@ public class SelectTaskByLeast extends ActorConnectorHandler {
 				userIdSet.add(StringUtil.trim(id));
 			}
 			// 处理用户id重复输入
-			Map<String, Integer> userTasks = new HashMap<String, Integer>();
+//			Map<String, Integer> userTasks = new HashMap<String, Integer>();
 			TaskService taskService = Context.getProcessEngineConfiguration().getTaskService();
 			TaskQuery taskQuery = null;
+			int minTaskCount= 0 ;
+			String minTaskUserId = "";
 			// 记录每个用户的任务数
 			for (String id : userIdSet) {
 				taskQuery = taskService.createTaskQuery();
@@ -77,16 +74,23 @@ public class SelectTaskByLeast extends ActorConnectorHandler {
 				taskQuery.taskCandidateUser(id);
 				taskQuery.taskNotEnd();
 				// 如果数据量大 long 转换int 可能存在问题
-				userTasks.put(id, StringUtil.getInt(taskQuery.count()));
+//				userTasks.put(id, StringUtil.getInt(taskQuery.count()));
+				if(minTaskCount == 0){
+					minTaskCount = (int)taskQuery.count();
+				}
+				if(taskQuery.count() < minTaskCount){
+					minTaskUserId = id;
+				}
 			}
 			// 排序
-			List<Map.Entry<String, Integer>> list = new ArrayList<Map.Entry<String, Integer>>(userTasks.entrySet());
-			Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
-				public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
-					return (o1.getValue()).compareTo(o2.getValue());
-				}
-			});
-			task.setAssignee(list.get(0).getKey());
+//			List<Map.Entry<String, Integer>> list = new ArrayList<Map.Entry<String, Integer>>(userTasks.entrySet());
+//			Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+//				public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+//					return (o1.getValue()).compareTo(o2.getValue());
+//				}
+//			});
+//			task.setAssignee(list.get(0).getKey());
+			task.setAssignee(minTaskUserId);
 		}
 	}
 
