@@ -20,7 +20,6 @@ package org.foxbpm.engine.impl.cmd;
 import java.util.Iterator;
 import java.util.List;
 
-import org.foxbpm.engine.config.BizDataObjectConfig;
 import org.foxbpm.engine.datavariable.BizDataObjectBehavior;
 import org.foxbpm.engine.datavariable.DataObjectDefinition;
 import org.foxbpm.engine.exception.FoxBPMBizException;
@@ -59,11 +58,7 @@ public class GetBizDataObjectCmd implements Command<List<BizDataObject>> {
 			throw new FoxBPMBizException("dataSource is null!");
 		}
 		ProcessEngineConfigurationImpl processEngine = commandContext.getProcessEngineConfigurationImpl();
-		BizDataObjectConfig bizDataObjectConfig = processEngine.getBizDataObjectConfig();
-		if (null == bizDataObjectConfig) {
-			throw new FoxBPMException("获取业务数据对象配置为空!");
-		}
-		List<DataObjectDefinitionImpl> dataObjBehaviorList = bizDataObjectConfig.getDataObjectDefinitions();
+		List<DataObjectDefinitionImpl> dataObjBehaviorList = processEngine.getFoxBpmConfig().getDataObjectDefinitions();
 		if (null == dataObjBehaviorList) {
 			throw new FoxBPMException("获取数据对象行为为空!");
 		}

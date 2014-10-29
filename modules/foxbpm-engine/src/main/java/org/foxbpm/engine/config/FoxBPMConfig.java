@@ -35,4 +35,35 @@ public class FoxBPMConfig {
 	public List<DataObjectDefinitionImpl> getDataObjectDefinitions() {
 		return dataObjectDefinitions;
 	}
+	
+	public void addConfig(FoxBPMConfig other){
+		if(other == null){
+			return;
+		}
+		
+		if(other.getTaskCommandDefinitions() != null){
+			if(taskCommandDefinitions == null){
+				taskCommandDefinitions = other.getTaskCommandDefinitions();
+			}else{
+				taskCommandDefinitions.addAll(other.getTaskCommandDefinitions());
+			}
+		}
+		
+		if(other.getEventListeners() != null){
+			if(eventListeners == null){
+				eventListeners = other.getEventListeners();
+			}else{
+				eventListeners.addAll(other.getEventListeners());
+			}
+		}
+		
+		if(other.getDataObjectDefinitions() != null){
+			if(dataObjectDefinitions == null){
+				dataObjectDefinitions = other.getDataObjectDefinitions();
+			}else{
+				dataObjectDefinitions.addAll(other.getDataObjectDefinitions());
+			}
+		}
+		
+	}
 }

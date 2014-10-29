@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.foxbpm.engine.config.BizDataObjectConfig;
 import org.foxbpm.engine.datavariable.BizDataObjectBehavior;
 import org.foxbpm.engine.datavariable.DataObjectDefinition;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
@@ -45,12 +44,7 @@ public class GetAllBizObjectsCmd implements Command<List<Map<String,Object>>> {
 	public List<Map<String, Object>> execute(CommandContext commandContext) {
 		List<Map<String,Object>> result = new ArrayList<Map<String,Object>>();
 		ProcessEngineConfigurationImpl processEngine = commandContext.getProcessEngineConfigurationImpl();
-		BizDataObjectConfig bizDataObjectConfig = processEngine.getBizDataObjectConfig();
-		if (null == bizDataObjectConfig) {
-			return Collections.emptyList();
-		}
-		List<DataObjectDefinitionImpl> dataObjBehaviorList = bizDataObjectConfig.getDataObjectDefinitions();
-	
+		List<DataObjectDefinitionImpl> dataObjBehaviorList = processEngine.getFoxBpmConfig().getDataObjectDefinitions();
 		if(dataObjBehaviorList == null){
 			return Collections.emptyList();
 		}

@@ -42,8 +42,6 @@ import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.cache.Cache;
 import org.foxbpm.engine.calendar.WorkCalendar;
-import org.foxbpm.engine.config.BizDataObjectConfig;
-import org.foxbpm.engine.config.EventListenerConfig;
 import org.foxbpm.engine.config.FoxBPMConfig;
 import org.foxbpm.engine.config.ProcessEngineConfigurator;
 import org.foxbpm.engine.event.EventListener;
@@ -87,9 +85,9 @@ import org.foxbpm.engine.impl.persistence.deploy.Deployer;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduler;
 import org.foxbpm.engine.impl.task.filter.AbstractCommandFilter;
+import org.foxbpm.engine.impl.util.FoxBPMCfgParseUtil;
 import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.engine.impl.util.ServiceLoader;
-import org.foxbpm.engine.impl.util.XMLToObject;
 import org.foxbpm.engine.impl.workcalendar.DefaultWorkCalendar;
 import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
 import org.foxbpm.engine.repository.ProcessDefinition;
@@ -109,8 +107,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected CommandExecutor commandExecutor;
 	protected CommandContextFactory commandContextFactory;
 	protected List<CommandInterceptor> commandInterceptors;
-	protected FoxBPMConfig foxBpmConfig;
-	protected BizDataObjectConfig bizDataObjectConfig;
+	protected FoxBPMConfig foxBpmConfig = new FoxBPMConfig();
 	// service
 	protected List<ProcessService> processServices = new ArrayList<ProcessService>();
 	protected Map<Class<?>,ProcessService> serviceMap = new HashMap<Class<?>, ProcessService>();
@@ -334,14 +331,11 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 	
 	protected void initEventListenerConfig(){
-		EventListenerConfig modelEventListenerConfig = foxBpmConfig.getEventListeners();
-		if(modelEventListenerConfig != null){
-			List<EventListenerImpl> eventListenerImpls = modelEventListenerConfig.getEventListeners();
-			if(eventListenerImpls != null){
-				this.eventListeners = new HashMap<String, EventListener>();
-				for(EventListenerImpl tmp :eventListenerImpls){
-					eventListeners.put(tmp.getId(), tmp);
-				}
+		List<EventListenerImpl> eventListenerImpls = foxBpmConfig.getEventListeners();
+		if(eventListenerImpls != null){
+			this.eventListeners = new HashMap<String, EventListener>();
+			for(EventListenerImpl tmp :eventListenerImpls){
+				eventListeners.put(tmp.getId(), tmp);
 			}
 		}
 	}
@@ -404,7 +398,9 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	protected List<TaskCommandDefinition> getAllTaskCommandDefinitions(){
 		List<TaskCommandDefinition> taskCommands = new ArrayList<TaskCommandDefinition>();
-		taskCommands.addAll(foxBpmConfig.getTaskCommands().getTaskCommandDefinitions());
+		if(foxBpmConfig.getTaskCommandDefinitions() != null){
+			taskCommands.addAll(foxBpmConfig.getTaskCommandDefinitions());
+		}
 		ServiceLoader<TaskCommandDefinition> s = ServiceLoader.load(TaskCommandDefinition.class); 
 		Iterator<TaskCommandDefinition> searchs = s.iterator();
 		while(searchs.hasNext()){
@@ -509,14 +505,15 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 	
 	protected void initEngineConfig(){
-		XMLToObject xmlToObject = XMLToObject.getInstance();
+		
+		FoxBPMCfgParseUtil configUtil = FoxBPMCfgParseUtil.getInstance();
 		InputStream configStream = ReflectUtil.getResourceAsStream("config/foxbpm.cfg.xml");
 		if(configStream == null){
 			throw new FoxBPMException("config/foxbpm.cfg.xml文件丢失，请检查jar包或相关配置！");
 		}
 		try{
-			FoxBPMConfig tmpfoxBpmConfig = (FoxBPMConfig)xmlToObject.transform(configStream, FoxBPMConfig.class, false);
-			foxBpmConfig.addObject(tmpfoxBpmConfig);
+			FoxBPMConfig tmpfoxBpmConfig = configUtil.parsecfg(configStream);
+			foxBpmConfig.addConfig(tmpfoxBpmConfig);
 		}catch(Exception ex){
 			if(ex instanceof FoxBPMException){
 				throw (FoxBPMException)ex;
@@ -527,20 +524,19 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 	
 	protected void initExpandConfig(){
-		
+		FoxBPMCfgParseUtil configUtil = FoxBPMCfgParseUtil.getInstance();
 		if(configXmlStream == null && configXmlPath == null){
 			return;
 		}
 		if(configXmlStream == null){
 			configXmlStream = ReflectUtil.getResourceAsStream(configXmlPath);
 		}
-		XMLToObject xmlToObject = XMLToObject.getInstance();
 		if(configXmlStream == null){
 			throw new FoxBPMException("configXmlPath文件未发现，请检查！");
 		}
 		try{
-			FoxBPMConfig expandConfig = (FoxBPMConfig)xmlToObject.transform(configXmlStream, FoxBPMConfig.class, false);
-			foxBpmConfig.addObject(expandConfig);
+			FoxBPMConfig expandConfig = configUtil.parsecfg(configXmlStream);
+			foxBpmConfig.addConfig(expandConfig);
 		}catch(Exception ex){
 			if(ex instanceof FoxBPMException){
 				throw (FoxBPMException)ex;
@@ -767,10 +763,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	public Map<String, AbstractCommandFilter> getCommandFilterMap() {
 		return commandFilterMap;
-	}
-	
-	public BizDataObjectConfig getBizDataObjectConfig() {
-		return bizDataObjectConfig;
 	}
 	
 	public List<ProcessEngineConfigurator> getConfigurators() {
