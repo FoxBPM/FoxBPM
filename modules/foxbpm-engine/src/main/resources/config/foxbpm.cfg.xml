@@ -1,27 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <foxbpmconfig:FoxBPMConfig xmlns:foxbpmconfig="http://www.foxbpm.org/foxbpmconfig">
-	<resourcePathConfig>
-
-		<resourcePath id="foxbpmflowconnector" name="流程连接器路径"
-			type="flowConnector" projectName="foxbpm-connector"
-			virtualPath="src/main/java/org/foxbpm/connector/flowconnector/" src="org/foxbpm/connector/flowconnector/" />
-		<resourcePath id="foxbpmactorconnector" name="处理者选择器路径"
-			type="actorConnector" projectName="foxbpm-connector"
-			virtualPath="src/main/java/org/foxbpm/connector/actorconnector/" src="org/foxbpm/connector/actorconnector/" />
-
-		<!-- <resourcePath id="foxbpmflow-template" name="foxbpmflow-template" 
-			projectName="foxbpm-engine" src="template/flowtemplate/" virtualPath="src/main/resources/template/flowtemplate/" 
-			/> -->
-
-	</resourcePathConfig>
-	<scriptLanguageConfig selected="Groovy">
-		<scriptLanguage id="BeanShell"
-			classImpl="org.foxbpm.engine.impl.scriptlanguage.BeanShellScriptLanguageMgmtImpl" />
-		<scriptLanguage id="Groovy"
-			classImpl="org.foxbpm.engine.impl.scriptlanguage.GroovyScriptLanguageMgmtImpl" />
-	</scriptLanguageConfig>
-
-	<taskCommandConfig isAutoClaim="false">
+	<taskCommands>
 		<taskCommandDefinition id="general" name="通用"
 			isEnabled="true" type="toDoTasks"
 			command="org.foxbpm.engine.impl.task.command.GeneralTaskCommand" cmd="org.foxbpm.engine.impl.task.cmd.CompleteGeneralTaskCmd"
@@ -343,36 +322,21 @@
 		<taskCommandDefinition id="receiveEnd" name="等待结束"
 			isEnabled="true" type="system" />
 
-	</taskCommandConfig>
+	</taskCommands>
 
-	<sysMailConfig selected="FoxBPM邮箱">
-		<mailInfo mailAddress="kenshin@wisedu.com" mailName="FoxBPM邮箱"
-			smtpHost="mail.widedu.com.cn" smtpPort="25" userName="kenshin"
-			password="kenshin" />
-	</sysMailConfig>
-
-	<connectionManagementConfig selected="General">
-		<connectionManagement id="General" name="通用连接管理"
-			classImpl="com.founder.fix.fixflow.expand.database.GeneralConnectionManagement" />
-	</connectionManagementConfig>
-	<eventListenerConfig>
-		<eventListener eventType="node-enter"
+	<eventListeners>
+		<eventListener id="flowNodeTrackListener-node-enter" eventType="node-enter"
 			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" />
-		<eventListener eventType="sequenceflow-take"
+		<eventListener id="SequenceTrackEventListener-sequenceflow-take" eventType="sequenceflow-take" 
 			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.SequenceTrackEventListener" />
-		<eventListener eventType="process-start"
+		<eventListener id="startEventTaskListener-process-start" eventType="process-start"
 			listenerClass="org.foxbpm.engine.impl.listener.task.StartEventTaskListener" />
-		<eventListener eventType="process-end"
+		<eventListener id="endEventTaskListener-process-end" eventType="process-end"
 			listenerClass="org.foxbpm.engine.impl.listener.task.EndEventTaskListener" />
-		<!-- <eventListener eventType="process-start"
-			listenerClass="org.foxbpm.engine.impl.event.UpdateBizTableListener" />
-		<eventListener eventType="process-end"
-			listenerClass="org.foxbpm.engine.impl.event.UpdateBizTableListener" />	 -->
-	</eventListenerConfig>
+	</eventListeners>
 
-	<bizDataObjectConfig>
+	<bizDataObjects>
 		<dataObjectBehavior id="dataBaseMode" name="数据库表模R式"
 			behavior="org.foxbpm.engine.impl.datavariable.BizDataObjectBehaviorImpl" />
-
-	</bizDataObjectConfig>
+	</bizDataObjects>
 </foxbpmconfig:FoxBPMConfig>

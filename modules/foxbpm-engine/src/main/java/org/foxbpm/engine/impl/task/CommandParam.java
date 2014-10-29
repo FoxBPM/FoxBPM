@@ -19,20 +19,19 @@ package org.foxbpm.engine.impl.task;
 
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
-import org.foxbpm.engine.task.CommandParam;
 import org.foxbpm.engine.task.CommandParamType;
 
 /**
- * 任务命令参数
  * @author kenshin
+ * 
  */
-public class CommandParamImpl implements CommandParam {
+public class CommandParam {
 	
 	protected String key;
 	
-	
-
 	protected String name;
+	
+	protected String value;
 	
 	protected String description;
 	
@@ -45,51 +44,56 @@ public class CommandParamImpl implements CommandParam {
 	public String getKey() {
 		return key;
 	}
-
+	
 	public void setKey(String key) {
 		this.key = key;
 	}
-
+	
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public String getDescription() {
 		return description;
 	}
-
+	
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	
 	public CommandParamType getBizType() {
 		return bizType;
 	}
-
-	public void setBizType(CommandParamType bizType) {
-		this.bizType = bizType;
+	
+	public void setBizType(String bizType) {
+		this.bizType = CommandParamType.valueOf(bizType);
 	}
-
+	
 	public String getDataType() {
 		return dataType;
 	}
-
+	
 	public void setDataType(String dataType) {
 		this.dataType = dataType;
 	}
-
+	
 	public Expression getExpression() {
 		return expression;
 	}
-
+	
 	public void setExpression(String expression) {
 		this.expression = new ExpressionImpl(expression);
 	}
 	
+	public String getValue() {
+		return value;
+	}
 	
-
+	public void setValue(String value) {
+		this.value = value;
+	}
 }

@@ -13,24 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author yangguangftlp
+ * @author kenshin
  */
-package org.foxbpm.engine.config;
+package org.foxbpm.engine.impl.connector;
 
-/**
- * 常量类
- * 
- * @author yangguangftlp
- * @date 2014年10月27日
- */
-public class EventListenerConfig {
-	protected EventListenerImpl[] eventListener;
-	
-	public EventListenerImpl[] getEventListener() {
-		return eventListener;
-	}
-	
-	public void setEventListener(EventListenerImpl[] eventListener) {
-		this.eventListener = eventListener;
-	}
+public interface FlowConnector extends ConnectorDefinition{
+
 }

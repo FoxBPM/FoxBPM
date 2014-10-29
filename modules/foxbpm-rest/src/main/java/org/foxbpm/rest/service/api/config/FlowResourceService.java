@@ -48,6 +48,7 @@ public class FlowResourceService {
 		generators.add(new ConfigGenerator());
 		generators.add(new DataObjectCacheGenerator());
 		generators.add(new GroupDefinitionsCacheGenerator());
+		generators.add(new TaskCommandDefinitionsGenerator());
 	}
 	public void generateFlowResouceZipFile(){
 		ZipOutputStream out = null;

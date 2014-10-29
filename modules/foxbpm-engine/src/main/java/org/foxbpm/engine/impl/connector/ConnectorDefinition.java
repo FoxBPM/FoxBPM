@@ -13,18 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author yangguangftlp
+ * @author kenshin
  */
-package org.foxbpm.engine.datavariable;
+package org.foxbpm.engine.impl.connector;
 
-/**
- * 数据变量配置
- * 
- * @author yangguangftlp
- * @date 2014年10月27日
- */
-public interface DataObjectBehavior {
-	String getId();
-	String getName();
-	String getBehavior();
+public interface ConnectorDefinition {
+
+	String getXmlPath();
+	
+	String getPngPath();
+	
 }

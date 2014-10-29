@@ -13,25 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author yangguangftlp
+ * @author kenshin
  */
-package org.foxbpm.engine.config;
+package org.foxbpm.engine.impl.connector;
 
-/**
- * 常量类
- * 
- * @author yangguangftlp
- * @date 2014年10月27日
- */
-public class BizDataObjectConfig {
-	protected DataObjectBehaviorImpl dataObjectBehavior;
-	
-	public DataObjectBehaviorImpl getDataObjectBehavior() {
-		return dataObjectBehavior;
-	}
-	
-	public void setDataObjectBehavior(DataObjectBehaviorImpl dataObjectBehavior) {
-		this.dataObjectBehavior = dataObjectBehavior;
-	}
-	
+public interface ActorConnector extends ConnectorDefinition{
+
 }

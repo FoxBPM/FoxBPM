@@ -15,31 +15,16 @@
  * 
  * @author yangguangftlp
  */
-package org.foxbpm.engine.config;
-
-import org.foxbpm.engine.event.EventListener;
+package org.foxbpm.engine.datavariable;
 
 /**
- * 常量类
+ * 数据变量配置
  * 
  * @author yangguangftlp
  * @date 2014年10月27日
  */
-public class EventListenerImpl implements EventListener {
-	
-	private String eventType;
-	private String listenerClass;
-	
-	public String getEventType() {
-		return eventType;
-	}
-	public void setEventType(String eventType) {
-		this.eventType = eventType;
-	}
-	public String getListenerClass() {
-		return listenerClass;
-	}
-	public void setListenerClass(String listenerClass) {
-		this.listenerClass = listenerClass;
-	}
+public interface DataObjectDefinition {
+	String getId();
+	String getName();
+	String getBehavior();
 }

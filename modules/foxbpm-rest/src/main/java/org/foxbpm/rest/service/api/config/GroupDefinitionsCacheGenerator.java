@@ -20,7 +20,7 @@ public class GroupDefinitionsCacheGenerator implements IZipGenerator {
 	private static Logger log = LoggerFactory.getLogger(GroupDefinitionsCacheGenerator.class);
 	 
 	public void generate(ZipOutputStream out) {
-		// TODO Auto-generated method stub
+		log.debug("开始处理GroupDefinitions.data...");
 		try{
 			List<GroupDefinition> groupDefinitions = FoxBpmUtil.getProcessEngine().getIdentityService().getAllGroupDefinitions();
 			Map<String,Object> resultMap = new HashMap<String, Object>();

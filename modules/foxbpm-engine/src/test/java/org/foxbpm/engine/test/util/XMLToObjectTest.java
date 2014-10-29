@@ -17,12 +17,9 @@
  */
 package org.foxbpm.engine.test.util;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.io.SAXReader;
 import org.foxbpm.engine.config.FoxBPMConfig;
+import org.foxbpm.engine.impl.util.FoxBPMCfgParseUtil;
 import org.foxbpm.engine.impl.util.ReflectUtil;
-import org.foxbpm.engine.impl.util.XMLToObject;
 import org.junit.Test;
 
 /**
@@ -34,7 +31,7 @@ import org.junit.Test;
 public class XMLToObjectTest {
 	@Test
 	public void testTransform() {
-		SAXReader reader = new SAXReader();
+		/*SAXReader reader = new SAXReader();
 		Document doc;
 		try {
 			doc = reader.read(ReflectUtil.getResourceAsStream("org/foxbpm/foxbpm.cfg.xml"));
@@ -42,7 +39,12 @@ public class XMLToObjectTest {
 			System.out.println(a);
 		} catch (DocumentException e) {
 			e.printStackTrace();
-		}
+		}*/
+	};
+	@Test
+	public void testPase() {
+		FoxBPMConfig a = FoxBPMCfgParseUtil.getInstance().parsecfg(ReflectUtil.getResourceAsStream("org/foxbpm/foxbpm.cfg.xml"));
+		System.out.println(a);
 	};
 	
 }
