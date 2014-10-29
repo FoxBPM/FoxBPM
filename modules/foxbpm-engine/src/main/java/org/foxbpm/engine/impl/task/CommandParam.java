@@ -67,8 +67,8 @@ public class CommandParam {
 		return bizType;
 	}
 
-	public void setBizType(CommandParamType bizType) {
-		this.bizType = bizType;
+	public void setBizType(String bizType) {
+		this.bizType = CommandParamType.valueOf(bizType);
 	}
 
 	public String getDataType() {

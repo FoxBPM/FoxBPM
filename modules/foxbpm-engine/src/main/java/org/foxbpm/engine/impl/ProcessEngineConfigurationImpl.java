@@ -189,12 +189,24 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	 */
 	protected InputStream configXmlStream;
 	
+	/**
+	 * 邮件服务器地址
+	 */
 	protected String mailServerAddress;
 	
+	/**
+	 * 邮件服务器端口
+	 */
 	protected String mailServerPort;
 	
+	/**
+	 * 邮件服务器用户名
+	 */
 	protected String mailUserName;
 	
+	/**
+	 * 邮件服务器密码
+	 */
 	protected String mailPassword;
 	
 	/**
@@ -238,9 +250,11 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		initConfigurators();
 		configuratorsBeforeInit();
 		initExceptionResource();
+		//优先加载扩展文件
+		initExpandConfig();
 		//加载foxbpm.cfg.xml配置文件，配置了引擎默认配置。
 		initEngineConfig();
-		initExpandConfig();
+		
 		initCache();
 //		initDataSource();
 		//加载sessionFactory
@@ -408,7 +422,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 	
 	protected void initGroupDefinitions() {
-		if (groupDefinitions == null || groupDefinitions.isEmpty()) {
+		if (groupDefinitions == null) {
+			groupDefinitions = new ArrayList<GroupDefinition>();
 			groupDefinitions.add(new GroupDeptImpl(Constant.DEPT_TYPE, "部门"));
 			groupDefinitions.add(new GroupRoleImpl(Constant.ROLE_TYPE, "角色"));
 		}
@@ -495,13 +510,13 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	protected void initEngineConfig(){
 		XMLToObject xmlToObject = XMLToObject.getInstance();
-		
 		InputStream configStream = ReflectUtil.getResourceAsStream("config/foxbpm.cfg.xml");
 		if(configStream == null){
 			throw new FoxBPMException("config/foxbpm.cfg.xml文件丢失，请检查jar包或相关配置！");
 		}
 		try{
-			this.foxBpmConfig = (FoxBPMConfig)xmlToObject.transform(configStream, FoxBPMConfig.class, false);
+			FoxBPMConfig tmpfoxBpmConfig = (FoxBPMConfig)xmlToObject.transform(configStream, FoxBPMConfig.class, false);
+			foxBpmConfig.addObject(tmpfoxBpmConfig);
 		}catch(Exception ex){
 			if(ex instanceof FoxBPMException){
 				throw (FoxBPMException)ex;
@@ -525,6 +540,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		}
 		try{
 			FoxBPMConfig expandConfig = (FoxBPMConfig)xmlToObject.transform(configXmlStream, FoxBPMConfig.class, false);
+			foxBpmConfig.addObject(expandConfig);
 		}catch(Exception ex){
 			if(ex instanceof FoxBPMException){
 				throw (FoxBPMException)ex;

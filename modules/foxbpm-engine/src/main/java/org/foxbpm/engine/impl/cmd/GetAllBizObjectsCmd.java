@@ -26,7 +26,6 @@ import java.util.Map;
 import org.foxbpm.engine.config.BizDataObjectConfig;
 import org.foxbpm.engine.datavariable.BizDataObjectBehavior;
 import org.foxbpm.engine.datavariable.DataObjectDefinition;
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.datavariable.BizDataObject;
 import org.foxbpm.engine.impl.datavariable.DataObjectDefinitionImpl;
@@ -48,7 +47,7 @@ public class GetAllBizObjectsCmd implements Command<List<Map<String,Object>>> {
 		ProcessEngineConfigurationImpl processEngine = commandContext.getProcessEngineConfigurationImpl();
 		BizDataObjectConfig bizDataObjectConfig = processEngine.getBizDataObjectConfig();
 		if (null == bizDataObjectConfig) {
-			throw new FoxBPMException("获取业务数据对象配置为空!");
+			return Collections.emptyList();
 		}
 		List<DataObjectDefinitionImpl> dataObjBehaviorList = bizDataObjectConfig.getDataObjectDefinitions();
 	

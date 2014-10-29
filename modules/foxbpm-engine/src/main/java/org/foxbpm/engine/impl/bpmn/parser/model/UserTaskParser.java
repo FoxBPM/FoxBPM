@@ -29,7 +29,6 @@ import org.foxbpm.engine.impl.task.CommandParam;
 import org.foxbpm.engine.impl.task.FormParam;
 import org.foxbpm.engine.impl.task.TaskCommandImpl;
 import org.foxbpm.engine.impl.task.TaskDefinition;
-import org.foxbpm.engine.task.CommandParamType;
 import org.foxbpm.model.BaseElement;
 import org.foxbpm.model.CommandParameter;
 import org.foxbpm.model.Connector;
@@ -68,7 +67,7 @@ public class UserTaskParser extends TaskParser {
 					commandParamEngine.setKey(param.getKey());
 					commandParamEngine.setName(param.getName());
 					commandParamEngine.setDescription(param.getDescription());
-					commandParamEngine.setBizType(CommandParamType.valueOf(param.getBizType()));
+					commandParamEngine.setBizType(param.getBizType());
 					commandParamEngine.setDataType(param.getDataType());
 					commandParamEngine.setExpression(param.getExpression());
 					taskCommandNew.getCommandParams().add(commandParamEngine);

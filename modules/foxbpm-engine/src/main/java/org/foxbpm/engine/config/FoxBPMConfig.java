@@ -24,4 +24,8 @@ public class FoxBPMConfig {
 	public void setBizDataObject(BizDataObjectConfig bizDataObject) {
 		this.bizDataObject = bizDataObject;
 	}
+	
+	public void addObject(FoxBPMConfig object){
+		
+	}
 }
