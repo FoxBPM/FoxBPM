@@ -74,14 +74,20 @@ var pagefunction = function() {
 									"createdCell" : function(td, cellData,
 											rowData, row, col) {
 
-										if (rowData.priority == "0") {
-											$(td).html("<span class='badge'>低</span>");
+										if (rowData.priority == "20") {
+											$(td).html("<span class='badge bg-color-blueLight'>非常低</span>");
+										}
+										if (rowData.priority == "40") {
+											$(td).html("<span class='badge bg-color-blue'>低</span>");
 										}
 										if (rowData.priority == "50") {
-											$(td).html("<span class='badge bg-color-greenLight'>中</span>");
+											$(td).html("<span class='badge bg-color-greenLight'>一般</span>");
+										}
+										if (rowData.priority == "80") {
+											$(td).html("<span class='badge bg-color-redLight'>高</span>");
 										}
 										if (rowData.priority == "100") {
-											$(td).html("<span class='badge bg-color-red'>高</span>");
+											$(td).html("<span class='badge bg-color-red'>非常高</span>");
 										}
 									}
 								},
@@ -254,7 +260,11 @@ function openTaskForm(url,dataId,taskId,processInstanceId){
 	//测试时暂时用报销的表单代替
 	url = "portal/expense/editExpense.jsp";
 	var formUrl = url+"?dataId="+dataId+"&taskId="+taskId+"&processInstanceId="+processInstanceId+"&refresh="+new Date();
-	openModalForm(formUrl,505);
+	var operResult = openModalForm(formUrl,505);  
+//		if(formCommit){
+//			pagefunction.searchTodoTask();
+//		} 
+	
 }
 
 function showDiagram(processDefinitionKey,processInstanceId){ 

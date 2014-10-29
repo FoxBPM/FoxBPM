@@ -332,6 +332,7 @@ public class TaskServiceTest extends AbstractFoxBpmTestCase {
 		expandTaskCommand.setBusinessKey("bizKey");
 		expandTaskCommand.setCommandType("startandsubmit");
 		expandTaskCommand.setTaskCommandId("HandleCommand_1");
+		//expandTaskCommand.addPersistenceVariable("variableKey", "123");
 		taskService.expandTaskComplete(expandTaskCommand, null);
 		
 		

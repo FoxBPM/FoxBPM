@@ -61,7 +61,7 @@ public class SelectDepartmentTest extends AbstractFoxBpmTestCase {
 		runtimeService.startProcessInstanceByKey("SelectDepartmentTest_1");
 
 		String groupId = null;
-		Task task = (Task) taskService.createTaskQuery().processDefinitionKey("SelectDepartmentTest_1").singleResult();
+		Task task = (Task) taskService.createTaskQuery().processDefinitionKey("SelectDepartmentTest_1").taskNotEnd().singleResult();
 		System.out.println(task.getId());
 		String taskId = task.getId();
 		SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_run_taskidentitylink WHERE TASK_ID = '" + taskId + "'");

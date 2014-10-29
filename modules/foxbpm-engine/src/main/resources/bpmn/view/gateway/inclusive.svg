@@ -22,7 +22,7 @@
 	        <stop stop-opacity="1" stop-color="rgb(255,255,201)" offset="100%" />
      	</linearGradient>
 	</defs>
-	<path d="M 0,24 L 24,0 L 48,24 L 24,48 ZM0 24" id="bg_frame" fill="url(#background) white" stroke="black" style="stroke-width:1" />
+	<path d="M 0,24 L 24,0 L 48,24 L 24,48 ZM0 24" id="bg_frame" fill="url(#background) white" stroke-width="1"  stroke="black" />
     <circle id="circle" stroke="rgb(100,100,100)" cx="24" cy="24" r="12" style="fill:none;stroke-width:3" />
 	<text id="text_name" x="26" y="26" oryx:align="left top"/>
 	

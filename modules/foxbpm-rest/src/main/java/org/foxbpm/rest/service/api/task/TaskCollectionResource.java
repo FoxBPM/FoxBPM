@@ -37,6 +37,7 @@ import org.foxbpm.rest.common.RestConstants;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.DataResult;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
+
 import org.restlet.data.Form;
 import org.restlet.data.Status;
 import org.restlet.ext.servlet.ServletUtils;
@@ -117,13 +118,15 @@ public class TaskCollectionResource extends AbstractRestResource {
 		}
 		
 		if (queryNames.contains("assigneed")) {
-			String unassigneed = getQueryParameter("processDefinitionId", queryForm);
-			if ("0".equals(unassigneed)) {
+			String assigneedFlag = getQueryParameter("assigneed", queryForm);
+			if ("0".equals(assigneedFlag)) {
 				taskQuery.taskUnnassigned();
-			} else if ("1".equals(unassigneed)) {
-				// 已领取
+			} else if ("1".equals(assigneedFlag)) {
+				//领取
+				taskQuery.taskAssigned();
 			} else {
 				// 全部
+				taskQuery.ignorTaskAssigned();
 			}
 			
 		}
@@ -131,7 +134,8 @@ public class TaskCollectionResource extends AbstractRestResource {
 		if (queryNames.contains("subjectLike")) {
 			taskQuery.taskSubjectLike(parseLikeValue(getQueryParameter("subjectLike", queryForm)));
 		}
-		
+		//任务主题和 发起人共用一个查询条件
+		taskQuery.subjectUnionInitiator();
 		if (queryNames.contains("initiator")) {
 			taskQuery.initiator(getQueryParameter("initiator", queryForm));
 		}

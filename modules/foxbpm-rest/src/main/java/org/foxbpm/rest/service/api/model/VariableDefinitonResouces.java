@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.foxbpm.engine.impl.datavariable.DataVariableDefinition;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.model.DataVariableDefinition;
 import org.foxbpm.rest.common.RestConstants;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.DataResult;
@@ -49,6 +49,6 @@ public class VariableDefinitonResouces extends AbstractRestResource {
 		DataResult result = new DataResult();
 		result.setData(results);
 		result.setTotal(dataVariableDefinitions.size());
-		return result;
+		return null;
 	}
 }

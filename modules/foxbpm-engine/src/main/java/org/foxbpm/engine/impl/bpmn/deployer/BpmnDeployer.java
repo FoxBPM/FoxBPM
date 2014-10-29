@@ -24,7 +24,6 @@ import java.util.List;
 import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.impl.Context;
-import org.foxbpm.engine.impl.bpmn.behavior.EventDefinition;
 import org.foxbpm.engine.impl.bpmn.behavior.StartEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.TimerEventBehavior;
 import org.foxbpm.engine.impl.entity.DeploymentEntity;
@@ -38,6 +37,9 @@ import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
+import org.foxbpm.model.EventDefinition;
+import org.foxbpm.model.StartEvent;
+import org.foxbpm.model.TimerEventDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -191,12 +193,15 @@ public class BpmnDeployer extends AbstractDeployer {
 			kernelFlowNodeBehavior = kernelFlowNodeImpl.getKernelFlowNodeBehavior();
 			// 获取START EVENT节点
 			if (kernelFlowNodeBehavior instanceof StartEventBehavior) {
-				eventDefinitions = ((StartEventBehavior) kernelFlowNodeBehavior).getEventDefinitions();
-				for (EventDefinition eventDefinition : eventDefinitions) {
-					// 如果开始节点存在自动启动属性，那么就调度或者刷新 工作任务
-					if (eventDefinition instanceof TimerEventBehavior) {
-						Object[] params = new String[]{processDefinition.getId(), processDefinition.getKey(), processDefinition.getName(), kernelFlowNodeImpl.getId()};
-						eventDefinition.execute(null, TimerEventBehavior.EVENT_TYPE_START, params);
+				eventDefinitions = ((StartEvent)((StartEventBehavior) kernelFlowNodeBehavior).getBaseElement()).getEventDefinitions();
+				if(eventDefinitions != null){
+					for (EventDefinition eventDefinition : eventDefinitions) {
+						// 如果开始节点存在自动启动属性，那么就调度或者刷新 工作任务
+						if (eventDefinition instanceof TimerEventDefinition) {
+							TimerEventBehavior timerEventBehavior = new TimerEventBehavior((TimerEventDefinition)eventDefinition);
+							Object[] params = new String[]{processDefinition.getId(), processDefinition.getKey(), processDefinition.getName(), kernelFlowNodeImpl.getId()};
+							timerEventBehavior.execute(null, TimerEventBehavior.EVENT_TYPE_START, params);
+						}
 					}
 				}
 			}

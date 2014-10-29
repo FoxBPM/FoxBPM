@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.Context;
-import org.foxbpm.engine.impl.connector.Connector;
+import org.foxbpm.engine.impl.connector.ConnectorListener;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.ClaimType;
@@ -65,7 +65,7 @@ public class TaskDefinition implements Serializable {
 	 */
 	private List<TaskCommand> taskCommands = new ArrayList<TaskCommand>();
 
-	protected List<Connector> actorConnectors = new ArrayList<Connector>();
+	protected List<ConnectorListener> actorConnectors = new ArrayList<ConnectorListener>();
 
 	public Expression getTaskSubject() {
 		return taskSubject;
@@ -109,11 +109,11 @@ public class TaskDefinition implements Serializable {
 
 
 
-	public List<Connector> getActorConnectors() {
+	public List<ConnectorListener> getActorConnectors() {
 		return actorConnectors;
 	}
 
-	public void setActorConnectors(List<Connector> actorConnectors) {
+	public void setActorConnectors(List<ConnectorListener> actorConnectors) {
 		this.actorConnectors = actorConnectors;
 	}
 

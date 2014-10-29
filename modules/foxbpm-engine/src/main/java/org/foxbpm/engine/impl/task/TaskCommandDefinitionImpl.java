@@ -19,11 +19,10 @@ package org.foxbpm.engine.impl.task;
 
 import java.util.List;
 
-import org.foxbpm.engine.task.CommandParam;
 import org.foxbpm.engine.task.TaskCommandDefinition;
 
 public class TaskCommandDefinitionImpl implements TaskCommandDefinition {
-
+	
 	/**
 	 * 命令定义ID
 	 */
@@ -37,17 +36,17 @@ public class TaskCommandDefinitionImpl implements TaskCommandDefinition {
 	/**
 	 * 参数实现类
 	 */
-	private String commandClass;
+	private String command;
 	
 	/**
 	 * 执行实现类
 	 */
-	private String cmdClass;
+	private String cmd;
 	
 	/**
 	 * 过滤器实现类
 	 */
-	private String filterClass;
+	private String filter;
 	
 	/**
 	 * 命令描述
@@ -63,51 +62,39 @@ public class TaskCommandDefinitionImpl implements TaskCommandDefinition {
 	 * 命令参数
 	 */
 	private List<CommandParam> commandParams;
-
+	
 	public String getId() {
 		return id;
 	}
-
+	
 	public void setId(String id) {
 		this.id = id;
 	}
-
+	
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public String getCommandClass() {
-		return commandClass;
+		return command;
 	}
-
-	public void setCommandClass(String commandClass) {
-		this.commandClass = commandClass;
-	}
-
+	
 	public String getCmdClass() {
-		return cmdClass;
+		return cmd;
 	}
-
-	public void setCmdClass(String cmdClass) {
-		this.cmdClass = cmdClass;
-	}
-
+	
 	public String getFilterClass() {
-		return filterClass;
+		return filter;
 	}
-
-	public void setFilterClass(String filterClass) {
-		this.filterClass = filterClass;
-	}
-
+	
 	public String getDescription() {
 		return description;
 	}
-
+	
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -115,7 +102,7 @@ public class TaskCommandDefinitionImpl implements TaskCommandDefinition {
 	public List<CommandParam> getCommandParam() {
 		return commandParams;
 	}
-
+	
 	public void setCommandParam(List<CommandParam> commandParams) {
 		this.commandParams = commandParams;
 	}
@@ -124,9 +111,24 @@ public class TaskCommandDefinitionImpl implements TaskCommandDefinition {
 		this.type = type;
 	}
 	
-	 
 	public String getType() {
 		return type;
 	}
-
+	
+	public void setCommand(String command) {
+		this.command = command;
+	}
+	
+	public void setCmd(String cmd) {
+		this.cmd = cmd;
+	}
+	
+	public void setFilter(String filter) {
+		this.filter = filter;
+	}
+	
+	public void setCommandParams(List<CommandParam> commandParams) {
+		this.commandParams = commandParams;
+	}
+	
 }

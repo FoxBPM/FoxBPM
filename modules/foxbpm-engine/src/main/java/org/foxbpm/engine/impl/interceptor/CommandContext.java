@@ -18,6 +18,7 @@
 package org.foxbpm.engine.impl.interceptor;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -48,7 +49,7 @@ import org.slf4j.LoggerFactory;
  * @author kenshin
  */
 public class CommandContext {
-
+	
 	Logger log = LoggerFactory.getLogger(CommandContext.class);
 	protected Command<?> command;
 	protected Map<Class<?>, SessionFactory> sessionFactories;
@@ -57,69 +58,67 @@ public class CommandContext {
 	protected Throwable exception = null;
 	protected ProcessEngineConfigurationImpl processEngineConfigurationImpl;
 	protected boolean isCommit = true;
-
-	public CommandContext(Command<?> command,
-			ProcessEngineConfigurationImpl processEngineConfigurationImpl) {
+	
+	public CommandContext(Command<?> command, ProcessEngineConfigurationImpl processEngineConfigurationImpl) {
 		this.command = command;
 		this.processEngineConfigurationImpl = processEngineConfigurationImpl;
 		sessionFactories = processEngineConfigurationImpl.getSessionFactories();
 	}
-
+	
 	public ProcessEngineConfigurationImpl getProcessEngineConfigurationImpl() {
 		return processEngineConfigurationImpl;
 	}
-
+	
 	@SuppressWarnings({"unchecked"})
 	public <T> T getSession(Class<T> sessionClass) {
 		Session session = sessions.get(sessionClass);
 		if (session == null) {
 			SessionFactory sessionFactory = sessionFactories.get(sessionClass);
 			if (sessionFactory == null) {
-				throw new FoxBPMClassLoadingException("no session factory configured for "
-						+ sessionClass.getName());
+				throw new FoxBPMClassLoadingException("no session factory configured for " + sessionClass.getName());
 			}
 			session = sessionFactory.openSession();
 			sessions.put(sessionClass, session);
 		}
 		return (T) session;
 	}
-
+	
 	public DeploymentEntityManager getDeploymentEntityManager() {
 		return getSession(DeploymentEntityManager.class);
 	}
-
+	
 	public ResourceManager getResourceManager() {
 		return getSession(ResourceManager.class);
 	}
-
+	
 	public ProcessDefinitionManager getProcessDefinitionManager() {
 		return getSession(ProcessDefinitionManager.class);
 	}
-
+	
 	public ProcessInstanceManager getProcessInstanceManager() {
 		return getSession(ProcessInstanceManager.class);
 	}
-
+	
 	public TaskManager getTaskManager() {
 		return getSession(TaskManager.class);
 	}
-
+	
 	public IdentityLinkManager getIdentityLinkManager() {
 		return getSession(IdentityLinkManager.class);
 	}
-
+	
 	public AgentManager getAgentManager() {
 		return getSession(AgentManager.class);
 	}
-
+	
 	public VariableManager getVariableManager() {
 		return getSession(VariableManager.class);
 	}
-
+	
 	public TokenManager getTokenManager() {
 		return getSession(TokenManager.class);
 	}
-
+	
 	public RunningTrackManager getRunningTrackManager() {
 		return getSession(RunningTrackManager.class);
 	}
@@ -127,44 +126,45 @@ public class CommandContext {
 	public ProcessOperatingManager getProcessOperatingManager() {
 		return getSession(ProcessOperatingManager.class);
 	}
-
+	
 	public HistoryManager getHistoryManager() {
 		return getSession(HistoryManager.class);
 	}
-
+	
 	public UserDefinition getUserEntityManager() {
 		return getProcessEngineConfigurationImpl().getUserDefinition();
 	}
-
+	
 	public Command<?> getCommand() {
 		return command;
 	}
-
+	
 	public ISqlSession getSqlSession() {
 		return getSession(ISqlSession.class);
 	}
-
+	
 	public void flushSession() {
-		Set<Entry<Class<?>, Session>> entrySet = sessions.entrySet();
-		Iterator<Entry<Class<?>, Session>> iterator = entrySet.iterator();
-		while(iterator.hasNext()){
-			Entry<Class<?>, Session> next = iterator.next();
-			Session session = next.getValue();
-			session.flush();
+		// 这里处理sessions内容被修改
+		Set<Entry<Class<?>, Session>> entrySet = new HashSet<Map.Entry<Class<?>, Session>>(sessions.entrySet());
+		// 这里清空,后面可能会新增
+		sessions.clear();
+		for (Iterator<Entry<Class<?>, Session>> iterator = entrySet.iterator(); iterator.hasNext();) {
+			iterator.next().getValue().flush();
 		}
-//		for (Session session : sessions.values()) {
-//			session.flush();
-//		}
+		// 继续刷新
+		for (Iterator<Entry<Class<?>, Session>> iterator = sessions.entrySet().iterator(); iterator.hasNext();) {
+			iterator.next().getValue().flush();
+		}
 	}
-
+	
 	public Throwable getException() {
 		return exception;
 	}
-
+	
 	public void setCommit(boolean isCommit) {
 		this.isCommit = isCommit;
 	}
-
+	
 	public void close() {
 		try {
 			if (exception == null) {
@@ -175,7 +175,7 @@ public class CommandContext {
 		} finally {
 			closeSessions();
 		}
-
+		
 		if (exception != null) {
 			if (exception instanceof Error) {
 				throw (Error) exception;
@@ -185,13 +185,13 @@ public class CommandContext {
 				throw new FoxBPMException("exception while executing command " + command, exception);
 			}
 		}
-
+		
 	}
-
+	
 	public void closeSessions() {
 		Set<Entry<Class<?>, Session>> entrySet = sessions.entrySet();
 		Iterator<Entry<Class<?>, Session>> iterator = entrySet.iterator();
-		while(iterator.hasNext()){
+		while (iterator.hasNext()) {
 			Entry<Class<?>, Session> next = iterator.next();
 			Session session = next.getValue();
 			try {
@@ -200,22 +200,20 @@ public class CommandContext {
 				exception(exception);
 			}
 		}
-//		for (Session session : sessions.values()) {
-//			try {
-//				session.close();
-//			} catch (Throwable exception) {
-//				exception(exception);
-//			}
-//		}
+		// for (Session session : sessions.values()) {
+		// try {
+		// session.close();
+		// } catch (Throwable exception) {
+		// exception(exception);
+		// }
+		// }
 	}
-
+	
 	public void exception(Throwable e) {
 		if (this.exception == null) {
 			this.exception = e;
 		} else {
-			log.error(
-					"masked exception in command context. for root cause, see below as it will be rethrown later.",
-					exception);
+			log.error("masked exception in command context. for root cause, see below as it will be rethrown later.", exception);
 		}
 	}
 }

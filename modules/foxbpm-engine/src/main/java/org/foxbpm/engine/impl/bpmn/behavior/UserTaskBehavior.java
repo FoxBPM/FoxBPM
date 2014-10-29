@@ -18,6 +18,7 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -26,18 +27,24 @@ import java.util.Map;
 import org.foxbpm.engine.calendar.WorkCalendar;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
-import org.foxbpm.engine.impl.connector.Connector;
+import org.foxbpm.engine.impl.connector.ConnectorListener;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.event.AbstractTaskEvent;
+import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.task.FormParam;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.task.Task;
+import org.foxbpm.engine.task.TaskCommandDefinition;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
+import org.foxbpm.model.SkipStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 人工任务处理器
@@ -47,14 +54,10 @@ import org.foxbpm.kernel.runtime.ListenerExecutionContext;
  */
 public class UserTaskBehavior extends TaskBehavior {
 
+	private static Logger logger = LoggerFactory.getLogger(UserTaskBehavior.class);
 	private static final long serialVersionUID = 1L;
-
-
 	/** 任务信息定义 */
 	private TaskDefinition taskDefinition;
-
-
-	 
 	public void execute(FlowNodeExecutionContext executionContext) {
 		
 		TokenEntity token=(TokenEntity)executionContext;
@@ -123,14 +126,16 @@ public class UserTaskBehavior extends TaskBehavior {
 			task.setAssignee(token.getTaskAssignee());
 		}else{
 			/** 重新分配任务 */
-			for (Connector connector : taskDefinition.getActorConnectors()) {
+			for (ConnectorListener connector : taskDefinition.getActorConnectors()) {
 				try {
 					connector.notify((ListenerExecutionContext) executionContext);
 				} catch (Exception e) {
-					if(e instanceof FoxBPMException)
+					logger.error("执行选择人处理器失败！节点"+this.getId()+",处理器："+connector.getConnector().getConnectorInstanceId(), e);
+					if(e instanceof FoxBPMException){
 						throw (FoxBPMException)e;
+					}
 					else{
-						throw new FoxBPMException("执行选择人处理器失败！节点"+this.getId()+",处理器："+connector.getConnectorId() , e);
+						throw new FoxBPMException("执行选择人处理器失败！节点"+this.getId()+",处理器："+connector.getConnector().getConnectorInstanceId() , e);
 					}
 				}
 			}
@@ -174,6 +179,72 @@ public class UserTaskBehavior extends TaskBehavior {
 		super.cleanData(executionContext);
 	}
 
+	@Override
+	protected void skipTaskRecord(FlowNodeExecutionContext executionContext,
+			SkipStrategy skipStrategy) {
+		String skipAssignee = skipStrategy.getSkipAssignee();
+		String skipComment = skipStrategy.getSkipComment();
+ 
+		TokenEntity token = (TokenEntity)executionContext;
+
+		TaskEntity newTask = TaskEntity.createAndInsert(executionContext);
+		newTask.setCreateTime(new Date());
+		newTask.setNodeId(this.getId());
+
+		if (skipAssignee != null && !skipAssignee.equals("")) {
+			newTask.setAssignee(StringUtil.getString(new ExpressionImpl(skipAssignee).getValue(executionContext)));
+		}
+
+		newTask.setDraft(false);
+
+		Date date = new Date();
+
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.MILLISECOND, 1);
+		date = cal.getTime();
+
+		newTask.setEndTime(date);
+		newTask.setPriority(50);
+		ProcessInstanceEntity processInstance = token.getProcessInstance();
+		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity)processInstance.getProcessDefinition();
+		newTask.setProcessDefinitionId(processDefinition.getId());
+		newTask.setProcessDefinitionKey(processDefinition.getKey());
+		newTask.setProcessInitiator(processInstance.getInitiator());
+		newTask.setName(this.getName());
+		newTask.setNodeName(this.getName());
+		newTask.setProcessInstanceId(token.getProcessInstance().getId());
+		newTask.setTokenId(token.getId());
+		newTask.setProcessDefinitionName(processDefinition.getName());
+		newTask.setTaskType(Task.TYPE_FOXBPMTASK);
+		String bizKey = token.getProcessInstance().getBizKey();
+		newTask.setBizKey(bizKey);
+		newTask.setCommandId("skipNode");
+		newTask.setCommandType("skipNode");
+
+		TaskCommandDefinition taskCommandDefinition = Context.getProcessEngineConfiguration().getTaskCommandDefinition("skipNode");
+
+		if (taskCommandDefinition.getName() != null) {
+			newTask.setCommandMessage(taskCommandDefinition.getName());
+		}
+
+		if (skipComment != null && !skipComment.equals("")) {
+			newTask.setTaskComment(StringUtil.getString(new ExpressionImpl(skipComment).getValue(executionContext)));
+		}
+		
+		if(taskDefinition.getTaskSubject()==null||StringUtil.isEmpty(taskDefinition.getTaskSubject().getExpressionText())){
+			newTask.setSubject(StringUtil.getString(processDefinition.getSubject().getValue(executionContext)));
+		}else{
+			newTask.setSubject(StringUtil.getString(taskDefinition.getTaskSubject().getValue(executionContext)));
+		}
+		
+		if(StringUtil.isEmpty(newTask.getSubject())){
+			newTask.setSubject(getName());
+		}
+
+		Context.getCommandContext().getTaskManager().update(newTask);
+	}
+	
 	/**
 	 * 令牌离开节点时，强制结束所有未完成任务
 	 * @param executionContext
@@ -228,5 +299,5 @@ public class UserTaskBehavior extends TaskBehavior {
 		formUriView = getFormUri(executionContext);
 		return formUriView;
 	}
-
+	
 }

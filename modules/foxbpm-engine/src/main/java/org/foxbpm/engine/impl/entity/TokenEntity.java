@@ -107,7 +107,6 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 			for (TokenEntity tokenEntity : listResult) {
 				children.add(tokenEntity);
 			}
-			
 		}
 	}
 	

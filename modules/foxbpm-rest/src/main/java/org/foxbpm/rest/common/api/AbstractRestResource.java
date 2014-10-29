@@ -23,15 +23,11 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
@@ -42,12 +38,7 @@ import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.query.Query;
 import org.foxbpm.engine.query.QueryProperty;
 import org.foxbpm.rest.common.RestConstants;
-import org.restlet.Context;
-import org.restlet.Request;
-import org.restlet.Response;
 import org.restlet.data.Form;
-import org.restlet.engine.http.HttpRequest;
-import org.restlet.ext.servlet.internal.ServletCall;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ServerResource;
 

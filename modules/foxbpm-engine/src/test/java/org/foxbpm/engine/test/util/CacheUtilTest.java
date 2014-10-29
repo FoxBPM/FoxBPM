@@ -39,7 +39,7 @@ public class CacheUtilTest extends AbstractFoxBpmTestCase {
 		//查询一次用户后，userCache中应该存在一个user缓存对象
 		identityService.getUser("admin");
 		Cache<Object> userCache = CacheUtil.getIdentityCache();
-		Assert.assertEquals(3, ((DefaultCache<Object>)userCache).size());
+		Assert.assertEquals(1, ((DefaultCache<Object>)userCache).size());
 		CacheUtil.clearCache();
 		//清空缓存后，缓存数量应该为0
 		Assert.assertEquals(0, ((DefaultCache<ProcessDefinition>)processDefinitionCache).size());

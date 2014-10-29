@@ -18,18 +18,16 @@
 package org.foxbpm.engine.impl.bpmn.behavior;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.foxbpm.engine.impl.connector.Connector;
-import org.foxbpm.engine.impl.datavariable.DataVariableDefinition;
+import org.foxbpm.model.BaseElement;
 
-public class BaseElementBehavior  implements Serializable {
-	
+public class BaseElementBehavior implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	protected String id;
+
+	protected BaseElement baseElement;
 
 	public String getId() {
 		return id;
@@ -38,32 +36,13 @@ public class BaseElementBehavior  implements Serializable {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
-	protected List<Connector> connectors=new ArrayList<Connector>();
-	
 
-	public List<Connector> getConnectors() {
-		return connectors;
+	public BaseElement getBaseElement() {
+		return baseElement;
 	}
 
-	public void setConnectors(List<Connector> connectors) {
-		this.connectors = connectors;
+	public void setBaseElement(BaseElement baseElement) {
+		this.baseElement = baseElement;
 	}
-	
-	protected List<DataVariableDefinition> dataVariableDefinitions=new ArrayList<DataVariableDefinition>();
-
-	public List<DataVariableDefinition> getDataVariableDefinitions() {
-		return dataVariableDefinitions;
-	}
-
-	public void setDataVariableDefinitions(List<DataVariableDefinition> dataVariableDefinitions) {
-		this.dataVariableDefinitions = dataVariableDefinitions;
-	}
-	
-	
-	
-	
-
-	
 
 }

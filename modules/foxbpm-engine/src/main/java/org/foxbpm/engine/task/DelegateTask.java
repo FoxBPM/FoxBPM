@@ -37,6 +37,10 @@ public interface DelegateTask extends KernelVariableScope {
 
 	/** 任务的名称或者标题 */
 	String getName();
+	
+	/** 任务的名称或者标题 */
+	String getNodeId();
+
 
 	/** 设置任务名称 */
 	void setName(String name);

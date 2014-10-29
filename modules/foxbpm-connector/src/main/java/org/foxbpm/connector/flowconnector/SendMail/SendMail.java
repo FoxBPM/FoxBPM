@@ -21,13 +21,9 @@ import java.util.Date;
 
 import org.foxbpm.connector.mail.MailEngine;
 import org.foxbpm.connector.mail.MailEntity;
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
-import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.connector.FlowConnectorHandler;
 import org.foxbpm.engine.impl.identity.Authentication;
-import org.foxbpm.model.config.foxbpmconfig.MailInfo;
-import org.foxbpm.model.config.foxbpmconfig.SysMailConfig;
 
 /**
  * 发送邮件
@@ -51,18 +47,6 @@ public class SendMail implements FlowConnectorHandler {
 	private java.lang.String content;
 
 	public void execute(ConnectorExecutionContext executionContext) throws Exception {
-		// 获取邮件配置
-		SysMailConfig sysMailConfig = Context.getProcessEngineConfiguration().getSysMailConfig();
-		MailInfo mailInfoObj = null;
-		for (MailInfo mailInfo : sysMailConfig.getMailInfo()) {
-			if (mailInfo.getMailName().equals(sysMailConfig.getSelected())) {
-				mailInfoObj = mailInfo;
-			}
-		}
-		// 判断邮件配置信息是否为空
-		if (null == mailInfoObj) {
-			throw new FoxBPMException("系统邮件配置错误请检查流程邮件配置！");
-		}
 		MailEntity mailEntity = new MailEntity();
 		mailEntity.setMailName(title);
 		mailEntity.setMailSubject(title);

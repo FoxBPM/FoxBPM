@@ -13,9 +13,6 @@
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="d13fa99a-db54-4231-b6f5-87d77f6fc248" connectorInstanceName="所有人" errorHandling="" type="actorconnector"/>
           </foxbpm:connectorInstanceElements>
-          <foxbpm:taskPriority>
-            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_1" name="一般"><![CDATA[50]]></foxbpm:expression>
-          </foxbpm:taskPriority>
         </bpmn2:extensionElements>
       </bpmn2:potentialOwner>
     </bpmn2:userTask>

@@ -25,12 +25,13 @@ import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
+import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.identity.Authentication;
-import org.foxbpm.engine.impl.identity.PotentialStarter;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
 import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.model.PotentialStarter;
 
 /**
  * 验证用户是否由于权限发起对应流程 
@@ -76,9 +77,9 @@ public class VerificationStartUserCmd implements Command<Boolean> {
 		for(PotentialStarter starter : processStarters){
 			String tmpValue = null;
 			try{
-				tmpValue = (String)starter.getExpression().getValue(null);
+				tmpValue = (String)new ExpressionImpl(starter.getExpression()).getValue(null);
 			}catch(Exception ex){
-				throw new FoxBPMBizException("流程启动人表达式配置错误：" + starter.getExpression().getExpressionText(),ex);
+				throw new FoxBPMBizException("流程启动人表达式配置错误：" + starter.getExpression(),ex);
 			}
 			//表达式值为空，则不进行判断
 			if(StringUtil.isEmpty(tmpValue)){

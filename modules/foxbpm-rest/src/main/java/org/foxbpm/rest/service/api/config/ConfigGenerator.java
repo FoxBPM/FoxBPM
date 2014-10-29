@@ -40,7 +40,7 @@ public class ConfigGenerator implements IZipGenerator{
 	Logger log = LoggerFactory.getLogger(TemplateGenerator.class);
 	 
 	public void generate(ZipOutputStream out) {
-		log.debug("开始处理template...");
+		log.debug("开始处理 config...");
 		try{
 			String dirPath = "config";
 			URL url = this.getClass().getClassLoader().getResource(dirPath);

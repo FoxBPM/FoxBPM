@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.impl.connector.Connector;
+import org.foxbpm.engine.impl.connector.ConnectorListener;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
@@ -101,7 +101,7 @@ public class TimeExecuteConnectorCmd implements Command<KernelListener>, Seriali
 		tokenEntity.setAssignTask(this.getTaskEntity(tokenEntity));
 		
 		// 获取当前任务记录的CONNECTOR
-		Connector connector = this.getListenersFromDefinition(processDefinition);
+		ConnectorListener connector = this.getListenersFromDefinition(processDefinition);
 		if (connector == null) {
 			throw new FoxBPMException("TimeExecuteConnectorCmd自动执行连接器时候,连接器无法获取");
 		}
@@ -142,18 +142,18 @@ public class TimeExecuteConnectorCmd implements Command<KernelListener>, Seriali
 	 * @return Connector
 	 * @since 1.0.0
 	 */
-	private Connector getListenersFromDefinition(KernelProcessDefinitionImpl processDefinition) {
+	private ConnectorListener getListenersFromDefinition(KernelProcessDefinitionImpl processDefinition) {
 		List<KernelFlowNodeImpl> flowNodes = processDefinition.getFlowNodes();
 		List<KernelListener> list = null;
-		Connector tempConnector = null;
+		ConnectorListener tempConnector = null;
 		for (KernelFlowNodeImpl kernelFlowNodeImpl : flowNodes) {
 			if (StringUtils.equalsIgnoreCase(kernelFlowNodeImpl.getId(), this.nodeID)) {
 				list = kernelFlowNodeImpl.getKernelListeners().get(this.eventName);
 				if (list != null && list.size() > 0) {
 					for (KernelListener listener : list) {
-						if (listener instanceof Connector) {
-							tempConnector = (Connector) listener;
-							if (StringUtils.equalsIgnoreCase(tempConnector.getConnectorId(), this.connectorID)) {
+						if (listener instanceof ConnectorListener) {
+							tempConnector = (ConnectorListener) listener;
+							if (StringUtils.equalsIgnoreCase(tempConnector.getConnector().getConnectorInstanceId(), this.connectorID)) {
 								return tempConnector;
 							}
 						}
