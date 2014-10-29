@@ -24,7 +24,7 @@ function FlowInfor(config) {
 		});
 	};
 	function loadStatus(instanceStatus) {
-		var statusEle = $("<a class='label css-truncate-target linked-labelstyle-84b6eb'>");
+		var statusEle = $("<a id='processStatus_a' class='label css-truncate-target' style='color: rgb(28, 39, 51) !important;background-color: rgb(132, 182, 235) !important;'>");
 		statusEle.attr("href", "javascript:void(0);");
 
 		if ("running" == instanceStatus) {
@@ -35,10 +35,18 @@ function FlowInfor(config) {
 			instanceStatus = "终止";
 		} else if ("complete" == instanceStatus) {
 			instanceStatus = "正常结束";
+			statusEle
+					.attr(
+							"style",
+							"color: rgb(28, 39, 51) !important;background-color: rgb(153, 255 ,102) !important;");
 		} else {
 			instanceStatus = "未知状态";
+			statusEle
+					.attr(
+							"style",
+							"color: rgb(28, 39, 51) !important;background-color: rgb(204 ,0 ,51) !important;");
 		}
-		
+
 		statusEle.attr("title", "状态【" + instanceStatus + "】");
 		statusEle.html("状态【" + instanceStatus + "】");
 		$("#processStatus").append(statusEle);
@@ -68,11 +76,9 @@ function FlowInfor(config) {
 								if ("foxbpm_all_user" == id) {
 									imgEle.attr("src", "images/default.png");
 								} else {
-									imgEle.attr("src",
-													$this.action
-													+ "identity/users/"
-													+ users[m].name
-													+ "/picture");
+									imgEle.attr("src", $this.action
+											+ "identity/users/" + users[m].name
+											+ "/picture");
 								}
 							} else if ("role" == type) {
 								imgEle.attr("src", "images/group.png");
@@ -116,8 +122,9 @@ FlowInfor.prototype.init = function(nowStep) {
 	html += "<div class='discussion-sidebar-item sidebar-notifications'>";
 	html += "<h3 class='discussion-sidebar-heading'>Notifications</h3>";
 	html += "<div class='thread-subscription-status js-thread-subscription-status js-socket-channel js-updatable-content'>";
-	html += "<span class='mega-octicon octicon-radio-tower'></span>";
-	html += "<p class='reason'>You're receiving notifications because you're subscribed to this repository.</p>";
+	// html += "<span class='mega-octicon octicon-radio-tower'></span>";
+	// html += "<p class='reason'>You're receiving notifications because you're
+	// subscribed to this repository.</p>";
 	html += "</div>";
 	html += "</div>";
 	// 流程参入者
@@ -126,9 +133,10 @@ FlowInfor.prototype.init = function(nowStep) {
 	html += "</div>";
 	html += "</div>";
 	// 用户锁定
-	html += "<div class='discussion-sidebar-item lock-toggle'>";
-	html += "<a class='lock-toggle-link' href='javascript:void(0);'><span class='octicon octicon-lock'></span>Lock issue</a>";
-	html += "</div>";
+	// html += "<div class='discussion-sidebar-item lock-toggle'>";
+	// html += "<a class='lock-toggle-link' href='javascript:void(0);'><span
+	// class='octicon octicon-lock'></span>Lock issue</a>";
+	// html += "</div>";
 
 	$("#" + this.eleId).append(html);
 	// 加载数据
@@ -139,7 +147,7 @@ FlowInfor.prototype.loadProcessParticipant = function(participants) {
 	if (len > 0) {
 		var participationDiv = $("#partial-users-participants");
 		participationDiv.append("<h3 class='discussion-sidebar-heading'>" + len
-				+ " 流程参入者</h3>");
+				+ " 流程参与者</h3>");
 		var participationAvatarsDiv = $("<div class='participation-avatars'>");
 		var a = null;
 		var a_Img = null;
