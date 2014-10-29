@@ -20,11 +20,10 @@ package org.foxbpm.engine.impl.event;
 import org.foxbpm.engine.event.EventListener;
 
 public class EventListenerImpl implements EventListener {
-
 	
 	private String id;
 	private String eventType;
-	private String eventListenerClass;
+	private String listenerClass;
 	public String getEventType() {
 		return eventType;
 	}
@@ -32,12 +31,12 @@ public class EventListenerImpl implements EventListener {
 		this.eventType = eventType;
 	}
 	public String getListenerClass() {
-		return eventListenerClass;
-	}
-	public void setEventListenerClass(String eventListenerClass) {
-		this.eventListenerClass = eventListenerClass;
+		return listenerClass;
 	}
 	
+	public void setListenerClass(String listenerClass) {
+		this.listenerClass = listenerClass;
+	}
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -45,5 +44,5 @@ public class EventListenerImpl implements EventListener {
 	public String getId() {
 		return id;
 	}
-
+	
 }

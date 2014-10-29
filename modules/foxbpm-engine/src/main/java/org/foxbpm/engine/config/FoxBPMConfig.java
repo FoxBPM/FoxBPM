@@ -1,31 +1,38 @@
 package org.foxbpm.engine.config;
 
+import java.util.List;
+
+import org.foxbpm.engine.impl.datavariable.DataObjectDefinitionImpl;
+import org.foxbpm.engine.impl.event.EventListenerImpl;
+import org.foxbpm.engine.impl.task.TaskCommandDefinitionImpl;
+
 public class FoxBPMConfig {
 	
-	protected TaskCommandConfig taskCommands;
-	protected EventListenerConfig eventListeners;
-	protected BizDataObjectConfig bizDataObject;
+	protected List<TaskCommandDefinitionImpl> taskCommandDefinitions;
+	protected List<EventListenerImpl> eventListeners;
+	protected List<DataObjectDefinitionImpl> dataObjectDefinitions;
 	
-	public TaskCommandConfig getTaskCommands() {
-		return taskCommands;
+	public List<TaskCommandDefinitionImpl> getTaskCommandDefinitions() {
+		return taskCommandDefinitions;
 	}
-	public void setTaskCommands(TaskCommandConfig taskCommands) {
-		this.taskCommands = taskCommands;
+	
+	public void setTaskCommandDefinitions(List<TaskCommandDefinitionImpl> taskCommandDefinitions) {
+		this.taskCommandDefinitions = taskCommandDefinitions;
 	}
-	public EventListenerConfig getEventListeners() {
+	
+	public List<EventListenerImpl> getEventListeners() {
 		return eventListeners;
 	}
-	public void setEventListeners(EventListenerConfig eventListeners) {
+	
+	public void setEventListeners(List<EventListenerImpl> eventListeners) {
 		this.eventListeners = eventListeners;
 	}
-	public BizDataObjectConfig getBizDataObject() {
-		return bizDataObject;
-	}
-	public void setBizDataObject(BizDataObjectConfig bizDataObject) {
-		this.bizDataObject = bizDataObject;
+	
+	public void setDataObjectDefinitions(List<DataObjectDefinitionImpl> dataObjectDefinitions) {
+		this.dataObjectDefinitions = dataObjectDefinitions;
 	}
 	
-	public void addObject(FoxBPMConfig object){
-		
+	public List<DataObjectDefinitionImpl> getDataObjectDefinitions() {
+		return dataObjectDefinitions;
 	}
 }
