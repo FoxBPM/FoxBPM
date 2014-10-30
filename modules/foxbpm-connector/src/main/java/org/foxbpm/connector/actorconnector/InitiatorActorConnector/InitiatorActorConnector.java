@@ -31,7 +31,7 @@ public class InitiatorActorConnector extends ActorConnectorHandler {
 	public void assign(DelegateTask task) throws Exception {
 		String initiator=task.getExecutionContext().getInitiator();
 		if(StringUtil.isEmpty(initiator)){
-			throw new FoxBPMConnectorException("流程的提交人未找到,请重新检查借点的人员配置.");
+			throw new FoxBPMConnectorException("流程的提交人未找到,请重新检查节点的人员配置.");
 		}
 		task.setAssignee(initiator);
 	}
