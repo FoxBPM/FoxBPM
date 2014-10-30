@@ -17,11 +17,13 @@
  */
 package org.foxbpm.engine.sqlsession;
 
+import java.sql.SQLException;
+
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.interceptor.SessionFactory;
 
 public interface ISqlSessionFactory extends SessionFactory{
 	
-	public void init(ProcessEngineConfigurationImpl processEngineConfig);
+	public void init(ProcessEngineConfigurationImpl processEngineConfig) throws SQLException;
 	
 }
