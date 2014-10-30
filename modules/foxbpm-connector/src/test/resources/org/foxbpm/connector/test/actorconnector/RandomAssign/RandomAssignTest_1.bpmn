@@ -14,7 +14,7 @@
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="RandomAssign" packageName="org.foxbpm.connector.actorconnector.RandomAssign" className="RandomAssign" connectorInstanceId="307efac0-f467-4b1a-9314-91ceade6a35e" connectorInstanceName="资源随机分配" errorHandling="" type="actorconnector">
               <documentation xsi:type="foxbpm:Documentation" id="Documentation_1"></documentation>
-              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="userId" name="用户ID" dataType="java.lang.String" isExecute="true">
+              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="userId" name="用户ID" dataType="java.lang.Object" isExecute="true">
                 <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_2" name="id"><![CDATA['a,b,c']]></foxbpm:expression>
               </foxbpm:connectorParameterInputs>
             </foxbpm:connectorInstance>

@@ -14,10 +14,10 @@
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="SelectDepartmentAndRole" packageName="org.foxbpm.connector.actorconnector.SelectDepartmentAndRole" className="SelectDepartmentAndRole" connectorInstanceId="713a77da-9efb-495e-ad7f-844ab45e2ca1" connectorInstanceName="选择部门和角色" errorHandling="" type="actorconnector">
               <documentation xsi:type="foxbpm:Documentation"></documentation>
-              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="departmentId" name="部门ID" dataType="java.lang.String" isExecute="true">
+              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="departmentId" name="部门ID" dataType="java.lang.Object" isExecute="true">
                 <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_2" name="部门ID"><![CDATA['2001']]></foxbpm:expression>
               </foxbpm:connectorParameterInputs>
-              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="roleId" name="角色ID" dataType="java.lang.String" isExecute="true">
+              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="roleId" name="角色ID" dataType="java.lang.Object" isExecute="true">
                 <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_3" name="角色ID"><![CDATA['3001']]></foxbpm:expression>
               </foxbpm:connectorParameterInputs>
             </foxbpm:connectorInstance>

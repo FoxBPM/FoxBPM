@@ -17,6 +17,7 @@
  */
 package org.foxbpm.connector.actorconnector.SelectDepartmentAndRole;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,7 +26,7 @@ import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
 import org.foxbpm.engine.impl.identity.Authentication;
-import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.impl.util.AssigneeUtil;
 import org.foxbpm.engine.task.DelegateTask;
 
 /**
@@ -35,28 +36,46 @@ import org.foxbpm.engine.task.DelegateTask;
  * @date 2014年7月8日
  */
 public class SelectDepartmentAndRole extends ActorConnectorHandler {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6171386850998648156L;
-
-	private java.lang.String departmentId;
-
-	private java.lang.String roleId;
-
+	
+	private java.lang.Object departmentId;
+	
+	private java.lang.Object roleId;
+	
 	public void assign(DelegateTask task) throws Exception {
-
-		if (StringUtil.isEmpty(StringUtil.trim(departmentId))) {
+		
+		if (null == departmentId) {
 			throw new FoxBPMConnectorException("departmentId is null!");
 		}
-		if (StringUtil.isEmpty(StringUtil.trim(roleId))) {
+		if (null == roleId) {
 			throw new FoxBPMConnectorException("roleId is null!");
 		}
+		
+		List<String> deptList = new ArrayList<String>();
+		List<String> roleList = new ArrayList<String>();
+		
+		List<String> departmentIds = AssigneeUtil.executionExpressionObj(departmentId);
+		List<String> roleIds = AssigneeUtil.executionExpressionObj(roleId);
+		List<String> temp = null;
 		// 获取部门下所有用户
-		List<String> deptList = Authentication.selectUserIdsByGroupIdAndType(departmentId, Constant.DEPT_TYPE);
+		for (String id : departmentIds) {
+			temp = Authentication.selectUserIdsByGroupIdAndType(id, Constant.DEPT_TYPE);;
+			if (null != temp) {
+				deptList.addAll(temp);
+			}
+		}
 		// 获取角色下所有用户
-		List<String> roleList = Authentication.selectUserIdsByGroupIdAndType(roleId, Constant.ROLE_TYPE);
+		for (String id : roleIds) {
+			temp = Authentication.selectUserIdsByGroupIdAndType(id, Constant.ROLE_TYPE);
+			if (null != temp) {
+				roleList.addAll(temp);
+			}
+		}
+		
 		// 取部门和角色同时存在的用户
 		int min = Math.min(roleList.size(), deptList.size());
 		// 自动过滤重复
@@ -77,13 +96,13 @@ public class SelectDepartmentAndRole extends ActorConnectorHandler {
 			task.addCandidateUsers(userIds);
 		}
 	}
-
-	public void setDepartmentId(java.lang.String departmentId) {
+	
+	public void setDepartmentId(java.lang.Object departmentId) {
 		this.departmentId = departmentId;
 	}
-
-	public void setRoleId(java.lang.String roleId) {
+	
+	public void setRoleId(java.lang.Object roleId) {
 		this.roleId = roleId;
 	}
-
+	
 }

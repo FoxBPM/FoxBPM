@@ -14,7 +14,7 @@
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="SelectRole" packageName="org.foxbpm.connector.actorconnector.SelectRole" className="SelectRole" connectorInstanceId="23324174-f481-4b32-9276-e7d36eadf1fa" connectorInstanceName="选择角色" errorHandling="" type="actorconnector">
               <documentation xsi:type="foxbpm:Documentation"></documentation>
-              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="roleId" name="角色ID" dataType="java.lang.String" isExecute="true">
+              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="roleId" name="角色ID" dataType="java.lang.Object" isExecute="true">
                 <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_2" name="角色ID"><![CDATA['2001']]></foxbpm:expression>
               </foxbpm:connectorParameterInputs>
             </foxbpm:connectorInstance>

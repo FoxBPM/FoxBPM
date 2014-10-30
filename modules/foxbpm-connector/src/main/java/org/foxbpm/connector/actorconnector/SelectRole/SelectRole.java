@@ -18,13 +18,14 @@
 package org.foxbpm.connector.actorconnector.SelectRole;
 
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
-import java.util.StringTokenizer;
 
-import org.foxbpm.connector.common.constant.Constants;
 import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
+import org.foxbpm.engine.impl.util.AssigneeUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
 import org.foxbpm.engine.task.IdentityLinkType;
@@ -36,32 +37,33 @@ import org.foxbpm.engine.task.IdentityLinkType;
  * @date 2014年7月7日
  */
 public class SelectRole extends ActorConnectorHandler {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5466313199990930905L;
-
-	private java.lang.String roleId;
-
+	
+	private java.lang.Object roleId;
+	
 	public void assign(DelegateTask task) throws Exception {
-		if (StringUtil.isEmpty(StringUtil.trim(roleId))) {
-			throw new FoxBPMConnectorException("任务节点："+task.getNodeId() +" 的 roleId 是空!");
+		if (null == roleId) {
+			throw new FoxBPMConnectorException("任务节点：" + task.getNodeId() + " 的 roleId 是空!");
 		}
 		// 处理角色重复
-		StringTokenizer st = new StringTokenizer(StringUtil.trim(roleId), Constants.COMMA);
+		List<String> userList = AssigneeUtil.executionExpressionObj(roleId);
 		Set<String> roleIdSet = new HashSet<String>();
-		while (st.hasMoreTokens()) {
-			roleIdSet.add(StringUtil.trim(st.nextToken()));
+		Iterator<String> iterator = userList.iterator();
+		while (iterator.hasNext()) {
+			roleIdSet.add(StringUtil.trim(iterator.next()));
 		}
 		// 处理角色
 		for (String id : roleIdSet) {
 			task.addGroupIdentityLink(id, Constant.ROLE_TYPE, IdentityLinkType.CANDIDATE);
 		}
 	}
-
-	public void setRoleId(java.lang.String roleId) {
+	
+	public void setRoleId(java.lang.Object roleId) {
 		this.roleId = roleId;
 	}
-
+	
 }

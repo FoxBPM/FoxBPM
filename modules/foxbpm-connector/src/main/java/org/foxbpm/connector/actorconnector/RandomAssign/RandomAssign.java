@@ -17,13 +17,12 @@
  */
 package org.foxbpm.connector.actorconnector.RandomAssign;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import org.foxbpm.connector.common.constant.Constants;
 import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
+import org.foxbpm.engine.impl.util.AssigneeUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
 
@@ -34,32 +33,32 @@ import org.foxbpm.engine.task.DelegateTask;
  * @date 2014年7月7日
  */
 public class RandomAssign extends ActorConnectorHandler {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 325047500772052099L;
-	private java.lang.String userId;
-
+	private java.lang.Object userId;
+	
 	public void assign(DelegateTask task) throws Exception {
-		if (StringUtil.isEmpty(StringUtil.trim(userId))) {
+		if (null == userId) {
 			throw new FoxBPMConnectorException("userId is null!");
 		}
 		// 获取待分配的用户
-		List<String> userIds = Arrays.asList(StringUtil.trim(userId).split(Constants.COMMA));
+		List<String> userIds = AssigneeUtil.executionExpressionObj(userId);
 		if (userIds.size() == 1) {
-			task.setAssignee(StringUtil.trim(userId));
+			task.setAssignee(StringUtil.trim(userIds.get(0)));
 		} else {
 			// 随机产生
 			Random random = new Random();
 			int index = random.nextInt(userIds.size());
 			task.setAssignee(StringUtil.trim(userIds.get(index)));
 		}
-
+		
 	}
-
-	public void setUserId(java.lang.String userId) {
+	
+	public void setUserId(java.lang.Object userId) {
 		this.userId = userId;
 	}
-
+	
 }

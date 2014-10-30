@@ -13,7 +13,7 @@
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="SelectTaskByLeast" packageName="org.foxbpm.connector.actorconnector.SelectTaskByLeast" className="SelectTaskByLeast" connectorInstanceId="a0668b26-4345-437a-abf4-8a3f15d788fd" connectorInstanceName="资源最少者" errorHandling="" type="actorconnector">
               <documentation xsi:type="foxbpm:Documentation"></documentation>
-              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="userId" name="用户ID" dataType="java.lang.String" isExecute="true">
+              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="userId" name="用户ID" dataType="java.lang.Object" isExecute="true">
                 <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_2" name="用户id"><![CDATA['a,b,c']]></foxbpm:expression>
               </foxbpm:connectorParameterInputs>
             </foxbpm:connectorInstance>

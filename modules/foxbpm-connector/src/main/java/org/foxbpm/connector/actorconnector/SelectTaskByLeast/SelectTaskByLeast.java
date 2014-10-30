@@ -17,16 +17,15 @@
  */
 package org.foxbpm.connector.actorconnector.SelectTaskByLeast;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.foxbpm.connector.common.constant.Constants;
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
+import org.foxbpm.engine.impl.util.AssigneeUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
 import org.foxbpm.engine.task.TaskQuery;
@@ -43,18 +42,18 @@ public class SelectTaskByLeast extends ActorConnectorHandler {
 	 * 
 	 */
 	private static final long serialVersionUID = -7475673707019152696L;
-	private java.lang.String userId;
+	private java.lang.Object userId;
 	
 	public void assign(DelegateTask task) throws Exception {
 		
-		if (StringUtil.isEmpty(StringUtil.trim(userId))) {
+		if (null == userId) {
 			throw new FoxBPMConnectorException("userId is null!");
 		}
 		// 获取待分配的用户
-		List<String> userIds = Arrays.asList(StringUtil.trim(userId).split(Constants.COMMA));
+		List<String> userIds = AssigneeUtil.executionExpressionObj(userId);
 		if (userIds.size() == 1) {
 			// 直接分配
-			task.setAssignee(StringUtil.trim(userId));
+			task.setAssignee(StringUtil.trim(userIds.get(0)));
 		} else {
 			// 过滤重复用户id
 			Set<String> userIdSet = new HashSet<String>();
@@ -85,7 +84,7 @@ public class SelectTaskByLeast extends ActorConnectorHandler {
 		}
 	}
 	
-	public void setUserId(java.lang.String userId) {
+	public void setUserId(java.lang.Object userId) {
 		this.userId = userId;
 	}
 	

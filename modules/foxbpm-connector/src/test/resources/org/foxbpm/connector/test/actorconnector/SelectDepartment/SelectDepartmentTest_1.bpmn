@@ -13,7 +13,7 @@
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="SelectDepartment" packageName="org.foxbpm.connector.actorconnector.SelectDepartment" className="SelectDepartment" connectorInstanceId="f1e9c5c5-a2d8-4838-8a6e-86a1751ef0a3" connectorInstanceName="选择部门只包含子部门" errorHandling="" type="actorconnector">
               <documentation xsi:type="foxbpm:Documentation" id="Documentation_1"></documentation>
-              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="departmentId" name="部门ID" dataType="java.lang.String" isExecute="true">
+              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="departmentId" name="部门ID" dataType="java.lang.Object" isExecute="true">
                 <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_3" name="部门ID"><![CDATA['2001']]></foxbpm:expression>
               </foxbpm:connectorParameterInputs>
             </foxbpm:connectorInstance>
