@@ -17,11 +17,11 @@
  */
 package org.foxbpm.connector.actorconnector.SelectUserActorConnector;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
-import org.foxbpm.engine.impl.util.AssigneeUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
 
@@ -47,7 +47,9 @@ public class SelectUserActorConnector extends ActorConnectorHandler {
 			throw new FoxBPMConnectorException("处理人选择器(选择用户)表达式为空 ! 节点编号：" + task.getNodeId());
 		}
 
-		List<String> userList = AssigneeUtil.executionExpressionObj(userId);
+		String[] dddStrings = userId.split(",");
+		List<String> userList = Arrays.asList(dddStrings);
+//		List<String> userList = AssigneeUtil.executionExpressionObj(userId);
 		if (userList.size() == 1) {
 			task.setAssignee(userList.get(0));
 		} else {

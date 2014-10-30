@@ -46,7 +46,7 @@ public class SelectRole extends ActorConnectorHandler {
 
 	public void assign(DelegateTask task) throws Exception {
 		if (StringUtil.isEmpty(StringUtil.trim(roleId))) {
-			throw new FoxBPMConnectorException("roleId is null!");
+			throw new FoxBPMConnectorException("任务节点："+task.getNodeId() +" 的 roleId 是空!");
 		}
 		// 处理角色重复
 		StringTokenizer st = new StringTokenizer(StringUtil.trim(roleId), Constants.COMMA);

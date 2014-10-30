@@ -20,6 +20,7 @@ package org.foxbpm.engine.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -551,7 +552,11 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	public void initSqlSessionFactory() {
 		if(sqlSessionFactory == null){
 			sqlSessionFactory = new MyBatisSqlSessionFactory();
-			sqlSessionFactory.init(this);
+			try {
+				sqlSessionFactory.init(this);
+			} catch (SQLException e) {
+				throw new FoxBPMException("数据库启动存在异常,请检查相关日志",e);
+			}
 		}
 	}
 	

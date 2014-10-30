@@ -90,7 +90,7 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 		databaseTypeMappings.setProperty("Microsoft SQL Server", "mssql");
 	}
 	
-	public void init(ProcessEngineConfigurationImpl processEngineConfig) {
+	public void init(ProcessEngineConfigurationImpl processEngineConfig) throws SQLException {
 		
 		DataSource dataSource = processEngineConfig.getDataSource();
 		if(dataSource == null){
@@ -117,6 +117,7 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 				}
 			} catch (SQLException e) {
 				log.error("Exception while closing the Database connection", e);
+				throw e;
 			}
 		}
 		if (sqlSessionFactory == null) {

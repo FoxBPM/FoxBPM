@@ -17,12 +17,12 @@
  */
 package org.foxbpm.connector.actorconnector.SelectDeptActorConnector;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
 import org.foxbpm.engine.impl.entity.GroupEntity;
-import org.foxbpm.engine.impl.util.AssigneeUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
 
@@ -40,11 +40,14 @@ public class SelectDeptActorConnector extends ActorConnectorHandler {
 	public void assign(DelegateTask task) throws Exception {
 
 		if (StringUtil.isEmpty(StringUtil.trim(deptId))) {
-			throw new FoxBPMConnectorException("deptId is null !");
+			throw new FoxBPMConnectorException("任务节点："+task.getNodeId() +" 的 deptId 是空!");
 		}
-		List<String> deptList = AssigneeUtil.executionExpressionObj(deptId);
+		String[] dddStrings = deptId.split(",");
+		List<String> deptList = Arrays.asList(dddStrings);
+		GroupEntity group = null;
+//		List<String> deptList = AssigneeUtil.executionExpressionObj(deptId);
 		for (String deptId : deptList) {
-			GroupEntity group = new GroupEntity(deptId, "dept");
+			group = new GroupEntity(deptId, "dept");
 			task.addCandidateGroupEntity(group);
 		}
 	}
