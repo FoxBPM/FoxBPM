@@ -58,8 +58,8 @@
       <bpmn2:potentialOwner id="PotentialOwner_1">
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
-            <foxbpm:connectorInstance connectorId="InitiatorActorConnector" packageName="org.foxbpm.connector.actorconnector.InitiatorActorConnector" className="InitiatorActorConnector" connectorInstanceId="f3f56d55-a8ec-4ce4-a268-cba7f7f9be64" connectorInstanceName="发起人" errorHandling="" type="actorconnector">
-              <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_1"></foxbpm:documentation>
+            <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="edb13544-e07c-432d-a96d-0cc2404639f4" connectorInstanceName="所有人" errorHandling="" type="actorconnector">
+              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
             </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
@@ -72,23 +72,23 @@
         <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
         <foxbpm:taskPriority>
-          <foxbpm:expression xsi:type="foxbpm:Expression" name="高"><![CDATA[80]]></foxbpm:expression>
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_14" name="高"><![CDATA[80]]></foxbpm:expression>
         </foxbpm:taskPriority>
         <foxbpm:expectedExecutionTime day="1" hour="1" minute="1"/>
-        <foxbpm:taskSubject>
-          <foxbpm:expression xsi:type="foxbpm:Expression" name="任务主题"><![CDATA["任务主题"]]></foxbpm:expression>
+        <foxbpm:taskSubject id="TaskSubject_1">
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_15" name="任务主题"><![CDATA["任务主题"]]></foxbpm:expression>
         </foxbpm:taskSubject>
         <foxbpm:taskDescription>
-          <foxbpm:expression xsi:type="foxbpm:Expression" name="任务描述"><![CDATA["任务描述"]]></foxbpm:expression>
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_16" name="任务描述"><![CDATA["任务描述"]]></foxbpm:expression>
         </foxbpm:taskDescription>
         <foxbpm:completeTaskDescription>
-          <foxbpm:expression xsi:type="foxbpm:Expression" name="完成后的描述"><![CDATA["完成后的描述"]]></foxbpm:expression>
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_17" name="完成后的描述"><![CDATA["完成后的描述"]]></foxbpm:expression>
         </foxbpm:completeTaskDescription>
         <foxbpm:formUri>
-          <foxbpm:expression xsi:type="foxbpm:Expression" name="&quot;操作表单&quot;"><![CDATA["操作表单"]]></foxbpm:expression>
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_18" name="&quot;操作表单&quot;"><![CDATA["操作表单"]]></foxbpm:expression>
         </foxbpm:formUri>
         <foxbpm:formUriView>
-          <foxbpm:expression xsi:type="foxbpm:Expression" name="&quot;浏览表单&quot;"><![CDATA["浏览表单"]]></foxbpm:expression>
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_19" name="&quot;浏览表单&quot;"><![CDATA["浏览表单"]]></foxbpm:expression>
         </foxbpm:formUriView>
         <foxbpm:skipStrategy/>
       </bpmn2:extensionElements>

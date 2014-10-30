@@ -38,15 +38,15 @@ import org.foxbpm.engine.task.TaskQuery;
  * @date 2014年7月7日
  */
 public class SelectTaskByLeast extends ActorConnectorHandler {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7475673707019152696L;
 	private java.lang.String userId;
-
+	
 	public void assign(DelegateTask task) throws Exception {
-
+		
 		if (StringUtil.isEmpty(StringUtil.trim(userId))) {
 			throw new FoxBPMConnectorException("userId is null!");
 		}
@@ -62,10 +62,9 @@ public class SelectTaskByLeast extends ActorConnectorHandler {
 				userIdSet.add(StringUtil.trim(id));
 			}
 			// 处理用户id重复输入
-//			Map<String, Integer> userTasks = new HashMap<String, Integer>();
 			TaskService taskService = Context.getProcessEngineConfiguration().getTaskService();
 			TaskQuery taskQuery = null;
-			int minTaskCount= 0 ;
+			int minTaskCount = 0;
 			String minTaskUserId = "";
 			// 记录每个用户的任务数
 			for (String id : userIdSet) {
@@ -74,28 +73,20 @@ public class SelectTaskByLeast extends ActorConnectorHandler {
 				taskQuery.taskCandidateUser(id);
 				taskQuery.taskNotEnd();
 				// 如果数据量大 long 转换int 可能存在问题
-//				userTasks.put(id, StringUtil.getInt(taskQuery.count()));
-				if(minTaskCount == 0){
-					minTaskCount = (int)taskQuery.count();
-				}
-				if(taskQuery.count() < minTaskCount){
+				if (minTaskCount == 0) {
+					minTaskCount = (int) taskQuery.count();
 					minTaskUserId = id;
+				} else if (taskQuery.count() < minTaskCount) {
+					minTaskUserId = id;
+					minTaskCount = (int) taskQuery.count();
 				}
 			}
-			// 排序
-//			List<Map.Entry<String, Integer>> list = new ArrayList<Map.Entry<String, Integer>>(userTasks.entrySet());
-//			Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
-//				public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
-//					return (o1.getValue()).compareTo(o2.getValue());
-//				}
-//			});
-//			task.setAssignee(list.get(0).getKey());
 			task.setAssignee(minTaskUserId);
 		}
 	}
-
+	
 	public void setUserId(java.lang.String userId) {
 		this.userId = userId;
 	}
-
+	
 }

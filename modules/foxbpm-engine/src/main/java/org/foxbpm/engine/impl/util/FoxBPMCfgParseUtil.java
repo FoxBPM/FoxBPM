@@ -58,7 +58,7 @@ public class FoxBPMCfgParseUtil {
 	public static final String ELEMENT_COMMANDPARAM = "commandParam";
 	public static final String ELEMENT_EVENTLISTENERS = "eventListeners";
 	public static final String ELEMENT_EVENTLISTENER = "eventListener";
-	public static final String ELEMENT_BIZDATAOBJECTS = "bizDataObject";
+	public static final String ELEMENT_BIZDATAOBJECTS = "bizDataObjects";
 	public static final String ELEMENT_DATAOBJECTBEHAVIOR = "dataObjectBehavior";
 	
 	private FoxBPMCfgParseUtil() {

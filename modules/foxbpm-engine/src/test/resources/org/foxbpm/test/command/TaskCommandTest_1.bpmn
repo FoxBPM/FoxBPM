@@ -61,8 +61,8 @@
       <bpmn2:potentialOwner id="PotentialOwner_1_1">
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
-            <foxbpm:connectorInstance connectorId="InitiatorActorConnector" packageName="org.foxbpm.connector.actorconnector.InitiatorActorConnector" className="InitiatorActorConnector" connectorInstanceId="f3f56d55-a8ec-4ce4-a268-cba7f7f9be64" connectorInstanceName="发起人" errorHandling="" type="actorconnector">
-              <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_1"></foxbpm:documentation>
+            <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="e5f883eb-bf95-4dce-bc7b-f6e1d90344fe" connectorInstanceName="所有人" errorHandling="" type="actorconnector">
+              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
             </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
@@ -77,10 +77,10 @@
         <foxbpm:taskCommand id="HandleCommand_5" name="转发" commandType="transfer">
           <foxbpm:params xsi:type="foxbpm:CommandParam" key="transferUserId" name="转发给谁" description="" bizType="InputParam" dataType="String"/>
           <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
-            <foxbpm:expression xsi:type="foxbpm:Expression" name="true"><![CDATA[true]]></foxbpm:expression>
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_14" name="true"><![CDATA[true]]></foxbpm:expression>
           </foxbpm:params>
           <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
-            <foxbpm:expression xsi:type="foxbpm:Expression" name="true"><![CDATA[true]]></foxbpm:expression>
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_15" name="true"><![CDATA[true]]></foxbpm:expression>
           </foxbpm:params>
         </foxbpm:taskCommand>
       </bpmn2:extensionElements>

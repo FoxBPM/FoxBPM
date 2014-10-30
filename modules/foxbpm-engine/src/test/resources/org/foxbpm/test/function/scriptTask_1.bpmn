@@ -58,8 +58,8 @@
       <bpmn2:potentialOwner id="PotentialOwner_1">
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
-            <foxbpm:connectorInstance connectorId="InitiatorActorConnector" packageName="org.foxbpm.connector.actorconnector.InitiatorActorConnector" className="InitiatorActorConnector" connectorInstanceId="f3f56d55-a8ec-4ce4-a268-cba7f7f9be64" connectorInstanceName="发起人" errorHandling="" type="actorconnector">
-              <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_1"></foxbpm:documentation>
+            <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="55b61162-8976-476e-abbc-05f8dbddc279" connectorInstanceName="所有人" errorHandling="" type="actorconnector">
+              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
             </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>

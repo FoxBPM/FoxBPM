@@ -292,8 +292,8 @@
 			listenerClass="org.foxbpm.engine.impl.event.UpdateBizTableListener" />	 -->
 	</eventListeners>
 
-	<bizDataObject>
+	<bizDataObjects>
 		<dataObjectBehavior id="dataBaseMode" name="数据库表模R式"
 			behavior="org.foxbpm.engine.impl.datavariable.BizDataObjectBehaviorImpl" />
-	</bizDataObject>
+	</bizDataObjects>
 </foxbpmconfig:FoxBPMConfig>
