@@ -60,5 +60,11 @@ public interface Token {
 	 * @return
 	 */
 	boolean isSuspended();
+	
+	/**
+	 * 是否已结束
+	 * @return
+	 */
+	boolean isEnded();
 
 }
