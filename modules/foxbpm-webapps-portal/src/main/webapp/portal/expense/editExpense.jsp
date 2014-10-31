@@ -60,8 +60,8 @@
 		
 		var flowCommandCompenent = new Foxbpm.FlowCommandCompenent(flowconfig);
 		flowCommandCompenent.init();
-		initChatMsg();
-		setInterval(function() { 
+		//initChatMsg();
+/* 		setInterval(function() { 
 			var msgUrl = _serviceUrl+"social";
 			$.ajax({
 		        type: "get",//使用get方法访问后台
@@ -81,7 +81,7 @@
 		        	showMessage("错误","系统错误，请重新打开或联系管理员！","error");
 		        }
 			});
-		}, 5000);
+		}, 5000); */
 		
 		
 		var filter_input = $('#filter-chat-list'),
@@ -323,12 +323,12 @@
 				</footer>
 				<input type="hidden" name="flowCommandInfo" id="flowCommandInfo">
 			</form>
-		<a id="aaa" flag="0"
-					style="position: absolute; right: -5; top: 50%; z-index: 1; cursor: pointer; border-top: 10px solid rgba(241, 248, 241, 0); border-right: 10px solid #993366; border-bottom: 10px solid rgba(0, 0, 255, 0);"></a>
+		<!-- <a id="aaa" flag="0"
+					style="position: absolute; right: -5; top: 50%; z-index: 1; cursor: pointer; border-top: 10px solid rgba(241, 248, 241, 0); border-right: 10px solid #993366; border-bottom: 10px solid rgba(0, 0, 255, 0);"></a> -->
 		
 		</div>
 	</div>
-        <div id="rightDiv" style="float:left;display:none;height:502px; border:1px solid red;border-left-width:0px;padding-left: 0px;padding-top: 0px;">
+        <div id="rightDiv" style="float:left;display:none;height:502px; border:1px solid red;border-left-width:0px;padding-left: 0px;padding-top: 0px">
  
 			<!--效果html开始--> 
 			     <!-- new widget -->
@@ -462,11 +462,9 @@
         </div>
 </div>
 </body>
-<link rel="stylesheet" type="text/css" href="css/chat.css" />
-<script type="text/javascript" src="js/chat.js"></script>
+
 <script type="text/javascript">
-   
-   
+   $("#rightDiv").hide();
    $("#aaa").on("click", function() {
 		var $this = $(this);
 		var flag = $this.attr("flag");
@@ -505,6 +503,5 @@
 			   
 		}
 	});
-
 </script>
 </html>

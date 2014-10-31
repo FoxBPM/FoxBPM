@@ -248,9 +248,9 @@
 					<li>
 						<a href="portal/jsp/calendarpanel.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-calendar"></i> <span class="menu-item-parent">日 历 面 板</span></a>
 					</li>
-					<li>
+					<!-- <li>
 						<a href="ajax/inbox.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-bullhorn"></i> <span class="menu-item-parent">通 知 中 心</span></a>
-					</li>
+					</li> -->
 					<li>
 						<a href="portal/jsp/doneTasks.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-check-square-o"></i> <span class="menu-item-parent">已 办 任 务</span></a>
 					</li>
@@ -260,7 +260,7 @@
 					<li>
 						<a href="portal/jsp/profile.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-comments-o"></i> <span class="menu-item-parent">社 交 中 心</span></a>
 					</li>
-					<li>
+<!-- 					<li>
 						<a href="#"><i class="fa fa-lg fa-fw fa-calendar"></i> <span class="menu-item-parent">工 作 日 历</span></a>
 						<ul>
 							<li>
@@ -273,7 +273,7 @@
 								<a href="portal/jsp/calendarpart.jsp"><i class="fa fa-lg fa-fw fa-calendarpart"></i> <span class="menu-item-parent">日 历 时 间</span></a>
 							</li>
 						</ul>
-					</li>
+					</li> -->
 					
 					<li>
 						<a href="#"><i class="fa fa-lg fa-fw fa-calendar"></i> <span class="menu-item-parent">报 销 系 统</span></a>
