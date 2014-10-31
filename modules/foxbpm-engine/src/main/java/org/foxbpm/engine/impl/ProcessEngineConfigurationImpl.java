@@ -188,6 +188,11 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	protected InputStream configXmlStream;
 	
 	/**
+	 * 用户配置文件路径
+	 */
+	protected String connectorMenuPath;
+	
+	/**
 	 * 邮件服务器地址
 	 */
 	protected String mailServerAddress;
@@ -882,6 +887,14 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	public InputStream getConfigXmlStream() {
 		return configXmlStream;
+	}
+	
+	public void setConnectorMenuPath(String connectorMenuPath) {
+		this.connectorMenuPath = connectorMenuPath;
+	}
+	
+	public String getConnectorMenuPath() {
+		return connectorMenuPath;
 	}
 	
 	

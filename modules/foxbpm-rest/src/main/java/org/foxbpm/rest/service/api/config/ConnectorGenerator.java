@@ -17,8 +17,19 @@
  */
 package org.foxbpm.rest.service.api.config;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Iterator;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
+import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
+import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +44,78 @@ import org.slf4j.LoggerFactory;
 public class ConnectorGenerator implements IZipGenerator {
 
 	Logger log = LoggerFactory.getLogger(ConnectorGenerator.class);
+	
+	private static final int SIZE = 1024;
+	private void parseConnector(Element nodeElement , ZipOutputStream out) throws Exception{
+		if(nodeElement != null){
+			Iterator<Element> iterator = nodeElement.elements("node").iterator();
+			while(iterator.hasNext()){
+				
+			}
+			
+			iterator = nodeElement.elements("connector").iterator();
+			while(iterator.hasNext()){
+				Element tmp = iterator.next();
+				
+				String id = tmp.attributeValue("id");
+				String packageName = tmp.attributeValue("package");
+				
+				String xmlFileName = packageName + "/ActorConnector.xml";
+				String pngFileName = packageName + "/" + id + ".png";
+				String xmlEntryName = id + "/ActorConnector.xml";
+				String pngEntryName = id + "/" + id + ".xml";
+				
+				InputStream xmlInputStream = ReflectUtil.getResourceAsStream(xmlFileName);
+				ZipEntry zipEntry = new ZipEntry(xmlEntryName);
+				zipEntry.setMethod(ZipEntry.DEFLATED);// 设置条目的压缩方式
+				out.putNextEntry(zipEntry);
+				int n = 0;
+				byte b[] = new byte[SIZE];
+				while((n=xmlInputStream.read(b)) != -1){
+					out.write(b , 0 , n);
+				}
+				out.closeEntry();
+				xmlInputStream.close();
+				
+				
+				InputStream pngInputStream = ReflectUtil.getResourceAsStream(pngFileName);
+				zipEntry = new ZipEntry(pngEntryName);
+				zipEntry.setMethod(ZipEntry.DEFLATED);// 设置条目的压缩方式
+				out.putNextEntry(zipEntry);
+				n = 0;
+				b = new byte[SIZE];
+				while((n=pngInputStream.read(b)) != -1){
+					out.write(b , 0 , n);
+				}
+				out.closeEntry();
+				pngInputStream.close();
+			}
+		}
+	}
 	public void generate(ZipOutputStream out) {
+		ProcessEngineConfigurationImpl processEngineConfigurationImpl = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration();
+		
+		SAXReader reader = null;
+		InputStream stream = ReflectUtil.getResourceAsStream("org/foxbpm/connector/ConnectorMenu.xml");
+		try {
+			if(stream != null){
+				reader = new SAXReader();
+				Document doc = reader.read(stream);
+				Element flowConnectorElement =doc.getRootElement().element("flowConnector");
+				if(flowConnectorElement != null){
+					Iterator<Element> iterator = flowConnectorElement.elements("node").iterator();
+					while(iterator.hasNext()){
+						
+					}
+				}
+				
+			}
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
 //		log.debug("开始处理connector。。.");
 //		try{
 //			Map<String,Map<String,String>> pathMap = new HashMap<String,Map<String,String>>();

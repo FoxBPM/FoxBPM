@@ -18,26 +18,17 @@
 package org.foxbpm.connector.actorconnector.AllUserActorConnector;
 
 import org.foxbpm.engine.Constant;
-import org.foxbpm.engine.impl.connector.ActorConnector;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
 import org.foxbpm.engine.task.DelegateTask;
 
 
-public class AllUserActorConnector extends ActorConnectorHandler implements ActorConnector {
+public class AllUserActorConnector extends ActorConnectorHandler{
 
 	private static final long serialVersionUID = 1L;
 
 	 
 	public void assign(DelegateTask task) throws Exception {
 		task.addCandidateUser(Constant.FOXBPM_ALL_USER);
-	}
-	
-	public String getPngPath() {
-		return "org/foxbpm/connector/AllUserActorConnector/actorConnector.xml";
-	}
-	
-	public String getXmlPath() {
-		return "org/foxbpm/connector/AllUserActorConnector/actorConnector.png";
 	}
 
 }

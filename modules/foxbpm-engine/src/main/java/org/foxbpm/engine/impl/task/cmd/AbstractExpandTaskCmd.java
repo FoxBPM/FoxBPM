@@ -25,6 +25,7 @@ import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
 import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.bpmn.behavior.ActivityBehavior;
 import org.foxbpm.engine.impl.entity.ProcessOperatingEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
@@ -38,8 +39,11 @@ import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.TaskCommand;
+import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
+import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
+import org.foxbpm.model.Activity;
 
 
 public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCommand, T> implements Command<T>, Serializable {
@@ -180,5 +184,17 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 		return commandExecutor;
 	}
 	
+	
+	protected boolean isMutilInstance(KernelFlowNode kernelFlowNode){
+		KernelFlowNodeBehavior kernelBehavior = kernelFlowNode.getKernelFlowNodeBehavior();
+		if(kernelBehavior instanceof ActivityBehavior){
+			ActivityBehavior actBehavior = (ActivityBehavior)kernelBehavior;
+			Activity activity = (Activity)actBehavior.getBaseElement();
+			if(activity.getLoopCharacteristics() != null){
+				return true;
+			}
+		}
+		return false;
+	}
 
 }
