@@ -65,7 +65,6 @@ public class RollBackTaskDesignationAssigneeCmd extends AbstractExpandTaskCmd<Ro
 		
 		/** 查询出指定节点最后一次完成的任务 */
 		TaskEntity lastEndTask=commandContext.getTaskManager().findLastEndTaskByProcessInstanceIdAndNodeId(task.getProcessInstanceId(), rollBackNodeId);
-		
 
 		/** 设置任务处理者 */
 		task.setAssignee(Authentication.getAuthenticatedUserId());
@@ -90,8 +89,6 @@ public class RollBackTaskDesignationAssigneeCmd extends AbstractExpandTaskCmd<Ro
 			/** 非会签任务则完成任务,并将流程推向指定的节点,并指定处理者 */
 			task.complete(flowNode,lastEndTask.getAssignee());
 		}
-		
-		
 
 		return null;
 	}

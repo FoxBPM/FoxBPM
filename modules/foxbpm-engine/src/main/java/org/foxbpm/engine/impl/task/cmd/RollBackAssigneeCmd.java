@@ -66,8 +66,12 @@ public class RollBackAssigneeCmd extends AbstractExpandTaskCmd<RollBackAssigneeC
 		KernelProcessDefinition processDefinition=getProcessDefinition(task);
 		/** 查找需要退回的节点 */
 		KernelFlowNodeImpl flowNode=processDefinition.findFlowNode(rollBackNodeId);
+		
 		if(flowNode == null){
 			throw new FoxBPMIllegalArgumentException("退回的目的节点："+rollBackNodeId+"不存在,请检查流程配置！");
+		}
+		if(isMutilInstance(flowNode)){
+			throw new FoxBPMIllegalArgumentException("该命令不能退回到多实例节点，节点号：" + rollBackNodeId);
 		}
 		/** 完成任务,并将流程推向指定的节点,并指定处理者 */
 		task.complete(flowNode,rollBackAssignee);
