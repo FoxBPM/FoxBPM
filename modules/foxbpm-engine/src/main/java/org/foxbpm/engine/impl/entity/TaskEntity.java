@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
@@ -847,7 +848,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		end();
 		/** 正常处理任务不能处理已经暂停的任务 */
 		if (this.isSuspended) {
-			throw new FoxBPMException("任务已经暂停不能再处理");
+			throw new FoxBPMBizException("任务已经暂停不能再处理");
 		}
 		/** 获取令牌 */
 		if (tokenId != null) {
@@ -926,11 +927,11 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	 * 这个结束并不会去推动令牌向下。例如用在退回的时候。
 	 */
 	public void end(TaskCommand taskCommand, String taskComment) {
-		
+		if(this.isSuspended()){
+			throw new FoxBPMBizException("任务已经被暂停，无法结束！");
+		}
 		end();
-		
 		setTaskComment(taskComment);
-		
 		if (taskCommand != null && taskCommand.getTaskCommandType() != null
 		        && !taskCommand.getTaskCommandType().equals("")) {
 			String taskCommandType = taskCommand.getTaskCommandType();
