@@ -43,7 +43,7 @@ public class FlowResourceService {
 	private List<IZipGenerator> generators = new ArrayList<IZipGenerator>();
 	
 	public FlowResourceService() {
-//		generators.add(new ConnectorGenerator());
+		generators.add(new ConnectorGenerator());
 		generators.add(new TemplateGenerator());
 		generators.add(new ConfigGenerator());
 		generators.add(new DataObjectCacheGenerator());
