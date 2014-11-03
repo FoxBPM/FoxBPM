@@ -324,7 +324,7 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 		this.instanceStatus = ProcessInstanceStatus.ABORT;
 		isEnded = true;
 		KernelTokenImpl tempToken = getRootToken();
-		tempToken.end();
+		tempToken.end(false);
 		tempToken.fireEvent(KernelEvent.PROCESS_ABORT);
 		if (getParentProcessInstance() != null) {
 			signalParentProcessInstance();
