@@ -81,8 +81,6 @@ public class RollBackTaskDesignationResetCommandTest extends AbstractFoxBpmTestC
 		expandTaskCommand.setTaskCommandId("HandleCommand_3");
 		expandTaskCommand.setCommandType("general");
 		expandTaskCommand.setTaskId(task.getId());
-		expandTaskCommand.setBusinessKey("bizKey");
-		expandTaskCommand.setInitiator("admin");
 		taskService.expandTaskComplete(expandTaskCommand, null);
 		// 查询未完成任务c
 		taskQuery = taskService.createTaskQuery();
@@ -99,8 +97,6 @@ public class RollBackTaskDesignationResetCommandTest extends AbstractFoxBpmTestC
 		expandTaskCommand.setTaskCommandId("HandleCommand_5");
 		expandTaskCommand.setCommandType("rollBack_designation_reset");
 		expandTaskCommand.setTaskId(task.getId());
-		expandTaskCommand.setBusinessKey("bizKey");
-		expandTaskCommand.setInitiator("admin");
 		taskService.expandTaskComplete(expandTaskCommand, null);
 		// 查看任务状态
 		// 查询未完成任务c
@@ -153,8 +149,6 @@ public class RollBackTaskDesignationResetCommandTest extends AbstractFoxBpmTestC
 		expandTaskCommand.setTaskCommandId("HandleCommand_3");
 		expandTaskCommand.setCommandType("general");
 		expandTaskCommand.setTaskId(task.getId());
-		expandTaskCommand.setBusinessKey("bizKey");
-		expandTaskCommand.setInitiator("admin");
 		taskService.expandTaskComplete(expandTaskCommand, null);
 		// 查询待办任务
 		taskQuery = taskService.createTaskQuery();
@@ -172,8 +166,6 @@ public class RollBackTaskDesignationResetCommandTest extends AbstractFoxBpmTestC
 		expandTaskCommand.setTaskCommandId("HandleCommand_5");
 		expandTaskCommand.setCommandType("rollBack_designation_reset");
 		expandTaskCommand.setTaskId(task.getId());
-		expandTaskCommand.setBusinessKey("bizKey");
-		expandTaskCommand.setInitiator("test01");
 		taskService.expandTaskComplete(expandTaskCommand, null);
 		// 查询任务是否在B节点上
 		taskQuery = taskService.createTaskQuery();
@@ -193,8 +185,6 @@ public class RollBackTaskDesignationResetCommandTest extends AbstractFoxBpmTestC
 		expandTaskCommand.setTaskCommandId("HandleCommand_3");
 		expandTaskCommand.setCommandType("general");
 		expandTaskCommand.setTaskId(task.getId());
-		expandTaskCommand.setBusinessKey("bizKey");
-		expandTaskCommand.setInitiator("admin");
 		taskService.expandTaskComplete(expandTaskCommand, null);
 		
 		
@@ -208,8 +198,6 @@ public class RollBackTaskDesignationResetCommandTest extends AbstractFoxBpmTestC
 		expandTaskCommand.setTaskCommandId("HandleCommand_3");
 		expandTaskCommand.setCommandType("general");
 		expandTaskCommand.setTaskId(task.getId());
-		expandTaskCommand.setBusinessKey("bizKey");
-		expandTaskCommand.setInitiator("admin");
 		taskService.expandTaskComplete(expandTaskCommand, null);
 		// 查询待办任务
 		taskQuery = taskService.createTaskQuery();
@@ -221,8 +209,6 @@ public class RollBackTaskDesignationResetCommandTest extends AbstractFoxBpmTestC
 		expandTaskCommand.setTaskCommandId("HandleCommand_5");
 		expandTaskCommand.setCommandType("rollBack_designation_reset");
 		expandTaskCommand.setTaskId(task.getId());
-		expandTaskCommand.setBusinessKey("bizKey");
-		expandTaskCommand.setInitiator("test01");
 		taskService.expandTaskComplete(expandTaskCommand, null);
 		//查询任务位置
 		taskQuery = taskService.createTaskQuery();
@@ -271,8 +257,6 @@ public class RollBackTaskDesignationResetCommandTest extends AbstractFoxBpmTestC
 		expandTaskCommand.setTaskCommandId("HandleCommand_3");
 		expandTaskCommand.setCommandType("general");
 		expandTaskCommand.setTaskId(task.getId());
-		expandTaskCommand.setBusinessKey("bizKey");
-		expandTaskCommand.setInitiator("admin");
 		taskService.expandTaskComplete(expandTaskCommand, null);
 		
 		// 查询待办任务
@@ -285,8 +269,6 @@ public class RollBackTaskDesignationResetCommandTest extends AbstractFoxBpmTestC
 		expandTaskCommand.setTaskCommandId("HandleCommand_5");
 		expandTaskCommand.setCommandType("rollBack_designation_reset");
 		expandTaskCommand.setTaskId(task.getId());
-		expandTaskCommand.setBusinessKey("bizKey");
-		expandTaskCommand.setInitiator("test01");
 		taskService.expandTaskComplete(expandTaskCommand, null);
 		// 获取任务是否在B上UserTask_3
 		taskQuery = taskService.createTaskQuery();

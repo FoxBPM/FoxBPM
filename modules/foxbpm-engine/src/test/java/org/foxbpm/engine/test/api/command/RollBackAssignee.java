@@ -72,7 +72,6 @@ public class RollBackAssignee extends AbstractFoxBpmTestCase {
 		expandTaskCommand.setTaskCommandId("HandleCommand_3");
 		expandTaskCommand.setCommandType("general");
 		expandTaskCommand.setTaskId(task.getId());
-		expandTaskCommand.setBusinessKey("bizKey");
 		taskService.expandTaskComplete(expandTaskCommand, null);
 		
 		// 接收任务B
@@ -88,7 +87,6 @@ public class RollBackAssignee extends AbstractFoxBpmTestCase {
 		expandTaskCommand.setTaskCommandId("HandleCommand_5");
 		expandTaskCommand.setCommandType("rollBack_assignee");
 		expandTaskCommand.setTaskId(task.getId());
-		expandTaskCommand.setBusinessKey("bizKey");
 		expandTaskCommand.getParamMap().put("rollBackNodeId", "UserTask_3");
 		expandTaskCommand.getParamMap().put("rollBackAssignee", "test03");
 		taskService.expandTaskComplete(expandTaskCommand, null);
