@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC '-//OASIS//DTD DocBook XML V5.0//EN' 'dtd/docbook.dtd'>
+<book xmlns="http://docbook.org/ns/docbook"
+  version="5.0"  
+  xml:lang="zh_cn">
+
+  <info><title>FoxBPM6.0 用户向导</title></info>
+  
+  <toc/>
+  <xi:include  xmlns:xi="http://www.w3.org/2001/XInclude" href="chapters/ch00-Info.xml"/>
+  <xi:include  xmlns:xi="http://www.w3.org/2001/XInclude" href="chapters/ch02-GettingStarted.xml"/>
+</book>
