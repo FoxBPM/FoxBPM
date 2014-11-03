@@ -257,9 +257,9 @@
 					<li>
 						<a href="portal/jsp/runningTrackTasks.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-check-square"></i> <span class="menu-item-parent">流 程 追 踪</span></a>
 					</li>
-					<li>
+					<!-- <li>
 						<a href="portal/jsp/profile.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-comments-o"></i> <span class="menu-item-parent">社 交 中 心</span></a>
-					</li>
+					</li> -->
 <!-- 					<li>
 						<a href="#"><i class="fa fa-lg fa-fw fa-calendar"></i> <span class="menu-item-parent">工 作 日 历</span></a>
 						<ul>
