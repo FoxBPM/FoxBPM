@@ -63,7 +63,7 @@ public class TransferAndCreateTaskTest extends AbstractFoxBpmTestCase {
 		
 		//转发任务
 		expandTaskCommand = new ExpandTaskCommand();
-		expandTaskCommand.setTaskCommandId("HandleCommand_6");
+		expandTaskCommand.setTaskCommandId("HandleCommand_5");
 		expandTaskCommand.setCommandType("transferAndCreateTask");
 		expandTaskCommand.setTaskId(task.getId());
 		Map<String,Object> map = new HashMap<String,Object>();
