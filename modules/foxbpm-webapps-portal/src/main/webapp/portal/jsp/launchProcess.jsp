@@ -20,7 +20,7 @@
 	<div class="col-sm-12" style="margin-left: 5px">
 		<div class="input-group">
 			<input class="form-control" style="width: 150px; height: 30px"
-				type="text" id="input_search" placeholder="Search..."> <a
+				type="text" id="input_search" placeholder="Search..." title="流程名称"> <a
 				class="btn btn-primary disabled"
 				style="height: 30px; disabled: true" href="javascript:void(0);"
 				id="btn_search">Search</a>

@@ -67,7 +67,6 @@ public class RollBackDesignationAssignee extends AbstractFoxBpmTestCase {
 		expandTaskCommand.setTaskCommandId("HandleCommand_1");
 		expandTaskCommand.setCommandType("claim");
 		expandTaskCommand.setTaskId(task.getId());
-		expandTaskCommand.setBusinessKey("bizKey");
 		taskService.expandTaskComplete(expandTaskCommand, null);
 		// 处理C
 		expandTaskCommand = new ExpandTaskCommand();
@@ -83,14 +82,12 @@ public class RollBackDesignationAssignee extends AbstractFoxBpmTestCase {
 		expandTaskCommand.setTaskCommandId("HandleCommand_1");
 		expandTaskCommand.setCommandType("claim");
 		expandTaskCommand.setTaskId(task.getId());
-		expandTaskCommand.setBusinessKey("bizKey");
 		taskService.expandTaskComplete(expandTaskCommand, null);
 		// 处理B
 		expandTaskCommand = new ExpandTaskCommand();
 		expandTaskCommand.setTaskCommandId("HandleCommand_5");
 		expandTaskCommand.setCommandType("rollBack_designation_reset");
 		expandTaskCommand.setTaskId(task.getId());
-		expandTaskCommand.setBusinessKey("bizKey");
 		taskService.expandTaskComplete(expandTaskCommand, null);
 		// 查询任务状态
 		task = taskService.createTaskQuery().processDefinitionKey("RollBackDesignationAssignee_1_1").taskNotEnd().singleResult();
@@ -102,7 +99,6 @@ public class RollBackDesignationAssignee extends AbstractFoxBpmTestCase {
 		expandTaskCommand.setTaskCommandId("HandleCommand_1");
 		expandTaskCommand.setCommandType("claim");
 		expandTaskCommand.setTaskId(task.getId());
-		expandTaskCommand.setBusinessKey("bizKey");
 		taskService.expandTaskComplete(expandTaskCommand, null);
 		// 处理C
 		expandTaskCommand = new ExpandTaskCommand();
@@ -124,7 +120,6 @@ public class RollBackDesignationAssignee extends AbstractFoxBpmTestCase {
 		expandTaskCommand.setTaskCommandId("HandleCommand_6");
 		expandTaskCommand.setCommandType("rollBack_designation_assignee");
 		expandTaskCommand.setTaskId(task.getId());
-		expandTaskCommand.setBusinessKey("bizKey");
 		taskService.expandTaskComplete(expandTaskCommand, null);
 		//------------------------------------------------------------------------//
 		task = taskService.createTaskQuery().processDefinitionKey("RollBackDesignationAssignee_1_1").taskNotEnd().singleResult();

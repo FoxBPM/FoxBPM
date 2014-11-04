@@ -111,7 +111,7 @@
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="SelectUserActorConnector" packageName="org.foxbpm.connector.actorconnector.SelectUserActorConnector" className="SelectUserActorConnector" connectorInstanceId="d37d2f3c-7136-4ee5-829d-e2833aef8c01" connectorInstanceName="单个处理人" errorHandling="" type="actorconnector">
-              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="userId" name="用户编号" dataType="java.lang.String" isExecute="true">
+              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="userId" name="用户编号" dataType="java.lang.Object" isExecute="true">
                 <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_17" name="单个处理人"><![CDATA[${单个处理人}]]></foxbpm:expression>
               </foxbpm:connectorParameterInputs>
               <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_6"></foxbpm:documentation>

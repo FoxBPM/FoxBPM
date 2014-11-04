@@ -73,7 +73,6 @@ public class RollBackPreviousStep extends AbstractFoxBpmTestCase {
 		expandTaskCommand.setTaskCommandId("HandleCommand_3");
 		expandTaskCommand.setCommandType("general");
 		expandTaskCommand.setTaskId(task.getId());
-		expandTaskCommand.setBusinessKey("bizKey");
 		taskService.expandTaskComplete(expandTaskCommand, null);
 		
 		// 接收任务B
@@ -89,7 +88,6 @@ public class RollBackPreviousStep extends AbstractFoxBpmTestCase {
 		expandTaskCommand.setTaskCommandId("HandleCommand_5");
 		expandTaskCommand.setCommandType("rollBack_previousStep");
 		expandTaskCommand.setTaskId(task.getId());
-		expandTaskCommand.setBusinessKey("bizKey");
 		taskService.expandTaskComplete(expandTaskCommand, null);
 		// 查询任务状态
 		task = taskService.createTaskQuery().processDefinitionKey("RollBack_previousStep_1").taskNotEnd().singleResult();
