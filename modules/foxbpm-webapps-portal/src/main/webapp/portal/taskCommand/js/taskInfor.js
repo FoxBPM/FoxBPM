@@ -131,7 +131,7 @@ TaskInfor.prototype = {
 																						event.data.obj,
 																						event.data.flag);
 																	});
-													record.append(loadMsg);
+													//record.append(loadMsg);
 												}
 												recordsDiv.append(record);
 												/** ********************处理信息**************************** */
