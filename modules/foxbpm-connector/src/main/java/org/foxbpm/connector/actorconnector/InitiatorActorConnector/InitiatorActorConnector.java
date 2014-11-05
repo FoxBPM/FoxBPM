@@ -22,20 +22,16 @@ import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
 
-
 public class InitiatorActorConnector extends ActorConnectorHandler {
-
+	
 	private static final long serialVersionUID = 1L;
-
-	 
+	
 	public void assign(DelegateTask task) throws Exception {
-		String initiator=task.getExecutionContext().getInitiator();
-		if(StringUtil.isEmpty(initiator)){
-			throw new FoxBPMConnectorException("流程的提交人未找到,请重新检查节点的人员配置.");
+		String initiator = task.getExecutionContext().getInitiator();
+		if (StringUtil.isEmpty(initiator)) {
+			throw new FoxBPMConnectorException("处理人选择器(发起人)流程的提交人未找到,请重新检查节点的人员配置! 节点编号：" + task.getNodeId());
 		}
 		task.setAssignee(initiator);
 	}
-
 	
-
 }

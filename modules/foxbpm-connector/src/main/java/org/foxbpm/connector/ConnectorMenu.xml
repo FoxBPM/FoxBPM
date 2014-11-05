@@ -24,7 +24,7 @@
     <connector id="AllUserActorConnector" name="所有人" note="系统里的全部用户" ico="AllUserActorConnector.png" package="org/foxbpm/connector/actorconnector/AllUserActorConnector"/>
     <connector id="StartAuthorActorConnector" name="启动人" note="流程的启动人(默认情况下启动人和发起人是同一个)" ico="StartAuthorActorConnector.png" package="org/foxbpm/connector/actorconnector/StartAuthorActorConnector"/>
     <connector id="LastStepActorConnector" name="上一步骤处理者" note="上一个步骤的处理者" ico="LastStepActorConnector.png" package="org/foxbpm/connector/actorconnector/LastStepActorConnector"/>
-    <connector id="UserIdActorConnector" name="系统登陆人" note="当前系统的登陆用户" ico="UserIdActorConnector.png" package="org/foxbpm/connector/actorconnector/UserIdActorConnector"/>
+    <!-- <connector id="UserIdActorConnector" name="系统登陆人" note="当前系统的登陆用户" ico="UserIdActorConnector.png" package="org/foxbpm/connector/actorconnector/UserIdActorConnector"/> -->
     <connector id="SelectUserActorConnector" name="选择用户" note="输入用户编号来指定处理者" ico="SelectUserActorConnector.png" package="org/foxbpm/connector/actorconnector/SelectUserActorConnector"/>
     <connector id="SelectDeptActorConnector" name="选择部门" note="选择一个或者多个部门" ico="SelectDeptActorConnector.png" package="org/foxbpm/connector/actorconnector/SelectDeptActorConnector"/>
     <connector id="SelectRole" name="选择角色" note="选择一个或者多个角色" ico="SelectRole.png" package="org/foxbpm/connector/actorconnector/SelectRole"/>

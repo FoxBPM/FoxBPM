@@ -32,20 +32,20 @@ import org.foxbpm.engine.impl.util.StringUtil;
  * @date 2014年7月7日
  */
 public class DatasourceDatabaseQuery implements FlowConnectorHandler {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 8595980483313031237L;
-
+	
 	private java.lang.String sqlText;
-
+	
 	private java.util.List<java.util.Map<String, Object>> outputObj;
-
+	
 	public void execute(ConnectorExecutionContext executionContext) throws Exception {
-
+		
 		if (StringUtil.isEmpty(sqlText)) {
-			throw new FoxBPMConnectorException("sqlText is null!");
+			throw new FoxBPMConnectorException("连接器(通过Datasource数据库查询)sql语句表达式为空!");
 		}
 		// 只处理查询sql
 		if (StringUtil.trim(sqlText).toLowerCase().startsWith(Constants.SQL_SELECT)) {
@@ -53,16 +53,16 @@ public class DatasourceDatabaseQuery implements FlowConnectorHandler {
 			outputObj = sqlCommand.queryForList(sqlText);
 		} else {
 			// 如果不是select 查询语句
-			throw new FoxBPMConnectorException("执行无效的查询sql错误,请检查sql语句:" + sqlText);
+			throw new FoxBPMConnectorException("连接器(通过Datasource数据库查询)执行无效的查询sql错误,请检查sql语句:" + sqlText);
 		}
 	}
-
+	
 	public void setSqlText(java.lang.String sqlText) {
 		this.sqlText = sqlText;
 	}
-
+	
 	public java.util.List<java.util.Map<String, Object>> getOutputObj() {
 		return outputObj;
 	}
-
+	
 }

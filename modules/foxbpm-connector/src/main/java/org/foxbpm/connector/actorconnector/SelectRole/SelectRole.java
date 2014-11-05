@@ -47,7 +47,7 @@ public class SelectRole extends ActorConnectorHandler {
 	
 	public void assign(DelegateTask task) throws Exception {
 		if (null == roleId) {
-			throw new FoxBPMConnectorException("任务节点：" + task.getNodeId() + " 的 roleId 是空!");
+			throw new FoxBPMConnectorException("处理人选择器(选择角色)角色编号表达式为空 ! 节点编号：" + task.getNodeId());
 		}
 		// 处理角色重复
 		List<String> userList = AssigneeUtil.executionExpressionObj(roleId);

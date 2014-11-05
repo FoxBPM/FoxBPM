@@ -30,14 +30,13 @@ import org.foxbpm.engine.task.DelegateTask;
  * @date 2014年7月14日
  */
 public class LastStepActorConnector extends ActorConnectorHandler {
-
+	
 	private static final long serialVersionUID = 1L;
-
-	 
+	
 	public void assign(DelegateTask task) throws Exception {
 		String userId = Authentication.getAuthenticatedUserId();
 		if (StringUtil.isEmpty(userId)) {
-			throw new FoxBPMConnectorException("上一步处理者未找到,请重新检查借点的人员配置.");
+			throw new FoxBPMConnectorException("处理人选择器(上一步骤处理者)上一步处理者未找到,请重新检查借点的人员配置! 节点编号：" + task.getNodeId());
 		}
 		task.setAssignee(userId);
 	}

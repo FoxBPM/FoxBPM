@@ -32,7 +32,7 @@ import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
 
 /**
- * 选择部门
+ * 选择部门(只包含子部门)
  * 
  * @author yangguangftlp
  * @date 2014年7月9日
@@ -48,7 +48,7 @@ public class SelectDepartment extends ActorConnectorHandler {
 	public void assign(DelegateTask task) throws Exception {
 		
 		if (null == departmentId) {
-			throw new FoxBPMConnectorException("departmentId is null!");
+			throw new FoxBPMConnectorException("处理人选择器(选择部门(只包含子部门))部门编号表达式为空 ! 节点编号：" + task.getNodeId());
 		}
 		List<String> departmentIds = AssigneeUtil.executionExpressionObj(departmentId);
 		// 处理部门重复

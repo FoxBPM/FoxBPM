@@ -49,10 +49,10 @@ public class SelectDepartmentAndRole extends ActorConnectorHandler {
 	public void assign(DelegateTask task) throws Exception {
 		
 		if (null == departmentId) {
-			throw new FoxBPMConnectorException("departmentId is null!");
+			throw new FoxBPMConnectorException("处理人选择器(选择某部门和某角色)部门编号表达式为空 ! 节点编号：" + task.getNodeId());
 		}
 		if (null == roleId) {
-			throw new FoxBPMConnectorException("roleId is null!");
+			throw new FoxBPMConnectorException("处理人选择器(选择某部门和某角色)角色编号表达式为空 ! 节点编号：" + task.getNodeId());
 		}
 		
 		List<String> deptList = new ArrayList<String>();

@@ -23,39 +23,33 @@ import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
 
 public class StartAuthorActorConnector extends ActorConnectorHandler {
-
-	private static final long serialVersionUID = 1L;
-
 	
-
-	/** humanPerformer独占 potentialOwner共享*/
+	private static final long serialVersionUID = 1L;
+	
+	/** humanPerformer独占 potentialOwner共享 */
 	private String assignType;
-
+	
 	public void setAssignType(String assignType) {
 		this.assignType = assignType;
 	}
-
-
-	 
+	
 	public void assign(DelegateTask task) throws Exception {
 		
-		String initiator=task.getExecutionContext().getStartAuthor();
-
-		if(StringUtil.isEmpty(initiator)){
-			throw new FoxBPMConnectorException("流程的提交人未找到,请重新检查借点的人员配置.");
+		String initiator = task.getExecutionContext().getStartAuthor();
+		
+		if (StringUtil.isEmpty(initiator)) {
+			throw new FoxBPMConnectorException("处理人选择器(启动人)启动人未找到,请重新检查借点的人员配置! 节点编号：" + task.getNodeId());
 		}
 		
-		if(assignType!=null){
-			if(assignType.equals("humanPerformer")){
+		if (assignType != null) {
+			if (assignType.equals("humanPerformer")) {
 				task.setAssignee(initiator);
-			}
-			else{
+			} else {
 				task.addCandidateUser(initiator);
 			}
-		}else{
+		} else {
 			task.setAssignee(initiator);
 		}
 	}
-
-
+	
 }

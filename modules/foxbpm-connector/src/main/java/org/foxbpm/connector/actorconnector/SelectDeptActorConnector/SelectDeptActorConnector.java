@@ -38,7 +38,7 @@ public class SelectDeptActorConnector extends ActorConnectorHandler {
 	public void assign(DelegateTask task) throws Exception {
 		
 		if (null == deptId) {
-			throw new FoxBPMConnectorException("任务节点：" + task.getNodeId() + " 的 deptId 是空!");
+			throw new FoxBPMConnectorException("处理人选择器(选择部门)部门编号表达式为空 ! 节点编号：" + task.getNodeId());
 		}
 		GroupEntity group = null;
 		List<String> deptList = AssigneeUtil.executionExpressionObj(deptId);
