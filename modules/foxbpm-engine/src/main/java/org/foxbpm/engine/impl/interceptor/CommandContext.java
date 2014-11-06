@@ -144,6 +144,12 @@ public class CommandContext {
 	}
 	
 	public void flushSession() {
+		
+		Set<Entry<Class<?>, Session>> tmpEntrySet = new HashSet<Map.Entry<Class<?>, Session>>(sessions.entrySet());
+		for (Iterator<Entry<Class<?>, Session>> iterator = tmpEntrySet.iterator(); iterator.hasNext();) {
+			iterator.next().getValue().beforeFlush();
+		}
+		
 		// 这里处理sessions内容被修改
 		Set<Entry<Class<?>, Session>> entrySet = new HashSet<Map.Entry<Class<?>, Session>>(sessions.entrySet());
 		// 这里清空,后面可能会新增

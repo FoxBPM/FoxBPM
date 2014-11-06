@@ -333,6 +333,8 @@
 			listenerClass="org.foxbpm.engine.impl.listener.task.StartEventTaskListener" />
 		<eventListener id="endEventTaskListener-process-end" eventType="process-end"
 			listenerClass="org.foxbpm.engine.impl.listener.task.EndEventTaskListener" />
+		<eventListener id="updateLocationListener-before-process-save" eventType="before-process-save"
+			listenerClass="org.foxbpm.engine.impl.listener.process.UpdateLocationListener" />
 	</eventListeners>
 
 	<bizDataObjects>

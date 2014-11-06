@@ -191,6 +191,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		commandContext.getTaskManager().insert(this);
 		if (processInstance != null) {
 			processInstance.addTask(this);
+			processInstance.setLocationChange(true);
 		}
 		
 	}
@@ -316,14 +317,6 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	
 	public void setTaskDefinition(TaskDefinition taskDefinition) {
 		this.taskDefinition = taskDefinition;
-	}
-	
-	public List<IdentityLinkEntity> getTaskIdentityLinks() {
-		return taskIdentityLinks;
-	}
-	
-	public void setTaskIdentityLinks(List<IdentityLinkEntity> taskIdentityLinks) {
-		this.taskIdentityLinks = taskIdentityLinks;
 	}
 	
 	public TaskEntity getParentTask() {
@@ -459,6 +452,17 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	}
 	
 	public void setAssignee(String assignee) {
+		
+		if(assignee != null && !assignee.equals(this.assignee)){
+			ProcessInstanceEntity processInstance = getProcessInstance();
+			if(processInstance != null){
+				processInstance.setLocationChange(true);
+			}
+		}
+		this.assignee = assignee;
+	}
+	
+	public void setAssigneeString(String assignee) {
 		this.assignee = assignee;
 	}
 	
@@ -803,10 +807,12 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		identityLinkEntity.setGroupId(groupId);
 		identityLinkEntity.setType(type);
 		identityLinkEntity.setGroupType(groupType);
-		// 判断开始流程权限时会触发add方法，此时不应该存储数据
-		if (this.id != null) {
-			identityLinkEntity.insert();
+		
+		ProcessInstanceEntity processInstance = getProcessInstance();
+		if(processInstance != null){
+			processInstance.setLocationChange(true);
 		}
+		identityLinkEntity.insert();
 		return identityLinkEntity;
 	}
 	

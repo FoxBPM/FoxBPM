@@ -38,6 +38,7 @@ public class KernelEventType {
 	public static final String EVENTTYPE_TASK_CREATE = "task-create";
 	public static final String EVENTTYPE_TASK_ASSIGN = "task-assign";
 	public static final String EVENTTYPE_TASK_ASSIGN_CHANGE = "task-assign-change";
+	public static final String EVENTTYPE_BEFORE_PROCESS_SAVE = "before-process-save";
 	public static final String EVENTTYPE_TASK_START = "task-start";
 	public static final String EVENTTYPE_TASK_END = "task-end";
 	public static final String EVENTTYPE_TIMER = "timer";

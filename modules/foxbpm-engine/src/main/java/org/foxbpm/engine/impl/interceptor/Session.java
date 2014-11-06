@@ -23,8 +23,10 @@ package org.foxbpm.engine.impl.interceptor;
  * @author ych
  */
 public interface Session {
-  
-  void flush();
+ 
+	void beforeFlush();
+	
+	void flush();
 
-  void close();
+	void close();
 }

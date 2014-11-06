@@ -23,6 +23,7 @@ import java.util.List;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.runtime.ProcessInstanceQueryImpl;
 import org.foxbpm.engine.runtime.ProcessInstance;
+import org.foxbpm.kernel.event.KernelEvent;
 
 /**
  * 流程实例管理器
@@ -95,6 +96,16 @@ public class ProcessInstanceManager extends AbstractManager {
 	public void deleteProcessInstanceById(String processInstanceId) {
 		delete("deleteProcessInstanceById", processInstanceId);
 		cascadeDelete(processInstanceId);
+	}
+	
+	@Override
+	public void beforeFlush() {
+		
+		for(CachedObject cacheObject : cachedObjects.values()){
+			ProcessInstanceEntity processInstanceEntity = (ProcessInstanceEntity)cacheObject.getPersistentObject();
+			processInstanceEntity.getRootToken().fireEvent(KernelEvent.BEFORE_PROCESS_SAVE);
+		}
+		
 	}
 	
 }

@@ -32,7 +32,7 @@ public interface KernelEvent {
 	KernelEvent NODE_ENTER = new KernelEventNodeEnter();
 	KernelEvent NODE_EXECUTE = new KernelEventNodeExecute();
 	KernelEvent NODE_LEAVE = new KernelEventNodeLeave();
-
+	KernelEvent BEFORE_PROCESS_SAVE = new KernelEventBeforeProcessSave();
 	KernelEvent SEQUENCEFLOW_TAKE = new KernelEventSequenceFlowTake();
 
 	boolean isAsync(InterpretableExecutionContext executionContext);

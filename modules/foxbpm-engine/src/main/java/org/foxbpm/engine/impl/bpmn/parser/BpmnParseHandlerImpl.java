@@ -275,7 +275,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		try {
 			for (EventListener eventListener : eventListenerList.values()) {
 				foxbpmEventListener = (KernelListener) Class.forName(eventListener.getListenerClass()).newInstance();
-				if (StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_START) || StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_END)) {
+				if (StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_START) || StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_END)|| StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_BEFORE_PROCESS_SAVE)) {
 					// 注册启动监听
 					processEntity.addKernelListener(eventListener.getEventType(), foxbpmEventListener);
 				} else {
