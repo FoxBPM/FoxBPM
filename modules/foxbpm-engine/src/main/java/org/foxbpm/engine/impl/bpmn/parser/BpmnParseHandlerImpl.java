@@ -83,9 +83,9 @@ import org.foxbpm.model.constant.StyleOption;
 import org.foxbpm.model.style.Style;
 
 public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
-
+	
 	private static Map<String, Style> styleContainer = new HashMap<String, Style>();
-
+	
 	@SuppressWarnings("unchecked")
 	public BpmnParseHandlerImpl() {
 		SAXReader reader = new SAXReader();
@@ -124,9 +124,9 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			throw new FoxBPMClassLoadingException("style.xml文件解析失败，请检查！", e);
 		}
 	}
-
+	
 	public static BehaviorRelationMemo behaviorRelationMemo = new BehaviorRelationMemo();
-
+	
 	public KernelProcessDefinition createProcessDefinition(String processId, Object processFile) {
 		BpmnModel bpmnModel = null;
 		bpmnModel = loadBpmnModel(processId, (InputStream) processFile);
@@ -140,7 +140,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		registListener((ProcessDefinitionEntity) processDefinition);
 		return processDefinition;
 	}
-
+	
 	/**
 	 * loadBehavior 根据Process模型加载流程定义对象
 	 * 
@@ -157,24 +157,24 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			connectorListener.setConnector(connector);
 			processDefinitionBuilder.executionListener(connector.getEventType(), connectorListener);
 		}
-
+		
 		for (FlowElement flowElement : flowElements) {
 			generateBuilder(processDefinitionBuilder, flowElement, false, process.getSequenceFlows());
 		}
-
+		
 		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) processDefinitionBuilder.buildProcessDefinition();
-
+		
 		if (process.getLaneSets() != null && process.getLaneSets().size() > 0) {
 			for (LaneSet laneSet : process.getLaneSets()) {
-
+				
 				KernelLaneSetImpl laneSetObj = new KernelLaneSetImpl(laneSet.getId(), processDefinition);
 				laneSetObj.setName(laneSet.getName());
 				loadLane(laneSetObj, laneSet, processDefinition);
-
+				
 				processDefinition.getLaneSets().add(laneSetObj);
 			}
 		}
-
+		
 		// // 加载其他元素
 		// for (Artifact artifact : process.getArtifacts()) {
 		// KernelArtifactBehavior artifactBehavior =
@@ -191,7 +191,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		// processDefinition.getArtifacts().add(kernelArtifactImpl);
 		//
 		// }
-
+		
 		processDefinition.setKey(process.getId());
 		processDefinition.setName(process.getName());
 		processDefinition.setCategory(process.getCategory());
@@ -200,14 +200,14 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		processDefinition.setSubject(process.getSubject());
 		processDefinition.setPotentialStarters(process.getPotentialStarters());
 		processDefinition.setProperty("documentation", process.getDocumentation());
-
+		
 		DataVariableMgmtDefinition dataVariableMgmtDefinition = new DataVariableMgmtDefinition(processDefinition);
 		dataVariableMgmtDefinition.getDataVariableDefinitions().addAll(process.getDataVariables());
 		processDefinition.setDataVariableMgmtDefinition(dataVariableMgmtDefinition);
 		processDI(processDefinition, bpmnModel);
 		return processDefinition;
 	}
-
+	
 	/**
 	 * 根据flowElement构造builder(递归内部子流程)
 	 * 
@@ -216,7 +216,8 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	 * @param isSub
 	 *            是否子流程
 	 */
-	private void generateBuilder(ProcessDefinitionBuilder processDefinitionBuilder, FlowElement flowElement, boolean isSub, Map<String, SequenceFlow> sequenceFlows) {
+	private void generateBuilder(ProcessDefinitionBuilder processDefinitionBuilder, FlowElement flowElement,
+	    boolean isSub, Map<String, SequenceFlow> sequenceFlows) {
 		KernelFlowNodeBehavior flowNodeBehavior = BpmnBehaviorEMFConverter.getFlowNodeBehavior(flowElement, processDefinitionBuilder.getProcessDefinition());
 		if (flowElement instanceof FlowNode) {
 			processDefinitionBuilder.createFlowNode(flowElement.getId(), flowElement.getName()).behavior(flowNodeBehavior);
@@ -229,7 +230,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 					kernelFlowNodeImpl.getParent().setProperty("initial", kernelFlowNodeImpl);
 				}
 			}
-
+			
 			// 特殊处理子流程，需要递归处理节点
 			if (flowElement instanceof SubProcess) {
 				SubProcess subProcess = (SubProcess) flowElement;
@@ -247,7 +248,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 					processDefinitionBuilder.executionListener(connector.getEventType(), connectorListener);
 				}
 			}
-
+			
 			// 处理线条
 			List<String> sequenceFlowIds = ((FlowNode) flowElement).getOutgoingFlows();
 			for (String sequenceFlowId : sequenceFlowIds) {
@@ -258,7 +259,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			processDefinitionBuilder.endFlowNode();
 		}
 	}
-
+	
 	/**
 	 * 加载配置监听器、 独立加载 和嵌入流程定义创建代码中，算法效率是一样的 监听器集合SIZE * 节点集合SIZE
 	 * 不建议侵入到流程定义的LOAD代码中
@@ -267,15 +268,20 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	 */
 	private void registListener(ProcessDefinitionEntity processEntity) {
 		// 加载监听器
-		Map<String,EventListener> eventListenerList = Context.getProcessEngineConfiguration().getEventListeners();
-		if(eventListenerList == null){
+		List<EventListener> eventListenerList = Context.getProcessEngineConfiguration().getEventListeners();
+		
+		if (eventListenerList == null) {
 			return;
 		}
-		KernelListener foxbpmEventListener = null;
+		
 		try {
-			for (EventListener eventListener : eventListenerList.values()) {
+			EventListener eventListener = null;
+			KernelListener foxbpmEventListener = null;
+			for (Iterator<EventListener> iterator = eventListenerList.iterator(); iterator.hasNext();) {
+				eventListener = iterator.next();
 				foxbpmEventListener = (KernelListener) Class.forName(eventListener.getListenerClass()).newInstance();
-				if (StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_START) || StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_END)) {
+				if (StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_START)
+				        || StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_END)) {
 					// 注册启动监听
 					processEntity.addKernelListener(eventListener.getEventType(), foxbpmEventListener);
 				} else {
@@ -296,15 +302,15 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 						List<KernelFlowNodeImpl> flowNodes = processEntity.getFlowNodes();
 						this.registerFlowNodeListener(flowNodes, eventListener, foxbpmEventListener);
 					}
-
+					
 				}
-
+				
 			}
 		} catch (Exception e) {
 			throw new FoxBPMException("加载运行监听器时出现问题", e);
 		}
 	}
-
+	
 	/**
 	 * 
 	 * 子流程节点加载轨迹监听器
@@ -316,17 +322,18 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	 * @exception
 	 * @since 1.0.0
 	 */
-	private void registerFlowNodeListener(List<KernelFlowNodeImpl> flowNodes, EventListener eventListener, KernelListener foxbpmEventListener) {
+	private void registerFlowNodeListener(List<KernelFlowNodeImpl> flowNodes, EventListener eventListener,
+	    KernelListener foxbpmEventListener) {
 		for (KernelFlowNodeImpl kernelFlowNodeImpl : flowNodes) {
 			kernelFlowNodeImpl.addKernelListener(eventListener.getEventType(), foxbpmEventListener);
-
+			
 			List<KernelFlowNodeImpl> subFlowNodes = kernelFlowNodeImpl.getFlowNodes();
 			if (subFlowNodes != null && subFlowNodes.size() > 0) {
 				registerFlowNodeListener(subFlowNodes, eventListener, foxbpmEventListener);
 			}
 		}
 	}
-
+	
 	private void loadLane(KernelLaneSet kernelLaneSet, LaneSet laneSet, ProcessDefinitionEntity processDefinition) {
 		kernelLaneSet.setName(laneSet.getName());
 		for (Lane lane : laneSet.getLanes()) {
@@ -346,9 +353,9 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			}
 		}
 	}
-
+	
 	private void processDI(ProcessDefinitionEntity processDefinition, BpmnModel bpmnModel) {
-
+		
 		String processId = bpmnModel.getProcesses().get(0).getId();
 		Map<String, Bounds> boundsMap = bpmnModel.getBoundsLocationMap().get(processId);
 		Map<String, List<WayPoint>> wayPointsMap = bpmnModel.getWaypointLocationMap().get(processId);
@@ -356,7 +363,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		float maxY = 0;
 		float minY = 0;
 		float minX = 0;
-
+		
 		for (Bounds tmpBounds : boundsMap.values()) {
 			float x = tmpBounds.getX();
 			float y = tmpBounds.getY();
@@ -375,7 +382,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 					minY = y;
 				}
 			}
-
+			
 			if (minX == 0) {
 				minX = x;
 			} else {
@@ -385,18 +392,18 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			}
 			loadBPMNShape(tmpBounds, processDefinition);
 		}
-
+		
 		for (String edgeId : wayPointsMap.keySet()) {
 			List<WayPoint> tmpPointList = wayPointsMap.get(edgeId);
 			loadBPMNEdge(tmpPointList, edgeId, processDefinition);
 		}
-
+		
 		processDefinition.setProperty("canvas_maxX", maxX + 30);
 		processDefinition.setProperty("canvas_maxY", maxY + 70);
 		processDefinition.setProperty("canvas_minX", minX);
 		processDefinition.setProperty("canvas_minY", minY);
 	}
-
+	
 	/**
 	 * 
 	 * loadBPMNShape(加载 bpmnShape信息)
@@ -418,17 +425,17 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		Style style = null;
 		KernelDIBounds kernelDIBounds = this.getDIElementFromProcessDefinition(processDefinition, elementId);
 		if (kernelDIBounds != null) {
-			if(kernelDIBounds instanceof KernelLane){
+			if (kernelDIBounds instanceof KernelLane) {
 				style = styleContainer.get("Lane");
-			}else{
+			} else {
 				KernelFlowNodeImpl flowNodeImpl = processDefinition.findFlowNode(elementId);
-				if(flowNodeImpl == null){
+				if (flowNodeImpl == null) {
 					return;
 				}
 				FlowNodeBehavior behavior = (FlowNodeBehavior) flowNodeImpl.getKernelFlowNodeBehavior();
 				style = getStyle(behavior.getBaseElement());
 			}
-		
+			
 			// 图形基本属性
 			kernelDIBounds.setWidth((float) bounds.getWidth());
 			kernelDIBounds.setHeight((float) bounds.getHeight());
@@ -439,14 +446,15 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 				kernelDIBounds.setProperty(StyleOption.IsHorizontal, bounds.isHorizontal());
 			}
 			// 内部子流程展开收起属性
-			if (kernelDIBounds instanceof KernelFlowNodeImpl && ((KernelFlowNodeImpl) kernelDIBounds).getKernelFlowNodeBehavior() instanceof SubProcessBehavior) {
+			if (kernelDIBounds instanceof KernelFlowNodeImpl
+			        && ((KernelFlowNodeImpl) kernelDIBounds).getKernelFlowNodeBehavior() instanceof SubProcessBehavior) {
 				kernelDIBounds.setProperty(StyleOption.IsExpanded, bounds.isExpanded());
 			}
 			// 图形式样属性
 			setStyleProperties((KernelBaseElementImpl) kernelDIBounds, style);
 		}
 	}
-
+	
 	/**
 	 * 
 	 * loadBPMNEdge(加载bpmnEdge信息)
@@ -461,7 +469,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	private void loadBPMNEdge(List<WayPoint> pointList, String elementId, ProcessDefinitionEntity processDefinition) {
 		Style style = null;
 		KernelSequenceFlowImpl findSequenceFlow = processDefinition.findSequenceFlow(elementId);
-		BaseElement baseElement = ((SequenceFlowBehavior)findSequenceFlow.getSequenceFlowBehavior()).getBaseElement();
+		BaseElement baseElement = ((SequenceFlowBehavior) findSequenceFlow.getSequenceFlowBehavior()).getBaseElement();
 		style = getStyle(baseElement);
 		List<Integer> waypoints = new ArrayList<Integer>();
 		for (WayPoint point : pointList) {
@@ -491,7 +499,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		// // TODO MESSAGEFLOW
 		// }
 	}
-
+	
 	/**
 	 * 
 	 * getDIElementFromProcessDefinition(获取BPMN的DI元素包括所有节点，除了线条之外)
@@ -502,7 +510,8 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	 * @exception
 	 * @since 1.0.0
 	 */
-	private KernelDIBounds getDIElementFromProcessDefinition(ProcessDefinitionEntity processDefinition, String diElementId) {
+	private KernelDIBounds getDIElementFromProcessDefinition(ProcessDefinitionEntity processDefinition,
+	    String diElementId) {
 		KernelFlowNodeImpl localFlowNode = processDefinition.getNamedFlowNodes().get(diElementId);
 		if (localFlowNode != null) {
 			return localFlowNode;
@@ -517,11 +526,11 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 				if (nestedFlowNode != null) {
 					return nestedFlowNode;
 				}
-
+				
 			}
-
+			
 		}
-
+		
 		// 返回泳道
 		if (processDefinition.getLaneSets() != null && processDefinition.getLaneSets().size() > 0) {
 			KernelLaneImpl lane = null;
@@ -539,7 +548,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		}
 		return null;
 	}
-
+	
 	/**
 	 * 
 	 * getStyle(获取元素式样)
@@ -557,7 +566,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		}
 		return style;
 	}
-
+	
 	/**
 	 * 
 	 * setStyleProperties(设置元素式样)
@@ -576,7 +585,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		kernelBaseElementImpl.setProperty(StyleOption.SelectedColor, style.getSelectedColor());
 		kernelBaseElementImpl.setProperty(StyleOption.TextColor, style.getTextColor());
 	}
-
+	
 	private BpmnModel loadBpmnModel(String processId, InputStream is) {
 		BpmnXMLConverter converter = new BpmnXMLConverter();
 		SAXReader reader = new SAXReader();
@@ -584,13 +593,13 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		try {
 			Document doc = reader.read(is);
 			bpmnModel = converter.convertToBpmnModel(doc);
-
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		return bpmnModel;
 	}
-
+	
 	/**
 	 * 
 	 * 
@@ -605,7 +614,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		/** 临时存储MAP */
 		private Map<String, ActivityBehavior> attachActivityMap = new HashMap<String, ActivityBehavior>();
 		private Map<String, List<BoundaryEventBehavior>> beAttachedActivityMap = new HashMap<String, List<BoundaryEventBehavior>>();
-
+		
 		/**
 		 * 
 		 * attachActivityAndBoundaryEventBehaviorRelation(创建Activity
@@ -622,13 +631,13 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 					for (EventBehavior behavior : list) {
 						attachActivityMap.get(activityID).getBoundaryEventBehaviors().add((BoundaryEventBehavior) behavior);
 					}
-
+					
 				}
 			}
 			this.attachActivityMap.clear();
 			this.beAttachedActivityMap.clear();
 		}
-
+		
 		/**
 		 * 
 		 * addActivity(保存解释得到的活动节点)
@@ -642,7 +651,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		public void addActivity(Activity activity, ActivityBehavior activityBehavior) {
 			this.attachActivityMap.put(activity.getId(), activityBehavior);
 		}
-
+		
 		/**
 		 * 
 		 * addActivity(保存解释得到的事件行为)
@@ -662,5 +671,5 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			list.add(eventBehavior);
 		}
 	}
-
+	
 }

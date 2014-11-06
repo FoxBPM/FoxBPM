@@ -24,6 +24,8 @@ public class EventListenerImpl implements EventListener {
 	private String id;
 	private String eventType;
 	private String listenerClass;
+	private int priority;
+	
 	public String getEventType() {
 		return eventType;
 	}
@@ -43,6 +45,12 @@ public class EventListenerImpl implements EventListener {
 	
 	public String getId() {
 		return id;
+	}
+	public int getPriority() {
+		return priority;
+	}
+	public void setPriority(int priority) {
+		this.priority = priority;
 	}
 	
 }

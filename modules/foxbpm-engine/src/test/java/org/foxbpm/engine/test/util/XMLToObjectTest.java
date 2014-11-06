@@ -17,10 +17,17 @@
  */
 package org.foxbpm.engine.test.util;
 
+import java.util.Iterator;
+
 import org.foxbpm.engine.config.FoxBPMConfig;
+import org.foxbpm.engine.event.EventListener;
+import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.util.FoxBPMCfgParseUtil;
 import org.foxbpm.engine.impl.util.ReflectUtil;
+import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 常量类
@@ -28,18 +35,16 @@ import org.junit.Test;
  * @author yangguangftlp
  * @date 2014年10月27日
  */
-public class XMLToObjectTest {
+public class XMLToObjectTest extends AbstractFoxBpmTestCase {
+	private static Logger log = LoggerFactory.getLogger(ProcessEngineConfigurationImpl.class);
 	@Test
 	public void testTransform() {
-		/*SAXReader reader = new SAXReader();
-		Document doc;
-		try {
-			doc = reader.read(ReflectUtil.getResourceAsStream("org/foxbpm/foxbpm.cfg.xml"));
-			FoxBPMConfig a = (FoxBPMConfig) XMLToObject.getInstance().transform(doc, FoxBPMConfig.class, true);
-			System.out.println(a);
-		} catch (DocumentException e) {
-			e.printStackTrace();
-		}*/
+		EventListener tmp = null;
+		System.out.println("---------------------------------------------");
+		for (Iterator<EventListener> iterator = processEngine.getProcessEngineConfiguration().getEventListeners().iterator(); iterator.hasNext();) {
+			tmp = iterator.next();
+			log.debug("监听编号：{},监听事件：{},级别：{},类名：{}", tmp.getId(), tmp.getEventType(), tmp.getPriority(), tmp.getListenerClass());
+		}
 	};
 	@Test
 	public void testPase() {

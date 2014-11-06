@@ -13,38 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @author ych
+ * @author yangguangftlp
  */
-package org.foxbpm.engine.event;
+package org.foxbpm.engine.impl.util;
+
+import java.util.Comparator;
+
+import org.foxbpm.engine.event.EventListener;
 
 /**
- * 引擎监听器配置 见foxbpm.cfg.xml中的eventListenerConfig配置
+ * 监听器排序器
  * 
- * @author ych
- * 
+ * @author yangguangftlp
+ * @date 2014年11月6日
  */
-public interface EventListener {
-	
-	String getId();
-	/**
-	 * 监听的事件类型
-	 * 
-	 * @return
-	 */
-	String getEventType();
-	
-	/**
-	 * 监听器执行类
-	 * 
-	 * @return
-	 */
-	String getListenerClass();
-	
-	/**
-	 * 获取优先级
-	 * 
-	 * @return
-	 */
-	int getPriority();
-	
+public class ListenerComparator implements Comparator<EventListener> {
+	public int compare(EventListener o1, EventListener o2) {
+		return o1.getPriority() - o2.getPriority();
+	}
 }

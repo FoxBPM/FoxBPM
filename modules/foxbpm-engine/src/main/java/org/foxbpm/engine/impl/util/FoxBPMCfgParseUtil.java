@@ -278,6 +278,8 @@ public class FoxBPMCfgParseUtil {
 			method.invoke(pObj, value);
 		} else if (boolean.class == pType) {
 			method.invoke(pObj, Boolean.valueOf(value));
+		} else if (int.class == pType) {
+			method.invoke(pObj, Integer.valueOf(value));
 		} else {
 			// 暂不支持的类型
 			LOGGER.warn("不支持的类型是:" + pType);
