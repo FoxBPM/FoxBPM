@@ -230,8 +230,10 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	/**
 	 * 事件监听配置
+	 * eventMapListeners:eventType->events
+	 * events:eventId->EventListener
 	 */
-	protected Map<String,EventListener> eventListeners;
+	protected Map<String,Map<String,EventListener>> eventMapListeners;
 	
 	/**
 	 * FOXBPM任务调度器
@@ -338,14 +340,29 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	protected void initEventListeners(){
 		List<EventListenerImpl> eventListenerImpls = foxBpmConfig.getEventListeners();
+
 		if(eventListenerImpls != null){
-			this.eventListeners = new HashMap<String, EventListener>();
+			this.eventMapListeners = new HashMap<String, Map<String,EventListener>>();
 			log.debug("发现{}个全局监听，列表如下：",eventListenerImpls.size());
 			for(EventListenerImpl tmp :eventListenerImpls){
 				log.debug("监听编号：{},监听事件：{},类名：{}",tmp.getId(),tmp.getEventType(),tmp.getListenerClass());
-				eventListeners.put(tmp.getId(), tmp);
+				if(eventMapListeners.get(tmp.getEventType()) == null){
+					Map<String,EventListener> eventListeners =  new HashMap<String,EventListener>();
+					eventListeners.put(tmp.getId(), tmp);
+					eventMapListeners.put(tmp.getEventType(), eventListeners);
+				}else{
+					eventMapListeners.get(tmp.getEventType()).put(tmp.getId(), tmp);
+				} 
 			}
 		}
+//		if(eventListenerImpls != null){
+//			this.eventListeners = new HashMap<String, EventListener>();
+//			log.debug("发现{}个全局监听，列表如下：",eventListenerImpls.size());
+//			for(EventListenerImpl tmp :eventListenerImpls){
+//				log.debug("监听编号：{},监听事件：{},类名：{}",tmp.getId(),tmp.getEventType(),tmp.getListenerClass());
+//				eventListeners.put(tmp.getId(), tmp);
+//			}
+//		}
 	}
 	
 	protected void initQuartz() {
@@ -756,11 +773,9 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	public TaskCommandDefinition getTaskCommandDefinition(String taskCommandDefinitionId) {
 		return taskCommandDefinitionMap.get(taskCommandDefinitionId);
 	}
-	
-	public Map<String,EventListener> getEventListeners() {
-		return eventListeners;
+	public  Map<String,Map<String,EventListener>>  getEventMapListeners(){
+		return eventMapListeners;
 	}
-
 	public FoxbpmScheduler getFoxbpmScheduler() {
 		if(!quartzEnabled){
 			return null;
