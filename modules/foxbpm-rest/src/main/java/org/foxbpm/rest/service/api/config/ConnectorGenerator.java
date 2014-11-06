@@ -26,6 +26,7 @@ import java.util.zip.ZipOutputStream;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
@@ -82,17 +83,28 @@ public class ConnectorGenerator implements IZipGenerator {
 		String pngEntryName = folderName + "/" + id + "/" + id + ".png";
 		
 		InputStream xmlInputStream = ReflectUtil.getResourceAsStream(xmlFileName);
-		generZip(xmlInputStream,xmlEntryName,out);
+		if(xmlInputStream == null){
+			log.error("文件：{}不存在,跳过处理，该连接器可能不可用！" ,xmlFileName);
+		}else{
+			generZip(xmlInputStream,xmlEntryName,out);
+		}
+	
 		
 		InputStream pngInputStream = ReflectUtil.getResourceAsStream(pngFileName);
 		if(pngInputStream == null){
 			pngFileName = packageName + "/" + id + ".jpg";
 			pngInputStream = ReflectUtil.getResourceAsStream(pngFileName);
 		}
-		generZip(pngInputStream,pngEntryName,out);
+		if(pngInputStream == null){
+			log.error("文件：{}不存在,跳过处理，该连接器可能不可用！" ,pngFileName);
+		}else{
+			generZip(pngInputStream,pngEntryName,out);
+		}
+		
 	}
 	
 	private void generZip(InputStream stream,String entryName,ZipOutputStream out) throws Exception{
+		
 		ZipEntry zipEntry = new ZipEntry(entryName);
 		zipEntry.setMethod(ZipEntry.DEFLATED);// 设置条目的压缩方式
 		out.putNextEntry(zipEntry);
@@ -109,7 +121,13 @@ public class ConnectorGenerator implements IZipGenerator {
 		SAXReader reader = null;
 		reader = new SAXReader();
 		Document doc = reader.read(stream);
-		generZip(stream, prefix+"/ConnectorMenu.xml", out);
+		ZipEntry zipEntry = new ZipEntry(prefix+"/ConnectorMenu.xml");
+		zipEntry.setMethod(ZipEntry.DEFLATED);// 设置条目的压缩方式
+		out.putNextEntry(zipEntry);
+		XMLWriter xmlWriter = new XMLWriter(out);
+		xmlWriter.setEscapeText(false);
+		xmlWriter.write(doc);
+		out.closeEntry();
 		Element flowConnectorElement =doc.getRootElement().element("flowConnector");
 		if(flowConnectorElement != null){
 			parseNode(flowConnectorElement, out, "flowConnector",prefix + "/flowConnector");
