@@ -8,6 +8,10 @@
     <para>
       <orderedlist>
         <listitem>
+          <para>前置条件</para>
+          <para>最新的设计器插件包、foxbpm-common.war。</para>
+        </listitem>
+        <listitem>
           <para>打开Eclipse的官网，进入下载页面。地址：<link xlink:href="http://eclipse.org/downloads/"
               >http://eclipse.org/downloads/</link></para>
           <para>点击如图右方所示红框部分，进入Juno或Kepler版本的下载界面(下面以Kepler为例)。</para>
@@ -325,10 +329,12 @@
           <para>完成后自动打开创建的流程文件,说明设计器插件已经可以正常使用。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.30.png"
-              />
+              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.30.png"/>
             </imageobject>
           </mediaobject>
+        </listitem>
+        <listitem>
+          <para>以上该设计器插件均在kepler、版本安装通过。</para>
         </listitem>
       </orderedlist>
     </para>

@@ -117,6 +117,11 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	/** 控制并发修改标示 */
 	protected int revision;
 	
+	/**
+	 * 是否需要重新计算流程位置
+	 */
+	protected boolean isLocationChange;
+	
 	public boolean isModified() {
 		return true;
 	}
@@ -380,6 +385,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	}
 	
 	public String getProcessLocation() {
+		
 		return processLocation;
 	}
 	
@@ -545,5 +551,13 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 			tmpTask.setSuspended(false);
 		}
 		super.continueInstance();
+	}
+	
+	public void setLocationChange(boolean isLocationChange) {
+		this.isLocationChange = isLocationChange;
+	}
+	
+	public boolean isLocationChange() {
+		return isLocationChange;
 	}
 }

@@ -87,7 +87,7 @@ public class AutoSendMail implements FlowConnectorHandler {
 				// 处理共享任务
 				StringBuffer to = new StringBuffer();
 				String userId = null;
-				for (IdentityLinkEntity identityLink : taskEntity.getTaskIdentityLinks()) {
+				for (IdentityLinkEntity identityLink : taskEntity.getIdentityLinks()) {
 					userId = identityLink.getUserId();
 					if (StringUtil.isNotEmpty(userId)) {
 						if (!Constant.FOXBPM_ALL_USER.equals(userId)) {

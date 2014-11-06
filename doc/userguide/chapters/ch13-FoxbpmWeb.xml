@@ -16,7 +16,7 @@
                                 fileref="../image/web.13.png"/>
                         </imageobject>
                     </mediaobject>
-                    <para>说明：该页面作为主页面，目前只有日历面板和待办任务有效。</para>
+                    <para>说明：该页面作为主页面，目前只有日历面板和待办任务有效(关于日历和代码后面介绍)。</para>
                 </listitem>
                 <listitem>
                     <para>发起流程</para>
@@ -61,7 +61,7 @@
                                 fileref="../image/web.4.png"/>
                         </imageobject>
                     </mediaobject>
-                    <para>界面功能：支持“任务优先级”、“任务创建或任务期限”过滤以及“日历视图方式”展现</para>
+                    <para>界面功能：支持根据“任务优先级”、“任务创建或任务期限”来过滤待办任务，以支持“日历视图”的方式展现待办任务，和“待办任务”功能差不多区别就是在与展现方式上。</para>
                 </listitem>
                 <listitem>
                     <para>已办任务</para>

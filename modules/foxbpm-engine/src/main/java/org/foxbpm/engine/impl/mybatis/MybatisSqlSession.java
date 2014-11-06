@@ -78,6 +78,10 @@ public class MybatisSqlSession implements ISqlSession,Session {
 		}
 	}
 	
+	public void beforeFlush() {
+		
+	}
+	
 	 
 	public void flush() {
 		

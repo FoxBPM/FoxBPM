@@ -18,7 +18,7 @@
 		<result column="COMPLETEDESCRIPTION" property="completeDescription"
 			jdbcType="VARCHAR" />
 		<result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
-		<result column="ASSIGNEE" property="assignee" jdbcType="VARCHAR" />
+		<result column="ASSIGNEE" property="assigneeString" jdbcType="VARCHAR" />
 		<result column="CLAIM_TIME" property="claimTime" jdbcType="TIMESTAMP" />
 		<result column="NAME" property="name" jdbcType="VARCHAR" />
 		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />

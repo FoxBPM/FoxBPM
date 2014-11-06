@@ -14,19 +14,17 @@
  * limitations under the License.
  * 
  * @author kenshin
- * @author ych
  */
-package org.foxbpm.engine.impl.interceptor;
-
+package org.foxbpm.engine.task;
 
 /**
- * @author ych
+ * @author kenshin
  */
-public interface Session {
- 
-	void beforeFlush();
+public class AddSignType {
 	
-	void flush();
+	
+	public static String PARALLEL="parallel";
+	public static String SEQUENTIAL="sequential";
+	
 
-	void close();
 }

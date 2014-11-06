@@ -457,4 +457,7 @@ public abstract class AbstractManager implements Session {
 		return filteredObjects;
 	}
 	
+	public void beforeFlush() {
+		
+	}
 }

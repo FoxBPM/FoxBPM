@@ -14,19 +14,49 @@
  * limitations under the License.
  * 
  * @author kenshin
- * @author ych
  */
-package org.foxbpm.engine.impl.interceptor;
+package org.foxbpm.engine.impl.task.filter;
 
+import org.foxbpm.engine.task.Task;
 
 /**
- * @author ych
+ * @author kenshin
  */
-public interface Session {
- 
-	void beforeFlush();
-	
-	void flush();
+public class AddSignFilter extends AbstractCommandFilter {
 
-	void close();
+	@Override
+	public boolean accept(Task task) {
+		
+
+		if (task == null) {
+			return false;
+		}
+
+		if (task.isSuspended()) {
+			return false;
+		}
+
+		if (task.hasEnded()) {
+			return false;
+		}
+
+		if (isProcessTracking()) {
+			return false;
+		}
+
+		if (task.getDelegationState() != null) {
+			return false;
+		}
+
+		if (task.getAssignee() != null) {
+			return true;
+		}
+
+		if (isAutoClaim(task)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }
