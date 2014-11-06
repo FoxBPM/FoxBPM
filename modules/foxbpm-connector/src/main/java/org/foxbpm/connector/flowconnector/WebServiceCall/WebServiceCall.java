@@ -42,42 +42,42 @@ import org.foxbpm.engine.impl.util.StringUtil;
  * @date 2014年7月7日
  */
 public class WebServiceCall implements FlowConnectorHandler {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -748190599446833382L;
-
+	
 	private java.lang.String namespaceURI;
-
+	
 	private java.lang.String serviceName;
-
+	
 	private java.lang.String portName;
-
+	
 	private java.lang.String endpointAddress;
-
+	
 	private java.lang.String request;
-
+	
 	private java.lang.String response;
-
+	
 	public void execute(ConnectorExecutionContext executionContext) throws Exception {
 		if (StringUtil.isEmpty(namespaceURI)) {
-			throw new FoxBPMConnectorException("namespaceURI is null!");
+			throw new FoxBPMConnectorException("连接器(执行一个Web服务)命名空间表达式为空!");
 		}
 		if (StringUtil.isEmpty(portName)) {
-			throw new FoxBPMConnectorException("portName is null!");
+			throw new FoxBPMConnectorException("连接器(执行一个Web服务)端口名表达式为空!");
 		}
 		if (StringUtil.isEmpty(serviceName)) {
-			throw new FoxBPMConnectorException("serviceName is null!");
+			throw new FoxBPMConnectorException("连接器(执行一个Web服务)服务名表达式为空!");
 		}
-
+		
 		if (StringUtil.isEmpty(endpointAddress)) {
-			throw new FoxBPMConnectorException("endpointAddress is null!");
+			throw new FoxBPMConnectorException("连接器(执行一个Web服务)端点地址表达式为空!");
 		}
 		if (StringUtil.isEmpty(request)) {
-			throw new FoxBPMConnectorException("request is null!");
+			throw new FoxBPMConnectorException("连接器(执行一个Web服务)请求内容表达式为空!");
 		}
-
+		
 		QName portQName = new QName(namespaceURI, portName);
 		Service service = Service.create(new QName(namespaceURI, serviceName));
 		service.addPort(portQName, SOAPBinding.SOAP11HTTP_BINDING, endpointAddress);
@@ -90,27 +90,27 @@ public class WebServiceCall implements FlowConnectorHandler {
 		ByteArrayOutputStream baos = (ByteArrayOutputStream) result.getOutputStream();
 		response = new String(baos.toByteArray());
 	}
-
+	
 	public void setNamespaceURI(java.lang.String namespaceURI) {
 		this.namespaceURI = namespaceURI;
 	}
-
+	
 	public void setServiceName(java.lang.String serviceName) {
 		this.serviceName = serviceName;
 	}
-
+	
 	public void setPortName(java.lang.String portName) {
 		this.portName = portName;
 	}
-
+	
 	public void setEndpointAddress(java.lang.String endpointAddress) {
 		this.endpointAddress = endpointAddress;
 	}
-
+	
 	public void setRequest(java.lang.String request) {
 		this.request = request;
 	}
-
+	
 	public java.lang.String getResponse() {
 		return response;
 	}

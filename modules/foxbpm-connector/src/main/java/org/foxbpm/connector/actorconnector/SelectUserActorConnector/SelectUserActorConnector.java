@@ -42,7 +42,7 @@ public class SelectUserActorConnector extends ActorConnectorHandler {
 	
 	public void assign(DelegateTask task) throws Exception {
 		if (null == userId) {
-			throw new FoxBPMConnectorException("处理人选择器(选择用户)表达式为空 ! 节点编号：" + task.getNodeId());
+			throw new FoxBPMConnectorException("处理人选择器(选择用户)用户编号表达式为空 ! 节点编号：" + task.getNodeId());
 		}
 		List<String> userList = AssigneeUtil.executionExpressionObj(userId);
 		if (userList.size() == 1) {

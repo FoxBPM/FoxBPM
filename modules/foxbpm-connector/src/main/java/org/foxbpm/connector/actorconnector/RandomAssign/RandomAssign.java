@@ -42,7 +42,7 @@ public class RandomAssign extends ActorConnectorHandler {
 	
 	public void assign(DelegateTask task) throws Exception {
 		if (null == userId) {
-			throw new FoxBPMConnectorException("userId is null!");
+			throw new FoxBPMConnectorException("处理人选择器(资源中随机分配)用户编号表达式为空 ! 节点编号：" + task.getNodeId());
 		}
 		// 获取待分配的用户
 		List<String> userIds = AssigneeUtil.executionExpressionObj(userId);

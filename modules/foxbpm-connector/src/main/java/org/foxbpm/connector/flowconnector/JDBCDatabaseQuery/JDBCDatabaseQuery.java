@@ -34,40 +34,40 @@ import org.foxbpm.engine.impl.util.StringUtil;
  * @date 2014年7月7日
  */
 public class JDBCDatabaseQuery implements FlowConnectorHandler {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3120408358341797232L;
-
+	
 	private java.lang.String driverClassName;
-
+	
 	private java.lang.String url;
-
+	
 	private java.lang.String username;
-
+	
 	private java.lang.String password;
-
+	
 	private java.lang.String sqlText;
-
+	
 	private java.util.List<java.util.Map<String, Object>> outputObj;
-
+	
 	public void execute(ConnectorExecutionContext executionContext) throws Exception {
-
+		
 		if (StringUtil.isEmpty(driverClassName)) {
-			throw new FoxBPMConnectorException("driverClassName is null!");
+			throw new FoxBPMConnectorException("连接器(通过JDBC数据库查询)驱动表达式为空!");
 		}
 		if (StringUtil.isEmpty(url)) {
-			throw new FoxBPMConnectorException("url is null!");
+			throw new FoxBPMConnectorException("连接器(通过JDBC数据库查询)url表达式为空!");
 		}
 		if (StringUtil.isEmpty(username)) {
-			throw new FoxBPMConnectorException("username is null!");
+			throw new FoxBPMConnectorException("连接器(通过JDBC数据库查询)用户名表达式为空!");
 		}
 		if (StringUtil.isEmpty(password)) {
-			throw new FoxBPMConnectorException("password is null!");
+			throw new FoxBPMConnectorException("连接器(通过JDBC数据库查询)密码表达式为空!");
 		}
 		if (StringUtil.isEmpty(sqlText)) {
-			throw new FoxBPMConnectorException("sqlText is null!");
+			throw new FoxBPMConnectorException("连接器(通过JDBC数据库查询)sql语句表达式为空!");
 		}
 		// 只处理查询sql
 		if (StringUtil.trim(sqlText).toLowerCase().startsWith(Constants.SQL_SELECT)) {
@@ -87,32 +87,32 @@ public class JDBCDatabaseQuery implements FlowConnectorHandler {
 			}
 		} else {
 			// 如果不是select 查询语句
-			throw new FoxBPMConnectorException("执行无效的查询sql错误,请检查sql语句:" + sqlText);
+			throw new FoxBPMConnectorException("连接器(通过JDBC数据库查询)执行无效的查询sql错误,请检查sql语句:" + sqlText);
 		}
 	}
-
+	
 	public void setDriverClassName(java.lang.String driverClassName) {
 		this.driverClassName = driverClassName;
 	}
-
+	
 	public void setUrl(java.lang.String url) {
 		this.url = url;
 	}
-
+	
 	public void setUsername(java.lang.String username) {
 		this.username = username;
 	}
-
+	
 	public void setPassword(java.lang.String password) {
 		this.password = password;
 	}
-
+	
 	public void setSqlText(java.lang.String sqlText) {
 		this.sqlText = sqlText;
 	}
-
+	
 	public java.util.List<java.util.Map<String, Object>> getOutputObj() {
 		return outputObj;
 	}
-
+	
 }

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC '-//OASIS//DTD DocBook XML V5.0//EN'  
+               '../dtd/docbook.dtd'> 
+<chapter xml:id="EclipseDesigner">
+    <title>Foxbpm Web 功能文档</title>
+    <section>
+        <title>foxbpm-common web功能介绍</title>
+        <para>
+            <itemizedlist>
+                <listitem>
+                    <para>个人面</para>
+                    <para>界面原型如下：</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="../image/web.13.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <para>说明：该页面作为主页面，目前只有日历面板和待办任务有效。</para>
+                </listitem>
+                <listitem>
+                    <para>发起流程</para>
+                    <para>发起流程就是当前用户可以发起的流程（可以启动流程）。</para>
+                    <para>界面原型如下：</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="../image/web.1.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <para>功能说明：支持搜索查询、流程启动操作。</para>
+                    <para>点击启动按钮会弹出启动表单页面。</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="../image/web.2.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <para>在该表单页面上只有“流程状态”，“启动并提交“，“关闭”按钮。</para>
+                    <para>注意：表单上需要填写"申请日期"、"报销金额"(必须输入数字)、“报销部门”、“发票类型”、“事由”（可选）。</para>
+                </listitem>
+                <listitem>
+                    <para>待办任务</para>
+                    <para>待办任务就是当前用户未处理的任务。</para>
+                    <para>界面原型如下：</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="../image/web.3.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <para>界面功能：待办任务查询、列表分页、展示列设置、操作表单、查看流程图</para>
+                </listitem>
+                <listitem>
+                    <para>日历面板</para>
+                    <para>日历面板是采用日历的形式展现当前用户所有的待办任务。</para>
+                    <para>界面原型如下：</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="../image/web.4.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <para>界面功能：支持“任务优先级”、“任务创建或任务期限”过滤以及“日历视图方式”展现</para>
+                </listitem>
+                <listitem>
+                    <para>已办任务</para>
+                    <para>已办任务是指当前用户已经处理过的任务。</para>
+                    <para>界面原型如下：</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="../image/web.5.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <para>界面功能：待办任务查询、列表分页、展示列设置、表单查看、查看流程图</para>
+                </listitem>
+                <listitem>
+                    <para>流程追踪</para>
+                    <para>流程追踪就是当前用户参与过的且已完成的流程。</para>
+                    <para>界面原型如下：</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="../image/web.6.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <para>界面功能：流程查询、列表分页、展示列设置、表单查看、查看流程图</para>
+                </listitem>
+                <listitem>
+                    <para>系统设置</para>
+                    <para>系统设置就是提供整个页面的配置。</para>
+                    <para>界面原型如下：</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="../image/web.7.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <para>点击如下图：</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="../image/web.8.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <para>界面功能：支持“页面布局”、“本地缓存”(清除)、“主题切换”</para>
+                </listitem>
+                <listitem>
+                    <para>流程详细信息</para>
+                    <para>流程详细就是整个流程执行的情况。</para>
+                    <para>界面原型如下：</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="../image/web.9.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <para>界面功能：支持“轨迹动态运行”、“流程图状态操作、“轨迹信息查看”等操作，“流程信息列表”、“流程状态”、“当前处理者”、“流程参入者”等查看。</para>
+                </listitem>
+                <listitem>
+                    <para>页面功能介绍</para>
+                    <para>流程详细就是整个流程执行的情况。</para>
+                    <para>界面原型如下：</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="../image/web.10.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <para>界面功能：支持“全屏”、“锁定系统”、“退出系统”、“轨迹信息查看”等操作，“流程信息列表”、“流程状态”、“当前处理者”、“流程参入者”等查看。</para>
+                    <para>界面通知中心</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="../image/web.11.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <para>界面功能：目前只支持“任务通知”。</para>
+                    <para>“任务通知”单击列表数据可以打开表单，以及单击更多可以跳转至待办任务。</para>
+                    <para>工具栏：</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="../image/web.12.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <para>点击开发者工具可以清空缓存、暂不支持国际化、以及查找待办任务，支持全屏，左侧菜单隐藏功能。</para>
+                </listitem>
+            </itemizedlist>
+        </para>
+    </section>
+</chapter>
