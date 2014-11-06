@@ -23,7 +23,6 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.foxbpm.engine.ProcessEngineManagement;
-import org.foxbpm.engine.db.DataSourceManage;
 import org.foxbpm.engine.exception.FoxBPMDbException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
@@ -36,7 +35,7 @@ import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 public class DBUtils {
 
 	public static DataSource getDataSource(){
-		return getDataSource(DataSourceManage.DAFAULT_DATABASE_ID);
+		return getDataSource(null);
 	}
 	public static DataSource getDataSource(String key){
 		ProcessEngineConfigurationImpl processEngineConfig = Context.getProcessEngineConfiguration();
@@ -46,7 +45,7 @@ public class DBUtils {
 		return processEngineConfig.getDataSource();
 	}
 	public static Connection getConnection(){
-		return getConnection(DataSourceManage.DAFAULT_DATABASE_ID);
+		return getConnection(null);
 	}
 	public static Connection getConnection(String key){
 		DataSource dataSource = getDataSource(key);

@@ -107,7 +107,7 @@ public class SelectTaskByLeastTest extends AbstractFoxBpmTestCase {
 	    StringUtil.getInt(taskQuery.count());
 		Authentication.setAuthenticatedUserId("dd");
 		runtimeService.startProcessInstanceByKey("SelectTaskByLeastTest_1");
-		task = (Task) taskService.createTaskQuery().processDefinitionKey("SelectTaskByLeastTest_1").singleResult();
+		task = (Task) taskService.createTaskQuery().processDefinitionKey("SelectTaskByLeastTest_1").taskNotEnd().singleResult();
 		assertEquals("c", task.getAssignee());
 	}
 }

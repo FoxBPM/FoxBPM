@@ -18,43 +18,44 @@
 package org.foxbpm.connector.actorconnector.SelectDepartment;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.StringTokenizer;
 
-import org.foxbpm.connector.common.constant.Constants;
 import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
 import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
+import org.foxbpm.engine.impl.util.AssigneeUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
 
 /**
- * 选择部门
+ * 选择部门(只包含子部门)
  * 
  * @author yangguangftlp
  * @date 2014年7月9日
  */
 public class SelectDepartment extends ActorConnectorHandler {
-
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2721883158970190680L;
-	private java.lang.String departmentId;
-
+	private java.lang.Object departmentId;
+	
 	public void assign(DelegateTask task) throws Exception {
-
-		if (StringUtil.isEmpty(StringUtil.trim(departmentId))) {
-			throw new FoxBPMConnectorException("departmentId is null!");
+		
+		if (null == departmentId) {
+			throw new FoxBPMConnectorException("处理人选择器(选择部门(只包含子部门))部门编号表达式为空 ! 节点编号：" + task.getNodeId());
 		}
+		List<String> departmentIds = AssigneeUtil.executionExpressionObj(departmentId);
 		// 处理部门重复
-		StringTokenizer st = new StringTokenizer(StringUtil.trim(departmentId), Constants.COMMA);
 		Set<String> depIdSet = new HashSet<String>();
-		while (st.hasMoreTokens()) {
-			depIdSet.add(StringUtil.trim(st.nextToken()));
+		Iterator<String> iterator = departmentIds.iterator();
+		while (iterator.hasNext()) {
+			depIdSet.add(StringUtil.trim(iterator.next()));
 		}
 		// 存放查询组
 		List<GroupEntity> groupList = null;
@@ -79,8 +80,8 @@ public class SelectDepartment extends ActorConnectorHandler {
 			}
 		}
 	}
-
-	public void setDepartmentId(java.lang.String departmentId) {
+	
+	public void setDepartmentId(java.lang.Object departmentId) {
 		this.departmentId = departmentId;
 	}
 }

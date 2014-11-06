@@ -40,7 +40,7 @@ public class ExpandTaskCompleteCmd<T> implements Command<T>{
 	public T execute(CommandContext commandContext) {
 		
 		if(Authentication.getAuthenticatedUserId()==null||Authentication.getAuthenticatedUserId().equals("")){
-			throw new FoxBPMException("登录用户不能为空!");
+			throw new FoxBPMException("未设置引擎操作人!");
 		}
 		// TODO Auto-generated method stub
 		Object[] obj = new Object[] {expandTaskCommand};  

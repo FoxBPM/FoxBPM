@@ -17,23 +17,19 @@
  */
 package org.foxbpm.rest.service.api.config;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.net.JarURLConnection;
-import java.net.URL;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
+import java.util.Iterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
-import org.foxbpm.model.config.foxbpmconfig.ResourcePath;
-import org.foxbpm.model.config.foxbpmconfig.ResourcePathConfig;
+import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,73 +44,113 @@ import org.slf4j.LoggerFactory;
 public class ConnectorGenerator implements IZipGenerator {
 
 	Logger log = LoggerFactory.getLogger(ConnectorGenerator.class);
+	
+	private static final int SIZE = 1024;
+	@SuppressWarnings("unchecked")
+	private void parseNode(Element nodeElement , ZipOutputStream out,String type,String folderName) throws Exception{
+		if(nodeElement != null){
+			Iterator<Element> iterator = nodeElement.elements("node").iterator();
+			while(iterator.hasNext()){
+				Element nodeTmpElement = iterator.next();
+				parseNode(nodeTmpElement,out,type,folderName);
+			}
+			
+			iterator = nodeElement.elements("connector").iterator();
+			while(iterator.hasNext()){
+				Element tmp = iterator.next();
+				parseConnector(tmp,out,type,folderName);
+			}
+		}
+	}
+	
+	private void parseConnector(Element tmp,ZipOutputStream out,String type,String folderName) throws Exception{
+		String id = tmp.attributeValue("id");
+		String packageName = tmp.attributeValue("package");
+		
+		String connectorXmlName = "";
+		if(type.equals("flowConnector")){
+			connectorXmlName = "FlowConnector.xml";
+		}else if(type.equals("actorConnector")){
+			connectorXmlName = "ActorConnector.xml";
+		}else{
+			throw new FoxBPMException("不支持的连接器类型："+type);
+		}
+		
+		String xmlFileName = packageName + "/" + connectorXmlName;
+		String pngFileName = packageName + "/" + id + ".png";
+		String xmlEntryName = folderName + "/" + id + "/" + connectorXmlName;
+		String pngEntryName = folderName + "/" + id + "/" + id + ".png";
+		
+		InputStream xmlInputStream = ReflectUtil.getResourceAsStream(xmlFileName);
+		generZip(xmlInputStream,xmlEntryName,out);
+		
+		InputStream pngInputStream = ReflectUtil.getResourceAsStream(pngFileName);
+		if(pngInputStream == null){
+			pngFileName = packageName + "/" + id + ".jpg";
+			pngInputStream = ReflectUtil.getResourceAsStream(pngFileName);
+		}
+		generZip(pngInputStream,pngEntryName,out);
+	}
+	
+	private void generZip(InputStream stream,String entryName,ZipOutputStream out) throws Exception{
+		ZipEntry zipEntry = new ZipEntry(entryName);
+		zipEntry.setMethod(ZipEntry.DEFLATED);// 设置条目的压缩方式
+		out.putNextEntry(zipEntry);
+		int n = 0;
+		byte b[] = new byte[SIZE];
+		while((n=stream.read(b)) != -1){
+			out.write(b , 0 , n);
+		}
+		out.closeEntry();
+		stream.close();
+	}
+	
+	private void generatorConnector(String prefix,InputStream stream ,ZipOutputStream out) throws Exception{
+		SAXReader reader = null;
+		reader = new SAXReader();
+		Document doc = reader.read(stream);
+		generZip(stream, prefix+"/ConnectorMenu.xml", out);
+		Element flowConnectorElement =doc.getRootElement().element("flowConnector");
+		if(flowConnectorElement != null){
+			parseNode(flowConnectorElement, out, "flowConnector",prefix + "/flowConnector");
+		}
+		Element actorConnectorElement = doc.getRootElement().element("actorConnector");
+		if(actorConnectorElement != null){
+			parseNode(actorConnectorElement, out, "actorConnector",prefix + "/actorConnector");
+		}
+	}
+	
+	
 	public void generate(ZipOutputStream out) {
-		log.debug("开始处理connector。。.");
-		try{
-			Map<String,Map<String,String>> pathMap = new HashMap<String,Map<String,String>>();
-			ProcessEngineConfigurationImpl processEngineConfigurationImpl = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration();
-			
-			ResourcePathConfig resourcePathConfig = processEngineConfigurationImpl.getResourcePathConfig();
-			List<ResourcePath> resourcePaths = resourcePathConfig.getResourcePath();
-			
-			if(resourcePaths != null){
-				for(ResourcePath path : resourcePaths){
-					if("flowConnector".equals(path.getType()) || "actorConnector".equals(path.getType())){
-						Map<String,String> pathList = pathMap.get(path.getProjectName());
-						if(pathList == null){
-							pathList = new HashMap<String, String>();
-							pathMap.put(path.getProjectName(), pathList);
-						}
-						pathList.put(path.getType(), path.getSrc());
-					}
-				}
+		ProcessEngineConfigurationImpl processEngineConfigurationImpl = ProcessEngineManagement.getDefaultProcessEngine().getProcessEngineConfiguration();
+		
+		InputStream stream = ReflectUtil.getResourceAsStream("org/foxbpm/connector/ConnectorMenu.xml");
+		String connectorMenuPath = processEngineConfigurationImpl.getConnectorMenuPath();
+		InputStream connectorStream = null;
+		if(connectorMenuPath != null){
+			connectorStream = ReflectUtil.getResourceAsStream(connectorMenuPath);
+		}
+		try {
+			if(stream != null){
+				generatorConnector("connector/defaultConnector",stream,out);
 			}
-			for(String key : pathMap.keySet()){
-				Map<String,String> pathList = pathMap.get(key);
-				if(pathList ==null){
-					continue;
-				}
-				
-				for(String tmp : pathList.keySet()){
-					String dirPath = pathList.get(tmp);
-					URL url = this.getClass().getClassLoader().getResource(dirPath);
-					if(url == null){
-						log.warn("位置:" + dirPath + " 不存在，跳过不处理");
-						continue;
-					}
-					String urlStr = url.toString();
-					String jarPath = urlStr.substring(0, urlStr.indexOf("!/") + 2);
-					URL jarURL = new URL(jarPath);
-					JarURLConnection jarCon = (JarURLConnection) jarURL.openConnection();
-					JarFile jarFile = jarCon.getJarFile();
-					
-					Enumeration<JarEntry> jarEntrys = jarFile.entries();
-					while (jarEntrys.hasMoreElements()) {
-						JarEntry entry = jarEntrys.nextElement();
-						String name = entry.getName();
-						if(name.startsWith(dirPath) && !entry.isDirectory() && !name.endsWith(".class")){
-							int size = 1024;
-							InputStream is = jarFile.getInputStream(entry);
-							String tmpEntryName = "connector/" + key + "/" + tmp + "/" + name.substring(dirPath.length());
-							ZipEntry zipEntry = new ZipEntry(tmpEntryName);
-							zipEntry.setMethod(ZipEntry.DEFLATED);// 设置条目的压缩方式
-							out.putNextEntry(zipEntry);
-							int n = 0;
-							byte b[] = new byte[size];
-							while((n=is.read(b)) != -1){
-								out.write(b , 0 , n);
-							}
-							out.closeEntry();
-							is.close();
-						}
-					}
-					log.debug("位置：" + dirPath + " 处理完毕");
-				}
+			if(connectorStream != null){
+				generatorConnector("connector/custormConnector",connectorStream,out);
 			}
-			log.debug("处理connector完毕!");
-		}catch(Exception ex){
-			log.error("转换connector时出错",ex);
-			throw new FoxBPMException("转换connector时出错", ex);
+		} catch (Exception e) {
+			log.error("同步连接器失败，失败原因："+e.getMessage(),e);
+			throw new FoxBPMException("同步连接器失败，失败原因："+e.getMessage(),e);
+		}finally{
+			try {
+				if(stream != null){
+					stream.close();
+				}
+				if(connectorStream != null){
+					stream.close();
+				}
+			} catch (IOException e) {
+				log.error("生成连接器时流关闭失败，失败原因："+e.getMessage(),e);
+			}
 		}
 	}
 }

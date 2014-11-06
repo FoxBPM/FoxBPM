@@ -54,5 +54,17 @@ public interface Token {
 	 * @return
 	 */
 	String getParentId();
+	
+	/**
+	 * 是否被暂停
+	 * @return
+	 */
+	boolean isSuspended();
+	
+	/**
+	 * 是否已结束
+	 * @return
+	 */
+	boolean isEnded();
 
 }

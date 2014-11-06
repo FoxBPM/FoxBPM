@@ -106,9 +106,8 @@ public class StartProcessInstanceCmd<T> implements Command<ProcessInstance>, Ser
 		if (persistenceVariables != null) {
 			processInstance.setVariables(persistenceVariables);
 		}
-		String initiator = Authentication.getAuthenticatedUserId();
-		processInstance.setInitiator(initiator);
-		processInstance.setStartAuthor(initiator);
+		String startAuthor = Authentication.getAuthenticatedUserId();
+		processInstance.setStartAuthor(startAuthor);
 		processInstance.start();
 		
 		return processInstance;

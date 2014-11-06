@@ -19,52 +19,62 @@ package org.foxbpm.engine.task;
 
 import java.util.List;
 
-public interface TaskCommandDefinition {
+import org.foxbpm.engine.impl.task.CommandParam;
 
+public interface TaskCommandDefinition {
+	
 	/**
 	 * 按钮编号，如startandsubmit
+	 * 
 	 * @return
 	 */
 	String getId();
-
+	
 	/**
 	 * 按钮名称
+	 * 
 	 * @return
 	 */
 	String getName();
-
+	
 	/**
 	 * command类全名 org.foxbpm.task****
+	 * 
 	 * @return
 	 */
 	String getCommandClass();
-
+	
 	/**
 	 * cmd类全名
+	 * 
 	 * @return
 	 */
 	String getCmdClass();
 	
 	/**
 	 * 命令类型，system、todoTasks等
+	 * 
 	 * @return
 	 */
 	String getType();
-
+	
 	/**
 	 * filter类全名
+	 * 
 	 * @return
 	 */
 	String getFilterClass();
-
+	
 	/**
 	 * 按钮描述
+	 * 
 	 * @return
 	 */
 	String getDescription();
-
+	
 	/**
 	 * 按钮参数
+	 * 
 	 * @return
 	 */
 	List<CommandParam> getCommandParam();

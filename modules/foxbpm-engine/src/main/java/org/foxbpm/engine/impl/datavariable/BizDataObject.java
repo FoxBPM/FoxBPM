@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.foxbpm.model.DataVariableDefinition;
 /**
  * 业务数据对象模型
  * 

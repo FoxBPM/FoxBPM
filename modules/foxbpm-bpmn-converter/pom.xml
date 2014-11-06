@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.foxbpm</groupId>
+    <artifactId>foxbpm-root</artifactId>
+    <version>6.0.1-SNAPSHOT</version>
+    <relativePath>../..</relativePath>
+  </parent>
+  <artifactId>foxbpm-bpmn-converter</artifactId>
+  <name>foxbpm-bpmn-converter</name>
+  <dependencies>
+		<dependency>
+			<groupId>org.foxbpm</groupId>
+			<artifactId>foxbpm-bpmn-model</artifactId>
+			<version>6.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+  </dependencies>
+
+</project>

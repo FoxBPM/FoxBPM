@@ -18,7 +18,7 @@ public class DataObjectCacheGenerator implements IZipGenerator{
 	private static Logger log = LoggerFactory.getLogger(DataObjectCacheGenerator.class);
 	 
 	public void generate(ZipOutputStream out) {
-		// TODO Auto-generated method stub
+		log.debug("开始处理bizData.data...");
 		try{
 			List<Map<String,Object>> list = FoxBpmUtil.getProcessEngine().getModelService().getAllBizObjects();
 			ObjectMapper objectMapper = new ObjectMapper();

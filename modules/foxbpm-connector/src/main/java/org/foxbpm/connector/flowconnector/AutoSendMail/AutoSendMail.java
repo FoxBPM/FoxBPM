@@ -25,7 +25,6 @@ import org.foxbpm.connector.mail.MailEngine;
 import org.foxbpm.connector.mail.MailEntity;
 import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.IdentityService;
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
@@ -35,8 +34,6 @@ import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
-import org.foxbpm.model.config.foxbpmconfig.MailInfo;
-import org.foxbpm.model.config.foxbpmconfig.SysMailConfig;
 
 /**
  * 自动发送邮件
@@ -59,18 +56,6 @@ public class AutoSendMail implements FlowConnectorHandler {
 
 		// 从上下文拿引擎
 		ProcessEngineConfigurationImpl peconfig = Context.getProcessEngineConfiguration();
-		// 获取邮件配置
-		SysMailConfig sysMailConfig = peconfig.getSysMailConfig();
-		MailInfo mailInfoObj = null;
-		for (MailInfo mailInfo : sysMailConfig.getMailInfo()) {
-			if (mailInfo.getMailName().equals(sysMailConfig.getSelected())) {
-				mailInfoObj = mailInfo;
-			}
-		}
-		// 判断邮件配置信息是否为空
-		if (null == mailInfoObj) {
-			throw new FoxBPMException("系统邮件配置错误请检查流程邮件配置！");
-		}
 		TaskEntity taskEntity = executionContext.getAssignTask();
 		if (null != taskEntity) {
 			StringBuffer mailTitle = new StringBuffer();

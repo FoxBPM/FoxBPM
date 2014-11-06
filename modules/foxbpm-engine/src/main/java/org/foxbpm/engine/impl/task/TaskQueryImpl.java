@@ -52,7 +52,8 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 	protected String descriptionLike;
 	protected String assignee;
 	protected String owner;
-	protected boolean unassigned = false;
+	//默认查询所有
+	protected int assignedFlag = 2;
 	protected String candidateUser;
 	protected String end;
 	protected String businessKey;
@@ -77,6 +78,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 	protected String processDefinitionNameLike;
 	protected String subject;
 	protected String subjectLike;
+	protected boolean subjectUnionInitiator = false;
 	protected String initiator;
 	protected String isSuspended;
 	protected String tokenId;
@@ -250,7 +252,13 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 		this.subject = subject;
 		return this;
 	}
-
+	
+	public TaskQuery subjectUnionInitiator() {
+		this.subjectUnionInitiator = true;
+		return this;
+	}
+	
+	
 	 
 	public TaskQuery taskSubjectLike(String subjectLike) {
 		if (subjectLike == null) {
@@ -280,9 +288,20 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 	}
 
 	public TaskQuery taskUnnassigned() {
-		this.unassigned = true;
+		this.assignedFlag = 0;
 		return this;
 	}
+	public TaskQuery taskAssigned() {
+		this.assignedFlag = 1;
+		return this;
+	}
+	
+	public TaskQuery ignorTaskAssigned() {
+		this.assignedFlag = 2;
+		return this;
+	}
+	
+	
 
 	public TaskQueryImpl taskCandidateUser(String candidateUser) {
 		if (candidateUser == null) {
@@ -463,8 +482,8 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 		return owner;
 	}
 
-	public boolean getUnassigned() {
-		return unassigned;
+	public int getUnassigned() {
+		return assignedFlag;
 	}
 
 	public String getCandidateUser() {

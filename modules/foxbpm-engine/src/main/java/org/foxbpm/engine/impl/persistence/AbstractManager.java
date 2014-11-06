@@ -53,7 +53,7 @@ public abstract class AbstractManager implements Session {
 	}
 	
 	protected <T> T getSession(Class<T> sessionClass) {
-		return Context.getCommandContext().getSession(sessionClass);
+		return (T)Context.getCommandContext().getSession(sessionClass);
 	}
 	
 	public void insert(PersistentObject persistentObject) {
@@ -82,9 +82,9 @@ public abstract class AbstractManager implements Session {
 	
 	@SuppressWarnings("unchecked")
 	public <T extends PersistentObject> T selectById(Class<T> entityClass, String id) {
-		T persistentObject = cacheGet(id);
+		T persistentObject = (T)cacheGet(id);
 		if (persistentObject != null) {
-			return persistentObject;
+			return (T)persistentObject;
 		}
 		String selectStatement = StatementMap.getSelectStatement(entityClass);
 		persistentObject = (T) getSqlSession().selectOne(selectStatement, id);
@@ -92,7 +92,7 @@ public abstract class AbstractManager implements Session {
 			return null;
 		}
 		cachePut(persistentObject, true);
-		return persistentObject;
+		return (T)persistentObject;
 	}
 	
 	protected DeploymentEntityManager getDeploymentManager() {
@@ -152,9 +152,9 @@ public abstract class AbstractManager implements Session {
 	}
 	
 	public void flush() {
-		if (cachedObjects.isEmpty()) {
-			return;
-		}
+//		if (cachedObjects.isEmpty()) {
+//			return;
+//		}
 		removeUnnecessaryOperations();
 		List<PersistentObject> updatedObjects = getUpdatedObjects();
 		
@@ -340,7 +340,7 @@ public abstract class AbstractManager implements Session {
 		for (CachedObject cachedObject : cachedObjects.values()) {
 			entities.add((T) cachedObject.getPersistentObject());
 		}
-		return entities;
+		return (List<T>)entities;
 	}
 	
 	public interface DeleteOperation {

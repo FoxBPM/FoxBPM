@@ -21,13 +21,13 @@ package org.foxbpm.engine.impl.task.cmd;
 import java.io.Serializable;
 import java.util.Map;
 
-import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
 import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.bpmn.behavior.ActivityBehavior;
 import org.foxbpm.engine.impl.entity.ProcessOperatingEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
-import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
@@ -38,8 +38,11 @@ import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.TaskCommand;
+import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
+import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
+import org.foxbpm.model.Activity;
 
 
 public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCommand, T> implements Command<T>, Serializable {
@@ -109,25 +112,17 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 	public T execute(CommandContext commandContext) {
 
 		if (StringUtil.isEmpty(taskId)) {
-			throw new FoxBPMIllegalArgumentException("taskId is null");
+			throw new FoxBPMIllegalArgumentException("任务编号为空！");
 		}
 		
-		if(StringUtil.isEmpty(Authentication.getAuthenticatedUserId())){
-			throw new FoxBPMException("authenticatedUserId is null");
-		}
-
 		TaskEntity task = Context.getCommandContext().getTaskManager().findTaskById(taskId);
 
 		if (task == null) {
-			throw new FoxBPMObjectNotFoundException("Cannot find task with id " + taskId);
+			throw new FoxBPMObjectNotFoundException("未发现任务：" + taskId);
 		}
 
-		if (task.isSuspended()) {
-			throw new FoxBPMException("task is suspended");
-		}
-		
 		if (task.hasEnded()) {
-			throw new FoxBPMException("task is end");
+			throw new FoxBPMBizException("任务已经结束，不能被处理！");
 		}
 		task.setProcessInstanceVariables(persistenceVariables);
 		task.setProcessInstanceTransientVariables(transientVariables);
@@ -180,5 +175,17 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 		return commandExecutor;
 	}
 	
+	
+	protected boolean isMutilInstance(KernelFlowNode kernelFlowNode){
+		KernelFlowNodeBehavior kernelBehavior = kernelFlowNode.getKernelFlowNodeBehavior();
+		if(kernelBehavior instanceof ActivityBehavior){
+			ActivityBehavior actBehavior = (ActivityBehavior)kernelBehavior;
+			Activity activity = (Activity)actBehavior.getBaseElement();
+			if(activity.getLoopCharacteristics() != null){
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

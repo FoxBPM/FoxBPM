@@ -38,6 +38,7 @@ import org.foxbpm.engine.impl.cmd.SaveTaskCmd;
 import org.foxbpm.engine.impl.cmd.UnClaimCmd;
 import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
 import org.foxbpm.engine.impl.entity.ProcessOperatingEntity;
+import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.query.NativeTaskQueryImpl;
 import org.foxbpm.engine.impl.task.TaskQueryImpl;
 import org.foxbpm.engine.impl.task.cmd.ExpandTaskCompleteCmd;
@@ -50,11 +51,11 @@ import org.foxbpm.kernel.process.KernelFlowNode;
 
 public class TaskServiceImpl extends ServiceImpl implements TaskService {
 
-	public Task newTask() {
+	public TaskEntity newTask() {
 		return newTask(null);
 	}
 
-	public Task newTask(String taskId) {
+	public TaskEntity newTask(String taskId) {
 		return commandExecutor.execute(new NewTaskCmd(taskId));
 	}
 
@@ -67,19 +68,19 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 	}
 
 	public void deleteTask(String taskId) {
-		deleteTask(taskId,true);
+		deleteTask(taskId, true);
 	}
 
 	public void deleteTasks(Collection<String> taskIds) {
-		deleteTasks(taskIds,true);
+		deleteTasks(taskIds, true);
 	}
 
 	public void deleteTask(String taskId, boolean cascade) {
-		commandExecutor.execute( new DeleteTasksCmd(taskId,cascade));
+		commandExecutor.execute(new DeleteTasksCmd(taskId, cascade));
 	}
 
 	public void deleteTasks(Collection<String> taskIds, boolean cascade) {
-		commandExecutor.execute( new DeleteTasksCmd(taskIds,cascade));
+		commandExecutor.execute(new DeleteTasksCmd(taskIds, cascade));
 	}
 
 	public void claim(String taskId, String userId) {
@@ -91,66 +92,61 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 	}
 
 	public void complete(String taskId) {
-		commandExecutor.execute(new CompleteTaskCmd(taskId, null,null));
-	}
-	
-	public void complete(String taskId,Map<String, Object> transientVariables,Map<String, Object> persistenceVariables) {
-		commandExecutor.execute(new CompleteTaskCmd(taskId, transientVariables,persistenceVariables));
+		commandExecutor.execute(new CompleteTaskCmd(taskId, null, null));
 	}
 
-	 
-	public <T> T expandTaskComplete(ExpandTaskCommand expandTaskCommand, T classReturn) {
-		return (T) commandExecutor.execute(new ExpandTaskCompleteCmd<T>(expandTaskCommand));
+	public void complete(String taskId, Map<String, Object> transientVariables,
+			Map<String, Object> persistenceVariables) {
+		commandExecutor.execute(new CompleteTaskCmd(taskId, transientVariables,
+				persistenceVariables));
 	}
-	
+
+	public <T> T expandTaskComplete(ExpandTaskCommand expandTaskCommand,
+			T classReturn) {
+		return (T) commandExecutor.execute(new ExpandTaskCompleteCmd<T>(
+				expandTaskCommand));
+	}
+
 	public NativeTaskQuery createNativeTaskQuery() {
 		return new NativeTaskQueryImpl(commandExecutor);
 	}
-	
+
 	public TaskQuery createTaskQuery() {
 		return new TaskQueryImpl(commandExecutor);
 	}
-	
-	 
+
 	public List<TaskCommand> getSubTaskCommandByKey(String Key) {
 		return commandExecutor.execute(new GetTaskCommandByKeyCmd(Key));
 	}
-	
-	 
+
 	public List<TaskCommand> getTaskCommandByTaskId(String taskId) {
-		return commandExecutor.execute(new GetTaskCommandByTaskIdCmd(taskId,false));
+		return commandExecutor.execute(new GetTaskCommandByTaskIdCmd(taskId,
+				false));
 	}
-	
-	 
-	public List<TaskCommand> getTaskCommandByTaskId(String taskId,boolean isProcessTracking) {
-		return commandExecutor.execute(new GetTaskCommandByTaskIdCmd(taskId,isProcessTracking));
+
+	public List<TaskCommand> getTaskCommandByTaskId(String taskId,
+			boolean isProcessTracking) {
+		return commandExecutor.execute(new GetTaskCommandByTaskIdCmd(taskId,
+				isProcessTracking));
 	}
-	
-	 
+
 	public List<KernelFlowNode> getRollbackFlowNode(String taskId) {
 		return commandExecutor.execute(new GetRollbackNodeCmd(taskId));
 	}
-	
-	 
+
 	public List<Task> getRollbackTasks(String taskId) {
 		return commandExecutor.execute(new GetRollbackTasksCmd(taskId));
 	}
-	
-	 
+
 	public List<ProcessOperatingEntity> getTaskOperations(String taskId) {
 		return commandExecutor.execute(new GetTaskOperationCmd(taskId));
 	}
-	
-	public List<IdentityLinkEntity> getIdentityLinkByTaskId(String taskId){
+
+	public List<IdentityLinkEntity> getIdentityLinkByTaskId(String taskId) {
 		return commandExecutor.execute(new GetIdentityLinkByTaskIdCmd(taskId));
 	}
-	
-	 
+
 	public Class<?> getInterfaceClass() {
 		return TaskService.class;
 	}
-	
-	
-
-
 }

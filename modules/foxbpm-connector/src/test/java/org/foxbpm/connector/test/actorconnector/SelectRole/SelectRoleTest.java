@@ -55,7 +55,7 @@ public class SelectRoleTest extends AbstractFoxBpmTestCase {
 		jdbcTemplate.execute("insert into au_group_relation(guid,userid,groupid,grouptype) VALUES ('10000000000000001','a','2001','role')");
 		// 启动流程触发任务分配
 		runtimeService.startProcessInstanceByKey("SelectRoleTest_1");
-		Task task = (Task) taskService.createTaskQuery().processDefinitionKey("SelectRoleTest_1").singleResult();
+		Task task = (Task) taskService.createTaskQuery().processDefinitionKey("SelectRoleTest_1").taskNotEnd().singleResult();
 		// 同时分配给两个人
 		String taskId = task.getId();
 		SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_run_taskidentitylink WHERE TASK_ID = '" + taskId + "'");

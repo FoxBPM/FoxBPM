@@ -259,7 +259,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	public void setParentProcessInstance(KernelProcessInstanceImpl parentProcessInstance) {
 		ProcessInstanceEntity processInstanceEntity = ((ProcessInstanceEntity) parentProcessInstance);
 		this.parentProcessInstance = processInstanceEntity;
-		this.parentId = processInstanceEntity.getParentId();
+		this.parentId = processInstanceEntity.getId();
 	}
 	
 	 
@@ -531,4 +531,19 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		return new ProcessInstanceEntity();
 	}
 	
+	@Override
+	public void suspendInstance() {
+		for(TaskEntity tmpTask : getTasks()){
+			tmpTask.setSuspended(true);
+		}
+		super.suspendInstance();
+	}
+
+	@Override
+	public void continueInstance() {
+		for(TaskEntity tmpTask : getTasks()){
+			tmpTask.setSuspended(false);
+		}
+		super.continueInstance();
+	}
 }

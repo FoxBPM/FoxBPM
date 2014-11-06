@@ -22,7 +22,7 @@ import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
 import org.foxbpm.engine.task.DelegateTask;
 
 
-public class AllUserActorConnector extends ActorConnectorHandler {
+public class AllUserActorConnector extends ActorConnectorHandler{
 
 	private static final long serialVersionUID = 1L;
 

@@ -12,7 +12,7 @@
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="UserIdActorConnector" packageName="org.foxbpm.connector.actorconnector.UserIdActorConnector" className="UserIdActorConnector" connectorInstanceId="01c169db-05d6-4a16-b909-794c666c6d8f" connectorInstanceName="系统登录人" errorHandling="" type="actorconnector">
-              <documentation xsi:type="foxbpm:Documentation" id="Documentation_1"></documentation>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_1"></foxbpm:documentation>
             </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
@@ -28,8 +28,8 @@
     </bpmn2:endEvent>
     <bpmn2:userTask id="UserTask_2" name="UserTask_1">
       <bpmn2:extensionElements>
-        <foxbpm:taskCommand id="HandleCommand_1" name="同意" commandType="general" isVerification="false" isSaveData="false" isSimulationRun="false"/>
-        <foxbpm:taskCommand id="HandleCommand_2" name="流程状态" commandType="processStatus" isVerification="false" isSaveData="false" isSimulationRun="false"/>
+        <foxbpm:taskCommand id="HandleCommand_1" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_2" name="流程状态" commandType="processStatus"/>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
@@ -37,7 +37,7 @@
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="UserIdActorConnector" packageName="org.foxbpm.connector.actorconnector.UserIdActorConnector" className="UserIdActorConnector" connectorInstanceId="3ed13985-8143-456f-9a27-db07d6512b3d" connectorInstanceName="系统登录" errorHandling="" type="actorconnector">
-              <documentation xsi:type="foxbpm:Documentation"></documentation>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_2"></foxbpm:documentation>
             </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
@@ -57,7 +57,7 @@
         <dc:Bounds height="50.0" width="110.0" x="255.0" y="102.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_UserTask_2" bpmnElement="UserTask_2">
-        <dc:Bounds height="50.0" width="110.0" x="380.0" y="210.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="390.0" y="260.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_1" targetElement="BPMNShape_UserTask_1">
         <di:waypoint xsi:type="dc:Point" x="106.0" y="127.0"/>
@@ -66,13 +66,13 @@
         <di:waypoint xsi:type="dc:Point" x="255.0" y="127.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1" sourceElement="BPMNShape_UserTask_1" targetElement="BPMNShape_UserTask_2">
-        <di:waypoint xsi:type="dc:Point" x="365.0" y="127.0"/>
-        <di:waypoint xsi:type="dc:Point" x="435.0" y="127.0"/>
-        <di:waypoint xsi:type="dc:Point" x="435.0" y="210.0"/>
+        <di:waypoint xsi:type="dc:Point" x="310.0" y="152.0"/>
+        <di:waypoint xsi:type="dc:Point" x="310.0" y="285.0"/>
+        <di:waypoint xsi:type="dc:Point" x="390.0" y="285.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="BPMNShape_UserTask_2" targetElement="BPMNShape_2">
-        <di:waypoint xsi:type="dc:Point" x="490.0" y="235.0"/>
-        <di:waypoint xsi:type="dc:Point" x="558.0" y="235.0"/>
+        <di:waypoint xsi:type="dc:Point" x="500.0" y="285.0"/>
+        <di:waypoint xsi:type="dc:Point" x="558.0" y="285.0"/>
         <di:waypoint xsi:type="dc:Point" x="558.0" y="145.0"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

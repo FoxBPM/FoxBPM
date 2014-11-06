@@ -64,16 +64,13 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 		</constructor-arg>
 	</bean>
 
-	<bean id="workCalendar" class="org.foxbpm.calendar.service.impl.WorkCalendarImpl">
-	</bean>
-
 	<!-- 流程引擎配置 -->
 	<bean id="processEngineConfigurationSpring"
 		class="org.foxbpm.engine.spring.ProcessEngineConfigurationSpring">
 		<property name="dataSource" ref="foxbpmDataSource" />
 		<property name="transactionManager" ref="foxbpmTransactionManager" />
 		<property name="foxbpmScheduler" ref="foxbpmScheduler"></property>
-		<property name="workCalendar" ref="workCalendar"></property>
+		<property name="connectorMenuPath" value="conf/ConnectorMenu.xml"></property>
 	</bean>
 	
 	

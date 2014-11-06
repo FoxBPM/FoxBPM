@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
 import org.foxbpm.engine.impl.entity.ProcessOperatingEntity;
+import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.query.NativeTaskQuery;
 import org.foxbpm.engine.task.Task;
@@ -37,14 +38,14 @@ public interface TaskService {
 	 * 创建任务
 	 * @return
 	 */
-	Task newTask();
+	TaskEntity newTask();
 
 	/**
 	 * 创建带taskId的任务
 	 * @param taskId 任务编号
 	 * @return
 	 */
-	Task newTask(String taskId);
+	TaskEntity newTask(String taskId);
 
 	/**
 	 * 查询任务
@@ -203,5 +204,4 @@ public interface TaskService {
 	 * @return
 	 */
 	List<IdentityLinkEntity> getIdentityLinkByTaskId(String taskId);
-
 }

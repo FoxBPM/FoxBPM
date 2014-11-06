@@ -41,8 +41,8 @@ public class IntermediateCatchEventBehavior extends CatchEventBehavior {
 	 
 	public void execute(FlowNodeExecutionContext executionContext) {
 		// 执行中间事件定义,例如 时间定义
-		List<EventDefinition> eventDefinitions = this.getEventDefinitions();
-		for (EventDefinition eventDefinition : eventDefinitions) {
+		List<EventDefinitionBehavior> eventDefinitions =getEventDefinitionBehaviors();
+		for (EventDefinitionBehavior eventDefinition : eventDefinitions) {
 			Object[] params = new String[]{this.getId(), executionContext.getProcessDefinition().getId()};
 			eventDefinition.execute(executionContext, TimerEventBehavior.EVENT_TYPE_INTERMIDATE, params);
 		}

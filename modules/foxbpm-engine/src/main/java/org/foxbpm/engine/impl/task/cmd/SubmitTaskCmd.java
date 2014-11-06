@@ -40,6 +40,9 @@ public class SubmitTaskCmd extends AbstractExpandTaskCmd<SubmitTaskCommand, Void
 	 
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
 		
+		if(this.initiator == null){
+			this.initiator = Authentication.getAuthenticatedUserId();
+		}
 		// 获取任务命令
 		TaskCommand taskCommand = getTaskCommand(task);
 		// 获取流程内容执行器

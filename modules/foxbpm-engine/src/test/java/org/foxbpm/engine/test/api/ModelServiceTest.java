@@ -64,7 +64,7 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	public void testGetStartProcessByUserId() {
 		jdbcTemplate.execute("insert into au_userInfo(userId,USERNAME) VALUES ('test_admin3','管理员3')");
 		List<ProcessDefinition> result = modelService.getStartProcessByUserId("test_admin3");
-		assertTrue(result.size() > 1);
+		assertTrue(!result.isEmpty());
 	}
 	
 	/**
@@ -109,7 +109,7 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 			        + deployId + "'").size();
 			assertEquals("发布流程出现错误", 1, count);
 			// 查资源
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_bytearray where DEPLOYMENT_ID='"
+			rowSet = jdbcTemplate.queryForRowSet("select name from foxbpm_def_bytearray where DEPLOYMENT_ID='"
 			        + deployId + "'");
 			count = 0;
 			resourceNames = new ArrayList<String>();
@@ -156,7 +156,7 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 			        + deployId + "'").size();
 			assertEquals("发布流程出现错误", 1, count);
 			// 查资源
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_bytearray where DEPLOYMENT_ID='"
+			rowSet = jdbcTemplate.queryForRowSet("select name from foxbpm_def_bytearray where DEPLOYMENT_ID='"
 			        + deployId + "'");
 			count = 0;
 			resourceNames = new ArrayList<String>();
@@ -194,7 +194,7 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 			        + updateDeployId + "'").size();
 			assertEquals("发布流程出现错误", 1, count);
 			// 查资源
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_bytearray where DEPLOYMENT_ID='"
+			rowSet = jdbcTemplate.queryForRowSet("select name from foxbpm_def_bytearray where DEPLOYMENT_ID='"
 			        + updateDeployId + "'");
 			count = 0;
 			resourceNames = new ArrayList<String>();
@@ -232,7 +232,7 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 			        + updateDeployId + "'").size();
 			assertEquals("发布流程出现错误", 1, count);
 			// 查资源
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_bytearray where DEPLOYMENT_ID='"
+			rowSet = jdbcTemplate.queryForRowSet("select name from foxbpm_def_bytearray where DEPLOYMENT_ID='"
 			        + updateDeployId + "'");
 			count = 0;
 			resourceNames = new ArrayList<String>();
@@ -270,7 +270,7 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 			        + deployId + "'").size();
 			assertEquals("发布流程出现错误", 1, count);
 			// 查资源
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_def_bytearray where DEPLOYMENT_ID='"
+			rowSet = jdbcTemplate.queryForRowSet("select name from foxbpm_def_bytearray where DEPLOYMENT_ID='"
 			        + deployId + "'");
 			count = 0;
 			resourceNames = new ArrayList<String>();
@@ -368,7 +368,7 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 			// 变量
 			List<String> variableIds = new ArrayList<String>();
 			count = 0;
-			rowSet = jdbcTemplate.queryForRowSet("select * from foxbpm_run_variable t WHERE  t.PROCESSINSTANCE_ID ='"
+			rowSet = jdbcTemplate.queryForRowSet("select ID from foxbpm_run_variable t WHERE  t.PROCESSINSTANCE_ID ='"
 			        + pi.getId() + "'");
 			while (rowSet.next()) {
 				variableIds.add(rowSet.getString("ID"));

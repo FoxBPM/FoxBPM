@@ -47,12 +47,16 @@ var pagefunction = function() {
 			$("#eventInfoTipTitle").html("主      &nbsp;&nbsp; 题:  "+event.title);
 			
 			var priority = "";
-			if(event.className == "event,bg-color-red"){
-				priority = "高";
-			}else if(event.className == "event,bg-color-greenLight"){
-				priority = "中";
-			}else if(event.className == "event,bg-color-darken"){
+			if(event.className == "event,bg-color-blueLight"){
+				priority = "非常低";
+			}else if(event.className == "event,bg-color-blue"){
 				priority = "低";
+			}else if(event.className == "event,bg-color-greenLight"){
+				priority = "一般";
+			}else if(event.className == "event,bg-color-redLight"){
+				priority = "高";
+			}else if(event.className == "event,bg-color-red"){
+				priority = "非常高";
 			}
 			
 			$("#eventInfoTipPriority").html("优先级:  "+priority);
@@ -101,10 +105,14 @@ var pagefunction = function() {
 	                	
 	                	//判断是否选择了优先级
 	                	if(taskPriority == ""){
-	                		if(doc.data[i].priority == "50"){
+	                		if(doc.data[i].priority == "20"){
+		                		taskColor = ["event", "bg-color-blueLight"];
+		                	}else if(doc.data[i].priority == "40"){
+		                		taskColor = ["event", "bg-color-blue"];
+		                	}else if(doc.data[i].priority == "50"){
 		                		taskColor = ["event", "bg-color-greenLight"];
-		                	}else if(doc.data[i].priority == "0"){
-		                		taskColor = ["event", "bg-color-darken"];
+		                	}else if(doc.data[i].priority == "80"){
+		                		taskColor = ["event", "bg-color-redLight"];
 		                	}else if(doc.data[i].priority == "100"){
 		                		taskColor = ["event", "bg-color-red"];
 		                	}
@@ -248,21 +256,32 @@ var pagefunction = function() {
 		$('#calendar').fullCalendar('refetchEvents');
 	});
 	
-	$('#priority_high').click(function () {
+	$('#priority_veryhigh').click(function () {
 		taskPriority = "100";
+		$('#select_priority').html($('#priority_veryhigh').html()+"<i class='fa fa-caret-down'></i>"); 
+		$('#calendar').fullCalendar('refetchEvents');
+	});
+	
+	$('#priority_high').click(function () {
+		taskPriority = "80";
 		$('#select_priority').html($('#priority_high').html()+"<i class='fa fa-caret-down'></i>"); 
 		$('#calendar').fullCalendar('refetchEvents');
 	});
 	
-	$('#priority_mid').click(function () {
+	$('#priority_normal').click(function () {
 		taskPriority = "50";
-		$('#select_priority').html($('#priority_mid').html()+"<i class='fa fa-caret-down'></i>"); 
+		$('#select_priority').html($('#priority_normal').html()+"<i class='fa fa-caret-down'></i>"); 
+		$('#calendar').fullCalendar('refetchEvents');
+	});
+	$('#priority_low').click(function () {
+		taskPriority = "40";
+		$('#select_priority').html($('#priority_low').html()+"<i class='fa fa-caret-down'></i>"); 
 		$('#calendar').fullCalendar('refetchEvents');
 	});
 	
-	$('#priority_low').click(function () {
-		taskPriority = "0";
-		$('#select_priority').html($('#priority_low').html()+"<i class='fa fa-caret-down'></i>"); 
+	$('#priority_verylow').click(function () {
+		taskPriority = "20";
+		$('#select_priority').html($('#priority_verylow').html()+"<i class='fa fa-caret-down'></i>"); 
 		$('#calendar').fullCalendar('refetchEvents');
 	});
 	$('#priority_all').click(function () {

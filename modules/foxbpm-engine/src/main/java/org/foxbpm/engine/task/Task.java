@@ -26,10 +26,12 @@ import java.util.Map;
  */
 public interface Task{
 	
-	int PRIORITY_MINIUM = 0;
+	int PRIORITY_VERYLOW = 20;
+	int PRIORITY_LOW = 40;
 	int PRIORITY_NORMAL = 50;
-	int PRIORITY_MAXIMUM = 100;
-	
+	int PRIORITY_HIGH = 80;
+	int PRIORITY_VERYHIGH = 100;
+	String TYPE_FOXBPMTASK = "foxbpmtask";
 	/**
 	 * 获取任务编号
 	 */
@@ -279,4 +281,10 @@ public interface Task{
 	 * @param nodeName
 	 */
 	void setNodeName(String nodeName);
+	
+	/**
+	 * 设置任务类型
+	 * @param taskType
+	 */
+	void setTaskType(String taskType);
 }

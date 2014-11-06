@@ -19,6 +19,8 @@ package org.foxbpm.kernel.process;
 
 import java.util.List;
 
+import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
+
 
 
 /**
@@ -39,6 +41,8 @@ public interface KernelFlowNode extends KernelFlowElement {
 	List<KernelSequenceFlow> getOutgoingSequenceFlows();
 
 	KernelSequenceFlow findOutgoingSequenceFlow(String sequenceFlowId);
+	
+	KernelFlowNodeBehavior getKernelFlowNodeBehavior();
 	
 	
 }

@@ -19,9 +19,11 @@
 package org.foxbpm.engine.impl.bpmn.behavior;
 
 import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
-import org.foxbpm.engine.expression.Expression;
+import org.foxbpm.engine.impl.expression.ExpressionImpl;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.behavior.KernelSequenceFlowBehavior;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
+import org.foxbpm.model.SequenceFlow;
 
 public class SequenceFlowBehavior extends FlowElementBehavior implements KernelSequenceFlowBehavior {
 
@@ -30,9 +32,12 @@ public class SequenceFlowBehavior extends FlowElementBehavior implements KernelS
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private Expression conditionExpression;
 	public boolean isContinue(FlowNodeExecutionContext executionContext) {
-		Object expressionValue = conditionExpression.getValue(executionContext);
+		SequenceFlow sequenceFlow = (SequenceFlow)baseElement;
+		if(StringUtil.isEmpty(sequenceFlow.getFlowCondition())){
+			return true;
+		}
+		Object expressionValue = new ExpressionImpl(sequenceFlow.getFlowCondition()).getValue(executionContext);
 		if (expressionValue == null) {
 			return true;
 		}
@@ -40,14 +45,6 @@ public class SequenceFlowBehavior extends FlowElementBehavior implements KernelS
 			return (Boolean) expressionValue;
 		}
 		throw new FoxBPMIllegalArgumentException("线条{}表达式需要返回布尔类型结果", this.id);
-	}
-
-	public Expression getConditionExpression() {
-		return conditionExpression;
-	}
-
-	public void setConditionExpression(Expression conditionExpression) {
-		this.conditionExpression = conditionExpression;
 	}
 
 }

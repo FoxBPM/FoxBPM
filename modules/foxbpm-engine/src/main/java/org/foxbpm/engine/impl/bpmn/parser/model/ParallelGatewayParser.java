@@ -17,31 +17,24 @@
  */
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
-import org.eclipse.bpmn2.BaseElement;
-import org.eclipse.bpmn2.ParallelGateway;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ParallelGatewayBehavior;
-import org.foxbpm.engine.impl.util.BpmnModelUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.model.BaseElement;
+import org.foxbpm.model.ParallelGateway;
 
 public class ParallelGatewayParser extends GatewayParser {
 
 	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
 		ParallelGatewayBehavior parallelGatewayBehavior=(ParallelGatewayBehavior)baseElementBehavior;
-		
-
 		ParallelGateway parallelGateway=(ParallelGateway)baseElement;
-		String convergType=BpmnModelUtil.convergType(parallelGateway);
+		String convergType=parallelGateway.getConvergType();
 		if(StringUtil.isNotEmpty(convergType)){
-			parallelGatewayBehavior.setConvergType(BpmnModelUtil.convergType(parallelGateway));
+			parallelGatewayBehavior.setConvergType(convergType);
 		}
-
-		
 		return super.parser(baseElement);
 	}
-	
-
 	 
 	public void init() {
 		baseElementBehavior=new ParallelGatewayBehavior();

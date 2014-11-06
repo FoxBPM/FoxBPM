@@ -17,7 +17,6 @@
  */
 package org.foxbpm.rest.service.api.task;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import org.foxbpm.engine.ModelService;
@@ -42,7 +41,6 @@ public class FlowGraphicImgResource extends AbstractRestResource {
 	@Get
 	public InputStream getFlowGraphicImg() {
 		Form query = getQuery();
-		String flag = getQueryParameter("flag", query);
 		String processInstanceId = getQueryParameter("processInstanceId", query);
 		String processDefinitionKey = getQueryParameter("processDefinitionKey", query);
 		// 获取引擎
@@ -71,16 +69,9 @@ public class FlowGraphicImgResource extends AbstractRestResource {
 			}
 			processDefinitionId = processInstance.getProcessDefinitionId();
 		}
-		
-		// 获取图形资源
-		if ("svg".equals(flag)) {
-			String svgContent = modelService.getProcessDefinitionSVG(processDefinitionId);
-			if (StringUtil.isNotEmpty(svgContent)) {
-				in = new ByteArrayInputStream(svgContent.getBytes());
-			}
-		} else {
-			in = modelService.GetFlowGraphicsImgStreamByDefId(processDefinitionId);
-		}
+		 
+		in = modelService.GetFlowGraphicsImgStreamByDefId(processDefinitionId);
 		return in;
 	}
+ 
 }

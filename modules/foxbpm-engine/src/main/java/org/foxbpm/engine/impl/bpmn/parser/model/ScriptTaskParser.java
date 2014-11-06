@@ -17,27 +17,10 @@
  */
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
-import org.eclipse.bpmn2.BaseElement;
-import org.eclipse.bpmn2.ScriptTask;
-import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.ScriptTaskBehavior;
 
 public class ScriptTaskParser extends TaskParser {
-
-	 
-	public BaseElementBehavior parser(BaseElement baseElement) {
-		ScriptTaskBehavior scriptTaskBehavior = (ScriptTaskBehavior) baseElementBehavior;
-		ScriptTask scriptTask=(ScriptTask)baseElement;
-		
-		scriptTaskBehavior.setScript(scriptTask.getScript());
-		scriptTaskBehavior.setScriptFormat(scriptTask.getScriptFormat());
-		
-		return super.parser(baseElement);
-	}
-	
-	 
 	public void init() {
 		baseElementBehavior=new ScriptTaskBehavior();
 	}
-
 }

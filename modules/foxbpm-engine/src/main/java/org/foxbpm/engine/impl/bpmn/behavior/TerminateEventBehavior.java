@@ -19,7 +19,7 @@ package org.foxbpm.engine.impl.bpmn.behavior;
 
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 
-public class TerminateEventBehavior extends EventDefinition {
+public class TerminateEventBehavior extends EventDefinitionBehavior {
 	
 	/**
 	 * serialVersionUID:TODO（用一句话描述这个变量表示什么）
@@ -30,6 +30,6 @@ public class TerminateEventBehavior extends EventDefinition {
 	
 	 
 	public void execute(FlowNodeExecutionContext executionContext, String eventType, Object[] params) {
-		executionContext.getProcessInstance().end();
+		executionContext.getProcessInstance().abort();
 	}
 }

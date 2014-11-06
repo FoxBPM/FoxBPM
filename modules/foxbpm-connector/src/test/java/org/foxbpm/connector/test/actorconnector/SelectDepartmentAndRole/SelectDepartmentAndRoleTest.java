@@ -66,7 +66,7 @@ public class SelectDepartmentAndRoleTest extends AbstractFoxBpmTestCase {
 
 		// 启动流程触发任务分配
 		runtimeService.startProcessInstanceByKey("SelectDepartmentAndRoleTest_1");
-		Task task = (Task) taskService.createTaskQuery().processDefinitionKey("SelectDepartmentAndRoleTest_1").singleResult();
+		Task task = (Task) taskService.createTaskQuery().processDefinitionKey("SelectDepartmentAndRoleTest_1").taskNotEnd().singleResult();
 		assertEquals("a", task.getAssignee());
 
 		// 存在多个用户时需要共享

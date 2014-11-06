@@ -19,6 +19,7 @@
 	<script src="js/libs/jquery-ui-1.10.3.min.js"></script>
 	<script src="js/plugin/jquery-validate/jquery.validate.min.js"></script>
 	<script src="js/common.js"></script>
+	<script src="js/notification/SmartNotification.min.js"></script>
 	<script type="text/javascript" src="portal/taskCommand/js/foxbpmframework.js"></script>
 	<script type="text/javascript" src="portal/taskCommand/js/flowCommandCompenent.js"></script>
 	<script type="text/javascript" src="portal/taskCommand/js/flowCommandHandler.js"></script>
@@ -59,8 +60,8 @@
 		
 		var flowCommandCompenent = new Foxbpm.FlowCommandCompenent(flowconfig);
 		flowCommandCompenent.init();
-		initChatMsg();
-		setInterval(function() { 
+		//initChatMsg();
+/* 		setInterval(function() { 
 			var msgUrl = _serviceUrl+"social";
 			$.ajax({
 		        type: "get",//使用get方法访问后台
@@ -72,7 +73,7 @@
 		        	setLastReadTime();
 		        	for(var i=0;i<msgInfos.length;i++){
 		        		//$(".mes" + 3).append("<div class='message clearfix' style='border-bottom:0px'><div class='user-logo' style='float:left'><img src='" + "img/head/2024.jpg" + "'/>" + "</div>" +"<div class='msgDiv' style='margin-top:0px;margin-left:65;width:110px;background:#33CC99'>&nbsp;"+msgInfos[i].content+" <div style='position:absolute;top:5px;left:-20px;border:solid 10px;border-color: rgba(15, 15, 15, 0) #33CC99 rgba(200, 37, 207, 0) rgba(248, 195, 1, 0);'></div>"+ "<div class='wrap-ri'>" + "<div clsss='clearfix' style='bottom: 0px;width: 150px;left: 50px;top: 40px;' style='float:right'><span>" + msgInfos[i].time + "</span></div>" + "</div>" + "<div style='clear:both;'></div>" + "</div>");
-		        		$("#msg_list").append("<li style='height: 69px' class='message'><img src='img/avatars/sunny.png' class='online' alt=''><div class='message-text'><time>"+msgInfos[i].time+"</time> <a href='javascript:void(0);' class='username'>John Doe</a>"+msgInfos[i].content+" <i class='fa fa-smile-o txt-color-orange'></i></div></li>");
+		        		$("#msg_list").append("<li style='height: 69px' class='message'><img src='img/avatars/sunny.png' class='online' alt=''><div class='message-text'><time>"+msgInfos[i].time+"</time> <a href='javascript:void(0);' class='username'>John Doe</a><span>"+msgInfos[i].content+" </span><i class='fa fa-smile-o txt-color-orange'></i></div></li>");
 		        		$("#chat-body").scrollTop($("#msg_list").height());
 		        	}
 		        },
@@ -80,7 +81,7 @@
 		        	showMessage("错误","系统错误，请重新打开或联系管理员！","error");
 		        }
 			});
-		}, 3000);
+		}, 5000); */
 		
 		
 		var filter_input = $('#filter-chat-list'),
@@ -135,15 +136,19 @@
 	});
 	
 	function setLastReadTime(){
-		var e = new Date,
-		f = "";
-		f += e.getFullYear() + "-",
-		f += e.getMonth() + 1 + "-",
-		f += e.getDate() + " ";
-		f += e.getHours() + ":",
-		f += e.getMinutes() + ":",
-		f += e.getSeconds();
-		lastReadTime = f;
+		 
+		var msgUrl = _serviceUrl+"social";
+		$.ajax({
+	        type: "get",//使用get方法访问后台
+	        async:false,
+	        dataType: "json",//返回json格式的数据
+	        url: msgUrl,//要访问的后台地址
+	        data:{taskId:"taskId",msgType:"getCurrentReadTime"},
+	        success: function(msgInfo){//msg为返回的数据，在这里做数据绑定     
+	        	lastReadTime = msgInfo.content;
+	        } 
+		}); 
+		  
 	}
 	function initChatMsg(){
 		//设置读取消息的时间
@@ -318,12 +323,12 @@
 				</footer>
 				<input type="hidden" name="flowCommandInfo" id="flowCommandInfo">
 			</form>
-		<a id="aaa" flag="0"
-					style="position: absolute; right: -5; top: 50%; z-index: 1; cursor: pointer; border-top: 10px solid rgba(241, 248, 241, 0); border-right: 10px solid #993366; border-bottom: 10px solid rgba(0, 0, 255, 0);"></a>
+		<!-- <a id="aaa" flag="0"
+					style="position: absolute; right: -5; top: 50%; z-index: 1; cursor: pointer; border-top: 10px solid rgba(241, 248, 241, 0); border-right: 10px solid #993366; border-bottom: 10px solid rgba(0, 0, 255, 0);"></a> -->
 		
 		</div>
 	</div>
-        <div id="rightDiv" style="float:left;display:none;height:502px; border:1px solid red;border-left-width:0px;padding-left: 0px;padding-top: 0px;">
+        <div id="rightDiv" style="float:left;display:none;height:502px; border:1px solid red;border-left-width:0px;padding-left: 0px;padding-top: 0px">
  
 			<!--效果html开始--> 
 			     <!-- new widget -->
@@ -457,11 +462,9 @@
         </div>
 </div>
 </body>
-<link rel="stylesheet" type="text/css" href="css/chat.css" />
-<script type="text/javascript" src="js/chat.js"></script>
+
 <script type="text/javascript">
-   
-   
+   $("#rightDiv").hide();
    $("#aaa").on("click", function() {
 		var $this = $(this);
 		var flag = $this.attr("flag");
@@ -500,6 +503,5 @@
 			   
 		}
 	});
-
 </script>
 </html>

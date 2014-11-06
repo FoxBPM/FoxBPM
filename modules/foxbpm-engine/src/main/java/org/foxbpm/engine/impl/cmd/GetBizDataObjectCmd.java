@@ -20,18 +20,17 @@ package org.foxbpm.engine.impl.cmd;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.emf.common.util.EList;
 import org.foxbpm.engine.datavariable.BizDataObjectBehavior;
+import org.foxbpm.engine.datavariable.DataObjectDefinition;
 import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.datavariable.BizDataObject;
+import org.foxbpm.engine.impl.datavariable.DataObjectDefinitionImpl;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
-import org.foxbpm.model.config.foxbpmconfig.BizDataObjectConfig;
-import org.foxbpm.model.config.foxbpmconfig.DataObjectBehavior;
 
 /**
  * 获取业务数据对象命令类
@@ -59,18 +58,14 @@ public class GetBizDataObjectCmd implements Command<List<BizDataObject>> {
 			throw new FoxBPMBizException("dataSource is null!");
 		}
 		ProcessEngineConfigurationImpl processEngine = commandContext.getProcessEngineConfigurationImpl();
-		BizDataObjectConfig bizDataObjectConfig = processEngine.getBizDataObjectConfig();
-		if (null == bizDataObjectConfig) {
-			throw new FoxBPMException("获取业务数据对象配置为空!");
-		}
-		EList<DataObjectBehavior> dataObjBehaviorList = bizDataObjectConfig.getDataObjectBehavior();
+		List<DataObjectDefinitionImpl> dataObjBehaviorList = processEngine.getFoxBpmConfig().getDataObjectDefinitions();
 		if (null == dataObjBehaviorList) {
 			throw new FoxBPMException("获取数据对象行为为空!");
 		}
 		
-		DataObjectBehavior dataObjectBehavior = null;
-		for (Iterator<DataObjectBehavior> iterator = dataObjBehaviorList.iterator(); iterator.hasNext();) {
-			dataObjectBehavior = (DataObjectBehavior) iterator.next();
+		DataObjectDefinition dataObjectBehavior = null;
+		for (Iterator<DataObjectDefinitionImpl> iterator = dataObjBehaviorList.iterator(); iterator.hasNext();) {
+			dataObjectBehavior = (DataObjectDefinition) iterator.next();
 			if (behaviorId.equals(dataObjectBehavior.getId())) {
 				break;
 			}

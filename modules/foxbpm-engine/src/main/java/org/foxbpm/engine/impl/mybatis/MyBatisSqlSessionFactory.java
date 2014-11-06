@@ -44,8 +44,8 @@ import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
 import org.foxbpm.engine.exception.FoxBPMDbException;
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.interceptor.Session;
-import org.foxbpm.engine.impl.util.ServiceLoader;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 import org.slf4j.Logger;
@@ -90,7 +90,12 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 		databaseTypeMappings.setProperty("Microsoft SQL Server", "mssql");
 	}
 	
-	public void init(DataSource dataSource,String prefix) {
+	public void init(ProcessEngineConfigurationImpl processEngineConfig) throws SQLException {
+		
+		DataSource dataSource = processEngineConfig.getDataSource();
+		if(dataSource == null){
+			throw new FoxBPMDbException("未配置dataSource,请检查！");
+		}
 		Connection connection = null;
 		String databaseType = null;
 		try {
@@ -112,6 +117,7 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 				}
 			} catch (SQLException e) {
 				log.error("Exception while closing the Database connection", e);
+				throw e;
 			}
 		}
 		if (sqlSessionFactory == null) {
@@ -128,15 +134,14 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 					properties.put("limitBetween", databaseSpecificLimitBetweenStatements.get(databaseType));
 					properties.put("limitOuterJoinBetween", databaseOuterJoinLimitBetweenStatements.get(databaseType));
 					properties.put("orderBy" , databaseSpecificOrderByStatements.get(databaseType));
-					properties.put("prefix" , prefix);
+					properties.put("prefix" , processEngineConfig.getPrefix());
 		        }
 		        XMLConfigBuilder parser = new XMLConfigBuilder(reader,"", properties);
 		        Configuration configuration = parser.getConfiguration();
 		        configuration.setEnvironment(environment);
 		        configuration = parser.parse();
 		        
-		        ServiceLoader<FoxbpmMapperConfig> mapperConfig =  ServiceLoader.load(FoxbpmMapperConfig.class);
-		        Iterator<FoxbpmMapperConfig> mapperIterator = mapperConfig.iterator();
+		        Iterator<FoxbpmMapperConfig> mapperIterator = processEngineConfig.getCustomMapperConfig().iterator();
 		        while(mapperIterator.hasNext()){
 		        	FoxbpmMapperConfig tmpMapper = mapperIterator.next();
 		        	log.debug("发现注册mapperConifg：{};",tmpMapper.getClass());

@@ -86,7 +86,7 @@ public class BoundaryEventTimeDefinitionTest extends BaseSchedulerTest {
 			// 校验活动节点，由于是非终止事件所以为产生两个同时活动的节点
 			this.validateActiveTask(new String[]{"UserTask_1", "UserTask_2"});
 			// 非终止边界事件会产生一个主令牌多个子令牌的情况
-			this.validateToken(new String[]{"UserTask_1", "UserTask_1", "UserTask_2"});
+			this.validateToken(new String[]{"UserTask_1", "UserTask_2"});
 			
 		} catch (Exception e) {
 			fail();
@@ -116,7 +116,7 @@ public class BoundaryEventTimeDefinitionTest extends BaseSchedulerTest {
 			this.validateActiveTask(new String[]{"UserTask_1", "UserTask_2", "UserTask_3"});
 			
 			// 非终止边界事件会产生一个主令牌多个子令牌的情况
-			this.validateToken(new String[]{"UserTask_1", "UserTask_1", "UserTask_2", "UserTask_3"});
+			this.validateToken(new String[]{"UserTask_1", "UserTask_2", "UserTask_3"});
 			
 		} catch (Exception e) {
 			fail();

@@ -22,7 +22,6 @@ import java.util.List;
 import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
 import org.foxbpm.engine.impl.util.AssigneeUtil;
-import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
 
 /**
@@ -32,22 +31,19 @@ import org.foxbpm.engine.task.DelegateTask;
  * @date 2014年7月14日
  */
 public class SelectUserActorConnector extends ActorConnectorHandler {
-
+	
 	private static final long serialVersionUID = 1L;
-
-	private java.lang.String userId;
-
-	public void setUserId(java.lang.String userId) {
+	
+	private java.lang.Object userId;
+	
+	public void setUserId(java.lang.Object userId) {
 		this.userId = userId;
 	}
-
-	 
+	
 	public void assign(DelegateTask task) throws Exception {
-
-		if (StringUtil.isEmpty(StringUtil.trim(userId))) {
-			throw new FoxBPMConnectorException("userId is null !");
+		if (null == userId) {
+			throw new FoxBPMConnectorException("处理人选择器(选择用户)用户编号表达式为空 ! 节点编号：" + task.getNodeId());
 		}
-
 		List<String> userList = AssigneeUtil.executionExpressionObj(userId);
 		if (userList.size() == 1) {
 			task.setAssignee(userList.get(0));

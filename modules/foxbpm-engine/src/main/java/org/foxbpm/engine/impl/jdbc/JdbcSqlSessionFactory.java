@@ -19,6 +19,7 @@ package org.foxbpm.engine.impl.jdbc;
 
 import javax.sql.DataSource;
 
+import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.interceptor.Session;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
@@ -51,6 +52,11 @@ public class JdbcSqlSessionFactory implements ISqlSessionFactory {
 	
 	 
 	public void init(DataSource datasource, String prefix) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void init(ProcessEngineConfigurationImpl processEngineConfig) {
 		// TODO Auto-generated method stub
 		
 	}

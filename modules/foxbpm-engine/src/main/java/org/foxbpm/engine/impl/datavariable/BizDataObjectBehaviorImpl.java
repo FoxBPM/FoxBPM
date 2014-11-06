@@ -26,6 +26,7 @@ import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.datavariable.BizDataObjectBehavior;
 import org.foxbpm.engine.exception.FoxBPMDbException;
 import org.foxbpm.engine.impl.util.DBUtils;
+import org.foxbpm.model.DataVariableDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;

@@ -18,21 +18,12 @@
  */
 package org.foxbpm.engine.impl.bpmn.parser.model;
 
-import org.eclipse.bpmn2.BaseElement;
 import org.foxbpm.engine.impl.bpmn.behavior.BaseElementBehavior;
+import org.foxbpm.model.BaseElement;
 
 public abstract class FlowNodeParser extends FlowElementParser {
-
 	 
 	public BaseElementBehavior parser(BaseElement baseElement) {
-		// TODO Auto-generated method stub
 		return super.parser(baseElement);
 	}
-
-	 
-	public void init() {
-		// TODO Auto-generated method stub
-		super.init();
-	}
-
 }

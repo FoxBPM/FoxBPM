@@ -35,12 +35,13 @@ import org.restlet.data.Form;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
+
 /**
  * 社交rest资源类
  * 
  * @author Administrator
  * 
- */ 
+ */
 public class SocialResource extends AbstractRestResource {
 	@Get
 	public Object findSocialMessageInfo() {
@@ -51,7 +52,7 @@ public class SocialResource extends AbstractRestResource {
 		List<SocialMessageInfo> allSocialMessageInfo = null;
 		if (StringUtil.equals(msgType, "findAll")) {
 			// 获取参数
-			String taskId =  getQueryParameter("taskId", queryForm);
+			String taskId = getQueryParameter("taskId", queryForm);
 			if (StringUtil.isNotEmpty(taskId)) {
 				allSocialMessageInfo = socialService
 						.findAllSocialMessageInfo(taskId);
@@ -65,7 +66,8 @@ public class SocialResource extends AbstractRestResource {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date lastReadTime = null;
 			try {
-				lastReadTime = sdf.parse(getQueryParameter("lastReadTime", queryForm));
+				lastReadTime = sdf.parse(getQueryParameter("lastReadTime",
+						queryForm));
 			} catch (ParseException e) {
 			}
 			if (StringUtil.isNotEmpty(taskId)) {
@@ -76,6 +78,14 @@ public class SocialResource extends AbstractRestResource {
 					return allSocialMessageInfo;
 				}
 			}
+		} else if (StringUtil.equals(msgType, "getCurrentReadTime")) {
+			SocialMessageInfo msgInfo = new SocialMessageInfo();
+			TimeZone tz = TimeZone.getTimeZone("ETC/GMT-8");
+			TimeZone.setDefault(tz);
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			msgInfo.setContent(sdf.format(new Date()));
+			return msgInfo;
 		}
 
 		return null;
@@ -96,7 +106,7 @@ public class SocialResource extends AbstractRestResource {
 		String transferredCount = URLDecoder.decode(paramsMap
 				.get("transferredCount"));
 		String transferCount = URLDecoder
-				.decode(paramsMap.get("transferCount")); 
+				.decode(paramsMap.get("transferCount"));
 		String taskId = URLDecoder.decode(paramsMap.get("taskId"));
 		String processInstanceId = URLDecoder.decode(paramsMap
 				.get("processInstanceId"));

@@ -14,7 +14,7 @@
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="SelectDeptActorConnector" packageName="org.foxbpm.connector.actorconnector.SelectDeptActorConnector" className="SelectDeptActorConnector" connectorInstanceId="a944c079-22f4-46c0-964e-f2d3d5e717d0" connectorInstanceName="选择部门" errorHandling="" type="actorconnector">
               <documentation xsi:type="foxbpm:Documentation"></documentation>
-              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="deptId" name="部门编号" dataType="java.lang.String" isExecute="true">
+              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="deptId" name="部门编号" dataType="java.lang.Object" isExecute="true">
                 <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_3" name="部门编号"><![CDATA['a,b']]></foxbpm:expression>
               </foxbpm:connectorParameterInputs>
             </foxbpm:connectorInstance>

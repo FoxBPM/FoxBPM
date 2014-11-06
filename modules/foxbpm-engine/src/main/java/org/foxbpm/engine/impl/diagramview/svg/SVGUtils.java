@@ -85,11 +85,14 @@ public final class SVGUtils {
 	 */
 	public final static PathVO getSequentialVOFromSvgVO(SvgVO svgVo) {
 		List<GVO> gVoList = svgVo.getgVo().getgVoList();
-		for (GVO gvo : gVoList) {
-			if (StringUtil.equals(gvo.getId(), "sequential")) {
-				return gvo.getPathVoList().get(0);
+		if(gVoList != null){
+			for (GVO gvo : gVoList) {
+				if (StringUtil.equals(gvo.getId(), "sequential")) {
+					return gvo.getPathVoList().get(0);
+				}
 			}
 		}
+		
 		return null;
 	}
 	
