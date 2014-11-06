@@ -131,9 +131,10 @@ public class TimerEventBehavior extends EventDefinitionBehavior {
 		} else {
 			// 创建Trigger List
 			if (StringUtil.equals(eventType, EVENT_TYPE_CONNECTOR)) {
-				//连接器以兼容模式创建TRIGGER
-				jobDetail.createCompatibleTriggerList(new ExpressionImpl(timerEventDefinition.getTimeDate()), kernelTokenImpl, groupName);
+				//只支持表达式
+				jobDetail.createTriggerListByCycle(new ExpressionImpl(timerEventDefinition.getTimeDate()), kernelTokenImpl, groupName);
 			}else{
+				//支持表达式和日期时间
 				this.createTriggerList(jobDetail, kernelTokenImpl, groupName);
 			}
 			
@@ -142,6 +143,18 @@ public class TimerEventBehavior extends EventDefinitionBehavior {
 		}
 		
 	}
+	
+
+
+	public TimerEventDefinition getTimerEventDefinition() {
+		return timerEventDefinition;
+	}
+
+
+	public void setTimerEventDefinition(TimerEventDefinition timerEventDefinition) {
+		this.timerEventDefinition = timerEventDefinition;
+	}
+	
 	/**
 	 * 
 	 * createTriggerList(创建TriggerList)
@@ -155,18 +168,7 @@ public class TimerEventBehavior extends EventDefinitionBehavior {
 	private void createTriggerList(FoxbpmJobDetail<FoxbpmScheduleJob> jobDetail,
 	    KernelTokenImpl kernelTokenImpl, String groupName) {
 		jobDetail.createDateTimeTriggerList(new ExpressionImpl(timerEventDefinition.getTimeDate()), kernelTokenImpl, groupName);
-		jobDetail.createTriggerListByDuration(new ExpressionImpl(timerEventDefinition.getTimeDuration()), kernelTokenImpl, groupName);
-		jobDetail.createDateTimeTriggerList(new ExpressionImpl(timerEventDefinition.getTimeCycle()), kernelTokenImpl, groupName);
-	}
-
-
-	public TimerEventDefinition getTimerEventDefinition() {
-		return timerEventDefinition;
-	}
-
-
-	public void setTimerEventDefinition(TimerEventDefinition timerEventDefinition) {
-		this.timerEventDefinition = timerEventDefinition;
+		jobDetail.createTriggerListByCycle(new ExpressionImpl(timerEventDefinition.getTimeCycle()), kernelTokenImpl, groupName);
 	}
 	
 }
