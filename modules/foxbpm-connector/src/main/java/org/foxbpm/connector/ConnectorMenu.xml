@@ -15,7 +15,6 @@
       <node id="67db3acf-5965-43e8-bfd8-91e276eb0901" name="Generic" ico="database.png">
         <connector id="DatasourceDatabaseQuery" name="通过Datasource方式执行sql语句" note="执行sql语句返回数据集" ico="database.png" package="org/foxbpm/connector/flowconnector/DatasourceDatabaseQuery"/>
         <connector id="JDBCDatabaseQuery" name="通过JDBC方式执行sql语句" note="执行sql语句返回数据集" ico="database.png" package="org/foxbpm/connector/flowconnector/JDBCDatabaseQuery"/>
-        <connector id="Test1001" name="Test1001" note="Test1001" ico="Test1001.png" package="org/foxbpm/connector/flowconnector/Test1001"/>
       </node>
     </node>
   </flowConnector>
