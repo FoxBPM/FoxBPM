@@ -95,8 +95,194 @@
       对标准做了一些自己的扩展,FoxBPM引擎的扩展都以"foxbpm:"开头,包括节点扩展和属性扩展。 BPMN是个开放的标准,它为每个元素都提供了扩展的方式,extensionElements可以包含在任务BPMN官方的元素里。 
     </para>
   </section>
- 
-  <section xml:id="bpmn.extensions">
+  <section xml:id="bpmn.process">
+    <title>流程定义</title>
+    <para> 流程定义基于XML语法、文件后缀名为“bpmn”，可基于eclipse插件进行图形化设计。 流程定义主体主要包括两部分，分别是流程模型信息和元素节点的图形信息。
+      流程模型信息包括所有的流程元素节点定义，包括其中元素节点之间的关联关系，节点名称是“bpmn2:process”。
+      元素节点图形信息包括节点大小和坐标，节点名称是“bpmndi:BPMNDiagram”。 流程定义的主要属性包括默认主题、默认操作表单、流程启动人、数据变量、连接器。 </para>
+    <para>
+            在FoxBPM引擎中,一个流程定义实际指的就是一个Process元素,FoxBPM现在并不支持多Process的交互式流程图,
+            设计完流程定义之后需要发布到数据库中才能供引擎使用,FoxBPM支持多流程版本功能,新启动的流程自动走新的版本,老的流程继续跑在老的版本上,相互不会产生影响。
+    </para> 
+    <para>
+      <emphasis role="bold">XML定义</emphasis>:      
+      <programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.foxbpm.org" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:foxbpm="http://www.foxbpm.org/foxbpm" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="Definitions_1" targetNamespace="http://www.foxbpm.org">
+  <bpmn2:process id="1_1" name="1">
+    <bpmn2:extensionElements>
+      <foxbpm:potentialStarter resourceType="user" description="所有用户都可以发起流程">
+        <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_3" name="所有人">"foxbpm_all_user"</foxbpm:expression>
+      </foxbpm:potentialStarter>
+      <foxbpm:taskSubject>
+        <foxbpm:expression xsi:type="foxbpm:Expression" name="${任务主题}">${任务主题}</foxbpm:expression>
+      </foxbpm:taskSubject>
+      <foxbpm:formUriView>
+        <foxbpm:expression xsi:type="foxbpm:Expression" name="${浏览表单}">${浏览表单}</foxbpm:expression>
+      </foxbpm:formUriView>
+      <foxbpm:formUri>
+        <foxbpm:expression xsi:type="foxbpm:Expression" name="${操作表单表单}">${操作表单表单}</foxbpm:expression>
+      </foxbpm:formUri>
+    </bpmn2:extensionElements>
+    <bpmn2:documentation id="Documentation_2">测试流程</bpmn2:documentation>
+    <bpmn2:startEvent id="StartEvent_1" name="开始">
+      <bpmn2:outgoing>SequenceFlow_46</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:userTask id="UserTask_2" foxbpm:taskType="foxbpmtask" foxbpm:claimType="defaultClaim" name="人工任务_4">
+      <bpmn2:extensionElements>
+        <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
+        <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_46</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_47</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="PotentialOwner_2">
+        <bpmn2:extensionElements>
+          <foxbpm:connectorInstanceElements connrctorType="actorConnector">
+            <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="d13fa99a-db54-4231-b6f5-87d77f6fc248" connectorInstanceName="所有人" errorHandling="" type="actorconnector"/>
+          </foxbpm:connectorInstanceElements>
+        </bpmn2:extensionElements>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+    <bpmn2:endEvent id="EndEvent_3" name="结束_1">
+      <bpmn2:incoming>SequenceFlow_47</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_46" sourceRef="StartEvent_1" targetRef="UserTask_2"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_47" sourceRef="UserTask_2" targetRef="EndEvent_3"/>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="1_1">
+      <bpmndi:BPMNShape id="BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="90.0" y="66.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_2" bpmnElement="UserTask_2">
+        <dc:Bounds height="50.0" width="110.0" x="240.0" y="90.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndEvent_3" bpmnElement="EndEvent_3">
+        <dc:Bounds height="36.0" width="36.0" x="692.0" y="142.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_46" bpmnElement="SequenceFlow_46" sourceElement="BPMNShape_StartEvent_2" targetElement="BPMNShape_UserTask_2">
+        <di:waypoint xsi:type="dc:Point" x="108.0" y="102.0"/>
+        <di:waypoint xsi:type="dc:Point" x="108.0" y="115.0"/>
+        <di:waypoint xsi:type="dc:Point" x="240.0" y="115.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_47" bpmnElement="SequenceFlow_47" sourceElement="BPMNShape_UserTask_2" targetElement="BPMNShape_EndEvent_3">
+        <di:waypoint xsi:type="dc:Point" x="350.0" y="115.0"/>
+        <di:waypoint xsi:type="dc:Point" x="710.0" y="115.0"/>
+        <di:waypoint xsi:type="dc:Point" x="710.0" y="142.0"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>
+]]></programlisting>
+    </para>
+    
+    
+    <para>
+      <emphasis role="bold">流程基本信息：</emphasis>:  
+    </para>
+    <itemizedlist>
+      
+      <listitem>
+        <para>
+          <emphasis role="bold">流程编号(id)</emphasis>:也叫流程Key 用来标识一个流程,但是一个流程里会有多个版本,所以通过Key找流程,不能定位到唯一的一个。 
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">流程唯一编号(dbid)</emphasis>:流程唯一编号,由流程Key、版本号、GIUD组合而成的唯一编号。   
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">流程名称(name)</emphasis>:流程的名称。
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="bold">分类(category)</emphasis>:用于流程定义的归类。
+        </para>
+      </listitem>
+    </itemizedlist>
+    
+    <para>
+      <emphasis role="bold">Java代码</emphasis>:  
+      <programlisting language="java"><![CDATA[
+//查询所有流程定义
+List<ProcessDefinitionBehavior> processDefinitions=modelService.createProcessDefinitionQuery().list();
+
+//获取其中的一个流程定义
+ProcessDefinitionBehavior processDefinition=processDefinitions.get(0);
+
+//流程唯一编号
+processDefinition.getProcessDefinitionId();
+
+//流程编号
+processDefinition.getProcessDefinitionKey();
+
+//流程名称
+processDefinition.getName();
+
+//版本号
+processDefinition.getVersion();
+
+//流程分类
+processDefinition.getCategory();
+
+//流程定义里的所有元素
+processDefinition.getFlowElements();
+]]></programlisting> 
+    </para>
+    
+    
+    <para xml:id="bpmn.process.subject">
+      <emphasis role="bold">流程任务主题</emphasis>:
+    </para>
+    <para>
+      流程任务主题是用来标识一个流程实例的说明,不同于人工任务(UserTask)的任务主题,流程的任务主题是用来显示在流程实例上的实例主题,一般情况下我们在流程中只需要设置这个流程任务
+      主题就可以了,一但设置了流程任务主题,流程中的所有人工任务(UserTask)的任务主题在没有配置的情况下就会默认从这里取。
+    </para>
+    
+    
+    
+    <para xml:id="bpmn.process.defaultForm">
+      <emphasis role="bold">默认表单</emphasis>:
+    </para>
+    <para>
+      默认表单包括默认操作表单、默认浏览表单。FoxBPM引擎的一条流程记录会有一个流程实例和多个任务组成,当UserTask的操作表单没有配置的时候,会
+      自动去流程实例默认表单去寻找。当我们想查看一个流程实例的数据的时候一般都是以这个默认表单打开。
+    </para>
+    
+    <para xml:id="bpmn.process.startUser">
+      <emphasis role="bold">流程启动人</emphasis>:
+    </para>
+    <para>
+      流程启动人表示可以启动该流程的用户、启动人主要起到过滤的作用，当用户登录系统后只能看到自己可以启动的流程。
+      流程启动人可以配置具体用户、也可以配置角色和部门或者所有人。如果配置的所有人，那么任何人都可以看到并且可以启动。
+      如果配置的是角色或者部门，那么只有属于该角色或者该部门的用户才可以看到和启动。
+    </para>
+    
+    <para xml:id="bpmn.process.variable">
+      <emphasis role="bold">流程数据变量</emphasis>:
+    </para>
+    <para>
+      流程数据变量是指流程运行过程中会用到的变量，比如可以保存业务表单数据、也可以通过变量控制流程分散、通过变量进行加签会签控制。
+      如果任务活动不在同一个会话中，但又要传递变量值，可以选择将变量持久化。
+      FoxBPM支持常用的数据类型包括String、Integer、List等。
+      常用的业务类型为数据库变量、自定义变量等。
+    </para>
+    
+    <para xml:id="bpmn.process.connector">
+      <emphasis role="bold">流程连接器</emphasis>:
+    </para>
+    <para>
+       在流程上配置的连接器，当流程启动或者结束时会触发执行。任何可以在任务活动上配置的连接器都可以配置在流程定义上。
+    </para>
+     
+     
+  </section>
+  <section xml:id="bpmn.flowElement">
     <title>FoxBPM支持的BPMN元素</title>
     <para>
       目前FoxBPM只提供了对BPMN标准的部分实现、包括事件、活动、网关、线条等。
@@ -182,7 +368,8 @@
           </para>
           <para> 
             <programlisting language="java">
-<![CDATA[//创建一个启动命令
+<![CDATA[
+//创建一个启动命令
 StartProcessInstanceCommand startProcessInstanceCommand = new StartProcessInstanceCommand();
 //设置需要启动的流程的KEY
 startProcessInstanceCommand.setProcessDefinitionKey("Process_StartProcessInstanceTest");
@@ -191,7 +378,8 @@ startProcessInstanceCommand.setBusinessKey("bk_StartProcessInstanceTest");
 //设置流程的启动人
 startProcessInstanceCommand.setStartAuthor("1200119390");
 //启动流程，返回流程实例
-ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startProcessInstanceCommand);]]></programlisting>
+ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startProcessInstanceCommand);
+]]></programlisting>
           </para>
           <para>
             <emphasis>注意: </emphasis> 私有子流程(subprocess) 总是有一个空启动事件(None StartEvent).
@@ -401,7 +589,10 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
     <section>
       <title>活动</title>
       <para>
-        活动是流程里面基本节点负责任务执行分配，活动节点包括两大类分别是任务节点和子流程。
+        在基本活动里，我们知道活动是流程是执行过程中的工作，分为两类：任务（原子活动）和子流程（块活动）。
+        任务是流程模型中的最小工作单元，不能继续分解，子流程则能继续分解为一些列的子活动。
+        在核心元素里我们将讨论任务和子流程更加具体的类型，这样我们在建模时会有更加具体的语义。
+        所有的活动节点都支持跳过策略、多实例、执行连接器，都可以基于eclipse插件配置。
       </para> 
       <section>
         <title>人工任务</title> 
@@ -625,9 +816,32 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <title>高级属性</title> 
           <para>
             高级属性中的多实例,是用来完成一个for循环的动作,出发多次不同参数的执行,并将结果收集起来。BPMN官方对多实例是使用Multi-instance元素,来实现的,
+            一个多实例活动(multi-instance activity)是一种被定义为一个特定的步骤重复完成一些操作。
+            在编程的概念里,这个多实例相当于一个for循环,每次将输入数据集(loopDataInputCollection)中的集合遍历出来,
+            放置到输入项编号(inputDataItem)所指定的变量中,这样在这个活动(activity)中变可以使用这个输入项编号,
+            每次循环中,我们可以对输出项编号(outputDataItem)里边所指定的变量赋值,引擎会自动将这次循环中对输出项编号变量赋的值插入到输出数据集(loopDataOutputCollection)在每次循环完成的时候,
+            会触发完成表达式(completionCondition),用来判断是否够能离开这个节点。
+            
           </para>
           <para><emphasis>注意</emphasis>: 用于人工任务(UserTask)来说,多实例一般就是用来完成并行会签功能,也可以作用在子流程等其他节点上起到不同的效果。</para>
           <para><emphasis>注意</emphasis>: 串行的多实例,在这个版本的FoxBPM中并没有实现,我们将会在今后的版本中引入这个功能。</para>
+          <para>
+            <itemizedlist>
+              <listitem>
+                <para><emphasis role="bold">输入数据集(loopDataInputCollection)</emphasis>: 
+                  <![CDATA[用来设置并行数的来源,接收类型:List<String> 、"人员ID1,人员ID2,人员ID3"、List<Object>、String[],例如: 在并行的人工任务中,集合可以用:"人员ID1,人员ID2,人员ID3"。]]>
+                </para>
+              </listitem>
+              <listitem><para><emphasis role="bold">输入项编号(inputDataItem)</emphasis>: 
+                <![CDATA[每个并行的分支都会将自己从输入数据集中获得到的一个变量放置在输入数据项中,在节点内部的配置中便可以使用这个输入项,例如 在并行的人工任务中,处理者可以使用 ${输入数据项变量}。]]>
+              </para></listitem>
+              <listitem><para><emphasis role="bold">输出项编号(outputDataItem)</emphasis>: 
+                <![CDATA[并行的每次执行中将执行的一些数据放到输出数据集中,在这个分支结束的时候输出数据集里边的变量就会被add到输出数据集中持久化存储。]]></para></listitem>
+              <listitem><para><emphasis role="bold">输出数据集(loopDataOutputCollection)</emphasis>: 
+                <![CDATA[用来记录每次并行执行的结果,类型是个List集合。]]>
+              </para></listitem>
+            </itemizedlist>
+          </para>
           <para>
             <emphasis role="bold">XML定义</emphasis>:
             <programlisting language="xml">
@@ -657,6 +871,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
 </bpmn2:userTask>
   ]]></programlisting> 
           </para>
+           
         </section>
         
         <section xml:id="bpmn.UserTask.connector">
@@ -694,42 +909,214 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
         </section>
       </section>
       <section>
-        <title>私有子流程</title> 
-        <para></para>
+        <title>子流程</title> 
+        <para>
+          bpmn 2.0区分了普通子流程， 也叫做内嵌子流程，和调用节点(外部子流程)，看起来很相似。 上概念上讲，当流程抵达节点时，两者都会调用子流程。 
+          不同点是调用节点引用流程定义外部的一个流程，子流程 会内嵌到原始的流程定义中。使用调用节点的主要场景是需要重用流程定义， 这个流程定义需要被很多其他流程定义调用的时候。 
+          当流程执行到调用节点，会创建一个新分支，它是到达调用节点的流程的分支。 这个分支会用来执行子流程，默认创建并行子流程，就像一个普通的流程。 上级流程会等待子流程完成，然后才会继续向下执行。 
+        </para>
+        <section>
+          <title>公有子流程</title> 
+          <para> 
+            使用调用节点的主要场景是需要重用流程定义， 这个流程定义需要被很多其他流程定义调用的时候。 
+            共有子流程是外部流程，主流程通过子流程编号和版本进行启动，同时可以传递业务关联键和映射主流程数据变量。 
+            当流程执行到调用节点，会创建一个新分支，它是到达调用节点的流程的分支。 这个分支会用来执行子流程，默认创建并行子流程，就像一个普通的流程。 上级流程会等待子流程完成，然后才会继续向下执行。 
+            共有子流程可以选择是否是异步调用，如果是选择为异步调用则创建子流程完毕后直接执行离开事件，子流程和主流程都独立运行。
+          </para>
+          <mediaobject ><imageobject>
+            <imagedata align="center"  fileref="../image/callActivity.PNG"/>
+          </imageobject></mediaobject>
+        </section>
+        <section>
+          <title>私有子流程</title> 
+          <para>
+            私有子流程定义在父流程里，可以展开显示它所包含的模型细节，也可以收起隐藏细节。
+            私有子流程可以将一部分节点步骤作为一个整体，进行多实例，跳过策略，连接器的配置，并可以折叠隐藏关键业务步骤。
+            需要注意的是私有子流程属于主流程，所以主流程上配置的数据变量，对于私有子流程来说也是共享的。
+          </para>
+          <mediaobject ><imageobject>
+            <imagedata align="center"  fileref="../image/subProcess.PNG"/>
+          </imageobject></mediaobject>
+        </section>
       </section>
       <section>
         <title>发送任务</title> 
-        <para></para>
+        <section xml:id="bpmn.SendTask.Description">
+          <title>描述</title>
+          <para>
+            发送任务(SendTask)用来发送邮件、短信、通知等等消息,FoxBPM使用连接器来完成这个节点的功能。
+            发送任务中一般使用发送邮件的连接器。
+          </para>
+        </section>
+        <section xml:id="bpmn.SendTask.GraphicalNotation">
+          <title>图形符号</title>
+          <para> 
+            发送任务是图形为一个圆角矩形,有一个小的黑色邮件图标在左上角。
+            <mediaobject ><imageobject>
+              <imagedata align="center"  fileref="../image/sendTask.PNG"/>
+            </imageobject></mediaobject>
+          </para>
+        </section> 
+        <section xml:id="bpmn.SendTask.XMLRepresentation">
+          <title>XML描述</title> 
+          <para>
+            XML元素表示如下:
+            <programlisting language="xml"><![CDATA[<bpmn2:sendTask id="SendTask_1" name="SendTask"/>]]></programlisting>
+          </para>
+        </section>
       </section>
       <section>
         <title>脚本任务</title> 
-        <para></para>
+        <section xml:id="bpmn.ScriptTask.Description">
+          <title>描述</title>
+          <para>
+            脚本任务(ScriptTask)是一个自动的活动，不需要用户手动执行，当一个流程执行到脚本任务的时候相应的脚本被会被执行，而不是像人工任务那样进行分配任务。但是脚本任务属于活动节点所以支持跳过策略、多实例、执行连接器。
+            对应的脚本语言用户可以基于eclipse插件进行编写。 
+          </para>
+        </section>
+        <section xml:id="bpmn.ScriptTask.GraphicalNotation">
+          <title>图形符号</title>
+          <para> 
+            脚本任务是图形为一个圆角矩形,有一个小的脚本图标在左上角。
+            <mediaobject ><imageobject>
+              <imagedata align="center" fileref="../image/script_task.PNG"/>
+            </imageobject></mediaobject>
+          </para>
+        </section>
+        
+        
+        <section xml:id="bpmn.ScriptTask.XMLRepresentation">
+          <title>XML描述</title> 
+          <para>
+            XML元素表示如下:
+            <programlisting language="xml"><![CDATA[
+<bpmn2:scriptTask id="ScriptTask_1" name="ScriptTask" scriptFormat="Groovy">
+  <bpmn2:script>System.out.print("测试脚本");</bpmn2:script>
+</bpmn2:scriptTask>
+]]></programlisting>
+          </para>
+          <para>
+            FoxBPM暂时支持只Groovy，开发人员也可以扩展自己的脚本语言,这里我们推荐使用Groovy做为默认的脚本引擎,关于Groovy请查看<link xlink:href="http://groovy.codehaus.org">Groovy官网</link>
+          </para> 
+          
+        </section>
+        
       </section>
       <section>
         <title>规则任务</title> 
-        <para></para>
+        <section xml:id="bpmn.BusinessRuleTask.Description">
+          <title>描述</title>
+          <para>
+            业务规则任务(BusinessRuleTask)用来执行一段业务规则脚本,这个节点FoxBPM引擎是采用连接器的方式去执行的。
+          </para>
+        </section>
+        <section xml:id="bpmn.BusinessRuleTask.GraphicalNotation">
+          <title>图形符号</title>
+          <para> 
+            服务任务是图形为一个圆角矩形,有一个小的表格图标在左上角。
+            <mediaobject ><imageobject>
+              <imagedata align="center"  fileref="../image/businessrule_task.PNG"/>
+            </imageobject></mediaobject>
+          </para>
+        </section>
+        
+        
+        <section xml:id="bpmn.BusinessRuleTask.XMLRepresentation">
+          <title>XML描述</title> 
+          <para>
+            XML元素表示如下:
+            <programlisting language="xml"><![CDATA[<bpmn2:businessRuleTask id="BusinessRuleTask_1" name="BusinessRuleTask"/>]]></programlisting>
+          </para>
+        </section>
       </section>
       <section>
         <title>接收任务</title> 
         <para></para>
+        <section xml:id="bpmn.ReceiveTask.Description">
+          <title>描述</title>
+          <para>
+            接收任务(ReceiveTask)当流程走到这个节点的时候,令牌(Token)会暂停在这个节点等待一个命令来激活它。
+            一般这个节点,运用在流程走到某个步骤之后停止,等待别人事情完成之后,接到通知,再继续进行下去的功能。
+          </para>
+        </section>
+        <section xml:id="bpmn.ReceiveTask.GraphicalNotation">
+          <title>图形符号</title>
+          <para> 
+            发送任务是图形为一个圆角矩形,有一个小的白色邮件图标在左上角。
+            <mediaobject ><imageobject>
+              <imagedata align="center"  fileref="../image/ReceiveTask.PNG"/>
+            </imageobject></mediaobject>
+          </para>
+        </section>
+        
+        
+        <section xml:id="bpmn.ReceiveTask.XMLRepresentation">
+          <title>XML描述</title>
+          
+          <para>
+            XML元素表示如下:
+            <programlisting language="xml"><![CDATA[<bpmn2:receiveTask id="ReceiveTask_1" name="ReceiveTask"/>]]></programlisting>
+          </para>
+        </section>
       </section>
-      <section>
-        <title>通用任务</title> 
-        <para></para>
-      </section>
+       
       <section>
         <title>服务任务</title> 
-        <para></para>
+        <section xml:id="bpmn.ServiceTask.Description">
+          <title>描述</title>
+          <para>
+            BPMN官方定义,服务任务(ServiceTask)专门被用来调用服务用的,FoxBPM将这里指的服务解释为连接器,服务任务可以通过连接器完成调用功能，也可以用来和SOA框架集成。
+            服务可以Web服务、也可以是自动化的应用程序
+          </para>
+        </section>
+        <section xml:id="bpmn.ServiceTask.GraphicalNotation">
+          <title>图形符号</title>
+          <para> 
+            服务任务是图形为一个圆角矩形,有一个小的齿轮图标在左上角。
+            <mediaobject ><imageobject>
+              <imagedata align="center"  fileref="../image/service_task.PNG"/>
+            </imageobject></mediaobject>
+          </para>
+        </section>
+        
+        
+        <section xml:id="bpmn.ServiceTask.XMLRepresentation">
+          <title>XML描述</title> 
+          <para>
+            XML元素表示如下:
+            <programlisting language="xml"><![CDATA[<bpmn2:serviceTask id="ServiceTask_1" name="ServiceTask"/>]]></programlisting>
+          </para>
+        </section>
       </section>
       <section>
         <title>手工任务</title> 
-        <para></para>
-      </section>
-      <section>
-        <title>公有子流程</title> 
-        <para></para>
-      </section>
+        <section xml:id="bpmn.ManualTask.Description">
+          <title>描述</title>
+          <para>
+            手工任务(ManualTask)这个节点,用于描述线下完成的工作,在FoxBPM引擎遇到这个节点会直接忽略过去,这个节点只具有图形的含义。
+          </para>
+        </section>
+        <section xml:id="bpmn.ManualTask.GraphicalNotation">
+          <title>图形符号</title>
+          <para> 
+            发送任务是图形为一个圆角矩形,有一个手的图标在左上角。
+            <mediaobject ><imageobject>
+              <imagedata align="center"  fileref="../image/manualTask.PNG"/>
+            </imageobject></mediaobject>
+          </para>
+        </section>
+        
+        
+        <section xml:id="bpmn.ManualTask.XMLRepresentation">
+          <title>XML描述</title> 
+          <para>
+            XML元素表示如下:
+            <programlisting language="xml"><![CDATA[<bpmn2:manualTask id="ManualTask_1" name="ManualTask"/>]]></programlisting>
+          </para>
+        </section>
+      </section> 
     </section>
+      
     <section>
       <title>网关</title>
       <para>
@@ -750,7 +1137,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para> 
             包容网关(ExclusiveGateway)图形为一个菱形里边有一个"o"圆圈。
             <mediaobject ><imageobject>
-              <imagedata align="center"   fileref="images/bpmn.InclusiveGateway.GraphicalNotation.1.png"/>
+              <imagedata align="center"   fileref="../image/inclusive_gateway.PNG"/>
             </imageobject></mediaobject>
           </para>
         </section>
@@ -822,7 +1209,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para>
             下面这样做法FoxBPM引擎是支持的,但是不推荐这么用。
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="images/bpmn.InclusiveGateway.GraphicalNotation.2.png"/>
+              <imagedata align="center"  fileref="../image/connect_condition.PNG"/>
             </imageobject></mediaobject>
           </para>
           
@@ -836,7 +1223,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
             排他网关(ExclusiveGateway)在分裂时，只会选择一个输出顺序流传递Token,会按照后面线条的排序号优先计算,第一个满足条件的会将Token传递过去,排他网关在聚合时，任何一个输入顺序流传入Token，网关都会向后传递，不会对Token进行同步。我们使用"x"在网关内部标示出这是一个排他网关，默认情况下，我们也可以忽略标示。
           </para>
           <para>
-            一般情况下,值只允许后面有一条线通过或者说是只允许有一个条件满足的时候使用排他网关。
+            一般情况下,只允许后面有一条线通过或者说是只允许有一个条件满足的时候使用排他网关。
           </para>
           <para>
             <emphasis>注意: </emphasis> 当排他网关(ExclusiveGateway)后面的线条都不满足的时候会抛出异常.
@@ -848,34 +1235,32 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para> 
             排他网关(ExclusiveGateway)图形为一个菱形里边有一个X。注意,一个网关如果内部是空的则默认为排他网关。
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="images/bpmn.ExclusiveGateway.GraphicalNotation.1.png"/>
+              <imagedata align="center"  fileref="../image/ExclusiveGateway.PNG"/>
             </imageobject></mediaobject>
           </para>
         </section>
         
         <section xml:id="bpmn.ExclusiveGateway.XMLRepresentation">
           <title>XML描述</title>
-          <para>下面描述的是一个排他网关,后面通过带条件的顺序流<link linkend="bpmn.SequenceFlow.ConditionalSequenceFlow">(Conditional SequenceFlow)</link>连接了三个Task。</para>
+          <para>下面描述的是一个排他网关,后面通过带条件的顺序流<link linkend="bpmn.SequenceFlow.Description">(Conditional SequenceFlow)</link>连接了三个Task。</para>
           <mediaobject ><imageobject>
-            <imagedata align="center"  fileref="images/bpmn.ExclusiveGateway.XMLRepresentation.1.png"/>
+            <imagedata align="center"  fileref="../image/bpmn.ExclusiveGateway.XMLRepresentation.1.png"/>
           </imageobject></mediaobject>
           
-          <para>
-            XML元素表示如下:
-            <programlisting language="xml"><![CDATA[<bpmn2:exclusiveGateway id="ExclusiveGateway_1" name="">
+          <para> XML元素表示如下: <programlisting language="xml"><![CDATA[<bpmn2:exclusiveGateway id="ExclusiveGateway_1" name="">
   <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
   <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
   <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
   <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
 </bpmn2:exclusiveGateway>
-<bpmn2:sequenceFlow id="SequenceFlow_3" name="${金额}==300" sourceRef="ExclusiveGateway_1" targetRef="Task_1">
-  <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${金额}==300</bpmn2:conditionExpression>
+<bpmn2:sequenceFlow id="SequenceFlow_3" name="${金额}==500" sourceRef="ExclusiveGateway_1" targetRef="Task_1">
+  <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${金额}==500</bpmn2:conditionExpression>
 </bpmn2:sequenceFlow>
-<bpmn2:sequenceFlow id="SequenceFlow_4" name="${金额}==200" sourceRef="ExclusiveGateway_1" targetRef="Task_2">
+<bpmn2:sequenceFlow id="SequenceFlow_4" name="${金额}==1000" sourceRef="ExclusiveGateway_1" targetRef="Task_2">
+  <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${金额}==1000</bpmn2:conditionExpression>
+</bpmn2:sequenceFlow>
+<bpmn2:sequenceFlow id="SequenceFlow_5" name="${金额}==200" sourceRef="ExclusiveGateway_1" targetRef="Task_3">
   <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${金额}==200</bpmn2:conditionExpression>
-</bpmn2:sequenceFlow>
-<bpmn2:sequenceFlow id="SequenceFlow_5" name="${金额}==100" sourceRef="ExclusiveGateway_1" targetRef="Task_3">
-  <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${金额}==100</bpmn2:conditionExpression>
 </bpmn2:sequenceFlow>]]></programlisting>
           </para>
         </section>
@@ -916,7 +1301,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para> 
             并行网关(ParallelGateway)图形为一个菱形里边有一个"+"。
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="images/bpmn.ParallelGateway.GraphicalNotation.png"/>
+              <imagedata align="center"  fileref="../image/ParallelGateway.PNG"/>
             </imageobject></mediaobject>
           </para>
         </section>
@@ -970,24 +1355,20 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
 </bpmn2:userTask>]]>
           </programlisting>
           </para>
-          
+           
           <para>
             FoxBPM的分支和合并要遵循同时分散,同时收回的原则,一次分散出来的子令牌必须在一个合并网关上合并。例如下面的例子：
-          </para>
-          
+          </para> 
           <para>
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="images/bpmn.ParallelGateway.GraphicalNotation.1.png"/>
+              <imagedata align="center"  fileref="../image/bpmn.ParallelGateway.GraphicalNotation.1.png"/>
             </imageobject></mediaobject>
-          </para>
-          
+          </para> 
           <para>
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="images/bpmn.ParallelGateway.GraphicalNotation.2.png"/>
+              <imagedata align="center"  fileref="../image/bpmn.ParallelGateway.GraphicalNotation.2.png"/>
             </imageobject></mediaobject>
-          </para>
-          
-          
+          </para> 
         </section>
       </section>
     </section>
@@ -995,7 +1376,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
       <title>线条</title>
       <section>
         <title>顺序流</title> 
-        <section xml:id="bpmn.Description">
+        <section xml:id="bpmn.SequenceFlow.Description">
           <title>描述</title>
           <para>
             顺序流是流程中两个元素之间的连接，令牌通过顺序流流转到下面的节点上。
@@ -1031,15 +1412,15 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
       </section>
     </section>
     <section>
-      <title>图像小部件</title>
-      <para>图像小部件对流程而言起到装饰的作用，不参与也不影响流程的运转。后续版本中，泳道会参与任务的分配。</para>
+      <title>图形元素</title>
+      <para>图形元素对流程而言起到装饰的作用，用来做交互式流程和布局用，不参与也不影响流程的运转。FoxBPM目前不支持交互式流程图（会在后面版本支持），所以目前Lane只是作为布局工具使用。后续版本中，泳道会参与任务的分配。</para>
       <section>
         <title>数据对象</title> 
-        <para></para>
+        <para>用于描述任务活动的数据对象</para>
       </section>
       <section>
         <title>组</title> 
-        <para></para>
+        <para>用于将流程元素进行简单的分组</para>
       </section>
       <section>
         <title>数据输入</title> 
@@ -1055,1797 +1436,9 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
       </section>
       <section>
         <title>泳道</title> 
-        <para></para>
+        <para>属于流程元素分组的一种，可以将流程按照角色部门业务对象等进行分组，泳道可以更加清晰地展示各组之间的关系</para>
       </section>
     </section>
-  </section>
-  
-  
-  
-  <section xml:id="bpmn.process">
-    <title>Process</title>
-    <para>在FoxBPM引擎中,一个流程定义实际指的就是一个Process元素,FoxBPM现在并不支持多Process的交互式流程图,设计完流程定义之后需要发布到数据库中才能供引擎使用,FoxBPM支持多流程版本功能,新启动的流程自动走新的版本,老的流程继续跑在老的版本上,相互不会产生影响。</para>
-    <para>
-      <emphasis role="bold">XML定义</emphasis>:      
-      <programlisting language="xml"><![CDATA[<bpmn2:process id="process_demotest" 
-  FoxBPM:verification="true" 
-  FoxBPM:dbid="process_demotest:1:73189bfc-59cf-4ecf-b425-051cff44de3a" 
-  name="测试流程" FoxBPM:category="测试分类" >
-    ........
-</bpmn2:process>]]></programlisting>
-    </para>
-    
-    
-    <itemizedlist>
-      
-      <listitem>
-    <para>
-      <emphasis role="bold">流程编号(id)</emphasis>:也叫流程Key 用来标识一个流程,但是一个流程里会有多个版本,所以通过Key找流程,不能定位到唯一的一个。 
-    </para>
-        </listitem>
-        <listitem>
-    <para>
-      <emphasis role="bold">流程唯一编号(dbid)</emphasis>:流程唯一编号,由流程Key、版本号、GIUD组合而成的唯一编号。   
-    </para>
-        </listitem>
-          <listitem>
-    <para>
-      <emphasis role="bold">流程名称(name)</emphasis>:流程的名称。
-    </para>
-          </listitem>
-              <listitem>
-    <para>
-      <emphasis role="bold">分类(category)</emphasis>:用于流程定义的归类。
-    </para>
-              </listitem>
-      </itemizedlist>
-        
-    <para>
-      <emphasis role="bold">Java代码</emphasis>:  
-      <programlisting language="java"><![CDATA[
-//查询所有流程定义
-List<ProcessDefinitionBehavior> processDefinitions=modelService.createProcessDefinitionQuery().list();
-
-//获取其中的一个流程定义
-ProcessDefinitionBehavior processDefinition=processDefinitions.get(0);
-
-//流程唯一编号
-processDefinition.getProcessDefinitionId();
-
-//流程编号
-processDefinition.getProcessDefinitionKey();
-
-//流程名称
-processDefinition.getName();
-
-//版本号
-processDefinition.getVersion();
-
-//流程分类
-processDefinition.getCategory();
-
-//流程定义里的所有元素
-processDefinition.getFlowElements();]]></programlisting>
-     
-      
-    </para>
-    
-    <para>
-      
-      <emphasis role="bold">流程定义设计器配置</emphasis>:
-      <itemizedlist> 
-        <listitem>
-          <para>
-            <emphasis role="bold">通用</emphasis>: 通用配置包括流程名称、任务分类、任务主题、操作表单、浏览表单、描述。需要注意的是活动节点也可以配置任务主题和表单，活动节点是针对每个任务配置的。如果活动节点没有配置任务主题和表单，那么引擎在创建任务时就从流程定义中获取任务主题和表单。
-            <mediaobject ><imageobject>
-              <imagedata contentwidth="800" align="center" fileref="../image/process_general.PNG"/>
-            </imageobject></mediaobject>
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            <emphasis role="bold">启动人</emphasis>:顾名思义指可以启动该流程的人员，设计器创建流程时会默认配置成所有人。用户获取流程定义集合时，会根据该配置进行过滤。
-            <mediaobject ><imageobject>
-              <imagedata contentwidth="800" align="center" fileref="../image/process_initiator.PNG"/>
-            </imageobject></mediaobject>
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            <emphasis role="bold">数据变量</emphasis>:流程运行过程中所有用到的变量都可以在此配置，包括常用数据类型和集合，需要注意的是FoxBPM采用Groovy引擎执行表达式，Groovy引擎会根据默认值来确认变量的类型。常用业务类型包括数据库变量和自定义变量。变量支持持久化。
-            <mediaobject ><imageobject>
-              <imagedata contentwidth="800" align="center" fileref="../image/process_datavariable.PNG" contentdepth="353"/>
-            </imageobject></mediaobject>         
-          </para>
-        </listitem>
-        <listitem>
-          <para>
-            <emphasis role="bold">连接器</emphasis>:连接器是流程在运行中和外部系统交互的一种方式、流程定义里面配置的连接器会在该流程启动和结束时执行。
-            <mediaobject ><imageobject>
-              <imagedata contentwidth="800" align="center" fileref="../image/bpmn.info.2.png"/>
-            </imageobject></mediaobject>
-          </para>
-        </listitem> 
-      </itemizedlist>
-      <mediaobject ><imageobject>
-        <imagedata contentwidth="800"  align="center" fileref="images/bpmn.process.1.png"/>
-      </imageobject></mediaobject>
-      
-      
-    </para>
-    
-    <para xml:id="bpmn.process.subject">
-      <emphasis role="bold">流程任务主题</emphasis>:
-    </para>
-    <para>
-      流程任务主题是用来标识一个流程实例的说明,不同于人工任务(UserTask)的任务主题,流程的任务主题是用来显示在流程实例上的实例主题,一般情况下我们在流程中只需要设置这个流程任务
-      主题就可以了,一但设置了流程任务主题,流程中的所有人工任务(UserTask)的任务主题在没有配置的情况下就会默认从这里取。
-    </para>
-    <para>
-      <emphasis role="bold">XML描述</emphasis>: <programlisting language="xml"><![CDATA[
-<bpmn2:process id="process_demotest" 
-foxbpm:verification="true" 
-foxbpm:dbid="process_demotest:1:e9701a99-3814-48d4-b7f5-a64144c439a1" 
-foxbpm:category="测试分类" 
-name="测试流程">
-  <bpmn2:extensionElements>
-    <foxbpm:taskSubject>
-        <foxbpm:expression xsi:type="foxbpm:Expression" >"编号为: "+${编号}+" 的测试流程任务主题"</foxbpm:expression>
-    </foxbpm:taskSubject>
-  </bpmn2:extensionElements>
-</bpmn2:process>]]></programlisting>
-    </para>
-    <para> 可以看到上面的 foxbpm:taskSubject 是一个扩展元素,它存放在 bpmn2:extensionElements 中,这个元素是扩展元素的根元素,更多请查看
-        <link linkend="bpmn.extensions">扩展元素</link>。 </para>
-    <para>
-      <emphasis role="bold">Java代码</emphasis>: <programlisting language="java"><![CDATA[//查询所有流程实例
-List<ProcessInstance> processInstances=runtimeService.createProcessInstanceQuery().list();
-//取第一个流程实例
-ProcessInstance processInstance=processInstances.get(0);
-//获取流程实例主题
-processInstance.getSubject();]]></programlisting>
-    </para>
-    
-    
-    <para xml:id="bpmn.process.defaultForm">
-      <emphasis role="bold">默认表单</emphasis>:
-    </para>
-    <para>
-      默认表单是用来查看流程实例的浏览表单,FoxBPM引擎的一条流程记录会有一个流程实例和多个任务组成,当UserTask的操作表单没有配置的时候,会
-      自动去流程实例默认表单去寻找。当我们想查看一个流程实例的数据的时候一般都是以这个默认表单打开。
-    </para>
-    <para>
-      <emphasis role="bold">XML描述</emphasis>: <programlisting language="xml"><![CDATA[
-<bpmn2:process id="process_demotest" 
-foxbpm:verification="true" 
-foxbpm:dbid="process_demotest:1:e9701a99-3814-48d4-b7f5-a64144c439a1" 
-foxbpm:category="测试分类" 
-name="测试流程">
-  <bpmn2:extensionElements>
-    <foxbpm:formUri>
-        <foxbpm:expression xsi:type="foxbpm:Expression" >"view.html"</foxbpm:expression>
-    </foxbpm:formUri>
-  </bpmn2:extensionElements>
-</bpmn2:process>]]></programlisting>
-    </para>
-    <para>
-      <emphasis role="bold">Java代码</emphasis>: <programlisting language="java"><![CDATA[//查询所有流程实例
-List<ProcessInstance> processInstances=runtimeService.createProcessInstanceQuery().list();
-//取第一个流程实例
-ProcessInstance processInstance=processInstances.get(0);
-//获取默认表单
-processInstance.getProcessDefinition().getDefaultFormUri();]]></programlisting>
-    </para>
-    <para>
-      <emphasis role="bold">其他内容请参见相应章节</emphasis>:
-    </para>
-    <para>
-      
-      <link linkend="bpmn.ExtensionElements.dataVariable">数据变量</link>
-      <link linkend="bpmn.ExtensionElements.connector">连接器</link>
-      <link linkend="bpmn.ExtensionElements.connector">国际化</link>
-    </para>
-  </section>
-  
- 
-  
-  <section xml:id="bpmn.Gateways">
-    <title>Gateways</title>
-    <para>
-      　　网关是用来控制流程分支执行的(令牌的分支执行)。网关能够合并或分散令牌。网关是图形为一个菱形,内部为一个图标。这个图标显示了网关的类型。
-    </para>
-    <para>
-    <mediaobject ><imageobject>
-      <imagedata align="center"  fileref="images/bpmn.Gateways.1.png"/>
-    </imageobject></mediaobject>
-    </para>
-    <section xml:id="bpmn.ExclusiveGateway">
-      <title>Exclusive Gateway</title>
-      
-      
-      
-      <section xml:id="bpmn.ExclusiveGateway.Description">
-        <title>描述</title>
-        <para>
-          排他网关(ExclusiveGateway)在分裂时，只会选择一个输出顺序流传递Token,会按照后面线条的排序号优先计算,第一个满足条件的会将Token传递过去,排他网关在聚合时，任何一个输入顺序流传入Token，网关都会向后传递，不会对Token进行同步。我们使用"x"在网关内部标示出这是一个排他网关，默认情况下，我们也可以忽略标示。
-        </para>
-        <para>
-          一般情况下,值只允许后面有一条线通过或者说是只允许有一个条件满足的时候使用排他网关。
-        </para>
-        <para>
-          <emphasis>注意: </emphasis> 当排他网关(ExclusiveGateway)后面的线条都不满足的时候会抛出异常.
-        </para>
-      </section>
-      
-      <section xml:id="bpmn.ExclusiveGateway.GraphicalNotation">
-        <title>图形符号</title>
-        <para> 
-          排他网关(ExclusiveGateway)图形为一个菱形里边有一个X。注意,一个网关如果内部是空的则默认为排他网关。
-          <mediaobject ><imageobject>
-            <imagedata align="center"  fileref="images/bpmn.ExclusiveGateway.GraphicalNotation.1.png"/>
-          </imageobject></mediaobject>
-        </para>
-      </section>
-      
-      <section xml:id="bpmn.ExclusiveGateway.XMLRepresentation">
-        <title>XML描述</title>
-        <para>下面描述的是一个排他网关,后面通过带条件的顺序流<link linkend="bpmn.SequenceFlow.ConditionalSequenceFlow">(Conditional SequenceFlow)</link>连接了三个Task。</para>
-        <mediaobject ><imageobject>
-          <imagedata align="center"  fileref="images/bpmn.ExclusiveGateway.XMLRepresentation.1.png"/>
-        </imageobject></mediaobject>
-       
-        <para>
-          XML元素表示如下:
-          <programlisting language="xml"><![CDATA[<bpmn2:exclusiveGateway id="ExclusiveGateway_1" name="">
-  <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
-  <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
-  <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
-  <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
-</bpmn2:exclusiveGateway>
-<bpmn2:sequenceFlow id="SequenceFlow_3" name="${金额}==300" sourceRef="ExclusiveGateway_1" targetRef="Task_1">
-  <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${金额}==300</bpmn2:conditionExpression>
-</bpmn2:sequenceFlow>
-<bpmn2:sequenceFlow id="SequenceFlow_4" name="${金额}==200" sourceRef="ExclusiveGateway_1" targetRef="Task_2">
-  <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${金额}==200</bpmn2:conditionExpression>
-</bpmn2:sequenceFlow>
-<bpmn2:sequenceFlow id="SequenceFlow_5" name="${金额}==100" sourceRef="ExclusiveGateway_1" targetRef="Task_3">
-  <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression">${金额}==100</bpmn2:conditionExpression>
-</bpmn2:sequenceFlow>]]></programlisting>
-        </para>
-      </section>
-      
-      <section xml:id="bpmn.ExclusiveGateway.designer">
-        
-        <title>设计器配置</title>
-        <para> 
-          <mediaobject ><imageobject>
-            <imagedata align="center"  fileref="images/bpmn.ExclusiveGateway.designer.1.png"/>
-          </imageobject></mediaobject>
-        </para>
-        
-      </section>
-      
-    </section>
-    
-    <section xml:id="bpmn.ParallelGateway">
-      <title>Parallel Gateway</title>
-      <section xml:id="bpmn.ParallelGateway.Description">
-        <title>描述</title>
-        <para>
-          并行网关(ParallelGateway)用于将流程产生多个并行的分支,也可以将多个并行的分支合并回一个主线。
-
-          <itemizedlist>
-            <listitem>
-              <para>
-                <emphasis role="bold">分散</emphasis>(Diverging):  
-                当并行网关处于分散(Diverging)状态的时候,流程令牌(token)经过的时候,会被分散出和网关输出顺序流相同数据量的分支,并每个分支沿着对应的顺序流向下执行。
-              </para>
-            </listitem>
-            <listitem>
-              <para>
-                <emphasis role="bold">合并</emphasis>(Converging): 
-                当并行网关处于合并(Converging)状态的时候,当分支令牌经过的时候,分支令牌会停留在网关上,等待其他的分支一起走到该网关,然后合并为一个继续向下。
-              </para>
-            </listitem>
-          </itemizedlist>
-        </para>
-        <para>
-          分散、合并原理解释: 令牌 token1 走到 ParallelGateway1(Diverging) 的时候,token1会生成两个子令牌 token1.1 和 token1.2,两个子令牌沿着顺序流向下面的节点运行,token1父令牌
-          停留在ParallelGateway1上面,当token1.1到达 ParallelGateway2(Converging) 的时候,会停在上面等待 它的"兄弟" token1.2,当token1.2到达ParallelGateway2(Converging)的时候,
-          两个子令牌都被结束,同时激活父令牌token1,将token1拉到ParallelGateway2,沿着后面的线条向下运行。
-        </para>
-        <para>
-          <emphasis>注意: </emphasis> 并行网关处于分散的时候,会忽略掉后面顺序流的条件,直接向下执行,这是并行网关和包容网关最大的区别。
-        </para>
-      </section>
-      
-      <section xml:id="bpmn.ParallelGateway.GraphicalNotation">
-        <title>图形符号</title>
-        <para> 
-          并行网关(ParallelGateway)图形为一个菱形里边有一个"+"。
-          <mediaobject ><imageobject>
-            <imagedata align="center"  fileref="images/bpmn.ParallelGateway.GraphicalNotation.png"/>
-          </imageobject></mediaobject>
-        </para>
-      </section>
-      
-      <section xml:id="bpmn.ParallelGateway.XMLRepresentation">
-        <title>XML描述</title>
-        <para>
-          XML元素表示如下:
-          <programlisting language="xml"><![CDATA[ <bpmn2:parallelGateway id="ParallelGateway_1" name=""></bpmn2:parallelGateway>]]></programlisting>
-        </para>
-        <para>
-          下面是一个合并、分散例子的XML表示:
-          <programlisting language="xml"><![CDATA[<bpmn2:userTask id="UserTask_7" name="提交">
-  <bpmn2:outgoing>SequenceFlow_12</bpmn2:outgoing>
-</bpmn2:userTask>
-
-<bpmn2:sequenceFlow id="SequenceFlow_12" name="" sourceRef="UserTask_7" targetRef="ParallelGateway_1"/>
-
-<bpmn2:parallelGateway id="ParallelGateway_1" name="" gatewayDirection="Diverging">
-  <bpmn2:incoming>SequenceFlow_12</bpmn2:incoming>
-  <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
-  <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
-</bpmn2:parallelGateway>
-
-<bpmn2:sequenceFlow id="SequenceFlow_1" name="" sourceRef="ParallelGateway_1" targetRef="UserTask_2"/>
-<bpmn2:sequenceFlow id="SequenceFlow_2" name="" sourceRef="ParallelGateway_1" targetRef="UserTask_4"/>
-
-<bpmn2:userTask id="UserTask_2" name="并行审批1">
-  <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
-  <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
-</bpmn2:userTask>
-
-<bpmn2:userTask id="UserTask_4" name="并行审批2">
-  <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
-  <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
-</bpmn2:userTask>
-    
-<bpmn2:parallelGateway id="ParallelGateway_2" name="" gatewayDirection="Converging">
-  <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
-  <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
-  <bpmn2:outgoing>SequenceFlow_13</bpmn2:outgoing>
-</bpmn2:parallelGateway>
-   
-<bpmn2:sequenceFlow id="SequenceFlow_7" name="" sourceRef="UserTask_2" targetRef="ParallelGateway_2"/>
-<bpmn2:sequenceFlow id="SequenceFlow_8" name="" sourceRef="UserTask_4" targetRef="ParallelGateway_2"/>
-
-<bpmn2:sequenceFlow id="SequenceFlow_13" name="" sourceRef="ParallelGateway_2" targetRef="UserTask_8"/>
-
-<bpmn2:userTask id="UserTask_8" name="最终审批">   
-  <bpmn2:incoming>SequenceFlow_13</bpmn2:incoming>
-</bpmn2:userTask>]]>
-          </programlisting>
-        </para>
-        
-        <para>
-          FoxBPM的分支和合并要遵循同时分散,同时收回的原则,一次分散出来的子令牌必须在一个合并网关上合并。例如下面的例子：
-        </para>
-        
-        <para>
-          <mediaobject ><imageobject>
-            <imagedata align="center"  fileref="images/bpmn.ParallelGateway.GraphicalNotation.1.png"/>
-          </imageobject></mediaobject>
-        </para>
-        
-        <para>
-          <mediaobject ><imageobject>
-            <imagedata align="center"  fileref="images/bpmn.ParallelGateway.GraphicalNotation.2.png"/>
-          </imageobject></mediaobject>
-        </para>
-        
-        
-      </section>
-      
-      <section xml:id="bpmn.ParallelGateway.designer">
-        
-        <title>设计器配置</title>
-        <para> 
-          <mediaobject ><imageobject>
-            <imagedata align="center"  fileref="images/bpmn.ParallelGateway.GraphicalNotation.3.png"/>
-          </imageobject></mediaobject>
-        </para>
-        
-      </section>
-    </section>
-    
-    <section xml:id="bpmn.InclusiveGateway">
-      <title>InclusiveGateway</title>
-      <section xml:id="bpmn.InclusiveGateway.Description">
-        <title>描述</title>
-        <para>
-          包容网关(InclusiveGateway)更像是排他网关和并行网关的结合,它会验证后面的每条顺序流,如果后面有多条顺序流条件都满足则产生并发,如只有一个
-          满足,则令牌正常往下流转不产生分支,如没有一条顺序流满足则抛出异常。
-        </para>
-      </section>
-      
-      <section xml:id="bpmn.InclusiveGateway.GraphicalNotation">
-        <title>图形符号</title>
-        <para> 
-          包容网关(ExclusiveGateway)图形为一个菱形里边有一个"o"圆圈。
-          <mediaobject ><imageobject>
-            <imagedata align="center"   fileref="images/bpmn.InclusiveGateway.GraphicalNotation.1.png"/>
-          </imageobject></mediaobject>
-        </para>
-      </section>
-      
-      <section xml:id="bpmn.InclusiveGateway.XMLRepresentation">
-        <title>XML描述</title>
-     
-        <para>
-          XML元素表示如下:
-          <programlisting language="xml"><![CDATA[<bpmn2:inclusiveGateway id="InclusiveGateway_1"></bpmn2:inclusiveGateway>]]></programlisting>
-        </para>
-        
-        <para>
-          下面是一个使用包容网关和平行网关例子的XML表示:
-          <programlisting language="xml"><![CDATA[
-<bpmn2:inclusiveGateway id="InclusiveGateway_1" name="">
-  <bpmn2:incoming>SequenceFlow_32</bpmn2:incoming>
-  <bpmn2:outgoing>SequenceFlow_26</bpmn2:outgoing>
-  <bpmn2:outgoing>SequenceFlow_27</bpmn2:outgoing>
-</bpmn2:inclusiveGateway>
-
-<bpmn2:userTask id="UserTask_16" name="UserTask_2">
-  <bpmn2:incoming>SequenceFlow_26</bpmn2:incoming>
-  <bpmn2:outgoing>SequenceFlow_28</bpmn2:outgoing>
-</bpmn2:userTask>
-
-<bpmn2:userTask id="UserTask_17" name="UserTask_3">
-  <bpmn2:incoming>SequenceFlow_27</bpmn2:incoming>
-  <bpmn2:outgoing>SequenceFlow_29</bpmn2:outgoing>
-</bpmn2:userTask>
-
-<bpmn2:parallelGateway id="ParallelGateway_5" name="" gatewayDirection="Converging">
-  <bpmn2:incoming>SequenceFlow_28</bpmn2:incoming>
-  <bpmn2:incoming>SequenceFlow_29</bpmn2:incoming>
-  <bpmn2:outgoing>SequenceFlow_31</bpmn2:outgoing>
-</bpmn2:parallelGateway>
-
-<bpmn2:sequenceFlow id="SequenceFlow_26" name="${金额>300}" sourceRef="InclusiveGateway_1" targetRef="UserTask_16">
-  <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="${金额>300}">${金额>300}</bpmn2:conditionExpression>
-</bpmn2:sequenceFlow>
-
-<bpmn2:sequenceFlow id="SequenceFlow_27" name="${金额>400}" sourceRef="InclusiveGateway_1" targetRef="UserTask_17">
-  <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="${金额>400}">${金额>400}</bpmn2:conditionExpression>
-</bpmn2:sequenceFlow>
-    
-<bpmn2:sequenceFlow id="SequenceFlow_28" name="" sourceRef="UserTask_16" targetRef="ParallelGateway_5"/>
-
-<bpmn2:sequenceFlow id="SequenceFlow_29" name="" sourceRef="UserTask_17" targetRef="ParallelGateway_5"/>
-
-<bpmn2:userTask id="UserTask_19" name="UserTask_1">
-  <bpmn2:outgoing>SequenceFlow_32</bpmn2:outgoing>
-</bpmn2:userTask>
-
-<bpmn2:userTask id="UserTask_20" name="UserTask_4">
-  <bpmn2:incoming>SequenceFlow_31</bpmn2:incoming>
-</bpmn2:userTask>
-
-<bpmn2:sequenceFlow id="SequenceFlow_31" name="" sourceRef="ParallelGateway_5" targetRef="UserTask_20"/>
-
-<bpmn2:sequenceFlow id="SequenceFlow_32" name="" sourceRef="UserTask_19" targetRef="InclusiveGateway_1"/>]]></programlisting>
-        </para>
-        <para>
-          上面的例子使用包容网关和并行网关来完成操作,当包容网关后面有多个分支的时候,并行网关负责合并,如果包容网关后面没有产生并发的话,那么并行网关将忽略不记。
-        </para>
-        
-        <para>
-          <emphasis>注意: </emphasis> 所有非网关的FlowNode节点,后面都默认实现了包容网关的功能,FoxBPM允许开发人员不使用网关来控制顺序流走向,但这样做是不推荐的,除非万不得已。
-        </para>
-        <para>
-          下面这样做法FoxBPM引擎是支持的,但是不推荐这么用。
-          <mediaobject ><imageobject>
-            <imagedata align="center"  fileref="images/bpmn.InclusiveGateway.GraphicalNotation.2.png"/>
-          </imageobject></mediaobject>
-        </para>
-        
-      </section>
-      
-      <section xml:id="bpmn.InclusiveGateway.designer">
-        
-        <title>设计器配置</title>
-        <para> 
-          <mediaobject ><imageobject>
-            <imagedata align="center"  fileref="images/bpmn.InclusiveGateway.designer.png"/>
-          </imageobject></mediaobject>
-        </para>
-        
-      </section>
-    </section>
-    
-
-  </section>
-  
-  
-  <section xml:id="bpmn.Tasks">
-    <title>Tasks</title>
-    <para>任务是一个流程里面最基本的活动，一个任务在使用的过程中不能再被拆分到更细的水平去执行。一般情况下，任务是被最终用户或应用程序执行的。</para>
-    <para>
-      
-      <emphasis role="bold">BPMN2.0 Task类型元素图:</emphasis>
-      <mediaobject ><imageobject>
-        <imagedata  align="center"   fileref="images/bpmn.Tasks.1.png"/>
-      </imageobject></mediaobject>
-    </para>
-    
-    <section xml:id="bpmn.UserTask">
-      <title>User Task</title>
-      
-      <section xml:id="bpmn.UserTask.Description">
-        <title>描述</title>
-        <para>
-          人工任务(UserTask)是用于模拟人工工作的，通常是需要被人来操作完成的。当执行到一个人工任务时，这个任务列表中的用户或者组都会被分配到此任务。 
-        </para>
-      </section>
-      <section xml:id="bpmn.UserTask.GraphicalNotation">
-        <title>图形符号</title>
-        <para> 
-          一个人工任务是图形为一个圆角矩形,有一个小的用户图标在左上角。
-          <mediaobject ><imageobject>
-            <imagedata align="center"   fileref="images/bpmn.UserTask.GraphicalNotation.png"/>
-          </imageobject></mediaobject>
-        </para>
-      </section>
-      
-      
-      <section xml:id="bpmn.UserTask.XMLRepresentation">
-        <title>XML描述</title>
-        
-        <para>
-          XML元素表示如下:
-          <programlisting language="xml"><![CDATA[<bpmn2:userTask id="UserTask_1" name="人工任务"/>]]></programlisting>
-        </para>
-       
-      </section>
-      
-      
-      <section xml:id="bpmn.UserTask.assignment">
-        <title>任务分配</title>
-        
-        <para>
-          人工任务需要指派给一个用户或者是一个组(部门、角色),任务类型也被分为两大种:独占、共享，
-          独占的任务直接指派给一个用户,共享的任务可以指定给多个用户、部门、角色等,共享任务默认需要先领取才能处理。
-        </para>
-        
-        <para>
-          BPMN2.0 标准中定义的UserTask节点的功能过于简单,没有办法描述复杂人工任务,所以FoxBPM引擎对UserTask节点做了很多的扩展。
-        </para>
-        
-        <para> 下面这段XML表示,UserTask_1这个人工节点的任务处理者为"所有人",任务的分配策略为共享方式。 <programlisting language="xml"><![CDATA[<bpmn2:userTask id="UserTask_1" name="User Task 1">
-  <bpmn2:extensionElements>
-    <FoxBPM:assignPolicyType id="potentialOwner"/>
-  </bpmn2:extensionElements>
-  <bpmn2:potentialOwner id="PotentialOwner_1" FoxBPM:resourceType="user" FoxBPM:includeExclusion="INCLUDE" 
-    FoxBPM:isContainsSub="false" name="所有人">
-    <bpmn2:resourceAssignmentExpression id="ResourceAssignmentExpression_1">
-      <bpmn2:formalExpression id="所有人">"quot;FoxBPM_allusers"</bpmn2:formalExpression>
-    </bpmn2:resourceAssignmentExpression>
-  </bpmn2:potentialOwner>
-</bpmn2:userTask>]]></programlisting>
-        </para>
-        
-        <para> 
-          对应的设计器图形表示:
-          <mediaobject ><imageobject>
-            <imagedata align="center"   fileref="images/bpmn.UserTask.assignment.1.png"/>
-          </imageobject></mediaobject>
-        </para>
-        
-        <para>
-          分配策略(assignPolicyType):
-        </para>
-        <para>
-          分配策略用来决定任务将以什么形式被分配或是怎么分配,而完成人选择,则决定了任务将分配给谁。
-          FoxBPM自带了一些分配策略,开发人员还可以自己扩展出自己的分配策略,分配策略的XML配置在FoxBPMConfig.xml中,详见 <link linkend="config.assignPolicyConfig">分配策略</link>
-          <programlisting language="xml"><![CDATA[
-<assignPolicy id="potentialOwner" name="共享   (默认策略)" 
-  classImpl="com.founder.fix.FoxBPM.expand.assignment.PotentialOwnerAssignmentImpl" 
-  remarks="系统默认策略,需要接收任务才能处理,不能删除。"/>
-<assignPolicy id="humanPerformer" name="独占   (默认策略)" 
-  classImpl="com.founder.fix.FoxBPM.expand.assignment.HumanPerformerAssignmentImpl" 
-  remarks="系统默认策略,只能分配给一个处理者,不能删除。"/>
-<assignPolicy id="potentialOwner_One" name="共享   (当只有一人时采用独占策略)" 
-  classImpl="com.founder.fix.FoxBPM.expand.assignment.PotentialOwnerOneAssignmentImpl" 
-  remarks="当任务的处理者只有一个人的时候自动使用独占策略,多人的时候使用共享策略。"/>]]></programlisting>
-          
-        </para>
-        
-        <para>
-          任务处理者:
-        </para>
-        <para>
-          <emphasis role="bold">resourceType</emphasis>:分配资源的类型(用户、部门、角色 或者任意的组) 。
-        </para>
-        <para>
-          <emphasis role="bold">includeExclusion</emphasis>:是包含这个资源还是排除它。 注意:这个功能存在一个已知bug,不推荐使用。
-        </para>
-        <para>
-          <emphasis role="bold">isContainsSub</emphasis>:是否包含子集,在有上下级关系的组里才会起作用。
-        </para>
-        <para>
-          <emphasis role="bold">resourceAssignmentExpression-formalExpression</emphasis>:人员或者组信息的表达式,
-          可以是"人员编号"、也可以 return "人员编号"、或者 "人员1,人员2,人员3"、或者是个 List(String) 、也可以直接在这里调用java代码返回人员信息。
-          <mediaobject ><imageobject>
-            <imagedata align="center"   fileref="images/bpmn.UserTask.assignment.2.png"/>
-          </imageobject></mediaobject>
-        </para>
-        <para>
-          例如:
-        </para>
-        <para>
-          <programlisting language="java"><![CDATA["admin"]]></programlisting>
-          <programlisting language="java"><![CDATA[return "admin";]]></programlisting>
-          <programlisting language="java"><![CDATA["admin,kenshin,char"]]></programlisting>
-          可以调用任意的java代码,只要保证返回值的格式正确性,流程引擎就能接收。注意：对于java代码请注意导入import。
-          <programlisting language="java"><![CDATA[import com.founder.fix.FoxBPM.core.impl.Context;
-import com.founder.fix.FoxBPM.core.impl.identity.GroupTo;
-
-groupTos=Context.getProcessEngineConfiguration().getUserDefinition().getUserInGroups("用户编号");
-for (GroupTo groupTo : groupTos) {
-	//默认取出用户的第一个所在部门
-	if(groupTo.getGroupType().equals("org")){
-		return processInfo.findUserDeptAndRole(groupTo.getGroupId(),"角色编号");;
-	}
-}
-return null;]]></programlisting>
-          
-        </para>
-      
-      </section>
-      
-      
-      <section xml:id="bpmn.UserTask.commonConfig">
-        <title>常规配置</title>
-        <para>
-          <emphasis role="bold">编号(id)</emphasis>:
-          一个bpmn文件中的任意一个元素都拥有不同的编号,通过这个编号可以定位到唯一的一个节点。
-        </para>
-        <para>
-          <emphasis role="bold">名称(name)</emphasis>:
-          用来在节点上显示的名称。
-        </para>
-        <para>
-          <emphasis role="bold">操作表单(formUri)</emphasis>:
-          用来进行任务处理的表单地址,可以从数据变量中的表单变量中选择,也可以返回一段字符串地址"add.html"。
-        </para>
-        <para>
-          <emphasis role="bold">浏览表单(formUriView)</emphasis>:
-          用来在查看已经处理完毕的任务的表单。
-        </para>
-        <para>
-          <emphasis role="bold">优先级(taskPriority)</emphasis>:
-          用来标识任务的紧急程度,接收的是int类型。
-        </para>
-        <para>  
-          <emphasis role="bold">XML定义</emphasis>:
-          <programlisting language="xml"><![CDATA[<bpmn2:userTask id="UserTask_1" FoxBPM:taskType="FoxBPMTASK" name="人工任务">
-  <bpmn2:extensionElements>
-    <FoxBPM:formUri>
-      <FoxBPM:expression xsi:type="FoxBPM:Expression" >"add.html"</FoxBPM:expression>
-    </FoxBPM:formUri>
-    <FoxBPM:formUriView>
-      <FoxBPM:expression xsi:type="FoxBPM:Expression" >"view.html"</FoxBPM:expression>
-    </FoxBPM:formUriView>
-    <FoxBPM:taskPriority>
-      <FoxBPM:expression xsi:type="FoxBPM:Expression" >50</FoxBPM:expression>
-    </FoxBPM:taskPriority>
-  </bpmn2:extensionElements>
-</bpmn2:userTask>]]></programlisting>
-          
-        </para>
-        
-        <para>  
-          <emphasis role="bold">Java代码</emphasis>:有了表单地址和BizKey我们就可以打开相应的表单。
-          <programlisting language="java"><![CDATA[//创建任务查询
-TaskQuery taskQuery = taskService.createTaskQuery();
-//查询用户的任务,取第一个任务。
-TaskInstance taskInstance=taskQuery.taskAssignee("").list().get(0);
-//任务编号
-taskInstance.getId();
-//任务标题
-taskInstance.getDescription();
-//操作表单
-taskInstance.getFormUri();
-//浏览表单
-taskInstance.getFormUriView();
-//任务所在节点编号
-taskInstance.getNodeId();
-//任务所在节点名称
-taskInstance.getNodeName();
-//流程业务关联值
-taskInstance.getBizKey();
-//优先级
-taskInstance.getPriority();]]></programlisting>
-          
-        </para>
-      </section>
-      <section xml:id="bpmn.UserTask.taskInfo">
-        <title>任务信息</title>
-        
-       
-        <para> <emphasis role="bold">动态主题</emphasis>:</para>
-        <para>用来显示在代办任务上任务的显示主题,如果这里不填写的话,将自动从流程实例主题获取。<link linkend="bpmn.process.subject">流程任务主题</link></para>
-        <para> <emphasis role="bold">任务类型</emphasis>:</para>
-        <para>用来区别不同的任务分类,例如,通知任务、提醒任务等等,任务类型默认提供3种,FoxBPMTASK 是默认的任务类型,其他两种用户可以自由选择。通过任务类型的区分之后,就
-        可以在任务查询的时候通过指定的类型来分类任务。</para>
-        <para> <emphasis>注意</emphasis>: 任务类型现在只有写死的三种,在以后的版本中我们会对这里做出扩展能让开发人员自定义任务类型。</para>
-        <para> <emphasis role="bold">预计执行时间</emphasis>:</para>
-        <para>设置任务的预计执行时间,只用来显示用并不用做超时处理,超时处理请参见<link linkend="bpmn.ExtensionElements.connector">连接器</link>章节</para>
-        <para>
-          <emphasis role="bold">XML描述</emphasis>:
-          <programlisting language="xml"><![CDATA[<bpmn2:userTask id="UserTask_1" FoxBPM:taskType="FoxBPMTASK" name="人工任务">
-  <bpmn2:extensionElements>
-    <FoxBPM:taskSubject>
-      <FoxBPM:expression xsi:type="FoxBPM:Expression">"任务主题"</FoxBPM:expression>
-    </FoxBPM:taskSubject>
-  </bpmn2:extensionElements>
-</bpmn2:userTask>]]></programlisting>
-        </para>
-        <para>
-          <emphasis role="bold">设计器界面</emphasis>:
-          <mediaobject ><imageobject>
-            <imagedata align="center"   fileref="images/bpmn.UserTask.taskInfo.1.png"/>
-          </imageobject></mediaobject>
-        </para>
-        <para>
-          <emphasis role="bold">Java代码</emphasis>:
-          <programlisting language="java"><![CDATA[//获取任务查询对象
-TaskQuery taskQuery=taskService.createTaskQuery();
-
-//设置查询的任务类型(默认任务),可以设置多个之间是or的关系。
-taskQuery.addTaskType(TaskInstanceType.FoxBPMTASK);
-
-//通知型任务
-taskQuery.addTaskType(TaskInstanceType.FIXNOTICETASK);
-
-//提醒任务
-taskQuery.addTaskType(TaskInstanceType.FIXREMIND);
-
-//查询出一个任务
-TaskInstance taskInstance=taskQuery.singleResult();
-
-//获取任务主题
-taskInstance.getDescription();
-
-//获取任务类型
-taskInstance.getTaskInstanceType();
-
-//获取任务的预计执行时间(毫秒)
-taskInstance.getExpectedExecutionTime();
-]]></programlisting>
-        </para>
-        
-        
-      </section>
-      <section xml:id="bpmn.UserTask.advancedProperties">
-        <title>高级属性</title>
-        <para>高级属性中的多实例,是用来完成一个for循环的动作,出发多次不同参数的执行,并将结果收集起来。BPMN官方对多实例是使用Multi-instance元素,来实现的,
-          关于多实例的使用请参见<link linkend="bpmn.foreach">Multi-instance (for each)</link>章节。
-        </para>
-        <para><emphasis>注意</emphasis>: 用于人工任务(UserTask)来说,多实例一般就是用来完成并行会签功能,也可以作用在子流程等其他节点上起到不同的效果。</para>
-        <para><emphasis>注意</emphasis>: 串行的多实例,在这个版本的FoxBPM中并没有实现,我们将会在今后的版本中引入这个功能。</para>
-      </section>
-      
-    </section>
-    
-   
-    <section xml:id="bpmn.ScriptTask">
-      <title>Script Task</title>
-      <section xml:id="bpmn.ScriptTask.Description">
-        <title>描述</title>
-        <para>
-          脚本任务(ScriptTask)是一个自动的活动。当一个流程执行到脚本任务的时候相应的脚本被会被执行。 
-        </para>
-      </section>
-      <section xml:id="bpmn.ScriptTask.GraphicalNotation">
-        <title>图形符号</title>
-        <para> 
-          脚本任务是图形为一个圆角矩形,有一个小的脚本图标在左上角。
-          <mediaobject ><imageobject>
-            <imagedata align="center" fileref="images/bpmn.ScriptTask.GraphicalNotation.1.png"/>
-          </imageobject></mediaobject>
-        </para>
-      </section>
-      
-      
-      <section xml:id="bpmn.ScriptTask.XMLRepresentation">
-        <title>XML描述</title>
-        
-        <para>
-          XML元素表示如下:
-          <programlisting language="xml"><![CDATA[<bpmn2:scriptTask id="ScriptTask_1" name="ScriptTask" scriptFormat="Groovy">
-  <bpmn2:script>System.out.print("测试脚本");</bpmn2:script>
-</bpmn2:scriptTask>]]></programlisting>
-        </para>
-        <para>
-          FoxBPM自带两种脚本语言,Groovy、BeanShell开发人员也可以扩展自己的脚本语言,这里我们推荐使用Groovy做为默认的脚本引擎,关于Groovy请查看<link xlink:href="http://groovy.codehaus.org">Groovy官网</link>
-        </para>
-        <para>
-          关于扩展脚本语言请参见 脚本语言配置 
-        </para>
-        
-      </section>
-      
-      <section xml:id="bpmn.ScriptTask.script">
-        <title>脚本使用技巧</title>
-        
-        <para>
-          如果在表达式中使用数据变量:
-          <programlisting language="xml"><![CDATA[        
-def title= "单据号为: "+${单据编号}+" 的报销单请审批!";
-            ]]></programlisting>
-        </para>
-        <para>
-          关于脚本语言更多使用介绍请参见<link linkend="bpmn.FoxBPM.ProcessEngine.Script">脚本语言</link>
-        </para>
-      </section>
-      
-    </section>
-    
-    
-    <section xml:id="bpmn.ServiceTask">
-      <title>Service Task</title>
-      <section xml:id="bpmn.ServiceTask.Description">
-        <title>描述</title>
-        <para>
-          BPMN官方定义,服务任务(ServiceTask)专门被用来调用服务用的,FoxBPM将这里指的服务解释为连接器,服务任务
-          可以通过连接器完成调用功能。 
-        </para>
-      </section>
-      <section xml:id="bpmn.ServiceTask.GraphicalNotation">
-        <title>图形符号</title>
-        <para> 
-          服务任务是图形为一个圆角矩形,有一个小的齿轮图标在左上角。
-          <mediaobject ><imageobject>
-            <imagedata align="center"  fileref="images/bpmn.ServiceTask.GraphicalNotation.1.png"/>
-          </imageobject></mediaobject>
-        </para>
-      </section>
-      
-      
-      <section xml:id="bpmn.ServiceTask.XMLRepresentation">
-        <title>XML描述</title>
-        
-        <para>
-          XML元素表示如下:
-          <programlisting language="xml"><![CDATA[<bpmn2:serviceTask id="ServiceTask_1" name="ServiceTask"/>]]></programlisting>
-        </para>
-      </section>
-    </section>
-    
-    <section xml:id="bpmn.BusinessRuleTask">
-      <title>Business Rule Task</title>
-      <section xml:id="bpmn.BusinessRuleTask.Description">
-        <title>描述</title>
-        <para>
-          业务规则任务(BusinessRuleTask)用来执行一段业务规则脚本,这个节点FoxBPM引擎是采用连接器的方式去执行的。
-        </para>
-      </section>
-      <section xml:id="bpmn.BusinessRuleTask.GraphicalNotation">
-        <title>图形符号</title>
-        <para> 
-          服务任务是图形为一个圆角矩形,有一个小的表格图标在左上角。
-          <mediaobject ><imageobject>
-            <imagedata align="center"  fileref="images/bpmn.BusinessRuleTask.GraphicalNotation.1.png"/>
-          </imageobject></mediaobject>
-        </para>
-      </section>
-      
-      
-      <section xml:id="bpmn.BusinessRuleTask.XMLRepresentation">
-        <title>XML描述</title>
-        
-        <para>
-          XML元素表示如下:
-          <programlisting language="xml"><![CDATA[<bpmn2:businessRuleTask id="BusinessRuleTask_1" name="BusinessRuleTask"/>]]></programlisting>
-        </para>
-      </section>
-    </section>
-    
-    <section xml:id="bpmn.SendTask">
-      <title>Send Task</title>
-      <section xml:id="bpmn.SendTask.Description">
-        <title>描述</title>
-        <para>
-          发送任务(SendTask)用来发送邮件、短信、通知等等消息,FoxBPM使用连接器来完成这个节点的功能。
-          发送任务中一般使用发送邮件的连接器。
-        </para>
-      </section>
-      <section xml:id="bpmn.SendTask.GraphicalNotation">
-        <title>图形符号</title>
-        <para> 
-          发送任务是图形为一个圆角矩形,有一个小的黑色邮件图标在左上角。
-          <mediaobject ><imageobject>
-            <imagedata align="center"  fileref="images/bpmn.SendTask.GraphicalNotation.1.png"/>
-          </imageobject></mediaobject>
-        </para>
-      </section>
-      
-      
-      <section xml:id="bpmn.SendTask.XMLRepresentation">
-        <title>XML描述</title>
-        
-        <para>
-          XML元素表示如下:
-          <programlisting language="xml"><![CDATA[<bpmn2:sendTask id="SendTask_1" name="SendTask"/>]]></programlisting>
-        </para>
-      </section>
-    </section>
-    
-    <section xml:id="bpmn.ReceiveTask">
-      <title>Receive Task</title>
-      <section xml:id="bpmn.ReceiveTask.Description">
-        <title>描述</title>
-        <para>
-          接收任务(ReceiveTask)当流程走到这个节点的时候,令牌(Token)会暂停在这个节点等待一个命令来激活它。
-        </para>
-      </section>
-      <section xml:id="bpmn.ReceiveTask.GraphicalNotation">
-        <title>图形符号</title>
-        <para> 
-          发送任务是图形为一个圆角矩形,有一个小的白色邮件图标在左上角。
-          <mediaobject ><imageobject>
-            <imagedata align="center"  fileref="images/bpmn.ReceiveTask.GraphicalNotation.1.png"/>
-          </imageobject></mediaobject>
-        </para>
-      </section>
-      
-      
-      <section xml:id="bpmn.ReceiveTask.XMLRepresentation">
-        <title>XML描述</title>
-        
-        <para>
-          XML元素表示如下:
-          <programlisting language="xml"><![CDATA[<bpmn2:receiveTask id="ReceiveTask_1" name="ReceiveTask"/>]]></programlisting>
-        </para>
-      </section>
-      
-      <section xml:id="bpmn.ReceiveTask.Java">
-        <title>Java代码:</title>
-        
-        <para>
-          <programlisting language="java"><![CDATA[//获取流程实例对象
-ProcessInstanceEntity processInstance=(ProcessInstanceEntity)runtimeService.getProcessInstance("processInstanceId");
-
-//驱动根令牌向下运行
-processInstance.signal();
-
-//驱动指定的令牌向下运转
-processInstance.getTokenMap().get("tokenId").signal();]]></programlisting>
-        </para>
-        <para>
-          <emphasis>注意</emphasis>:一般这个节点,运用在流程走到某个步骤之后停止,等待别人事情完成之后,接到通知,再继续进行下去的功能。
-        </para>
-      </section>
-    </section>
-    
-    <section xml:id="bpmn.ManualTask">
-      <title>Manual Task</title>
-      <section xml:id="bpmn.ManualTask.Description">
-        <title>描述</title>
-        <para>
-          手工任务(ManualTask)这个节点,用于描述线下完成的工作,在FoxBPM引擎遇到这个节点会直接忽略过去,这个节点只具有图形的含义。
-        </para>
-      </section>
-      <section xml:id="bpmn.ManualTask.GraphicalNotation">
-        <title>图形符号</title>
-        <para> 
-          发送任务是图形为一个圆角矩形,有一个手的图标在左上角。
-          <mediaobject ><imageobject>
-            <imagedata align="center"  fileref="images/bpmn.ManualTask.GraphicalNotation.1.png"/>
-          </imageobject></mediaobject>
-        </para>
-      </section>
-      
-      
-      <section xml:id="bpmn.ManualTask.XMLRepresentation">
-        <title>XML描述</title>
-        
-        <para>
-          XML元素表示如下:
-          <programlisting language="xml"><![CDATA[<bpmn2:manualTask id="ManualTask_1" name="ManualTask"/>]]></programlisting>
-        </para>
-      </section>
-
-    </section>
-    
-    <section xml:id="bpmn.foreach">
-      <title>Multi-instance (for each、会签)</title>
-      <section xml:id="bpmn.foreach.Description">
-        <title>描述</title>
-        <para>
-          一个多实例活动(multi-instance activity)是一种被定义为一个特定的步骤重复完成一些操作。
-          在编程的概念里,这个多实例相当于一个for循环,每次将输入数据集(loopDataInputCollection)中的集合遍历出来,
-          放置到输入项编号(inputDataItem)所指定的变量中,这样在这个活动(activity)中变可以使用这个输入项编号,
-          每次循环中,我们可以对输出项编号(outputDataItem)里边所指定的变量赋值,引擎会自动将这次循环中对输出项编号变量赋的值插入到输出数据集(loopDataOutputCollection)在每次循环完成的时候,
-          会触发完成表达式(completionCondition),用来判断是否够能离开这个节点。
-        </para>
-        <para>
-          以下活动支持多实例:
-        </para>
-        <para>
-          <itemizedlist>
-            <listitem><para><link linkend="bpmn.UserTask">User Task</link></para></listitem>
-            <listitem><para><link  linkend="bpmn.ScriptTask">Script Task</link></para></listitem>
-            <listitem><para><link linkend="bpmn.ServiceTask">Service Task</link></para></listitem>
-            <listitem><para><link linkend="bpmn.SendTask">Send Task</link></para></listitem>
-            <listitem><para><link linkend="bpmn.BusinessRuleTask">Business Rule Task</link></para></listitem>
-            <listitem><para><link linkend="bpmn.ManualTask">Manual Task</link></para></listitem>
-            <listitem><para><link linkend="bpmn.Sub-Process">(Embedded) Sub-Process</link></para></listitem>
-            <listitem><para><link linkend="bpmn.CallActivity">Call Activity</link></para></listitem>
-          </itemizedlist>
-          <link  linkend="bpmn.Gateways">Gateway</link> 和 <link linkend="bpmn.event">Event</link>
-          <emphasis role="bold">不能</emphasis> 使用多实例。
-        </para>
-        
-        <para>
-          <itemizedlist>
-            <listitem>
-              <para><emphasis role="bold">输入数据集(loopDataInputCollection)</emphasis>: 
-              <![CDATA[用来设置并行数的来源,接收类型:List<String> 、"人员ID1,人员ID2,人员ID3"、List<Object>、String[],例如: 在并行的人工任务中,集合可以用:"人员ID1,人员ID2,人员ID3"。]]>
-              </para>
-            </listitem>
-            <listitem><para><emphasis role="bold">输入项编号(inputDataItem)</emphasis>: 
-              <![CDATA[每个并行的分支都会将自己从输入数据集中获得到的一个变量放置在输入数据项中,在节点内部的配置中便可以使用这个输入项,例如 在并行的人工任务中,处理者可以使用 ${输入数据项变量}。]]>
-            </para></listitem>
-            <listitem><para><emphasis role="bold">输出项编号(outputDataItem)</emphasis>: 
-              <![CDATA[并行的每次执行中将执行的一些数据放到输出数据集中,在这个分支结束的时候输出数据集里边的变量就会被add到输出数据集中持久化存储。]]></para></listitem>
-            <listitem><para><emphasis role="bold">输出数据集(loopDataOutputCollection)</emphasis>: 
-              <![CDATA[用来记录每次并行执行的结果,类型是个List集合。]]>
-            </para></listitem>
-          </itemizedlist>
-        </para>
- 
-        
-      </section>
-      <section xml:id="bpmn.foreach.GraphicalNotation">
-        <title>图形符号</title>
-        <para> 
-          还有并行多实例的活动节点下面都会出现三道竖线。(串行是三道横线)
-          <mediaobject ><imageobject>
-            <imagedata align="center"  fileref="images/bpmn.foreach.GraphicalNotation.1.png"/>
-          </imageobject></mediaobject>
-        </para>
-      </section>
-      
-      
-      <section xml:id="bpmn.foreach.XMLRepresentation">
-        <title>XML描述</title>
-        
-        <para>
-          XML元素表示如下:
-          <programlisting language="xml"><![CDATA[<bpmn2:multiInstanceLoopCharacteristics>
-  <bpmn2:extensionElements>
-    <FoxBPM:loopDataInputCollection>
-      <FoxBPM:expression>输入数据集</FoxBPM:expression>
-    </FoxBPM:loopDataInputCollection>
-    <FoxBPM:loopDataOutputCollection>
-      <FoxBPM:expression>输出数据集</FoxBPM:expression>
-    </FoxBPM:loopDataOutputCollection>
-  </bpmn2:extensionElements>
-  <bpmn2:inputDataItem>
-    <bpmn2:extensionElements>
-      <FoxBPM:expression>输入项编号</FoxBPM:expression>
-    </bpmn2:extensionElements>
-  </bpmn2:inputDataItem>
-  <bpmn2:outputDataItem>
-    <bpmn2:extensionElements>
-      <FoxBPM:expression>输出项编号</FoxBPM:expression>
-    </bpmn2:extensionElements>
-  </bpmn2:outputDataItem>
-  <bpmn2:completionCondition>完成表达式</bpmn2:completionCondition>
-</bpmn2:multiInstanceLoopCharacteristics>]]></programlisting>
-        </para>
-      </section>
-    </section>
-    
-    
-    
-  </section>
-  
-  <section xml:id="bpmn.Sub-ProcessesAndCallActivities">
-    <title>Sub-Processes and Call Activities</title>
-    <para>
-      bpmn 2.0区分了普通子流程， 也叫做内嵌子流程，和调用节点(外部子流程)，看起来很相似。 上概念上讲，当流程抵达及诶单时，两者都会调用子流程。 
-    </para> 
-    <para>
-      不同点是调用节点引用流程定义外部的一个流程，子流程 会内嵌到原始的流程定义中。使用调用节点的主要场景是需要重用流程定义， 这个流程定义需要被很多其他流程定义调用的时候。 
-    </para> 
-    <para>
-      当流程执行到调用节点，会创建一个新分支，它是到达调用节点的流程的分支。 这个分支会用来执行子流程，默认创建并行子流程，就像一个普通的流程。 上级流程会等待子流程完成，然后才会继续向下执行。 
-    </para>
-    
-    <section xml:id="bpmn.Sub-Process">
-      <title>Sub-Process</title>
-      <para>
-        Sub-Process 可以将一部分节点步骤作为一个整体，进行多实例，跳过策略，连接器的配置，并可以折叠隐藏关键业务步骤。
-      </para>
-      <mediaobject ><imageobject>
-        <imagedata align="center"  fileref="images/bpmn.SubProcess.1.png"/>
-      </imageobject></mediaobject>
-    </section>
-    
-    <section xml:id="bpmn.CallActivity">
-      <title>Call activity (subprocess)</title>
-      <para>
-        使用调用节点的主要场景是需要重用流程定义， 这个流程定义需要被很多其他流程定义调用的时候。 
-      </para>
-      <para>
-        当流程执行到调用节点，会创建一个新分支，它是到达调用节点的流程的分支。 这个分支会用来执行子流程，默认创建并行子流程，就像一个普通的流程。 上级流程会等待子流程完成，然后才会继续向下执行。 
-      </para>
-    </section>
-    
-    
-  </section>
-
-  <section xml:id="bpmn.Lane">
-    <title>Lane</title>
-    <para>
-      Lane，泳道，图形元素，用来做交互式流程和布局用。
-    </para>
-    <mediaobject ><imageobject>
-      <imagedata align="center"  fileref="images/bpmn.lane.png"/>
-    </imageobject></mediaobject>
-    <para>
-      FoxBPM目前不支持交互式流程图（会在后面版本支持），所以目前Lane只是作为布局工具使用。
-    </para>
-  </section>
-  
-  <section xml:id="bpmn.Data">
-    <title>Data</title>
-    <para>
-      图形元素，暂无用处。
-    </para>
-    
-  </section>
-  
-  
-  <section xml:id="bpmn.Artifacts">
-    <title>Artifacts</title>
-    <para>
-      图形元素，暂无用处。
-    </para>
-    
-  </section>
-  
-  
-  
-  <section xml:id="bpmn.ExtensionElements">
-    <title>扩展元素</title>
-    <para>
-      
-    </para>
-    <section xml:id="bpmn.ExtensionElements.connector">
-      <title>连接器</title>
-      <para>
-        连接器的使用主要在于封装一些在流程中常用操作，用可视化界面代替原有静态方法，并提供在流程各种事件中扩展。
-      </para>
-      <para>
-        注：为了更好的适应后期的连接器扩展，FoxBPM在5.1版本添加了新版本的连接器，原有旧版本连接器兼容，但是只能编辑，不能新增。
-      </para>
-      <para>
-        本例以发送短信为例子介绍连接器的使用。
-      </para>
-      <para>按照项目经验，这部分工作会分为“封装”连接器和“调用”连接器。</para>
-      <section xml:id="bpmn.ExtensionElements.connector.create">
-        <title>创建连接器</title>
-        <orderedlist>
-          <listitem>
-            <para>打开设计器，点击FoxBPM->连接器->创建连接器</para>
-            <mediaobject ><imageobject>
-              <imagedata align="center" contentwidth="600" fileref="images/bpmn.ExtensionElements.connector.create.1.png"/>
-            </imageobject></mediaobject>
-          </listitem>
-          <listitem>
-            <para>填写连接器ID，名称，描述等信息，分类可选择新建或者原有分类。</para>
-           
-          </listitem>
-          <listitem>
-            <para>这里和老版连接器不同，这里要先定义参数，然后创建页面，并选择参数。</para>
-           
-          </listitem>
-          <listitem>
-            <para>配置输出参数，这里可以将发送短信之后的结果返回给FoxBPM在流程中使用,当然，实际使用中我们可能会返回更复杂的数据结构，如List、Map等，最终效果如：</para>
-            <mediaobject ><imageobject>
-              <imagedata align="center" contentwidth="600" fileref="images/bpmn.ExtensionElements.connector.create.2.png"/>
-            </imageobject></mediaobject>
-          </listitem>
-          <listitem>
-            <para>点击确定->完成，连接器创建成功，下面需要写发送短信的业务逻辑，设计器已经为我们创建好了相关的java类和xml配置文件（flow-expand\src\main\java\com\founder\fix\FoxBPM\expand\FoxBPMconnector\TestSendMessage包下）。</para>
-          </listitem>
-          <listitem>
-            <para>实现发送短信的具体逻辑</para>
-            <para>查看生成的java代码，其中receiveId和messageInfo是我们刚才创建的变量ID，execute方法是最终执行的方法，这里的业务逻辑可能要调用第三方的短信猫接口，需要自己去补充。
-              我们这里仅仅做简单的输出，表明我们拿到了相关的参数，可以进行复杂的业务计算等：</para>
-            <mediaobject ><imageobject>
-              <imagedata align="center" contentwidth="600" fileref="images/bpmn.ExtensionElements.connector.create.5.png"/>
-            </imageobject></mediaobject>
-          </listitem>
-          <listitem>
-            <para>到这里我们的“封装”的工具就完成了。</para>
-          </listitem>
-        </orderedlist>
-        <para>连接器定义的源文件介绍：</para>
-        <para>FoxBPM的连接器定义文件在FoxBPM-expand\src\main\java\com\founder\fix\FoxBPM\expand\FoxBPMconnector包下，其中FixConnectorMenu.xml是连接器的总览文件
-          一个包代表一个连接器的定义，其中包括**.java和FixConnector.xml两个文件。
-        </para>
-        <para>FixConnectorMenu.xml中一个连接的定义如下：</para>
-        <programlisting>&lt;node id="64159507-476c-483c-ad29-9918465afbab" name="TestFoxBPM">
-    &lt;menuConnector id="TestSendMessage" name="发送短信" note="发送短信连接器"/>
- &lt;/node></programlisting>
-        <itemizedlist>
-          <listitem><para>node：表示一个连接器分类</para></listitem>
-          <listitem>
-            <para>id：表示分类的唯一编号，自动生成的</para>
-          </listitem>
-          <listitem>
-            <para>name：分类的名称</para>
-          </listitem>
-          <listitem>
-            <para>ico：分类在设计器中的图标</para>
-          </listitem>
-          <listitem>
-            <para>menuConnector：连接器的定义</para>
-            <itemizedlist>
-              <listitem><para>id：连接器的唯一编号，自己定义，并且相同目录下必须有这个同名包，包下有同名的java文件。</para></listitem>
-              <listitem><para>name：连接器的名称。</para></listitem>
-              <listitem><para>note：连接器的说明。</para></listitem>
-            </itemizedlist>
-          </listitem>
-        </itemizedlist>
-        <para>同名包下的FixConnector.xml文件的定义如下：</para>
-        <programlisting>
-&lt;connector:Connector xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:connector="http://www.founderfix.com/connector" connectorId="TestSendMessage" className="TestSendMessage" packageName="com.founder.fix.FoxBPM.expand.connector.TestSendMessage" connectorName="发送短信" connectorNote="发送短信连接器" category="TestFoxBPM">
-  &lt;outputs>
-    &lt;outputParameter id="result" name="发送是否成功" dataType="java.lang.String"/>
-  &lt;/outputs>
-  &lt;Pages>
-    &lt;page pageId="messageConfig" pageTitle="信息配置" pageNote="信息配置">
-      &lt;inputParameter id="receiveId" name="收件人号码" dataType="java.lang.String" controlType="text"/>
-      &lt;inputParameter id="messageInfo" name="短信内容" dataType="java.lang.String" controlType="text"/>
-    &lt;/page>
-  &lt;/Pages>
-&lt;/connector:Connector>      
-        </programlisting>
-        <para>主要属性说明</para>
-        <itemizedlist>
-          <listitem>
-            <para>connector：连接器的声明，类名，包名等信息</para>
-          </listitem>
-          <listitem>
-            <para>outputs：输出参数</para>
-          </listitem>
-          <listitem>
-            <para>Pages：页面数，流程中使用此连接器时需要配置几个界面。<itemizedlist>
-              <listitem>
-                <para>page：页面定义</para>
-              </listitem>
-              <listitem>
-                <para>inputParameter：页面上的输入参数，与Java文件中的一一对应。</para>
-              </listitem>
-            </itemizedlist></para>
-          </listitem>
-        </itemizedlist>
-        <para>对应的java文件代码如下：</para>
-        <programlisting language="java">
-package com.founder.fix.FoxBPM.expand.connector.TestSendMessage;
-
-
-import com.founder.fix.FoxBPM.core.runtime.ExecutionContext;
-import com.founder.fix.FoxBPM.core.action.ConnectorHandler;
-
-public class TestSendMessage implements ConnectorHandler {
-
-	private java.lang.String receiveId;
-
-	private java.lang.String messageInfo;
-
-	public void execute(ExecutionContext executionContext) throws Exception {
-		System.out.println("收件人号码为："+receiveId);
-		System.out.println("短信内容为："+messageInfo);
-	}
-
-	public void  setReceiveId(java.lang.String receiveId){
-		this.receiveId = receiveId;
-	}
-
-	public void  setMessageInfo(java.lang.String messageInfo){
-		this.messageInfo = messageInfo;
-	}
-
-	public java.lang.String  getResult(){
-		return "true" ;
-	}
-
-}          
-        </programlisting>
-        <para>主要代码说明</para>
-        <itemizedlist>
-          <listitem>
-            <para>receiveId：和messageInfo一样，是连接器定义XML文件中定义的输入参数，并且要有setReceiveId()方法</para>
-          </listitem>
-          <listitem>
-            <para>getResult()：定义文件中有出参result，所以此处会有getResult()方法，返回给流程使用</para>
-          </listitem>
-          <listitem>
-            <para>execute()：具体逻辑的实现方法。</para>
-          </listitem>
-        </itemizedlist>
-        <para><emphasis>注意：</emphasis>get方法和set方法是由FoxBPM流程引擎调用，用户只需要实现execute()中的相关逻辑即可。</para>
-      </section>
-      <section xml:id="bpmn.ExtensionElements.connector.use">
-        <title>使用连接器</title>
-        <para>连接器作用在不同的地方有不同的触发事件，作用在流程上时有启动触发，终止触发，结束触发；作用在节点上时有进入时触发，分配任务时触发，离开时触发。</para>
-        <orderedlist>
-          <listitem> 
-            <para>打开设计器，打开一个简单流程，打开Properties属性页，点击流程空白处，在属性页中选择连接器，如图：</para>
-            <mediaobject ><imageobject>
-              <imagedata align="center" contentwidth="600" fileref="images/bpmn.ExtensionElements.connector.use.1.png"/>
-            </imageobject></mediaobject>
-          </listitem>
-          <listitem>
-            <para>点击添加->选择TestFoxBPM分类下TestSendMessage连接器，如图：</para>
-            <mediaobject ><imageobject>
-              <imagedata align="center" contentwidth="600" fileref="images/bpmn.ExtensionElements.connector.use.2.png"/>
-            </imageobject></mediaobject>
-          </listitem>
-          <listitem>
-            <para>填写基本信息</para>
-            <itemizedlist>
-              <listitem><para>名称、描述用来描述这个连接器的作用。</para></listitem>
-              <listitem><para>跳过策略，通过条件来设置次连接器的跳过策略。详细跳过策略介绍可参考<link linkend="bpmn.ExtensionElements.skip">跳过策略</link></para></listitem>
-              <listitem>
-                <para>定时器可以让我们方便的设置延迟，循环执行次功能</para>
-                <para>当勾选了定时器配置中的 启用定时器之后 便可以在时间表达式中去指定 Trigger（触发器）。
-                  对于时间表达式我们使用的是Quartz定时任务框架所带的功能。
-                </para>
-                <para>
-                  这里我们说明一下：我们的时间表达式配置里边,可以指定一个Trigger，
-                  也可以指定多个Trigger,可以指定在指定时间触发的Trigger，
-                  也可以指定复杂的间歇性Trigger。如：
-                </para>
-                <programlisting language="java">import org.quartz.Trigger;
-import com.founder.fix.FoxBPM.core.impl.util.QuartzUtil;
-
-cal = Calendar.getInstance();
-cal.add(Calendar.MINUTE, +1);
-trigger1=QuartzUtil.createSimpleTrigger(processInfo,cal.getTime());
-trigger2=QuartzUtil.createCronTrigger(processInfo, "0 0 12 * * ?");
-
-List&lt;Trigger> triggers=new ArrayList&lt;Trigger>();
-triggers.add(trigger1);
-triggers.add(trigger2);
-return triggers;          
-                </programlisting>
-              </listitem>
-              <listitem>
-                <para>连接器如果失效时，可以选择忽略或者抛出异常等。</para>
-              </listitem>
-            </itemizedlist>
-            <para>这里我们只设置简单的当流程启动时给指定人员发送短信，点击下一步，如：</para>
-            <mediaobject ><imageobject>
-              <imagedata align="center" contentwidth="600" fileref="images/bpmn.ExtensionElements.connector.use.3.png"/>
-            </imageobject></mediaobject>
-          </listitem>
-          <listitem><para>填写我们创建的两个参数：收件人号码和短信内容，点击下一步：</para>
-            <mediaobject ><imageobject>
-              <imagedata align="center" contentwidth="600" fileref="images/bpmn.ExtensionElements.connector.use.4.png"/>
-            </imageobject></mediaobject>
-            <para>当然我们这里的号码和短信内容和FoxBPM流程中的其他配置一样，都可以写复杂的java代码的。</para>
-          </listitem>
-          <listitem>
-            <para>配置输出参数，左边的result是我们创建连接器时的输出参数，右边是次流程定义的变量。</para>
-          </listitem>
-          <listitem>
-            <para>点击完成，保存，发布流程。</para>
-          </listitem>
-          <listitem>
-            <para>启动tomcat，访问bpmcenter，启动此流程，查看控制台输出：</para>
-            <mediaobject ><imageobject>
-              <imagedata align="center" contentwidth="600" fileref="images/bpmn.ExtensionElements.connector.use.5.png"/>
-            </imageobject></mediaobject>
-          </listitem>
-        </orderedlist>
-        <para>配置在流程中的连接器XML文件表示如图：</para>
-        <programlisting language="xml">&lt;FoxBPM:connectorInstance connectorId="TestSendMessage" packageName="com.founder.fix.FoxBPM.expand.connector.TestSendMessage" className="TestSendMessage" connectorInstanceId="2c2ee38b-785e-4f52-9112-8710980124ad" connectorInstanceName="发送短信" eventType="node-enter" errorHandling="抛出异常" errorCode="" isTimeExecute="true">
-          &lt;documentation xsi:type="FoxBPM:Documentation">流程启动时给管理员发送短信&lt;/documentation>
-          &lt;FoxBPM:connectorParameterInputs xsi:type="FoxBPM:ConnectorParameterInputs" id="receiveId" name="收件人号码" dataType="java.lang.String">
-            &lt;FoxBPM:expression xsi:type="FoxBPM:Expression" name="&amp;quot;13022222222&amp;quot;">"13022222222"&lt;/FoxBPM:expression>
-          &lt;/FoxBPM:connectorParameterInputs>
-          &lt;FoxBPM:connectorParameterInputs xsi:type="FoxBPM:ConnectorParameterInputs" id="messageInfo" name="短信内容" dataType="java.lang.String">
-            &lt;FoxBPM:expression xsi:type="FoxBPM:Expression" name="流程启动发送短信">"流程启动发送短信"&lt;/FoxBPM:expression>
-          &lt;/FoxBPM:connectorParameterInputs>
-          &lt;FoxBPM:connectorParameterOutputs xsi:type="FoxBPM:ConnectorParameterOutputs" variableTarget="${amount}">
-            &lt;FoxBPM:expression xsi:type="FoxBPM:Expression">result&lt;/FoxBPM:expression>
-          &lt;/FoxBPM:connectorParameterOutputs>
-          &lt;FoxBPM:connectorParameterOutputsDef xsi:type="FoxBPM:ConnectorParameterOutputsDef" id="result" name="发送是否成功" dataType="java.lang.String"/>
-          &lt;FoxBPM:skipComment xsi:type="FoxBPM:SkipComment">
-            &lt;FoxBPM:expression xsi:type="FoxBPM:Expression" name="returnfalse;">return false;&lt;/FoxBPM:expression>
-          &lt;/FoxBPM:skipComment>
-          &lt;FoxBPM:timeExpression xsi:type="FoxBPM:timeExpression">
-            &lt;FoxBPM:expression xsi:type="FoxBPM:Expression" name="importorg.quartz.Trigger;">import org.quartz.Trigger;
-import com.founder.fix.FoxBPM.core.impl.util.QuartzUtil;
-
-cal = Calendar.getInstance();
-cal.add(Calendar.MINUTE, +1);
-trigger1=QuartzUtil.createSimpleTrigger(processInfo,cal.getTime());
-trigger2=QuartzUtil.createCronTrigger(processInfo, &amp;quot;0 0 12 * * ?&amp;quot;);
-
-List&amp;lt;Trigger> triggers=new ArrayList&amp;lt;Trigger>();
-triggers.add(trigger1);
-triggers.add(trigger2);
-return triggers;&lt;/FoxBPM:expression>
-          &lt;/FoxBPM:timeExpression>
-          &lt;FoxBPM:timeSkipExpression xsi:type="FoxBPM:timeSkipExpression">
-            &lt;FoxBPM:expression xsi:type="FoxBPM:Expression" name="returnfalse;">return false;&lt;/FoxBPM:expression>
-          &lt;/FoxBPM:timeSkipExpression>
-        &lt;/FoxBPM:connectorInstance>          
-        </programlisting>
-        <para>主要节点和属性说明</para>
-        <itemizedlist>
-          <listitem>
-            <para>FoxBPM:connectorInstance：连接器实例<itemizedlist>
-              <listitem>
-                <para>connectorId：连接器定义编号</para>
-              </listitem>
-              <listitem>
-                <para>eventType：作用时机：节点进入、节点离开、任务分配、流程启动、流程结束等</para>
-              </listitem>
-              <listitem>
-                <para>isTimeExecute：是否启动定时器</para>
-              </listitem>
-              <listitem>
-                <para>errorHandling：错误机制：抛出异常、忽略错误并继续流程、抛出错误事件。</para>
-              </listitem>
-            </itemizedlist></para>
-          </listitem>
-          <listitem>
-            <para>documentation：连接器描述</para>
-          </listitem>
-          <listitem>
-            <para>FoxBPM:connectorParameterInputs：连接器输入参数</para>
-          </listitem>
-          <listitem>
-            <para>FoxBPM:connectorParameterOutputs：连接器输出参数<itemizedlist>
-              <listitem>
-                <para>variableTarget：输出变量对应的目标变量</para>
-              </listitem>
-            </itemizedlist></para>
-          </listitem>
-          <listitem>
-            <para>FoxBPM:skipComment：跳过策略</para>
-          </listitem>
-          <listitem>
-            <para>timeExpression：启动定时器时的时间表达式</para>
-          </listitem>
-          <listitem>
-            <para>FoxBPM:timeSkipExpression：时间表达式的跳过策略</para>
-          </listitem>
-          <listitem>
-            <para>FoxBPM:expression：groovy代码或表达式。</para>
-          </listitem>
-        </itemizedlist>
-        <para>至此，连接器的使用基本就结束了，需要注意的是当连接器作用在不同的地方时，其可选择的触发事件是不一样的。FoxBPM为了方便用户，已经将
-        项目中常用的连接器封装好了，比如：发送短信，发送邮件，超时自动处理，webService等。</para>
-        
-        <para>下面介绍两个最常用的连接器：</para>
-        <orderedlist>
-          <listitem>
-            <para>超时处理，超时处理。</para>
-          </listitem>
-          <listitem>
-            <para>自动发送邮件。这个经常使用在当流程到达某个节点时，自动给相关处理者发送一封提醒邮件</para>
-          </listitem>
-        </orderedlist>
-        
-      </section>
-      <section xml:id="bpmn.ExtensionElements.connector.time">
-        <title>定时连接器</title>
-        <para>为了完成定时提醒、超时处理功能,同时又不限定死到了时间我们要做的事情,于是加了以下这个功能,让连接器有了延迟执行、间歇性执行功能。</para>
-        <mediaobject ><imageobject>
-          <imagedata align="center" contentwidth="600" fileref="images/bpmn.ExtensionElements.connector.time.1.png"/>
-        </imageobject></mediaobject>
-        <para>
-          当勾选了定时器配置中的 启用定时器之后 便可以在时间表达式中去指定 Trigger（触发器）。
-          对于时间表达式我们使用的是Quartz定时任务框架所带的功能。
-          Quartz是什么，怎么使用，Corn表达式该怎么，这些直接问Google好了，遍地都是。
-          这里我们说明一下：我们的时间表达式配置里边,可以指定一个Trigger，
-          也可以指定多个Trigger,可以指定在指定时间触发的Trigger，
-          也可以指定复杂的间歇性Trigger。
-        </para>
-        <para>例如:</para>
-        <programlisting language="java"><![CDATA[import com.founder.fix.FoxBPM.core.impl.util.QuartzUtil;
-cal = Calendar.getInstance();  
-cal.add(Calendar.MINUTE, +3);
-return QuartzUtil.createSimpleTrigger(processInfo, cal.getTime());]]>
-        </programlisting>
-        <para>
-          这样一段表达式是创建一个在指定时间执行的Trigger,指定的时间为当前触发的时间+3分钟。
-          QuartzUtil.createSimpleTrigger 创建一个指定时间执行的Trigger。
-        </para>
-        <para>例如:</para>
-        <programlisting language="java"><![CDATA[import org.quartz.Trigger;
-
-import com.founder.fix.FoxBPM.core.impl.util.QuartzUtil;
-
-cal = Calendar.getInstance();
-cal.add(Calendar.MINUTE, +1);
-trigger1=QuartzUtil.createSimpleTrigger(processInfo,cal.getTime());
-trigger2=QuartzUtil.createCronTrigger(processInfo, "0 0 12 * * ?");
-
-List<Trigger> triggers=new ArrayList<Trigger>();
-triggers.add(trigger1);
-triggers.add(trigger2);
-return triggers;]]>
-        </programlisting>
-        <para>
-          这样一段表达式创建两个Trigger
-          一个是在指定时间触发：当前触发时间+1分钟。
-          一个是在每天中午12点触发一次。
-          
-          QuartzUtil.createCronTrigger 用来创建一个基于Corn表达式的间歇性Trigger,可以周期性的执行连接器。
-        </para>
-        <programlisting language="java"><![CDATA["0 0 12 * * ?" 每天中午12点触发 
-"0 15 10 ? * *" 每天上午10:15触发 
-"0 15 10 * * ?" 每天上午10:15触发 
-"0 15 10 * * ? *" 每天上午10:15触发 
-"0 15 10 * * ? 2005" 2005年的每天上午10:15触发 
-"0 * 14 * * ?" 在每天下午2点到下午2:59期间的每1分钟触发 
-"0 0/5 14 * * ?" 在每天下午2点到下午2:55期间的每5分钟触发 
-"0 0/5 14,18 * * ?" 在每天下午2点到2:55期间和下午6点到6:55期间的每5分钟触发 
-"0 0-5 14 * * ?" 在每天下午2点到下午2:05期间的每1分钟触发 
-"0 10,44 14 ? 3 WED" 每年三月的星期三的下午2:10和2:44触发 
-"0 15 10 ? * MON-FRI" 周一至周五的上午10:15触发 
-"0 15 10 15 * ?" 每月15日上午10:15触发 
-"0 15 10 L * ?" 每月最后一日的上午10:15触发 
-"0 15 10 ? * 6L" 每月的最后一个星期五上午10:15触发 
-"0 15 10 ? * 6L 2002-2005" 2002年至2005年的每月的最后一个星期五上午10:15触发 
-"0 15 10 ? * 6#3" 每月的第三个星期五上午10:15触发 ]]>
-        </programlisting>
-        <para>上面是一些常用的Corn表达式写法，具体的不用问我了，直接查Google，上面说的很明白。</para>
-        
-        
-        
-        <para>时间到了怎么自动处理任务呢？</para>
-        <para>新建连接器的时候选那个超时任务处理就可以了</para>
-        <mediaobject ><imageobject>
-          <imagedata align="center" contentwidth="600" fileref="images/bpmn.ExtensionElements.connector.time.2.png"/>
-        </imageobject></mediaobject>
-        <para>简单配置下参数：</para>
-        <mediaobject ><imageobject>
-          <imagedata align="center" contentwidth="600" fileref="images/bpmn.ExtensionElements.connector.time.3.png"/>
-        </imageobject></mediaobject>
-       
-        <para>
-          有了以上功能组合使用就能完成，一些变态的需求。
-          
-          例如任务到期后2天后没天提醒一次，到期5天后每半天提醒一次，7天后没1小时提醒一次，10天后给我自动处理！
-          
-          超时发邮件、发短信、更新数据库、调用webservice之类的就更不在话下了。
-          
-          说到工作日历的排除,这个需要项目开发人员自己去计算平台的日历表,组合使用Trigger来完成了。
-          
-          对于Quartz框架来说上述功能就是他最基础的功能,他还有很多更强大的功能,二次开发的人员可以自己研究一下。
-        </para>
-        
-        <para>下面是管理界面：</para>
-        <para> 
-          主数据为Job 点击一个Job可以查看他的多个Trigger
-          一个定时启动是一个Job，
-          一个定时连接器也是一个Job，
-          一个Job可以有多个Trigger触发器。
-        </para>
-        <mediaobject ><imageobject>
-          <imagedata align="center" contentwidth="600" fileref="images/bpmn.ExtensionElements.connector.time.4.png"/>
-        </imageobject></mediaobject>
-      </section>
-    </section>
-    
-    
-    
-    
-    <section xml:id="bpmn.ExtensionElements.dataVariable">
-      <title>数据变量</title>
-        <para>数据变量是在流程运转中可以由用户控制的，可以在流程各个表达式中使用的变量定义。</para>
-        <para>它分为瞬态变量和持久化变量，瞬态变量的生命周期为命令提交到令牌进入下一个节点清空数据之前。持久化变量是在使用此变量后，流程引擎会将数据持久化到数据库，在以后的各个节点状态均可直接使用。</para>
-        <para>
-          <emphasis role="bold">设计器使用</emphasis>
-          <mediaobject ><imageobject>
-            <imagedata align="center" contentwidth="600" fileref="images/bpmn.ExtensionElements.dataVariable.designer.1.png"/>
-          </imageobject></mediaobject>
-        </para>
-      <para> <emphasis role="bold">XML描述</emphasis></para>
-        <programlisting language="xml">
-&lt;FoxBPM:DataVariable id="amount" dataType="int" isPersistence="true" bizType="customVariable">
-        &lt;FoxBPM:expression xsi:type="FoxBPM:Expression" name="4000">"4000"&lt;/FoxBPM:expression>
-        &lt;FoxBPM:documentation xsi:type="FoxBPM:Documentation">&lt;/FoxBPM:documentation>
-&lt;/FoxBPM:DataVariable>          
-        </programlisting>
-        <itemizedlist>
-          <listitem><para>dataType：变量数据类型。</para></listitem>
-          <listitem><para>isPersistence：是否持久化。</para></listitem>
-          <listitem><para>bizType：变量业务类型，用户自己划分。</para></listitem>
-          <listitem><para>FoxBPM:expression：命令表达式，这里代表默认值。</para></listitem>
-          <listitem><para>FoxBPM:documentation：描述。</para></listitem>
-        </itemizedlist>
-      <para> <emphasis role="bold">设计器表达式中使用</emphasis></para>
-      <programlisting language="java">${amount}=300;     </programlisting>
-      <para> <emphasis role="bold">Java代码使用</emphasis></para>
-      <programlisting language="java">//获取流程变量
-Object variableValue = runtimeService.getProcessInstanceVariable(processInstanceId, "amount");      </programlisting>
-    </section>
-    
-    <section xml:id="bpmn.ExtensionElements.skip">
-      <title>跳过策略</title>
-      <para>跳过策略一般作用于节点上，来指定在特殊状态下次节点直接跳过</para>
-      <para> <emphasis role="bold">设计器定义如图</emphasis></para>
-        <para>
-          选中节点，点击properties属性框，选择跳过策略。
-          <mediaobject ><imageobject>
-            <imagedata align="center" contentwidth="600" fileref="images/bpmn.ExtensionElements.skip.designer.1.png"/>
-          </imageobject></mediaobject>
-        </para>
-        <para> <emphasis role="bold">XML描述</emphasis></para>
-        <programlisting language="xml">&lt;FoxBPM:skipStrategy FoxBPM:isEnable="true">
-    &lt;FoxBPM:expression xsi:type="FoxBPM:Expression" name="判断">if(${amount}>4000){
-	    return true;
-    }else{
-	    return false;
-    }&lt;/FoxBPM:expression>
-    &lt;FoxBPM:skipAssignee xsi:type="FoxBPM:SkipAssignee">
-       &lt;FoxBPM:expression xsi:type="FoxBPM:Expression" name="1200119390">"1200119390"&lt;/FoxBPM:expression>
-    &lt;/FoxBPM:skipAssignee>
-    &lt;FoxBPM:skipComment xsi:type="FoxBPM:SkipComment">
-        &lt;FoxBPM:expression xsi:type="FoxBPM:Expression" name=金额太小就不用我审批了">"金额太小就不用我审批了。"&lt;/FoxBPM:expression>
-     &lt;/FoxBPM:skipComment>
-&lt;/FoxBPM:skipStrategy>
-        </programlisting>
-    </section>
-    
-    <section xml:id="bpmn.ExtensionElements.form">
-      <title>任务表单</title>
-      <section xml:id="bpmn.ExtensionElements.form.description">
-        <title>描述</title>
-        <para> 任务大致分为两种，流程默认表单，任务级别表单。
-        <orderedlist>
-          <listitem><para>默认表单：<link linkend="bpmn.process.defaultForm">默认表单</link></para></listitem>
-          <listitem><para>任务级别表单：<link linkend="bpmn.UserTask.commonConfig">任务表单</link></para></listitem>
-        </orderedlist>
-          
-        </para>
-      </section>
-     
-      <section xml:id="bpmn.ExtensionElements.form.designer">
-        <title>设计器配置</title>
-        <para>
-          <mediaobject ><imageobject>
-            <imagedata align="center" contentwidth="600" fileref="images/bpmn.ExtensionElements.form.designer.1.png"/>
-          </imageobject></mediaobject>
-          <mediaobject ><imageobject>
-            <imagedata align="center" contentwidth="600" fileref="images/bpmn.ExtensionElements.form.designer.2.png"/>
-          </imageobject></mediaobject>
-        </para>
-      </section>
-      <section xml:id="bpmn.ExtensionElements.form.xmlCode">
-        <title>XML描述</title>
-        <programlisting language="xml">
-&lt;FoxBPM:formUri>
-    &lt;FoxBPM:expression xsi:type="FoxBPM:Expression" id="Expression_5" name="DemoServlet">"DemoServlet?action=startOneTask"&lt;/FoxBPM:expression>
-&lt;/FoxBPM:formUri>     
-        </programlisting>
-      </section>
-    </section>
-    
-    <section xml:id="bpmn.ExtensionElements.taskTopic">
-      <title>任务主题</title>
-      <para>
-        任务主题是流程实例的基本描述。
-      </para>
-      <para> <emphasis role="bold">设计器配置</emphasis></para>
-      <para>
-        <mediaobject ><imageobject>
-          <imagedata align="center" contentwidth="600" fileref="images/bpmn.ExtensionElements.taskTopic.1.png"/>
-        </imageobject></mediaobject>
-      </para>
-      <para> <emphasis role="bold">XML描述</emphasis></para>
-      <programlisting language="xml">&lt;FoxBPM:taskSubject id="TaskSubject_1">
-     &lt;FoxBPM:expression xsi:type="FoxBPM:Expression" id="Expression_2" name="提交的**出差报销单">processInfo.getInitiator()+"提交的**出差报销单"&lt;/FoxBPM:expression>
- &lt;/FoxBPM:taskSubject>  </programlisting>
-      <para> <emphasis role="bold">Java代码使用</emphasis></para>
-      <programlisting language="java">ProcessInstance processInstance = runtimeService.getProcessInstance(processInstanceId);
-String taskSubject = processInstance.getSubject();             </programlisting>
-    </section>
-    
-    <section xml:id="bpmn.ExtensionElements.taskCommand">
-      <title>任务命令</title>
-      <para> 任务命令是一组预先配置的，能够驱动流程走向的命令的集合。</para>
-      <para>任务命令的配置如图：
-        <mediaobject ><imageobject>
-          <imagedata align="center" contentwidth="600" fileref="images/bpmn.ExtensionElements.taskCommand.1.png"/>
-        </imageobject></mediaobject>
-      </para>
-      <para>其中每一个任务命令都会对应三个Java实现类：参数对象、执行器、过滤器。<itemizedlist>
-          <listitem>
-            <para>参数对象表明了此命令的运行需要提供哪些必要参数。</para>
-          </listitem>
-          <listitem>
-            <para>过滤器是控制此命令在当前环境下是否显示的逻辑。如：接收任务命令只能在任务未被领取的时候出现。</para>
-          </listitem>
-          <listitem>
-            <para>执行器是控制此命令如何驱动流程运转逻辑的实现。</para>
-          </listitem>
-      </itemizedlist></para>
-      <para>当FoxBPM提供的默认命令不满足用户需求的时候，用户可以很方便的自定义自己的任务命令按钮，只要实现上述三个类即可。</para>
-      <para>流程中配置如图：
-        <mediaobject ><imageobject>
-          <imagedata align="center" contentwidth="600" fileref="images/bpmn.ExtensionElements.taskCommand.2.png"/>
-        </imageobject></mediaobject>
-      </para>
-      <para><emphasis role="bold">XML描述</emphasis></para>
-      <programlisting language="xml"> &lt;FoxBPM:taskCommand id="HandleCommand_5" name="通用" commandType="general" isVerification="true" isSaveData="true" isSimulationRun="false">
-          &lt;FoxBPM:expression xsi:type="FoxBPM:Expression" name="System.out.println(&amp;quot;启动命令执行啦。&amp;quot;);">System.out.println(&amp;quot;启动命令执行啦。&amp;quot;);&lt;/FoxBPM:expression>
-  &lt;/FoxBPM:taskCommand>          </programlisting>
-      <itemizedlist>
-        <listitem><para>FoxBPM:taskCommand：任务命令定义</para></listitem>
-        <listitem><para> FoxBPM:expression：任务命令执行时需要执行的表达式或代码。</para></listitem>
-      </itemizedlist>
-      
-      <para><emphasis role="bold">Java代码使用</emphasis></para>
-      <programlisting language="java">//获取任务处理时应得到的命令
-List&lt;TaskCommandInst> list = null;
-//如果TaskId为空，说明是启动表单，获取启动相关命令，否则则获得处理命令
-if(StringUtil.isNotEmpty(taskId)){
-	list = engine.getTaskService().GetTaskCommandByTaskId(taskId, false);
-}else{
-	list = engine.getTaskService().getSubTaskTaskCommandByKey(processDefinitionKey);
-}
-        
-//执行命令方法
-//创建一个通用命令
-ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
-//设置流程名
-expandTaskCommand.setProcessDefinitionKey("Process_TaskServiceTest");
-//设置流程的业务关联键
-expandTaskCommand.setBusinessKey("BK_testStartProcessInstanceByKey");
-//命令类型，可以从流程引擎配置中查询   启动并提交为startandsubmit
-expandTaskCommand.setCommandType("startandsubmit");
-//设置提交人
-expandTaskCommand.setInitiator("1200119390");
-//设置命令的id,需和节点上配置的按钮编号对应，会执行按钮中的脚本。
-expandTaskCommand.setUserCommandId("HandleCommand_2");      </programlisting>
-    </section>
-    
-    <section xml:id="bpmn.ExtensionElements.assignPolicy">
-      <title>分配策略</title>
-      <para>
-        <link linkend="bpmn.UserTask.assignment">见任务分配</link>
-      </para>
-      
-    </section>
-    
-  </section>
-  
-  <section xml:id="bpmn.FoxBPM.ProcessEngine">
-    <title>FoxBPM Engine 运行机制及原理</title>
-    <section xml:id="bpmn.FoxBPM.ProcessEngine.Event">
-      <title>FoxBPM Event</title>
-      <para>
-        
-      </para>
-      
-    </section>
-    
-    <section xml:id="bpmn.FoxBPM.ProcessEngine.Script">
-      <title>脚本语言</title>
-      <para>
-        
-      </para>
-      
-    </section>
-    
-  </section>
-  
+   </section>
   
 </chapter>

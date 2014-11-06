@@ -444,7 +444,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 	public void cleanData(FlowNodeExecutionContext executionContext) {
 		try {
 			FoxbpmScheduler foxbpmScheduler =Context.getProcessEngineConfiguration().getFoxbpmScheduler();
-			if (foxbpmScheduler == null) {
+			if (foxbpmScheduler == null || foxbpmScheduler.getScheduler() == null) {
 				LOG.debug("自动调度器未启动，导致任务节点离开时清空相关数据失败！");
 			}else{
 				String groupName = null;

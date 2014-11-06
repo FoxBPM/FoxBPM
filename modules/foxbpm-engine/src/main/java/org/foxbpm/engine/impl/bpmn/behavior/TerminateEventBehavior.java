@@ -30,6 +30,6 @@ public class TerminateEventBehavior extends EventDefinitionBehavior {
 	
 	 
 	public void execute(FlowNodeExecutionContext executionContext, String eventType, Object[] params) {
-		executionContext.getProcessInstance().end();
+		executionContext.getProcessInstance().abort();
 	}
 }
