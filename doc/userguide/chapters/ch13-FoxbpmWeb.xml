@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter PUBLIC '-//OASIS//DTD DocBook XML V5.0//EN'  
-               '../dtd/docbook.dtd'> 
+               '../dtd/docbook.dtd'>
 <chapter xml:id="EclipseDesigner">
     <title>Foxbpm Web 功能文档</title>
     <section>
@@ -49,7 +49,7 @@
                                 fileref="../image/web.3.png"/>
                         </imageobject>
                     </mediaobject>
-                    <para>界面功能：待办任务查询、列表分页、展示列设置、操作表单、查看流程图</para>
+                    <para>界面功能：待办任务查询、列表分页、展示列设置、操作表单(主要命令操作)、查看流程图</para>
                 </listitem>
                 <listitem>
                     <para>日历面板</para>
