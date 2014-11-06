@@ -84,10 +84,7 @@ import org.foxbpm.model.style.Style;
 
 public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	
-	private static Map<String, Style> styleContainer = new HashMap<String, Style>();
-<<<<<<< HEAD
-	
-=======
+	private static Map<String, Style> styleContainer = new HashMap<String, Style>(); 
 	//初始化加载监听器
 	private static Map<String,List<String>> eventTypeMap = new HashMap<String,List<String>>();
 	private static final String PROCESSDEFINITION_EVENT = "ProcessDefinitionEvent";
@@ -114,8 +111,8 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		sequenceFlowEventList.add(KernelEventType.EVENTTYPE_SEQUENCEFLOW_TAKE);
 		eventTypeMap.put(SEQUENCEFLOW_EVENT, sequenceFlowEventList);
 		
-	}
->>>>>>> branch 'develop' of https://github.com/FoxBPM/FoxBPM.git
+	} 
+	
 	@SuppressWarnings("unchecked")
 	public BpmnParseHandlerImpl() {
 		SAXReader reader = new SAXReader();
@@ -296,13 +293,12 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	 * @param eventMapListenerList
 	 * @param eventType
 	 */
-	private void registEventListener(KernelFlowElementsContainerImpl flowNode,Map<String,Map<String,EventListener>> eventMapListenerList,String eventType){
+	private void registEventListener(KernelFlowElementsContainerImpl flowNode,Map<String,List<EventListener>> eventMapListenerList,String eventType){
 		try{
-			Map<String, EventListener> startListeners = eventMapListenerList.get(eventType);
-			if(startListeners != null && startListeners.size()>0){
-				Collection<EventListener> values = startListeners.values();
+			List<EventListener> startListeners = eventMapListenerList.get(eventType);
+			if(startListeners != null && startListeners.size()>0){ 
 				KernelListener foxbpmEventListener = null;
-				for(EventListener eventListener : values){
+				for(EventListener eventListener : startListeners){
 					foxbpmEventListener = (KernelListener) Class.forName(eventListener.getListenerClass()).newInstance();
 					flowNode.addKernelListener(eventType, foxbpmEventListener);
 				}
@@ -319,13 +315,12 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	 * @param eventMapListenerList
 	 * @param eventType
 	 */
-	private void registSequenceFlowEventListener(KernelSequenceFlowImpl sequenceFlow,Map<String,Map<String,EventListener>> eventMapListenerList,String eventType){
+	private void registSequenceFlowEventListener(KernelSequenceFlowImpl sequenceFlow,Map<String,List<EventListener>> eventMapListenerList,String eventType){
 		try{
-			Map<String, EventListener> startListeners = eventMapListenerList.get(eventType);
+			List<EventListener> startListeners = eventMapListenerList.get(eventType);
 			if(startListeners != null && startListeners.size()>0){
-				Collection<EventListener> values = startListeners.values();
 				KernelListener foxbpmEventListener = null;
-				for(EventListener eventListener : values){
+				for(EventListener eventListener : startListeners){
 					foxbpmEventListener = (KernelListener) Class.forName(eventListener.getListenerClass()).newInstance();
 					sequenceFlow.addKernelListener(foxbpmEventListener);
 				}
@@ -341,17 +336,10 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	 * 
 	 * @param processEntity
 	 */
-	private void registListener(ProcessDefinitionEntity processEntity) { 
-		// 加载监听器
-<<<<<<< HEAD
-		List<EventListener> eventListenerList = Context.getProcessEngineConfiguration().getEventListeners();
-		
-		if (eventListenerList == null) {
-=======
-		Map<String,Map<String,EventListener>> eventMapListenerList = Context.getProcessEngineConfiguration().getEventMapListeners();
+	private void registListener(ProcessDefinitionEntity processEntity) {  
+		Map<String,List<EventListener>> eventMapListenerList = Context.getProcessEngineConfiguration().getEventMapListeners();
 
-		if(eventTypeMap == null || eventMapListenerList == null){
->>>>>>> branch 'develop' of https://github.com/FoxBPM/FoxBPM.git
+		if(eventTypeMap == null || eventMapListenerList == null){ 
 			return;
 		} 
 		//注册流程定义
@@ -359,40 +347,8 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		for(String eventType:eventList){
 			this.registEventListener(processEntity, eventMapListenerList, eventType);
 		}
-		
-<<<<<<< HEAD
-		try {
-			EventListener eventListener = null;
-			KernelListener foxbpmEventListener = null;
-			for (Iterator<EventListener> iterator = eventListenerList.iterator(); iterator.hasNext();) {
-				eventListener = iterator.next();
-				foxbpmEventListener = (KernelListener) Class.forName(eventListener.getListenerClass()).newInstance();
-				if (StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_START)
-				        || StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_PROCESS_END)) {
-					// 注册启动监听
-					processEntity.addKernelListener(eventListener.getEventType(), foxbpmEventListener);
-				} else {
-					if (StringUtil.equals(eventListener.getEventType(), KernelEventType.EVENTTYPE_SEQUENCEFLOW_TAKE)) {
-						// 注册线条监听
-						Map<String, KernelSequenceFlowImpl> sequenceFlows = processEntity.getSequenceFlows();
-						Set<Entry<String, KernelSequenceFlowImpl>> sequenceEntrySet = sequenceFlows.entrySet();
-						Iterator<Entry<String, KernelSequenceFlowImpl>> sequenceEntryIter = sequenceEntrySet.iterator();
-						Entry<String, KernelSequenceFlowImpl> sequenceFlow = null;
-						KernelSequenceFlowImpl kernelSequenceFlowImpl = null;
-						while (sequenceEntryIter.hasNext()) {
-							sequenceFlow = sequenceEntryIter.next();
-							kernelSequenceFlowImpl = sequenceFlow.getValue();
-							kernelSequenceFlowImpl.addKernelListener(foxbpmEventListener);
-						}
-					} else {
-						// 注册节点监听
-						List<KernelFlowNodeImpl> flowNodes = processEntity.getFlowNodes();
-						this.registerFlowNodeListener(flowNodes, eventListener, foxbpmEventListener);
-					}
-					
-				}
-				
-=======
+		 
+		 
 		// 注册线条监听
 		eventList = eventTypeMap.get(SEQUENCEFLOW_EVENT);
 		for(String eventType:eventList){
@@ -400,7 +356,6 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 			Collection<KernelSequenceFlowImpl> sequenceFlowList = sequenceFlows.values(); 
 			for(KernelSequenceFlowImpl kernelSequenceFlowImpl : sequenceFlowList){ 
 				this.registSequenceFlowEventListener(kernelSequenceFlowImpl, eventMapListenerList, eventType);
->>>>>>> branch 'develop' of https://github.com/FoxBPM/FoxBPM.git
 			}
 			
 		}
@@ -424,21 +379,10 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 	 *            void
 	 * @exception
 	 * @since 1.0.0
-	 */
-<<<<<<< HEAD
-	private void registerFlowNodeListener(List<KernelFlowNodeImpl> flowNodes, EventListener eventListener,
-	    KernelListener foxbpmEventListener) {
-=======
-	private void registerFlowNodeListener(List<KernelFlowNodeImpl> flowNodes, Map<String,Map<String,EventListener>> eventMapListenerList,String eventType) {
->>>>>>> branch 'develop' of https://github.com/FoxBPM/FoxBPM.git
+	 */ 
+	private void registerFlowNodeListener(List<KernelFlowNodeImpl> flowNodes, Map<String,List<EventListener>> eventMapListenerList,String eventType) {
 		for (KernelFlowNodeImpl kernelFlowNodeImpl : flowNodes) {
-<<<<<<< HEAD
-			kernelFlowNodeImpl.addKernelListener(eventListener.getEventType(), foxbpmEventListener);
-			
-=======
 			this.registEventListener(kernelFlowNodeImpl, eventMapListenerList, eventType);
-
->>>>>>> branch 'develop' of https://github.com/FoxBPM/FoxBPM.git
 			List<KernelFlowNodeImpl> subFlowNodes = kernelFlowNodeImpl.getFlowNodes();
 			if (subFlowNodes != null && subFlowNodes.size() > 0) {
 				registerFlowNodeListener(subFlowNodes, eventMapListenerList, eventType);

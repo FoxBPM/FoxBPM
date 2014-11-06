@@ -227,20 +227,14 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	 */
 	protected Map<String, AbstractCommandFilter> commandFilterMap;
 	
-	/**
-<<<<<<< HEAD
-	 * 所有的事件监听配置(系统级和外部)
-=======
+	/** 
+	 * 所有的事件监听配置(系统级和外部) 
 	 * 事件监听配置
 	 * eventMapListeners:eventType->events
-	 * events:eventId->EventListener
->>>>>>> branch 'develop' of https://github.com/FoxBPM/FoxBPM.git
-	 */
-<<<<<<< HEAD
-	protected List<EventListener> eventListeners = new ArrayList<EventListener>(10);
-=======
-	protected Map<String,Map<String,EventListener>> eventMapListeners;
->>>>>>> branch 'develop' of https://github.com/FoxBPM/FoxBPM.git
+	 * events:eventId->EventListener branch 'develop' of https://github.com/FoxBPM/FoxBPM.git
+	 */ 
+	protected List<EventListener> eventListeners = new ArrayList<EventListener>(10); 
+	protected Map<String,List<EventListener>> eventMapListeners; 
 	
 	/**
 	 * FOXBPM任务调度器
@@ -365,20 +359,21 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 			for (Iterator<EventListener> iterator = eventListeners.iterator(); iterator.hasNext();) {
 				tmp = iterator.next();
 				log.debug("监听编号：{},监听事件：{},优先级：{},类名：{}", tmp.getId(), tmp.getEventType(), tmp.getPriority(), tmp.getListenerClass());
-		}}
-			if(eventListenerImpls != null){
-				this.eventMapListeners = new HashMap<String, Map<String,EventListener>>();
-				log.debug("发现{}个全局监听，列表如下：",eventListenerImpls.size());
-				for(EventListenerImpl tmp :eventListenerImpls){
-					log.debug("监听编号：{},监听事件：{},类名：{}",tmp.getId(),tmp.getEventType(),tmp.getListenerClass());
-					if(eventMapListeners.get(tmp.getEventType()) == null){
-						Map<String,EventListener> eventListeners =  new HashMap<String,EventListener>();
-						eventListeners.put(tmp.getId(), tmp);
-						eventMapListeners.put(tmp.getEventType(), eventListeners);
-					}else{
-						eventMapListeners.get(tmp.getEventType()).put(tmp.getId(), tmp);
-					} 
-				}}
+			}
+		}
+		if(eventListenerImpls != null) {
+			this.eventMapListeners = new HashMap<String, List<EventListener>>();
+			List<EventListener> eventListeners = null;
+			for(EventListenerImpl tmp :eventListenerImpls){
+				if(eventMapListeners.get(tmp.getEventType()) == null){
+					eventListeners =  new ArrayList<EventListener>();
+					eventListeners.add(tmp);
+					eventMapListeners.put(tmp.getEventType(), eventListeners);
+				}else{
+					eventMapListeners.get(tmp.getEventType()).add(tmp);
+				} 
+			}
+		}
 	}
 	protected void initQuartz() {
 		if (!this.quartzEnabled) {
@@ -787,17 +782,14 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	public TaskCommandDefinition getTaskCommandDefinition(String taskCommandDefinitionId) {
 		return taskCommandDefinitionMap.get(taskCommandDefinitionId);
-	}
-<<<<<<< HEAD
-	
+	} 
 	public List<EventListener> getEventListeners() {
-		return eventListeners;
-=======
-	public  Map<String,Map<String,EventListener>>  getEventMapListeners(){
-		return eventMapListeners;
->>>>>>> branch 'develop' of https://github.com/FoxBPM/FoxBPM.git
+		return eventListeners; 
 	}
-<<<<<<< HEAD
+	public  Map<String,List<EventListener>>  getEventMapListeners(){
+		return eventMapListeners; 
+	} 
+
 	/**
 	 * 添加监听器
 	 * 
@@ -806,10 +798,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	 */
 	public void addEventListener(EventListener listener) {
 		eventListeners.add(listener);
-	}
-	
-=======
->>>>>>> branch 'develop' of https://github.com/FoxBPM/FoxBPM.git
+	} 
 	public FoxbpmScheduler getFoxbpmScheduler() {
 		if (!quartzEnabled) {
 			return null;
