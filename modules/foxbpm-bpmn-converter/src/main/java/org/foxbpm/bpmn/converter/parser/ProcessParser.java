@@ -30,7 +30,6 @@ import org.foxbpm.model.FlowContainer;
 import org.foxbpm.model.LaneSet;
 import org.foxbpm.model.PotentialStarter;
 import org.foxbpm.model.Process;
-;
 
 /**
  * 
