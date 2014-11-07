@@ -85,10 +85,10 @@ public class ConnectorGenerator implements IZipGenerator {
 		InputStream xmlInputStream = ReflectUtil.getResourceAsStream(xmlFileName);
 		if(xmlInputStream == null){
 			log.error("文件：{}不存在,跳过处理，该连接器可能不可用！" ,xmlFileName);
+			return;
 		}else{
 			generZip(xmlInputStream,xmlEntryName,out);
 		}
-	
 		
 		InputStream pngInputStream = ReflectUtil.getResourceAsStream(pngFileName);
 		if(pngInputStream == null){
@@ -156,8 +156,8 @@ public class ConnectorGenerator implements IZipGenerator {
 				generatorConnector("connector/custormConnector",connectorStream,out);
 			}
 		} catch (Exception e) {
-			log.error("同步连接器失败，失败原因："+e.getMessage(),e);
-			throw new FoxBPMException("同步连接器失败，失败原因："+e.getMessage(),e);
+			log.error("加载连接器失败，失败原因："+e.getMessage(),e);
+			throw new FoxBPMException("加载连接器失败，失败原因："+e.getMessage(),e);
 		}finally{
 			try {
 				if(stream != null){
