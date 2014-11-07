@@ -15,7 +15,6 @@
  * 
  * @author ych
  */
-
 package org.foxbpm.engine.impl.query;
 
 /**

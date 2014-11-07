@@ -16,7 +16,6 @@
  * @author kenshin
  * @author ych
  */
-
 package org.foxbpm.engine.impl.persistence;
 
 import org.foxbpm.engine.exception.FoxBPMClassLoadingException;

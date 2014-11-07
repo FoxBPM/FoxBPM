@@ -19,10 +19,11 @@ package org.foxbpm.connector.actorconnector.SelectUserActorConnector;
 
 import java.util.List;
 
-import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
 import org.foxbpm.engine.impl.util.AssigneeUtil;
 import org.foxbpm.engine.task.DelegateTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 选择用户
@@ -33,7 +34,7 @@ import org.foxbpm.engine.task.DelegateTask;
 public class SelectUserActorConnector extends ActorConnectorHandler {
 	
 	private static final long serialVersionUID = 1L;
-	
+	private static Logger LOG = LoggerFactory.getLogger(SelectUserActorConnector.class);
 	private java.lang.Object userId;
 	
 	public void setUserId(java.lang.Object userId) {
@@ -42,7 +43,8 @@ public class SelectUserActorConnector extends ActorConnectorHandler {
 	
 	public void assign(DelegateTask task) throws Exception {
 		if (null == userId) {
-			throw new FoxBPMConnectorException("处理人选择器(选择用户)用户编号表达式为空 ! 节点编号：" + task.getNodeId());
+			LOG.warn("处理人选择器(选择用户)用户编号表达式为空 ! 节点编号：" + task.getNodeId());
+			return;
 		}
 		List<String> userList = AssigneeUtil.executionExpressionObj(userId);
 		if (userList.size() == 1) {

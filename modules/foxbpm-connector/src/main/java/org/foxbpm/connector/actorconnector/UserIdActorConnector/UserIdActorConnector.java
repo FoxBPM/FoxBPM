@@ -17,19 +17,19 @@
  */
 package org.foxbpm.connector.actorconnector.UserIdActorConnector;
 
-import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UserIdActorConnector extends ActorConnectorHandler {
 	
 	private static final long serialVersionUID = 1L;
-	
+	private static Logger LOG = LoggerFactory.getLogger(UserIdActorConnector.class);
 	/** humanPerformer独占 potentialOwner共享 */
 	private String assignType;
-	
 	public void setAssignType(String assignType) {
 		this.assignType = assignType;
 	}
@@ -39,7 +39,8 @@ public class UserIdActorConnector extends ActorConnectorHandler {
 		String userId = Authentication.getAuthenticatedUserId();
 		
 		if (StringUtil.isEmpty(userId)) {
-			throw new FoxBPMConnectorException("处理人选择器(系统登陆人)系统登录人未找到,请重新检查借点的人员配置! 节点编号：" + task.getNodeId());
+			LOG.warn("处理人选择器(系统登陆人)系统登录人未找到,请重新检查借点的人员配置! 节点编号：" + task.getNodeId());
+			return;
 		}
 		
 		if (assignType != null) {

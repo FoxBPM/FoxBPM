@@ -20,11 +20,12 @@ package org.foxbpm.connector.actorconnector.RandomAssign;
 import java.util.List;
 import java.util.Random;
 
-import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
 import org.foxbpm.engine.impl.util.AssigneeUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 随机分配任务
@@ -39,10 +40,11 @@ public class RandomAssign extends ActorConnectorHandler {
 	 */
 	private static final long serialVersionUID = 325047500772052099L;
 	private java.lang.Object userId;
-	
+	private static Logger LOG = LoggerFactory.getLogger(RandomAssign.class);
 	public void assign(DelegateTask task) throws Exception {
 		if (null == userId) {
-			throw new FoxBPMConnectorException("处理人选择器(资源中随机分配)用户编号表达式为空 ! 节点编号：" + task.getNodeId());
+			LOG.warn("处理人选择器(资源中随机分配)用户编号表达式为空 ! 节点编号：" + task.getNodeId());
+			return;
 		}
 		// 获取待分配的用户
 		List<String> userIds = AssigneeUtil.executionExpressionObj(userId);
