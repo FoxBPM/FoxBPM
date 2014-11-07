@@ -26,7 +26,7 @@ var pagefunction = function() {
 								},
 								{
 									"orderable" : false,
-									"data" : 'processLocation',
+									"data" : 'processLocationString',
 									"defaultContent" : "-"
 								},
 								{

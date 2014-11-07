@@ -20,6 +20,7 @@ package org.foxbpm.engine.impl.persistence;
 
 import java.util.List;
 
+import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.runtime.ProcessInstanceQueryImpl;
 import org.foxbpm.engine.runtime.ProcessInstance;
@@ -100,9 +101,14 @@ public class ProcessInstanceManager extends AbstractManager {
 	
 	@Override
 	public void beforeFlush() {
-		
-		for(CachedObject cacheObject : cachedObjects.values()){
-			ProcessInstanceEntity processInstanceEntity = (ProcessInstanceEntity)cacheObject.getPersistentObject();
+		removeUnnecessaryOperations();
+		for(PersistentObject obj : insertedObjects){
+			ProcessInstanceEntity processInstanceEntity = (ProcessInstanceEntity)obj;
+			processInstanceEntity.getRootToken().fireEvent(KernelEvent.BEFORE_PROCESS_SAVE);
+		}
+		List<PersistentObject> updateObjects = getUpdatedObjects();
+		for(PersistentObject obj : updateObjects){
+			ProcessInstanceEntity processInstanceEntity = (ProcessInstanceEntity)obj;
 			processInstanceEntity.getRootToken().fireEvent(KernelEvent.BEFORE_PROCESS_SAVE);
 		}
 		

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<foxbpmconfig:FoxBPMConfig xmlns:foxbpmconfig="http://www.foxbpm.org/foxbpmconfig">
+	<eventListeners>
+		<!-- 更新业务表数据插件，会自动更新业务表相关字段，详见插件详细介绍 -->
+		<eventListener id="updateBizTableListener-node-enter" eventType="before-process-save" listenerClass="org.foxbpm.plugin.processinfo.UpdateBizTableListener" priority="60" />
+	</eventListeners>
+</foxbpmconfig:FoxBPMConfig>

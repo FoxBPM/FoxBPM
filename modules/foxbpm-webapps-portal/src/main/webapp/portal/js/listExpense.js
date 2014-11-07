@@ -10,6 +10,7 @@ var pagefunction = function() {
 							{data : 'deptName'},
 							{data : 'account'},  
 							{ data: 'invoiceType' },
+							{ data: 'processStep' },
 					        { data: 'createTime' }
 						],
 						columnDefs : [
@@ -79,36 +80,11 @@ var pagefunction = function() {
 		                        "sPrevious": "上一页",
 		                        "sNext": "下一页",
 		                        "sLast": "末页"
-		                    },
-		                    "sSearch": "_INPUT_ "+
-                    		"&nbsp;&nbsp;<input placeholder='创建起始'id='createtime_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:11%'>" +
-                    		"<label for='createtime_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-72.2%;top:-5px'></label>" +
-                    		" - " +
-                    		"<input placeholder='创建终止' id='createtime_end_dateselect_filter' type='text' value='' class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:11%'>"+
-                    		"<label for='createtime_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-59%;top:-5px'></label> " +
-                    		"&nbsp;&nbsp;<input placeholder='完成起始' id='complete_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:11%'>"+
-                    		"<label for='complete_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-46%;top:-5px'></label>" +
-                    		" - "+
-                    		"<input placeholder='完成终止' id='complete_end_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:11%'>"+
-                    		"<label for='complete_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-33%;top:-5px'></label>"+
-                    		"&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' onclick='searchTodoTask();' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);' onclick='clearCondition();'>重置</a></div></form>"
-
+		                    }
 				        },
 				        "bStateSave" : false,
 				        "bAutoWidth": true,
-				        "sPaginationType":'full_numbers',
-				        "drawCallback":function(){
-							//调整页面布局
-							$("#datatable_col_reorder_length").css("padding-right","10px");
-							$(".dt-toolbar").css("padding-bottom","6px");
-							$(".dt-toolbar").css("padding-right","64px");
-							$("#datatable_col_reorder_filter").css("width","1200px");
-							$("[type='search']").attr("placeholder","主题/发起人");
-							//屏蔽搜索框所有事件
-							$("#datatable_col_reorder_filter input[type=search]").unbind();
-							pageSetUp();	
-						}
-
+				        "sPaginationType":'full_numbers'
 					});
 	 
 		doneTable.column(3).order( 'desc' );

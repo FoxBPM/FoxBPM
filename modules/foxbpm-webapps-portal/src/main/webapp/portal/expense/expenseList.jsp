@@ -43,6 +43,7 @@
 									<th><i class="fa fa-fw fa-rocket text-muted hidden-md hidden-sm hidden-xs"></i> 报销部门</th>
 									<th><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> 金额</th>
 									<th><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> 报销类型</th>
+									<th><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> 当前节点</th>
 									<th><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"> </i> 创建时间</th>
 								</tr>
 							</thead>

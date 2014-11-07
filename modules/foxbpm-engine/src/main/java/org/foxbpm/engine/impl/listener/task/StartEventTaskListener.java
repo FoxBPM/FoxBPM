@@ -48,10 +48,10 @@ public class StartEventTaskListener extends AbstractTaskEventListener {
 		taskEntity.setNodeId(kernelFlowNode.getId());
 		taskEntity.setNodeName(kernelFlowNode.getName());
 		taskEntity.setTaskType(TaskType.STARTEVENTTASK);
-		
+		taskEntity.setSubject("启动流程");
 		taskEntity.setCommandId(TaskCommandSystemType.STARTEVENT);
 		taskEntity.setCommandType(TaskCommandSystemType.STARTEVENT);
-		//taskInstance.setCommandMessage("流程启动");
+		taskEntity.setCommandMessage("启动流程");
 		TaskCommandDefinition taskCommandDef=Context.getProcessEngineConfiguration().getTaskCommandDefinitionMap().get(TaskCommandSystemType.STARTEVENT);
 		if(taskCommandDef!=null){
 			taskEntity.setCommandMessage(taskCommandDef.getName());

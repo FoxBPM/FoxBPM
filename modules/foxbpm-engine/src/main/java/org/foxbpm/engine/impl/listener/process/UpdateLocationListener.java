@@ -57,11 +57,12 @@ public class UpdateLocationListener  implements KernelListener {
 		TokenEntity token = (TokenEntity)executionContext;
 		ProcessInstanceEntity processInstance = token.getProcessInstance();
 		if(processInstance != null){
-			Map<String,Object> location = getProcessLocation(processInstance);
-			
-			ObjectMapper objectMapper = new ObjectMapper();
-			String l = objectMapper.writeValueAsString(location);
-			processInstance.setProcessLocation(l);
+			if(processInstance.isLocationChange()){
+				Map<String,Object> location = getProcessLocation(processInstance);
+				ObjectMapper objectMapper = new ObjectMapper();
+				String l = objectMapper.writeValueAsString(location);
+				processInstance.setProcessLocation(l);
+			}
 		}
 	}
 	
