@@ -60,6 +60,11 @@ public class ExpenseEntity {
 	private String reason;
 	
 	/**
+	 * 当前位置信息
+	 */
+	private String processStep;
+	
+	/**
 	 * 创建时间
 	 */
 	private String createTime;
@@ -135,5 +140,15 @@ public class ExpenseEntity {
 		}
 		return "未知用户";
 	}
+	
+	public void setProcessStep(String processStep) {
+		this.processStep = processStep;
+	}
+	
+	public String getProcessStep() {
+		return processStep;
+	}
+	
+	
 
 }

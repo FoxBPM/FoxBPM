@@ -361,14 +361,14 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 				log.debug("监听编号：{},监听事件：{},优先级：{},类名：{}", tmp.getId(), tmp.getEventType(), tmp.getPriority(), tmp.getListenerClass());
 			}
 		}
-		if(eventListenerImpls != null) {
+		if(eventListeners != null) {
 			this.eventMapListeners = new HashMap<String, List<EventListener>>();
-			List<EventListener> eventListeners = null;
-			for(EventListenerImpl tmp :eventListenerImpls){
+			List<EventListener> tmpEventListeners = null;
+			for(EventListener tmp :eventListeners){
 				if(eventMapListeners.get(tmp.getEventType()) == null){
-					eventListeners =  new ArrayList<EventListener>();
-					eventListeners.add(tmp);
-					eventMapListeners.put(tmp.getEventType(), eventListeners);
+					tmpEventListeners =  new ArrayList<EventListener>();
+					tmpEventListeners.add(tmp);
+					eventMapListeners.put(tmp.getEventType(), tmpEventListeners);
 				}else{
 					eventMapListeners.get(tmp.getEventType()).add(tmp);
 				} 

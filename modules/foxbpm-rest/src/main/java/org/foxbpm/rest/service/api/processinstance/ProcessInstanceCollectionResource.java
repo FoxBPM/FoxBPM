@@ -24,6 +24,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.foxbpm.engine.RuntimeService;
+import org.foxbpm.engine.impl.util.LocationUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.runtime.ProcessInstanceQuery;
 import org.foxbpm.rest.common.RestConstants;
@@ -108,6 +109,9 @@ public class ProcessInstanceCollectionResource extends AbstractRestResource {
 				String initator = StringUtil.getString(tmp.get("initiator"));
 				String initatorName = getUserName(initator);
 				tmp.put("initatorName", initatorName);
+				String processLocation = StringUtil.getString(tmp.get("processLocation"));
+				String processLocationString = LocationUtil.parseProcessLocation(processLocation);
+				tmp.put("processLocationString", processLocationString);
 			}
 		}
 		return result;

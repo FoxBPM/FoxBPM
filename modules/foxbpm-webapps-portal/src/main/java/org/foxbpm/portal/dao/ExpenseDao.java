@@ -73,6 +73,7 @@ public class ExpenseDao {
 			expenseEntity.setReason(rs.getString("reason"));
 			expenseEntity.setDept(rs.getString("dept"));
 			expenseEntity.setInvoiceType(rs.getString("invoiceType"));
+			expenseEntity.setProcessStep(rs.getString("processStep"));
 			return expenseEntity;
 		}
 	}
