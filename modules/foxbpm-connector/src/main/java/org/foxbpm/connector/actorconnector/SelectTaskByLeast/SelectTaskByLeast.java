@@ -22,13 +22,14 @@ import java.util.List;
 import java.util.Set;
 
 import org.foxbpm.engine.TaskService;
-import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
 import org.foxbpm.engine.impl.util.AssigneeUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
 import org.foxbpm.engine.task.TaskQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 选择任务最少者
@@ -43,11 +44,12 @@ public class SelectTaskByLeast extends ActorConnectorHandler {
 	 */
 	private static final long serialVersionUID = -7475673707019152696L;
 	private java.lang.Object userId;
-	
+	private static Logger LOG = LoggerFactory.getLogger(SelectTaskByLeast.class);
 	public void assign(DelegateTask task) throws Exception {
 		
 		if (null == userId) {
-			throw new FoxBPMConnectorException("处理人选择器(资源中任务最少者)用户编号表达式为空 ! 节点编号：" + task.getNodeId());
+			LOG.warn("处理人选择器(资源中任务最少者)用户编号表达式为空 ! 节点编号：" + task.getNodeId());
+			return;
 		}
 		// 获取待分配的用户
 		List<String> userIds = AssigneeUtil.executionExpressionObj(userId);

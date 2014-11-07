@@ -23,12 +23,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.foxbpm.engine.Constant;
-import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
 import org.foxbpm.engine.impl.util.AssigneeUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
 import org.foxbpm.engine.task.IdentityLinkType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 角色选择
@@ -42,12 +43,13 @@ public class SelectRole extends ActorConnectorHandler {
 	 * 
 	 */
 	private static final long serialVersionUID = -5466313199990930905L;
-	
+	private static Logger LOG = LoggerFactory.getLogger(SelectRole.class);
 	private java.lang.Object roleId;
 	
 	public void assign(DelegateTask task) throws Exception {
 		if (null == roleId) {
-			throw new FoxBPMConnectorException("处理人选择器(选择角色)角色编号表达式为空 ! 节点编号：" + task.getNodeId());
+			LOG.warn("处理人选择器(选择角色)角色编号表达式为空 ! 节点编号：" + task.getNodeId());
+			return;
 		}
 		// 处理角色重复
 		List<String> userList = AssigneeUtil.executionExpressionObj(roleId);

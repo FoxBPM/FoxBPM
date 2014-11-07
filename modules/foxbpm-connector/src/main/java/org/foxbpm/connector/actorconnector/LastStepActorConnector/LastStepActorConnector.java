@@ -17,11 +17,12 @@
  */
 package org.foxbpm.connector.actorconnector.LastStepActorConnector;
 
-import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 上一步骤处理者
@@ -32,11 +33,13 @@ import org.foxbpm.engine.task.DelegateTask;
 public class LastStepActorConnector extends ActorConnectorHandler {
 	
 	private static final long serialVersionUID = 1L;
+	private static Logger LOG = LoggerFactory.getLogger(LastStepActorConnector.class);
 	
 	public void assign(DelegateTask task) throws Exception {
 		String userId = Authentication.getAuthenticatedUserId();
 		if (StringUtil.isEmpty(userId)) {
-			throw new FoxBPMConnectorException("处理人选择器(上一步骤处理者)上一步处理者未找到,请重新检查借点的人员配置! 节点编号：" + task.getNodeId());
+			LOG.warn("处理人选择器(上一步骤处理者)上一步处理者未找到,请重新检查借点的人员配置! 节点编号：" + task.getNodeId());
+			return;
 		}
 		task.setAssignee(userId);
 	}

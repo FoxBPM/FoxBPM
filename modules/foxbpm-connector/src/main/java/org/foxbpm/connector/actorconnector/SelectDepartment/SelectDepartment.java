@@ -23,13 +23,14 @@ import java.util.List;
 import java.util.Set;
 
 import org.foxbpm.engine.Constant;
-import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
 import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.AssigneeUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 选择部门(只包含子部门)
@@ -43,12 +44,14 @@ public class SelectDepartment extends ActorConnectorHandler {
 	 * 
 	 */
 	private static final long serialVersionUID = 2721883158970190680L;
+	private static Logger LOG = LoggerFactory.getLogger(SelectDepartment.class);
 	private java.lang.Object departmentId;
 	
 	public void assign(DelegateTask task) throws Exception {
 		
 		if (null == departmentId) {
-			throw new FoxBPMConnectorException("处理人选择器(选择部门(只包含子部门))部门编号表达式为空 ! 节点编号：" + task.getNodeId());
+			LOG.warn("处理人选择器(选择部门(只包含子部门))部门编号表达式为空 ! 节点编号：" + task.getNodeId());
+			return;
 		}
 		List<String> departmentIds = AssigneeUtil.executionExpressionObj(departmentId);
 		// 处理部门重复

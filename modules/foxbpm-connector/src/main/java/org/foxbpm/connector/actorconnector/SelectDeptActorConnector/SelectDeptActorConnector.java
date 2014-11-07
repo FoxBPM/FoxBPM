@@ -19,11 +19,12 @@ package org.foxbpm.connector.actorconnector.SelectDeptActorConnector;
 
 import java.util.List;
 
-import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
 import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.impl.util.AssigneeUtil;
 import org.foxbpm.engine.task.DelegateTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SelectDeptActorConnector extends ActorConnectorHandler {
 	
@@ -31,6 +32,7 @@ public class SelectDeptActorConnector extends ActorConnectorHandler {
 	
 	private java.lang.Object deptId;
 	
+	private static Logger LOG = LoggerFactory.getLogger(SelectDeptActorConnector.class);
 	public void setDeptId(java.lang.Object deptId) {
 		this.deptId = deptId;
 	}
@@ -38,7 +40,8 @@ public class SelectDeptActorConnector extends ActorConnectorHandler {
 	public void assign(DelegateTask task) throws Exception {
 		
 		if (null == deptId) {
-			throw new FoxBPMConnectorException("处理人选择器(选择部门)部门编号表达式为空 ! 节点编号：" + task.getNodeId());
+			LOG.warn("处理人选择器(选择部门)部门编号表达式为空 ! 节点编号：" + task.getNodeId());
+			return;
 		}
 		GroupEntity group = null;
 		List<String> deptList = AssigneeUtil.executionExpressionObj(deptId);

@@ -17,10 +17,11 @@
  */
 package org.foxbpm.connector.actorconnector.StartAuthorActorConnector;
 
-import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.impl.connector.ActorConnectorHandler;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class StartAuthorActorConnector extends ActorConnectorHandler {
 	
@@ -28,7 +29,7 @@ public class StartAuthorActorConnector extends ActorConnectorHandler {
 	
 	/** humanPerformer独占 potentialOwner共享 */
 	private String assignType;
-	
+	private static Logger LOG = LoggerFactory.getLogger(StartAuthorActorConnector.class);
 	public void setAssignType(String assignType) {
 		this.assignType = assignType;
 	}
@@ -38,7 +39,8 @@ public class StartAuthorActorConnector extends ActorConnectorHandler {
 		String initiator = task.getExecutionContext().getStartAuthor();
 		
 		if (StringUtil.isEmpty(initiator)) {
-			throw new FoxBPMConnectorException("处理人选择器(启动人)启动人未找到,请重新检查借点的人员配置! 节点编号：" + task.getNodeId());
+			LOG.warn("处理人选择器(启动人)启动人未找到,请重新检查借点的人员配置! 节点编号：" + task.getNodeId());
+			return;
 		}
 		
 		if (assignType != null) {
