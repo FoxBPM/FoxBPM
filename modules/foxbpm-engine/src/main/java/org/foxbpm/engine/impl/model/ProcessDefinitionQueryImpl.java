@@ -16,7 +16,6 @@
  * @author kenshin
  * @author ych
  */
-
 package org.foxbpm.engine.impl.model;
 
 import java.util.List;
