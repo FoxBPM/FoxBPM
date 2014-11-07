@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<connectormenu:Menu xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:connectormenu="http://www.foxbpm.org/connectormenu">
+  <flowConnector>
+    <node id="71e8d50f-5d55-4b03-88b0-dbe37bc8fed33" name="自定义" ico="group_16.png">
+      <node id="ceeb3fae-e11c-4a43-8580-5afe711da595" name="自定义路径" ico="category.png">
+        <connector id="SendMessage" name="发送短信" note="发送短信" ico="SendMessage.png" package="org/foxbpm/connector/SendMessage"/>
+      </node>
+    </node>
+  </flowConnector>
+  <actorConnector>
+    <node id="71e8d50f-5d55-4b03-88b0-dbe37bc8fedf" name="自定义" ico="group_16.png"/>
+  </actorConnector>
+</connectormenu:Menu>

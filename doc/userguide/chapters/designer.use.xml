@@ -37,6 +37,9 @@
         <orderedlist>
             <listitem>
                 <para>打开windows->preferences->流程设计器配置，配置相关属性。</para>
+                <mediaobject><imageobject>
+                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.43.png"/>
+                </imageobject></mediaobject>
                 <itemizedlist>
                     <listitem>
                         <para>服务地址：此地址需要根据自己项目web.xml中配置的rest服务而确定，foxbpm-webapps-common中rest服务前缀默认为service/，所以此处写http://localhost:8080/foxbpm-webapps-common/service</para>
@@ -61,19 +64,19 @@
             <listitem>
                 <para>选中一个目录，右键new File->Other->FoxBPM->新建FoxBPM流程</para>
                 <mediaobject><imageobject>
-                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.01.png"/>
+                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.36.png"/>
                 </imageobject></mediaobject>
             </listitem>
             <listitem>
                 <para>选择模板，点击NEXT。</para>
                 <mediaobject><imageobject>
-                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.01.png"/>
+                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.44.png"/>
                 </imageobject></mediaobject>
             </listitem>
             <listitem>
                 <para>填写流程相关信息。</para>
                 <mediaobject><imageobject>
-                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.01.png"/>
+                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.45.png"/>
                 </imageobject></mediaobject>
                 <itemizedlist>
                     <listitem>
@@ -90,7 +93,7 @@
             <listitem>
                 <para>点击FINISH,如果第一步中的同步没问题的话，此处应该在选中的目录下创建了新的bpmn文件和png文件。</para>
                 <mediaobject><imageobject>
-                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.01.png"/>
+                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.46.png"/>
                 </imageobject></mediaobject>
             </listitem>
         </orderedlist>
@@ -646,8 +649,115 @@
         </sect1>
     </chapter>
     <chapter>
-        <title>连接器和选择器的创建</title>
-        <para></para>
+        <title>连接器和选择器</title>
+        <para>FoxBPM将项目中可能遇到的通用功能封装成可视化的插件，称为连接器，如邮件、如连接微博，ESB等，都可以封装成连接器</para>
+        <para>引擎默认提供了几种常用的连接器，如果需要自定义连接器，可以按照如下步骤。</para>
+        <sect1>
+            <title>连接器的创建</title>
+            <para>用户在创建连接器之前要了解FoxBPM对连接器的处理。</para>
+            <para>FoxBPM将连接器分为两类，一类为系统默认连接器，一类为用户自定义连接器。系统连接器是foxbpm-connector.jar，默认必须添加。
+                自定义连接器可以是自己创建的，也可以是其他FoxBPM用户创建之后共享的，不管是自己创建的，还是其他用户共享的，都需要注册到自己的引擎中，并且在设计流程之前同步到本地才能使用。</para>
+            <para>自定义连接器步骤如下：</para>
+            <orderedlist>
+                <listitem>
+                    <para>首先，需要用户建立自定义的连接器菜单文件，这里我取名CustomConnectorMenu.xml，放到我的web项目中</para>
+                    <mediaobject><imageobject>
+                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.34.png"/>
+                    </imageobject></mediaobject>
+                    <programlisting>
+&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;connectormenu:Menu xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:connectormenu="http://www.foxbpm.org/connectormenu">
+  &lt;flowConnector>
+  	&lt;node id="71e8d50f-5d55-4b03-88b0-dbe37bc8fed33" name="自定义" ico="group_16.png">
+    &lt;/node>
+  &lt;/flowConnector>
+  &lt;actorConnector>
+    &lt;node id="71e8d50f-5d55-4b03-88b0-dbe37bc8fedf" name="自定义" ico="group_16.png">
+    &lt;/node>
+  &lt;/actorConnector>
+&lt;/connectormenu:Menu>                
+                    </programlisting>
+                </listitem>
+                <listitem>
+                    <para>在首选项中配置连接器的menu地址，就是上面我们创建的文件的物理路径。</para>
+                    <mediaobject><imageobject>
+                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.35.png"/>
+                    </imageobject></mediaobject>
+                </listitem>
+                <listitem>
+                    <para>然后在需要创建连接器的包上右键->New->other->FoxBPM->创建连接器，打开创建连接器的界面。</para>
+                    <mediaobject><imageobject>
+                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.36.png"/>
+                    </imageobject></mediaobject>
+                </listitem>
+                <listitem>
+                    <para>填写连接器基本信息，这里我以发送短信为例子</para>
+                    <para>发送短信，我需要收件人手机号和短信内容两个参数，并且将两个参数放到一个页面上，所以填好之后如下</para>
+                    <mediaobject><imageobject>
+                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.37.png"/>
+                    </imageobject></mediaobject>
+                </listitem>
+                <listitem>
+                    <para>点击“完成”之后，会在选中的目录，生成新的包，如sendMessage，包下有三个文件，SendMessage.java，connecto.xml,SendMessage.png，也就是一个完成的连接器必须有的三个文件。
+                        其中：SendMessage.java是连接器的实现逻辑，需要再excute方法中写入发送短信的逻辑，如调用短信猫接口等。connector.xml中记录了连接器的结构信息。
+                        除创建文件之外，还会在上面的CustomConnectorMenu.xml中写入对应信息（如果是其他用户共享连接器，需要手工填写这段xml）。</para>
+                    <mediaobject><imageobject>
+                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.38.png"/>
+                    </imageobject></mediaobject>
+                    <mediaobject><imageobject>
+                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.39.png"/>
+                    </imageobject></mediaobject>
+                </listitem>
+               
+            </orderedlist>
+        </sect1>
+        <sect1>
+            <title>连接器的注册</title>
+            <orderedlist>
+                <listitem>
+                    <para>将CustomConnectorMenu.xml注册给流程引擎，如spring配置：</para>
+                    <mediaobject><imageobject>
+                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.40.png"/>
+                    </imageobject></mediaobject>
+                    <programlisting>
+
+	&lt;!-- 流程引擎配置 -->
+	&lt;bean id="processEngineConfigurationSpring"
+		class="org.foxbpm.engine.spring.ProcessEngineConfigurationSpring">
+		&lt;property name="dataSource" ref="foxbpmDataSource" />
+		&lt;property name="transactionManager" ref="foxbpmTransactionManager" />
+		&lt;property name="foxbpmScheduler" ref="foxbpmScheduler">&lt;/property>
+		&lt;property name="connectorMenuPath" value="conf/CustomConnectorMenu.xml">&lt;/property>
+		&lt;property name="configXmlPath" value="conf/foxbpmconfig.xml">&lt;/property>
+	&lt;/bean>                        
+                    </programlisting>
+                </listitem>
+                <listitem>
+                    <para>
+                        然后重启服务，点击流程同步，就可以将新的连接器同步到本地，在设计流程的时候就可以直接使用新的连接器了。
+                    </para>
+                    <mediaobject><imageobject>
+                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.41.png"/>
+                    </imageobject></mediaobject>
+                    <mediaobject><imageobject>
+                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.42.png"/>
+                    </imageobject></mediaobject>
+                </listitem>     
+            </orderedlist>
+            
+            <note>
+                <title></title>
+                <para>上面创建连接器的目录，必须在classpath中。如果是其他用户共享的连接器，需要将对应jar包放到lib下。</para>
+            </note>
+        </sect1>
+        <sect1>
+            <title>处理人选择器</title>
+            <para>选择器的创建和连接器基本一致，用户可以尝试进行创建。</para>
+        </sect1>
+        <sect1>
+            <title> 连接器和选择器的共享</title>
+            <para>一个完整的连接器应该包含**.java，**.png，connector.xml三个文件，将三个文件导出jar包，在配合详细的说明文档，就可以共享给其他用户使用了。</para>
+           </sect1>
     </chapter>
     <chapter>
         <title>附录：系统默认连接器和选择器功能介绍</title>

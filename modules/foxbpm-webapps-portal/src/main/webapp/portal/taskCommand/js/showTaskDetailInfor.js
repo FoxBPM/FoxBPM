@@ -19,7 +19,7 @@ var _GlobalFlowVar = {
 	nodeInforArr : [],
 	isIE : window.ActiveXObject && $.browser.msie && $.browser.version < 8.0,
 	_self : this,
-	_bpmServiceUrl : _serviceUrl,
+	_bpmServiceUrl : _bpmServiceUrl,
 	init : function(config) {
 		this.taskListEnd = config.taskListEnd || [];
 		this.taskListIng = config.taskListIng || [];
