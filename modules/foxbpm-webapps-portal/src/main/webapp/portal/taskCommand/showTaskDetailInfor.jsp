@@ -1,15 +1,22 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
 <meta charset="utf-8">
+<%
+    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/";
+%>
+<base href="<%=basePath%>">
+
 <title>FoxBPM流程门户</title>
-<link rel="stylesheet" type="text/css" href="css/taskDetailInfor.css" />
-<script src="js/jquery.js"></script>
-<script src="js/foxbpmframework.js"></script>
-<script src="js/taskInfor.js"></script>
-<script src="js/flowInfor.js"></script> 
-<script src="js/flowGraphicInfor.js"></script>
-<script src="js/flowRunTrackInfor.js"></script>
+<link rel="stylesheet" type="text/css" href="portal/taskCommand/css/taskDetailInfor.css" />
+<script src="portal/taskCommand/js/jquery.js"></script>
+<script src="portal/taskCommand/js/foxbpmframework.js"></script>
+<script src="portal/taskCommand/js/taskInfor.js"></script>
+<script src="portal/taskCommand/js/flowInfor.js"></script> 
+<script src="portal/taskCommand/js/flowGraphicInfor.js"></script>
+<script src="portal/taskCommand/js/flowRunTrackInfor.js"></script>
 </head>
 <body>
 	<br>
@@ -50,7 +57,7 @@
 			//流程信息
 			var flowInfor = new FlowInfor({
 				 eleId:'flowInforEle',
-			    action : _serviceUrl,
+			    action : _bpmServiceUrl,
 				processInstanceId : _processInstanceId
 			});
 			flowInfor.init(); 
@@ -58,7 +65,7 @@
 			var flowRunTrackInfor = new FlowRunTrackInfor({
 				eleId:'flowRunTrackInforEle',
 				isIELowVer:isIELowVer,
-				action : _serviceUrl + 'task/runTrack',
+				action : _bpmServiceUrl + '/task/runTrack',
 				processInstanceId : _processInstanceId
 			});
 			flowRunTrackInfor.init();
@@ -66,7 +73,7 @@
 			var flowGraphicInfor = new FlowGraphicInfor({
 				eleId:'flowGraphicInforEle',
 				isIELowVer : isIELowVer,
-				action : _serviceUrl,
+				action : _bpmServiceUrl,
 				processInstanceId : _processInstanceId,
 				processDefinitionKey : _processDefinitionKey,
 				runTrackObj:flowRunTrackInfor
@@ -75,7 +82,7 @@
 			//任务信息
 		     var taskInfor = new TaskInfor({
 		    	eleId:'taskInforEle',
-		    	action : _serviceUrl,
+		    	action : _bpmServiceUrl,
 				processInstanceId : _processInstanceId,
 				processDefinitionKey : _processDefinitionKey,
 				flowInforObj:flowInfor,

@@ -17,7 +17,7 @@ TaskInfor.prototype = {
 					.ajax({
 						type : "get",// 使用get方法访问后台
 						dataType : "json",// 返回json格式的数据
-						url : $this.action + "runtime/tasks",// 要访问的后台地址
+						url : $this.action + "/runtime/tasks",// 要访问的后台地址
 						data : {
 							processInstanceId : $this.processInstanceId,
 							orderby : 'endTime',
@@ -71,7 +71,7 @@ TaskInfor.prototype = {
 												img = $("<img width='48' height='48' class='timeline-comment-avatar'>");
 												img.attr("alt", data.userName);
 												img.attr("src", $this.action
-														+ "identity/users/"
+														+ "/identity/users/"
 														+ data.userName
 														+ "/picture");
 												a.append(img);
@@ -161,7 +161,7 @@ TaskInfor.prototype = {
 							if($this.flowGraphicInforObj){
 								$.ajax({
 									type : "GET",
-									url : $this.action + 'flowGraphic/position',
+									url : $this.action + '/flowGraphic/position',
 									dataType : "json",// 返回json格式的数据
 									data : "processDefinitionId=" + processDefinitionId,
 									success : function(data) {
@@ -184,7 +184,7 @@ TaskInfor.prototype = {
 				+ taskId + " >";
 		html += "<div id='warning' style='text-align:center;'><span id=tips_"
 				+ flag
-				+ " style='display:none'>数据为空!</span><img style='display:none' src='images/loading.gif' id=loading_"
+				+ " style='display:none'>数据为空!</span><img style='display:none' src='"+_bpmFilePath+"/images/loading.gif' id=loading_"
 				+ flag + " /></div>";
 		html += "<div id=data_" + flag + "></div>";
 		return html;
@@ -200,7 +200,7 @@ TaskInfor.prototype = {
 						type : "get",// 使用get方法访问后台
 						cache : false,
 						dataType : "json",// 返回json格式的数据
-						url : this.action + "runtime/tasks/" + taskId
+						url : this.action + "/runtime/tasks/" + taskId
 								+ "/operations",// 要访问的后台地址
 						success : function(msg) {
 							$("#loading_" + i).hide();

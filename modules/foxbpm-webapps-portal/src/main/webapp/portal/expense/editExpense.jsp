@@ -26,7 +26,7 @@
 	
 	
 	<script type="text/javascript">
-	 parent.window.$('#contentFrame').css("width",650);
+	 //parent.window.$('#contentFrame').css("width",650);
 	 //设置上次读取的时间，表单初始化和每次轮询之后设置值
 	 var lastReadTime;
 	$(document).ready(function() {
@@ -234,7 +234,7 @@
 	</style>
 </head>
 	
-<body style="width:600px" class="keBody">
+<body class="keBody">
 
 <div class="jarviswidget" id="wid-id-8" data-widget-editbutton="false" data-widget-custombutton="false"  style="margin:0 0 0 0">
 	<header>
@@ -243,7 +243,7 @@
 		<h2>报销单据</h2>
 	</header>
 	<!-- widget div-->
-	<div id="leftDiv" style="float:left;width:100%;height:495px; border:1px solid red;">
+	<div id="leftDiv">
 		<div class="jarviswidget-editbox">
 		</div>
 		<div class="widget-body no-padding" style="border-right-width:2px;border-right-style:outset;">

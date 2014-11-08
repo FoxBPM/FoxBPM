@@ -47,6 +47,9 @@
                     <listitem>
                         <para> 解压路径：资源的本地存放路径，建议新建文件夹。</para>
                     </listitem>
+                    <listitem>
+                        <para> 连接器Menu路径：自定义连接器的菜单路径，不用自定义连接器时可不填，具体在连接器章节介绍。</para>
+                    </listitem>
                 </itemizedlist>
             </listitem>
             <listitem>
@@ -64,7 +67,7 @@
             <listitem>
                 <para>选中一个目录，右键new File->Other->FoxBPM->新建FoxBPM流程</para>
                 <mediaobject><imageobject>
-                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.36.png"/>
+                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.47.png"/>
                 </imageobject></mediaobject>
             </listitem>
             <listitem>
@@ -93,7 +96,7 @@
             <listitem>
                 <para>点击FINISH,如果第一步中的同步没问题的话，此处应该在选中的目录下创建了新的bpmn文件和png文件。</para>
                 <mediaobject><imageobject>
-                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.46.png"/>
+                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.48.png"/>
                 </imageobject></mediaobject>
             </listitem>
         </orderedlist>
@@ -209,8 +212,27 @@
                         <para>连接器是将项目中用到的通用功能，封装成可视化的操作界面，给流程设计人员使用，如发送邮件，发送短信，调用webService等功能。</para>
                         <para>连接器的创建和注册功能，会在后面章节单独介绍。</para>
                         <mediaobject><imageobject>
-                            <imagedata align="center" contentwidth="600" fileref="images/designer.use.09.png"/>
+                            <imagedata align="center" contentwidth="600" fileref="images/designer.use.092.png"/>
                         </imageobject></mediaobject>
+                        <para>添加连接器时，会根据添加的位置不同有不同的监听事件，如流程定义上有开始、结束、终止，人工任务上有进入、分配、执行、离开等，用户可以根据自己的需求确定连接器的执行时机。</para>
+                        <mediaobject><imageobject>
+                            <imagedata align="center" contentwidth="600" fileref="images/designer.use.093.png"/>
+                        </imageobject></mediaobject>
+                        <itemizedlist>
+                            <listitem>
+                                <para>事件：连接器的执行时机，不同节点有不同的事件类型可以选择。</para>
+                            </listitem>
+                            <listitem>
+                                <para>跳过策略：特殊情况下跳过此连接器的执行，表达式需返回bool类型。</para>
+                            </listitem>
+                            <listitem>
+                                <para>定时器配置：连接器的定时执行，在选择的事件上触发后创建Job,可返回cron表达式、List&lt;Trigger&gt;或Trigger类型。</para>
+                            </listitem>
+                            <listitem>
+                                <para>异常处理：暂不支持，目前异常处理方式均为阻断型，会回滚整个事务。</para>
+                            </listitem>
+                        </itemizedlist>
+                        <para>后面的属性配置，会根据创建连接器时的设置填写不同的属性。详见连接器创建。</para>
                     </listitem>
                 </orderedlist>
                 <para></para>

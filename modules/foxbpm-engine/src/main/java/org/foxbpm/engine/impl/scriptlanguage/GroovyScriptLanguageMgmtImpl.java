@@ -34,97 +34,65 @@ public class GroovyScriptLanguageMgmtImpl extends AbstractScriptLanguageMgmt {
 
 	private GroovyShell groovyShell;
 
-	 
 	public AbstractScriptLanguageMgmt init() {
 		groovyShell = new GroovyShell();
 		return this;
 	}
 
-	 
 	public void close() {
 		groovyShell = null;
 	}
 
-	 
 	public Object execute(String scriptText, ProcessDefinitionEntity processDefinition) {
 		List<String> dvList = getDataVariableList(scriptText);
 		if (dvList.size() > 0) {
 			for (String expressionId : dvList) {
-				List<DataVariableDefinition> dataVariableBehaviors = processDefinition.getDataVariableMgmtDefinition()
-						.getDataVariableBehaviorsByProcess();
+				List<DataVariableDefinition> dataVariableBehaviors = processDefinition.getDataVariableMgmtDefinition().getDataVariableBehaviorsByProcess();
 				for (DataVariableDefinition dataVariableBehavior : dataVariableBehaviors) {
 					if (StringUtils.equals(dataVariableBehavior.getId(), expressionId)) {
 						Object object = null;
-						
-						
 						String expression = dataVariableBehavior.getExpression();
 						if (StringUtil.isEmpty(expression)) {
 							object = ExpressionMgmt.execute(expression, processDefinition);
 						}
 						ExpressionMgmt.setVariable(expressionId, object);
-
 					}
-
 				}
-
 			}
-
 		}
 		String scriptTextTemp = getExpressionAll(scriptText);
 		return groovyShell.evaluate(scriptTextTemp);
-
 	}
 
-	 
 	public void setVariable(String variableName, Object variableObj) {
-
 		groovyShell.setVariable(variableName, variableObj);
-
 	}
 
-	 
 	public void setVariable(String variableName, Object variableObj, FlowNodeExecutionContext executionContext) {
 		dataVariableCalculate(variableName, executionContext);
 		String scriptText = getExpressionAll(variableName);
-
 		groovyShell.setVariable(scriptText, variableObj);
-
 	}
 
-	 
 	public Object getVariable(String variableName) {
-
 		return groovyShell.getVariable(variableName);
-
 	}
 
-	 
 	public Object execute(String scriptText, FlowNodeExecutionContext executionContext) {
 		if (scriptText == null) {
 			return null;
 		}
-
 		Object resultObj = false;
-
-		// groovyShell.setVariable("bizData",
-		// Context.getProcessEngineConfiguration().getBizData());
-
 		// 绑定变量
 		if (executionContext != null) {
-
 			dataVariableCalculate(scriptText, executionContext);
-
 			groovyShell.setVariable("processInfo", executionContext);
-
 		}
 		String scriptTextTemp = getExpressionAll(scriptText);
-
 		resultObj = groovyShell.evaluate(scriptTextTemp);
-
 		return resultObj;
 	}
 
-	 
 	public Object execute(String scriptText) {
 		return groovyShell.evaluate(scriptText);
 	}
