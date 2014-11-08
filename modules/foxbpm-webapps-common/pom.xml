@@ -25,14 +25,6 @@
 							<groupId>org.foxbpm</groupId>
 							<artifactId>foxbpm-webapps-portal</artifactId>
 						</overlay>
-						<overlay>
-							<groupId>org.foxbpm</groupId>
-							<artifactId>foxbpm-webapps-management</artifactId>
-						</overlay>
-						<overlay>
-							<groupId>org.foxbpm</groupId>
-							<artifactId>foxbpm-webapps-governance</artifactId>
-						</overlay>
 					</overlays>
 				</configuration>
 			</plugin>
@@ -143,18 +135,6 @@
 		<dependency>
 			<groupId>org.foxbpm</groupId>
 			<artifactId>foxbpm-webapps-portal</artifactId>
-			<version>6.0.1-SNAPSHOT</version>
-			<type>war</type>
-		</dependency>
-		<dependency>
-			<groupId>org.foxbpm</groupId>
-			<artifactId>foxbpm-webapps-management</artifactId>
-			<version>6.0.1-SNAPSHOT</version>
-			<type>war</type>
-		</dependency>
-		<dependency>
-			<groupId>org.foxbpm</groupId>
-			<artifactId>foxbpm-webapps-governance</artifactId>
 			<version>6.0.1-SNAPSHOT</version>
 			<type>war</type>
 		</dependency>

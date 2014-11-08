@@ -15,15 +15,8 @@
 		<module>modules/foxbpm-kernel</module>
 		<module>modules/foxbpm-connector</module>
 		<module>modules/foxbpm-rest</module>
-		<module>modules/foxbpm-webapps-rest</module>
-		<module>modules/foxbpm-webapps-base</module>
 		<module>modules/foxbpm-webapps-portal</module>
-		<module>modules/foxbpm-webapps-governance</module>
-		<module>modules/foxbpm-webapps-management</module>
 		<module>modules/foxbpm-webapps-common</module>
-		<module>modules/foxbpm-social</module>
-        <module>modules/foxbpm-workcalendar</module>
-        <module>modules/foxbpm-notification</module>
         <module>modules/foxbpm-bpmn-model</module>
         <module>modules/foxbpm-bpmn-converter</module>
         <module>modules/foxbpm-plugin</module>
