@@ -6,7 +6,7 @@ Foxbpm.commandHandler = {};
 
 //流程状态
 Foxbpm.commandHandler.processStatus = function(data){
-	var url = _bpmFilePath+"/showTaskDetailInfor.html?";
+	var url = _bpmFilePath+"/showTaskDetailInfor.jsp?";
 	if(data.processInstanceId){
 		url += "processInstanceId=" + data.processInstanceId;
 	}else if(data.processDefinitionKey){

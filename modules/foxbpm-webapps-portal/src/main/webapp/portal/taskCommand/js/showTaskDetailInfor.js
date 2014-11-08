@@ -42,12 +42,12 @@ Foxbpm.TaskDeatailInfor = function(flowConfig) {
 	this._flowGraphic = new FlowGraphic({
 		'isIE' : _GlobalFlowVar.isIE,
 		'parentId' : 'flowImg',
-		'action' : _GlobalFlowVar._bpmServiceUrl + 'flowGraphic/flowImg',
+		'action' : _GlobalFlowVar._bpmServiceUrl + '/flowGraphic/flowImg',
 		'processInstanceId' : _processInstanceId,
 		'processDefinitionKey' : _processDefinitionKey
 	});
 	this._runTrack = new RunTrack({
-		action : _GlobalFlowVar._bpmServiceUrl + 'task/runTrack',
+		action : _GlobalFlowVar._bpmServiceUrl + '/task/runTrack',
 		processInstanceId : _processInstanceId
 	});
 	this._processInfor = new ProcessInfor({
@@ -63,7 +63,7 @@ Foxbpm.TaskDeatailInfor.prototype = {
 			$.ajax({
 						type : "get",// 使用get方法访问后台
 						dataType : "json",// 返回json格式的数据
-						url : _GlobalFlowVar._bpmServiceUrl + "task/taskInfor",// 要访问的后台地址
+						url : _GlobalFlowVar._bpmServiceUrl + "/task/taskInfor",// 要访问的后台地址
 						data : {
 							processInstanceId : _processInstanceId
 						},
@@ -174,7 +174,7 @@ Foxbpm.TaskDeatailInfor.prototype = {
 													img.attr("alt", "admin");
 													img
 															.attr("src",
-																	"/foxbpm-webapps-common/service/identity/users/admin/picture");
+																	_bpmServiceUrl+"/identity/users/admin/picture");
 													a.append(img);
 													var comment = $("<div class='comment timeline-comment js-comment js-task-list-container  is-task-list-enabled'>");
 													var comment_header = $("<div class='timeline-comment-header'>");
@@ -298,7 +298,7 @@ ProcessInfor.prototype = {
 		//创建流程信息模板
 		createMsgTemplet:function(flag,taskId){
 			var html = "<div id=msg_"+flag+" style='display:none' taskId="+taskId+" >";
-			html+="<div id='warning' style='text-align:center;'><span id=tips_"+flag+" style='display:none'>数据为空!</span><img style='display:none' src='images/loading.gif' id=loading_"+flag+" /></div>";
+			html+="<div id='warning' style='text-align:center;'><span id=tips_"+flag+" style='display:none'>数据为空!</span><img style='display:none' src='"+_bpmFilePath+"/images/loading.gif' id=loading_"+flag+" /></div>";
 			html+="<div id=data_"+flag+"></div>";
 			return html;
 		},
@@ -337,7 +337,7 @@ ProcessInfor.prototype = {
 									if("foxbpm_all_user" == id){
 										imgEle.attr("src","images/default.png");
 									}else {
-										imgEle.attr("src",_GlobalFlowVar._bpmServiceUrl+ "identity/users/"+users[m].name+"/picture");
+										imgEle.attr("src",_GlobalFlowVar._bpmServiceUrl+ "/identity/users/"+users[m].name+"/picture");
 									}
 								}else if("role" == type){
 									imgEle.attr("src","images/group.png");
@@ -370,7 +370,7 @@ ProcessInfor.prototype = {
 					type : "get",// 使用get方法访问后台
 					cache:false,
 					dataType : "json",// 返回json格式的数据
-					url : _GlobalFlowVar._bpmServiceUrl + "runtime/tasks/"+taskId+"/operations",// 要访问的后台地址
+					url : _GlobalFlowVar._bpmServiceUrl + "/runtime/tasks/"+taskId+"/operations",// 要访问的后台地址
 					success : function(msg) {
 						$("#loading_"+i).hide();
 						if (!msg && !msg.data) {

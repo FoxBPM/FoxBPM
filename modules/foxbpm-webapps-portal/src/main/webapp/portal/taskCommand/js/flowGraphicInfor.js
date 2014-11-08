@@ -212,14 +212,14 @@ function FlowGraphicInfor(config) {
 		
 		if (this.isIELowVer) {
 			$('#flowImg').append(
-					"<img src= " + this.action + "flowGraphic/flowImg?processInstanceId="
+					"<img src= " + this.action + "/flowGraphic/flowImg?processInstanceId="
 							+ this.processInstanceId + "&processDefinitionKey="
 							+ this.processDefinitionKey + " />");
 		} else {
 			// 加载svg图片
 			$.ajax({
 				type : "GET",
-				url : this.action + 'flowGraphic/flowSvg',
+				url : this.action + '/flowGraphic/flowSvg',
 				dataType : "json",// 返回json格式的数据
 				data : "processInstanceId=" + this.processInstanceId
 						+ "&processDefinitionKey=" + this.processDefinitionKey,

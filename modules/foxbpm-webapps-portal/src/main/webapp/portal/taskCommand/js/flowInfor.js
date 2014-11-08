@@ -11,7 +11,7 @@ function FlowInfor(config) {
 		$.ajax({
 			type : "get",// 使用get方法访问后台
 			dataType : "json",// 返回json格式的数据
-			url : $this.action + "runtime/process-instances/"
+			url : $this.action + "/runtime/process-instances/"
 					+ $this.processInstanceId,// 要访问的后台地址
 			success : function(msg) {// msg为返回的数据，在这里做数据绑定
 				if (!msg) {
@@ -74,10 +74,10 @@ function FlowInfor(config) {
 							id = users[i].id;
 							if ("user" == type) {
 								if ("foxbpm_all_user" == id) {
-									imgEle.attr("src", "images/default.png");
+									imgEle.attr("src", _bpmFilePath+"/images/default.png");
 								} else {
 									imgEle.attr("src", $this.action
-											+ "identity/users/" + users[m].name
+											+ "/identity/users/" + users[m].name
 											+ "/picture");
 								}
 							} else if ("role" == type) {
@@ -157,7 +157,7 @@ FlowInfor.prototype.loadProcessParticipant = function(participants) {
 			a.attr("href", "javascript:void(0);");
 			a_Img = $("<img width='20' height='20' class='avatar'>");
 			a_Img.attr("alt", participants[i].name);
-			a_Img.attr("src", this.action + "identity/users/"
+			a_Img.attr("src", this.action + "/identity/users/"
 					+ participants[i].id + "/picture");
 			a.append(a_Img);
 			participationAvatarsDiv.append(a);
