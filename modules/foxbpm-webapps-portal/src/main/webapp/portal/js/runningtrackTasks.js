@@ -1,5 +1,11 @@
 var runningTrackTaskUrl = _serviceUrl+"runtime/process-instances?participate="+_userId;
 var pagefunction = function() {
+	var dateInputWidth = "15%";
+	var dateWidth = "-32%";
+	if(document.body.clientWidth > 1366){
+		dateInputWidth = "17%";
+		dateWidth = "-29.5%";
+	}
 	var runningTrackTable = $('#datatable_col_reorder')
 			.DataTable(
 					{
@@ -133,11 +139,11 @@ var pagefunction = function() {
 							},
 							"sSearch": "_INPUT_ "+
                     		"<select id='TASKSTATE_SEARCH' class='form-control'><option value='0'>未领取</option><option value='1'>领取</option><option value='2' selected>所有</option></select> " +
-                    		"&nbsp;&nbsp;<input placeholder='创建起始' id='createtime_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:15%'>" +
+                    		"&nbsp;&nbsp;<input placeholder='创建起始' id='createtime_start_dateselect_filter' type='text'  class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:"+dateInputWidth+"'>" +
                     		"<label for='createtime_start_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title='' style='left:-50%;top:-5px'></label>" +
                     		" - " +
-                    		"<input placeholder='创建终止' id='createtime_end_dateselect_filter' type='text' value='' class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:15%'>"+
-                    		"<label for='createtime_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:-32%;top:-5px'></label> " +
+                    		"<input placeholder='创建终止' id='createtime_end_dateselect_filter' type='text' value='' class='form-control datepicker' data-dateformat='yy-mm-dd' style='width:"+dateInputWidth+"'>"+
+                    		"<label for='createtime_end_dateselect_filter' class='glyphicon glyphicon-calendar no-margin padding-top-15' rel='tooltip' title=''  style='left:"+dateWidth+";top:-5px'></label> " +
                     		"&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' onclick='searchTodoTask();' href='javascript:void(0);'>搜索</a>&nbsp;&nbsp;<a class='btn btn-primary' style='height: 30px; disabled: true;' href='javascript:void(0);' onclick='clearCondition();'>重置</a></form>"
 						},
 						"bStateSave" : false,

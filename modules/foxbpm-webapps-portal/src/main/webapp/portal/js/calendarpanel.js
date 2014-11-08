@@ -29,7 +29,7 @@ var pagefunction = function() {
     	weekends:showWeekend,
     	slotEventOverlap:false,
     	lang:'zh-cn',
-    	defaultView: 'agendaWeek',
+    	defaultView: 'month',
         header: hdr,
         editable: false,
         droppable: false, // this allows things to be dropped onto the calendar !!!
