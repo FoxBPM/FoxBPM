@@ -60,167 +60,113 @@
           </mediaobject>
         </listitem>
         <listitem>
-          <para>如果是首次安装，需要安装一个groovy依赖插件，如果是更新安装可跳过此步骤，点击添加。</para>
+          <para>如果是首次安装，需要添加Graphiti和Groovy两个个站点信息(如果已经存在（url一致）的话可以不添加)。</para>
           <mediaobject>
             <imageobject>
               <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.6.png"
               />
             </imageobject>
           </mediaobject>
-        </listitem>
-        <listitem>
-          <para>从Groovy官网复制安装groovy插件的地址：根据你当前eclipse版本选择对应的地址</para>
-          <para> Groovy官网：http://groovy.codehaus.org/</para>
-          <para> Groovy插件的地址：http://dist.springsource.org/release/GRECLIPSE/e4.3/</para>
-          <mediaobject>
-            <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.12.png"
-              />
-            </imageobject>
-          </mediaobject>
-          <para>在弹出的Add Repository窗口中填写如下：</para>
-          <para>
-            <![CDATA[Name:可任意填写名称，如：Groovy]]>
-          </para>
-          <para>
-            <![CDATA[Location:将上面的地址复制到这里，如：http://dist.springsource.org/release/GRECLIPSE/e4.3/]]>
-            <![CDATA[注意这里Groovy插件版本必须要和Eclipse版本]]>
-          </para>
           <mediaobject>
             <imageobject>
               <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.7.png"
               />
             </imageobject>
           </mediaobject>
-          <para>添加好之后点击确定，然后勾选1、2两项，点击下一步。</para>
+          <para>点击添加。</para>
           <mediaobject>
             <imageobject>
               <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.8.png"
               />
             </imageobject>
           </mediaobject>
+          <para>1：添加Graphiti站点信息(http://download.eclipse.org/graphiti/updates/0.10.2)。</para>
           <mediaobject>
             <imageobject>
               <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.9.png"
               />
             </imageobject>
           </mediaobject>
-          <para>在许可信息这点击同意。</para>
+          <para>1：添加Groovy站点信息(http://dist.springsource.org/release/GRECLIPSE/e4.3/)。</para>
           <mediaobject>
             <imageobject>
               <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.10.png"
               />
             </imageobject>
           </mediaobject>
-        </listitem>
-        <listitem>
-          <para> 安装完毕后会提示重启信息，我们选择重启。</para>
           <mediaobject>
             <imageobject>
               <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.11.png"
               />
             </imageobject>
           </mediaobject>
+          <note>
+            <title>注意</title>
+            <para>Groovy站点地址：这里Groovy插件版本必须要和Eclipse版本一致。</para>
+            <para> Groovy官网：http://groovy.codehaus.org/</para>
+            <mediaobject>
+              <imageobject>
+                <imagedata align="center" contentwidth="600"
+                  fileref="../image/eclipseDesigner.12.png"/>
+              </imageobject>
+            </mediaobject>
+          </note>
         </listitem>
         <listitem>
-          <para>重启完毕后，我们再次回到安装软件界面，点击添加按钮。</para>
-          <mediaobject>
-            <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.5.png"
-              />
-            </imageobject>
-          </mediaobject>
-        </listitem>
-        <listitem>
-          <para>继续点击添加，安装EMF相关插件(如果存在该步骤跳过，否则继续)。</para>
-          <mediaobject>
-            <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.6.png"
-              />
-            </imageobject>
-          </mediaobject>
-          <para>在弹出的Add Repository窗口中填写如下：</para>
-          <para><![CDATA[Name:可任意填写名称，如：Kepler]]></para>
-          <para><![CDATA[Location:将上面的地址复制到这里，如：http://download.eclipse.org/releases/kepler]]>
-          </para>
+          <para>继续点击添加，安装我们设计器插件。</para>
           <mediaobject>
             <imageobject>
               <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.13.png"
               />
             </imageobject>
           </mediaobject>
-          <para>添加好之后点击确定，然后勾选Modeling中EMF - Eclipse Modeling Framework SDK、EMF Model Transaction
-            SDK两项，点击下一步。</para>
+          <para>在弹出的Add Repository窗口中填写如下：</para>
+          <para><![CDATA[Name:可任意填写名称，如：FoxbpmDesigner]]></para>
+          <para><![CDATA[Location:jar:file:/E:/org.foxbpm.bpmn.designer.feature_1.0.0.201411071144.jar!/]]><note>
+              <title>注意</title>
+              <para>这里点击Archire选择本地设计器插件包。</para>
+            </note></para>
           <mediaobject>
             <imageobject>
               <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.14.png"
               />
             </imageobject>
           </mediaobject>
+          <para>添加好之后点击确定，点击下一步。</para>
           <mediaobject>
             <imageobject>
               <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.15.png"
               />
             </imageobject>
           </mediaobject>
-          <para>在许可信息这点击同意。</para>
+          <para>显示安装信息，直接点击下一步。</para>
           <mediaobject>
             <imageobject>
               <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.16.png"
               />
             </imageobject>
           </mediaobject>
-        </listitem>
-        <listitem>
-          <para> 安装完毕后会提示重启信息，我们选择重启。</para>
-          <mediaobject>
-            <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.11.png"
-              />
-            </imageobject>
-          </mediaobject>
-        </listitem>
-        <listitem>
-          <para>重启完毕后，我们再次回到安装软件界面，点击添加按钮。</para>
-          <mediaobject>
-            <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.5.png"
-              />
-            </imageobject>
-          </mediaobject>
-        </listitem>
-        <listitem>
-          <para>注意以上插件安装过程中可能由于网络原因出现链接超时导致安装失败，只要重新安装即可。</para>
-
-        </listitem>
-        <listitem>
-          <para>继续点击添加，安装我们设计器插件。</para>
-          <mediaobject>
-            <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.6.png"
-              />
-            </imageobject>
-          </mediaobject>
-          <para>在弹出的Add Repository窗口中填写如下：</para>
-          <para><![CDATA[Name:可任意填写名称，如：FoxbpmDesigner]]></para>
-          <para><![CDATA[Location:jar:file:/E:/org.foxbpm.bpmn.designer.zip!/]]></para>
+          <para>在许可信息这点击同意并点击完成。</para>
           <mediaobject>
             <imageobject>
               <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.17.png"
               />
             </imageobject>
           </mediaobject>
-          <para>添加好之后点击确定，点击下一步。</para>
+          <para><note>
+              <title>注意</title>
+              <para>插件安装过程中需要上网下载需要的依赖jar包可能有些缓慢，以及如果出现以下提示直接重新安装即可（网络导致超时）。</para>
+            <mediaobject>
+              <imageobject>
+                <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.20.png"
+                />
+              </imageobject>
+            </mediaobject>
+          </note>
+            如果提示如下信息直接点击同意。</para>
           <mediaobject>
             <imageobject>
               <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.18.png"
-              />
-            </imageobject>
-          </mediaobject>
-          <para>在许可信息这点击同意。</para>
-          <mediaobject>
-            <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.19.png"
               />
             </imageobject>
           </mediaobject>
@@ -229,14 +175,7 @@
           <para> 安装完毕后会提示重启信息，我们选择重启。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.11.png"
-              />
-            </imageobject>
-          </mediaobject>
-          <para> 如果提示如下信息直接点击同意。</para>
-          <mediaobject>
-            <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.20.png"
+              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.19.png"
               />
             </imageobject>
           </mediaobject>
@@ -250,7 +189,7 @@
             </imageobject>
           </mediaobject>
         </listitem>
-        <!-- 至此设计器插件已完成安装，接下来进行简单操作 -->
+        <!-- 至此设计器插件已完成安装，接下来进行简单插件操作。 -->
         <listitem>
           <para>打开windows-preferences-流程设计器配置,为设计器配置rest服务地址，此目的是为了同步项目中用到的所有资源。</para>
           <mediaobject>
@@ -329,12 +268,13 @@
           <para>完成后自动打开创建的流程文件,说明设计器插件已经可以正常使用。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.30.png"/>
+              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.30.png"
+              />
             </imageobject>
           </mediaobject>
         </listitem>
         <listitem>
-          <para>以上该设计器插件均在kepler、版本安装通过。</para>
+          <para>说明：该设计器插件均在kepler、Juno版本的Eclipse 安装通过。</para>
         </listitem>
       </orderedlist>
     </para>
