@@ -105,6 +105,11 @@ public interface ProcessInstanceQuery extends Query<ProcessInstanceQuery, Proces
 	ProcessInstanceQuery subjectLike(String subjectLike);
 	
 	/**
+	 * 任务主题发起人共用一个查询条件
+	 * 
+	 */
+	ProcessInstanceQuery subjectUnionInitiator();
+	/**
 	 * 流程开始时间等于
 	 * @param startTime
 	 * @return

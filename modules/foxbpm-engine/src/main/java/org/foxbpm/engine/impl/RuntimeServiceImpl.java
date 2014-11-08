@@ -108,7 +108,6 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 	public ProcessInstanceQuery createProcessInstanceQuery() {
 		return new ProcessInstanceQueryImpl(commandExecutor);
 	}
-
 	 
 	public VariableQuery createVariableQuery() {
 		return new VariableQueryImpl(commandExecutor);
