@@ -41,6 +41,7 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
 
 	private static final long serialVersionUID = 1L;
 
+	protected boolean subjectUnionInitiator = false;
 	protected String processInstanceId;
 	protected String businessKey;
 	protected String businessKeyLike;
@@ -71,11 +72,7 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
 	protected String processInstanceVariableKey;
 	protected String processInstanceVariableValue;
 	protected boolean processInstanceVariableValueIsLike;
-
-	public ProcessInstanceQueryImpl() {
-
-	}
-
+	
 	public ProcessInstanceQueryImpl(CommandContext commandContext) {
 		super(commandContext);
 	}
@@ -286,6 +283,10 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
 		return this;
 	}
 
+	public ProcessInstanceQuery subjectUnionInitiator(){
+		this.subjectUnionInitiator = true;
+		return this;
+	}
 	public ProcessInstanceQuery startTimeBefore(Date startTimeBefore) {
 		this.startTimeBefore = startTimeBefore;
 		return this;

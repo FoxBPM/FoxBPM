@@ -134,7 +134,12 @@
 				and RES.SUBJECT = #{subject}
 			</if>
 			<if test="subjectLike != null">
-				and RES.SUBJECT like #{subjectLike}
+				<if test="subjectUnionInitiator == true">
+					and (RES.SUBJECT like #{subjectLike} or RES.INITIATOR like #{subjectLike})
+				</if>
+				<if test="subjectUnionInitiator == false">
+					and RES.SUBJECT like #{subjectLike}
+				</if>
 			</if>
 			<if test="processDefinitionName != null">
 				and P.PROCESS_NAME = #{processDefinitionName}

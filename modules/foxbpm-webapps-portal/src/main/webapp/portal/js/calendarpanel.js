@@ -145,10 +145,14 @@ var pagefunction = function() {
 		                	 
 		                	
 	                	}else if(taskPriority == doc.data[i].priority){
-	                		if(doc.data[i].priority == "50"){
+	                		if(doc.data[i].priority == "20"){
+		                		taskColor = ["event", "bg-color-blueLight"];
+		                	}else if(doc.data[i].priority == "40"){
+		                		taskColor = ["event", "bg-color-blue"];
+		                	}else if(doc.data[i].priority == "50"){
 		                		taskColor = ["event", "bg-color-greenLight"];
-		                	}else if(doc.data[i].priority == "0"){
-		                		taskColor = ["event", "bg-color-darken"];
+		                	}else if(doc.data[i].priority == "80"){
+		                		taskColor = ["event", "bg-color-redLight"];
 		                	}else if(doc.data[i].priority == "100"){
 		                		taskColor = ["event", "bg-color-red"];
 		                	}
