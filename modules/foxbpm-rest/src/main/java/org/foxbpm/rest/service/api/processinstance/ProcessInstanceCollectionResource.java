@@ -87,6 +87,7 @@ public class ProcessInstanceCollectionResource extends AbstractRestResource {
 			processIntanceQuery.subjectLike(parseLikeValue(getQueryParameter("subjectLike", queryForm)));
 		}
 		
+		processIntanceQuery.subjectUnionInitiator();
 		if(queryNames.contains("ended")){
 			boolean ended = StringUtil.getBoolean(getQueryParameter("ended", queryForm));
 			if(ended){
