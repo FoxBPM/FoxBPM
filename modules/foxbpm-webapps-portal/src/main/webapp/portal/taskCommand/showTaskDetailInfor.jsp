@@ -4,19 +4,15 @@
 <html>
 <head>
 <meta charset="utf-8">
-<%
-    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/";
-%>
-<base href="<%=basePath%>">
 
 <title>FoxBPM流程门户</title>
-<link rel="stylesheet" type="text/css" href="portal/taskCommand/css/taskDetailInfor.css" />
-<script src="portal/taskCommand/js/jquery.js"></script>
-<script src="portal/taskCommand/js/foxbpmframework.js"></script>
-<script src="portal/taskCommand/js/taskInfor.js"></script>
-<script src="portal/taskCommand/js/flowInfor.js"></script> 
-<script src="portal/taskCommand/js/flowGraphicInfor.js"></script>
-<script src="portal/taskCommand/js/flowRunTrackInfor.js"></script>
+<link rel="stylesheet" type="text/css" href="css/taskDetailInfor.css" />
+<script src="js/jquery.js"></script>
+<script src="js/foxbpmframework.js"></script>
+<script src="js/taskInfor.js"></script>
+<script src="js/flowInfor.js"></script> 
+<script src="js/flowGraphicInfor.js"></script>
+<script src="js/flowRunTrackInfor.js"></script>
 </head>
 <body>
 	<br>
@@ -53,6 +49,7 @@
 	</div>
 	<script type="text/javascript">
 		$(document).ready(function(){
+			var _bpmServiceUrl = "../../service";
 			var isIELowVer = window.ActiveXObject && ($.browser.msie && $.browser.version < 8.0); 
 			//流程信息
 			var flowInfor = new FlowInfor({

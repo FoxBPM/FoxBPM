@@ -74,7 +74,7 @@ function FlowInfor(config) {
 							id = users[i].id;
 							if ("user" == type) {
 								if ("foxbpm_all_user" == id) {
-									imgEle.attr("src", _bpmFilePath+"/images/default.png");
+									imgEle.attr("src", "images/default.png");
 								} else {
 									imgEle.attr("src", $this.action
 											+ "/identity/users/" + users[m].name
