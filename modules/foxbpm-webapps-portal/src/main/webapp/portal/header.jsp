@@ -50,6 +50,7 @@
 <script type="text/javascript">
  var _userId = '<%=user.getUserId()%>';
  var BASE_64_CODE = '<%=BASE_64_CODE%>';
+ var _WEBPATH = '<%=basePath%>';
 </script>
 <link rel="apple-touch-startup-image" href="img/splash/iphone.png" media="screen and (max-device-width: 320px)">
 <script src="js/libs/jquery-2.0.2.min.js"></script>
