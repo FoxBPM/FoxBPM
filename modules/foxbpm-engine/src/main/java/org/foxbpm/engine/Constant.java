@@ -43,4 +43,10 @@ public class Constant {
 	public static final String SVG_PROPERTIES_NAME = "svgDocument";
 	/** 数据库变量类型 */
 	public static final String DB_BIZTYPE = "dataBaseVariable";
+	/** 数据库变量类型 */
+	public static final String BIZTYPE_CUSTOMVARIABLE = "customVariable";
+	/** 业务表名称 */
+	public static final String _BIZNAME = "_BizName";
+	/** 业务表关联键 */
+	public static final String _BIZKEYFIELD = "_BizKeyField";
 }
