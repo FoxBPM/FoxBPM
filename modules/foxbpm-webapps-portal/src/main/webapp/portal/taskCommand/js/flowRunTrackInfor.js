@@ -337,7 +337,7 @@ function FlowRunTrackInfor(config) {
 	//定义回调函数
 	this.init = function() {
 		$("#"+this.eleId).append("<h3><span id='clz'>流程运行信息</span></h3>");
-		$("#"+this.eleId).append("<div id='warning' style='text-align:center;'><span id=loadTips style='display:none'>数据为空!</span><img style='display:none' src='"+_bpmFilePath+"/images/loading.gif' id=loading /></div>");
+		$("#"+this.eleId).append("<div id='warning' style='text-align:center;'><span id=loadTips style='display:none'>数据为空!</span><img style='display:none' src='images/loading.gif' id=loading /></div>");
 		
 		
 		//加载最新数据
