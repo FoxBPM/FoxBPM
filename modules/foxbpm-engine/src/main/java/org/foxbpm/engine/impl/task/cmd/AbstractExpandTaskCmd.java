@@ -188,7 +188,7 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 				String key = null;
 				for (Iterator<String> iterator = dataValues.keySet().iterator(); iterator.hasNext();) {
 					key = iterator.next();
-					if (null != bizTypeDataVarMap.get(key)) {
+					if (null != bizTypeDataVarMap.get(key) && null != dataValues.get(key)) {
 						bizTypeDataVarMap.get(key).setExpression(dataValues.get(key).toString());
 					}
 				}

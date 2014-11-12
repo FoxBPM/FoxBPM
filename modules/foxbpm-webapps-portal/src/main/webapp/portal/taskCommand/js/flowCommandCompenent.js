@@ -24,7 +24,6 @@ Foxbpm.FlowCommandCompenent.prototype={
 	         data:{key:_processDefinitionKey},
 	         success: function(msg){//msg为返回的数据，在这里做数据绑定
 	             var data = msg.data;
-	             
 	             //画任务命令
 	             $.each(data, function(i, n){
 	                 var toolBarDiv = $("<button type='button' class='btn btn-primary'></button>");
@@ -37,40 +36,44 @@ Foxbpm.FlowCommandCompenent.prototype={
 	             
 	             //给任务命令赋值事件
 	             $("button[commandType]").click(function(){
-	            	 
 	            	 var data = {};
 	            	 data.processDefinitionKey = _processDefinitionKey;
 	            	 data.processInstanceId = _processInstanceId;
 	            	 data.taskId = _taskId;
-	            	 
-	            	 var result = null;
-	            	 var commandType = $(this).attr("commandType");
-	            	 
-	            	 if(Foxbpm.commandHandler[commandType] !== undefined){
-	            		 result = Foxbpm.commandHandler[commandType](data);
-	            		 if(result === undefined || result == null){
-	            			 return;
-	            		 }
-	                	 if(result.status == "error"){
-	                		 alert(result.message);
-	                		 return;
-	                	 }else if(result.status == "success"){
-	                		 return ;
+	            	 var $this = this;
+	            	 var commandType = $($this).attr("commandType");
+	            	 data.fn=function(params, result){
+	            		 var commandObj = {};
+	                	 commandObj.processDefinitionKey=_processDefinitionKey;
+	                	 commandObj.processInstanceId = _processInstanceId;
+	                	 commandObj.taskId=_taskId;
+	                	 commandObj.commandId=$($this).attr("commandId");
+	                	 commandObj.commandType = commandType;
+	                	 if(Foxbpm.commandHandler.result[commandType] !== undefined){
+	                		 commandObj.commandParams = Foxbpm.commandHandler.result[commandType](result);
 	                	 }
+	                	 else {
+	                		 commandObj.commandParams = result;
+	                	 }
+	                	 commandObj.bizKey = self._config.getBizKey();
+	                	 commandObj.taskComment = self._config.getTaskComment();
+	                	 self._config.flowCommit(commandObj);
+	            	 };
+	            	 if(Foxbpm.commandHandler[commandType] !== undefined){
+	            		 //流程提交所需信息
+	            		 Foxbpm.commandHandler[commandType](data);
 	            	 }
-	            	 
-	            	 //流程提交所需信息
-	            	 var commandObj = {};
-	            	 commandObj.processDefinitionKey=_processDefinitionKey;
-	            	 commandObj.processInstanceId = _processInstanceId;
-	            	 commandObj.taskId=_taskId;
-	            	 commandObj.commandId=$(this).attr("commandId");
-	            	 commandObj.commandType = commandType;
-	            	 commandObj.commandParams = result;
-	            	 
-	            	 commandObj.bizKey = self._config.getBizKey();
-	            	 commandObj.taskComment = self._config.getTaskComment();
-	            	 self._config.flowCommit(commandObj);
+	            	 else {
+	              		 var commandObj = {};
+	                	 commandObj.processDefinitionKey=_processDefinitionKey;
+	                	 commandObj.processInstanceId = _processInstanceId;
+	                	 commandObj.taskId=_taskId;
+	                	 commandObj.commandId=$($this).attr("commandId");
+	                	 commandObj.commandType = commandType;
+	                	 commandObj.bizKey = self._config.getBizKey();
+	                	 commandObj.taskComment = self._config.getTaskComment();
+	                	 self._config.flowCommit(commandObj);
+	            	 }
 	        	 });
 	         }
 		 });

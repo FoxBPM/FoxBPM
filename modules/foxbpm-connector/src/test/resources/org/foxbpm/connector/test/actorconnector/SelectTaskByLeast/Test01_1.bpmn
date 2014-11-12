@@ -23,6 +23,9 @@
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
     <bpmn2:sequenceFlow id="SequenceFlow_1" sourceRef="UserTask_1" targetRef="UserTask_2"/>
+    <bpmn2:endEvent id="EndEvent_1" name="结束">
+      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
+    </bpmn2:endEvent>
     <bpmn2:userTask id="UserTask_2" name="UserTask_1">
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="同意" commandType="general"/>
@@ -41,9 +44,6 @@
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
     <bpmn2:sequenceFlow id="SequenceFlow_3" sourceRef="UserTask_2" targetRef="EndEvent_1"/>
-    <bpmn2:endEvent id="EndEvent_1" name="结束">
-      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
-    </bpmn2:endEvent>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Test01_1">
@@ -57,7 +57,7 @@
         <dc:Bounds height="50.0" width="110.0" x="170.0" y="147.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_UserTask_2" bpmnElement="UserTask_2">
-        <dc:Bounds height="50.0" width="110.0" x="370.0" y="210.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="370.0" y="320.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_1" targetElement="BPMNShape_UserTask_1">
         <di:waypoint xsi:type="dc:Point" x="88.0" y="145.0"/>
@@ -66,12 +66,12 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1" sourceElement="BPMNShape_UserTask_1" targetElement="BPMNShape_UserTask_2">
         <di:waypoint xsi:type="dc:Point" x="225.0" y="197.0"/>
-        <di:waypoint xsi:type="dc:Point" x="225.0" y="235.0"/>
-        <di:waypoint xsi:type="dc:Point" x="370.0" y="235.0"/>
+        <di:waypoint xsi:type="dc:Point" x="225.0" y="345.0"/>
+        <di:waypoint xsi:type="dc:Point" x="370.0" y="345.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="BPMNShape_UserTask_2" targetElement="BPMNShape_2">
-        <di:waypoint xsi:type="dc:Point" x="480.0" y="235.0"/>
-        <di:waypoint xsi:type="dc:Point" x="593.0" y="235.0"/>
+        <di:waypoint xsi:type="dc:Point" x="480.0" y="345.0"/>
+        <di:waypoint xsi:type="dc:Point" x="593.0" y="345.0"/>
         <di:waypoint xsi:type="dc:Point" x="593.0" y="208.0"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

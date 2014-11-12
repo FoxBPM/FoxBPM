@@ -61,7 +61,10 @@ public class UserCollectionResource extends AbstractRestResource {
 		}
 		initPage();
 		// 分页信息
-		Page page = new Page(pageIndex, pageSize);
+		Page page = null;
+		if (pageIndex > -1) {
+			page = new Page(pageIndex, pageSize);
+		}
 		List<UserEntity> userEntitys = identityService.getUsers(idLike, nameLike, page);
 		List<Map<String, Object>> userList = new ArrayList<Map<String, Object>>();
 		if (null != userEntitys) {
