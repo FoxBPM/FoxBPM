@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?oxygen RNGSchema="http://www.oasis-open.org/docbook/xml/5.0/rng/docbook.rng" type="xml"?>
-<book xmlns="http://docbook.org/ns/docbook"
-    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+<book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
     <info>
         <title>设计器操作手册</title>
         <author>
@@ -37,9 +36,12 @@
         <orderedlist>
             <listitem>
                 <para>打开windows->preferences->流程设计器配置，配置相关属性。</para>
-                <mediaobject><imageobject>
-                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.43.png"/>
-                </imageobject></mediaobject>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/designer.use.43.png"/>
+                    </imageobject>
+                </mediaobject>
                 <itemizedlist>
                     <listitem>
                         <para>服务地址：此地址需要根据自己项目web.xml中配置的rest服务而确定，foxbpm-webapps-common中rest服务前缀默认为service/，所以此处写http://localhost:8080/foxbpm-webapps-common/service</para>
@@ -54,33 +56,45 @@
             </listitem>
             <listitem>
                 <para>点击同步按钮，如果配置没有问题，则会提示同步成功，否则会提示相关错误信息。</para>
-                <mediaobject><imageobject>
-                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.01.png"/>
-                </imageobject></mediaobject>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/designer.use.01.png"/>
+                    </imageobject>
+                </mediaobject>
             </listitem>
         </orderedlist>
-        
+
     </chapter>
     <chapter>
         <title>新建流程</title>
         <orderedlist>
             <listitem>
                 <para>选中一个目录，右键new File->Other->FoxBPM->新建FoxBPM流程</para>
-                <mediaobject><imageobject>
-                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.47.png"/>
-                </imageobject></mediaobject>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/designer.use.47.png"/>
+                    </imageobject>
+                </mediaobject>
             </listitem>
             <listitem>
                 <para>选择模板，点击NEXT。</para>
-                <mediaobject><imageobject>
-                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.44.png"/>
-                </imageobject></mediaobject>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/designer.use.44.png"/>
+                    </imageobject>
+                </mediaobject>
             </listitem>
             <listitem>
                 <para>填写流程相关信息。</para>
-                <mediaobject><imageobject>
-                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.45.png"/>
-                </imageobject></mediaobject>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/designer.use.45.png"/>
+                    </imageobject>
+                </mediaobject>
                 <itemizedlist>
                     <listitem>
                         <para>流程编号：流程的编号（key），在引擎中会和版本（version）、guid一起组成流程定义的唯一编号。</para>
@@ -90,29 +104,35 @@
                     </listitem>
                     <listitem>
                         <para>流程版本：流程版本和以往版本的概念不同，新版本中，一个流程文件（**.bpmn）就是一个版本，如果想新建版本，必须从向导创建，或者从流程操作菜单中创建一个新的bpmn文件。</para>
-                    </listitem>   
+                    </listitem>
                 </itemizedlist>
             </listitem>
             <listitem>
                 <para>点击FINISH,如果第一步中的同步没问题的话，此处应该在选中的目录下创建了新的bpmn文件和png文件。</para>
-                <mediaobject><imageobject>
-                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.48.png"/>
-                </imageobject></mediaobject>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/designer.use.48.png"/>
+                    </imageobject>
+                </mediaobject>
             </listitem>
         </orderedlist>
     </chapter>
     <chapter>
         <title>设计流程图</title>
-        <para></para>
+        <para/>
         <sect1>
             <title>通用功能介绍</title>
-            <para></para>
+            <para/>
             <sect2>
                 <title>表达式编辑器</title>
                 <para>点击属性后面的编辑按钮，可以打开表达式编辑器。</para>
-                <mediaobject><imageobject>
-                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.07.png"/>
-                </imageobject></mediaobject>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/designer.use.07.png"/>
+                    </imageobject>
+                </mediaobject>
                 <para>表达式编辑器中可以编写Groovy代码，groovvy是一种类java的动态语言，完全支持java的语法，目前引擎默认用groovy作为脚本的解释器。</para>
                 <para>几乎所有的能打开表达式编辑器的属性，都可以编写java脚本，只要返回对应的值即可，如果要返回字符串，需要加双引号，如"admin"等。</para>
                 <para>不能打开表达式编辑器的属性，都应该直接填写字符串，不要双引号，如“流程分类”属性。</para>
@@ -121,17 +141,20 @@
                     <para>只有一个例外：高级属性-多实例-输入表达式，这里只能选择一个自定义变量，不能返回代码或其他格式。</para>
                 </note>
                 <para>打开表达式编辑器之后,界面如图</para>
-                <mediaobject><imageobject>
-                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.07.png"/>
-                </imageobject></mediaobject>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/designer.use.07.png"/>
+                    </imageobject>
+                </mediaobject>
                 <itemizedlist>
                     <listitem>
                         <para>组织机构</para>
-                        <para>这里可以搜索系统中的用户和部门角色，因为点击资源同步的时候，会将服务器上配置的组织机构信息同步到本地
-                        </para>
+                        <para>这里可以搜索系统中的用户和部门角色，因为点击资源同步的时候，会将服务器上配置的组织机构信息同步到本地 </para>
                         <note>
                             <title>注意</title>
-                            <para>在正式环境配置用户信息的时候建议不要用select *,以免敏感信息泄露，另外foxbpm会在以后版本中敏感信息的安全控制。</para>
+                            <para>在正式环境配置用户信息的时候建议不要用select
+                                *,以免敏感信息泄露，另外foxbpm会在以后版本中敏感信息的安全控制。</para>
                         </note>
                     </listitem>
                     <listitem>
@@ -145,476 +168,614 @@
                     <listitem>
                         <para> 主编辑器区域</para>
                         <para>这里是脚本编辑区域，因为默认是用groovy的脚本解释器，所以这里可以写所有的java语法和groovy语法。</para>
-                        <para>脚本应该根据属性需要的结果类型进行返回，如线条表达式，需要“return true或return false”,任务主题需要“return "string"”等。</para>
+                        <para>脚本应该根据属性需要的结果类型进行返回，如线条表达式，需要“return true或return false”,任务主题需要“return
+                            "string"”等。</para>
                     </listitem>
                 </itemizedlist>
             </sect2>
         </sect1>
-            <sect1>
-                <title>流程定义</title>
-                <para>打开properties属性视图，点击流程图的空白处。</para>
+        <sect1>
+            <title>流程定义</title>
+            <para>打开properties属性视图，点击流程图的空白处。</para>
+            <orderedlist>
+                <listitem>
+                    <para>通用</para>
+                    <para>通用菜单中填写了流程定义的基本属性。</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="images/designer.use.08.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <itemizedlist>
+                        <listitem>
+                            <para>编号：流程的编号（ProcessDefinitionKey）,创建流程的时候填写，不能修改。</para>
+                        </listitem>
+                        <listitem>
+                            <para>唯一编号：流程定义的唯一编号（ProcessDefinitionId），发布流程的时候由引擎通过规则自动生成，不能修改。</para>
+                        </listitem>
+                        <listitem>
+                            <para>名称：流程的中文名称（ProcessDefinitionName），可以修改。</para>
+                        </listitem>
+                        <listitem>
+                            <para>分类：流程的分类信息，可以为空。</para>
+                        </listitem>
+                        <listitem>
+                            <para>任务主题：流程的默认主题（subject），必填项。</para>
+                        </listitem>
+                        <listitem>
+                            <para>操作表单：流程的默认操作表单（formUri），处理任务时，用户看到的界面，如果是foxbpm-webapps-common的web项目，此处可以填写"expenseSevelt"。</para>
+                        </listitem>
+                        <listitem>
+                            <para>浏览表单：流程的默认浏览（formUriView），任务处理人以外的其他人打开任务时看到的页面，可以不填，不存在默认会取默认操作表单。</para>
+                        </listitem>
+                    </itemizedlist>
+
+                </listitem>
+                <listitem>
+                    <para>启动人</para>
+                    <para>这里配置了有权限启动流程的人员信息，多个配置之间为or关系。</para>
+                    <para>此处的配置会体现在modelService.getUserProcess(String
+                        userId)接口中，不会在启动流程时做强制校验。也就是说用户可以绕过这个api取到流程流程定义，并通过api发起。</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="images/designer.use.09.png"/>
+                        </imageobject>
+                    </mediaobject>
+                </listitem>
+
+                <listitem>
+                    <para>数据变量</para>
+                    <para>数据变量是指在流程设计中，用到的所有变量，此处的变量，可以通过导入或者手工创建的方式，导入方式需要的配置后面章节会介绍。</para>
+                    <para>这里创建的数据变量会在表达式编辑器中双击使用。</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="images/designer.use.09.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <note>
+                        <title>注意</title>
+                        <para>流程变量都是流程实例级别的变量，非持久化变量会在一次api调用完成之后被清空。持久化变量会被保存到foxbpm_run_variable表中，且对每个流程实例来讲，每个变量只会保存一份。</para>
+                    </note>
+                </listitem>
+
+                <listitem>
+                    <para>导入变量</para>
+                    <para>这里导入变量目前支持导入数据库表字段。下面介绍如何导入数据库变量。</para>
+                    <para>点击导入按钮</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="images/designer.use.095.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <para>显示导入页面并选择对应的编号(表名)点击导入变量按钮</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="images/designer.use.096.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <note>
+                        <title>注意</title>
+                        <para>这里选择的编号(数据库表名)必须是存在关联业务key的表，否则导入数据库变量无意义。</para>
+                        <para>一般来说这里的数据库表应该是针对业务表的。</para>
+                    </note>
+                    <para>显示导入变量页面并对应表字段并点击右箭头按钮</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="images/designer.use.097.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <para>接下来选择关联键</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="images/designer.use.098.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <note>
+                        <title>注意</title>
+                        <para>将关联业务key的字段作为关联键，不能用其他字段代替。</para>
+                    </note>
+                    <para>点击确定后就完成数据库变量的导入，下面显示导入成功后生成的变量</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="images/designer.use.099.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <note>
+                        <title>注意</title>
+                        <para>_BizName：是自动生成是用来存放数据库表名（这里对应上面的TB_EXPENSE）。</para>
+                        <para> _BizKeyField：用来存放关联业务key的表字段名(这里对应上面的ID)。</para>
+                    </note>
+                </listitem>
+                <listitem>
+                    <para>连接器</para>
+                    <para>连接器是将项目中用到的通用功能，封装成可视化的操作界面，给流程设计人员使用，如发送邮件，发送短信，调用webService等功能。</para>
+                    <para>连接器的创建和注册功能，会在后面章节单独介绍。</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="images/designer.use.092.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <para>添加连接器时，会根据添加的位置不同有不同的监听事件，如流程定义上有开始、结束、终止，人工任务上有进入、分配、执行、离开等，用户可以根据自己的需求确定连接器的执行时机。</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="images/designer.use.093.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <itemizedlist>
+                        <listitem>
+                            <para>事件：连接器的执行时机，不同节点有不同的事件类型可以选择。</para>
+                        </listitem>
+                        <listitem>
+                            <para>跳过策略：特殊情况下跳过此连接器的执行，表达式需返回bool类型。</para>
+                        </listitem>
+                        <listitem>
+                            <para>定时器配置：连接器的定时执行，在选择的事件上触发后创建Job,可返回cron表达式、List&lt;Trigger&gt;或Trigger类型。</para>
+                        </listitem>
+                        <listitem>
+                            <para>异常处理：暂不支持，目前异常处理方式均为阻断型，会回滚整个事务。</para>
+                        </listitem>
+                    </itemizedlist>
+                    <para>后面的属性配置，会根据创建连接器时的设置填写不同的属性。详见连接器创建。</para>
+                </listitem>
+            </orderedlist>
+            <para/>
+        </sect1>
+        <sect1>
+            <title>活动</title>
+            <para>每一个活动节点都会有一些通用的属性。</para>
+            <sect2>
+                <title>通用属性</title>
+                <sect3>
+                    <title>高级属性</title>
+                    <para>此tab页主要是配置节点的多实例信息，经常用来做会签功能，会签功能会在后面章节单独介绍</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="images/designer.use.10.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <itemizedlist>
+                        <listitem>
+                            <para>并行：多实例并行执行。</para>
+                        </listitem>
+                        <listitem>
+                            <para>串行：多实例串行执行，目前不支持。</para>
+                        </listitem>
+                        <listitem>
+                            <para>输入数据集：循环对象（集合）。</para>
+                        </listitem>
+                        <listitem>
+                            <para>输入项：每次循环的临时变量。</para>
+                        </listitem>
+                        <listitem>
+                            <para>输出项：每条任务处理后的循环处理对象（处理结果）。</para>
+                        </listitem>
+                        <listitem>
+                            <para>输出数据集：输出项的保存集合（List）。</para>
+                        </listitem>
+                        <listitem>
+                            <para>完成表达式：判断多实例是否结束的表达式。</para>
+                        </listitem>
+                    </itemizedlist>
+                </sect3>
+                <sect3>
+                    <title>跳过策略</title>
+                    <para>此页中主要填写在何种情况下时，跳过此节点的执行，如：当上一步处理人和此步骤处理人相同时，跳过此节点</para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="images/designer.use.11.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <itemizedlist>
+                        <listitem>
+                            <para>启用跳过策略：是否启用</para>
+                        </listitem>
+                        <listitem>
+                            <para>生成跳过记录：是否在任务中生成一条跳过记录</para>
+                        </listitem>
+                        <listitem>
+                            <para>跳过策略：跳过表达式，此表达式需返回boolean类型，为true时跳过此节点</para>
+                        </listitem>
+                        <listitem>
+                            <para>处理者：当生成跳过记录时，记录上的处理者</para>
+                        </listitem>
+                        <listitem>
+                            <para>处理意见：当生成跳过记录时，记录上的处理意见。</para>
+                        </listitem>
+                    </itemizedlist>
+                    <note>
+                        <title>注意</title>
+                        <para>生成跳过记录功能目前只能在人工任务节点使用。</para>
+                    </note>
+                </sect3>
+                <sect3>
+                    <title>连接器</title>
+                    <para>同流程定义中的连接器，会在后面章节详细介绍</para>
+                </sect3>
+            </sect2>
+            <sect2>
+                <title>人工任务</title>
                 <orderedlist>
                     <listitem>
                         <para>通用</para>
-                        <para>通用菜单中填写了流程定义的基本属性。</para>
-                        <mediaobject><imageobject>
-                            <imagedata align="center" contentwidth="600" fileref="images/designer.use.08.png"/>
-                        </imageobject></mediaobject>
+                        <para>填写节点名称、描述信息（描述是引擎运转中无实际意义，主要是让其他人员能看懂，类似注释功能）</para>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata align="center" contentwidth="600"
+                                    fileref="images/designer.use.12.png"/>
+                            </imageobject>
+                        </mediaobject>
+                    </listitem>
+                    <listitem>
+                        <para>任务信息</para>
+                        <para>此页主要填写一些任务的基础信息</para>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata align="center" contentwidth="600"
+                                    fileref="images/designer.use.13.png"/>
+                            </imageobject>
+                        </mediaobject>
                         <itemizedlist>
                             <listitem>
-                                <para>编号：流程的编号（ProcessDefinitionKey）,创建流程的时候填写，不能修改。</para>
+                                <para>优先级：任务的优先级</para>
                             </listitem>
                             <listitem>
-                                <para>唯一编号：流程定义的唯一编号（ProcessDefinitionId），发布流程的时候由引擎通过规则自动生成，不能修改。</para>
+                                <para>任务类型：任务类型，用来在默认为foxbpmtask</para>
                             </listitem>
                             <listitem>
-                                <para>名称：流程的中文名称（ProcessDefinitionName），可以修改。</para>
+                                <para>任务主题：任务处理人在待办任务中看到的任务的介绍信息，为空时默认从流程默认主题取值</para>
                             </listitem>
                             <listitem>
-                                <para>分类：流程的分类信息，可以为空。</para>
+                                <para>任务描述：</para>
                             </listitem>
                             <listitem>
-                                <para>任务主题：流程的默认主题（subject），必填项。</para>
+                                <para>完成后的任务描述：</para>
                             </listitem>
                             <listitem>
-                                <para>操作表单：流程的默认操作表单（formUri），处理任务时，用户看到的界面，如果是foxbpm-webapps-common的web项目，此处可以填写"expenseSevelt"。</para>
-                            </listitem>
-                            <listitem>
-                                <para>浏览表单：流程的默认浏览（formUriView），任务处理人以外的其他人打开任务时看到的页面，可以不填，不存在默认会取默认操作表单。</para>
+                                <para>预计执行时间：这里是需要配合工作日历功能来做超时处理的。</para>
                             </listitem>
                         </itemizedlist>
-                        
+
                     </listitem>
                     <listitem>
-                        <para>启动人</para>
-                        <para>这里配置了有权限启动流程的人员信息，多个配置之间为or关系。</para>
-                        <para>此处的配置会体现在modelService.getUserProcess(String userId)接口中，不会在启动流程时做强制校验。也就是说用户可以绕过这个api取到流程流程定义，并通过api发起。</para>
-                        <mediaobject><imageobject>
-                            <imagedata align="center" contentwidth="600" fileref="images/designer.use.09.png"/>
-                        </imageobject></mediaobject>
+                        <para>表单信息</para>
+                        <para>此页中主要配置此节点上，用户用来处理此任务或查看此任务时看到的表单信息，为空则默认从流程的对应属性取值。</para>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata align="center" contentwidth="600"
+                                    fileref="images/designer.use.14.png"/>
+                            </imageobject>
+                        </mediaobject>
                     </listitem>
-                    
                     <listitem>
-                        <para>数据变量</para>
-                        <para>数据变量是指在流程设计中，用到的所有变量，此处的变量，可以通过导入或者手工创建的方式，导入方式需要的配置后面章节会介绍。</para>
-                        <para>这里创建的数据变量会在表达式编辑器中双击使用。</para>
-                        <mediaobject><imageobject>
-                            <imagedata align="center" contentwidth="600" fileref="images/designer.use.09.png"/>
-                        </imageobject></mediaobject>
+                        <para>任务命令</para>
+                        <para>此页中主要配置用户接到此任务后，有哪些可以进行的操作。Foxbpm对常用的国内需求做了封装，形成一个个任务命令（TaskCommand）</para>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata align="center" contentwidth="600"
+                                    fileref="images/designer.use.15.png"/>
+                            </imageobject>
+                        </mediaobject>
+                        <itemizedlist>
+                            <listitem>
+                                <para>领取方式：在foxbpm中，如果是多人共享任务，则需要配置领取方式，默认方式是跟随引擎的全局配置，自动领取是不需要接收任务，手工领取，必须要手工接收任务之后才能处理。</para>
+                            </listitem>
+                        </itemizedlist>
+                        <para>点击“添加”,可以添加任务命令。</para>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata align="center" contentwidth="600"
+                                    fileref="images/designer.use.16.png"/>
+                            </imageobject>
+                        </mediaobject>
+                        <itemizedlist>
+                            <listitem>
+                                <para>名称：用户看到的按钮名称</para>
+                            </listitem>
+                            <listitem>
+                                <para>类型：按钮的功能类型</para>
+                            </listitem>
+                            <listitem>
+                                <para>执行表达式：点击按钮的同时，会执行此处配置的表达式脚本，脚本中可以调用java方法或其他服务。</para>
+                            </listitem>
+                            <listitem>
+                                <para>引擎执行参数：此处的参数，需要后台指定，如：退回节点-后台指定，这样就需要将退回的目标节点号填写到这里。</para>
+                            </listitem>
+                            <listitem>
+                                <para>高级参数-界面收集参数：
+                                    此参数需要前台传递给引擎，一般用于让最终用户选择的参数，如退回-指定处理者，api中需要在taskParams中指定此参数</para>
+                            </listitem>
+                            <listitem>
+                                <para>高级参数-界面控制参数：
+                                    此参数，主要是给前台传递一些参数，让前台页面控制逻辑，设置后，会在getTaskCommandByTaskId(String
+                                    taskId)返回的结果中以JSON的格式展现</para>
+                            </listitem>
+                        </itemizedlist>
                         <note>
                             <title>注意</title>
-                            <para>流程变量都是流程实例级别的变量，非持久化变量会在一次api调用完成之后被清空。持久化变量会被保存到foxbpm_run_variable表中，且对每个流程实例来讲，每个变量只会保存一份。</para>
+                            <para>命令中凡是有界面收集参数的命令，都需要集成项目中前端支持，集成过程会在集成文档上介绍。</para>
                         </note>
+                        <para>配置好命令后，可以通过编辑，向上、向下等功能调整按钮的功能或展现顺序。</para>
                     </listitem>
-                    
                     <listitem>
-                        <para>连接器</para>
-                        <para>连接器是将项目中用到的通用功能，封装成可视化的操作界面，给流程设计人员使用，如发送邮件，发送短信，调用webService等功能。</para>
-                        <para>连接器的创建和注册功能，会在后面章节单独介绍。</para>
-                        <mediaobject><imageobject>
-                            <imagedata align="center" contentwidth="600" fileref="images/designer.use.092.png"/>
-                        </imageobject></mediaobject>
-                        <para>添加连接器时，会根据添加的位置不同有不同的监听事件，如流程定义上有开始、结束、终止，人工任务上有进入、分配、执行、离开等，用户可以根据自己的需求确定连接器的执行时机。</para>
-                        <mediaobject><imageobject>
-                            <imagedata align="center" contentwidth="600" fileref="images/designer.use.093.png"/>
-                        </imageobject></mediaobject>
-                        <itemizedlist>
-                            <listitem>
-                                <para>事件：连接器的执行时机，不同节点有不同的事件类型可以选择。</para>
-                            </listitem>
-                            <listitem>
-                                <para>跳过策略：特殊情况下跳过此连接器的执行，表达式需返回bool类型。</para>
-                            </listitem>
-                            <listitem>
-                                <para>定时器配置：连接器的定时执行，在选择的事件上触发后创建Job,可返回cron表达式、List&lt;Trigger&gt;或Trigger类型。</para>
-                            </listitem>
-                            <listitem>
-                                <para>异常处理：暂不支持，目前异常处理方式均为阻断型，会回滚整个事务。</para>
-                            </listitem>
-                        </itemizedlist>
-                        <para>后面的属性配置，会根据创建连接器时的设置填写不同的属性。详见连接器创建。</para>
+                        <para>任务分配</para>
+                        <para>此页配置了此节点的处理人员</para>
+                        <para>新版本的处理人员都被封装成为了用户选择器，系统默认提供的选择器，基本上可以满足大部分的选择功能。特殊不满足的可以通过自己扩展选择器的方式实现。选择器的扩展方式会在后面章节介绍。</para>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata align="center" contentwidth="600"
+                                    fileref="images/designer.use.17.png"/>
+                            </imageobject>
+                        </mediaobject>
+                        <para>点击“添加”，可以添加系统提供的选择器。</para>
+                        <mediaobject>
+                            <imageobject>
+                                <imagedata align="center" contentwidth="600"
+                                    fileref="images/designer.use.18.png"/>
+                            </imageobject>
+                        </mediaobject>
+                        <para>系统默认提供的选择器，参数基本都支持Collection、List&lt;String&gt;、“user1,user2,user3”这三种形式，也就是说，如果是多个用户或多个部门，表达式中可以返回上面3中格式。
+                            其他选择器是否支持，需要看各选择器的开发文档。</para>
                     </listitem>
                 </orderedlist>
-                <para></para>
-            </sect1>
-            <sect1>
-                <title>活动</title>
-                <para>每一个活动节点都会有一些通用的属性。</para>
-                <sect2>
-                    <title>通用属性</title>
-                        <sect3>
-                            <title>高级属性</title>
-                            <para>此tab页主要是配置节点的多实例信息，经常用来做会签功能，会签功能会在后面章节单独介绍</para>
-                            <mediaobject><imageobject>
-                                <imagedata align="center" contentwidth="600" fileref="images/designer.use.10.png"/>
-                            </imageobject></mediaobject>
-                            <itemizedlist>
-                                <listitem>
-                                    <para>并行：多实例并行执行。</para>
-                                </listitem>
-                                <listitem>
-                                    <para>串行：多实例串行执行，目前不支持。</para>
-                                </listitem>
-                                <listitem>
-                                    <para>输入数据集：循环对象（集合）。</para>
-                                </listitem>
-                                <listitem>
-                                    <para>输入项：每次循环的临时变量。</para>
-                                </listitem>
-                                <listitem>
-                                    <para>输出项：每条任务处理后的循环处理对象（处理结果）。</para>
-                                </listitem>
-                                <listitem>
-                                    <para>输出数据集：输出项的保存集合（List）。</para>
-                                </listitem>
-                                <listitem>
-                                    <para>完成表达式：判断多实例是否结束的表达式。</para>
-                                </listitem>
-                            </itemizedlist>
-                        </sect3>
-                        <sect3>
-                            <title>跳过策略</title>
-                            <para>此页中主要填写在何种情况下时，跳过此节点的执行，如：当上一步处理人和此步骤处理人相同时，跳过此节点</para>
-                            <mediaobject><imageobject>
-                                <imagedata align="center" contentwidth="600" fileref="images/designer.use.11.png"/>
-                            </imageobject></mediaobject>
-                            <itemizedlist>
-                                <listitem>
-                                    <para>启用跳过策略：是否启用</para>
-                                </listitem>
-                                <listitem>
-                                    <para>生成跳过记录：是否在任务中生成一条跳过记录</para>
-                                </listitem>
-                                <listitem>
-                                    <para>跳过策略：跳过表达式，此表达式需返回boolean类型，为true时跳过此节点</para>
-                                </listitem>
-                                <listitem>
-                                    <para>处理者：当生成跳过记录时，记录上的处理者</para>
-                                </listitem>
-                                <listitem>
-                                    <para>处理意见：当生成跳过记录时，记录上的处理意见。</para>
-                                </listitem>
-                            </itemizedlist>
-                            <note>
-                                <title>注意</title>
-                                <para>生成跳过记录功能目前只能在人工任务节点使用。</para>
-                            </note>         
-                        </sect3>
-                    <sect3>
-                        <title>连接器</title>
-                        <para>同流程定义中的连接器，会在后面章节详细介绍</para>
-                    </sect3>
-                </sect2>
-                <sect2>
-                    <title>人工任务</title>
-                    <orderedlist>
-                        <listitem>
-                            <para>通用</para>
-                            <para>填写节点名称、描述信息（描述是引擎运转中无实际意义，主要是让其他人员能看懂，类似注释功能）</para>
-                            <mediaobject><imageobject>
-                                <imagedata align="center" contentwidth="600" fileref="images/designer.use.12.png"/>
-                            </imageobject></mediaobject>
-                        </listitem>
-                        <listitem>
-                            <para>任务信息</para>
-                            <para>此页主要填写一些任务的基础信息</para>
-                            <mediaobject><imageobject>
-                                <imagedata align="center" contentwidth="600" fileref="images/designer.use.13.png"/>
-                            </imageobject></mediaobject>
-                            <itemizedlist>
-                                <listitem>
-                                    <para>优先级：任务的优先级</para>
-                                </listitem>
-                                <listitem>
-                                    <para>任务类型：任务类型，用来在默认为foxbpmtask</para>
-                                </listitem>
-                                <listitem>
-                                    <para>任务主题：任务处理人在待办任务中看到的任务的介绍信息，为空时默认从流程默认主题取值</para>
-                                </listitem>
-                                <listitem>
-                                    <para>任务描述：</para>
-                                </listitem>
-                                <listitem>
-                                    <para>完成后的任务描述：</para>
-                                </listitem>
-                                <listitem>
-                                    <para>预计执行时间：这里是需要配合工作日历功能来做超时处理的。</para>
-                                </listitem>
-                            </itemizedlist>
-                            
-                        </listitem>
-                        <listitem>
-                            <para>表单信息</para>
-                            <para>此页中主要配置此节点上，用户用来处理此任务或查看此任务时看到的表单信息，为空则默认从流程的对应属性取值。</para>
-                            <mediaobject><imageobject>
-                                <imagedata align="center" contentwidth="600" fileref="images/designer.use.14.png"/>
-                            </imageobject></mediaobject>
-                        </listitem>
-                        <listitem>
-                            <para>任务命令</para>
-                            <para>此页中主要配置用户接到此任务后，有哪些可以进行的操作。Foxbpm对常用的国内需求做了封装，形成一个个任务命令（TaskCommand）</para>
-                            <mediaobject><imageobject>
-                                <imagedata align="center" contentwidth="600" fileref="images/designer.use.15.png"/>
-                            </imageobject></mediaobject>
-                            <itemizedlist>
-                                <listitem>
-                                    <para>领取方式：在foxbpm中，如果是多人共享任务，则需要配置领取方式，默认方式是跟随引擎的全局配置，自动领取是不需要接收任务，手工领取，必须要手工接收任务之后才能处理。</para>
-                                </listitem>
-                            </itemizedlist>
-                            <para>点击“添加”,可以添加任务命令。</para>
-                            <mediaobject><imageobject>
-                                <imagedata align="center" contentwidth="600" fileref="images/designer.use.16.png"/>
-                            </imageobject></mediaobject>
-                            <itemizedlist>
-                                <listitem>
-                                    <para>名称：用户看到的按钮名称</para>
-                                </listitem>
-                                <listitem>
-                                    <para>类型：按钮的功能类型</para>
-                                </listitem>
-                                <listitem>
-                                    <para>执行表达式：点击按钮的同时，会执行此处配置的表达式脚本，脚本中可以调用java方法或其他服务。</para>
-                                </listitem>
-                                <listitem>
-                                    <para>引擎执行参数：此处的参数，需要后台指定，如：退回节点-后台指定，这样就需要将退回的目标节点号填写到这里。</para>
-                                </listitem>
-                                <listitem>
-                                    <para>高级参数-界面收集参数：
-                                        此参数需要前台传递给引擎，一般用于让最终用户选择的参数，如退回-指定处理者，api中需要在taskParams中指定此参数</para>
-                                </listitem>
-                                <listitem>
-                                    <para>高级参数-界面控制参数：
-                                        此参数，主要是给前台传递一些参数，让前台页面控制逻辑，设置后，会在getTaskCommandByTaskId(String taskId)返回的结果中以JSON的格式展现</para>
-                                </listitem>
-                            </itemizedlist>
-                            <note>
-                                <title>注意</title>
-                                <para>命令中凡是有界面收集参数的命令，都需要集成项目中前端支持，集成过程会在集成文档上介绍。</para>
-                            </note>
-                            <para>配置好命令后，可以通过编辑，向上、向下等功能调整按钮的功能或展现顺序。</para>
-                        </listitem>
-                        <listitem>
-                            <para>任务分配</para>
-                            <para>此页配置了此节点的处理人员</para>
-                            <para>新版本的处理人员都被封装成为了用户选择器，系统默认提供的选择器，基本上可以满足大部分的选择功能。特殊不满足的可以通过自己扩展选择器的方式实现。选择器的扩展方式会在后面章节介绍。</para>
-                            <mediaobject><imageobject>
-                                <imagedata align="center" contentwidth="600" fileref="images/designer.use.17.png"/>
-                            </imageobject></mediaobject>
-                            <para>点击“添加”，可以添加系统提供的选择器。</para>
-                            <mediaobject><imageobject>
-                                <imagedata align="center" contentwidth="600" fileref="images/designer.use.18.png"/>
-                            </imageobject></mediaobject>
-                            <para>系统默认提供的选择器，参数基本都支持Collection、List&lt;String&gt;、“user1,user2,user3”这三种形式，也就是说，如果是多个用户或多个部门，表达式中可以返回上面3中格式。
-                                其他选择器是否支持，需要看各选择器的开发文档。</para>
-                        </listitem>
-                    </orderedlist>               
-                    <para></para>
-                </sect2>
-                <sect2>
-                    <title>脚本任务</title>
-                    <para>此节点需要配置需要执行的脚本，用来执行另外一件事情，可以进行多实例，跳过策略，连接器的配置。</para>
-                    <mediaobject><imageobject>
-                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.19.png"/>
-                    </imageobject></mediaobject>
-                    <itemizedlist>
-                        <listitem>
-                            <para>表达式：需要执行的脚本,此脚本和表达式编辑器中的脚本相同，均用groovy解释器解释，兼容标准java语法和groovy语法。</para>
-                        </listitem>
-                    </itemizedlist>
-                </sect2>
-                <sect2>
-                    <title>内部子流程</title>
-                    <para>在流程设计时，可以将一组功能组合起来作为一个内部子流程，整体进行多实例，跳过策略，连接器等配置。</para>
-                    <mediaobject><imageobject>
-                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.20.png"/>
-                    </imageobject></mediaobject>
-                    <note>
-                        <title>注意</title>
-                        <para>内部子流程中，必须存在一个空的开始事件和一个空的结束事件。</para>
-                    </note>
-                </sect2>
-                <sect2>
-                    <title>外部子流程</title>
-                    <para>在上面的子流程中，如果这组功能比较特殊，可以供其他多个地方公用，如付款子流程，那就应该将这组功能抽象成一个外部子流程。</para>
-                    <mediaobject><imageobject>
-                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.21.png"/>
-                    </imageobject></mediaobject>
-                    <itemizedlist>
-                        <listitem>
-                            <para>子流程编号：需要调用的子流程编号，如“付款子流程”。</para>
-                        </listitem>
-                        <listitem>
-                            <para>版本：需要调用的子流程版本，必填。</para>
-                        </listitem>
-                        <listitem>
-                            <para>关联值：启动的子流程的业务关联键（BizKey）。</para>
-                        </listitem>
-                        <listitem>
-                            <para>异步：是否异步执行，如果异步执行，则流程启动子流程之后直接向下流转，否则则需等待子流程结束后，才会向下流转。</para>
-                        </listitem>
-                    </itemizedlist>            
-                </sect2>
-                <sect2>
-                    <title>通用任务</title>
-                    <para></para>
-                </sect2>
-                <sect2>
-                    <title>发送任务</title>
-                    <para></para>
-                </sect2>
-                <sect2>
-                    <title>接收任务</title>
-                    <para></para>
-                </sect2>
-                <sect2>
-                    <title>规则任务</title>
-                    <para></para>
-                </sect2>
-                <sect2>
-                    <title>服务任务</title>
-                    <para></para>
-                </sect2>
-                <sect2>
-                    <title>手工任务</title>
-                    <para></para>
-                </sect2>
-            </sect1>
-            <sect1>
-                <title>线条</title>
-                <para>标识流程走向的线条，可以配置表达式和排序属性</para>
-                <mediaobject><imageobject>
-                    <imagedata align="center" contentwidth="600" fileref="images/designer.use.22.png"/>
-                </imageobject></mediaobject>
+                <para/>
+            </sect2>
+            <sect2>
+                <title>脚本任务</title>
+                <para>此节点需要配置需要执行的脚本，用来执行另外一件事情，可以进行多实例，跳过策略，连接器的配置。</para>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/designer.use.19.png"/>
+                    </imageobject>
+                </mediaobject>
                 <itemizedlist>
                     <listitem>
-                        <para>排序：此属性一般用在排他网关后面的线条，排他网关会根据线条排序依次判断线条表达式，取第一个返回true的线条流转。</para>
-                    </listitem>
-                    <listitem>
-                        <para>表达式：此表达式可返回bool类型，如果为true,则表示线条可以通过，反之亦然。如果一个节点后面的线条都返回了false，则会抛出异常。</para>
+                        <para>表达式：需要执行的脚本,此脚本和表达式编辑器中的脚本相同，均用groovy解释器解释，兼容标准java语法和groovy语法。</para>
                     </listitem>
                 </itemizedlist>
-            </sect1>
-            <sect1>
-                <title> 事件 </title>
-                <sect2>
-                    <title>空开始事件</title>
-                    <para>空的开始事件是指需要用户手工启动的流程，此节点只需要配置节点名称即可，不需要配置其他属性，此节点用来标示流程的开始地点。</para>
-                    <mediaobject><imageobject>
-                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.23.png"/>
-                    </imageobject></mediaobject>
-                    <note>
-                        <title>注意</title>
-                        <para>一个流程图上只能有一个空的开始事件。</para>
-                    </note>
-                </sect2>
-                <sect2>
-                    <title>时间开始事件</title>
-                    <para>时间开始事件主要用于定时启动流程。</para>
-                    <para>此节点除了要配置基本属性外，还需要配置流程定时启动的时间点或者时间表达式。</para>
-                    <mediaobject><imageobject>
-                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.24.png"/>
-                    </imageobject></mediaobject>
-                    <itemizedlist>
-                        <listitem>
-                            <para>时间点：此属性可以返回标准时间格式，如“"2014-11-04 10:19:29"”,也可以返回java.util.Date类型的对象。</para>
-                        </listitem>
-                        <listitem>
-                            <para>周期时间：此属性可返回cron表达式（需要双引号），也可以返回Trigger、List&lt;Trigger&gt;对象。具体cron表达式可以从网上查询，或者从表达式编辑器中添加示例。</para>
-                        </listitem>
-                    </itemizedlist>
-                    
-                </sect2>
-                <sect2>
-                    <title>空结束事件</title>
-                    <para>空结束事件是标识流程正常结束的节点，此节点只需要配置节点名称即可，当流程走到此节点时，会自动结束流程实例。</para>
-                    <mediaobject><imageobject>
-                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.25.png"/>
-                    </imageobject></mediaobject>
-                    <note>
-                        <title>注意</title>
-                        <para>只有当所有激活的分支全部走到结束节点时，才会完全结束流程实例。</para>
-                    </note>
-                </sect2>
-                <sect2>
-                    <title>终止结束事件</title>
-                    <para>终止结束事件是标识流程异常终止的节点。</para>
-                    <para>此节点只需要配置节点名称，当流程走到此节点是，会自动终止流程实例，并将流程实例设置为终止状态。</para>
-                    <mediaobject><imageobject>
-                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.26.png"/>
-                    </imageobject></mediaobject>
-                </sect2>
-                <sect2>
-                    <title>捕获时间节点</title>
-                    <para>此节点主要用于流程等待一段时间之后再次启动的场景。</para>
-                    <mediaobject><imageobject>
-                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.27.png"/>
-                    </imageobject></mediaobject>
-                    <para>节点时间配置见时间开始事件</para>
-                    <note>
-                        <title></title>
-                        <para>此节点如果配置了周期时间，则只会在周期时间的第一个执行，忽略后面的周期。</para>
-                    </note>
-                </sect2>
-                <sect2>
-                    <title>边界时间事件</title>
-                    <para>此节点主要用于边界事件，用户可以在任务到达某个活动节点后，定时去执行其他任务，如超时处理、超时通知等。</para>
-                    <mediaobject><imageobject>
-                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.28.png"/>
-                    </imageobject></mediaobject>
-                    <itemizedlist>
-                        <listitem>
-                            <para>终止活动：在满足事件触发条件后（如到达特定时间），则流程会根据边界事件的线条向下流转，如超时处理。</para>
-                        </listitem>
-                        <listitem>
-                            <para>非终止活动：在事件触发后，会并行向下执行，如超时通知等。	</para>
-                        </listitem>           
-                    </itemizedlist>       
-                </sect2>
-            </sect1>
-            <sect1>
-                <title> 网关 </title>
-                <para>网关主要是判断流程分支走向的功能。</para>
-                <sect2>
-                    <title>排他网关</title>
-                    <para>此网关后面线条只会走一个，引擎会根据线条排序依次判断是否满足条件，取第一个满足条件的线条向下，线条表达式都不满足则抛出异常。</para>
-                    <mediaobject><imageobject>
-                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.29.png"/>
-                    </imageobject></mediaobject>
-                </sect2>
-                <sect2>
-                    <title>并行网关</title>
-                    <para>此网关会不判断线条表达式，直接全部并行处理。并行网关应该成对使用，对于分散的分支，最后必须由合并类型的并行网关进行合并。</para>
-                    <mediaobject><imageobject>
-                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.30.png"/>
-                    </imageobject></mediaobject>
-                    <itemizedlist>
-                        <listitem>
-                            <para>进出类型：分散或者合并，分散是指由一条线分散为多个分支，合并是指由多个分支合并为一个分支。</para>
-                        </listitem>
-                        <listitem>
-                            <para>合并策略：线条数量合并会根据到达的线条数量判断是否合并结束，令牌数量是根据分支产生的令牌来计算是否合并结束。</para>
-                            <para>实际使用中，一般多用令牌策略，对于简单分散合并都能满足，令牌策略的选择主要用于复杂网关合并，如网关嵌套等复杂功能时才会根据实际场景进行选择。</para>
-                        </listitem>
-                    </itemizedlist>
-                </sect2>
-                <sect2>
-                    <title>包容网关</title>
-                    <para>此网关会根据线条条件进行分支分散，和并行网关不同的是，此网关只会走满足线条表达式的路线。</para>
-                    <mediaobject><imageobject>
-                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.31.png"/>
-                    </imageobject></mediaobject>
-                    <para>此网关分之后，必须通过合并类型的并行网关进行合并操作，并且合并策略选择令牌策略。</para>
-                </sect2>
-            </sect1>
-            <sect1>
-                <title>图形</title>
-                <sect2>
-                    <title>泳道</title>
-                    <para>目前泳道主要是为了流程布局美观清晰使用。</para>
-                </sect2>
-            </sect1>
+            </sect2>
+            <sect2>
+                <title>内部子流程</title>
+                <para>在流程设计时，可以将一组功能组合起来作为一个内部子流程，整体进行多实例，跳过策略，连接器等配置。</para>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/designer.use.20.png"/>
+                    </imageobject>
+                </mediaobject>
+                <note>
+                    <title>注意</title>
+                    <para>内部子流程中，必须存在一个空的开始事件和一个空的结束事件。</para>
+                </note>
+            </sect2>
+            <sect2>
+                <title>外部子流程</title>
+                <para>在上面的子流程中，如果这组功能比较特殊，可以供其他多个地方公用，如付款子流程，那就应该将这组功能抽象成一个外部子流程。</para>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/designer.use.21.png"/>
+                    </imageobject>
+                </mediaobject>
+                <itemizedlist>
+                    <listitem>
+                        <para>子流程编号：需要调用的子流程编号，如“付款子流程”。</para>
+                    </listitem>
+                    <listitem>
+                        <para>版本：需要调用的子流程版本，必填。</para>
+                    </listitem>
+                    <listitem>
+                        <para>关联值：启动的子流程的业务关联键（BizKey）。</para>
+                    </listitem>
+                    <listitem>
+                        <para>异步：是否异步执行，如果异步执行，则流程启动子流程之后直接向下流转，否则则需等待子流程结束后，才会向下流转。</para>
+                    </listitem>
+                </itemizedlist>
+            </sect2>
+            <sect2>
+                <title>通用任务</title>
+                <para/>
+            </sect2>
+            <sect2>
+                <title>发送任务</title>
+                <para/>
+            </sect2>
+            <sect2>
+                <title>接收任务</title>
+                <para/>
+            </sect2>
+            <sect2>
+                <title>规则任务</title>
+                <para/>
+            </sect2>
+            <sect2>
+                <title>服务任务</title>
+                <para/>
+            </sect2>
+            <sect2>
+                <title>手工任务</title>
+                <para/>
+            </sect2>
+        </sect1>
+        <sect1>
+            <title>线条</title>
+            <para>标识流程走向的线条，可以配置表达式和排序属性</para>
+            <mediaobject>
+                <imageobject>
+                    <imagedata align="center" contentwidth="600"
+                        fileref="images/designer.use.22.png"/>
+                </imageobject>
+            </mediaobject>
+            <itemizedlist>
+                <listitem>
+                    <para>排序：此属性一般用在排他网关后面的线条，排他网关会根据线条排序依次判断线条表达式，取第一个返回true的线条流转。</para>
+                </listitem>
+                <listitem>
+                    <para>表达式：此表达式可返回bool类型，如果为true,则表示线条可以通过，反之亦然。如果一个节点后面的线条都返回了false，则会抛出异常。</para>
+                </listitem>
+            </itemizedlist>
+        </sect1>
+        <sect1>
+            <title> 事件 </title>
+            <sect2>
+                <title>空开始事件</title>
+                <para>空的开始事件是指需要用户手工启动的流程，此节点只需要配置节点名称即可，不需要配置其他属性，此节点用来标示流程的开始地点。</para>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/designer.use.23.png"/>
+                    </imageobject>
+                </mediaobject>
+                <note>
+                    <title>注意</title>
+                    <para>一个流程图上只能有一个空的开始事件。</para>
+                </note>
+            </sect2>
+            <sect2>
+                <title>时间开始事件</title>
+                <para>时间开始事件主要用于定时启动流程。</para>
+                <para>此节点除了要配置基本属性外，还需要配置流程定时启动的时间点或者时间表达式。</para>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/designer.use.24.png"/>
+                    </imageobject>
+                </mediaobject>
+                <itemizedlist>
+                    <listitem>
+                        <para>时间点：此属性可以返回标准时间格式，如“"2014-11-04
+                            10:19:29"”,也可以返回java.util.Date类型的对象。</para>
+                    </listitem>
+                    <listitem>
+                        <para>周期时间：此属性可返回cron表达式（需要双引号），也可以返回Trigger、List&lt;Trigger&gt;对象。具体cron表达式可以从网上查询，或者从表达式编辑器中添加示例。</para>
+                    </listitem>
+                </itemizedlist>
+
+            </sect2>
+            <sect2>
+                <title>空结束事件</title>
+                <para>空结束事件是标识流程正常结束的节点，此节点只需要配置节点名称即可，当流程走到此节点时，会自动结束流程实例。</para>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/designer.use.25.png"/>
+                    </imageobject>
+                </mediaobject>
+                <note>
+                    <title>注意</title>
+                    <para>只有当所有激活的分支全部走到结束节点时，才会完全结束流程实例。</para>
+                </note>
+            </sect2>
+            <sect2>
+                <title>终止结束事件</title>
+                <para>终止结束事件是标识流程异常终止的节点。</para>
+                <para>此节点只需要配置节点名称，当流程走到此节点是，会自动终止流程实例，并将流程实例设置为终止状态。</para>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/designer.use.26.png"/>
+                    </imageobject>
+                </mediaobject>
+            </sect2>
+            <sect2>
+                <title>捕获时间节点</title>
+                <para>此节点主要用于流程等待一段时间之后再次启动的场景。</para>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/designer.use.27.png"/>
+                    </imageobject>
+                </mediaobject>
+                <para>节点时间配置见时间开始事件</para>
+                <note>
+                    <title/>
+                    <para>此节点如果配置了周期时间，则只会在周期时间的第一个执行，忽略后面的周期。</para>
+                </note>
+            </sect2>
+            <sect2>
+                <title>边界时间事件</title>
+                <para>此节点主要用于边界事件，用户可以在任务到达某个活动节点后，定时去执行其他任务，如超时处理、超时通知等。</para>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/designer.use.28.png"/>
+                    </imageobject>
+                </mediaobject>
+                <itemizedlist>
+                    <listitem>
+                        <para>终止活动：在满足事件触发条件后（如到达特定时间），则流程会根据边界事件的线条向下流转，如超时处理。</para>
+                    </listitem>
+                    <listitem>
+                        <para>非终止活动：在事件触发后，会并行向下执行，如超时通知等。 </para>
+                    </listitem>
+                </itemizedlist>
+            </sect2>
+        </sect1>
+        <sect1>
+            <title> 网关 </title>
+            <para>网关主要是判断流程分支走向的功能。</para>
+            <sect2>
+                <title>排他网关</title>
+                <para>此网关后面线条只会走一个，引擎会根据线条排序依次判断是否满足条件，取第一个满足条件的线条向下，线条表达式都不满足则抛出异常。</para>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/designer.use.29.png"/>
+                    </imageobject>
+                </mediaobject>
+            </sect2>
+            <sect2>
+                <title>并行网关</title>
+                <para>此网关会不判断线条表达式，直接全部并行处理。并行网关应该成对使用，对于分散的分支，最后必须由合并类型的并行网关进行合并。</para>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/designer.use.30.png"/>
+                    </imageobject>
+                </mediaobject>
+                <itemizedlist>
+                    <listitem>
+                        <para>进出类型：分散或者合并，分散是指由一条线分散为多个分支，合并是指由多个分支合并为一个分支。</para>
+                    </listitem>
+                    <listitem>
+                        <para>合并策略：线条数量合并会根据到达的线条数量判断是否合并结束，令牌数量是根据分支产生的令牌来计算是否合并结束。</para>
+                        <para>实际使用中，一般多用令牌策略，对于简单分散合并都能满足，令牌策略的选择主要用于复杂网关合并，如网关嵌套等复杂功能时才会根据实际场景进行选择。</para>
+                    </listitem>
+                </itemizedlist>
+            </sect2>
+            <sect2>
+                <title>包容网关</title>
+                <para>此网关会根据线条条件进行分支分散，和并行网关不同的是，此网关只会走满足线条表达式的路线。</para>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/designer.use.31.png"/>
+                    </imageobject>
+                </mediaobject>
+                <para>此网关分之后，必须通过合并类型的并行网关进行合并操作，并且合并策略选择令牌策略。</para>
+            </sect2>
+        </sect1>
+        <sect1>
+            <title>图形</title>
+            <sect2>
+                <title>泳道</title>
+                <para>目前泳道主要是为了流程布局美观清晰使用。</para>
+            </sect2>
+        </sect1>
     </chapter>
-    
+
     <chapter>
         <title>流程定义管理</title>
         <para>设计好流程之后，需要将流程发布到数据库才能被引擎使用。</para>
@@ -622,52 +783,67 @@
         <sect1>
             <title>发布流程定义</title>
             <para>右键点击流程.bpmn文件，选择流程操作，点击发布按钮</para>
-            <mediaobject><imageobject>
-                <imagedata align="center" contentwidth="600" fileref="images/designer.use.32.png"/>
-            </imageobject></mediaobject>
-            
+            <mediaobject>
+                <imageobject>
+                    <imagedata align="center" contentwidth="600"
+                        fileref="images/designer.use.32.png"/>
+                </imageobject>
+            </mediaobject>
+
             <note>
-                <title></title>
+                <title/>
                 <para>如果流程发布和更新按钮都是不可点击状态，则需要手工打开bpmn文件，删除process节点上的dbId属性,因为foxbpm默认一个bpmn文件就是一个版本，如果已经存在dbId,则只能进行更新操作。</para>
             </note>
-            
+
         </sect1>
         <sect1>
             <title>更新流程定义</title>
             <para>右键点击流程.bpmn文件，选择流程操作，选中需要更新的定义，点击更新。</para>
-            <mediaobject><imageobject>
-                <imagedata align="center" contentwidth="600" fileref="images/designer.use.32.png"/>
-            </imageobject></mediaobject>
+            <mediaobject>
+                <imageobject>
+                    <imagedata align="center" contentwidth="600"
+                        fileref="images/designer.use.32.png"/>
+                </imageobject>
+            </mediaobject>
             <note>
-                <title></title>
+                <title/>
                 <para>只有发布过的流程才能更新，也就是说有dbId的流程文件才能进行更新操作。</para>
             </note>
         </sect1>
         <sect1>
             <title>删除流程定义</title>
             <para>在文件夹或包上右键流程操作是 ，会将数据库中所有的流程定义都列出，供删除。</para>
-            <mediaobject><imageobject>
-                <imagedata align="center" contentwidth="600" fileref="images/designer.use.33.png"/>
-            </imageobject></mediaobject>
+            <mediaobject>
+                <imageobject>
+                    <imagedata align="center" contentwidth="600"
+                        fileref="images/designer.use.33.png"/>
+                </imageobject>
+            </mediaobject>
             <note>
-                <title></title>
+                <title/>
                 <para>注：删除流程定义后，如果想再次发布，则需要手工打开bpmn文件，删除process节点上的dbId属性。</para>
             </note>
         </sect1>
         <sect1>
             <title>下载流程定义</title>
             <para>在文件夹或包上右键流程操作是 ，会将数据库中所有的流程定义都列出，供下载。</para>
-            <mediaobject><imageobject>
-                <imagedata align="center" contentwidth="600" fileref="images/designer.use.33.png"/>
-            </imageobject></mediaobject>
+            <mediaobject>
+                <imageobject>
+                    <imagedata align="center" contentwidth="600"
+                        fileref="images/designer.use.33.png"/>
+                </imageobject>
+            </mediaobject>
         </sect1>
         <sect1>
             <title>创建新版本</title>
             <para>右键点击流程.bpmn文件，选择流程操作，点击创建新版本，填写版本信息，则会在同一位置生成一个新的流程文件，可以进行发布操作。</para>
-            <mediaobject><imageobject>
-                <imagedata align="center" contentwidth="600" fileref="images/designer.use.32.png"/>
-            </imageobject></mediaobject>
-          
+            <mediaobject>
+                <imageobject>
+                    <imagedata align="center" contentwidth="600"
+                        fileref="images/designer.use.32.png"/>
+                </imageobject>
+            </mediaobject>
+
         </sect1>
     </chapter>
     <chapter>
@@ -683,9 +859,12 @@
             <orderedlist>
                 <listitem>
                     <para>首先，需要用户建立自定义的连接器菜单文件，这里我取名CustomConnectorMenu.xml，放到我的web项目中</para>
-                    <mediaobject><imageobject>
-                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.34.png"/>
-                    </imageobject></mediaobject>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="images/designer.use.34.png"/>
+                        </imageobject>
+                    </mediaobject>
                     <programlisting>
 &lt;?xml version="1.0" encoding="UTF-8"?>
 &lt;connectormenu:Menu xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:connectormenu="http://www.foxbpm.org/connectormenu">
@@ -702,35 +881,50 @@
                 </listitem>
                 <listitem>
                     <para>在首选项中配置连接器的menu地址，就是上面我们创建的文件的物理路径。</para>
-                    <mediaobject><imageobject>
-                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.35.png"/>
-                    </imageobject></mediaobject>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="images/designer.use.35.png"/>
+                        </imageobject>
+                    </mediaobject>
                 </listitem>
                 <listitem>
                     <para>然后在需要创建连接器的包上右键->New->other->FoxBPM->创建连接器，打开创建连接器的界面。</para>
-                    <mediaobject><imageobject>
-                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.36.png"/>
-                    </imageobject></mediaobject>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="images/designer.use.36.png"/>
+                        </imageobject>
+                    </mediaobject>
                 </listitem>
                 <listitem>
                     <para>填写连接器基本信息，这里我以发送短信为例子</para>
                     <para>发送短信，我需要收件人手机号和短信内容两个参数，并且将两个参数放到一个页面上，所以填好之后如下</para>
-                    <mediaobject><imageobject>
-                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.37.png"/>
-                    </imageobject></mediaobject>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="images/designer.use.37.png"/>
+                        </imageobject>
+                    </mediaobject>
                 </listitem>
                 <listitem>
                     <para>点击“完成”之后，会在选中的目录，生成新的包，如sendMessage，包下有三个文件，SendMessage.java，connecto.xml,SendMessage.png，也就是一个完成的连接器必须有的三个文件。
                         其中：SendMessage.java是连接器的实现逻辑，需要再excute方法中写入发送短信的逻辑，如调用短信猫接口等。connector.xml中记录了连接器的结构信息。
                         除创建文件之外，还会在上面的CustomConnectorMenu.xml中写入对应信息（如果是其他用户共享连接器，需要手工填写这段xml）。</para>
-                    <mediaobject><imageobject>
-                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.38.png"/>
-                    </imageobject></mediaobject>
-                    <mediaobject><imageobject>
-                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.39.png"/>
-                    </imageobject></mediaobject>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="images/designer.use.38.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="images/designer.use.39.png"/>
+                        </imageobject>
+                    </mediaobject>
                 </listitem>
-               
+
             </orderedlist>
         </sect1>
         <sect1>
@@ -738,9 +932,12 @@
             <orderedlist>
                 <listitem>
                     <para>将CustomConnectorMenu.xml注册给流程引擎，如spring配置：</para>
-                    <mediaobject><imageobject>
-                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.40.png"/>
-                    </imageobject></mediaobject>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="images/designer.use.40.png"/>
+                        </imageobject>
+                    </mediaobject>
                     <programlisting>
 
 	&lt;!-- 流程引擎配置 -->
@@ -755,20 +952,24 @@
                     </programlisting>
                 </listitem>
                 <listitem>
-                    <para>
-                        然后重启服务，点击流程同步，就可以将新的连接器同步到本地，在设计流程的时候就可以直接使用新的连接器了。
-                    </para>
-                    <mediaobject><imageobject>
-                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.41.png"/>
-                    </imageobject></mediaobject>
-                    <mediaobject><imageobject>
-                        <imagedata align="center" contentwidth="600" fileref="images/designer.use.42.png"/>
-                    </imageobject></mediaobject>
-                </listitem>     
+                    <para> 然后重启服务，点击流程同步，就可以将新的连接器同步到本地，在设计流程的时候就可以直接使用新的连接器了。 </para>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="images/designer.use.41.png"/>
+                        </imageobject>
+                    </mediaobject>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata align="center" contentwidth="600"
+                                fileref="images/designer.use.42.png"/>
+                        </imageobject>
+                    </mediaobject>
+                </listitem>
             </orderedlist>
-            
+
             <note>
-                <title></title>
+                <title/>
                 <para>上面创建连接器的目录，必须在classpath中。如果是其他用户共享的连接器，需要将对应jar包放到lib下。</para>
             </note>
         </sect1>
@@ -779,7 +980,7 @@
         <sect1>
             <title> 连接器和选择器的共享</title>
             <para>一个完整的连接器应该包含**.java，**.png，connector.xml三个文件，将三个文件导出jar包，在配合详细的说明文档，就可以共享给其他用户使用了。</para>
-           </sect1>
+        </sect1>
     </chapter>
     <chapter>
         <title>附录：系统默认连接器和选择器功能介绍</title>
@@ -788,23 +989,23 @@
             <para>连接器主要类似java监听的功能，可在流程运转的过程中额外的做一些其他功能，如发送邮件，记录流程信息等。</para>
             <sect2>
                 <title>发送邮件</title>
-                <para></para>
+                <para/>
             </sect2>
             <sect2>
                 <title>自动邮件发送</title>
-                <para></para>
+                <para/>
             </sect2>
             <sect2>
                 <title>WebServices</title>
-                <para></para>
+                <para/>
             </sect2>
             <sect2>
                 <title>Groovy</title>
-                <para></para>
+                <para/>
             </sect2>
             <sect2>
                 <title>JDBCDatabaseQuery</title>
-                <para></para>
+                <para/>
             </sect2>
         </sect1>
         <sect1>
@@ -821,7 +1022,7 @@
                 </itemizedlist>
                 <note>
                     <title>说明</title>
-                    
+
                     <itemizedlist>
                         <listitem>
                             <para>该发送邮件不是立即发送，而是将邮件信息存入数据库foxbpm_mail中，有系统定时任务根据foxbpm_mail表内容来处理发送邮件。</para>
@@ -834,7 +1035,7 @@
                         </listitem>
                     </itemizedlist>
                 </note>
-                <para></para>
+                <para/>
             </sect2>
             <sect2>
                 <title>所有人</title>
@@ -843,7 +1044,7 @@
                         <para>功能描述：所有人都可以处理该任务。</para>
                     </listitem>
                 </itemizedlist>
-                <para></para>
+                <para/>
             </sect2>
             <sect2>
                 <title>启动人</title>
@@ -852,10 +1053,11 @@
                         <para>功能描述：流程的启动人。</para>
                     </listitem>
                     <listitem>
-                        <para> 说明：在一般情况下，流程的启动人和发起人是同一个，但是如果流程是通过API来启动的，此值可能不同。取值来自foxbpm_run_processInstance的startAuthor字段。</para>
+                        <para>
+                            说明：在一般情况下，流程的启动人和发起人是同一个，但是如果流程是通过API来启动的，此值可能不同。取值来自foxbpm_run_processInstance的startAuthor字段。</para>
                     </listitem>
                 </itemizedlist>
-                <para></para>
+                <para/>
             </sect2>
             <sect2>
                 <title>上一步骤处理者</title>
@@ -864,10 +1066,11 @@
                         <para>功能描述：上一步骤的处理者。</para>
                     </listitem>
                     <listitem>
-                        <para> 说明：此选择器会自动选择上一步骤的处理者。如果分支合并的时候选择此连接器，则会找最后一个分支的处理者，所以分支合并不建议用此选择器。</para>
+                        <para>
+                            说明：此选择器会自动选择上一步骤的处理者。如果分支合并的时候选择此连接器，则会找最后一个分支的处理者，所以分支合并不建议用此选择器。</para>
                     </listitem>
                 </itemizedlist>
-                <para></para>
+                <para/>
             </sect2>
             <sect2>
                 <title>选择用户</title>
@@ -876,10 +1079,11 @@
                         <para>功能描述：选择指定ID的用户。</para>
                     </listitem>
                     <listitem>
-                        <para> 说明：选择用户的表达式中，可以返回Collection、List&lt;String&gt;、“user1,user2,user3”这三种格式。如果返回结果只有一个用户，则任务未独占方式，否则为共享任务。</para>
+                        <para>
+                            说明：选择用户的表达式中，可以返回Collection、List&lt;String&gt;、“user1,user2,user3”这三种格式。如果返回结果只有一个用户，则任务未独占方式，否则为共享任务。</para>
                     </listitem>
                 </itemizedlist>
-                <para></para>
+                <para/>
             </sect2>
             <sect2>
                 <title>选择部门</title>
@@ -888,11 +1092,12 @@
                         <para>功能描述：选择指定编号的部门。</para>
                     </listitem>
                     <listitem>
-                        <para> 说明：可以返回Collection、List&lt;String&gt;、“dept1,dept2,dept3”这三种格式,任务为共享任务。此连接器需要在引擎启动的时候配置好角色部门的实现。</para>
+                        <para>
+                            说明：可以返回Collection、List&lt;String&gt;、“dept1,dept2,dept3”这三种格式,任务为共享任务。此连接器需要在引擎启动的时候配置好角色部门的实现。</para>
                     </listitem>
                 </itemizedlist>
                 <note>
-                    <title></title>
+                    <title/>
                     <para>如果引擎初始化时配置组织机构错误，可能导致此连接器无法使用。</para>
                 </note>
             </sect2>
@@ -903,11 +1108,12 @@
                         <para>功能描述：选择指定编号的角色。</para>
                     </listitem>
                     <listitem>
-                        <para> 说明：可以返回Collection、List&lt;String&gt;、“dept1,dept2,dept3”这三种格式,任务为共享任务。此连接器需要在引擎启动的时候配置好角色部门的实现。</para>
+                        <para>
+                            说明：可以返回Collection、List&lt;String&gt;、“dept1,dept2,dept3”这三种格式,任务为共享任务。此连接器需要在引擎启动的时候配置好角色部门的实现。</para>
                     </listitem>
                 </itemizedlist>
                 <note>
-                    <title></title>
+                    <title/>
                     <para>如果引擎初始化时配置组织机构错误，可能导致此连接器无法使用。</para>
                 </note>
             </sect2>
@@ -918,11 +1124,12 @@
                         <para>功能描述：配置一个用户组，自动计算组中任务最少的用户，将任务分给此人独占。</para>
                     </listitem>
                     <listitem>
-                        <para> 说明：可以返回Collection、List&lt;String&gt;、“user1,user2,user3”这三种格式,任务为独占任务。</para>
+                        <para>
+                            说明：可以返回Collection、List&lt;String&gt;、“user1,user2,user3”这三种格式,任务为独占任务。</para>
                     </listitem>
                 </itemizedlist>
                 <note>
-                    <title></title>
+                    <title/>
                     <para>此选择器计算量较大，性能不可靠，建议关键业务少用或者优化计算方式。</para>
                 </note>
             </sect2>
@@ -933,7 +1140,8 @@
                         <para>功能描述：配置一个用户组，自动随机选择组中的用户，将任务分给此人独占。</para>
                     </listitem>
                     <listitem>
-                        <para> 说明：可以返回Collection、List&lt;String&gt;、“user1,user2,user3”这三种格式,任务为独占任务。</para>
+                        <para>
+                            说明：可以返回Collection、List&lt;String&gt;、“user1,user2,user3”这三种格式,任务为独占任务。</para>
                     </listitem>
                 </itemizedlist>
             </sect2>
@@ -947,7 +1155,7 @@
                         <para> 说明：无</para>
                     </listitem>
                 </itemizedlist>
-                <para></para>
+                <para/>
             </sect2>
             <sect2>
                 <title>选择部门（包含子部门）</title>
