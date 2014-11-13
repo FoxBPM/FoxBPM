@@ -24,9 +24,7 @@ import java.io.IOException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
-import org.foxbpm.engine.exception.ExceptionCode;
 import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 
 /**
  * svg 转换操作工具类
@@ -73,7 +71,7 @@ public class SVGConverterUtil {
 		ByteArrayOutputStream out = null;
 		try {
 			if (StringUtil.isEmpty(svgCode)) {
-				throw new FoxBPMIllegalArgumentException(ExceptionCode.ILLEGALARGUMENTEXCEPTION_ISNULL, "svgCode is null !");
+				throw ExceptionUtil.getException("转换png内容为空");
 			}
 			PNGTranscoder transcoder = new PNGTranscoder();
 			in = new ByteArrayInputStream(svgCode.getBytes("utf-8"));
@@ -82,20 +80,20 @@ public class SVGConverterUtil {
 			out.flush();
 			return out.toByteArray();
 		} catch (Exception e) {
-			throw new FoxBPMException(ExceptionCode.CONVERTERTER_SVG_ERROR, e);
+			throw ExceptionUtil.getException("png转换失败",e);
 		} finally {
 			if (null != in) {
 				try {
 					in.close();
 				} catch (IOException e) {
-					throw new FoxBPMException(ExceptionCode.IO_CLOSE_ERROR, e);
+					throw ExceptionUtil.getException("png输入流关闭失败",e);
 				}
 			}
 			if (null != out) {
 				try {
-					in.close();
+					out.close();
 				} catch (IOException e) {
-					throw new FoxBPMException(ExceptionCode.IO_CLOSE_ERROR, e);
+					throw ExceptionUtil.getException("png输出流关闭失败",e);
 				}
 			}
 		}

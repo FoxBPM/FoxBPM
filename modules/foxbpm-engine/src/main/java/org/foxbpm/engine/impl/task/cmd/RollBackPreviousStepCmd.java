@@ -20,11 +20,11 @@ package org.foxbpm.engine.impl.task.cmd;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.task.command.RollBackPreviousStepCommand;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
@@ -94,7 +94,7 @@ public class RollBackPreviousStepCmd extends AbstractExpandTaskCmd<RollBackPrevi
 			}
 
 		} else {
-			throw new FoxBPMException("未找到上一步骤任务.");
+			throw ExceptionUtil.getException("10502005");
 		}
 
 		return null;

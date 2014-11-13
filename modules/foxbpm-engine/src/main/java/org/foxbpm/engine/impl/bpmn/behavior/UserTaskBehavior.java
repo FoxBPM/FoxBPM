@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.calendar.WorkCalendar;
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.connector.ConnectorListener;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
@@ -34,17 +33,15 @@ import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.event.AbstractTaskEvent;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
-import org.foxbpm.engine.impl.task.FormParam;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.util.ClockUtil;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskCommandDefinition;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.foxbpm.model.SkipStrategy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 人工任务处理器
@@ -54,7 +51,6 @@ import org.slf4j.LoggerFactory;
  */
 public class UserTaskBehavior extends TaskBehavior {
 
-	private static Logger logger = LoggerFactory.getLogger(UserTaskBehavior.class);
 	private static final long serialVersionUID = 1L;
 	/** 任务信息定义 */
 	private TaskDefinition taskDefinition;
@@ -88,9 +84,19 @@ public class UserTaskBehavior extends TaskBehavior {
 		task.setBizKey(processInstance.getBizKey());
 		ProcessDefinitionEntity processDefinition=(ProcessDefinitionEntity)processInstance.getProcessDefinition();
 		if(taskDefinition.getTaskSubject()==null||StringUtil.isEmpty(taskDefinition.getTaskSubject().getExpressionText())){
-			task.setSubject(StringUtil.getString(processDefinition.getSubject().getValue(executionContext)));
+			try{
+				task.setSubject(StringUtil.getString(processDefinition.getSubject().getValue(executionContext)));
+			}catch(Exception ex){
+				throw ExceptionUtil.getException("10404021",ex,this.getId());
+			}
+			
 		}else{
-			task.setSubject(StringUtil.getString(taskDefinition.getTaskSubject().getValue(executionContext)));
+			try{
+				task.setSubject(StringUtil.getString(taskDefinition.getTaskSubject().getValue(executionContext)));
+			}catch(Exception ex){
+				throw ExceptionUtil.getException("10404022",ex,this.getId());
+			}
+			
 		}
 		
 		if(StringUtil.isEmpty(task.getSubject())){
@@ -98,8 +104,18 @@ public class UserTaskBehavior extends TaskBehavior {
 		}
 		task.setProcessInitiator(processInstance.getInitiator());
 		task.setProcessStartTime(processInstance.getStartTime());
-		task.setDescription(StringUtil.getString(taskDefinition.getTaskDescription().getValue(executionContext)));
-		task.setCompleteDescription(StringUtil.getString(taskDefinition.getCompleteTaskDescription().getValue(executionContext)));
+		try{
+			task.setDescription(StringUtil.getString(taskDefinition.getTaskDescription().getValue(executionContext)));
+		}catch(Exception ex){
+			throw ExceptionUtil.getException("10404023",ex,this.getId());
+		}
+		
+		try{
+			task.setCompleteDescription(StringUtil.getString(taskDefinition.getCompleteTaskDescription().getValue(executionContext)));
+		}catch(Exception ex){
+			throw ExceptionUtil.getException("10404024",ex,this.getId());
+		}
+		
 		task.setToken((TokenEntity) executionContext);
 		task.setTaskType(taskDefinition.getTaskType());
 		
@@ -109,16 +125,21 @@ public class UserTaskBehavior extends TaskBehavior {
 		task.setFormUriView(formUriView);
 		
 		if(taskDefinition.getTaskPriority() !=null){
-			task.setPriority(StringUtil.getInt(taskDefinition.getTaskPriority().getValue(executionContext)));
-		}
-		List<FormParam> formParams = taskDefinition.getFormParams();
-		if(formParams!=null&&formParams.size()>0){
-			Map<String, Object> paramMap=new HashMap<String, Object>();
-			for (FormParam formParam : formParams) {
-				paramMap.put(formParam.getParamKey(), formParam.getExpression().getValue(executionContext));
+			try{
+				task.setPriority(StringUtil.getInt(taskDefinition.getTaskPriority().getValue(executionContext)));
+			}catch(Exception ex){
+				throw ExceptionUtil.getException("10404025",ex,this.getId());
 			}
-			task.setParamMap(paramMap);
+			
 		}
+//		List<FormParam> formParams = taskDefinition.getFormParams();
+//		if(formParams!=null&&formParams.size()>0){
+//			Map<String, Object> paramMap=new HashMap<String, Object>();
+//			for (FormParam formParam : formParams) {
+//				paramMap.put(formParam.getParamKey(), formParam.getExpression().getValue(executionContext));
+//			}
+//			task.setParamMap(paramMap);
+//		}
 		
 		/** 判断是否有强制任务处理者指定 */
 		if(StringUtil.isNotEmpty(token.getTaskAssignee())){
@@ -130,13 +151,7 @@ public class UserTaskBehavior extends TaskBehavior {
 				try {
 					connector.notify((ListenerExecutionContext) executionContext);
 				} catch (Exception e) {
-					logger.error("执行选择人处理器失败！节点"+this.getId()+",处理器："+connector.getConnector().getConnectorInstanceId(), e);
-					if(e instanceof FoxBPMException){
-						throw (FoxBPMException)e;
-					}
-					else{
-						throw new FoxBPMException("执行选择人处理器失败！节点"+this.getId()+",处理器："+connector.getConnector().getConnectorInstanceId() , e);
-					}
+					throw ExceptionUtil.getException("10700002",e,this.getId(),connector.getConnector().getType());
 				}
 			}
 		}
@@ -192,7 +207,12 @@ public class UserTaskBehavior extends TaskBehavior {
 		newTask.setNodeId(this.getId());
 
 		if (skipAssignee != null && !skipAssignee.equals("")) {
-			newTask.setAssignee(StringUtil.getString(new ExpressionImpl(skipAssignee).getValue(executionContext)));
+			try{
+				newTask.setAssignee(StringUtil.getString(new ExpressionImpl(skipAssignee).getValue(executionContext)));
+			}catch(Exception ex){
+				throw ExceptionUtil.getException("10404026",ex,this.getId());
+			}
+			
 		}
 
 		newTask.setDraft(false);
@@ -229,13 +249,28 @@ public class UserTaskBehavior extends TaskBehavior {
 		}
 
 		if (skipComment != null && !skipComment.equals("")) {
-			newTask.setTaskComment(StringUtil.getString(new ExpressionImpl(skipComment).getValue(executionContext)));
+			try{
+				newTask.setTaskComment(StringUtil.getString(new ExpressionImpl(skipComment).getValue(executionContext)));
+			}catch(Exception ex){
+				throw ExceptionUtil.getException("10404027",ex,this.getId());
+			}
+			
 		}
 		
 		if(taskDefinition.getTaskSubject()==null||StringUtil.isEmpty(taskDefinition.getTaskSubject().getExpressionText())){
-			newTask.setSubject(StringUtil.getString(processDefinition.getSubject().getValue(executionContext)));
+			try{
+				newTask.setSubject(StringUtil.getString(processDefinition.getSubject().getValue(executionContext)));
+			}catch(Exception ex){
+				throw ExceptionUtil.getException("10404021",ex,this.getId());
+			}
+			
 		}else{
-			newTask.setSubject(StringUtil.getString(taskDefinition.getTaskSubject().getValue(executionContext)));
+			try{
+				newTask.setSubject(StringUtil.getString(taskDefinition.getTaskSubject().getValue(executionContext)));
+			}catch(Exception ex){
+				throw ExceptionUtil.getException("10404022",ex,this.getId());
+			}
+			
 		}
 		
 		if(StringUtil.isEmpty(newTask.getSubject())){
@@ -270,12 +305,24 @@ public class UserTaskBehavior extends TaskBehavior {
 	 * @return
 	 */
 	private String getFormUri(FlowNodeExecutionContext executionContext){
-		String formUri = StringUtil.getString(taskDefinition.getFormUri().getValue(executionContext));
+		String formUri = null;
+		try{
+			formUri = StringUtil.getString(taskDefinition.getFormUri().getValue(executionContext));
+		}catch(Exception ex){
+			throw ExceptionUtil.getException("10404028");
+		}
+		
+		
 		if(StringUtil.isNotEmpty(formUri)){
 			return formUri;
 		}
 		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity)executionContext.getProcessDefinition();
-		formUri = StringUtil.getString(processDefinitionEntity.getFormUri().getValue(executionContext));
+		try{
+			formUri = StringUtil.getString(processDefinitionEntity.getFormUri().getValue(executionContext));
+		}catch(Exception ex){
+			throw ExceptionUtil.getException("10404029");
+		}
+		
 		return formUri;
 	}
 	
@@ -286,12 +333,22 @@ public class UserTaskBehavior extends TaskBehavior {
 	 * @return
 	 */
 	private String getFormUriView(FlowNodeExecutionContext executionContext){
-		String formUriView = StringUtil.getString(taskDefinition.getFormUriView().getValue(executionContext));
+		String formUriView = null;
+		try{
+			formUriView = StringUtil.getString(taskDefinition.getFormUriView().getValue(executionContext));
+		}catch(Exception ex){
+			throw ExceptionUtil.getException("10404030");
+		}
 		if(StringUtil.isNotEmpty(formUriView)){
 			return formUriView;
 		}
 		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity)executionContext.getProcessDefinition();
-		formUriView = StringUtil.getString(processDefinitionEntity.getFormUriView().getValue(executionContext));
+		try{
+			formUriView = StringUtil.getString(processDefinitionEntity.getFormUriView().getValue(executionContext));
+		}catch(Exception ex){
+			throw ExceptionUtil.getException("10404031");
+		}
+		
 		
 		if(StringUtil.isNotEmpty(formUriView)){
 			return formUriView;

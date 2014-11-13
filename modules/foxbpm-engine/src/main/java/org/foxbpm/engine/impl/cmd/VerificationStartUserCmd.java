@@ -21,8 +21,6 @@ package org.foxbpm.engine.impl.cmd;
 import java.util.List;
 
 import org.foxbpm.engine.Constant;
-import org.foxbpm.engine.exception.FoxBPMBizException;
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
@@ -30,6 +28,7 @@ import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.model.PotentialStarter;
 
@@ -64,7 +63,7 @@ public class VerificationStartUserCmd implements Command<Boolean> {
 			processDefinition = deployCache
 					.findDeployedLatestProcessDefinitionByKey(processDefinitionKey);
 		} else {
-			throw new FoxBPMIllegalArgumentException("验证发起权限时，流程编号和流程唯一键不能同时为空");
+			throw ExceptionUtil.getException("10601103");
 		}
 		
 		List<PotentialStarter> processStarters = processDefinition.getPotentialStarters();
@@ -79,7 +78,7 @@ public class VerificationStartUserCmd implements Command<Boolean> {
 			try{
 				tmpValue = (String)new ExpressionImpl(starter.getExpression()).getValue(null);
 			}catch(Exception ex){
-				throw new FoxBPMBizException("流程启动人表达式配置错误：" + starter.getExpression(),ex);
+				throw ExceptionUtil.getException("10604001",ex);
 			}
 			//表达式值为空，则不进行判断
 			if(StringUtil.isEmpty(tmpValue)){

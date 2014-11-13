@@ -32,7 +32,6 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.foxbpm.bpmn.converter.BpmnXMLConverter;
 import org.foxbpm.engine.event.EventListener;
-import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.ProcessDefinitionEntityBuilder;
@@ -46,6 +45,7 @@ import org.foxbpm.engine.impl.bpmn.behavior.SubProcessBehavior;
 import org.foxbpm.engine.impl.connector.ConnectorListener;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtDefinition;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.modelparse.ProcessModelParseHandler;
 import org.foxbpm.kernel.ProcessDefinitionBuilder;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
@@ -148,7 +148,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 				styleContainer.put(elementType, tmpStyle);
 			}
 		} catch (DocumentException e) {
-			throw new FoxBPMClassLoadingException("style.xml文件解析失败，请检查！", e);
+			throw ExceptionUtil.getException("10106000", e);
 		}
 	}
 	

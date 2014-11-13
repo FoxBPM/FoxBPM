@@ -25,6 +25,7 @@ import java.util.Map;
 
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.task.CommandParamType;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
@@ -95,7 +96,12 @@ public class TaskCommandImpl implements Serializable, TaskCommand {
 	public Object getExpressionValue(FlowNodeExecutionContext executionContext) {
 
 		if (expression != null) {
-			return expression.getValue(executionContext);
+			try{
+				return expression.getValue(executionContext);
+			}catch(Exception ex){
+				throw ExceptionUtil.getException("10304003",ex);
+			}
+			
 		}
 		return null;
 	}

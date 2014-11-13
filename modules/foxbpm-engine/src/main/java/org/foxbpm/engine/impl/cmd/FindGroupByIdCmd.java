@@ -19,11 +19,12 @@ package org.foxbpm.engine.impl.cmd;
 
 import java.util.List;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
 
 /**
  * 获取组编号下的所有子组（包含自身）
@@ -42,8 +43,12 @@ public class FindGroupByIdCmd  implements Command<GroupEntity>{
 	
 	 
 	public GroupEntity execute(CommandContext commandContext) {
-		if(groupId == null || groupType == null){
-			throw new FoxBPMIllegalArgumentException("参数不能为空:groupId="+groupId+",groupType="+groupType);
+		if(StringUtil.isEmpty(groupType)){
+			throw ExceptionUtil.getException("10601004");
+		}
+		
+		if(StringUtil.isEmpty(groupId)){
+			throw ExceptionUtil.getException("10601005");
 		}
 		List<GroupDefinition> groupDefinitions = commandContext.getProcessEngineConfigurationImpl().getGroupDefinitions();
 		for(GroupDefinition groupDefinition : groupDefinitions){
@@ -52,6 +57,6 @@ public class FindGroupByIdCmd  implements Command<GroupEntity>{
 				return group;
 			}
 		}
-		throw new FoxBPMIllegalArgumentException("不支持的组类型：" + groupType);
+		throw ExceptionUtil.getException("10602001");
 	}
 }

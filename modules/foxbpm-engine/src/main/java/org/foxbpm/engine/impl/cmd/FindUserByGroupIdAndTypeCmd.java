@@ -20,10 +20,11 @@ package org.foxbpm.engine.impl.cmd;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
 
 /**
  * 从数据库中查询gourpId对应的userid
@@ -42,6 +43,13 @@ public class FindUserByGroupIdAndTypeCmd implements Command<List<String>>{
 	
 	 
 	public List<String> execute(CommandContext commandContext) {
+		if(StringUtil.isEmpty(groupType)){
+			throw ExceptionUtil.getException("10601004");
+		}
+		
+		if(StringUtil.isEmpty(groupId)){
+			throw ExceptionUtil.getException("10601005");
+		}
 		List<String> userIds = new ArrayList<String>();
 		//处理组织机构
 		List<GroupDefinition> groupDefinitions = commandContext.getProcessEngineConfigurationImpl().getGroupDefinitions();
@@ -51,6 +59,6 @@ public class FindUserByGroupIdAndTypeCmd implements Command<List<String>>{
 				return userIds;
 			}
 		}
-		throw new FoxBPMIllegalArgumentException("不支持的组类型：" + groupType);
+		throw ExceptionUtil.getException("10602001");
 	}
 }

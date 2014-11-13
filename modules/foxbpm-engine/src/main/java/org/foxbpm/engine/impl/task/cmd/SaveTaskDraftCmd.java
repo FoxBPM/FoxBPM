@@ -17,13 +17,13 @@
  */
 package org.foxbpm.engine.impl.task.cmd;
 
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.task.command.SaveTaskDraftCommand;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
@@ -37,19 +37,15 @@ public class SaveTaskDraftCmd extends AbstractExpandTaskCmd<SaveTaskDraftCommand
 	private static final long serialVersionUID = 1L;
 
 	public SaveTaskDraftCmd(SaveTaskDraftCommand saveTaskDraftCommand) {
-		
 		super(saveTaskDraftCommand);
-
 	}
 	
 	 
 	public Void execute(CommandContext commandContext) {
 		TaskEntity task = Context.getCommandContext().getTaskManager().findTaskById(taskId);
-
 		if (task != null && task.isSuspended()) {
-			throw new FoxBPMException("task is suspended");
+			throw ExceptionUtil.getException("10503002");
 		}
-
 		return execute(commandContext, task);
 	}
 
@@ -58,7 +54,6 @@ public class SaveTaskDraftCmd extends AbstractExpandTaskCmd<SaveTaskDraftCommand
 		
 		if(task!=null){
 			/** 流程已经启动有任务的时候的处理 */
-
 			// 获取任务命令
 			TaskCommand taskCommand = getTaskCommand(task);
 			// 获取流程内容执行器
@@ -75,47 +70,38 @@ public class SaveTaskDraftCmd extends AbstractExpandTaskCmd<SaveTaskDraftCommand
 			if(StringUtil.isEmpty(task.getBizKey())){
 				task.setBizKey(businessKey);
 			}
-			
-			
 			TaskDefinition taskDefinition=task.getTaskDefinition();
-			
 			if (taskDefinition != null && taskDefinition.getTaskSubject() != null) {
-
-				Object result = taskDefinition.getTaskSubject().getValue(executionContext);
+				Object result = null;
+				try{
+					result = taskDefinition.getTaskSubject().getValue(executionContext);
+				}catch(Exception ex){
+					throw ExceptionUtil.getException("10604003",ex);
+				}
+				
 				if (result != null) {
 					task.setDescription(result.toString());
 				} else {
 					task.setDescription(task.getToken().getFlowNode().getName());
 				}
 			} else {
-				
 				if (task.getProcessDefinition().getSubject() != null) {
-
-					Object result = task.getProcessDefinition().getSubject().getValue(executionContext);
-
+					Object result = null;
+					try{
+						result = taskDefinition.getTaskSubject().getValue(executionContext);
+					}catch(Exception ex){
+						throw ExceptionUtil.getException("10604004",ex);
+					}
 					if (result != null) {
 						task.setDescription(result.toString());
 					}
 				} else {
 					task.setDescription(task.getToken().getFlowNode().getName());
 				}
-				  
-				
 			}
-
-
-			
-			
 		}else{
 			/** 还没有发起流程时候的处理 */
-			
-			
 		}
-		
-		
 		return null;
 	}
-
-	
-
 }

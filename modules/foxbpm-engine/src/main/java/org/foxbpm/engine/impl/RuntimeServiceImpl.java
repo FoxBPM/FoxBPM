@@ -22,7 +22,6 @@ import java.util.Map;
 
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.datavariable.VariableQuery;
-import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.impl.cmd.BoundaryTimeSignalCmd;
 import org.foxbpm.engine.impl.cmd.DeleteProcessInstanceByIdCmd;
 import org.foxbpm.engine.impl.cmd.SignalCmd;
@@ -32,6 +31,7 @@ import org.foxbpm.engine.impl.datavariable.VariableQueryImpl;
 import org.foxbpm.engine.impl.runningtrack.RunningTrackQueryImpl;
 import org.foxbpm.engine.impl.runtime.ProcessInstanceQueryImpl;
 import org.foxbpm.engine.impl.runtime.TokenQueryImpl;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.runningtrack.RunningTrackQuery;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.runtime.ProcessInstanceQuery;
@@ -78,19 +78,19 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 	}
 
 	public ProcessInstance startProcessInstanceByMessage(String messageName) {
-		throw new FoxBPMBizException("功能尚未完成");
+		throw ExceptionUtil.getException("功能尚未完成");
 	}
 
 	public ProcessInstance startProcessInstanceByMessage(String messageName, String bizKey) {
-		throw new FoxBPMBizException("功能尚未完成");
+		throw ExceptionUtil.getException("功能尚未完成");
 	}
 
 	public ProcessInstance startProcessInstanceByMessage(String messageName, Map<String, Object> processVariables) {
-		throw new FoxBPMBizException("功能尚未完成");
+		throw ExceptionUtil.getException("功能尚未完成");
 	}
 
 	public ProcessInstance startProcessInstanceByMessage(String messageName, String bizKey, Map<String, Object> processVariables) {
-		throw new FoxBPMBizException("功能尚未完成");
+		throw ExceptionUtil.getException("功能尚未完成");
 	}
 
 	public void signal(String executionId) {

@@ -17,11 +17,11 @@
  */
 package org.foxbpm.engine.impl.task.cmd;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.task.command.RollBackAssigneeCommand;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
@@ -68,10 +68,10 @@ public class RollBackAssigneeCmd extends AbstractExpandTaskCmd<RollBackAssigneeC
 		KernelFlowNodeImpl flowNode=processDefinition.findFlowNode(rollBackNodeId);
 		
 		if(flowNode == null){
-			throw new FoxBPMIllegalArgumentException("退回的目的节点："+rollBackNodeId+"不存在,请检查流程配置！");
+			throw ExceptionUtil.getException("10502004",rollBackNodeId);
 		}
 		if(isMutilInstance(flowNode)){
-			throw new FoxBPMIllegalArgumentException("该命令不能退回到多实例节点，节点号：" + rollBackNodeId);
+			throw ExceptionUtil.getException("10501004",rollBackNodeId);
 		}
 		/** 完成任务,并将流程推向指定的节点,并指定处理者 */
 		task.complete(flowNode,rollBackAssignee);

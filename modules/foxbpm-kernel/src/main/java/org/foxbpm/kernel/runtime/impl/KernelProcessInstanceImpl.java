@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.foxbpm.kernel.KernelException;
 import org.foxbpm.kernel.event.KernelEvent;
-import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.process.impl.KernelProcessDefinitionImpl;
 import org.foxbpm.kernel.runtime.InterpretableProcessInstance;
@@ -121,7 +121,7 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 			this.rootToken.setProcessInstance(this);
 			return this.rootToken;
 		} else {
-			throw new KernelException("RootToken已经存在");
+			throw new KernelException("跟令牌已经存在，不能再次创建！");
 		}
 
 	}
@@ -173,7 +173,7 @@ public class KernelProcessInstanceImpl extends KernelVariableScopeImpl implement
 	public void signal(String tokenId) {
 		// getTokens 没有子类重写所以直接调用属性
 		if(tokenId==null||tokenId.equals("")){
-			throw new KernelException("signal 的 tokenId is null");
+			throw new KernelException("需要驱动的令牌编号为空！");
 		}
 		if (tokens != null && tokens.size() > 0) {
 			for (KernelTokenImpl kernelTokenImpl : tokens) {

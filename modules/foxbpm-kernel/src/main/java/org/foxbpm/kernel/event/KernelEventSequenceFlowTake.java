@@ -19,7 +19,7 @@ package org.foxbpm.kernel.event;
 
 import java.util.List;
 
-import org.foxbpm.kernel.process.KernelException;
+import org.foxbpm.kernel.KernelListenerException;
 import org.foxbpm.kernel.process.impl.KernelSequenceFlowImpl;
 import org.foxbpm.kernel.runtime.InterpretableExecutionContext;
 
@@ -42,10 +42,8 @@ public class KernelEventSequenceFlowTake implements KernelEvent {
 			KernelListener listener = kernelListeners.get(kernelListenerIndex);
 			try {
 				listener.notify(executionContext);
-			} catch (RuntimeException e) {
-				throw e;
 			} catch (Exception e) {
-				throw new KernelException("不能执行事件监听 : " + e.getMessage(), e);
+				throw new KernelListenerException("不能执行事件监听 : " + e.getMessage(), e,executionContext.getId(),executionContext.getSequenceFlow().getId(),listener.getClass().getName(),KernelEventType.EVENTTYPE_SEQUENCEFLOW_TAKE);
 			}
 			executionContext.setKernelListenerIndex(kernelListenerIndex + 1);
 			executionContext.fireEvent(this);

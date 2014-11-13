@@ -19,11 +19,12 @@ package org.foxbpm.engine.impl.cmd;
 
 import java.util.List;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
 
 /**
  * 获取指定组类型下所有的组实体
@@ -40,9 +41,10 @@ public class GetAllGroupByTypeCmd implements Command<List<GroupEntity>> {
 	
 	 
 	public List<GroupEntity> execute(CommandContext commandContext) {
-		if(this.groupType == null || this.groupType.equals("")){
-			throw new FoxBPMIllegalArgumentException("groupType不能为null");
+		if(StringUtil.isEmpty(groupType)){
+			throw ExceptionUtil.getException("10601004");
 		}
+		
 		List<GroupDefinition> groupDefinitins = commandContext.getProcessEngineConfigurationImpl().getGroupDefinitions();
 		GroupDefinition groupDefinition = null;
 		if(groupDefinitins != null && !groupDefinitins.isEmpty()){
@@ -54,7 +56,7 @@ public class GetAllGroupByTypeCmd implements Command<List<GroupEntity>> {
 			}
 		}
 		if(groupDefinition == null){
-			throw new FoxBPMIllegalArgumentException("未知的组类型："+this.groupType);
+			throw ExceptionUtil.getException("10602001");
 		}
 		List<GroupEntity> groupEntitys = groupDefinition.selectAllGroup();
 		return groupEntitys;

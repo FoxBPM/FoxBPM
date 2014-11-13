@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.TaskService;
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
+import org.foxbpm.engine.exception.FoxbpmPluginException;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.rest.common.RestConstants;
@@ -43,7 +43,7 @@ public class RollbackNodeCollectionResource extends AbstractRestResource{
 	public DataResult getRollbackNode(){
 		String taskId = getAttribute(RestConstants.TASK_ID);
 		if(StringUtil.isEmpty(taskId)){
-			throw new FoxBPMIllegalArgumentException("taskId is null");
+			throw new FoxbpmPluginException("任务编号为空", "Rest服务");
 		}
 		List<Map<String,String>> resultList= new ArrayList<Map<String,String>>();
 		TaskService taskService = FoxBpmUtil.getProcessEngine().getTaskService();

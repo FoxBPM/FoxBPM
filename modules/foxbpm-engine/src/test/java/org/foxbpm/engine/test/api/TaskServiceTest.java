@@ -29,7 +29,7 @@ import java.util.Map;
 
 import org.foxbpm.engine.datavariable.VariableInstance;
 import org.foxbpm.engine.datavariable.VariableQuery;
-import org.foxbpm.engine.exception.FoxBPMBizException;
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
@@ -255,6 +255,8 @@ public class TaskServiceTest extends AbstractFoxBpmTestCase {
 	@Test
 	@Deployment(resources = {"org/foxbpm/test/api/Test_taskService_1.bpmn"})
 	public void testClaimAndUnClaim(){
+		String sqlInsertUser = "insert into au_userInfo(userId,USERNAME,EMAIL) VALUES ('test_admin2','管理员2','222@qq.com')";
+		jdbcTemplate.execute(sqlInsertUser);
 		//启动一个流程
 		Authentication.setAuthenticatedUserId("admin");
 		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
@@ -269,18 +271,18 @@ public class TaskServiceTest extends AbstractFoxBpmTestCase {
 		String taskId = taskService.createTaskQuery().processDefinitionKey("Test_taskService_1").taskNotEnd().singleResult().getId();
 		
 		//领取任务
-		taskService.claim(taskId, "admin2");
+		taskService.claim(taskId, "test_admin2");
 		
 		//查询任务
 		Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
 		//验证结果
-		assertEquals("admin2", task.getAssignee());
+		assertEquals("test_admin2", task.getAssignee());
 		
 		try{
 			//领取任务
-			taskService.claim(taskId, "admin2");
+			taskService.claim(taskId, "test_admin2");
 			fail();
-		}catch(FoxBPMBizException ex){
+		}catch(FoxBPMException ex){
 			
 		}
 		
@@ -408,7 +410,7 @@ public class TaskServiceTest extends AbstractFoxBpmTestCase {
 		try{
 			taskService.getTaskCommandByTaskId(taskId,true);
 			fail();
-		}catch(FoxBPMBizException ex){
+		}catch(FoxBPMException ex){
 			
 		}
 		

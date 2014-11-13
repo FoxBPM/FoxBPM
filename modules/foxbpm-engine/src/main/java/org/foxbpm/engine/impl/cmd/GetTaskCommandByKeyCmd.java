@@ -19,13 +19,13 @@ package org.foxbpm.engine.impl.cmd;
 
 import java.util.List;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
 import org.foxbpm.engine.impl.util.CoreUtil;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.task.TaskCommand;
 
 /**
@@ -47,11 +47,9 @@ public class GetTaskCommandByKeyCmd implements Command<List<TaskCommand>> {
 		DeploymentManager deploymentManager = Context.getProcessEngineConfiguration().getDeploymentManager();
 		ProcessDefinitionEntity processDefinition = deploymentManager.findDeployedLatestProcessDefinitionByKey(processKey);
 		if (processDefinition == null) {
-			throw new FoxBPMIllegalArgumentException("为找到key为：" + processKey + " 的流程定义");
+			throw ExceptionUtil.getException("10602101",processKey);
 		}
-
 		List<TaskCommand> taskCommands = CoreUtil.getSubmitNodeTaskCommand(processDefinition.getSubTaskDefinition());
-
 		return taskCommands;
 
 	}

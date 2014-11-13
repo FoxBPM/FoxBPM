@@ -17,10 +17,10 @@
  */
 package org.foxbpm.engine.impl.cmd;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.repository.ProcessDefinition;
 
@@ -41,7 +41,7 @@ public class GetLatestProcessDefinitionByKey implements Command<ProcessDefinitio
 	 
 	public ProcessDefinition execute(CommandContext commandContext) {
 		if (StringUtil.isEmpty(ProcessDefinitionKey)) {
-			throw new FoxBPMIllegalArgumentException("查询的流程定义key不能为null");
+			throw ExceptionUtil.getException("10601100");
 		}
 		return Context.getProcessEngineConfiguration().getDeploymentManager().findDeployedLatestProcessDefinitionByKey(ProcessDefinitionKey);
 	}

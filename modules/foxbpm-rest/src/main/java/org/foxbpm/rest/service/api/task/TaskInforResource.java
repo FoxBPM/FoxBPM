@@ -28,8 +28,8 @@ import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.TaskService;
-import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.exception.FoxbpmPluginException;
 import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
@@ -58,7 +58,7 @@ public class TaskInforResource extends AbstractRestResource {
 		Form query = getQuery();
 		String processInstanceId = getQueryParameter("processInstanceId", query);
 		if (StringUtil.isEmpty(processInstanceId)) {
-			throw new FoxBPMBizException("processInstanceId is null!");
+			throw new FoxbpmPluginException("流程实例编号为空", "Rest服务");
 		}
 		
 		ProcessEngine processEngine = FoxBpmUtil.getProcessEngine();
@@ -70,7 +70,7 @@ public class TaskInforResource extends AbstractRestResource {
 		ProcessInstanceQuery processInstanceQuery = runtimeService.createProcessInstanceQuery();
 		ProcessInstance processInstance = processInstanceQuery.processInstanceId(processInstanceId).singleResult();
 		if (null == processInstance) {
-			throw new FoxBPMBizException("processInstanceId=" + processInstanceId + " is Invalid parameter value!");
+			throw new FoxbpmPluginException("未找到流程实例"+processInstanceId, "Rest服务");
 		}
 		
 		Map<String, Object> resultData = new HashMap<String, Object>();

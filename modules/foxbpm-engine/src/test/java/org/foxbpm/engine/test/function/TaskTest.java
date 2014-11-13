@@ -3,7 +3,7 @@ package org.foxbpm.engine.test.function;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import org.foxbpm.engine.exception.FoxBPMOptimisticLockException;
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
@@ -29,7 +29,7 @@ public class TaskTest extends AbstractFoxBpmTestCase {
 		try {
 			taskService.saveTask(task2);
 			fail("should get an exception here as the task was modified by someone else.");
-		} catch (FoxBPMOptimisticLockException e) {
+		} catch (FoxBPMException e) {
 			// exception was thrown as expected
 		
 		}

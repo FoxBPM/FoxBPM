@@ -17,18 +17,18 @@
  */
 package org.foxbpm.engine.impl.cmd;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import org.foxbpm.engine.datavariable.BizDataObjectBehavior;
 import org.foxbpm.engine.datavariable.DataObjectDefinition;
-import org.foxbpm.engine.exception.FoxBPMBizException;
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.datavariable.BizDataObject;
 import org.foxbpm.engine.impl.datavariable.DataObjectDefinitionImpl;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 
@@ -49,18 +49,16 @@ public class GetBizDataObjectCmd implements Command<List<BizDataObject>> {
 	}
 	
 	 
+	@SuppressWarnings("unchecked")
 	public List<BizDataObject> execute(CommandContext commandContext) {
 		
 		if (StringUtil.isEmpty(behaviorId)) {
-			throw new FoxBPMBizException("type is null!");
-		}
-		if (StringUtil.isEmpty(dataSource)) {
-			throw new FoxBPMBizException("dataSource is null!");
+			throw ExceptionUtil.getException("00001003");
 		}
 		ProcessEngineConfigurationImpl processEngine = commandContext.getProcessEngineConfigurationImpl();
 		List<DataObjectDefinitionImpl> dataObjBehaviorList = processEngine.getFoxBpmConfig().getDataObjectDefinitions();
 		if (null == dataObjBehaviorList) {
-			throw new FoxBPMException("获取数据对象行为为空!");
+			return Collections.EMPTY_LIST;
 		}
 		
 		DataObjectDefinition dataObjectBehavior = null;
@@ -73,11 +71,16 @@ public class GetBizDataObjectCmd implements Command<List<BizDataObject>> {
 		
 		// 判断是否存在type对应的数据处理行为
 		if (null == dataObjectBehavior) {
-			throw new FoxBPMException("获取 behaviorId=" + behaviorId + "对应数据对象行为为空!");
+			return Collections.EMPTY_LIST;
 		}
 		
 		// 实例化业务数据对象行为处理类
-		BizDataObjectBehavior bizDataObjectBehavior = (BizDataObjectBehavior) ReflectUtil.instantiate(StringUtil.trim(dataObjectBehavior.getBehavior()));
+		BizDataObjectBehavior bizDataObjectBehavior = null;
+		try{
+			bizDataObjectBehavior = (BizDataObjectBehavior)ReflectUtil.instantiate(StringUtil.trim(dataObjectBehavior.getBehavior()));
+		}catch(Exception ex){
+			throw ExceptionUtil.getException("00005003",ex,behaviorId);
+		}
 		return bizDataObjectBehavior.getDataObjects(dataSource);
 	}
 }

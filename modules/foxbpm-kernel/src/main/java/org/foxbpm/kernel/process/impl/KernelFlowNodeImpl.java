@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.kernel.KernelException;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
-import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.process.KernelSequenceFlow;
 
@@ -57,8 +57,7 @@ public class KernelFlowNodeImpl extends KernelFlowElementsContainerImpl implemen
 
 		if (sequenceFlowId != null) {
 			if (namedOutgoingSequenceFlows.containsKey(sequenceFlowId)) {
-				throw new KernelException("flownode '" + id + " has duplicate transition '"
-						+ sequenceFlowId + "'");
+				throw new KernelException("节点 '" + id + " 离开线条： '" + sequenceFlowId + "'已存在。");
 			}
 			namedOutgoingSequenceFlows.put(sequenceFlowId, sequenceFlow);
 		}

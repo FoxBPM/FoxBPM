@@ -17,7 +17,7 @@
  */
 package org.foxbpm.engine.impl.task.command;
 
-import org.foxbpm.engine.exception.FoxBPMBizException;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 
 /**
@@ -56,10 +56,10 @@ public class RollBackAssigneeCommand extends AbstractCustomExpandTaskCommand {
 		this.rollBackNodeId = StringUtil.getString(expandTaskCommand.getParam(PARAM_ROLLBACK_NODEID));
 		this.rollBackAssignee = StringUtil.getString(expandTaskCommand.getParam(PARAM_ROLLBACK_ASSIGNEE));
 		if (StringUtil.isEmpty(this.rollBackNodeId)) {
-			throw new FoxBPMBizException("退回的节点号不能为空");
+			throw ExceptionUtil.getException("10502009");
 		}
 		if (StringUtil.isEmpty(this.rollBackAssignee)) {
-			throw new FoxBPMBizException("退回节点的指定处理者不能为空");
+			throw ExceptionUtil.getException("10502010");
 		}
 	}
 }

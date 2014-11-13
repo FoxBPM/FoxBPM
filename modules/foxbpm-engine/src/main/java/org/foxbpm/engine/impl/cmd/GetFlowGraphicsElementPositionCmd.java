@@ -22,12 +22,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 
 /**
@@ -63,7 +63,7 @@ public class GetFlowGraphicsElementPositionCmd implements Command<Map<String, Ma
 		}else if(processDefinitionKey != null){
 			processDefinition = deploymentCache.findDeployedLatestProcessDefinitionByKey(processDefinitionKey);
 		}else{
-			throw new FoxBPMIllegalArgumentException("processDefinitionId和processDefinitionKey不能同时为空");
+			throw ExceptionUtil.getException("10601103");
 		}
 		
 		List<KernelFlowNodeImpl> flowNodes = processDefinition.getFlowNodes();

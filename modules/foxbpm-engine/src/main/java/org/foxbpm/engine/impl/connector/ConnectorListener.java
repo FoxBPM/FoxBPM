@@ -19,11 +19,12 @@ package org.foxbpm.engine.impl.connector;
 
 import java.lang.reflect.Method;
 
-import org.foxbpm.engine.exception.FoxBPMConnectorException;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.impl.bpmn.behavior.TimerEventBehavior;
+import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.event.KernelListener;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
@@ -115,8 +116,20 @@ public class ConnectorListener implements KernelListener {
 				}
 			}
 
-		} catch (Exception e) {
-			throw new FoxBPMConnectorException(e.getMessage(), e);
+		}catch(ClassNotFoundException ex){
+			if(connector.getType().equals("actorconnector")){
+				throw ex;
+			}else{
+				TokenEntity token = (TokenEntity)executionContext;
+				throw ExceptionUtil.getException("10705003", ex,connector.getType(),token.getNodeId(),connector.getEventType(),connector.getClassName());
+			}
+		}catch (Exception e) {
+			if(connector.getType().equals("actorconnector")){
+				throw e;
+			}else{
+				TokenEntity token = (TokenEntity)executionContext;
+				throw ExceptionUtil.getException("10700003", e,connector.getType(),token.getNodeId(),connector.getEventType());
+			}
 		}
 	}
 

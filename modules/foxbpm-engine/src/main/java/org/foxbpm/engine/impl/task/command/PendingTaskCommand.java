@@ -17,7 +17,7 @@
  */
 package org.foxbpm.engine.impl.task.command;
 
-import org.foxbpm.engine.exception.FoxBPMBizException;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 
 /**
@@ -46,7 +46,7 @@ public class PendingTaskCommand extends AbstractCustomExpandTaskCommand {
 		super(expandTaskCommand);
 		this.pendingUserId=StringUtil.getString(expandTaskCommand.getParamMap().get(INPUTPARAM_PENDING_USER_ID));
 		if (StringUtil.isEmpty(this.pendingUserId)) {
-			throw new FoxBPMBizException("转办人不能为空");
+			throw ExceptionUtil.getException("10502008");
 		}
 	}
 

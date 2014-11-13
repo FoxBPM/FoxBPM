@@ -28,7 +28,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.foxbpm.engine.TaskService;
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
+import org.foxbpm.engine.exception.FoxbpmPluginException;
 import org.foxbpm.engine.impl.task.TaskQueryProperty;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.query.QueryProperty;
@@ -37,7 +37,6 @@ import org.foxbpm.rest.common.RestConstants;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.DataResult;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
-
 import org.restlet.data.Form;
 import org.restlet.data.Status;
 import org.restlet.ext.servlet.ServletUtils;
@@ -158,7 +157,7 @@ public class TaskCollectionResource extends AbstractRestResource {
 			try {
 				createTimeB = sdf.parse(dateB + " 0000000");
 			} catch (ParseException e) {
-				throw new FoxBPMIllegalArgumentException("创建时间格式转换错误，需要yyyy-MM-dd格式,实际格式：" + dateB);
+				throw new FoxbpmPluginException("创建时间格式转换错误，需要yyyy-MM-dd格式,实际格式：" + dateB, "Rest服务");
 			}
 			taskQuery.taskCreatedAfter(createTimeB);
 		}
@@ -169,7 +168,7 @@ public class TaskCollectionResource extends AbstractRestResource {
 			try {
 				createTimeE = sdf.parse(dateE + " 2359999");
 			} catch (ParseException e) {
-				throw new FoxBPMIllegalArgumentException("创建时间格式转换错误，需要yyyy-MM-dd格式,实际格式：" + dateE);
+				throw new FoxbpmPluginException("创建时间格式转换错误，需要yyyy-MM-dd格式,实际格式：" + dateE, "Rest服务");
 			}
 			taskQuery.taskCreatedBefore(createTimeE);
 		}
@@ -180,7 +179,7 @@ public class TaskCollectionResource extends AbstractRestResource {
 			try {
 				dueDateB = sdf.parse(dateB + " 0000000");
 			} catch (ParseException e) {
-				throw new FoxBPMIllegalArgumentException("期望时间格式转换错误，需要yyyy-MM-dd格式,实际格式：" + dateB);
+				throw new FoxbpmPluginException("期望时间格式转换错误，需要yyyy-MM-dd格式,实际格式：" + dateB, "Rest服务");
 			}
 			taskQuery.taskDueDateAfter(dueDateB);
 		}
@@ -191,7 +190,7 @@ public class TaskCollectionResource extends AbstractRestResource {
 			try {
 				dueDateE = sdf.parse(dateE + " 2359999");
 			} catch (ParseException e) {
-				throw new FoxBPMIllegalArgumentException("创建时间格式转换错误，需要yyyy-MM-dd格式,实际格式：" + dateE);
+				throw new FoxbpmPluginException("期望时间格式转换错误，需要yyyy-MM-dd格式,实际格式：" + dateE, "Rest服务");
 			}
 			taskQuery.taskDueDateBefore(dueDateE);
 		}
@@ -202,7 +201,7 @@ public class TaskCollectionResource extends AbstractRestResource {
 			try {
 				endTimeB = sdf.parse(dateB + " 0000000");
 			} catch (ParseException e) {
-				throw new FoxBPMIllegalArgumentException("期望时间格式转换错误，需要yyyy-MM-dd格式,实际格式：" + dateB);
+				throw new FoxbpmPluginException("结束时间格式转换错误，需要yyyy-MM-dd格式,实际格式：" + dateB, "Rest服务");
 			}
 			taskQuery.taskEndTimeAfter(endTimeB);
 		}
@@ -213,7 +212,7 @@ public class TaskCollectionResource extends AbstractRestResource {
 			try {
 				endTimeE = sdf.parse(dateE + " 2359999");
 			} catch (ParseException e) {
-				throw new FoxBPMIllegalArgumentException("创建时间格式转换错误，需要yyyy-MM-dd格式,实际格式：" + dateE);
+				throw new FoxbpmPluginException("结束时间格式转换错误，需要yyyy-MM-dd格式,实际格式：" + dateE, "Rest服务");
 			}
 			taskQuery.taskEndTimeBefore(endTimeE);
 		}

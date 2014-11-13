@@ -42,10 +42,10 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
-import org.foxbpm.engine.exception.FoxBPMDbException;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.interceptor.Session;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 import org.foxbpm.engine.sqlsession.ISqlSessionFactory;
 import org.slf4j.Logger;
@@ -94,7 +94,7 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 		
 		DataSource dataSource = processEngineConfig.getDataSource();
 		if(dataSource == null){
-			throw new FoxBPMDbException("未配置dataSource,请检查！");
+			throw ExceptionUtil.getException("00002003");
 		}
 		Connection connection = null;
 		String databaseType = null;
@@ -154,7 +154,7 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 			    		        xmlMapperBuilder.parse();
 			    		        log.debug("发现注册mapper文件：{};",mapPath);
 		        			}else{
-		        				throw new FoxBPMDbException("mapper文件:"+mapPath+"不存在;");
+		        				log.warn("mapper文件:"+mapPath+"不存在;");
 		        			}
 		        		}
 		        	}

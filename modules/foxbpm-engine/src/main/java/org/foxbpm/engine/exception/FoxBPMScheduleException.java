@@ -29,29 +29,5 @@ public class FoxBPMScheduleException extends FoxBPMException {
 		super(exceptionCode);
 		// TODO Auto-generated constructor stub
 	}
-	
-	
-
-	/**
-	 * 构造定时任务异常
-	 * @param exceptionCode 异常编码 '{@link com.founder.fix.fixflow.core.exception.ExceptionResourceCore <em>ExceptionResourceCore</em>}'
-	 * @param nodeId 节点编号
-	 * @param nodeName 节点名称
-	 */
-	public FoxBPMScheduleException(String exceptionCode,String nodeId,String nodeName) {
-		super(exceptionCode, new Object[] { nodeId,nodeName });
-	}
-	
-	/**
-	 * 构造定时任务异常
-	 * @param exceptionCode 异常编码 '{@link com.founder.fix.fixflow.core.exception.ExceptionResourceCore <em>ExceptionResourceCore</em>}'
-	 * @param nodeId 节点编号
-	 * @param nodeName 节点名称
-	 * @param cause 异常
-	 */
-	public FoxBPMScheduleException(String exceptionCode,String nodeId,String nodeName, Throwable cause) {
-		super(exceptionCode, new Object[] { nodeId,nodeName },cause);
-	}
-
 
 }

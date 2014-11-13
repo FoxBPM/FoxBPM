@@ -21,9 +21,6 @@ package org.foxbpm.engine.impl.task.cmd;
 import java.io.Serializable;
 import java.util.Map;
 
-import org.foxbpm.engine.exception.FoxBPMBizException;
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
-import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.bpmn.behavior.ActivityBehavior;
 import org.foxbpm.engine.impl.entity.ProcessOperatingEntity;
@@ -35,6 +32,7 @@ import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.task.command.AbstractCustomExpandTaskCommand;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.ClockUtil;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.TaskCommand;
@@ -112,17 +110,17 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 	public T execute(CommandContext commandContext) {
 
 		if (StringUtil.isEmpty(taskId)) {
-			throw new FoxBPMIllegalArgumentException("任务编号为空！");
+			throw ExceptionUtil.getException("10501001");
 		}
 		
 		TaskEntity task = Context.getCommandContext().getTaskManager().findTaskById(taskId);
 
 		if (task == null) {
-			throw new FoxBPMObjectNotFoundException("未发现任务：" + taskId);
+			throw ExceptionUtil.getException("10502001",taskId);
 		}
 
 		if (task.hasEnded()) {
-			throw new FoxBPMBizException("任务已经结束，不能被处理！");
+			throw ExceptionUtil.getException("10503001",taskId);
 		}
 		task.setProcessInstanceVariables(persistenceVariables);
 		task.setProcessInstanceTransientVariables(transientVariables);

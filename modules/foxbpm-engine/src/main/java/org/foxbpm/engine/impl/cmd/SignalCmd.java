@@ -44,14 +44,12 @@ public class SignalCmd extends NeedsTokenCmd<Object> {
 		if (transientVariables != null) {
 			token.setProcessInstanceVariables(transientVariables);
 		}
+		if(persistenceVariables != null){
+			token.setProcessInstanceVariables(transientVariables);
+		}
 
 		token.signal();
 		return null;
-	}
-
-	 
-	protected String getSuspendedExceptionMessage() {
-		return "Cannot signal an execution that is suspended";
 	}
 
 }

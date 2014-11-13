@@ -17,10 +17,10 @@
  */
 package org.foxbpm.engine.impl.cmd;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.task.Task;
 
 /**
@@ -38,7 +38,7 @@ public class SaveTaskCmd implements Command<Void>{
 	 
 	public Void execute(CommandContext commandContext) {
 		if(taskEntity == null){
-			throw new FoxBPMIllegalArgumentException("需要保存的task为null");
+			throw ExceptionUtil.getException("10601009");
 		}
 		if (taskEntity.getRevision()==0){
 			taskEntity.insert(null);

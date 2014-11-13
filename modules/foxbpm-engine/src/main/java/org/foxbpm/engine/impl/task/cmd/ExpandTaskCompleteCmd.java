@@ -17,12 +17,12 @@
  */
 package org.foxbpm.engine.impl.task.cmd;
 
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.task.command.AbstractCustomExpandTaskCommand;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.engine.task.TaskCommandDefinition;
 
@@ -36,11 +36,11 @@ public class ExpandTaskCompleteCmd<T> implements Command<T>{
 	
 	
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public T execute(CommandContext commandContext) {
 		
 		if(Authentication.getAuthenticatedUserId()==null||Authentication.getAuthenticatedUserId().equals("")){
-			throw new FoxBPMException("未设置引擎操作人!");
+			throw ExceptionUtil.getException("10501001");
 		}
 		// TODO Auto-generated method stub
 		Object[] obj = new Object[] {expandTaskCommand};  
@@ -50,25 +50,35 @@ public class ExpandTaskCompleteCmd<T> implements Command<T>{
 		if(taskCommandDef!=null){
 			String classNameString=taskCommandDef.getCmdClass();
 			if(classNameString==null||classNameString.equals("")){
-				throw new FoxBPMException("配置文件中ID为 "+this.expandTaskCommand.getCommandType() + " 的扩展配置cmd属性不能为空!");
+				throw ExceptionUtil.getException("10512001",this.expandTaskCommand.getCommandType());
 			}
 			
 			String commandClassNameString=taskCommandDef.getCommandClass();
 			if(commandClassNameString==null||commandClassNameString.equals("")){
-				throw new FoxBPMException("配置文件中ID为 "+this.expandTaskCommand.getCommandType() + " 的扩展配置command属性不能为空!");
+				throw ExceptionUtil.getException("10512002",this.expandTaskCommand.getCommandType());
 			}
 			
 			//commandClassNameString
-			AbstractCustomExpandTaskCommand abstractCustomExpandTaskCommand=(AbstractCustomExpandTaskCommand)ReflectUtil.instantiate(commandClassNameString, obj);
+			AbstractCustomExpandTaskCommand abstractCustomExpandTaskCommand= null;
+			try{
+				abstractCustomExpandTaskCommand = (AbstractCustomExpandTaskCommand)ReflectUtil.instantiate(commandClassNameString, obj);
+			}catch(Exception ex){
+				throw ExceptionUtil.getException("10505001",ex);
+			}
 			
 			Object[] objTemp = new Object[] {abstractCustomExpandTaskCommand};  
-			@SuppressWarnings("rawtypes")
-			AbstractExpandTaskCmd abstractExpandTaskCmd=(AbstractExpandTaskCmd)ReflectUtil.instantiate(classNameString, objTemp);
+			AbstractExpandTaskCmd abstractExpandTaskCmd=null;
+			try{
+				abstractExpandTaskCmd = (AbstractExpandTaskCmd)ReflectUtil.instantiate(classNameString, objTemp);
+			}catch(Exception ex){
+				throw ExceptionUtil.getException("10505002",ex);
+			}
+			
 			return (T) abstractExpandTaskCmd.execute(commandContext);
 			
 		}
 		else{
-			throw new FoxBPMException("配置文件中不存在ID为 "+this.expandTaskCommand.getCommandType() + " 的扩展配置.");
+			throw ExceptionUtil.getException("10512003",this.expandTaskCommand.getCommandType());
 		}
 	
 

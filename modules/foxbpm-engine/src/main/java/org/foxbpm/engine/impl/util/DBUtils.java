@@ -23,7 +23,6 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.foxbpm.engine.ProcessEngineManagement;
-import org.foxbpm.engine.exception.FoxBPMDbException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 
@@ -50,12 +49,12 @@ public class DBUtils {
 	public static Connection getConnection(String key){
 		DataSource dataSource = getDataSource(key);
 		if(dataSource == null){
-			throw new FoxBPMDbException("没有可用的数据源配置！");
+			throw ExceptionUtil.getException("没有可用的数据源配置！");
 		}
 		try {
 			return dataSource.getConnection();
 		} catch (SQLException e) {
-			throw new FoxBPMDbException("获取数据库连接："+key+" 出错",e);
+			 throw ExceptionUtil.getException("获取数据库连接："+key+" 出错",e);
 		}
 	}
 }

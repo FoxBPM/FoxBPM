@@ -17,9 +17,9 @@
  */
 package org.foxbpm.engine.impl.cmd;
 
-import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 
 public class UnClaimCmd extends NeedsActiveTaskCmd<Void> {
 
@@ -35,10 +35,10 @@ public class UnClaimCmd extends NeedsActiveTaskCmd<Void> {
 				task.setAssignee(null);
 				task.setClaimTime(null);
 			}else{
-				throw new FoxBPMBizException("任务 " + taskId + " 没有候选处理者不能被释放!");
+				throw ExceptionUtil.getException("10603004",taskId);
 			}
 		} else {
-			throw new FoxBPMBizException("任务 " + taskId + " 没有被领取,所以不能做释放操作!");
+			throw ExceptionUtil.getException("10603005",taskId);
 		}
 		return null;
 	}

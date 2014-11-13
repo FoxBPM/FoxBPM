@@ -28,10 +28,10 @@ import java.util.Map;
 
 import org.dom4j.Attribute;
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.foxbpm.engine.config.FoxBPMConfig;
-import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.impl.datavariable.DataObjectDefinitionImpl;
 import org.foxbpm.engine.impl.event.EventListenerImpl;
 import org.foxbpm.engine.impl.task.CommandParam;
@@ -88,21 +88,24 @@ public class FoxBPMCfgParseUtil {
 	 * @return 返回解析后生成的FoxBPMConfig实例对象
 	 */
 	public FoxBPMConfig parsecfg(InputStream in) {
+		if(in == null){
+			return null;
+		}
 		try {
 			SAXReader reader = new SAXReader();
-			Document document = reader.read(in);
+			Document document;
+			document = reader.read(in);
 			Element rootElem = document.getRootElement();
 			if (ELEMENT_FOXBPMCONFIG.equals(rootElem.getName())) {
 				return parseElement(rootElem);
 			}
-		} catch (Exception e) {
-			throw new FoxBPMBizException("解析foxbpm.cfg配置出现错误!", e);
+		} catch (DocumentException e) {
+			throw ExceptionUtil.getException("00006001",e);
 		}
 		return null;
 	}
 	
-	private FoxBPMConfig parseElement(Element element) throws IllegalArgumentException, IllegalAccessException,
-	    InvocationTargetException {
+	private FoxBPMConfig parseElement(Element element){
 		Element childElem = null;
 		String nodeName = null;
 		FoxBPMConfig foxBPMConfig = new FoxBPMConfig();
@@ -130,8 +133,7 @@ public class FoxBPMCfgParseUtil {
 	 * @throws IllegalAccessException
 	 * @throws IllegalArgumentException
 	 */
-	private List<TaskCommandDefinitionImpl> parseTaskCommands(Element element) throws IllegalArgumentException,
-	    IllegalAccessException, InvocationTargetException {
+	private List<TaskCommandDefinitionImpl> parseTaskCommands(Element element) {
 		Element childElem = null;
 		String nodeName = null;
 		List<TaskCommandDefinitionImpl> taskCommandDefs = null;
@@ -157,8 +159,7 @@ public class FoxBPMCfgParseUtil {
 		}
 		return taskCommandDefs;
 	}
-	private List<CommandParam> parseCommandParams(Element element) throws IllegalArgumentException,
-	    IllegalAccessException, InvocationTargetException {
+	private List<CommandParam> parseCommandParams(Element element) {
 		
 		Element childElem = null;
 		String nodeName = null;
@@ -179,8 +180,7 @@ public class FoxBPMCfgParseUtil {
 		}
 		return commandParams;
 	}
-	private List<EventListenerImpl> parseEventListeners(Element element) throws IllegalArgumentException,
-	    IllegalAccessException, InvocationTargetException {
+	private List<EventListenerImpl> parseEventListeners(Element element){
 		
 		Element childElem = null;
 		String nodeName = null;
@@ -201,8 +201,7 @@ public class FoxBPMCfgParseUtil {
 		}
 		return eventListeners;
 	}
-	private List<DataObjectDefinitionImpl> parseBizDataObject(Element element) throws IllegalArgumentException,
-	    IllegalAccessException, InvocationTargetException {
+	private List<DataObjectDefinitionImpl> parseBizDataObject(Element element){
 		Element childElem = null;
 		String nodeName = null;
 		List<DataObjectDefinitionImpl> dataObjectDefinitions = null;
@@ -223,8 +222,7 @@ public class FoxBPMCfgParseUtil {
 		return dataObjectDefinitions;
 	}
 	
-	private void doAttributes(Element element, Object paramObj) throws IllegalArgumentException,
-	    IllegalAccessException, InvocationTargetException {
+	private void doAttributes(Element element, Object paramObj){
 		// 处理element属性
 		Method method = null;
 		Attribute attribute = null;
@@ -272,17 +270,25 @@ public class FoxBPMCfgParseUtil {
 		// 处理有些节点属性a:b 去掉a:
 		return new StringBuffer(prefix).append(Character.toUpperCase(sbuffer.charAt(0))).append(sbuffer.substring(1)).toString();
 	}
-	private void doAttributeValue(Object pObj, Method method, String value, Class<?> pType)
-	    throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		if (String.class == pType) {
-			method.invoke(pObj, value);
-		} else if (boolean.class == pType) {
-			method.invoke(pObj, Boolean.valueOf(value));
-		} else if (int.class == pType) {
-			method.invoke(pObj, Integer.valueOf(value));
-		} else {
-			// 暂不支持的类型
-			LOGGER.warn("不支持的类型是:" + pType);
+	private void doAttributeValue(Object pObj, Method method, String value, Class<?> pType){
+		try {
+			if (String.class == pType) {
+				method.invoke(pObj, value);
+			} else if (boolean.class == pType) {
+				method.invoke(pObj, Boolean.valueOf(value));
+			} else if (int.class == pType) {
+				method.invoke(pObj, Integer.valueOf(value));
+			} else {
+				// 暂不支持的类型
+				LOGGER.warn("不支持的类型是:" + pType);
+			}
+		
+		} catch (IllegalArgumentException e) {
+			throw ExceptionUtil.getException("00006002",e,method.toString(),pObj.toString(),value,pType.getName());
+		} catch (IllegalAccessException e) {
+			throw ExceptionUtil.getException("00006003",e,method.toString(),pObj.toString(),value,pType.getName());
+		} catch (InvocationTargetException e) {
+			throw ExceptionUtil.getException("00006004",e,method.toString(),pObj.toString(),value,pType.getName());
 		}
 	}
 }

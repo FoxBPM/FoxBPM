@@ -23,7 +23,7 @@ import java.util.Map;
 
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.TaskService;
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
+import org.foxbpm.engine.exception.FoxbpmPluginException;
 import org.foxbpm.engine.impl.entity.ProcessOperatingEntity;
 import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
@@ -45,7 +45,7 @@ public class TaskOperationCollectionResource extends AbstractRestResource {
 		
 		String taskId = getAttribute("taskId");
 		if(StringUtil.isEmpty(taskId)){
-			throw new FoxBPMIllegalArgumentException("taskId 为空！");
+			throw new FoxbpmPluginException("任务编号为空", "Rest服务");
 		}
 		ProcessEngine processEngine = FoxBpmUtil.getProcessEngine();
 		TaskService taskService = processEngine.getTaskService();

@@ -18,7 +18,6 @@
 package org.foxbpm.engine.impl.bpmn.deployer;
 
 import org.foxbpm.engine.Constant;
-import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.diagramview.factory.ConcreteProcessDefinitionVOFactory;
 import org.foxbpm.engine.impl.entity.DeploymentEntity;
@@ -28,6 +27,7 @@ import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.persistence.DeploymentEntityManager;
 import org.foxbpm.engine.impl.persistence.ProcessDefinitionManager;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.SVGConverterUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.slf4j.Logger;
@@ -98,7 +98,7 @@ public class PngDeployer extends AbstractDeployer {
 				// 从sql缓存获取已存在的发布实例
 				DeploymentEntity deploymentOld = deploymentEntityManager.findDeploymentById(updateDeploymentId);
 				if (null == deploymentOld) {
-					throw new FoxBPMBizException("无效的更新发布号updateDeploymentId：" + updateDeploymentId);
+					throw ExceptionUtil.getException("10102002" , updateDeploymentId);
 				}
 				ResourceEntity resourcePngOld = null;
 				for (ResourceEntity resourceEntity : deploymentOld.getResources().values()) {

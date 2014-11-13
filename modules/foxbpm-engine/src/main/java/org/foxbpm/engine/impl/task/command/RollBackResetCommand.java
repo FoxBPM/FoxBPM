@@ -17,7 +17,7 @@
  */
 package org.foxbpm.engine.impl.task.command;
 
-import org.foxbpm.engine.exception.FoxBPMBizException;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 
 /**
@@ -44,7 +44,7 @@ public class RollBackResetCommand  extends AbstractCustomExpandTaskCommand {
 		super(expandTaskCommand);
 		this.rollBackNodeId=StringUtil.getString(expandTaskCommand.getParam(PARAM_ROLLBACK_NODEID));
 		if(StringUtil.isEmpty(this.rollBackNodeId)){
-			throw new FoxBPMBizException("退回的节点号不能为空");
+			throw ExceptionUtil.getException("10502011");
 		}
 	}
 	

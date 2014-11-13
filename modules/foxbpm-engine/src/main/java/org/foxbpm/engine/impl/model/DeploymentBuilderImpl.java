@@ -23,10 +23,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.foxbpm.engine.ModelService;
-import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.entity.DeploymentEntity;
 import org.foxbpm.engine.impl.entity.ResourceEntity;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.IoUtil;
 import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.engine.repository.Deployment;
@@ -53,7 +53,7 @@ public class DeploymentBuilderImpl implements DeploymentBuilder {
 	 
 	public DeploymentBuilder addInputStream(String resourceName, InputStream inputStream, int version) {
 		if (inputStream == null) {
-			throw new FoxBPMClassLoadingException("inputStream for resource '" + resourceName + "' is null");
+			throw ExceptionUtil.getException("10101001",resourceName);
 		}
 		byte[] bytes = IoUtil.readInputStream(inputStream, resourceName);
 		ResourceEntity resource = new ResourceEntity();
@@ -71,7 +71,7 @@ public class DeploymentBuilderImpl implements DeploymentBuilder {
 	public DeploymentBuilder addClasspathResource(String resource) {
 		InputStream inputStream = ReflectUtil.getResourceAsStream(resource);
 		if (inputStream == null) {
-			throw new FoxBPMException("resource '" + resource + "' not found");
+			throw ExceptionUtil.getException("10101001",resource);
 		}
 		return addInputStream(resource, inputStream);
 	}

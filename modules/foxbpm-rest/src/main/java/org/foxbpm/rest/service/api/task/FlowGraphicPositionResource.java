@@ -22,7 +22,7 @@ import java.util.Map;
 
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngine;
-import org.foxbpm.engine.exception.FoxBPMBizException;
+import org.foxbpm.engine.exception.FoxbpmPluginException;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.DataResult;
@@ -43,7 +43,7 @@ public class FlowGraphicPositionResource extends AbstractRestResource {
 		Form query = getQuery();
 		String processDefinitionId = getQueryParameter("processDefinitionId", query);
 		if (StringUtil.isEmpty(processDefinitionId)) {
-			throw new FoxBPMBizException("processDefinitionId is null!");
+			throw new FoxbpmPluginException("流程定义唯一编号为空", "Rest服务");
 		}
 		ProcessEngine processEngine = FoxBpmUtil.getProcessEngine();
 		ModelService modelService = processEngine.getModelService();

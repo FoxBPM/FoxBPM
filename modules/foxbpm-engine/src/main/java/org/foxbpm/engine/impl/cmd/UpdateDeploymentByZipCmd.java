@@ -20,9 +20,9 @@ package org.foxbpm.engine.impl.cmd;
 
 import java.util.zip.ZipInputStream;
 
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.repository.DeploymentBuilder;
 
 public class UpdateDeploymentByZipCmd implements Command<Void>{
@@ -37,10 +37,10 @@ public class UpdateDeploymentByZipCmd implements Command<Void>{
 	}
 	public Void execute(CommandContext commandContext) {
 		if(zipInputStream == null){
-			throw new FoxBPMException("Zip文件不能为空");
+			throw ExceptionUtil.getException("10601003");
 		}
 		if(deploymentId == null || "".equals(deploymentId)){
-			throw new FoxBPMException("需要更新的发布号不能为空");
+			throw ExceptionUtil.getException("10601006");
 		}
 		deploymentBuilder.updateDeploymentId(deploymentId);
 		deploymentBuilder.addZipInputStream(zipInputStream);

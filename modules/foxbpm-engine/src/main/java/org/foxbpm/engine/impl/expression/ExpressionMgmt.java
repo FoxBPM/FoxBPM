@@ -56,12 +56,8 @@ public class ExpressionMgmt {
 
 	}
 
-	public static Object execute(String scriptText,
-			FlowNodeExecutionContext executionContext) {
-
-		return Context.getAbstractScriptLanguageMgmt().execute(scriptText,
-				executionContext);
-
+	public static Object execute(String scriptText,FlowNodeExecutionContext executionContext) throws Exception {
+		return Context.getAbstractScriptLanguageMgmt().execute(scriptText,executionContext);
 	}
 
 	public static Object getVariable(String variableName) {

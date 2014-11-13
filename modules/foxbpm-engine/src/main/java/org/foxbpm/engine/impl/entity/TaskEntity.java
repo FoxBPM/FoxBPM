@@ -27,9 +27,7 @@ import java.util.Set;
 
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
-import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
@@ -37,6 +35,7 @@ import org.foxbpm.engine.impl.task.TaskCommandSystemType;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.task.TaskQueryImpl;
 import org.foxbpm.engine.impl.util.ClockUtil;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.DelegateTask;
@@ -52,9 +51,13 @@ import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelVariableScopeImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TaskEntity extends KernelVariableScopeImpl implements Task, DelegateTask,
     PersistentObject, HasRevision {
+	
+	private static Logger log = LoggerFactory.getLogger(TaskEntity.class);
 	
 	/**
 	 * 
@@ -859,7 +862,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	/** 结束任务,并驱动流程向下运转。 指定需要去的节点。 */
 	public void complete(KernelFlowNodeImpl toFlowNode) {
 		if(toFlowNode == null){
-			throw new FoxBPMIllegalArgumentException("跳转的目的节点不能为null");
+			throw ExceptionUtil.getException("10301001");
 		}
 		complete(toFlowNode, null);
 	}
@@ -871,7 +874,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		end();
 		/** 正常处理任务不能处理已经暂停的任务 */
 		if (this.isSuspended) {
-			throw new FoxBPMBizException("任务已经暂停不能再处理");
+			throw ExceptionUtil.getException("10303001");
 		}
 		/** 获取令牌 */
 		if (tokenId != null) {
@@ -887,7 +890,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 				if(taskCount == 0){
 					token = getParentTokenByNodeId((TokenEntity)token.getParent(),toFlowNode.getId());
 					if(token == null){
-						throw new FoxBPMException("无法退回到节点："+nodeId +",原因：流程尚未走过该节点");
+						throw ExceptionUtil.getException("10303002");
 					}
 					token.terminationChildToken();
 				}
@@ -900,6 +903,8 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 			}
 			/** 驱动令牌向下 */
 			token.signal();
+		}else{
+			log.warn("任务："+id+"没有令牌号，仅做结束任务处理，不驱动流程向下。");
 		}
 		
 	}
@@ -928,7 +933,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	 */
 	public void end() {
 		if (this.endTime != null) {
-			throw new FoxBPMException("任务已经结束,不能再进行处理.");
+			throw ExceptionUtil.getException("10303003");
 		}
 		
 		/**
@@ -951,7 +956,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	 */
 	public void end(TaskCommand taskCommand, String taskComment) {
 		if(this.isSuspended()){
-			throw new FoxBPMBizException("任务已经被暂停，无法结束！");
+			throw ExceptionUtil.getException("10303001");
 		}
 		end();
 		setTaskComment(taskComment);
@@ -1100,7 +1105,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		try {
 			return super.clone();
 		} catch (CloneNotSupportedException e) {
-			throw new FoxBPMException("task clone 异常", e);
+			throw ExceptionUtil.getException("10313001",e);
 		}
 	}
 	

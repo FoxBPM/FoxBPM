@@ -17,8 +17,8 @@
  */
 package org.foxbpm.kernel.process.impl;
 
+import org.foxbpm.kernel.KernelException;
 import org.foxbpm.kernel.process.KernelDefinitions;
-import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.process.KernelLaneSet;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.runtime.InterpretableProcessInstance;
@@ -46,7 +46,7 @@ public class KernelProcessDefinitionImpl extends KernelFlowElementsContainerImpl
 
 	public KernelProcessInstance createProcessInstance() {
 		if (initial == null) {
-			throw new KernelException("流程 '" + name + "' 没有指定启动节点不能启动.");
+			throw new KernelException("流程 '" + name + "' 没有启动节点不能启动.");
 		}
 		return createProcessInstanceForInitial(initial);
 	}
@@ -55,8 +55,7 @@ public class KernelProcessDefinitionImpl extends KernelFlowElementsContainerImpl
 	public KernelProcessInstance createProcessInstanceForInitial(KernelFlowNodeImpl initial) {
 
 		if (initial == null) {
-			throw new KernelException(
-					"Cannot start process instance, initial activity where the process instance should start is null.");
+			throw new KernelException("流程 '" + name + "' 没有启动节点不能启动.");
 		}
 
 		InterpretableProcessInstance processInstance = newProcessInstance(initial);

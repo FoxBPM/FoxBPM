@@ -21,12 +21,12 @@ package org.foxbpm.engine.impl.cmd;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.ResourceEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.repository.ProcessDefinition;
 
 /**
@@ -55,14 +55,14 @@ public class GetFlowGraphicsImgStreamCmd implements Command<InputStream> {
 			if (this.processDefinitionKey != null && !this.processDefinitionKey.equals("")) {
 				processDefinition = deploymentCache.findDeployedLatestProcessDefinitionByKey(processDefinitionKey);
 			} else {
-				throw new FoxBPMIllegalArgumentException("查询流程图的processDefinitionId、processDefinitionKey不能都为空!");
+				throw ExceptionUtil.getException("10601103");
 			}
 		}
 		String deploymentId = processDefinition.getDeploymentId();
 		String diagramResourceName = processDefinition.getDiagramResourceName();
 		ResourceEntity resourceEntity = commandContext.getResourceManager().selectResourceByDeployIdAndName(deploymentId, diagramResourceName);
 		if (null == resourceEntity) {
-			throw new FoxBPMIllegalArgumentException("查询流程图为空,对应processDefinitionId=" + processDefinition.getId());
+			return null;
 		}
 		InputStream inputStream = new ByteArrayInputStream(resourceEntity.getBytes());
 		return inputStream;

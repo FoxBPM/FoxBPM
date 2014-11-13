@@ -17,7 +17,7 @@
  */
 package org.foxbpm.engine.impl.task.command;
 
-import org.foxbpm.engine.exception.FoxBPMBizException;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 
 /**
@@ -43,7 +43,7 @@ public class JumpTaskCommand  extends AbstractCustomExpandTaskCommand{
 		super(expandTaskCommand);
 		this.jumpNodeId=StringUtil.getString(expandTaskCommand.getParamMap().get(INPUTPARAM_JUMP_NODE_ID));
 		if (StringUtil.isEmpty(this.jumpNodeId)) {
-			throw new FoxBPMBizException("跳转的节点号不能为空");
+			throw ExceptionUtil.getException("10502007");
 		}
 	}
 

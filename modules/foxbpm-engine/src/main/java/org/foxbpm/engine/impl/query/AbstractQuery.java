@@ -21,13 +21,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.db.ListQueryParameterObject;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.query.Query;
 import org.foxbpm.engine.query.QueryProperty;
 
@@ -93,8 +92,7 @@ public abstract class AbstractQuery<T extends Query<?, ?>, U> extends ListQueryP
 	@SuppressWarnings("unchecked")
 	public T direction(Direction direction) {
 		if (orderProperty == null) {
-			throw new FoxBPMIllegalArgumentException(
-					"You should call any of the orderBy methods first before specifying a direction");
+			throw ExceptionUtil.getException("10313005");
 		}
 		addOrder(orderProperty.getName(), direction.getName());
 		orderProperty = null;
@@ -103,8 +101,7 @@ public abstract class AbstractQuery<T extends Query<?, ?>, U> extends ListQueryP
 
 	protected void checkQueryOk() {
 		if (orderProperty != null) {
-			throw new FoxBPMIllegalArgumentException(
-					"Invalid query: call asc() or desc() after using orderByXX()");
+			throw ExceptionUtil.getException("10313006");
 		}
 	}
 
@@ -186,8 +183,7 @@ public abstract class AbstractQuery<T extends Query<?, ?>, U> extends ListQueryP
 		if (results.size() == 1) {
 			return results.get(0);
 		} else if (results.size() > 1) {
-			throw new FoxBPMException("Query return " + results.size()
-					+ " results instead of max 1");
+			throw ExceptionUtil.getException("10313007");
 		}
 		return null;
 	}

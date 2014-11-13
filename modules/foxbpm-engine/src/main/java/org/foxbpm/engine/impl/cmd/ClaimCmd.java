@@ -17,11 +17,10 @@
  */
 package org.foxbpm.engine.impl.cmd;
 
-import org.foxbpm.engine.exception.FoxBPMBizException;
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.util.ClockUtil;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 
 public class ClaimCmd extends NeedsActiveTaskCmd<Void> {
 
@@ -35,10 +34,10 @@ public class ClaimCmd extends NeedsActiveTaskCmd<Void> {
 	 
 	protected Void execute(CommandContext commandContext, TaskEntity task) {
 		if(userId == null){
-			throw new FoxBPMIllegalArgumentException("userId is null");
+			throw ExceptionUtil.getException("10601001");
 		}
 		if (task.getAssignee() != null) {
-			throw new FoxBPMBizException("任务 " + taskId + " 已经被领取，不能重复领取");
+			throw ExceptionUtil.getException("10603201",taskId);
 		} else {
 			task.setAssignee(userId);
 			task.setClaimTime(ClockUtil.getCurrentTime());

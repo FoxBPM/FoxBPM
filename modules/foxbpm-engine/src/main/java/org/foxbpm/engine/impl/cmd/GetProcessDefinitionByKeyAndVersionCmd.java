@@ -18,10 +18,10 @@
  */
 package org.foxbpm.engine.impl.cmd;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.repository.ProcessDefinition;
 
 /**
@@ -41,10 +41,10 @@ public class GetProcessDefinitionByKeyAndVersionCmd implements Command<ProcessDe
 	 
 	public ProcessDefinition execute(CommandContext commandContext) {
 		if(processKey == null){
-			throw new FoxBPMIllegalArgumentException("查询的key不能为null");
+			throw ExceptionUtil.getException("10601100");
 		}
 		if(version == -1){
-			throw new FoxBPMIllegalArgumentException("查询的流程版本不能为空");
+			throw ExceptionUtil.getException("10601102");
 		}
 		return Context.getProcessEngineConfiguration().getDeploymentManager().findDeployedProcessDefinitionByKeyAndVersion(processKey, version);
 	}

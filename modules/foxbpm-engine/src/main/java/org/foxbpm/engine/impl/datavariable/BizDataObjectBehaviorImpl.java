@@ -24,8 +24,8 @@ import java.util.List;
 
 import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.datavariable.BizDataObjectBehavior;
-import org.foxbpm.engine.exception.FoxBPMDbException;
 import org.foxbpm.engine.impl.util.DBUtils;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.model.DataVariableDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -122,7 +122,7 @@ public class BizDataObjectBehaviorImpl implements BizDataObjectBehavior {
 			LOG.debug("end getDataObjects(String dataSource)");
 			return bizDataObjects;
 		} catch (SQLException e) {
-			throw new FoxBPMDbException("获取数据对象失败!", e);
+			throw ExceptionUtil.getException("获取数据对象失败",e);
 		}
 	}
 }

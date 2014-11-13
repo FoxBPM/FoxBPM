@@ -17,6 +17,10 @@
  */
 package org.foxbpm.engine.impl.interceptor;
 
+import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
+import org.foxbpm.kernel.KernelException;
+import org.foxbpm.kernel.KernelListenerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,12 +35,15 @@ public class LogInterceptor extends CommandInterceptor {
 		log.debug("                                                                                                    ");
 		log.debug("--- starting {} --------------------------------------------------------", command.getClass().getSimpleName());
 		try {
-
 			return next.execute(config, command);
-
-		}catch(RuntimeException ex){
-			log.error("cmd执行出错", ex);
+		}catch(KernelListenerException ex){
+			throw ExceptionUtil.getException("10700001",ex,ex.getTokenId(),ex.getNodeId(),ex.getListenerId(),ex.getEventName());
+		}catch(KernelException ex){
+			throw ExceptionUtil.getException("10300000",ex,ex.getMessage());
+		}catch(FoxBPMException ex){
 			throw ex;
+		}catch(RuntimeException ex){
+			throw ExceptionUtil.getException("10300001",ex);
 		}finally {
 			log.debug("--- {} finished --------------------------------------------------------", command.getClass().getSimpleName());
 			log.debug("                                                                                                    ");

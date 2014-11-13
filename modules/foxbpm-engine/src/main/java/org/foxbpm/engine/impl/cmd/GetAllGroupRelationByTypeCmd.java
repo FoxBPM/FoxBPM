@@ -19,11 +19,12 @@ package org.foxbpm.engine.impl.cmd;
 
 import java.util.List;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.identity.GroupDefinition;
 import org.foxbpm.engine.impl.identity.GroupRelationEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
 
 /**
  * 获取指定组类型下所有的组与人员的关系映射
@@ -40,8 +41,8 @@ public class GetAllGroupRelationByTypeCmd implements Command<List<GroupRelationE
 	
 	 
 	public List<GroupRelationEntity> execute(CommandContext commandContext) {
-		if(this.groupType == null || this.groupType.equals("")){
-			throw new FoxBPMIllegalArgumentException("groupType不能为null");
+		if(StringUtil.isEmpty(groupType)){
+			throw ExceptionUtil.getException("10601004");
 		}
 		List<GroupDefinition> groupDefinitins = commandContext.getProcessEngineConfigurationImpl().getGroupDefinitions();
 		GroupDefinition groupDefinition = null;
@@ -54,7 +55,7 @@ public class GetAllGroupRelationByTypeCmd implements Command<List<GroupRelationE
 			}
 		}
 		if(groupDefinition == null){
-			throw new FoxBPMIllegalArgumentException("未知的组类型："+this.groupType);
+			throw ExceptionUtil.getException("10602001");
 		}
 		List<GroupRelationEntity> results = groupDefinition.selectAllRelation();
 		return results;

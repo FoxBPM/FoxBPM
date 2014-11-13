@@ -19,15 +19,13 @@ package org.foxbpm.engine.impl.bpmn.behavior;
 
 import java.util.List;
 
-import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
-import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.identity.Authentication;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.model.CallActivity;
@@ -52,23 +50,38 @@ public class CallActivityBehavior extends ActivityBehavior {
 	private ProcessInstanceEntity createSubProcess(FlowNodeExecutionContext executionContext) {
 		CallActivity callActivity = (CallActivity)baseElement;
 		String flowId = callActivity.getCallableElementId();
-
 		String flowVersion = callActivity.getCallableElementVersion();
-		
-		if(StringUtil.isEmpty(flowId)){
-			throw new FoxBPMIllegalArgumentException("共有子流程的key不能为空！");
+		String processKey = null;
+		try{
+			processKey = StringUtil.getString(new ExpressionImpl(flowId).getValue(executionContext));
+		}catch(Exception ex){
+			throw ExceptionUtil.getException("10404014",ex,this.getFlowNode().getId());
 		}
-		if(StringUtil.isEmpty(flowVersion)){
-			throw new FoxBPMIllegalArgumentException("共有子流程的version不能为空！");
+		
+		if(StringUtil.isEmpty(processKey)){
+			throw ExceptionUtil.getException("10401001",this.getFlowNode().getId());
 		}
 		
-		String processKey = StringUtil.getString(new ExpressionImpl(flowId).getValue(executionContext));
-		int version = StringUtil.getInt(new ExpressionImpl(flowVersion).getValue(executionContext));
-		String bizKey = StringUtil.getString(new ExpressionImpl(callActivity.getBizKey()).getValue(executionContext));
+		int version;
+		try{
+			version = StringUtil.getInt(new ExpressionImpl(flowVersion).getValue(executionContext));
+		}catch(NumberFormatException ex){
+			throw ExceptionUtil.getException("10404015",ex,this.getFlowNode().getId());
+		}catch(Exception ex){
+			throw ExceptionUtil.getException("10404016",ex,this.getFlowNode().getId());
+		}
+		
+		String bizKey = null;
+		try{
+			bizKey = StringUtil.getString(new ExpressionImpl(callActivity.getBizKey()).getValue(executionContext));
+		}catch(Exception ex){
+			throw ExceptionUtil.getException("10404017",ex,this.getFlowNode().getId());
+		}
+				
 		ProcessDefinitionEntity processDefinition = Context.getProcessEngineConfiguration().getDeploymentManager()
 				.findDeployedProcessDefinitionByKeyAndVersion(processKey, version);
 		if(processDefinition == null){
-			throw new FoxBPMObjectNotFoundException("公有有子流程key:"+processKey+",version:"+version+" 定义不存在，请检查配置！");
+			throw ExceptionUtil.getException("10402001",this.getFlowNode().getId(), processKey,String.valueOf(version));
 		}
 		ProcessInstanceEntity createSubProcessInstance = (ProcessInstanceEntity) executionContext
 				.createSubProcessInstance(processDefinition);
@@ -82,17 +95,18 @@ public class CallActivityBehavior extends ActivityBehavior {
 		if(dataSourceToSubProcessMapping != null){
 			for (VariableMapping dataVariableMapping : dataSourceToSubProcessMapping) {
 				String dataSourceId = "${" + dataVariableMapping.getFormId() + "}";
-				createSubProcessInstance.setVariable(dataVariableMapping.getToId(),
-						ExpressionMgmt.execute(dataSourceId, executionContext));
+				
+				Object value = null;
+				try{
+					value = ExpressionMgmt.execute(dataSourceId, executionContext);
+				}catch(Exception ex){
+					throw ExceptionUtil.getException("10404018",dataSourceId,this.getFlowNode().getId());
+				}
+				createSubProcessInstance.setVariable(dataVariableMapping.getToId(),value);
 			}
 		}
-		try {
-			// 启动流程实例
-			createSubProcessInstance.start();
-		} catch (Exception e) {
-			throw new FoxBPMException("子流程 " + this.getName() + " 启动异常!", e);
-		}
-
+		// 启动流程实例
+		createSubProcessInstance.start();
 		return createSubProcessInstance;
 
 	}

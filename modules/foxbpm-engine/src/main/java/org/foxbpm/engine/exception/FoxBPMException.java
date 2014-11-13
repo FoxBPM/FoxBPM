@@ -28,22 +28,11 @@ public class FoxBPMException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
 	public FoxBPMException(String exceptionCode) {
-		super(ExceptionI18NCore.getResourceValue(exceptionCode));
+		super(exceptionCode);
 	}
 
-	public FoxBPMException(String exceptionCode,Object... args) {
-		super(ExceptionI18NCore.getResourceValue(exceptionCode,args));
-	}
-	public FoxBPMException(String exceptionCode,Throwable cause,Object... args) {
-		super(ExceptionI18NCore.getResourceValue(exceptionCode,args),cause);
-	}
-	
 	public FoxBPMException(String exceptionCode,Throwable cause){
-		super(ExceptionI18NCore.getResourceValue(exceptionCode),cause);
-	}
-	
-	public FoxBPMException(String exceptionCode,Object[] args,Throwable cause){
-		super(ExceptionI18NCore.getResourceValue(exceptionCode,args),cause);
+		super(exceptionCode,cause);
 	}
 	
 }

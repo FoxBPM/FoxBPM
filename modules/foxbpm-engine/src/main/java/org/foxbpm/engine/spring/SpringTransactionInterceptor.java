@@ -18,10 +18,10 @@
  */
 package org.foxbpm.engine.spring;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandConfig;
 import org.foxbpm.engine.impl.interceptor.CommandInterceptor;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -64,7 +64,7 @@ public class SpringTransactionInterceptor extends CommandInterceptor {
 		case REQUIRES_NEW:
 			return TransactionTemplate.PROPAGATION_REQUIRES_NEW;
 		default:
-			throw new FoxBPMIllegalArgumentException("不支持的事务传播类型: " + config.getPropagation());
+			throw ExceptionUtil.getException("不支持的事务传播类型: " + config.getPropagation());
 		}
 	}
 

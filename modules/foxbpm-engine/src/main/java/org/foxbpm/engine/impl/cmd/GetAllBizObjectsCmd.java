@@ -30,6 +30,7 @@ import org.foxbpm.engine.impl.datavariable.BizDataObject;
 import org.foxbpm.engine.impl.datavariable.DataObjectDefinitionImpl;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 
@@ -57,7 +58,13 @@ public class GetAllBizObjectsCmd implements Command<List<Map<String,Object>>> {
 			tmpResult.put("name", name);
 			
 			// 实例化业务数据对象行为处理类
-			BizDataObjectBehavior bizDataObjectBehavior = (BizDataObjectBehavior) ReflectUtil.instantiate(StringUtil.trim(dataObjectBehavior.getBehavior()));
+			BizDataObjectBehavior bizDataObjectBehavior = null;
+			try{
+				bizDataObjectBehavior = (BizDataObjectBehavior) ReflectUtil.instantiate(StringUtil.trim(dataObjectBehavior.getBehavior()));
+			}catch(Exception ex){
+				throw ExceptionUtil.getException("00005003",ex,id);
+			}
+					
 			//这里暂时不做多数据源问题，所以dataSource参数为null
 			List<BizDataObject> bizObjects = bizDataObjectBehavior.getDataObjects(null);
 			
