@@ -18,7 +18,7 @@
  */
 package org.foxbpm.engine.impl.task.command;
 
-import org.foxbpm.engine.exception.FoxBPMBizException;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 
 /**
@@ -73,7 +73,7 @@ public class AddSignUserCommand extends AbstractCustomExpandTaskCommand {
 		super(expandTaskCommand);
 		this.addResources = StringUtil.getString(expandTaskCommand.getParamMap().get(INPUTPARAM_ADDRESOURCES));
 		if (StringUtil.isEmpty(this.addResources)) {
-			throw new FoxBPMBizException("加签资源不能为空");
+			throw ExceptionUtil.getException("10502006");
 		}
 		this.isParallel = StringUtil.getBoolean(expandTaskCommand.getParamMap().get(INPUTPARAM_ISPARALLEL));
 		this.isResolved = StringUtil.getBoolean(expandTaskCommand.getParamMap().get(INPUTPARAM_ISRESOLVED));

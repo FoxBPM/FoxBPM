@@ -17,12 +17,12 @@
  */
 package org.foxbpm.engine.impl.task.cmd;
 
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.task.command.ClaimTaskCommand;
 import org.foxbpm.engine.impl.util.ClockUtil;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 
 public class ClaimTaskCmd extends AbstractExpandTaskCmd<ClaimTaskCommand, Void> {
@@ -41,7 +41,7 @@ public class ClaimTaskCmd extends AbstractExpandTaskCmd<ClaimTaskCommand, Void> 
 			if (task.getAssignee() != null) {
 				if (!task.getAssignee().equals(this.agent)) {
 					// 当任务已经被另一个不是自己的用户占有，则抛出异常。
-					throw new FoxBPMException("任务 " + taskId + " 已经被另一个用户领取!");
+					throw ExceptionUtil.getException("10503003",taskId);
 				}
 			} else {
 
@@ -55,7 +55,7 @@ public class ClaimTaskCmd extends AbstractExpandTaskCmd<ClaimTaskCommand, Void> 
 			if (task.getAssignee() != null) {
 				if (!task.getAssignee().equals(Authentication.getAuthenticatedUserId())) {
 					// 当任务已经被另一个不是自己的用户占有，则抛出异常。
-					throw new FoxBPMException("任务 " + taskId + " 已经被另一个用户领取!");
+					throw ExceptionUtil.getException("10503003",taskId);
 				}
 			} else {
 

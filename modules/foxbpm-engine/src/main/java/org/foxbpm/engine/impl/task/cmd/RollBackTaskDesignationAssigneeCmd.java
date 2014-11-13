@@ -17,14 +17,13 @@
  */
 package org.foxbpm.engine.impl.task.cmd;
 
-import org.foxbpm.engine.exception.FoxBPMBizException;
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.task.CommandParam;
 import org.foxbpm.engine.impl.task.command.RollBackTaskDesignationAssigneeCommand;
 import org.foxbpm.engine.impl.task.command.RollBackTaskDesignationResetCommand;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
@@ -56,11 +55,16 @@ public class RollBackTaskDesignationAssigneeCmd extends AbstractExpandTaskCmd<Ro
 		/** 获取执行任务命令参数 */
 		CommandParam commandParam = taskCommand.getCommandParam(RollBackTaskDesignationResetCommand.EXECUTEPARAM_ROLLBACK_NODEID);
 		/** 从后台配置中获取需要退回的节点 */
-		String rollBackNodeId = StringUtil.getString(commandParam.getExpression().getValue(executionContext));
+		String rollBackNodeId = null;
+		try{
+			rollBackNodeId = StringUtil.getString(commandParam.getExpression().getValue(executionContext));
+		}catch(Exception ex){
+			throw ExceptionUtil.getException("10604002",ex);
+		}
 
 		/** 验证退回节点 */
 		if (StringUtil.isEmpty(rollBackNodeId)) {
-			throw new FoxBPMBizException("退回的节点号不能为空");
+			throw ExceptionUtil.getException("10501005");
 		}
 		
 		/** 查询出指定节点最后一次完成的任务 */
@@ -78,7 +82,7 @@ public class RollBackTaskDesignationAssigneeCmd extends AbstractExpandTaskCmd<Ro
 		KernelFlowNodeImpl flowNode = processDefinition.findFlowNode(rollBackNodeId);
 		
 		if(flowNode == null){
-			throw new FoxBPMIllegalArgumentException("退回的目的节点："+rollBackNodeId+"不存在,请检查流程配置！");
+			throw ExceptionUtil.getException("10502004",rollBackNodeId);
 		}
 		
 		/** 判断是否会签 */

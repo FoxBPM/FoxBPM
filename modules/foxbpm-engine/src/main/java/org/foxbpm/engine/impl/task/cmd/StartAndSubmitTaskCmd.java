@@ -19,8 +19,6 @@ package org.foxbpm.engine.impl.task.cmd;
 
 import java.util.List;
 
-import org.foxbpm.engine.exception.FoxBPMBizException;
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.cmd.StartProcessInstanceCmd;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
@@ -30,6 +28,8 @@ import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.task.command.StartAndSubmitTaskCommand;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
@@ -47,9 +47,8 @@ public class StartAndSubmitTaskCmd extends AbstractExpandTaskCmd<StartAndSubmitT
 		TaskEntity task = Context.getCommandContext().getTaskManager().findTaskById(taskId);
 
 		if (task != null && task.isSuspended()) {
-			throw new FoxBPMException("task is suspended");
+			throw ExceptionUtil.getException("10503002",taskId);
 		}
-
 		return execute(commandContext, task);
 	}
 
@@ -59,14 +58,18 @@ public class StartAndSubmitTaskCmd extends AbstractExpandTaskCmd<StartAndSubmitT
 		if (task == null) {
 
 			/** 没有任务的时候需要新启动一个流程,然后完成他的第一个任务. */
+			if(StringUtil.isEmpty(processDefinitionKey)){
+				throw ExceptionUtil.getException("10501002");
+			}
+			
+			if(StringUtil.isEmpty(processDefinitionKey)){
+				throw ExceptionUtil.getException("10501003");
+			}
 
 			/** 发起流程,传入processKey,按照最新流程启动。 */
 			processInstance = (ProcessInstanceEntity) getCommandExecutor().execute(
 					new StartProcessInstanceCmd<ProcessInstance>(processDefinitionKey, null, businessKey, transientVariables,
 							persistenceVariables));
-			
-			
-			
 			// 获取流程内容执行器
 			FlowNodeExecutionContext executionContext = processInstance.getRootToken();
 			// 获取任务命令
@@ -76,7 +79,7 @@ public class StartAndSubmitTaskCmd extends AbstractExpandTaskCmd<StartAndSubmitT
 				// 任务命令的执行表达式变量
 				taskCommand.getExpressionValue(executionContext);
 			}else{
-				throw new FoxBPMException("流程没有找到提交节点,请重新检查流程定义。");
+				throw ExceptionUtil.getException("10502002");
 			}
 
 		
@@ -94,27 +97,22 @@ public class StartAndSubmitTaskCmd extends AbstractExpandTaskCmd<StartAndSubmitT
 				if (taskCommands.size() > 0) {
 					expandTaskCommand.setTaskCommandId(taskCommands.get(0).getId());
 				} else {
-					throw new FoxBPMException("发起节点必须包含一个提交命令");
-					// expandTaskCommand.setTaskCommandId(this.taskCommandId);
+					throw ExceptionUtil.getException("10502003");
 				}
-
 				expandTaskCommand.setTransientVariables(transientVariables);
 				expandTaskCommand.setPersistenceVariables(persistenceVariables);
 				expandTaskCommand.setBusinessKey(businessKey);
 				expandTaskCommand.setInitiator(initiator);
-
 				if (this.agent != null && !this.agent.equals("")) {
 					expandTaskCommand.setAgent(this.agent);
 				}
-
 				getCommandExecutor().execute(new ExpandTaskCompleteCmd<ProcessInstance>(expandTaskCommand));
 
 			}
 
 		} else {
-
 			/** 流程引擎启动了之后点击启动并提交按钮 */
-			throw new FoxBPMBizException("启动并提交按钮不能在已经启动的流程上被执行");
+			throw ExceptionUtil.getException("10503004");
 		}
 
 		return processInstance;

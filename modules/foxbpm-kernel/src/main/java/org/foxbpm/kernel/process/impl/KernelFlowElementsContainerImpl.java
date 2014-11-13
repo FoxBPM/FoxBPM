@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.foxbpm.kernel.KernelException;
 import org.foxbpm.kernel.event.KernelListener;
 import org.foxbpm.kernel.process.KernelArtifact;
-import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.process.KernelFlowElementsContainer;
 import org.foxbpm.kernel.process.KernelLane;
 import org.foxbpm.kernel.process.KernelLaneSet;
@@ -107,7 +107,7 @@ public class KernelFlowElementsContainerImpl extends KernelFlowElementImpl
 		KernelFlowNodeImpl flowNode = new KernelFlowNodeImpl(flowNodeId, processDefinition);
 		if (flowNodeId != null) {
 			if (processDefinition.findFlowNode(flowNodeId) != null) {
-				throw new KernelException("流程定义里已经存在 flowNode id '" + flowNodeId + "'");
+				throw new KernelException("流程定义里已经存在 节点：'" + flowNodeId + "'");
 			}
 			namedFlowNodes.put(flowNodeId, flowNode);
 		}

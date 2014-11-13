@@ -20,7 +20,7 @@ package org.foxbpm.rest.common.api;
 import java.util.List;
 import java.util.Map;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
+import org.foxbpm.engine.exception.FoxbpmPluginException;
 import org.foxbpm.engine.impl.query.AbstractQuery;
 import org.foxbpm.engine.query.Query;
 import org.foxbpm.engine.query.QueryProperty;
@@ -52,7 +52,7 @@ public abstract class AbstractPaginateList {
 		if (sort != null && properties.size() > 0) {
 			QueryProperty qp = properties.get(sort);
 			if (qp == null) {
-				throw new FoxBPMIllegalArgumentException("Value for param 'sort' is not valid, '" + sort + "' is not a valid property");
+				throw new FoxbpmPluginException("Value for param 'sort' is not valid, '" + sort + "' is not a valid property","rest服务");
 			}
 			((AbstractQuery) query).orderBy(qp);
 			if (order.equals("asc")) {
@@ -60,7 +60,7 @@ public abstract class AbstractPaginateList {
 			} else if (order.equals("desc")) {
 				query.desc();
 			} else {
-				throw new FoxBPMIllegalArgumentException("Value for param 'order' is not valid : '" + order + "', must be 'asc' or 'desc'");
+				throw new FoxbpmPluginException("Value for param 'order' is not valid : '" + order + "', must be 'asc' or 'desc'","rest服务");
 			}
 		}
 

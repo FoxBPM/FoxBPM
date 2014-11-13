@@ -15,28 +15,21 @@
  * 
  * @author kenshin
  */
-package org.foxbpm.engine.exception;
+package org.foxbpm.kernel;
 
-
-public class FoxBPMBizException extends FoxBPMException {
+public class KernelException extends RuntimeException {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1974264253264503442L;
+	private static final long serialVersionUID = 1L;
 
-	public FoxBPMBizException(String message) {
-		
-		super(message);
-		//super((ResourcesUtil.getExpressionAll(FixFlowResources.ExceptionResource,message)));
-	}
-
-	
-	public FoxBPMBizException(String message, Throwable cause) {
-		
+	public KernelException(String message, Throwable cause) {
 		super(message, cause);
-		//super(ResourcesUtil.getExpressionAll(FixFlowResources.ExceptionResource, message), cause);
 	}
 
+	public KernelException(String message) {
+		super(message);
+	}
 
 }

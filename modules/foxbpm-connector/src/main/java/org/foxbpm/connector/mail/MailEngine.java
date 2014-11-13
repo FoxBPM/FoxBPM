@@ -25,8 +25,7 @@ import java.util.Map;
 
 import org.foxbpm.connector.common.constant.Constants;
 import org.foxbpm.connector.common.constant.EntityFieldName;
-import org.foxbpm.engine.exception.FoxBPMBizException;
-import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.exception.FoxbpmPluginException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.db.SqlCommand;
 import org.foxbpm.engine.impl.util.DBUtils;
@@ -101,7 +100,7 @@ public class MailEngine {
 		
 		if (mailServerHost == null || mailServerPort == null || mailUserName == null || passWord == null) {
 			LOGGER.error("系统邮件配置错误请检查流程邮件配置！");
-			throw new FoxBPMException("系统邮件配置错误请检查流程邮件配置！");
+			throw new FoxbpmPluginException("系统邮件配置错误请检查流程邮件配置！","邮件引擎");
 		}
 		
 		PlatformTransactionManager transactionManager = processEngineConfig.getTransactionManager();
@@ -133,8 +132,7 @@ public class MailEngine {
 						// 支持发送多人邮件 #4185
 						String to = mailEntity.getMailTo();
 						if (StringUtil.isEmpty(StringUtil.trim(to))) {
-							LOGGER.error("mailTo is null");
-							throw new FoxBPMBizException("mailTo is null");
+							throw new FoxbpmPluginException("收件人地址为空！","邮件引擎");
 						}
 						String[] strTo = to.split(",");
 						List<String> userMailToList = new ArrayList<String>();
@@ -143,12 +141,7 @@ public class MailEngine {
 								userMailToList.add(userMail);
 							}
 						}
-						if (userMailToList.size() == 0) {
-							LOGGER.error("Mail toaddress is null");
-							throw new FoxBPMBizException("Mail toaddress is null");
-						}
 						mailUtil.setTo(userMailToList.toArray(new String[0]));
-
 						String cc = mailEntity.getMailCc();
 						if (StringUtil.isNotEmpty(StringUtil.trim(cc))) {
 							String[] strCC = cc.split(Constants.COMMA);
@@ -157,9 +150,6 @@ public class MailEngine {
 								if (StringUtil.isNotEmpty(StringUtil.trim(userMail))) {
 									userMailCCList.add(userMail);
 								}
-							}
-							if (userMailCCList.size() == 0) {
-								throw new FoxBPMBizException("Mail ccaddress is null");
 							}
 							mailUtil.setCC(userMailCCList.toArray(new String[0]));
 						}

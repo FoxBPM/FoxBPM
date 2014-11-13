@@ -18,10 +18,10 @@
  */
 package org.foxbpm.engine.impl.cmd;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 
 /**
  * 根据发布号删除发布信息
@@ -39,7 +39,7 @@ public class DeleteDeploymentCmd implements Command<Void>{
 	 
 	public Void execute(CommandContext commandContext) {
 		if(deploymentId == null){
-			throw new FoxBPMIllegalArgumentException("删除的发布号为null");
+			throw ExceptionUtil.getException("10601002");
 		}
 		Context.getProcessEngineConfiguration().getDeploymentManager().removeDeployment(deploymentId, true);
 		return null;

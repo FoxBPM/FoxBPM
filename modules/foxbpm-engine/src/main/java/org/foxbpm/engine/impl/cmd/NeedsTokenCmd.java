@@ -19,12 +19,10 @@ package org.foxbpm.engine.impl.cmd;
 
 import java.io.Serializable;
 
-import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
-import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
 import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 
 public abstract class NeedsTokenCmd<T> implements Command<T>, Serializable {
 
@@ -38,28 +36,17 @@ public abstract class NeedsTokenCmd<T> implements Command<T>, Serializable {
 
 	public T execute(CommandContext commandContext) {
 		if (tokenId == null) {
-			throw new FoxBPMIllegalArgumentException("executionId is null");
+			throw ExceptionUtil.getException("10601008");
 		}
-
 		TokenEntity token = commandContext.getTokenManager().findTokenById(tokenId);
-
 		if (token == null) {
-			throw new FoxBPMObjectNotFoundException("execution " + tokenId + " doesn't exist");
+			throw ExceptionUtil.getException("10602002");
 		}
-
 		if (token.isSuspended()) {
-			throw new FoxBPMException(getSuspendedExceptionMessage());
+			throw ExceptionUtil.getException("10603001");
 		}
-
 		return execute(commandContext, token);
 	}
 
-
 	protected abstract T execute(CommandContext commandContext, TokenEntity token);
-
-
-	protected String getSuspendedExceptionMessage() {
-		return "Cannot execution operation because execution '" + tokenId + "' is suspended";
-	}
-
 }

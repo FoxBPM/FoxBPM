@@ -20,7 +20,7 @@ package org.foxbpm.rest.common.api;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
+import org.foxbpm.engine.exception.FoxbpmPluginException;
 import org.restlet.data.Form;
 
 /**
@@ -70,7 +70,7 @@ public class RequestUtil {
 			try {
 				value = longDateFormat.parse(input);
 			} catch (Exception e) {
-				throw new FoxBPMIllegalArgumentException("Failed to parse date " + input);
+				throw new FoxbpmPluginException("Failed to parse date " + input,"Rest服务");
 			}
 		}
 		return value;

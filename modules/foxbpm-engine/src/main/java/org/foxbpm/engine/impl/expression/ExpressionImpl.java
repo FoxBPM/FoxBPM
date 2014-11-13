@@ -32,7 +32,7 @@ public class ExpressionImpl implements Expression {
 		this.expressionText=expressionText;
 	}
 
-	public Object getValue(FlowNodeExecutionContext executionContext) {
+	public Object getValue(FlowNodeExecutionContext executionContext) throws Exception {
 		if(StringUtil.isNotEmpty(expressionText)){
 			return ExpressionMgmt.execute(expressionText,executionContext);
 		}

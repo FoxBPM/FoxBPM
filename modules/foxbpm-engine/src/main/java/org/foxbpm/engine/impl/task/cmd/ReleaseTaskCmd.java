@@ -17,11 +17,11 @@
  */
 package org.foxbpm.engine.impl.task.cmd;
 
-import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.task.command.ReleaseTaskCommand;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 
 public class ReleaseTaskCmd extends AbstractExpandTaskCmd<ReleaseTaskCommand, Void>{
 
@@ -37,7 +37,7 @@ public class ReleaseTaskCmd extends AbstractExpandTaskCmd<ReleaseTaskCommand, Vo
 		if (task.getAssignee() != null) {
 			if (!task.getAssignee().equals(Authentication.getAuthenticatedUserId())) {
 				// 当任务已经被另一个不是自己的用户占有，则抛出异常。
-				throw new FoxBPMBizException("任务 " + taskId + " 已经被另一个用户领取!您不能做释放操作!");
+				throw ExceptionUtil.getException("10503004",taskId);
 			}
 			else{
 				if(task.getIdentityLinks().size()>0){
@@ -45,11 +45,11 @@ public class ReleaseTaskCmd extends AbstractExpandTaskCmd<ReleaseTaskCommand, Vo
 					task.setClaimTime(null);
 				}
 				else{
-					throw new FoxBPMBizException("任务 " + taskId + " 没有候选处理者不能被释放!");
+					throw ExceptionUtil.getException("10503005",taskId);
 				}
 			}
 		} else {
-			throw new FoxBPMBizException("任务 " + taskId + " 没有被领取,所以不能做释放操作!");
+			throw ExceptionUtil.getException("10503006",taskId);
 		}
 		return null;
 	}

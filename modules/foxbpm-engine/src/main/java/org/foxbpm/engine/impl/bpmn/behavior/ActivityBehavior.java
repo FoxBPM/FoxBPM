@@ -21,9 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.foxbpm.engine.exception.ExceptionCode;
-import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.exception.FoxBPMExpressionException;
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.TokenEntity;
@@ -31,6 +28,7 @@ import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduler;
 import org.foxbpm.engine.impl.schedule.FoxbpmSchedulerGroupnameGernerater;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
@@ -71,9 +69,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 						valueObj = StringUtil.getBoolean(expression.getValue(executionContext));
 						LOG.debug("节点: {}({}) 跳过策略直接结束,结果为 '{}'.", this.getName(), this.getId(), valueObj);
 					} catch (Exception e) {
-						LOG.error("节点: " + this.getName() + "(" + this.getId() + ") 跳过策略执行出错,错误信息: 【" + e.getMessage() + "】.", e);
-						throw new FoxBPMExpressionException(ExceptionCode.EXPRESSION_EXCEPTION_SKIPSTRATEGY, this.getId(), this.getName(),
-								expression.getExpressionText(), e);
+						throw ExceptionUtil.getException("10404012", e, this.getFlowNode().getId());
 					}
 				}
 				if (valueObj) {
@@ -178,23 +174,25 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		// 解决多实例处理退回BUG
 		// 在进入多实例的第一次先清空多实例输出集合,以防历史数据影响。
 		if (loopDataOutputCollectionExpressionValue != null && !loopDataOutputCollectionExpressionValue.equals("")) {
-			Object valueObj = new ExpressionImpl(loopDataOutputCollectionExpressionValue).getValue(executionContext);
+			Object valueObj = null;
+			try {
+				valueObj = new ExpressionImpl(loopDataOutputCollectionExpressionValue).getValue(executionContext);
+			} catch (Exception e) {
+				throw ExceptionUtil.getException("10404001",this.flowNode.getId());
+			}
 			if (valueObj != null) {
 				if (valueObj instanceof Collection) {
 					LOG.debug("清空多实例输出集合");
 					// 如果计算结果为集合时清空数据
 					((Collection<?>) valueObj).clear();
 				} else {
-					LOG.error("多实例输出集合不是一个集合");
-					throw new FoxBPMExpressionException(ExceptionCode.EXPRESSION_EXCEPTION_LOOPDATAOUTPUTCOLLECTION_COLLECTIONCHECK,
-							this.getId(), this.getName(), loopDataOutputCollectionExpressionValue);
+					throw ExceptionUtil.getException("10404003",this.flowNode.getId());
 				}
 			}
 		}
 		// 开始触发多实例循环
 		if (StringUtil.isEmpty(loopDataInputCollectionExpressionValue)) {
-			LOG.error("多实例输入集合值为空");
-			throw new FoxBPMExpressionException("多实例输入集合值为空");
+			throw ExceptionUtil.getException("10404009",this.flowNode.getId());
 		}
 
 		// 生成一个唯一组号,用户多实例任务组的标识
@@ -206,17 +204,11 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		Collection<?> valueObjCollection =getloopDataInputCollection(executionContext,loopDataInputCollectionExpressionValue);
 
 		if (valueObjCollection == null) {
-			LOG.error("多实例输出集合不是一个集合");
-			throw new FoxBPMExpressionException(ExceptionCode.EXPRESSION_EXCEPTION_LOOPDATAOUTPUTCOLLECTION_COLLECTIONCHECK, this.getId(),
-					this.getName(), loopDataOutputCollectionExpressionValue);
+			throw ExceptionUtil.getException("10404010",this.flowNode.getId());
 		}
 		if (valueObjCollection.size() == 0) {
-
-			LOG.error("多实例输入集合的个数为 0,请重新检查多实例输入集合配置.");
-			throw new FoxBPMExpressionException(ExceptionCode.EXPRESSION_EXCEPTION_LOOPDATAINPUTCOLLECTIONEMPTY, this.getId(),
-					this.getName(), loopDataInputCollectionExpressionValue);
+			throw ExceptionUtil.getException("10404011",this.flowNode.getId());
 		}
-
 		// 判断事都是并行多实例
 		if (milc.isSequential()) {
 			// 串行多实例
@@ -234,13 +226,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		try {
 			valueObj = new ExpressionImpl(loopDataInputCollectionExpressionValue).getValue(executionContext);
 		} catch (Exception e) {
-			LOG.error("多实例输入数据集解释出错,错误信息: " + e.getMessage(), e);
-			throw new FoxBPMExpressionException(ExceptionCode.EXPRESSION_EXCEPTION_LOOPDATAOUTPUTCOLLECTION_COLLECTIONCHECK, this.getId(),
-					this.getName(), loopDataInputCollectionExpressionValue, e);
-		}
-		if (valueObj == null) {
-			LOG.error("多实例输入集合值为空");
-			throw new FoxBPMExpressionException("多实例输入集合值为空");
+			throw ExceptionUtil.getException("01404009",e,this.flowNode.getId());
 		}
 
 		Collection<?> valueObjCollection = null;
@@ -249,7 +235,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 			valueObjCollection = (Collection<?>) valueObj;
 		}
 
-		if (valueObj instanceof String[]) {
+		else if (valueObj instanceof String[]) {
 			// 如果是个字符串数组
 			String[] valueObjString = (String[]) valueObj;
 			// 循环执行 将令牌多次放入节点
@@ -260,7 +246,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 			valueObjCollection = (Collection<?>) valueList;
 		}
 		// 如果是一个逗号分割的字符串
-		if (valueObj instanceof String && valueObj != null && !valueObj.equals("")) {
+		else if (valueObj instanceof String && valueObj != null && !valueObj.equals("")) {
 			// 将字符串转换为字符串数组
 			String[] valueObjString = valueObj.toString().split(",");
 			// 如果大于0再处理
@@ -272,6 +258,9 @@ public class ActivityBehavior extends FlowNodeBehavior {
 				}
 				valueObjCollection = (Collection<?>) valueList;
 			}
+		}
+		else{
+			throw ExceptionUtil.getException("01404013");
 		}
 		return valueObjCollection;
 	}
@@ -289,9 +278,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 			// 将循环的每个变量赋值给输入数据项
 			ExpressionMgmt.setVariable(inputDataItemExpressionValue, object, executionContext);
 		} catch (Exception e) {
-			LOG.error("串行多实例循环第 '" + loopCount + "' 次执行出错,错误信息: " + e.getMessage(), e);
-			throw new FoxBPMExpressionException(ExceptionCode.EXPRESSIONEXCEPTION_COLLECTIONININPUTDATAITEM, this.getId(), this.getName(),
-					inputDataItemExpressionValue, e);
+			throw ExceptionUtil.getException("01404008",e,this.flowNode.getId());
 		}
 		// 执行令牌进入节点方法
 		executionContext.execute();
@@ -318,9 +305,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 				// 将循环的每个变量赋值给输入数据项
 				ExpressionMgmt.setVariable(inputDataItemExpressionValue, object, executionContext);
 			} catch (Exception e) {
-				LOG.error("多实例循环第 '" + i + "' 次执行出错,错误信息: " + e.getMessage(), e);
-				throw new FoxBPMExpressionException(ExceptionCode.EXPRESSIONEXCEPTION_COLLECTIONININPUTDATAITEM, this.getId(),
-						this.getName(), inputDataItemExpressionValue, e);
+				throw ExceptionUtil.getException("01404011",this.flowNode.getId());
 			}
 			// 执行令牌进入节点方法
 			executionContext.execute();
@@ -372,32 +357,44 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		LOG.debug("\n【完成条件】: \n{}", completionConditionExpressionValue);
 
 		if (loopDataOutputCollectionExpressionValue != null && !loopDataOutputCollectionExpressionValue.equals("")) {
-			Object valueObj = ExpressionMgmt.execute(loopDataOutputCollectionExpressionValue, executionContext);
+			Object valueObj = null;
+			try {
+				valueObj = ExpressionMgmt.execute(loopDataOutputCollectionExpressionValue, executionContext);
+			} catch (Exception e) {
+				throw ExceptionUtil.getException("10404001",this.flowNode.getId());
+			}
 			if (valueObj != null) {
 				if (valueObj instanceof Collection) {
 					Collection collection = (Collection) valueObj;
-					collection.add(new ExpressionImpl(outputDataItemExpressionValue).getValue(executionContext));
+					try {
+						collection.add(new ExpressionImpl(outputDataItemExpressionValue).getValue(executionContext));
+					} catch (Exception e) {
+						throw ExceptionUtil.getException("10404002",this.flowNode.getId());
+					}
 				} else {
-					throw new FoxBPMException("输出集合类型必须是Collection");
+					throw ExceptionUtil.getException("10404003",this.flowNode.getId());
 				}
 			} else {
-				throw new FoxBPMException("输出集合为null:" + loopDataOutputCollectionExpressionValue);
+				throw ExceptionUtil.getException("10404004",this.flowNode.getId());
 			}
 		}
 
 		if (completionConditionExpressionValue == null || completionConditionExpressionValue.equals("")) {
-			LOG.error("节点: " + getName() + "(" + getId() + ") 多实例完成条件为空.");
-			throw new FoxBPMExpressionException(ExceptionCode.EXPRESSIONEXCEPTION_CONDITIONEXPRESSIONEMPTY, this.getId(), this.getName(),
-					"");
+			throw ExceptionUtil.getException("10404005",this.flowNode.getId());
 		}
 		
 		boolean isCompletion = false;
+		Object flag = null;
 		try {
-			isCompletion = StringUtil.getBoolean(ExpressionMgmt.execute(completionConditionExpressionValue, executionContext));
+			flag = ExpressionMgmt.execute(completionConditionExpressionValue, executionContext);
 		} catch (Exception e) {
-			LOG.error("节点: " + getName() + "(" + getId() + ") 多实例完成条件计算出错.", e);
-			throw new FoxBPMExpressionException(ExceptionCode.EXPRESSIONEXCEPTION_CONDITIONEXPRESSIONERROR, this.getId(), this.getName(),
-					"");
+			throw ExceptionUtil.getException("10404006",this.flowNode.getId());
+		}
+		
+		try{
+			isCompletion = StringUtil.getBoolean(flag);
+		}catch(Exception ex){
+			throw ExceptionUtil.getException("10404007",this.flowNode.getId());
 		}
 
 		if (isCompletion) {
@@ -427,7 +424,8 @@ public class ActivityBehavior extends FlowNodeBehavior {
 			TokenEntity token=(TokenEntity)executionContext;
 			token.setLoopCount(1);
 			if(token.getLoopCount()==valueObjCollection.size()){
-				throw new FoxBPMException("串行多实例集合全部处理完毕,但完成条件依然不满足!");
+				//穿行多实例未实现
+				
 			}
 			sequentialMultiInstanceExecute(executionContext, valueObjCollection, inputDataItemExpressionValue);
 			
@@ -452,7 +450,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 				foxbpmScheduler.deleteJobsByGroupName(groupName);
 			}
 		} catch (Exception e) {
-			throw new FoxBPMException("Activity 离开时清空 节点调度器报错", e);
+			throw ExceptionUtil.getException("10408001",e,this.getFlowNode().getId());
 		}
 		TokenEntity token = (TokenEntity) executionContext;
 		token.setGroupID(null);

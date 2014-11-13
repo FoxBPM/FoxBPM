@@ -19,11 +19,7 @@
 package org.foxbpm.rest.common.application;
 
 import org.codehaus.jackson.map.JsonMappingException;
-import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
-import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
-import org.foxbpm.engine.exception.FoxBPMOptimisticLockException;
 import org.foxbpm.rest.common.RestError;
 import org.restlet.Request;
 import org.restlet.Response;
@@ -74,16 +70,7 @@ public class FoxbpmStatusService extends StatusService {
 	protected Status getSpecificStatus(Throwable throwable, Request request, Response response) {
 		Status status = null;
 
-		if (throwable instanceof FoxBPMObjectNotFoundException) {
-			// 404 - 实体未找到
-			status = new Status(Status.CLIENT_ERROR_NOT_FOUND.getCode(), getSafeStatusName(throwable.getMessage()), getSafeStatusName(throwable.getMessage()), null);
-		} else if (throwable instanceof FoxBPMIllegalArgumentException || throwable instanceof FoxBPMBizException) {
-			// 400 - 参数错误
-			status = new Status(Status.CLIENT_ERROR_BAD_REQUEST.getCode(), getSafeStatusName(throwable.getMessage()), getSafeStatusName(throwable.getMessage()), null);
-		} else if (throwable instanceof FoxBPMOptimisticLockException) {
-			// 409 - 乐观锁冲突
-			status = new Status(Status.CLIENT_ERROR_CONFLICT.getCode(), getSafeStatusName(throwable.getMessage()), getSafeStatusName(throwable.getMessage()), null);
-		} else if (throwable instanceof ResourceException) {
+		if (throwable instanceof ResourceException) {
 			ResourceException re = (ResourceException) throwable;
 			status = re.getStatus();
 		} else if (throwable instanceof FoxBPMException) {

@@ -17,11 +17,11 @@
  */
 package org.foxbpm.engine.impl.task.cmd;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.task.command.RollBackResetCommand;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
@@ -63,7 +63,7 @@ public class RollBackResetCmd extends AbstractExpandTaskCmd<RollBackResetCommand
 		/** 查找需要退回的节点 */
 		KernelFlowNodeImpl flowNode=processDefinition.findFlowNode(rollBackNodeId);
 		if(flowNode == null){
-			throw new FoxBPMIllegalArgumentException("退回的目的节点："+rollBackNodeId+"不存在,请检查流程配置！");
+			throw ExceptionUtil.getException("10502004",rollBackNodeId);
 		}
 		/** 完成任务,并将流程推向指定的节点 */
 		task.complete(flowNode);

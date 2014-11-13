@@ -26,9 +26,9 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
 
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.diagramview.svg.vo.SvgVO;
 import org.foxbpm.engine.impl.diagramview.vo.VONode;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.ReflectUtil;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
@@ -131,7 +131,7 @@ public class SVGTemplateContainer {
 			VONode object = (VONode) unMarshaller.unmarshal(source);
 			this.svgTemplets.put(templateName, object);
 		} catch (Exception e) {
-			throw new FoxBPMException("template svg file load exception", e);
+			throw ExceptionUtil.getException("00010001",e,templateName);
 		} finally {
 		}
 

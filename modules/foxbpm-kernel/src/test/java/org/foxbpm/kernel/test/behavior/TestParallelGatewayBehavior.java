@@ -19,7 +19,7 @@ package org.foxbpm.kernel.test.behavior;
 
 import java.util.List;
 
-import org.foxbpm.kernel.process.KernelException;
+import org.foxbpm.kernel.KernelException;
 import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
@@ -44,7 +44,7 @@ public class TestParallelGatewayBehavior extends CommonNodeBehavior {
 
 	public void execute(FlowNodeExecutionContext executionContext) {
 		if (this.gatewayDirection == null) {
-			throw new KernelException("并行网关节点没有选择 GatewayDirection 类型,请检查流程定义文件!");
+			throw new KernelException("并行网关节点没有选择 进出类型！");
 		}
 
 		if (this.gatewayDirection.equals("Converging")) {

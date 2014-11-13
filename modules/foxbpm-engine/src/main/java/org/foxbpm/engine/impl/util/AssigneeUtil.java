@@ -29,7 +29,13 @@ public class AssigneeUtil {
 	public static List<String> executionExpression(String expression,
 			FlowNodeExecutionContext executionContext) {
 		List<String> resultList = new ArrayList<String>();
-		Object result = ExpressionMgmt.execute(expression, executionContext);
+		Object result = null;
+		try{
+			result = ExpressionMgmt.execute(expression, executionContext);
+		}catch(Exception ex){
+			throw ExceptionUtil.getException("10304004");
+		}
+		
 		if (result != null) {
 			if (result instanceof String) {
 				String[] dddStrings = result.toString().split(",");

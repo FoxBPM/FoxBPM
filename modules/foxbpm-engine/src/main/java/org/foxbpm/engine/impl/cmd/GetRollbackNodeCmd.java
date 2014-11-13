@@ -24,12 +24,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
@@ -49,7 +49,7 @@ public class GetRollbackNodeCmd implements Command<List<KernelFlowNode>> {
 	 
 	public List<KernelFlowNode> execute(CommandContext commandContext) {
 		if(StringUtil.isEmpty(taskId)){
-			throw new FoxBPMIllegalArgumentException("taskId is null");
+			throw ExceptionUtil.getException("10601201");
 		}
 		
 		List<KernelFlowNode> results = new ArrayList<KernelFlowNode>();

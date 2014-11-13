@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.ProcessEngine;
-import org.foxbpm.engine.exception.FoxBPMBizException;
+import org.foxbpm.engine.exception.FoxbpmPluginException;
 import org.foxbpm.engine.impl.entity.RunningTrackEntity;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.runningtrack.RunningTrack;
@@ -45,7 +45,7 @@ public class TaskRunTrackResource extends AbstractRestResource {
 	public DataResult getTaskRunTrackInfor() {
 		String processInstanceId = getQueryParameter("processInstanceId", getQuery());
 		if (StringUtil.isEmpty(processInstanceId)) {
-			throw new FoxBPMBizException("processInstanceId is null!");
+			throw new FoxbpmPluginException("流程实例编号为空", "Rest服务");
 		}
 		
 		ProcessEngine processEngine = FoxBpmUtil.getProcessEngine();

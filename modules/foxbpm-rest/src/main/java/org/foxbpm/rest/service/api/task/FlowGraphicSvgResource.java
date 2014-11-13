@@ -19,7 +19,7 @@ package org.foxbpm.rest.service.api.task;
 
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.ProcessEngine;
-import org.foxbpm.engine.exception.FoxBPMBizException;
+import org.foxbpm.engine.exception.FoxbpmPluginException;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.runtime.ProcessInstance;
@@ -51,18 +51,18 @@ public class FlowGraphicSvgResource extends AbstractRestResource {
 		if (StringUtil.isEmpty(processInstanceId)) {
 			// 流程定义Key
 			if (StringUtil.isEmpty(processDefinitionKey)) {
-				throw new FoxBPMBizException("processDefinitionKey is null !");
+				throw new FoxbpmPluginException("流程定义编号为空", "Rest服务");
 			}
 			ProcessDefinition processDefinition = modelService.getLatestProcessDefinition(processDefinitionKey);
 			if (null == processDefinition) {
-				throw new FoxBPMBizException("无效的流程定义key:" + processDefinitionKey);
+				throw new FoxbpmPluginException("未找到流程定义"+processDefinitionKey, "Rest服务");
 			}
 			processDefinitionId = processDefinition.getId();
 		} else {
 			ProcessInstanceQuery processInstanceQuery = processEngine.getRuntimeService().createProcessInstanceQuery();
 			ProcessInstance processInstance = processInstanceQuery.processInstanceId(processInstanceId).singleResult();
 			if (null == processInstance) {
-				throw new FoxBPMBizException("无效的流程实例id:" + processInstanceId);
+				throw new FoxbpmPluginException("未找到流程定义"+processInstanceId, "Rest服务");
 			}
 			processDefinitionId = processInstance.getProcessDefinitionId();
 		}

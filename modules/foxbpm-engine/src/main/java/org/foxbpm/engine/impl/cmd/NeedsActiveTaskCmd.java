@@ -19,14 +19,12 @@ package org.foxbpm.engine.impl.cmd;
 
 import java.io.Serializable;
 
-import org.foxbpm.engine.exception.FoxBPMBizException;
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
-import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.util.ClockUtil;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 
 public abstract class NeedsActiveTaskCmd<T> implements Command<T>, Serializable {
 
@@ -42,17 +40,17 @@ public abstract class NeedsActiveTaskCmd<T> implements Command<T>, Serializable 
 
 	public T execute(CommandContext commandContext) {
 		if (taskId == null) {
-			throw new FoxBPMIllegalArgumentException("taskId is null");
+			throw ExceptionUtil.getException("10601201");
 		}
 		TaskEntity task = Context.getCommandContext().getTaskManager().findTaskById(taskId);
 		if (task == null) {
-			throw new FoxBPMObjectNotFoundException("Cannot find task with id " + taskId);
+			throw ExceptionUtil.getException("10602201");
 		}
 		if(task.hasEnded()){
-			throw new FoxBPMBizException("task is ended");
+			throw ExceptionUtil.getException("10603203");
 		}
 		if (task.isSuspended()) {
-			throw new FoxBPMBizException("task is suspended");
+			throw ExceptionUtil.getException("10603202");
 		}
 		//增加流程修改时间
 		task.getProcessInstance().setUpdateTime(ClockUtil.getCurrentTime());

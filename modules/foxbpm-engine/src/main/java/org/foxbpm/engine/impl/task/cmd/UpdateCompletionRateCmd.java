@@ -59,7 +59,6 @@ public class UpdateCompletionRateCmd extends AbstractExpandTaskCmd<UpdateComplet
 		/** 更新完成率 */
 		task.setCompletionRate(completionRate);
 		
-		
 		return null;
 	}
 

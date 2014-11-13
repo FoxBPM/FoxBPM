@@ -24,8 +24,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.identity.UserDefinition;
 import org.foxbpm.engine.impl.ProcessEngineConfigurationImpl;
 import org.foxbpm.engine.impl.persistence.AgentManager;
@@ -40,6 +38,7 @@ import org.foxbpm.engine.impl.persistence.RunningTrackManager;
 import org.foxbpm.engine.impl.persistence.TaskManager;
 import org.foxbpm.engine.impl.persistence.TokenManager;
 import org.foxbpm.engine.impl.persistence.VariableManager;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 import org.foxbpm.engine.transaction.TransactionContext;
 import org.slf4j.Logger;
@@ -75,7 +74,7 @@ public class CommandContext {
 		if (session == null) {
 			SessionFactory sessionFactory = sessionFactories.get(sessionClass);
 			if (sessionFactory == null) {
-				throw new FoxBPMClassLoadingException("no session factory configured for " + sessionClass.getName());
+				throw ExceptionUtil.getException("10302001");
 			}
 			session = sessionFactory.openSession();
 			sessions.put(sessionClass, session);
@@ -176,22 +175,9 @@ public class CommandContext {
 			if (exception == null) {
 				flushSession();
 			}
-		} catch (Exception ex) {
-			exception(ex);
-		} finally {
+		}finally {
 			closeSessions();
 		}
-		
-		if (exception != null) {
-			if (exception instanceof Error) {
-				throw (Error) exception;
-			} else if (exception instanceof RuntimeException) {
-				throw (RuntimeException) exception;
-			} else {
-				throw new FoxBPMException("exception while executing command " + command, exception);
-			}
-		}
-		
 	}
 	
 	public void closeSessions() {
@@ -200,26 +186,7 @@ public class CommandContext {
 		while (iterator.hasNext()) {
 			Entry<Class<?>, Session> next = iterator.next();
 			Session session = next.getValue();
-			try {
-				session.close();
-			} catch (Throwable exception) {
-				exception(exception);
-			}
-		}
-		// for (Session session : sessions.values()) {
-		// try {
-		// session.close();
-		// } catch (Throwable exception) {
-		// exception(exception);
-		// }
-		// }
-	}
-	
-	public void exception(Throwable e) {
-		if (this.exception == null) {
-			this.exception = e;
-		} else {
-			log.error("masked exception in command context. for root cause, see below as it will be rethrown later.", exception);
+			session.close();
 		}
 	}
 }

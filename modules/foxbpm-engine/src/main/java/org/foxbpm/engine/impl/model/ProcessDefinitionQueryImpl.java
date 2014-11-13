@@ -20,7 +20,7 @@ package org.foxbpm.engine.impl.model;
 
 import java.util.List;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 import org.foxbpm.engine.impl.query.AbstractQuery;
@@ -63,7 +63,7 @@ public class ProcessDefinitionQueryImpl extends AbstractQuery<ProcessDefinitionQ
 
 	public ProcessDefinitionQueryImpl processDefinitionCategory(String category) {
 		if (category == null) {
-			throw new FoxBPMIllegalArgumentException("category is null");
+			return this;
 		}
 		this.category = category;
 		return this;
@@ -71,7 +71,7 @@ public class ProcessDefinitionQueryImpl extends AbstractQuery<ProcessDefinitionQ
 
 	public ProcessDefinitionQueryImpl processDefinitionCategoryLike(String categoryLike) {
 		if (categoryLike == null) {
-			throw new FoxBPMIllegalArgumentException("categoryLike is null");
+			return this;
 		}
 		this.categoryLike = categoryLike;
 		return this;
@@ -79,7 +79,7 @@ public class ProcessDefinitionQueryImpl extends AbstractQuery<ProcessDefinitionQ
 
 	public ProcessDefinitionQueryImpl processDefinitionName(String name) {
 		if (name == null) {
-			throw new FoxBPMIllegalArgumentException("name is null");
+			return this;
 		}
 		this.name = name;
 		return this;
@@ -87,7 +87,7 @@ public class ProcessDefinitionQueryImpl extends AbstractQuery<ProcessDefinitionQ
 
 	public ProcessDefinitionQueryImpl processDefinitionNameLike(String nameLike) {
 		if (nameLike == null) {
-			throw new FoxBPMIllegalArgumentException("nameLike is null");
+			return this;
 		}
 		this.nameLike = nameLike;
 		return this;
@@ -95,7 +95,7 @@ public class ProcessDefinitionQueryImpl extends AbstractQuery<ProcessDefinitionQ
 
 	public ProcessDefinitionQueryImpl deploymentId(String deploymentId) {
 		if (deploymentId == null) {
-			throw new FoxBPMIllegalArgumentException("id is null");
+			return this;
 		}
 		this.deploymentId = deploymentId;
 		return this;
@@ -103,7 +103,7 @@ public class ProcessDefinitionQueryImpl extends AbstractQuery<ProcessDefinitionQ
 
 	public ProcessDefinitionQueryImpl processDefinitionKey(String key) {
 		if (key == null) {
-			throw new FoxBPMIllegalArgumentException("key is null");
+			return this;
 		}
 		this.key = key;
 		return this;
@@ -111,7 +111,7 @@ public class ProcessDefinitionQueryImpl extends AbstractQuery<ProcessDefinitionQ
 
 	public ProcessDefinitionQueryImpl processDefinitionKeyLike(String keyLike) {
 		if (keyLike == null) {
-			throw new FoxBPMIllegalArgumentException("keyLike is null");
+			return this;
 		}
 		this.keyLike = keyLike;
 		return this;
@@ -119,9 +119,7 @@ public class ProcessDefinitionQueryImpl extends AbstractQuery<ProcessDefinitionQ
 
 	public ProcessDefinitionQueryImpl processDefinitionVersion(Integer version) {
 		if (version == null) {
-			throw new FoxBPMIllegalArgumentException("version is null");
-		} else if (version <= 0) {
-			throw new FoxBPMIllegalArgumentException("version must be positive");
+			return this;
 		}
 		this.version = version;
 		return this;
@@ -175,7 +173,7 @@ public class ProcessDefinitionQueryImpl extends AbstractQuery<ProcessDefinitionQ
 
 		// latest() makes only sense when used with key() or keyLike()
 		if (latest && ((id != null) || (name != null) || (nameLike != null) || (version != null) || (deploymentId != null))) {
-			throw new FoxBPMIllegalArgumentException("Calling latest() can only be used in combination with key(String) and keyLike(String)");
+			throw new FoxBPMException("Calling latest() can only be used in combination with key(String) and keyLike(String)");
 		}
 	}
 

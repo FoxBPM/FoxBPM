@@ -22,7 +22,7 @@ import java.util.zip.ZipInputStream;
 
 import org.foxbpm.engine.ModelService;
 import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
+import org.foxbpm.engine.exception.FoxbpmPluginException;
 import org.foxbpm.engine.repository.DeploymentBuilder;
 import org.foxbpm.rest.common.api.AbstractRestResource;
 import org.foxbpm.rest.common.api.FoxBpmUtil;
@@ -41,7 +41,7 @@ public class DeploymentResource extends AbstractRestResource {
 		try {
 			input = entity.getStream();
 			if(input == null){
-				throw new FoxBPMIllegalArgumentException("请求中必须包含文件流inputStream");
+				throw new FoxbpmPluginException("请求中必须包含文件流", "Rest服务");
 			}
 			ModelService modelService = FoxBpmUtil.getProcessEngine().getModelService();
 			DeploymentBuilder deploymentBuilder = modelService.createDeployment();

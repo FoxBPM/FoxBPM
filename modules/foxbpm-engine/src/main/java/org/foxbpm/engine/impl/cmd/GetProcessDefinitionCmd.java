@@ -18,11 +18,11 @@
  */
 package org.foxbpm.engine.impl.cmd;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.repository.ProcessDefinition;
 
 public class GetProcessDefinitionCmd implements Command<ProcessDefinition>{
@@ -38,7 +38,7 @@ public class GetProcessDefinitionCmd implements Command<ProcessDefinition>{
 		DeploymentManager deploymentCache = Context.getProcessEngineConfiguration().getDeploymentManager();
 		ProcessDefinition processDefinition = null;
 		if(processDefinitionId == null){
-			throw new FoxBPMIllegalArgumentException("查询的流程定义id不能为null");
+			throw ExceptionUtil.getException("10601101");
 		}
 		processDefinition = deploymentCache.findDeployedProcessDefinitionById(processDefinitionId);
 		return processDefinition;

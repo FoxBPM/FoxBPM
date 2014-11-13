@@ -26,13 +26,13 @@ import java.util.Map;
 import org.foxbpm.engine.datavariable.VariableQuery;
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
-import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.datavariable.VariableQueryImpl;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtInstance;
 import org.foxbpm.engine.impl.runtime.ContextInstanceImpl;
 import org.foxbpm.engine.impl.util.ClockUtil;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.runtime.ContextInstance;
@@ -143,14 +143,20 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	
 	 
 	public void start() {
+		if(getRootToken().getFlowNode() != null){
+			throw ExceptionUtil.getException("10303004",getId());
+		}
 		this.instanceStatus = ProcessInstanceStatus.RUNNING;
 		this.setStartTime(ClockUtil.getCurrentTime());
 		
 		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity) getProcessDefinition();
 		if (processDefinitionEntity.getSubject() != null) {
-			this.setSubject(StringUtil.getString(processDefinitionEntity.getSubject().getValue(getRootToken())));
+			try{
+				this.setSubject(StringUtil.getString(processDefinitionEntity.getSubject().getValue(getRootToken())));
+			}catch(Exception ex){
+				throw ExceptionUtil.getException("10304001",processDefinitionEntity.getId());
+			}
 		}
-		
 		super.start();
 	}
 	
@@ -475,12 +481,8 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 				Context.getCommandContext().getVariableManager().update(variableInstances.get(0));
 				dataVariableMgmtInstance.getDataVariableEntities().add(variableInstances.get(0));
 			} else {
-				if (variableInstances != null && variableInstances.size() > 1) {
-					throw new FoxBPMException("一个流程实例中含有两个相同的key,key(" + mapKey + ") instanceId(" + this.id + ")");
-				} else {
-					VariableInstanceEntity variableInstanceEntity = addVariableToMgmt(mapKey, variables.get(mapKey));
-					Context.getCommandContext().getVariableManager().insert(variableInstanceEntity);
-				}
+				VariableInstanceEntity variableInstanceEntity = addVariableToMgmt(mapKey, variables.get(mapKey));
+				Context.getCommandContext().getVariableManager().insert(variableInstanceEntity);
 			}
 			ExpressionMgmt.setVariable(mapKey, variables.get(mapKey));
 		}

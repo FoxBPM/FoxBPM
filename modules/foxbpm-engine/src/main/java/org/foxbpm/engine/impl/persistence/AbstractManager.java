@@ -26,11 +26,9 @@ import java.util.Map;
 
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
-import org.foxbpm.engine.exception.FoxBPMDbException;
-import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.exception.FoxBPMOptimisticLockException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.interceptor.Session;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.sqlsession.ISqlSession;
 import org.foxbpm.engine.sqlsession.StatementMap;
 import org.slf4j.Logger;
@@ -67,12 +65,24 @@ public abstract class AbstractManager implements Session {
 	
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	public List selectList(String statement, Object parameter) {
-		List resultList = getSqlSession().selectList(statement, parameter);
+		List resultList = null;
+		try{
+			resultList = getSqlSession().selectList(statement, parameter);
+		}catch(Exception ex){
+			throw ExceptionUtil.getException("10209001",ex,statement);
+		}
+				
 		return filterLoadedObjects(resultList);
 	}
 	
 	public Object selectOne(String statement, Object parameter) {
-		Object result = getSqlSession().selectOne(statement, parameter);
+		Object result = null;
+		try{
+			result = getSqlSession().selectOne(statement, parameter);
+		}catch(Exception ex){
+			throw ExceptionUtil.getException("10209001",ex,statement);
+		}
+				
 		if (result instanceof PersistentObject) {
 			PersistentObject loadedObject = (PersistentObject) result;
 			result = cacheFilter(loadedObject);
@@ -87,6 +97,9 @@ public abstract class AbstractManager implements Session {
 			return (T)persistentObject;
 		}
 		String selectStatement = StatementMap.getSelectStatement(entityClass);
+		if(selectStatement == null){
+			throw ExceptionUtil.getException("10202004",entityClass.getName());
+		}
 		persistentObject = (T) getSqlSession().selectOne(selectStatement, id);
 		if (persistentObject == null) {
 			return null;
@@ -177,15 +190,18 @@ public abstract class AbstractManager implements Session {
 		for (PersistentObject updateObject : updateObjects) {
 			String updateStatement = StatementMap.getUpdateStatement(updateObject);
 			if (updateStatement == null) {
-				throw new FoxBPMDbException("no update statement for " + updateObject.getClass()
-				        + " in the ibatis mapping files");
+				throw ExceptionUtil.getException("10202003",updateObject.getClass().getName());
 			}
 			log.debug("updating: {}", updateObject);
-			affectedRow = getSqlSession().update(updateStatement, updateObject);
+			try{
+				affectedRow = getSqlSession().update(updateStatement, updateObject);
+			}catch(Exception ex){
+				throw ExceptionUtil.getException("10209001",ex,updateStatement);
+			}
 			// 并发处理
 			if (updateObject instanceof HasRevision) {
 				if (affectedRow != 1) {
-					throw new FoxBPMOptimisticLockException("ID=" + updateObject.getId() + "记录已经被修改，当前禁止修改!");
+					throw ExceptionUtil.getException("10211001",updateObject.getClass().getName(),updateObject.getId());
 				}
 				((HasRevision) updateObject).setRevision(((HasRevision) updateObject).getRevisionNext());
 			}
@@ -197,11 +213,14 @@ public abstract class AbstractManager implements Session {
 		for (PersistentObject insertedObject : insertedObjects) {
 			String insertStatement = StatementMap.getInsertStatement(insertedObject);
 			if (insertStatement == null) {
-				throw new FoxBPMDbException("no insert statement for " + insertedObject.getClass()
-				        + " in the ibatis mapping files");
+				throw ExceptionUtil.getException("10202001",insertedObject.getClass().getName());
 			}
 			log.debug("inserting: {}", insertedObject);
-			getSqlSession().insert(insertStatement, insertedObject);
+			try{
+				getSqlSession().insert(insertStatement, insertedObject);
+			}catch(Exception ex){
+				throw ExceptionUtil.getException("10209001",ex,insertStatement);
+			}
 			// 并发处理
 			if (insertedObject instanceof HasRevision) {
 				((HasRevision) insertedObject).setRevision(((HasRevision) insertedObject).getRevisionNext());
@@ -389,7 +408,11 @@ public abstract class AbstractManager implements Session {
 		
 		 
 		public void execute() {
-			getSqlSession().delete(statement, parameter);
+			try{
+				getSqlSession().delete(statement, parameter);
+			}catch(Exception ex){
+				throw ExceptionUtil.getException("10209001",ex,statement);
+			}
 		}
 		
 		 
@@ -423,10 +446,9 @@ public abstract class AbstractManager implements Session {
 		}
 		
 		public void execute() {
-			String deleteStatement = StatementMap.getDeleteStatement(persistentObject.getClass());
+			String deleteStatement = StatementMap.getDeleteStatement(persistentObject);
 			if (deleteStatement == null) {
-				throw new FoxBPMException("no delete statement for " + persistentObject.getClass()
-				        + " in the ibatis mapping files");
+				throw ExceptionUtil.getException("10202002",persistentObject.getClass().getName());
 			}
 			getSqlSession().delete(deleteStatement, persistentObject);
 		}

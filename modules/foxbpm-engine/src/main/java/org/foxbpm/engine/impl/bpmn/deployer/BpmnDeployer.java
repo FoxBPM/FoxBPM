@@ -22,7 +22,6 @@ import java.io.ByteArrayInputStream;
 import java.util.List;
 
 import org.foxbpm.engine.Constant;
-import org.foxbpm.engine.exception.FoxBPMBizException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.bpmn.behavior.StartEventBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.TimerEventBehavior;
@@ -33,6 +32,7 @@ import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.persistence.DeploymentEntityManager;
 import org.foxbpm.engine.impl.persistence.ProcessDefinitionManager;
 import org.foxbpm.engine.impl.task.TaskDefinition;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
@@ -67,7 +67,7 @@ public class BpmnDeployer extends AbstractDeployer {
 		}
 		// bpmn图不存在
 		if (null == resourceBpmnNew) {
-			throw new FoxBPMBizException("发布包中必须存在bpmn文件");
+			throw ExceptionUtil.getException("10102001");
 		}
 		
 		// 获取命令上下文
@@ -99,7 +99,7 @@ public class BpmnDeployer extends AbstractDeployer {
 				DeploymentEntity deploymentOld = deploymentEntityManager.findDeploymentById(updateDeploymentId);
 				
 				if (null == deploymentOld) {
-					throw new FoxBPMBizException("无效的更新发布号updateDeploymentId：" + updateDeploymentId);
+					throw ExceptionUtil.getException("10102002" , updateDeploymentId);
 				}
 				
 				ResourceEntity resourceBpmnOld = null;
@@ -121,8 +121,7 @@ public class BpmnDeployer extends AbstractDeployer {
 				// 从sql缓存中获取流程定义实例,该操作会自动更新数据库
 				ProcessDefinitionEntity processEntityNew = processDefinitionManager.findProcessDefinitionByDeploymentAndKey(updateDeploymentId, processDefineKey);
 				if (null == processEntityNew) {
-					LOG.error("无效的更新发布号updateDeploymentId：" + updateDeploymentId);
-					throw new FoxBPMBizException("无效的更新发布号updateDeploymentId：" + updateDeploymentId);
+					throw ExceptionUtil.getException("10102002" , updateDeploymentId);
 				}
 				processEntityNew.setCategory(processDefinitionEntity.getCategory());
 				processEntityNew.setName(processDefinitionEntity.getName());
@@ -221,12 +220,22 @@ public class BpmnDeployer extends AbstractDeployer {
 		String formUri = null;
 		TaskDefinition taskDefinition = processDefinitionEntity.getSubTaskDefinition();
 		if (taskDefinition != null) {
-			formUri = StringUtil.getString(taskDefinition.getFormUri().getValue(null));
+			try{
+				formUri = StringUtil.getString(taskDefinition.getFormUri().getValue(null));
+			}catch(Exception ex){
+				throw ExceptionUtil.getException("10104001",taskDefinition.getId());
+			}
+			
 		}
 		if (StringUtil.isNotEmpty(formUri)) {
 			return formUri;
 		}
-		formUri = StringUtil.getString(processDefinitionEntity.getFormUri().getValue(null));
+		try{
+			formUri = StringUtil.getString(processDefinitionEntity.getFormUri().getValue(null));
+		}catch(Exception ex){
+			throw ExceptionUtil.getException("10104002",processDefinitionEntity.getId());
+		}
+		
 		return formUri;
 	}
 	

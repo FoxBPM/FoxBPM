@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineManagement;
-import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
 import org.foxbpm.engine.impl.cache.CacheUtil;
 import org.foxbpm.engine.impl.cmd.FindGroupByIdCmd;
 import org.foxbpm.engine.impl.cmd.FindGroupChildrenIncludeByGroupIdCmd;
@@ -31,6 +30,7 @@ import org.foxbpm.engine.impl.cmd.FindUserByIdNoCacheCmd;
 import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 
 public abstract class Authentication {
 	
@@ -67,7 +67,7 @@ public abstract class Authentication {
 	public static List<GroupEntity> selectGroupByUserId(String userId) {
 		UserEntity user = selectUserByUserId(userId);
 		if (user == null) {
-			throw new FoxBPMObjectNotFoundException("未找到ID:" + userId + "的用户！");
+			throw ExceptionUtil.getException("10302002",userId);
 		}
 		return user.getGroups();
 	}

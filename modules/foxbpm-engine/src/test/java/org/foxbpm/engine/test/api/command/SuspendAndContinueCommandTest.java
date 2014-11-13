@@ -22,7 +22,7 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 
-import org.foxbpm.engine.exception.FoxBPMBizException;
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.runtime.ProcessInstance;
@@ -99,7 +99,7 @@ public class SuspendAndContinueCommandTest extends AbstractFoxBpmTestCase {
 			//验证非法调用API，抛出bizException
 			taskService.expandTaskComplete(expandTaskCommand, null);
 			fail();
-		}catch(FoxBPMBizException ex){
+		}catch(FoxBPMException ex){
 			
 		}
 		

@@ -27,7 +27,7 @@ import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
  */
 public interface Expression extends Serializable {
 
-	   Object getValue(FlowNodeExecutionContext executionContext);
+	   Object getValue(FlowNodeExecutionContext executionContext)throws Exception;
 	   
 	   String getExpressionText();
 	   

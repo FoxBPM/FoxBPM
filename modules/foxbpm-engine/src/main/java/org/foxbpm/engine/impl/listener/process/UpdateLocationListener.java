@@ -111,10 +111,15 @@ public class UpdateLocationListener  implements KernelListener {
 			nodeMap.put("users", users);
 			if(StringUtil.isNotEmpty(assignee)){
 				UserEntity user = Authentication.selectUserByUserId(assignee);
-				
 				Map<String,Object> tmpUser = new HashMap<String, Object>();
-				tmpUser.put("userId", user.getUserId());
-				tmpUser.put("userName", user.getUserName());
+				if(user == null){
+					tmpUser.put("userId", assignee);
+					tmpUser.put("userName", "未知用户："+assignee);
+					
+				}else{
+					tmpUser.put("userId", user.getUserId());
+					tmpUser.put("userName", user.getUserName());
+				}
 				users.add(tmpUser);
 				continue;
 			}

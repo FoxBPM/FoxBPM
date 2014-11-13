@@ -23,9 +23,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.kernel.KernelException;
 import org.foxbpm.kernel.event.KernelEvent;
 import org.foxbpm.kernel.process.KernelBaseElement;
-import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.process.KernelFlowNode;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.process.KernelSequenceFlow;
@@ -167,7 +167,7 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 			setFlowNode(flowNode);
 			flowNode.getKernelFlowNodeBehavior().leave(this);
 		} else {
-			throw new KernelException("signal flownode is null");
+			throw new KernelException("目标节点为空。");
 		}
 
 	}
@@ -242,10 +242,8 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 		// 节点后面没有线的处理
 		if (sequenceFlowList == null || sequenceFlowList.size() == 0) {
 			if (flowNode.getOutgoingSequenceFlows().size() == 0) {
-				LOG.error("节点: {}({}) 后面没有配置处理线条！", flowNode.getName(), flowNode.getId());
 				throw new KernelException("节点: " + flowNode.getName() + "(" + flowNode.getId() + ") 后面没有配置处理线条！");
 			} else {
-				LOG.error("节点: {}({}) 后面的条件都不满足导致节点后面没有处理线条,请检查后续线条条件！", flowNode.getName(), this.getId());
 				throw new KernelException("节点: " + flowNode.getName() + "(" + flowNode.getId() + ") 后面的条件都不满足导致节点后面没有处理线条,请检查后续线条条件！");
 			}
 		}
@@ -544,7 +542,7 @@ public class KernelTokenImpl extends KernelVariableScopeImpl implements FlowNode
 
 			if (token.getId() != null) {
 				if (namedChildren.containsKey(token.getId())) {
-					throw new KernelException("token " + token.getId() + "已经存在");
+					throw new KernelException("令牌 " + token.getId() + "已经存在，无法加入");
 				}
 				namedChildren.put(token.getId(), token);
 			}

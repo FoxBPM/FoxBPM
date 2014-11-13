@@ -20,9 +20,9 @@ package org.foxbpm.engine.impl.cmd;
 import java.io.InputStream;
 import java.util.Map;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.repository.DeploymentBuilder;
 
 public class DeploymentByInputStreamCmd  implements Command<String> {
@@ -35,7 +35,7 @@ public class DeploymentByInputStreamCmd  implements Command<String> {
 
 	public String execute(CommandContext commandContext) {
 		if(inputStreamMap == null || inputStreamMap.size() == 0){
-			throw new FoxBPMIllegalArgumentException("发布 内容不能为空");
+			throw ExceptionUtil.getException("10601003");
 		}
 		for(String resourceName : inputStreamMap.keySet()){
 			deploymentBuilder.addInputStream(resourceName, inputStreamMap.get(resourceName));

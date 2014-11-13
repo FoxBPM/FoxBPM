@@ -114,9 +114,7 @@ public class TimeExecuteConnectorCmd implements Command<KernelListener>, Seriali
 	}
 	
 	/**
-	 * 
 	 * getTaskEntity(获取任务实体)
-	 * 
 	 * @param tokenEntity
 	 * @return TaskEntity
 	 * @exception
@@ -135,9 +133,7 @@ public class TimeExecuteConnectorCmd implements Command<KernelListener>, Seriali
 	}
 	
 	/**
-	 * 
 	 * getListenersFromDefinition(从特定节点获取) (这里描述这个方法适用条件 – 可选)
-	 * 
 	 * @param processDefinition
 	 * @return Connector
 	 * @since 1.0.0

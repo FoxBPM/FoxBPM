@@ -18,9 +18,9 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
-import org.foxbpm.engine.exception.FoxBPMClassLoadingException;
 import org.foxbpm.engine.impl.interceptor.Session;
 import org.foxbpm.engine.impl.interceptor.SessionFactory;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 
 
 /**
@@ -42,7 +42,7 @@ public class GenericManagerFactory implements SessionFactory {
 		try {
 			return managerImplementation.newInstance();
 		} catch (Exception e) {
-			throw new FoxBPMClassLoadingException("couldn't instantiate " + managerImplementation.getName() + ": " + e.getMessage(),e);
+			throw ExceptionUtil.getException("10305001",e,managerImplementation.getName());
 		}
 	}
 }

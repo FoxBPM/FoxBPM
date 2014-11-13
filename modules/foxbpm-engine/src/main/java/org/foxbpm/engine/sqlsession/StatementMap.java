@@ -89,11 +89,11 @@ public class StatementMap {
 	    return updateStatements.get(object.getClass());
 	}
 
-	public static String getDeleteStatement(Class<?> persistentObjectClass) {
-	    return deleteStatements.get(persistentObjectClass);
+	public static String getDeleteStatement(PersistentObject object) {
+	    return deleteStatements.get(object.getClass());
 	}
 
-	public static String getSelectStatement(Class<?> persistentObjectClass) {
-		  return selectStatements.get(persistentObjectClass);
+	public static String getSelectStatement(Class<?> object) {
+		  return selectStatements.get(object);
 	}
 }

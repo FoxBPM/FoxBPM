@@ -18,8 +18,8 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.behavior.KernelSequenceFlowBehavior;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
@@ -37,14 +37,19 @@ public class SequenceFlowBehavior extends FlowElementBehavior implements KernelS
 		if(StringUtil.isEmpty(sequenceFlow.getFlowCondition())){
 			return true;
 		}
-		Object expressionValue = new ExpressionImpl(sequenceFlow.getFlowCondition()).getValue(executionContext);
+		Object expressionValue = null;
+		try{
+			expressionValue = StringUtil.getBoolean(new ExpressionImpl(sequenceFlow.getFlowCondition()).getValue(executionContext));
+		}catch(Exception ex){
+			throw ExceptionUtil.getException("10404020",this.getId());
+		}
 		if (expressionValue == null) {
 			return true;
 		}
 		if (expressionValue instanceof Boolean) {
 			return (Boolean) expressionValue;
 		}
-		throw new FoxBPMIllegalArgumentException("线条{}表达式需要返回布尔类型结果", this.id);
+		throw ExceptionUtil.getException("10404021",this.getId());
 	}
 
 }

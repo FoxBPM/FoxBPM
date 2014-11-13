@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 import org.foxbpm.engine.impl.query.AbstractQuery;
@@ -83,7 +82,7 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
 
 	public ProcessInstanceQueryImpl processInstanceId(String processInstanceId) {
 		if (processInstanceId == null) {
-			throw new FoxBPMIllegalArgumentException("Process instance id is null");
+			return this;
 		}
 		this.processInstanceId = processInstanceId;
 		return this;
@@ -91,7 +90,7 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
 
 	public ProcessInstanceQuery processInstanceBusinessKey(String businessKey) {
 		if (businessKey == null) {
-			throw new FoxBPMIllegalArgumentException("Business key is null");
+			return this;
 		}
 		this.businessKey = businessKey;
 		return this;
@@ -99,7 +98,7 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
 
 	public ProcessInstanceQuery processInstanceBusinessKeyLike(String businessKey) {
 		if (businessKey == null) {
-			throw new FoxBPMIllegalArgumentException("Business key is null");
+			return this;
 		}
 		this.businessKeyLike = businessKey;
 		return this;
@@ -107,7 +106,7 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
 
 	public ProcessInstanceQueryImpl processDefinitionId(String processDefinitionId) {
 		if (processDefinitionId == null) {
-			throw new FoxBPMIllegalArgumentException("Process definition id is null");
+			return this;
 		}
 		this.processDefinitionId = processDefinitionId;
 		return this;
@@ -135,7 +134,7 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
 
 	public ProcessInstanceQueryImpl processDefinitionKey(String processDefinitionKey) {
 		if (processDefinitionKey == null) {
-			throw new FoxBPMIllegalArgumentException("Process definition key is null");
+			return this;
 		}
 		this.processDefinitionKey = processDefinitionKey;
 		return this;
@@ -145,7 +144,7 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
 		if (processDefinitionKeyList != null && processDefinitionKeyList.size() > 0) {
 			this.processDefinitionKeyList = processDefinitionKeyList;
 		} else {
-			throw new FoxBPMIllegalArgumentException("processDefinitionKeyList is null!");
+			return this;
 		}
 		return this;
 	}

@@ -18,9 +18,9 @@
 package org.foxbpm.engine.impl.cmd;
 
 import org.foxbpm.engine.db.PersistentObject;
-import org.foxbpm.engine.exception.FoxBPMDbException;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.sqlsession.StatementMap;
 
 /**
@@ -58,7 +58,7 @@ public class UpdatePersistentObjectCmd implements Command<Void> {
 		if(updateStatement == null){
 			updateStatement = StatementMap.getUpdateStatement(persistentObject);
 			if(updateStatement == null){
-				throw new FoxBPMDbException("没有为类配置update语句:"+persistentObject.getClass());
+				throw ExceptionUtil.getException("10602003",persistentObject.getClass().getName());
 			}
 		}
 		commandContext.getSqlSession().update(updateStatement,persistentObject);

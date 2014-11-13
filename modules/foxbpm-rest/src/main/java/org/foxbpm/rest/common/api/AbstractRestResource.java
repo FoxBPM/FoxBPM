@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.foxbpm.engine.db.PersistentObject;
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
+import org.foxbpm.engine.exception.FoxbpmPluginException;
 import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.query.AbstractQuery;
@@ -160,7 +160,7 @@ public abstract class AbstractRestResource extends ServerResource {
 			}
 			QueryProperty orderByProPerty = properties.get(orderby);
 			if (orderByProPerty == null) {
-				throw new FoxBPMIllegalArgumentException("不支持的排序字段:" + orderby);
+				throw new FoxbpmPluginException("不支持的排序字段:" + orderby,"Rest服务");
 			}
 			((AbstractQuery) query).orderBy(orderByProPerty);
 			

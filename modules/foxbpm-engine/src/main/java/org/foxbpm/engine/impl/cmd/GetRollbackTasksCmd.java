@@ -21,11 +21,11 @@ package org.foxbpm.engine.impl.cmd;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
@@ -45,7 +45,7 @@ public class GetRollbackTasksCmd implements Command<List<Task>> {
 	 
 	public List<Task> execute(CommandContext commandContext) {
 		if(StringUtil.isEmpty(taskId)){
-			throw new FoxBPMIllegalArgumentException("taskId is null");
+			throw ExceptionUtil.getException("10601201");
 		}
 		
 		List<Task> results = new ArrayList<Task>();

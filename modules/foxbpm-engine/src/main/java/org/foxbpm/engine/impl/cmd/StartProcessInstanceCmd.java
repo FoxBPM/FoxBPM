@@ -21,10 +21,7 @@ package org.foxbpm.engine.impl.cmd;
 import java.io.Serializable;
 import java.util.Map;
 
-import org.foxbpm.engine.exception.ExceptionCode;
 import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
-import org.foxbpm.engine.exception.FoxBPMObjectNotFoundException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
@@ -32,7 +29,7 @@ import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
-import org.foxbpm.engine.repository.ProcessDefinition;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.runtime.ProcessInstance;
 
 /**
@@ -81,15 +78,15 @@ public class StartProcessInstanceCmd<T> implements Command<ProcessInstance>, Ser
 		if (processDefinitionId != null) {
 			processDefinition = deploymentCache.findDeployedProcessDefinitionById(processDefinitionId);
 			if (processDefinition == null) {
-				throw new FoxBPMObjectNotFoundException(ExceptionCode.OBJECTNOTFOUNDEXCEPTION_FINDDEFINITIONBYID, processDefinitionId, ProcessDefinition.class);
+				throw ExceptionUtil.getException("10602101",processDefinitionId);
 			}
 		} else if (processDefinitionKey != null) {
 			processDefinition = deploymentCache.findDeployedLatestProcessDefinitionByKey(processDefinitionKey);
 			if (processDefinition == null) {
-				throw new FoxBPMObjectNotFoundException(ExceptionCode.OBJECTNOTFOUNDEXCEPTION_FINDDEFINITIONBYKEY, processDefinitionId, ProcessDefinition.class);
+				throw ExceptionUtil.getException("10602101",processDefinitionKey);
 			}
 		} else {
-			throw new FoxBPMIllegalArgumentException(ExceptionCode.ILLEGALARGUMENTEXCEPTION_ISNULL, "processDefinitionKey、processDefinitionId");
+			throw ExceptionUtil.getException("10601103");
 		}
 		
 		// 如果流程定义是暂停状态则不允许启动流程实例

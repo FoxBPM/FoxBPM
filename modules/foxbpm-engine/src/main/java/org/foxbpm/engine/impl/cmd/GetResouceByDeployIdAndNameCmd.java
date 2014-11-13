@@ -20,10 +20,10 @@ package org.foxbpm.engine.impl.cmd;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.entity.ResourceEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 
 /**
  * 根据发布号和资源名称获取资源流
@@ -41,8 +41,12 @@ public class GetResouceByDeployIdAndNameCmd implements Command<InputStream> {
 	
 	 
 	public InputStream execute(CommandContext commandContext) {
-		if(deployId == null || resourceName == null){
-			throw new FoxBPMIllegalArgumentException("查询资源名称时参数错误：deployId"+deployId+";ResourceName"+resourceName);
+		
+		if(deployId == null){
+			throw ExceptionUtil.getException("10601006");
+		}
+		if(resourceName == null){
+			throw ExceptionUtil.getException("10601007");
 		}
 		ResourceEntity resourceEntity=commandContext.getResourceManager().selectResourceByDeployIdAndName(deployId, resourceName);
 		InputStream inputStream = new ByteArrayInputStream(resourceEntity.getBytes()); 

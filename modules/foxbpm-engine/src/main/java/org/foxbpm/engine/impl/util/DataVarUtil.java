@@ -20,7 +20,6 @@ package org.foxbpm.engine.impl.util;
 import java.text.MessageFormat;
 import java.util.Map;
 
-import org.foxbpm.engine.exception.FoxBPMDbException;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -76,7 +75,7 @@ public class DataVarUtil {
 					new Object[] { bizkey });
 
 		} catch (Exception e) {
-			throw new FoxBPMDbException("数据变量值获取失败!", e);
+			throw ExceptionUtil.getException("数据变量值获取失败!", e);
 		}
 	}
 	
@@ -95,7 +94,7 @@ public class DataVarUtil {
 			String sql = MessageFormat.format(QUERY_DATASQL, new Object[]{"*", bizName, bizKeyField});
 			return jdbcTemplate.queryForMap(sql, new Object[]{bizkey});
 		} catch (Exception e) {
-			throw new FoxBPMDbException("数据变量值获取失败!", e);
+			throw ExceptionUtil.getException("数据变量值获取失败!", e);
 		}
 	}
 }

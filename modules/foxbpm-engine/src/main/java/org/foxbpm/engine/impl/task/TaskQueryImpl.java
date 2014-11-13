@@ -22,9 +22,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.foxbpm.engine.Constant;
-import org.foxbpm.engine.exception.FoxBPMBizException;
-import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.exception.FoxBPMIllegalArgumentException;
 import org.foxbpm.engine.impl.agent.AgentTo;
 import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.impl.entity.UserEntity;
@@ -32,6 +29,7 @@ import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 import org.foxbpm.engine.impl.query.AbstractQuery;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskQuery;
 
@@ -100,7 +98,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 
 	public TaskQueryImpl taskId(String taskId) {
 		if (taskId == null) {
-			throw new FoxBPMIllegalArgumentException("Task id is null");
+			return this;
 		}
 		this.taskId = taskId;
 		return this;
@@ -118,7 +116,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 
 	public TaskQueryImpl taskNameLike(String nameLike) {
 		if (nameLike == null) {
-			throw new FoxBPMIllegalArgumentException("Task namelike is null");
+			return this;
 		}
 		this.nameLike = nameLike;
 		return this;
@@ -137,7 +135,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 		}
 		UserEntity user = Authentication.selectUserByUserId(this.oldAssigneeId);
 		if (user == null) {
-			throw new FoxBPMException("未找到userid为{}的代理人信息！", oldAssigneeId);
+			throw ExceptionUtil.getException("10302002",oldAssigneeId);
 		}
 		List<AgentTo> agentInfo = user.getAgentInfo();
 		Date nowDate = new Date();
@@ -170,8 +168,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 	 */
 	public TaskQuery agentId(String agentId) {
 		if (this.assignee == null && this.candidateUser == null) {
-			throw new FoxBPMBizException(
-					"agentId()方法必须要在assignee()方法或candidateUser()方法之后调用");
+			throw ExceptionUtil.getException("10313002");
 		}
 		if (this.assignee != null) {
 			this.oldAssigneeId = this.assignee;
@@ -199,7 +196,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 
 	public TaskQueryImpl businessKey(String businessKey) {
 		if (businessKey == null) {
-			throw new FoxBPMIllegalArgumentException("businessKey is null!");
+			return this;
 		}
 		this.businessKey = businessKey;
 		return this;
@@ -207,7 +204,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 
 	public TaskQueryImpl businessKeyLike(String businessKey) {
 		if (businessKey == null) {
-			throw new FoxBPMIllegalArgumentException("businessKeyLike is null!");
+			return this;
 		}
 		this.businessKeyLike = businessKey;
 		return this;
@@ -216,7 +213,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 	public TaskQueryImpl addTaskType(String taskInstanceType) {
 
 		if (taskInstanceType == null) {
-			throw new FoxBPMIllegalArgumentException("TaskType is null");
+			return this;
 		}
 		for (String taskInstanceTypeObj : taskTypeList) {
 			if (taskInstanceType.equals(taskInstanceTypeObj)) {
@@ -230,7 +227,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 
 	public TaskQueryImpl taskDescription(String description) {
 		if (description == null) {
-			throw new FoxBPMIllegalArgumentException("Description is null");
+			return this;
 		}
 		this.description = description;
 		return this;
@@ -238,7 +235,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 
 	public TaskQuery taskDescriptionLike(String descriptionLike) {
 		if (descriptionLike == null) {
-			throw new FoxBPMIllegalArgumentException("Descriptionlike is null");
+			return this;
 		}
 		this.descriptionLike = descriptionLike;
 		return this;
@@ -247,7 +244,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 	 
 	public TaskQuery taskSubject(String subject) {
 		if (subject == null) {
-			throw new FoxBPMIllegalArgumentException("subject is null");
+			return this;
 		}
 		this.subject = subject;
 		return this;
@@ -262,7 +259,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 	 
 	public TaskQuery taskSubjectLike(String subjectLike) {
 		if (subjectLike == null) {
-			throw new FoxBPMIllegalArgumentException("subjectLike is null");
+			return this;
 		}
 		this.subjectLike = subjectLike;
 		return this;
@@ -270,10 +267,10 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 
 	public TaskQueryImpl taskAssignee(String assignee) {
 		if (assignee == null) {
-			throw new FoxBPMIllegalArgumentException("Assignee is null");
+			return this;
 		}
 		if (this.agentId != null) {
-			throw new FoxBPMBizException("请在agentId()方法之前调用此方法！");
+			throw ExceptionUtil.getException("10313003");
 		}
 		this.assignee = assignee;
 		return this;
@@ -281,7 +278,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 
 	public TaskQueryImpl taskOwner(String owner) {
 		if (owner == null) {
-			throw new FoxBPMIllegalArgumentException("Owner is null");
+			return this;
 		}
 		this.owner = owner;
 		return this;
@@ -305,10 +302,10 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 
 	public TaskQueryImpl taskCandidateUser(String candidateUser) {
 		if (candidateUser == null) {
-			throw new FoxBPMIllegalArgumentException("candidateUser  is null!");
+			return this;
 		}
 		if (this.agentId != null) {
-			throw new FoxBPMBizException("请在agentId()方法之前调用此方法！");
+			throw ExceptionUtil.getException("10313004");
 		}
 		this.candidateUser = candidateUser;
 		return this;

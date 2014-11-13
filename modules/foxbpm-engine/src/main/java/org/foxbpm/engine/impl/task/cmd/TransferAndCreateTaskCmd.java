@@ -62,9 +62,6 @@ public class TransferAndCreateTaskCmd extends AbstractExpandTaskCmd<TransferTask
 		/** 结束任务,但是并不驱动流程向下。 */
 		task.end(taskCommand, taskComment);
 		
-		
-		
-		
 		/** 创建新任务 */	
 		cloneAndInsertTask(task);
 		

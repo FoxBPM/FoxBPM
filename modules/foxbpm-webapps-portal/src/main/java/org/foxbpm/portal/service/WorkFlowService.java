@@ -86,10 +86,10 @@ public class WorkFlowService {
 			String userId = Authentication.getAuthenticatedUserId();
 			expandTaskCommand.setInitiator(userId);
 			if(businessKeyNode == null){
-				throw new FoxBPMException("启动流程时关联键不能为null","");
+				throw new RuntimeException("启动流程时关联键不能为null");
 			}
 			if(processDefinitionKeyNode == null){
-				throw new FoxBPMException("启动流程时流程Key不能为null","");
+				throw new RuntimeException("启动流程时流程Key不能为null");
 			}
 			expandTaskCommand.setBusinessKey(businessKeyNode.getTextValue());
 			expandTaskCommand.setProcessDefinitionKey(processDefinitionKeyNode.getTextValue());

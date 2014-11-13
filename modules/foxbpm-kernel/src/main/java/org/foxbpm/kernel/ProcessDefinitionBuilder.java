@@ -24,7 +24,6 @@ import java.util.Stack;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
 import org.foxbpm.kernel.behavior.KernelSequenceFlowBehavior;
 import org.foxbpm.kernel.event.KernelListener;
-import org.foxbpm.kernel.process.KernelException;
 import org.foxbpm.kernel.process.KernelProcessDefinition;
 import org.foxbpm.kernel.process.impl.KernelBaseElementImpl;
 import org.foxbpm.kernel.process.impl.KernelFlowElementsContainerImpl;
@@ -90,7 +89,7 @@ public class ProcessDefinitionBuilder {
 
 	public ProcessDefinitionBuilder startSequenceFlow(String targetFlowNodeId, String sequenceFlowId) {
 		if (targetFlowNodeId == null) {
-			throw new KernelException("targetFlowNodeId is null");
+			throw new KernelException("线条目标节点为空！");
 		}
 		KernelFlowNodeImpl flowNode = getFlowNode();
 		sequenceFlow = flowNode.createOutgoingSequenceFlow(sequenceFlowId);
@@ -170,7 +169,7 @@ public class ProcessDefinitionBuilder {
 		if (sequenceFlow != null) {
 			sequenceFlow.addKernelListener(kernelListener);
 		} else {
-			throw new KernelException("不是 sequenceFlow 对象");
+			throw new KernelException("该事件只能用于线条对象。");
 		}
 		return this;
 	}
@@ -180,7 +179,7 @@ public class ProcessDefinitionBuilder {
 		if (sequenceFlow == null) {
 			containerStack.peek().addKernelListener(eventName, kernelListener);
 		} else {
-			throw new KernelException("必须是个 containerStack ");
+			throw new KernelException("该事件只能作用于非线条元素。");
 		}
 		return this;
 	}
