@@ -378,5 +378,11 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
 	public boolean isProcessInstanceVariableValueIsLike() {
 		return processInstanceVariableValueIsLike;
 	}
+	
+	@Override
+	public String getOrderBy() {
+		// TODO Auto-generated method stub
+		return "RES.ID";
+	}
 
 }

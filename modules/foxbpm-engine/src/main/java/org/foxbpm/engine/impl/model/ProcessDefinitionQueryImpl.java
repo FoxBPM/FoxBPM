@@ -218,4 +218,10 @@ public class ProcessDefinitionQueryImpl extends AbstractQuery<ProcessDefinitionQ
 	public String getCategoryLike() {
 		return categoryLike;
 	}
+	
+	@Override
+	public String getOrderBy() {
+		// TODO Auto-generated method stub
+		return "RES.PROCESS_ID";
+	}
 }
