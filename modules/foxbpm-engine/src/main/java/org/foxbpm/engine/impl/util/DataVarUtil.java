@@ -18,6 +18,7 @@
 package org.foxbpm.engine.impl.util;
 
 import java.text.MessageFormat;
+import java.util.Map;
 
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
@@ -73,6 +74,25 @@ public class DataVarUtil {
 			return jdbcTemplate.queryForObject(sql, Object.class,
 					new Object[] { bizkey });
 
+		} catch (Exception e) {
+			throw ExceptionUtil.getException("数据变量值获取失败!", e);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param dataSource
+	 * @param bizkey
+	 * @param bizName
+	 * @param bizKeyField
+	 * @param executionContext
+	 * @return
+	 */
+	public Map<String, Object> getDataValue(String dataSource, String bizkey, String bizName, String bizKeyField) {
+		try {
+			JdbcTemplate jdbcTemplate = new JdbcTemplate(DBUtils.getDataSource(dataSource));
+			String sql = MessageFormat.format(QUERY_DATASQL, new Object[]{"*", bizName, bizKeyField});
+			return jdbcTemplate.queryForMap(sql, new Object[]{bizkey});
 		} catch (Exception e) {
 			throw ExceptionUtil.getException("数据变量值获取失败!", e);
 		}

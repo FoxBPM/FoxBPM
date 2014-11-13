@@ -17,6 +17,7 @@
  */
 package org.foxbpm.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -121,17 +122,26 @@ public class DataVariableDefinition extends BaseElement {
 	public void setBizType(String bizType) {
 		this.bizType = bizType;
 	}
-
+	
 	public String getNodeId() {
 		return nodeId;
 	}
-
+	
 	public void setNodeId(String nodeId) {
 		this.nodeId = nodeId;
 	}
 	
-	public Map<String,Object> getPersistentState(){
-		
-		return null;
+	public Map<String, Object> getPersistentState() {
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("id", id);
+		result.put("dataType", dataType);
+		result.put("fieldName", fieldName);
+		result.put("isPersistence", isPersistence);
+		result.put("expressionText", expression);
+		result.put("documentation", documentation);
+		result.put("bizType", bizType);
+		result.put("nodeId", nodeId);
+		result.put("isPubilc", isPubilc);
+		return result;
 	}
 }

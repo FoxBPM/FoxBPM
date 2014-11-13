@@ -21,27 +21,39 @@ Foxbpm.commandHandler.processStatus = function(data){
 };
 		
 		
-Foxbpm.commandHandler.transfer = function(){
-	var userId = showDialog(_bpmFilePath+"/selectUser.html");
-	if(userId == null || userId === undefined){
-		return null;
+Foxbpm.commandHandler.transfer = function(data){
+	var params = {};
+	params.url = _bpmServiceUrl + "/identity/users";
+	params.fn = data.fn;
+	showDialog(_bpmFilePath+"/selectUser.html",params);
+};
+/**
+ * 命令返回值封装
+ */
+Foxbpm.commandHandler.result = {
+	transfer : function(userId) {
+		return {
+			transferUserId : userId
+		};
+	},
+	pending : function(userId) {
+		return {
+			pendingUserId : userId
+		}
 	}
-	return {transferUserId:userId};
 };
 
 
-Foxbpm.commandHandler.pending = function(){
-	var userId = showDialog(_bpmFilePath+"/selectUser.html");
-	if(userId == null || userId === undefined){
-		return null;
-	}
-	return {pendingUserId:userId};
+Foxbpm.commandHandler.pending = function(data){
+	var params = {};
+	params.url = _bpmServiceUrl + "/identity/users";
+	params.fn = data.fn;
+	showDialog(_bpmFilePath+"/selectUser.html",params);
 };
 
 Foxbpm.commandHandler.rollBack_reset = function(data){
 	var params = {};
-	var url = _bpmFilePath+"/selectData.html";
-	var queryUrl = _bpmServiceUrl + "/runtime/tasks/{taskId}/rollbackNodes";
+	var queryUrl = _bpmServiceUrl + "/runtime/tasks/"+data.taskId+"/rollbackNodes";
 	var queryData = {taskId:data.taskId};
 	var returnData = {rollBackNodeId:"nodeId"};
 	var columnInfo = {nodeId:"节点编号",nodeName:"节点名称"};
@@ -49,14 +61,13 @@ Foxbpm.commandHandler.rollBack_reset = function(data){
 	params.returnData = returnData;
 	params.columnInfo = columnInfo;
 	params.url = queryUrl;
-	var result = showDialog(url,params);
-	return result;
+	params.fn = data.fn;
+	showDialog(_bpmFilePath+"/selectData.html",params);
 };
 
 Foxbpm.commandHandler.rollBack_assignee = function(data){
 	var params = {};
-	var url = _bpmFilePath+"/selectData.html";
-	var queryUrl = _bpmServiceUrl + "/runtime/tasks/{taskId}/rollbackTasks";
+	var queryUrl = _bpmServiceUrl + "/runtime/tasks/"+data.taskId+"/rollbackTasks";
 	var queryData = {taskId:data.taskId};
 	var returnData = {rollBackNodeId:"nodeId",rollBackAssignee:"assignee"};
 	var columnInfo = {nodeName:"步骤名称",assgneeUserName:"处理者",endTime:"处理时间",commandMessage:"处理结果",taskComment:"处理意见"};
@@ -64,24 +75,32 @@ Foxbpm.commandHandler.rollBack_assignee = function(data){
 	params.returnData = returnData;
 	params.columnInfo = columnInfo;
 	params.url = queryUrl;
-	var result = showDialog(url,params);
-	return result;
+	params.fn = data.fn;
+	showDialog(_bpmFilePath+"/selectData.html",params);
 };
 
 
 
-function showDialog(url,params){
+function showDialog(url, params) {
 	window.rv = null;
 	var rv = null;
 	var passObj = {
 		opener : window,
-		params : params
+		params : params,
 	};
-	rv = window.showModalDialog(url, passObj,
-			"dialogWidth=600;dialogHeight=400");
-	if(rv){
-		return rv;
-	}else{
-		return window.rv;
+	if (params && params.fn) {
+		passObj.fn = params.fn;
 	}
+
+	$.ligerDialog.open({
+		height : 400,
+		width : 600,
+		url : url,
+		showMax : false,
+		showToggle : false,
+		showMin : false,
+		isResize : true,
+		slide : false,
+		data : passObj
+	});
 }

@@ -55,7 +55,8 @@ function applyData(params){
 	 });
 }
 $(document).ready(function() {
-	var obj = window.dialogArguments;
+	var dialog = frameElement.dialog; 
+	var obj = dialog.get("data");
 	applyData(obj.params);
 	$("#ok").click(function() {
 		var rv = null;
@@ -66,17 +67,12 @@ $(document).ready(function() {
 				rv[i] = $(this).attr(i);
 			}
 		});
-		if (window.opener) {
-			window.opener.rv = rv;
-		} else if (obj.opener) {
-			obj.opener.rv = rv;
-		} else {
+		dialog.close()
+		if(obj.fn){
 			obj.fn(obj.params, rv);
 		}
-		window.close();
 	});
 });
-
 
 
 </script>

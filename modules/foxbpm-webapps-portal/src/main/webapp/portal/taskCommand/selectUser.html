@@ -13,7 +13,7 @@ function applyData(params){
 	$.ajax({
         type: "get",//使用get方法访问后台
         dataType: "json",//返回json格式的数据
-        url: _bpmServiceUrl + "/identity/allUsers",//要访问的后台地址
+        url: params.url,//要访问的后台地址_bpmServiceUrl + "/identity/allUsers"
         data:params,
         success: function(msg){//msg为返回的数据，在这里做数据绑定
             var data = msg.data;
@@ -42,27 +42,27 @@ function applyData(params){
 	 });
 }
 $(document).ready(function() {
-	var obj = window.dialogArguments;
-	applyData();
+	var dialog = frameElement.dialog; 
+	var obj = dialog.get("data");
+	var params = {};
+	params.url = obj.params.url;
+	applyData(params);
 	$("#ok").click(function() {
 		var rv = null;
 		$("table#dataList tr.selected").each(function(index) {
 			rv = $(this).attr("data-rowData");
 		});
-		if (window.opener) {
-			window.opener.rv = rv;
-		} else if (obj.opener) {
-			obj.opener.rv = rv;
-		} else {
+		if(obj.fn){
 			obj.fn(obj.params, rv);
 		}
-		window.close();
+		dialog.close()
 	});
 	
 	$("#searchBtn").click(function(){
 		var params = {};
-		params["userId"] = $("#userId").val();
-		params["userName"] = $("#userName").val();
+		params["id"] = $("#userId").val();
+		params["name"] = $("#userName").val();
+		params["url"] = obj.params.url;
 		applyData(params);
 	});
 });

@@ -268,7 +268,7 @@ function openTaskForm(url,dataId,taskId,processInstanceId){
 }
 
 function showDiagram(processDefinitionKey,processInstanceId){ 
-	window.open("portal/taskCommand/showTaskDetailInfor.jsp?processDefinitionKey="+processDefinitionKey+"&processInstanceId="+processInstanceId);
+	window.open(_WEBPATH+"portal/taskCommand/showTaskDetailInfor.jsp?processDefinitionKey="+processDefinitionKey+"&processInstanceId="+processInstanceId);
 }
 
 
