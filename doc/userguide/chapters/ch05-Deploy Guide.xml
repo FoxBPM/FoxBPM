@@ -40,7 +40,7 @@
   <para> 
     如果进入系统登录页面则说明部署成功
     <mediaobject ><imageobject>
-      <imagedata align="center"  fileref="../image/login.jpg"/>
+      <imagedata align="center"  fileref="../images/login.jpg"/>
     </imageobject></mediaobject>
   </para>
   <para>
@@ -49,7 +49,7 @@
     <para>
       默认进入个人面页面如下图所示，系统相关操作用户可以参照 “Foxbpm Web 功能”文档
       <mediaobject ><imageobject>
-        <imagedata align="center"  fileref="../image/dashboard.jpg"/>
+        <imagedata align="center"  fileref="../images/dashboard.jpg"/>
       </imageobject></mediaobject>
     </para>
 </section>

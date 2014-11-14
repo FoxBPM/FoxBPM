@@ -17,7 +17,7 @@
           <para>点击如图右方所示红框部分，进入Juno或Kepler版本的下载界面(下面以Kepler为例)。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.1.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.1.png"
               />
             </imageobject>
           </mediaobject>
@@ -26,7 +26,7 @@
           <para>点击如图红框部分进入Kepler版本的下载界面。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.2.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.2.png"
               />
             </imageobject>
           </mediaobject>
@@ -35,7 +35,7 @@
           <para>如图所示选择Kepler的Java EE版本下载。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.3.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.3.png"
               />
             </imageobject>
           </mediaobject>
@@ -44,7 +44,7 @@
           <para>如图所示选择对应本机系统的版本。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.4.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.4.png"
               />
             </imageobject>
           </mediaobject>
@@ -54,7 +54,7 @@
           <para>如图所示点击右上角的帮助(Help)菜单，选择安装新软件(Install New Software)。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.5.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.5.png"
               />
             </imageobject>
           </mediaobject>
@@ -63,40 +63,40 @@
           <para>如果是首次安装，需要添加Graphiti和Groovy两个个站点信息(如果已经存在（url一致）的话可以不添加)。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.6.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.6.png"
               />
             </imageobject>
           </mediaobject>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.7.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.7.png"
               />
             </imageobject>
           </mediaobject>
           <para>点击添加。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.8.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.8.png"
               />
             </imageobject>
           </mediaobject>
           <para>1：添加Graphiti站点信息(http://download.eclipse.org/graphiti/updates/0.10.2)。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.9.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.9.png"
               />
             </imageobject>
           </mediaobject>
           <para>1：添加Groovy站点信息(http://dist.springsource.org/release/GRECLIPSE/e4.3/)。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.10.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.10.png"
               />
             </imageobject>
           </mediaobject>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.11.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.11.png"
               />
             </imageobject>
           </mediaobject>
@@ -107,7 +107,7 @@
             <mediaobject>
               <imageobject>
                 <imagedata align="center" contentwidth="600"
-                  fileref="../image/eclipseDesigner.12.png"/>
+                  fileref="../images/eclipseDesigner.12.png"/>
               </imageobject>
             </mediaobject>
           </note>
@@ -116,7 +116,7 @@
           <para>继续点击添加，安装我们设计器插件。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.13.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.13.png"
               />
             </imageobject>
           </mediaobject>
@@ -128,28 +128,28 @@
             </note></para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.14.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.14.png"
               />
             </imageobject>
           </mediaobject>
           <para>添加好之后点击确定，点击下一步。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.15.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.15.png"
               />
             </imageobject>
           </mediaobject>
           <para>显示安装信息，直接点击下一步。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.16.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.16.png"
               />
             </imageobject>
           </mediaobject>
           <para>在许可信息这点击同意并点击完成。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.17.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.17.png"
               />
             </imageobject>
           </mediaobject>
@@ -158,7 +158,7 @@
               <para>插件安装过程中需要上网下载需要的依赖jar包可能有些缓慢，以及如果出现以下提示直接重新安装即可（网络导致超时）。</para>
             <mediaobject>
               <imageobject>
-                <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.20.png"
+                <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.20.png"
                 />
               </imageobject>
             </mediaobject>
@@ -166,7 +166,7 @@
             如果提示如下信息直接点击同意。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.18.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.18.png"
               />
             </imageobject>
           </mediaobject>
@@ -175,7 +175,7 @@
           <para> 安装完毕后会提示重启信息，我们选择重启。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.19.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.19.png"
               />
             </imageobject>
           </mediaobject>
@@ -184,7 +184,7 @@
           <para> 重启完成后，看到流程设置的菜单后，表示平台已经顺利安装成功。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.21.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.21.png"
               />
             </imageobject>
           </mediaobject>
@@ -194,7 +194,7 @@
           <para>打开windows-preferences-流程设计器配置,为设计器配置rest服务地址，此目的是为了同步项目中用到的所有资源。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.22.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.22.png"
               />
             </imageobject>
           </mediaobject>
@@ -208,21 +208,21 @@
           <para>点击设计器同步。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.23.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.23.png"
               />
             </imageobject>
           </mediaobject>
           <para>点击Ok完成目录创建。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.24.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.24.png"
               />
             </imageobject>
           </mediaobject>
           <para>点击Ok进行目录清空。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.25.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.25.png"
               />
             </imageobject>
           </mediaobject>
@@ -231,7 +231,7 @@
           <para>点击Ok完成。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.26.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.26.png"
               />
             </imageobject>
           </mediaobject>
@@ -241,7 +241,7 @@
           <para>选中Test项目鼠标右击New-->Other-->Foxbpm-->新建FoxBPM流程并点击下一步。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.27.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.27.png"
               />
             </imageobject>
           </mediaobject>
@@ -250,7 +250,7 @@
           <para>出现创建向导页面，使用默认模板，点击下一步。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.28.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.28.png"
               />
             </imageobject>
           </mediaobject>
@@ -259,7 +259,7 @@
           <para>出现创建向导页面，填写编号、名称、版本(数字)，点击完成。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.29.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.29.png"
               />
             </imageobject>
           </mediaobject>
@@ -268,10 +268,14 @@
           <para>完成后自动打开创建的流程文件,说明设计器插件已经可以正常使用。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../image/eclipseDesigner.30.png"
+              <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.30.png"
               />
             </imageobject>
           </mediaobject>
+        </listitem>
+        <listitem>
+          <para>验证groovy表达式是否可正常使用。</para>
+          <para>aa</para>
         </listitem>
         <listitem>
           <para>说明：该设计器插件均在kepler、Juno版本的Eclipse 安装通过。</para>
