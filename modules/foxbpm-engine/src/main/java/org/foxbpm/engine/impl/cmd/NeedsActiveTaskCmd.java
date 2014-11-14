@@ -20,6 +20,7 @@ package org.foxbpm.engine.impl.cmd;
 import java.io.Serializable;
 
 import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
@@ -53,7 +54,11 @@ public abstract class NeedsActiveTaskCmd<T> implements Command<T>, Serializable 
 			throw ExceptionUtil.getException("10603202");
 		}
 		//增加流程修改时间
-		task.getProcessInstance().setUpdateTime(ClockUtil.getCurrentTime());
+		ProcessInstanceEntity processInstance = task.getProcessInstance();
+		if(processInstance != null){
+			processInstance.setUpdateTime(ClockUtil.getCurrentTime());
+		}
+		
 		return execute(commandContext, task);
 	}
 
