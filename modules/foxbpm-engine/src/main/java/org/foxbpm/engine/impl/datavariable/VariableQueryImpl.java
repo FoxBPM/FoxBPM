@@ -148,4 +148,9 @@ public class VariableQueryImpl extends AbstractQuery<VariableQuery, VariableInst
 		return (List)commandContext.getVariableManager().findVariablesByQueryCriteria(this);
 	}
 
+	@Override
+	public String getOrderBy() {
+		// TODO Auto-generated method stub
+		return "RES.ID";
+	}
 }
