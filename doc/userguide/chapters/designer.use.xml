@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?oxygen RNGSchema="http://www.oasis-open.org/docbook/xml/5.0/rng/docbook.rng" type="xml"?>
-<book xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
-    <info>
-        <title>设计器操作手册</title>
-        <author>
-            <orgname>FoxBPM团队</orgname>
-        </author>
-    </info>
-    <chapter>
+<!DOCTYPE chapter PUBLIC '-//OASIS//DTD DocBook XML V5.0//EN'  '../dtd/docbook.dtd'>
+<chapter>
+    <title>eclipse设计器使用手册</title>
+    <sect1>
         <title>前言</title>
-        <sect1>
+        <sect2>
             <title>先决条件</title>
             <para>阅读此文档，请确保你已经做了以下几点：</para>
             <orderedlist>
@@ -20,17 +15,17 @@
                     <para>有一个包含foxbpm-rest的web服务，可以是foxbpm-rest-common.war或在自己项目中配置了foxbpm-rest的服务，参考部署文档。</para>
                 </listitem>
             </orderedlist>
-        </sect1>
-        <sect1>
+        </sect2>
+        <sect2>
             <title>适用人群</title>
             <para>本文档适用于使用FoxBPM产品的流程开发人员。有FixFlow,Activiti,JBPM等开源工作流使用经验者，或熟悉BPMN标准的人员，会比较容易看懂此文档。</para>
-        </sect1>
-        <sect1>
+        </sect2>
+        <sect2>
             <title>文档内容</title>
             <para>本文档主要介绍了FoxBPM产品的eclipse开发插件各功能的使用介绍，以及所有节点定义的属性介绍。可能会有部分的开发专业术语。</para>
-        </sect1>
-    </chapter>
-    <chapter>
+        </sect2>
+    </sect1>
+    <sect1>
         <title>准备工作</title>
         <para>在进行流程设计之前，需要为设计器配置Rest服务地址，此目的是为了同步项目中用到的所有资源。</para>
         <orderedlist>
@@ -39,7 +34,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.43.png"/>
+                            fileref="images/designer.use.43.png"/>
                     </imageobject>
                 </mediaobject>
                 <itemizedlist>
@@ -59,14 +54,14 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.01.png"/>
+                            fileref="images/designer.use.01.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
         </orderedlist>
 
-    </chapter>
-    <chapter>
+    </sect1>
+    <sect1>
         <title>新建流程</title>
         <orderedlist>
             <listitem>
@@ -74,7 +69,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.47.png"/>
+                            fileref="images/designer.use.47.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -83,7 +78,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.44.png"/>
+                            fileref="images/designer.use.44.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -92,7 +87,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.45.png"/>
+                            fileref="images/designer.use.45.png"/>
                     </imageobject>
                 </mediaobject>
                 <itemizedlist>
@@ -112,25 +107,25 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.48.png"/>
+                            fileref="images/designer.use.48.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
         </orderedlist>
-    </chapter>
-    <chapter>
+    </sect1>
+    <sect1>
         <title>设计流程图</title>
         <para/>
-        <sect1>
+        <sect2>
             <title>通用功能介绍</title>
             <para/>
-            <sect2>
+            <sect3>
                 <title>表达式编辑器</title>
                 <para>点击属性后面的编辑按钮，可以打开表达式编辑器。</para>
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.07.png"/>
+                            fileref="images/designer.use.07.png"/>
                     </imageobject>
                 </mediaobject>
                 <para>表达式编辑器中可以编写Groovy代码，groovvy是一种类java的动态语言，完全支持java的语法，目前引擎默认用groovy作为脚本的解释器。</para>
@@ -144,7 +139,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.07.png"/>
+                            fileref="images/designer.use.07.png"/>
                     </imageobject>
                 </mediaobject>
                 <itemizedlist>
@@ -172,9 +167,9 @@
                             "string"”等。</para>
                     </listitem>
                 </itemizedlist>
-            </sect2>
-        </sect1>
-        <sect1>
+            </sect3>
+        </sect2>
+        <sect2>
             <title>流程定义</title>
             <para>打开properties属性视图，点击流程图的空白处。</para>
             <orderedlist>
@@ -184,7 +179,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.08.png"/>
+                                fileref="images/designer.use.08.png"/>
                         </imageobject>
                     </mediaobject>
                     <itemizedlist>
@@ -220,7 +215,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.09.png"/>
+                                fileref="images/designer.use.09.png"/>
                         </imageobject>
                     </mediaobject>
                 </listitem>
@@ -232,7 +227,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.09.png"/>
+                                fileref="images/designer.use.09.png"/>
                         </imageobject>
                     </mediaobject>
                     <note>
@@ -248,14 +243,14 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.095.png"/>
+                                fileref="images/designer.use.095.png"/>
                         </imageobject>
                     </mediaobject>
                     <para>显示导入页面并选择对应的编号(表名)点击导入变量按钮</para>
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.096.png"/>
+                                fileref="images/designer.use.096.png"/>
                         </imageobject>
                     </mediaobject>
                     <note>
@@ -267,14 +262,14 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.097.png"/>
+                                fileref="images/designer.use.097.png"/>
                         </imageobject>
                     </mediaobject>
                     <para>接下来选择关联键</para>
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.098.png"/>
+                                fileref="images/designer.use.098.png"/>
                         </imageobject>
                     </mediaobject>
                     <note>
@@ -285,7 +280,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.099.png"/>
+                                fileref="images/designer.use.099.png"/>
                         </imageobject>
                     </mediaobject>
                     <note>
@@ -301,14 +296,14 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.092.png"/>
+                                fileref="images/designer.use.092.png"/>
                         </imageobject>
                     </mediaobject>
                     <para>添加连接器时，会根据添加的位置不同有不同的监听事件，如流程定义上有开始、结束、终止，人工任务上有进入、分配、执行、离开等，用户可以根据自己的需求确定连接器的执行时机。</para>
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.093.png"/>
+                                fileref="images/designer.use.093.png"/>
                         </imageobject>
                     </mediaobject>
                     <itemizedlist>
@@ -329,19 +324,19 @@
                 </listitem>
             </orderedlist>
             <para/>
-        </sect1>
-        <sect1>
+        </sect2>
+        <sect2>
             <title>活动</title>
             <para>每一个活动节点都会有一些通用的属性。</para>
-            <sect2>
+            <sect3>
                 <title>通用属性</title>
-                <sect3>
+                <sect4>
                     <title>高级属性</title>
                     <para>此tab页主要是配置节点的多实例信息，经常用来做会签功能，会签功能会在后面章节单独介绍</para>
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.10.png"/>
+                                fileref="images/designer.use.10.png"/>
                         </imageobject>
                     </mediaobject>
                     <itemizedlist>
@@ -367,14 +362,14 @@
                             <para>完成表达式：判断多实例是否结束的表达式。</para>
                         </listitem>
                     </itemizedlist>
-                </sect3>
-                <sect3>
+                </sect4>
+                <sect4>
                     <title>跳过策略</title>
                     <para>此页中主要填写在何种情况下时，跳过此节点的执行，如：当上一步处理人和此步骤处理人相同时，跳过此节点</para>
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.11.png"/>
+                                fileref="images/designer.use.11.png"/>
                         </imageobject>
                     </mediaobject>
                     <itemizedlist>
@@ -398,13 +393,13 @@
                         <title>注意</title>
                         <para>生成跳过记录功能目前只能在人工任务节点使用。</para>
                     </note>
-                </sect3>
-                <sect3>
+                </sect4>
+                <sect4>
                     <title>连接器</title>
                     <para>同流程定义中的连接器，会在后面章节详细介绍</para>
-                </sect3>
-            </sect2>
-            <sect2>
+                </sect4>
+            </sect3>
+            <sect3>
                 <title>人工任务</title>
                 <orderedlist>
                     <listitem>
@@ -413,7 +408,7 @@
                         <mediaobject>
                             <imageobject>
                                 <imagedata align="center" contentwidth="600"
-                                    fileref="../images/designer.use.12.png"/>
+                                    fileref="images/designer.use.12.png"/>
                             </imageobject>
                         </mediaobject>
                     </listitem>
@@ -423,7 +418,7 @@
                         <mediaobject>
                             <imageobject>
                                 <imagedata align="center" contentwidth="600"
-                                    fileref="../images/designer.use.13.png"/>
+                                    fileref="images/designer.use.13.png"/>
                             </imageobject>
                         </mediaobject>
                         <itemizedlist>
@@ -454,7 +449,7 @@
                         <mediaobject>
                             <imageobject>
                                 <imagedata align="center" contentwidth="600"
-                                    fileref="../images/designer.use.14.png"/>
+                                    fileref="images/designer.use.14.png"/>
                             </imageobject>
                         </mediaobject>
                     </listitem>
@@ -464,7 +459,7 @@
                         <mediaobject>
                             <imageobject>
                                 <imagedata align="center" contentwidth="600"
-                                    fileref="../images/designer.use.15.png"/>
+                                    fileref="images/designer.use.15.png"/>
                             </imageobject>
                         </mediaobject>
                         <itemizedlist>
@@ -476,7 +471,7 @@
                         <mediaobject>
                             <imageobject>
                                 <imagedata align="center" contentwidth="600"
-                                    fileref="../images/designer.use.16.png"/>
+                                    fileref="images/designer.use.16.png"/>
                             </imageobject>
                         </mediaobject>
                         <itemizedlist>
@@ -515,14 +510,14 @@
                         <mediaobject>
                             <imageobject>
                                 <imagedata align="center" contentwidth="600"
-                                    fileref="../images/designer.use.17.png"/>
+                                    fileref="images/designer.use.17.png"/>
                             </imageobject>
                         </mediaobject>
                         <para>点击“添加”，可以添加系统提供的选择器。</para>
                         <mediaobject>
                             <imageobject>
                                 <imagedata align="center" contentwidth="600"
-                                    fileref="../images/designer.use.18.png"/>
+                                    fileref="images/designer.use.18.png"/>
                             </imageobject>
                         </mediaobject>
                         <para>系统默认提供的选择器，参数基本都支持Collection、List&lt;String&gt;、“user1,user2,user3”这三种形式，也就是说，如果是多个用户或多个部门，表达式中可以返回上面3中格式。
@@ -530,14 +525,14 @@
                     </listitem>
                 </orderedlist>
                 <para/>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>脚本任务</title>
                 <para>此节点需要配置需要执行的脚本，用来执行另外一件事情，可以进行多实例，跳过策略，连接器的配置。</para>
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.19.png"/>
+                            fileref="images/designer.use.19.png"/>
                     </imageobject>
                 </mediaobject>
                 <itemizedlist>
@@ -545,28 +540,28 @@
                         <para>表达式：需要执行的脚本,此脚本和表达式编辑器中的脚本相同，均用groovy解释器解释，兼容标准java语法和groovy语法。</para>
                     </listitem>
                 </itemizedlist>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>内部子流程</title>
                 <para>在流程设计时，可以将一组功能组合起来作为一个内部子流程，整体进行多实例，跳过策略，连接器等配置。</para>
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.20.png"/>
+                            fileref="images/designer.use.20.png"/>
                     </imageobject>
                 </mediaobject>
                 <note>
                     <title>注意</title>
                     <para>内部子流程中，必须存在一个空的开始事件和一个空的结束事件。</para>
                 </note>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>外部子流程</title>
                 <para>在上面的子流程中，如果这组功能比较特殊，可以供其他多个地方公用，如付款子流程，那就应该将这组功能抽象成一个外部子流程。</para>
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.21.png"/>
+                            fileref="images/designer.use.21.png"/>
                     </imageobject>
                 </mediaobject>
                 <itemizedlist>
@@ -583,39 +578,39 @@
                         <para>异步：是否异步执行，如果异步执行，则流程启动子流程之后直接向下流转，否则则需等待子流程结束后，才会向下流转。</para>
                     </listitem>
                 </itemizedlist>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>通用任务</title>
                 <para/>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>发送任务</title>
                 <para/>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>接收任务</title>
                 <para/>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>规则任务</title>
                 <para/>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>服务任务</title>
                 <para/>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>手工任务</title>
                 <para/>
-            </sect2>
-        </sect1>
-        <sect1>
+            </sect3>
+        </sect2>
+        <sect2>
             <title>线条</title>
             <para>标识流程走向的线条，可以配置表达式和排序属性</para>
             <mediaobject>
                 <imageobject>
                     <imagedata align="center" contentwidth="600"
-                        fileref="../images/designer.use.22.png"/>
+                        fileref="images/designer.use.22.png"/>
                 </imageobject>
             </mediaobject>
             <itemizedlist>
@@ -626,31 +621,31 @@
                     <para>表达式：此表达式可返回bool类型，如果为true,则表示线条可以通过，反之亦然。如果一个节点后面的线条都返回了false，则会抛出异常。</para>
                 </listitem>
             </itemizedlist>
-        </sect1>
-        <sect1>
+        </sect2>
+        <sect2>
             <title> 事件 </title>
-            <sect2>
+            <sect3>
                 <title>空开始事件</title>
                 <para>空的开始事件是指需要用户手工启动的流程，此节点只需要配置节点名称即可，不需要配置其他属性，此节点用来标示流程的开始地点。</para>
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.23.png"/>
+                            fileref="images/designer.use.23.png"/>
                     </imageobject>
                 </mediaobject>
                 <note>
                     <title>注意</title>
                     <para>一个流程图上只能有一个空的开始事件。</para>
                 </note>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>时间开始事件</title>
                 <para>时间开始事件主要用于定时启动流程。</para>
                 <para>此节点除了要配置基本属性外，还需要配置流程定时启动的时间点或者时间表达式。</para>
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.24.png"/>
+                            fileref="images/designer.use.24.png"/>
                     </imageobject>
                 </mediaobject>
                 <itemizedlist>
@@ -663,39 +658,39 @@
                     </listitem>
                 </itemizedlist>
 
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>空结束事件</title>
                 <para>空结束事件是标识流程正常结束的节点，此节点只需要配置节点名称即可，当流程走到此节点时，会自动结束流程实例。</para>
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.25.png"/>
+                            fileref="images/designer.use.25.png"/>
                     </imageobject>
                 </mediaobject>
                 <note>
                     <title>注意</title>
                     <para>只有当所有激活的分支全部走到结束节点时，才会完全结束流程实例。</para>
                 </note>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>终止结束事件</title>
                 <para>终止结束事件是标识流程异常终止的节点。</para>
                 <para>此节点只需要配置节点名称，当流程走到此节点是，会自动终止流程实例，并将流程实例设置为终止状态。</para>
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.26.png"/>
+                            fileref="images/designer.use.26.png"/>
                     </imageobject>
                 </mediaobject>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>捕获时间节点</title>
                 <para>此节点主要用于流程等待一段时间之后再次启动的场景。</para>
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.27.png"/>
+                            fileref="images/designer.use.27.png"/>
                     </imageobject>
                 </mediaobject>
                 <para>节点时间配置见时间开始事件</para>
@@ -703,14 +698,14 @@
                     <title/>
                     <para>此节点如果配置了周期时间，则只会在周期时间的第一个执行，忽略后面的周期。</para>
                 </note>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>边界时间事件</title>
                 <para>此节点主要用于边界事件，用户可以在任务到达某个活动节点后，定时去执行其他任务，如超时处理、超时通知等。</para>
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.28.png"/>
+                            fileref="images/designer.use.28.png"/>
                     </imageobject>
                 </mediaobject>
                 <itemizedlist>
@@ -721,28 +716,28 @@
                         <para>非终止活动：在事件触发后，会并行向下执行，如超时通知等。 </para>
                     </listitem>
                 </itemizedlist>
-            </sect2>
-        </sect1>
-        <sect1>
+            </sect3>
+        </sect2>
+        <sect2>
             <title> 网关 </title>
             <para>网关主要是判断流程分支走向的功能。</para>
-            <sect2>
+            <sect3>
                 <title>排他网关</title>
                 <para>此网关后面线条只会走一个，引擎会根据线条排序依次判断是否满足条件，取第一个满足条件的线条向下，线条表达式都不满足则抛出异常。</para>
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.29.png"/>
+                            fileref="images/designer.use.29.png"/>
                     </imageobject>
                 </mediaobject>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>并行网关</title>
                 <para>此网关会不判断线条表达式，直接全部并行处理。并行网关应该成对使用，对于分散的分支，最后必须由合并类型的并行网关进行合并。</para>
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.30.png"/>
+                            fileref="images/designer.use.30.png"/>
                     </imageobject>
                 </mediaobject>
                 <itemizedlist>
@@ -754,39 +749,39 @@
                         <para>实际使用中，一般多用令牌策略，对于简单分散合并都能满足，令牌策略的选择主要用于复杂网关合并，如网关嵌套等复杂功能时才会根据实际场景进行选择。</para>
                     </listitem>
                 </itemizedlist>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>包容网关</title>
                 <para>此网关会根据线条条件进行分支分散，和并行网关不同的是，此网关只会走满足线条表达式的路线。</para>
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.31.png"/>
+                            fileref="images/designer.use.31.png"/>
                     </imageobject>
                 </mediaobject>
                 <para>此网关分之后，必须通过合并类型的并行网关进行合并操作，并且合并策略选择令牌策略。</para>
-            </sect2>
-        </sect1>
-        <sect1>
+            </sect3>
+        </sect2>
+        <sect2>
             <title>图形</title>
-            <sect2>
+            <sect3>
                 <title>泳道</title>
                 <para>目前泳道主要是为了流程布局美观清晰使用。</para>
-            </sect2>
-        </sect1>
-    </chapter>
+            </sect3>
+        </sect2>
+    </sect1>
 
-    <chapter>
+    <sect1>
         <title>流程定义管理</title>
         <para>设计好流程之后，需要将流程发布到数据库才能被引擎使用。</para>
         <para>此功能必须连接webServer才能使用，也就是说在流程开发过程中，只要同步一次资源，其他时间可以脱机开发，但是发布时需要连接正在运行的server。</para>
-        <sect1>
+        <sect2>
             <title>发布流程定义</title>
             <para>右键点击流程.bpmn文件，选择流程操作，点击发布按钮</para>
             <mediaobject>
                 <imageobject>
                     <imagedata align="center" contentwidth="600"
-                        fileref="../images/designer.use.32.png"/>
+                        fileref="images/designer.use.32.png"/>
                 </imageobject>
             </mediaobject>
 
@@ -795,62 +790,62 @@
                 <para>如果流程发布和更新按钮都是不可点击状态，则需要手工打开bpmn文件，删除process节点上的dbId属性,因为foxbpm默认一个bpmn文件就是一个版本，如果已经存在dbId,则只能进行更新操作。</para>
             </note>
 
-        </sect1>
-        <sect1>
+        </sect2>
+        <sect2>
             <title>更新流程定义</title>
             <para>右键点击流程.bpmn文件，选择流程操作，选中需要更新的定义，点击更新。</para>
             <mediaobject>
                 <imageobject>
                     <imagedata align="center" contentwidth="600"
-                        fileref="../images/designer.use.32.png"/>
+                        fileref="images/designer.use.32.png"/>
                 </imageobject>
             </mediaobject>
             <note>
                 <title/>
                 <para>只有发布过的流程才能更新，也就是说有dbId的流程文件才能进行更新操作。</para>
             </note>
-        </sect1>
-        <sect1>
+        </sect2>
+        <sect2>
             <title>删除流程定义</title>
             <para>在文件夹或包上右键流程操作是 ，会将数据库中所有的流程定义都列出，供删除。</para>
             <mediaobject>
                 <imageobject>
                     <imagedata align="center" contentwidth="600"
-                        fileref="../images/designer.use.33.png"/>
+                        fileref="images/designer.use.33.png"/>
                 </imageobject>
             </mediaobject>
             <note>
                 <title/>
                 <para>注：删除流程定义后，如果想再次发布，则需要手工打开bpmn文件，删除process节点上的dbId属性。</para>
             </note>
-        </sect1>
-        <sect1>
+        </sect2>
+        <sect2>
             <title>下载流程定义</title>
             <para>在文件夹或包上右键流程操作是 ，会将数据库中所有的流程定义都列出，供下载。</para>
             <mediaobject>
                 <imageobject>
                     <imagedata align="center" contentwidth="600"
-                        fileref="../images/designer.use.33.png"/>
+                        fileref="images/designer.use.33.png"/>
                 </imageobject>
             </mediaobject>
-        </sect1>
-        <sect1>
+        </sect2>
+        <sect2>
             <title>创建新版本</title>
             <para>右键点击流程.bpmn文件，选择流程操作，点击创建新版本，填写版本信息，则会在同一位置生成一个新的流程文件，可以进行发布操作。</para>
             <mediaobject>
                 <imageobject>
                     <imagedata align="center" contentwidth="600"
-                        fileref="../images/designer.use.32.png"/>
+                        fileref="images/designer.use.32.png"/>
                 </imageobject>
             </mediaobject>
 
-        </sect1>
-    </chapter>
-    <chapter>
+        </sect2>
+    </sect1>
+    <sect1>
         <title>连接器和选择器</title>
         <para>FoxBPM将项目中可能遇到的通用功能封装成可视化的插件，称为连接器，如邮件、如连接微博，ESB等，都可以封装成连接器</para>
         <para>引擎默认提供了几种常用的连接器，如果需要自定义连接器，可以按照如下步骤。</para>
-        <sect1>
+        <sect2>
             <title>连接器的创建</title>
             <para>用户在创建连接器之前要了解FoxBPM对连接器的处理。</para>
             <para>FoxBPM将连接器分为两类，一类为系统默认连接器，一类为用户自定义连接器。系统连接器是foxbpm-connector.jar，默认必须添加。
@@ -862,7 +857,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.34.png"/>
+                                fileref="images/designer.use.34.png"/>
                         </imageobject>
                     </mediaobject>
                     <programlisting>
@@ -884,7 +879,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.35.png"/>
+                                fileref="images/designer.use.35.png"/>
                         </imageobject>
                     </mediaobject>
                 </listitem>
@@ -893,7 +888,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.36.png"/>
+                                fileref="images/designer.use.36.png"/>
                         </imageobject>
                     </mediaobject>
                 </listitem>
@@ -903,7 +898,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.37.png"/>
+                                fileref="images/designer.use.37.png"/>
                         </imageobject>
                     </mediaobject>
                 </listitem>
@@ -914,20 +909,20 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.38.png"/>
+                                fileref="images/designer.use.38.png"/>
                         </imageobject>
                     </mediaobject>
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.39.png"/>
+                                fileref="images/designer.use.39.png"/>
                         </imageobject>
                     </mediaobject>
                 </listitem>
 
             </orderedlist>
-        </sect1>
-        <sect1>
+        </sect2>
+        <sect2>
             <title>连接器的注册</title>
             <orderedlist>
                 <listitem>
@@ -935,7 +930,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.40.png"/>
+                                fileref="images/designer.use.40.png"/>
                         </imageobject>
                     </mediaobject>
                     <programlisting>
@@ -956,13 +951,13 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.41.png"/>
+                                fileref="images/designer.use.41.png"/>
                         </imageobject>
                     </mediaobject>
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.42.png"/>
+                                fileref="images/designer.use.42.png"/>
                         </imageobject>
                     </mediaobject>
                 </listitem>
@@ -972,45 +967,45 @@
                 <title/>
                 <para>上面创建连接器的目录，必须在classpath中。如果是其他用户共享的连接器，需要将对应jar包放到lib下。</para>
             </note>
-        </sect1>
-        <sect1>
+        </sect2>
+        <sect2>
             <title>处理人选择器</title>
             <para>选择器的创建和连接器基本一致，用户可以尝试进行创建。</para>
-        </sect1>
-        <sect1>
+        </sect2>
+        <sect2>
             <title> 连接器和选择器的共享</title>
             <para>一个完整的连接器应该包含**.java，**.png，connector.xml三个文件，将三个文件导出jar包，在配合详细的说明文档，就可以共享给其他用户使用了。</para>
-        </sect1>
-    </chapter>
-    <chapter>
+        </sect2>
+    </sect1>
+    <sect1>
         <title>附录：系统默认连接器和选择器功能介绍</title>
-        <sect1>
+        <sect2>
             <title>连接器</title>
             <para>连接器主要类似java监听的功能，可在流程运转的过程中额外的做一些其他功能，如发送邮件，记录流程信息等。</para>
-            <sect2>
+            <sect3>
                 <title>发送邮件</title>
                 <para/>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>自动邮件发送</title>
                 <para/>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>WebServices</title>
                 <para/>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>Groovy</title>
                 <para/>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>JDBCDatabaseQuery</title>
                 <para/>
-            </sect2>
-        </sect1>
-        <sect1>
+            </sect3>
+        </sect2>
+        <sect2>
             <title>处理人选择器</title>
-            <sect2>
+            <sect3>
                 <title>发起人</title>
                 <itemizedlist>
                     <listitem>
@@ -1036,8 +1031,8 @@
                     </itemizedlist>
                 </note>
                 <para/>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>所有人</title>
                 <itemizedlist>
                     <listitem>
@@ -1045,8 +1040,8 @@
                     </listitem>
                 </itemizedlist>
                 <para/>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>启动人</title>
                 <itemizedlist>
                     <listitem>
@@ -1058,8 +1053,8 @@
                     </listitem>
                 </itemizedlist>
                 <para/>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>上一步骤处理者</title>
                 <itemizedlist>
                     <listitem>
@@ -1071,8 +1066,8 @@
                     </listitem>
                 </itemizedlist>
                 <para/>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>选择用户</title>
                 <itemizedlist>
                     <listitem>
@@ -1084,8 +1079,8 @@
                     </listitem>
                 </itemizedlist>
                 <para/>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>选择部门</title>
                 <itemizedlist>
                     <listitem>
@@ -1100,8 +1095,8 @@
                     <title/>
                     <para>如果引擎初始化时配置组织机构错误，可能导致此连接器无法使用。</para>
                 </note>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>选择角色</title>
                 <itemizedlist>
                     <listitem>
@@ -1116,8 +1111,8 @@
                     <title/>
                     <para>如果引擎初始化时配置组织机构错误，可能导致此连接器无法使用。</para>
                 </note>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>资源中任务最少者</title>
                 <itemizedlist>
                     <listitem>
@@ -1132,8 +1127,8 @@
                     <title/>
                     <para>此选择器计算量较大，性能不可靠，建议关键业务少用或者优化计算方式。</para>
                 </note>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>资源中随机分配</title>
                 <itemizedlist>
                     <listitem>
@@ -1144,8 +1139,8 @@
                             说明：可以返回Collection、List&lt;String&gt;、“user1,user2,user3”这三种格式,任务为独占任务。</para>
                     </listitem>
                 </itemizedlist>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>选择某部门和某角色</title>
                 <itemizedlist>
                     <listitem>
@@ -1156,8 +1151,8 @@
                     </listitem>
                 </itemizedlist>
                 <para/>
-            </sect2>
-            <sect2>
+            </sect3>
+            <sect3>
                 <title>选择部门（包含子部门）</title>
                 <itemizedlist>
                     <listitem>
@@ -1167,7 +1162,7 @@
                         <para> 说明：无</para>
                     </listitem>
                 </itemizedlist>
-            </sect2>
-        </sect1>
-    </chapter>
-</book>
+            </sect3>
+        </sect2>
+    </sect1>
+</chapter>

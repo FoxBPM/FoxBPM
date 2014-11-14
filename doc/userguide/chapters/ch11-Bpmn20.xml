@@ -20,16 +20,16 @@
     </para>
     <para> <emphasis role="bold">BPMN2.0元素图</emphasis></para>
     <para>
-      <link xlink:href="../images/BPMN2_0_Poster_EN_big.png">查看完整图片</link>
+      <link xlink:href="images/BPMN2_0_Poster_EN_big.png">查看完整图片</link>
       <mediaobject ><imageobject>
-        <imagedata align="center" contentwidth="800"  fileref="../images/BPMN2_0_Poster_EN.png"/>
+        <imagedata align="center" contentwidth="800"  fileref="images/BPMN2_0_Poster_EN.png"/>
       </imageobject></mediaobject>
     </para>
 
     <para> <emphasis role="bold">我们使用BPMN元素进行建模，BPMN的元素分为五个类别</emphasis></para>
     <para>
       <mediaobject ><imageobject>
-        <imagedata align="center" contentwidth="800"   fileref="../images/bpmn.info.1.png"/>
+        <imagedata align="center" contentwidth="800"   fileref="images/bpmn.info.1.png"/>
       </imageobject></mediaobject>
     </para>
     <para>
@@ -70,19 +70,19 @@
     <para>
       <emphasis role="bold">基本元素:</emphasis>
       <mediaobject ><imageobject>
-        <imagedata contentwidth="800" align="center" fileref="../images/bpmn.info.2.png"/>
+        <imagedata contentwidth="800" align="center" fileref="images/bpmn.info.2.png"/>
       </imageobject></mediaobject>
     </para>
     <para>
       <emphasis role="bold">核心元素:</emphasis>
       <mediaobject ><imageobject>
-        <imagedata contentwidth="800" align="center" fileref="../images/bpmn.info.3.png"/>
+        <imagedata contentwidth="800" align="center" fileref="images/bpmn.info.3.png"/>
       </imageobject></mediaobject>
     </para>
     <para>
       <emphasis role="bold">高级元素:</emphasis>
       <mediaobject ><imageobject>
-        <imagedata contentwidth="800" align="center" fileref="../images/bpmn.info.4.png"/>
+        <imagedata contentwidth="800" align="center" fileref="images/bpmn.info.4.png"/>
       </imageobject></mediaobject>
     </para>
     <para>
@@ -293,7 +293,7 @@ processDefinition.getFlowElements();
           <para> 
             <emphasis role="bold">事件元素：</emphasis>
             <mediaobject ><imageobject>
-              <imagedata contentwidth="502" align="justify" contentdepth="163" fileref="../images/event.PNG"/>
+              <imagedata contentwidth="502" align="justify" contentdepth="163" fileref="images/event.PNG"/>
             </imageobject></mediaobject>
           </para>
         </listitem>
@@ -301,7 +301,7 @@ processDefinition.getFlowElements();
           <para>  
             <emphasis role="bold">活动元素：</emphasis>
             <mediaobject ><imageobject>
-              <imagedata contentwidth="501" align="justify" contentdepth="261" fileref="../images/task.PNG"/>
+              <imagedata contentwidth="501" align="justify" contentdepth="261" fileref="images/task.PNG"/>
             </imageobject></mediaobject>
           </para>
         </listitem>
@@ -309,7 +309,7 @@ processDefinition.getFlowElements();
           <para> 
             <emphasis role="bold">网关元素：</emphasis>
             <mediaobject ><imageobject>
-              <imagedata contentwidth="498" align="justify" contentdepth="96"  fileref="../images/gateway.PNG"/>
+              <imagedata contentwidth="498" align="justify" contentdepth="96"  fileref="images/gateway.PNG"/>
             </imageobject></mediaobject>
           </para>
         </listitem>
@@ -317,7 +317,7 @@ processDefinition.getFlowElements();
           <para> 
             <emphasis role="bold">线条元素：</emphasis>
             <mediaobject ><imageobject>
-              <imagedata contentwidth="496" align="justify" contentdepth="94" fileref="../images/connector.PNG"/>
+              <imagedata contentwidth="496" align="justify" contentdepth="94" fileref="images/connector.PNG"/>
             </imageobject></mediaobject>
           </para>
         </listitem>
@@ -325,7 +325,7 @@ processDefinition.getFlowElements();
           <para> 
             <emphasis role="bold">图形元素：</emphasis>
             <mediaobject ><imageobject>
-              <imagedata contentwidth="497" align="justify" contentdepth="165" fileref="../images/widget.PNG"/>
+              <imagedata contentwidth="497" align="justify" contentdepth="165" fileref="images/widget.PNG"/>
             </imageobject></mediaobject>
           </para>
         </listitem>
@@ -355,7 +355,7 @@ processDefinition.getFlowElements();
       <para>
         <emphasis role="bold">BPMN2.0事件元素图:</emphasis>
         <mediaobject ><imageobject>
-          <imagedata contentwidth="800" align="center" fileref="../images/BPMN2_0_Poster_EN_EVENT.png"/>
+          <imagedata contentwidth="800" align="center" fileref="images/BPMN2_0_Poster_EN_EVENT.png"/>
         </imageobject></mediaobject>
       </para>
       <section>
@@ -391,7 +391,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para> 
             一个空启动事件是图形为一个圆,细边框空心圆圈的图标(即没有触发类型)。
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="../images/start_event.PNG"/>
+              <imagedata align="center"  fileref="images/start_event.PNG"/>
             </imageobject></mediaobject>
           </para>
           
@@ -421,7 +421,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para> 
             时间开始事件是图形为一个圆,细边框中间有时钟圆圈的图标(即有时间触发类型)。
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="../images/time_start_event.PNG"/>
+              <imagedata align="center"  fileref="images/time_start_event.PNG"/>
             </imageobject></mediaobject>
           </para>
           
@@ -463,7 +463,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para> 
             一个空结束事件(NoneEndEvent)是粗的空心的圆圈都成的的图标(没有事件定义)。
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="../images/end_event.PNG"/>
+              <imagedata align="center"  fileref="images/end_event.PNG"/>
             </imageobject></mediaobject>
           </para>
           
@@ -494,7 +494,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para> 
             终止事件(EndEvent)是粗的实心的圆圈组成的的图标，如下图所示
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="../images/terminate_end.PNG"/>
+              <imagedata align="center"  fileref="images/terminate_end.PNG"/>
             </imageobject></mediaobject>
           </para>
         </section>
@@ -526,7 +526,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para> 
             时间捕获事件(Timer_IntermediateCatchEvent)是图形为一个双层圆,细边框中间有时钟圆圈的图标(即有时间触发类型)。
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="../images/timer_catch_event.PNG"/>
+              <imagedata align="center"  fileref="images/timer_catch_event.PNG"/>
             </imageobject></mediaobject>
           </para>
         </section>
@@ -562,7 +562,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para> 
             时间边界事件的图标和时间捕获事件的图标一致，只不过时间边界事件必须附于一个活动节点。
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="../images/time_boundary_event.PNG"/>
+              <imagedata align="center"  fileref="images/time_boundary_event.PNG"/>
             </imageobject></mediaobject>
           </para>
         </section>
@@ -616,7 +616,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para> 
             一个人工任务是图形为一个圆角矩形,有一个小的用户图标在左上角。如下图所示，制作标书和评阅都属于人工任务。
             <mediaobject ><imageobject>
-              <imagedata align="center"   fileref="../images/user_task.PNG"/>
+              <imagedata align="center"   fileref="images/user_task.PNG"/>
             </imageobject></mediaobject>
           </para>
         </section>
@@ -924,7 +924,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
             共有子流程可以选择是否是异步调用，如果是选择为异步调用则创建子流程完毕后直接执行离开事件，子流程和主流程都独立运行。
           </para>
           <mediaobject ><imageobject>
-            <imagedata align="center"  fileref="../images/callActivity.PNG"/>
+            <imagedata align="center"  fileref="images/callActivity.PNG"/>
           </imageobject></mediaobject>
         </section>
         <section>
@@ -935,7 +935,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
             需要注意的是私有子流程属于主流程，所以主流程上配置的数据变量，对于私有子流程来说也是共享的。
           </para>
           <mediaobject ><imageobject>
-            <imagedata align="center"  fileref="../images/subProcess.PNG"/>
+            <imagedata align="center"  fileref="images/subProcess.PNG"/>
           </imageobject></mediaobject>
         </section>
       </section>
@@ -953,7 +953,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para> 
             发送任务是图形为一个圆角矩形,有一个小的黑色邮件图标在左上角。
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="../images/sendTask.PNG"/>
+              <imagedata align="center"  fileref="images/sendTask.PNG"/>
             </imageobject></mediaobject>
           </para>
         </section> 
@@ -979,7 +979,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para> 
             脚本任务是图形为一个圆角矩形,有一个小的脚本图标在左上角。
             <mediaobject ><imageobject>
-              <imagedata align="center" fileref="../images/script_task.PNG"/>
+              <imagedata align="center" fileref="images/script_task.PNG"/>
             </imageobject></mediaobject>
           </para>
         </section>
@@ -1015,7 +1015,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para> 
             服务任务是图形为一个圆角矩形,有一个小的表格图标在左上角。
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="../images/businessrule_task.PNG"/>
+              <imagedata align="center"  fileref="images/businessrule_task.PNG"/>
             </imageobject></mediaobject>
           </para>
         </section>
@@ -1044,7 +1044,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para> 
             发送任务是图形为一个圆角矩形,有一个小的白色邮件图标在左上角。
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="../images/ReceiveTask.PNG"/>
+              <imagedata align="center"  fileref="images/ReceiveTask.PNG"/>
             </imageobject></mediaobject>
           </para>
         </section>
@@ -1074,7 +1074,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para> 
             服务任务是图形为一个圆角矩形,有一个小的齿轮图标在左上角。
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="../images/service_task.PNG"/>
+              <imagedata align="center"  fileref="images/service_task.PNG"/>
             </imageobject></mediaobject>
           </para>
         </section>
@@ -1101,7 +1101,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para> 
             发送任务是图形为一个圆角矩形,有一个手的图标在左上角。
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="../images/manualTask.PNG"/>
+              <imagedata align="center"  fileref="images/manualTask.PNG"/>
             </imageobject></mediaobject>
           </para>
         </section>
@@ -1137,7 +1137,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para> 
             包容网关(ExclusiveGateway)图形为一个菱形里边有一个"o"圆圈。
             <mediaobject ><imageobject>
-              <imagedata align="center"   fileref="../images/inclusive_gateway.PNG"/>
+              <imagedata align="center"   fileref="images/inclusive_gateway.PNG"/>
             </imageobject></mediaobject>
           </para>
         </section>
@@ -1209,7 +1209,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para>
             下面这样做法FoxBPM引擎是支持的,但是不推荐这么用。
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="../images/connect_condition.PNG"/>
+              <imagedata align="center"  fileref="images/connect_condition.PNG"/>
             </imageobject></mediaobject>
           </para>
           
@@ -1235,7 +1235,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para> 
             排他网关(ExclusiveGateway)图形为一个菱形里边有一个X。注意,一个网关如果内部是空的则默认为排他网关。
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="../images/ExclusiveGateway.PNG"/>
+              <imagedata align="center"  fileref="images/ExclusiveGateway.PNG"/>
             </imageobject></mediaobject>
           </para>
         </section>
@@ -1244,7 +1244,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <title>XML描述</title>
           <para>下面描述的是一个排他网关,后面通过带条件的顺序流<link linkend="bpmn.SequenceFlow.Description">(Conditional SequenceFlow)</link>连接了三个Task。</para>
           <mediaobject ><imageobject>
-            <imagedata align="center"  fileref="../images/bpmn.ExclusiveGateway.XMLRepresentation.1.png"/>
+            <imagedata align="center"  fileref="images/bpmn.ExclusiveGateway.XMLRepresentation.1.png"/>
           </imageobject></mediaobject>
           
           <para> XML元素表示如下: <programlisting language="xml"><![CDATA[<bpmn2:exclusiveGateway id="ExclusiveGateway_1" name="">
@@ -1301,7 +1301,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para> 
             并行网关(ParallelGateway)图形为一个菱形里边有一个"+"。
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="../images/ParallelGateway.PNG"/>
+              <imagedata align="center"  fileref="images/ParallelGateway.PNG"/>
             </imageobject></mediaobject>
           </para>
         </section>
@@ -1361,12 +1361,12 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           </para> 
           <para>
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="../images/bpmn.ParallelGateway.GraphicalNotation.1.png"/>
+              <imagedata align="center"  fileref="images/bpmn.ParallelGateway.GraphicalNotation.1.png"/>
             </imageobject></mediaobject>
           </para> 
           <para>
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="../images/bpmn.ParallelGateway.GraphicalNotation.2.png"/>
+              <imagedata align="center"  fileref="images/bpmn.ParallelGateway.GraphicalNotation.2.png"/>
             </imageobject></mediaobject>
           </para> 
         </section>
@@ -1390,7 +1390,7 @@ ProcessInstance processInstance = runtimeService.noneStartProcessInstance(startP
           <para> 
             一个顺序流可视化作为一个从源元素对目标元素的箭头。箭头始终指向朝着既定目标。 
             <mediaobject ><imageobject>
-              <imagedata align="center"  fileref="../images/sequence_flow.PNG"/>
+              <imagedata align="center"  fileref="images/sequence_flow.PNG"/>
             </imageobject></mediaobject>
           </para>
         </section>

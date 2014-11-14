@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter PUBLIC '-//OASIS//DTD DocBook XML V5.0//EN'  
                '../dtd/docbook.dtd'> 
-
 <chapter xml:id="GetCode">
+    <title>代码获取及Web环境配置</title>
     <section xml:id="gc.getFoxBPM">
         <title>获取FoxBPM</title>
         <para>不使用git的用户可以直接下载FoxBPM6.0 release包，里面包含所有项目源码。可以省过此步骤，直接到maven环境配置小节。</para>
@@ -13,7 +13,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/gettingStarted.1.png"/>
+                            fileref="images/gettingStarted.1.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -22,7 +22,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/gettingStarted.2.png"/>
+                            fileref="images/gettingStarted.2.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -31,7 +31,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/gettingStarted.3.png"/>
+                            fileref="images/gettingStarted.3.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -40,7 +40,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/gettingStarted.7.png"/>
+                            fileref="images/gettingStarted.7.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -49,7 +49,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/gettingStarted.4.png"/>
+                            fileref="images/gettingStarted.4.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -58,7 +58,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/gettingStarted.5.png"/>
+                            fileref="images/gettingStarted.5.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -68,7 +68,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/gettingStarted.6.png"/>
+                            fileref="images/gettingStarted.6.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -77,7 +77,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/gettingStarted.9.png"/>
+                            fileref="images/gettingStarted.9.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -86,7 +86,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/gettingStarted.10.png"/>
+                            fileref="images/gettingStarted.10.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -95,7 +95,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/gettingStarted.8.png"/>
+                            fileref="images/gettingStarted.8.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -124,7 +124,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/gs.mavenConfig.1.png"/>
+                            fileref="images/gs.mavenConfig.1.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -139,7 +139,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/gs.mavenConfig.2.png"/>
+                            fileref="images/gs.mavenConfig.2.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -149,12 +149,12 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/gs.mavenConfig.3.png"/>
+                            fileref="images/gs.mavenConfig.3.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
             <listitem>
-                <para>打开E:\GIT_DEMO\FoxBPM\MavenInstall文件夹，在命令行依次执行文本中的安装代码（修改文件路径），安装ojdbc(如果使用mysql那么不用支持下面安装)。</para>
+                <para>打开E:\GIT_DEMO\FoxBPM文件夹，在命令行依次执行文本中的安装代码（修改文件路径），安装ojdbc(如果使用mysql那么不用支持下面安装)。</para>
                 <programlisting>mvn install:install-file -DgroupId=com.oracle.jdbc -DartifactId=ojdbc5 -Dversion=11.2.0.1.0 -Dpackaging=jar -Dfile=D:\FoxBPM\MavenInstall\ojdbc5.jar </programlisting>
             </listitem>
             <listitem>
@@ -165,7 +165,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/gs.mavenConfig.4.png"/>
+                            fileref="images/gs.mavenConfig.4.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -183,26 +183,38 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/gettingStarted.13.png"/>
+                            fileref="images/gettingStarted.13.png"/>
                     </imageobject>
                 </mediaobject>
-                <para>选择tomcat路径，选择安装的jdk 点击Next,将foxbpm-webapps-common项目add进去 点击finish。</para>
+                <para>配置tomcat， 点击finish。</para>
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/gettingStarted.14.png"/>
+                            fileref="images/gettingStarted.14.png"/>
                     </imageobject>
                 </mediaobject>
-                <para>双击新建的服务器，设置发布到tomcat目录下</para>
+                <para>点击next将服务发布到tomcat目录下</para>
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/gettingStarted.15.png"/>
+                            fileref="images/gettingStarted.15.png"/>
+                    </imageobject>
+                </mediaobject>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/gettingStarted.150.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
             <listitem>
-                <para>右键点击tomcat,点击“publish”，此时应该已经发布成功。</para>
+                <para>此时应该已经发布成功。</para>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" contentwidth="600"
+                            fileref="images/gettingStarted.151.png"/>
+                    </imageobject>
+                </mediaobject>
             </listitem>
         </orderedlist>
     </section>
@@ -388,37 +400,32 @@
         <title>运行FoxBPM</title>
         <para> 进行这步之前，请确保完成<link linkend="gc.webConfig">web环境配置</link>和<link
                 linkend="gs.dataBaseRun">数据库脚本安装</link>。 </para>
-        <para>
-            这步需要进行数据库配置，打开FoxBPM-expand\src\main\resources\config\FoxBPMconfig.xml文件，找到dataBaseConfig节点的selected属性配置的数据库信息，修改
-            对应的数据库配置的驱动、用户名、密码等信息(bpmcenter默认只能使用DB_FIX_BIZ_BASE和mysql两个作为选中ID，与spring配置文件中的dataSource
-            ID有关)。 </para>
-        <para>
-            修改业务数据数据库地址，打开flow-webapp-common\src\main\resources\jdbc.properties文件,这里以oracle数据库为例。</para>
+        <para>修改\foxbpm-webapps-common\src\main\resources\conf\jdbc.properties文件,这里以oracle数据库为例。</para>
         <mediaobject>
             <imageobject>
                 <imagedata align="center" contentwidth="600"
-                    fileref="../images/gettingStarted.17.png"/>
+                    fileref="images/gettingStarted.17.png"/>
             </imageobject>
         </mediaobject>
         <para>保存，重新发布，启动tomcat服务器，发现已经启动成功。</para>
         <mediaobject>
             <imageobject>
                 <imagedata align="center" contentwidth="600"
-                    fileref="../images/gettingStarted.18.png"/>
+                    fileref="images/gettingStarted.18.png"/>
             </imageobject>
         </mediaobject>
         <para>访问http://127.0.0.1:8889/foxbpm-webapps-common/login.html</para>
         <mediaobject>
             <imageobject>
                 <imagedata align="center" contentwidth="600"
-                    fileref="../images/gettingStarted.19.png"/>
+                    fileref="images/gettingStarted.19.png"/>
             </imageobject>
         </mediaobject>
         <para>输入账号：admin 初始密码：1，点击登录，登录成功，进入个人页面心界面</para>
         <mediaobject>
             <imageobject>
                 <imagedata align="center" contentwidth="600"
-                    fileref="../images/gettingStarted.20.png"/>
+                    fileref="images/gettingStarted.20.png"/>
             </imageobject>
         </mediaobject>
         <para>至此，快速入门结束。关于FoxBPM的其他详细信息，请继续看我们的文档。</para>
