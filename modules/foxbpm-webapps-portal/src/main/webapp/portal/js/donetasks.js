@@ -18,7 +18,7 @@ var pagefunction = function() {
 							data : 'initatorName'
 						}, {
 							"orderable" : false,
-							"data" : null,
+							"data" : 'bizKey',
 							"width":"15%",
 							"defaultContent" : ""// <a
 													// href='javascript:void(0);'
@@ -82,7 +82,7 @@ var pagefunction = function() {
 									"orderable" : true,
 									"createdCell" : function(td, cellData,
 											rowData, row, col) { 
-										var tdHtml ="<a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=openTaskForm('"+cellData+"','"+rowData.id+"','"+rowData.processInstanceId+"');><i class='fa fa-pencil-square-o'></i> 查看</a>"+
+										var tdHtml ="<a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=openTaskForm('"+rowData.formUri+"','"+cellData+"','"+rowData.id+"','"+rowData.processInstanceId+"');><i class='fa fa-pencil-square-o'></i> 查看</a>"+
 											"   <a class='btn btn-default btn-xs' href='javascript:void(0);' onclick=showDiagram('"+rowData.processDefinitionKey+"','"+rowData.processInstanceId+"');><i class='fa fa-sitemap'></i> 流程图</a>";
 										$(td).html(tdHtml);
 									
