@@ -41,16 +41,16 @@ public class EndEventTaskListener extends AbstractTaskEventListener {
 	protected TaskEntity handleTaskEntity(ListenerExecutionContext executionContext) {
 		TokenEntity tokenEntity = (TokenEntity) executionContext;
 		KernelFlowNodeImpl kernelFlowNode = tokenEntity.getFlowNode();
-		// 创建流程启动
+		// 创建流程结束
 		TaskEntity taskEntity = new TaskEntity();
 		taskEntity.setNodeId(kernelFlowNode.getId());
 		taskEntity.setNodeName(kernelFlowNode.getName());
-
+		taskEntity.setBizKey(tokenEntity.getBizKey());
 		taskEntity.setTaskType(TaskType.ENDEVENTTASK);
-		
+		taskEntity.setSubject("结束流程");
 		taskEntity.setCommandId(TaskCommandSystemType.ENDEVENT);
 		taskEntity.setCommandType(TaskCommandSystemType.ENDEVENT);
-		//taskInstance.setCommandMessage("流程启动");
+		taskEntity.setCommandMessage("结束流程");
 		TaskCommandDefinition taskCommandDef=Context.getProcessEngineConfiguration().getTaskCommandDefinitionMap().get(TaskCommandSystemType.ENDEVENT);
 		if(taskCommandDef!=null){
 			taskEntity.setCommandMessage(taskCommandDef.getName());
