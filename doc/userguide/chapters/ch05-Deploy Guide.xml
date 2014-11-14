@@ -2,7 +2,7 @@
 <!DOCTYPE chapter PUBLIC '-//OASIS//DTD DocBook XML V5.0//EN'  
                '../dtd/docbook.dtd'> 
 
-<chapter>
+<chapter xml:id="web.Deploy">
 <title>部署介绍</title>
   <para>这里只介绍foxbpm-webapps-common项目的部署，对于其他系统怎么集成FoxBPM这里不做介绍，用户可以参照集成相关文档。</para>
   <para>
@@ -40,7 +40,7 @@
   <para> 
     如果进入系统登录页面则说明部署成功
     <mediaobject ><imageobject>
-      <imagedata align="center"  fileref="../images/login.jpg"/>
+      <imagedata align="center"  fileref="images/login.jpg"/>
     </imageobject></mediaobject>
   </para>
   <para>
@@ -49,7 +49,7 @@
     <para>
       默认进入个人面页面如下图所示，系统相关操作用户可以参照 “Foxbpm Web 功能”文档
       <mediaobject ><imageobject>
-        <imagedata align="center"  fileref="../images/dashboard.jpg"/>
+        <imagedata align="center"  fileref="images/dashboard.jpg"/>
       </imageobject></mediaobject>
     </para>
 </section>
