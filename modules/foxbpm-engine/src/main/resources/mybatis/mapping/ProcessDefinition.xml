@@ -64,7 +64,7 @@
   
   <select id="selectProcessDefinitionsByQueryCriteria" parameterType="org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl" resultMap="ProcessDefinitionMap">
   	${limitBefore}
-    select PD.*,DP.DEPLOY_TIME ${limitBetween}
+    select RES.* ${limitBetween}
     <include refid="selectProcessDefinitionsByQueryCriteriaSql"/>
     <if test="orderBy != null">
        ${orderBy}
@@ -78,37 +78,37 @@
   </select>
   
   <sql id="selectProcessDefinitionsByQueryCriteriaSql">  
-    from ${prefix}_DEF_PROCESSDEFINITION PD LEFT JOIN ${prefix}_DEF_DEPLOYMENT DP ON PD.DEPLOYMENT_ID = DP.ID
+    from ${prefix}_DEF_PROCESSDEFINITION RES LEFT JOIN ${prefix}_DEF_DEPLOYMENT DP ON RES.DEPLOYMENT_ID = DP.ID
     <where>
       <if test="id != null">
-        PD.PROCESS_ID = #{id}
+        RES.PROCESS_ID = #{id}
       </if>
       <if test="category != null">
-        and PD.CATEGORY = #{category}
+        and RES.CATEGORY = #{category}
       </if>
       <if test="categoryLike != null">
-        and PD.CATEGORY like #{categoryLike}
+        and RES.CATEGORY like #{categoryLike}
       </if>
       <if test="name != null">
-        and PD.PROCESS_NAME = #{name}
+        and RES.PROCESS_NAME = #{name}
       </if>
       <if test="nameLike != null">
-        and PD.PROCESS_NAME like #{nameLike}
+        and RES.PROCESS_NAME like #{nameLike}
       </if>
       <if test="key != null">
-        and PD.PROCESS_KEY = #{key}
+        and RES.PROCESS_KEY = #{key}
       </if>
       <if test="keyLike != null">
-        and PD.PROCESS_KEY like #{keyLike}
+        and RES.PROCESS_KEY like #{keyLike}
       </if>
       <if test="version != null">
-        and PD.VERSION = #{version}
+        and RES.VERSION = #{version}
       </if>
       <if test="deploymentId != null">
-        and PD.DEPLOYMENT_ID = #{deploymentId}
+        and RES.DEPLOYMENT_ID = #{deploymentId}
       </if>
       <if test="latest">
-        and PD.VERSION = (select max(VERSION) from ${prefix}_DEF_PROCESSDEFINITION where KEY = RES.KEY)
+        and RES.VERSION = (select max(VERSION) from ${prefix}_DEF_PROCESSDEFINITION where KEY = RES.KEY)
       </if>
     </where>
   </sql>
