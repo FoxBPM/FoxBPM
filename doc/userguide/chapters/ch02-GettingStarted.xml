@@ -248,7 +248,7 @@
     <title>web运行</title>
     <orderedlist>
       <listitem>
-        <para>访问http://127.0.0.1:8889/foxbpm-webapps-common/login.html。</para>
+        <para>访问http://127.0.0.1:8080/foxbpm-webapps-common/login.html。</para>
         <mediaobject>
           <imageobject>
             <imagedata align="center" contentwidth="600" fileref="../images/webRun.1.png"/>
@@ -281,11 +281,13 @@
             <imagedata align="center" contentwidth="600" fileref="../images/webRun.5.png"/>
           </imageobject>
         </mediaobject>
+        <para>点击表单接收任务</para>
         <mediaobject>
           <imageobject>
             <imagedata align="center" contentwidth="600" fileref="../images/webRun.6.png"/>
           </imageobject>
         </mediaobject>
+        <para>再次点击表单处理任务</para>
         <mediaobject>
           <imageobject>
             <imagedata align="center" contentwidth="600" fileref="../images/webRun.7.png"/>
