@@ -4,300 +4,329 @@
 
 <chapter xml:id="GettingStarted">
   <title>快速入门</title>
-  
+
   <section xml:id="gs.prerequisites">
     <title>先决条件</title>
-    <para> 本章建立在用户已经下载Eclipse Juno SR2或Kepler版本开发工具，安装了JDK 6+运行环境，以及Tomcat
-      V6.0服务器，有FixFlow支持的数据库服务器中的一种，本例拿oracle为例，安装了git插件(初学者可下载完整版设计器)，在github.com注册了账号（不使用GIT用户可直接下载release包）。</para>
+    <para> 本章建立在用户已经下载FoxBPM完成整版设计器、FoxBPM的Web部署war包，安装了JDK 5+运行环境，以及Tomcat
+      V6.0服务器，有FoxBPM支持的数据库服务器中的一种，本例拿oracle为例，安装了git插件(初学者可下载完整版设计器)，在github.com注册了账号（不使用GIT用户可直接下载release包）。</para>
   </section>
   <section xml:id="gs.goal">
     <title>目标</title>
-    <para> 获取并部署好FixFlow源代码，保证可以正常访问运行FixFlow的Web。</para>
+    <para> 获取并部署好FoxBPM的Web服务，保证可以正常访问运行FoxBPM的Web服务。</para>
   </section>
-  <section xml:id="gs.getFixFlow">
-    <title>获取FixFlow</title>
-    <para>不使用git的用户可以直接下载FixFlow5.2 release包，里面包含所有项目源码。可以省过此步骤，直接到maven环境配置小节。</para>
-    <orderedlist>
-     
-      
-      <listitem>       
-        <para>打开eclipse,然后在工程空白区域，右键选择import->import->Git->Projects from git ，点击“Next”。</para>
-        <mediaobject><imageobject>
-          <imagedata align="center" contentwidth="600" fileref="images/gettingStarted.1.png"/>
-        </imageobject></mediaobject>
-      </listitem>
-      <listitem>
-        <para>在弹出的界面选择URI，点击“Next”，弹出如下界面：</para>
-        <mediaobject><imageobject>
-          <imagedata align="center" contentwidth="600" fileref="images/gettingStarted.2.png"/>
-        </imageobject></mediaobject>
-      </listitem>
-      <listitem>
-        <para>访问github.com网站，登陆，搜索fixflow,回车，如图：</para>
-        <mediaobject><imageobject>
-          <imagedata align="center" contentwidth="600" fileref="images/gettingStarted.3.png"/>
-        </imageobject></mediaobject>
-      </listitem>
-      <listitem>
-         <para>搜索到FixFlow相关项目，点击fixteam/fixflow进入。</para>
-        <mediaobject><imageobject>
-          <imagedata align="center" contentwidth="600" fileref="images/gettingStarted.7.png"/>
-        </imageobject></mediaobject>
-      </listitem>
-      <listitem>
-       <para>点击右边https clone url的copy按钮，复制fixflow的git地址。</para>
-       <mediaobject><imageobject>
-         <imagedata align="center" contentwidth="600" fileref="images/gettingStarted.4.png"/>
-       </imageobject></mediaobject>
-      </listitem>
-      <listitem>
-        <para>返回eclipse，粘贴如图：</para>
-        <mediaobject><imageobject>
-          <imagedata align="center" contentwidth="600" fileref="images/gettingStarted.5.png"/>
-        </imageobject></mediaobject>
-      </listitem>
-      <listitem>
-        <para>输入注册的git账号密码信息，选择store in Secure store(记住密码)，点击“Next”，此时会出现fixflow代码的分支信息，如下图。全部选择，点击“Next”。</para>
-        <mediaobject><imageobject>
-          <imagedata align="center" contentwidth="600" fileref="images/gettingStarted.6.png"/>
-        </imageobject></mediaobject>
-      </listitem>
-      <listitem>
-         <para>选择GIT的工作目录，假设在E:\GIT_DEMO\fixflow（此目录后面会用到）,选择master分支，点击“Next”。</para>
-        <mediaobject><imageobject>
-          <imagedata align="center" contentwidth="600" fileref="images/gettingStarted.9.png"/>
-        </imageobject></mediaobject>
-      </listitem>
-      <listitem>
-        <para>此时会从github下载代码，需要等待几分钟，完成后如图，直接点击“Next”。</para>
-        <mediaobject><imageobject>
-          <imagedata align="center" contentwidth="600" fileref="images/gettingStarted.10.png"/>
-        </imageobject></mediaobject>
-      </listitem>
-      <listitem>
-        <para>此时会列出fixflow项目的信息，点击“取消”，我们只是把代码下载下来</para>
-        <mediaobject><imageobject>
-          <imagedata align="center" contentwidth="600" fileref="images/gettingStarted.8.png"/>
-        </imageobject></mediaobject>
-      </listitem>
-      
-     </orderedlist>
+  <section>
+    <title>部署war包</title>
+    <para>
+      <link linkend="gs.goal">web环境配置(待定)</link></para>
   </section>
-  <section xml:id="gs.mavenConfig">
-    <title>Maven环境配置</title>
+  <section>
+    <title>下载FoxBPM完整版设计器</title>
+    <para>FoxBPM完整版设计器下载地址为<link
+        xlink:href="http://www.oracle.com/technetwork/java/javase/downloads/index.html"
+      >地址未给出</link></para>
+  </section>
+  <section>
+    <title>设计器配置</title>
     <orderedlist>
       <listitem>
-        <para>
-          下载maven,下载地址： <link xlink:href="http://maven.apache.org/download.html">http://maven.apache.org/download.html</link>
-        </para>
+        <para>打开windows-preferences-流程设计器配置,为设计器配置rest服务地址，此目的是为了同步项目中用到的所有资源。</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.22.png"/>
+          </imageobject>
+        </mediaobject>
+        <para> 服务地址：此地址需要根据自己项目web.xml中配置的rest服务而确定，foxbpm-webapps-common中rest服务前缀默认为
+          service/，所以此处写http://localhost:8080/foxbpm-webapps-common/service。</para>
+        <para> 解压路径：资源的本地路径，建议新建文件夹。 然后点击同步按钮，如果配置没有问题，则会提示同步成功，否则会提示相关错误信息。 </para>
+        <para>说明：这里我已经部署好foxbpm-webapps-common服务，所以以上直接配置。</para>
       </listitem>
       <listitem>
-        <para>
-          解压缩maven-2.0.7-bin.zip 到你想安装的位置，如D:/software/。
-        </para>
+        <para>点击设计器同步。</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.23.png"/>
+          </imageobject>
+        </mediaobject>
+        <para>点击Ok完成目录创建。</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.24.png"/>
+          </imageobject>
+        </mediaobject>
+        <para>点击Ok进行目录清空。</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.25.png"/>
+          </imageobject>
+        </mediaobject>
       </listitem>
       <listitem>
-        <para>
-          设置Maven系统环境变量，M2_HOME=D:/software/maven-2.0.7。
-        </para>
-      </listitem>
-      <listitem>
-        <para>
-          添加Maven bin目录至系统环境变量PATH中， %M2_HOME%\bin。
-        </para>
-      </listitem>
-      <listitem>
-        <para>
-          确认Maven的安装：cmd > mvn -version。
-        </para>
-        <mediaobject><imageobject>
-          <imagedata align="center" contentwidth="600" fileref="images/gs.mavenConfig.1.png"/>
-        </imageobject></mediaobject>
-      </listitem>
-      <listitem> <para>设置下workspace的编码方式，fixflow使用UTF-8的编码方式。 打开eclispse工具，点击window->preferences->General->workspace->Text file encoding 把编码方式改为UTF-8即可。</para></listitem>
-      <listitem> 
-        <para> 设置maven本地资源库。如：设置M2_HOME\conf\setting.xml中设置localRepository节点值：E:\mavenRepository。</para>
-        <mediaobject><imageobject>
-          <imagedata align="center" contentwidth="600" fileref="images/gs.mavenConfig.2.png"/>
-        </imageobject></mediaobject>
-      </listitem>
-      <listitem>
-        <para>点击window->preferences->Maven->User setting 选择MAVEN_HOME\conf\setting.xml，保存。</para>
-        <mediaobject><imageobject>
-          <imagedata align="center" contentwidth="600" fileref="images/gs.mavenConfig.3.png"/>
-        </imageobject></mediaobject>
-      </listitem>
-      <listitem>
-        <para>打开E:\GIT_DEMO\fixflow\MavenInstall文件夹，在命令行依次执行文本中的安装代码（修改文件路径），安装ojdbc和extension包。</para>
-        <programlisting>mvn install:install-file -DgroupId=com.founder.fix.fixflow -DartifactId=com.founder.fix.fixflow.bpmn2.extensions -Dversion=5.2.0 -Dpackaging=jar -Dfile=D:\fixflow\MavenInstall\com.founder.fix.fixflow.bpmn2.extensions.jar
-mvn install:install-file -DgroupId=com.oracle.jdbc -DartifactId=ojdbc5 -Dversion=11.2.0.1.0 -Dpackaging=jar -Dfile=D:\fixflow\MavenInstall\ojdbc5.jar       </programlisting>
-      </listitem>
-      <listitem>
-        <para>然后在工程空白区域，右键选择import->import->Maven->Existing Maven	Projects ，点击“Next”</para>
-      </listitem>
-      <listitem>
-        <para>选择上面选择的git地址，如：E:\GIT_DEMO\fixflow，此时如果maven配置的本地资源库中无文件的话，maven会自动从中央仓库下载文件，（时间因网速而异），所以要保持机器联网（下载一次，以后就很快了）。之后点击finish,等待项目构建即可。</para>
-        <mediaobject><imageobject>
-          <imagedata align="center" contentwidth="600" fileref="images/gs.mavenConfig.4.png"/>
-        </imageobject></mediaobject>
+        <para>点击Ok完成。</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.26.png"/>
+          </imageobject>
+        </mediaobject>
       </listitem>
     </orderedlist>
-    <para>注：此时项目中可能很多JSP的错误，看着不舒服的可以去validation里将JSP相关的验证去掉即可。</para>
   </section>
-  <section xml:id="gs.webConfig">
-    <title>Web环境配置</title>
-    <para>
-      	进行此节之前，请确保eclipse中已经有fixflow各项目代码
-    </para>
+  <section xml:id="gs.processDiagram">
+    <title>设计流程</title>
+    <para>用例：员工报销流程，当报销金额大于5000元时需要经理审批，小于5000元时需要部门主管审批。</para>
     <orderedlist>
-        <listitem>
-        <para>我们还是以tomcat为例来介绍如何部署fixflow的maven项目</para>
-          <para>调出服务器视图 window-->show View-->Server 新建一个服务器，本例我们选择apache tomcat V6.0作为测试服务器。</para>
-          <mediaobject><imageobject>
-            <imagedata align="center" contentwidth="600" fileref="images/gettingStarted.13.png"/>
-          </imageobject></mediaobject>
-        <para>选择tomcat路径，选择安装的jdk 点击Next,将fixflow-webapp-common项目add进去 点击finish。</para>
-          <mediaobject><imageobject>
-            <imagedata align="center" contentwidth="600" fileref="images/gettingStarted.14.png"/>
-          </imageobject></mediaobject>
-        <para>双击新建的服务器，设置发布到tomcat目录下</para>
-          <mediaobject><imageobject>
-            <imagedata align="center" contentwidth="600" fileref="images/gettingStarted.15.png"/>
-          </imageobject></mediaobject>
-        </listitem>
-       <listitem>
-         <para>右键点击tomcat,点击“publish”，此时应该已经发布成功。</para>
-       </listitem>
-     </orderedlist>
+      <listitem>
+        <para>新建一个Test java工程（这里主要是为创建流程文件时需要指定一个目录提供）</para>
+      </listitem>
+      <listitem>
+        <para>选择“新建FoxBPM流程”，点击“Next”</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.1.png"/>
+          </imageobject>
+        </mediaobject>
+      </listitem>
+      <listitem>
+        <para>选择“默认模板”，点击“Next”</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.2.png"/>
+          </imageobject>
+        </mediaobject>
+      </listitem>
+      <listitem>
+        <para>输入路径（可以在点击预览）、编号、名称、版本（必须是数字），点击“Finish”</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.3.png"/>
+          </imageobject>
+        </mediaobject>
+      </listitem>
+      <listitem>
+        <para>完成可以看到FixFlow的设计界面，如图：</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.4.png"/>
+          </imageobject>
+        </mediaobject>
+      </listitem>
+      <listitem>
+        <para>删除人工任务节点和结束节点之间的线，从画板上拖两个活动/人工任务和一个排他网关到设计界面上，</para>
+        <para>用连接/顺序流连接起来各个节点 做成如下图样子。</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.5.png"/>
+          </imageobject>
+        </mediaobject>
+        <note>
+          <title>注意</title>
+          <para>这里需要配置插件BPMN2行为属性，否则导致“结束”节点不支持多个线条指向。</para>
+          <mediaobject>
+            <imageobject>
+              <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.6.png"
+              />
+            </imageobject>
+          </mediaobject>
+        </note>
+      </listitem>
+      <listitem>
+        <para>先改流程整体的配置信息，点击流程空白处，打开eclipse的Properties窗口，如图：</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.7.png"/>
+          </imageobject>
+        </mediaobject>
+        <para>点击默认主题，编辑表达式，如图：</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.8.png"/>
+          </imageobject>
+        </mediaobject>
+        <note>
+          <title>注意</title>
+          <para>这里操作表单项不用配置（FoxBPM的Web提供默认表单，如果想自己提供表单请继续看我们的 表单集成文档）</para>
+        </note>
+      </listitem>
+      <listitem>
+        <para>因为需求中需要判断报销金额的大小，所以我们创建一个流程变量amount,类型为整型：</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.9.png"/>
+          </imageobject>
+        </mediaobject>
+      </listitem>
+      <listitem>
+        <para>下面选中第一个节点“人工任务”(提交申请)属性->任务命令，配置操作表单。</para>
+        <para>添加一个启动并提交按钮，最终效果如图</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.10.png"/>
+          </imageobject>
+        </mediaobject>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.11.png"/>
+          </imageobject>
+        </mediaobject>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.19.png"/>
+          </imageobject>
+        </mediaobject>
+      </listitem>
+
+      <listitem>
+        <para>然后我们配置网关之后的线条条件，选中线条(指向经理审批)，打开Properties属性框，设置表单式，这里我们可以是简单的判断语句，也可以是经过复杂运算之后用return
+          true的形式返回判断结果。简单配置如图：</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.12.png"/>
+          </imageobject>
+        </mediaobject>
+        <para>同样的方法我们设置网关后面的另外一条线条条件为：amount&lt;=5000</para>
+      </listitem>
+      <listitem>
+        <para>最后配置User_Task2和User_Task3节点的信息，即审批节点的配置，点击节点，属性->任务命令，配置操作表单。</para>
+        <para>添加一个退回-上一步按钮，改名称为拒绝，最终效果如图：</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.13.png"/>
+          </imageobject>
+        </mediaobject>
+        <para>添加一个退回-上一步按钮，改名称为拒绝，最终效果如图：</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.14.png"/>
+          </imageobject>
+        </mediaobject>
+        <para>下面配置任务分配，这一步可以暂时什么都不做，用FoxBPM默认配置所有人。</para>
+      </listitem>
+      <listitem>
+        <para>点击“保存”。到这里，第一个报销流程基本上就结束了。</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.20.png"/>
+          </imageobject>
+        </mediaobject>
+      </listitem>
+    </orderedlist>
   </section>
-  
-  <section xml:id="gs.dataBaseRun">
-    <title>DataBase脚本安装</title>
-    <para>
-      数据库的详细介绍请查看<link linkend="dataBase.support">数据库说明</link>章节
-    </para>
+  <section>
+    <title>发布流程</title>
+    <orderedlist>
+      <listitem>
+        <para>切换工作空间视图如下点击流程图文件右击流程操作。</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.15.png"/>
+          </imageobject>
+        </mediaobject>
+        <para>在流程发布界面点击发布按钮</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.16.png"/>
+          </imageobject>
+        </mediaobject>
+        <para>出现流程发布结果提示框，点击OK按钮</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.17.png"/>
+          </imageobject>
+        </mediaobject>
+        <para>在流程发布界面上出现以下记录及流程发布成功，点击确定按钮</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.18.png"/>
+          </imageobject>
+        </mediaobject>
+      </listitem>
+    </orderedlist>
+
   </section>
-  
-  <section xml:id="gs.jarConfig">
-    <title>依赖Jar配置</title>
-    <para> FixFlow依赖以下jar文件：
-      <programlisting language="xml">
- &lt;dependency>
-			&lt;groupId>org.eclipse.emf&lt;/groupId>
-			&lt;artifactId>org.eclipse.emf.common&lt;/artifactId>
-			&lt;version>2.9.1-v20130827-0309&lt;/version>
-		&lt;/dependency>
-		&lt;dependency>
-			&lt;groupId>org.eclipse.emf&lt;/groupId>
-			&lt;artifactId>org.eclipse.emf.ecore&lt;/artifactId>
-			&lt;version>2.9.1-v20130827-0309&lt;/version>
-		&lt;/dependency>
-		&lt;dependency>
-			&lt;groupId>org.eclipse.emf&lt;/groupId>
-			&lt;artifactId>org.eclipse.emf.ecore.xmi&lt;/artifactId>
-			&lt;version>2.9.1-v20130827-0309&lt;/version>
-		&lt;/dependency>
-		&lt;dependency>
-			&lt;groupId>org.eclipse.xsd&lt;/groupId>
-			&lt;artifactId>org.eclipse.xsd&lt;/artifactId>
-			&lt;version>2.7.0-v20110606-0949&lt;/version>
-		&lt;/dependency>
-		&lt;dependency>
-			&lt;groupId>com.founder.fix.fixflow&lt;/groupId>
-			&lt;artifactId>com.founder.fix.fixflow.bpmn2.extensions&lt;/artifactId>
-			&lt;version>5.2.0&lt;/version>
-		&lt;/dependency>
-		&lt;dependency>
-			&lt;groupId>org.quartz-scheduler&lt;/groupId>
-			&lt;artifactId>quartz&lt;/artifactId>
-			&lt;version>2.1.7&lt;/version>
-		&lt;/dependency>
-		&lt;dependency>
-			&lt;groupId>org.beanshell&lt;/groupId>
-			&lt;artifactId>bsh&lt;/artifactId>
-			&lt;version>2.0b5&lt;/version>
-		&lt;/dependency>
-		&lt;dependency>
-			&lt;groupId>org.codehaus.groovy&lt;/groupId>
-			&lt;artifactId>groovy-all&lt;/artifactId>
-			&lt;version>2.1.9&lt;/version>
-		&lt;/dependency>
-
-		&lt;dependency>
-			&lt;groupId>javax.jms&lt;/groupId>
-			&lt;artifactId>jms-api&lt;/artifactId>
-			&lt;version>1.1-rev-1&lt;/version>
-		&lt;/dependency>
 
 
-		&lt;dependency>
-			&lt;groupId>org.apache.activemq&lt;/groupId>
-			&lt;artifactId>activemq-all&lt;/artifactId>
-			&lt;version>5.9.0&lt;/version>
-		&lt;/dependency>
-		&lt;dependency>
-			&lt;groupId>javax.mail&lt;/groupId>
-			&lt;artifactId>mail&lt;/artifactId>
-			&lt;version>1.4.1&lt;/version>
-		&lt;/dependency>
-		&lt;dependency>
-			&lt;groupId>jakarta-regexp&lt;/groupId>
-			&lt;artifactId>jakarta-regexp&lt;/artifactId>
-			&lt;version>1.4&lt;/version>
-		&lt;/dependency>
-		&lt;dependency>
-			&lt;groupId>dom4j&lt;/groupId>
-			&lt;artifactId>dom4j&lt;/artifactId>
-		&lt;/dependency>
-      &lt;!--数据库驱动  -->
-		&lt;dependency>
-			&lt;groupId>com.oracle.jdbc&lt;/groupId>
-			&lt;artifactId>ojdbc5&lt;/artifactId>
-		&lt;/dependency>
-
-		&lt;dependency>
-			&lt;groupId>mysql&lt;/groupId>
-			&lt;artifactId>mysql-connector-java&lt;/artifactId>
-		&lt;/dependency>
-		&lt;dependency> 
-			&lt;groupId>net.sourceforge.jtds&lt;/groupId> 
-			&lt;artifactId>jtds&lt;/artifactId> 
-		&lt;/dependency>     
-     </programlisting>
-    </para>
-  </section>
-  
-  <section xml:id="gs.runFixFlow">
-    <title>运行FixFlow</title>
-    <para>
-      进行这步之前，请确保完成<link linkend="gs.webConfig">web环境配置</link>和<link  linkend="gs.dataBaseRun">数据库脚本安装</link>。
-    </para>
-    <para>
-      这步需要进行数据库配置，打开fixflow-expand\src\main\resources\config\fixflowconfig.xml文件，找到dataBaseConfig节点的selected属性配置的数据库信息，修改
-      对应的数据库配置的驱动、用户名、密码等信息(bpmcenter默认只能使用DB_FIX_BIZ_BASE和mysql两个作为选中ID，与spring配置文件中的dataSource ID有关)。
-    </para>
-    <para>
-    修改业务数据数据库地址，打开flow-webapp-common\src\main\resources\jdbc.properties文件
-    </para>
-    <mediaobject><imageobject>
-      <imagedata align="center" contentwidth="600" fileref="images/gettingStarted.17.png"/>
-    </imageobject></mediaobject>
-    <para>保存，重新发布，启动tomcat服务器，发现已经启动成功。</para>
-    <mediaobject><imageobject>
-      <imagedata align="center" contentwidth="600" fileref="images/gettingStarted.18.png"/>
-    </imageobject></mediaobject>
-    <para>访问http://127.0.0.1:8080/bpmcenter/</para>
-    <mediaobject><imageobject>
-      <imagedata align="center" contentwidth="600" fileref="images/gettingStarted.19.png"/>
-    </imageobject></mediaobject>
-    <para>输入账号：admin 初始密码：888888（演示地址中密码为1），点击登录，登录成功，进入任务中心界面</para>
-    <mediaobject><imageobject>
-      <imagedata align="center" contentwidth="600" fileref="images/gettingStarted.20.png"/>
-    </imageobject></mediaobject>
-    <para>输入账号：admin 初始密码：888888（演示地址中密码为1），并勾选管控中心登录，点击登录，可进入流程管控中心界面</para>
-    <mediaobject><imageobject>
-      <imagedata align="center" contentwidth="600" fileref="images/gettingStarted.21.png"/>
-    </imageobject></mediaobject>
-    <para>至此，快速入门结束。关于fixflow的其他详细信息，请继续看我们的文档。</para>
+  <section>
+    <title>web运行</title>
+    <orderedlist>
+      <listitem>
+        <para>访问http://127.0.0.1:8080/foxbpm-webapps-common/login.html。</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/webRun.1.png"/>
+          </imageobject>
+        </mediaobject>
+        <para>输入账号：admin 初始密码：1，点击登录</para>
+      </listitem>
+      <listitem>
+        <para>登录成功，进入发起流程页面</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/webRun.2.png"/>
+          </imageobject>
+        </mediaobject>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/webRun.3.png"/>
+          </imageobject>
+        </mediaobject>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/webRun.4.png"/>
+          </imageobject>
+        </mediaobject>
+      </listitem>
+      <listitem>
+        <para>进入待办任务页面</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/webRun.5.png"/>
+          </imageobject>
+        </mediaobject>
+        <para>点击表单接收任务</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/webRun.6.png"/>
+          </imageobject>
+        </mediaobject>
+        <para>再次点击表单处理任务</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/webRun.7.png"/>
+          </imageobject>
+        </mediaobject>
+      </listitem>
+      <listitem>
+        <para>进入已办办任务页面</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/webRun.8.png"/>
+          </imageobject>
+        </mediaobject>
+      </listitem>
+      <listitem>
+        <para>进入流程追踪页面</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/webRun.9.png"/>
+          </imageobject>
+        </mediaobject>
+        <para>点击查看</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/webRun.10.png"/>
+          </imageobject>
+        </mediaobject>
+        <para>点击流程图</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" contentwidth="600" fileref="../images/webRun.11.png"/>
+          </imageobject>
+        </mediaobject>
+        <note>
+          <title>说明</title>
+          <para>流程详细页面中可以查看流程的整个运行过程以及能在图直观展现流程执行过程。</para>
+        </note>
+      </listitem>
+    </orderedlist>
+    <para>至此整个“员工报销流程”运行完成。</para>
   </section>
 </chapter>

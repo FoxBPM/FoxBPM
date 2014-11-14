@@ -46,6 +46,7 @@ public class StartEventTaskListener extends AbstractTaskEventListener {
 		// 创建流程启动
 		TaskEntity taskEntity = new TaskEntity();
 		taskEntity.setNodeId(kernelFlowNode.getId());
+		taskEntity.setBizKey(tokenEntity.getBizKey());
 		taskEntity.setNodeName(kernelFlowNode.getName());
 		taskEntity.setTaskType(TaskType.STARTEVENTTASK);
 		taskEntity.setSubject("启动流程");
