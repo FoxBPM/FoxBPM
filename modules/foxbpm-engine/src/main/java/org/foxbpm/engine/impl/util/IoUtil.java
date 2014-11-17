@@ -20,12 +20,15 @@ package org.foxbpm.engine.impl.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
@@ -111,5 +114,44 @@ public class IoUtil {
 		} catch (IOException ignore) {
 			// Exception is silently ignored
 		}
+	}
+	
+	/**
+	 * 克隆对象
+	 * 
+	 * @param object
+	 *            原对象
+	 * @return 目标对象
+	 */
+	public final static Object clone(Object object) {
+		ByteArrayOutputStream bos = null;
+		ObjectOutputStream oos = null;
+		ObjectInputStream ois = null;
+		Object cloneObject = null;
+		try {
+			bos = new ByteArrayOutputStream();
+			oos = new ObjectOutputStream(bos);
+			oos.writeObject(object);
+			ois = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()));
+			cloneObject = ois.readObject();
+		} catch (Exception e) {
+			throw new FoxBPMException("SVG对象G节点克隆出现问题", e);
+		} finally {
+			try {
+				if (bos != null) {
+					bos.close();
+				}
+				if (oos != null) {
+					oos.close();
+				}
+				if (ois != null) {
+					ois.close();
+				}
+			} catch (Exception e) {
+				throw new FoxBPMException("克隆之后关闭对象流时出现问题", e);
+			}
+		}
+		
+		return cloneObject;
 	}
 }

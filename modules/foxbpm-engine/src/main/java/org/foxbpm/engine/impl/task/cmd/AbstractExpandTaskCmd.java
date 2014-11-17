@@ -40,9 +40,10 @@ import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.task.command.AbstractCustomExpandTaskCommand;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.ClockUtil;
-import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.DataVarUtil;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.GuidUtil;
+import org.foxbpm.engine.impl.util.IoUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.task.TaskCommand;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
@@ -192,8 +193,11 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 				for (Iterator<DataVariableDefinition> iterator = bizTypeDataVarMap.values().iterator(); iterator.hasNext();) {
 					dataVarDefin = iterator.next();
 					if (dataValues.containsKey(dataVarDefin.getFieldName())) {
-						dataVarDefin.setExpression(StringUtil.getString(dataValues.get(dataVarDefin.getFieldName())));
-						dataVals.put(dataVarDefin.getFieldName(), dataVarDefin);
+						DataVariableDefinition tmpVal = (DataVariableDefinition)IoUtil.clone(dataVarDefin);
+						if(StringUtil.isNotEmpty(StringUtil.getString(dataValues.get(dataVarDefin.getFieldName())))){
+							tmpVal.setExpression(StringUtil.getString(dataValues.get(dataVarDefin.getFieldName())));
+							dataVals.put(dataVarDefin.getFieldName(), tmpVal);
+						}
 					}
 				}
 			}
