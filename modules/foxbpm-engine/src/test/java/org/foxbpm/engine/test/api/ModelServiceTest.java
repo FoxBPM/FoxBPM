@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.zip.ZipInputStream;
 
 import org.foxbpm.engine.datavariable.VariableInstance;
+import org.foxbpm.engine.datavariable.VariableQuery;
 import org.foxbpm.engine.impl.datavariable.BizDataObject;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.model.DeploymentBuilderImpl;
@@ -37,6 +38,7 @@ import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.repository.ProcessDefinitionQuery;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.task.Task;
+import org.foxbpm.engine.task.TaskQuery;
 import org.foxbpm.engine.test.AbstractFoxBpmTestCase;
 import org.foxbpm.engine.test.Deployment;
 import org.junit.Test;
@@ -796,19 +798,24 @@ public class ModelServiceTest extends AbstractFoxBpmTestCase {
 	public void testBizDataObject() {
 		// 启动一个流程
 		Authentication.setAuthenticatedUserId("admin");
-		// 启动流程
-		runtimeService.startProcessInstanceByKey("TestDataImport_1");
-		
-		Task task = taskService.createTaskQuery().processDefinitionKey("TestDataImport_1").taskNotEnd().singleResult();
-		
-		// 驱动流程
 		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
-		expandTaskCommand.setInitiator("admin");
 		expandTaskCommand.setProcessDefinitionKey("TestDataImport_1");
-		expandTaskCommand.setBusinessKey("admin");
-		expandTaskCommand.setCommandType("submit");
 		expandTaskCommand.setTaskCommandId("HandleCommand_2");
-		expandTaskCommand.setTaskId(task.getId());
+		expandTaskCommand.setCommandType("startandsubmit");
+		expandTaskCommand.setBusinessKey("admin");
 		taskService.expandTaskComplete(expandTaskCommand, null);
+		TaskQuery taskQuery = taskService.createTaskQuery();
+		List<Task> taskList = taskQuery.processDefinitionKey("TestDataImport_1").list();
+		Task task = null;
+		for (Task t : taskList) {
+			if("UserTask_1".equals(t.getNodeId())){
+				task = t;
+				break;
+			};
+        }
+		VariableQuery variableQuery = runtimeService.createVariableQuery();
+		VariableInstance variableInstance = variableQuery.processInstanceId(task.getProcessInstanceId()).addVariableKey("Test").singleResult();
+		//验证持久化变量是否存储
+		assertEquals("admin", variableInstance.getValueObject());
 	}
 }

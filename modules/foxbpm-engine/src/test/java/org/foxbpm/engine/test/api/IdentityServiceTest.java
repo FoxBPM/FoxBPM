@@ -18,6 +18,7 @@
 package org.foxbpm.engine.test.api;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -253,7 +254,7 @@ public class IdentityServiceTest extends AbstractFoxBpmTestCase {
 		assertEquals("role1001", role.getGroupId());
 		assertEquals("角色名称", role.getGroupName());
 		assertEquals("role", role.getGroupType());
-		assertEquals(null, role.getSupGroupId());
+		assertTrue((null != role.getSupGroupId() || "" == role.getSupGroupId()));
 		
 		groups = identityService.getAllGroup("dept");
 		assertEquals(1,groups.size());
