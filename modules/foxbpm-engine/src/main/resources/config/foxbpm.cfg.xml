@@ -325,16 +325,10 @@
 	</taskCommands>
 
 	<eventListeners>
-		<eventListener id="flowNodeTrackListener-node-enter" eventType="node-enter"
-			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" />
-		<eventListener id="SequenceTrackEventListener-sequenceflow-take" eventType="sequenceflow-take" 
-			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.SequenceTrackEventListener" />
 		<eventListener id="startEventTaskListener-process-start" eventType="process-start"
 			listenerClass="org.foxbpm.engine.impl.listener.task.StartEventTaskListener" />
 		<eventListener id="endEventTaskListener-process-end" eventType="process-end"
 			listenerClass="org.foxbpm.engine.impl.listener.task.EndEventTaskListener" />
-		<eventListener id="updateLocationListener-before-process-save" eventType="before-process-save"
-			listenerClass="org.foxbpm.engine.impl.listener.process.UpdateLocationListener" priority="5" />
 	</eventListeners>
 
 	<bizDataObjects>

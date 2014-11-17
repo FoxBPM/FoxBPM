@@ -4,4 +4,9 @@
 		<!-- 更新业务表数据插件，会自动更新业务表相关字段，详见插件详细介绍 -->
 		<eventListener id="updateBizTableListener-node-enter" eventType="before-process-save" listenerClass="org.foxbpm.plugin.processinfo.UpdateBizTableListener" priority="60" />
 	</eventListeners>
+		<!-- 流程轨迹信息监听 
+	<eventListener id="flowNodeTrackListener-node-enter" eventType="node-enter"
+			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" />
+	<eventListener id="SequenceTrackEventListener-sequenceflow-take" eventType="sequenceflow-take" 
+			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.SequenceTrackEventListener" />-->
 </foxbpmconfig:FoxBPMConfig>

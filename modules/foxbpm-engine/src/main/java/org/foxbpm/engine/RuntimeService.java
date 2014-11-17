@@ -210,4 +210,11 @@ public interface RuntimeService {
 	 * @param processInstanceId
 	 */
 	void deleteProcessInstance(String processInstanceId);
+	
+	/**
+	 * 根据流程实例号终止流程实例，如果是子流程，则会知直接递归终止父流程
+	 * @param processInstanceId
+	 */
+	void abortProcessInstance(String processInstanceId);
+	
 }

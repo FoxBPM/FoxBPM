@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.datavariable.VariableQuery;
+import org.foxbpm.engine.impl.cmd.AbortProcessInstanceByIdCmd;
 import org.foxbpm.engine.impl.cmd.BoundaryTimeSignalCmd;
 import org.foxbpm.engine.impl.cmd.DeleteProcessInstanceByIdCmd;
 import org.foxbpm.engine.impl.cmd.SignalCmd;
@@ -197,6 +198,11 @@ public class RuntimeServiceImpl extends ServiceImpl implements RuntimeService {
 	 
 	public void deleteProcessInstance(String processInstanceId) {
 		this.commandExecutor.execute(new DeleteProcessInstanceByIdCmd(processInstanceId));
+	}
+	
+	public void abortProcessInstance(String processInstanceId) {
+		// TODO Auto-generated method stub
+		this.commandExecutor.execute(new AbortProcessInstanceByIdCmd(processInstanceId));
 	}
 	
 	 

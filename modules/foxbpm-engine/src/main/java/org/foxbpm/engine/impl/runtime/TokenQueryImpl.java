@@ -100,4 +100,10 @@ public class TokenQueryImpl extends AbstractQuery<TokenQuery, Token> implements 
 	public boolean getEnd() {
 		return end;
 	}
+	
+	@Override
+	public String getOrderBy() {
+		// TODO Auto-generated method stub
+		return "RES.ID";
+	}
 }
