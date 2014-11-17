@@ -191,9 +191,8 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 				DataVariableDefinition dataVarDefin = null;
 				for (Iterator<DataVariableDefinition> iterator = bizTypeDataVarMap.values().iterator(); iterator.hasNext();) {
 					dataVarDefin = iterator.next();
-					if (dataValues.containsKey(dataVarDefin.getFieldName())
-					        && null != dataValues.get(dataVarDefin.getFieldName())) {
-						dataVarDefin.setExpression(dataValues.get(dataVarDefin.getFieldName()).toString());
+					if (dataValues.containsKey(dataVarDefin.getFieldName())) {
+						dataVarDefin.setExpression(StringUtil.getString(dataValues.get(dataVarDefin.getFieldName())));
 						dataVals.put(dataVarDefin.getFieldName(), dataVarDefin);
 					}
 				}
