@@ -51,7 +51,12 @@ public class DeploymentManager {
 		if (processDefinitionId == null) {
 			throw ExceptionUtil.getException("10101002");
 		}
-		ProcessDefinitionEntity processDefinition = Context.getCommandContext().getProcessDefinitionManager().findProcessDefinitionById(processDefinitionId);
+		ProcessDefinitionEntity processDefinition = null;
+		processDefinition = (ProcessDefinitionEntity) processDefinitionCache.get(processDefinitionId);
+		if(processDefinition != null){
+			return processDefinition;
+		}
+		processDefinition = Context.getCommandContext().getProcessDefinitionManager().findProcessDefinitionById(processDefinitionId);
 		if (processDefinition != null) {
 			processDefinition = resolveProcessDefinition(processDefinition);
 		}
@@ -81,9 +86,6 @@ public class DeploymentManager {
 		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity) Context.getCommandContext().getProcessDefinitionManager().findProcessDefinitionByKeyAndVersion(processDefinitionKey, processDefinitionVersion);
 		if (processDefinition == null) {
 			return null;
-			// throw new FoxBPMObjectNotFoundException("数据库中未找到key = '" +
-			// processDefinitionKey + "' ， version 为='"
-			// + processDefinitionVersion + "'的流程定义");
 		}
 		processDefinition = resolveProcessDefinition(processDefinition);
 		return processDefinition;

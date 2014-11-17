@@ -131,12 +131,16 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 		if (task.hasEnded()) {
 			throw ExceptionUtil.getException("10503001",taskId);
 		}
-		task.setProcessInstanceVariables(persistenceVariables);
-		task.setProcessInstanceTransientVariables(transientVariables);
+		if(persistenceVariables != null && persistenceVariables.size() >0){
+			task.setProcessInstanceVariables(persistenceVariables);
+		}
+		if(transientVariables != null &&transientVariables.size() >0){
+			task.setProcessInstanceTransientVariables(transientVariables);
+		}
 		// 增加流程更新时间功能，by ych
 		task.getProcessInstance().setUpdateTime(ClockUtil.getCurrentTime());
 		// 对所有操作插入操作
-		createProcessOperating(task, getTaskCommand(task), taskComment);
+		//createProcessOperating(task, getTaskCommand(task), taskComment);
 		// 处理流程实例数据库变量优化
 		loadDatabaseVariables(task);
 		return execute(commandContext, task);

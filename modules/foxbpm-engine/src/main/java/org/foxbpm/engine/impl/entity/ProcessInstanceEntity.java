@@ -189,8 +189,14 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	protected void ensureTasksInitialized() {
+		//流程第一次启动时，不需要从数据库查询
 		if (tasks == null) {
-			tasks = (List) Context.getCommandContext().getTaskManager().findTasksByProcessInstanceId(id);
+			if(revision == 0){
+				tasks = new ArrayList<TaskEntity>();
+			}
+			else{
+				tasks = (List) Context.getCommandContext().getTaskManager().findTasksByProcessInstanceId(id);
+			}
 		}
 	}
 	
@@ -261,7 +267,10 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	 
 	protected void ensureTokensInitialized() {
-		if (tokens == null) {
+		//如果跟令牌不存在，则不需要初始化
+		if(rootTokenId == null){
+			this.tokens = new ArrayList<KernelTokenImpl>();
+		}else if (tokens == null) {
 			this.tokens = (List) Context.getCommandContext().getTokenManager().findTokensByProcessInstanceId(id);
 		}
 	}

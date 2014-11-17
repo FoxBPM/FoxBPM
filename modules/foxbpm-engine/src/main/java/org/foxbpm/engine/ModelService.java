@@ -106,7 +106,7 @@ public interface ModelService {
 	 * 
 	 * @param processDefinitionId
 	 *            流程唯一编号
-	 * @return 获取流程定义 throws FoxBPMObjectNotFoundException 未找到对象时会抛出此异常
+	 * @return 获取流程定义 
 	 */
 	ProcessDefinition getProcessDefinition(String processDefinitionId);
 	
@@ -117,7 +117,7 @@ public interface ModelService {
 	 *            流程key
 	 * @param version
 	 *            版本号
-	 * @return 获取流程定义 throws FoxBPMObjectNotFoundException 未找到对象时会抛出此异常
+	 * @return 获取流程定义 
 	 */
 	ProcessDefinition getProcessDefinition(String processKey, int version);
 	
