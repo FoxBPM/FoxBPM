@@ -170,6 +170,7 @@ public class ProcessExport {
 				dataVariableEle.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, dataVariableDefinition.getId());
 				dataVariableEle.addAttribute(BpmnXMLConstants.ATTRIBUTE_DATATYPE, dataVariableDefinition.getDataType());
 				dataVariableEle.addAttribute(BpmnXMLConstants.ATTRIBUTE_BIZTYPE, dataVariableDefinition.getBizType());
+				dataVariableEle.addAttribute(BpmnXMLConstants.ATTRIBUTE_FIELDNAME, dataVariableDefinition.getFieldName());
 				if (dataVariableDefinition.isPersistence()) {
 					dataVariableEle.addAttribute(BpmnXMLConstants.ATTRIBUTE_ISPERSISTENCE, String.valueOf(dataVariableDefinition.isPersistence()));
 				}

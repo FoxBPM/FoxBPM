@@ -125,22 +125,22 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 		TaskEntity task = Context.getCommandContext().getTaskManager().findTaskById(taskId);
 		
 		if (task == null) {
-			throw ExceptionUtil.getException("10502001",taskId);
+			throw ExceptionUtil.getException("10502001", taskId);
 		}
 		
 		if (task.hasEnded()) {
-			throw ExceptionUtil.getException("10503001",taskId);
+			throw ExceptionUtil.getException("10503001", taskId);
 		}
-		if(persistenceVariables != null && persistenceVariables.size() >0){
+		if (persistenceVariables != null && persistenceVariables.size() > 0) {
 			task.setProcessInstanceVariables(persistenceVariables);
 		}
-		if(transientVariables != null &&transientVariables.size() >0){
+		if (transientVariables != null && transientVariables.size() > 0) {
 			task.setProcessInstanceTransientVariables(transientVariables);
 		}
 		// 增加流程更新时间功能，by ych
 		task.getProcessInstance().setUpdateTime(ClockUtil.getCurrentTime());
 		// 对所有操作插入操作
-		//createProcessOperating(task, getTaskCommand(task), taskComment);
+		// createProcessOperating(task, getTaskCommand(task), taskComment);
 		// 处理流程实例数据库变量优化
 		loadDatabaseVariables(task);
 		return execute(commandContext, task);
@@ -184,20 +184,23 @@ public abstract class AbstractExpandTaskCmd<P extends AbstractCustomExpandTaskCo
 			}
 		}
 		// 查询业务数据
+		Map<String, DataVariableDefinition> dataVals = new HashMap<String, DataVariableDefinition>();
 		if (null != bizName && null != bizkeyField) {
 			Map<String, Object> dataValues = DataVarUtil.getInstance().getDataValue(null, task.getBizKey(), bizName, bizkeyField);
 			if (null != dataValues) {
-				String key = null;
-				for (Iterator<String> iterator = dataValues.keySet().iterator(); iterator.hasNext();) {
-					key = iterator.next();
-					if (null != bizTypeDataVarMap.get(key) && null != dataValues.get(key)) {
-						bizTypeDataVarMap.get(key).setExpression(dataValues.get(key).toString());
+				DataVariableDefinition dataVarDefin = null;
+				for (Iterator<DataVariableDefinition> iterator = bizTypeDataVarMap.values().iterator(); iterator.hasNext();) {
+					dataVarDefin = iterator.next();
+					if (dataValues.containsKey(dataVarDefin.getFieldName())) {
+						dataVarDefin.setExpression(dataValues.get(dataVarDefin.getFieldName()).toString());
+						dataVals.put(dataVarDefin.getFieldName(), dataVarDefin);
 					}
 				}
 			}
 		}
+		
 		// 添加变量至流程变量管理和脚本变量中(即使暂无业务数据)
-		for (Iterator<DataVariableDefinition> iterator = bizTypeDataVarMap.values().iterator(); iterator.hasNext();) {
+		for (Iterator<DataVariableDefinition> iterator = dataVals.values().iterator(); iterator.hasNext();) {
 			dataVariableDefinition = iterator.next();
 			dataVariableMgmtInstance.createDataVariableInstance(dataVariableDefinition);
 			ExpressionMgmt.setVariable(dataVariableDefinition.getId(), dataVariableDefinition.getExpression());
