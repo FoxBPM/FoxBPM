@@ -47,7 +47,7 @@ public class SuspendAndContinueCommandTest extends AbstractFoxBpmTestCase {
 	 * 流程实例被暂停之后：
 	 * 1.本任务会被暂停，任务命令只剩下“流程状态”和“恢复实例”
 	 * 2.流程和令牌也会被暂停
-	 * 3.如果有人试图对已经暂停的流程实例进行操作（通过命令或API），会得到foxbpmBizException的异常
+	 * 3.如果有人试图对已经暂停的流程实例进行操作（通过命令或API），会得到foxbpmException的异常
 	 * 4.任务被暂停后， 只能由有恢复按钮的任务进行恢复操作
 	 */
 	@Test

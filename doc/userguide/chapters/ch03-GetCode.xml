@@ -5,7 +5,7 @@
     <title>代码获取及Web环境配置</title>
     <section xml:id="gc.getFoxBPM">
         <title>获取FoxBPM</title>
-        <para>不使用git的用户可以直接下载FoxBPM6.0 release包，里面包含所有项目源码。可以省过此步骤，直接到maven环境配置小节。</para>
+        <para>请确保在阅读本章前，在github网站注册了账号，或者已经了下载FoxBPM6.0 release包，里面包含所有项目源码。Release包用户可以省过此步骤，直接到maven环境配置小节。</para>
         <orderedlist>
             <listitem>
                 <para>打开eclipse,然后在工程空白区域，右键选择import->import->Git->Projects from git
@@ -92,14 +92,7 @@
             </listitem>
             <listitem>
                 <para>此时会列出FoxBPM项目的信息，点击“取消”，我们只是把代码下载下来</para>
-                <mediaobject>
-                    <imageobject>
-                        <imagedata align="center" contentwidth="600"
-                            fileref="images/gettingStarted.8.png"/>
-                    </imageobject>
-                </mediaobject>
             </listitem>
-
         </orderedlist>
     </section>
     <section xml:id="gc.mavenConfig">
@@ -193,7 +186,7 @@
                             fileref="images/gettingStarted.14.png"/>
                     </imageobject>
                 </mediaobject>
-                <para>点击next将服务发布到tomcat目录下</para>
+                <para>点击next将服务发布到tomcat目录下，此处只需将foxbpm-webapps-common项目发布，因为m2Eclipse插件会自动将所需web进行合并。</para>
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
@@ -215,6 +208,9 @@
                             fileref="images/gettingStarted.151.png"/>
                     </imageobject>
                 </mediaobject>
+            </listitem>
+            <listitem>
+                <para>修改foxbpm-webapps-common/src/main/resource/conf/jdbc.properties文件中的数据库信息，启动tomcat就能跟上面war包部署一样正常访问web了。</para>
             </listitem>
         </orderedlist>
     </section>

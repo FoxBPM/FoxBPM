@@ -8,11 +8,11 @@
   <section xml:id="gs.prerequisites">
     <title>先决条件</title>
     <para> 本章建立在用户已经下载FoxBPM完成整版设计器、FoxBPM的Web部署war包，安装了JDK 5+运行环境，以及Tomcat
-      V6.0服务器，有FoxBPM支持的数据库服务器中的一种，本例拿oracle为例，安装了git插件(初学者可下载完整版设计器)，在github.com注册了账号（不使用GIT用户可直接下载release包）。</para>
+      V6.0服务器，有FoxBPM支持的数据库服务器中的一种，本例拿oracle为例。</para>
   </section>
   <section xml:id="gs.goal">
     <title>目标</title>
-    <para> 获取并部署好FoxBPM的Web服务，保证可以正常访问运行FoxBPM的Web服务。</para>
+    <para> 获取并部署好FoxBPM的Web服务，设计简单报销流程，并能在web上正确运行。。</para>
   </section>
   <section>
     <title>Web环境部署</title>
@@ -32,7 +32,7 @@
       <para>
         FoxBPM引擎支持JDK1.5以上开发环境，相关信息可以参照“项目介绍”文档，这里以apache-tomcat-6.0.39\jdk1.6.0_43为环境，保证tomcat正常启动即可。
         FoxBPM流程引擎还支持WebSphere Application Server 和
-        WebLogic服务器，WAS和WebLogic都是可以直接通过控制台进行war包的部署，但是和tomcat服务一样都需要手动进行数据库配置文件的修改。 </para>
+        WebLogic服务器，WebSphere和WebLogic都是可以直接通过控制台进行war包的部署，但是和tomcat服务一样都需要手动进行数据库配置文件的修改。 </para>
     </section>
     <section xml:id="deploy_config">
       <title>部署</title>
@@ -114,7 +114,7 @@
         <para>新建一个Test java工程（这里主要是为创建流程文件时需要指定一个目录提供）</para>
       </listitem>
       <listitem>
-        <para>选择“新建FoxBPM流程”，点击“Next”</para>
+        <para>右键->New->Other->FoxBPM，选择“新建FoxBPM流程”，点击“Next”</para>
         <mediaobject>
           <imageobject>
             <imagedata align="center" contentwidth="600" fileref="images/processDiagram.1.png"/>
@@ -138,7 +138,7 @@
         </mediaobject>
       </listitem>
       <listitem>
-        <para>完成可以看到FixFlow的设计界面，如图：</para>
+        <para>完成可以看到FoxBPM的设计界面，如图：</para>
         <mediaobject>
           <imageobject>
             <imagedata align="center" contentwidth="600" fileref="images/processDiagram.4.png"/>
@@ -178,7 +178,7 @@
         </mediaobject>
         <note>
           <title>注意</title>
-          <para>这里操作表单项不用配置（FoxBPM的Web提供默认表单，如果想自己提供表单请继续看我们的 表单集成文档）</para>
+          <para>这里操作表单项不用配置（FoxBPM的Web做了特殊处理，会直接走web提供的默认表单，如果想自己提供表单请继续看我们的 表单集成文档）</para>
         </note>
       </listitem>
       <listitem>
@@ -227,12 +227,6 @@
             <imagedata align="center" contentwidth="600" fileref="images/processDiagram.13.png"/>
           </imageobject>
         </mediaobject>
-        <para>添加一个退回-上一步按钮，改名称为拒绝，最终效果如图：</para>
-        <mediaobject>
-          <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="images/processDiagram.14.png"/>
-          </imageobject>
-        </mediaobject>
         <para>下面配置任务分配，这一步可以暂时什么都不做，用FoxBPM默认配置所有人。</para>
       </listitem>
       <listitem>
@@ -249,7 +243,7 @@
     <title>发布流程</title>
     <orderedlist>
       <listitem>
-        <para>切换工作空间视图如下点击流程图文件右击流程操作。</para>
+        <para>在Project Explorer视图中，点击流程图文件右击流程操作。</para>
         <mediaobject>
           <imageobject>
             <imagedata align="center" contentwidth="600" fileref="images/processDiagram.15.png"/>
@@ -330,7 +324,7 @@
         </mediaobject>
       </listitem>
       <listitem>
-        <para>进入已办办任务页面</para>
+        <para>查看已办办任务</para>
         <mediaobject>
           <imageobject>
             <imagedata align="center" contentwidth="600" fileref="images/webRun.8.png"/>
@@ -338,7 +332,7 @@
         </mediaobject>
       </listitem>
       <listitem>
-        <para>进入流程追踪页面</para>
+        <para>查看流程追踪</para>
         <mediaobject>
           <imageobject>
             <imagedata align="center" contentwidth="600" fileref="images/webRun.9.png"/>

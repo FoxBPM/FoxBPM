@@ -204,4 +204,17 @@ public interface TaskService {
 	 * @return
 	 */
 	List<IdentityLinkEntity> getIdentityLinkByTaskId(String taskId);
+	
+	/**
+	 * 追回任务
+	 * 此命令要求：
+	 * 1.当前登陆人必须在目标节点（targetNodeId）处理过任务，处理多次则默认取最近的一条
+	 * 2.主令牌经过的节点才能追回，也就是说主线上的节点
+	 * 3.分支时，只有同一条分支上的节点之间才能追回操作
+	 * 不满足上述条件时，则会抛出相应异常信息
+	 * @param taskId 要追回的任务编号
+	 * @param targetNodeId 要追回到的目标节点编号
+	 * 
+	 */
+	void recoverTask(String taskId,String targetNodeId);
 }
