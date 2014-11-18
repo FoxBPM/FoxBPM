@@ -71,6 +71,7 @@ public class DataVarUtil {
 
 			String sql = MessageFormat.format(QUERY_DATASQL, new Object[] {
 					field, bizObjName, bizField });
+			
 			return jdbcTemplate.queryForObject(sql, Object.class,
 					new Object[] { bizkey });
 

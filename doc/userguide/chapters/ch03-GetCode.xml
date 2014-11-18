@@ -82,16 +82,13 @@
                 </mediaobject>
             </listitem>
             <listitem>
-                <para>此时会从github下载代码，需要等待几分钟，完成后如图，直接点击“Next”。</para>
+                <para>此时会从github下载代码，需要等待几分钟，完成后如下图，直接点击“Cancel”。</para>
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
                             fileref="images/gettingStarted.10.png"/>
                     </imageobject>
                 </mediaobject>
-            </listitem>
-            <listitem>
-                <para>此时会列出FoxBPM项目的信息，点击“取消”，我们只是把代码下载下来</para>
             </listitem>
         </orderedlist>
     </section>
@@ -158,7 +155,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="images/gs.mavenConfig.4.png"/>
+                            fileref="images/gs.mavenConfig.8.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>

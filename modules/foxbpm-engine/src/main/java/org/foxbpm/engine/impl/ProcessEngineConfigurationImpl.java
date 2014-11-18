@@ -399,7 +399,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 				foxbpmScheduler.setScheduler(scheduler);
 				// TODO 获取系统配置中的调度系统是否启动配置
 				scheduler.startDelayed(QUART_START_DELAYTIME);
-				
 			} catch (IOException e) {
 				throw ExceptionUtil.getException("00007001",e);
 			} catch (SchedulerException e) {
