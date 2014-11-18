@@ -34,6 +34,7 @@ import org.foxbpm.engine.impl.cmd.GetTaskCommandByKeyCmd;
 import org.foxbpm.engine.impl.cmd.GetTaskCommandByTaskIdCmd;
 import org.foxbpm.engine.impl.cmd.GetTaskOperationCmd;
 import org.foxbpm.engine.impl.cmd.NewTaskCmd;
+import org.foxbpm.engine.impl.cmd.RecoverTaskByIdCmd;
 import org.foxbpm.engine.impl.cmd.SaveTaskCmd;
 import org.foxbpm.engine.impl.cmd.UnClaimCmd;
 import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
@@ -144,6 +145,10 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 
 	public List<IdentityLinkEntity> getIdentityLinkByTaskId(String taskId) {
 		return commandExecutor.execute(new GetIdentityLinkByTaskIdCmd(taskId));
+	}
+	
+	public void recoverTask(String taskId, String targetNodeId) {
+		commandExecutor.execute(new RecoverTaskByIdCmd(taskId,targetNodeId));
 	}
 
 	public Class<?> getInterfaceClass() {

@@ -416,6 +416,8 @@ public class TaskServiceTest extends AbstractFoxBpmTestCase {
 		
 	}
 	
+	
+	
 	/**
 	 * 测试根据任务编号获取任务命令
 	 * 测试用例：2个（启动并提交，流程状态）
@@ -425,6 +427,93 @@ public class TaskServiceTest extends AbstractFoxBpmTestCase {
 	public void testGetSubTaskCommandByProcessKey(){
 		List<TaskCommand> taskCommands = taskService.getSubTaskCommandByKey("Test_taskService_1");
 		assertEquals(2, taskCommands.size());
+	}
+	
+	/**
+	 * 追回任务
+	 * 此命令要求：
+	 * 1.当前登陆人必须在目标节点（targetNodeId）处理过任务，处理多次则默认取最近的一条
+	 * 2.主令牌经过的节点才能追回，也就是说主线上的节点
+	 * 3.分支时，只有同一条分支上的节点之间才能追回操作
+	 * 不满足上述条件时，则会抛出相应异常信息
+	 * 如果从分支内追回到主线时，其他分支将被强制结束。
+	 * @param taskId 要追回的任务编号
+	 * @param targetNodeId 要追回到的目标节点编号
+	 * 
+	 * 测试用例
+	 * 	追回后，任务会到第一个节点，并且由当前登陆人处理
+	 */
+	@Test
+	@Deployment(resources = {"org/foxbpm/test/api/TestRecover_1.bpmn"})
+	public void testRecoverTask(){
+		//启动一个流程
+		Authentication.setAuthenticatedUserId("admin");
+		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
+		expandTaskCommand.setInitiator("admin");
+		expandTaskCommand.setProcessDefinitionKey("TestRecover_1");
+		expandTaskCommand.setBusinessKey("bizKey");
+		expandTaskCommand.setCommandType("startandsubmit");
+		expandTaskCommand.setTaskCommandId("HandleCommand_3");
+		taskService.expandTaskComplete(expandTaskCommand, null);
+		
+		TaskQuery taskQuery = taskService.createTaskQuery();
+		
+		Task task = taskQuery.processDefinitionKey("TestRecover_1").taskNotEnd().singleResult();
+		taskService.recoverTask(task.getId(), "UserTask_1");
+		taskQuery = taskService.createTaskQuery();
+		task = taskQuery.processDefinitionKey("TestRecover_1").taskNotEnd().singleResult();
+		assertEquals("UserTask_1", task.getNodeId());
+		assertEquals("admin",task.getAssignee());
+		
+		expandTaskCommand = new ExpandTaskCommand();
+		expandTaskCommand.setTaskId(task.getId());
+		expandTaskCommand.setCommandType("submit");
+		expandTaskCommand.setTaskCommandId("HandleCommand_4");
+		taskService.expandTaskComplete(expandTaskCommand, null);
+		
+		taskQuery = taskService.createTaskQuery();
+		task = taskQuery.processDefinitionKey("TestRecover_1").taskNotEnd().singleResult();
+		expandTaskCommand = new ExpandTaskCommand();
+		expandTaskCommand.setTaskId(task.getId());
+		expandTaskCommand.setCommandType("general");
+		expandTaskCommand.setTaskCommandId("HandleCommand_3");
+		taskService.expandTaskComplete(expandTaskCommand, null);
+		
+		taskQuery = taskService.createTaskQuery();
+		List<Task> tasks = taskQuery.processDefinitionKey("TestRecover_1").taskNotEnd().list();
+		assertEquals(2, tasks.size());
+		
+		task = taskQuery.nodeId("UserTask_3").taskNotEnd().singleResult();
+		
+		expandTaskCommand = new ExpandTaskCommand();
+		expandTaskCommand.setTaskId(task.getId());
+		expandTaskCommand.setCommandType("general");
+		expandTaskCommand.setTaskCommandId("HandleCommand_3");
+		taskService.expandTaskComplete(expandTaskCommand, null);
+		
+		task = taskQuery.nodeId("UserTask_4").taskNotEnd().singleResult();
+		assertNotNull(task);
+		
+		taskService.recoverTask(task.getId(), "UserTask_3");
+		
+		task = taskQuery.nodeId("UserTask_3").taskNotEnd().singleResult();
+		expandTaskCommand = new ExpandTaskCommand();
+		expandTaskCommand.setTaskId(task.getId());
+		expandTaskCommand.setCommandType("general");
+		expandTaskCommand.setTaskCommandId("HandleCommand_3");
+		taskService.expandTaskComplete(expandTaskCommand, null);
+		
+		task = taskQuery.nodeId("UserTask_4").taskNotEnd().singleResult();
+		assertNotNull(task);
+		
+		taskService.recoverTask(task.getId(), "UserTask_2");
+		
+		taskQuery = taskService.createTaskQuery();
+		tasks = taskQuery.processDefinitionKey("TestRecover_1").taskNotEnd().list();
+		assertEquals(1, tasks.size());
+		
+		task = tasks.get(0);
+		assertEquals("UserTask_2", task.getNodeId());
 	}
 	
 	

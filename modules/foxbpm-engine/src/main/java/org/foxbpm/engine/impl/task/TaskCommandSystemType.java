@@ -61,5 +61,10 @@ public class TaskCommandSystemType {
 	 * 等待结束
 	 */
 	public static String RECEIVEEND="receiveEnd";
+	
+	/**
+	 * 
+	 */
+	public static String RECOVER = "recover";
 
 }
