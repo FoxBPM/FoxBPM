@@ -291,7 +291,7 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 			try{
 				object = new ExpressionImpl(dataVariableDefinition.getExpression()).getValue(executionContext);
 			}catch(Exception ex){
-				throw ExceptionUtil.getException("10304002",this.getKey());
+				throw ExceptionUtil.getException("10304002",ex,this.getKey());
 			}
 			
 		}
