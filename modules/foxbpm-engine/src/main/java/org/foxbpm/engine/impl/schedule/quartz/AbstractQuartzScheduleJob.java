@@ -64,7 +64,7 @@ public abstract class AbstractQuartzScheduleJob extends FoxbpmScheduleJob {
 	        this.executeJob(foxpmJobExecutionContext);
 	        LOG.debug("FoxbpmJob执行成功，执行时间 :" + new Date());
         } catch (Exception e) {
-        	LOG.debug("FoxbpmJob执行失败，执行时间 :" + new Date());
+        	LOG.error("FoxbpmJob执行失败，执行时间 :" + new Date(),e);
         }
 	}
 	

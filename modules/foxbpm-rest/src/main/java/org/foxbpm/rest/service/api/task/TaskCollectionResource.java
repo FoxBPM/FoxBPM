@@ -71,8 +71,8 @@ public class TaskCollectionResource extends AbstractRestResource {
 		
 		Form queryForm = getQuery();
 		Set<String> queryNames = queryForm.getNames();
-		if (!validateUser())
-			return null;
+//		if (!validateUser())
+//			return null;
 		TaskService taskService = FoxBpmUtil.getProcessEngine().getTaskService();
 		TaskQuery taskQuery = taskService.createTaskQuery();
 		if (queryNames.contains("assignee")) {
