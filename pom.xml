@@ -20,7 +20,6 @@
         <module>modules/foxbpm-bpmn-model</module>
         <module>modules/foxbpm-bpmn-converter</module>
         <module>modules/foxbpm-plugin</module>
-        <module>fixflow-bpmn-converter</module>
 	</modules>
 
 	<build>
