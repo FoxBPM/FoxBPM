@@ -18,7 +18,7 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
-import org.foxbpm.engine.impl.expression.ExpressionImpl;
+import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.behavior.KernelSequenceFlowBehavior;
@@ -39,7 +39,7 @@ public class SequenceFlowBehavior extends FlowElementBehavior implements KernelS
 		}
 		Object expressionValue = null;
 		try{
-			expressionValue = StringUtil.getBoolean(new ExpressionImpl(sequenceFlow.getFlowCondition()).getValue(executionContext));
+			expressionValue = StringUtil.getBoolean(ExpressionMgmt.execute(sequenceFlow.getFlowCondition(), executionContext));
 		}catch(Exception ex){
 			throw ExceptionUtil.getException("10404020",this.getId());
 		}

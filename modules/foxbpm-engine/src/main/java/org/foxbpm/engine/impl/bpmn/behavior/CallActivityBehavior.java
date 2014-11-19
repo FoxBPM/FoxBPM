@@ -22,7 +22,6 @@ import java.util.List;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
-import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.ExceptionUtil;
@@ -53,7 +52,7 @@ public class CallActivityBehavior extends ActivityBehavior {
 		String flowVersion = callActivity.getCallableElementVersion();
 		String processKey = null;
 		try{
-			processKey = StringUtil.getString(new ExpressionImpl(flowId).getValue(executionContext));
+			processKey = StringUtil.getString(ExpressionMgmt.execute(flowId, executionContext));
 		}catch(Exception ex){
 			throw ExceptionUtil.getException("10404014",ex,this.getFlowNode().getId());
 		}
@@ -64,7 +63,7 @@ public class CallActivityBehavior extends ActivityBehavior {
 		
 		int version;
 		try{
-			version = StringUtil.getInt(new ExpressionImpl(flowVersion).getValue(executionContext));
+			version = StringUtil.getInt(ExpressionMgmt.execute(flowVersion, executionContext));
 		}catch(NumberFormatException ex){
 			throw ExceptionUtil.getException("10404015",ex,this.getFlowNode().getId());
 		}catch(Exception ex){
@@ -73,7 +72,7 @@ public class CallActivityBehavior extends ActivityBehavior {
 		
 		String bizKey = null;
 		try{
-			bizKey = StringUtil.getString(new ExpressionImpl(callActivity.getBizKey()).getValue(executionContext));
+			bizKey = StringUtil.getString(ExpressionMgmt.execute(callActivity.getBizKey(), executionContext));
 		}catch(Exception ex){
 			throw ExceptionUtil.getException("10404017",ex,this.getFlowNode().getId());
 		}

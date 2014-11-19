@@ -32,7 +32,6 @@ import java.util.Map;
 import org.foxbpm.engine.datavariable.VariableInstance;
 import org.foxbpm.engine.db.HasRevision;
 import org.foxbpm.engine.db.PersistentObject;
-import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.mgmt.DataVariableMgmtInstance;
 import org.foxbpm.engine.impl.util.ExceptionUtil;
@@ -289,7 +288,7 @@ public class VariableInstanceEntity extends KernelVariableInstanceImpl implement
 		Object object = null;
 		if (dataVariableDefinition != null && dataVariableDefinition.getExpression() != null) {
 			try{
-				object = new ExpressionImpl(dataVariableDefinition.getExpression()).getValue(executionContext);
+				object = ExpressionMgmt.execute(dataVariableDefinition.getExpression(), executionContext);
 			}catch(Exception ex){
 				throw ExceptionUtil.getException("10304002",ex,this.getKey());
 			}

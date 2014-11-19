@@ -20,6 +20,7 @@ package org.foxbpm.engine.impl.expression;
 
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
+import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 
@@ -43,7 +44,11 @@ public class ExpressionMgmt {
 	}
 
 	public static Object execute(String scriptText,FlowNodeExecutionContext executionContext) throws Exception {
-		return Context.getAbstractScriptLanguageMgmt().execute(scriptText,executionContext);
+		if(StringUtil.isNotEmpty(scriptText)){
+			return Context.getAbstractScriptLanguageMgmt().execute(scriptText,executionContext);
+		}
+		return null;
+		
 	}
 
 	public static Object getVariable(String variableName) {

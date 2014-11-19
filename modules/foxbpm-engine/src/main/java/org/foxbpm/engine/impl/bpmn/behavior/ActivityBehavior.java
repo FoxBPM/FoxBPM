@@ -21,10 +21,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.TokenEntity;
-import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduler;
 import org.foxbpm.engine.impl.schedule.FoxbpmSchedulerGroupnameGernerater;
@@ -60,13 +58,13 @@ public class ActivityBehavior extends FlowNodeBehavior {
 				// 启用跳过策略处理的情况
 				LOG.debug("节点: {}({}) 启用跳过策略.", this.getName(), this.getId());
 				boolean valueObj = false;
+				String skipExpression = skipStrategy.getSkipExpression();
 				// 处理跳过策略表达式
-				if (StringUtil.isNotEmpty(skipStrategy.getSkipExpression())) {
-					Expression expression = new ExpressionImpl(skipStrategy.getSkipExpression());
+				if (StringUtil.isNotEmpty(skipExpression)) {
 					try {
-						LOG.debug("节点: {}({}) 跳过策略开始直接,跳过策略表达式内容为:\n {}", this.getName(), this.getId(), expression.getExpressionText());
+						LOG.debug("节点: {}({}) 跳过策略开始直接,跳过策略表达式内容为:\n {}", this.getName(), this.getId(), skipExpression);
 						// 执行验证表达式
-						valueObj = StringUtil.getBoolean(expression.getValue(executionContext));
+						valueObj = StringUtil.getBoolean(ExpressionMgmt.execute(skipExpression, executionContext));
 						LOG.debug("节点: {}({}) 跳过策略直接结束,结果为 '{}'.", this.getName(), this.getId(), valueObj);
 					} catch (Exception e) {
 						throw ExceptionUtil.getException("10404012", e, this.getFlowNode().getId());
@@ -176,7 +174,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		if (loopDataOutputCollectionExpressionValue != null && !loopDataOutputCollectionExpressionValue.equals("")) {
 			Object valueObj = null;
 			try {
-				valueObj = new ExpressionImpl(loopDataOutputCollectionExpressionValue).getValue(executionContext);
+				valueObj = ExpressionMgmt.execute(loopDataOutputCollectionExpressionValue, executionContext);
 			} catch (Exception e) {
 				throw ExceptionUtil.getException("10404001",this.flowNode.getId());
 			}
@@ -224,7 +222,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		
 		Object valueObj = null;
 		try {
-			valueObj = new ExpressionImpl(loopDataInputCollectionExpressionValue).getValue(executionContext);
+			valueObj = ExpressionMgmt.execute(loopDataInputCollectionExpressionValue, executionContext);
 		} catch (Exception e) {
 			throw ExceptionUtil.getException("01404009",e,this.flowNode.getId());
 		}
@@ -347,8 +345,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		// 多实例输出项
 		String outputDataItemExpressionValue = milc.getOutputDataItem();
 		// 完成条件
-		Expression completionCondition = new ExpressionImpl(milc.getCompletionCondition());
-		String completionConditionExpressionValue = completionCondition != null ? completionCondition.getExpressionText() : null;
+		String completionConditionExpressionValue = milc.getCompletionCondition();
 		// 打印日志信息
 		LOG.debug("\n多实例配置信息: \n 【输入数据集】: \n{}", loopDataInputCollectionExpressionValue);
 		LOG.debug("\n【输入项编号】: \n{}", inputDataItemExpressionValue);
@@ -367,7 +364,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 				if (valueObj instanceof Collection) {
 					Collection collection = (Collection) valueObj;
 					try {
-						collection.add(new ExpressionImpl(outputDataItemExpressionValue).getValue(executionContext));
+						collection.add(ExpressionMgmt.execute(outputDataItemExpressionValue, executionContext));
 					} catch (Exception e) {
 						throw ExceptionUtil.getException("10404002",this.flowNode.getId());
 					}

@@ -27,7 +27,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.foxbpm.engine.exception.FoxBPMException;
-import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.ExceptionUtil;
@@ -112,17 +111,17 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 	 * @param groupName
 	 */
 	@SuppressWarnings("unchecked")
-	public void createDateTimeTriggerList(Expression timeExpression,
+	public void createDateTimeTriggerList(String timeExpression,
 	    ListenerExecutionContext executionContext, String groupName) {
-		if (timeExpression == null || StringUtil.isBlank(timeExpression.getExpressionText())) {
+		if (timeExpression == null || StringUtil.isBlank(timeExpression)) {
 			return;
 		}
 		List<Trigger> triggersList = new ArrayList<Trigger>();
 		Object triggerObj = null;
 		try {
-			triggerObj = timeExpression.getValue((FlowNodeExecutionContext)executionContext);
+			triggerObj = ExpressionMgmt.execute(timeExpression,(FlowNodeExecutionContext)executionContext);
 		} catch (Exception e1) {
-			throw ExceptionUtil.getException("10304005", e1, timeExpression.getExpressionText());
+			throw ExceptionUtil.getException("10304005", e1, timeExpression);
 		}
 		if (triggerObj == null) {
 			throw new FoxBPMException("FoxbpmJobDetail创建TRIGGER LIST时候，TIMER 表达式执行结果为NULL");
@@ -150,13 +149,13 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 	 * @param groupName
 	 */
 	@SuppressWarnings("unchecked")
-	public void createTriggerListByCycle(Expression timeExpression,
+	public void createTriggerListByCycle(String timeExpression,
 	    ListenerExecutionContext executionContext, String groupName) {
-		if (timeExpression == null || StringUtil.isBlank(timeExpression.getExpressionText())) {
+		if (timeExpression == null || StringUtil.isBlank(timeExpression)) {
 			return;
 		}
 		List<Trigger> triggersList = new ArrayList<Trigger>();
-		Object triggerObj = ExpressionMgmt.execute(timeExpression.getExpressionText(), executionContext);
+		Object triggerObj = ExpressionMgmt.execute(timeExpression, executionContext);
 		if (triggerObj == null) {
 			throw new FoxBPMException("FoxbpmJobDetail创建TRIGGER LIST时候，TIMER 表达式执行结果为NULL");
 		}
