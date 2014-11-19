@@ -24,7 +24,7 @@
 	<script type="text/javascript" src="portal/taskCommand/js/flowCommandCompenent.js"></script>
 	<script type="text/javascript" src="portal/taskCommand/js/flowCommandHandler.js"></script>
 	<!-- 表单命令弹出框 -->
-	<link href="portal/taskCommand/js/ligerUI/skins/Aqua/css/ligerui-dialog.css" rel="stylesheet" type="text/css">
+	<link href="portal/taskCommand/js/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css">
 	<script src="portal/taskCommand/js/ligerUI/js/core/base.js" type="text/javascript"></script>
 	<script src="portal/taskCommand/js/ligerUI/js/ligerui.all.js" type="text/javascript"></script>
 	<script src="portal/taskCommand/js/ligerUI/js/plugins/ligerDrag.js" type="text/javascript"></script>
