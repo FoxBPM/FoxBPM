@@ -30,8 +30,10 @@ import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.expression.Expression;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.util.ClockUtil;
+import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.QuartzUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.quartz.Job;
 import org.quartz.JobBuilder;
@@ -116,7 +118,12 @@ public class FoxbpmJobDetail<T extends Job> extends JobDetailImpl {
 			return;
 		}
 		List<Trigger> triggersList = new ArrayList<Trigger>();
-		Object triggerObj = ExpressionMgmt.execute(timeExpression.getExpressionText(), executionContext);
+		Object triggerObj = null;
+		try {
+			triggerObj = timeExpression.getValue((FlowNodeExecutionContext)executionContext);
+		} catch (Exception e1) {
+			throw ExceptionUtil.getException("10304005", e1, timeExpression.getExpressionText());
+		}
 		if (triggerObj == null) {
 			throw new FoxBPMException("FoxbpmJobDetail创建TRIGGER LIST时候，TIMER 表达式执行结果为NULL");
 		}

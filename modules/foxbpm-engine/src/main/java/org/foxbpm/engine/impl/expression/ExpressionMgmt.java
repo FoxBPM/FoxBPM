@@ -21,7 +21,6 @@ package org.foxbpm.engine.impl.expression;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
-import org.foxbpm.kernel.runtime.KernelVariableScope;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 
 public class ExpressionMgmt {
@@ -39,20 +38,7 @@ public class ExpressionMgmt {
 		if (executionContext != null) {
 			setVariable("listenerExecutionContext", executionContext);
 		}
-		return Context.getAbstractScriptLanguageMgmt().execute(scriptText);
-
-	}
-
-	public static Object execute(String scriptText) {
-
-		return Context.getAbstractScriptLanguageMgmt().execute(scriptText);
-
-	}
-
-	public static Object execute(String scriptText,
-			KernelVariableScope variableScope) {
-
-		return Context.getAbstractScriptLanguageMgmt().execute(scriptText);
+		return Context.getAbstractScriptLanguageMgmt().execute(scriptText,(FlowNodeExecutionContext)executionContext);
 
 	}
 
@@ -68,23 +54,18 @@ public class ExpressionMgmt {
 
 	public static void setVariable(String variableName, Object variableObj,
 			FlowNodeExecutionContext executionContext) {
-
 		Context.getAbstractScriptLanguageMgmt().setVariable(variableName,
-				variableObj, executionContext);
-
+				variableObj, executionContext); 
 	}
 
 	public static void setVariable(String variableName, Object variableObj) {
-
 		Context.getAbstractScriptLanguageMgmt().setVariable(variableName,
-				variableObj);
-
+				variableObj); 
 	}
 
 	public static Object execute(String scriptText,
 			ProcessDefinitionEntity processDefinition) {
 		return Context.getAbstractScriptLanguageMgmt().execute(scriptText,
 				processDefinition);
-
 	}
 }
