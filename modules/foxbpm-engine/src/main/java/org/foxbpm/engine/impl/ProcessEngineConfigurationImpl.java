@@ -425,7 +425,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		commandFilterMap = new HashMap<String, AbstractCommandFilter>();
 		for (TaskCommandDefinition taskCommandDef : getAllTaskCommandDefinitions()) {
 			TaskCommandDefinition tmp = taskCommandDefinitionMap.get(taskCommandDef.getId());
-			if (tmp == null) {
+			if (tmp == null && !"system".equals(taskCommandDef.getType())) {
 				taskCommandDefinitions.add(taskCommandDef);
 				taskCommandDefinitionMap.put(taskCommandDef.getId(), taskCommandDef);
 				AbstractCommandFilter filter = null;

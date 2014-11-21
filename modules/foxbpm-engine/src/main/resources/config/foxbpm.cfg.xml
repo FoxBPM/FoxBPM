@@ -160,7 +160,7 @@
 				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
 
-
+		<!-- 
 		<taskCommandDefinition id="updateCompletionRate"
 			name="更新完成率"
 			command="org.foxbpm.engine.impl.task.command.UpdateCompletionRateCommand"
@@ -175,7 +175,7 @@
 			<commandParam key="isVerification" name="是否触发验证" value="true"
 				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
-
+		 -->
 
 		<taskCommandDefinition id="pending" name="转办"
 			command="org.foxbpm.engine.impl.task.command.PendingTaskCommand" cmd="org.foxbpm.engine.impl.task.cmd.PendingTaskCmd"
@@ -200,7 +200,7 @@
 				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
 
-
+		<!-- 
 		<taskCommandDefinition id="jump" name="跳转"
 			isEnabled="true" type="toDoTasks"
 			command="org.foxbpm.engine.impl.task.command.JumpTaskCommand" cmd="org.foxbpm.engine.impl.task.cmd.JumpTaskCmd"
@@ -212,7 +212,7 @@
 			<commandParam key="isVerification" name="是否触发验证" value="true"
 				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
-
+		 -->
 
 		<taskCommandDefinition id="abortProcess" name="终止"
 			command="org.foxbpm.engine.impl.task.command.AbortProcessCommand"
@@ -249,6 +249,7 @@
 				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
 		
+		<!-- 
 		<taskCommandDefinition id="recover" name="追回" command="org.foxbpm.engine.impl.task.command.RecoverTaskCommand" 
 			cmd="org.foxbpm.engine.impl.task.cmd.RecoverTaskCmd" isEnabled="true" 
 			type="processInstanceInfo" filter="org.foxbpm.engine.impl.task.filter.RecoverTaskFilter">
@@ -257,7 +258,7 @@
 			<commandParam key="isVerification" name="是否触发验证" value="false"
 				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
-		
+		 -->
 		<!-- <taskCommandDefinition id="addSignUser" name="加签-用户控制" command="org.foxbpm.engine.impl.task.command.AddSignUserCommand" 
 			cmd="org.foxbpm.engine.impl.task.cmd.AddSignUserCmd" isEnabled="true" 
 			type="processInstanceInfo" filter="org.foxbpm.engine.impl.task.filter.AddSignFilter">

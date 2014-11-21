@@ -38,10 +38,13 @@ public class LocationUtil {
 		ObjectMapper objectMapper = new ObjectMapper();
 		String processStatus = "";
 		JsonNode jsonNode= null ;
+		if(StringUtil.isEmpty(processLocationJson)){
+			return "";
+		}
 		try {
 			jsonNode = objectMapper.readTree(processLocationJson);
 		}catch (Exception e) {
-			e.printStackTrace();
+			throw ExceptionUtil.getException("10806001", e,processLocationJson);
 		}
 		
 		processStatus = jsonNode.get("processStatus").getTextValue();
