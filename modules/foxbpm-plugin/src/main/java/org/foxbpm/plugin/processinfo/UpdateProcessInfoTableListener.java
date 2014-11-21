@@ -46,8 +46,8 @@ public class UpdateProcessInfoTableListener implements KernelListener {
 		try {
 			KernelTokenImpl kernelTokenImpl = (KernelTokenImpl) executionContext;
 			ProcessInstanceEntity processInstanceEntity = (ProcessInstanceEntity) kernelTokenImpl.getProcessInstance();
-			String sql = "UPDATE FOXBPM_RUN_PROCESS_INFO SET UPDATE_TIME = ?,PROCESS_STATUS= ?,PROCESS_STEP= ? WHERE PROCESSINSTANCEID = ?";
-			Object[] params = new Object[]{new Date(), processInstanceEntity.getInstanceStatus(), LocationUtil.parseProcessLocation(processInstanceEntity.getProcessLocation()), processInstanceEntity.getId()};
+			String sql = "UPDATE FOXBPM_RUN_PROCESS_INFO SET UPDATE_TIME = ?,PROCESS_STATUS= ?,PROCESS_STEP= ?,INITIATOR= ?,BIZKEY= ? WHERE PROCESSINSTANCEID = ?";
+			Object[] params = new Object[]{new Date(), processInstanceEntity.getInstanceStatus(), LocationUtil.parseProcessLocation(processInstanceEntity.getProcessLocation()), processInstanceEntity.getInitiator(), processInstanceEntity.getBizKey(), processInstanceEntity.getId()};
 			SqlCommand sqlCommand = new SqlCommand(DBUtils.getConnection());
 			sqlCommand.execute(sql, params);
 		} catch (Exception e) {
