@@ -22,7 +22,6 @@ import java.lang.reflect.Method;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.impl.bpmn.behavior.TimerEventBehavior;
 import org.foxbpm.engine.impl.entity.TokenEntity;
-import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
@@ -45,8 +44,7 @@ public class ConnectorListener implements KernelListener {
 		String skipExpression = connector.getSkipExpression();
 		
 		if (StringUtil.isNotEmpty(skipExpression)) {
-			Object skipExpressionObj = new ExpressionImpl(skipExpression).getValue(
-					(FlowNodeExecutionContext) executionContext);
+			Object skipExpressionObj =ExpressionMgmt.execute(skipExpression, (FlowNodeExecutionContext) executionContext);
 			if (StringUtil.getBoolean(skipExpressionObj)) {
 				return;
 			}
@@ -91,8 +89,7 @@ public class ConnectorListener implements KernelListener {
 					Object arg[] = new Object[1];
 					if (StringUtil.isNotEmpty(connectorParameterInputs.getExpression())
 							&& connectorParameterInputs.isExecute()) {
-						arg[0] = new ExpressionImpl(connectorParameterInputs.getExpression()).getValue(
-								flowNodeExecutionContext);
+						arg[0] = ExpressionMgmt.execute(connectorParameterInputs.getExpression(), flowNodeExecutionContext);
 					} else {
 						arg[0] = connectorParameterInputs.getExpression();
 					}

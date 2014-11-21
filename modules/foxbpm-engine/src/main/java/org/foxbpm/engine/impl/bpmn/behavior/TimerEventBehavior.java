@@ -20,7 +20,6 @@ package org.foxbpm.engine.impl.bpmn.behavior;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
-import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobDetail;
 import org.foxbpm.engine.impl.schedule.FoxbpmJobExecutionContext;
 import org.foxbpm.engine.impl.schedule.FoxbpmScheduleJob;
@@ -132,7 +131,7 @@ public class TimerEventBehavior extends EventDefinitionBehavior {
 			// 创建Trigger List
 			if (StringUtil.equals(eventType, EVENT_TYPE_CONNECTOR)) {
 				//只支持表达式
-				jobDetail.createTriggerListByCycle(new ExpressionImpl(timerEventDefinition.getTimeDate()), kernelTokenImpl, groupName);
+				jobDetail.createTriggerListByCycle(timerEventDefinition.getTimeDate(), kernelTokenImpl, groupName);
 			}else{
 				//支持表达式和日期时间
 				this.createTriggerList(jobDetail, kernelTokenImpl, groupName);
@@ -167,8 +166,8 @@ public class TimerEventBehavior extends EventDefinitionBehavior {
 	 */
 	private void createTriggerList(FoxbpmJobDetail<FoxbpmScheduleJob> jobDetail,
 	    KernelTokenImpl kernelTokenImpl, String groupName) {
-		jobDetail.createDateTimeTriggerList(new ExpressionImpl(timerEventDefinition.getTimeDate()), kernelTokenImpl, groupName);
-		jobDetail.createTriggerListByCycle(new ExpressionImpl(timerEventDefinition.getTimeCycle()), kernelTokenImpl, groupName);
+		jobDetail.createDateTimeTriggerList(timerEventDefinition.getTimeDate(), kernelTokenImpl, groupName);
+		jobDetail.createTriggerListByCycle(timerEventDefinition.getTimeCycle(), kernelTokenImpl, groupName);
 	}
 	
 }

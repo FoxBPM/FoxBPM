@@ -32,7 +32,7 @@ import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.event.AbstractTaskEvent;
-import org.foxbpm.engine.impl.expression.ExpressionImpl;
+import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.ExceptionUtil;
@@ -208,7 +208,7 @@ public class UserTaskBehavior extends TaskBehavior {
 
 		if (skipAssignee != null && !skipAssignee.equals("")) {
 			try{
-				newTask.setAssignee(StringUtil.getString(new ExpressionImpl(skipAssignee).getValue(executionContext)));
+				newTask.setAssignee(StringUtil.getString(ExpressionMgmt.execute(skipAssignee, executionContext)));
 			}catch(Exception ex){
 				throw ExceptionUtil.getException("10404026",ex,this.getId());
 			}
@@ -250,7 +250,7 @@ public class UserTaskBehavior extends TaskBehavior {
 
 		if (skipComment != null && !skipComment.equals("")) {
 			try{
-				newTask.setTaskComment(StringUtil.getString(new ExpressionImpl(skipComment).getValue(executionContext)));
+				newTask.setTaskComment(StringUtil.getString(ExpressionMgmt.execute(skipComment, executionContext)));
 			}catch(Exception ex){
 				throw ExceptionUtil.getException("10404027",ex,this.getId());
 			}

@@ -17,7 +17,7 @@
  */
 package org.foxbpm.engine.impl.bpmn.behavior;
 
-import org.foxbpm.engine.impl.expression.ExpressionImpl;
+import org.foxbpm.engine.impl.expression.ExpressionMgmt;
 import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
@@ -31,7 +31,7 @@ public class ScriptTaskBehavior extends TaskBehavior {
 		ScriptTask scriptTask = (ScriptTask) baseElement;
 		if(StringUtil.isNotEmpty(scriptTask.getScript())){
 			try{
-				new ExpressionImpl(scriptTask.getScript()).getValue(executionContext);
+				ExpressionMgmt.execute(scriptTask.getScript(), executionContext);
 			}catch(Exception ex){
 				throw ExceptionUtil.getException("10404019",this.getFlowNode().getId());
 			}

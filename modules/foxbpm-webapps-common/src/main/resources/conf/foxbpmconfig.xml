@@ -2,11 +2,25 @@
 <foxbpmconfig:FoxBPMConfig xmlns:foxbpmconfig="http://www.foxbpm.org/foxbpmconfig">
 	<eventListeners>
 		<!-- 更新业务表数据插件，会自动更新业务表相关字段，详见插件详细介绍 -->
-		<eventListener id="updateBizTableListener-node-enter" eventType="before-process-save" listenerClass="org.foxbpm.plugin.processinfo.UpdateBizTableListener" priority="60" />
+		<eventListener id="updateBizTableListener-node-enter"
+			eventType="before-process-save" listenerClass="org.foxbpm.plugin.processinfo.UpdateBizTableListener"
+			priority="60" />
+		<eventListener id="UpdateProcessInfoTableListener-node-enter"
+			eventType="before-process-save"
+			listenerClass="org.foxbpm.plugin.processinfo.UpdateProcessInfoTableListener"
+			priority="60" />
+		<eventListener id="UpdateProcessInfoTableListener-process-start"
+			eventType="process-start"
+			listenerClass="org.foxbpm.plugin.processinfo.InsertProcessInfoTableListener"
+			priority="60" />
+		<eventListener id="UpdateProcessInfoTableListener-process-end"
+			eventType="process-end"
+			listenerClass="org.foxbpm.plugin.processinfo.DeleteProcessInoTableListener"
+			priority="60" />
 	</eventListeners>
-		<!-- 流程轨迹信息监听 
-	<eventListener id="flowNodeTrackListener-node-enter" eventType="node-enter"
-			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" />
-	<eventListener id="SequenceTrackEventListener-sequenceflow-take" eventType="sequenceflow-take" 
-			listenerClass="org.foxbpm.engine.impl.listener.runningtrack.SequenceTrackEventListener" />-->
+	<!-- 流程轨迹信息监听 <eventListener id="flowNodeTrackListener-node-enter" eventType="node-enter" 
+		listenerClass="org.foxbpm.engine.impl.listener.runningtrack.FlowNodeTrackListener" 
+		/> <eventListener id="SequenceTrackEventListener-sequenceflow-take" eventType="sequenceflow-take" 
+		listenerClass="org.foxbpm.engine.impl.listener.runningtrack.SequenceTrackEventListener" 
+		/> -->
 </foxbpmconfig:FoxBPMConfig>
