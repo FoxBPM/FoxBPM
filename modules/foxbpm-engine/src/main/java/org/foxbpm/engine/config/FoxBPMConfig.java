@@ -34,6 +34,7 @@ public class FoxBPMConfig {
 	protected List<TaskCommandDefinitionImpl> taskCommandDefinitions;
 	protected List<EventListenerImpl> eventListeners;
 	protected List<DataObjectDefinitionImpl> dataObjectDefinitions;
+	protected List<ProcessEngineConfigurator> configurators;
 	
 	public List<TaskCommandDefinitionImpl> getTaskCommandDefinitions() {
 		return taskCommandDefinitions;
@@ -57,6 +58,14 @@ public class FoxBPMConfig {
 	
 	public List<DataObjectDefinitionImpl> getDataObjectDefinitions() {
 		return dataObjectDefinitions;
+	}
+	
+	public void setConfigurators(List<ProcessEngineConfigurator> configurators) {
+		this.configurators = configurators;
+	}
+	
+	public List<ProcessEngineConfigurator> getConfigurators() {
+		return configurators;
 	}
 	
 	public void addConfig(FoxBPMConfig other) {
@@ -88,5 +97,12 @@ public class FoxBPMConfig {
 			}
 		}
 		
+		if (other.getConfigurators() != null) {
+			if (configurators == null) {
+				configurators = other.getConfigurators();
+			} else {
+				configurators.addAll(other.getConfigurators());
+			}
+		}
 	}
 }

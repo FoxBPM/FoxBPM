@@ -26,6 +26,24 @@ public class EventListenerImpl implements EventListener {
 	private String listenerClass;
 	private int priority;
 	
+	
+	public EventListenerImpl(){
+		
+	}
+	
+	public EventListenerImpl(String id,String eventType,String listenerClass){
+		this.id = id;
+		this.listenerClass = listenerClass;
+		this.eventType = eventType;
+	}
+	
+	public EventListenerImpl(String id,String eventType,String listenerClass,int priority){
+		this.id = id;
+		this.listenerClass = listenerClass;
+		this.eventType = eventType;
+		this.priority = priority ;
+	}
+	
 	public String getEventType() {
 		return eventType;
 	}

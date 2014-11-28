@@ -51,7 +51,7 @@ public class UpdateProcessInfoTableListener implements KernelListener {
 			SqlCommand sqlCommand = new SqlCommand(DBUtils.getConnection());
 			sqlCommand.execute(sql, params);
 		} catch (Exception e) {
-			LOG.error("流程保存时更新流程信息失败!", e);
+			LOG.error("流程保存时更新流程信息失败!此错误不会影响流程运转，但可能会导致流程位置信息显示异常", e);
 		}
 	}
 	

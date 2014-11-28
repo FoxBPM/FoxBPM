@@ -47,7 +47,7 @@ public class DeleteProcessInoTableListener implements KernelListener {
 			SqlCommand sqlCommand = new SqlCommand(DBUtils.getConnection());
 			sqlCommand.execute(sql, new Object[]{processInstanceEntity.getId()});
 		} catch (Exception e) {
-			LOG.error("流程结束时删除流程信息失败!", e);
+			LOG.error("流程结束时删除流程信息失败!此错误不会影响流程运转，但可能会导致流程位置信息显示异常", e);
 		}
 	}
 	

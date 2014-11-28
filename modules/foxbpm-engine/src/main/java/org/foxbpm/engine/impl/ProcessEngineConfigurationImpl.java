@@ -231,8 +231,6 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	/** 
 	 * 所有的事件监听配置(系统级和外部) 
 	 * 事件监听配置
-	 * eventMapListeners:eventType->events
-	 * events:eventId->EventListener branch 'develop' of https://github.com/FoxBPM/FoxBPM.git
 	 */ 
 	protected List<EventListener> eventListeners = new ArrayList<EventListener>(10); 
 	protected Map<String,List<EventListener>> eventMapListeners; 
@@ -253,15 +251,14 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	}
 	
 	protected void init() {
-		// 加载外部插件
-		initConfigurators();
-		configuratorsBeforeInit();
 		initExceptionResource();
 		// 优先加载扩展文件
 		initExpandConfig();
 		// 加载foxbpm.cfg.xml配置文件，配置了引擎默认配置。
 		initEngineConfig();
-		
+		// 加载外部插件
+		initConfigurators();
+		configuratorsBeforeInit();
 		initCache();
 		// 加载sessionFactory
 		initSqlSessionFactory();
@@ -291,9 +288,16 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 	
 	protected void initConfigurators() {
 		allConfigurators = new ArrayList<ProcessEngineConfigurator>();
+		//外部注入配置，如spring
 		if (configurators != null) {
 			allConfigurators.addAll(configurators);
 		}
+		//config文件中配置
+		if(foxBpmConfig.getConfigurators() != null){
+			allConfigurators.addAll(foxBpmConfig.getConfigurators());
+		}
+		
+		//java spi扫描
 		ServiceLoader<ProcessEngineConfigurator> configuratorServiceLoader = ServiceLoader.load(ProcessEngineConfigurator.class);
 		for (ProcessEngineConfigurator configurator : configuratorServiceLoader) {
 			allConfigurators.add(configurator);
@@ -424,22 +428,25 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		taskCommandDefinitionMap = new HashMap<String, TaskCommandDefinition>();
 		commandFilterMap = new HashMap<String, AbstractCommandFilter>();
 		for (TaskCommandDefinition taskCommandDef : getAllTaskCommandDefinitions()) {
-			TaskCommandDefinition tmp = taskCommandDefinitionMap.get(taskCommandDef.getId());
-			if (tmp == null && !"system".equals(taskCommandDef.getType())) {
-				taskCommandDefinitions.add(taskCommandDef);
-				taskCommandDefinitionMap.put(taskCommandDef.getId(), taskCommandDef);
-				AbstractCommandFilter filter = null;
-				if ("toDoTasks".equals(taskCommandDef.getType())) {
-					try{
-						filter = (AbstractCommandFilter) ReflectUtil.instantiate(taskCommandDef.getFilterClass());
-					}catch(Exception ex){
-						throw ExceptionUtil.getException("00005001",ex,taskCommandDef.getId(),taskCommandDef.getFilterClass());
+			if(!"system".equals(taskCommandDef.getType())){
+				TaskCommandDefinition tmp = taskCommandDefinitionMap.get(taskCommandDef.getId());
+				if (tmp == null) {
+					taskCommandDefinitions.add(taskCommandDef);
+					taskCommandDefinitionMap.put(taskCommandDef.getId(), taskCommandDef);
+					AbstractCommandFilter filter = null;
+					if ("toDoTasks".equals(taskCommandDef.getType())) {
+						try{
+							filter = (AbstractCommandFilter) ReflectUtil.instantiate(taskCommandDef.getFilterClass());
+						}catch(Exception ex){
+							throw ExceptionUtil.getException("00005001",ex,taskCommandDef.getId(),taskCommandDef.getFilterClass());
+						}
+						commandFilterMap.put(taskCommandDef.getId(),filter);
 					}
-					commandFilterMap.put(taskCommandDef.getId(),filter);
+				} else {
+					log.debug("发现重复任务命令，忽略此命令：" + taskCommandDef.getId());
 				}
-			} else {
-				log.debug("发现重复任务命令，忽略此命令：" + taskCommandDef.getId());
 			}
+			
 		}
 	}
 	

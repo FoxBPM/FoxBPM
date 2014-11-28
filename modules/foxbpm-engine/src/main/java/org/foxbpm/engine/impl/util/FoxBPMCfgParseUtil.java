@@ -32,6 +32,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.foxbpm.engine.config.FoxBPMConfig;
+import org.foxbpm.engine.config.ProcessEngineConfigurator;
 import org.foxbpm.engine.impl.datavariable.DataObjectDefinitionImpl;
 import org.foxbpm.engine.impl.event.EventListenerImpl;
 import org.foxbpm.engine.impl.task.CommandParam;
@@ -60,7 +61,8 @@ public class FoxBPMCfgParseUtil {
 	public static final String ELEMENT_EVENTLISTENER = "eventListener";
 	public static final String ELEMENT_BIZDATAOBJECTS = "bizDataObjects";
 	public static final String ELEMENT_DATAOBJECTBEHAVIOR = "dataObjectBehavior";
-	
+	public static final String ELEMENT_PLUGIN = "plugin";
+	public static final String ELEMENT_PLUGINS = "plugins";
 	private FoxBPMCfgParseUtil() {
 		
 	}
@@ -118,9 +120,46 @@ public class FoxBPMCfgParseUtil {
 				foxBPMConfig.setEventListeners(parseEventListeners(childElem));
 			} else if (ELEMENT_BIZDATAOBJECTS.equals(nodeName)) {
 				foxBPMConfig.setDataObjectDefinitions(parseBizDataObject(childElem));
+			}else if(ELEMENT_PLUGINS.equals(nodeName)){
+				foxBPMConfig.setConfigurators(parsePlugins(childElem));
 			}
 		}
 		return foxBPMConfig;
+	}
+	
+	private List<ProcessEngineConfigurator> parsePlugins(Element element){
+		List<ProcessEngineConfigurator> configurators = null;
+		Element childElem = null;
+		String nodeName = null;
+		String className = null;
+		ProcessEngineConfigurator configurator = null;
+		for (Iterator<Element> iterator = element.elementIterator(); iterator.hasNext();) {
+			childElem = iterator.next();
+			nodeName = childElem.getName();
+			if (ELEMENT_PLUGIN.equals(nodeName)) {
+				String id = childElem.attributeValue("id");
+				className = childElem.attributeValue("configurator");
+				if(StringUtil.isEmpty(className)){
+					LOGGER.error("plugin{}未配置configurator属性,忽略此配置",id);
+					continue;
+				}
+				try{
+					configurator = (ProcessEngineConfigurator)ReflectUtil.instantiate(className);
+				}catch(Exception ex){
+					LOGGER.error("plugin:"+id+"加载失败，已忽略。原因：类:"+className+"反射失败！",ex);
+					continue;
+				}
+				
+				if(configurator != null){
+					if(configurators == null){
+						configurators = new ArrayList<ProcessEngineConfigurator>();
+					}
+					configurators.add(configurator);
+				}
+			}
+		}
+		
+		return configurators;
 	}
 	
 	/**

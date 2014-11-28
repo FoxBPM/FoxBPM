@@ -13,8 +13,8 @@
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="chapters/ch11-Bpmn20.xml"/>
   <!--设计器安装 -->
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="chapters/ch12-DesignerInstall.xml"/>
-  <!-- 设计器使用 -->
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="chapters/designer.use.xml"/>
   <!-- web功能手册 -->
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="chapters/ch13-FoxbpmWeb.xml"/>
+  <!-- 设计器使用 -->
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="chapters/designer.use.xml"/>
 </book>

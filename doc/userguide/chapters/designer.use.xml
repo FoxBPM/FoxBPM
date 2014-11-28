@@ -984,23 +984,65 @@
             <para>连接器主要类似java监听的功能，可在流程运转的过程中额外的做一些其他功能，如发送邮件，记录流程信息等。</para>
             <sect3>
                 <title>发送邮件</title>
-                <para/>
+                <para> 功能描述：根据配置的“主题”，“收件人”，“抄送人”，“正文”发送邮件，如任务结束时，需要邮件通知发起人任务已经结束。</para>
+                <para>说明</para>
+                <orderedlist>
+                    <listitem>
+                        <para>该发送邮件不是立即发送，而是将邮件信息存入数据库foxbpm_mail中，有系统定时任务根据foxbpm_mail表内容来处理发送邮件。</para>
+                    </listitem>
+                    <listitem>
+                        <para>其中“发件人”，“抄送人”可以使多个（以分号分隔）。</para>
+                    </listitem>
+                </orderedlist>
+                
             </sect3>
             <sect3>
                 <title>自动邮件发送</title>
-                <para/>
+                <para>  功能描述：根据配置的“主题”，“正文”自动实现邮件发送（该连接器针对任务分配有效）连接器触发时机选择“分配”。</para>
+                <para>说明:</para>
+                <orderedlist>
+                    <listitem>
+                        <para>只有选择连接事件为“分配”该连接器才有效。</para>
+                    </listitem>
+                    <listitem>
+                        <para>此连接器目前并不完整，实用性也不高，实际使用场景中，如果是分配人是部门，则一般企业都会有部门邮箱，而不是将部门所有人都取出来单独发邮件通知，每个人都发邮件会极大影响性能，另外邮件内容也应该有邮件模板来控制。
+                        所以，在实际场景中，应该由用户自己开发类似功能连接器，根据公司情况考虑好性能及邮件内容，如果是短信通知，也可仿照此连接器开发。</para>
+                    </listitem>
+                </orderedlist>
             </sect3>
             <sect3>
                 <title>WebServices</title>
-                <para/>
+                <para>功能描述：根据配置webservice信息，调用webservice接口返回响应结果。</para>
+                <para>注意</para>
+                <orderedlist>
+                    <listitem>
+                        <para>该连接器需要输入参数，而且相关参数必须有值。</para>
+                    </listitem>
+                    <listitem>
+                        <para>该链接存在返回值。</para>
+                    </listitem>
+                </orderedlist>
+                
             </sect3>
             <sect3>
                 <title>Groovy</title>
-                <para/>
+                <para>执行Groovy脚本</para>
             </sect3>
             <sect3>
                 <title>JDBCDatabaseQuery</title>
-                <para/>
+                <para>根据输入的数据库驱动、url、用户名、密码，执行查询sql并返回结果。</para>
+            </sect3>
+            <sect3>
+                <title>连接器使用注意事项</title>
+                <orderedlist>
+                    <listitem>
+                        <para>连接器使用过程中，必须要注意连接器的监听事件，各时机取到的引擎参数都有可能不同，如“任务分配信息”只有在“分配”事件上才能获得。</para>
+                    </listitem>
+                    <listitem>
+                        <para>连接器目前执行错误会直接导致流程中断，并回滚事务（需要引擎配置了事务管理），后期可能会加上异常处理handler功能，用来灵活捕获异常。</para>
+                    </listitem>
+                </orderedlist>
+                
             </sect3>
         </sect2>
         <sect2>
@@ -1162,6 +1204,356 @@
                         <para> 说明：无</para>
                     </listitem>
                 </itemizedlist>
+            </sect3>
+        </sect2>
+        <sect2>
+            <title>任务命令</title>
+            <sect3>
+                <title>通用</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>功能说明：结束当前任务，"同意"流程向下运转</para>
+                    </listitem>
+                    <listitem>
+                        <para>执行参数：无</para>
+                    </listitem>
+                    <listitem>
+                        <para>界面收集参数：无</para>
+                    </listitem>
+                </itemizedlist>
+                
+            </sect3>
+            <sect3>
+                <title>启动并提交</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>功能说明：启动一条流程，并在第一个人工节点做提交操作。</para>
+                    </listitem>
+                    <listitem>
+                        <para>执行参数：无</para>
+                    </listitem>
+                    <listitem>
+                        <para>界面收集参数：无</para>
+                    </listitem>
+                    <listitem>
+                        <para>说明：需要和“提交”命令一起使用。</para>
+                    </listitem>
+                </itemizedlist>
+            </sect3>
+            <sect3>
+                <title>提交</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>功能说明：提交流程，一般此时或设置或修改bizKey和initator字段。</para>
+                    </listitem>
+                    <listitem>
+                        <para>执行参数：无</para>
+                    </listitem>
+                    <listitem>
+                        <para>界面收集参数：无</para>
+                    </listitem>
+                </itemizedlist>
+            </sect3>
+            <sect3>
+                <title>接收任务</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>功能说明：共享任务时，如果是手工领取方式，则需要此命令来领取任务才能看到待办任务。</para>
+                    </listitem>
+                    <listitem>
+                        <para>执行参数：无</para>
+                    </listitem>
+                    <listitem>
+                        <para>界面收集参数：无</para>
+                    </listitem>
+                </itemizedlist>
+            </sect3>
+            <sect3>
+                <title>释放任务</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>共享任务时，如果是手工领取方式，那么在任务被领取以后，可以使用此按钮进行任务释放操作。</para>
+                    </listitem>
+                    <listitem>
+                        <para>执行参数：无</para>
+                    </listitem>
+                    <listitem>
+                        <para>界面收集参数：无</para>
+                    </listitem>
+                </itemizedlist>
+            </sect3>
+            <sect3>
+                <title>保存草稿</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>开始节点，只启动，不提交，并且将任务设置为草稿状态。</para>
+                    </listitem>
+                    <listitem>
+                        <para>执行参数：无</para>
+                    </listitem>
+                    <listitem>
+                        <para>界面收集参数：无</para>
+                    </listitem>
+                </itemizedlist>
+            </sect3>
+            
+            <sect3>
+                <title>转发-创建新任务</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>将当前任务转发给其他人，并且会生成新的任务（留下转发痕迹）。</para>
+                    </listitem>
+                    <listitem>
+                        <para>执行参数：无</para>
+                    </listitem>
+                    <listitem>
+                        <para>界面收集参数：</para>
+                        <orderedlist>
+                            <listitem>
+                                <para>transferUserId:转发目的人</para>
+                            </listitem>
+                        </orderedlist>
+                        
+                    </listitem>
+                </itemizedlist>
+            </sect3>
+            
+            <sect3>
+                <title>转发</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>将当前任务转发给其他人，不会创建新任务（不会留下痕迹）。</para>
+                    </listitem>
+                    <listitem>
+                        <para>执行参数：无</para>
+                    </listitem>
+                    <listitem>
+                        <para>界面收集参数：</para>
+                        <orderedlist>
+                            <listitem>
+                                <para>transferUserId:转发目的人</para>
+                            </listitem>
+                        </orderedlist>
+                        
+                    </listitem>
+                </itemizedlist>
+            </sect3>
+            <sect3>
+                <title>退回重新分配</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>将流程退回到指定节点，并且重新分配任务。</para>
+                    </listitem>
+                    <listitem>
+                        <para>执行参数：无</para>
+                    </listitem>
+                    <listitem>
+                        <para>界面收集参数：</para>
+                        <orderedlist>
+                            <listitem>
+                                <para>rollbackNodeId:退回目的节点。</para>
+                            </listitem>
+                        </orderedlist>
+                    </listitem>
+                    <listitem>
+                        <para>说明：如果分支退回到主线时，会结束当前的所有分支；不能由主线退回到分支内。</para>
+                    </listitem>
+                </itemizedlist>
+            </sect3>
+            
+            <sect3>
+                <title>退回上一步</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>自动计算并退回到流程的上一步骤,任务处理者为上一步骤的处理者。</para>
+                    </listitem>
+                    <listitem>
+                        <para>执行参数：无。</para>
+                    </listitem>
+                    <listitem>
+                        <para>界面收集参数：无。</para>
+                    </listitem>
+                </itemizedlist>
+            </sect3>
+            <sect3>
+                <title>退回-指定处理者</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>退回到前台用户指定的节点和处理者。</para>
+                    </listitem>
+                    <listitem>
+                        <para>执行参数：无。</para>
+                    </listitem>
+                    <listitem>
+                        <para>界面收集参数：</para>
+                        <orderedlist>
+                            <listitem>
+                                <para>rollBackNodeId：退回节点号。</para>
+                            </listitem>
+                            <listitem>
+                                <para>rollBackAssignee：退回的指定处理者。</para>
+                            </listitem>
+                        </orderedlist>
+                    </listitem>
+                </itemizedlist>
+            </sect3>
+            <sect3>
+                <title>退回-后台指定步骤-重新分配</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>功能说明：在设计器上指定退回的节点，退回到节点后任务被重新分配。</para>
+                    </listitem>
+                    <listitem>
+                        <para>执行参数：</para>
+                        <orderedlist>
+                            <listitem>
+                                <para>rollBackNodeId：退回节点号。</para>
+                            </listitem>
+                        </orderedlist>
+                        
+                    </listitem>
+                    <listitem>
+                        <para>界面收集参数：无。</para>
+                    </listitem>
+                </itemizedlist>
+            </sect3>
+            <sect3>
+                <title>退回-后台指定步骤-自动最近处理者</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>功能说明：在设计器上指定退回的节点，退回后，任务被自动分配给最近一次任务的处理者。</para>
+                    </listitem>
+                    <listitem>
+                        <para>执行参数：</para>
+                        <orderedlist>
+                            <listitem>
+                                <para>rollBackNodeId：退回节点号。</para>
+                            </listitem>
+                        </orderedlist>
+                        
+                    </listitem>
+                    <listitem>
+                        <para>界面收集参数：无。</para>
+                    </listitem>
+                </itemizedlist>
+            </sect3>
+            
+            <sect3>
+                <title>退回-后台指定步骤-自动最近处理者</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>功能说明：将任务给其他人处理，处理人只会有“还回”权限，并且会生成记录。</para>
+                    </listitem>
+                    <listitem>
+                        <para>执行参数：无</para>
+                    </listitem>
+                    <listitem>
+                        <para>界面收集参数：</para>
+                        <orderedlist>
+                            <listitem>
+                                <para>pendingUserId:转办目的人。</para>
+                            </listitem>
+                        </orderedlist>
+                    </listitem>
+                </itemizedlist>
+            </sect3>
+            <sect3>
+                <title>还回</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>功能说明：见转办。</para>
+                    </listitem>
+                    <listitem>
+                        <para>执行参数：无。</para>
+                    </listitem>
+                    <listitem>
+                        <para>界面收集参数：无。</para>
+                    </listitem>
+                </itemizedlist>
+            </sect3>
+            
+            <sect3>
+                <title>终止</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>功能说明：强制终止流程实例，将流程实例设置为终止状态，结束流程上所有任务和令牌等。</para>
+                    </listitem>
+                    <listitem>
+                        <para>执行参数：无。</para>
+                    </listitem>
+                    <listitem>
+                        <para>界面收集参数：无。</para>
+                    </listitem>
+                    <listitem>
+                        <para>说明：在子流程中使用此命令时，则会连同主流程一起被结束掉。</para>
+                    </listitem>
+                </itemizedlist>
+            </sect3>
+            
+            <sect3>
+                <title>暂时实例</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>功能说明：暂停流程实例，本任务会被暂停，任务命令只剩下“流程状态”和“恢复实例”。</para>
+                    </listitem>
+                    <listitem>
+                        <para>执行参数：无。</para>
+                    </listitem>
+                    <listitem>
+                        <para>界面收集参数：无。</para>
+                    </listitem>
+                </itemizedlist>
+            </sect3>
+            
+            <sect3>
+                <title>恢复实例</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>功能说明：恢复被暂停的流程实例。</para>
+                    </listitem>
+                    <listitem>
+                        <para>执行参数：无。</para>
+                    </listitem>
+                    <listitem>
+                        <para>界面收集参数：无。</para>
+                    </listitem>
+                </itemizedlist>
+            </sect3>
+            
+            <sect3>
+                <title>流程状态</title>
+                <itemizedlist>
+                    <listitem>
+                        <para>功能说明：展现流程的处理过程和流程图等信息。</para>
+                    </listitem>
+                    <listitem>
+                        <para>执行参数：无。</para>
+                    </listitem>
+                    <listitem>
+                        <para>界面收集参数：无。</para>
+                    </listitem>
+                </itemizedlist>
+            </sect3>
+            <sect3>
+                <title>命令注意事项</title>
+                <orderedlist>
+                    <listitem>
+                        <para>退回类型的按钮，在使用时一定要注意场景，尤其是在并行分支中、多实例场景中使用时，一定要详细考虑场景及相应的功能。</para>
+                    </listitem>
+                    <listitem>
+                        <para>引擎执行参数是必须在设计器上就指定的参数，具体应用是说，在设计流程的时候，开发人员已经指定了这个参数的值，如应该退回到哪个节点。</para>
+                    </listitem>
+                    <listitem>
+                        <para>带有页面收集参数的命令，都是需要前端自己配合实现的，具体应用是说，这种参数都应该由最终客户在页面上选择的。</para>
+                    </listitem>
+                    <listitem>
+                        <para>任务命令不满足功能时，自己可以根据二开文档进行任务命令的扩展。</para>
+                    </listitem>
+                    
+                    <listitem>
+                        <para>每个任务命令在foxbpm-engine的test类中都有对应的test类，里面有详细使用说明以及测试用例。</para>
+                    </listitem>
+                </orderedlist>
             </sect3>
         </sect2>
     </sect1>
