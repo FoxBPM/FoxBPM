@@ -51,6 +51,7 @@ public class EndEventTaskListener extends AbstractTaskEventListener {
 		taskEntity.setCommandId(TaskCommandSystemType.ENDEVENT);
 		taskEntity.setCommandType(TaskCommandSystemType.ENDEVENT);
 		taskEntity.setCommandMessage("结束流程");
+		taskEntity.setAssignee(tokenEntity.getProcessInstance().getStartAuthor());
 		TaskCommandDefinition taskCommandDef=Context.getProcessEngineConfiguration().getTaskCommandDefinitionMap().get(TaskCommandSystemType.ENDEVENT);
 		if(taskCommandDef!=null){
 			taskEntity.setCommandMessage(taskCommandDef.getName());
