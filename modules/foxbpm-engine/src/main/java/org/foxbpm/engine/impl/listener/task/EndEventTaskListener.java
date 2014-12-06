@@ -17,6 +17,8 @@
  */
 package org.foxbpm.engine.impl.listener.task;
 
+import java.util.Calendar;
+
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
@@ -34,10 +36,9 @@ import org.foxbpm.kernel.runtime.ListenerExecutionContext;
  * @date 2014年7月16日
  */
 public class EndEventTaskListener extends AbstractTaskEventListener {
-
+	
 	private static final long serialVersionUID = -261843320544102107L;
-
-	 
+	
 	protected TaskEntity handleTaskEntity(ListenerExecutionContext executionContext) {
 		TokenEntity tokenEntity = (TokenEntity) executionContext;
 		KernelFlowNodeImpl kernelFlowNode = tokenEntity.getFlowNode();
@@ -52,11 +53,15 @@ public class EndEventTaskListener extends AbstractTaskEventListener {
 		taskEntity.setCommandType(TaskCommandSystemType.ENDEVENT);
 		taskEntity.setCommandMessage("结束流程");
 		taskEntity.setAssignee(tokenEntity.getProcessInstance().getStartAuthor());
-		TaskCommandDefinition taskCommandDef=Context.getProcessEngineConfiguration().getTaskCommandDefinitionMap().get(TaskCommandSystemType.ENDEVENT);
-		if(taskCommandDef!=null){
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.SECOND, 1);
+		taskEntity.setCreateTime(calendar.getTime());
+		taskEntity.setEndTime(calendar.getTime());
+		TaskCommandDefinition taskCommandDef = Context.getProcessEngineConfiguration().getTaskCommandDefinitionMap().get(TaskCommandSystemType.ENDEVENT);
+		if (taskCommandDef != null) {
 			taskEntity.setCommandMessage(taskCommandDef.getName());
 		}
-
+		
 		return taskEntity;
 	}
 }

@@ -17,6 +17,8 @@
  */
 package org.foxbpm.engine.impl.listener.task;
 
+import java.util.Calendar;
+
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
@@ -37,9 +39,7 @@ public class StartEventTaskListener extends AbstractTaskEventListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 8093133229946107408L;
-
-
-	 
+	
 	protected TaskEntity handleTaskEntity(ListenerExecutionContext executionContext) {
 		TokenEntity tokenEntity = (TokenEntity) executionContext;
 		KernelFlowNodeImpl kernelFlowNode = tokenEntity.getProcessInstance().getStartFlowNode();
@@ -53,13 +53,16 @@ public class StartEventTaskListener extends AbstractTaskEventListener {
 		taskEntity.setCommandId(TaskCommandSystemType.STARTEVENT);
 		taskEntity.setCommandType(TaskCommandSystemType.STARTEVENT);
 		taskEntity.setCommandMessage("启动流程");
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.SECOND, -1);
+		taskEntity.setCreateTime(calendar.getTime());
+		taskEntity.setEndTime(calendar.getTime());
 		taskEntity.setAssignee(tokenEntity.getProcessInstance().getStartAuthor());
-		TaskCommandDefinition taskCommandDef=Context.getProcessEngineConfiguration().getTaskCommandDefinitionMap().get(TaskCommandSystemType.STARTEVENT);
-		if(taskCommandDef!=null){
+		TaskCommandDefinition taskCommandDef = Context.getProcessEngineConfiguration().getTaskCommandDefinitionMap().get(TaskCommandSystemType.STARTEVENT);
+		if (taskCommandDef != null) {
 			taskEntity.setCommandMessage(taskCommandDef.getName());
 		}
 		
 		return taskEntity;
 	}
-
 }

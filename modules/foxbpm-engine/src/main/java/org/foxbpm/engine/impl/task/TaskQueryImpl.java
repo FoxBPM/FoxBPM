@@ -640,10 +640,4 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements
 	public boolean isProcessInstanceVariableValueIsLike() {
 		return processInstanceVariableValueIsLike;
 	}
-	
-	@Override
-	public String getOrderBy() {
-		// TODO Auto-generated method stub
-		return "RES.ID";
-	}
 }
