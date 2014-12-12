@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.impl.datavariable.VariableQueryImpl;
 import org.foxbpm.engine.impl.entity.QueryVariablesCommand;
 import org.foxbpm.engine.impl.entity.VariableInstanceEntity;
@@ -34,6 +35,31 @@ import org.foxbpm.kernel.runtime.impl.KernelVariableInstanceImpl;
  */
 public class VariableManager extends AbstractManager {
 
+	/**
+	 * by ych 2014-12-12
+	 * jiejue bianliang chongfu
+	 * @param persistentObject
+	 */
+	public void insert(PersistentObject persistentObject) {
+		VariableInstanceEntity v = (VariableInstanceEntity)persistentObject;
+		String nowProcessInstanceId = v.getProcessInstanceId();
+		String nowVariableKey = v.getKey();
+		VariableInstanceEntity tmpV = null;
+		boolean flag = false;
+		for(PersistentObject tmp :insertedObjects){
+			tmpV = (VariableInstanceEntity)tmp;
+			if(tmpV.getProcessInstanceId().equals(nowProcessInstanceId) && tmpV.getKey().equals(nowVariableKey)){
+				tmpV.setValue(v.getValue());
+				flag = true;
+				break;
+			}
+		}
+		if(!flag){
+			super.insert(persistentObject);
+		}
+	}
+	
+	
 	public List<KernelVariableInstanceImpl> findVariableInstancesByProcessInstanceId(String id) {
 		return null;
 	}
