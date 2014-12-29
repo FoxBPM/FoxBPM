@@ -18,44 +18,52 @@
 package org.foxbpm.portal.manager;
 
 import java.util.List;
+import java.util.Map;
 
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.portal.dao.ExpenseDao;
 import org.foxbpm.portal.model.ExpenseEntity;
 import org.foxbpm.portal.service.WorkFlowService;
+import org.foxbpm.rest.common.api.DataResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ExpenseManager {
+public class ExpenseManager{
 
 	@Autowired
 	private ExpenseDao expenseDao;
 	@Autowired
 	private WorkFlowService workFlowService;
 	
-	public void applyNewExpense(ExpenseEntity expenseEntity,String flowCommandInfo){
+	public void applyNewExpense(ExpenseEntity expenseEntity,Map<String,Object> formData){
 		expenseDao.saveExpenseEntity(expenseEntity);
-		
+		String flowCommandInfo = StringUtil.getString(formData.get("flowCommandInfo"));
 		if(StringUtil.isEmpty(flowCommandInfo)){
 			throw new RuntimeException("流程命令参数确实，请检查请求参数");
 		}
+		
 		//调用api执行任务命令
-		workFlowService.executeTaskCommandJson(flowCommandInfo);
+		workFlowService.executeTaskCommandJson(formData);
 	}
 	
-	public void updateExpense(ExpenseEntity expenseEntity,String flowCommandInfo){
+	public void updateExpense(ExpenseEntity expenseEntity,Map<String,Object> formData){
 		expenseDao.updateExpenseEntity(expenseEntity);
-		
-		if(StringUtil.isEmpty(flowCommandInfo)){
-			throw new RuntimeException("流程命令参数确实，请检查请求参数");
-		}
 		//调用api执行任务命令
-		workFlowService.executeTaskCommandJson(flowCommandInfo);
+		workFlowService.executeTaskCommandJson(formData);
 	}
 	
-	public List<ExpenseEntity> selectByPage(int pageIndex,int pageSize){
-		return expenseDao.selectExpenseByPage(pageIndex, pageSize);
+	public DataResult selectByPage(int pageIndex,int pageSize){
+		List<ExpenseEntity> list = expenseDao.selectExpenseByPage(pageIndex, pageSize);
+		int count = expenseDao.selectCount();
+		DataResult dr = new DataResult(); 
+		dr.setData(list);
+		dr.setPageIndex(pageIndex);
+		dr.setPageSize(pageSize);
+		dr.setRecordsFiltered(count);
+		dr.setRecordsTotal(count);
+		dr.setTotal(count);
+		return dr;
 	}
 	
 	public ExpenseEntity selectExpenseById(String expenseId){

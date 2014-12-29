@@ -10,7 +10,13 @@
   <packaging>war</packaging>
   <name>foxbpm-webapps-portal</name>
   <description>FoxBPM流程门户</description>
-  
+  <repositories>
+        <repository>
+            <id>EclipseLink Repo</id>
+            <name>eclipseLink repository</name>
+            <url>http://download.eclipse.org/rt/eclipselink/maven.repo/</url>
+        </repository>
+    </repositories>
   
   
   <dependencies>
@@ -70,6 +76,23 @@
 			<artifactId>spring-aspects</artifactId>
 			<version>3.2.5.RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>3.2.5.RELEASE</version>
+		</dependency>
+			<!-- PERSISTENCE begin -->
+		<dependency>  
+	        <groupId>org.eclipse.persistence</groupId>  
+	        <artifactId>javax.persistence</artifactId>  
+	        <version>2.0.0</version>  
+	    </dependency>  
+	      
+	    <dependency>  
+	        <groupId>org.eclipse.persistence</groupId>  
+	        <artifactId>eclipselink</artifactId>  
+	        <version>2.0.0</version>  
+	    </dependency> 
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -99,6 +122,5 @@
 			<artifactId>foxbpm-rest</artifactId>
 			<version>6.0.1-SNAPSHOT</version>
 		</dependency>
-		
-		</dependencies>
+	</dependencies>
 </project>

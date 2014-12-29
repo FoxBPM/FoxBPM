@@ -11,7 +11,6 @@
 	<packaging>war</packaging>
 	<name>foxbpm-webapps-common</name>
 	<description>FoxBPM Web基础项目</description>
-
 	<build>
 		<plugins>
 			<!-- 合并多个war -->
@@ -99,6 +98,8 @@
 			<artifactId>spring-aspects</artifactId>
 			<version>3.2.5.RELEASE</version>
 		</dependency>
+		
+		 
 
 		<dependency>
 			<groupId>javax.servlet</groupId>

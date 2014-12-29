@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.identity.Authentication;
@@ -36,7 +37,15 @@ public class WorkFlowService {
 	@Autowired
 	private TaskService taskService;
 	
-	public void executeTaskCommandJson(String taskCommandJson) {
+	@Autowired
+	private ProcessEngine processEngine;
+	
+	public void executeTaskCommandJson(Map<String,Object> formData) {
+		String taskCommandJson = StringUtil.getString(formData.get("flowCommandInfo"));
+		
+		
+		Map<String,Object> transVariable = new HashMap<String, Object>();
+		transVariable.put("formData", formData);
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode params = null;
 		try {
@@ -70,6 +79,7 @@ public class WorkFlowService {
 		if(taskCommentNode != null){
 			expandTaskCommand.setTaskComment(taskCommentNode.getTextValue());
 		}
+		expandTaskCommand.setTransientVariables(transVariable);
 		//设置任务命令参数
 		Map<String,Object> taskParams = new HashMap<String, Object>();
 		if(commandParamsNode != null){

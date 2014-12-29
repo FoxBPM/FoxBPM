@@ -18,7 +18,6 @@
 package org.foxbpm.portal.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.portal.manager.ExpenseManager;
 import org.foxbpm.portal.model.ExpenseEntity;
+import org.foxbpm.rest.common.api.DataResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,19 +38,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class ExpenseController {
+public class ExpenseController extends AbstractController{
 
 	Logger log = LoggerFactory.getLogger(ExpenseController.class);
 	@Autowired
 	private ExpenseManager expenseManager;
 
 	@RequestMapping(value = { "/", "/expenses" }, method = RequestMethod.POST)
-	public void applyExpense(HttpServletResponse response,HttpServletRequest request, @ModelAttribute ExpenseEntity expenseEntity, @RequestParam String flowCommandInfo) throws IOException {
+	public void applyExpense(HttpServletResponse response,HttpServletRequest request, @ModelAttribute ExpenseEntity expenseEntity) throws IOException {
 		response.setContentType("text/html;charset=utf-8");
 		try{
+			Map<String,Object> formData = getFormData(request);
 			UserEntity userEntity = (UserEntity)request.getSession().getAttribute("user");
 			expenseEntity.setOwner(userEntity.getUserId());
-			expenseManager.applyNewExpense(expenseEntity, flowCommandInfo);
+			expenseManager.applyNewExpense(expenseEntity,formData);
 			response.getWriter().print(showMessage("启动成功！",true));
 		}catch(Exception ex){
 			log.error("报销流程启动失败！",ex);
@@ -60,8 +61,9 @@ public class ExpenseController {
 	}
 
 	@RequestMapping(value = { "/", "/updateExpense" }, method = RequestMethod.POST)
-	public void updateExpense(HttpServletResponse response, @ModelAttribute ExpenseEntity expenseEntity, @RequestParam String flowCommandInfo) throws IOException {
-		expenseManager.updateExpense(expenseEntity, flowCommandInfo);
+	public void updateExpense(HttpServletResponse response,HttpServletRequest request, @ModelAttribute ExpenseEntity expenseEntity) throws IOException {
+		Map<String,Object> formData = getFormData(request);
+		expenseManager.updateExpense(expenseEntity, formData);
 		response.setContentType("text/html;charset=utf-8");
 		response.getWriter().print(showMessage("更新成功！",true));
 	}
@@ -75,10 +77,8 @@ public class ExpenseController {
 	
 	@RequestMapping(value = { "/", "/listExpense" }, method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String,Object> getExpenseByPage(@RequestParam int pageIndex,@RequestParam int pageSize){
-		Map< String, Object> result = new HashMap<String, Object>();
-		result.put("data", expenseManager.selectByPage(pageIndex, pageSize));
-		return result;
+	public DataResult getExpenseByPage(@RequestParam int pageIndex,@RequestParam int pageSize){
+		return expenseManager.selectByPage(pageIndex, pageSize);
 	}
 	
 	public String showMessage(String msg,boolean isCloseWindow){

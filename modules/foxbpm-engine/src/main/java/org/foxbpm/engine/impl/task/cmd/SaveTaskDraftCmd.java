@@ -17,7 +17,13 @@
  */
 package org.foxbpm.engine.impl.task.cmd;
 
+import java.util.List;
+
+import org.foxbpm.engine.ProcessEngine;
+import org.foxbpm.engine.ProcessEngineManagement;
+import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
@@ -101,6 +107,16 @@ public class SaveTaskDraftCmd extends AbstractExpandTaskCmd<SaveTaskDraftCommand
 			}
 		}else{
 			/** 还没有发起流程时候的处理 */
+			ProcessEngine processEngine =ProcessEngineManagement.getDefaultProcessEngine();
+			RuntimeService runtimeService = processEngine.getRuntimeService();
+			ProcessInstanceEntity processInstance = (ProcessInstanceEntity)runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey,transientVariables,persistenceVariables);
+			List<TaskEntity> tasks = processInstance.getTasks();
+			if(tasks!= null && tasks.size() >0){
+				TaskEntity tmpTask = tasks.get(0);
+				tmpTask.setDraft(true);
+				String userId = Authentication.getAuthenticatedUserId();
+				tmpTask.setAssignee(userId);
+			}
 		}
 		return null;
 	}
