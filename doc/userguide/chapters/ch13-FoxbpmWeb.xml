@@ -13,7 +13,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="images/web.13.png"/>
+                                fileref="../images/web.13.png"/>
                         </imageobject>
                     </mediaobject>
                     <para>说明：该页面作为主页面，目前只有日历面板和待办任务有效(关于日历和代码后面介绍)。</para>
@@ -25,7 +25,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="images/web.1.png"/>
+                                fileref="../images/web.1.png"/>
                         </imageobject>
                     </mediaobject>
                     <para>功能说明：支持搜索查询、流程启动操作。</para>
@@ -33,7 +33,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="images/web.2.png"/>
+                                fileref="../images/web.2.png"/>
                         </imageobject>
                     </mediaobject>
                     <para>在该表单页面上只有“流程状态”，“启动并提交“，“关闭”按钮。</para>
@@ -46,7 +46,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="images/web.3.png"/>
+                                fileref="../images/web.3.png"/>
                         </imageobject>
                     </mediaobject>
                     <para>界面功能：待办任务查询、列表分页、展示列设置、操作表单(主要命令操作)、查看流程图。<note>
@@ -61,7 +61,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="images/web.4.png"/>
+                                fileref="../images/web.4.png"/>
                         </imageobject>
                     </mediaobject>
                     <para>界面功能：支持根据“任务优先级”、“任务创建或任务期限”来过滤待办任务，以支持“日历视图”的方式展现待办任务，和“待办任务”功能差不多区别就是在与展现方式上。</para>
@@ -73,7 +73,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="images/web.5.png"/>
+                                fileref="../images/web.5.png"/>
                         </imageobject>
                     </mediaobject>
                     <para>界面功能：待办任务查询、列表分页、展示列设置、表单查看、查看流程图。
@@ -90,7 +90,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="images/web.6.png"/>
+                                fileref="../images/web.6.png"/>
                         </imageobject>
                     </mediaobject>
                     <para>界面功能：流程查询、列表分页、展示列设置、表单查看、查看流程图。
@@ -107,14 +107,14 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="images/web.7.png"/>
+                                fileref="../images/web.7.png"/>
                         </imageobject>
                     </mediaobject>
                     <para>点击如下图：</para>
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="images/web.8.png"/>
+                                fileref="../images/web.8.png"/>
                         </imageobject>
                     </mediaobject>
                     <para>界面功能：支持“页面布局”、“本地缓存”(清除)、“主题切换”</para>
@@ -126,7 +126,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="images/web.9.png"/>
+                                fileref="../images/web.9.png"/>
                         </imageobject>
                     </mediaobject>
                     <para>界面功能：支持“轨迹动态运行”、“流程图状态操作、“轨迹信息查看”等操作，“流程信息列表”、“流程状态”、“当前处理者”、“流程参入者”等查看。</para>
@@ -138,7 +138,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="images/web.10.png"/>
+                                fileref="../images/web.10.png"/>
                         </imageobject>
                     </mediaobject>
                     <para>界面功能：支持“全屏”、“锁定系统”、“退出系统”、“轨迹信息查看”等操作，“流程信息列表”、“流程状态”、“当前处理者”、“流程参入者”等查看。</para>
@@ -146,7 +146,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="images/web.11.png"/>
+                                fileref="../images/web.11.png"/>
                         </imageobject>
                     </mediaobject>
                     <para>界面功能：目前只支持“任务通知”。</para>
@@ -155,7 +155,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="images/web.12.png"/>
+                                fileref="../images/web.12.png"/>
                         </imageobject>
                     </mediaobject>
                     <para>点击开发者工具可以清空缓存、暂不支持国际化、以及查找待办任务，支持全屏，左侧菜单隐藏功能。</para>

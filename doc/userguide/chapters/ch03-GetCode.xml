@@ -13,7 +13,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="images/gettingStarted.1.png"/>
+                            fileref="../images/gettingStarted.1.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -22,7 +22,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="images/gettingStarted.2.png"/>
+                            fileref="../images/gettingStarted.2.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -31,7 +31,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="images/gettingStarted.3.png"/>
+                            fileref="../images/gettingStarted.3.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -40,7 +40,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="images/gettingStarted.7.png"/>
+                            fileref="../images/gettingStarted.7.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -49,7 +49,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="images/gettingStarted.4.png"/>
+                            fileref="../images/gettingStarted.4.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -58,7 +58,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="images/gettingStarted.5.png"/>
+                            fileref="../images/gettingStarted.5.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -68,7 +68,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="images/gettingStarted.6.png"/>
+                            fileref="../images/gettingStarted.6.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -77,7 +77,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="images/gettingStarted.9.png"/>
+                            fileref="../images/gettingStarted.9.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -86,7 +86,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="images/gettingStarted.10.png"/>
+                            fileref="../images/gettingStarted.10.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -114,7 +114,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="images/gs.mavenConfig.1.png"/>
+                            fileref="../images/gs.mavenConfig.1.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -129,7 +129,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="images/gs.mavenConfig.2.png"/>
+                            fileref="../images/gs.mavenConfig.2.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -139,7 +139,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="images/gs.mavenConfig.3.png"/>
+                            fileref="../images/gs.mavenConfig.3.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -155,7 +155,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="images/gs.mavenConfig.8.png"/>
+                            fileref="../images/gs.mavenConfig.8.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -173,27 +173,27 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="images/gettingStarted.13.png"/>
+                            fileref="../images/gettingStarted.13.png"/>
                     </imageobject>
                 </mediaobject>
                 <para>配置tomcat， 点击finish。</para>
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="images/gettingStarted.14.png"/>
+                            fileref="../images/gettingStarted.14.png"/>
                     </imageobject>
                 </mediaobject>
                 <para>点击next将服务发布到tomcat目录下，此处只需将foxbpm-webapps-common项目发布，因为m2Eclipse插件会自动将所需web进行合并。</para>
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="images/gettingStarted.15.png"/>
+                            fileref="../images/gettingStarted.15.png"/>
                     </imageobject>
                 </mediaobject>
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="images/gettingStarted.150.png"/>
+                            fileref="../images/gettingStarted.150.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -202,7 +202,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="images/gettingStarted.151.png"/>
+                            fileref="../images/gettingStarted.151.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -397,28 +397,28 @@
         <mediaobject>
             <imageobject>
                 <imagedata align="center" contentwidth="600"
-                    fileref="images/gettingStarted.17.png"/>
+                    fileref="../images/gettingStarted.17.png"/>
             </imageobject>
         </mediaobject>
         <para>保存，重新发布，启动tomcat服务器，发现已经启动成功。</para>
         <mediaobject>
             <imageobject>
                 <imagedata align="center" contentwidth="600"
-                    fileref="images/gettingStarted.18.png"/>
+                    fileref="../images/gettingStarted.18.png"/>
             </imageobject>
         </mediaobject>
         <para>访问http://127.0.0.1:8889/foxbpm-webapps-common/login.html</para>
         <mediaobject>
             <imageobject>
                 <imagedata align="center" contentwidth="600"
-                    fileref="images/gettingStarted.19.png"/>
+                    fileref="../images/gettingStarted.19.png"/>
             </imageobject>
         </mediaobject>
         <para>输入账号：admin 初始密码：1，点击登录，登录成功，进入个人页面心界面</para>
         <mediaobject>
             <imageobject>
                 <imagedata align="center" contentwidth="600"
-                    fileref="images/gettingStarted.20.png"/>
+                    fileref="../images/gettingStarted.20.png"/>
             </imageobject>
         </mediaobject>
         <para>至此，快速入门结束。关于FoxBPM的其他详细信息，请继续看我们的文档。</para>
