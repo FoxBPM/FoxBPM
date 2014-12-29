@@ -10,7 +10,7 @@ var pagefunction = function() {
 							{data : 'deptName'},
 							{data : 'account'},  
 							{ data: 'invoiceType' },
-							{ data: 'processStep' },
+							{ data: 'processInfo' },
 					        { data: 'createTime' }
 						],
 						columnDefs : [
@@ -45,6 +45,13 @@ var pagefunction = function() {
 										if (rowData.invoiceType == "5") {
 											$(td).html("<span class='badge bg-color-red'>其他</span>");
 										}
+									}
+								},{
+									"targets" : [5],
+									"orderable" : false,
+									"createdCell" : function(td, cellData,
+											rowData, row, col) {
+										$(td).html(cellData.processStep);
 									}
 								}
 						],
