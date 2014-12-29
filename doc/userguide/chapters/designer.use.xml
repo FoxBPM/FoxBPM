@@ -34,7 +34,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.43.png"/>
+                            fileref="images/designer.use.43.png"/>
                     </imageobject>
                 </mediaobject>
                 <itemizedlist>
@@ -54,7 +54,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.01.png"/>
+                            fileref="images/designer.use.01.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -69,7 +69,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.47.png"/>
+                            fileref="images/designer.use.47.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -78,7 +78,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.44.png"/>
+                            fileref="images/designer.use.44.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -87,7 +87,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.45.png"/>
+                            fileref="images/designer.use.45.png"/>
                     </imageobject>
                 </mediaobject>
                 <itemizedlist>
@@ -107,7 +107,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.48.png"/>
+                            fileref="images/designer.use.48.png"/>
                     </imageobject>
                 </mediaobject>
             </listitem>
@@ -125,7 +125,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.07.png"/>
+                            fileref="images/designer.use.07.png"/>
                     </imageobject>
                 </mediaobject>
                 <para>表达式编辑器中可以编写Groovy代码，groovvy是一种类java的动态语言，完全支持java的语法，目前引擎默认用groovy作为脚本的解释器。</para>
@@ -139,7 +139,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.07.png"/>
+                            fileref="images/designer.use.07.png"/>
                     </imageobject>
                 </mediaobject>
                 <itemizedlist>
@@ -179,7 +179,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.08.png"/>
+                                fileref="images/designer.use.08.png"/>
                         </imageobject>
                     </mediaobject>
                     <itemizedlist>
@@ -215,7 +215,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.09.png"/>
+                                fileref="images/designer.use.09.png"/>
                         </imageobject>
                     </mediaobject>
                 </listitem>
@@ -227,7 +227,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.09.png"/>
+                                fileref="images/designer.use.09.png"/>
                         </imageobject>
                     </mediaobject>
                     <note>
@@ -243,14 +243,14 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.095.png"/>
+                                fileref="images/designer.use.095.png"/>
                         </imageobject>
                     </mediaobject>
                     <para>显示导入页面并选择对应的编号(表名)点击导入变量按钮</para>
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.096.png"/>
+                                fileref="images/designer.use.096.png"/>
                         </imageobject>
                     </mediaobject>
                     <note>
@@ -262,14 +262,14 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.097.png"/>
+                                fileref="images/designer.use.097.png"/>
                         </imageobject>
                     </mediaobject>
                     <para>接下来选择关联键</para>
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.098.png"/>
+                                fileref="images/designer.use.098.png"/>
                         </imageobject>
                     </mediaobject>
                     <note>
@@ -280,7 +280,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.099.png"/>
+                                fileref="images/designer.use.099.png"/>
                         </imageobject>
                     </mediaobject>
                     <note>
@@ -296,14 +296,14 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.092.png"/>
+                                fileref="images/designer.use.092.png"/>
                         </imageobject>
                     </mediaobject>
                     <para>添加连接器时，会根据添加的位置不同有不同的监听事件，如流程定义上有开始、结束、终止，人工任务上有进入、分配、执行、离开等，用户可以根据自己的需求确定连接器的执行时机。</para>
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.093.png"/>
+                                fileref="images/designer.use.093.png"/>
                         </imageobject>
                     </mediaobject>
                     <itemizedlist>
@@ -336,7 +336,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.10.png"/>
+                                fileref="images/designer.use.10.png"/>
                         </imageobject>
                     </mediaobject>
                     <itemizedlist>
@@ -369,7 +369,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.11.png"/>
+                                fileref="images/designer.use.11.png"/>
                         </imageobject>
                     </mediaobject>
                     <itemizedlist>
@@ -408,7 +408,7 @@
                         <mediaobject>
                             <imageobject>
                                 <imagedata align="center" contentwidth="600"
-                                    fileref="../images/designer.use.12.png"/>
+                                    fileref="images/designer.use.12.png"/>
                             </imageobject>
                         </mediaobject>
                     </listitem>
@@ -418,7 +418,7 @@
                         <mediaobject>
                             <imageobject>
                                 <imagedata align="center" contentwidth="600"
-                                    fileref="../images/designer.use.13.png"/>
+                                    fileref="images/designer.use.13.png"/>
                             </imageobject>
                         </mediaobject>
                         <itemizedlist>
@@ -449,7 +449,7 @@
                         <mediaobject>
                             <imageobject>
                                 <imagedata align="center" contentwidth="600"
-                                    fileref="../images/designer.use.14.png"/>
+                                    fileref="images/designer.use.14.png"/>
                             </imageobject>
                         </mediaobject>
                     </listitem>
@@ -459,7 +459,7 @@
                         <mediaobject>
                             <imageobject>
                                 <imagedata align="center" contentwidth="600"
-                                    fileref="../images/designer.use.15.png"/>
+                                    fileref="images/designer.use.15.png"/>
                             </imageobject>
                         </mediaobject>
                         <itemizedlist>
@@ -471,7 +471,7 @@
                         <mediaobject>
                             <imageobject>
                                 <imagedata align="center" contentwidth="600"
-                                    fileref="../images/designer.use.16.png"/>
+                                    fileref="images/designer.use.16.png"/>
                             </imageobject>
                         </mediaobject>
                         <itemizedlist>
@@ -510,14 +510,14 @@
                         <mediaobject>
                             <imageobject>
                                 <imagedata align="center" contentwidth="600"
-                                    fileref="../images/designer.use.17.png"/>
+                                    fileref="images/designer.use.17.png"/>
                             </imageobject>
                         </mediaobject>
                         <para>点击“添加”，可以添加系统提供的选择器。</para>
                         <mediaobject>
                             <imageobject>
                                 <imagedata align="center" contentwidth="600"
-                                    fileref="../images/designer.use.18.png"/>
+                                    fileref="images/designer.use.18.png"/>
                             </imageobject>
                         </mediaobject>
                         <para>系统默认提供的选择器，参数基本都支持Collection、List&lt;String&gt;、“user1,user2,user3”这三种形式，也就是说，如果是多个用户或多个部门，表达式中可以返回上面3中格式。
@@ -532,7 +532,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.19.png"/>
+                            fileref="images/designer.use.19.png"/>
                     </imageobject>
                 </mediaobject>
                 <itemizedlist>
@@ -547,7 +547,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.20.png"/>
+                            fileref="images/designer.use.20.png"/>
                     </imageobject>
                 </mediaobject>
                 <note>
@@ -561,7 +561,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.21.png"/>
+                            fileref="images/designer.use.21.png"/>
                     </imageobject>
                 </mediaobject>
                 <itemizedlist>
@@ -610,7 +610,7 @@
             <mediaobject>
                 <imageobject>
                     <imagedata align="center" contentwidth="600"
-                        fileref="../images/designer.use.22.png"/>
+                        fileref="images/designer.use.22.png"/>
                 </imageobject>
             </mediaobject>
             <itemizedlist>
@@ -630,7 +630,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.23.png"/>
+                            fileref="images/designer.use.23.png"/>
                     </imageobject>
                 </mediaobject>
                 <note>
@@ -645,7 +645,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.24.png"/>
+                            fileref="images/designer.use.24.png"/>
                     </imageobject>
                 </mediaobject>
                 <itemizedlist>
@@ -665,7 +665,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.25.png"/>
+                            fileref="images/designer.use.25.png"/>
                     </imageobject>
                 </mediaobject>
                 <note>
@@ -680,7 +680,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.26.png"/>
+                            fileref="images/designer.use.26.png"/>
                     </imageobject>
                 </mediaobject>
             </sect3>
@@ -690,7 +690,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.27.png"/>
+                            fileref="images/designer.use.27.png"/>
                     </imageobject>
                 </mediaobject>
                 <para>节点时间配置见时间开始事件</para>
@@ -705,7 +705,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.28.png"/>
+                            fileref="images/designer.use.28.png"/>
                     </imageobject>
                 </mediaobject>
                 <itemizedlist>
@@ -727,7 +727,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.29.png"/>
+                            fileref="images/designer.use.29.png"/>
                     </imageobject>
                 </mediaobject>
             </sect3>
@@ -737,7 +737,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.30.png"/>
+                            fileref="images/designer.use.30.png"/>
                     </imageobject>
                 </mediaobject>
                 <itemizedlist>
@@ -756,7 +756,7 @@
                 <mediaobject>
                     <imageobject>
                         <imagedata align="center" contentwidth="600"
-                            fileref="../images/designer.use.31.png"/>
+                            fileref="images/designer.use.31.png"/>
                     </imageobject>
                 </mediaobject>
                 <para>此网关分之后，必须通过合并类型的并行网关进行合并操作，并且合并策略选择令牌策略。</para>
@@ -781,7 +781,7 @@
             <mediaobject>
                 <imageobject>
                     <imagedata align="center" contentwidth="600"
-                        fileref="../images/designer.use.32.png"/>
+                        fileref="images/designer.use.32.png"/>
                 </imageobject>
             </mediaobject>
 
@@ -797,7 +797,7 @@
             <mediaobject>
                 <imageobject>
                     <imagedata align="center" contentwidth="600"
-                        fileref="../images/designer.use.32.png"/>
+                        fileref="images/designer.use.32.png"/>
                 </imageobject>
             </mediaobject>
             <note>
@@ -811,7 +811,7 @@
             <mediaobject>
                 <imageobject>
                     <imagedata align="center" contentwidth="600"
-                        fileref="../images/designer.use.33.png"/>
+                        fileref="images/designer.use.33.png"/>
                 </imageobject>
             </mediaobject>
             <note>
@@ -825,7 +825,7 @@
             <mediaobject>
                 <imageobject>
                     <imagedata align="center" contentwidth="600"
-                        fileref="../images/designer.use.33.png"/>
+                        fileref="images/designer.use.33.png"/>
                 </imageobject>
             </mediaobject>
         </sect2>
@@ -835,7 +835,7 @@
             <mediaobject>
                 <imageobject>
                     <imagedata align="center" contentwidth="600"
-                        fileref="../images/designer.use.32.png"/>
+                        fileref="images/designer.use.32.png"/>
                 </imageobject>
             </mediaobject>
 
@@ -857,7 +857,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.34.png"/>
+                                fileref="images/designer.use.34.png"/>
                         </imageobject>
                     </mediaobject>
                     <programlisting>
@@ -879,7 +879,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.35.png"/>
+                                fileref="images/designer.use.35.png"/>
                         </imageobject>
                     </mediaobject>
                 </listitem>
@@ -888,7 +888,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.36.png"/>
+                                fileref="images/designer.use.36.png"/>
                         </imageobject>
                     </mediaobject>
                 </listitem>
@@ -898,7 +898,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.37.png"/>
+                                fileref="images/designer.use.37.png"/>
                         </imageobject>
                     </mediaobject>
                 </listitem>
@@ -909,13 +909,13 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.38.png"/>
+                                fileref="images/designer.use.38.png"/>
                         </imageobject>
                     </mediaobject>
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.39.png"/>
+                                fileref="images/designer.use.39.png"/>
                         </imageobject>
                     </mediaobject>
                 </listitem>
@@ -930,7 +930,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.40.png"/>
+                                fileref="images/designer.use.40.png"/>
                         </imageobject>
                     </mediaobject>
                     <programlisting>
@@ -951,7 +951,7 @@
                     <mediaobject>
                         <imageobject>
                             <imagedata align="center" contentwidth="600"
-                                fileref="../images/designer.use.41.png"/>
+                                fileref="images/designer.use.41.png"/>
                         </imageobject>
                     </mediaobject>
                     <mediaobject>

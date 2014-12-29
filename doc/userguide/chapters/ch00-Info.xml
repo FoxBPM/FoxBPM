@@ -407,7 +407,7 @@
     </para>
     <para>
       <mediaobject><imageobject>
-        <imagedata align="center" contentwidth="700" fileref="../images/info.gnt.png"/>
+        <imagedata align="center" contentwidth="700" fileref="images/info.gnt.png"/>
       </imageobject></mediaobject>
     </para>
   </section>
@@ -415,7 +415,7 @@
     <title>FixFlow构架图</title>
     <para>
       <mediaobject><imageobject>
-        <imagedata align="center" contentwidth="900" fileref="../images/info.gjt.png"/>
+        <imagedata align="center" contentwidth="900" fileref="images/info.gjt.png"/>
       </imageobject></mediaobject>
     </para>
   </section>  
@@ -423,7 +423,7 @@
     <title>FixFlow Eclipse流程设计器</title>
     <para>
       <mediaobject><imageobject>
-        <imagedata align="center" contentwidth="900" fileref="../images/info.sjq.png"/>
+        <imagedata align="center" contentwidth="900" fileref="images/info.sjq.png"/>
       </imageobject></mediaobject>
     </para>
   </section>  
@@ -431,7 +431,7 @@
     <title>FixFlow Web流程设计器</title>
     <para>
       <mediaobject><imageobject>
-        <imagedata align="center" contentwidth="900" fileref="../images/info.web.sjq.png"/>
+        <imagedata align="center" contentwidth="900" fileref="images/info.web.sjq.png"/>
       </imageobject></mediaobject>
     </para>
   </section>  
@@ -440,7 +440,7 @@
     <title>FixFlow 任务中心</title>
     <para>
       <mediaobject><imageobject>
-        <imagedata align="center" contentwidth="900" fileref="../images/info.TaskCenter.png"/>
+        <imagedata align="center" contentwidth="900" fileref="images/info.TaskCenter.png"/>
       </imageobject></mediaobject>
     </para>
   </section>
@@ -449,7 +449,7 @@
     <title>FixFlow 管控中心</title>
     <para>
       <mediaobject><imageobject>
-        <imagedata align="center" contentwidth="900" fileref="../images/info.managercenter.png"/>
+        <imagedata align="center" contentwidth="900" fileref="images/info.managercenter.png"/>
       </imageobject></mediaobject>
     </para>
   </section>

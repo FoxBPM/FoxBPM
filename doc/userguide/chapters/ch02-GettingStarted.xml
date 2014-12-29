@@ -42,14 +42,14 @@
       <para> 为了验证是否启动部署成功，打开浏览器，输入URL “http://localhost:8080/foxbpm-webapps-common/”。 </para>
       <para> 如果进入系统登录页面则说明部署成功 <mediaobject>
           <imageobject>
-            <imagedata align="center" fileref="../images/login.jpg"/>
+            <imagedata align="center" fileref="images/login.jpg"/>
           </imageobject>
         </mediaobject>
       </para>
       <para> 输入用户名“admin”、密码“1”，点击登录进入系统。 </para>
       <para> 默认进入个人面页面如下图所示，系统相关操作用户可以参照 “Foxbpm Web 功能”文档 <mediaobject>
           <imageobject>
-            <imagedata align="center" fileref="../images/dashboard.jpg"/>
+            <imagedata align="center" fileref="images/dashboard.jpg"/>
           </imageobject>
         </mediaobject>
       </para>
@@ -68,7 +68,7 @@
         <para>打开windows-preferences-流程设计器配置,为设计器配置rest服务地址，此目的是为了同步项目中用到的所有资源。</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.22.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/eclipseDesigner.22.png"/>
           </imageobject>
         </mediaobject>
         <para> 服务地址：此地址需要根据自己项目web.xml中配置的rest服务而确定，foxbpm-webapps-common中rest服务前缀默认为
@@ -80,19 +80,19 @@
         <para>点击设计器同步。</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.23.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/eclipseDesigner.23.png"/>
           </imageobject>
         </mediaobject>
         <para>点击Ok完成目录创建。</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.24.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/eclipseDesigner.24.png"/>
           </imageobject>
         </mediaobject>
         <para>点击Ok进行目录清空。</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.25.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/eclipseDesigner.25.png"/>
           </imageobject>
         </mediaobject>
       </listitem>
@@ -100,7 +100,7 @@
         <para>点击Ok完成。</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/eclipseDesigner.26.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/eclipseDesigner.26.png"/>
           </imageobject>
         </mediaobject>
       </listitem>
@@ -117,7 +117,7 @@
         <para>右键->New->Other->FoxBPM，选择“新建FoxBPM流程”，点击“Next”</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.1.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/processDiagram.1.png"/>
           </imageobject>
         </mediaobject>
       </listitem>
@@ -125,7 +125,7 @@
         <para>选择“默认模板”，点击“Next”</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.2.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/processDiagram.2.png"/>
           </imageobject>
         </mediaobject>
       </listitem>
@@ -133,7 +133,7 @@
         <para>输入路径（可以在点击预览）、编号、名称、版本（必须是数字），点击“Finish”</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.3.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/processDiagram.3.png"/>
           </imageobject>
         </mediaobject>
       </listitem>
@@ -141,7 +141,7 @@
         <para>完成可以看到FoxBPM的设计界面，如图：</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.4.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/processDiagram.4.png"/>
           </imageobject>
         </mediaobject>
       </listitem>
@@ -150,7 +150,7 @@
         <para>用连接/顺序流连接起来各个节点 做成如下图样子。</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.5.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/processDiagram.5.png"/>
           </imageobject>
         </mediaobject>
         <note>
@@ -158,7 +158,7 @@
           <para>这里需要配置插件BPMN2行为属性，否则导致“结束”节点不支持多个线条指向。</para>
           <mediaobject>
             <imageobject>
-              <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.6.png"/>
+              <imagedata align="center" contentwidth="600" fileref="images/processDiagram.6.png"/>
             </imageobject>
           </mediaobject>
         </note>
@@ -167,13 +167,13 @@
         <para>先改流程整体的配置信息，点击流程空白处，打开eclipse的Properties窗口，如图：</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.7.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/processDiagram.7.png"/>
           </imageobject>
         </mediaobject>
         <para>点击默认主题，编辑表达式，如图：</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.8.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/processDiagram.8.png"/>
           </imageobject>
         </mediaobject>
         <note>
@@ -185,7 +185,7 @@
         <para>因为需求中需要判断报销金额的大小，所以我们创建一个流程变量amount,类型为整型：</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.9.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/processDiagram.9.png"/>
           </imageobject>
         </mediaobject>
       </listitem>
@@ -194,17 +194,17 @@
         <para>添加一个启动并提交按钮，最终效果如图</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.10.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/processDiagram.10.png"/>
           </imageobject>
         </mediaobject>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.11.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/processDiagram.11.png"/>
           </imageobject>
         </mediaobject>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.19.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/processDiagram.19.png"/>
           </imageobject>
         </mediaobject>
       </listitem>
@@ -214,7 +214,7 @@
           true的形式返回判断结果。简单配置如图：</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.12.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/processDiagram.12.png"/>
           </imageobject>
         </mediaobject>
         <para>同样的方法我们设置网关后面的另外一条线条条件为：amount&lt;=5000</para>
@@ -224,7 +224,7 @@
         <para>添加一个退回-上一步按钮，改名称为拒绝，最终效果如图：</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.13.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/processDiagram.13.png"/>
           </imageobject>
         </mediaobject>
         <para>下面配置任务分配，这一步可以暂时什么都不做，用FoxBPM默认配置所有人。</para>
@@ -233,7 +233,7 @@
         <para>点击“保存”。到这里，第一个报销流程基本上就结束了。</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.20.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/processDiagram.20.png"/>
           </imageobject>
         </mediaobject>
       </listitem>
@@ -246,25 +246,25 @@
         <para>在Project Explorer视图中，点击流程图文件右击流程操作。</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.15.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/processDiagram.15.png"/>
           </imageobject>
         </mediaobject>
         <para>在流程发布界面点击发布按钮</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.16.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/processDiagram.16.png"/>
           </imageobject>
         </mediaobject>
         <para>出现流程发布结果提示框，点击OK按钮</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.17.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/processDiagram.17.png"/>
           </imageobject>
         </mediaobject>
         <para>在流程发布界面上出现以下记录及流程发布成功，点击确定按钮</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/processDiagram.18.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/processDiagram.18.png"/>
           </imageobject>
         </mediaobject>
       </listitem>
@@ -280,7 +280,7 @@
         <para>访问http://127.0.0.1:8080/foxbpm-webapps-common/login.html。</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/webRun.1.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/webRun.1.png"/>
           </imageobject>
         </mediaobject>
         <para>输入账号：admin 初始密码：1，点击登录</para>
@@ -289,17 +289,17 @@
         <para>登录成功，进入发起流程页面</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/webRun.2.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/webRun.2.png"/>
           </imageobject>
         </mediaobject>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/webRun.3.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/webRun.3.png"/>
           </imageobject>
         </mediaobject>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/webRun.4.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/webRun.4.png"/>
           </imageobject>
         </mediaobject>
       </listitem>
@@ -307,19 +307,19 @@
         <para>进入待办任务页面</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/webRun.5.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/webRun.5.png"/>
           </imageobject>
         </mediaobject>
         <para>点击表单接收任务</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/webRun.6.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/webRun.6.png"/>
           </imageobject>
         </mediaobject>
         <para>再次点击表单处理任务</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/webRun.7.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/webRun.7.png"/>
           </imageobject>
         </mediaobject>
       </listitem>
@@ -327,7 +327,7 @@
         <para>查看已办办任务</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/webRun.8.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/webRun.8.png"/>
           </imageobject>
         </mediaobject>
       </listitem>
@@ -335,19 +335,19 @@
         <para>查看流程追踪</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/webRun.9.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/webRun.9.png"/>
           </imageobject>
         </mediaobject>
         <para>点击查看</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/webRun.10.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/webRun.10.png"/>
           </imageobject>
         </mediaobject>
         <para>点击流程图</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="../images/webRun.11.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/webRun.11.png"/>
           </imageobject>
         </mediaobject>
         <note>
