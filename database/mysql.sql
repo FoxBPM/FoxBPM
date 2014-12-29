@@ -125,25 +125,6 @@
       `FAILURE_REASON` varchar(4000) DEFAULT NULL,
       PRIMARY KEY (`MAIL_ID`)
    );
-  CREATE TABLE `FOXBPM_RUN_OPERATING` 
-   (	
-      `ID` varchar(64) NOT NULL, 
-      `PROCESSINSTANCE_ID` varchar(64), 
-      `PROCESSDEFINITION_ID` varchar(512), 
-      `PROCESSDEFINITION_NAME` varchar(512), 
-      `PROCESSDEFINITION_KEY` varchar(256), 
-      `TASK_ID` varchar(64), 
-      `TOKEN_ID` varchar(64), 
-      `NODE_ID` varchar(64), 
-      `NODE_NAME` varchar(256), 
-      `OPERATING_TIME` TIMESTAMP NULL, 
-      `COMMAND_ID` varchar(64), 
-      `COMMAND_TYPE` varchar(64), 
-      `COMMAND_MESSAGE` varchar(64), 
-      `OPERATING_COMMENT` varchar(4000), 
-      `OPERATOR` varchar(64),
-      PRIMARY KEY (`ID`)
-   ); 
   CREATE TABLE `FOXBPM_RUN_PROCESSINSTANCE` 
    (	
       `ID` varchar(64) NOT NULL, 
@@ -295,7 +276,7 @@
       `UPDATE_TIME` varchar(64 ), 
       `PROCESS_STATUS` varchar(64 ), 
       `PROCESS_STEP` varchar(256 ),
-      `INITIATOR` varchar(64 ), 
+      `INITATOR` varchar(64 ), 
       `BIZKEY` varchar(64 ), 
       PRIMARY KEY (`PROCESSINSTANCEID`)
    );
@@ -484,8 +465,6 @@
       `REASON` varchar(252), 
       `CREATE_TIME` varchar(64), 
       `PROCESSINSTANCEID` varchar(64), 
-      `PROCESSINSTANCESTATUS` varchar(64), 
-      `PROCESSSTEP` varchar(256),
       PRIMARY KEY (`ID`)
    );  
 Insert into AU_ORGINFO (ORGID,SUPORGID,ORGNAME) values ('20001','2000','dept1');

@@ -20,6 +20,8 @@ package org.foxbpm.portal.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.foxbpm.engine.impl.entity.GroupEntity;
@@ -78,6 +80,10 @@ public class ExpenseEntity {
 	 */
 	@Column(name = "CREATE_TIME")
 	private String createTime;
+	
+	@OneToOne(optional=false)
+	@JoinColumn(name="processInstanceId")
+	private ProcessInfoEntity processInfo;
 
 	public String getExpenseId() {
 		return expenseId;
@@ -157,5 +163,13 @@ public class ExpenseEntity {
 	
 	public String getProcessStep() {
 		return processStep;
+	}
+	
+	public void setProcessInfo(ProcessInfoEntity processInfo) {
+		this.processInfo = processInfo;
+	}
+	
+	public ProcessInfoEntity getProcessInfo() {
+		return processInfo;
 	}
 }

@@ -87,6 +87,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 			<ref bean="scheduler" />
 		</constructor-arg>
 	</bean>
+	
+	<bean id="springLoadHelper" class="org.foxbpm.rest.common.api.SpringLoadHelper"></bean>
 
 	<!-- 流程引擎配置 -->
 	<bean id="processEngineConfigurationSpring"
@@ -135,7 +137,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	<aop:config>
 		<!-- 事物切入点 -->
 		<aop:pointcut id="txPointcut"
-			expression="execution(* org.foxbpm.portal.manager..*.*(..))" />
+			expression="execution(* org.foxbpm.portal.service..*.*(..))" />
 		<aop:pointcut id="userPointcut"
 			expression="execution(* org.foxbpm.engine.TaskService.*(..))" />
 		<aop:advisor advice-ref="foxbpmTransactionAdvice"

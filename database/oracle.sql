@@ -4,43 +4,7 @@
 -- Created by Administrator on 2014/12/29, 11:29:48 --
 ------------------------------------------------------
 
-set define off
-spool foxbpm_publish_orcl.log
 
-  DROP TABLE AU_GROUP_RELATION;
-  DROP TABLE AU_ORGINFO;
-  DROP TABLE AU_ROLEINFO;
-  DROP TABLE AU_USERINFO;
-  DROP TABLE FOXBPM_AGENT;
-  DROP TABLE FOXBPM_AGENT_DETAILS;
-  DROP TABLE FOXBPM_DEF_BYTEARRAY;
-  DROP TABLE FOXBPM_DEF_DEPLOYMENT;
-  DROP TABLE FOXBPM_DEF_PROCESSDEFINITION;
-  DROP TABLE FOXBPM_MAIL;
-  DROP TABLE FOXBPM_RUN_OPERATING;
-  DROP TABLE FOXBPM_RUN_PROCESSINSTANCE;
-  DROP TABLE FOXBPM_RUN_RUNNINGTRACK;
-  DROP TABLE FOXBPM_RUN_TASK;
-  DROP TABLE FOXBPM_RUN_TASKIDENTITYLINK;
-  DROP TABLE FOXBPM_RUN_TOKEN;
-  DROP TABLE FOXBPM_RUN_VARIABLE;
-  DROP TABLE QRTZ_BLOB_TRIGGERS;
-  DROP TABLE QRTZ_CALENDARS;
-  DROP TABLE QRTZ_CRON_TRIGGERS;
-  DROP TABLE QRTZ_FIRED_TRIGGERS; 
-  DROP TABLE QRTZ_LOCKS;
-  DROP TABLE QRTZ_PAUSED_TRIGGER_GRPS;
-  DROP TABLE QRTZ_SCHEDULER_STATE;
-  DROP TABLE QRTZ_SIMPLE_TRIGGERS;
-  DROP TABLE QRTZ_SIMPROP_TRIGGERS;
-  DROP TABLE QRTZ_TRIGGERS;
-  DROP TABLE QRTZ_JOB_DETAILS;
-  DROP TABLE TB_EXPENSE;
-  DROP TABLE FOXBPM_RUN_PROCESS_INFO;
-prompt
-prompt Creating table AU_GROUP_RELATION
-prompt ================================
-prompt
 create table AU_GROUP_RELATION
 (
   guid      VARCHAR2(64) not null,
@@ -52,10 +16,7 @@ create table AU_GROUP_RELATION
 alter table AU_GROUP_RELATION
   add primary key (GUID);
 
-prompt
-prompt Creating table AU_ORGINFO
-prompt =========================
-prompt
+
 create table AU_ORGINFO
 (
   orgid    VARCHAR2(64) not null,
@@ -66,10 +27,7 @@ create table AU_ORGINFO
 alter table AU_ORGINFO
   add primary key (ORGID);
 
-prompt
-prompt Creating table AU_ROLEINFO
-prompt ==========================
-prompt
+
 create table AU_ROLEINFO
 (
   roleid   VARCHAR2(64) not null,
@@ -79,10 +37,7 @@ create table AU_ROLEINFO
 alter table AU_ROLEINFO
   add primary key (ROLEID);
 
-prompt
-prompt Creating table AU_USERINFO
-prompt ==========================
-prompt
+
 create table AU_USERINFO
 (
   userid   VARCHAR2(64) not null,
@@ -96,10 +51,7 @@ create table AU_USERINFO
 alter table AU_USERINFO
   add primary key (USERID);
 
-prompt
-prompt Creating table FOXBPM_AGENT
-prompt ===========================
-prompt
+
 create table FOXBPM_AGENT
 (
   id         VARCHAR2(255) not null,
@@ -112,10 +64,7 @@ create table FOXBPM_AGENT
 alter table FOXBPM_AGENT
   add primary key (ID);
 
-prompt
-prompt Creating table FOXBPM_AGENT_DETAILS
-prompt ===================================
-prompt
+
 create table FOXBPM_AGENT_DETAILS
 (
   id                    VARCHAR2(255) not null,
@@ -127,10 +76,7 @@ create table FOXBPM_AGENT_DETAILS
 alter table FOXBPM_AGENT_DETAILS
   add primary key (ID);
 
-prompt
-prompt Creating table FOXBPM_DEF_BYTEARRAY
-prompt ===================================
-prompt
+
 create table FOXBPM_DEF_BYTEARRAY
 (
   id            VARCHAR2(64) not null,
@@ -143,10 +89,7 @@ create table FOXBPM_DEF_BYTEARRAY
 alter table FOXBPM_DEF_BYTEARRAY
   add primary key (ID);
 
-prompt
-prompt Creating table FOXBPM_DEF_DEPLOYMENT
-prompt ====================================
-prompt
+
 create table FOXBPM_DEF_DEPLOYMENT
 (
   id          VARCHAR2(64) not null,
@@ -157,10 +100,7 @@ create table FOXBPM_DEF_DEPLOYMENT
 alter table FOXBPM_DEF_DEPLOYMENT
   add primary key (ID);
 
-prompt
-prompt Creating table FOXBPM_DEF_PROCESSDEFINITION
-prompt ===========================================
-prompt
+
 create table FOXBPM_DEF_PROCESSDEFINITION
 (
   difinitions_key       VARCHAR2(512),
@@ -182,10 +122,7 @@ create table FOXBPM_DEF_PROCESSDEFINITION
 alter table FOXBPM_DEF_PROCESSDEFINITION
   add primary key (PROCESS_ID);
 
-prompt
-prompt Creating table FOXBPM_MAIL
-prompt ==========================
-prompt
+
 create table FOXBPM_MAIL
 (
   mail_id        VARCHAR2(128) not null,
@@ -204,36 +141,6 @@ create table FOXBPM_MAIL
 alter table FOXBPM_MAIL
   add primary key (MAIL_ID);
 
-prompt
-prompt Creating table FOXBPM_RUN_OPERATING
-prompt ===================================
-prompt
-create table FOXBPM_RUN_OPERATING
-(
-  id                     VARCHAR2(64) not null,
-  processinstance_id     VARCHAR2(64),
-  processdefinition_id   VARCHAR2(512),
-  processdefinition_name VARCHAR2(512),
-  processdefinition_key  VARCHAR2(256),
-  task_id                VARCHAR2(64),
-  token_id               VARCHAR2(64),
-  node_id                VARCHAR2(64),
-  node_name              VARCHAR2(256),
-  operating_time         TIMESTAMP(6),
-  command_id             VARCHAR2(64),
-  command_type           VARCHAR2(64),
-  command_message        VARCHAR2(64),
-  operating_comment      VARCHAR2(4000),
-  operator               VARCHAR2(64)
-)
-;
-alter table FOXBPM_RUN_OPERATING
-  add primary key (ID);
-
-prompt
-prompt Creating table FOXBPM_RUN_PROCESSINSTANCE
-prompt =========================================
-prompt
 create table FOXBPM_RUN_PROCESSINSTANCE
 (
   id                    VARCHAR2(64) not null,
@@ -260,25 +167,18 @@ create table FOXBPM_RUN_PROCESSINSTANCE
 alter table FOXBPM_RUN_PROCESSINSTANCE
   add primary key (ID);
 
-prompt
-prompt Creating table FOXBPM_RUN_PROCESS_INFO
-prompt ======================================
-prompt
+
 create table FOXBPM_RUN_PROCESS_INFO
 (
   processinstanceid VARCHAR2(64),
   update_time       VARCHAR2(64),
   process_status    VARCHAR2(64),
   process_step      VARCHAR2(256),
-  initiator         VARCHAR2(64),
+  initator         VARCHAR2(64),
   bizkey            VARCHAR2(64)
 )
 ;
 
-prompt
-prompt Creating table FOXBPM_RUN_RUNNINGTRACK
-prompt ======================================
-prompt
 create table FOXBPM_RUN_RUNNINGTRACK
 (
   id                    VARCHAR2(64) not null,
@@ -299,10 +199,6 @@ create table FOXBPM_RUN_RUNNINGTRACK
 alter table FOXBPM_RUN_RUNNINGTRACK
   add primary key (ID);
 
-prompt
-prompt Creating table FOXBPM_RUN_TASK
-prompt ==============================
-prompt
 create table FOXBPM_RUN_TASK
 (
   id                       VARCHAR2(64) not null,
@@ -359,10 +255,6 @@ create table FOXBPM_RUN_TASK
 alter table FOXBPM_RUN_TASK
   add primary key (ID);
 
-prompt
-prompt Creating table FOXBPM_RUN_TASKIDENTITYLINK
-prompt ==========================================
-prompt
 create table FOXBPM_RUN_TASKIDENTITYLINK
 (
   id                VARCHAR2(64) not null,
@@ -377,10 +269,6 @@ create table FOXBPM_RUN_TASKIDENTITYLINK
 alter table FOXBPM_RUN_TASKIDENTITYLINK
   add primary key (ID);
 
-prompt
-prompt Creating table FOXBPM_RUN_TOKEN
-prompt ===============================
-prompt
 create table FOXBPM_RUN_TOKEN
 (
   id                    VARCHAR2(64) not null,
@@ -403,10 +291,6 @@ create table FOXBPM_RUN_TOKEN
 alter table FOXBPM_RUN_TOKEN
   add primary key (ID);
 
-prompt
-prompt Creating table FOXBPM_RUN_VARIABLE
-prompt ==================================
-prompt
 create table FOXBPM_RUN_VARIABLE
 (
   id                    VARCHAR2(64) not null,
@@ -427,10 +311,6 @@ create table FOXBPM_RUN_VARIABLE
 alter table FOXBPM_RUN_VARIABLE
   add primary key (ID);
 
-prompt
-prompt Creating table QRTZ_JOB_DETAILS
-prompt ===============================
-prompt
 create table QRTZ_JOB_DETAILS
 (
   sched_name        VARCHAR2(120) not null,
@@ -451,10 +331,6 @@ create unique index SYS_C009076 on QRTZ_JOB_DETAILS (SCHED_NAME, JOB_NAME, JOB_G
 alter table QRTZ_JOB_DETAILS
   add primary key (SCHED_NAME, JOB_NAME, JOB_GROUP);
 
-prompt
-prompt Creating table QRTZ_TRIGGERS
-prompt ============================
-prompt
 create table QRTZ_TRIGGERS
 (
   sched_name     VARCHAR2(120) not null,
@@ -494,10 +370,6 @@ alter table QRTZ_TRIGGERS
   add foreign key (SCHED_NAME, JOB_NAME, JOB_GROUP)
   references QRTZ_JOB_DETAILS (SCHED_NAME, JOB_NAME, JOB_GROUP);
 
-prompt
-prompt Creating table QRTZ_BLOB_TRIGGERS
-prompt =================================
-prompt
 create table QRTZ_BLOB_TRIGGERS
 (
   sched_name    VARCHAR2(120) not null,
@@ -513,10 +385,6 @@ alter table QRTZ_BLOB_TRIGGERS
   add foreign key (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP)
   references QRTZ_TRIGGERS (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP);
 
-prompt
-prompt Creating table QRTZ_CALENDARS
-prompt =============================
-prompt
 create table QRTZ_CALENDARS
 (
   sched_name    VARCHAR2(120) not null,
@@ -528,10 +396,6 @@ create unique index SYS_C009114 on QRTZ_CALENDARS (SCHED_NAME, CALENDAR_NAME);
 alter table QRTZ_CALENDARS
   add primary key (SCHED_NAME, CALENDAR_NAME);
 
-prompt
-prompt Creating table QRTZ_CRON_TRIGGERS
-prompt =================================
-prompt
 create table QRTZ_CRON_TRIGGERS
 (
   sched_name      VARCHAR2(120) not null,
@@ -548,10 +412,6 @@ alter table QRTZ_CRON_TRIGGERS
   add foreign key (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP)
   references QRTZ_TRIGGERS (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP);
 
-prompt
-prompt Creating table QRTZ_FIRED_TRIGGERS
-prompt ==================================
-prompt
 create table QRTZ_FIRED_TRIGGERS
 (
   sched_name        VARCHAR2(120) not null,
@@ -578,10 +438,6 @@ create unique index SYS_C009126 on QRTZ_FIRED_TRIGGERS (SCHED_NAME, ENTRY_ID);
 alter table QRTZ_FIRED_TRIGGERS
   add primary key (SCHED_NAME, ENTRY_ID);
 
-prompt
-prompt Creating table QRTZ_LOCKS
-prompt =========================
-prompt
 create table QRTZ_LOCKS
 (
   sched_name VARCHAR2(120) not null,
@@ -592,10 +448,6 @@ create unique index SYS_C009134 on QRTZ_LOCKS (SCHED_NAME, LOCK_NAME);
 alter table QRTZ_LOCKS
   add primary key (SCHED_NAME, LOCK_NAME);
 
-prompt
-prompt Creating table QRTZ_PAUSED_TRIGGER_GRPS
-prompt =======================================
-prompt
 create table QRTZ_PAUSED_TRIGGER_GRPS
 (
   sched_name    VARCHAR2(120) not null,
@@ -606,10 +458,6 @@ create unique index SYS_C009117 on QRTZ_PAUSED_TRIGGER_GRPS (SCHED_NAME, TRIGGER
 alter table QRTZ_PAUSED_TRIGGER_GRPS
   add primary key (SCHED_NAME, TRIGGER_GROUP);
 
-prompt
-prompt Creating table QRTZ_SCHEDULER_STATE
-prompt ===================================
-prompt
 create table QRTZ_SCHEDULER_STATE
 (
   sched_name        VARCHAR2(120) not null,
@@ -622,10 +470,6 @@ create unique index SYS_C009131 on QRTZ_SCHEDULER_STATE (SCHED_NAME, INSTANCE_NA
 alter table QRTZ_SCHEDULER_STATE
   add primary key (SCHED_NAME, INSTANCE_NAME);
 
-prompt
-prompt Creating table QRTZ_SIMPLE_TRIGGERS
-prompt ===================================
-prompt
 create table QRTZ_SIMPLE_TRIGGERS
 (
   sched_name      VARCHAR2(120) not null,
@@ -643,10 +487,6 @@ alter table QRTZ_SIMPLE_TRIGGERS
   add foreign key (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP)
   references QRTZ_TRIGGERS (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP);
 
-prompt
-prompt Creating table QRTZ_SIMPROP_TRIGGERS
-prompt ====================================
-prompt
 create table QRTZ_SIMPROP_TRIGGERS
 (
   sched_name    VARCHAR2(120) not null,
@@ -672,10 +512,6 @@ alter table QRTZ_SIMPROP_TRIGGERS
   add foreign key (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP)
   references QRTZ_TRIGGERS (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP);
 
-prompt
-prompt Creating table TB_EXPENSE
-prompt =========================
-prompt
 create table TB_EXPENSE
 (
   id                    VARCHAR2(64) not null,
@@ -685,9 +521,7 @@ create table TB_EXPENSE
   invoicetype           VARCHAR2(64),
   reason                VARCHAR2(252),
   create_time           VARCHAR2(64),
-  processinstanceid     VARCHAR2(64),
-  processinstancestatus VARCHAR2(64),
-  processstep           VARCHAR2(256)
+  processinstanceid     VARCHAR2(64)
 )
 ;
 alter table TB_EXPENSE
@@ -701,6 +535,5 @@ Insert into AU_ROLEINFO (ROLEID,ROLENAME) values ('10002','ROLE2');
 Insert into AU_GROUP_RELATION (GUID,USERID,GROUPID,GROUPTYPE) values ('100000000000004','admin','200012','dept');
 Insert into AU_GROUP_RELATION (GUID,USERID,GROUPID,GROUPTYPE) values ('100000000000003','admin','200011','dept');
 Insert into AU_USERINFO (USERID,USERNAME,PASSWORD,EMAIL,TEL,IMAGE) values ('admin','admin','1','ft%25252563a.com','ddxx','admin.jpg');
-spool off
 
 

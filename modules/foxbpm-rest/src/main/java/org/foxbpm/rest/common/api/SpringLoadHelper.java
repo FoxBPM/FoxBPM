@@ -15,4 +15,8 @@ public class SpringLoadHelper implements ApplicationContextAware {
 	public static Object getBean(String name) throws BeansException{
 		return applicationContext.getBean(name);
 	}
+	
+	public static Object getBean(Class<?> c){
+		return applicationContext.getBean(c);
+	}
 }

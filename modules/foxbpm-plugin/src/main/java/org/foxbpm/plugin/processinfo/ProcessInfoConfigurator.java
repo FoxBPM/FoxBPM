@@ -12,6 +12,8 @@ public class ProcessInfoConfigurator implements ProcessEngineConfigurator {
 		EventListener udpateInfoListener = new EventListenerImpl("UpdateProcessLocationInfoTableListener-before-process-save","before-process-save","org.foxbpm.engine.impl.listener.process.UpdateLocationListener",1);
 		//流程启动时插入流程信息表
 		EventListener insertListener = new EventListenerImpl("InsertProcessInfoListener-process-start","process-start","org.foxbpm.plugin.processinfo.InsertProcessInfoTableListener");
+		//流程启动时更新业务表的processInstanceId字段
+		EventListener updatBizTableListener= new EventListenerImpl("UpdateBizTable-process-start","process-start","org.foxbpm.plugin.processinfo.UpdateBizTableListener");
 		//流程保存时，更新流程信息
 		EventListener udpateListener = new EventListenerImpl("UpdateProcessInfoListener-before-process-save","before-process-save","org.foxbpm.plugin.processinfo.UpdateProcessInfoTableListener",60);
 		//流程结束时，删除流程信息。
@@ -20,6 +22,7 @@ public class ProcessInfoConfigurator implements ProcessEngineConfigurator {
 		processEngineConfiguration.addEventListener(udpateListener);
 		processEngineConfiguration.addEventListener(insertListener);
 		processEngineConfiguration.addEventListener(deleteListener);
+		processEngineConfiguration.addEventListener(updatBizTableListener);
 		
 		
 	}

@@ -64,7 +64,6 @@
   <dataVariableBizTypeConfig>
     <dataVariableBizType typeId="form" typeName="表单" img="copynext_16.png"/>
     <dataVariableBizType typeId="dataBaseVariable" typeName="数据库变量" img="systemsave_16.png"/>
-    <dataVariableBizType typeId="bizObjVariable" typeName="业务对象变量" img="estat_16.png"/>
     <dataVariableBizType typeId="customVariable" typeName="自定义变量" img="recycle_16.png"/>
   </dataVariableBizTypeConfig>
 </variableconfig:DataVariableConfig>
