@@ -1,3 +1,12 @@
+
+------------------------------------------------------
+-- Export file for user FOXBPM                      --
+-- Created by Administrator on 2014/12/29, 11:29:48 --
+------------------------------------------------------
+
+set define off
+spool foxbpm_publish_orcl.log
+
   DROP TABLE AU_GROUP_RELATION;
   DROP TABLE AU_ORGINFO;
   DROP TABLE AU_ROLEINFO;
@@ -28,484 +37,670 @@
   DROP TABLE QRTZ_JOB_DETAILS;
   DROP TABLE TB_EXPENSE;
   DROP TABLE FOXBPM_RUN_PROCESS_INFO;
-  
-  CREATE TABLE "AU_GROUP_RELATION" 
-   (	
-      "GUID" VARCHAR2(64 BYTE) NOT NULL, 
-      "USERID" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "GROUPID" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "GROUPTYPE" VARCHAR2(512 BYTE) DEFAULT NULL,
-      PRIMARY KEY("GUID")
-   );
-  CREATE TABLE "AU_ORGINFO" 
-   (	
-      "ORGID" VARCHAR2(64 BYTE) NOT NULL, 
-      "SUPORGID" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "ORGNAME" VARCHAR2(512 BYTE) DEFAULT NULL,
-      PRIMARY KEY ("ORGID")
-   );
-  CREATE TABLE "AU_ROLEINFO" 
-   (	
-      "ROLEID" VARCHAR2(64 BYTE) NOT NULL, 
-      "ROLENAME" VARCHAR2(512 BYTE) DEFAULT NULL,
-      PRIMARY KEY ("ROLEID")
-   );
-  CREATE TABLE "AU_USERINFO" 
-   (	
-      "USERID" VARCHAR2(64 BYTE) NOT NULL, 
-      "USERNAME" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "PASSWORD" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "EMAIL" VARCHAR2(250 BYTE) DEFAULT NULL, 
-      "TEL" VARCHAR2(255 BYTE) DEFAULT NULL, 
-      "IMAGE" VARCHAR2(64 BYTE) DEFAULT NULL,
-      PRIMARY KEY ("USERID") 
-   );
-   CREATE TABLE "FOXBPM_AGENT" 
-   (	
-      "ID" VARCHAR2(255 BYTE) NOT NULL, 
-      "AGENT_USER" VARCHAR2(255 BYTE) DEFAULT NULL, 
-      "STARTTIME" TIMESTAMP (6) DEFAULT NULL, 
-      "ENDTIME" TIMESTAMP (6) DEFAULT NULL, 
-      "STATUS" VARCHAR2(255 BYTE) DEFAULT NULL,
-      PRIMARY KEY ("ID")
-   );
-   CREATE TABLE "FOXBPM_AGENT_DETAILS" 
-   (	
-      "ID" VARCHAR2(255 BYTE) NOT NULL, 
-      "AGENT_ID" VARCHAR2(255 BYTE) DEFAULT NULL, 
-      "PROCESSDEFINITION_KEY" VARCHAR2(255 BYTE), 
-      "AGENT_TOUSER" VARCHAR2(255 BYTE) DEFAULT NULL,
-      PRIMARY KEY ("ID")
-   );
-  CREATE TABLE "FOXBPM_DEF_BYTEARRAY" 
-   (	
-      "ID" VARCHAR2(64 BYTE) NOT NULL, 
-      "REV" NUMBER(12,0) DEFAULT NULL, 
-      "NAME" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "BYTES" BLOB, 
-      "DEPLOYMENT_ID" VARCHAR2(256 BYTE) DEFAULT NULL,
-      PRIMARY KEY("ID")
-   );
-  CREATE TABLE "FOXBPM_DEF_DEPLOYMENT" 
-   (	
-      "ID" VARCHAR2(64 BYTE) NOT NULL, 
-      "NAME" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "DEPLOY_TIME" TIMESTAMP (6) DEFAULT NULL,
-      PRIMARY KEY("ID")
-   );
- 
-  CREATE TABLE "FOXBPM_DEF_PROCESSDEFINITION" 
-   (	
-      "DIFINITIONS_KEY" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "DIFINITIONS_ID" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "PROCESS_KEY" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "PROCESS_ID" VARCHAR2(250 BYTE) NOT NULL, 
-      "CATEGORY" VARCHAR2(255 BYTE) DEFAULT NULL, 
-      "PROCESS_NAME" VARCHAR2(255 BYTE) DEFAULT NULL, 
-      "VERSION" NUMBER(*,0) DEFAULT NULL, 
-      "RESOURCE_NAME" VARCHAR2(4000 BYTE) DEFAULT NULL, 
-      "DEPLOYMENT_ID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "DIAGRAM_RESOURCE_NAME" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "START_FORM_KEY" VARCHAR2(1024 BYTE) DEFAULT NULL, 
-      "RESOURCE_ID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "SUB_TASK_ID" VARCHAR2(128 BYTE) DEFAULT NULL, 
-      "REV_" NUMBER(*,0) DEFAULT 0,
-      PRIMARY KEY("PROCESS_ID")
-   );
-  CREATE TABLE "FOXBPM_MAIL" 
-   (	
-      "MAIL_ID" VARCHAR2(128 BYTE) NOT NULL, 
-      "MAIL_NAME" VARCHAR2(4000 BYTE) DEFAULT NULL, 
-      "MAIL_TO" VARCHAR2(4000 BYTE) DEFAULT NULL, 
-      "MAIL_SUBJECT" VARCHAR2(4000 BYTE) DEFAULT NULL, 
-      "MAIL_BODY" BLOB, 
-      "MAIL_STATUS" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "CREATE_TIME" TIMESTAMP (6) DEFAULT NULL, 
-      "SEND_TIME" TIMESTAMP (6) DEFAULT NULL, 
-      "MAIL_CC" VARCHAR2(4000 BYTE) DEFAULT NULL, 
-      "CREATE_USER" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "FAILURE_REASON" VARCHAR2(4000 BYTE) DEFAULT NULL,
-      PRIMARY KEY ("MAIL_ID")
-   );
-  CREATE TABLE "FOXBPM_RUN_OPERATING" 
-   (	
-      "ID" VARCHAR2(64 BYTE) NOT NULL, 
-      "PROCESSINSTANCE_ID" VARCHAR2(64 BYTE), 
-      "PROCESSDEFINITION_ID" VARCHAR2(512 BYTE), 
-      "PROCESSDEFINITION_NAME" VARCHAR2(512 BYTE), 
-      "PROCESSDEFINITION_KEY" VARCHAR2(256 BYTE), 
-      "TASK_ID" VARCHAR2(64 BYTE), 
-      "TOKEN_ID" VARCHAR2(64 BYTE), 
-      "NODE_ID" VARCHAR2(64 BYTE), 
-      "NODE_NAME" VARCHAR2(256 BYTE), 
-      "OPERATING_TIME" TIMESTAMP (6), 
-      "COMMAND_ID" VARCHAR2(64 BYTE), 
-      "COMMAND_TYPE" VARCHAR2(64 BYTE), 
-      "COMMAND_MESSAGE" VARCHAR2(64 BYTE), 
-      "OPERATING_COMMENT" VARCHAR2(4000 BYTE), 
-      "OPERATOR" VARCHAR2(64 BYTE),
-      PRIMARY KEY ("ID")
-   ); 
-  CREATE TABLE "FOXBPM_RUN_PROCESSINSTANCE" 
-   (	
-      "ID" VARCHAR2(64 BYTE) NOT NULL, 
-      "PROCESSDEFINITION_ID" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "PROCESSDEFINITION_KEY" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "SUBJECT" VARCHAR2(4000 BYTE) DEFAULT NULL, 
-      "START_TIME" TIMESTAMP (6) DEFAULT NULL, 
-      "END_TIME" TIMESTAMP (6) DEFAULT NULL, 
-      "DEFINITION_ID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "ROOTTOKEN_ID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "BIZ_KEY" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "INITIATOR" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "START_AUTHOR" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "ISSUSPENDED" VARCHAR2(20 BYTE) DEFAULT NULL, 
-      "PARENT_ID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "PARENT_TOKEN_ID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "UPDATE_TIME" TIMESTAMP (6) DEFAULT NULL, 
-      "PROCESSLOCATION" VARCHAR2(2048 BYTE) DEFAULT NULL, 
-      "INSTANCE_STATUS" VARCHAR2(45 BYTE) DEFAULT NULL, 
-      "ARCHIVE_TIME" TIMESTAMP (6) DEFAULT NULL, 
-      "REV_" NUMBER(*,0) DEFAULT 0,
-      PRIMARY KEY("ID")
-   ); 
-  CREATE TABLE "FOXBPM_RUN_RUNNINGTRACK" 
-   (	
-       "ID" VARCHAR2(64 BYTE) NOT NULL, 
-      "PROCESSINSTANCE_ID" VARCHAR2(64 BYTE), 
-      "PROCESSDEFINITION_ID" VARCHAR2(512 BYTE), 
-      "PROCESSDEFINITION_KEY" VARCHAR2(512 BYTE), 
-      "TOKEN_ID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "PARENT_TOKEN_ID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "EXECUTION_TIME" TIMESTAMP (6) DEFAULT NULL, 
-      "TRACK_RECORD" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "OPERATOR" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "NODE_ID" VARCHAR2(128 BYTE) DEFAULT NULL, 
-      "NODE_NAME" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "EVENT_NAME" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "ARCHIVE_TIME" TIMESTAMP (6) DEFAULT NULL,
-      PRIMARY KEY("ID")
-   );
- 
-  CREATE TABLE "FOXBPM_RUN_TASK" 
-   (	
-      "ID" VARCHAR2(64 BYTE) NOT NULL, 
-      "PROCESSINSTANCE_ID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "PROCESSDEFINITION_ID" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "VERSION" NUMBER(*,0) DEFAULT NULL, 
-      "TOKEN_ID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "NODE_ID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "DESCRIPTION" VARCHAR2(4000 BYTE) DEFAULT NULL, 
-      "SUBJECT" VARCHAR2(255 BYTE) DEFAULT NULL, 
-      "PARENT_ID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "ASSIGNEE" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "CLAIM_TIME" TIMESTAMP (6) DEFAULT NULL, 
-      "NAME" VARCHAR2(255 BYTE) DEFAULT NULL, 
-      "CREATE_TIME" TIMESTAMP (6) DEFAULT NULL, 
-      "START_TIME" TIMESTAMP (6) DEFAULT NULL, 
-      "ISBLOCKING" VARCHAR2(20 BYTE) DEFAULT NULL, 
-      "END_TIME" TIMESTAMP (6) DEFAULT NULL, 
-      "DUEDATE" TIMESTAMP (6) DEFAULT NULL, 
-      "PRIORITY" NUMBER(6,0) DEFAULT NULL, 
-      "CATEGORY" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "OWNER" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "DELEGATIONSTATE" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "BIZKEY" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "COMMAND_TYPE" VARCHAR2(256 BYTE) DEFAULT NULL, 
-      "COMMAND_MESSAGE" VARCHAR2(256 BYTE) DEFAULT NULL, 
-      "TASK_COMMENT" VARCHAR2(4000 BYTE) DEFAULT NULL, 
-      "NODE_NAME" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "PROCESSDEFINITION_KEY" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "FORMURI" VARCHAR2(256 BYTE) DEFAULT NULL, 
-      "TASKGROUP" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "TASKTYPE" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "PROCESSDEFINITION_NAME" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "ISCANCELLED" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "ISSUSPENDED" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "ISOPEN" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "ISDRAFT" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "EXPECTED_EXECUTIONTIME" NUMBER(14,2) DEFAULT NULL, 
-      "AGENT" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "ADMIN" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "FORMURIVIEW" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "CALLACTIVITY_INSTANCE_ID" VARCHAR2(256 BYTE) DEFAULT NULL, 
-      "COMMAND_ID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "PENDINGTASKID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "ARCHIVE_TIME" TIMESTAMP (6) DEFAULT NULL, 
-      "COMPLETEDESCRIPTION" VARCHAR2(1024 BYTE) DEFAULT NULL, 
-      "PROCESSSTART_TIME" TIMESTAMP (6) DEFAULT NULL, 
-      "PROCESS_INITIATOR" VARCHAR2(255 BYTE) DEFAULT NULL, 
-      "REV_" NUMBER(*,0) DEFAULT 0, 
-      "NEXT_TASK_ID" VARCHAR2(64 BYTE), 
-      "ADDSIGN_TYPE" VARCHAR2(64 BYTE),
-      PRIMARY KEY("ID")
-   );
- 
-  CREATE TABLE "FOXBPM_RUN_TASKIDENTITYLINK" 
-   (	
-      "ID" VARCHAR2(64 BYTE) NOT NULL, 
-      "TYPE" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "USER_ID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "GROUP_ID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "GROUP_TYPE" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "TASK_ID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "INCLUDE_EXCLUSION" VARCHAR2(64 BYTE) DEFAULT NULL,
-      PRIMARY KEY("ID")
-   );
- 
-  CREATE TABLE "FOXBPM_RUN_TOKEN" 
-   (	
-      "ID" VARCHAR2(64 BYTE) NOT NULL, 
-      "NAME" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "PROCESSINSTANCE_ID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "NODE_ID" VARCHAR2(128 BYTE) DEFAULT NULL, 
-      "PARENT_ID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "START_TIME" TIMESTAMP (6) DEFAULT NULL, 
-      "END_TIME" TIMESTAMP (6) DEFAULT NULL, 
-      "NODEENTER_TIME" TIMESTAMP (6) DEFAULT NULL, 
-      "ARCHIVE_TIME" TIMESTAMP (6) DEFAULT NULL, 
-      "ISSUSPENDED" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "ISLOCK" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "ISACTIVE" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "ISSUBPROCESSROOTTOKEN" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "REV_" NUMBER(*,0) DEFAULT 0, 
-      "LOOP_COUNT" NUMBER(*,0),
-      PRIMARY KEY("ID")
-   );
+prompt
+prompt Creating table AU_GROUP_RELATION
+prompt ================================
+prompt
+create table AU_GROUP_RELATION
+(
+  guid      VARCHAR2(64) not null,
+  userid    VARCHAR2(512),
+  groupid   VARCHAR2(512),
+  grouptype VARCHAR2(512)
+)
+;
+alter table AU_GROUP_RELATION
+  add primary key (GUID);
 
-  CREATE TABLE "FOXBPM_RUN_VARIABLE" 
-   (	
-      "ID" VARCHAR2(64 BYTE) NOT NULL, 
-      "PROCESSINSTANCE_ID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "PROCESSDEFINITION_ID" VARCHAR2(255 BYTE) DEFAULT NULL, 
-      "PROCESSDEFINITION_KEY" VARCHAR2(255 BYTE) DEFAULT NULL, 
-      "VARIABLE_KEY" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "VARIABLE_VALUE" BLOB, 
-      "CLASSNAME" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "TASK_ID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "TOKEN_ID" VARCHAR2(64 BYTE) DEFAULT NULL, 
-      "NODE_ID" VARCHAR2(512 BYTE) DEFAULT NULL, 
-      "VARIABLE_TYPE" VARCHAR2(45 BYTE) DEFAULT NULL, 
-      "BIZ_DATA" VARCHAR2(2048 BYTE) DEFAULT NULL, 
-      "REV_" NUMBER(*,0) DEFAULT 0,
-      PRIMARY KEY("ID")
-   );
-  
-  CREATE TABLE "QRTZ_BLOB_TRIGGERS" 
-   (	
-       "SCHED_NAME" VARCHAR2(120 BYTE) NOT NULL, 
-      "TRIGGER_NAME" VARCHAR2(200 BYTE) NOT NULL, 
-      "TRIGGER_GROUP" VARCHAR2(200 BYTE) NOT NULL, 
-      "BLOB_DATA" BLOB
-   );
-  CREATE UNIQUE INDEX "SYS_C009109" ON "QRTZ_BLOB_TRIGGERS" ("SCHED_NAME", "TRIGGER_NAME", "TRIGGER_GROUP");
-  ALTER TABLE "QRTZ_BLOB_TRIGGERS" ADD PRIMARY KEY ("SCHED_NAME", "TRIGGER_NAME", "TRIGGER_GROUP"); 
-  
-    
-  CREATE TABLE "QRTZ_CALENDARS" 
-   (	
-      "SCHED_NAME" VARCHAR2(120 BYTE) NOT NULL, 
-      "CALENDAR_NAME" VARCHAR2(200 BYTE) NOT NULL, 
-      "CALENDAR" BLOB NOT NULL
-   );
-  CREATE UNIQUE INDEX "SYS_C009114" ON "QRTZ_CALENDARS" ("SCHED_NAME", "CALENDAR_NAME");
-  ALTER TABLE "QRTZ_CALENDARS" ADD PRIMARY KEY ("SCHED_NAME", "CALENDAR_NAME"); 
-  
-  CREATE TABLE "QRTZ_CRON_TRIGGERS" 
-   (	
-      "SCHED_NAME" VARCHAR2(120 BYTE) NOT NULL, 
-      "TRIGGER_NAME" VARCHAR2(200 BYTE) NOT NULL, 
-      "TRIGGER_GROUP" VARCHAR2(200 BYTE) NOT NULL, 
-      "CRON_EXPRESSION" VARCHAR2(120 BYTE) NOT NULL, 
-      "TIME_ZONE_ID" VARCHAR2(80 BYTE)
-   );
-  CREATE UNIQUE INDEX "SYS_C009099" ON "QRTZ_CRON_TRIGGERS" ("SCHED_NAME", "TRIGGER_NAME", "TRIGGER_GROUP");  
-  ALTER TABLE "QRTZ_CRON_TRIGGERS" ADD PRIMARY KEY ("SCHED_NAME", "TRIGGER_NAME", "TRIGGER_GROUP"); 
- 
-  CREATE TABLE "QRTZ_FIRED_TRIGGERS" 
-   (	
-      "SCHED_NAME" VARCHAR2(120 BYTE) NOT NULL, 
-      "ENTRY_ID" VARCHAR2(95 BYTE) NOT NULL, 
-      "TRIGGER_NAME" VARCHAR2(200 BYTE) NOT NULL, 
-      "TRIGGER_GROUP" VARCHAR2(200 BYTE) NOT NULL, 
-      "INSTANCE_NAME" VARCHAR2(200 BYTE) NOT NULL, 
-      "FIRED_TIME" NUMBER(13,0) NOT NULL, 
-      "PRIORITY" NUMBER(13,0) NOT NULL, 
-      "STATE" VARCHAR2(16 BYTE) NOT NULL, 
-      "JOB_NAME" VARCHAR2(200 BYTE), 
-      "JOB_GROUP" VARCHAR2(200 BYTE), 
-      "IS_NONCONCURRENT" VARCHAR2(1 BYTE), 
-      "REQUESTS_RECOVERY" VARCHAR2(1 BYTE)
-   );
-  CREATE INDEX "IDX_QRTZ_FT_JG" ON "QRTZ_FIRED_TRIGGERS" ("SCHED_NAME", "JOB_GROUP");
-  CREATE INDEX "IDX_QRTZ_FT_T_G" ON "QRTZ_FIRED_TRIGGERS" ("SCHED_NAME", "TRIGGER_NAME", "TRIGGER_GROUP"); 
-  CREATE INDEX "IDX_QRTZ_FT_TG" ON "QRTZ_FIRED_TRIGGERS" ("SCHED_NAME", "TRIGGER_GROUP"); 
-  CREATE UNIQUE INDEX "SYS_C009126" ON "QRTZ_FIRED_TRIGGERS" ("SCHED_NAME", "ENTRY_ID"); 
-  CREATE INDEX "IDX_QRTZ_FT_TRIG_INST_NAME" ON "QRTZ_FIRED_TRIGGERS" ("SCHED_NAME", "INSTANCE_NAME"); 
-  CREATE INDEX "IDX_QRTZ_FT_INST_JOB_REQ_RCVRY" ON "QRTZ_FIRED_TRIGGERS" ("SCHED_NAME", "INSTANCE_NAME", "REQUESTS_RECOVERY"); 
-  CREATE INDEX "IDX_QRTZ_FT_J_G" ON "QRTZ_FIRED_TRIGGERS" ("SCHED_NAME", "JOB_NAME", "JOB_GROUP");  
-  ALTER TABLE "QRTZ_FIRED_TRIGGERS" ADD PRIMARY KEY ("SCHED_NAME", "ENTRY_ID"); 
-  
-  CREATE TABLE "QRTZ_JOB_DETAILS" 
-   (	
-      "SCHED_NAME" VARCHAR2(120 BYTE) NOT NULL, 
-      "JOB_NAME" VARCHAR2(200 BYTE) NOT NULL, 
-      "JOB_GROUP" VARCHAR2(200 BYTE) NOT NULL, 
-      "DESCRIPTION" VARCHAR2(250 BYTE), 
-      "JOB_CLASS_NAME" VARCHAR2(250 BYTE) NOT NULL, 
-      "IS_DURABLE" VARCHAR2(1 BYTE) NOT NULL, 
-      "IS_NONCONCURRENT" VARCHAR2(1 BYTE) NOT NULL, 
-      "IS_UPDATE_DATA" VARCHAR2(1 BYTE) NOT NULL, 
-      "REQUESTS_RECOVERY" VARCHAR2(1 BYTE) NOT NULL, 
-      "JOB_DATA" BLOB
-   );
-  CREATE INDEX "IDX_QRTZ_J_REQ_RECOVERY" ON "QRTZ_JOB_DETAILS" ("SCHED_NAME", "REQUESTS_RECOVERY");  
-  CREATE INDEX "IDX_QRTZ_J_GRP" ON "QRTZ_JOB_DETAILS" ("SCHED_NAME", "JOB_GROUP");  
-  CREATE UNIQUE INDEX "SYS_C009076" ON "QRTZ_JOB_DETAILS" ("SCHED_NAME", "JOB_NAME", "JOB_GROUP");  
-  ALTER TABLE "QRTZ_JOB_DETAILS" ADD PRIMARY KEY ("SCHED_NAME", "JOB_NAME", "JOB_GROUP"); 
+prompt
+prompt Creating table AU_ORGINFO
+prompt =========================
+prompt
+create table AU_ORGINFO
+(
+  orgid    VARCHAR2(64) not null,
+  suporgid VARCHAR2(512),
+  orgname  VARCHAR2(512)
+)
+;
+alter table AU_ORGINFO
+  add primary key (ORGID);
 
-  CREATE TABLE "QRTZ_LOCKS" 
-   (	
-      "SCHED_NAME" VARCHAR2(120 BYTE) NOT NULL, 
-      "LOCK_NAME" VARCHAR2(40 BYTE) NOT NULL
-   );
-  CREATE UNIQUE INDEX "SYS_C009134" ON "QRTZ_LOCKS" ("SCHED_NAME", "LOCK_NAME");  
-  ALTER TABLE "QRTZ_LOCKS" ADD PRIMARY KEY ("SCHED_NAME", "LOCK_NAME"); 
+prompt
+prompt Creating table AU_ROLEINFO
+prompt ==========================
+prompt
+create table AU_ROLEINFO
+(
+  roleid   VARCHAR2(64) not null,
+  rolename VARCHAR2(512)
+)
+;
+alter table AU_ROLEINFO
+  add primary key (ROLEID);
 
-  CREATE TABLE "QRTZ_PAUSED_TRIGGER_GRPS" 
-   (	
-      "SCHED_NAME" VARCHAR2(120 BYTE) NOT NULL, 
-      "TRIGGER_GROUP" VARCHAR2(200 BYTE) NOT NULL
-   );
-  CREATE UNIQUE INDEX "SYS_C009117" ON "QRTZ_PAUSED_TRIGGER_GRPS" ("SCHED_NAME", "TRIGGER_GROUP");  
-  ALTER TABLE "QRTZ_PAUSED_TRIGGER_GRPS" ADD PRIMARY KEY ("SCHED_NAME", "TRIGGER_GROUP");
-   
-  CREATE TABLE "QRTZ_SCHEDULER_STATE" 
-   (	
-      "SCHED_NAME" VARCHAR2(120 BYTE) NOT NULL, 
-      "INSTANCE_NAME" VARCHAR2(200 BYTE) NOT NULL, 
-      "LAST_CHECKIN_TIME" NUMBER(13,0) NOT NULL, 
-      "CHECKIN_INTERVAL" NUMBER(13,0) NOT NULL
-   );
-  CREATE UNIQUE INDEX "SYS_C009131" ON "QRTZ_SCHEDULER_STATE" ("SCHED_NAME", "INSTANCE_NAME");
-  ALTER TABLE "QRTZ_SCHEDULER_STATE" ADD PRIMARY KEY ("SCHED_NAME", "INSTANCE_NAME"); 
-  
-  CREATE TABLE "QRTZ_SIMPLE_TRIGGERS" 
-   (	
-      "SCHED_NAME" VARCHAR2(120 BYTE) NOT NULL, 
-      "TRIGGER_NAME" VARCHAR2(200 BYTE) NOT NULL, 
-      "TRIGGER_GROUP" VARCHAR2(200 BYTE) NOT NULL, 
-      "REPEAT_COUNT" NUMBER(7,0) NOT NULL, 
-      "REPEAT_INTERVAL" NUMBER(12,0) NOT NULL, 
-      "TIMES_TRIGGERED" NUMBER(10,0) NOT NULL
-   );
-  CREATE UNIQUE INDEX "SYS_C009093" ON "QRTZ_SIMPLE_TRIGGERS" ("SCHED_NAME", "TRIGGER_NAME", "TRIGGER_GROUP");
-  ALTER TABLE "QRTZ_SIMPLE_TRIGGERS" ADD PRIMARY KEY ("SCHED_NAME", "TRIGGER_NAME", "TRIGGER_GROUP"); 
-  
-  CREATE TABLE "QRTZ_SIMPROP_TRIGGERS" 
-   (	
-      "SCHED_NAME" VARCHAR2(120 BYTE) NOT NULL, 
-      "TRIGGER_NAME" VARCHAR2(200 BYTE) NOT NULL, 
-      "TRIGGER_GROUP" VARCHAR2(200 BYTE) NOT NULL, 
-      "STR_PROP_1" VARCHAR2(512 BYTE), 
-      "STR_PROP_2" VARCHAR2(512 BYTE), 
-      "STR_PROP_3" VARCHAR2(512 BYTE), 
-      "INT_PROP_1" NUMBER(10,0), 
-      "INT_PROP_2" NUMBER(10,0), 
-      "LONG_PROP_1" NUMBER(13,0), 
-      "LONG_PROP_2" NUMBER(13,0), 
-      "DEC_PROP_1" NUMBER(13,4), 
-      "DEC_PROP_2" NUMBER(13,4), 
-      "BOOL_PROP_1" VARCHAR2(1 BYTE), 
-      "BOOL_PROP_2" VARCHAR2(1 BYTE)
-   );
-  CREATE UNIQUE INDEX "SYS_C009104" ON "QRTZ_SIMPROP_TRIGGERS" ("SCHED_NAME", "TRIGGER_NAME", "TRIGGER_GROUP");  
-  ALTER TABLE "QRTZ_SIMPROP_TRIGGERS" ADD PRIMARY KEY ("SCHED_NAME", "TRIGGER_NAME", "TRIGGER_GROUP");  
-  
-   CREATE TABLE "FOXBPM_RUN_PROCESS_INFO"
-   (
-      "PROCESSINSTANCEID" VARCHAR2(64 BYTE) NOT NULL, 
-      "UPDATE_TIME" VARCHAR2(64 BYTE), 
-      "PROCESS_STATUS" VARCHAR2(64 BYTE), 
-      "PROCESS_STEP" VARCHAR2(256 BYTE),
-      "INITIATOR" VARCHAR2(64 BYTE), 
-      "BIZKEY" VARCHAR2(64 BYTE), 
-      PRIMARY KEY ("PROCESSINSTANCEID")
-   );
-  
-  
-  
-  CREATE TABLE "QRTZ_TRIGGERS" 
-   (	
-      "SCHED_NAME" VARCHAR2(120 BYTE) NOT NULL, 
-      "TRIGGER_NAME" VARCHAR2(200 BYTE) NOT NULL, 
-      "TRIGGER_GROUP" VARCHAR2(200 BYTE) NOT NULL, 
-      "JOB_NAME" VARCHAR2(200 BYTE) NOT NULL, 
-      "JOB_GROUP" VARCHAR2(200 BYTE) NOT NULL, 
-      "DESCRIPTION" VARCHAR2(250 BYTE), 
-      "NEXT_FIRE_TIME" NUMBER(13,0), 
-      "PREV_FIRE_TIME" NUMBER(13,0), 
-      "PRIORITY" NUMBER(13,0), 
-      "TRIGGER_STATE" VARCHAR2(16 BYTE) NOT NULL, 
-      "TRIGGER_TYPE" VARCHAR2(8 BYTE) NOT NULL, 
-      "START_TIME" NUMBER(13,0) NOT NULL, 
-      "END_TIME" NUMBER(13,0), 
-      "CALENDAR_NAME" VARCHAR2(200 BYTE), 
-      "MISFIRE_INSTR" NUMBER(2,0), 
-      "JOB_DATA" BLOB
-   );
-   
-  CREATE INDEX "IDX_QRTZ_T_J" ON "QRTZ_TRIGGERS" ("SCHED_NAME", "JOB_NAME", "JOB_GROUP");
-  CREATE INDEX "IDX_QRTZ_T_JG" ON "QRTZ_TRIGGERS" ("SCHED_NAME", "JOB_GROUP");  
-  CREATE INDEX "IDX_QRTZ_T_C" ON "QRTZ_TRIGGERS" ("SCHED_NAME", "CALENDAR_NAME");  
-  CREATE INDEX "IDX_QRTZ_T_G" ON "QRTZ_TRIGGERS" ("SCHED_NAME", "TRIGGER_GROUP");  
-  CREATE INDEX "IDX_QRTZ_T_STATE" ON "QRTZ_TRIGGERS" ("SCHED_NAME", "TRIGGER_STATE");  
-  CREATE INDEX "IDX_QRTZ_T_N_STATE" ON "QRTZ_TRIGGERS" ("SCHED_NAME", "TRIGGER_NAME", "TRIGGER_GROUP", "TRIGGER_STATE");  
-  CREATE INDEX "IDX_QRTZ_T_N_G_STATE" ON "QRTZ_TRIGGERS" ("SCHED_NAME", "TRIGGER_GROUP", "TRIGGER_STATE");  
-  CREATE INDEX "IDX_QRTZ_T_NEXT_FIRE_TIME" ON "QRTZ_TRIGGERS" ("SCHED_NAME", "NEXT_FIRE_TIME");  
-  CREATE INDEX "IDX_QRTZ_T_NFT_ST" ON "QRTZ_TRIGGERS" ("SCHED_NAME", "TRIGGER_STATE", "NEXT_FIRE_TIME");  
-  CREATE INDEX "IDX_QRTZ_T_NFT_MISFIRE" ON "QRTZ_TRIGGERS" ("SCHED_NAME", "MISFIRE_INSTR", "NEXT_FIRE_TIME"); 
-  CREATE INDEX "IDX_QRTZ_T_NFT_ST_MISFIRE" ON "QRTZ_TRIGGERS" ("SCHED_NAME", "MISFIRE_INSTR", "NEXT_FIRE_TIME", "TRIGGER_STATE"); 
-  CREATE INDEX "IDX_QRTZ_T_NFT_ST_MISFIRE_GRP" ON "QRTZ_TRIGGERS" ("SCHED_NAME", "MISFIRE_INSTR", "NEXT_FIRE_TIME", "TRIGGER_GROUP", "TRIGGER_STATE");  
-  CREATE UNIQUE INDEX "SYS_C009085" ON "QRTZ_TRIGGERS" ("SCHED_NAME", "TRIGGER_NAME", "TRIGGER_GROUP");
-  ALTER TABLE "QRTZ_TRIGGERS" ADD PRIMARY KEY ("SCHED_NAME", "TRIGGER_NAME", "TRIGGER_GROUP"); 
-  ALTER TABLE "QRTZ_TRIGGERS" ADD FOREIGN KEY ("SCHED_NAME", "JOB_NAME", "JOB_GROUP")
-	  REFERENCES "QRTZ_JOB_DETAILS" ("SCHED_NAME", "JOB_NAME", "JOB_GROUP") ENABLE;
-  ALTER TABLE "QRTZ_SIMPROP_TRIGGERS" ADD FOREIGN KEY ("SCHED_NAME", "TRIGGER_NAME", "TRIGGER_GROUP")
-	  REFERENCES "QRTZ_TRIGGERS" ("SCHED_NAME", "TRIGGER_NAME", "TRIGGER_GROUP") ENABLE;
-  ALTER TABLE "QRTZ_SIMPLE_TRIGGERS" ADD FOREIGN KEY ("SCHED_NAME", "TRIGGER_NAME", "TRIGGER_GROUP")
-	  REFERENCES "QRTZ_TRIGGERS" ("SCHED_NAME", "TRIGGER_NAME", "TRIGGER_GROUP") ENABLE;
-   ALTER TABLE "QRTZ_CRON_TRIGGERS" ADD FOREIGN KEY ("SCHED_NAME", "TRIGGER_NAME", "TRIGGER_GROUP")
-	  REFERENCES "QRTZ_TRIGGERS" ("SCHED_NAME", "TRIGGER_NAME", "TRIGGER_GROUP") ENABLE;
-  ALTER TABLE "QRTZ_BLOB_TRIGGERS" ADD FOREIGN KEY ("SCHED_NAME", "TRIGGER_NAME", "TRIGGER_GROUP")
-	  REFERENCES "QRTZ_TRIGGERS" ("SCHED_NAME", "TRIGGER_NAME", "TRIGGER_GROUP") ENABLE;
-  CREATE TABLE "TB_EXPENSE" 
-   (	
-      "ID" VARCHAR2(64 BYTE) NOT NULL, 
-      "OWNER" VARCHAR2(64 BYTE), 
-      "DEPT" VARCHAR2(64 BYTE), 
-      "ACCOUNT" NUMBER, 
-      "INVOICETYPE" VARCHAR2(64 BYTE), 
-      "REASON" VARCHAR2(252 BYTE), 
-      "CREATE_TIME" VARCHAR2(64 BYTE), 
-      "PROCESSINSTANCEID" VARCHAR2(64 BYTE), 
-      "PROCESSINSTANCESTATUS" VARCHAR2(64 BYTE), 
-      "PROCESSSTEP" VARCHAR2(256 BYTE),
-      PRIMARY KEY ("ID")
-   ); 
-   REM INSERTING into FOXBPM.AU_ORGINFO
-SET DEFINE OFF;
-Insert into AU_ORGINFO (ORGID,SUPORGID,ORGNAME) values ('20001','2000','金融事业部');
-Insert into AU_ORGINFO (ORGID,SUPORGID,ORGNAME) values ('200011','20001','产品研发部');
-Insert into AU_ORGINFO (ORGID,SUPORGID,ORGNAME) values ('200012','20001','市场营销部');
-REM INSERTING into FOXBPM.AU_ROLEINFO
-SET DEFINE OFF;
-Insert into AU_ROLEINFO (ROLEID,ROLENAME) values ('10001','项目主管');
-Insert into AU_ROLEINFO (ROLEID,ROLENAME) values ('10002','部门经理');
-REM INSERTING into FOXBPM.AU_GROUP_RELATION
-SET DEFINE OFF;
+prompt
+prompt Creating table AU_USERINFO
+prompt ==========================
+prompt
+create table AU_USERINFO
+(
+  userid   VARCHAR2(64) not null,
+  username VARCHAR2(512),
+  password VARCHAR2(512),
+  email    VARCHAR2(250),
+  tel      VARCHAR2(255),
+  image    VARCHAR2(64)
+)
+;
+alter table AU_USERINFO
+  add primary key (USERID);
+
+prompt
+prompt Creating table FOXBPM_AGENT
+prompt ===========================
+prompt
+create table FOXBPM_AGENT
+(
+  id         VARCHAR2(255) not null,
+  agent_user VARCHAR2(255),
+  starttime  TIMESTAMP(6),
+  endtime    TIMESTAMP(6),
+  status     VARCHAR2(255)
+)
+;
+alter table FOXBPM_AGENT
+  add primary key (ID);
+
+prompt
+prompt Creating table FOXBPM_AGENT_DETAILS
+prompt ===================================
+prompt
+create table FOXBPM_AGENT_DETAILS
+(
+  id                    VARCHAR2(255) not null,
+  agent_id              VARCHAR2(255),
+  processdefinition_key VARCHAR2(255),
+  agent_touser          VARCHAR2(255)
+)
+;
+alter table FOXBPM_AGENT_DETAILS
+  add primary key (ID);
+
+prompt
+prompt Creating table FOXBPM_DEF_BYTEARRAY
+prompt ===================================
+prompt
+create table FOXBPM_DEF_BYTEARRAY
+(
+  id            VARCHAR2(64) not null,
+  rev           NUMBER(12),
+  name          VARCHAR2(512),
+  bytes         BLOB,
+  deployment_id VARCHAR2(256)
+)
+;
+alter table FOXBPM_DEF_BYTEARRAY
+  add primary key (ID);
+
+prompt
+prompt Creating table FOXBPM_DEF_DEPLOYMENT
+prompt ====================================
+prompt
+create table FOXBPM_DEF_DEPLOYMENT
+(
+  id          VARCHAR2(64) not null,
+  name        VARCHAR2(512),
+  deploy_time TIMESTAMP(6)
+)
+;
+alter table FOXBPM_DEF_DEPLOYMENT
+  add primary key (ID);
+
+prompt
+prompt Creating table FOXBPM_DEF_PROCESSDEFINITION
+prompt ===========================================
+prompt
+create table FOXBPM_DEF_PROCESSDEFINITION
+(
+  difinitions_key       VARCHAR2(512),
+  difinitions_id        VARCHAR2(512),
+  process_key           VARCHAR2(512),
+  process_id            VARCHAR2(250) not null,
+  category              VARCHAR2(255),
+  process_name          VARCHAR2(255),
+  version               INTEGER,
+  resource_name         VARCHAR2(4000),
+  deployment_id         VARCHAR2(64),
+  diagram_resource_name VARCHAR2(512),
+  start_form_key        VARCHAR2(1024),
+  resource_id           VARCHAR2(64),
+  sub_task_id           VARCHAR2(128),
+  rev_                  INTEGER default 0
+)
+;
+alter table FOXBPM_DEF_PROCESSDEFINITION
+  add primary key (PROCESS_ID);
+
+prompt
+prompt Creating table FOXBPM_MAIL
+prompt ==========================
+prompt
+create table FOXBPM_MAIL
+(
+  mail_id        VARCHAR2(128) not null,
+  mail_name      VARCHAR2(4000),
+  mail_to        VARCHAR2(4000),
+  mail_subject   VARCHAR2(4000),
+  mail_body      BLOB,
+  mail_status    VARCHAR2(64),
+  create_time    TIMESTAMP(6),
+  send_time      TIMESTAMP(6),
+  mail_cc        VARCHAR2(4000),
+  create_user    VARCHAR2(64),
+  failure_reason VARCHAR2(4000)
+)
+;
+alter table FOXBPM_MAIL
+  add primary key (MAIL_ID);
+
+prompt
+prompt Creating table FOXBPM_RUN_OPERATING
+prompt ===================================
+prompt
+create table FOXBPM_RUN_OPERATING
+(
+  id                     VARCHAR2(64) not null,
+  processinstance_id     VARCHAR2(64),
+  processdefinition_id   VARCHAR2(512),
+  processdefinition_name VARCHAR2(512),
+  processdefinition_key  VARCHAR2(256),
+  task_id                VARCHAR2(64),
+  token_id               VARCHAR2(64),
+  node_id                VARCHAR2(64),
+  node_name              VARCHAR2(256),
+  operating_time         TIMESTAMP(6),
+  command_id             VARCHAR2(64),
+  command_type           VARCHAR2(64),
+  command_message        VARCHAR2(64),
+  operating_comment      VARCHAR2(4000),
+  operator               VARCHAR2(64)
+)
+;
+alter table FOXBPM_RUN_OPERATING
+  add primary key (ID);
+
+prompt
+prompt Creating table FOXBPM_RUN_PROCESSINSTANCE
+prompt =========================================
+prompt
+create table FOXBPM_RUN_PROCESSINSTANCE
+(
+  id                    VARCHAR2(64) not null,
+  processdefinition_id  VARCHAR2(512),
+  processdefinition_key VARCHAR2(512),
+  subject               VARCHAR2(4000),
+  start_time            TIMESTAMP(6),
+  end_time              TIMESTAMP(6),
+  definition_id         VARCHAR2(64),
+  roottoken_id          VARCHAR2(64),
+  biz_key               VARCHAR2(64),
+  initiator             VARCHAR2(64),
+  start_author          VARCHAR2(64),
+  issuspended           VARCHAR2(20),
+  parent_id             VARCHAR2(64),
+  parent_token_id       VARCHAR2(64),
+  update_time           TIMESTAMP(6),
+  processlocation       VARCHAR2(2048),
+  instance_status       VARCHAR2(45),
+  archive_time          TIMESTAMP(6),
+  rev_                  INTEGER default 0
+)
+;
+alter table FOXBPM_RUN_PROCESSINSTANCE
+  add primary key (ID);
+
+prompt
+prompt Creating table FOXBPM_RUN_PROCESS_INFO
+prompt ======================================
+prompt
+create table FOXBPM_RUN_PROCESS_INFO
+(
+  processinstanceid VARCHAR2(64),
+  update_time       VARCHAR2(64),
+  process_status    VARCHAR2(64),
+  process_step      VARCHAR2(256),
+  initiator         VARCHAR2(64),
+  bizkey            VARCHAR2(64)
+)
+;
+
+prompt
+prompt Creating table FOXBPM_RUN_RUNNINGTRACK
+prompt ======================================
+prompt
+create table FOXBPM_RUN_RUNNINGTRACK
+(
+  id                    VARCHAR2(64) not null,
+  processinstance_id    VARCHAR2(64),
+  processdefinition_id  VARCHAR2(512),
+  processdefinition_key VARCHAR2(512),
+  token_id              VARCHAR2(64),
+  parent_token_id       VARCHAR2(64),
+  execution_time        TIMESTAMP(6),
+  track_record          VARCHAR2(64),
+  operator              VARCHAR2(512),
+  node_id               VARCHAR2(128),
+  node_name             VARCHAR2(512),
+  event_name            VARCHAR2(512),
+  archive_time          TIMESTAMP(6)
+)
+;
+alter table FOXBPM_RUN_RUNNINGTRACK
+  add primary key (ID);
+
+prompt
+prompt Creating table FOXBPM_RUN_TASK
+prompt ==============================
+prompt
+create table FOXBPM_RUN_TASK
+(
+  id                       VARCHAR2(64) not null,
+  processinstance_id       VARCHAR2(64),
+  processdefinition_id     VARCHAR2(512),
+  version                  INTEGER,
+  token_id                 VARCHAR2(64),
+  node_id                  VARCHAR2(64),
+  description              VARCHAR2(4000),
+  subject                  VARCHAR2(255),
+  parent_id                VARCHAR2(64),
+  assignee                 VARCHAR2(64),
+  claim_time               TIMESTAMP(6),
+  name                     VARCHAR2(255),
+  create_time              TIMESTAMP(6),
+  start_time               TIMESTAMP(6),
+  isblocking               VARCHAR2(20),
+  end_time                 TIMESTAMP(6),
+  duedate                  TIMESTAMP(6),
+  priority                 NUMBER(6),
+  category                 VARCHAR2(64),
+  owner                    VARCHAR2(64),
+  delegationstate          VARCHAR2(64),
+  bizkey                   VARCHAR2(64),
+  command_type             VARCHAR2(256),
+  command_message          VARCHAR2(256),
+  task_comment             VARCHAR2(4000),
+  node_name                VARCHAR2(512),
+  processdefinition_key    VARCHAR2(512),
+  formuri                  VARCHAR2(256),
+  taskgroup                VARCHAR2(64),
+  tasktype                 VARCHAR2(64),
+  processdefinition_name   VARCHAR2(512),
+  iscancelled              VARCHAR2(64),
+  issuspended              VARCHAR2(64),
+  isopen                   VARCHAR2(64),
+  isdraft                  VARCHAR2(64),
+  expected_executiontime   NUMBER(14,2),
+  agent                    VARCHAR2(64),
+  admin                    VARCHAR2(64),
+  formuriview              VARCHAR2(512),
+  callactivity_instance_id VARCHAR2(256),
+  command_id               VARCHAR2(64),
+  pendingtaskid            VARCHAR2(64),
+  archive_time             TIMESTAMP(6),
+  completedescription      VARCHAR2(1024),
+  processstart_time        TIMESTAMP(6),
+  process_initiator        VARCHAR2(255),
+  rev_                     INTEGER default 0,
+  next_task_id             VARCHAR2(64),
+  addsign_type             VARCHAR2(64)
+)
+;
+alter table FOXBPM_RUN_TASK
+  add primary key (ID);
+
+prompt
+prompt Creating table FOXBPM_RUN_TASKIDENTITYLINK
+prompt ==========================================
+prompt
+create table FOXBPM_RUN_TASKIDENTITYLINK
+(
+  id                VARCHAR2(64) not null,
+  type              VARCHAR2(64),
+  user_id           VARCHAR2(64),
+  group_id          VARCHAR2(64),
+  group_type        VARCHAR2(64),
+  task_id           VARCHAR2(64),
+  include_exclusion VARCHAR2(64)
+)
+;
+alter table FOXBPM_RUN_TASKIDENTITYLINK
+  add primary key (ID);
+
+prompt
+prompt Creating table FOXBPM_RUN_TOKEN
+prompt ===============================
+prompt
+create table FOXBPM_RUN_TOKEN
+(
+  id                    VARCHAR2(64) not null,
+  name                  VARCHAR2(64),
+  processinstance_id    VARCHAR2(64),
+  node_id               VARCHAR2(128),
+  parent_id             VARCHAR2(64),
+  start_time            TIMESTAMP(6),
+  end_time              TIMESTAMP(6),
+  nodeenter_time        TIMESTAMP(6),
+  archive_time          TIMESTAMP(6),
+  issuspended           VARCHAR2(64),
+  islock                VARCHAR2(64),
+  isactive              VARCHAR2(64),
+  issubprocessroottoken VARCHAR2(64),
+  rev_                  INTEGER default 0,
+  loop_count            INTEGER
+)
+;
+alter table FOXBPM_RUN_TOKEN
+  add primary key (ID);
+
+prompt
+prompt Creating table FOXBPM_RUN_VARIABLE
+prompt ==================================
+prompt
+create table FOXBPM_RUN_VARIABLE
+(
+  id                    VARCHAR2(64) not null,
+  processinstance_id    VARCHAR2(64),
+  processdefinition_id  VARCHAR2(255),
+  processdefinition_key VARCHAR2(255),
+  variable_key          VARCHAR2(64),
+  variable_value        BLOB,
+  classname             VARCHAR2(64),
+  task_id               VARCHAR2(64),
+  token_id              VARCHAR2(64),
+  node_id               VARCHAR2(512),
+  variable_type         VARCHAR2(45),
+  biz_data              VARCHAR2(2048),
+  rev_                  INTEGER default 0
+)
+;
+alter table FOXBPM_RUN_VARIABLE
+  add primary key (ID);
+
+prompt
+prompt Creating table QRTZ_JOB_DETAILS
+prompt ===============================
+prompt
+create table QRTZ_JOB_DETAILS
+(
+  sched_name        VARCHAR2(120) not null,
+  job_name          VARCHAR2(200) not null,
+  job_group         VARCHAR2(200) not null,
+  description       VARCHAR2(250),
+  job_class_name    VARCHAR2(250) not null,
+  is_durable        VARCHAR2(1) not null,
+  is_nonconcurrent  VARCHAR2(1) not null,
+  is_update_data    VARCHAR2(1) not null,
+  requests_recovery VARCHAR2(1) not null,
+  job_data          BLOB
+)
+;
+create index IDX_QRTZ_J_GRP on QRTZ_JOB_DETAILS (SCHED_NAME, JOB_GROUP);
+create index IDX_QRTZ_J_REQ_RECOVERY on QRTZ_JOB_DETAILS (SCHED_NAME, REQUESTS_RECOVERY);
+create unique index SYS_C009076 on QRTZ_JOB_DETAILS (SCHED_NAME, JOB_NAME, JOB_GROUP);
+alter table QRTZ_JOB_DETAILS
+  add primary key (SCHED_NAME, JOB_NAME, JOB_GROUP);
+
+prompt
+prompt Creating table QRTZ_TRIGGERS
+prompt ============================
+prompt
+create table QRTZ_TRIGGERS
+(
+  sched_name     VARCHAR2(120) not null,
+  trigger_name   VARCHAR2(200) not null,
+  trigger_group  VARCHAR2(200) not null,
+  job_name       VARCHAR2(200) not null,
+  job_group      VARCHAR2(200) not null,
+  description    VARCHAR2(250),
+  next_fire_time NUMBER(13),
+  prev_fire_time NUMBER(13),
+  priority       NUMBER(13),
+  trigger_state  VARCHAR2(16) not null,
+  trigger_type   VARCHAR2(8) not null,
+  start_time     NUMBER(13) not null,
+  end_time       NUMBER(13),
+  calendar_name  VARCHAR2(200),
+  misfire_instr  NUMBER(2),
+  job_data       BLOB
+)
+;
+create index IDX_QRTZ_T_C on QRTZ_TRIGGERS (SCHED_NAME, CALENDAR_NAME);
+create index IDX_QRTZ_T_G on QRTZ_TRIGGERS (SCHED_NAME, TRIGGER_GROUP);
+create index IDX_QRTZ_T_J on QRTZ_TRIGGERS (SCHED_NAME, JOB_NAME, JOB_GROUP);
+create index IDX_QRTZ_T_JG on QRTZ_TRIGGERS (SCHED_NAME, JOB_GROUP);
+create index IDX_QRTZ_T_NEXT_FIRE_TIME on QRTZ_TRIGGERS (SCHED_NAME, NEXT_FIRE_TIME);
+create index IDX_QRTZ_T_NFT_MISFIRE on QRTZ_TRIGGERS (SCHED_NAME, MISFIRE_INSTR, NEXT_FIRE_TIME);
+create index IDX_QRTZ_T_NFT_ST on QRTZ_TRIGGERS (SCHED_NAME, TRIGGER_STATE, NEXT_FIRE_TIME);
+create index IDX_QRTZ_T_NFT_ST_MISFIRE on QRTZ_TRIGGERS (SCHED_NAME, MISFIRE_INSTR, NEXT_FIRE_TIME, TRIGGER_STATE);
+create index IDX_QRTZ_T_NFT_ST_MISFIRE_GRP on QRTZ_TRIGGERS (SCHED_NAME, MISFIRE_INSTR, NEXT_FIRE_TIME, TRIGGER_GROUP, TRIGGER_STATE);
+create index IDX_QRTZ_T_N_G_STATE on QRTZ_TRIGGERS (SCHED_NAME, TRIGGER_GROUP, TRIGGER_STATE);
+create index IDX_QRTZ_T_N_STATE on QRTZ_TRIGGERS (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP, TRIGGER_STATE);
+create index IDX_QRTZ_T_STATE on QRTZ_TRIGGERS (SCHED_NAME, TRIGGER_STATE);
+create unique index SYS_C009085 on QRTZ_TRIGGERS (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP);
+alter table QRTZ_TRIGGERS
+  add primary key (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP);
+alter table QRTZ_TRIGGERS
+  add foreign key (SCHED_NAME, JOB_NAME, JOB_GROUP)
+  references QRTZ_JOB_DETAILS (SCHED_NAME, JOB_NAME, JOB_GROUP);
+
+prompt
+prompt Creating table QRTZ_BLOB_TRIGGERS
+prompt =================================
+prompt
+create table QRTZ_BLOB_TRIGGERS
+(
+  sched_name    VARCHAR2(120) not null,
+  trigger_name  VARCHAR2(200) not null,
+  trigger_group VARCHAR2(200) not null,
+  blob_data     BLOB
+)
+;
+create unique index SYS_C009109 on QRTZ_BLOB_TRIGGERS (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP);
+alter table QRTZ_BLOB_TRIGGERS
+  add primary key (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP);
+alter table QRTZ_BLOB_TRIGGERS
+  add foreign key (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP)
+  references QRTZ_TRIGGERS (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP);
+
+prompt
+prompt Creating table QRTZ_CALENDARS
+prompt =============================
+prompt
+create table QRTZ_CALENDARS
+(
+  sched_name    VARCHAR2(120) not null,
+  calendar_name VARCHAR2(200) not null,
+  calendar      BLOB not null
+)
+;
+create unique index SYS_C009114 on QRTZ_CALENDARS (SCHED_NAME, CALENDAR_NAME);
+alter table QRTZ_CALENDARS
+  add primary key (SCHED_NAME, CALENDAR_NAME);
+
+prompt
+prompt Creating table QRTZ_CRON_TRIGGERS
+prompt =================================
+prompt
+create table QRTZ_CRON_TRIGGERS
+(
+  sched_name      VARCHAR2(120) not null,
+  trigger_name    VARCHAR2(200) not null,
+  trigger_group   VARCHAR2(200) not null,
+  cron_expression VARCHAR2(120) not null,
+  time_zone_id    VARCHAR2(80)
+)
+;
+create unique index SYS_C009099 on QRTZ_CRON_TRIGGERS (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP);
+alter table QRTZ_CRON_TRIGGERS
+  add primary key (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP);
+alter table QRTZ_CRON_TRIGGERS
+  add foreign key (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP)
+  references QRTZ_TRIGGERS (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP);
+
+prompt
+prompt Creating table QRTZ_FIRED_TRIGGERS
+prompt ==================================
+prompt
+create table QRTZ_FIRED_TRIGGERS
+(
+  sched_name        VARCHAR2(120) not null,
+  entry_id          VARCHAR2(95) not null,
+  trigger_name      VARCHAR2(200) not null,
+  trigger_group     VARCHAR2(200) not null,
+  instance_name     VARCHAR2(200) not null,
+  fired_time        NUMBER(13) not null,
+  priority          NUMBER(13) not null,
+  state             VARCHAR2(16) not null,
+  job_name          VARCHAR2(200),
+  job_group         VARCHAR2(200),
+  is_nonconcurrent  VARCHAR2(1),
+  requests_recovery VARCHAR2(1)
+)
+;
+create index IDX_QRTZ_FT_INST_JOB_REQ_RCVRY on QRTZ_FIRED_TRIGGERS (SCHED_NAME, INSTANCE_NAME, REQUESTS_RECOVERY);
+create index IDX_QRTZ_FT_JG on QRTZ_FIRED_TRIGGERS (SCHED_NAME, JOB_GROUP);
+create index IDX_QRTZ_FT_J_G on QRTZ_FIRED_TRIGGERS (SCHED_NAME, JOB_NAME, JOB_GROUP);
+create index IDX_QRTZ_FT_TG on QRTZ_FIRED_TRIGGERS (SCHED_NAME, TRIGGER_GROUP);
+create index IDX_QRTZ_FT_TRIG_INST_NAME on QRTZ_FIRED_TRIGGERS (SCHED_NAME, INSTANCE_NAME);
+create index IDX_QRTZ_FT_T_G on QRTZ_FIRED_TRIGGERS (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP);
+create unique index SYS_C009126 on QRTZ_FIRED_TRIGGERS (SCHED_NAME, ENTRY_ID);
+alter table QRTZ_FIRED_TRIGGERS
+  add primary key (SCHED_NAME, ENTRY_ID);
+
+prompt
+prompt Creating table QRTZ_LOCKS
+prompt =========================
+prompt
+create table QRTZ_LOCKS
+(
+  sched_name VARCHAR2(120) not null,
+  lock_name  VARCHAR2(40) not null
+)
+;
+create unique index SYS_C009134 on QRTZ_LOCKS (SCHED_NAME, LOCK_NAME);
+alter table QRTZ_LOCKS
+  add primary key (SCHED_NAME, LOCK_NAME);
+
+prompt
+prompt Creating table QRTZ_PAUSED_TRIGGER_GRPS
+prompt =======================================
+prompt
+create table QRTZ_PAUSED_TRIGGER_GRPS
+(
+  sched_name    VARCHAR2(120) not null,
+  trigger_group VARCHAR2(200) not null
+)
+;
+create unique index SYS_C009117 on QRTZ_PAUSED_TRIGGER_GRPS (SCHED_NAME, TRIGGER_GROUP);
+alter table QRTZ_PAUSED_TRIGGER_GRPS
+  add primary key (SCHED_NAME, TRIGGER_GROUP);
+
+prompt
+prompt Creating table QRTZ_SCHEDULER_STATE
+prompt ===================================
+prompt
+create table QRTZ_SCHEDULER_STATE
+(
+  sched_name        VARCHAR2(120) not null,
+  instance_name     VARCHAR2(200) not null,
+  last_checkin_time NUMBER(13) not null,
+  checkin_interval  NUMBER(13) not null
+)
+;
+create unique index SYS_C009131 on QRTZ_SCHEDULER_STATE (SCHED_NAME, INSTANCE_NAME);
+alter table QRTZ_SCHEDULER_STATE
+  add primary key (SCHED_NAME, INSTANCE_NAME);
+
+prompt
+prompt Creating table QRTZ_SIMPLE_TRIGGERS
+prompt ===================================
+prompt
+create table QRTZ_SIMPLE_TRIGGERS
+(
+  sched_name      VARCHAR2(120) not null,
+  trigger_name    VARCHAR2(200) not null,
+  trigger_group   VARCHAR2(200) not null,
+  repeat_count    NUMBER(7) not null,
+  repeat_interval NUMBER(12) not null,
+  times_triggered NUMBER(10) not null
+)
+;
+create unique index SYS_C009093 on QRTZ_SIMPLE_TRIGGERS (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP);
+alter table QRTZ_SIMPLE_TRIGGERS
+  add primary key (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP);
+alter table QRTZ_SIMPLE_TRIGGERS
+  add foreign key (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP)
+  references QRTZ_TRIGGERS (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP);
+
+prompt
+prompt Creating table QRTZ_SIMPROP_TRIGGERS
+prompt ====================================
+prompt
+create table QRTZ_SIMPROP_TRIGGERS
+(
+  sched_name    VARCHAR2(120) not null,
+  trigger_name  VARCHAR2(200) not null,
+  trigger_group VARCHAR2(200) not null,
+  str_prop_1    VARCHAR2(512),
+  str_prop_2    VARCHAR2(512),
+  str_prop_3    VARCHAR2(512),
+  int_prop_1    NUMBER(10),
+  int_prop_2    NUMBER(10),
+  long_prop_1   NUMBER(13),
+  long_prop_2   NUMBER(13),
+  dec_prop_1    NUMBER(13,4),
+  dec_prop_2    NUMBER(13,4),
+  bool_prop_1   VARCHAR2(1),
+  bool_prop_2   VARCHAR2(1)
+)
+;
+create unique index SYS_C009104 on QRTZ_SIMPROP_TRIGGERS (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP);
+alter table QRTZ_SIMPROP_TRIGGERS
+  add primary key (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP);
+alter table QRTZ_SIMPROP_TRIGGERS
+  add foreign key (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP)
+  references QRTZ_TRIGGERS (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP);
+
+prompt
+prompt Creating table TB_EXPENSE
+prompt =========================
+prompt
+create table TB_EXPENSE
+(
+  id                    VARCHAR2(64) not null,
+  owner                 VARCHAR2(64),
+  dept                  VARCHAR2(64),
+  account               NUMBER,
+  invoicetype           VARCHAR2(64),
+  reason                VARCHAR2(252),
+  create_time           VARCHAR2(64),
+  processinstanceid     VARCHAR2(64),
+  processinstancestatus VARCHAR2(64),
+  processstep           VARCHAR2(256)
+)
+;
+alter table TB_EXPENSE
+  add primary key (ID);
+
+Insert into AU_ORGINFO (ORGID,SUPORGID,ORGNAME) values ('20001','2000','dept1');
+Insert into AU_ORGINFO (ORGID,SUPORGID,ORGNAME) values ('200011','20001','dept2');
+Insert into AU_ORGINFO (ORGID,SUPORGID,ORGNAME) values ('200012','20001','dept3'); 
+Insert into AU_ROLEINFO (ROLEID,ROLENAME) values ('10001','ROLE1');
+Insert into AU_ROLEINFO (ROLEID,ROLENAME) values ('10002','ROLE2'); 
 Insert into AU_GROUP_RELATION (GUID,USERID,GROUPID,GROUPTYPE) values ('100000000000004','admin','200012','dept');
 Insert into AU_GROUP_RELATION (GUID,USERID,GROUPID,GROUPTYPE) values ('100000000000003','admin','200011','dept');
-REM INSERTING into FOXBPM.AU_USERINFO
-SET DEFINE OFF; 
-Insert into AU_USERINFO (USERID,USERNAME,PASSWORD,EMAIL,TEL,IMAGE) values ('admin','超级管理员','1','ft%25252563a.com','ddxx','admin.jpg');
+Insert into AU_USERINFO (USERID,USERNAME,PASSWORD,EMAIL,TEL,IMAGE) values ('admin','admin','1','ft%25252563a.com','ddxx','admin.jpg');
+spool off
+
+
