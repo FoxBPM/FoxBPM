@@ -37,11 +37,35 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 			<ref local="foxbpmDataSource" />
 		</property>
 	</bean>
-	<!-- foxbpm事物管理 -->
-	<bean id="foxbpmTransactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="foxbpmDataSource" />
-	</bean>
+	
+	<!-- Jpa Entity Manager 配置 -->
+    
+     <!-- Jpa Entity Manager 配置 -->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="foxbpmDataSource"/>
+        <property name="jpaVendorAdapter" ref="eclipselinkJpaVendorAdapter"/>
+        <property name="packagesToScan" value="org.foxbpm.portal"/>
+        <property name="jpaProperties">
+            <props>
+            	
+            	<prop key="eclipselink.weaving">false</prop>
+                <prop key="eclipselink.show_sql">true</prop>
+                <prop key="eclipselink.logging.parameters">true</prop>
+                <prop key="eclipselink.logging.level">FINE</prop>
+                <prop key="eclipselink.logging.level.sql">FINE</prop>
+                <prop key="eclipselink.orm.throw.exceptions">true</prop>
+                <prop key="eclipselink.query-results-cache">true</prop>
+            </props>
+        </property>
+    </bean>
+    
+	<bean id="eclipselinkJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter"/>
+
+    <!-- Jpa 事务配置 -->
+    <bean id="foxbpmTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+    
 	<bean id="scheduler"
 		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="autoStartup" value="false"></property>

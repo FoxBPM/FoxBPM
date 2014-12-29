@@ -18,6 +18,7 @@
 package org.foxbpm.engine.impl.util;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Map;
 
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
@@ -72,8 +73,15 @@ public class DataVarUtil {
 			String sql = MessageFormat.format(QUERY_DATASQL, new Object[] {
 					field, bizObjName, bizField });
 			
-			return jdbcTemplate.queryForObject(sql, Object.class,
-					new Object[] { bizkey });
+			List<Map<String,Object>> resultMapList = jdbcTemplate.queryForList(sql,new Object[] { bizkey });
+			if(resultMapList != null && resultMapList.size() >0){
+				Map<String,Object> resultMap = resultMapList.get(0);
+				if(resultMap != null){
+					return resultMap.get(field);
+				}
+			}
+			
+			return null;
 
 		} catch (Exception e) {
 			throw ExceptionUtil.getException("数据变量值获取失败!", e);

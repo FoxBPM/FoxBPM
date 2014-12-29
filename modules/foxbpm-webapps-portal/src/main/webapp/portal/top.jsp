@@ -6,53 +6,7 @@
 <!-- #HEADER -->
 		<header id="header">
 			<div id="logo-group">
-
-				<!-- PLACE YOUR LOGO HERE -->
 				<span id="logo"> <img src="img/logo.png" alt="SmartAdmin"> </span>
-				<!-- END LOGO PLACEHOLDER -->
-
-				<!-- Note: The activity badge color changes when clicked and resets the number to 0
-					 Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->
-				<span id="activity" class="activity-dropdown"> <i class="fa fa-user"></i></span>
-
-				<!-- AJAX-DROPDOWN : control this dropdown height, look and feel from the LESS variable file -->
-				<div class="ajax-dropdown">
-
-					<!-- the ID links are fetched via AJAX to the ajax container "ajax-notifications" -->
-					<div class="btn-group btn-group-justified" data-toggle="buttons">
-						<label class="btn btn-default">
-							<input type="radio" name="activity" url="ajax/notify/mail.html" notifyType='0'>
-							消息  </label>
-						<label class="btn btn-default">
-							<input type="radio" name="activity" url="ajax/notify/notifications.html" notifyType='1'>
-							通知  </label>
-						<label class="btn btn-default">
-							<input type="radio" name="activity" url="runtime/tasks" notifyType='2'>
-							任务  </label>
-					</div>
-
-					<!-- notification content -->
-					<div class="ajax-notifications custom-scroll">
-
-						<div class="alert alert-transparent">
-							<h4>Click a button to show messages here</h4>
-							This blank page message helps protect your privacy, or you can show the first message here automatically.
-						</div>
-
-						<i class="fa fa-lock fa-4x fa-border"></i>
-
-					</div>
-					<!-- end notification content -->
-
-					<!-- footer: refresh area -->
-					<span> 最后更新时间 : 12/12/2013 9:43AM
-						<button type="button" data-loading-text="<i class='fa fa-refresh fa-spin'></i> Loading..." class="btn btn-xs btn-default pull-right">
-							<i class="fa fa-refresh"></i>
-						</button> </span>
-					<!-- end footer -->
-
-				</div>
-				<!-- END AJAX-DROPDOWN -->
 			</div>
 
 			<!-- #PROJECTS: projects dropdown -->
@@ -71,11 +25,7 @@
 						<a href="javascript:void(0);" id="clearCache"><i class="fa fa-power-off"></i> Clear</a>
 					</li>
 				</ul>
-				<!-- end dropdown-menu-->
-
 			</div>
-			<!-- end projects dropdown -->
-			
 			<!-- #TOGGLE LAYOUT BUTTONS -->
 			<!-- pulled right: nav area -->
 			<div class="pull-right">
@@ -96,22 +46,6 @@
 						</a>
 						<ul class="dropdown-menu pull-right">
 							<li>
-								<a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-cog"></i> <strong> 系统设置</strong></a>
-							</li>
-							<li class="divider"></li>
-							<li>
-								<a href="portal/jsp/profile.jsp" class="padding-10 padding-top-0 padding-bottom-0"> <i class="fa fa-user"></i> <strong> 个人信息</strong></a>
-							</li>
-							<li class="divider"></li>
-							<li>
-								<a href="portal/jsp/profile.html" class="padding-10 padding-top-0 padding-bottom-0"> <i class="fa fa-plane"></i> <strong> 委托授权</strong></a>
-							</li>
-								<li class="divider"></li>
-							<li>
-								<a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0" data-action="toggleShortcut"><i class="fa fa-arrow-down"></i> <strong> 快捷菜单</strong></a>
-							</li>
-							<li class="divider"></li>
-							<li>
 								<a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0" data-action="launchFullscreen"><i class="fa fa-arrows-alt"></i> <strong> 全屏幕</strong></a>
 							</li>
 							<li class="divider"></li>
@@ -125,56 +59,10 @@
 						</ul>
 					</li>
 				</ul>
-
-				<!-- logout button -->
-				<!-- <div id="logout" class="btn-header transparent pull-right">
-					<span> <a href="login.html" title="Sign Out" data-action="userLogout" data-logout-msg="您确定要退出系统？"><i class="fa fa-sign-out"></i></a> </span>
-				</div> -->
-				<!-- end logout button -->
-
 				<!-- search mobile button (this is hidden till mobile view port) -->
 				<div id="search-mobile" class="btn-header transparent pull-right">
 					<span> <a href="javascript:void(0)" title="Search"><i class="fa fa-search"></i></a> </span>
 				</div>
-				<!-- end search mobile button -->
-				
-				<!-- #SEARCH -->
-				<!-- input: search field -->
-				<form action="#ajax/search.html" class="header-search pull-right">
-					<input id="search-fld" type="text" name="param" placeholder="查找待办任务">
-					<button type="submit">
-						<i class="fa fa-search"></i>
-					</button>
-					<a href="javascript:void(0);" id="cancel-search-js" title="Cancel Search"><i class="fa fa-times"></i></a>
-				</form>
-				<!-- end input: search field -->
-
-				<!-- fullscreen button -->
-				<div id="fullscreen" class="btn-header transparent pull-right">
-					<span> <a href="javascript:void(0);" data-action="launchFullscreen" title="Full Screen"><i class="fa fa-arrows-alt"></i></a> </span>
-				</div>
-				<!-- end fullscreen button -->
-
-				<!-- #Voice Command: Start Speech -->
-				<!-- <div id="speech-btn" class="btn-header transparent pull-right hidden-sm hidden-xs">
-					<div> 
-						<a href="javascript:void(0)" title="Voice Command" data-action="voiceCommand"><i class="fa fa-microphone"></i></a> 
-						<div class="popover bottom"><div class="arrow"></div>
-							<div class="popover-content">
-								<h4 class="vc-title">Voice command activated <br><small>Please speak clearly into the mic</small></h4>
-								<h4 class="vc-title-error text-center">
-									<i class="fa fa-microphone-slash"></i> Voice command failed
-									<br><small class="txt-color-red">Must <strong>"Allow"</strong> Microphone</small>
-									<br><small class="txt-color-red">Must have <strong>Internet Connection</strong></small>
-								</h4>
-								<a href="javascript:void(0);" class="btn btn-success" onclick="commands.help()">See Commands</a> 
-								<a href="javascript:void(0);" class="btn bg-color-purple txt-color-white" onclick="$('#speech-btn .popover').fadeOut(50);">Close Popup</a> 
-							</div>
-						</div>
-					</div>
-				</div> -->
-				<!-- end voice command -->
-
 				<!-- multiple lang dropdown : find all flags in the flags page -->
 				<ul class="header-dropdown-list hidden-xs">
 					<li>
@@ -183,9 +71,6 @@
 							<li>
 								<a href="javascript:void(0);"><img src="img/blank.gif" class="flag flag-cn" alt="China"> 中文</a>
 							</li>	
-							<li class="active">
-								<a href="javascript:void(0);"><img src="img/blank.gif" class="flag flag-us" alt="United States"> English (US)</a>
-							</li>
 						</ul>
 					</li>
 				</ul>
@@ -226,19 +111,10 @@
 			will not initialize.
 			-->
 			<nav>
-				<!-- 
-				NOTE: Notice the gaps after each icon usage <i></i>..
-				Please note that these links work a bit different than
-				traditional href="" links. See documentation for details.
-				-->
-
 				<ul>
 					<li class="">
 						<a href="portal/jsp/dashboard.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-tachometer"></i> <span class="menu-item-parent">个 人 面 板</span></a>
 					</li>
-					<!-- <li>
-						<a href="portal/jsp/users.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-arrow-circle-right"></i> <span class="menu-item-parent">用户列表</span></a>
-					</li> -->
 					<li>
 						<a href="portal/jsp/launchProcess.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-arrow-circle-right"></i> <span class="menu-item-parent">发 起 流 程</span></a>
 					</li>
@@ -248,32 +124,9 @@
 					<li>
 						<a href="portal/jsp/calendarpanel.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-calendar"></i> <span class="menu-item-parent">日 历 面 板</span></a>
 					</li>
-					<!-- <li>
-						<a href="ajax/inbox.html" title="Dashboard"><i class="fa fa-lg fa-fw fa-bullhorn"></i> <span class="menu-item-parent">通 知 中 心</span></a>
-					</li> -->
-					<li>
-						<a href="portal/jsp/doneTasks.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-check-square-o"></i> <span class="menu-item-parent">已 办 任 务</span></a>
-					</li>
 					<li>
 						<a href="portal/jsp/runningTrackTasks.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-check-square"></i> <span class="menu-item-parent">流 程 追 踪</span></a>
 					</li>
-					<!-- <li>
-						<a href="portal/jsp/profile.jsp" title="Dashboard"><i class="fa fa-lg fa-fw fa-comments-o"></i> <span class="menu-item-parent">社 交 中 心</span></a>
-					</li> -->
-<!-- 					<li>
-						<a href="#"><i class="fa fa-lg fa-fw fa-calendar"></i> <span class="menu-item-parent">工 作 日 历</span></a>
-						<ul>
-							<li>
-								<a href="portal/jsp/calendartype.jsp"><i class="fa fa-lg fa-fw fa-calendartype"></i> <span class="menu-item-parent">日 历 类 型</span></a>
-							</li>
-							<li>
-								<a href="portal/jsp/calendarrule.jsp"><i class="fa fa-lg fa-fw fa-calendarrule"></i> <span class="menu-item-parent">日 历 规 则</span></a>
-							</li>
-							<li>
-								<a href="portal/jsp/calendarpart.jsp"><i class="fa fa-lg fa-fw fa-calendarpart"></i> <span class="menu-item-parent">日 历 时 间</span></a>
-							</li>
-						</ul>
-					</li> -->
 					
 					<li>
 						<a href="#"><i class="fa fa-lg fa-fw fa-calendar"></i> <span class="menu-item-parent">报 销 系 统</span></a>
@@ -305,18 +158,6 @@
 					<!-- This is auto generated -->
 				</ol>
 				<!-- end breadcrumb -->
-
-				<!-- You can also add more buttons to the
-				ribbon for further usability
-
-				Example below:
-
-				<span class="ribbon-button-alignment pull-right" style="margin-right:25px">
-					<span id="search" class="btn btn-ribbon hidden-xs" data-title="search"><i class="fa fa-grid"></i> Change Grid</span>
-					<span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa fa-plus"></i> Add</span>
-					<span id="search" class="btn btn-ribbon" data-title="search"><i class="fa fa-search"></i> <span class="hidden-mobile">Search</span></span>
-				</span> -->
-
 			</div>
 			<!-- END RIBBON -->
 <div id="content">

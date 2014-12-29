@@ -17,64 +17,50 @@
  */
 package org.foxbpm.portal.dao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.foxbpm.portal.model.ExpenseEntity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ExpenseDao {
 
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	@PersistenceContext
+	private EntityManager entityManager;
+
 	public void saveExpenseEntity(ExpenseEntity expenseEntity){
-		String sqlInsert = "insert into tb_expense(id,owner,dept,account,invoiceType,reason,create_Time) values(?,?,?,?,?,?,?)";
-		jdbcTemplate.update(sqlInsert,expenseEntity.getExpenseId(),expenseEntity.getOwner(),expenseEntity.getDept(),expenseEntity.getAccount(),expenseEntity.getInvoiceType(),expenseEntity.getReason(),expenseEntity.getCreateTime());
+		entityManager.persist(expenseEntity);
 	}
 	
 	public void updateExpenseEntity(ExpenseEntity expenseEntity){
-		String sqlUpdate = "update tb_expense set owner=?,dept=?,account=?,invoiceType=?,reason=?,create_Time=? where id=?";
-		jdbcTemplate.update(sqlUpdate,expenseEntity.getOwner(),expenseEntity.getDept(),expenseEntity.getAccount(),expenseEntity.getInvoiceType(),expenseEntity.getReason(),expenseEntity.getCreateTime(),expenseEntity.getExpenseId());
+		entityManager.merge(expenseEntity);
 	}
 	
 	
 	public ExpenseEntity selectExpenseById(String entityId){
-		String sqlSel = "select * from tb_expense where id=?";
-		List<ExpenseEntity> resultList = jdbcTemplate.query(sqlSel, new Object[]{entityId}, new ExpenseRowMapper());
-		if(resultList != null && resultList.size() >0){
-			return resultList.get(0);
-		}
-		return null;
+		return entityManager.find(ExpenseEntity.class, entityId);
 	}
 	
 	public List<ExpenseEntity> selectExpenseByPage(int pageIndex,int pageSize){
 		int begin = (pageIndex -1)*pageSize;
 		int end = pageIndex * pageSize;
-		String sql = "select t2.* from (select rownum , t.* from tb_expense t where rownum > ?) t2 where rownum < ? ";
-		Object []args = new Object[]{begin,end};
-		List<ExpenseEntity> list = jdbcTemplate.query(sql,args, new ExpenseRowMapper());
+		String sql = "select expense from ExpenseEntity expense order by expense.createTime desc";
+		List<ExpenseEntity> list = entityManager.createQuery(sql,ExpenseEntity.class).setFirstResult(begin).setMaxResults(end).getResultList();
 		return list;
 	}
 	
-	
-	private class ExpenseRowMapper implements RowMapper<ExpenseEntity>{
-		 
-		public ExpenseEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
-			ExpenseEntity expenseEntity = new ExpenseEntity();
-			expenseEntity.setExpenseId(rs.getString("id"));
-			expenseEntity.setOwner(rs.getString("owner"));
-			expenseEntity.setAccount(rs.getDouble("account"));
-			expenseEntity.setCreateTime(rs.getString("create_time"));
-			expenseEntity.setReason(rs.getString("reason"));
-			expenseEntity.setDept(rs.getString("dept"));
-			expenseEntity.setInvoiceType(rs.getString("invoiceType"));
-			expenseEntity.setProcessStep(rs.getString("processStep"));
-			return expenseEntity;
-		}
+	public int selectCount(){
+		CriteriaBuilder critBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Long> critQuery = critBuilder.createQuery(Long.class);
+		Root<ExpenseEntity> root = critQuery.from(ExpenseEntity.class);
+		critQuery.select(critBuilder.countDistinct(root));
+		int count = entityManager.createQuery(critQuery).getSingleResult().intValue();
+		return count;
 	}
 }

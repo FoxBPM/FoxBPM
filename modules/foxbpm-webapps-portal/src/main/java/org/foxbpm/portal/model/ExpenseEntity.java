@@ -17,6 +17,11 @@
  */
 package org.foxbpm.portal.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
@@ -27,11 +32,15 @@ import org.foxbpm.engine.impl.identity.Authentication;
  * @author ych
  *
  */
+@Entity
+@Table(name="TB_EXPENSE")
 public class ExpenseEntity {
 
 	/**
 	 * 报销单编号
 	 */
+	@Id
+	@Column(name = "ID")
 	private String expenseId;
 	
 	/**
@@ -67,6 +76,7 @@ public class ExpenseEntity {
 	/**
 	 * 创建时间
 	 */
+	@Column(name = "CREATE_TIME")
 	private String createTime;
 
 	public String getExpenseId() {
@@ -148,7 +158,4 @@ public class ExpenseEntity {
 	public String getProcessStep() {
 		return processStep;
 	}
-	
-	
-
 }

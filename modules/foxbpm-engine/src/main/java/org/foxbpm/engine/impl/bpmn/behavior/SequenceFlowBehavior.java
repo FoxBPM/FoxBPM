@@ -41,7 +41,7 @@ public class SequenceFlowBehavior extends FlowElementBehavior implements KernelS
 		try{
 			expressionValue = StringUtil.getBoolean(ExpressionMgmt.execute(sequenceFlow.getFlowCondition(), executionContext));
 		}catch(Exception ex){
-			throw ExceptionUtil.getException("10404020",this.getId());
+			throw ExceptionUtil.getException("10404020",ex,this.getId());
 		}
 		if (expressionValue == null) {
 			return true;
