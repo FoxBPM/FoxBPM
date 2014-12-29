@@ -379,10 +379,10 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
 		return processInstanceVariableValueIsLike;
 	}
 	
-	@Override
+	/*@Override
 	public String getOrderBy() {
 		// TODO Auto-generated method stub
 		return "RES.ID";
 	}
-
+*/
 }
