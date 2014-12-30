@@ -190,12 +190,6 @@
                             fileref="images/gettingStarted.15.png"/>
                     </imageobject>
                 </mediaobject>
-                <mediaobject>
-                    <imageobject>
-                        <imagedata align="center" contentwidth="600"
-                            fileref="images/gettingStarted.150.png"/>
-                    </imageobject>
-                </mediaobject>
             </listitem>
             <listitem>
                 <para>此时应该已经发布成功。</para>
@@ -210,10 +204,6 @@
                 <para>修改foxbpm-webapps-common/src/main/resource/conf/jdbc.properties文件中的数据库信息，启动tomcat就能跟上面war包部署一样正常访问web了。</para>
             </listitem>
         </orderedlist>
-    </section>
-    <section xml:id="gc.dataBaseRun">
-        <title>DataBase脚本安装</title>
-        <para> 数据库的详细介绍请查看<link linkend="dataBase.support">数据库说明</link>章节 </para>
     </section>
     <section xml:id="gc.jarConfig">
         <title>依赖Jar配置</title>
@@ -407,18 +397,18 @@
                     fileref="images/gettingStarted.18.png"/>
             </imageobject>
         </mediaobject>
-        <para>访问http://127.0.0.1:8889/foxbpm-webapps-common/login.html</para>
+        <para>访问http://127.0.0.1:8080/foxbpm-webapps-common/login.html</para>
         <mediaobject>
             <imageobject>
                 <imagedata align="center" contentwidth="600"
-                    fileref="images/gettingStarted.19.png"/>
+                    fileref="images/login.jpg"/>
             </imageobject>
         </mediaobject>
         <para>输入账号：admin 初始密码：1，点击登录，登录成功，进入个人页面心界面</para>
         <mediaobject>
             <imageobject>
                 <imagedata align="center" contentwidth="600"
-                    fileref="images/gettingStarted.20.png"/>
+                    fileref="images/dashboard.jpg"/>
             </imageobject>
         </mediaobject>
         <para>至此，快速入门结束。关于FoxBPM的其他详细信息，请继续看我们的文档。</para>
