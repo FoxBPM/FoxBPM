@@ -1,6 +1,6 @@
 #简介
 
-FoxBPM(fixflow6.0 -- 6.0版本开始改名为FoxBPM)是一款开源的基于BPMN2.0标准的工作流引擎,引擎底层直接支持BPMN2.0国际标准,
+FoxBPM(6.0版本开始fixflow改名为FoxBPM)是一款开源的基于BPMN2.0标准的工作流引擎,引擎底层直接支持BPMN2.0国际标准,
 吸纳了 jBPM3 、 Activiti5、BonitaBPM 等国际开源流程引擎的精髓,
 同时提供了强大的中国式流程流转处理,引擎采用微内核+插件形式设计,提供灵活的扩展模式, 建模采 用基于BPMN2.0标准的Eclipse设计器和基于Web的流程设计器,不仅仅为审批流程提供了解决方案, 同时还为复杂业务流程编排提供了强大的支持。
 
@@ -15,12 +15,12 @@ FoxBPM本身并不具备完整的开发平台功能,它的定位是专门用于�
 
 **开源中国社区-中国**:(https://git.oschina.net/kenshinnet/fixflow)
 
-**GitHub-美国**:(https://github.com/fixteam/fixflow)
+**GitHub-美国**:(https://github.com/FoxBPM/FoxBPM)
 
 **csdn_code -中国**:(https://code.csdn.net/fixflow/fixflow)  
 
 
-#为什么选择FixFlow？
+#为什么选择FoxBPM？
 • 开源以及强大的社区支持
 
 • 基于国际业务流程标准BPMN2.0
@@ -44,31 +44,31 @@ FoxBPM本身并不具备完整的开发平台功能,它的定位是专门用于�
 
 #资源打包下载
 包含数据库脚本、jar包、用户向导、设计器插件、war包、内核源码，全部源码。
-* [Fixflow Release 5.2(百度网盘)](http://pan.baidu.com/s/1o6M8XhK)
+* [FoxBPM Release 6.0(百度网盘)](http://pan.baidu.com/s/1o6M8XhK)
 
 #流程设计器
 (国内最强大的BPMN设计器)
 设计器提供两种版本,完整Eclipse版本、单一插件版本。
-* [完整版设计器下载 5.2(百度网盘)](http://pan.baidu.com/s/1o6x624E)
-* [插件下载 5.2(百度网盘)](http://pan.baidu.com/s/1hqA9Spe)
+* [完整版设计器下载 6.0(百度网盘)](http://pan.baidu.com/s/1o6x624E)
+* [插件下载 6.0(百度网盘)](http://pan.baidu.com/s/1hqA9Spe)
 
 
 
 #资源介绍
 
-**开发者交流社区QQ群**: 152654373
+**开发者交流社区QQ群**: 434527452
 
 **演示系统地址**: [http://218.107.242.90:9633/bpmcenter/ 用户名:admin 密码:1](http://218.107.242.90:9633/bpmcenter/) 
 
 **用户向导**: [http://fixteam.github.io/fixflow/userguide/out/html/index.html](http://fixteam.github.io/fixflow/userguide/out/html/index.html)
 
-**用户向导离线版本 5.2**: [http://pan.baidu.com/s/1pJk9QHX](http://pan.baidu.com/s/1kTqRdbh)
+**用户向导离线版本 6.0**: [http://pan.baidu.com/s/1pJk9QHX](http://pan.baidu.com/s/1kTqRdbh)
 
-**学习怎样使用和集成FixFlow**: [https://github.com/fixteam/fixflow/wiki](https://github.com/fixteam/fixflow/wiki)
+**学习怎样使用和集成FoxBPM**: [https://github.com/fixteam/fixflow/wiki](https://github.com/fixteam/fixflow/wiki)
 
 **团队Blog地址**: [http://fixteam.github.io/fixflow/blog/](http://fixteam.github.io/fixflow/blog/)
 
-**Fixflow开放日活动视频**: [开放日视频](http://pan.baidu.com/s/1pbS4u)
+**FoxBPM开放日活动视频**: [开放日视频](http://pan.baidu.com/s/1pbS4u)
 
 
 #教学视频
@@ -112,14 +112,14 @@ FoxBPM本身并不具备完整的开发平台功能,它的定位是专门用于�
 
 
 #如何选择？
-* Fixflow提供两种方式的集成:
+* FoxBPM提供两种方式的集成:
 * 1.完整集成版本,提供任务处理中心、流程管控中心、引擎内核、扩展项目、Junit测试库
 * 2.核心集成版本,只提供引擎内核、扩展项目、Junit测试库
 
 * 第一种适合不想在自己开发任务处理和管控中心的用户,用户可以将Fixflow的web和自己的web集成到一起。
 * 第二种适合对界面需要大量订制的用户,通过流程提供的Api自己开发任务处理、管控界面。
 
-* 注意：Fixflow自带的任务处理中心,在应用到实际项目中之前需要对其进行集成开发来使用用户各自系统的要求。
+* 注意：FoxBPM自带的任务处理中心,在应用到实际项目中之前需要对其进行集成开发来使用用户各自系统的要求。
 
 #如何操作流程引擎
 * [代码调用流程引擎示例](http://fixteam.github.io/fixflow/userguide/out/html/index.html#api.connection)
