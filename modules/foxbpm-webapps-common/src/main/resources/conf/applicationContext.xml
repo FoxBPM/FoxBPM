@@ -54,7 +54,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                 <prop key="eclipselink.logging.level">FINE</prop>
                 <prop key="eclipselink.logging.level.sql">FINE</prop>
                 <prop key="eclipselink.orm.throw.exceptions">true</prop>
-                <prop key="eclipselink.query-results-cache">true</prop>
+                <prop key="eclipselink.cache.shared.default">false</prop>
             </props>
         </property>
     </bean>
@@ -98,6 +98,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 		<property name="foxbpmScheduler" ref="foxbpmScheduler"></property>
 		<property name="connectorMenuPath" value="conf/CustomConnectorMenu.xml"></property>
 		<property name="configXmlPath" value="conf/foxbpmconfig.xml"></property>
+		<property name="autoClaim" value="1"></property>
 	</bean>
 	
 	

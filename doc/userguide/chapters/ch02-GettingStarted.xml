@@ -7,10 +7,10 @@
 
   <section xml:id="gs.prerequisites">
     <para>本章节适合所有读者，不过在快速入门之前需要用户有一定的基础能力，起码要知道JDK的环境变量的配置。
-      用户首先需要下载FoxBPM完成整版设计器、FoxBPM的Web部署war包，支持的运行环境为JDK 5+、Tomcat 6.0，
+      用户首先需要下载FoxBPM完成整版设计器、FoxBPM6.0Release包，支持的运行环境为JDK 5+、Tomcat 6.0，
       FoxBPM暂时支持的数据库有mysql、oracle、sqlserver，用户可以选择其中的任意一种进行数据库环境的搭建。
       通过本章节用户可以获取并部署好FoxBPM的Web服务，设计简单报销流程，并能在web上正确运行。
-      用户也可以通过本章节校验当前配置的环境是否可以作为最终集成的开发环境。通过本章节用户将会了解简单的流程设计和发布，用户若想和应用系统进行集成还需要对其他章节或文档进行学习。</para>
+     通过本章节用户将会了解简单的流程设计和发布，用户若想和应用系统进行集成还需要对其他章节或文档进行学习。</para>
   </section> 
   <section>
     <title>Web环境部署</title>
@@ -24,22 +24,22 @@
     
     <section xml:id="database_config">
       <title>数据库配置</title>
-      <para> 流程引擎有自己的运行时仓库，所以在部署项目之前首先需要将数据脚本导入到本地数据库。用户可以从上面说的三种数据库中选择一种进行配置
+      <para> 流程引擎有自己的运行时仓库，所以在部署项目之前首先需要将数据脚本导入到本地数据库。打开FoxBPMRelease/database目录，选择适合自己的数据库脚本，在对应工具里执行。
         默认脚本会向AU_USERINFO表插入一条数据用来进行系统登录，用户名为“admin”，密码为“1” </para>
     </section>
     <section xml:id="environment_config">
       <title>环境配置</title>
       <para>
         FoxBPM引擎支持JDK1.5以上开发环境，相关信息可以参照“项目介绍”文档，这里以apache-tomcat-6.0.39\jdk1.6.0_43为环境，保证tomcat正常启动即可。
-        FoxBPM流程引擎还支持WebSphere Application Server 和 WebLogic服务器，WebSphere和WebLogic都是可以直接通过控制台进行war包的部署，但是和tomcat服务一样都需要手动进行数据库配置文件的修改。 </para>
+      </para>
     </section>
     <section xml:id="deploy_config">
       <title>部署</title>
       <para>
-        将foxbpm.war部署包拷贝至apache-tomcat-6.0.39\webapps目录下，然后启动tomcat服务，webapps目录下会自动生成foxbpm文件夹。
-        停止服务进入foxbpm\WEB-INF\classes\conf目录，打开jdbc.properties文件修改数据库相关配置，如果是weblogic和websphere服务则需要进入相关目录修改此文件，
+        将FoxBPMRelease\wars\foxbpm.war部署包拷贝至apache-tomcat-6.0.39\webapps目录下，然后启动tomcat服务，webapps目录下会自动生成foxbpm文件夹。
+        停止服务进入foxbpm\WEB-INF\classes\conf目录，打开jdbc.properties文件修改数据库相关配置，
         包括数据URL、数据库用户名、密码，然后再次启动服务即可。 </para>
-      <para> 为了验证是否启动部署成功，打开浏览器，输入URL “http://localhost:8080/foxbpm/portal/index.jsp”。 </para>
+      <para> 为了验证是否启动部署成功，打开浏览器，输入URL “http://localhost:8080/foxbpm/”。 </para>
       <para> 如果进入系统登录页面则说明部署成功 <mediaobject>
           <imageobject>
             <imagedata align="center" fileref="images/login.jpg"/>
@@ -67,10 +67,10 @@
         </mediaobject>
         <para> 服务地址：此地址需要根据自己项目web.xml中配置的rest服务而确定，foxbpm中rest服务前缀默认为
           service/，所以此处写http://localhost:8080/foxbpm/service。后面发布流程和资源同步都将调用这个服务，所以要确保这个服务正确。</para>
-        <para> 解压路径：资源的本地路径，建议新建文件夹。 然后点击同步按钮，如果配置没有问题，则会提示同步成功，否则会提示相关错误信息。 </para>
+        <para> 解压路径：资源的本地路径，建议新建文件夹。</para>
       </listitem>
       <listitem>
-        <para>点击设计器同步。此时会将组织机构信息同步到设计器的嵌入式仓库中、将连接器等其他资源同步至设计器本地，这样一个功能强大的设计器就诞生了。</para>
+        <para>点击设计器同步。此时会将组织机构信息同步到设计器的嵌入式仓库中、将连接器等其他资源同步至设计器本地，这样就可以开始设计流程了。</para>
         <mediaobject>
           <imageobject>
             <imagedata align="center" contentwidth="600" fileref="images/eclipseDesigner.23.png"/>
@@ -101,7 +101,7 @@
   </section>
   <section xml:id="gs.processDiagram">
     <title>设计流程</title>
-    <para>用例：员工报销流程，当报销金额大于5000元时需要经理审批，小于5000元时需要部门主管审批。</para>
+    <para>用例：员工报销流程，当报销金额大于500元时需要经理审批，小于500元时需要部门主管审批。</para>
     <orderedlist>
       <listitem>
         <para>新建一个Test java工程（这里主要是为创建流程文件时需要指定一个目录提供。需要注意的是最终集成到应用系统中时，流程定义的bpmn文件最好建在webapp目录下，
@@ -211,7 +211,7 @@
             <imagedata align="center" contentwidth="600" fileref="images/processDiagram.12.png"/>
           </imageobject>
         </mediaobject>
-        <para>同样的方法我们设置网关后面的另外一条线条条件为：amount&lt;=5000</para>
+        <para>同样的方法我们设置网关后面的另外一条线条条件为：amount&lt;=500</para>
       </listitem>
       <listitem>
         <para>最后配置User_Task2和User_Task3节点的信息，即审批节点的配置，点击节点，属性->任务命令，配置操作表单。</para>
@@ -271,10 +271,10 @@
     <title>web运行</title>
     <orderedlist>
       <listitem>
-        <para>访问http://127.0.0.1:8080/foxbpm-webapps-common/login.html。</para>
+        <para>访问http://127.0.0.1:8080/foxbpm/login.html。</para>
         <mediaobject>
           <imageobject>
-            <imagedata align="center" contentwidth="600" fileref="images/webRun.1.png"/>
+            <imagedata align="center" contentwidth="600" fileref="images/login.jpg"/>
           </imageobject>
         </mediaobject>
         <para>输入账号：admin 初始密码：1，点击登录</para>

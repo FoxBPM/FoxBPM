@@ -25,6 +25,9 @@ import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.eclipse.persistence.annotations.Cache;
+import org.eclipse.persistence.annotations.CacheType;
+
 @Entity(name="FOXBPM_RUN_PROCESS_INFO")
 public class ProcessInfoEntity {
 
