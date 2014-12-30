@@ -71,18 +71,13 @@ public class ExpenseEntity {
 	private String reason;
 	
 	/**
-	 * 当前位置信息
-	 */
-	private String processStep;
-	
-	/**
 	 * 创建时间
 	 */
 	@Column(name = "CREATE_TIME")
 	private String createTime;
 	
-	@OneToOne(optional=false)
-	@JoinColumn(name="processInstanceId")
+	@OneToOne(optional=true)
+	@JoinColumn(name="PROCESSINSTANCEID")
 	private ProcessInfoEntity processInfo;
 
 	public String getExpenseId() {
@@ -155,14 +150,6 @@ public class ExpenseEntity {
 			return user.getUserName();
 		}
 		return "未知用户";
-	}
-	
-	public void setProcessStep(String processStep) {
-		this.processStep = processStep;
-	}
-	
-	public String getProcessStep() {
-		return processStep;
 	}
 	
 	public void setProcessInfo(ProcessInfoEntity processInfo) {

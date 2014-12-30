@@ -39,7 +39,13 @@ public class ExpenseDao {
 	}
 	
 	public void updateExpenseEntity(ExpenseEntity expenseEntity){
-		entityManager.merge(expenseEntity);
+		ExpenseEntity newObject = entityManager.find(ExpenseEntity.class, expenseEntity.getExpenseId());
+		newObject.setAccount(expenseEntity.getAccount());
+		newObject.setDept(expenseEntity.getDept());
+		newObject.setCreateTime(expenseEntity.getCreateTime());
+		newObject.setInvoiceType(expenseEntity.getInvoiceType());
+		newObject.setReason(expenseEntity.getReason());
+		newObject.setOwner(expenseEntity.getOwner());
 	}
 	
 	
