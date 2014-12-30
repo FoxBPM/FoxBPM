@@ -245,7 +245,7 @@
     CREATE TABLE "FOXBPM_RUN_PROCESS_INFO"
    (
       "PROCESSINSTANCEID" VARCHAR(64) NOT NULL, 
-      "UPDATE_TIME" VARCHAR(64 ), 
+      "UPDATE_TIME" datetime DEFAULT NULL, 
       "PROCESS_STATUS" VARCHAR(64 ), 
       "PROCESS_STEP" VARCHAR(256 ),
       "INITATOR" VARCHAR(64), 
@@ -435,15 +435,16 @@
       "ACCOUNT" decimal, 
       "INVOICETYPE" VARCHAR(64 ), 
       "REASON" VARCHAR(252 ), 
-      "CREATE_TIME" VARCHAR(64 ), 
+      "CREATE_TIME" datetime DEFAULT NULL, 
       "PROCESSINSTANCEID" VARCHAR(64 ), 
       PRIMARY KEY ("ID")
    );  
-Insert into AU_ORGINFO (ORGID,SUPORGID,ORGNAME) values ('20001','2000','dept1');
-Insert into AU_ORGINFO (ORGID,SUPORGID,ORGNAME) values ('200011','20001','dept2');
-Insert into AU_ORGINFO (ORGID,SUPORGID,ORGNAME) values ('200012','20001','dept3'); 
-Insert into AU_ROLEINFO (ROLEID,ROLENAME) values ('10001','ROLE1');
-Insert into AU_ROLEINFO (ROLEID,ROLENAME) values ('10002','ROLE2'); 
+Insert into AU_ORGINFO (ORGID,SUPORGID,ORGNAME) values ('2000','2000','**公司');
+Insert into AU_ORGINFO (ORGID,SUPORGID,ORGNAME) values ('20001','2000','ERP技术中心');
+Insert into AU_ORGINFO (ORGID,SUPORGID,ORGNAME) values ('200011','20001','研发部');
+Insert into AU_ORGINFO (ORGID,SUPORGID,ORGNAME) values ('200012','20001','市场部'); 
+Insert into AU_ROLEINFO (ROLEID,ROLENAME) values ('10001','总经理');
+Insert into AU_ROLEINFO (ROLEID,ROLENAME) values ('10002','秘书'); 
 Insert into AU_GROUP_RELATION (GUID,USERID,GROUPID,GROUPTYPE) values ('100000000000004','admin','200012','dept');
 Insert into AU_GROUP_RELATION (GUID,USERID,GROUPID,GROUPTYPE) values ('100000000000003','admin','200011','dept');
-Insert into AU_USERINFO (USERID,USERNAME,PASSWORD,EMAIL,TEL,IMAGE) values ('admin','admin','1','ft%25252563a.com','ddxx','admin.jpg');
+Insert into AU_USERINFO (USERID,USERNAME,PASSWORD,EMAIL,TEL,IMAGE) values ('admin','超级管理员','1','84989979@qq.com','ddxx','admin.jpg');

@@ -40,7 +40,7 @@ public class WorkFlowService {
 	@Autowired
 	private ProcessEngine processEngine;
 	
-	public void executeTaskCommandJson(Map<String,Object> formData) {
+	public Object executeTaskCommandJson(Map<String,Object> formData) {
 		String taskCommandJson = StringUtil.getString(formData.get("flowCommandInfo"));
 		
 		
@@ -104,6 +104,6 @@ public class WorkFlowService {
 			expandTaskCommand.setBusinessKey(businessKeyNode.getTextValue());
 			expandTaskCommand.setProcessDefinitionKey(processDefinitionKeyNode.getTextValue());
 		}
-		taskService.expandTaskComplete(expandTaskCommand, null);
+		return taskService.expandTaskComplete(expandTaskCommand, Object.class);
 	}
 }
