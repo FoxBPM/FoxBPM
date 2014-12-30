@@ -28,7 +28,7 @@ import javax.persistence.criteria.Root;
 import org.foxbpm.portal.model.ExpenseEntity;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("expenseDao")
 public class ExpenseDao {
 
 	@PersistenceContext

@@ -24,8 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.foxbpm.engine.impl.entity.UserEntity;
-import org.foxbpm.portal.manager.ExpenseManager;
 import org.foxbpm.portal.model.ExpenseEntity;
+import org.foxbpm.portal.service.ExpenseService;
 import org.foxbpm.rest.common.api.DataResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +42,7 @@ public class ExpenseController extends AbstractController{
 
 	Logger log = LoggerFactory.getLogger(ExpenseController.class);
 	@Autowired
-	private ExpenseManager expenseManager;
+	private ExpenseService expenseService;
 
 	@RequestMapping(value = { "/", "/expenses" }, method = RequestMethod.POST)
 	public void applyExpense(HttpServletResponse response,HttpServletRequest request, @ModelAttribute ExpenseEntity expenseEntity) throws IOException {
@@ -51,7 +51,7 @@ public class ExpenseController extends AbstractController{
 			Map<String,Object> formData = getFormData(request);
 			UserEntity userEntity = (UserEntity)request.getSession().getAttribute("user");
 			expenseEntity.setOwner(userEntity.getUserId());
-			expenseManager.applyNewExpense(expenseEntity,formData);
+			expenseService.applyNewExpense(expenseEntity,formData);
 			response.getWriter().print(showMessage("启动成功！",true));
 		}catch(Exception ex){
 			log.error("报销流程启动失败！",ex);
@@ -63,7 +63,7 @@ public class ExpenseController extends AbstractController{
 	@RequestMapping(value = { "/", "/updateExpense" }, method = RequestMethod.POST)
 	public void updateExpense(HttpServletResponse response,HttpServletRequest request, @ModelAttribute ExpenseEntity expenseEntity) throws IOException {
 		Map<String,Object> formData = getFormData(request);
-		expenseManager.updateExpense(expenseEntity, formData);
+		expenseService.updateExpense(expenseEntity, formData);
 		response.setContentType("text/html;charset=utf-8");
 		response.getWriter().print(showMessage("更新成功！",true));
 	}
@@ -72,13 +72,13 @@ public class ExpenseController extends AbstractController{
 	@RequestMapping(value = { "/", "/findExpense" }, method = RequestMethod.GET)
 	@ResponseBody
 	public ExpenseEntity getExpenseById(@RequestParam String expenseId){
-		return expenseManager.selectExpenseById(expenseId);
+		return expenseService.selectExpenseById(expenseId);
 	}
 	
 	@RequestMapping(value = { "/", "/listExpense" }, method = RequestMethod.GET)
 	@ResponseBody
 	public DataResult getExpenseByPage(@RequestParam int pageIndex,@RequestParam int pageSize){
-		return expenseManager.selectByPage(pageIndex, pageSize);
+		return expenseService.selectByPage(pageIndex, pageSize);
 	}
 	
 	public String showMessage(String msg,boolean isCloseWindow){

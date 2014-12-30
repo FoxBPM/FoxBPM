@@ -17,27 +17,23 @@
  */
 package org.foxbpm.plugin.processinfo;
 
-import org.foxbpm.engine.impl.bpmn.behavior.UserTaskBehavior;
 import org.foxbpm.engine.impl.db.SqlCommand;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.expression.ExpressionImpl;
 import org.foxbpm.engine.impl.util.DBUtils;
-import org.foxbpm.engine.impl.util.LocationUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
-import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
 import org.foxbpm.kernel.event.KernelListener;
-import org.foxbpm.kernel.process.impl.KernelFlowNodeImpl;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 import org.foxbpm.model.DataVariableDefinition;
 
 /**
  * <p>更新业务字段监听</p>
- * <p>该监听会先判断是否存在表名(_BizName)和关联字段(_BizKeyField)的变量,如果存在则会更新该业务表的_processInstanceId,_processInstanceStatus,_processStep的字段。</p>
+ * <p>该监听会先判断是否存在表名(_BizName)和关联字段(_BizKeyField)的变量,如果存在则会更新该业务表的_processInstanceId。</p>
  * <p>使用条件：</p>
  * <p>	1.流程定义中存在_BizName和_BizKeyField变量，并赋值正确，该变量只能为固定的string，不能有上下文的计算。</p>
- * <p>  2._BizName的业务表中存在_processInstanceId(流程实例号)、_processInstanceStatus(流程当前状态)、_processStep(当前节点信息)字段</p>
+ * <p>  2._BizName的业务表中存在_processInstanceId(流程实例号)</p>
  * @author ych
  * @version 1.0
  */
@@ -46,28 +42,20 @@ public class UpdateBizTableListener implements KernelListener {
 	private static final long serialVersionUID = 1L;
 
 	public void notify(ListenerExecutionContext executionContext) throws Exception {
+		
+		
 		KernelTokenImpl kernelTokenImpl = (KernelTokenImpl) executionContext;
 		ProcessInstanceEntity processInstanceEntity = (ProcessInstanceEntity)kernelTokenImpl.getProcessInstance();
-		if(!processInstanceEntity.isLocationChange()){
-			return;
-		}
-		KernelFlowNodeImpl flowNode = kernelTokenImpl.getFlowNode();
-		KernelFlowNodeBehavior behavior = flowNode.getKernelFlowNodeBehavior();
-		if(!(behavior instanceof UserTaskBehavior)){
-			return;
-		}
 		ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity)kernelTokenImpl.getProcessDefinition();
 		DataVariableDefinition bizName = processDefinition.getDataVariableMgmtDefinition().getProcessDataVariableDefinition("_BizName");
 		DataVariableDefinition bizKeyField = processDefinition.getDataVariableMgmtDefinition().getProcessDataVariableDefinition("_BizKeyField");
 		if(bizName != null && bizKeyField != null){
 			String bizNameString = StringUtil.getString(new ExpressionImpl(bizName.getExpression()).getValue(null));
 			String bizKeyFiledString = StringUtil.getString(new ExpressionImpl(bizKeyField.getExpression()).getValue(null));
-			String sql = "update "+bizNameString + " set processInstanceId = ?,processInstanceStatus = ?, processStep = ? "
+			String sql = "update "+bizNameString + " set processInstanceId = ?"
 					+ "where " + bizKeyFiledString + "=?";
 			Object []params = new Object[]{
 					processInstanceEntity.getId(),
-					processInstanceEntity.getInstanceStatus(),
-					LocationUtil.parseProcessLocation(processInstanceEntity.getProcessLocation()),
 					processInstanceEntity.getBizKey()
 			};
 			SqlCommand sqlCommand = new SqlCommand(DBUtils.getConnection());
