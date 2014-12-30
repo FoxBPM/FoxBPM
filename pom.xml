@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.foxbpm</groupId>
 	<artifactId>foxbpm-root</artifactId>
-	<version>6.0.1-SNAPSHOT</version>
+	<version>6.0.0</version>
 	<name>FoxBPM</name>
 	<description>FoxBPM流程引擎</description>
 	<packaging>pom</packaging>
@@ -112,6 +112,47 @@
 				<version>3.1</version>
 			</dependency>
 
+			<dependency>
+				<groupId>org.foxbpm</groupId>
+				<artifactId>foxbpm-engine</artifactId>
+				<version>6.0.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.foxbpm</groupId>
+				<artifactId>foxbpm-kernel</artifactId>
+				<version>6.0.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.foxbpm</groupId>
+				<artifactId>foxbpm-connector</artifactId>
+				<version>6.0.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.foxbpm</groupId>
+				<artifactId>foxbpm-bpmn-model</artifactId>
+				<version>6.0.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.foxbpm</groupId>
+				<artifactId>foxbpm-bpmn-converter</artifactId>
+				<version>6.0.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.foxbpm</groupId>
+				<artifactId>foxbpm-plugin</artifactId>
+				<version>6.0.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.foxbpm</groupId>
+				<artifactId>foxbpm-rest</artifactId>
+				<version>6.0.0</version>
+			</dependency>
+			<dependency>
+			<groupId>org.foxbpm</groupId>
+			<artifactId>foxbpm-webapps-portal</artifactId>
+			<version>6.0.0</version>
+			<type>war</type>
+		</dependency>
 		</dependencies>
 	</dependencyManagement>
 </project>

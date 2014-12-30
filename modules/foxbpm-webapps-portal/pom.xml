@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.foxbpm</groupId>
     <artifactId>foxbpm-root</artifactId>
-    <version>6.0.1-SNAPSHOT</version>
+    <version>6.0.0</version>
 	<relativePath>../..</relativePath>
   </parent>
   <artifactId>foxbpm-webapps-portal</artifactId>
@@ -20,16 +20,6 @@
   
   
   <dependencies>
-		<dependency>
-			<groupId>org.foxbpm</groupId>
-			<artifactId>foxbpm-engine</artifactId>
-			<version>6.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.foxbpm</groupId>
-			<artifactId>foxbpm-connector</artifactId>
-			<version>6.0.1-SNAPSHOT</version>
-		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
@@ -119,8 +109,15 @@
 		</dependency>
 		<dependency>
 			<groupId>org.foxbpm</groupId>
+			<artifactId>foxbpm-engine</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.foxbpm</groupId>
+			<artifactId>foxbpm-connector</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.foxbpm</groupId>
 			<artifactId>foxbpm-rest</artifactId>
-			<version>6.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>
