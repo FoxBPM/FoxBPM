@@ -86,7 +86,7 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 	    
 	    databaseSpecificLimitBeforeStatements.put("mssql", "SELECT SUB.* FROM (");
 	    databaseSpecificLimitAfterStatements.put("mssql", ")RES ) SUB WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}");
-	    databaseSpecificLimitBetweenStatements.put("mssql", ", row_number() over (ORDER BY ${orderBy}) rnk FROM ( select distinct RES.* ");
+	    databaseSpecificLimitBetweenStatements.put("mssql", ", row_number() over (ORDER BY #{orderBy}) rnk FROM ( select distinct RES.* ");
 	    databaseOuterJoinLimitBetweenStatements.put("mssql", "");
 	    databaseSpecificOrderByStatements.put("mssql", "");
 	    
