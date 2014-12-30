@@ -88,27 +88,23 @@ FoxBPM本身并不具备完整的开发平台功能,它的定位是专门用于�
 
 #项目介绍
 
-* fixflow-root  根项目，用来聚合各个模块
-
-* fixflow-core、fixflow-expand  引擎内核模块
-
-* fixflow-webapp-common 、fixflow-common-api、fixflow-common-servlet bpmcenter项目公用代码
-
-* fixflow-webapp-taskcenter  任务中心模块
-
-* fixflow-webapp-managecenter 、fixflow-manage-serlvet 管控中心模块
-
-* fixflow-webapp-explorer 资源管理器模块
-
-* fixflow-webapp-editor、fixflow-converter web设计器模块
-
-* 数据库脚本项目: **database**
-
-* 文档项目: **docbook**
-
-* 设计器相关项目: **eclipse**
-
-* 最终成果物项目: **release**
+* foxbpm-kernel:Foxbpm流程微内核项目
+* 
+* foxbpm-engine:Foxbpm流程引擎项目
+* 
+* foxbpm-bpmn-model:Foxbpm的模型定义
+* 
+* foxbpm-bpmn-converter:Foxbpm的bpmn的转换器项目
+* 
+* foxbpm-plugin:Foxbpm的官方扩展插件包项目
+* 
+* foxbpm-rest:Foxbpm Rest项目
+* 
+* foxbpm-root:Foxbpm 根项目
+* 
+* foxbpm-webapps-common：Foxbpm web根项目
+* 
+* foxbpm-webapps-portal：Foxbpm流程门户
 
 
 #如何选择？
@@ -143,12 +139,6 @@ FoxBPM本身并不具备完整的开发平台功能,它的定位是专门用于�
 * [FAQ](#)
 
 
-#引擎构架图
-Fixflow内核采用的Token驱动驱动机制,Api则层借鉴了Activiti的设计,并基于BPMN2.0的执行语义设计。
-![引擎构架图](http://images.cnitblog.com/blog/20120/201401/231607436798.png)
-
-#功能模块图
-![功能模块图](http://images.cnitblog.com/blog/20120/201401/231629069445.png)
 
 #Eclipse设计器界面
 ![Eclipse设计器界面](http://images.cnitblog.com/blog/20120/201401/231630266632.png)
@@ -158,12 +148,8 @@ Fixflow内核采用的Token驱动驱动机制,Api则层借鉴了Activiti的设�
 
 
 #如何提交bug或者问题
-在Fixteam/FixFlow项目上点击Issues->New Issue提交bug,在标签栏选择bug、优先级、状态（未解决）三个标签，然后提交。我们会根据bug内容反馈相关信息给您。
+在FoxBPM项目上点击Issues->New Issue提交bug,在标签栏选择bug、优先级、状态（未解决）三个标签，然后提交。我们会根据bug内容反馈相关信息给您。
 ![系统截图](https://github.com/fixteam/fixflow/wiki/images/Bug20130917093746.png)
-
-
-
-
 
 
 
@@ -172,9 +158,9 @@ Fixflow内核采用的Token驱动驱动机制,Api则层借鉴了Activiti的设�
 ### 6.0.0（2014-12）
 引擎端
 
-1.全新的架构，增加完善的事件体系，为二次开发提供扩展点。
+1.全新设计的引擎架构，增加了引擎事件体系。
 
-2.去除了emf的依赖，采用dom4j转换流程文件及配置文件。
+2.模型转换层去除了emf的依赖，采用dom4j转换流程文件及配置文件。
 
 3.采用了mybatis作为持久化层。
 
@@ -182,15 +168,13 @@ Fixflow内核采用的Token驱动驱动机制,Api则层借鉴了Activiti的设�
 
 5.采用的dataSource的数据库配置方式。
 
-6.整理了代码，去除了不支持的功能和接口。
+6.新增rest服务项目，提供默认的rest服务。
 
-7.增加了rest服务项目，提供默认的rest服务。
+7.优化一些影响性能的代码，如groovy的转换等。
 
-8.优化一些影响性能的代码，如groovy的转换等。
+8.采用bootstrap+springMvc重新开发演示示例。
 
-9.采用bootstrap+springMvc重新开发演示示例。
-
-10.暂时没有提供管控中心和web设计器。
+9.暂时没有提供管控中心和web设计器。
 	
 
 
