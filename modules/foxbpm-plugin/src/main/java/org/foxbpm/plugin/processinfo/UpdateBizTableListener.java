@@ -53,7 +53,7 @@ public class UpdateBizTableListener implements KernelListener {
 			String bizNameString = StringUtil.getString(new ExpressionImpl(bizName.getExpression()).getValue(null));
 			String bizKeyFiledString = StringUtil.getString(new ExpressionImpl(bizKeyField.getExpression()).getValue(null));
 			String sql = "update "+bizNameString + " set processInstanceId = ?"
-					+ "where " + bizKeyFiledString + "=?";
+					+ " where " + bizKeyFiledString + "=?";
 			Object []params = new Object[]{
 					processInstanceEntity.getId(),
 					processInstanceEntity.getBizKey()
