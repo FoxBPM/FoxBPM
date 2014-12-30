@@ -6,40 +6,40 @@
   <title>快速入门</title>
 
   <section xml:id="gs.prerequisites">
-    <title>先决条件</title>
-    <para> 本章建立在用户已经下载FoxBPM完成整版设计器、FoxBPM的Web部署war包，安装了JDK 5+运行环境，以及Tomcat
-      V6.0服务器，有FoxBPM支持的数据库服务器中的一种，本例拿oracle为例。</para>
-  </section>
-  <section xml:id="gs.goal">
-    <title>目标</title>
-    <para> 获取并部署好FoxBPM的Web服务，设计简单报销流程，并能在web上正确运行。。</para>
-  </section>
+    <para>本章节适合所有读者，不过在快速入门之前需要用户有一定的基础能力，起码要知道JDK的环境变量的配置。
+      用户首先需要下载FoxBPM完成整版设计器、FoxBPM的Web部署war包，支持的运行环境为JDK 5+、Tomcat 6.0，
+      FoxBPM暂时支持的数据库有mysql、oracle、sqlserver，用户可以选择其中的任意一种进行数据库环境的搭建。
+      通过本章节用户可以获取并部署好FoxBPM的Web服务，设计简单报销流程，并能在web上正确运行。
+      用户也可以通过本章节校验当前配置的环境是否可以作为最终集成的开发环境。通过本章节用户将会了解简单的流程设计和发布，用户若想和应用系统进行集成还需要对其他章节或文档进行学习。</para>
+  </section> 
   <section>
     <title>Web环境部署</title>
     <section>
       <title>部署介绍</title>
-      <para>这里只介绍foxbpm-webapps-common项目的部署，对于其他系统怎么集成FoxBPM这里不做介绍，用户可以参照集成相关文档。</para>
-      <para> 首先介绍一下foxbpm-webapps-common项目，这是一个采用spring框架构建的简单web示例，集成了流程引擎。其功能
+      <para>这里只介绍foxbpm项目的部署，对于其他系统怎么集成FoxBPM这里不做介绍，用户可以参照集成相关文档。</para>
+      <para> 首先介绍一下foxbpm项目，这是一个采用spring框架构建的简单web示例，集成了流程引擎。其功能
         包括流程定义的查询展示、流程定义启动、待办任务的查询、任务执行、历史任务查询、流程图展示、流程追踪、基于日历面板进行任务展示等。 </para>
       <para> 用户在基于FoxBPM流程引擎构建自己的系统时，可以参照这个示例对流程引擎相关API的调用。用户也可以基于这个项目构建自己的流程管控中心。 </para>
     </section>
+    
     <section xml:id="database_config">
       <title>数据库配置</title>
-      <para> 在部署项目之前首先需要将数据脚本导入到本地数据库,这里以ORACLE数据库为例。默认脚本会向AU_USERINFO表插入一条数据用来进行系统登录。 </para>
+      <para> 流程引擎有自己的运行时仓库，所以在部署项目之前首先需要将数据脚本导入到本地数据库。用户可以从上面说的三种数据库中选择一种进行配置
+        默认脚本会向AU_USERINFO表插入一条数据用来进行系统登录，用户名为“admin”，密码为“1” </para>
     </section>
     <section xml:id="environment_config">
       <title>环境配置</title>
       <para>
         FoxBPM引擎支持JDK1.5以上开发环境，相关信息可以参照“项目介绍”文档，这里以apache-tomcat-6.0.39\jdk1.6.0_43为环境，保证tomcat正常启动即可。
-        FoxBPM流程引擎还支持WebSphere Application Server 和
-        WebLogic服务器，WebSphere和WebLogic都是可以直接通过控制台进行war包的部署，但是和tomcat服务一样都需要手动进行数据库配置文件的修改。 </para>
+        FoxBPM流程引擎还支持WebSphere Application Server 和 WebLogic服务器，WebSphere和WebLogic都是可以直接通过控制台进行war包的部署，但是和tomcat服务一样都需要手动进行数据库配置文件的修改。 </para>
     </section>
     <section xml:id="deploy_config">
       <title>部署</title>
       <para>
-        将foxbpm-webapps-common.war部署包拷贝至apache-tomcat-6.0.39\webapps目录下，然后启动tomcat服务，webapps目录下会自动生成foxbpm-webapps-common文件夹。
-        停止服务进入foxbpm-webapps-common\WEB-INF\classes\conf目录，打开jdbc.properties文件修改数据库相关配置，包括数据URL、数据库用户名、密码，然后再次启动服务即可。 </para>
-      <para> 为了验证是否启动部署成功，打开浏览器，输入URL “http://localhost:8080/foxbpm-webapps-common/”。 </para>
+        将foxbpm.war部署包拷贝至apache-tomcat-6.0.39\webapps目录下，然后启动tomcat服务，webapps目录下会自动生成foxbpm文件夹。
+        停止服务进入foxbpm\WEB-INF\classes\conf目录，打开jdbc.properties文件修改数据库相关配置，如果是weblogic和websphere服务则需要进入相关目录修改此文件，
+        包括数据URL、数据库用户名、密码，然后再次启动服务即可。 </para>
+      <para> 为了验证是否启动部署成功，打开浏览器，输入URL “http://localhost:8080/foxbpm/portal/index.jsp”。 </para>
       <para> 如果进入系统登录页面则说明部署成功 <mediaobject>
           <imageobject>
             <imagedata align="center" fileref="images/login.jpg"/>
@@ -56,28 +56,21 @@
     </section>
   </section>
   <section>
-    <title>下载FoxBPM完整版设计器</title>
-    <para>FoxBPM完整版设计器下载地址为<link
-        xlink:href="http://www.oracle.com/technetwork/java/javase/downloads/index.html"
-      >地址未给出</link></para>
-  </section>
-  <section>
     <title>设计器配置</title>
     <orderedlist>
       <listitem>
-        <para>打开windows-preferences-流程设计器配置,为设计器配置rest服务地址，此目的是为了同步项目中用到的所有资源。</para>
+        <para>打开windows->preferences->流程设计器配置,为设计器配置rest服务地址，此目的是为了同步项目中用到的所有资源。</para>
         <mediaobject>
           <imageobject>
             <imagedata align="center" contentwidth="600" fileref="images/eclipseDesigner.22.png"/>
           </imageobject>
         </mediaobject>
-        <para> 服务地址：此地址需要根据自己项目web.xml中配置的rest服务而确定，foxbpm-webapps-common中rest服务前缀默认为
-          service/，所以此处写http://localhost:8080/foxbpm-webapps-common/service。</para>
+        <para> 服务地址：此地址需要根据自己项目web.xml中配置的rest服务而确定，foxbpm中rest服务前缀默认为
+          service/，所以此处写http://localhost:8080/foxbpm/service。后面发布流程和资源同步都将调用这个服务，所以要确保这个服务正确。</para>
         <para> 解压路径：资源的本地路径，建议新建文件夹。 然后点击同步按钮，如果配置没有问题，则会提示同步成功，否则会提示相关错误信息。 </para>
-        <para>说明：这里我已经部署好foxbpm-webapps-common服务，所以以上直接配置。</para>
       </listitem>
       <listitem>
-        <para>点击设计器同步。</para>
+        <para>点击设计器同步。此时会将组织机构信息同步到设计器的嵌入式仓库中、将连接器等其他资源同步至设计器本地，这样一个功能强大的设计器就诞生了。</para>
         <mediaobject>
           <imageobject>
             <imagedata align="center" contentwidth="600" fileref="images/eclipseDesigner.23.png"/>
@@ -111,10 +104,11 @@
     <para>用例：员工报销流程，当报销金额大于5000元时需要经理审批，小于5000元时需要部门主管审批。</para>
     <orderedlist>
       <listitem>
-        <para>新建一个Test java工程（这里主要是为创建流程文件时需要指定一个目录提供）</para>
+        <para>新建一个Test java工程（这里主要是为创建流程文件时需要指定一个目录提供。需要注意的是最终集成到应用系统中时，流程定义的bpmn文件最好建在webapp目录下，
+          如果是建在资源目录下，发布流程定义的时候会导致服务重新启动。如果建在webapp目录下调试的时候就避免了这样的麻烦。）</para>
       </listitem>
       <listitem>
-        <para>右键->New->Other->FoxBPM，选择“新建FoxBPM流程”，点击“Next”</para>
+        <para>项目视图右键->New->Other->FoxBPM，选择“新建FoxBPM流程”，点击“Next”</para>
         <mediaobject>
           <imageobject>
             <imagedata align="center" contentwidth="600" fileref="images/processDiagram.1.png"/>
@@ -243,7 +237,7 @@
     <title>发布流程</title>
     <orderedlist>
       <listitem>
-        <para>在Project Explorer视图中，点击流程图文件右击流程操作。</para>
+        <para>在发布之前要确保tomcat是运行中状态，在Eclipse的Project Explorer视图中，右击流程定义的bpmn文件，选择“流程操作”，在弹出的发布对话框中进行发布操作，如下图所示。</para>
         <mediaobject>
           <imageobject>
             <imagedata align="center" contentwidth="600" fileref="images/processDiagram.15.png"/>
