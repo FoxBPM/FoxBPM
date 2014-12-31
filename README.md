@@ -55,6 +55,7 @@ FoxBPM本身并不具备完整的开发平台功能,它的定位是专门用于�
 **用户向导**: [http://fixteam.github.io/fixflow/userguide/out/html/index.html](http://fixteam.github.io/fixflow/userguide/out/html/index.html)
 
 **用户向导离线版本 6.0**: [http://pan.baidu.com/s/1bnniqB1](http://pan.baidu.com/s/1bnniqB1)
+* [FAQ](http://yang-ch.iteye.com/blog/2171370)
 
 
 #分支介绍
@@ -94,18 +95,6 @@ FoxBPM本身并不具备完整的开发平台功能,它的定位是专门用于�
 * 第二种适合对界面需要大量订制的用户,通过流程提供的Api自己开发任务处理、管控界面。
 
 * 注意：FoxBPM自带的任务处理中心,在应用到实际项目中之前需要对其进行集成开发来使用用户各自系统的要求。
-
-
-#文档说明
-
-【用户向导文档】提供了快速学习FixFlow引擎的途径,推荐从用户向导文档开始学习,【示例文档】提供了现实业务中常用的功能例子,【开发人员Blog文章列表】提供了高级功能详细讲解。
-
-
-
-* [查看用户向导文档](http://fixteam.github.io/fixflow/userguide/out/html/index.html)
-* [产品及开发社区介绍](https://github.com/fixteam/fixflow/wiki/产品及开发社区介绍)
-* [FAQ](#)
-
 
 
 #Eclipse设计器界面
