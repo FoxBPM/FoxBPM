@@ -37,7 +37,7 @@ FoxBPM本身并不具备完整的开发平台功能,它的定位是专门用于�
 
 #资源打包下载
 包含数据库脚本、jar包、用户向导、设计器插件、war包、内核源码，全部源码。
-* [FoxBPM Release 6.0(百度网盘)](http://pan.baidu.com/s/1dDlIpJN)
+* [FoxBPM Release 6.0(百度网盘)](http://pan.baidu.com/s/1hqkqoNM)
 
 #流程设计器
 (国内最强大的BPMN设计器)
