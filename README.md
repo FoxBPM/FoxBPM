@@ -52,7 +52,7 @@ FoxBPM本身并不具备完整的开发平台功能,它的定位是专门用于�
 
 **开发者交流社区QQ群**: 434527452
 
-**用户向导**: [http://fixteam.github.io/fixflow/userguide/out/html/index.html](http://fixteam.github.io/fixflow/userguide/out/html/index.html)
+**用户向导**: [http://foxbpm.github.io/FoxBPM/userguide.html](http://foxbpm.github.io/FoxBPM/userguide.html)
 
 **用户向导下载**: [http://pan.baidu.com/s/1bnniqB1](http://pan.baidu.com/s/1bnniqB1)
 
