@@ -2,7 +2,7 @@
 
 FoxBPM(6.0版本开始fixflow改名为FoxBPM)是一款开源的基于BPMN2.0标准的工作流引擎,引擎底层直接支持BPMN2.0国际标准,
 吸纳了 jBPM3 、 Activiti5、BonitaBPM 等国际开源流程引擎的精髓,
-同时提供了强大的中国式流程流转处理,引擎采用微内核+插件形式设计,提供灵活的扩展模式, 建模采 用基于BPMN2.0标准的Eclipse设计器和基于Web的流程设计器,不仅仅为审批流程提供了解决方案, 同时还为复杂业务流程编排提供了强大的支持。
+同时提供了强大的中国式流程流转处理,引擎采用微内核+插件形式设计,提供灵活的扩展模式, 建模采 用基于BPMN2.0标准的Eclipse设计器,不仅仅为审批流程提供了解决方案, 同时还为复杂业务流程编排提供了强大的支持。
 
 FoxBPM本身并不具备完整的开发平台功能,它的定位是专门用于集成到现有系统的引擎。
 
@@ -55,7 +55,7 @@ FoxBPM本身并不具备完整的开发平台功能,它的定位是专门用于�
 **用户向导**: [http://fixteam.github.io/fixflow/userguide/out/html/index.html](http://fixteam.github.io/fixflow/userguide/out/html/index.html)
 
 **用户向导离线版本 6.0**: [http://pan.baidu.com/s/1bnniqB1](http://pan.baidu.com/s/1bnniqB1)
-* [FAQ](http://yang-ch.iteye.com/blog/2171370)
+**常见问题整理**:[FAQ](http://yang-ch.iteye.com/blog/2171370)
 
 
 #分支介绍
