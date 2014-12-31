@@ -10,11 +10,11 @@ FoxBPM本身并不具备完整的开发平台功能,它的定位是专门用于�
 #其他Git仓库
 国内访问速度比较慢的朋友可以考虑从国内的Git仓库拉取代码:
 
-**开源中国社区-中国**:(https://git.oschina.net/kenshinnet/fixflow)
+**开源中国社区-中国**:(http://git.oschina.net/kenshinnet/FoxBPM)
 
 **GitHub-美国**:(https://github.com/FoxBPM/FoxBPM)
 
-**csdn_code -中国**:(https://code.csdn.net/fixflow/fixflow)  
+**csdn_code -中国**:(https://code.csdn.net/kenShinNet/foxbpm)  
 
 
 #为什么选择FoxBPM？
