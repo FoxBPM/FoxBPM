@@ -69,21 +69,13 @@ FoxBPM本身并不具备完整的开发平台功能,它的定位是专门用于�
 #项目介绍
 
 * foxbpm-kernel:Foxbpm流程微内核项目
-* 
 * foxbpm-engine:Foxbpm流程引擎项目
-* 
 * foxbpm-bpmn-model:Foxbpm的模型定义
-* 
 * foxbpm-bpmn-converter:Foxbpm的bpmn的转换器项目
-* 
 * foxbpm-plugin:Foxbpm的官方扩展插件包项目
-* 
 * foxbpm-rest:Foxbpm Rest项目
-* 
 * foxbpm-root:Foxbpm 根项目
-* 
 * foxbpm-webapps-common:Foxbpm web根项目
-* 
 * foxbpm-webapps-portal:Foxbpm流程门户
 
 
