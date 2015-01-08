@@ -564,11 +564,12 @@ button.discussion-sidebar-toggle {
 
 .timeline-comment-wrapper {
 	position: relative;
-	padding-left: 64px;
+	padding-left: 60px;
 	margin-top: 15px;
 	margin-bottom: 15px;
-	border-top: 2px solid #fff;
-	border-bottom: 2px solid #fff;
+	/* border-top: 2px solid #fff;
+	border-bottom: 2px solid #fff; */
+	padding-top: 5px;  /* ThinkGem */
 }
 
 :first-child.timeline-comment-wrapper {
@@ -617,7 +618,7 @@ button.discussion-sidebar-toggle {
 
 .timeline-comment-avatar {
 	border-radius: 4px;
-	margin-left: -64px;
+	margin-left: -60px;
 	float: left;
 }
 

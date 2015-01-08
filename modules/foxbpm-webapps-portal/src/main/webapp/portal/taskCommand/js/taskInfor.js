@@ -54,21 +54,21 @@ TaskInfor.prototype = {
 												if (null != d.endTime) {
 													taskListEnd.push(d);
 													if(!isOpen){
-														taskDetailInforDiv.append("<div style='border-bottom-style:solid;border-bottom-width:1px;border-bottom-color:#ddd'><span style='padding-right:4px;padding-bottom:3px;padding-left:4px;font-size:11px;font-weight:bold;display:inline-block;line-height:1;padding-top:3px;color:rgb(255,255,255);padding-top:0.2em;padding-left:0.6em;padding-right:0.6em;padding-bottom:0.3em;font-size:75%;display:inline;background-color: rgb(153, 153, 153);'>已完成</span></div>");
+														taskDetailInforDiv.append("<div style='border-bottom-style:solid;border-bottom-width:1px;border-bottom-color:#ddd;padding-bottom:4px;'><span style='padding-right:4px;padding-bottom:3px;padding-left:4px;font-size:11px;font-weight:bold;display:inline-block;line-height:1;padding-top:3px;color:rgb(255,255,255);padding-top:0.2em;padding-left:0.6em;padding-right:0.6em;padding-bottom:0.3em;font-size:75%;display:inline;background-color: rgb(153, 153, 153);'>已完成</span></div>");
 														recordsDiv = $("<div class='js-discussion js-socket-channel'>");
 														isOpen = true;
 													}
 												} else{
 													taskListIng.push(d);
 													 if (!isEnd) {
-														 taskDetailInforDiv.append("<div style='border-bottom-style:solid;border-bottom-width:1px;border-bottom-color:#ddd'><span style='padding-right:4px;padding-bottom:3px;padding-left:4px;font-size:11px;font-weight:bold;display:inline-block;line-height:1;padding-top:3px;color:rgb(255,255,255);padding-top:0.2em;padding-left:0.6em;padding-right:0.6em;padding-bottom:0.3em;font-size:75%;display:inline;background-color: rgb(153, 153, 153);'>未完成</span></div>");
+														 taskDetailInforDiv.append("<div style='border-bottom-style:solid;border-bottom-width:1px;border-bottom-color:#ddd;padding-bottom:4px;'><span style='padding-right:4px;padding-bottom:3px;padding-left:4px;font-size:11px;font-weight:bold;display:inline-block;line-height:1;padding-top:3px;color:rgb(255,255,255);padding-top:0.2em;padding-left:0.6em;padding-right:0.6em;padding-bottom:0.3em;font-size:75%;display:inline;background-color: rgb(153, 153, 153);'>未完成</span></div>");
 														 isEnd = true;
 														 recordsDiv = $("<div class='js-discussion js-socket-channel'>");
 													 }
 												}
 												record = $("<div class='timeline-comment-wrapper js-comment-container'>");
 												a = $("<a href='javascript:void(0);'>");
-												img = $("<img width='48' height='48' class='timeline-comment-avatar'>");
+												img = $("<img width='42' height='42' class='timeline-comment-avatar'>");
 												img.attr("alt", data.userName);
 												img.attr("src", $this.action
 														+ "/identity/users/"
@@ -94,7 +94,8 @@ TaskInfor.prototype = {
 																		: d.endTime));
 												comment_content = $("<div class='comment-content'>");
 												edit_comment_hide = $("<div class='edit-comment-hide'>");
-												edit_comment_hide
+												if (d.taskComment && d.taskComment != '')
+													edit_comment_hide
 														.append("<div class='comment-body markdown-body markdown-format js-comment-body'><p>"
 																+ (!d.taskComment ? ''
 																		: d.taskComment)
