@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.foxbpm</groupId>
     <artifactId>foxbpm-root</artifactId>
-    <version>6.0.0</version>
+   <version>6.0.1-SNAPSHOT</version>
 	<relativePath>../..</relativePath>
   </parent>
   <artifactId>foxbpm-webapps-portal</artifactId>
@@ -69,7 +69,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>3.2.5.RELEASE</version>
+			<version>3.2.6.RELEASE</version>
 		</dependency>
 			<!-- PERSISTENCE begin -->
 		<dependency>  
