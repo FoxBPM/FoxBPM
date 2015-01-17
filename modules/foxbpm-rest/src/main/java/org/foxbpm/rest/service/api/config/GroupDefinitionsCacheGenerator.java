@@ -1,5 +1,6 @@
 package org.foxbpm.rest.service.api.config;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,14 @@ public class GroupDefinitionsCacheGenerator implements IZipGenerator {
 		try{
 			List<GroupDefinition> groupDefinitions = FoxBpmUtil.getProcessEngine().getIdentityService().getAllGroupDefinitions();
 			Map<String,Object> resultMap = new HashMap<String, Object>();
-			resultMap.put("data", groupDefinitions);
+			List<Map<String,Object>> gdList = new ArrayList<Map<String,Object>>();
+			for (GroupDefinition gd : groupDefinitions){
+				Map<String,Object> gdMap = new HashMap<String, Object>();
+				gdMap.put("type", gd.getType());
+				gdMap.put("name", gd.getName());
+				gdList.add(gdMap);
+			}
+			resultMap.put("data", gdList);
 			ObjectMapper objectMapper = new ObjectMapper();
 			JsonGenerator jsonGenerator = objectMapper.getJsonFactory().createJsonGenerator(out, JsonEncoding.UTF8);
 			String tmpEntryName = "cache/allGroupDefinitions.data";
