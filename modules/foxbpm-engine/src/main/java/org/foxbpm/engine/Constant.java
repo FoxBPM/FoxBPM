@@ -25,9 +25,12 @@ public class Constant {
 	
 	/** foxbpm引擎中所有流程标识 */
 	public final static String FOXBPM_ALL_FLOW = "foxbpm_all_flow";
-	
+
 	/** 角色类型 */
 	public final static String ROLE_TYPE = "role";
+	
+	/** 岗位类型 */
+	public final static String POST_TYPE = "post";
 	
 	/** 部门类型 */
 	public final static String DEPT_TYPE = "dept";
