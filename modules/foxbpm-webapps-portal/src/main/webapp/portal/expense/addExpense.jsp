@@ -1,9 +1,11 @@
+<%@page import="java.util.UUID"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="org.foxbpm.engine.impl.entity.UserEntity" %>
 <%@ page import="org.foxbpm.engine.impl.entity.GroupEntity" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="org.foxbpm.engine.impl.util.GuidUtil" %>
 <!DOCTYPE html>
 <html lang="en-us">
 <head>
@@ -17,7 +19,8 @@
 <%
 	UserEntity user = (UserEntity)request.getSession().getAttribute("user");
 	SimpleDateFormat df = new SimpleDateFormat("yyyyMMddhhmmsssss");
-	String expenseId = "BXD-" + df.format(new Date());
+	/*  String expenseId = "BXD-" + df.format(new Date());*/
+	String expenseId = "BXD-" + GuidUtil.CreateGuid();
 %>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
