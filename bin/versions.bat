@@ -16,6 +16,10 @@ cd ..
 set /p new=请输入新版本号：
 echo.
 
+set /p choice=如果是快照版请按 "y" 否则按任意键继续：
+if /i "%choice%"=="y" set new=%new%-SNAPSHOT
+echo.
+
 pause
 echo.
 

@@ -3,4 +3,4 @@
 .classpath
 .project
 .DS_Store
-.versionsBackup
+*.versionsBackup
