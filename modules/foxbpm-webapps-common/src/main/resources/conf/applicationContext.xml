@@ -38,9 +38,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 		<property name="user" value="${idbase.username}" />
 		<property name="password" value="${idbase.password}" />
 		 <!--连接池中保留的最大连接数。默认值: 15 -->   
-          <property name="maxPoolSize" value="20"/>  
+          <property name="maxPoolSize" value="100"/>  
           <!-- 连接池中保留的最小连接数，默认为：3-->  
-          <property name="minPoolSize" value="2"/>  
+          <property name="minPoolSize" value="50"/>  
           <!-- 初始化连接池中的连接数，取值应在minPoolSize与maxPoolSize之间，默认为3-->  
           <property name="initialPoolSize" value="2"/>  
           <!--最大空闲时间，60秒内未使用则连接被丢弃。若为0则永不丢弃。默认值: 0 -->   
@@ -67,8 +67,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           <property name="maxStatementsPerConnection" value="0"/> 
 		
 	</bean>
-	
-	
 	
 	<!-- 使用jdbcTemplate -->
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
@@ -105,28 +103,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
     
-	<bean id="scheduler"
-		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-		<property name="autoStartup" value="false"></property>
-		<!-- 注入数据源 -->
-		<property name="dataSource">
-			<ref bean="foxbpmDataSource" />
-		</property>
-		<property name="transactionManager" ref="foxbpmTransactionManager">
-		</property>
-		<!-- 延迟30秒启动Scheduler -->
-		<property name="startupDelay" value="5"></property>
-		<!-- 通过applicationContextSchedulerContextKey属性配置spring上下文 -->
-		<property name="applicationContextSchedulerContextKey">
-			<value>applicationContext</value>
-		</property>
-	</bean>
-	<bean id="foxbpmScheduler" class="org.foxbpm.engine.impl.schedule.FoxbpmScheduler">
-		<constructor-arg>
-			<ref bean="scheduler" />
-		</constructor-arg>
-	</bean>
-	
 	<bean id="springLoadHelper" class="org.foxbpm.rest.common.api.SpringLoadHelper"></bean>
 
 	<!-- 流程引擎配置 -->
@@ -134,7 +110,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 		class="org.foxbpm.engine.spring.ProcessEngineConfigurationSpring">
 		<property name="dataSource" ref="foxbpmDataSource" />
 		<property name="transactionManager" ref="foxbpmTransactionManager" />
-		<property name="foxbpmScheduler" ref="foxbpmScheduler"></property>
 		<property name="connectorMenuPath" value="conf/CustomConnectorMenu.xml"></property>
 		<property name="configXmlPath" value="conf/foxbpmconfig.xml"></property>
 	</bean>
