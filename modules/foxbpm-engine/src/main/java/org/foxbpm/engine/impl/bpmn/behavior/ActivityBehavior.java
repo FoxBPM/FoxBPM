@@ -342,21 +342,10 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		LOG.debug("节点: {}({}) 含有并行多实例,将进入多实例'离开'阶段处理,令牌号: {}({}).", this.getName(), this.getId(), token.getName(), token.getId());
 		// 输出数据集
 		String loopDataOutputCollectionExpressionValue =milc.getLoopDataOutputCollection();
-		// 多实例输入数据集
-		String loopDataInputCollectionExpressionValue = milc.getLoopDataInputCollection();
-		// 多实例输入项
-		String inputDataItemExpressionValue = milc.getInputDataItem();
 		// 多实例输出项
 		String outputDataItemExpressionValue = milc.getOutputDataItem();
 		// 完成条件
 		String completionConditionExpressionValue = milc.getCompletionCondition();
-		// 打印日志信息
-		LOG.debug("\n多实例配置信息: \n 【输入数据集】: \n{}", loopDataInputCollectionExpressionValue);
-		LOG.debug("\n【输入项编号】: \n{}", inputDataItemExpressionValue);
-		LOG.debug("\n【输出项编号】: \n{}", outputDataItemExpressionValue);
-		LOG.debug("\n【输出数据集】: \n{}", loopDataOutputCollectionExpressionValue);
-		LOG.debug("\n【完成条件】: \n{}", completionConditionExpressionValue);
-
 		if (loopDataOutputCollectionExpressionValue != null && !loopDataOutputCollectionExpressionValue.equals("")) {
 			Object valueObj = null;
 			try {
@@ -431,8 +420,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		if (isCompletion) {
 			super.leave(executionContext);
 		}
-		
-		//
+		//这里要加判断，否则可能出现全部处理完，但是流程没有向下驱动的问题
 	}
 
 	 
