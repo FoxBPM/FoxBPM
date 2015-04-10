@@ -235,11 +235,9 @@ public class TokenEntity extends KernelTokenImpl implements Token, ConnectorExec
 		objectParam.put("nodeId", getNodeId());
 		objectParam.put("processInstanceId", getProcessInstanceId());
 		objectParam.put("parentId", getParentId());
-		
+		objectParam.put("loopCount", getLoopCount());
 		objectParam.put("processDefinitionId", getProcessDefinitionId());
-		
 		objectParam.put("processDefinitionKey", getProcessDefinitionKey());
-		
 		return objectParam;
 	}
 	

@@ -108,30 +108,27 @@ public abstract class AbstractFoxBpmTestCase extends AbstractTransactionalJUnit4
 			}
 			DeploymentBuilder deploymentBuilder = null;// processEngine.getModelService().createDeployment().name("测试名称");
 			// 由于当前不支持一次发布多个流程定义
-			BpmnXMLConverter bpmnXMLConverter = new BpmnXMLConverter();
-			BpmnModel bpmnModel = null;
-			SAXReader reader = new SAXReader();
-			ByteArrayOutputStream out = null;
-			OutputFormat format = null;
+//			BpmnXMLConverter bpmnXMLConverter = new BpmnXMLConverter();
+//			BpmnModel bpmnModel = null;
+//			SAXReader reader = new SAXReader();
+//			ByteArrayOutputStream out = null;
+//			OutputFormat format = null;
 			for (String resource : resources) {
-				bpmnModel = bpmnXMLConverter.convertToBpmnModel(reader.read(ReflectUtil.getResourceAsStream(resource)));
+//				bpmnModel = bpmnXMLConverter.convertToBpmnModel(reader.read(ReflectUtil.getResourceAsStream(resource)));
 				deploymentBuilder = processEngine.getModelService().createDeployment().name("测试名称");
 				// deploymentBuilder.addClasspathResource(resource);
-				try {
-					out = new ByteArrayOutputStream();
-					// 定义输出流的目的地
-					format = OutputFormat.createPrettyPrint();
-					format.setEncoding("UTF-8");
-					XMLWriter xmlWriter = new XMLWriter(out, format);
-					xmlWriter.setEscapeText(false);
-					xmlWriter.write(bpmnXMLConverter.convertToXML(bpmnModel));
-					xmlWriter.close();
-					System.out.println(resource + "---------------" + out.toString());
-					deploymentBuilder.addInputStream(resource, new ByteArrayInputStream(out.toByteArray()));
+//					out = new ByteArrayOutputStream();
+//					// 定义输出流的目的地
+//					format = OutputFormat.createPrettyPrint();
+//					format.setEncoding("UTF-8");
+//					XMLWriter xmlWriter = new XMLWriter(out, format);
+//					xmlWriter.setEscapeText(false);
+//					xmlWriter.write(bpmnXMLConverter.convertToXML(bpmnModel));
+//					xmlWriter.close();
+//					System.out.println(resource + "---------------" + out.toString());
+//					deploymentBuilder.addInputStream(resource, new ByteArrayInputStream(out.toByteArray()));
+					deploymentBuilder.addInputStream(resource, this.getClass().getClassLoader().getResourceAsStream(resource));
 					deploymentBuilder.deploy();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
 			}
 		}
 	}
