@@ -19,6 +19,7 @@ package org.foxbpm.bpmn.converter.parser;
 
 import java.util.Iterator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
 import org.foxbpm.bpmn.constants.BpmnXMLConstants;
 import org.foxbpm.bpmn.converter.util.BpmnXMLUtil;
@@ -32,12 +33,18 @@ import org.foxbpm.model.SkipStrategy;
  */
 public class SkipStrategyParser {
 	public static SkipStrategy parser(Element element) {
-		if (element ==null || !BpmnXMLConstants.ELEMENT_SKIPSTRATEGY.equalsIgnoreCase(element.getName())) {
+		if (element == null || !BpmnXMLConstants.ELEMENT_SKIPSTRATEGY.equalsIgnoreCase(element.getName())) {
 			return null;
 		}
 		
 		SkipStrategy skipStrategy = new SkipStrategy();
 		skipStrategy.setEnable(BpmnXMLUtil.parseBoolean(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ISENABLE)));
+		// 如果该属性不存在那么就是true
+		if (StringUtils.isEmpty(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ISCREATESKIPPROCESS))) {
+			skipStrategy.setCreateSkipTaskRecord(true);
+		} else {
+			skipStrategy.setCreateSkipTaskRecord(BpmnXMLUtil.parseBoolean(element.attributeValue(BpmnXMLConstants.ATTRIBUTE_ISCREATESKIPPROCESS)));
+		}
 		parserElement(element, skipStrategy);
 		return skipStrategy;
 	}

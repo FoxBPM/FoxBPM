@@ -135,6 +135,8 @@ public interface BpmnXMLConstants {
 	String ATTRIBUTE_SCRIPTFORMAT = "scriptFormat";
 	/** isEnable */
 	String ATTRIBUTE_ISENABLE = "isEnable";
+	/** isCreateSkipProcess */
+	String ATTRIBUTE_ISCREATESKIPPROCESS = "isCreateSkipProcess";
 	/** gatewayDirection */
 	String ATTRIBUTE_GATEWAYDIRECTION = "gatewayDirection";
 	/** convergType */
