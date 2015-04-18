@@ -70,7 +70,8 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 	static{
 		
 		String defaultOrderBy = " order by ${orderBy} ";
-		 //mysql specific
+		
+		//mysql specific
 	    databaseSpecificLimitBeforeStatements.put("mysql", "");
 	    databaseSpecificLimitAfterStatements.put("mysql", "LIMIT #{maxResults} OFFSET #{firstResult}");
 	    databaseSpecificLimitBetweenStatements.put("mysql", "");
@@ -84,15 +85,25 @@ public class MyBatisSqlSessionFactory implements ISqlSessionFactory {
 	    databaseOuterJoinLimitBetweenStatements.put("oracle", "");
 	    databaseSpecificOrderByStatements.put("oracle", defaultOrderBy);
 	    
+	    //mssql specific
 	    databaseSpecificLimitBeforeStatements.put("mssql", "SELECT SUB.* FROM (");
 	    databaseSpecificLimitAfterStatements.put("mssql", ")RES ) SUB WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}");
 	    databaseSpecificLimitBetweenStatements.put("mssql", ", row_number() over (ORDER BY #{orderBy}) rnk FROM ( select distinct RES.* ");
 	    databaseOuterJoinLimitBetweenStatements.put("mssql", "");
 	    databaseSpecificOrderByStatements.put("mssql", "");
+
+		//postgre sql or highgo database
+	    databaseSpecificLimitBeforeStatements.put("postgre", "");
+	    databaseSpecificLimitAfterStatements.put("postgre", "LIMIT #{maxResults} OFFSET #{firstResult}");
+	    databaseSpecificLimitBetweenStatements.put("postgre", "");
+	    databaseOuterJoinLimitBetweenStatements.put("postgre", "");
+	    databaseSpecificOrderByStatements.put("postgre", defaultOrderBy);
 	    
 		databaseTypeMappings.setProperty("MySQL", "mysql");
 		databaseTypeMappings.setProperty("Oracle", "oracle");
 		databaseTypeMappings.setProperty("Microsoft SQL Server", "mssql");
+		databaseTypeMappings.setProperty("PostgreSQL", "postgre"); // PostgreSQL
+		databaseTypeMappings.setProperty("HighgoDB", "postgre"); // 瀚高数据库，使用PostgreSQL分页方法
 	}
 	
 	public void init(ProcessEngineConfigurationImpl processEngineConfig) throws SQLException {
