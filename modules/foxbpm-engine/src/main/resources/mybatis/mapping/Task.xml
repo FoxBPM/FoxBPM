@@ -335,6 +335,14 @@
 			<if test="nameLike != null">
 				and NAME like #{nameLike}
 			</if>
+			
+			<if test="taskComment != null">
+				and TASK_COMMENT = #{taskComment}
+			</if>
+			<if test="taskCommentLike != null">
+				and TASK_COMMENT like #{taskCommentLike}
+			</if>
+			
 			<if test="owner != null">
 				and OWNER = #{owner}
 			</if>
