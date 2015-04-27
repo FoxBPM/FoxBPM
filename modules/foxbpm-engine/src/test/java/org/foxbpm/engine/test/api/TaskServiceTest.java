@@ -459,7 +459,7 @@ public class TaskServiceTest extends AbstractFoxBpmTestCase {
 		TaskQuery taskQuery = taskService.createTaskQuery();
 		
 		Task task = taskQuery.processDefinitionKey("TestRecover_1").taskNotEnd().singleResult();
-		taskService.recoverTask(task.getId(), "UserTask_1");
+		taskService.recoverTask(task.getId(), "UserTask_1","");
 		taskQuery = taskService.createTaskQuery();
 		task = taskQuery.processDefinitionKey("TestRecover_1").taskNotEnd().singleResult();
 		assertEquals("UserTask_1", task.getNodeId());
@@ -494,7 +494,7 @@ public class TaskServiceTest extends AbstractFoxBpmTestCase {
 		task = taskQuery.nodeId("UserTask_4").taskNotEnd().singleResult();
 		assertNotNull(task);
 		
-		taskService.recoverTask(task.getId(), "UserTask_3");
+		taskService.recoverTask(task.getId(), "UserTask_3","");
 		
 		task = taskQuery.nodeId("UserTask_3").taskNotEnd().singleResult();
 		expandTaskCommand = new ExpandTaskCommand();
@@ -506,7 +506,7 @@ public class TaskServiceTest extends AbstractFoxBpmTestCase {
 		task = taskQuery.nodeId("UserTask_4").taskNotEnd().singleResult();
 		assertNotNull(task);
 		
-		taskService.recoverTask(task.getId(), "UserTask_2");
+		taskService.recoverTask(task.getId(), "UserTask_2","");
 		
 		taskQuery = taskService.createTaskQuery();
 		tasks = taskQuery.processDefinitionKey("TestRecover_1").taskNotEnd().list();
