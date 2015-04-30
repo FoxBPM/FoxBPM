@@ -79,12 +79,11 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	protected String initiator;
 	protected String isSuspended;
 	protected String tokenId;
-	protected String taskComment;
-	protected String taskCommentLike;
 	
 	// 查询代理任务时，用来存放原始任务处理人
 	protected String oldAssigneeId;
 	protected List<String> taskTypeList = new ArrayList<String>();
+	protected List<String> commandTypeList = new ArrayList<String>();
 	
 	public TaskQueryImpl() {
 	}
@@ -120,19 +119,6 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 			return this;
 		}
 		this.nameLike = nameLike;
-		return this;
-	}
-	
-	public TaskQueryImpl taskComment(String taskComment) {
-		this.taskComment = taskComment;
-		return this;
-	}
-	
-	public TaskQueryImpl taskCommentLike(String taskCommentLike) {
-		if (taskCommentLike == null) {
-			return this;
-		}
-		this.taskCommentLike = taskCommentLike;
 		return this;
 	}
 	
@@ -235,6 +221,21 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 			}
 		}
 		this.taskTypeList.add(taskInstanceType);
+		return this;
+	}
+	
+	public TaskQuery addCommandType(String commandType) {
+		
+		if (commandType == null) {
+			return this;
+		}
+		for (String commandTypeObj : commandTypeList) {
+			if (commandType.equals(commandTypeObj)) {
+				// 如果已存在，则直接返回
+				return this;
+			}
+		}
+		this.commandTypeList.add(commandType);
 		return this;
 	}
 	

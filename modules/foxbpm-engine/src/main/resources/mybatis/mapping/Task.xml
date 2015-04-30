@@ -336,13 +336,6 @@
 				and NAME like #{nameLike}
 			</if>
 			
-			<if test="taskComment != null">
-				and TASK_COMMENT = #{taskComment}
-			</if>
-			<if test="taskCommentLike != null">
-				and TASK_COMMENT like #{taskCommentLike}
-			</if>
-			
 			<if test="owner != null">
 				and OWNER = #{owner}
 			</if>
@@ -382,7 +375,14 @@
 					#{group}
 				</foreach>
 			</if>
-
+            <!-- commandType -->
+            <if test="commandTypeList != null  &amp;&amp; commandTypeList.size() &gt; 0">
+				and COMMAND_TYPE in
+				<foreach item="group" index="index" collection="commandTypeList"
+					open="(" separator="," close=")">
+					#{group}
+				</foreach>
+			</if>
 			<!-- 共享任务 -->
 			<if
 				test="candidateUser != null  || (candidateGroups != null &amp;&amp; candidateGroups.size() &gt; 0)">

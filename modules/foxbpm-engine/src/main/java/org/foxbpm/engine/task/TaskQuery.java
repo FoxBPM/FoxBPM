@@ -106,22 +106,6 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	TaskQuery taskNameLike(String nameLike);
 	
 	/**
-	 * 根据评论查询
-	 * 
-	 * @param taskComment
-	 * @return
-	 */
-	TaskQuery taskComment(String taskComment);
-	
-	/**
-	 * 根据评like匹配
-	 * 
-	 * @param taskCommentLike
-	 * @return
-	 */
-	TaskQuery taskCommentLike(String taskCommentLike);
-	
-	/**
 	 * 根据业务主键查询
 	 * 
 	 * @param businessKey
@@ -144,6 +128,14 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery addTaskType(String taskType);
+	
+	/**
+	 * 命令类型
+	 * 
+	 * @param commandType
+	 * @return
+	 */
+	TaskQuery addCommandType(String commandType);
 	
 	/**
 	 * 任务描述
