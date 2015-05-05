@@ -150,28 +150,20 @@ public class ActivityBehavior extends FlowNodeBehavior {
 
 		// 多实例执行
 		TokenEntity token = (TokenEntity) executionContext;
+		
+		// 生成一个唯一组号,用户多实例任务组的标识
+		String groupID = GuidUtil.CreateGuid();
+		// 给流程上下文设置唯一组号,好在多实例每次进入节点的时候将唯一组号传递给每个任务创建方法。
+		token.setGroupID(groupID);
+		LOG.debug("为多实例生成唯一组号: '{}'", groupID);
+		
 		MultiInstanceLoopCharacteristics milc = (MultiInstanceLoopCharacteristics) loopCharacteristics;
-		// 并行多实例处理
-		LOG.debug("节点: {}({}) 含有并行多实例,将进入多实例'进入'阶段处理,令牌号: {}({}).", getName(), getId(), token.getName(), token.getId());
-		// 输出数据集
-		String loopDataOutputCollectionExpressionValue = milc.getLoopDataOutputCollection();
-		// 多实例输入数据集
-		String loopDataInputCollectionExpressionValue =milc.getLoopDataInputCollection();
-		// 多实例输入项
-		String inputDataItemExpressionValue = milc.getInputDataItem();
-		// 多实例输出项
-		String outputDataItemExpressionValue = milc.getOutputDataItem();
-		// 完成条件
-		String completionConditionExpressionValue = milc.getCompletionCondition();
-		// 打印日志信息
-		LOG.debug("\n多实例配置信息: \n 【输入数据集】: \n{}", loopDataInputCollectionExpressionValue);
-		LOG.debug("\n【输入项编号】: \n{}", inputDataItemExpressionValue);
-		LOG.debug("\n【输出项编号】: \n{}", outputDataItemExpressionValue);
-		LOG.debug("\n【输出数据集】: \n{}", outputDataItemExpressionValue);
-		LOG.debug("\n【完成条件】: \n{}", completionConditionExpressionValue);
+		
 		// 解决多实例处理退回BUG
 		// 在进入多实例的第一次先清空多实例输出集合,以防历史数据影响。
-		if (loopDataOutputCollectionExpressionValue != null && !loopDataOutputCollectionExpressionValue.equals("")) {
+		// 输出数据集
+		String loopDataOutputCollectionExpressionValue = milc.getLoopDataOutputCollection();
+		if (loopDataOutputCollectionExpressionValue != null && !loopDataOutputCollectionExpressionValue.equals("") && token.getLoopCount() == 0) {
 			Object valueObj = null;
 			try {
 				valueObj = ExpressionMgmt.execute(loopDataOutputCollectionExpressionValue, executionContext);
@@ -188,33 +180,15 @@ public class ActivityBehavior extends FlowNodeBehavior {
 				}
 			}
 		}
-		// 开始触发多实例循环
-		if (StringUtil.isEmpty(loopDataInputCollectionExpressionValue)) {
-			throw ExceptionUtil.getException("10404009",this.flowNode.getId());
-		}
-
-		// 生成一个唯一组号,用户多实例任务组的标识
-		String groupID = GuidUtil.CreateGuid();
-		// 给流程上下文设置唯一组号,好在多实例每次进入节点的时候将唯一组号传递给每个任务创建方法。
-		token.setGroupID(groupID);
-		LOG.debug("为多实例生成唯一组号: '{}'", groupID);
-		// 执行多实例 输入数据集 解释
-		Collection<?> valueObjCollection =getloopDataInputCollection(executionContext,loopDataInputCollectionExpressionValue);
-
-		if (valueObjCollection == null) {
-			throw ExceptionUtil.getException("10404010",this.flowNode.getId());
-		}
-		if (valueObjCollection.size() == 0) {
-			throw ExceptionUtil.getException("10404011",this.flowNode.getId());
-		}
+				
 		// 判断事都是并行多实例
 		if (milc.isSequential()) {
 			// 串行多实例
-			sequentialMultiInstanceExecute(executionContext, valueObjCollection, inputDataItemExpressionValue);
+			sequentialMultiInstanceExecute(executionContext, milc);
 
 		} else {
 			// 并行多实例
-			parallelMultiInstanceExecute(executionContext, valueObjCollection, inputDataItemExpressionValue);
+			parallelMultiInstanceExecute(executionContext, milc);
 		}
 	}
 	
@@ -263,21 +237,28 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		return valueObjCollection;
 	}
 
+
 	/** 串行多实例处理 */
-	protected void sequentialMultiInstanceExecute(FlowNodeExecutionContext executionContext, Collection<?> valueObjCollection,
-			String inputDataItemExpressionValue) {
+	protected void sequentialMultiInstanceExecute(FlowNodeExecutionContext executionContext,MultiInstanceLoopCharacteristics milc) {
 		TokenEntity token=(TokenEntity)executionContext;
 		int loopCount=token.getLoopCount();
-		
+		// 多实例输入数据集
+		String loopDataInputCollectionExpressionValue =milc.getLoopDataInputCollection();
+		// 多实例输入项
+		String inputDataItemExpressionValue = milc.getInputDataItem();
+		Collection<?> valueObjCollection =getloopDataInputCollection(executionContext,loopDataInputCollectionExpressionValue);
 		Object[] object = valueObjCollection.toArray();
-
+		if(object.length <= loopCount){
+			throw ExceptionUtil.getException("串行多实例循环错误，循环次数超过了输入数据集的个数，当前循环次数："+loopCount+"，输入数据集总长度"+object.length);
+		}
 		LOG.debug("串行多实例循环第 '{}' 次开始执行,循环值为: '{}'", loopCount, StringUtil.getString(object[loopCount]));
 		try {
 			// 将循环的每个变量赋值给输入数据项
-			ExpressionMgmt.setVariable(inputDataItemExpressionValue, object, executionContext);
+			ExpressionMgmt.setVariable(inputDataItemExpressionValue, object[loopCount], executionContext);
 		} catch (Exception e) {
 			throw ExceptionUtil.getException("01404008",e,this.flowNode.getId());
 		}
+		token.setLoopCount(token.getLoopCount()+1);
 		// 执行令牌进入节点方法
 		executionContext.execute();
 
@@ -293,9 +274,32 @@ public class ActivityBehavior extends FlowNodeBehavior {
 	 * @param inputDataItemExpressionValue
 	 *            输入参数变量
 	 */
-	protected void parallelMultiInstanceExecute(FlowNodeExecutionContext executionContext, Collection<?> valueObjCollection,
-			String inputDataItemExpressionValue) {
+	protected void parallelMultiInstanceExecute(FlowNodeExecutionContext executionContext,MultiInstanceLoopCharacteristics milc) {
+		
+		TokenEntity token = (TokenEntity)executionContext;
+		// 并行多实例处理
+		LOG.debug("节点: {}({}) 含有并行多实例,将进入多实例'进入'阶段处理,令牌号: {}({}).", getName(), getId(), token.getName(), token.getId());
+		// 多实例输入数据集
+		String loopDataInputCollectionExpressionValue =milc.getLoopDataInputCollection();
+		// 多实例输入项
+		String inputDataItemExpressionValue = milc.getInputDataItem();
+		// 打印日志信息
+		LOG.debug("\n多实例输入配置信息: \n 【输入数据集】: \n{}", loopDataInputCollectionExpressionValue);
+		LOG.debug("\n【输入项编号】: \n{}", inputDataItemExpressionValue);
+		// 开始触发多实例循环
+		if (StringUtil.isEmpty(loopDataInputCollectionExpressionValue)) {
+			throw ExceptionUtil.getException("10404009",this.flowNode.getId());
+		}
+		// 执行多实例 输入数据集 解释
+		Collection<?> valueObjCollection =getloopDataInputCollection(executionContext,loopDataInputCollectionExpressionValue);
 
+		if (valueObjCollection == null) {
+			throw ExceptionUtil.getException("10404010",this.flowNode.getId());
+		}
+		if (valueObjCollection.size() == 0) {
+			throw ExceptionUtil.getException("10404011",this.flowNode.getId());
+		}
+		
 		int i = 1;
 		for (Object object : valueObjCollection) {
 			LOG.debug("多实例循环第 '{}' 次开始执行,循环值为: '{}'", i, StringUtil.getString(object));
@@ -338,21 +342,10 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		LOG.debug("节点: {}({}) 含有并行多实例,将进入多实例'离开'阶段处理,令牌号: {}({}).", this.getName(), this.getId(), token.getName(), token.getId());
 		// 输出数据集
 		String loopDataOutputCollectionExpressionValue =milc.getLoopDataOutputCollection();
-		// 多实例输入数据集
-		String loopDataInputCollectionExpressionValue = milc.getLoopDataInputCollection();
-		// 多实例输入项
-		String inputDataItemExpressionValue = milc.getInputDataItem();
 		// 多实例输出项
 		String outputDataItemExpressionValue = milc.getOutputDataItem();
 		// 完成条件
 		String completionConditionExpressionValue = milc.getCompletionCondition();
-		// 打印日志信息
-		LOG.debug("\n多实例配置信息: \n 【输入数据集】: \n{}", loopDataInputCollectionExpressionValue);
-		LOG.debug("\n【输入项编号】: \n{}", inputDataItemExpressionValue);
-		LOG.debug("\n【输出项编号】: \n{}", outputDataItemExpressionValue);
-		LOG.debug("\n【输出数据集】: \n{}", outputDataItemExpressionValue);
-		LOG.debug("\n【完成条件】: \n{}", completionConditionExpressionValue);
-
 		if (loopDataOutputCollectionExpressionValue != null && !loopDataOutputCollectionExpressionValue.equals("")) {
 			Object valueObj = null;
 			try {
@@ -408,24 +401,18 @@ public class ActivityBehavior extends FlowNodeBehavior {
 	}
 
 	protected void sequentialMultiInstanceLeave(FlowNodeExecutionContext executionContext,boolean isCompletion) {
-		
 		if (isCompletion) {
 			super.leave(executionContext);
 		}else{
-			
 			Activity activity = (Activity)baseElement;
 			LoopCharacteristics loopCharacteristics = activity.getLoopCharacteristics();
 			MultiInstanceLoopCharacteristics milc = (MultiInstanceLoopCharacteristics) loopCharacteristics;
 			Collection<?> valueObjCollection =getloopDataInputCollection(executionContext,milc.getLoopDataInputCollection());
-			String inputDataItemExpressionValue = milc.getInputDataItem();
 			TokenEntity token=(TokenEntity)executionContext;
-			token.setLoopCount(1);
-			if(token.getLoopCount()==valueObjCollection.size()){
-				//穿行多实例未实现
-				
+			if(token.getLoopCount() == valueObjCollection.size()){
+				throw ExceptionUtil.getException("串行多实例循环完成，但是不满足完成条件，流程无法继续执行！");
 			}
-			sequentialMultiInstanceExecute(executionContext, valueObjCollection, inputDataItemExpressionValue);
-			
+			sequentialMultiInstanceExecute(executionContext,milc);
 		}
 	}
 
@@ -433,6 +420,7 @@ public class ActivityBehavior extends FlowNodeBehavior {
 		if (isCompletion) {
 			super.leave(executionContext);
 		}
+		//这里要加判断，否则可能出现全部处理完，但是流程没有向下驱动的问题
 	}
 
 	 

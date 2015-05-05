@@ -147,8 +147,8 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 		return commandExecutor.execute(new GetIdentityLinkByTaskIdCmd(taskId));
 	}
 	
-	public void recoverTask(String taskId, String targetNodeId) {
-		commandExecutor.execute(new RecoverTaskByIdCmd(taskId,targetNodeId));
+	public void recoverTask(String taskId, String targetNodeId,String taskComment) {
+		commandExecutor.execute(new RecoverTaskByIdCmd(taskId,targetNodeId,taskComment));
 	}
 
 	public Class<?> getInterfaceClass() {

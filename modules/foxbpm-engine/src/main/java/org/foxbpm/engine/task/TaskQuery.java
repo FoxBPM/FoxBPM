@@ -27,21 +27,21 @@ import org.foxbpm.engine.query.Query;
  * @author kenshin
  */
 public interface TaskQuery extends Query<TaskQuery, Task> {
-
+	
 	/**
 	 * 任务是否结束
 	 * 
 	 * @return
 	 */
 	TaskQuery taskIsEnd();
-
+	
 	/**
 	 * 未结束的任务
 	 * 
 	 * @return
 	 */
 	TaskQuery taskNotEnd();
-
+	
 	/**
 	 * 是否代理
 	 * 
@@ -49,7 +49,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery isAgent(boolean isAgent);
-
+	
 	/**
 	 * 代理id
 	 * 
@@ -57,7 +57,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery agentId(String agentId);
-
+	
 	/**
 	 * 是否暂停
 	 * 
@@ -65,7 +65,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery isSuspended(boolean isSuspended);
-
+	
 	/**
 	 * 根据令牌ID查询
 	 * 
@@ -73,14 +73,14 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery tokenId(String tokenId);
-
+	
 	/**
 	 * 根据任务发起人查询
 	 * 
 	 * @return
 	 */
 	TaskQuery initiator(String initiator);
-
+	
 	/**
 	 * 根据taskId查询
 	 * 
@@ -88,7 +88,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery taskId(String taskId);
-
+	
 	/**
 	 * 根据任务名称查询
 	 * 
@@ -96,7 +96,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery taskName(String name);
-
+	
 	/**
 	 * 任务名称like匹配
 	 * 
@@ -104,7 +104,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery taskNameLike(String nameLike);
-
+	
 	/**
 	 * 根据业务主键查询
 	 * 
@@ -112,7 +112,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery businessKey(String businessKey);
-
+	
 	/**
 	 * 根据业务主键查询
 	 * 
@@ -120,7 +120,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery businessKeyLike(String businessKey);
-
+	
 	/**
 	 * 任务类型
 	 * 
@@ -128,7 +128,15 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery addTaskType(String taskType);
-
+	
+	/**
+	 * 命令类型
+	 * 
+	 * @param commandType
+	 * @return
+	 */
+	TaskQuery addCommandType(String commandType);
+	
 	/**
 	 * 任务描述
 	 * 
@@ -136,7 +144,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery taskDescription(String description);
-
+	
 	/**
 	 * 任务描述like匹配
 	 * 
@@ -144,7 +152,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery taskDescriptionLike(String descriptionLike);
-
+	
 	/**
 	 * 任务主题
 	 * 
@@ -152,7 +160,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery taskSubject(String subject);
-
+	
 	/**
 	 * 任务主题like匹配
 	 * 
@@ -166,7 +174,6 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * 
 	 */
 	TaskQuery subjectUnionInitiator();
-
 	
 	/**
 	 * 指定用户的独占任务
@@ -175,7 +182,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery taskAssignee(String assignee);
-
+	
 	/**
 	 * 指定用户的任务
 	 * 
@@ -183,7 +190,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery taskOwner(String owner);
-
+	
 	/**
 	 * 未被领取的任务
 	 * 
@@ -204,7 +211,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery ignorTaskAssigned();
-
+	
 	/**
 	 * 指定用户的的共享任务
 	 * 
@@ -212,7 +219,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery taskCandidateUser(String candidateUser);
-
+	
 	/**
 	 * 根据流程实例编号查询
 	 * 
@@ -220,7 +227,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery processInstanceId(String processInstanceId);
-
+	
 	/**
 	 * 创建时间等于createTime
 	 * 
@@ -228,7 +235,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery taskCreatedOn(Date createTime);
-
+	
 	/**
 	 * 创建时间小于before
 	 * 
@@ -236,7 +243,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery taskCreatedBefore(Date before);
-
+	
 	/**
 	 * 创建时间大于after
 	 * 
@@ -252,7 +259,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery taskDueDateOn(Date endTime);
-
+	
 	/**
 	 * 期望完成时间小于before
 	 * 
@@ -260,14 +267,14 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery taskDueDateBefore(Date before);
-
+	
 	/**
 	 * 期望完成时间大于after
+	 * 
 	 * @param after
 	 * @return
 	 */
 	TaskQuery taskDueDateAfter(Date after);
-	
 	
 	/**
 	 * 期望完成时间等于dueDate
@@ -276,7 +283,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery taskEndTimeOn(Date dueDate);
-
+	
 	/**
 	 * 期望完成时间小于before
 	 * 
@@ -284,15 +291,15 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery taskEndTimeBefore(Date before);
-
+	
 	/**
 	 * 期望完成时间大于after
+	 * 
 	 * @param after
 	 * @return
 	 */
 	TaskQuery taskEndTimeAfter(Date after);
 	
-
 	/**
 	 * 根据流程定义key查询
 	 * 
@@ -300,7 +307,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery processDefinitionKey(String processDefinitionKey);
-
+	
 	/**
 	 * 根据流程定义编号查询
 	 * 
@@ -308,7 +315,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery processDefinitionId(String processDefinitionId);
-
+	
 	/**
 	 * 根据流程名称查询
 	 * 
@@ -316,7 +323,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery processDefinitionName(String processDefinitionName);
-
+	
 	/**
 	 * 根据流程名称like查询
 	 * 
@@ -324,7 +331,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery processDefinitionNameLike(String processDefinitionLike);
-
+	
 	/**
 	 * 根据节点查询
 	 * 
@@ -332,56 +339,56 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery nodeId(String nodeId);
-
+	
 	// ordering ////////////////////////////////////////////////////////////
-
+	
 	/**
 	 * 根据任务ID排序
 	 * 
 	 * @return
 	 */
 	TaskQuery orderByTaskId();
-
+	
 	/**
 	 * 根据任务名称排序
 	 * 
 	 * @return
 	 */
 	TaskQuery orderByTaskName();
-
+	
 	/**
 	 * 根据任务描述排序
 	 * 
 	 * @return
 	 */
 	TaskQuery orderByTaskDescription();
-
+	
 	/**
 	 * 根据处理人排序
 	 * 
 	 * @return
 	 */
 	TaskQuery orderByTaskAssignee();
-
+	
 	/**
 	 * 根据创建时间排序
 	 * 
 	 * @return
 	 */
 	TaskQuery orderByTaskCreateTime();
-
+	
 	/**
 	 * 根据流程实例ID排序
 	 * 
 	 * @return
 	 */
 	TaskQuery orderByProcessInstanceId();
-
+	
 	/**
 	 * 根据结束时间排序
 	 * 
 	 * @return
 	 */
 	TaskQuery orderByEndTime();
-
+	
 }
