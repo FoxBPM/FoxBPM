@@ -86,17 +86,28 @@ public class UpdateLocationListener  implements KernelListener {
 			}
 			
 			String nodeId = tmpTask.getNodeId();
-			//删除重复的token
-			List<KernelTokenImpl> tokenList = new ArrayList<KernelTokenImpl>(tokens);
-			for(int i=0; i<tokenList.size();i++){
-				KernelTokenImpl tmpToken = tokenList.get(i);
+//			//删除重复的token
+//			List<KernelTokenImpl> tokenList = new ArrayList<KernelTokenImpl>(tokens);
+//			for(int i=0; i<tokenList.size();i++){
+//				KernelTokenImpl tmpToken = tokenList.get(i);
+//				//如果存在子令牌，则不计算主令牌的位置。
+//				if(!tmpToken.isRoot()){
+//					isRootTokenEnable =false;
+//				}
+//				if(tmpToken.getFlowNode().getId().equals(nodeId)){
+//					tokens.remove(i);
+//					
+//				}
+//			}
+			//删除重复的token ThinkGem 2015-5-22 修正数组越界
+			for(int i=0; i<tokens.size();i++){
+				KernelTokenImpl tmpToken = tokens.get(i);
 				//如果存在子令牌，则不计算主令牌的位置。
 				if(!tmpToken.isRoot()){
 					isRootTokenEnable =false;
 				}
 				if(tmpToken.getFlowNode().getId().equals(nodeId)){
 					tokens.remove(i);
-					
 				}
 			}
 			
