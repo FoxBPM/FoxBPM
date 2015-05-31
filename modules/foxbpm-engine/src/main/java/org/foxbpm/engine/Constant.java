@@ -29,9 +29,6 @@ public class Constant {
 	/** 角色类型 */
 	public final static String ROLE_TYPE = "role";
 	
-	/** 岗位类型 */
-	public final static String POST_TYPE = "post";
-	
 	/** 部门类型 */
 	public final static String DEPT_TYPE = "dept";
 	
