@@ -79,6 +79,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	protected String initiator;
 	protected String isSuspended;
 	protected String tokenId;
+	protected String tenantId;
 	
 	// 查询代理任务时，用来存放原始任务处理人
 	protected String oldAssigneeId;
@@ -390,6 +391,11 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 		return this;
 	}
 	
+	public TaskQuery tenantId(String tenantId) {
+		this.tenantId = tenantId;
+		return this;
+	}
+	
 	public List<GroupEntity> getCandidateGroups() {
 		if (candidateUser != null) {
 			return getGroupsForCandidateUser(candidateUser);
@@ -637,5 +643,13 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	
 	public boolean isProcessInstanceVariableValueIsLike() {
 		return processInstanceVariableValueIsLike;
+	}
+	
+	public String getTenantId() {
+		return tenantId;
+	}
+	
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
 	}
 }

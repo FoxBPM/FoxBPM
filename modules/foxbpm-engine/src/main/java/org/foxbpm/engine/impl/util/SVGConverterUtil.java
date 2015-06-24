@@ -21,9 +21,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.apache.batik.transcoder.TranscoderInput;
-import org.apache.batik.transcoder.TranscoderOutput;
-import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.foxbpm.engine.exception.FoxBPMException;
 
 /**
@@ -73,10 +70,10 @@ public class SVGConverterUtil {
 			if (StringUtil.isEmpty(svgCode)) {
 				throw ExceptionUtil.getException("转换png内容为空");
 			}
-			PNGTranscoder transcoder = new PNGTranscoder();
-			in = new ByteArrayInputStream(svgCode.getBytes("utf-8"));
-			out = new ByteArrayOutputStream(1024);
-			transcoder.transcode(new TranscoderInput(in), new TranscoderOutput(out));
+//			PNGTranscoder transcoder = new PNGTranscoder();
+//			in = new ByteArrayInputStream(svgCode.getBytes("utf-8"));
+//			out = new ByteArrayOutputStream(1024);
+//			transcoder.transcode(new TranscoderInput(in), new TranscoderOutput(out));
 			out.flush();
 			return out.toByteArray();
 		} catch (Exception e) {

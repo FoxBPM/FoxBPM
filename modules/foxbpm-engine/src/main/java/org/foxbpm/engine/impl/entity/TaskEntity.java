@@ -183,11 +183,10 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	/** 下一步骤任务 */
 	protected String nextTaskId;
 	
-	
-
 	protected String addSignType;
 	
-	
+	/** 多租户标识  */
+	protected String tenantId;
 	
 	protected Map<String, Object> paramMap = new HashMap<String, Object>();
 	
@@ -210,6 +209,7 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		CommandContext commandContext = Context.getCommandContext();
 		commandContext.getTaskManager().insert(this);
 		if (processInstance != null) {
+			
 			processInstance.addTask(this);
 			processInstance.setLocationChange(true);
 		}
@@ -1123,6 +1123,14 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 
 	public void setAddSignType(String addSignType) {
 		this.addSignType = addSignType;
+	}
+	
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
+	}
+	
+	public String getTenantId() {
+		return tenantId;
 	}
 	
 	public boolean isAddSign() {

@@ -42,6 +42,9 @@ public class ProcessExport {
 			processEle.addAttribute(BpmnXMLConstants.ATTRIBUTE_NAME, process.getName());
 			processEle.addAttribute(BpmnXMLConstants.ATTRIBUTE_CATEGORY, process.getCategory());
 			processEle.addAttribute(BpmnXMLConstants.ATTRIBUTE_KEY, process.getKey());
+			if(process.getTenantId() != null){
+				processEle.addAttribute(BpmnXMLConstants.TENANT_ID, process.getTenantId());
+			}
 			if (!process.isPersistence()) {
 				processEle.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':' + BpmnXMLConstants.ATTRIBUTE_ISPERSISTENCE, String.valueOf(false));
 			}

@@ -100,6 +100,9 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	/** 流程实例位置 */
 	protected String processLocation;
 	
+	/**  多租户标识   */
+	protected String tenantId;
+	
 	// 对象字段 /////////////////////
 	
 	/** 任务集合 */
@@ -156,6 +159,9 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 			}catch(Exception ex){
 				throw ExceptionUtil.getException("10304001",processDefinitionEntity.getId());
 			}
+		}
+		if(processDefinitionEntity.getTenantId() != null){
+			this.tenantId = processDefinitionEntity.getTenantId();
 		}
 		super.start();
 	}
@@ -570,5 +576,13 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	
 	public boolean isLocationChange() {
 		return isLocationChange;
+	}
+	
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
+	}
+	
+	public String getTenantId() {
+		return tenantId;
 	}
 }

@@ -179,6 +179,13 @@ public interface ProcessInstanceQuery extends Query<ProcessInstanceQuery, Proces
 	ProcessInstanceQuery processDefinitionNameLike(String definitionNameLike);
 	
 	/**
+	 * 多租户编号
+	 * @param tenantId
+	 * @return
+	 */
+	ProcessInstanceQuery tenantId(String tenantId);
+	
+	/**
 	 * 根据流程实例编号排序
 	 * @return
 	 */

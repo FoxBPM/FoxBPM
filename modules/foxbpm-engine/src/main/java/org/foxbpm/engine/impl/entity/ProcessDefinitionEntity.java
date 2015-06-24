@@ -76,6 +76,9 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl
 	
 	/** 控制并发修改标示 */
 	protected int revision;
+	
+	/**  多租户标示     */
+	protected String tenantId;
 
 	protected DataVariableMgmtDefinition dataVariableMgmtDefinition;
 
@@ -118,6 +121,14 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl
 
 	public void setSubject(String subject) {
 		this.subject = new ExpressionImpl(subject);
+	}
+	
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
+	}
+	
+	public String getTenantId() {
+		return tenantId;
 	}
 
 	public Expression getFormUri() {

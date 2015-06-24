@@ -71,6 +71,10 @@ public interface BpmnXMLConstants {
 	String ATTRIBUTE_SUBJECT = "subject";
 	/** key */
 	String ATTRIBUTE_KEY = "key";
+	
+	/** tenantId */
+	String TENANT_ID = "tenantId";
+	
 	/** id */
 	String ATTRIBUTE_ID = "id";
 	/** name */

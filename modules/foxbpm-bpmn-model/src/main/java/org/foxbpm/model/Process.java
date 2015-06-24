@@ -62,6 +62,11 @@ public class Process extends FlowElement implements FlowContainer {
 	protected boolean isPersistence = true;
 	
 	/**
+	 * 多租户标示
+	 */
+	protected String tenantId;
+	
+	/**
 	 * 流程可发起人
 	 */
 	protected List<PotentialStarter> potentialStarters = new ArrayList<PotentialStarter>();
@@ -129,6 +134,14 @@ public class Process extends FlowElement implements FlowContainer {
 	
 	public void setCategory(String category) {
 		this.category = category;
+	}
+	
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
+	}
+	
+	public String getTenantId() {
+		return tenantId;
 	}
 	
 	public List<PotentialStarter> getPotentialStarters() {

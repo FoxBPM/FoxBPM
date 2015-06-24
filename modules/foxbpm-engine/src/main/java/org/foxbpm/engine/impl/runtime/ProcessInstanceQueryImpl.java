@@ -64,7 +64,8 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
 	protected Date endTime;
 	protected Date endTimeBefore;
 	protected Date endTimeAfter;
-
+	protected String tenantId;
+	
 	protected CommandExecutor commandExecutor;
 
 	/* 变量查询 */
@@ -271,6 +272,12 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
 		this.subject = subject;
 		return this;
 	}
+	
+	@Override
+	public ProcessInstanceQuery tenantId(String tenantId) {
+		this.tenantId = tenantId;
+		return this;
+	}
 
 	public ProcessInstanceQuery subjectLike(String subjectLike) {
 		this.subjectLike = subjectLike;
@@ -377,6 +384,14 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
 
 	public boolean isProcessInstanceVariableValueIsLike() {
 		return processInstanceVariableValueIsLike;
+	}
+	
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
+	}
+	
+	public String getTenantId() {
+		return tenantId;
 	}
 	
 	/*@Override

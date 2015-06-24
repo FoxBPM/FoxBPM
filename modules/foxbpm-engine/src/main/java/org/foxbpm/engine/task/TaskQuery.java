@@ -333,6 +333,13 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	TaskQuery processDefinitionNameLike(String processDefinitionLike);
 	
 	/**
+	 * 多租户编号，为空则返回所有
+	 * @param tenantId
+	 * @return
+	 */
+	TaskQuery tenantId(String tenantId);
+	
+	/**
 	 * 根据节点查询
 	 * 
 	 * @param nodeId
