@@ -70,7 +70,7 @@ public class TaskServiceTest extends AbstractFoxBpmTestCase {
 		
 		//构造task
 		String taskId = GuidUtil.CreateGuid();
-		Task task = taskService.newTask(taskId);
+		TaskEntity task = taskService.newTask(taskId);
 		task.setName("name");
 		task.setAssignee("assignee");
 		

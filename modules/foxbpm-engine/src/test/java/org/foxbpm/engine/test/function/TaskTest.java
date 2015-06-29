@@ -18,8 +18,8 @@ public class TaskTest extends AbstractFoxBpmTestCase {
 		String taskId = task.getId();
 		
 		// first modification
-		Task task1 = taskService.createTaskQuery().taskId(taskId).singleResult();
-		Task task2 = taskService.createTaskQuery().taskId(taskId).singleResult();
+		TaskEntity task1 = (TaskEntity)taskService.createTaskQuery().taskId(taskId).singleResult();
+		TaskEntity task2 = (TaskEntity)taskService.createTaskQuery().taskId(taskId).singleResult();
 		
 		task1.setDescription("first modification");
 		taskService.saveTask(task1);
@@ -38,7 +38,7 @@ public class TaskTest extends AbstractFoxBpmTestCase {
 	}
 	@Test
 	public void testRevisionUpdatedOnSave() {
-		Task task = taskService.newTask();
+		TaskEntity task = taskService.newTask();
 		taskService.saveTask(task);
 		assertEquals(1, ((TaskEntity) task).getRevision());
 		
@@ -54,7 +54,7 @@ public class TaskTest extends AbstractFoxBpmTestCase {
 	}
 	@Test
 	public void testRevisionUpdatedOnSaveWhenFetchedUsingQuery() {
-		Task task = taskService.newTask();
+		TaskEntity task = taskService.newTask();
 		taskService.saveTask(task);
 		assertEquals(1, ((TaskEntity) task).getRevision());
 		
@@ -63,7 +63,7 @@ public class TaskTest extends AbstractFoxBpmTestCase {
 		assertEquals(2, ((TaskEntity) task).getRevision());
 		
 		// Now fetch the task through the query api
-		task = taskService.createTaskQuery().taskId(task.getId()).singleResult();
+		task = (TaskEntity)taskService.createTaskQuery().taskId(task.getId()).singleResult();
 		assertEquals(2, ((TaskEntity) task).getRevision());
 		task.setDescription("ych");
 		taskService.saveTask(task);
