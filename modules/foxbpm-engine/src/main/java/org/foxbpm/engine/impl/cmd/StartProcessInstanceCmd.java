@@ -105,6 +105,8 @@ public class StartProcessInstanceCmd<T> implements Command<ProcessInstance>, Ser
 		}
 		String startAuthor = Authentication.getAuthenticatedUserId();
 		processInstance.setStartAuthor(startAuthor);
+		//当流程启动未指定提交人时，默认使用启动人
+		processInstance.setInitiator(startAuthor);
 		processInstance.start();
 		
 		return processInstance;

@@ -185,4 +185,10 @@ public interface Task{
 	 * @return
 	 */
 	DelegationState getDelegationState();
+	
+	/**
+	 * 获取流程的提交人
+	 * @return
+	 */
+	String getProcessInitiator();
 }
