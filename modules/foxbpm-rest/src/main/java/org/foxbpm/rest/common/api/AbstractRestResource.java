@@ -28,6 +28,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.exception.FoxbpmPluginException;
@@ -278,5 +280,21 @@ public abstract class AbstractRestResource extends ServerResource {
 	
 	protected String parseLikeValue(String value) {
 		return "%" + value + "%";
+	}
+	
+	/**
+	 * 判断是否允许接入
+	 * @return
+	 */
+	public boolean allowAccess() {
+		String ip = getClientInfo().getAddress();
+		System.out.println("IP Address: " + ip);
+	    String reg = "(10|172|192)"
+	    		+ "\\.([0-1][0-9]{0,2}|[2][0-5]{0,2}|[3-9][0-9]{0,1})"
+	    		+ "\\.([0-1][0-9]{0,2}|[2][0-5]{0,2}|[3-9][0-9]{0,1})"
+	    		+ "\\.([0-1][0-9]{0,2}|[2][0-5]{0,2}|[3-9][0-9]{0,1})";
+	    Pattern p = Pattern.compile(reg);
+	    Matcher matcher = p.matcher(ip);
+	    return matcher.find() || "0:0:0:0:0:0:0:1".equals(ip);
 	}
 }

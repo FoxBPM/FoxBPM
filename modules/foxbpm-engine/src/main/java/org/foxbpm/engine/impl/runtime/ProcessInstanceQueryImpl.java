@@ -56,6 +56,7 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
 	protected String processDefinitionNameLike;
 	protected String isEnd;
 	protected String initiatorLike;
+	protected String category; //按流程分类进行查询  ThinkGem 2015-7-6
 	protected String subject;
 	protected String subjectLike;
 	protected Date startTime;
@@ -267,6 +268,16 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
 		return this;
 	}
 
+	/**
+	 * 按流程分类进行查询  ThinkGem 2015-7-6
+	 * @param category
+	 * @return
+	 */
+	public ProcessInstanceQuery category(String category) {
+		this.category = category;
+		return this;
+	}
+	
 	public ProcessInstanceQuery subject(String subject) {
 		this.subject = subject;
 		return this;

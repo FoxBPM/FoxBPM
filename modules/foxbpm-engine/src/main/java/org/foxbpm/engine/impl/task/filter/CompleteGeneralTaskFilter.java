@@ -17,6 +17,7 @@
  */
 package org.foxbpm.engine.impl.task.filter;
 
+import org.foxbpm.engine.task.DelegationState;
 import org.foxbpm.engine.task.Task;
 
 public class CompleteGeneralTaskFilter extends AbstractCommandFilter {
@@ -41,7 +42,9 @@ public class CompleteGeneralTaskFilter extends AbstractCommandFilter {
 		}
 
 		if (task.getDelegationState() != null) {
-			return false;
+//			return false;
+			// 如果是转办状态的任务，则可以进行任务提交（ThinkGem 2015-6-12）
+			return DelegationState.RESOLVED.equals(task.getDelegationState());
 		}
 
 		if (task.getAssignee() != null) {

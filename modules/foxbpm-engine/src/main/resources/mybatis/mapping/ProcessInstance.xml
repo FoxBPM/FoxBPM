@@ -101,7 +101,7 @@
 		from ${prefix}_RUN_PROCESSINSTANCE RES
 
 		<if
-			test="processDefinitionName != null or processDefinitionNameLike != null">
+			test="processDefinitionName != null or processDefinitionNameLike != null or category != null">
 			inner join ${prefix}_DEF_PROCESSDEFINITION P on p.PROCESS_ID =
 			RES.PROCESSDEFINITION_ID
 		</if>
@@ -129,6 +129,9 @@
 			</if>
 			<if test="initiatorLike != null">
 				and RES.INITIATOR like #{initiatorLike}
+			</if>
+			<if test="category != null">
+				and P.CATEGORY = #{category}
 			</if>
 			<if test="subject != null">
 				and RES.SUBJECT = #{subject}

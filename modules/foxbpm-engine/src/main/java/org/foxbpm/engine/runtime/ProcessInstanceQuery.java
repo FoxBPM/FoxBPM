@@ -89,6 +89,13 @@ public interface ProcessInstanceQuery extends Query<ProcessInstanceQuery, Proces
 	 * @return
 	 */
 	ProcessInstanceQuery notEnd();
+
+	/**
+	 * 按流程分类进行查询  ThinkGem 2015-7-6
+	 * @param category
+	 * @return
+	 */
+	ProcessInstanceQuery category(String category);
 	
 	/**
 	 * 根据任务主题查询

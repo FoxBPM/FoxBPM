@@ -31,6 +31,7 @@ import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.execution.ConnectorExecutionContext;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
+import org.foxbpm.engine.impl.persistence.deploy.DeploymentManager;
 import org.foxbpm.engine.impl.task.TaskCommandSystemType;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.task.TaskQueryImpl;
@@ -38,6 +39,7 @@ import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.ExceptionUtil;
 import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.repository.ProcessDefinition;
 import org.foxbpm.engine.task.DelegateTask;
 import org.foxbpm.engine.task.DelegationState;
 import org.foxbpm.engine.task.IdentityLink;
@@ -207,13 +209,29 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	}
 	
 	public void insert(ProcessInstanceEntity processInstance) {
+		// 设置任务流程分类  ThinkGem 2015-7-8 
+		if (processInstance != null) {
+			ProcessDefinition processDefinition = null;
+//			// 因为流程定义XML中没有分类，通过缓存获取得不到分类。
+//			if (processInstance.getProcessDefinition() instanceof ProcessDefinition){
+//				processDefinition = (ProcessDefinition)processInstance.getProcessDefinition();
+//			}else{
+//				DeploymentManager deploymentCache = Context.getProcessEngineConfiguration().getDeploymentManager();
+//				processDefinition = deploymentCache.findDeployedProcessDefinitionById(processInstance.getProcessDefinitionId());
+//			}
+			// 流程定义缓存得不到分类，所以需要从库里再查询一遍。
+			processDefinition = Context.getCommandContext().getProcessDefinitionManager().findProcessDefinitionById(processInstance.getProcessDefinitionId());
+			if (processDefinition != null){
+				this.setCategory(processDefinition.getCategory());
+			}
+		}
+		// 保存任务
 		CommandContext commandContext = Context.getCommandContext();
 		commandContext.getTaskManager().insert(this);
 		if (processInstance != null) {
 			processInstance.addTask(this);
 			processInstance.setLocationChange(true);
 		}
-		
 	}
 	
 	public void update() {

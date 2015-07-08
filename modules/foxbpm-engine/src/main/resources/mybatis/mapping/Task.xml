@@ -275,7 +275,9 @@
 			<if test="descriptionLike != null">
 				and DESCRIPTION like #{descriptionLike}
 			</if>
-
+			<if test="category != null">
+				and RES.CATEGORY = #{category}
+			</if>
 			<if test="subject != null">
 				and SUBJECT = #{subject}
 			</if>
