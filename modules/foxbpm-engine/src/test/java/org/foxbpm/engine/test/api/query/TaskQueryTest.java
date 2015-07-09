@@ -22,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Calendar;
 import java.util.List;
 
+import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.task.Task;
@@ -85,5 +86,19 @@ public class TaskQueryTest extends AbstractFoxBpmTestCase {
 		
 		List<Task> tasks = taskQuery.list();
 		assertEquals(1, tasks.size());
+	}
+	
+	
+	@Test
+	public void testScrope(){
+		TaskQuery taskQuery = taskService.createTaskQuery();
+		
+		GroupEntity groupEntity = new GroupEntity("2008","userGroup","class","002");
+		taskQuery.addCandidateGroups(groupEntity);
+		taskQuery.addCandidateGroups(new GroupEntity("2009", "userGroup","dept","2003"));
+		taskQuery.taskCandidateUser("222");
+		
+		taskQuery.list();
+		
 	}
 }
