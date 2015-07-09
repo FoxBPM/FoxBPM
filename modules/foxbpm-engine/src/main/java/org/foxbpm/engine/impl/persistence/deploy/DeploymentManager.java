@@ -75,7 +75,7 @@ public class DeploymentManager {
 	    String processDefinitionKey) {
 		ProcessDefinitionEntity processDefinition = Context.getCommandContext().getProcessDefinitionManager().findLatestProcessDefinitionByKey(processDefinitionKey);
 		if (processDefinition == null) {
-			throw ExceptionUtil.getException("10102003",processDefinitionKey);
+			return null;
 		}
 		processDefinition = resolveProcessDefinition(processDefinition);
 		return processDefinition;

@@ -30,6 +30,7 @@ import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 import org.foxbpm.engine.impl.query.AbstractQuery;
 import org.foxbpm.engine.impl.util.ExceptionUtil;
+import org.foxbpm.engine.task.Scrope;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskQuery;
 
@@ -52,6 +53,8 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	// 默认查询所有
 	protected int assignedFlag = 2;
 	protected String candidateUser;
+	
+	protected List<GroupEntity> candidateGroups;
 	protected String end;
 	protected String businessKey;
 	protected String businessKeyLike;
@@ -85,6 +88,8 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	protected String oldAssigneeId;
 	protected List<String> taskTypeList = new ArrayList<String>();
 	protected List<String> commandTypeList = new ArrayList<String>();
+	
+	protected List<Scrope> scropes;
 	
 	public TaskQueryImpl() {
 	}
@@ -396,11 +401,30 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 		return this;
 	}
 	
-	public List<GroupEntity> getCandidateGroups() {
-		if (candidateUser != null) {
-			return getGroupsForCandidateUser(candidateUser);
+	public TaskQuery addScrope(Scrope scrope) {
+		if(scropes == null){
+			scropes = new ArrayList<Scrope>();
 		}
-		return null;
+		scropes.add(scrope);
+		return this;
+	}
+	
+	public TaskQuery addCandidateGroups(GroupEntity group){
+		if(candidateGroups == null){
+			candidateGroups = new ArrayList<GroupEntity>();
+		}
+		candidateGroups.add(group);
+		
+		return this;
+	}
+	
+	public List<GroupEntity> getCandidateGroups() {
+//		if (candidateUser != null) {
+//			return getGroupsForCandidateUser(candidateUser);
+//		}
+//		return null;
+		
+		return candidateGroups;
 	}
 	
 	protected List<GroupEntity> getGroupsForCandidateUser(String candidateUser) {

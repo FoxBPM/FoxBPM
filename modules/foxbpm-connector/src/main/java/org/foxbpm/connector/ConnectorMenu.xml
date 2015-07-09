@@ -31,6 +31,7 @@
       <connector id="RandomAssign" name="资源中随机分配" note="选择一个或者多个用户" ico="RandomAssign.png" package="org/foxbpm/connector/actorconnector/RandomAssign"/>
       <connector id="SelectDepartmentAndRole" name="选择某部门和某角色" note="选择某部门和某角色" ico="SelectDepartmentAndRole.png" package="org/foxbpm/connector/actorconnector/SelectDepartmentAndRole"/>
       <connector id="SelectDepartment" name="选择部门(只包含子部门)" note="选择一个或者多个部门" ico="SelectDepartment.png" package="org/foxbpm/connector/actorconnector/SelectDepartment"/>
+      <connector id="SelectScopeGroupActor" name="用户组选择器" note="用户组选择器" ico="SelectScopeGroupActor.png" package="org/foxbpm/connector/actorconnector/SelectScopeGroupActor"/>
     </node>
   </actorConnector>
 </connectormenu:Menu>

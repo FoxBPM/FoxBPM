@@ -19,6 +19,7 @@ package org.foxbpm.engine.task;
 
 import java.util.Date;
 
+import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.query.Query;
 
 /**
@@ -346,6 +347,20 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery nodeId(String nodeId);
+	
+	/**
+	 * 管理范围
+	 * @param scrope
+	 * @return
+	 */
+	TaskQuery addScrope(Scrope scrope);
+	
+	/**
+	 * 增加组
+	 * @param groupEntity
+	 * @return
+	 */
+	TaskQuery addCandidateGroups(GroupEntity groupEntity);
 	
 	// ordering ////////////////////////////////////////////////////////////
 	
