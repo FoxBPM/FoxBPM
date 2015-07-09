@@ -121,7 +121,11 @@ public interface DelegateTask extends KernelVariableScope {
 	void addUserIdentityLink(String userId, String identityLinkType);
 
 	/** 给任务添加一个候选组 */
-	void addGroupIdentityLink(String groupId,String groupType, String identityLinkType);
+	void addGroupIdentityLink(String groupId, String groupType,
+			String scopeId, String scopeType, String identityLinkType);
+	
+	/** 给任务添加一个候选组 */
+	void addGroupIdentityLink(String groupId, String groupType,String identityLinkType);
 
 	/** 删除一个候选用户 */
 	void deleteCandidateUser(String userId);

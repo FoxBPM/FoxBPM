@@ -349,18 +349,11 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	TaskQuery nodeId(String nodeId);
 	
 	/**
-	 * 管理范围
-	 * @param scrope
-	 * @return
-	 */
-	TaskQuery addScrope(Scrope scrope);
-	
-	/**
 	 * 增加组
 	 * @param groupEntity
 	 * @return
 	 */
-	TaskQuery addCandidateGroups(GroupEntity groupEntity);
+	TaskQuery addCandidateGroup(GroupEntity groupEntity);
 	
 	// ordering ////////////////////////////////////////////////////////////
 	

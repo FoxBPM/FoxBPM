@@ -28,8 +28,8 @@ public class GroupEntity implements Serializable  {
 	private String groupName;
 	private String groupType;
 	private String supGroupId;
-	private String scropeId;
-	private String scropeType;
+	private String scopeId;
+	private String scopeType;
 	private Map<String,Object> propertyMap;
 	
 	public GroupEntity(){
@@ -41,11 +41,11 @@ public class GroupEntity implements Serializable  {
 		this.groupType = groupType;
 	}
 	
-	public GroupEntity(String groupId,String groupType,String scropeType,String scropeId){
+	public GroupEntity(String groupId,String groupType,String scopeType,String scopeId){
 		this.groupId = groupId;
 		this.groupType = groupType;
-		this.scropeId = scropeId;
-		this.scropeType = scropeType;
+		this.scopeId = scopeId;
+		this.scopeType = scopeType;
 	}
 	
 	
@@ -53,20 +53,21 @@ public class GroupEntity implements Serializable  {
 		this.groupId = groupId;
 	}
 	
-	public void setScropeId(String scropeId) {
-		this.scropeId = scropeId;
+
+	public String getScopeId() {
+		return scopeId;
 	}
-	
-	public String getScropeId() {
-		return scropeId;
+
+	public void setScopeId(String scopeId) {
+		this.scopeId = scopeId;
 	}
-	
-	public void setScropeType(String scropeType) {
-		this.scropeType = scropeType;
+
+	public String getScopeType() {
+		return scopeType;
 	}
-	
-	public String getScropeType() {
-		return scropeType;
+
+	public void setScopeType(String scopeType) {
+		this.scopeType = scopeType;
 	}
 
 	public void setGroupName(String groupName) {

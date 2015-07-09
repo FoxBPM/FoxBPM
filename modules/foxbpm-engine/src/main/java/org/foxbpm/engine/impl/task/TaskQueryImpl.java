@@ -30,7 +30,6 @@ import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.impl.interceptor.CommandExecutor;
 import org.foxbpm.engine.impl.query.AbstractQuery;
 import org.foxbpm.engine.impl.util.ExceptionUtil;
-import org.foxbpm.engine.task.Scrope;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskQuery;
 
@@ -88,8 +87,6 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	protected String oldAssigneeId;
 	protected List<String> taskTypeList = new ArrayList<String>();
 	protected List<String> commandTypeList = new ArrayList<String>();
-	
-	protected List<Scrope> scropes;
 	
 	public TaskQueryImpl() {
 	}
@@ -401,15 +398,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 		return this;
 	}
 	
-	public TaskQuery addScrope(Scrope scrope) {
-		if(scropes == null){
-			scropes = new ArrayList<Scrope>();
-		}
-		scropes.add(scrope);
-		return this;
-	}
-	
-	public TaskQuery addCandidateGroups(GroupEntity group){
+	public TaskQuery addCandidateGroup(GroupEntity group){
 		if(candidateGroups == null){
 			candidateGroups = new ArrayList<GroupEntity>();
 		}
