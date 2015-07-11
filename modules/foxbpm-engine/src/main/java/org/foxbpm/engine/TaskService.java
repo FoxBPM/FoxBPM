@@ -132,6 +132,19 @@ public interface TaskService {
 	void complete(String taskId,Map<String, Object> transientVariables,Map<String, Object> persistenceVariables);
 	
 	/**
+	 * <p>完成任务</p>
+	 * <p>直接complete任务，不会执行command命令，也不会执行表达式</p>
+	 * <p>结束任务，如果是多实例，则判断是否满足完成表达式，然后决定是否将令牌向下驱动</p>
+	 * @param taskId 任务编号
+	 * @param transientVariables 瞬态变量
+	 * @param persistenceVariables 持久化变量
+	 * @param taskComment 任务意见
+	 * @exception FoxbpmBizException
+	 * 如果任务没有被领取，任务被暂停，任务已结束时会抛出异常(不能处理暂停，已结束任务)
+	 */
+	void complete(String taskId,Map<String, Object> transientVariables,Map<String, Object> persistenceVariables, String taskComment);
+	
+	/**
 	 * 自定义扩展方式完成任务的处理命令调用的方法
 	 * 
 	 * @param expandTaskCommand

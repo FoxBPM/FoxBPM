@@ -160,6 +160,24 @@ public class TaskCommandImpl implements Serializable, TaskCommand {
 			persistentState.put("nodeId", this.userTask.getId());
 			persistentState.put("nodeName", this.userTask.getName());
 		}
+		
+		// 增加命令参数 ThinkGem 2015-7-10
+		if (this.getCommandParams() != null){
+			Map<String, Object> commandParamMap = new HashMap<String, Object>();
+			for (CommandParam commandParam : this.getCommandParams()) {
+				Map<String, Object> commandParamObj = new HashMap<String, Object>();
+				commandParamObj.put("name", commandParam.getName());
+				if (commandParam.getValue() != null){
+					commandParamObj.put("value", commandParam.getValue());
+				}else if (commandParam.getExpression() != null){
+					commandParamObj.put("value", commandParam.getExpression().getExpressionText());
+				}
+				commandParamObj.put("description", commandParam.getDescription());
+				commandParamObj.put("dataType", commandParam.getDataType());
+				commandParamMap.put(commandParam.getKey(), commandParamObj);
+			}
+			persistentState.put("commandParam", commandParamMap);
+		}
 
 		return persistentState;
 	}

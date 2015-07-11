@@ -30,11 +30,19 @@ public class CompleteTaskCmd extends NeedsActiveTaskCmd<Void> {
 
 	protected Map<String, Object> transientVariables;
 	protected Map<String, Object> persistenceVariables;
+	protected String taskComment;
 
 	public CompleteTaskCmd(String taskId, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables) {
 		super(taskId);
 		this.transientVariables = transientVariables;
 		this.persistenceVariables = persistenceVariables;
+	}
+	
+	public CompleteTaskCmd(String taskId, Map<String, Object> transientVariables, Map<String, Object> persistenceVariables, String taskComment) {
+		super(taskId);
+		this.transientVariables = transientVariables;
+		this.persistenceVariables = persistenceVariables;
+		this.taskComment = taskComment;
 	}
 
 	 
@@ -45,6 +53,9 @@ public class CompleteTaskCmd extends NeedsActiveTaskCmd<Void> {
 		}
 		if(persistenceVariables != null && !persistenceVariables.isEmpty()){
 			task.setProcessInstanceVariables(persistenceVariables);
+		}
+		if(taskComment != null && !"".equals(taskComment)){
+			task.setTaskComment(taskComment);
 		}
 		task.setAssignee(Authentication.getAuthenticatedUserId());
 		task.complete();
