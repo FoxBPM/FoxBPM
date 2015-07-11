@@ -52,14 +52,18 @@ public class RollBackAssigneeCmd extends AbstractExpandTaskCmd<RollBackAssigneeC
 		
 		/** 获取任务命令 */
 		TaskCommand taskCommand = getTaskCommand(task);
-		/** 获取流程内容执行器 */
-		FlowNodeExecutionContext executionContext = getExecutionContext(task);
-		/** 任务命令的执行表达式变量 */
-		taskCommand.getExpressionValue(executionContext);
+		if(taskCommand != null) {
+			/** 获取流程内容执行器 */
+			FlowNodeExecutionContext executionContext = getExecutionContext(task);
+			/** 任务命令的执行表达式变量 */
+			taskCommand.getExpressionValue(executionContext);
+			/** 设置任务的处理命令 commandId commandName commandType */
+			task.setTaskCommand(taskCommand);		
+		}
+		
+		
 		/** 设置任务处理者 */
 		task.setAssignee(Authentication.getAuthenticatedUserId());
-		/** 设置任务的处理命令 commandId commandName commandType */
-		task.setTaskCommand(taskCommand);		
 		/** 处理意见 */
 		task.setTaskComment(taskComment);
 		/** 获取流程定义 */
