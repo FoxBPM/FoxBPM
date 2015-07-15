@@ -326,14 +326,7 @@
 	</taskCommands>
 
 	<eventListeners>
-		<eventListener id="startEventTaskListener-process-start" eventType="process-start"
-			listenerClass="org.foxbpm.engine.impl.listener.task.StartEventTaskListener" />
-		<eventListener id="endEventTaskListener-process-end" eventType="process-end"
-			listenerClass="org.foxbpm.engine.impl.listener.task.EndEventTaskListener" />
+		<eventListener id="UpdateProcessLocationInfoTableListener-before-process-save" eventType="before-process-save"
+			listenerClass="org.foxbpm.engine.impl.listener.process.UpdateLocationListener" />	
 	</eventListeners>
-
-	<bizDataObjects>
-		<dataObjectBehavior id="dataBaseMode" name="数据库表模R式"
-			behavior="org.foxbpm.engine.impl.datavariable.BizDataObjectBehaviorImpl" />
-	</bizDataObjects>
 </foxbpmconfig:FoxBPMConfig>
