@@ -35,6 +35,7 @@ public class Context {
 	protected static ThreadLocal<Stack<ProcessEngineConfigurationImpl>> processEngineConfigurationStackThreadLocal = new ThreadLocal<Stack<ProcessEngineConfigurationImpl>>();
 	protected static ThreadLocal<Stack<CommandContext>> commandContextThreadLocal = new ThreadLocal<Stack<CommandContext>>();
 	protected static ThreadLocal<Stack<AbstractScriptLanguageMgmt>> abstractScriptLanguageMgmtThreadLocal = new ThreadLocal<Stack<AbstractScriptLanguageMgmt>>();
+	protected static ThreadLocal<String> appIdThreadLocal=new ThreadLocal<String>();//应用编号线程副本
 	public static ProcessEngineConfigurationImpl getProcessEngineConfiguration() {
 		Stack<ProcessEngineConfigurationImpl> stack = getStack(processEngineConfigurationStackThreadLocal);
 		if (stack.isEmpty()) {
@@ -99,5 +100,19 @@ public class Context {
 		}
 		return stack;
 	}
+	
+	/**
+	 * 设置线程副本中的应用编号
+	 * @param appId 应用编号
+	 */
+	public static void setAppId(String appId){
+		appIdThreadLocal.set(appId);
+	}
 
+	/**
+	 * @return 线程副本中的应用编号
+	 */
+	public static String getAppId(){
+		return appIdThreadLocal.get();
+	}
 }

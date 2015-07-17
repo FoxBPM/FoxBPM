@@ -25,6 +25,7 @@
 		<result column="INSTANCE_STATUS" jdbcType="VARCHAR" property="instanceStatus" />
 		<result column="ARCHIVE_TIME" jdbcType="TIMESTAMP" property="archiveTime" />
 		<result column="REV_" property="revision" jdbcType="INTEGER" />
+		<result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<insert id="insertProcessInstance" parameterType="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">
@@ -38,7 +39,7 @@
 		PARENT_ID,
 		PARENT_TOKEN_ID, UPDATE_TIME,
 		PROCESSLOCATION, INSTANCE_STATUS,
-		ARCHIVE_TIME,REV_
+		ARCHIVE_TIME,REV_,TENANT_ID
 		)
 		values (#{id,jdbcType=VARCHAR},
 		#{processDefinitionId,jdbcType=VARCHAR},
@@ -52,7 +53,7 @@
 		#{parentId,jdbcType=VARCHAR}, #{parentTokenId,jdbcType=VARCHAR},
 		#{updateTime,jdbcType=TIMESTAMP},
 		#{processLocation,jdbcType=VARCHAR},
-		#{instanceStatus,jdbcType=VARCHAR}, #{archiveTime,jdbcType=TIMESTAMP},1
+		#{instanceStatus,jdbcType=VARCHAR}, #{archiveTime,jdbcType=TIMESTAMP},1,${appId}
 		)
 	</insert>
 
@@ -62,20 +63,21 @@
 		*
 		from ${prefix}_run_processinstance
 		where ID = #{id,jdbcType=VARCHAR}
+		<if test="${appId} != null and ${appId}!='00000000'">
+			AND TENANT_ID=${appId}
+		</if>
 	</select>
 
 
 	<select id="selectProcessInstanceIdsByProcessDefinitionId"
 		parameterType="java.lang.String" resultType="string">
-		select
-		ID
-		from
-		${prefix}_run_processinstance
-		where PROCESSDEFINITION_ID =
-		#{id,jdbcType=VARCHAR}
+		select ID
+		from ${prefix}_run_processinstance
+		where PROCESSDEFINITION_ID =#{id,jdbcType=VARCHAR}
+		<if test="${appId} != null and ${appId}!='00000000'">
+			AND TENANT_ID=${appId}
+		</if>
 	</select>
-
-
 
 
 	<select id="selectProcessInstanceByQueryCriteria"
@@ -106,8 +108,11 @@
 			RES.PROCESSDEFINITION_ID
 		</if>
 		<where>
+			<if test="${appId} != null and ${appId}!='00000000'">
+				RES.TENANT_ID=${appId}
+			</if>
 			<if test="processInstanceId != null">
-				RES.ID = #{processInstanceId}
+				and RES.ID = #{processInstanceId}
 			</if>
 			<if test="processDefinitionId != null">
 				AND RES.PROCESSDEFINITION_ID = #{processDefinitionId}
@@ -179,7 +184,7 @@
 		START_AUTHOR, ISSUSPENDED, PARENT_ID,
 		PARENT_TOKEN_ID,
 		UPDATE_TIME,
-		PROCESSLOCATION, INSTANCE_STATUS, ARCHIVE_TIME,REV_
+		PROCESSLOCATION, INSTANCE_STATUS, ARCHIVE_TIME,REV_,TENANT_ID
 	</sql>
 
 	<update id="updateProcessInstance" parameterType="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">
@@ -218,21 +223,27 @@
 		#{instanceStatus,jdbcType=VARCHAR},
 		ARCHIVE_TIME =
 		#{archiveTime,jdbcType=TIMESTAMP},
-		REV_ = #{revisionNext,jdbcType=INTEGER}
+		REV_ = #{revisionNext,jdbcType=INTEGER},
+		TENANT_ID=${appId}
 		where
 		ID = #{id,jdbcType=VARCHAR} AND  REV_ = #{revision,jdbcType=INTEGER}
 	</update>
 
 	<delete id="deleteProcessInstanceByProcessDefinitionId"
 		parameterType="java.lang.String">
-		DELETE FROM ${prefix}_RUN_PROCESSINSTANCE WHERE
-		PROCESSDEFINITION_ID =
-		#{processDefinitionId,jdbcType=VARCHAR}
+		DELETE FROM ${prefix}_RUN_PROCESSINSTANCE 
+		WHERE PROCESSDEFINITION_ID =#{processDefinitionId,jdbcType=VARCHAR}
+		<if test="${appId} != null and ${appId}!='00000000'">
+			AND TENANT_ID=${appId}
+		</if>
 	</delete>
 	<delete id="deleteProcessInstanceById" parameterType="java.lang.String">
 		DELETE FROM
-		${prefix}_RUN_PROCESSINSTANCE WHERE ID =
-		#{processInstanceId,jdbcType=VARCHAR}
+		${prefix}_RUN_PROCESSINSTANCE 
+		WHERE ID = #{processInstanceId,jdbcType=VARCHAR}
+		<if test="${appId} != null and ${appId}!='00000000'">
+			AND TENANT_ID=${appId}
+		</if>
 	</delete>
 
 </mapper>

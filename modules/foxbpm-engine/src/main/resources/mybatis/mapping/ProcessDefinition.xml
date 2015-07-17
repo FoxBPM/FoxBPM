@@ -1,135 +1,189 @@
 <?xml version="1.0" encoding="UTF-8" ?> 
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.foxbpm.engine.impl.entity.ProcessDefinitionEntity">
-<resultMap id="ProcessDefinitionMap" type="org.foxbpm.engine.impl.entity.ProcessDefinitionEntity">
-    <id column="PROCESS_ID" jdbcType="VARCHAR" property="id" />
-    <result column="PROCESS_KEY" jdbcType="VARCHAR" property="key" />
-    <result column="CATEGORY" jdbcType="VARCHAR" property="category" />
-    <result column="PROCESS_NAME" jdbcType="VARCHAR" property="name" />
-    <result column="VERSION" jdbcType="INTEGER" property="version" />
-    <result column="RESOURCE_NAME" jdbcType="VARCHAR" property="resourceName" />
-    <result column="DEPLOYMENT_ID" jdbcType="VARCHAR" property="deploymentId" />
-    <result column="DIAGRAM_RESOURCE_NAME" jdbcType="VARCHAR" property="diagramResourceName" />
-    <result column="RESOURCE_ID" jdbcType="VARCHAR" property="resourceId" />
-    <result column="START_FORM_KEY" jdbcType="VARCHAR" property="startFormUri" />
-    <result column="DEPLOY_TIME" jdbcType="TIMESTAMP" property="deploymentTime" />
-    <result column="REV_" property="revision" jdbcType="INTEGER" />
-  </resultMap>
-  
-   <insert id="insertProcessDefinition" parameterType="org.foxbpm.engine.impl.entity.ProcessDefinitionEntity">
-    insert into ${prefix}_def_processdefinition (PROCESS_ID, 
-      PROCESS_KEY, CATEGORY, PROCESS_NAME, 
-      VERSION, RESOURCE_NAME, DEPLOYMENT_ID, 
-      DIAGRAM_RESOURCE_NAME, RESOURCE_ID,START_FORM_KEY,
-      REV_
-      )
-    values (#{id,jdbcType=VARCHAR}, 
-      #{key,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{version,jdbcType=INTEGER}, #{resourceName,jdbcType=VARCHAR}, #{deploymentId,jdbcType=VARCHAR}, 
-      #{diagramResourceName,jdbcType=VARCHAR}, #{resourceId,jdbcType=VARCHAR}, #{startFormUri,jdbcType=VARCHAR},1
-     )
-  </insert>
-  
-   <select id="selectProcessDefinitionById" parameterType="java.lang.String" resultMap="ProcessDefinitionMap">
-    select 
-    *
-    from ${prefix}_def_processdefinition
-    where PROCESS_ID = #{processId,jdbcType=VARCHAR}
-  </select>
-  
-   <select id="selectLatestProcessDefinitionByKey" parameterType="java.lang.String" resultMap="ProcessDefinitionMap">
-   select * from ${prefix}_DEF_PROCESSDEFINITION 
-   where PROCESS_KEY = #{processKey,jdbcType=VARCHAR} and VERSION = (select max(VERSION) from ${prefix}_DEF_PROCESSDEFINITION where PROCESS_KEY = #{processKey,jdbcType=VARCHAR})
-  </select>
-  
-   <select id="selectProcessDefinitionByDeployIdAndKey" parameterType="map" resultMap="ProcessDefinitionMap">
-	   select * from ${prefix}_DEF_PROCESSDEFINITION 
-	   where DEPLOYMENT_ID = #{deploymentId,jdbcType=VARCHAR} AND PROCESS_KEY = #{key,jdbcType=VARCHAR}
-  </select>
-  
-  
-   <select id="selectProcessDefinitionByKeyAndVersion" parameterType="map" resultMap="ProcessDefinitionMap">
-	   select * from ${prefix}_DEF_PROCESSDEFINITION 
-	   where PROCESS_KEY = #{key,jdbcType=VARCHAR} AND VERSION = #{version,jdbcType=INTEGER}
-  </select>
-  
-   <select id="selectProcessDefinitionGroupByKey" parameterType="map" resultMap="ProcessDefinitionMap">
-	   select * from (select max(VERSION) as VERSION,PROCESS_KEY from ${prefix}_DEF_PROCESSDEFINITION GROUP BY PROCESS_KEY  ) t1 
-	   left join ${prefix}_DEF_PROCESSDEFINITION t2 on 
-	   t1.VERSION=t2.VERSION and t1.PROCESS_KEY=t2.PROCESS_KEY
-  </select>
-  
-  
-  
-  <select id="selectProcessDefinitionsByQueryCriteria" parameterType="org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl" resultMap="ProcessDefinitionMap">
-  	${limitBefore}
-    select RES.* ${limitBetween}
-    <include refid="selectProcessDefinitionsByQueryCriteriaSql"/>
-    <if test="orderBy != null">
-       ${orderBy}
-    </if>
-    ${limitAfter}
-  </select>
-  
-  <select id="selectProcessDefinitionCountByQueryCriteria" parameterType="org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl" resultType="long">
-    select count(PD.PROCESS_ID)
-    <include refid="selectProcessDefinitionsByQueryCriteriaSql"/>
-  </select>
-  
-  <sql id="selectProcessDefinitionsByQueryCriteriaSql">  
-    from ${prefix}_DEF_PROCESSDEFINITION RES LEFT JOIN ${prefix}_DEF_DEPLOYMENT DP ON RES.DEPLOYMENT_ID = DP.ID
-    <where>
-      <if test="id != null">
-        RES.PROCESS_ID = #{id}
-      </if>
-      <if test="category != null">
-        and RES.CATEGORY = #{category}
-      </if>
-      <if test="categoryLike != null">
-        and RES.CATEGORY like #{categoryLike}
-      </if>
-      <if test="name != null">
-        and RES.PROCESS_NAME = #{name}
-      </if>
-      <if test="nameLike != null">
-        and RES.PROCESS_NAME like #{nameLike}
-      </if>
-      <if test="key != null">
-        and RES.PROCESS_KEY = #{key}
-      </if>
-      <if test="keyLike != null">
-        and RES.PROCESS_KEY like #{keyLike}
-      </if>
-      <if test="version != null">
-        and RES.VERSION = #{version}
-      </if>
-      <if test="deploymentId != null">
-        and RES.DEPLOYMENT_ID = #{deploymentId}
-      </if>
-      <if test="latest">
-        and RES.VERSION = (select max(VERSION) from ${prefix}_DEF_PROCESSDEFINITION where KEY = RES.KEY)
-      </if>
-    </where>
-  </sql>
-  
-  <update id="updateProcessDefinition" parameterType="org.foxbpm.engine.impl.entity.ProcessDefinitionEntity">
-    update ${prefix}_def_processdefinition
-    set 
-      PROCESS_KEY = #{key,jdbcType=VARCHAR},
-      CATEGORY = #{category,jdbcType=VARCHAR},
-      PROCESS_NAME = #{name,jdbcType=VARCHAR},
-      VERSION = #{version,jdbcType=INTEGER},
-      RESOURCE_NAME = #{resourceName,jdbcType=VARCHAR},
-      DEPLOYMENT_ID = #{deploymentId,jdbcType=VARCHAR},
-      DIAGRAM_RESOURCE_NAME = #{diagramResourceName,jdbcType=VARCHAR},
-      REV_ = #{revisionNext,jdbcType=INTEGER}
-    where 
-      PROCESS_ID = #{id,jdbcType=VARCHAR} AND  REV_ = #{revision,jdbcType=INTEGER}
-  </update>
-  
-  <delete id="deleteProcessDefinitionById" parameterType="java.lang.String">
-  	DELETE FROM ${prefix}_DEF_PROCESSDEFINITION WHERE PROCESS_ID = #{id,jdbcType=VARCHAR}
-  </delete>
-  	
+	<resultMap id="ProcessDefinitionMap"
+		type="org.foxbpm.engine.impl.entity.ProcessDefinitionEntity">
+		<id column="PROCESS_ID" jdbcType="VARCHAR" property="id" />
+		<result column="PROCESS_KEY" jdbcType="VARCHAR" property="key" />
+		<result column="CATEGORY" jdbcType="VARCHAR" property="category" />
+		<result column="PROCESS_NAME" jdbcType="VARCHAR" property="name" />
+		<result column="VERSION" jdbcType="INTEGER" property="version" />
+		<result column="RESOURCE_NAME" jdbcType="VARCHAR" property="resourceName" />
+		<result column="DEPLOYMENT_ID" jdbcType="VARCHAR" property="deploymentId" />
+		<result column="DIAGRAM_RESOURCE_NAME" jdbcType="VARCHAR" property="diagramResourceName" />
+		<result column="RESOURCE_ID" jdbcType="VARCHAR" property="resourceId" />
+		<result column="START_FORM_KEY" jdbcType="VARCHAR" property="startFormUri" />
+		<result column="DEPLOY_TIME" jdbcType="TIMESTAMP" property="deploymentTime" />
+		<result column="REV_" property="revision" jdbcType="INTEGER" />
+		<result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<insert id="insertProcessDefinition"
+		parameterType="org.foxbpm.engine.impl.entity.ProcessDefinitionEntity">
+		insert into ${prefix}_def_processdefinition (PROCESS_ID,
+		PROCESS_KEY, CATEGORY, PROCESS_NAME,
+		VERSION, RESOURCE_NAME,
+		DEPLOYMENT_ID,
+		DIAGRAM_RESOURCE_NAME, RESOURCE_ID,START_FORM_KEY,
+		REV_,TENANT_ID
+		)
+		values (#{id,jdbcType=VARCHAR},
+		#{key,jdbcType=VARCHAR}, 
+		#{category,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{version,jdbcType=INTEGER},
+		#{resourceName,jdbcType=VARCHAR},
+		#{deploymentId,jdbcType=VARCHAR},
+		#{diagramResourceName,jdbcType=VARCHAR},
+		#{resourceId,jdbcType=VARCHAR},
+		#{startFormUri,jdbcType=VARCHAR},1,
+		#{tenantId,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<select id="selectProcessDefinitionById" parameterType="java.lang.String" resultMap="ProcessDefinitionMap">
+		select
+		*
+		from ${prefix}_def_processdefinition
+		where PROCESS_ID =#{processId,jdbcType=VARCHAR}
+		<if test="${appId} != null and ${appId}!='00000000'">
+			AND TENANT_ID=${appId}
+		</if>
+	</select>
+
+	<select id="selectLatestProcessDefinitionByKey" parameterType="java.lang.String" resultMap="ProcessDefinitionMap">
+		select 
+		* 
+		from ${prefix}_DEF_PROCESSDEFINITION
+		where PROCESS_KEY = #{processKey,jdbcType=VARCHAR} 
+		and VERSION = (select max(VERSION) from
+		${prefix}_DEF_PROCESSDEFINITION where PROCESS_KEY =#{processKey,jdbcType=VARCHAR})
+		<if test="${appId} != null and ${appId}!='00000000'">
+			AND TENANT_ID=${appId}
+		</if>
+	</select>
+
+	<select id="selectProcessDefinitionByDeployIdAndKey" parameterType="map" resultMap="ProcessDefinitionMap">
+		select * from
+		${prefix}_DEF_PROCESSDEFINITION
+		where DEPLOYMENT_ID = #{deploymentId,jdbcType=VARCHAR} 
+		AND PROCESS_KEY =#{key,jdbcType=VARCHAR}
+		<if test="${appId} != null and ${appId}!='00000000'">
+			AND TENANT_ID=${appId}
+		</if>
+	</select>
+
+
+	<select id="selectProcessDefinitionByKeyAndVersion" parameterType="map" resultMap="ProcessDefinitionMap">
+		select * from
+		${prefix}_DEF_PROCESSDEFINITION
+		where PROCESS_KEY = #{key,jdbcType=VARCHAR} 
+		AND VERSION =#{version,jdbcType=INTEGER}
+		<if test="${appId} != null and ${appId}!='00000000'">
+			AND TENANT_ID=${appId}
+		</if>
+	</select>
+
+	<select id="selectProcessDefinitionGroupByKey" parameterType="map" resultMap="ProcessDefinitionMap">
+		select * from 
+		(select max(VERSION) as VERSION,PROCESS_KEY from ${prefix}_DEF_PROCESSDEFINITION GROUP BY PROCESS_KEY ) t1
+		left join
+		${prefix}_DEF_PROCESSDEFINITION t2 
+		on t1.VERSION=t2.VERSION and t1.PROCESS_KEY=t2.PROCESS_KEY
+		WHERE 1=1
+		<if test="${appId} != null and ${appId}!='00000000'">
+			 AND t1.TENANT_ID=${appId}
+		</if>
+	</select>
+
+
+
+	<select id="selectProcessDefinitionsByQueryCriteria"
+		parameterType="org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl"
+		resultMap="ProcessDefinitionMap">
+		${limitBefore}
+		select RES.* ${limitBetween}
+		<include refid="selectProcessDefinitionsByQueryCriteriaSql" />
+		<if test="orderBy != null">
+			${orderBy}
+		</if>
+		${limitAfter}
+	</select>
+
+	<select id="selectProcessDefinitionCountByQueryCriteria"
+		parameterType="org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl"
+		resultType="long">
+		select count(PD.PROCESS_ID)
+		<include refid="selectProcessDefinitionsByQueryCriteriaSql" />
+	</select>
+
+	<sql id="selectProcessDefinitionsByQueryCriteriaSql">
+		from ${prefix}_DEF_PROCESSDEFINITION RES LEFT JOIN
+		${prefix}_DEF_DEPLOYMENT DP ON RES.DEPLOYMENT_ID = DP.ID
+		<where>
+			<if test="id != null">
+				RES.PROCESS_ID = #{id}
+			</if>
+			<if test="category != null">
+				and RES.CATEGORY = #{category}
+			</if>
+			<if test="categoryLike != null">
+				and RES.CATEGORY like #{categoryLike}
+			</if>
+			<if test="name != null">
+				and RES.PROCESS_NAME = #{name}
+			</if>
+			<if test="nameLike != null">
+				and RES.PROCESS_NAME like #{nameLike}
+			</if>
+			<if test="key != null">
+				and RES.PROCESS_KEY = #{key}
+			</if>
+			<if test="keyLike != null">
+				and RES.PROCESS_KEY like #{keyLike}
+			</if>
+			<if test="version != null">
+				and RES.VERSION = #{version}
+			</if>
+			<if test="deploymentId != null">
+				and RES.DEPLOYMENT_ID = #{deploymentId}
+			</if>
+			<if test="latest">
+				and RES.VERSION = (select max(VERSION) from
+				${prefix}_DEF_PROCESSDEFINITION where KEY = RES.KEY)
+			</if>
+			<if test="${appId} != null and ${appId}!='00000000'">
+			 AND RES.TENANT_ID=${appId}
+		</if>
+		</where>
+	</sql>
+
+	<update id="updateProcessDefinition"
+		parameterType="org.foxbpm.engine.impl.entity.ProcessDefinitionEntity">
+		update ${prefix}_def_processdefinition
+		set
+		PROCESS_KEY =#{key,jdbcType=VARCHAR},
+		CATEGORY = #{category,jdbcType=VARCHAR},
+		PROCESS_NAME = #{name,jdbcType=VARCHAR},
+		VERSION =#{version,jdbcType=INTEGER},
+		RESOURCE_NAME =#{resourceName,jdbcType=VARCHAR},
+		DEPLOYMENT_ID =#{deploymentId,jdbcType=VARCHAR},
+		DIAGRAM_RESOURCE_NAME =#{diagramResourceName,jdbcType=VARCHAR},
+		REV_ =#{revisionNext,jdbcType=INTEGER}
+		where
+		PROCESS_ID =#{id,jdbcType=VARCHAR} AND REV_ = #{revision,jdbcType=INTEGER}
+		<if test="${appId} != null and ${appId}!='00000000'">
+			AND TENANT_ID=${appId}
+		</if>
+	</update>
+
+	<delete id="deleteProcessDefinitionById" parameterType="java.lang.String">
+		DELETE FROM ${prefix}_DEF_PROCESSDEFINITION 
+		WHERE PROCESS_ID =#{id,jdbcType=VARCHAR}
+		<if test="${appId} != null and ${appId}!='00000000'">
+			AND TENANT_ID=${appId}
+		</if>
+	</delete>
+
 </mapper>
