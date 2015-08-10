@@ -30,7 +30,9 @@ import org.foxbpm.engine.repository.ProcessDefinitionQuery;
 /**
  * @author kenshin
  */
-public class ProcessDefinitionQueryImpl extends AbstractQuery<ProcessDefinitionQuery, ProcessDefinition> implements ProcessDefinitionQuery {
+public class ProcessDefinitionQueryImpl extends
+		AbstractQuery<ProcessDefinitionQuery, ProcessDefinition> implements
+		ProcessDefinitionQuery {
 
 	private static final long serialVersionUID = 1L;
 	protected String id;
@@ -42,6 +44,7 @@ public class ProcessDefinitionQueryImpl extends AbstractQuery<ProcessDefinitionQ
 	protected String key;
 	protected String keyLike;
 	protected Integer version;
+	protected String tenantId;
 	protected boolean latest = false;
 	protected String processDefinitionId;
 
@@ -56,7 +59,8 @@ public class ProcessDefinitionQueryImpl extends AbstractQuery<ProcessDefinitionQ
 		super(commandExecutor);
 	}
 
-	public ProcessDefinitionQueryImpl processDefinitionId(String processDefinitionId) {
+	public ProcessDefinitionQueryImpl processDefinitionId(
+			String processDefinitionId) {
 		this.id = processDefinitionId;
 		return this;
 	}
@@ -69,7 +73,8 @@ public class ProcessDefinitionQueryImpl extends AbstractQuery<ProcessDefinitionQ
 		return this;
 	}
 
-	public ProcessDefinitionQueryImpl processDefinitionCategoryLike(String categoryLike) {
+	public ProcessDefinitionQueryImpl processDefinitionCategoryLike(
+			String categoryLike) {
 		if (categoryLike == null) {
 			return this;
 		}
@@ -125,6 +130,15 @@ public class ProcessDefinitionQueryImpl extends AbstractQuery<ProcessDefinitionQ
 		return this;
 	}
 
+	@Override
+	public ProcessDefinitionQuery processTenantId(String tenantId) {
+		if (tenantId == null) {
+			return this;
+		}
+		this.tenantId = tenantId;
+		return this;
+	}
+
 	public ProcessDefinitionQueryImpl latestVersion() {
 		this.latest = true;
 		return this;
@@ -160,20 +174,25 @@ public class ProcessDefinitionQueryImpl extends AbstractQuery<ProcessDefinitionQ
 
 	public long executeCount(CommandContext commandContext) {
 		checkQueryOk();
-		return commandContext.getProcessDefinitionManager().findProcessDefinitionCountByQueryCriteria(this);
+		return commandContext.getProcessDefinitionManager()
+				.findProcessDefinitionCountByQueryCriteria(this);
 	}
 
 	public List<ProcessDefinition> executeList(CommandContext commandContext) {
 		checkQueryOk();
-		return commandContext.getProcessDefinitionManager().findProcessDefinitionsByQueryCriteria(this);
+		return commandContext.getProcessDefinitionManager()
+				.findProcessDefinitionsByQueryCriteria(this);
 	}
 
 	public void checkQueryOk() {
 		super.checkQueryOk();
 
 		// latest() makes only sense when used with key() or keyLike()
-		if (latest && ((id != null) || (name != null) || (nameLike != null) || (version != null) || (deploymentId != null))) {
-			throw new FoxBPMException("Calling latest() can only be used in combination with key(String) and keyLike(String)");
+		if (latest
+				&& ((id != null) || (name != null) || (nameLike != null)
+						|| (version != null) || (deploymentId != null))) {
+			throw new FoxBPMException(
+					"Calling latest() can only be used in combination with key(String) and keyLike(String)");
 		}
 	}
 
@@ -206,6 +225,10 @@ public class ProcessDefinitionQueryImpl extends AbstractQuery<ProcessDefinitionQ
 	public Integer getVersion() {
 		return version;
 	}
+	
+	public String getTenantId(){
+		return tenantId;
+	}
 
 	public boolean isLatest() {
 		return latest;
@@ -218,10 +241,11 @@ public class ProcessDefinitionQueryImpl extends AbstractQuery<ProcessDefinitionQ
 	public String getCategoryLike() {
 		return categoryLike;
 	}
-	
+
 	@Override
 	public String getOrderBy() {
 		// TODO Auto-generated method stub
 		return "RES.PROCESS_ID";
 	}
+
 }
