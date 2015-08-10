@@ -55,6 +55,10 @@ public interface ProcessDefinitionQuery extends Query<ProcessDefinitionQuery, Pr
 	/** 根据流程版本号查询 */
 
 	ProcessDefinitionQuery processDefinitionVersion(Integer processDefinitionVersion);
+	
+	/** 根据多租户编号查询 */
+
+	ProcessDefinitionQuery processTenantId(String tenantId);
 
 	// ordering ////////////////////////////////////////////////////////////
 	/** 根据分类排序  */

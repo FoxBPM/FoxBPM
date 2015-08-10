@@ -191,4 +191,10 @@ public interface Task{
 	 * @return
 	 */
 	String getProcessInitiator();
+	
+	/**
+	 * 获取租户编号
+	 * @return
+	 */
+	String getTenantId();
 }

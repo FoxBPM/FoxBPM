@@ -59,9 +59,6 @@
 		where PROCESS_KEY = #{processKey,jdbcType=VARCHAR} 
 		and VERSION = (select max(VERSION) from
 		${prefix}_DEF_PROCESSDEFINITION where PROCESS_KEY =#{processKey,jdbcType=VARCHAR})
-		<if test="${appId} != null and ${appId}!='00000000'">
-			AND TENANT_ID=${appId}
-		</if>
 	</select>
 
 	<select id="selectProcessDefinitionByDeployIdAndKey" parameterType="map" resultMap="ProcessDefinitionMap">
@@ -153,9 +150,9 @@
 				and RES.VERSION = (select max(VERSION) from
 				${prefix}_DEF_PROCESSDEFINITION where KEY = RES.KEY)
 			</if>
-			<if test="${appId} != null and ${appId}!='00000000'">
-			 AND RES.TENANT_ID=${appId}
-		</if>
+			<if test="tenantId != null">
+				and RES.TENANT_ID=${tenantId}
+			</if>
 		</where>
 	</sql>
 
@@ -173,17 +170,11 @@
 		REV_ =#{revisionNext,jdbcType=INTEGER}
 		where
 		PROCESS_ID =#{id,jdbcType=VARCHAR} AND REV_ = #{revision,jdbcType=INTEGER}
-		<if test="${appId} != null and ${appId}!='00000000'">
-			AND TENANT_ID=${appId}
-		</if>
 	</update>
 
 	<delete id="deleteProcessDefinitionById" parameterType="java.lang.String">
 		DELETE FROM ${prefix}_DEF_PROCESSDEFINITION 
 		WHERE PROCESS_ID =#{id,jdbcType=VARCHAR}
-		<if test="${appId} != null and ${appId}!='00000000'">
-			AND TENANT_ID=${appId}
-		</if>
 	</delete>
 
 </mapper>

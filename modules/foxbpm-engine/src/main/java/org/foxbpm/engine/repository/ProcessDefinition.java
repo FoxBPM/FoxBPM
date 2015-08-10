@@ -60,6 +60,12 @@ public interface ProcessDefinition {
 	 * @return
 	 */
 	int getVersion();
+	
+	/**
+	 * 获取流程多租户编号
+	 * @return
+	 */
+	String getTenantId();
 
 	/**
 	 * 获取流程定义文件名称，结合deploymentId可以查出对应的Stream流文件
