@@ -76,8 +76,11 @@ public class StartAndSubmitTaskCmd extends AbstractExpandTaskCmd<StartAndSubmitT
 			TaskDefinition taskDefinition=((ProcessDefinitionEntity)processInstance.getProcessDefinition()).getSubTaskDefinition();
 			if(taskDefinition!=null){
 				TaskCommand taskCommand = taskDefinition.getTaskCommand(taskCommandId);
-				// 任务命令的执行表达式变量
-				taskCommand.getExpressionValue(executionContext);
+				if (taskCommand!=null) {
+					// 任务命令的执行表达式变量
+					taskCommand.getExpressionValue(executionContext);
+				}
+
 			}else{
 				throw ExceptionUtil.getException("10502002");
 			}
