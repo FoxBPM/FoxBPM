@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<connector:ConnectorDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:connector="http://www.foxbpm.org/connector" id="SelectWiseduRole" name="选择金智用户角色" note="金智用户角色选择器" categoryId="71e8d50f-5d55-4b03-88b0-dbe37bc8fedf" icon="SelectWiseduRole.png">
+  <input id="wiseduRole" type="java.lang.String" mandatory="Mandatory" defaultValue="" isExecute="true"/>
+  <page id="SelectWiseduRolePage" name="设置金智用户角色页" note="设置金智用户角色页">
+    <widget xsi:type="connector:Text" id="Widget_0" name="角色编号" inputId="wiseduRole">
+      <widgetExpression expressionValue=""/>
+    </widget>
+  </page>
+  <definitionImpl className="SelectWiseduRole" packageName="org.foxbpm.connector.actorconnector.SelectWiseduRole"/>
+</connector:ConnectorDefinition>
