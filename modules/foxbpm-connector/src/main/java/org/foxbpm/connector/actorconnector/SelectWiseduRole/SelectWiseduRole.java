@@ -34,11 +34,10 @@ public class SelectWiseduRole extends ActorConnectorHandler {
 
 	public void assign(DelegateTask task) throws Exception {
 		if (wiseduRole == null) {
-			LOG.warn("金智用戶角色选择器角色编号表达式为空 ! 节点编号：" + task.getNodeId());
+			LOG.error("金智用戶角色选择器角色编号表达式为空 ! 节点编号：" + task.getNodeId());
 			return;
 		}
 
-		// TODO 当前应用编号是否能获取到
 		List<String> appRoleGroups = getAppRoleGroups(Context.getAppId(),
 				wiseduRole);
 		if (appRoleGroups != null && appRoleGroups.size() > 0) {
@@ -80,7 +79,7 @@ public class SelectWiseduRole extends ActorConnectorHandler {
 			}
 		}
 		// 设置返回值类型
-		call.setReturnType(XMLType.XSD_STRING); // 返回值类型：String
+		call.setReturnType(XMLType.XSD_STRING); 
 		@SuppressWarnings("unchecked")
 		List<String> groups = (List<String>) call.invoke(new Object[] { appId,
 				roleId });
