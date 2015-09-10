@@ -264,9 +264,9 @@ public class TaskManager extends AbstractManager {
 			taskPE.setInitiator(taskEntity.getProcessInitiator());
 			taskPE.setAssignee(getTaskAssignee(taskEntity));
 			taskPE.setTaskComment(taskEntity.getTaskComment());
-			taskPE.setCreateTime(taskEntity.getStartTime());
+			taskPE.setCreateTime(taskEntity.getCreateTime());
 			taskPE.setEndTime(taskEntity.getEndTime());
-
+			taskPE.setCommandType(taskEntity.getCommandType());
 			taskPEs.add(taskPE);
 		}
 		return taskPEs;
