@@ -77,6 +77,7 @@ public class RollBackAssigneeCmd extends AbstractExpandTaskCmd<RollBackAssigneeC
 		if(isMutilInstance(flowNode)){
 			throw ExceptionUtil.getException("10501004",rollBackNodeId);
 		}
+		task.setCommandType("rollback");
 		/** 完成任务,并将流程推向指定的节点,并指定处理者 */
 		task.complete(flowNode,rollBackAssignee);
 		

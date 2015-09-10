@@ -50,8 +50,9 @@ public class RollBackTaskDesignationAssigneeCmd extends AbstractExpandTaskCmd<Ro
 		/** 获取流程内容执行器 */
 		FlowNodeExecutionContext executionContext = getExecutionContext(task);
 		/** 任务命令的执行表达式变量 */
-		taskCommand.getExpressionValue(executionContext);
-
+		if(taskCommand != null){
+			taskCommand.getExpressionValue(executionContext);
+		}
 		/** 获取执行任务命令参数 */
 		CommandParam commandParam = taskCommand.getCommandParam(RollBackTaskDesignationResetCommand.EXECUTEPARAM_ROLLBACK_NODEID);
 		/** 从后台配置中获取需要退回的节点 */
