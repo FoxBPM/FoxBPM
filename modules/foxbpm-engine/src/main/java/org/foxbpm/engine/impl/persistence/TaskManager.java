@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -35,6 +36,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.task.TaskQueryImpl;
 import org.foxbpm.engine.impl.util.StringUtil;
@@ -194,7 +196,7 @@ public class TaskManager extends AbstractManager {
 		HttpClient httpClient = HttpClients.createDefault();
 		// 将当前的流程数据推送到哪个应用，由一张映射表来维护
 		HttpPost httpPost = new HttpPost(
-				"http://127.0.0.1:8080/amp-fdemo/task-receive-demo");
+				"http://localhost:8080/amp-fdemo/task-receive-demo");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		try {
 			params.add(new BasicNameValuePair("tasks", resourcesToJson(
@@ -251,20 +253,50 @@ public class TaskManager extends AbstractManager {
 			TaskPE taskPE = new TaskPE();
 			taskPE.setProcessInstanceId(taskEntity.getProcessInstanceId());
 			taskPE.setProcessDefinitionKey(taskEntity.getProcessDefinitionKey());
+			taskPE.setProcessDefinitionId(taskEntity.getProcessDefinitionId());
 			taskPE.setBizKey(taskEntity.getBizKey());
 			taskPE.setTaskId(taskEntity.getId());
-			taskPE.setTaskName(taskEntity.getName());
+			taskPE.setTaskSubject(taskEntity.getSubject());
 			taskPE.setNodeId(taskEntity.getNodeId());
 			taskPE.setNodeName(taskEntity.getNodeName());
-			taskPE.setViewForm(taskEntity.getFormUriView());
-			taskPE.setOperateForm(taskEntity.getFormUri());
-			taskPE.setProcessors(taskEntity.getAssignee());
-			// taskPE.setStartAuthor(taskEntity.get);
+			taskPE.setFormUri(taskEntity.getFormUri());
+			taskPE.setFormUriView(taskEntity.getFormUriView());
+			taskPE.setInitiator(taskEntity.getProcessInitiator());
+			taskPE.setAssignee(getTaskAssignee(taskEntity));
+			taskPE.setTaskComment(taskEntity.getTaskComment());
 			taskPE.setCreateTime(taskEntity.getStartTime());
 			taskPE.setEndTime(taskEntity.getEndTime());
 
 			taskPEs.add(taskPE);
 		}
 		return taskPEs;
+	}
+
+	/**
+	 * 获取任务处理人
+	 * 
+	 * @param taskEntity
+	 * @return user:001|group:009|user:007|group:876|...
+	 */
+	private String getTaskAssignee(TaskEntity taskEntity) {
+		String taskAssignee = null;
+
+		if (StringUtils.isNotEmpty(taskEntity.getAssignee())) {
+			taskAssignee = "user:" + taskEntity.getAssignee();
+		} else {
+			List<String> taskAssignees = new ArrayList<String>();
+			for (IdentityLinkEntity identityLinkEntity : taskEntity
+					.getIdentityLinks()) {
+				String groupId = identityLinkEntity.getGroupId();
+				if (StringUtils.isNotEmpty(groupId) && "good".equals(groupId)) {
+					taskAssignees.add("group:" + groupId);
+				} else {
+					taskAssignees.add("user:" + identityLinkEntity.getUserId());
+				}
+			}
+			taskAssignee = StringUtils.join(taskAssignees, "|");
+		}
+
+		return taskAssignee;
 	}
 }
