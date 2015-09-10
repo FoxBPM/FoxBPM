@@ -283,7 +283,8 @@ public final class SVGUtils {
 	public final static int getTextWidth(Font font, String text) {
 		JLabel label = new JLabel(text);
 		label.setFont(font);
-		FontMetrics metrics = label.getFontMetrics(label.getFont());
+//		Font font = new Font("", style, 12)
+		FontMetrics metrics = label.getFontMetrics(new Font("Times New Roman",Font.ITALIC,18));
 		return metrics.stringWidth(label.getText());
 	}
 	

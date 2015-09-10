@@ -47,6 +47,7 @@ public class CompleteTaskCmd extends NeedsActiveTaskCmd<Void> {
 			task.setProcessInstanceVariables(persistenceVariables);
 		}
 		task.setAssignee(Authentication.getAuthenticatedUserId());
+		task.setCommandType("complete");
 		task.complete();
 		return null;
 	}
