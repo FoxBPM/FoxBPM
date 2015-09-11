@@ -79,7 +79,9 @@ public class RollBackAssigneeCmd extends AbstractExpandTaskCmd<RollBackAssigneeC
 		}
 		task.setCommandType("rollback");
 		/** 完成任务,并将流程推向指定的节点,并指定处理者 */
-		task.complete(flowNode,rollBackAssignee);
+		
+		TaskEntity lastEndTask=commandContext.getTaskManager().findLastEndTaskByProcessInstanceIdAndNodeId(task.getProcessInstanceId(), rollBackNodeId);
+		task.complete(flowNode,lastEndTask.getAssignee());
 		
 		return null;
 
