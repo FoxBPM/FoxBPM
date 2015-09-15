@@ -21,10 +21,13 @@ package org.foxbpm.engine.impl.persistence;
 import java.util.List;
 
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.event.EventListener;
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.runtime.ProcessInstanceQueryImpl;
+import org.foxbpm.engine.observe.IObservable;
+import org.foxbpm.engine.observe.IObserver;
 import org.foxbpm.engine.runtime.ProcessInstance;
-import org.foxbpm.kernel.event.KernelEvent;
 
 /**
  * 流程实例管理器
@@ -32,36 +35,41 @@ import org.foxbpm.kernel.event.KernelEvent;
  * @author kenshin
  * 
  */
-public class ProcessInstanceManager extends AbstractManager {
-	
+public class ProcessInstanceManager extends AbstractManager implements
+		IObservable {
+
 	public ProcessInstanceEntity findProcessInstanceById(String id) {
-		return selectById(ProcessInstanceEntity.class , id);
+		return selectById(ProcessInstanceEntity.class, id);
 	}
-	
+
 	public long findProcessInstanceCountByQueryCriteria(
-	    ProcessInstanceQueryImpl processsInstanceQuery) {
-		return (Long) selectOne("selectProcessInstanceCountByQueryCriteria", processsInstanceQuery);
+			ProcessInstanceQueryImpl processsInstanceQuery) {
+		return (Long) selectOne("selectProcessInstanceCountByQueryCriteria",
+				processsInstanceQuery);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<ProcessInstance> findProcessInstanceByQueryCriteria(
-	    ProcessInstanceQueryImpl processInstaceQuery) {
-		return (List<ProcessInstance>) selectList("selectProcessInstanceByQueryCriteria", processInstaceQuery);
+			ProcessInstanceQueryImpl processInstaceQuery) {
+		return (List<ProcessInstance>) selectList(
+				"selectProcessInstanceByQueryCriteria", processInstaceQuery);
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public void deleteProcessInstancesByProcessDefinition(String processDefinitionId,
-	    boolean cascade) {
+	public void deleteProcessInstancesByProcessDefinition(
+			String processDefinitionId, boolean cascade) {
 		// 删除流程实例
 		deleteProcessInstanceByProcessDefinitionId(processDefinitionId);
 		if (cascade) {
-			List<String> processInstanceIds = (List<String>) selectList("selectProcessInstanceIdsByProcessDefinitionId", processDefinitionId);
+			List<String> processInstanceIds = (List<String>) selectList(
+					"selectProcessInstanceIdsByProcessDefinitionId",
+					processDefinitionId);
 			for (String processInstanceId : processInstanceIds) {
 				cascadeDelete(processInstanceId);
 			}
 		}
 	}
-	
+
 	private void cascadeDelete(String processInstanceId) {
 		TokenManager tokenManager = getTokenManager();
 		TaskManager taskManager = getTaskManager();
@@ -73,22 +81,25 @@ public class ProcessInstanceManager extends AbstractManager {
 		// 删除变量
 		variableManager.deleteVariableByProcessInstanceId(processInstanceId);
 		// 删除流程实例所关联的运行轨迹
-		getRunningTrackManager().deleteRunningTrackByProcessInstanceId(processInstanceId);
-		
+		getRunningTrackManager().deleteRunningTrackByProcessInstanceId(
+				processInstanceId);
+
 		// 删除流程实例所关联的调度器
 		getSchedulerManager().deleteJobByInstanceId(processInstanceId);
-		
+
 	}
-	
+
 	/**
 	 * 根据processDefinitionId删除流程实例 只删除流程实例，不级联其他数据
 	 * 
 	 * @param processInstanceId
 	 */
-	private void deleteProcessInstanceByProcessDefinitionId(String processDefinitionId) {
-		delete("deleteProcessInstanceByProcessDefinitionId", processDefinitionId);
+	private void deleteProcessInstanceByProcessDefinitionId(
+			String processDefinitionId) {
+		delete("deleteProcessInstanceByProcessDefinitionId",
+				processDefinitionId);
 	}
-	
+
 	/**
 	 * 根据流程实例号删除流程实例
 	 * 
@@ -98,20 +109,35 @@ public class ProcessInstanceManager extends AbstractManager {
 		delete("deleteProcessInstanceById", processInstanceId);
 		cascadeDelete(processInstanceId);
 	}
-	
+
 	@Override
 	public void beforeFlush() {
 		removeUnnecessaryOperations();
-		for(PersistentObject obj : insertedObjects){
-			ProcessInstanceEntity processInstanceEntity = (ProcessInstanceEntity)obj;
-			processInstanceEntity.getRootToken().fireEvent(KernelEvent.BEFORE_PROCESS_SAVE);
-		}
-		List<PersistentObject> updateObjects = getUpdatedObjects();
-		for(PersistentObject obj : updateObjects){
-			ProcessInstanceEntity processInstanceEntity = (ProcessInstanceEntity)obj;
-			processInstanceEntity.getRootToken().fireEvent(KernelEvent.BEFORE_PROCESS_SAVE);
-		}
-		
+		notifyObservers(null);
 	}
-	
+
+	@Override
+	public void notifyObservers(Object arg) {
+		// 获取自定义的任务监听器列表
+		List<EventListener> eventListeners = Context
+				.getProcessEngineConfiguration().getEventMapListeners()
+				.get("before-process-save");
+		for (EventListener eventListener : eventListeners) {
+			try {
+				IObserver observer = (IObserver) Class.forName(
+						eventListener.getListenerClass()).newInstance();
+				observer.update(this, arg);
+			} catch (Exception e) {
+				log.error("加载监听器类{}时出错：{}", eventListener.getListenerClass(),
+						e.getMessage());
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	public List<PersistentObject> getInsertedObjects() {
+		return insertedObjects;
+	}
+
 }

@@ -24,137 +24,177 @@ import java.util.Map;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.foxbpm.engine.Constant;
+import org.foxbpm.engine.db.PersistentObject;
 import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
-import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
+import org.foxbpm.engine.impl.persistence.ProcessInstanceManager;
 import org.foxbpm.engine.impl.util.StringUtil;
-import org.foxbpm.kernel.event.KernelListener;
+import org.foxbpm.engine.observe.IObservable;
+import org.foxbpm.engine.observe.IObserver;
 import org.foxbpm.kernel.process.KernelFlowNode;
-import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.foxbpm.kernel.runtime.impl.KernelTokenImpl;
 
 /**
- * <p>根据流程实例，计算出流程的当前位置信息</p>
- * <p>当前位置包括任务所在位置和令牌所在位置</p>
- * <p>任务位置会有处理人信息，如“人工任务”</p>
- * <p>令牌位置只会有节点信息，因为节点上不一定会创建任务，如“捕获节点”</p>
- * <p>此处计算的信息，都是json结构化的数据，用户可以拿到此数据之后进行解析，显示自己需要的格式。</p>
+ * <p>
+ * 根据流程实例，计算出流程的当前位置信息
+ * </p>
+ * <p>
+ * 当前位置包括任务所在位置和令牌所在位置
+ * </p>
+ * <p>
+ * 任务位置会有处理人信息，如“人工任务”
+ * </p>
+ * <p>
+ * 令牌位置只会有节点信息，因为节点上不一定会创建任务，如“捕获节点”
+ * </p>
+ * <p>
+ * 此处计算的信息，都是json结构化的数据，用户可以拿到此数据之后进行解析，显示自己需要的格式。
+ * </p>
+ * 
  * @author ych
  *
  */
-public class UpdateLocationListener  implements KernelListener {
+public class UpdateLocationListener implements IObserver {
+
+	@Override
+	public void update(IObservable observable, Object arg) {
+		List<PersistentObject> processInstances = new ArrayList<PersistentObject>();
+		ProcessInstanceManager processInstanceManager = (ProcessInstanceManager) observable;
+		if (processInstanceManager.getInsertedObjects() != null
+				&& processInstanceManager.getInsertedObjects().size() > 0) {
+			processInstances
+					.addAll(processInstanceManager.getInsertedObjects());
+		}
+		if (processInstanceManager.getUpdatedObjects() != null
+				&& processInstanceManager.getUpdatedObjects().size() > 0) {
+			processInstances.addAll(processInstanceManager.getUpdatedObjects());
+		}
+
+		updateProcessLocation(processInstances);
+	}
 
 	/**
+	 * 更新流程节点位置信息
 	 * 
+	 * @param processInstances
+	 *            流程实例集合
 	 */
-	private static final long serialVersionUID = 1L;
+	public void updateProcessLocation(List<PersistentObject> processInstances) {
+		if (processInstances != null && processInstances.size() > 0) {
+			for (PersistentObject persistentObject : processInstances) {
+				ProcessInstanceEntity processInstance = (ProcessInstanceEntity) persistentObject;
+				if (processInstance.isLocationChange()) {
+					Map<String, Object> location = getProcessLocation(processInstance);
+					ObjectMapper objectMapper = new ObjectMapper();
+					try {
+						processInstance.setProcessLocation(objectMapper
+								.writeValueAsString(location));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 
-	public void notify(ListenerExecutionContext executionContext) throws Exception {
-		TokenEntity token = (TokenEntity)executionContext;
-		ProcessInstanceEntity processInstance = token.getProcessInstance();
-		if(processInstance != null){
-			if(processInstance.isLocationChange()){
-				Map<String,Object> location = getProcessLocation(processInstance);
-				ObjectMapper objectMapper = new ObjectMapper();
-				String l = objectMapper.writeValueAsString(location);
-				processInstance.setProcessLocation(l);
+				}
 			}
 		}
+
 	}
-	
-	private Map<String,Object> getProcessLocation(ProcessInstanceEntity processInstance){
-		Map<String,Object> resultMap = new HashMap<String, Object>();
-		
-		resultMap.put("processStatus",processInstance.getInstanceStatus());
+
+	private Map<String, Object> getProcessLocation(
+			ProcessInstanceEntity processInstance) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+
+		resultMap.put("processStatus", processInstance.getInstanceStatus());
 		if (processInstance.isEnd()) {
 			return resultMap;
 		}
-		
+
 		List<TaskEntity> tasks = processInstance.getTasks();
 		List<KernelTokenImpl> tokens = processInstance.getTokens();
-		List<Map<String,Object>> nodes = new ArrayList<Map<String,Object>>();
+		List<Map<String, Object>> nodes = new ArrayList<Map<String, Object>>();
 		resultMap.put("nodes", nodes);
 		boolean isRootTokenEnable = true;
-		
-		for(TaskEntity tmpTask : tasks){
-			if(tmpTask.hasEnded()){
+
+		for (TaskEntity tmpTask : tasks) {
+			if (tmpTask.hasEnded()) {
 				continue;
 			}
-			
+
 			String nodeId = tmpTask.getNodeId();
-			//删除重复的token
-			List<KernelTokenImpl> tokenList = new ArrayList<KernelTokenImpl>(tokens);
-			for(int i=0; i<tokenList.size();i++){
+			// 删除重复的token
+			List<KernelTokenImpl> tokenList = new ArrayList<KernelTokenImpl>(
+					tokens);
+			for (int i = 0; i < tokenList.size(); i++) {
 				KernelTokenImpl tmpToken = tokenList.get(i);
-				//如果存在子令牌，则不计算主令牌的位置。
-				if(!tmpToken.isRoot()){
-					isRootTokenEnable =false;
+				// 如果存在子令牌，则不计算主令牌的位置。
+				if (!tmpToken.isRoot()) {
+					isRootTokenEnable = false;
 				}
-				if(tmpToken.getFlowNode().getId().equals(nodeId)){
+				if (tmpToken.getFlowNode().getId().equals(nodeId)) {
 					tokens.remove(i);
-					
+
 				}
 			}
-			
-			Map<String,Object> nodeMap = new HashMap<String, Object>();
+
+			Map<String, Object> nodeMap = new HashMap<String, Object>();
 			nodes.add(nodeMap);
 			nodeMap.put("nodeId", nodeId);
 			nodeMap.put("nodeName", tmpTask.getNodeName());
 			String assignee = tmpTask.getAssignee();
-			
-			
-			List<Map<String,Object>> users = new ArrayList<Map<String,Object>>();
+
+			List<Map<String, Object>> users = new ArrayList<Map<String, Object>>();
 			nodeMap.put("users", users);
-			if(StringUtil.isNotEmpty(assignee)){
-				//UserEntity user = Authentication.selectUserByUserId(assignee);
-				Map<String,Object> tmpUser = new HashMap<String, Object>();
-				//if(user == null){
-					tmpUser.put("userId", assignee);
-					tmpUser.put("userName", "未知用户："+assignee);
-					
-				//}else{
-				//	tmpUser.put("userId", user.getUserId());
-				//	tmpUser.put("userName", user.getUserName());
-				//}
+			if (StringUtil.isNotEmpty(assignee)) {
+				// UserEntity user =
+				// Authentication.selectUserByUserId(assignee);
+				Map<String, Object> tmpUser = new HashMap<String, Object>();
+				// if(user == null){
+				tmpUser.put("userId", assignee);
+				tmpUser.put("userName", "未知用户：" + assignee);
+
+				// }else{
+				// tmpUser.put("userId", user.getUserId());
+				// tmpUser.put("userName", user.getUserName());
+				// }
 				users.add(tmpUser);
 				continue;
 			}
-			
-			Map<String,List<String>> groups = new HashMap<String,List<String>>();
+
+			Map<String, List<String>> groups = new HashMap<String, List<String>>();
 			nodeMap.put("groups", groups);
-			List<IdentityLinkEntity> identityLinkList = tmpTask.getIdentityLinks();
+			List<IdentityLinkEntity> identityLinkList = tmpTask
+					.getIdentityLinks();
 			for (IdentityLinkEntity identityLink : identityLinkList) {
 				String userId = identityLink.getUserId();
 				if (userId == null) {
 					String groupTypeId = identityLink.getGroupType();
 					String groupId = identityLink.getGroupId();
-					//GroupEntity group = Authentication.findGroupById(groupId, groupTypeId);
-					//if (group == null) {
-					//	continue;
-					//}
-						
-					if(groups.get(groupTypeId)!=null){
+					// GroupEntity group = Authentication.findGroupById(groupId,
+					// groupTypeId);
+					// if (group == null) {
+					// continue;
+					// }
+
+					if (groups.get(groupTypeId) != null) {
 						groups.get(groupTypeId).add(groupId);
-					}
-					else{
-						List<String> groupTos=new ArrayList<String>();
+					} else {
+						List<String> groupTos = new ArrayList<String>();
 						groupTos.add(groupId);
 						groups.put(groupTypeId, groupTos);
 					}
-					
+
 				} else {
-					
-					Map<String,Object> tmpUser = new HashMap<String, Object>();
-					UserEntity user=null;
+
+					Map<String, Object> tmpUser = new HashMap<String, Object>();
+					UserEntity user = null;
 					if (userId.equals(Constant.FOXBPM_ALL_USER)) {
-						user=new UserEntity(Constant.FOXBPM_ALL_USER, "所有人");
+						user = new UserEntity(Constant.FOXBPM_ALL_USER, "所有人");
 					} else {
-						user= Authentication.selectUserByUserId(userId);
+						user = Authentication.selectUserByUserId(userId);
 					}
-					if(user!=null){
+					if (user != null) {
 						tmpUser.put("userId", user.getUserId());
 						tmpUser.put("userName", user.getUserName());
 						users.add(tmpUser);
@@ -162,22 +202,22 @@ public class UpdateLocationListener  implements KernelListener {
 				}
 			}
 		}
-		
-		if(tokens.size() > 0){
-			for(KernelTokenImpl tmpToken : tokens){
-				//只处理活着的子令牌
-				if(tmpToken.isEnded()){
+
+		if (tokens.size() > 0) {
+			for (KernelTokenImpl tmpToken : tokens) {
+				// 只处理活着的子令牌
+				if (tmpToken.isEnded()) {
 					continue;
 				}
-				if(tmpToken.isRoot()){
-					if(!isRootTokenEnable){
+				if (tmpToken.isRoot()) {
+					if (!isRootTokenEnable) {
 						continue;
 					}
 				}
-				KernelFlowNode node= tmpToken.getFlowNode();
-				Map<String,Object> tmpNodeMap = new HashMap<String, Object>();
+				KernelFlowNode node = tmpToken.getFlowNode();
+				Map<String, Object> tmpNodeMap = new HashMap<String, Object>();
 				tmpNodeMap.put("nodeId", node.getId());
-				tmpNodeMap.put("nodeName",node.getName());
+				tmpNodeMap.put("nodeName", node.getName());
 				nodes.add(tmpNodeMap);
 			}
 		}

@@ -96,7 +96,7 @@ public class BpmnParseHandlerImpl implements ProcessModelParseHandler {
 		processDefinitionEventList.add(KernelEventType.EVENTTYPE_PROCESS_START);
 		processDefinitionEventList.add(KernelEventType.EVENTTYPE_PROCESS_END);
 		processDefinitionEventList.add(KernelEventType.EVENTTYPE_PROCESS_ABORT);
-		processDefinitionEventList.add(KernelEventType.EVENTTYPE_BEFORE_PROCESS_SAVE);
+//		processDefinitionEventList.add(KernelEventType.EVENTTYPE_BEFORE_PROCESS_SAVE);
 		eventTypeMap.put(PROCESSDEFINITION_EVENT, processDefinitionEventList);
 		
 		//初始化流程节点事件监听

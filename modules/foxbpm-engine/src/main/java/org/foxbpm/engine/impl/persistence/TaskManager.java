@@ -18,40 +18,27 @@
  */
 package org.foxbpm.engine.impl.persistence;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.event.EventListener;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
-import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.task.TaskQueryImpl;
 import org.foxbpm.engine.impl.util.StringUtil;
+import org.foxbpm.engine.observe.IObservable;
+import org.foxbpm.engine.observe.IObserver;
 import org.foxbpm.engine.task.Task;
 import org.foxbpm.engine.task.TaskQuery;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * 任务数据管理器
  * 
  * @author kenshin
  */
-public class TaskManager extends AbstractManager {
+public class TaskManager extends AbstractManager implements IObservable {
 
 	/**
 	 * 普通查询
@@ -179,124 +166,43 @@ public class TaskManager extends AbstractManager {
 	public void beforeFlush() {
 		super.beforeFlush();
 		removeUnnecessaryOperations();
-		pushResources(insertedObjects, getUpdatedObjects());
+		notifyObservers(Context.getAppId());
 	}
 
-	/**
-	 * 推送资源到业务相关表中
-	 * 
-	 * @param insertedObjects
-	 * @param updateObjects
-	 */
-	private void pushResources(List<PersistentObject> insertedObjects,
-			List<PersistentObject> updateObjects) {
-		if (insertedObjects.isEmpty() && updateObjects.isEmpty()) {
+	@Override
+	public void notifyObservers(Object arg) {
+		// 如果流程中心的数据没有变化，不需要通知
+		if (insertedObjects.isEmpty() && getUpdatedObjects().isEmpty()) {
 			return;
 		}
-		HttpClient httpClient = HttpClients.createDefault();
-		// 将当前的流程数据推送到哪个应用，由一张映射表来维护
-		HttpPost httpPost = new HttpPost(
-				"http://localhost:8080/amp-fdemo/task-receive-demo");
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		try {
-			params.add(new BasicNameValuePair("tasks", resourcesToJson(
-					insertedObjects, updateObjects)));
-			httpPost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
-			httpClient.execute(httpPost);
-		} catch (JsonProcessingException e2) {
-			e2.printStackTrace();
-		} catch (UnsupportedEncodingException e1) {
-			e1.printStackTrace();
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+
+		// 获取自定义的任务监听器列表
+		List<EventListener> eventListeners = Context
+				.getProcessEngineConfiguration().getEventMapListeners()
+				.get("before-task-save");
+		// 如果没有观察者，则直接返回
+		if (eventListeners == null || eventListeners.isEmpty()) {
+			return;
 		}
-	}
-
-	/**
-	 * {"tasks:{insert:[],update:[]}"}
-	 * 
-	 * @param insertedObjects
-	 * @param updateObjects
-	 * @return
-	 * @throws JsonProcessingException
-	 */
-	private String resourcesToJson(List<PersistentObject> insertedObjects,
-			List<PersistentObject> updateObjects)
-			throws JsonProcessingException {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		Map<String, Object> tasks = new HashMap<String, Object>();
-		if (insertedObjects != null && insertedObjects.size() > 0) {
-			tasks.put("insert", convertToTaskPEs(insertedObjects));
-		}
-		if (updateObjects != null && updateObjects.size() > 0) {
-			tasks.put("update", convertToTaskPEs(updateObjects));
-		}
-		resultMap.put("tasks", tasks);
-
-		ObjectMapper mapper = new ObjectMapper();
-		return mapper.writeValueAsString(resultMap);
-	}
-
-	/**
-	 * 将持久化对象转换成任务推送对象
-	 * 
-	 * @param persistentObjects
-	 * @return
-	 */
-	private List<TaskPE> convertToTaskPEs(
-			List<PersistentObject> persistentObjects) {
-		List<TaskPE> taskPEs = new ArrayList<TaskPE>();
-		for (PersistentObject persistentObject : persistentObjects) {
-			TaskEntity taskEntity = (TaskEntity) persistentObject;
-			TaskPE taskPE = new TaskPE();
-			taskPE.setProcessInstanceId(taskEntity.getProcessInstanceId());
-			taskPE.setProcessDefinitionKey(taskEntity.getProcessDefinitionKey());
-			taskPE.setProcessDefinitionId(taskEntity.getProcessDefinitionId());
-			taskPE.setBizKey(taskEntity.getBizKey());
-			taskPE.setTaskId(taskEntity.getId());
-			taskPE.setTaskSubject(taskEntity.getSubject());
-			taskPE.setNodeId(taskEntity.getNodeId());
-			taskPE.setNodeName(taskEntity.getNodeName());
-			taskPE.setFormUri(taskEntity.getFormUri());
-			taskPE.setFormUriView(taskEntity.getFormUriView());
-			taskPE.setInitiator(taskEntity.getProcessInitiator());
-			taskPE.setAssignee(getTaskAssignee(taskEntity));
-			taskPE.setTaskComment(taskEntity.getTaskComment());
-			taskPE.setCreateTime(taskEntity.getCreateTime());
-			taskPE.setEndTime(taskEntity.getEndTime());
-			taskPE.setCommandType(taskEntity.getCommandType());
-			taskPEs.add(taskPE);
-		}
-		return taskPEs;
-	}
-
-	/**
-	 * 获取任务处理人
-	 * 
-	 * @param taskEntity
-	 * @return user:001|group:009|user:007|group:876|...
-	 */
-	private String getTaskAssignee(TaskEntity taskEntity) {
-		String taskAssignee = null;
-
-		if (StringUtils.isNotEmpty(taskEntity.getAssignee())) {
-			taskAssignee = "user:" + taskEntity.getAssignee();
-		} else {
-			List<String> taskAssignees = new ArrayList<String>();
-			for (IdentityLinkEntity identityLinkEntity : taskEntity
-					.getIdentityLinks()) {
-				String groupId = identityLinkEntity.getGroupId();
-				if (StringUtils.isNotEmpty(groupId) && "good".equals(groupId)) {
-					taskAssignees.add("group:" + groupId);
-				} else {
-					taskAssignees.add("user:" + identityLinkEntity.getUserId());
-				}
+		for (EventListener eventListener : eventListeners) {
+			try {
+				IObserver observer = (IObserver) Class.forName(
+						eventListener.getListenerClass()).newInstance();
+				observer.update(this, arg);
+			} catch (Exception e) {
+				log.error("加载监听器类{}时出错：{}", eventListener.getListenerClass(),
+						e.getMessage());
+				e.printStackTrace();
 			}
-			taskAssignee = StringUtils.join(taskAssignees, "|");
 		}
 
-		return taskAssignee;
 	}
+
+	/**
+	 * @return 新增的持久化对象列表
+	 */
+	public List<PersistentObject> getInsertedObjects() {
+		return insertedObjects;
+	}
+
 }

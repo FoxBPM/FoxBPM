@@ -63,10 +63,11 @@
 		</taskCommandDefinition>
 
 
-		<taskCommandDefinition id="transferAndCreateTask" name="转发-创建新任务"
-			command="org.foxbpm.engine.impl.task.command.TransferTaskCommand"
-			cmd="org.foxbpm.engine.impl.task.cmd.TransferAndCreateTaskCmd" isEnabled="true"
-			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.TransferTaskFilter">
+		<taskCommandDefinition id="transferAndCreateTask"
+			name="转发-创建新任务" command="org.foxbpm.engine.impl.task.command.TransferTaskCommand"
+			cmd="org.foxbpm.engine.impl.task.cmd.TransferAndCreateTaskCmd"
+			isEnabled="true" type="toDoTasks"
+			filter="org.foxbpm.engine.impl.task.filter.TransferTaskFilter">
 			<commandParam key="transferUserId" name="转发给谁"
 				description="" dataType="String" bizType="InputParam" />
 			<commandParam key="isSaveData" name="是否保存数据" value="true"
@@ -74,7 +75,7 @@
 			<commandParam key="isVerification" name="是否触发验证" value="true"
 				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
-		
+
 		<taskCommandDefinition id="transfer" name="转发"
 			command="org.foxbpm.engine.impl.task.command.TransferTaskCommand"
 			cmd="org.foxbpm.engine.impl.task.cmd.TransferTaskCmd" isEnabled="true"
@@ -160,22 +161,14 @@
 				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
 
-		<!-- 
-		<taskCommandDefinition id="updateCompletionRate"
-			name="更新完成率"
-			command="org.foxbpm.engine.impl.task.command.UpdateCompletionRateCommand"
-			cmd="org.foxbpm.engine.impl.task.cmd.UpdateCompletionRateCmd"
-			isEnabled="true" type="toDoTasks"
-			filter="org.foxbpm.engine.impl.task.filter.UpdateCompletionRateFilter"
-			description="更新任务的完成率。">
-			<commandParam key="completionRate" name="完成率"
-				description="" dataType="double" bizType="InputParam" />
-			<commandParam key="isSaveData" name="是否保存数据" value="true"
-				description="" dataType="String" bizType="ControlParam" />
-			<commandParam key="isVerification" name="是否触发验证" value="true"
-				description="" dataType="String" bizType="ControlParam" />
-		</taskCommandDefinition>
-		 -->
+		<!-- <taskCommandDefinition id="updateCompletionRate" name="更新完成率" command="org.foxbpm.engine.impl.task.command.UpdateCompletionRateCommand" 
+			cmd="org.foxbpm.engine.impl.task.cmd.UpdateCompletionRateCmd" isEnabled="true" 
+			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.UpdateCompletionRateFilter" 
+			description="更新任务的完成率。"> <commandParam key="completionRate" name="完成率" description="" 
+			dataType="double" bizType="InputParam" /> <commandParam key="isSaveData" 
+			name="是否保存数据" value="true" description="" dataType="String" bizType="ControlParam" 
+			/> <commandParam key="isVerification" name="是否触发验证" value="true" description="" 
+			dataType="String" bizType="ControlParam" /> </taskCommandDefinition> -->
 
 		<taskCommandDefinition id="pending" name="转办"
 			command="org.foxbpm.engine.impl.task.command.PendingTaskCommand" cmd="org.foxbpm.engine.impl.task.cmd.PendingTaskCmd"
@@ -200,19 +193,14 @@
 				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
 
-		<!-- 
-		<taskCommandDefinition id="jump" name="跳转"
-			isEnabled="true" type="toDoTasks"
-			command="org.foxbpm.engine.impl.task.command.JumpTaskCommand" cmd="org.foxbpm.engine.impl.task.cmd.JumpTaskCmd"
-			filter="org.foxbpm.engine.impl.task.filter.JumpTaskFilter">
-			<commandParam key="jumpNodeId" name="跳转节点号" description=""
-				dataType="String" bizType="InputParam" />
-			<commandParam key="isSaveData" name="是否保存数据" value="true"
-				description="" dataType="String" bizType="ControlParam" />
-			<commandParam key="isVerification" name="是否触发验证" value="true"
-				description="" dataType="String" bizType="ControlParam" />
-		</taskCommandDefinition>
-		 -->
+		<!-- <taskCommandDefinition id="jump" name="跳转" isEnabled="true" type="toDoTasks" 
+			command="org.foxbpm.engine.impl.task.command.JumpTaskCommand" cmd="org.foxbpm.engine.impl.task.cmd.JumpTaskCmd" 
+			filter="org.foxbpm.engine.impl.task.filter.JumpTaskFilter"> <commandParam 
+			key="jumpNodeId" name="跳转节点号" description="" dataType="String" bizType="InputParam" 
+			/> <commandParam key="isSaveData" name="是否保存数据" value="true" description="" 
+			dataType="String" bizType="ControlParam" /> <commandParam key="isVerification" 
+			name="是否触发验证" value="true" description="" dataType="String" bizType="ControlParam" 
+			/> </taskCommandDefinition> -->
 
 		<taskCommandDefinition id="abortProcess" name="终止"
 			command="org.foxbpm.engine.impl.task.command.AbortProcessCommand"
@@ -236,7 +224,7 @@
 			<commandParam key="isVerification" name="是否触发验证" value="true"
 				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
-		
+
 		<taskCommandDefinition id="continueProcessInstance"
 			name="恢复实例"
 			command="org.foxbpm.engine.impl.task.command.ContinueProcessInstanceCommand"
@@ -248,54 +236,40 @@
 			<commandParam key="isVerification" name="是否触发验证" value="true"
 				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
-		
-		<!-- 
-		<taskCommandDefinition id="recover" name="追回" command="org.foxbpm.engine.impl.task.command.RecoverTaskCommand" 
-			cmd="org.foxbpm.engine.impl.task.cmd.RecoverTaskCmd" isEnabled="true" 
-			type="processInstanceInfo" filter="org.foxbpm.engine.impl.task.filter.RecoverTaskFilter">
-			<commandParam key="isSaveData" name="是否保存数据" value="false"
-				description="" dataType="String" bizType="ControlParam" />
-			<commandParam key="isVerification" name="是否触发验证" value="false"
-				description="" dataType="String" bizType="ControlParam" />
-		</taskCommandDefinition>
-		 -->
+
+		<!-- <taskCommandDefinition id="recover" name="追回" command="org.foxbpm.engine.impl.task.command.RecoverTaskCommand" 
+			cmd="org.foxbpm.engine.impl.task.cmd.RecoverTaskCmd" isEnabled="true" type="processInstanceInfo" 
+			filter="org.foxbpm.engine.impl.task.filter.RecoverTaskFilter"> <commandParam 
+			key="isSaveData" name="是否保存数据" value="false" description="" dataType="String" 
+			bizType="ControlParam" /> <commandParam key="isVerification" name="是否触发验证" 
+			value="false" description="" dataType="String" bizType="ControlParam" /> 
+			</taskCommandDefinition> -->
 		<!-- <taskCommandDefinition id="addSignUser" name="加签-用户控制" command="org.foxbpm.engine.impl.task.command.AddSignUserCommand" 
-			cmd="org.foxbpm.engine.impl.task.cmd.AddSignUserCmd" isEnabled="true" 
-			type="processInstanceInfo" filter="org.foxbpm.engine.impl.task.filter.AddSignFilter">
-			<commandParam key="isSaveData" name="是否保存数据" value="false"
-				description="" dataType="String" bizType="ControlParam" />
-			<commandParam key="isVerification" name="是否触发验证" value="false"
-				description="" dataType="String" bizType="ControlParam" />
-			<commandParam key="addResources" name="加签资源" description="添加的加签者,可以是用户也可以是组."
-				dataType="String" bizType="InputParam" />	
-			<commandParam key="isParallel" name="" description="是否并行加签"
-				dataType="String" bizType="InputParam" value="true" />
-			<commandParam key="isResolved" name="" description="是否需要还回"
-				dataType="String" bizType="InputParam" value="true"/>
-			<commandParam key="isMoreAddSign" name="" description="是否允许多次加签"
-				dataType="String" bizType="InputParam" value="true"/>		
-		</taskCommandDefinition>
-		
-		
-		
-		<taskCommandDefinition id="addSignSystem" name="加签-后台控制" command="org.foxbpm.engine.impl.task.command.AddSignSystemCommand" 
-			cmd="org.foxbpm.engine.impl.task.cmd.AddSignSystemCmd" isEnabled="true" 
-			type="processInstanceInfo" filter="org.foxbpm.engine.impl.task.filter.AddSignFilter">
-			<commandParam key="isSaveData" name="是否保存数据" value="false"
-				description="" dataType="String" bizType="ControlParam" />
-			<commandParam key="isVerification" name="是否触发验证" value="false"
-				description="" dataType="String" bizType="ControlParam" />
-			<commandParam key="addResources" name="加签资源" description="添加的加签者,可以是用户也可以是组."
-				dataType="String" bizType="InputParam" />	
-			<commandParam key="isParallel" name="" description="是否并行加签"
-				dataType="String" bizType="ExecuteParam" value="true" />
-			<commandParam key="isResolved" name="" description="是否需要还回"
-				dataType="String" bizType="ExecuteParam" value="true"/>
-			<commandParam key="isMoreAddSign" name="" description="是否允许多次加签"
-				dataType="String" bizType="ExecuteParam" value="true"/>		
-		</taskCommandDefinition>
-		 -->
-		
+			cmd="org.foxbpm.engine.impl.task.cmd.AddSignUserCmd" isEnabled="true" type="processInstanceInfo" 
+			filter="org.foxbpm.engine.impl.task.filter.AddSignFilter"> <commandParam 
+			key="isSaveData" name="是否保存数据" value="false" description="" dataType="String" 
+			bizType="ControlParam" /> <commandParam key="isVerification" name="是否触发验证" 
+			value="false" description="" dataType="String" bizType="ControlParam" /> 
+			<commandParam key="addResources" name="加签资源" description="添加的加签者,可以是用户也可以是组." 
+			dataType="String" bizType="InputParam" /> <commandParam key="isParallel" 
+			name="" description="是否并行加签" dataType="String" bizType="InputParam" value="true" 
+			/> <commandParam key="isResolved" name="" description="是否需要还回" dataType="String" 
+			bizType="InputParam" value="true"/> <commandParam key="isMoreAddSign" name="" 
+			description="是否允许多次加签" dataType="String" bizType="InputParam" value="true"/> 
+			</taskCommandDefinition> <taskCommandDefinition id="addSignSystem" name="加签-后台控制" 
+			command="org.foxbpm.engine.impl.task.command.AddSignSystemCommand" cmd="org.foxbpm.engine.impl.task.cmd.AddSignSystemCmd" 
+			isEnabled="true" type="processInstanceInfo" filter="org.foxbpm.engine.impl.task.filter.AddSignFilter"> 
+			<commandParam key="isSaveData" name="是否保存数据" value="false" description="" 
+			dataType="String" bizType="ControlParam" /> <commandParam key="isVerification" 
+			name="是否触发验证" value="false" description="" dataType="String" bizType="ControlParam" 
+			/> <commandParam key="addResources" name="加签资源" description="添加的加签者,可以是用户也可以是组." 
+			dataType="String" bizType="InputParam" /> <commandParam key="isParallel" 
+			name="" description="是否并行加签" dataType="String" bizType="ExecuteParam" value="true" 
+			/> <commandParam key="isResolved" name="" description="是否需要还回" dataType="String" 
+			bizType="ExecuteParam" value="true"/> <commandParam key="isMoreAddSign" name="" 
+			description="是否允许多次加签" dataType="String" bizType="ExecuteParam" value="true"/> 
+			</taskCommandDefinition> -->
+
 
 		<!-- <taskCommandDefinition id="reminders" name="催办" command="com.founder.fix.fixflow.expand.command.RemindersTaskCommand" 
 			cmd="com.founder.fix.fixflow.expand.cmd.RemindersTaskCmd" isEnabled="true" 
@@ -326,7 +300,9 @@
 	</taskCommands>
 
 	<eventListeners>
-		<eventListener id="UpdateProcessLocationInfoTableListener-before-process-save" eventType="before-process-save"
-			listenerClass="org.foxbpm.engine.impl.listener.process.UpdateLocationListener" />	
+		<eventListener
+			id="UpdateProcessLocationInfoTableListener-before-process-save"
+			eventType="before-process-save"
+			listenerClass="org.foxbpm.engine.impl.listener.process.UpdateLocationListener" />
 	</eventListeners>
 </foxbpmconfig:FoxBPMConfig>
