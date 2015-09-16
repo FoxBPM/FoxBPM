@@ -20,7 +20,6 @@
 		<mapper resource="mybatis/mapping/Variable.xml" />
 		<mapper resource="mybatis/mapping/User.xml" />
 		<mapper resource="mybatis/mapping/Agent.xml" />
-		<mapper resource="mybatis/mapping/RunningTrack.xml" />
 		
 	</mappers>
 </configuration>
