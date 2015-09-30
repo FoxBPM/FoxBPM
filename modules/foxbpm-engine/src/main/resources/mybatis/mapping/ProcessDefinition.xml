@@ -100,7 +100,7 @@
 		parameterType="org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl"
 		resultMap="ProcessDefinitionMap">
 		${limitBefore}
-		select RES.* ${limitBetween}
+		select RES.*,DP.DEPLOY_TIME ${limitBetween}
 		<include refid="selectProcessDefinitionsByQueryCriteriaSql" />
 		<if test="orderBy != null">
 			${orderBy}
@@ -126,19 +126,19 @@
 				and RES.CATEGORY = #{category}
 			</if>
 			<if test="categoryLike != null">
-				and RES.CATEGORY like #{categoryLike}
+				and RES.CATEGORY like '%${categoryLike}%'
 			</if>
 			<if test="name != null">
 				and RES.PROCESS_NAME = #{name}
 			</if>
 			<if test="nameLike != null">
-				and RES.PROCESS_NAME like #{nameLike}
+				and RES.PROCESS_NAME like '%${nameLike}%'
 			</if>
 			<if test="key != null">
 				and RES.PROCESS_KEY = #{key}
 			</if>
 			<if test="keyLike != null">
-				and RES.PROCESS_KEY like #{keyLike}
+				and RES.PROCESS_KEY like '%${keyLike}%'
 			</if>
 			<if test="version != null">
 				and RES.VERSION = #{version}

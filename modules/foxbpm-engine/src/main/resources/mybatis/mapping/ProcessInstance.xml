@@ -121,7 +121,7 @@
 				and RES.BIZ_KEY = #{businessKey}
 			</if>
 			<if test="businessKeyLike != null">
-				and RES.BIZ_KEY like #{businessKeyLike}
+				and RES.BIZ_KEY like '%${businessKeyLike}%'
 			</if>
 			<if test="processDefinitionId != null">
 				and RES.PROCESSDEFINITION_ID = #{processDefinitionId}
@@ -133,24 +133,24 @@
 				and RES.INITIATOR = #{initiator}
 			</if>
 			<if test="initiatorLike != null">
-				and RES.INITIATOR like #{initiatorLike}
+				and RES.INITIATOR like '%${initiatorLike}%'
 			</if>
 			<if test="subject != null">
 				and RES.SUBJECT = #{subject}
 			</if>
 			<if test="subjectLike != null">
 				<if test="subjectUnionInitiator == true">
-					and (RES.SUBJECT like #{subjectLike} or RES.INITIATOR like #{subjectLike})
+					and (RES.SUBJECT like '%${subjectLike}%' or RES.INITIATOR like '%${subjectLike}%')
 				</if>
 				<if test="subjectUnionInitiator == false">
-					and RES.SUBJECT like #{subjectLike}
+					and RES.SUBJECT like '%${subjectLike}%'
 				</if>
 			</if>
 			<if test="processDefinitionName != null">
 				and P.PROCESS_NAME = #{processDefinitionName}
 			</if>
 			<if test="processDefinitionNameLike != null">
-				and P.PROCESS_NAME like #{processDefinitionNameLike}
+				and P.PROCESS_NAME like '%${processDefinitionNameLike}%'
 			</if>
 			<if test="taskParticipants != null">
 				and RES.ID in (SELECT distinct(PROCESSINSTANCE_ID) FROM
