@@ -271,7 +271,7 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl
 		persistentState.put("id", this.id);
 		persistentState.put("name", this.name);
 		persistentState.put("key", this.key);
-		persistentState.put("category", getCategory());
+		persistentState.put("category", this.category);
 		persistentState.put("version", this.version);
 		persistentState.put("resourceName", this.resourceName);
 		persistentState.put("resourceId", this.resourceId);

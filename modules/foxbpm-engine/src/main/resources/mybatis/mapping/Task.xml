@@ -292,7 +292,7 @@
 				and DESCRIPTION = #{description}
 			</if>
 			<if test="descriptionLike != null">
-				and DESCRIPTION like #{descriptionLike}
+				and DESCRIPTION like '%${descriptionLike}%'
 			</if>
 
 			<if test="subject != null">
@@ -300,12 +300,11 @@
 			</if>
 			<if test="subjectLike != null">
 				<if test="subjectUnionInitiator == true">
-					and (RES.SUBJECT like #{subjectLike} or P.INITIATOR like #{subjectLike})
+					and (RES.SUBJECT like '%${subjectLike}%' or P.INITIATOR like '%${subjectLike}%')
 				</if>
 				<if test="subjectUnionInitiator == false">
-					and SUBJECT like #{subjectLike}
+					and SUBJECT like '%${subjectLike}%'
 				</if>
-				 
 			</if>
 
 			<if test="createTimeBefore != null">
@@ -352,7 +351,7 @@
 				and NAME = #{name}
 			</if>
 			<if test="nameLike != null">
-				and NAME like #{nameLike}
+				and NAME like '%${nameLike}%'
 			</if>
 			
 			<if test="owner != null">
@@ -362,7 +361,7 @@
 				and BIZKEY = #{businessKey}
 			</if>
 			<if test="businessKeyLike != null">
-				and BIZKEY like #{businessKeyLike}
+				and BIZKEY like '%${businessKeyLike}%'
 			</if>
 
 			<if test="assignedFlag != 2">
@@ -383,7 +382,7 @@
 				and PROCESSDEFINITION_NAME = #{processDefinitionName}
 			</if>
 			<if test="processDefinitionNameLike != null">
-				and PROCESSDEFINITION_NAME like #{processDefinitionNameLike}
+				and PROCESSDEFINITION_NAME like '%${processDefinitionNameLike}%'
 			</if>
 
 			<!-- TaskType -->

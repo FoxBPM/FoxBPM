@@ -463,6 +463,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		mapPersistentState.put("id", id);
 		mapPersistentState.put("subject", subject);
 		mapPersistentState.put("processDefinitionKey", processDefinitionKey);
+		mapPersistentState.put("processDefinitionName", getProcessDefinitionName());
 		mapPersistentState.put("processDefinitionId", processDefinitionId);
 		mapPersistentState.put("rootTokenId", rootTokenId);
 		mapPersistentState.put("definitionId", definitionId);
