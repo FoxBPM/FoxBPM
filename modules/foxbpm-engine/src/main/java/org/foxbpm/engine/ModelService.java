@@ -55,12 +55,32 @@ public interface ModelService {
 	 */
 	List<ProcessDefinition> getStartProcessByUserId(String userId);
 	
+	/**
+	 * 发布资源
+	 * @param deploymentBuilderImpl
+	 * @return
+	 */
 	Deployment deploy(DeploymentBuilderImpl deploymentBuilderImpl);
 	
 	void deleteDeployment(String deploymentId);
 	
+	/**
+	 * 创建发布器
+	 * @return
+	 */
 	DeploymentBuilder createDeployment();
 	
+	/**
+	 * 根据发布编号获取发布对象
+	 * @param deploymentId 发布编号
+	 * @return
+	 */
+	Deployment getDeploymentById(String deploymentId);
+	
+	/**
+	 * 创建流程定义查询对象
+	 * @return
+	 */
 	ProcessDefinitionQuery createProcessDefinitionQuery();
 	
 	/**

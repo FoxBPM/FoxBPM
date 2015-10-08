@@ -36,6 +36,7 @@ import org.foxbpm.engine.impl.cmd.GetProcessDefinitionSVGCmd;
 import org.foxbpm.engine.impl.cmd.GetResouceByDeployIdAndNameCmd;
 import org.foxbpm.engine.impl.cmd.GetStartProcessByUserIdCmd;
 import org.foxbpm.engine.impl.cmd.VerificationStartUserCmd;
+import org.foxbpm.engine.impl.cmd.getDeploymentCmd;
 import org.foxbpm.engine.impl.datavariable.BizDataObject;
 import org.foxbpm.engine.impl.model.DeploymentBuilderImpl;
 import org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl;
@@ -61,6 +62,11 @@ public class ModelServiceImpl extends ServiceImpl implements ModelService {
 	
 	public void deleteDeployment(String deploymentId) {
 		commandExecutor.execute(new DeleteDeploymentCmd(deploymentId));
+	}
+	
+	@Override
+	public Deployment getDeploymentById(String deploymentId) {
+		return commandExecutor.execute(new getDeploymentCmd(deploymentId));
 	}
 	
 	public ProcessDefinitionQuery createProcessDefinitionQuery() {
