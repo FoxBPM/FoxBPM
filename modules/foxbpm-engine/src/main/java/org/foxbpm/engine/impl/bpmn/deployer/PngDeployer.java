@@ -90,7 +90,7 @@ public class PngDeployer extends AbstractDeployer {
 				// 设置发布Id
 				resourcePngNew.setDeploymentId(deployment.getId());
 				// svg转成png
-				resourcePngNew.setBytes(SVGConverterUtil.getInstance().convertToPng(svgCode));
+//				resourcePngNew.setBytes(SVGConverterUtil.getInstance().convertToPng(svgCode));
 			}
 			
 			// 处理更新发布
