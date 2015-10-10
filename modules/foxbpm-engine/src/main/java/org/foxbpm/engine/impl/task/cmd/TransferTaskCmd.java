@@ -51,7 +51,9 @@ public class TransferTaskCmd extends AbstractExpandTaskCmd<TransferTaskCommand, 
 		/** 获取流程内容执行器 */
 		FlowNodeExecutionContext executionContext = getExecutionContext(task);
 		/** 任务命令的执行表达式变量 */
-		taskCommand.getExpressionValue(executionContext);
+		if(taskCommand != null){
+			taskCommand.getExpressionValue(executionContext);
+		}
 		/** 设置任务处理者 */
 		task.setAssignee(transferUserId);
 		/** 设置任务的处理命令 commandId commandName commandType */
