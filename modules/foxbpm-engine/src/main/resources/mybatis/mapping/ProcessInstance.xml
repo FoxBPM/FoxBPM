@@ -26,6 +26,7 @@
 		<result column="ARCHIVE_TIME" jdbcType="TIMESTAMP" property="archiveTime" />
 		<result column="REV_" property="revision" jdbcType="INTEGER" />
 		<result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
+		<result column="INSTTYPE" property="INSTTYPE" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<insert id="insertProcessInstance" parameterType="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">
@@ -39,7 +40,7 @@
 		PARENT_ID,
 		PARENT_TOKEN_ID, UPDATE_TIME,
 		PROCESSLOCATION, INSTANCE_STATUS,
-		ARCHIVE_TIME,REV_,TENANT_ID
+		ARCHIVE_TIME,REV_,TENANT_ID,INSTTYPE
 		)
 		values (#{id,jdbcType=VARCHAR},
 		#{processDefinitionId,jdbcType=VARCHAR},
@@ -53,7 +54,8 @@
 		#{parentId,jdbcType=VARCHAR}, #{parentTokenId,jdbcType=VARCHAR},
 		#{updateTime,jdbcType=TIMESTAMP},
 		#{processLocation,jdbcType=VARCHAR},
-		#{instanceStatus,jdbcType=VARCHAR}, #{archiveTime,jdbcType=TIMESTAMP},1,${appId}
+		#{instanceStatus,jdbcType=VARCHAR}, #{archiveTime,jdbcType=TIMESTAMP},1,${appId},
+		#{instType,jdbcType=VARCHAR}
 		)
 	</insert>
 
@@ -76,7 +78,7 @@
 		where PROCESSDEFINITION_ID =#{id,jdbcType=VARCHAR}
 		<if test="${appId} != null and ${appId}!='00000000'">
 			AND TENANT_ID=${appId}
-		</if>
+		</if>/
 	</select>
 
 

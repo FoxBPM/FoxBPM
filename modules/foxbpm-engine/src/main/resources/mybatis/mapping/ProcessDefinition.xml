@@ -17,6 +17,7 @@
 		<result column="DEPLOY_TIME" jdbcType="TIMESTAMP" property="deploymentTime" />
 		<result column="REV_" property="revision" jdbcType="INTEGER" />
 		<result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
+		<result column="DEFINITIONTYPE" property="definitionType" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<insert id="insertProcessDefinition"
@@ -26,7 +27,7 @@
 		VERSION, RESOURCE_NAME,
 		DEPLOYMENT_ID,
 		DIAGRAM_RESOURCE_NAME, RESOURCE_ID,START_FORM_KEY,
-		REV_,TENANT_ID
+		REV_,TENANT_ID,DEFINITIONTYPE
 		)
 		values (#{id,jdbcType=VARCHAR},
 		#{key,jdbcType=VARCHAR}, 
@@ -38,7 +39,8 @@
 		#{diagramResourceName,jdbcType=VARCHAR},
 		#{resourceId,jdbcType=VARCHAR},
 		#{startFormUri,jdbcType=VARCHAR},1,
-		#{tenantId,jdbcType=VARCHAR}
+		#{tenantId,jdbcType=VARCHAR},
+		#{definitionType,jdbcType=VARCHAR}
 		)
 	</insert>
 

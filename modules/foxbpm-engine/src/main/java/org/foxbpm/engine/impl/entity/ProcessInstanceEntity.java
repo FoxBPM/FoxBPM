@@ -103,6 +103,11 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	/**  多租户标识   */
 	protected String tenantId;
 	
+	/**
+	 * 流程实例类型标识，用来区分其他系统推送过来的任务，默认为foxbpm
+	 */
+	protected String instType;
+	
 	// 对象字段 /////////////////////
 	
 	/** 任务集合 */
@@ -585,5 +590,13 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	
 	public String getTenantId() {
 		return tenantId;
+	}
+	
+	public void setInstType(String instType) {
+		this.instType = instType;
+	}
+	
+	public String getInstType() {
+		return instType;
 	}
 }

@@ -79,6 +79,11 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl
 	
 	/**  多租户标示     */
 	protected String tenantId;
+	
+	/**
+	 * 流程定义类型，为了兼容其他系统推送过来的任务，默认为foxbpm
+	 */
+	protected String definitionType;
 
 	protected DataVariableMgmtDefinition dataVariableMgmtDefinition;
 
@@ -358,6 +363,14 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl
 	public boolean isModified() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	public void setDefinitionType(String definitionType) {
+		this.definitionType = definitionType;
+	}
+	
+	public String getDefinitionType() {
+		return definitionType;
 	}
 	
 	public List<PotentialStarter> getPotentialStarters() {
