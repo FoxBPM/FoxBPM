@@ -47,6 +47,7 @@ public class ProcessDefinitionQueryImpl extends
 	protected String tenantId;
 	protected boolean latest = false;
 	protected String processDefinitionId;
+	protected String definitionType;
 
 	public ProcessDefinitionQueryImpl() {
 	}
@@ -119,6 +120,15 @@ public class ProcessDefinitionQueryImpl extends
 			return this;
 		}
 		this.keyLike = keyLike;
+		return this;
+	}
+	
+	@Override
+	public ProcessDefinitionQuery definitionType(String definitionType) {
+		if(definitionType == null){
+			return this;
+		}
+		this.definitionType = definitionType;
 		return this;
 	}
 
@@ -240,6 +250,9 @@ public class ProcessDefinitionQueryImpl extends
 
 	public String getCategoryLike() {
 		return categoryLike;
+	}
+	public String getDefinitionType() {
+		return definitionType;
 	}
 
 	@Override

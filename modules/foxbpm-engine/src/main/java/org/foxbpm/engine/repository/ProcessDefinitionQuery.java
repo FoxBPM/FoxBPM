@@ -56,6 +56,10 @@ public interface ProcessDefinitionQuery extends Query<ProcessDefinitionQuery, Pr
 
 	ProcessDefinitionQuery processDefinitionVersion(Integer processDefinitionVersion);
 	
+
+	/** 根据流程类型查询 ,类型是用来区分是Foxbpm流程，还是由其他系统推送过来的流程信息 */
+	ProcessDefinitionQuery definitionType(String definitionType);
+	
 	/** 根据多租户编号查询 */
 
 	ProcessDefinitionQuery processTenantId(String tenantId);

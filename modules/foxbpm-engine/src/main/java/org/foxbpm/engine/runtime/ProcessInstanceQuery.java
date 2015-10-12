@@ -105,6 +105,13 @@ public interface ProcessInstanceQuery extends Query<ProcessInstanceQuery, Proces
 	ProcessInstanceQuery subjectLike(String subjectLike);
 	
 	/**
+	 * 根据流程实例类型查询（是Foxbpm自己流程实例，还是其他业务系统推送的任务信息）
+	 * @param instType
+	 * @return
+	 */
+	ProcessInstanceQuery instType(String instType);
+	
+	/**
 	 * 任务主题发起人共用一个查询条件
 	 * 
 	 */

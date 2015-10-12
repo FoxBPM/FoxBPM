@@ -65,6 +65,7 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
 	protected Date endTimeBefore;
 	protected Date endTimeAfter;
 	protected String tenantId;
+	protected String instType;
 	
 	protected CommandExecutor commandExecutor;
 
@@ -130,6 +131,15 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
 
 	public ProcessInstanceQuery notEnd() {
 		isEnd = " null";
+		return this;
+	}
+	
+	@Override
+	public ProcessInstanceQuery instType(String instType) {
+		if(instType == null){
+			return this;
+		}
+		this.instType = instType;
 		return this;
 	}
 
@@ -392,6 +402,10 @@ public class ProcessInstanceQueryImpl extends AbstractQuery<ProcessInstanceQuery
 	
 	public String getTenantId() {
 		return tenantId;
+	}
+	
+	public String getInstType() {
+		return instType;
 	}
 	
 	/*@Override

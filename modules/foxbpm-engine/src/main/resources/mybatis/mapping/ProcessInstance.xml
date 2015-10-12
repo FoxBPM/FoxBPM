@@ -26,7 +26,7 @@
 		<result column="ARCHIVE_TIME" jdbcType="TIMESTAMP" property="archiveTime" />
 		<result column="REV_" property="revision" jdbcType="INTEGER" />
 		<result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
-		<result column="INSTTYPE" property="INSTTYPE" jdbcType="VARCHAR" />
+		<result column="INSTTYPE" property="instType" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<insert id="insertProcessInstance" parameterType="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">
