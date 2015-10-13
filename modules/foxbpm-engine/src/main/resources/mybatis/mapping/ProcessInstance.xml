@@ -5,10 +5,9 @@
 	<resultMap id="processResultMap"
 		type="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">
 		<id column="ID" jdbcType="VARCHAR" property="id" />
-		<result column="PROCESSDEFINITION_ID" jdbcType="VARCHAR"
-			property="processDefinitionId" />
-		<result column="PROCESSDEFINITION_KEY" jdbcType="VARCHAR"
-			property="processDefinitionKey" />
+		<result column="PROCESSDEFINITION_ID" jdbcType="VARCHAR" property="processDefinitionId" />
+		<result column="PROCESSDEFINITION_KEY" jdbcType="VARCHAR" property="processDefinitionKey" />
+		<result column="PROCESSDEFINITION_NAME" property="processDefinitionName" jdbcType="VARCHAR" />
 		<result column="SUBJECT" jdbcType="VARCHAR" property="subject" />
 		<result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
 		<result column="END_TIME" jdbcType="TIMESTAMP" property="endTime" />
@@ -27,6 +26,7 @@
 		<result column="REV_" property="revision" jdbcType="INTEGER" />
 		<result column="TENANT_ID" property="tenantId" jdbcType="VARCHAR" />
 		<result column="INSTTYPE" property="instType" jdbcType="VARCHAR" />
+		
 	</resultMap>
 
 	<insert id="insertProcessInstance" parameterType="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">
@@ -40,7 +40,7 @@
 		PARENT_ID,
 		PARENT_TOKEN_ID, UPDATE_TIME,
 		PROCESSLOCATION, INSTANCE_STATUS,
-		ARCHIVE_TIME,REV_,TENANT_ID,INSTTYPE
+		ARCHIVE_TIME,REV_,TENANT_ID,INSTTYPE,PROCESSDEFINITION_NAME
 		)
 		values (#{id,jdbcType=VARCHAR},
 		#{processDefinitionId,jdbcType=VARCHAR},
@@ -55,7 +55,8 @@
 		#{updateTime,jdbcType=TIMESTAMP},
 		#{processLocation,jdbcType=VARCHAR},
 		#{instanceStatus,jdbcType=VARCHAR}, #{archiveTime,jdbcType=TIMESTAMP},1,${appId},
-		#{instType,jdbcType=VARCHAR}
+		#{instType,jdbcType=VARCHAR},
+		#{processDefinitionName,jdbcType=VARCHAR}
 		)
 	</insert>
 
@@ -186,7 +187,7 @@
 		START_AUTHOR, ISSUSPENDED, PARENT_ID,
 		PARENT_TOKEN_ID,
 		UPDATE_TIME,
-		PROCESSLOCATION, INSTANCE_STATUS, ARCHIVE_TIME,REV_,TENANT_ID
+		PROCESSLOCATION, INSTANCE_STATUS, ARCHIVE_TIME,REV_,TENANT_ID,INSTTYPE,PROCESSDEFINITION_NAME
 	</sql>
 
 	<update id="updateProcessInstance" parameterType="org.foxbpm.engine.impl.entity.ProcessInstanceEntity">
@@ -226,7 +227,7 @@
 		ARCHIVE_TIME =
 		#{archiveTime,jdbcType=TIMESTAMP},
 		REV_ = #{revisionNext,jdbcType=INTEGER},
-		TENANT_ID=${appId}
+		TENANT_ID=${appId},PROCESSDEFINITION_NAME=#{processDefinitionName,jdbcType=VARCHAR}
 		where
 		ID = #{id,jdbcType=VARCHAR} AND  REV_ = #{revision,jdbcType=INTEGER}
 	</update>

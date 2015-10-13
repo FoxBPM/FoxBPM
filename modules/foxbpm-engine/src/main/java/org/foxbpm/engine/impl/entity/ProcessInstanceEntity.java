@@ -61,6 +61,11 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	/** 流程定义编号 */
 	protected String processDefinitionKey;
 	
+	/**
+	 * 流程定义名称
+	 */
+	protected String processDefinitionName;
+	
 	/** 交互式流程文件定义号 */
 	protected String definitionId;
 	
@@ -432,6 +437,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		this.processDefinition = processDefinition;
 		this.processDefinitionId = processDefinition.getId();
 		this.processDefinitionKey = processDefinition.getKey();
+		this.processDefinitionName = processDefinition.getName();
 	}
 	
 	public String getBizKey() {
@@ -468,7 +474,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 		mapPersistentState.put("id", id);
 		mapPersistentState.put("subject", subject);
 		mapPersistentState.put("processDefinitionKey", processDefinitionKey);
-//		mapPersistentState.put("processDefinitionName", getProcessDefinitionName());
+		mapPersistentState.put("processDefinitionName", getProcessDefinitionName());
 		mapPersistentState.put("processDefinitionId", processDefinitionId);
 		mapPersistentState.put("rootTokenId", rootTokenId);
 		mapPersistentState.put("definitionId", definitionId);
@@ -548,13 +554,12 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	}
 	
 	public String getProcessDefinitionName() {
-		ensureProcessDefinitionInitialized();
-		if (processDefinition != null) {
-			return processDefinition.getName();
-		}
-		return null;
+		return processDefinitionName;
 	}
 	
+	public void setProcessDefinitionName(String processDefinitionName) {
+		this.processDefinitionName = processDefinitionName;
+	}
 	 
 	protected KernelProcessInstanceImpl newProcessInstance() {
 		return new ProcessInstanceEntity();
@@ -599,4 +604,5 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	public String getInstType() {
 		return instType;
 	}
+	
 }
