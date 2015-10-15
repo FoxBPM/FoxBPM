@@ -410,7 +410,7 @@
 				and
 				(
 				<if test="candidateUser != null">
-					I.USER_ID = #{candidateUser} or I.USER_ID='foxbpm_all_user'
+					(I.GROUP_TYPE = 'user' and (I.GROUP_ID = #{candidateUser} or I.GROUP_ID='foxbpm_all_user'))
 				</if>
 				<if
 					test="candidateUser != null &amp;&amp; candidateGroups != null &amp;&amp; candidateGroups.size() &gt; 0">
