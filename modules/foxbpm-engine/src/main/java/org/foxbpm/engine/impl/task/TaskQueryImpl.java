@@ -408,12 +408,10 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	}
 	
 	public List<GroupEntity> getCandidateGroups() {
-//		if (candidateUser != null) {
-//			return getGroupsForCandidateUser(candidateUser);
-//		}
-//		return null;
-		
-		return candidateGroups;
+		if (candidateUser != null) {
+			return getGroupsForCandidateUser(candidateUser);
+		}
+		return null;
 	}
 	
 	protected List<GroupEntity> getGroupsForCandidateUser(String candidateUser) {
