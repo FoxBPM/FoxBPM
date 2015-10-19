@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Bpmn发布处理类
  * 
- * @author yangguangftlp
+ * @author ych
  * @date 2014年7月17日
  */
 public class BpmnDeployer extends AbstractDeployer {

@@ -83,7 +83,7 @@ public class ProcessDefinitionEntity extends KernelProcessDefinitionImpl
 	/**
 	 * 流程定义类型，为了兼容其他系统推送过来的任务，默认为foxbpm
 	 */
-	protected String definitionType;
+	protected String definitionType = "foxbpm";
 
 	protected DataVariableMgmtDefinition dataVariableMgmtDefinition;
 
