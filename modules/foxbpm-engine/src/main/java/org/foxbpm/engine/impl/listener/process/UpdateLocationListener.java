@@ -103,8 +103,7 @@ public class UpdateLocationListener implements IObserver {
 
 	}
 
-	private Map<String, Object> getProcessLocation(
-			ProcessInstanceEntity processInstance) {
+	private Map<String, Object> getProcessLocation(ProcessInstanceEntity processInstance) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 
 		resultMap.put("processStatus", processInstance.getInstanceStatus());
@@ -161,7 +160,7 @@ public class UpdateLocationListener implements IObserver {
 				continue;
 			}
 
-			Map<String, List<String>> groups = new HashMap<String, List<String>>();
+			List<GroupEntity> groups = new ArrayList<GroupEntity>();
 			nodeMap.put("groups", groups);
 			List<IdentityLinkEntity> identityLinkList = tmpTask
 					.getIdentityLinks();
@@ -174,14 +173,7 @@ public class UpdateLocationListener implements IObserver {
 					if (group == null) {
 						continue;
 					}
-					if (groups.get(groupTypeId) != null) {
-						groups.get(groupTypeId).add(groupId);
-					} else {
-						List<String> groupTos = new ArrayList<String>();
-						groupTos.add(groupId);
-						groups.put(groupTypeId, groupTos);
-					}
-
+					groups.add(group);
 				} else {
 					Map<String, Object> tmpUser = new HashMap<String, Object>();
 					UserEntity user = null;
