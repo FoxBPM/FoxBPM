@@ -25,6 +25,7 @@ import java.util.Map;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.db.PersistentObject;
+import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
@@ -147,17 +148,15 @@ public class UpdateLocationListener implements IObserver {
 			List<Map<String, Object>> users = new ArrayList<Map<String, Object>>();
 			nodeMap.put("users", users);
 			if (StringUtil.isNotEmpty(assignee)) {
-				// UserEntity user =
-				// Authentication.selectUserByUserId(assignee);
+				UserEntity user = Authentication.selectUserByUserId(assignee);
 				Map<String, Object> tmpUser = new HashMap<String, Object>();
-				// if(user == null){
-				tmpUser.put("userId", assignee);
-				tmpUser.put("userName", "未知用户：" + assignee);
-
-				// }else{
-				// tmpUser.put("userId", user.getUserId());
-				// tmpUser.put("userName", user.getUserName());
-				// }
+				if(user == null){
+					 tmpUser.put("userId", assignee);
+					 tmpUser.put("userName", "未知用户：" + assignee);
+				}else{
+					tmpUser.put("userId", user.getUserId());
+					tmpUser.put("userName", user.getUserName());
+				}
 				users.add(tmpUser);
 				continue;
 			}
@@ -171,12 +170,10 @@ public class UpdateLocationListener implements IObserver {
 				if (userId == null) {
 					String groupTypeId = identityLink.getGroupType();
 					String groupId = identityLink.getGroupId();
-					// GroupEntity group = Authentication.findGroupById(groupId,
-					// groupTypeId);
-					// if (group == null) {
-					// continue;
-					// }
-
+					GroupEntity group = Authentication.findGroupById(groupId,groupTypeId);
+					if (group == null) {
+						continue;
+					}
 					if (groups.get(groupTypeId) != null) {
 						groups.get(groupTypeId).add(groupId);
 					} else {
@@ -186,7 +183,6 @@ public class UpdateLocationListener implements IObserver {
 					}
 
 				} else {
-
 					Map<String, Object> tmpUser = new HashMap<String, Object>();
 					UserEntity user = null;
 					if (userId.equals(Constant.FOXBPM_ALL_USER)) {

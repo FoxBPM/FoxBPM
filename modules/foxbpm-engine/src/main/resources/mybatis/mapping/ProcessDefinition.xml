@@ -68,9 +68,6 @@
 		${prefix}_DEF_PROCESSDEFINITION
 		where DEPLOYMENT_ID = #{deploymentId,jdbcType=VARCHAR} 
 		AND PROCESS_KEY =#{key,jdbcType=VARCHAR}
-		<if test="${appId} != null and ${appId}!='00000000'">
-			AND TENANT_ID=${appId}
-		</if>
 	</select>
 
 
