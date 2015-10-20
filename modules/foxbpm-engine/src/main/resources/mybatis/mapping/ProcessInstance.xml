@@ -79,7 +79,7 @@
 		where PROCESSDEFINITION_ID =#{id,jdbcType=VARCHAR}
 		<if test="${appId} != null and ${appId}!='00000000'">
 			AND TENANT_ID=${appId}
-		</if>/
+		</if>
 	</select>
 
 
