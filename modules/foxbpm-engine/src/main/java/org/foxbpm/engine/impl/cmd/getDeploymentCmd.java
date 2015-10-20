@@ -18,6 +18,7 @@
 package org.foxbpm.engine.impl.cmd;
 
 import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.entity.DeploymentEntity;
 import org.foxbpm.engine.impl.interceptor.Command;
 import org.foxbpm.engine.impl.interceptor.CommandContext;
 import org.foxbpm.engine.repository.Deployment;
@@ -40,6 +41,11 @@ public class getDeploymentCmd implements Command<Deployment>{
 	
 	@Override
 	public Deployment execute(CommandContext commandContext) {
-		return Context.getCommandContext().getDeploymentEntityManager().findDeploymentById(deploymentId);
+		DeploymentEntity deploymentEntity = Context.getCommandContext().getDeploymentEntityManager().findDeploymentById(deploymentId);
+		if(deploymentEntity != null){
+			//加载文件资源
+			deploymentEntity.getResources();
+		}
+		return deploymentEntity;
 	}
 }
