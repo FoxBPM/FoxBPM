@@ -129,6 +129,21 @@
 			<commandParam key="isVerification" name="是否触发验证" value="true"
 				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
+		
+		<taskCommandDefinition id="rollBackAutoAssignee"
+			name="退回-自动最近处理者" command="org.foxbpm.engine.impl.task.command.RollBackAutoAssigneeCommand"
+			cmd="org.foxbpm.engine.impl.task.cmd.RollBackAutoAssigneeCmd" isEnabled="true"
+			type="toDoTasks" filter="org.foxbpm.engine.impl.task.filter.RollBackAutoAssigneeFilter"
+			description="退回到前台用户指定的节点和处理者。">
+			<commandParam key="rollBackNodeId" name="退回的节点号"
+				description="" dataType="String" bizType="InputParam" />
+			<commandParam key="isSaveData" name="是否保存数据" value="true"
+				description="" dataType="String" bizType="ControlParam" />
+			<commandParam key="isVerification" name="是否触发验证" value="true"
+				description="" dataType="String" bizType="ControlParam" />
+		</taskCommandDefinition>
+		
+		
 
 		<taskCommandDefinition id="rollBack_designation_reset"
 			name="退回-后台指定步骤-重新分配"
