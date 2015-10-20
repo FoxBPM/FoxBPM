@@ -56,7 +56,7 @@ public class FindUsersCmd implements Command<List<UserEntity>> {
 		UserDefinition userDefinition = commandContext.getUserEntityManager();
 		List<UserEntity> userEntityList = null;
 		if (null != page) {
-			userEntityList = userDefinition.findUsers(idLike, nameLike, page.getFirstResult(), page.getMaxResults());
+			userEntityList = userDefinition.findUsers(idLike, nameLike, page.getPageIndex(), page.getPageSize());
 		} else {
 			userEntityList = userDefinition.findUsers(idLike, nameLike);
 		}

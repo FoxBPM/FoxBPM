@@ -25,19 +25,18 @@ package org.foxbpm.engine.impl.db;
  */
 public class Page {
   
-  protected int firstResult;
-  protected int maxResults;
+  protected int pageIndex;
+  protected int pageSize;
   
-  public Page(int firstResult, int maxResults) {
-    this.firstResult = firstResult;
-    this.maxResults = maxResults;
+  public Page(int pageIndex, int pageSize) {
+    this.pageIndex = pageIndex;
+    this.pageSize = pageSize;
   }
   
-  public int getFirstResult() {
-    return firstResult;
+  public int getPageIndex() {
+	return pageIndex;
   }
-
-  public int getMaxResults() {
-    return maxResults;
+  public int getPageSize() {
+	return pageSize;	
   }
 }
