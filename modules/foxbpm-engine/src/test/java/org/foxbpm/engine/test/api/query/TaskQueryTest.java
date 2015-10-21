@@ -87,21 +87,4 @@ public class TaskQueryTest extends AbstractFoxBpmTestCase {
 		List<Task> tasks = taskQuery.list();
 		assertEquals(1, tasks.size());
 	}
-	
-	
-	@Test
-	public void testScrope(){
-		TaskQuery taskQuery = taskService.createTaskQuery();
-		
-		GroupEntity groupEntity = new GroupEntity("3002","good","class","2001");
-		taskQuery.addCandidateGroup(groupEntity);
-		taskQuery.addCandidateGroup(new GroupEntity("2009", "userGroup","dept","2003"));
-		taskQuery.taskCandidateUser("222");
-		
-		List<Task> tasks = taskQuery.list();
-		for (Task task : tasks) {
-			System.out.println(task.getId());
-		}
-		
-	}
 }

@@ -420,7 +420,7 @@
 					test="candidateGroups != null &amp;&amp; candidateGroups.size() &gt; 0">
 					<foreach item="group" index="index" collection="candidateGroups"
 						open="(" separator="or" close=")">
-						(I.GROUP_ID = #{group.groupId} AND I.GROUP_TYPE =#{group.groupType} AND (I.SCOPE_TYPE is null or (I.SCOPE_ID = #{group.scopeId} and I.SCOPE_TYPE=#{group.scopeType})))
+						(I.GROUP_ID = #{group.groupId} AND I.GROUP_TYPE =#{group.groupType})
 					</foreach>
 				</if>
 				))
