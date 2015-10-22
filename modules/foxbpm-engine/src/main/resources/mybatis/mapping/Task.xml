@@ -259,7 +259,7 @@
 
 	<select id="findTaskCountByQueryCriteria" parameterType="org.foxbpm.engine.impl.task.TaskQueryImpl"
 		resultType="long">
-		select count(RES.ID)
+		select count(distinct RES.ID)
 		<include refid="selectTasksByQueryCriteriaSql" />
 	</select>
 
