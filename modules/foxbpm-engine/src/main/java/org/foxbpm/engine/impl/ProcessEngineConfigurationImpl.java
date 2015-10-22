@@ -956,4 +956,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		return connectorMenuPath;
 	}
 	
+	public void setIdentityCache(Cache<Object> identityCache) {
+		this.identityCache = identityCache;
+	}
+	
 }
