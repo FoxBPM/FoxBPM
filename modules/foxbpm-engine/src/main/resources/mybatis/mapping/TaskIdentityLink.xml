@@ -14,9 +14,9 @@
   
    <insert id="insertIdentityLink" parameterType="org.foxbpm.engine.impl.entity.IdentityLinkEntity" >
     insert into ${prefix}_run_taskidentitylink (ID, TYPE, USER_ID, 
-      GROUP_ID, GROUP_TYPE, TASK_ID,SCOPE_ID,SCOPE_TYPE)
+      GROUP_ID, GROUP_TYPE, TASK_ID)
     values (#{id,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
-      #{groupId,jdbcType=VARCHAR}, #{groupType,jdbcType=VARCHAR}, #{taskId,jdbcType=VARCHAR}
+      #{groupId,jdbcType=VARCHAR}, #{groupType,jdbcType=VARCHAR}, #{taskId,jdbcType=VARCHAR})
   </insert>
   
    <select id="selectIdentityLinkById" resultMap="IdentityLinkResultMap" parameterType="java.lang.String" >
