@@ -66,9 +66,6 @@
 		*
 		from ${prefix}_run_processinstance
 		where ID = #{id,jdbcType=VARCHAR}
-		<if test="${appId} != null and ${appId}!='00000000'">
-			AND TENANT_ID=${appId}
-		</if>
 	</select>
 
 
@@ -77,9 +74,6 @@
 		select ID
 		from ${prefix}_run_processinstance
 		where PROCESSDEFINITION_ID =#{id,jdbcType=VARCHAR}
-		<if test="${appId} != null and ${appId}!='00000000'">
-			AND TENANT_ID=${appId}
-		</if>
 	</select>
 
 
@@ -111,9 +105,6 @@
 			RES.PROCESSDEFINITION_ID
 		</if>
 		<where>
-			<if test="${appId} != null and ${appId}!='00000000'">
-				RES.TENANT_ID=${appId}
-			</if>
 			<if test="processInstanceId != null">
 				and RES.ID = #{processInstanceId}
 			</if>
@@ -236,17 +227,11 @@
 		parameterType="java.lang.String">
 		DELETE FROM ${prefix}_RUN_PROCESSINSTANCE 
 		WHERE PROCESSDEFINITION_ID =#{processDefinitionId,jdbcType=VARCHAR}
-		<if test="${appId} != null and ${appId}!='00000000'">
-			AND TENANT_ID=${appId}
-		</if>
 	</delete>
 	<delete id="deleteProcessInstanceById" parameterType="java.lang.String">
 		DELETE FROM
 		${prefix}_RUN_PROCESSINSTANCE 
 		WHERE ID = #{processInstanceId,jdbcType=VARCHAR}
-		<if test="${appId} != null and ${appId}!='00000000'">
-			AND TENANT_ID=${appId}
-		</if>
 	</delete>
 
 </mapper>

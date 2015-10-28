@@ -801,12 +801,6 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		addIdentityLink(null, groupId, groupType, identityLinkType);
 	}
 	
-	@Override
-	public void addGroupIdentityLink(String groupId, String groupType,
-			String scopeId, String scopeType, String identityLinkType) {
-		addIdentityLink(groupId, groupType, scopeId, scopeType, identityLinkType);
-	}
-	
 	public void deleteCandidateUser(String userId) {
 		throw new FoxBPMException("未实现");
 	}
@@ -841,26 +835,6 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 		identityLinkEntity.insert();
 		return identityLinkEntity;
 	}
-	
-	public IdentityLinkEntity addIdentityLink(String groupId, String groupType,String scopeId,String scopeType,String type) {
-			IdentityLinkEntity identityLinkEntity = new IdentityLinkEntity();
-			identityLinkEntity.setId(GuidUtil.CreateGuid());
-			identityLinkEntity.setTask(this);
-			identityLinkEntity.setUserId(null);
-			identityLinkEntity.setGroupId(groupId);
-			identityLinkEntity.setType(type);
-			identityLinkEntity.setGroupType(groupType);
-			identityLinkEntity.setScopeId(scopeId);
-			identityLinkEntity.setScopeType(scopeType);
-			
-			getIdentityLinks().add(identityLinkEntity);
-			ProcessInstanceEntity processInstance = getProcessInstance();
-			if(processInstance != null){
-				processInstance.setLocationChange(true);
-			}
-			identityLinkEntity.insert();
-			return identityLinkEntity;
-		}
 	
 	public Set<IdentityLink> getCandidates() {
 		throw new FoxBPMException("未实现");

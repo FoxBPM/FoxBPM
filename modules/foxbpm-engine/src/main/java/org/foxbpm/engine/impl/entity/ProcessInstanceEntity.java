@@ -111,7 +111,7 @@ public class ProcessInstanceEntity extends KernelProcessInstanceImpl implements 
 	/**
 	 * 流程实例类型标识，用来区分其他系统推送过来的任务，默认为foxbpm
 	 */
-	protected String instType;
+	protected String instType = "foxbpm";
 	
 	// 对象字段 /////////////////////
 	

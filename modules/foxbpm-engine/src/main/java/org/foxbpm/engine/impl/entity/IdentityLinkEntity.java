@@ -48,11 +48,6 @@ public class IdentityLinkEntity implements Serializable, IdentityLink, Persisten
 
 	protected Date archiveTime;
 	
-	//增加域类型和域编号
-	protected String scopeType;
-	
-	protected String scopeId;
-
 	// get和set方法
 	public void setId(String id) {
 		this.id = id;
@@ -110,22 +105,6 @@ public class IdentityLinkEntity implements Serializable, IdentityLink, Persisten
 		this.archiveTime = archiveTime;
 	}
 
-	public String getScopeType() {
-		return scopeType;
-	}
-
-	public void setScopeType(String scopeType) {
-		this.scopeType = scopeType;
-	}
-
-	public String getScopeId() {
-		return scopeId;
-	}
-
-	public void setScopeId(String scopeId) {
-		this.scopeId = scopeId;
-	}
-
 	// 定义对象
 	protected TaskEntity task;
 
@@ -155,8 +134,6 @@ public class IdentityLinkEntity implements Serializable, IdentityLink, Persisten
 		map.put("GroupType", getGroupType());
 		map.put("userId", getUserId());
 		map.put("taskId", getTaskId());
-		map.put("scopeId", getScopeId());
-		map.put("scopeType", getScopeType());
 		return map;
 		
 	}
