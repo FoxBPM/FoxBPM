@@ -296,14 +296,14 @@
 			</if>
 
 			<if test="subject != null">
-				and SUBJECT = #{subject}
+				and RES.SUBJECT = #{subject}
 			</if>
 			<if test="subjectLike != null">
 				<if test="subjectUnionInitiator == true">
 					and (RES.SUBJECT like '%${subjectLike}%' or P.INITIATOR like '%${subjectLike}%')
 				</if>
 				<if test="subjectUnionInitiator == false">
-					and SUBJECT like '%${subjectLike}%'
+					and RES.SUBJECT like '%${subjectLike}%'
 				</if>
 			</if>
 
