@@ -93,6 +93,11 @@ public class DeploymentManager {
 	
 	public ProcessDefinitionEntity resolveProcessDefinition(
 	    ProcessDefinitionEntity processDefinition) {
+		
+		String definitionType = processDefinition.getDefinitionType();
+		if(!"foxbpm".equals(definitionType)){
+			return processDefinition;
+		}
 		String processDefinitionId = processDefinition.getId();
 		String deploymentId = processDefinition.getDeploymentId();
 		processDefinition = (ProcessDefinitionEntity) processDefinitionCache.get(processDefinitionId);

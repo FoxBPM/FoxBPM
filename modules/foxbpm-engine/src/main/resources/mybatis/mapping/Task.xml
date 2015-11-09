@@ -168,9 +168,6 @@
 		REV_ = #{revisionNext,jdbcType=INTEGER}
 		where
 		ID=#{id,jdbcType=VARCHAR} AND  REV_ = #{revision,jdbcType=INTEGER}
-		<if test="${appId} != null and ${appId}!='00000000'">
-			AND TENANT_ID=${appId}
-		</if>
 	</update>
 
 	<sql id="Task_Column_List">
@@ -193,9 +190,6 @@
 		*
 		FROM ${prefix}_RUN_TASK
 		WHERE ID = #{id,jdbcType=VARCHAR}
-		<if test="${appId} != null and ${appId}!='00000000'">
-			AND TENANT_ID=${appId}
-		</if>
 	</select>
 
 	<select id="selectTaskByNativeQuery" parameterType="java.util.Map"
@@ -209,9 +203,6 @@
 		*
 		FROM ${prefix}_RUN_TASK
 		where PROCESSINSTANCE_ID = #{id,jdbcType=VARCHAR}
-		<if test="${appId} != null and ${appId}!='00000000'">
-			AND TENANT_ID=${appId}
-		</if>
 	</select>
 	
 
@@ -221,9 +212,6 @@
 		*
 		FROM ${prefix}_RUN_TASK
 		where TOKEN_ID = #{id,jdbcType=VARCHAR}
-		<if test="${appId} != null and ${appId}!='00000000'">
-			AND TENANT_ID=${appId}
-		</if>
 	</select>
 
 	<select id="selectEndTasksByTokenIds" parameterType="java.util.List" resultMap="TaskResultMap">
@@ -231,9 +219,6 @@
 		*
 		FROM ${prefix}_RUN_TASK
 		where END_TIME IS NOT NULL AND TASKTYPE = 'foxbpmtask'
-		<if test="${appId} != null and ${appId}!='00000000'">
-			AND TENANT_ID=${appId}
-		</if>
 		<if test="list != null &amp;&amp; list.size() &gt; 0">
 		 	AND TOKEN_ID IN
 			<foreach item="item" index="index" collection="list"
@@ -459,17 +444,11 @@
 	<delete id="deleteTaskByProcessInstanceId" parameterType="java.lang.String">
 		DELETE FROM ${prefix}_RUN_TASK 
 		WHERE PROCESSINSTANCE_ID =#{processInstanceId,jdbcType=VARCHAR}
-		<if test="${appId} != null and ${appId}!='00000000'">
-			AND TENANT_ID=${appId}
-		</if>
 	</delete>
 
 	<delete id="deleteTaskById" parameterType="java.lang.String">
 		DELETE FROM ${prefix}_RUN_TASK 
 		WHERE ID = #{id,jdbcType=VARCHAR}
-		<if test="${appId} != null and ${appId}!='00000000'">
-			AND TENANT_ID=${appId}
-		</if>
 	</delete>
 
 </mapper>

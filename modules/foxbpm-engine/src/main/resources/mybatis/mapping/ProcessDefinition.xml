@@ -49,9 +49,6 @@
 		*
 		from ${prefix}_def_processdefinition
 		where PROCESS_ID =#{processId,jdbcType=VARCHAR}
-		<if test="${appId} != null and ${appId}!='00000000'">
-			AND TENANT_ID=${appId}
-		</if>
 	</select>
 
 	<select id="selectLatestProcessDefinitionByKey" parameterType="java.lang.String" resultMap="ProcessDefinitionMap">
@@ -76,9 +73,6 @@
 		${prefix}_DEF_PROCESSDEFINITION
 		where PROCESS_KEY = #{key,jdbcType=VARCHAR} 
 		AND VERSION =#{version,jdbcType=INTEGER}
-		<if test="${appId} != null and ${appId}!='00000000'">
-			AND TENANT_ID=${appId}
-		</if>
 	</select>
 
 	<select id="selectProcessDefinitionGroupByKey" parameterType="map" resultMap="ProcessDefinitionMap">
@@ -88,9 +82,6 @@
 		${prefix}_DEF_PROCESSDEFINITION t2 
 		on t1.VERSION=t2.VERSION and t1.PROCESS_KEY=t2.PROCESS_KEY
 		WHERE 1=1
-		<if test="${appId} != null and ${appId}!='00000000'">
-			 AND t1.TENANT_ID=${appId}
-		</if>
 	</select>
 
 
@@ -148,9 +139,6 @@
 			<if test="latest">
 				and RES.VERSION = (select max(VERSION) from
 				${prefix}_DEF_PROCESSDEFINITION where KEY = RES.KEY)
-			</if>
-			<if test="tenantId != null">
-				and RES.TENANT_ID= #{tenantId}
 			</if>
 			<if test="definitionType != null">
 				and RES.DEFINITIONTYPE= #{definitionType}
