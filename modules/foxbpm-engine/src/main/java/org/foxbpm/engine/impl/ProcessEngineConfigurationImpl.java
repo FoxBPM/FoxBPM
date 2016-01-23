@@ -428,7 +428,8 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 		taskCommandDefinitionMap = new HashMap<String, TaskCommandDefinition>();
 		commandFilterMap = new HashMap<String, AbstractCommandFilter>();
 		for (TaskCommandDefinition taskCommandDef : getAllTaskCommandDefinitions()) {
-			if(!"system".equals(taskCommandDef.getType())){
+			// ThinkGem 去掉system类型验证，修正“跳过策略”报null问题。
+//			if(!"system".equals(taskCommandDef.getType())){
 				TaskCommandDefinition tmp = taskCommandDefinitionMap.get(taskCommandDef.getId());
 				if (tmp == null) {
 					taskCommandDefinitions.add(taskCommandDef);
@@ -445,7 +446,7 @@ public class ProcessEngineConfigurationImpl extends ProcessEngineConfiguration {
 				} else {
 					log.debug("发现重复任务命令，忽略此命令：" + taskCommandDef.getId());
 				}
-			}
+//			}
 			
 		}
 	}

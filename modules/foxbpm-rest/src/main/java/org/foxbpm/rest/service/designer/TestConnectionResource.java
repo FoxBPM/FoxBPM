@@ -29,6 +29,10 @@ public class TestConnectionResource extends AbstractRestResource {
 
 	@Get
 	public String getMessage(){
+
+		// 只允许内部网络访问
+		onlyAllowIntranetAccess();
+		
 		return "SUCCESS";
 	}
 }

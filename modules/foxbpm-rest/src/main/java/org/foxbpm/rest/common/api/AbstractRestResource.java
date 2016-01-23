@@ -283,18 +283,20 @@ public abstract class AbstractRestResource extends ServerResource {
 	}
 	
 	/**
-	 * 判断是否允许接入
-	 * @return
+	 * 只允许内部网访问
 	 */
-	public boolean allowAccess() {
+	public void onlyAllowIntranetAccess() {
 		String ip = getClientInfo().getAddress();
-		System.out.println("IP Address: " + ip);
-	    String reg = "(10|172|192)"
+//		System.out.println("IP Address: " + ip);
+	    String reg = "(127|10|172|192)"
 	    		+ "\\.([0-1][0-9]{0,2}|[2][0-5]{0,2}|[3-9][0-9]{0,1})"
 	    		+ "\\.([0-1][0-9]{0,2}|[2][0-5]{0,2}|[3-9][0-9]{0,1})"
 	    		+ "\\.([0-1][0-9]{0,2}|[2][0-5]{0,2}|[3-9][0-9]{0,1})";
 	    Pattern p = Pattern.compile(reg);
 	    Matcher matcher = p.matcher(ip);
-	    return matcher.find() || "0:0:0:0:0:0:0:1".equals(ip);
+	    if (!(matcher.find() || "0:0:0:0:0:0:0:1".equals(ip))){
+			throw new FoxbpmPluginException("该服务只允许内网访问。", "Rest服务");
+	    }
 	}
+	
 }
