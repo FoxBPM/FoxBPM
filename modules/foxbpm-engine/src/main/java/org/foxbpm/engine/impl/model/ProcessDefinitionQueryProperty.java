@@ -30,13 +30,14 @@ public class ProcessDefinitionQueryProperty implements QueryProperty {
   
 	private static final Map<String, ProcessDefinitionQueryProperty> properties = new HashMap<String, ProcessDefinitionQueryProperty>();
 
-	public static final ProcessDefinitionQueryProperty PROCESS_DEFINITION_KEY = new ProcessDefinitionQueryProperty("PD.PROCESS_KEY");
-	public static final ProcessDefinitionQueryProperty PROCESS_DEFINITION_CATEGORY = new ProcessDefinitionQueryProperty("PD.CATEGORY");
-	public static final ProcessDefinitionQueryProperty PROCESS_DEFINITION_ID = new ProcessDefinitionQueryProperty("PD.PROCESS_ID");
-	public static final ProcessDefinitionQueryProperty PROCESS_DEFINITION_VERSION = new ProcessDefinitionQueryProperty("PD.VERSION");
-	public static final ProcessDefinitionQueryProperty PROCESS_DEFINITION_NAME = new ProcessDefinitionQueryProperty("PD.PROCESS_NAME");
-	public static final ProcessDefinitionQueryProperty DEPLOYMENT_ID = new ProcessDefinitionQueryProperty("PD.DEPLOYMENT_ID");
-	public static final ProcessDefinitionQueryProperty DEPLOYMENT_TIME = new ProcessDefinitionQueryProperty("DP.DEPLOY_TIME");// DP是fixflow_def_deployment表简称
+	public static final ProcessDefinitionQueryProperty PROCESS_DEFINITION_KEY = new ProcessDefinitionQueryProperty("RES.PROCESS_KEY"); // PD to RES 别名修正 ThinkGem 2016-1-23
+	public static final ProcessDefinitionQueryProperty PROCESS_DEFINITION_CATEGORY = new ProcessDefinitionQueryProperty("RES.CATEGORY");
+	public static final ProcessDefinitionQueryProperty PROCESS_DEFINITION_ID = new ProcessDefinitionQueryProperty("RES.PROCESS_ID");
+	public static final ProcessDefinitionQueryProperty PROCESS_DEFINITION_VERSION = new ProcessDefinitionQueryProperty("RES.VERSION");
+	public static final ProcessDefinitionQueryProperty PROCESS_DEFINITION_NAME = new ProcessDefinitionQueryProperty("RES.PROCESS_NAME");
+	public static final ProcessDefinitionQueryProperty DEPLOYMENT_ID = new ProcessDefinitionQueryProperty("RES.DEPLOYMENT_ID");
+	public static final ProcessDefinitionQueryProperty DEPLOYMENT_TIME = new ProcessDefinitionQueryProperty("RES.DEPLOY_TIME");// RES是fixflow_def_deployment表简称
+	
 	private String name;
 
 	public ProcessDefinitionQueryProperty(String name) {

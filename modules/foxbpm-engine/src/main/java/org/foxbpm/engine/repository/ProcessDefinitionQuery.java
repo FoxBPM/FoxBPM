@@ -56,7 +56,7 @@ public interface ProcessDefinitionQuery extends Query<ProcessDefinitionQuery, Pr
 	/** 根据流程版本号查询 */
 	ProcessDefinitionQuery processDefinitionVersion(Integer processDefinitionVersion);
 
-	/** 只查询最新版本 */
+	/** 补充只查询最新版本    ThinkGem 2016-1-23*/
 	ProcessDefinitionQueryImpl latestVersion();
 	
 	// ordering ////////////////////////////////////////////////////////////

@@ -75,9 +75,6 @@
 		#{id,jdbcType=VARCHAR}
 	</select>
 
-
-
-
 	<select id="selectProcessInstanceByQueryCriteria"
 		parameterType="org.foxbpm.engine.impl.runtime.ProcessInstanceQueryImpl"
 		resultMap="processResultMap">
