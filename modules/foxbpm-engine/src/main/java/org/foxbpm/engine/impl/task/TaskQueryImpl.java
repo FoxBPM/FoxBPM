@@ -73,6 +73,7 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	protected String processDefinitionId;
 	protected String processDefinitionName;
 	protected String processDefinitionNameLike;
+	protected String category; // 按流程分类进行查询 ThinkGem 2015-7-6
 	protected String subject;
 	protected String subjectLike;
 	protected boolean subjectUnionInitiator = false;
@@ -252,6 +253,14 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 			return this;
 		}
 		this.descriptionLike = descriptionLike;
+		return this;
+	}
+
+	/**
+	 * 按流程分类进行查询 ThinkGem 2015-7-6
+	 */
+	public TaskQuery category(String category) {
+		this.category = category;
 		return this;
 	}
 	
@@ -553,6 +562,13 @@ public class TaskQueryImpl extends AbstractQuery<TaskQuery, Task> implements Tas
 	public TaskQuery initiator(String initiator) {
 		this.initiator = initiator;
 		return this;
+	}
+
+	/**
+	 * 按流程分类进行查询 ThinkGem 2015-7-6
+	 */
+	public String getCategory() {
+		return category;
 	}
 	
 	public String getInitiator() {

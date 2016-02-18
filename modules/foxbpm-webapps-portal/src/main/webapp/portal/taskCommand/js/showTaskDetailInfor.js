@@ -88,7 +88,7 @@ Foxbpm.TaskDeatailInfor.prototype = {
 									function(j, data) {
 										var completedRecord = $("<div class='timeline-comment-wrapper js-comment-container'>");
 										var a = $("<a href='javascript:void(0);'>");
-										var img = $("<img width='48' height='48' class='timeline-comment-avatar'>");
+										var img = $("<img width='42' height='42' class='timeline-comment-avatar'>");
 										img.attr("alt", data.userName);
 										img.attr("src",_GlobalFlowVar._bpmServiceUrl+ "identity/users/"+data.userName+"/picture");
 										a.append(img);
@@ -108,7 +108,8 @@ Foxbpm.TaskDeatailInfor.prototype = {
 														+ data.endTime);
 										var comment_content = $("<div class='comment-content'>");
 										var edit_comment_hide = $("<div class='edit-comment-hide'>");
-										edit_comment_hide.append("<div class='comment-body markdown-body markdown-format js-comment-body'><p>"
+										if (data.taskComment && data.taskComment != '')
+											edit_comment_hide.append("<div class='comment-body markdown-body markdown-format js-comment-body'><p>"
 														+ (!data.taskComment ? '': data.taskComment)
 														+ "</p></div>");
 										comment_header.append(comment_action);
@@ -170,7 +171,7 @@ Foxbpm.TaskDeatailInfor.prototype = {
 												function(j, data) {
 													var completedRecord = $("<div class='timeline-comment-wrapper js-comment-container'>");
 													var a = $("<a href='javascript:void(0);'>");
-													var img = $("<img width='48' height='48' class='timeline-comment-avatar'>");
+													var img = $("<img width='42' height='42' class='timeline-comment-avatar'>");
 													img.attr("alt", "admin");
 													img
 															.attr("src",
@@ -193,7 +194,8 @@ Foxbpm.TaskDeatailInfor.prototype = {
 																	+ (!data.endTime? '': data.endTime));
 													var comment_content = $("<div class='comment-content'>");
 													var edit_comment_hide = $("<div class='edit-comment-hide'>");
-													edit_comment_hide
+													if (data.taskComment && data.taskComment != '')
+														edit_comment_hide
 															.append("<div class='comment-body markdown-body markdown-format js-comment-body'><p>"
 																	+ (!data.taskComment? ''
 																			: data.taskComment)

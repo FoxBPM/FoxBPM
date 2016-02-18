@@ -11,17 +11,13 @@
 		<batik.version>1.7</batik.version>
 	</properties>
 	<modules>
-		<module>modules/foxbpm-engine</module>
-		<module>modules/foxbpm-kernel</module>
 		<module>modules/foxbpm-connector</module>
 		<module>modules/foxbpm-rest</module>
 		<module>modules/foxbpm-webapps-portal</module>
-		<module>modules/foxbpm-webapps-common</module>
-        <module>modules/foxbpm-bpmn-model</module>
-        <module>modules/foxbpm-bpmn-converter</module>
         <module>modules/foxbpm-plugin</module>
+		<module>modules/foxbpm-webapps-common</module>
 	</modules>
-
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -120,7 +116,7 @@
 			<dependency>
 				<groupId>org.foxbpm</groupId>
 				<artifactId>foxbpm-kernel</artifactId>
-				<version>6.0.0</version>
+				<version>6.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.foxbpm</groupId>
@@ -155,4 +151,8 @@
 		</dependency>
 		</dependencies>
 	</dependencyManagement>
+	
+	<profiles>
+	</profiles>
+	
 </project>

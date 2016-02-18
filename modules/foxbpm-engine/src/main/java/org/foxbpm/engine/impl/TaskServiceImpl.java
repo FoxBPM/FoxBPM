@@ -102,6 +102,12 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 				persistenceVariables));
 	}
 
+	public void complete(String taskId, Map<String, Object> transientVariables,
+			Map<String, Object> persistenceVariables, String taskComment) {
+		commandExecutor.execute(new CompleteTaskCmd(taskId, transientVariables,
+				persistenceVariables, taskComment));
+	}
+
 	public <T> T expandTaskComplete(ExpandTaskCommand expandTaskCommand,
 			T classReturn) {
 		return (T) commandExecutor.execute(new ExpandTaskCompleteCmd<T>(

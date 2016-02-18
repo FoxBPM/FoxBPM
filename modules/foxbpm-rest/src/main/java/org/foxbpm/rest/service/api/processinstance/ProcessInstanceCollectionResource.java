@@ -47,8 +47,8 @@ public class ProcessInstanceCollectionResource extends AbstractRestResource {
 	@SuppressWarnings("unchecked")
 	@Get
 	public DataResult getProcessInstance(){
-		if(!validationUser())
-			return null;
+//		if(!validationUser())
+//			return null;
 		Form queryForm = getQuery();
 		Set<String> queryNames = queryForm.getNames();
 		
@@ -77,6 +77,10 @@ public class ProcessInstanceCollectionResource extends AbstractRestResource {
 		
 		if(queryNames.contains(RestConstants.PROCESS_ID)){
 			processIntanceQuery.processDefinitionId(getQueryParameter(RestConstants.PROCESS_ID, queryForm));
+		}
+		
+		if(queryNames.contains(RestConstants.BIZKEY)){
+			processIntanceQuery.processInstanceBusinessKey(getQueryParameter(RestConstants.BIZKEY, queryForm));
 		}
 		
 		if(queryNames.contains(RestConstants.BIZKEY_LIKE)){

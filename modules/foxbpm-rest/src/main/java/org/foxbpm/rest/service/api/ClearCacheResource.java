@@ -25,6 +25,10 @@ public class ClearCacheResource extends AbstractRestResource {
 
 	@Get
 	public void clearCache(){
+		
+		// 只允许内部网络访问
+		onlyAllowIntranetAccess();
+		
 		CacheUtil.clearCache();
 	}
 }

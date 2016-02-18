@@ -65,7 +65,7 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery isSuspended(boolean isSuspended);
-	
+
 	/**
 	 * 根据令牌ID查询
 	 * 
@@ -152,6 +152,14 @@ public interface TaskQuery extends Query<TaskQuery, Task> {
 	 * @return
 	 */
 	TaskQuery taskDescriptionLike(String descriptionLike);
+
+	/**
+	 * 按流程分类进行查询  ThinkGem 2015-7-6
+	 * 
+	 * @param category
+	 * @return
+	 */
+	TaskQuery category(String category);
 	
 	/**
 	 * 任务主题

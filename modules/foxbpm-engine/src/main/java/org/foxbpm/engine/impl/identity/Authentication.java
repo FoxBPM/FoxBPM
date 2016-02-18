@@ -35,7 +35,7 @@ import org.foxbpm.engine.impl.util.ExceptionUtil;
 public abstract class Authentication {
 	
 	static ThreadLocal<String> authenticatedUserIdThreadLocal = new ThreadLocal<String>();
-	private final static String SYSTEM_ID = "admin";
+	private final static String SYSTEM_ID = "system";
 	/**
 	 * 设置当前引擎的操作人
 	 * 

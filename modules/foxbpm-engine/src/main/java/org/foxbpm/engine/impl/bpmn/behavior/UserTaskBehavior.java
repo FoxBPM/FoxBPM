@@ -24,15 +24,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+import org.foxbpm.engine.Constant;
 import org.foxbpm.engine.calendar.WorkCalendar;
+import org.foxbpm.engine.exception.FoxBPMException;
 import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.connector.ConnectorListener;
+import org.foxbpm.engine.impl.entity.IdentityLinkEntity;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.event.AbstractTaskEvent;
 import org.foxbpm.engine.impl.expression.ExpressionMgmt;
+import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.task.TaskDefinition;
 import org.foxbpm.engine.impl.util.ClockUtil;
 import org.foxbpm.engine.impl.util.ExceptionUtil;
@@ -42,6 +47,8 @@ import org.foxbpm.engine.task.TaskCommandDefinition;
 import org.foxbpm.kernel.runtime.FlowNodeExecutionContext;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 import org.foxbpm.model.SkipStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 人工任务处理器
@@ -52,6 +59,8 @@ import org.foxbpm.model.SkipStrategy;
 public class UserTaskBehavior extends TaskBehavior {
 
 	private static final long serialVersionUID = 1L;
+	private static Logger log = LoggerFactory.getLogger(UserTaskBehavior.class);
+	
 	/** 任务信息定义 */
 	private TaskDefinition taskDefinition;
 	public void execute(FlowNodeExecutionContext executionContext) {
@@ -169,6 +178,47 @@ public class UserTaskBehavior extends TaskBehavior {
 			Date dueDate = workCalendar.getDueTime(now, expectedTime, calendarParams);
 			task.setDueDate(dueDate);
 		}
+		
+		// ThinkGem 2015-10-26  如果没有下一步处理者，则抛出异常
+		boolean isExistsNextAssignee = false;
+		StringBuilder sb = new StringBuilder();
+		sb.append("下一步处理人： nodeId: ").append(task.getNodeId());
+		if (StringUtils.isNotBlank(task.getAssignee())){
+			sb.append(" 独享任务： userId: ").append(task.getAssignee());
+			if (Authentication.selectUserByUserId(task.getAssignee()) != null){
+				isExistsNextAssignee = true;
+			}
+		}else{
+			List<IdentityLinkEntity> identityLinks = task.getIdentityLinks();
+			if (identityLinks != null){
+				sb.append(" 共享任务：");
+				for (IdentityLinkEntity e : identityLinks){
+					if (StringUtils.isNotBlank(e.getUserId())){
+						sb.append(" userId: ").append(e.getUserId());
+						if (Constant.FOXBPM_ALL_USER.equals(e.getUserId())){
+							isExistsNextAssignee = true;
+							break;
+						}else if (Authentication.selectUserByUserId(e.getUserId()) != null){
+							isExistsNextAssignee = true;
+							break;
+						}
+					}
+					if (StringUtils.isNotBlank(e.getGroupId()) && StringUtils.isNotBlank(e.getGroupType())){
+						sb.append(" groupId: ").append(e.getGroupId()).append("  groupType: ").append(e.getGroupType());
+						List<String> userIds = Authentication.selectUserIdsByGroupIdAndType(e.getGroupId(), e.getGroupType());
+						if (userIds != null && userIds.size() > 0){
+							isExistsNextAssignee = true;
+							break;
+						}
+					}
+				}
+			}
+		}
+		log.info(sb.toString());
+		if (!isExistsNextAssignee){
+			throw new FoxBPMException("没有下一步处理人");
+		}
+		// ThinkGem 2015-10-26 end
 		
 		token.setAssignTask(task);
 		/** 触发分配事件(后事件) */

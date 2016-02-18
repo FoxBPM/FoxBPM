@@ -66,7 +66,7 @@ public class SelectDepartmentAndRole extends ActorConnectorHandler {
 		List<String> temp = null;
 		// 获取部门下所有用户
 		for (String id : departmentIds) {
-			temp = Authentication.selectUserIdsByGroupIdAndType(id, Constant.DEPT_TYPE);;
+			temp = Authentication.selectUserIdsByGroupIdAndType(id, Constant.DEPT_TYPE);
 			if (null != temp) {
 				deptList.addAll(temp);
 			}

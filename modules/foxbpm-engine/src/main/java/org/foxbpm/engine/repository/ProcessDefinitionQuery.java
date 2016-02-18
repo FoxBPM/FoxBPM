@@ -19,6 +19,7 @@
 
 package org.foxbpm.engine.repository;
 
+import org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl;
 import org.foxbpm.engine.query.Query;
 
 /**
@@ -53,9 +54,11 @@ public interface ProcessDefinitionQuery extends Query<ProcessDefinitionQuery, Pr
 	ProcessDefinitionQuery processDefinitionKeyLike(String processDefinitionKeyLike);
 
 	/** 根据流程版本号查询 */
-
 	ProcessDefinitionQuery processDefinitionVersion(Integer processDefinitionVersion);
 
+	/** 补充只查询最新版本    ThinkGem 2016-1-23*/
+	ProcessDefinitionQueryImpl latestVersion();
+	
 	// ordering ////////////////////////////////////////////////////////////
 	/** 根据分类排序  */
 	ProcessDefinitionQuery orderByProcessDefinitionCategory();

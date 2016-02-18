@@ -88,6 +88,10 @@ public class TaskCollectionResource extends AbstractRestResource {
 			taskQuery.taskNameLike(parseLikeValue(getQueryParameter("nameLike", queryForm)));
 		}
 		
+		if (queryNames.contains("bizKey")) {
+			taskQuery.businessKeyLike(getQueryParameter("bizKey", queryForm));
+		}
+		
 		if (queryNames.contains("bizKeyLike")) {
 			taskQuery.businessKeyLike(parseLikeValue(getQueryParameter("bizKeyLike", queryForm)));
 		}

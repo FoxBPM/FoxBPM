@@ -6,3 +6,4 @@
 /fixflow-bpmn-converter
 .gitignore
 .DS_Store
+*.versionsBackup

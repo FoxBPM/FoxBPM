@@ -42,9 +42,7 @@ public class ExpandTaskCompleteCmd<T> implements Command<T>{
 		if(Authentication.getAuthenticatedUserId()==null||Authentication.getAuthenticatedUserId().equals("")){
 			throw ExceptionUtil.getException("10501001");
 		}
-		// TODO Auto-generated method stub
 		Object[] obj = new Object[] {expandTaskCommand};  
-		
 		
 		TaskCommandDefinition taskCommandDef= commandContext.getProcessEngineConfigurationImpl().getTaskCommandDefinition(this.expandTaskCommand.getCommandType());
 		if(taskCommandDef!=null){

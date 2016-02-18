@@ -42,6 +42,10 @@ public class DeploymentCollectionResource extends AbstractRestResource {
 
 	@Post
 	public String deploy(Representation entity){
+		
+		// 只允许内部网络访问
+		onlyAllowIntranetAccess();
+		
 		InputStream input = null;
 		String processDefinitionKey = null;
 		try {
