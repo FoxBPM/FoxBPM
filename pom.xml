@@ -17,17 +17,6 @@
         <module>modules/foxbpm-plugin</module>
 		<module>modules/foxbpm-webapps-common</module>
 	</modules>
-
-	<distributionManagement>
-		<repository>
-			<id>ecode-repos</id>
-			<url>http://192.168.11.36:8888/nexus/content/repositories/ecode-repos</url>
-		</repository>
-		<snapshotRepository>
-			<id>ecode-repos-s</id>
-			<url>http://192.168.11.36:8888/nexus/content/repositories/ecode-repos-s</url>
-		</snapshotRepository>
-	</distributionManagement>
 	
 	<build>
 		<plugins>
@@ -162,4 +151,8 @@
 		</dependency>
 		</dependencies>
 	</dependencyManagement>
+	
+	<profiles>
+	</profiles>
+	
 </project>
