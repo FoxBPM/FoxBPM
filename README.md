@@ -1,4 +1,4 @@
-#简介
+# 简介
 
 FoxBPM(6.0版本开始fixflow改名为FoxBPM)是一款开源的基于BPMN2.0标准的工作流引擎,引擎底层直接支持BPMN2.0国际标准,
 吸纳了 jBPM3 、 Activiti5、BonitaBPM 等国际开源流程引擎的精髓,
@@ -8,7 +8,7 @@ FoxBPM本身并不具备完整的开发平台功能,它的定位是专门用于�
 
 6.0.0为Beta版本,基于6.0.0版本会快速迭代修复问题。
 
-#其他Git仓库
+# 其他Git仓库
 国内访问速度比较慢的朋友可以考虑从国内的Git仓库拉取代码:
 
 **开源中国社区-中国**:(http://git.oschina.net/kenshinnet/FoxBPM)
@@ -18,7 +18,7 @@ FoxBPM本身并不具备完整的开发平台功能,它的定位是专门用于�
 **csdn_code -中国**:(https://code.csdn.net/kenShinNet/foxbpm)  
 
 
-#为什么选择FoxBPM？
+# 为什么选择FoxBPM？
 • 开源以及强大的社区支持
 
 • 基于国际业务流程标准BPMN2.0
@@ -36,11 +36,11 @@ FoxBPM本身并不具备完整的开发平台功能,它的定位是专门用于�
 • 支持Groovy等多种动态脚本引擎
 
 
-#资源打包下载
+# 资源打包下载
 包含数据库脚本、jar包、用户向导、设计器插件、war包、内核源码，全部源码。
 * [FoxBPM Release 6.0(百度网盘)](http://pan.baidu.com/s/1hqkqoNM)
 
-#流程设计器
+# 流程设计器
 (国内最强大的BPMN设计器)
 设计器提供两种版本,完整Eclipse版本、单一插件版本。
 * [完整版设计器下载（win32）(百度网盘)](http://pan.baidu.com/s/1eQAcKAe)
@@ -49,7 +49,7 @@ FoxBPM本身并不具备完整的开发平台功能,它的定位是专门用于�
 
 
 
-#资源介绍
+# 资源介绍
 
 **开发者交流社区QQ群**: 434527452
 
@@ -60,14 +60,14 @@ FoxBPM本身并不具备完整的开发平台功能,它的定位是专门用于�
 **常见问题整理（FAQ）**:(http://yang-ch.iteye.com/blog/2171370)
 
 
-#分支介绍
+# 分支介绍
 * develop 最新开发版
 * master 最新稳定版
 * release-*  发布分支为准备新的产品版本发布做支持
 * hotfix-*   当产品版本的重大bug需要立即解决的时候，我们从对应版本的标签创建出一个热补丁分支。
 * feature-*  特性分支是用来为下一发布版本开发新特性
 
-#项目介绍
+# 项目介绍
 
 * foxbpm-kernel:Foxbpm流程微内核项目
 * foxbpm-engine:Foxbpm流程引擎项目
@@ -80,7 +80,7 @@ FoxBPM本身并不具备完整的开发平台功能,它的定位是专门用于�
 * foxbpm-webapps-portal:Foxbpm流程门户
 
 
-#如何选择？
+# 如何选择？
 * FoxBPM提供两种方式的集成:
 * 1.完整集成版本,提供任务处理中心、流程管控中心、引擎内核、扩展项目、Junit测试库
 * 2.核心集成版本,只提供引擎内核、扩展项目、Junit测试库
@@ -91,18 +91,18 @@ FoxBPM本身并不具备完整的开发平台功能,它的定位是专门用于�
 * 注意：FoxBPM自带的任务处理中心,在应用到实际项目中之前需要对其进行集成开发来使用用户各自系统的要求。
 
 
-#Eclipse设计器界面
+# Eclipse设计器界面
 ![Eclipse设计器界面](http://images.cnitblog.com/blog/20120/201401/231630266632.png)
 
 
-#如何提交bug或者问题
+# 如何提交bug或者问题
 在FoxBPM项目上点击Issues->New Issue提交bug,在标签栏选择bug、优先级、状态（未解决）三个标签，然后提交。我们会根据bug内容反馈相关信息给您。
 ![系统截图](https://github.com/fixteam/fixflow/wiki/images/Bug20130917093746.png)
 
 
 
 
-#新的版本
+# 新的版本
 ### 6.0.0（2014-12）
 引擎端
 
@@ -143,7 +143,7 @@ FoxBPM本身并不具备完整的开发平台功能,它的定位是专门用于�
 
 
 
-#历史的脚印
+# 历史的脚印
 
 
 ### 5.2.1 hotfix（2014-4）
