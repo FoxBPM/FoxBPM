@@ -2,7 +2,7 @@
 <!DOCTYPE chapter PUBLIC '-//OASIS//DTD DocBook XML V5.0//EN'  
                '../dtd/docbook.dtd'> 
 <chapter xml:id="EclipseDesigner">
-  <title>设计器安装手册</title>
+  <title>设计器安装</title>
   <section xml:id="eclipse.Installation">
     <title>安装</title>
     <para>
@@ -275,10 +275,10 @@
         </listitem>
         <listitem>
           <para>验证groovy表达式是否可正常使用。</para>
-          <para>aa</para>
+          <para/>
         </listitem>
         <listitem>
-          <para>说明：该设计器插件均在kepler、Juno版本的Eclipse 安装通过。</para>
+          <para>说明：该设计器插件均在kepler、Juno、版本的Eclipse 安装通过。</para>
         </listitem>
       </orderedlist>
     </para>

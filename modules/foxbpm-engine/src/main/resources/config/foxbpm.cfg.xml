@@ -9,6 +9,16 @@
 				description="" dataType="String" bizType="ControlParam" />
 			<commandParam key="isVerification" name="是否触发验证" value="true"
 				description="" dataType="String" bizType="ControlParam" />
+			<commandParam key="selectUserId" name="选择的用户ID"
+				description="界面上选择的用户ID" dataType="String" bizType="InputParam" />
+			<commandParam key="isSelectUser" name="是否选择用户" value="false"
+				description="是否弹出选择用户" dataType="String" bizType="ControlParam" />
+			<commandParam key="isMultiSelect" name="是否可以多选" value="false"
+				description="选择用户是否可以多选" dataType="String" bizType="ControlParam" />
+			<commandParam key="isAll" name="是否显示全部" value="false"
+				description="选择用户是否显示全部" dataType="String" bizType="ControlParam" />
+			<commandParam key="treeDataUrl" name="外部数据源" value="false"
+				description="指定外部数据源" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
 
 		<taskCommandDefinition id="startandsubmit" name="启动并提交"
@@ -20,6 +30,16 @@
 				description="" dataType="String" bizType="ControlParam" />
 			<commandParam key="isVerification" name="是否触发验证" value="true"
 				description="" dataType="String" bizType="ControlParam" />
+			<commandParam key="selectUserId" name="选择的用户ID"
+				description="界面上选择的用户ID" dataType="String" bizType="InputParam" />
+			<commandParam key="isSelectUser" name="是否选择用户" value="false"
+				description="是否弹出选择用户" dataType="String" bizType="ControlParam" />
+			<commandParam key="isMultiSelect" name="是否可以多选" value="false"
+				description="选择用户是否可以多选" dataType="String" bizType="ControlParam" />
+			<commandParam key="isAll" name="是否显示全部" value="false"
+				description="选择用户是否显示全部" dataType="String" bizType="ControlParam" />
+			<commandParam key="treeDataUrl" name="外部数据源" value="false"
+				description="指定外部数据源" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
 
 		<taskCommandDefinition id="submit" name="提交"
@@ -30,6 +50,16 @@
 				description="" dataType="String" bizType="ControlParam" />
 			<commandParam key="isVerification" name="是否触发验证" value="true"
 				description="" dataType="String" bizType="ControlParam" />
+			<commandParam key="selectUserId" name="选择的用户ID"
+				description="界面上选择的用户ID" dataType="String" bizType="InputParam" />
+			<commandParam key="isSelectUser" name="是否选择用户" value="false"
+				description="是否弹出选择用户" dataType="String" bizType="ControlParam" />
+			<commandParam key="isMultiSelect" name="是否可以多选" value="false"
+				description="选择用户是否可以多选" dataType="String" bizType="ControlParam" />
+			<commandParam key="isAll" name="是否显示全部" value="false"
+				description="选择用户是否显示全部" dataType="String" bizType="ControlParam" />
+			<commandParam key="treeDataUrl" name="外部数据源" value="false"
+				description="指定外部数据源" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
 
 		<taskCommandDefinition id="claim" name="接收任务"
@@ -62,7 +92,6 @@
 				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
 
-
 		<taskCommandDefinition id="transferAndCreateTask" name="转发-创建新任务"
 			command="org.foxbpm.engine.impl.task.command.TransferTaskCommand"
 			cmd="org.foxbpm.engine.impl.task.cmd.TransferAndCreateTaskCmd" isEnabled="true"
@@ -86,7 +115,6 @@
 			<commandParam key="isVerification" name="是否触发验证" value="true"
 				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
-
 
 		<taskCommandDefinition id="rollBack_reset" name="退回-重新分配"
 			command="org.foxbpm.engine.impl.task.command.RollBackResetCommand"
@@ -176,12 +204,12 @@
 				description="" dataType="String" bizType="ControlParam" />
 		</taskCommandDefinition>
 		 -->
-
+		
 		<taskCommandDefinition id="pending" name="转办"
-			command="org.foxbpm.engine.impl.task.command.PendingTaskCommand" cmd="org.foxbpm.engine.impl.task.cmd.PendingTaskCmd"
+			command="org.foxbpm.engine.impl.task.command.PendingTaskCommand"
+			cmd="org.foxbpm.engine.impl.task.cmd.PendingTaskCmd"
 			isEnabled="true" type="toDoTasks"
 			filter="org.foxbpm.engine.impl.task.filter.PendingTaskFilter">
-
 			<commandParam key="pendingUserId" name="转办人"
 				description="" dataType="String" bizType="InputParam" />
 			<commandParam key="isSaveData" name="是否保存数据" value="true"

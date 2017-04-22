@@ -11,6 +11,10 @@ public class ResourceResource extends AbstractRestResource {
 
 	@Get
 	public InputStream getResource(){
+
+		// 只允许内部网络访问
+		onlyAllowIntranetAccess();
+		
 		String deploymentId = getAttribute("deploymentId");
 		String resourceName = getAttribute("resourceName");
 		ModelService modelService = FoxBpmUtil.getProcessEngine().getModelService();

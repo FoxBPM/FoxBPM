@@ -46,10 +46,12 @@ public class RecoverTaskByIdCmd implements Command<List<Void>>{
 
 	private String taskId;
 	private String targetNodeId;
+	private String taskComment;
 	
-	public RecoverTaskByIdCmd(String taskId,String targetNodeId) {
+	public RecoverTaskByIdCmd(String taskId,String targetNodeId,String taskComment) {
 		this.taskId = taskId;
 		this.targetNodeId = targetNodeId;
+		this.taskComment = taskComment;
 	}
 	
 	public List<Void> execute(CommandContext commandContext) {
@@ -97,6 +99,7 @@ public class RecoverTaskByIdCmd implements Command<List<Void>>{
 		taskEntity.setCommandId(TaskCommandSystemType.RECOVER);
 		taskEntity.setCommandType(TaskCommandSystemType.RECOVER);
 		taskEntity.setCommandMessage("已追回");
+		taskEntity.setTaskComment(taskComment);
 		taskEntity.setAssignee(userId);
 		taskEntity.complete(findFlowNode,userId);
 		

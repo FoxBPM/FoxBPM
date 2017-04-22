@@ -43,7 +43,7 @@ public class EndEventTaskListener extends AbstractTaskEventListener {
 		TokenEntity tokenEntity = (TokenEntity) executionContext;
 		KernelFlowNodeImpl kernelFlowNode = tokenEntity.getFlowNode();
 		// 创建流程结束
-		TaskEntity taskEntity = new TaskEntity();
+		TaskEntity taskEntity = TaskEntity.createAndInsert(tokenEntity);
 		taskEntity.setNodeId(kernelFlowNode.getId());
 		taskEntity.setNodeName(kernelFlowNode.getName());
 		taskEntity.setBizKey(tokenEntity.getBizKey());

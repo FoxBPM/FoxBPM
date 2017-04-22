@@ -102,6 +102,12 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 				persistenceVariables));
 	}
 
+	public void complete(String taskId, Map<String, Object> transientVariables,
+			Map<String, Object> persistenceVariables, String taskComment) {
+		commandExecutor.execute(new CompleteTaskCmd(taskId, transientVariables,
+				persistenceVariables, taskComment));
+	}
+
 	public <T> T expandTaskComplete(ExpandTaskCommand expandTaskCommand,
 			T classReturn) {
 		return (T) commandExecutor.execute(new ExpandTaskCompleteCmd<T>(
@@ -147,8 +153,8 @@ public class TaskServiceImpl extends ServiceImpl implements TaskService {
 		return commandExecutor.execute(new GetIdentityLinkByTaskIdCmd(taskId));
 	}
 	
-	public void recoverTask(String taskId, String targetNodeId) {
-		commandExecutor.execute(new RecoverTaskByIdCmd(taskId,targetNodeId));
+	public void recoverTask(String taskId, String targetNodeId,String taskComment) {
+		commandExecutor.execute(new RecoverTaskByIdCmd(taskId,targetNodeId,taskComment));
 	}
 
 	public Class<?> getInterfaceClass() {

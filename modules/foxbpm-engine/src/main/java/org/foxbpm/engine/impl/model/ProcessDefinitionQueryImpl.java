@@ -171,10 +171,11 @@ public class ProcessDefinitionQueryImpl extends AbstractQuery<ProcessDefinitionQ
 	public void checkQueryOk() {
 		super.checkQueryOk();
 
+		// 只查询最新版本的时候，允许加入 id、name、version等条件    ThinkGem 2016-1-23
 		// latest() makes only sense when used with key() or keyLike()
-		if (latest && ((id != null) || (name != null) || (nameLike != null) || (version != null) || (deploymentId != null))) {
-			throw new FoxBPMException("Calling latest() can only be used in combination with key(String) and keyLike(String)");
-		}
+//		if (latest && ((id != null) || (name != null) || (nameLike != null) || (version != null) || (deploymentId != null))) {
+//			throw new FoxBPMException("Calling latest() can only be used in combination with key(String) and keyLike(String)");
+//		}
 	}
 
 	// getters ////////////////////////////////////////////
@@ -219,9 +220,10 @@ public class ProcessDefinitionQueryImpl extends AbstractQuery<ProcessDefinitionQ
 		return categoryLike;
 	}
 	
-	@Override
-	public String getOrderBy() {
-		// TODO Auto-generated method stub
-		return "RES.PROCESS_ID";
-	}
+//	注释掉，使用基类排序设置
+//	@Override
+//	public String getOrderBy() {
+//		return "RES.PROCESS_ID";
+//	}
+	
 }

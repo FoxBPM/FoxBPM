@@ -87,7 +87,10 @@ public class StartAndSubmitTaskCmd extends AbstractExpandTaskCmd<StartAndSubmitT
 			List<TaskEntity> submitTasks = processInstance.getTasks();
 
 			for (TaskEntity submitTask : submitTasks) {
-
+				
+				if(!submitTask.getNodeId().equals(taskDefinition.getId())){
+					continue;
+				}
 				ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
 				expandTaskCommand.setCommandType("submit");
 				expandTaskCommand.setTaskComment(this.taskComment);

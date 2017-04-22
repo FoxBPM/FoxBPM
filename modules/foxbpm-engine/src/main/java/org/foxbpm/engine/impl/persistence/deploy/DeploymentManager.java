@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.foxbpm.engine.cache.Cache;
 import org.foxbpm.engine.impl.Context;
+import org.foxbpm.engine.impl.cache.CacheUtil;
 import org.foxbpm.engine.impl.entity.DeploymentEntity;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl;
@@ -42,6 +43,10 @@ public class DeploymentManager {
 	protected List<Deployer> deployers;
 	
 	public void deploy(DeploymentEntity deployment) {
+		// 先清理流程定义缓存
+		CacheUtil.clearProcessDefinitionCache();
+		CacheUtil.clearUserProcessDefinitionCache();
+		// 然后再部署流程
 		for (Deployer deployer : deployers) {
 			deployer.deploy(deployment);
 		}

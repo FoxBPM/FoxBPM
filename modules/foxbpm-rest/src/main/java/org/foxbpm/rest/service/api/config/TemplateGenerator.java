@@ -17,15 +17,20 @@
  */
 package org.foxbpm.rest.service.api.config;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.JarURLConnection;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.apache.commons.io.FileUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,30 +49,30 @@ public class TemplateGenerator implements IZipGenerator {
 				return;
 			}
 			String urlStr = url.toString();
-			String jarPath = urlStr.substring(0, urlStr.indexOf("!/") + 2);
-			URL jarURL = new URL(jarPath);
-			JarURLConnection jarCon = (JarURLConnection) jarURL.openConnection();
-			JarFile jarFile = jarCon.getJarFile();
-			
-			Enumeration<JarEntry> jarEntrys = jarFile.entries();
-			while (jarEntrys.hasMoreElements()) {
-				JarEntry entry = jarEntrys.nextElement();
-				// 简单的判断路径，如果想做到想Spring，Ant-Style格式的路径匹配需要用到正则。
-				String name = entry.getName();
-				if(name.startsWith(dirPath) && !entry.isDirectory() && !name.endsWith(".class")){
-					int size = 1024;
-					InputStream is = jarFile.getInputStream(entry);
-					String tmpEntryName = dirPath + "/" + name.substring(dirPath.length()+1);
-					ZipEntry zipEntry = new ZipEntry(tmpEntryName);
-					zipEntry.setMethod(ZipEntry.DEFLATED);// 设置条目的压缩方式
-					out.putNextEntry(zipEntry);
-					int n = 0;
-					byte b[] = new byte[size];
-					while((n=is.read(b)) != -1){
-						out.write(b , 0 , n);
+			if (!urlStr.startsWith("jar")){
+				File dirFile = new File(url.getFile());
+				Collection<File> files = FileUtils.listFiles(dirFile, null, true);
+				for (File file : files){
+					InputStream is = new FileInputStream(file);
+					String tmpEntryName = dirPath + file.getPath().replace(dirFile.getPath(), "");
+					writeZipFile(out, is, tmpEntryName);
+				}
+			}else{
+				String jarPath = urlStr.substring(0, urlStr.indexOf("!/") + 2);
+				URL jarURL = new URL(jarPath);
+				JarURLConnection jarCon = (JarURLConnection) jarURL.openConnection();
+				JarFile jarFile = jarCon.getJarFile();
+				
+				Enumeration<JarEntry> jarEntrys = jarFile.entries();
+				while (jarEntrys.hasMoreElements()) {
+					JarEntry entry = jarEntrys.nextElement();
+					// 简单的判断路径，如果想做到想Spring，Ant-Style格式的路径匹配需要用到正则。
+					String name = entry.getName();
+					if(name.startsWith(dirPath) && !entry.isDirectory() && !name.endsWith(".class")){
+						InputStream is = jarFile.getInputStream(entry);
+						String tmpEntryName = dirPath + "/" + name.substring(dirPath.length()+1);
+						writeZipFile(out, is, tmpEntryName);
 					}
-					out.closeEntry();
-					is.close();
 				}
 			}
 			log.debug("处理 template 完毕");
@@ -76,6 +81,19 @@ public class TemplateGenerator implements IZipGenerator {
 			throw new FoxBPMException("转换template时出错", ex);
 		}
 		
+	}
+	
+	private void writeZipFile(ZipOutputStream out, InputStream is, String tmpEntryName) throws IOException{
+		ZipEntry zipEntry = new ZipEntry(tmpEntryName);
+		zipEntry.setMethod(ZipEntry.DEFLATED);// 设置条目的压缩方式
+		out.putNextEntry(zipEntry);
+		int n = 0;
+		byte b[] = new byte[1024];
+		while((n=is.read(b)) != -1){
+			out.write(b , 0 , n);
+		}
+		out.closeEntry();
+		is.close();
 	}
 
 }

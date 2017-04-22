@@ -73,7 +73,7 @@ public class ExceptionUtil {
 		if(ex instanceof FoxBPMException){
 			return (FoxBPMException)ex;
 		}
-		return createException(getMessage(exceptionCode,args)+"，错误类型"+ex.getClass(),ex);
+		return createException(getMessage(exceptionCode,args)+" "+ex.getClass(),ex);
 	}
 	
 	private static FoxBPMException createException(String message,Throwable ex){

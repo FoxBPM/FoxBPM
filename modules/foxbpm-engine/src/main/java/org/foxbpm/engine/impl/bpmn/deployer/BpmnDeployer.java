@@ -233,7 +233,7 @@ public class BpmnDeployer extends AbstractDeployer {
 		try{
 			formUri = StringUtil.getString(processDefinitionEntity.getFormUri().getValue(null));
 		}catch(Exception ex){
-			throw ExceptionUtil.getException("10104002",processDefinitionEntity.getId());
+			throw ExceptionUtil.getException("10104002", ex, processDefinitionEntity.getId());
 		}
 		
 		return formUri;

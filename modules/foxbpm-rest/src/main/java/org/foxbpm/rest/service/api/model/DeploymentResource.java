@@ -36,6 +36,9 @@ public class DeploymentResource extends AbstractRestResource {
 	@Put
 	public String update(Representation entity){
 		
+		// 只允许内部网络访问
+		onlyAllowIntranetAccess();
+		
 		String deploymentId = getAttribute("deploymentId");
 		InputStream input = null;
 		try {
@@ -62,6 +65,10 @@ public class DeploymentResource extends AbstractRestResource {
 	
 	@Delete
 	public String deleteDeployment(){
+		
+		// 只允许内部网络访问
+		onlyAllowIntranetAccess();
+		
 		String deploymentId = getAttribute("deploymentId");
 		ModelService modelService = FoxBpmUtil.getProcessEngine().getModelService();
 		modelService.deleteDeployment(deploymentId);

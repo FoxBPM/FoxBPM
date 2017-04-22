@@ -116,11 +116,15 @@ public abstract class AbstractFlowElementVOFactory {
 			// 连接线
 			KernelSequenceFlowImpl kernelSequenceFlowImpl = (KernelSequenceFlowImpl) kernelBaseElement;
 			svgElementBuildDistincter.setKernelBaseElement(kernelBaseElement);
-			svgElementBuildDistincter.createSequenceElement(kernelSequenceFlowImpl.getId(), kernelSequenceFlowImpl.getName(), (String) kernelSequenceFlowImpl.getProperty(StyleOption.Foreground), kernelSequenceFlowImpl.getWaypoints());
+			if (kernelSequenceFlowImpl.getWaypoints().size() > 0){
+				svgElementBuildDistincter.createSequenceElement(kernelSequenceFlowImpl.getId(), kernelSequenceFlowImpl.getName(), (String) kernelSequenceFlowImpl.getProperty(StyleOption.Foreground), kernelSequenceFlowImpl.getWaypoints());
+			}
 		} else if (kernelBaseElement instanceof KernelAssociationImpl) {
 			// 连接线
 			KernelAssociationImpl kernelAssociationImpl = (KernelAssociationImpl) kernelBaseElement;
-			svgElementBuildDistincter.createSequenceElement(kernelAssociationImpl.getId(), kernelAssociationImpl.getName(), (String) kernelAssociationImpl.getProperty(StyleOption.Foreground), kernelAssociationImpl.getWaypoints());
+			if (kernelAssociationImpl.getWaypoints().size() > 0){
+				svgElementBuildDistincter.createSequenceElement(kernelAssociationImpl.getId(), kernelAssociationImpl.getName(), (String) kernelAssociationImpl.getProperty(StyleOption.Foreground), kernelAssociationImpl.getWaypoints());
+			}
 		} else if (kernelBaseElement instanceof KernelLane) {
 			// 泳道
 			svgElementBuildDistincter.setKernelBaseElement(kernelBaseElement);

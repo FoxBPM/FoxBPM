@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?> 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
-
 <mapper namespace="org.foxbpm.engine.impl.entity.ProcessDefinitionEntity">
-<resultMap id="ProcessDefinitionMap" type="org.foxbpm.engine.impl.entity.ProcessDefinitionEntity">
+
+  <resultMap id="ProcessDefinitionMap" type="org.foxbpm.engine.impl.entity.ProcessDefinitionEntity">
     <id column="PROCESS_ID" jdbcType="VARCHAR" property="id" />
     <result column="PROCESS_KEY" jdbcType="VARCHAR" property="key" />
     <result column="CATEGORY" jdbcType="VARCHAR" property="category" />
@@ -17,7 +17,7 @@
     <result column="REV_" property="revision" jdbcType="INTEGER" />
   </resultMap>
   
-   <insert id="insertProcessDefinition" parameterType="org.foxbpm.engine.impl.entity.ProcessDefinitionEntity">
+  <insert id="insertProcessDefinition" parameterType="org.foxbpm.engine.impl.entity.ProcessDefinitionEntity">
     insert into ${prefix}_def_processdefinition (PROCESS_ID, 
       PROCESS_KEY, CATEGORY, PROCESS_NAME, 
       VERSION, RESOURCE_NAME, DEPLOYMENT_ID, 
@@ -31,36 +31,34 @@
      )
   </insert>
   
-   <select id="selectProcessDefinitionById" parameterType="java.lang.String" resultMap="ProcessDefinitionMap">
+  <select id="selectProcessDefinitionById" parameterType="java.lang.String" resultMap="ProcessDefinitionMap">
     select 
     *
     from ${prefix}_def_processdefinition
     where PROCESS_ID = #{processId,jdbcType=VARCHAR}
   </select>
   
-   <select id="selectLatestProcessDefinitionByKey" parameterType="java.lang.String" resultMap="ProcessDefinitionMap">
+  <select id="selectLatestProcessDefinitionByKey" parameterType="java.lang.String" resultMap="ProcessDefinitionMap">
    select * from ${prefix}_DEF_PROCESSDEFINITION 
    where PROCESS_KEY = #{processKey,jdbcType=VARCHAR} and VERSION = (select max(VERSION) from ${prefix}_DEF_PROCESSDEFINITION where PROCESS_KEY = #{processKey,jdbcType=VARCHAR})
   </select>
   
-   <select id="selectProcessDefinitionByDeployIdAndKey" parameterType="map" resultMap="ProcessDefinitionMap">
+  <select id="selectProcessDefinitionByDeployIdAndKey" parameterType="map" resultMap="ProcessDefinitionMap">
 	   select * from ${prefix}_DEF_PROCESSDEFINITION 
 	   where DEPLOYMENT_ID = #{deploymentId,jdbcType=VARCHAR} AND PROCESS_KEY = #{key,jdbcType=VARCHAR}
   </select>
   
   
-   <select id="selectProcessDefinitionByKeyAndVersion" parameterType="map" resultMap="ProcessDefinitionMap">
+  <select id="selectProcessDefinitionByKeyAndVersion" parameterType="map" resultMap="ProcessDefinitionMap">
 	   select * from ${prefix}_DEF_PROCESSDEFINITION 
 	   where PROCESS_KEY = #{key,jdbcType=VARCHAR} AND VERSION = #{version,jdbcType=INTEGER}
   </select>
   
-   <select id="selectProcessDefinitionGroupByKey" parameterType="map" resultMap="ProcessDefinitionMap">
+  <select id="selectProcessDefinitionGroupByKey" parameterType="map" resultMap="ProcessDefinitionMap">
 	   select * from (select max(VERSION) as VERSION,PROCESS_KEY from ${prefix}_DEF_PROCESSDEFINITION GROUP BY PROCESS_KEY  ) t1 
 	   left join ${prefix}_DEF_PROCESSDEFINITION t2 on 
 	   t1.VERSION=t2.VERSION and t1.PROCESS_KEY=t2.PROCESS_KEY
   </select>
-  
-  
   
   <select id="selectProcessDefinitionsByQueryCriteria" parameterType="org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl" resultMap="ProcessDefinitionMap">
   	${limitBefore}
@@ -73,7 +71,7 @@
   </select>
   
   <select id="selectProcessDefinitionCountByQueryCriteria" parameterType="org.foxbpm.engine.impl.model.ProcessDefinitionQueryImpl" resultType="long">
-    select count(PD.PROCESS_ID)
+    select count(RES.PROCESS_ID)
     <include refid="selectProcessDefinitionsByQueryCriteriaSql"/>
   </select>
   
@@ -108,7 +106,7 @@
         and RES.DEPLOYMENT_ID = #{deploymentId}
       </if>
       <if test="latest">
-        and RES.VERSION = (select max(VERSION) from ${prefix}_DEF_PROCESSDEFINITION where KEY = RES.KEY)
+        and RES.VERSION = (select max(VERSION) from ${prefix}_DEF_PROCESSDEFINITION where PROCESS_KEY = RES.PROCESS_KEY)
       </if>
     </where>
   </sql>
