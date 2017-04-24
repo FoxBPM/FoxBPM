@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter PUBLIC '-//OASIS//DTD DocBook XML V5.0//EN'  '../dtd/docbook.dtd'>
 <chapter>
-    <title>eclipse设计器使用手册</title>
+    <title>eclipse设计器使用</title>
     <sect1>
         <title>前言</title>
         <sect2>
@@ -1415,7 +1415,7 @@
             </sect3>
             
             <sect3>
-                <title>退回-后台指定步骤-自动最近处理者</title>
+                <title>转办</title>
                 <itemizedlist>
                     <listitem>
                         <para>功能说明：将任务给其他人处理，处理人只会有“还回”权限，并且会生成记录。</para>

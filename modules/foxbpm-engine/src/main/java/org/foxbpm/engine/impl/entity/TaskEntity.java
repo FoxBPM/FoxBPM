@@ -191,11 +191,11 @@ public class TaskEntity extends KernelVariableScopeImpl implements Task, Delegat
 	
 	protected Map<String, Object> paramMap = new HashMap<String, Object>();
 	
-	public TaskEntity() {
+	private TaskEntity() {
 		
 	}
 	
-	public TaskEntity(String taskId) {
+	private TaskEntity(String taskId) {
 		this.id = taskId;
 	}
 	

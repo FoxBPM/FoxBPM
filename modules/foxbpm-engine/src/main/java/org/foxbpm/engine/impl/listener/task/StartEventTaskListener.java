@@ -44,7 +44,7 @@ public class StartEventTaskListener extends AbstractTaskEventListener {
 		TokenEntity tokenEntity = (TokenEntity) executionContext;
 		KernelFlowNodeImpl kernelFlowNode = tokenEntity.getProcessInstance().getStartFlowNode();
 		// 创建流程启动
-		TaskEntity taskEntity = new TaskEntity();
+		TaskEntity taskEntity = TaskEntity.createAndInsert(tokenEntity);
 		taskEntity.setNodeId(kernelFlowNode.getId());
 		taskEntity.setBizKey(tokenEntity.getBizKey());
 		taskEntity.setNodeName(kernelFlowNode.getName());

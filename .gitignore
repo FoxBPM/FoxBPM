@@ -3,4 +3,6 @@
 .classpath
 .project
 /bin
+/fixflow-bpmn-converter
+.gitignore
 .DS_Store

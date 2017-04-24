@@ -214,7 +214,7 @@ public interface TaskService {
 	 * 不满足上述条件时，则会抛出相应异常信息
 	 * @param taskId 要追回的任务编号
 	 * @param targetNodeId 要追回到的目标节点编号
-	 * 
+	 *  @param taskComment 任务意见
 	 */
-	void recoverTask(String taskId,String targetNodeId);
+	void recoverTask(String taskId,String targetNodeId,String taskComment);
 }

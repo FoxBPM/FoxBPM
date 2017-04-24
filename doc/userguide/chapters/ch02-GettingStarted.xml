@@ -184,7 +184,7 @@
         </mediaobject>
       </listitem>
       <listitem>
-        <para>下面选中第一个节点“人工任务”(提交申请)属性->任务命令，配置操作表单。</para>
+        <para>下面选中第一个节点“人工任务”(提交申请)属性->任务命令，</para>
         <para>添加一个启动并提交按钮，最终效果如图</para>
         <mediaobject>
           <imageobject>
@@ -214,7 +214,7 @@
         <para>同样的方法我们设置网关后面的另外一条线条条件为：amount&lt;=500</para>
       </listitem>
       <listitem>
-        <para>最后配置User_Task2和User_Task3节点的信息，即审批节点的配置，点击节点，属性->任务命令，配置操作表单。</para>
+        <para>最后配置User_Task2和User_Task3节点的信息，即审批节点的配置，点击节点，属性->任务命令，</para>
         <para>添加一个退回-上一步按钮，改名称为拒绝，最终效果如图：</para>
         <mediaobject>
           <imageobject>

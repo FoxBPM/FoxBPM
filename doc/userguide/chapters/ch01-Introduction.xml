@@ -41,8 +41,7 @@
     </section>
     <section>
       <title>Eclipse</title>
-      <para> Foxbpm设计器插件能够在 Eclipse Juno Kepler SR2版本中运行. 
-        <link
+      <para> Foxbpm设计器插件能够在 Eclipse Juno、Kepler SR2、Luna版本中运行. <link
           xlink:href="http://eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/keplersr2"
           >Eclipse Kepler SR2</link>
         <link
@@ -51,7 +50,7 @@
       </para>
     </section>
     <section>
-      <title>Graphiti(Juno、Kepler)</title>
+      <title>Graphiti(Juno、Kepler、Luna)</title>
       <para> 在安装Foxbpm设计器插件之前先要添加Graphiti和Groovy站点信息</para>
       <para>
         <uri>http://download.eclipse.org/graphiti/updates/0.10.2</uri>
@@ -60,7 +59,7 @@
     <section>
       <title>Groovy (Juno、Kepler)</title>
       <para> 在安装Foxbpm设计器插件之前先要添加Groovy站点信息</para>
-      <para> Kepler:<uri>http://dist.springsource.org/release/GRECLIPSE/e4.2/</uri></para>
+      <para> Kepler:<uri>http://dist.springsource.org/release/GRECLIPSE/e4.3/</uri></para>
       <para>
         Juno:<uri>http://dist.springsource.org/release/GRECLIPSE/e4.2/</uri>
       </para>

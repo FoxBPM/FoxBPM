@@ -17,14 +17,12 @@
  */
 package org.foxbpm.engine.impl.listener.task;
 
-import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.TokenEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.ClockUtil;
-import org.foxbpm.engine.impl.util.GuidUtil;
 import org.foxbpm.kernel.event.KernelListener;
 import org.foxbpm.kernel.runtime.ListenerExecutionContext;
 
@@ -57,7 +55,6 @@ public abstract class AbstractTaskEventListener implements KernelListener {
 		TaskEntity taskEntity = handleTaskEntity(executionContext);
 		TokenEntity tokenEntity = (TokenEntity) executionContext;
 		handleCommonTask(tokenEntity, taskEntity);
-		saveTaskEntity(taskEntity);
 	}
 
 	/**
@@ -72,8 +69,6 @@ public abstract class AbstractTaskEventListener implements KernelListener {
 		ProcessInstanceEntity kernelProcessInstance = tokenEntity.getProcessInstance();
 		ProcessDefinitionEntity kernelProcessDefinition = (ProcessDefinitionEntity) tokenEntity.getProcessDefinition();
 		taskEntity.setOpen(false);
-		taskEntity.setId(GuidUtil.CreateGuid());
-		taskEntity.setCreateTime(ClockUtil.getCurrentTime());
 		taskEntity.setEndTime(ClockUtil.getCurrentTime());
 		taskEntity.setProcessInitiator(Authentication.getAuthenticatedUserId());
 		taskEntity.setProcessInstanceId(kernelProcessInstance.getId());
@@ -82,18 +77,6 @@ public abstract class AbstractTaskEventListener implements KernelListener {
 		taskEntity.setProcessDefinitionKey(kernelProcessDefinition.getKey());
 		taskEntity.setProcessDefinitionName(kernelProcessDefinition.getName());
 		taskEntity.setTokenId(tokenEntity.getId());
-	}
-
-	/**
-	 * 
-	 * 保存实例数据
-	 * 
-	 * @param taskEntity
-	 *            任务实例
-	 * @since 1.0.0
-	 */
-	private void saveTaskEntity(TaskEntity taskEntity) {
-		Context.getCommandContext().getTaskManager().insert(taskEntity);
 	}
 
 	/**

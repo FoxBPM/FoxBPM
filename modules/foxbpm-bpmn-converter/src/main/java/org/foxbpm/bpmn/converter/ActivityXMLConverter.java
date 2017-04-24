@@ -85,6 +85,8 @@ public abstract class ActivityXMLConverter extends FlowNodeXMLConverter {
 			        + BpmnXMLConstants.ELEMENT_SKIPSTRATEGY,BpmnXMLConstants.FOXBPM_NAMESPACE);
 			skipStrategyElement.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':'
 				        + BpmnXMLConstants.ATTRIBUTE_ISENABLE, String.valueOf(skipStrategy.isEnable()));
+			skipStrategyElement.addAttribute(BpmnXMLConstants.FOXBPM_PREFIX + ':'
+				+ BpmnXMLConstants.ATTRIBUTE_ISCREATESKIPPROCESS, String.valueOf(skipStrategy.isCreateSkipTaskRecord()));
 			 
 			String skipExpression = skipStrategy.getSkipExpression();
 			if(skipExpression!= null){
@@ -119,6 +121,7 @@ public abstract class ActivityXMLConverter extends FlowNodeXMLConverter {
 			Element multiInstanceElement = element.addElement(BpmnXMLConstants.BPMN2_PREFIX + ':'
 				        + BpmnXMLConstants.ELEMENT_MULTIINSTANCELOOPCHARACTERISTICS);
 			multiInstanceElement.addAttribute(BpmnXMLConstants.ATTRIBUTE_ID, multiInstanceLoopCharacteristics.getId());
+			multiInstanceElement.addAttribute(BpmnXMLConstants.ELEMENT_ISSEQUENTIAL, String.valueOf(multiInstanceLoopCharacteristics.isSequential()));
 			Element multiInstanceExtensionElement = null;
 			
 			//输入数据集合
